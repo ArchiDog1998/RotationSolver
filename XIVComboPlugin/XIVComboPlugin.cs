@@ -47,15 +47,21 @@ namespace XIVComboPlugin
 
             this.pluginInterface.UiBuilder.OnOpenConfigUi += (sender, args) => isImguiComboSetupOpen = true;
             this.pluginInterface.UiBuilder.OnBuildUi += UiBuilder_OnBuildUi;
+            
             /*
             pluginInterface.Subscribe("PingPlugin", e => {
                 dynamic msg = e;
                 iconReplacer.UpdatePing(msg.LastRTT / 2);
                 PluginLog.Log("Ping was updated to {0} ms", msg.LastRTT / 2);
                 });
-                */
-            var values = Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>();
-            orderedByClassJob = values.Where(x => x != CustomComboPreset.None && x.GetAttribute<CustomComboInfoAttribute>() != null).OrderBy(x => x.GetAttribute<CustomComboInfoAttribute>().ClassJob).ToArray();
+            */
+
+            orderedByClassJob = Enum
+                .GetValues(typeof(CustomComboPreset))
+                .Cast<CustomComboPreset>()
+                .Where(x => x != CustomComboPreset.None && x.GetAttribute<CustomComboInfoAttribute>() != null)
+                .OrderBy(x => x.GetAttribute<CustomComboInfoAttribute>().ClassJob)
+                .ToArray();
             UpdateConfig();
         }
 
