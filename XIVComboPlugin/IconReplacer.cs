@@ -30,17 +30,17 @@ namespace XIVComboPlugin
 
         private readonly HashSet<uint> customIds;
         private readonly HashSet<uint> vanillaIds;
-        private HashSet<uint> noUpdateIcons;
-        private HashSet<uint> seenNoUpdate;
+        private readonly HashSet<uint> noUpdateIcons;
+        private readonly HashSet<uint> seenNoUpdate;
 
         private readonly Hook<OnGetIconDelegate> iconHook;
         private readonly IntPtr lastComboMove;
-        private readonly IntPtr playerLevel;
-        private readonly IntPtr playerJob;
+        // private readonly IntPtr playerLevel;
+        // private readonly IntPtr playerJob;
         private uint lastJob = 0;
 
         private readonly IntPtr BuffVTableAddr;
-        private float ping;
+        // private float ping;
 
         private unsafe delegate int* getArray(long* address);
 
@@ -48,7 +48,7 @@ namespace XIVComboPlugin
 
         public IconReplacer(SigScanner scanner, ClientState clientState, XIVComboConfiguration configuration)
         {
-            ping = 0;
+            // ping = 0;
             shutdown = false;
             Configuration = configuration;
             this.clientState = clientState;
@@ -76,7 +76,7 @@ namespace XIVComboPlugin
             Log.Verbose("GetIcon address {GetIcon}", Address.GetIcon);
             Log.Verbose("ComboTimer address {ComboTimer}", comboTimer);
             Log.Verbose("LastComboMove address {LastComboMove}", lastComboMove);
-            Log.Verbose("PlayerLevel address {PlayerLevel}", playerLevel);
+            // Log.Verbose("PlayerLevel address {PlayerLevel}", playerLevel);
 
             iconHook = new Hook<OnGetIconDelegate>(Address.GetIcon, new OnGetIconDelegate(GetIconDetour), this);
             checkerHook = new Hook<OnCheckIsIconReplaceableDelegate>(Address.IsIconReplaceable,

@@ -19,7 +19,7 @@ namespace XIVComboPlugin
 
         private DalamudPluginInterface pluginInterface;
         private IconReplacer iconReplacer;
-        private readonly int CURRENT_CONFIG_VERSION = 3;
+        // private readonly int CURRENT_CONFIG_VERSION = 3;
         private CustomComboPreset[] orderedByClassJob;
 
         public void Initialize(DalamudPluginInterface pluginInterface)
