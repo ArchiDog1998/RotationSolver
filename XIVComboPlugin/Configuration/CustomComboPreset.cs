@@ -185,6 +185,9 @@ namespace XIVComboPlugin
         [CustomComboInfo("Demon Slaughter Combo", "Replace Demon Slaughter with its combo chain", 37, new uint[] { GNB.DemonSlaughter })]
         GunbreakerDemonSlaughterCombo = 1L << 22,
 
+        [CustomComboInfo("Fated Circle Feature", "In addition to the Demon Slaughter combo, add Fated Circle when charges are full", 37, new uint[] { GNB.DemonSlaughter })]
+        GunbreakerFatedCircleFeature = 1L << 30,
+
         #endregion
         // ====================================================================================
         #region MACHINIST

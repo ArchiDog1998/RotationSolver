@@ -636,7 +636,17 @@ namespace XIVComboPlugin
                 {
                     if (comboTime > 0)
                         if (lastMove == GNB.DemonSlice && level >= GNB.Levels.DemonSlaughter)
+                        {
+                            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.GunbreakerFatedCircleFeature))
+                            {
+                                var gauge = clientState.JobGauges.Get<GNBGauge>();
+                                if (gauge.NumAmmo == 2 && level >= GNB.Levels.FatedCircle)
+                                {
+                                    return GNB.FatedCircle;
+                                }
+                            }
                             return GNB.DemonSlaughter;
+                        }
                     return GNB.DemonSlice;
                 }
             }
