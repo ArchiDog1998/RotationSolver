@@ -258,6 +258,9 @@ namespace XIVComboPlugin
         [CustomComboInfo("Fan Dance Combos", "Change Fan Dance and Fan Dance 2 into Fan Dance 3 while flourishing", 38, new uint[] { DNC.FanDance1, DNC.FanDance2 })]
         DancerFanDanceCombo = 1L << 33,
 
+        [CustomComboInfo("Dance Step Combo", "Change Standard Step and Technical Step into each dance step while dancing", 38, new uint[] { DNC.StandardStep, DNC.TechnicalStep })]
+        DancerDanceStepCombo = 1L << 31,
+
         #endregion
         // ====================================================================================
         #region WHITE MAGE

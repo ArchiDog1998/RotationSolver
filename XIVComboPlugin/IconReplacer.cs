@@ -974,6 +974,25 @@ namespace XIVComboPlugin
                 }
             }
 
+            // Standard Step and Technical Steps turn into the movements while dancing.
+            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerDanceStepCombo))
+            {
+                if (actionID == DNC.StandardStep)
+                {
+                    var gauge = clientState.JobGauges.Get<DNCGauge>();
+                    if (gauge.IsDancing() && SearchBuffArray(DNC.Buffs.StandardStep))
+                        if (gauge.NumCompleteSteps < 2)
+                            return gauge.NextStep();
+                }
+                if (actionID == DNC.TechnicalStep)
+                {
+                    var gauge = clientState.JobGauges.Get<DNCGauge>();
+                    if (gauge.IsDancing() && SearchBuffArray(DNC.Buffs.TechnicalStep))
+                        if (gauge.NumCompleteSteps < 4)
+                            return gauge.NextStep();
+                }
+            }
+
             #endregion
             // ====================================================================================
             #region WHITE MAGE
