@@ -993,6 +993,24 @@ namespace XIVComboPlugin
                 }
             }
 
+            // Before using Flourish, use any procs
+            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerFlourishFeature))
+            {
+                if (actionID == DNC.Flourish)
+                {
+                    UpdateBuffAddress();
+                    if (SearchBuffArray(DNC.Buffs.FlourishingFountain))
+                        return DNC.Fountainfall;
+                    if (SearchBuffArray(DNC.Buffs.FlourishingCascade))
+                        return DNC.ReverseCascade;
+                    if (SearchBuffArray(DNC.Buffs.FlourishingShower))
+                        return DNC.Bloodshower;
+                    if (SearchBuffArray(DNC.Buffs.FlourishingWindmill))
+                        return DNC.RisingWindmill;
+                    return DNC.Flourish;
+                }
+            }
+
             #endregion
             // ====================================================================================
             #region WHITE MAGE

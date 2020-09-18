@@ -261,6 +261,9 @@ namespace XIVComboPlugin
         [CustomComboInfo("Dance Step Combo", "Change Standard Step and Technical Step into each dance step while dancing", 38, new uint[] { DNC.StandardStep, DNC.TechnicalStep })]
         DancerDanceStepCombo = 1L << 31,
 
+        [CustomComboInfo("Flourish Proc Saver", "Change Flourish into any available procs before using", 38, new uint[] { DNC.Flourish })]
+        DancerFlourishFeature = 1L << 34,
+
         #endregion
         // ====================================================================================
         #region WHITE MAGE
