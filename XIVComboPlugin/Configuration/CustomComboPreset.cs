@@ -1,5 +1,4 @@
 using System;
-using XIVComboPlugin.JobActions;
 
 namespace XIVComboPlugin
 {

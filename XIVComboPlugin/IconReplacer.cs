@@ -9,7 +9,6 @@ using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Structs.JobGauge;
 using Dalamud.Hooking;
 using Serilog;
-using XIVComboPlugin.JobActions;
 
 namespace XIVComboPlugin
 {
