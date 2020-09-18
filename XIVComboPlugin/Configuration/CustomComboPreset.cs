@@ -8,6 +8,73 @@ namespace XIVComboPlugin
     {
         None = 0,
 
+        /*
+        DragoonCoerthanTormentCombo     = 1L << 0,
+        DragoonChaosThrustCombo         = 1L << 1,
+        DragoonFullThrustCombo          = 1L << 2,
+        DarkSouleaterCombo              = 1L << 3,
+        DarkStalwartSoulCombo           = 1L << 4,
+        PaladinGoringBladeCombo         = 1L << 5,
+        PaladinRoyalAuthorityCombo      = 1L << 6,
+        PaladinProminenceCombo          = 1L << 7,
+        WarriorStormsPathCombo          = 1L << 8,
+        WarriorStormsEyeCombo           = 1L << 9,
+        WarriorMythrilTempestCombo      = 1L << 10,
+        SamuraiYukikazeCombo            = 1L << 11,
+        SamuraiGekkoCombo               = 1L << 12,
+        SamuraiKashaCombo               = 1L << 13,
+        SamuraiMangetsuCombo            = 1L << 14,
+        SamuraiOkaCombo                 = 1L << 15,
+        // 16
+        NinjaArmorCrushCombo            = 1L << 17,
+        NinjaAeolianEdgeCombo           = 1L << 18,
+        NinjaHakkeMujinsatsuCombo       = 1L << 19,
+        GunbreakerSolidBarrelCombo      = 1L << 20,
+        GunbreakerGnashingFangCombo     = 1L << 21,
+        GunbreakerDemonSlaughterCombo   = 1L << 22,
+        MachinistMainCombo              = 1L << 23,
+        MachinistSpreadShotFeature      = 1L << 24,
+        BlackEnochianFeature            = 1L << 25,
+        BlackManaFeature                = 1L << 26,
+        AstrologianCardsOnDrawFeature   = 1L << 27,
+        SummonerDemiCombo               = 1L << 28,
+        ScholarSeraphConsolationFeature = 1L << 29,
+        // 30
+        // 31
+        DancerAoeGcdFeature             = 1L << 32,
+        DancerFanDanceCombo             = 1L << 33,
+        // 34
+        WhiteMageSolaceMiseryFeature    = 1L << 35,
+        WhiteMageRaptureMiseryFeature   = 1L << 36,
+        ScholarEnergyDrainFeature       = 1L << 37,
+        SummonerBoPCombo                = 1L << 38,
+        SummonerEDFesterCombo           = 1L << 39,
+        SummonerESPainflareCombo        = 1L << 40,
+        BardWandererPPFeature           = 1L << 41,
+        BardStraightShotUpgradeFeature  = 1L << 42,
+        // 43
+        DragoonJumpFeature              = 1L << 44,
+        NinjaAssassinateFeature         = 1L << 45,
+        DragoonBOTDFeature              = 1L << 46,
+        MachinistOverheatFeature        = 1L << 47,
+        RedMageAoECombo                 = 1L << 48,
+        RedMageMeleeCombo               = 1L << 49,
+        // 50
+        SamuraiThirdEyeFeature          = 1L << 51,
+        GunbreakerGnashingFangCont      = 1L << 52,
+        RedMageVerprocCombo             = 1L << 53,
+        MnkAoECombo                     = 1L << 54,
+        PaladinRequiescatCombo          = 1L << 55,
+        BlackLeyLines                   = 1L << 56,
+        
+        // Custom
+        GunbreakerFatedCircleFeature    = 1L << 30,
+        DancerDanceStepCombo            = 1L << 31,
+        DancerFlourishFeature           = 1L << 34,
+        DancerSingleTargetMultibutton   = 1L << 43,
+        DancerAoeMultibutton            = 1L << 50,
+        */
+
         // ====================================================================================
         #region DRAGOON
 
