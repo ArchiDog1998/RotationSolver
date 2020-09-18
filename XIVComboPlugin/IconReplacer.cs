@@ -922,6 +922,7 @@ namespace XIVComboPlugin
             // AoE GCDs are split into two buttons, because priority matters
             // differently in different single-target moments. Thanks yoship.
             // Replaces each GCD with its procced version.
+            /*
             if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerAoeGcdFeature))
             {
                 if (actionID == DNC.Bloodshower)
@@ -940,6 +941,7 @@ namespace XIVComboPlugin
                     return DNC.Windmill;
                 }
             }
+            */
 
             // Fan Dance changes into Fan Dance 3 while flourishing.
             if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerFanDanceCombo))

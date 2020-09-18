@@ -180,8 +180,10 @@ namespace XIVComboPlugin
         // ====================================================================================
         #region DANCER
 
+        /*
         [CustomComboInfo("AoE GCD procs", "DNC AoE procs turn into their normal abilities when not procced", 38, new uint[] { DNC.Bloodshower, DNC.RisingWindmill })]
         DancerAoeGcdFeature = 1L << 32,
+        */
 
         [CustomComboInfo("Fan Dance Combos", "Change Fan Dance and Fan Dance 2 into Fan Dance 3 while flourishing", 38, new uint[] { DNC.FanDance1, DNC.FanDance2 })]
         DancerFanDanceCombo = 1L << 33,
