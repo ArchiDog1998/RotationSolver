@@ -264,6 +264,12 @@ namespace XIVComboPlugin
         [CustomComboInfo("Flourish Proc Saver", "Change Flourish into any available procs before using", 38, new uint[] { DNC.Flourish })]
         DancerFlourishFeature = 1L << 34,
 
+        [CustomComboInfo("Single Target Multibutton", "Change Cascade into procs and combos as available", 38, new uint[] { DNC.Cascade })]
+        DancerSingleTargetMultibutton = 1L << 43,
+
+        [CustomComboInfo("AoE Multibutton", "Change Windmill into procs and combos as available", 38, new uint[] { DNC.Windmill })]
+        DancerAoeMultibutton = 1L << 50,
+
         #endregion
         // ====================================================================================
         #region WHITE MAGE

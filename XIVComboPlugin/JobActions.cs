@@ -129,7 +129,9 @@ namespace XIVComboPlugin
 
         public static class Levels
         {
-            // public const byte placeholder = 0;
+            public const byte
+                Fountain = 2,
+                Bladeshower = 25;
         }
     }
 

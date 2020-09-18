@@ -1011,6 +1011,44 @@ namespace XIVComboPlugin
                 }
             }
 
+            // Single target multibutton
+            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerSingleTargetMultibutton))
+            {
+                if (actionID == DNC.Cascade)
+                {
+                    UpdateBuffAddress();
+                    // From Fountain
+                    if (SearchBuffArray(DNC.Buffs.FlourishingFountain))
+                        return DNC.Fountainfall;
+                    // From Cascade
+                    if (SearchBuffArray(DNC.Buffs.FlourishingCascade))
+                        return DNC.ReverseCascade;
+                    // Cascade Combo
+                    if (lastMove == DNC.Cascade && level >= DNC.Levels.Fountain)
+                        return DNC.Fountain;
+                    return DNC.Cascade;
+                }
+            }
+
+            // AoE multibutton
+            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerAoeMultibutton))
+            {
+                if (actionID == DNC.Windmill)
+                {
+                    UpdateBuffAddress();
+                    // From Bladeshower
+                    if (SearchBuffArray(DNC.Buffs.FlourishingShower))
+                        return DNC.Bloodshower;
+                    // From Windmill
+                    if (SearchBuffArray(DNC.Buffs.FlourishingWindmill))
+                        return DNC.RisingWindmill;
+                    // Windmill Combo
+                    if (lastMove == DNC.Windmill && level >= DNC.Levels.Bladeshower)
+                        return DNC.Bladeshower;
+                    return DNC.Windmill;
+                }
+            }
+
             #endregion
             // ====================================================================================
             #region WHITE MAGE
