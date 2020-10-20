@@ -63,10 +63,10 @@ namespace XIVComboPlugin
             Log.Verbose($"ComboTimer address {Address.ComboTimer.ToInt64():X}");
             Log.Verbose($"LastComboMove address {Address.LastComboMove.ToInt64():X}");
 
-            iconHook = new Hook<OnGetIconDelegate>(Address.GetIcon, 
+            iconHook = new Hook<OnGetIconDelegate>(Address.GetIcon,
                 new OnGetIconDelegate(GetIconDetour), this);
-            
-            checkerHook = new Hook<OnCheckIsIconReplaceableDelegate>(Address.IsIconReplaceable, 
+
+            checkerHook = new Hook<OnCheckIsIconReplaceableDelegate>(Address.IsIconReplaceable,
                 new OnCheckIsIconReplaceableDelegate(CheckIsIconReplaceableDetour), this);
 
             Task.Run(BuffTask);
