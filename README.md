@@ -3,7 +3,7 @@ This plugin condenses combos and mutually exclusive abilities onto a single butt
 
 ## About
 XIVCombo is a plugin to allow for "one-button" combo chains, as well as implementing various other mutually-exclusive button consolidation and quality of life replacements. Some examples of the functionality it provides:
-* ~~All~~ Most weaponskill combos are put onto a single button (sorry DNC and MNK!).
+* ~~All~~ Most weaponskill combos are put onto a single button (sorry ~~DNC~~ and MNK!).
 * Enochian changes into Fire 4 and Blizzard 4 depending on your stacks, a la PvP Enochian.
 * Hypercharge turns into Heat Blast while Overheated.
 * Jump/High Jump turns into Mirage Dive while Dive Ready.
