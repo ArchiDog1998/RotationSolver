@@ -2,6 +2,8 @@ namespace XIVComboPlugin
 {
     public static class AST
     {
+        public const byte JobID = 33;
+
         public const uint
             Play = 17055,
             Draw = 3590,
@@ -25,6 +27,8 @@ namespace XIVComboPlugin
 
     public static class BLM
     {
+        public const byte JobID = 25;
+
         public const uint
             Enochian = 3575,
             Blizzard4 = 3576,
@@ -52,6 +56,8 @@ namespace XIVComboPlugin
 
     public static class BRD
     {
+        public const byte JobID = 23;
+
         public const uint
             WanderersMinuet = 3559,
             PitchPerfect = 7404,
@@ -76,6 +82,8 @@ namespace XIVComboPlugin
 
     public static class DoM
     {
+        public const byte JobID = 0;
+
         // public const uint placeholder = 0;
 
         public static class Buffs
@@ -92,6 +100,8 @@ namespace XIVComboPlugin
 
     public static class DNC
     {
+        public const byte JobID = 38;
+
         public const uint
             // Single Target
             Cascade = 15989,
@@ -137,6 +147,8 @@ namespace XIVComboPlugin
 
     public static class DRG
     {
+        public const byte JobID = 22;
+
         public const uint
             Jump = 92,
             HighJump = 16478,
@@ -183,6 +195,8 @@ namespace XIVComboPlugin
 
     public static class DRK
     {
+        public const byte JobID = 32;
+
         public const uint
             Souleater = 3632,
             HardSlash = 3617,
@@ -206,6 +220,8 @@ namespace XIVComboPlugin
 
     public static class GNB
     {
+        public const byte JobID = 37;
+
         public const uint
             SolidBarrel = 16145,
             KeenEdge = 16137,
@@ -242,6 +258,8 @@ namespace XIVComboPlugin
 
     public static class PLD
     {
+        public const byte JobID = 19;
+
         public const uint
             GoringBlade = 3538,
             FastBlade = 9,
@@ -273,6 +291,8 @@ namespace XIVComboPlugin
 
     public static class MCH
     {
+        public const byte JobID = 31;
+
         public const uint
             CleanShot = 2873,
             HeatedCleanShot = 7413,
@@ -305,6 +325,8 @@ namespace XIVComboPlugin
 
     public static class MNK
     {
+        public const byte JobID = 20;
+
         public const uint
             ArmOfTheDestroyer = 62,
             FourPointFury = 16473,
@@ -327,6 +349,8 @@ namespace XIVComboPlugin
 
     public static class NIN
     {
+        public const byte JobID = 30;
+
         public const uint
             ArmorCrush = 3563,
             SpinningEdge = 2240,
@@ -355,6 +379,8 @@ namespace XIVComboPlugin
 
     public static class RDM
     {
+        public const byte JobID = 35;
+
         public const uint
             Veraero2 = 16525,
             Verthunder2 = 16524,
@@ -395,6 +421,8 @@ namespace XIVComboPlugin
 
     public static class SAM
     {
+        public const byte JobID = 34;
+
         public const uint
             Yukikaze = 7480,
             Hakaze = 7477,
@@ -430,6 +458,8 @@ namespace XIVComboPlugin
 
     public static class SCH
     {
+        public const byte JobID = 28;
+
         public const uint
             FeyBless = 16543,
             Consolation = 16546,
@@ -449,6 +479,8 @@ namespace XIVComboPlugin
 
     public static class SMN
     {
+        public const byte JobID = 27;
+
         public const uint
             Deathflare = 3582,
             EnkindlePhoenix = 16516,
@@ -483,6 +515,8 @@ namespace XIVComboPlugin
 
     public static class WAR
     {
+        public const byte JobID = 21;
+
         public const uint
             StormsPath = 42,
             HeavySwing = 31,
@@ -508,6 +542,8 @@ namespace XIVComboPlugin
 
     public static class WHM
     {
+        public const byte JobID = 24;
+
         public const uint
             Solace = 16531,
             Rapture = 16534,
