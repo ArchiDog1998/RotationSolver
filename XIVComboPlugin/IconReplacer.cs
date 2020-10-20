@@ -24,8 +24,6 @@ namespace XIVComboPlugin
         private readonly Hook<OnCheckIsIconReplaceableDelegate> checkerHook;
         private readonly ClientState clientState;
 
-        private readonly IntPtr comboTimer;
-
         private readonly XIVComboConfiguration Configuration;
 
         private readonly HashSet<uint> customIds;
@@ -34,13 +32,7 @@ namespace XIVComboPlugin
         private readonly HashSet<uint> seenNoUpdate;
 
         private readonly Hook<OnGetIconDelegate> iconHook;
-        private readonly IntPtr lastComboMove;
-        // private readonly IntPtr playerLevel;
-        // private readonly IntPtr playerJob;
         private uint lastJob = 0;
-
-        private readonly IntPtr BuffVTableAddr;
-        // private float ping;
 
         private unsafe delegate int* getArray(long* address);
 
@@ -48,21 +40,12 @@ namespace XIVComboPlugin
 
         public IconReplacer(SigScanner scanner, ClientState clientState, XIVComboConfiguration configuration)
         {
-            // ping = 0;
             shutdown = false;
             Configuration = configuration;
             this.clientState = clientState;
 
             Address = new IconReplacerAddressResolver();
             Address.Setup(scanner);
-
-            comboTimer = scanner.GetStaticAddressFromSig("E8 ?? ?? ?? ?? 80 7E 21 00", 0x178);
-            lastComboMove = comboTimer + 0x4;
-            /*
-            playerLevel = scanner.GetStaticAddressFromSig("E8 ?? ?? ?? ?? 88 45 EF", 0x4d) + 0x78;
-            playerJob = playerLevel - 0xE;
-            */
-            BuffVTableAddr = scanner.GetStaticAddressFromSig("48 89 05 ?? ?? ?? ?? 88 05 ?? ?? ?? ?? 88 05 ?? ?? ?? ??", 0);
 
             customIds = new HashSet<uint>();
             vanillaIds = new HashSet<uint>();
@@ -72,14 +55,15 @@ namespace XIVComboPlugin
             PopulateDict();
 
             Log.Verbose("===== H O T B A R S =====");
-            Log.Verbose("IsIconReplaceable address {IsIconReplaceable}", Address.IsIconReplaceable);
-            Log.Verbose("GetIcon address {GetIcon}", Address.GetIcon);
-            Log.Verbose("ComboTimer address {ComboTimer}", comboTimer);
-            Log.Verbose("LastComboMove address {LastComboMove}", lastComboMove);
-            // Log.Verbose("PlayerLevel address {PlayerLevel}", playerLevel);
+            Log.Verbose($"IsIconReplaceable address {Address.IsIconReplaceable.ToInt64():X}");
+            Log.Verbose($"GetIcon address {Address.GetIcon.ToInt64():X}");
+            Log.Verbose($"ComboTimer address {Address.ComboTimer.ToInt64():X}");
+            Log.Verbose($"LastComboMove address {Address.LastComboMove.ToInt64():X}");
 
-            iconHook = new Hook<OnGetIconDelegate>(Address.GetIcon, new OnGetIconDelegate(GetIconDetour), this);
-            checkerHook = new Hook<OnCheckIsIconReplaceableDelegate>(Address.IsIconReplaceable,
+            iconHook = new Hook<OnGetIconDelegate>(Address.GetIcon, 
+                new OnGetIconDelegate(GetIconDetour), this);
+            
+            checkerHook = new Hook<OnCheckIsIconReplaceableDelegate>(Address.IsIconReplaceable, 
                 new OnCheckIsIconReplaceableDelegate(CheckIsIconReplaceableDetour), this);
 
             Task.Run(() =>
@@ -173,9 +157,8 @@ namespace XIVComboPlugin
             if (activeBuffArray == IntPtr.Zero) return iconHook.Original(self, actionID);
 
             // Don't clutter the spaghetti any worse than it already is.
-            var lastMove = Marshal.ReadInt32(lastComboMove);
-            var comboTime = Marshal.PtrToStructure<float>(comboTimer);
-            //var level = Marshal.ReadByte(playerLevel);
+            var lastMove = Marshal.ReadInt32(Address.LastComboMove);
+            var comboTime = Marshal.PtrToStructure<float>(Address.ComboTimer);
             var level = clientState.LocalPlayer.Level;
 
             // ====================================================================================
@@ -1220,13 +1203,6 @@ namespace XIVComboPlugin
             return iconHook.Original(self, actionID);
         }
 
-        /*
-        public void UpdatePing(ulong value)
-        {
-            ping = (float)(value)/1000;
-        }
-        */
-
         private bool SearchBuffArray(short needle)
         {
             if (activeBuffArray == IntPtr.Zero) return false;
@@ -1244,14 +1220,13 @@ namespace XIVComboPlugin
             }
             catch (Exception)
             {
-                //Before you're loaded in
                 activeBuffArray = IntPtr.Zero;
             }
         }
 
         private unsafe IntPtr FindBuffAddress()
         {
-            var num = Marshal.ReadIntPtr(BuffVTableAddr);
+            var num = Marshal.ReadIntPtr(Address.BuffVTableAddr);
             var step2 = (IntPtr)(Marshal.ReadInt64(num) + 0x280);
             var step3 = Marshal.ReadIntPtr(step2);
             var callback = Marshal.GetDelegateForFunctionPointer<getArray>(step3);
