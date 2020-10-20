@@ -50,12 +50,21 @@ namespace XIVComboPlugin
             noUpdateIcons = new HashSet<uint>();
             seenNoUpdate = new HashSet<uint>();
 
+            // For all presets, add all CustomComboInfo ability IDs to customIds
             Enum.GetValues(typeof(CustomComboPreset))
                 .Cast<CustomComboPreset>()
                 .Select(preset => preset.GetAttribute<CustomComboInfoAttribute>())
                 .OfType<CustomComboInfoAttribute>()  // filters null
                 .SelectMany(comboInfo => comboInfo.Abilities)
                 .ToList().ForEach(ability => customIds.Add(ability));
+
+            // For each hidden preset, add all CustomComboInfo ability IDs to noUpdateIcons
+            Configuration.HiddenActions
+                .Select(preset => preset.GetAttribute<CustomComboInfoAttribute>())
+                .OfType<CustomComboInfoAttribute>()  // filters null
+                .SelectMany(comboInfo => comboInfo.Abilities)
+                .ToList().ForEach(ability => noUpdateIcons.Add(ability));
+
 
             Log.Verbose("===== H O T B A R S =====");
             Log.Verbose($"IsIconReplaceable address {Address.IsIconReplaceable.ToInt64():X}");
@@ -86,7 +95,7 @@ namespace XIVComboPlugin
         }
 
         /// <summary>
-        ///  Maps to HiddenActions, these actions do not update their icon per the user configuration.
+        /// Maps to HiddenActions, these actions do not update their icon per the user configuration.
         /// </summary>
         /// <param name="ids">IDs to not update.</param>
         public void AddNoUpdateIcons(uint[] ids)
@@ -158,7 +167,7 @@ namespace XIVComboPlugin
             #region DRAGOON
 
             // Change Jump/High Jump into Mirage Dive when Dive Ready
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DragoonJumpFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.DragoonJumpFeature))
             {
                 if (actionID == DRG.Jump)
                 {
@@ -172,7 +181,7 @@ namespace XIVComboPlugin
             }
 
             // Change Blood of the Dragon into Stardiver when in Life of the Dragon
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DragoonBOTDFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.DragoonBOTDFeature))
             {
                 if (actionID == DRG.BloodOfTheDragon)
                 {
@@ -187,7 +196,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Coerthan Torment with Coerthan Torment combo chain
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DragoonCoerthanTormentCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.DragoonCoerthanTormentCombo))
             {
                 if (actionID == DRG.CoerthanTorment)
                 {
@@ -203,7 +212,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Chaos Thrust with the Chaos Thrust combo chain
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DragoonChaosThrustCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.DragoonChaosThrustCombo))
             {
                 if (actionID == DRG.ChaosThrust)
                 {
@@ -226,7 +235,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Full Thrust with the Full Thrust combo chain
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DragoonFullThrustCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.DragoonFullThrustCombo))
             {
                 if (actionID == DRG.FullThrust)
                 {
@@ -254,7 +263,7 @@ namespace XIVComboPlugin
             #region DARK KNIGHT
 
             // Replace Souleater with Souleater combo chain
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DarkSouleaterCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.DarkSouleaterCombo))
             {
                 if (actionID == DRK.Souleater)
                 {
@@ -270,7 +279,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Stalwart Soul with Stalwart Soul combo chain
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DarkStalwartSoulCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.DarkStalwartSoulCombo))
             {
                 if (actionID == DRK.StalwartSoul)
                 {
@@ -287,7 +296,7 @@ namespace XIVComboPlugin
             #region PALADIN
 
             // Replace Goring Blade with Goring Blade combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.PaladinGoringBladeCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.PaladinGoringBladeCombo))
             {
                 if (actionID == PLD.GoringBlade)
                 {
@@ -303,7 +312,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Royal Authority with Royal Authority combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.PaladinRoyalAuthorityCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.PaladinRoyalAuthorityCombo))
             {
                 if (actionID == PLD.RoyalAuthority || actionID == PLD.RageOfHalone)
                 {
@@ -324,7 +333,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Prominence with Prominence combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.PaladinProminenceCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.PaladinProminenceCombo))
             {
                 if (actionID == PLD.Prominence)
                 {
@@ -337,7 +346,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Requiescat with Confiteor when under the effect of Requiescat
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.PaladinRequiescatCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.PaladinRequiescatCombo))
             {
                 if (actionID == PLD.Requiescat)
                 {
@@ -352,7 +361,7 @@ namespace XIVComboPlugin
             #region WARRIOR
 
             // Replace Storm's Path with Storm's Path combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.WarriorStormsPathCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.WarriorStormsPathCombo))
             {
                 if (actionID == WAR.StormsPath)
                 {
@@ -368,7 +377,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Storm's Eye with Storm's Eye combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.WarriorStormsEyeCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.WarriorStormsEyeCombo))
             {
                 if (actionID == WAR.StormsEye)
                 {
@@ -384,7 +393,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Mythril Tempest with Mythril Tempest combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.WarriorMythrilTempestCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.WarriorMythrilTempestCombo))
             {
                 if (actionID == WAR.MythrilTempest)
                 {
@@ -400,7 +409,7 @@ namespace XIVComboPlugin
             #region SAMURAI
 
             // Replace Yukikaze with Yukikaze combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SamuraiYukikazeCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiYukikazeCombo))
             {
                 if (actionID == SAM.Yukikaze)
                 {
@@ -415,7 +424,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Gekko with Gekko combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SamuraiGekkoCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiGekkoCombo))
             {
                 if (actionID == SAM.Gekko)
                 {
@@ -434,7 +443,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Kasha with Kasha combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SamuraiKashaCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiKashaCombo))
             {
                 if (actionID == SAM.Kasha)
                 {
@@ -453,7 +462,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Mangetsu with Mangetsu combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SamuraiMangetsuCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiMangetsuCombo))
             {
                 if (actionID == SAM.Mangetsu)
                 {
@@ -468,7 +477,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Oka with Oka combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SamuraiOkaCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiOkaCombo))
             {
                 if (actionID == SAM.Oka)
                 {
@@ -483,7 +492,7 @@ namespace XIVComboPlugin
             }
 
             // Turn Seigan into Third Eye when not procced
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SamuraiThirdEyeFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiThirdEyeFeature))
             {
                 if (actionID == SAM.Seigan)
                 {
@@ -499,7 +508,7 @@ namespace XIVComboPlugin
             #region NINJA
 
             // Replace Armor Crush with Armor Crush combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.NinjaArmorCrushCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaArmorCrushCombo))
             {
                 if (actionID == NIN.ArmorCrush)
                 {
@@ -515,7 +524,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Aeolian Edge with Aeolian Edge combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.NinjaAeolianEdgeCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaAeolianEdgeCombo))
             {
                 if (actionID == NIN.AeolianEdge)
                 {
@@ -531,7 +540,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Hakke Mujinsatsu with Hakke Mujinsatsu combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.NinjaHakkeMujinsatsuCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaHakkeMujinsatsuCombo))
             {
                 if (actionID == NIN.HakkeMujinsatsu)
                 {
@@ -543,7 +552,7 @@ namespace XIVComboPlugin
             }
 
             //Replace Dream Within a Dream with Assassinate when Assassinate Ready
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.NinjaAssassinateFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaAssassinateFeature))
             {
                 if (actionID == NIN.DreamWithinADream)
                 {
@@ -559,7 +568,7 @@ namespace XIVComboPlugin
             #region GUNBREAKER
 
             // Replace Solid Barrel with Solid Barrel combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.GunbreakerSolidBarrelCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerSolidBarrelCombo))
             {
                 if (actionID == GNB.SolidBarrel)
                 {
@@ -575,11 +584,11 @@ namespace XIVComboPlugin
             }
 
             // Replace Wicked Talon with Gnashing Fang combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.GunbreakerGnashingFangCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerGnashingFangCombo))
             {
                 if (actionID == GNB.WickedTalon)
                 {
-                    if (Configuration.ComboPresets.HasFlag(CustomComboPreset.GunbreakerGnashingFangCont))
+                    if (Configuration.IsEnabled(CustomComboPreset.GunbreakerGnashingFangCont))
                     {
                         if (level >= GNB.Levels.Continuation)
                         {
@@ -606,14 +615,14 @@ namespace XIVComboPlugin
             }
 
             // Replace Demon Slaughter with Demon Slaughter combo
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.GunbreakerDemonSlaughterCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerDemonSlaughterCombo))
             {
                 if (actionID == GNB.DemonSlaughter)
                 {
                     if (comboTime > 0)
                         if (lastMove == GNB.DemonSlice && level >= GNB.Levels.DemonSlaughter)
                         {
-                            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.GunbreakerFatedCircleFeature))
+                            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerFatedCircleFeature))
                             {
                                 var gauge = clientState.JobGauges.Get<GNBGauge>();
                                 if (gauge.NumAmmo == 2 && level >= GNB.Levels.FatedCircle)
@@ -634,7 +643,7 @@ namespace XIVComboPlugin
             // Replace Clean Shot with Heated Clean Shot combo
             // Or with Heat Blast when overheated.
             // For some reason the shots use their unheated IDs as combo moves
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.MachinistMainCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.MachinistMainCombo))
             {
                 if (actionID == MCH.CleanShot || actionID == MCH.HeatedCleanShot)
                 {
@@ -662,7 +671,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Hypercharge with Heat Blast when overheated
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.MachinistOverheatFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.MachinistOverheatFeature))
             {
                 if (actionID == MCH.Hypercharge)
                 {
@@ -674,7 +683,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Spread Shot with Auto Crossbow when overheated.
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.MachinistSpreadShotFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.MachinistSpreadShotFeature))
             {
                 if (actionID == MCH.SpreadShot)
                 {
@@ -689,7 +698,7 @@ namespace XIVComboPlugin
             #region BLACK MAGE
 
             // Enochian changes to B4 or F4 depending on stance.
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.BlackEnochianFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.BlackEnochianFeature))
             {
                 if (actionID == BLM.Enochian)
                 {
@@ -707,7 +716,7 @@ namespace XIVComboPlugin
             }
 
             // Umbral Soul and Transpose
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.BlackManaFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.BlackManaFeature))
             {
                 if (actionID == BLM.Transpose)
                 {
@@ -719,7 +728,7 @@ namespace XIVComboPlugin
             }
 
             // Ley Lines and BTL
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.BlackLeyLines))
+            if (Configuration.IsEnabled(CustomComboPreset.BlackLeyLines))
             {
                 if (actionID == BLM.LeyLines)
                 {
@@ -734,7 +743,7 @@ namespace XIVComboPlugin
             #region ASTROLOGIAN
 
             // Make cards on the same button as play
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.AstrologianCardsOnDrawFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.AstrologianCardsOnDrawFeature))
             {
                 if (actionID == AST.Play)
                 {
@@ -773,7 +782,7 @@ namespace XIVComboPlugin
             // Now contains DWT, Deathflare, Summon Bahamut, Enkindle Bahamut, FBT, and Enkindle Phoenix.
             // What a monster of a button.
             /*
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SummonerDwtCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerDwtCombo))
                 if (actionID == 3581)
                 {
                     var gauge = clientState.JobGauges.Get<SMNGauge>();
@@ -801,7 +810,7 @@ namespace XIVComboPlugin
                 }
             */
 
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SummonerDemiCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerDemiCombo))
             {
 
                 // Replace Deathflare with demi enkindles
@@ -833,7 +842,7 @@ namespace XIVComboPlugin
             }
 
             // Ruin 1 now upgrades to Brand of Purgatory in addition to Ruin 3 and Fountain of Fire
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SummonerBoPCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerBoPCombo))
             {
                 if (actionID == SMN.Ruin1 || actionID == SMN.Ruin3)
                 {
@@ -854,7 +863,7 @@ namespace XIVComboPlugin
             }
 
             // Change Fester into Energy Drain
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SummonerEDFesterCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerEDFesterCombo))
             {
                 if (actionID == SMN.Fester)
                 {
@@ -865,7 +874,7 @@ namespace XIVComboPlugin
             }
 
             //Change Painflare into Energy Syphon
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.SummonerESPainflareCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerESPainflareCombo))
             {
                 if (actionID == SMN.Painflare)
                 {
@@ -882,7 +891,7 @@ namespace XIVComboPlugin
             #region SCHOLAR
 
             // Change Fey Blessing into Consolation when Seraph is out.
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.ScholarSeraphConsolationFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.ScholarSeraphConsolationFeature))
             {
                 if (actionID == SCH.FeyBless)
                 {
@@ -892,7 +901,7 @@ namespace XIVComboPlugin
             }
 
             // Change Energy Drain into Aetherflow when you have no more Aetherflow stacks.
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.ScholarEnergyDrainFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.ScholarEnergyDrainFeature))
             {
                 if (actionID == SCH.EnergyDrain)
                 {
@@ -909,7 +918,7 @@ namespace XIVComboPlugin
             // differently in different single-target moments. Thanks yoship.
             // Replaces each GCD with its procced version.
             /*
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerAoeGcdFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.DancerAoeGcdFeature))
             {
                 if (actionID == DNC.Bloodshower)
                 {
@@ -930,7 +939,7 @@ namespace XIVComboPlugin
             */
 
             // Fan Dance changes into Fan Dance 3 while flourishing.
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerFanDanceCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.DancerFanDanceCombo))
             {
                 if (actionID == DNC.FanDance1)
                 {
@@ -951,7 +960,7 @@ namespace XIVComboPlugin
             }
 
             // Standard Step and Technical Steps turn into the movements while dancing.
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerDanceStepCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.DancerDanceStepCombo))
             {
                 if (actionID == DNC.StandardStep)
                 {
@@ -970,7 +979,7 @@ namespace XIVComboPlugin
             }
 
             // Before using Flourish, use any procs
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerFlourishFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.DancerFlourishFeature))
             {
                 if (actionID == DNC.Flourish)
                 {
@@ -988,7 +997,7 @@ namespace XIVComboPlugin
             }
 
             // Single target multibutton
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerSingleTargetMultibutton))
+            if (Configuration.IsEnabled(CustomComboPreset.DancerSingleTargetMultibutton))
             {
                 if (actionID == DNC.Cascade)
                 {
@@ -1007,7 +1016,7 @@ namespace XIVComboPlugin
             }
 
             // AoE multibutton
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.DancerAoeMultibutton))
+            if (Configuration.IsEnabled(CustomComboPreset.DancerAoeMultibutton))
             {
                 if (actionID == DNC.Windmill)
                 {
@@ -1030,7 +1039,7 @@ namespace XIVComboPlugin
             #region WHITE MAGE
 
             // Replace Solace with Misery when full blood lily
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.WhiteMageSolaceMiseryFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.WhiteMageSolaceMiseryFeature))
             {
                 if (actionID == WHM.Solace)
                 {
@@ -1041,7 +1050,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Solace with Misery when full blood lily
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.WhiteMageRaptureMiseryFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.WhiteMageRaptureMiseryFeature))
             {
                 if (actionID == WHM.Rapture)
                 {
@@ -1056,7 +1065,7 @@ namespace XIVComboPlugin
             #region BARD
 
             // Replace Wanderer's Minuet with PP when in WM.
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.BardWandererPPFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.BardWandererPPFeature))
             {
                 if (actionID == BRD.WanderersMinuet)
                 {
@@ -1067,7 +1076,7 @@ namespace XIVComboPlugin
             }
 
             // Replace HS/BS with SS/RA when procced.
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.BardStraightShotUpgradeFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.BardStraightShotUpgradeFeature))
             {
                 if (actionID == BRD.HeavyShot || actionID == BRD.BurstShot)
                 {
@@ -1089,7 +1098,7 @@ namespace XIVComboPlugin
             // ====================================================================================
             #region MONK
 
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.MnkAoECombo))
+            if (Configuration.IsEnabled(CustomComboPreset.MnkAoECombo))
             {
                 if (actionID == MNK.Rockbreaker)
                 {
@@ -1111,7 +1120,7 @@ namespace XIVComboPlugin
             #region RED MAGE
 
             // Replace Veraero/thunder 2 with Impact when Dualcast is active
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.RedMageAoECombo))
+            if (Configuration.IsEnabled(CustomComboPreset.RedMageAoECombo))
             {
                 if (actionID == RDM.Veraero2)
                 {
@@ -1139,7 +1148,7 @@ namespace XIVComboPlugin
             }
 
             // Replace Redoublement with Redoublement combo, Enchanted if possible.
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.RedMageMeleeCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.RedMageMeleeCombo))
             {
                 if (actionID == RDM.Redoublement)
                 {
@@ -1164,7 +1173,7 @@ namespace XIVComboPlugin
                 }
             }
 
-            if (Configuration.ComboPresets.HasFlag(CustomComboPreset.RedMageVerprocCombo))
+            if (Configuration.IsEnabled(CustomComboPreset.RedMageVerprocCombo))
             {
                 if (actionID == RDM.Verstone)
                 {

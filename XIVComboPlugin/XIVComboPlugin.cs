@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
 using Dalamud.Game.Chat;
 using Dalamud.Game.Command;
 using Dalamud.Plugin;
 using ImGuiNET;
-using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 
 namespace XIVComboPlugin
 {
@@ -16,11 +15,12 @@ namespace XIVComboPlugin
         public string Command => "/pcombo";
 
         public XIVComboConfiguration Configuration;
+        public const int CURRENT_CONFIG_VERSION = 4;
 
         private DalamudPluginInterface pluginInterface;
         private IconReplacer iconReplacer;
-        // private readonly int CURRENT_CONFIG_VERSION = 3;
-        private CustomComboPreset[] orderedByClassJob;
+
+        private Dictionary<string, List<(CustomComboPreset preset, CustomComboInfoAttribute info)>> GroupedPresets;
 
         public void Initialize(DalamudPluginInterface pluginInterface)
         {
@@ -32,13 +32,12 @@ namespace XIVComboPlugin
                 ShowInHelp = true
             });
 
-            this.Configuration = pluginInterface.GetPluginConfig() as XIVComboConfiguration ?? new XIVComboConfiguration();
-            if (Configuration.Version < 3)
+
+            Configuration = pluginInterface.GetPluginConfig() as XIVComboConfiguration ?? new XIVComboConfiguration();
+            if (Configuration.Version < CURRENT_CONFIG_VERSION)
             {
-                Configuration.HiddenActions = new List<bool>();
-                for (var i = 0; i < Enum.GetValues(typeof(CustomComboPreset)).Length; i++)
-                    Configuration.HiddenActions.Add(false);
-                Configuration.Version = 3;
+                Configuration.Upgrade();
+                SaveConfiguration();
             }
 
             this.iconReplacer = new IconReplacer(pluginInterface.TargetModuleScanner, pluginInterface.ClientState, this.Configuration);
@@ -47,95 +46,36 @@ namespace XIVComboPlugin
 
             this.pluginInterface.UiBuilder.OnOpenConfigUi += (sender, args) => isImguiComboSetupOpen = true;
             this.pluginInterface.UiBuilder.OnBuildUi += UiBuilder_OnBuildUi;
-            
-            /*
-            pluginInterface.Subscribe("PingPlugin", e => {
-                dynamic msg = e;
-                iconReplacer.UpdatePing(msg.LastRTT / 2);
-                PluginLog.Log("Ping was updated to {0} ms", msg.LastRTT / 2);
-                });
-            */
 
-            orderedByClassJob = Enum
+            GroupedPresets = Enum
                 .GetValues(typeof(CustomComboPreset))
                 .Cast<CustomComboPreset>()
-                .Where(x => x != CustomComboPreset.None && x.GetAttribute<CustomComboInfoAttribute>() != null)
-                .OrderBy(x => x.GetAttribute<CustomComboInfoAttribute>().ClassJob)
-                .ToArray();
-            UpdateConfig();
+                .Select(preset => (preset, info: preset.GetAttribute<CustomComboInfoAttribute>()))
+                .Where(presetWithInfo => presetWithInfo.info != null)
+                .OrderBy(presetWithInfo => presetWithInfo.info.JobName)
+                .GroupBy(presetWithInfo => presetWithInfo.info.JobName)
+                .ToDictionary(presetWithInfos => presetWithInfos.Key,
+                              presetWithInfos => presetWithInfos.ToList());
         }
 
         private bool isImguiComboSetupOpen = false;
 
-        private string ClassJobToName(byte key)
+        private void SaveConfiguration()
         {
-            switch (key)
+            foreach (CustomComboPreset preset in Enum.GetValues(typeof(CustomComboPreset)))
             {
-                default: return "Unknown";
-                case 1: return "Gladiator";
-                case 2: return "Pugilist";
-                case 3: return "Marauder";
-                case 4: return "Lancer";
-                case 5: return "Archer";
-                case 6: return "Conjurer";
-                case 7: return "Thaumaturge";
-                case 8: return "Carpenter";
-                case 9: return "Blacksmith";
-                case 10: return "Armorer";
-                case 11: return "Goldsmith";
-                case 12: return "Leatherworker";
-                case 13: return "Weaver";
-                case 14: return "Alchemist";
-                case 15: return "Culinarian";
-                case 16: return "Miner";
-                case 17: return "Botanist";
-                case 18: return "Fisher";
-                case 19: return "Paladin";
-                case 20: return "Monk";
-                case 21: return "Warrior";
-                case 22: return "Dragoon";
-                case 23: return "Bard";
-                case 24: return "White Mage";
-                case 25: return "Black Mage";
-                case 26: return "Arcanist";
-                case 27: return "Summoner";
-                case 28: return "Scholar";
-                case 29: return "Rogue";
-                case 30: return "Ninja";
-                case 31: return "Machinist";
-                case 32: return "Dark Knight";
-                case 33: return "Astrologian";
-                case 34: return "Samurai";
-                case 35: return "Red Mage";
-                case 36: return "Blue Mage";
-                case 37: return "Gunbreaker";
-                case 38: return "Dancer";
-            }
-        }
-
-        private void UpdateConfig()
-        {
-            for (var i = 0; i < orderedByClassJob.Length; i++)
-            {
-                if (Configuration.HiddenActions[i])
-                    iconReplacer.AddNoUpdate(orderedByClassJob[i].GetAttribute<CustomComboInfoAttribute>().Abilities);
+                if (Configuration.IsHidden(preset))
+                    iconReplacer.AddNoUpdateIcons(preset.GetAttribute<CustomComboInfoAttribute>().Abilities);
                 else
-                    iconReplacer.RemoveNoUpdate(orderedByClassJob[i].GetAttribute<CustomComboInfoAttribute>().Abilities);
+                    iconReplacer.RemoveNoUpdateIcons(preset.GetAttribute<CustomComboInfoAttribute>().Abilities);
             }
+            pluginInterface.SavePluginConfig(Configuration);
         }
 
         private void UiBuilder_OnBuildUi()
         {
             if (!isImguiComboSetupOpen)
                 return;
-
-            var flagsSelected = new bool[orderedByClassJob.Length];
-            var hiddenFlags = new bool[orderedByClassJob.Length];
-            for (var i = 0; i < orderedByClassJob.Length; i++)
-            {
-                flagsSelected[i] = Configuration.ComboPresets.HasFlag(orderedByClassJob[i]);
-                hiddenFlags[i] = Configuration.HiddenActions[i];
-            }
 
             ImGui.SetNextWindowSize(new Vector2(740, 490));
 
@@ -148,48 +88,57 @@ namespace XIVComboPlugin
 
             ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 5));
 
-            var lastClassJob = 0;
-
-            for (var i = 0; i < orderedByClassJob.Length; i++)
+            int i = 1;
+            foreach (var jobName in GroupedPresets.Keys)
             {
-                var flag = orderedByClassJob[i];
-                var flagInfo = flag.GetAttribute<CustomComboInfoAttribute>();
-                if (lastClassJob != flagInfo.ClassJob)
+                if (ImGui.CollapsingHeader(jobName))
                 {
-                    lastClassJob = flagInfo.ClassJob;
-                    if (ImGui.CollapsingHeader(ClassJobToName((byte)lastClassJob)))
+                    foreach (var (preset, info) in GroupedPresets[jobName])
                     {
-                        for (int j = i; j < orderedByClassJob.Length; j++)
-                        {
-                            flag = orderedByClassJob[j];
-                            flagInfo = flag.GetAttribute<CustomComboInfoAttribute>();
-                            if (lastClassJob != flagInfo.ClassJob)
-                            {
-                                break;
-                            }
-                            ImGui.PushItemWidth(200);
-                            ImGui.Checkbox(flagInfo.FancyName, ref flagsSelected[j]);
-                            ImGui.PopItemWidth();
-                            ImGui.SameLine(275);
-                            ImGui.Checkbox("Prevent this chain from updating its icon" + $"##{j}", ref hiddenFlags[j]);
-                            ImGui.TextColored(new Vector4(0.68f, 0.68f, 0.68f, 1.0f), $"#{j + 1}:" + flagInfo.Description);
-                            ImGui.Spacing();
-                        }
-                    }
-                }
-            }
+                        bool enabled = Configuration.IsEnabled(preset);
+                        bool hidden = Configuration.IsHidden(preset);
 
-            for (var i = 0; i < orderedByClassJob.Length; i++)
-            {
-                if (flagsSelected[i])
-                {
-                    Configuration.ComboPresets |= orderedByClassJob[i];
+                        ImGui.PushItemWidth(200);
+                        if (ImGui.Checkbox(info.FancyName, ref enabled))
+                        {
+                            if (enabled)
+                            {
+                                Configuration.EnabledActions.Add(preset);
+                            }
+                            else
+                            {
+                                Configuration.EnabledActions.Remove(preset);
+                            }
+                            SaveConfiguration();
+                        }
+                        ImGui.PopItemWidth();
+
+                        ImGui.SameLine(275);
+
+                        if (ImGui.Checkbox($"Prevent this chain from updating its icon###{info.FancyName}", ref hidden))
+                        {
+                            if (hidden)
+                            {
+                                Configuration.HiddenActions.Add(preset);
+                                iconReplacer.AddNoUpdateIcons(info.Abilities);
+                            }
+                            else
+                            {
+                                Configuration.HiddenActions.Remove(preset);
+                                iconReplacer.RemoveNoUpdateIcons(info.Abilities);
+                            }
+                            SaveConfiguration();
+                        }
+                        ImGui.TextColored(new Vector4(0.68f, 0.68f, 0.68f, 1.0f), $"#{i}: {info.Description}");
+                        ImGui.Spacing();
+
+                        i++;
+                    }
                 }
                 else
                 {
-                    Configuration.ComboPresets &= ~orderedByClassJob[i];
+                    i += GroupedPresets[jobName].Count;
                 }
-                Configuration.HiddenActions[i] = hiddenFlags[i];
             }
 
             ImGui.PopStyleVar();
@@ -197,18 +146,9 @@ namespace XIVComboPlugin
             ImGui.EndChild();
 
             ImGui.Separator();
-            if (ImGui.Button("Save"))
-            {
-                this.pluginInterface.SavePluginConfig(Configuration);
-                UpdateConfig();
-            }
-            ImGui.SameLine();
-            if (ImGui.Button("Save and Close"))
-            {
-                this.pluginInterface.SavePluginConfig(Configuration);
+
+            if (ImGui.Button("Close"))
                 this.isImguiComboSetupOpen = false;
-                UpdateConfig();
-            }
 
             ImGui.End();
         }
@@ -230,77 +170,94 @@ namespace XIVComboPlugin
             {
                 case "setall":
                     {
-                        foreach (var value in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
-                        {
-                            if (value == CustomComboPreset.None)
-                                continue;
+                        foreach (var preset in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
+                            this.Configuration.EnabledActions.Add(preset);
 
-                            this.Configuration.ComboPresets |= value;
-                        }
-
-                        this.pluginInterface.Framework.Gui.Chat.Print("all SET");
+                        this.pluginInterface.Framework.Gui.Chat.Print("All SET");
                     }
                     break;
                 case "unsetall":
                     {
-                        foreach (var value in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
-                        {
-                            this.Configuration.ComboPresets &= value;
-                        }
+                        foreach (var preset in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
+                            this.Configuration.EnabledActions.Remove(preset);
 
-                        this.pluginInterface.Framework.Gui.Chat.Print("all UNSET");
+                        this.pluginInterface.Framework.Gui.Chat.Print("All UNSET");
                     }
                     break;
                 case "set":
                     {
-                        foreach (var value in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
+                        var targetPreset = argumentsParts[1].ToLower();
+                        foreach (var preset in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
                         {
-                            if (value.ToString().ToLower() != argumentsParts[1].ToLower())
+                            if (preset.ToString().ToLower() != targetPreset)
                                 continue;
 
-                            this.Configuration.ComboPresets |= value;
+                            this.Configuration.EnabledActions.Add(preset);
+                            this.pluginInterface.Framework.Gui.Chat.Print($"{preset} SET");
                         }
                     }
                     break;
                 case "toggle":
                     {
-                        foreach (var value in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
+                        var targetPreset = argumentsParts[1].ToLower();
+                        foreach (var preset in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
                         {
-                            if (value.ToString().ToLower() != argumentsParts[1].ToLower())
+                            if (preset.ToString().ToLower() != targetPreset)
                                 continue;
 
-                            this.Configuration.ComboPresets ^= value;
+                            if (this.Configuration.EnabledActions.Contains(preset))
+                            {
+                                this.Configuration.EnabledActions.Remove(preset);
+                                this.pluginInterface.Framework.Gui.Chat.Print($"{preset} UNSET");
+                            }
+                            else
+                            {
+                                this.Configuration.EnabledActions.Add(preset);
+                                this.pluginInterface.Framework.Gui.Chat.Print($"{preset} SET");
+                            }
                         }
                     }
                     break;
-
                 case "unset":
                     {
-                        foreach (var value in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
+                        var targetPreset = argumentsParts[1].ToLower();
+                        foreach (var preset in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
                         {
-                            if (value.ToString().ToLower() != argumentsParts[1].ToLower())
+                            if (preset.ToString().ToLower() != targetPreset)
                                 continue;
 
-                            this.Configuration.ComboPresets &= ~value;
+                            this.Configuration.EnabledActions.Remove(preset);
+                            this.pluginInterface.Framework.Gui.Chat.Print($"{preset} UNSET");
                         }
                     }
                     break;
-
                 case "list":
                     {
-                        foreach (var value in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>().Where(x => x != CustomComboPreset.None))
+                        string filter;
+                        if (argumentsParts.Length == 1)
+                            filter = "all";
+                        else
+                            filter = argumentsParts[1].ToLower();
+
+                        foreach (var preset in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
                         {
-                            if (argumentsParts[1].ToLower() == "set")
+                            if (filter == "set")
                             {
-                                if (this.Configuration.ComboPresets.HasFlag(value))
-                                    this.pluginInterface.Framework.Gui.Chat.Print(value.ToString());
+                                if (this.Configuration.EnabledActions.Contains(preset))
+                                    this.pluginInterface.Framework.Gui.Chat.Print(preset.ToString());
                             }
-                            else if (argumentsParts[1].ToLower() == "all")
-                                this.pluginInterface.Framework.Gui.Chat.Print(value.ToString());
+                            else if (filter == "unset")
+                            {
+                                if (!this.Configuration.EnabledActions.Contains(preset))
+                                    this.pluginInterface.Framework.Gui.Chat.Print(preset.ToString());
+                            }
+                            else if (filter == "all")
+                            {
+                                this.pluginInterface.Framework.Gui.Chat.Print(preset.ToString());
+                            }
                         }
                     }
                     break;
-
                 default:
                     this.isImguiComboSetupOpen = true;
                     break;
