@@ -92,18 +92,15 @@ namespace XIVComboPlugin
         public void AddNoUpdateIcons(uint[] ids)
         {
             foreach (uint id in ids)
-                if (!noUpdateIcons.Contains(id))
-                    noUpdateIcons.Add(id);
+                noUpdateIcons.Add(id);
         }
 
         public void RemoveNoUpdateIcons(uint[] ids)
         {
             foreach (uint id in ids)
             {
-                if (noUpdateIcons.Contains(id))
-                    noUpdateIcons.Remove(id);
-                if (seenNoUpdate.Contains(id))
-                    seenNoUpdate.Remove(id);
+                noUpdateIcons.Remove(id);
+                seenNoUpdate.Remove(id);
             }
         }
 
