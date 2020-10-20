@@ -27,7 +27,6 @@ namespace XIVComboPlugin
         private readonly XIVComboConfiguration Configuration;
 
         private readonly HashSet<uint> customIds;
-        private readonly HashSet<uint> vanillaIds;
         private readonly HashSet<uint> noUpdateIcons;
         private readonly HashSet<uint> seenNoUpdate;
 
@@ -48,11 +47,15 @@ namespace XIVComboPlugin
             Address.Setup(scanner);
 
             customIds = new HashSet<uint>();
-            vanillaIds = new HashSet<uint>();
             noUpdateIcons = new HashSet<uint>();
             seenNoUpdate = new HashSet<uint>();
 
-            PopulateDict();
+            Enum.GetValues(typeof(CustomComboPreset))
+                .Cast<CustomComboPreset>()
+                .Select(preset => preset.GetAttribute<CustomComboInfoAttribute>())
+                .OfType<CustomComboInfoAttribute>()  // filters null
+                .SelectMany(comboInfo => comboInfo.Abilities)
+                .ToList().ForEach(ability => customIds.Add(ability));
 
             Log.Verbose("===== H O T B A R S =====");
             Log.Verbose($"IsIconReplaceable address {Address.IsIconReplaceable.ToInt64():X}");
@@ -152,8 +155,7 @@ namespace XIVComboPlugin
                 seenNoUpdate.Add(actionID);
                 return actionID;
             }
-            if (vanillaIds.Contains(actionID)) return iconHook.Original(self, actionID);
-            if (!customIds.Contains(actionID)) return actionID;
+            if (!customIds.Contains(actionID)) return iconHook.Original(self, actionID);
             if (activeBuffArray == IntPtr.Zero) return iconHook.Original(self, actionID);
 
             // Don't clutter the spaghetti any worse than it already is.
@@ -1231,212 +1233,6 @@ namespace XIVComboPlugin
             var step3 = Marshal.ReadIntPtr(step2);
             var callback = Marshal.GetDelegateForFunctionPointer<getArray>(step3);
             return (IntPtr)callback((long*)num) + 8;
-        }
-
-        private void PopulateDict()
-        {
-            var values = Enum
-                .GetValues(typeof(CustomComboPreset))
-                .Cast<CustomComboPreset>()
-                .Where(x => x != CustomComboPreset.None && x.GetAttribute<CustomComboInfoAttribute>() != null)
-                .ToArray();
-            foreach (var value in values)
-            {
-                var abilities = value.GetAttribute<CustomComboInfoAttribute>().Abilities;
-                foreach (var ability in abilities)
-                    customIds.Add(ability);
-            }
-
-            vanillaIds.Add(0x3e75);
-            vanillaIds.Add(0x3e76);
-            vanillaIds.Add(0x3e77);
-            vanillaIds.Add(0x3e78);
-            vanillaIds.Add(0x3e7d);
-            vanillaIds.Add(0x3e7e);
-            vanillaIds.Add(0x3e86);
-            vanillaIds.Add(0x3f10);
-            vanillaIds.Add(0x3f25);
-            vanillaIds.Add(0x3f1b);
-            vanillaIds.Add(0x3f1c);
-            vanillaIds.Add(0x3f1d);
-            vanillaIds.Add(0x3f1e);
-            vanillaIds.Add(0x451f);
-            vanillaIds.Add(0x42ff);
-            vanillaIds.Add(0x4300);
-            vanillaIds.Add(0x49d4);
-            vanillaIds.Add(0x49d5);
-            vanillaIds.Add(0x49e9);
-            vanillaIds.Add(0x49ea);
-            vanillaIds.Add(0x49f4);
-            vanillaIds.Add(0x49f7);
-            vanillaIds.Add(0x49f9);
-            vanillaIds.Add(0x4a06);
-            vanillaIds.Add(0x4a31);
-            vanillaIds.Add(0x4a32);
-            vanillaIds.Add(0x4a35);
-            vanillaIds.Add(0x4792);
-            vanillaIds.Add(0x452f);
-            vanillaIds.Add(0x453f);
-            vanillaIds.Add(0x454c);
-            vanillaIds.Add(0x455c);
-            vanillaIds.Add(0x455d);
-            vanillaIds.Add(0x4561);
-            vanillaIds.Add(0x4565);
-            vanillaIds.Add(0x4566);
-            vanillaIds.Add(0x45a0);
-            vanillaIds.Add(0x45c8);
-            vanillaIds.Add(0x45c9);
-            vanillaIds.Add(0x45cd);
-            vanillaIds.Add(0x4197);
-            vanillaIds.Add(0x4199);
-            vanillaIds.Add(0x419b);
-            vanillaIds.Add(0x419d);
-            vanillaIds.Add(0x419f);
-            vanillaIds.Add(0x4198);
-            vanillaIds.Add(0x419a);
-            vanillaIds.Add(0x419c);
-            vanillaIds.Add(0x419e);
-            vanillaIds.Add(0x41a0);
-            vanillaIds.Add(0x41a1);
-            vanillaIds.Add(0x41a2);
-            vanillaIds.Add(0x41a3);
-            vanillaIds.Add(0x417e);
-            vanillaIds.Add(0x404f);
-            vanillaIds.Add(0x4051);
-            vanillaIds.Add(0x4052);
-            vanillaIds.Add(0x4055);
-            vanillaIds.Add(0x4053);
-            vanillaIds.Add(0x4056);
-            vanillaIds.Add(0x405e);
-            vanillaIds.Add(0x405f);
-            vanillaIds.Add(0x4063);
-            vanillaIds.Add(0x406f);
-            vanillaIds.Add(0x4074);
-            vanillaIds.Add(0x4075);
-            vanillaIds.Add(0x4076);
-            vanillaIds.Add(0x407d);
-            vanillaIds.Add(0x407f);
-            vanillaIds.Add(0x4083);
-            vanillaIds.Add(0x4080);
-            vanillaIds.Add(0x4081);
-            vanillaIds.Add(0x4082);
-            vanillaIds.Add(0x4084);
-            vanillaIds.Add(0x408e);
-            vanillaIds.Add(0x4091);
-            vanillaIds.Add(0x4092);
-            vanillaIds.Add(0x4094);
-            vanillaIds.Add(0x4095);
-            vanillaIds.Add(0x409c);
-            vanillaIds.Add(0x409d);
-            vanillaIds.Add(0x40aa);
-            vanillaIds.Add(0x40ab);
-            vanillaIds.Add(0x40ad);
-            vanillaIds.Add(0x40ae);
-            vanillaIds.Add(0x272b);
-            vanillaIds.Add(0x222a);
-            vanillaIds.Add(0x222d);
-            vanillaIds.Add(0x222e);
-            vanillaIds.Add(0x223b);
-            vanillaIds.Add(0x2265);
-            vanillaIds.Add(0x2267);
-            vanillaIds.Add(0x2268);
-            vanillaIds.Add(0x2269);
-            vanillaIds.Add(0x2274);
-            vanillaIds.Add(0x2290);
-            vanillaIds.Add(0x2291);
-            vanillaIds.Add(0x2292);
-            vanillaIds.Add(0x229c);
-            vanillaIds.Add(0x229e);
-            vanillaIds.Add(0x22a8);
-            vanillaIds.Add(0x22b3);
-            vanillaIds.Add(0x22b5);
-            vanillaIds.Add(0x22b7);
-            vanillaIds.Add(0x22d1);
-            vanillaIds.Add(0x4575);
-            vanillaIds.Add(0x2335);
-            vanillaIds.Add(0x1ebb);
-            vanillaIds.Add(0x1cdd);
-            vanillaIds.Add(0x1cee);
-            vanillaIds.Add(0x1cef);
-            vanillaIds.Add(0x1cf1);
-            vanillaIds.Add(0x1cf3);
-            vanillaIds.Add(0x1cf4);
-            vanillaIds.Add(0x1cf7);
-            vanillaIds.Add(0x1cfc);
-            vanillaIds.Add(0x1d17);
-            vanillaIds.Add(0x1d00);
-            vanillaIds.Add(0x1d01);
-            vanillaIds.Add(0x1d05);
-            vanillaIds.Add(0x1d07);
-            vanillaIds.Add(0x1d0b);
-            vanillaIds.Add(0x1d0d);
-            vanillaIds.Add(0x1d0f);
-            vanillaIds.Add(0x1d12);
-            vanillaIds.Add(0x1d13);
-            vanillaIds.Add(0x1d4f);
-            vanillaIds.Add(0x1d64);
-            vanillaIds.Add(0x1d50);
-            vanillaIds.Add(0x1d58);
-            vanillaIds.Add(0x1d59);
-            vanillaIds.Add(0x1d51);
-            vanillaIds.Add(0x1d53);
-            vanillaIds.Add(0x1d66);
-            vanillaIds.Add(0x1d55);
-            vanillaIds.Add(0xdda);
-            vanillaIds.Add(0xddd);
-            vanillaIds.Add(0xdde);
-            vanillaIds.Add(0xde3);
-            vanillaIds.Add(0xdf0);
-            vanillaIds.Add(0xe00);
-            vanillaIds.Add(0xe0b);
-            vanillaIds.Add(0xe0c);
-            vanillaIds.Add(0xe0e);
-            vanillaIds.Add(0xe0f);
-            vanillaIds.Add(0xe11);
-            vanillaIds.Add(0xe18);
-            vanillaIds.Add(0xfed);
-            vanillaIds.Add(0xff7);
-            vanillaIds.Add(0xffb);
-            vanillaIds.Add(0xfe9);
-            vanillaIds.Add(0xb30);
-            vanillaIds.Add(0x12e);
-            vanillaIds.Add(0x8d3);
-            vanillaIds.Add(0x8d4);
-            vanillaIds.Add(0x8d5);
-            vanillaIds.Add(0x8d7);
-            vanillaIds.Add(0xb32);
-            vanillaIds.Add(0xb34);
-            vanillaIds.Add(0xb38);
-            vanillaIds.Add(0xb3e);
-            vanillaIds.Add(0x12d);
-            vanillaIds.Add(0x26);
-            vanillaIds.Add(0x31);
-            vanillaIds.Add(0x33);
-            vanillaIds.Add(0x4b);
-            vanillaIds.Add(0x62);
-            vanillaIds.Add(0x64);
-            vanillaIds.Add(0x71);
-            vanillaIds.Add(0x77);
-            vanillaIds.Add(0x7f);
-            vanillaIds.Add(0x79);
-            vanillaIds.Add(0x84);
-            vanillaIds.Add(0x90);
-            vanillaIds.Add(0x99);
-            vanillaIds.Add(0xa4);
-            vanillaIds.Add(0xb2);
-            vanillaIds.Add(0xa8);
-            vanillaIds.Add(0xac);
-            vanillaIds.Add(0xb8);
-            vanillaIds.Add(0xe2);
-            vanillaIds.Add(0x10f);
-            vanillaIds.Add(0xf3);
-            vanillaIds.Add(0x10e);
-            vanillaIds.Add(0x110);
-            vanillaIds.Add(0x111);
-
-            foreach (var actionID in customIds)
-                if (vanillaIds.Contains(actionID))
-                    vanillaIds.Remove(actionID);
         }
     }
 }
