@@ -69,10 +69,7 @@ namespace XIVComboPlugin
             checkerHook = new Hook<OnCheckIsIconReplaceableDelegate>(Address.IsIconReplaceable, 
                 new OnCheckIsIconReplaceableDelegate(CheckIsIconReplaceableDetour), this);
 
-            Task.Run(() =>
-            {
-                BuffTask();
-            });
+            Task.Run(BuffTask);
         }
 
         public void Enable()
@@ -88,16 +85,18 @@ namespace XIVComboPlugin
             checkerHook.Dispose();
         }
 
-        public void AddNoUpdate(uint[] ids)
+        /// <summary>
+        ///  Maps to HiddenActions, these actions do not update their icon per the user configuration.
+        /// </summary>
+        /// <param name="ids">IDs to not update.</param>
+        public void AddNoUpdateIcons(uint[] ids)
         {
             foreach (uint id in ids)
-            {
                 if (!noUpdateIcons.Contains(id))
                     noUpdateIcons.Add(id);
-            }
         }
 
-        public void RemoveNoUpdate(uint[] ids)
+        public void RemoveNoUpdateIcons(uint[] ids)
         {
             foreach (uint id in ids)
             {
@@ -107,6 +106,7 @@ namespace XIVComboPlugin
                     seenNoUpdate.Remove(id);
             }
         }
+
         private async void BuffTask()
         {
             while (!shutdown)
@@ -120,14 +120,8 @@ namespace XIVComboPlugin
         // Determines which abilities are allowed to have their icons updated.
         private ulong CheckIsIconReplaceableDetour(uint actionID)
         {
-            if (!noUpdateIcons.Contains(actionID))
-            {
-                return 1;
-            }
-            if (!seenNoUpdate.Contains(actionID))
-            {
-                return 1;
-            }
+            if (!noUpdateIcons.Contains(actionID)) return 1;
+            if (!seenNoUpdate.Contains(actionID)) return 1;
             return 0;
         }
 
