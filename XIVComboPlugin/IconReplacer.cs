@@ -8,6 +8,7 @@ using Dalamud.Game.Chat;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Structs.JobGauge;
 using Dalamud.Hooking;
+using Dalamud.Plugin;
 using Serilog;
 
 namespace XIVComboPlugin
@@ -26,9 +27,9 @@ namespace XIVComboPlugin
 
         private readonly XIVComboConfiguration Configuration;
 
-        private readonly HashSet<uint> customIds;
-        private readonly HashSet<uint> noUpdateIcons;
-        private readonly HashSet<uint> seenNoUpdate;
+        private readonly HashSet<uint> customIds = new HashSet<uint>();
+        private readonly HashSet<uint> noUpdateIcons = new HashSet<uint>();
+        private readonly HashSet<uint> seenNoUpdate = new HashSet<uint>();
 
         private readonly Hook<OnGetIconDelegate> iconHook;
         private uint lastJob = 0;
@@ -46,25 +47,8 @@ namespace XIVComboPlugin
             Address = new IconReplacerAddressResolver();
             Address.Setup(scanner);
 
-            customIds = new HashSet<uint>();
-            noUpdateIcons = new HashSet<uint>();
-            seenNoUpdate = new HashSet<uint>();
-
-            // For all presets, add all CustomComboInfo ability IDs to customIds
-            Enum.GetValues(typeof(CustomComboPreset))
-                .Cast<CustomComboPreset>()
-                .Select(preset => preset.GetAttribute<CustomComboInfoAttribute>())
-                .OfType<CustomComboInfoAttribute>()  // filters null
-                .SelectMany(comboInfo => comboInfo.Abilities)
-                .ToList().ForEach(ability => customIds.Add(ability));
-
-            // For each hidden preset, add all CustomComboInfo ability IDs to noUpdateIcons
-            Configuration.HiddenActions
-                .Select(preset => preset.GetAttribute<CustomComboInfoAttribute>())
-                .OfType<CustomComboInfoAttribute>()  // filters null
-                .SelectMany(comboInfo => comboInfo.Abilities)
-                .ToList().ForEach(ability => noUpdateIcons.Add(ability));
-
+            UpdateEnabledActionIDs();
+            UpdateHiddenActionIDs();
 
             Log.Verbose("===== H O T B A R S =====");
             Log.Verbose($"IsIconReplaceable address {Address.IsIconReplaceable.ToInt64():X}");
@@ -95,22 +79,35 @@ namespace XIVComboPlugin
         }
 
         /// <summary>
-        /// Maps to HiddenActions, these actions do not update their icon per the user configuration.
+        /// Maps to <see cref="XIVComboConfiguration.EnabledActions"/>, these actions can potentially update their icon per the user configuration.
         /// </summary>
-        /// <param name="ids">IDs to not update.</param>
-        public void AddNoUpdateIcons(uint[] ids)
+        public void UpdateEnabledActionIDs()
         {
-            foreach (uint id in ids)
-                noUpdateIcons.Add(id);
+            var actionIDs = Enum
+                .GetValues(typeof(CustomComboPreset))
+                .Cast<CustomComboPreset>()
+                .Select(preset => preset.GetAttribute<CustomComboInfoAttribute>())
+                .OfType<CustomComboInfoAttribute>()  // filters null
+                .SelectMany(comboInfo => comboInfo.Abilities)
+                .ToHashSet();
+            customIds.Clear();
+            customIds.UnionWith(actionIDs);
         }
 
-        public void RemoveNoUpdateIcons(uint[] ids)
+        /// <summary>
+        /// Maps to <see cref="XIVComboConfiguration.HiddenActions"/>, these actions do not update their icon per the user configuration.
+        /// </summary>
+        public void UpdateHiddenActionIDs()
         {
-            foreach (uint id in ids)
-            {
-                noUpdateIcons.Remove(id);
-                seenNoUpdate.Remove(id);
-            }
+            var actionIDs = Configuration.EnabledActions
+                .Intersect(Configuration.HiddenActions)
+                .Select(preset => preset.GetAttribute<CustomComboInfoAttribute>())
+                .OfType<CustomComboInfoAttribute>()
+                .SelectMany(presetInfo => presetInfo.Abilities)
+                .ToHashSet();
+            noUpdateIcons.Clear();
+            noUpdateIcons.UnionWith(actionIDs);
+            seenNoUpdate.Clear();
         }
 
         private async void BuffTask()

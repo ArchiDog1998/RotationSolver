@@ -62,13 +62,6 @@ namespace XIVComboPlugin
 
         private void SaveConfiguration()
         {
-            foreach (CustomComboPreset preset in Enum.GetValues(typeof(CustomComboPreset)))
-            {
-                if (Configuration.IsHidden(preset))
-                    iconReplacer.AddNoUpdateIcons(preset.GetAttribute<CustomComboInfoAttribute>().Abilities);
-                else
-                    iconReplacer.RemoveNoUpdateIcons(preset.GetAttribute<CustomComboInfoAttribute>().Abilities);
-            }
             pluginInterface.SavePluginConfig(Configuration);
         }
 
@@ -102,13 +95,10 @@ namespace XIVComboPlugin
                         if (ImGui.Checkbox(info.FancyName, ref enabled))
                         {
                             if (enabled)
-                            {
                                 Configuration.EnabledActions.Add(preset);
-                            }
                             else
-                            {
                                 Configuration.EnabledActions.Remove(preset);
-                            }
+                            iconReplacer.UpdateEnabledActionIDs();
                             SaveConfiguration();
                         }
                         ImGui.PopItemWidth();
@@ -118,17 +108,13 @@ namespace XIVComboPlugin
                         if (ImGui.Checkbox($"Prevent this chain from updating its icon###{info.FancyName}", ref hidden))
                         {
                             if (hidden)
-                            {
                                 Configuration.HiddenActions.Add(preset);
-                                iconReplacer.AddNoUpdateIcons(info.Abilities);
-                            }
                             else
-                            {
                                 Configuration.HiddenActions.Remove(preset);
-                                iconReplacer.RemoveNoUpdateIcons(info.Abilities);
-                            }
+                            iconReplacer.UpdateHiddenActionIDs();
                             SaveConfiguration();
                         }
+
                         ImGui.TextColored(new Vector4(0.68f, 0.68f, 0.68f, 1.0f), $"#{i}: {info.Description}");
                         ImGui.Spacing();
 
