@@ -179,7 +179,7 @@ namespace XIVComboPlugin
                 if (actionID == DRG.Jump)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(DRG.Buffs.DiveReady))
+                    if (HasBuff(DRG.Buffs.DiveReady))
                         return DRG.MirageDive;
                     if (level >= DRG.Levels.HighJump)
                         return DRG.HighJump;
@@ -231,11 +231,11 @@ namespace XIVComboPlugin
                             return DRG.ChaosThrust;
                     }
                     UpdateBuffAddress();
-                    if (SearchBuffArray(DRG.Buffs.SharperFangAndClaw) && level >= DRG.Levels.FangAndClaw)
+                    if (HasBuff(DRG.Buffs.SharperFangAndClaw) && level >= DRG.Levels.FangAndClaw)
                         return DRG.FangAndClaw;
-                    if (SearchBuffArray(DRG.Buffs.EnhancedWheelingThrust) && level >= DRG.Levels.WheelingThrust)
+                    if (HasBuff(DRG.Buffs.EnhancedWheelingThrust) && level >= DRG.Levels.WheelingThrust)
                         return DRG.WheelingThrust;
-                    if (SearchBuffArray(DRG.Buffs.RaidenThrustReady) && level >= DRG.Levels.RaidenThrust)
+                    if (HasBuff(DRG.Buffs.RaidenThrustReady) && level >= DRG.Levels.RaidenThrust)
                         return DRG.RaidenThrust;
                     return DRG.TrueThrust;
                 }
@@ -255,11 +255,11 @@ namespace XIVComboPlugin
                             return DRG.FullThrust;
                     }
                     UpdateBuffAddress();
-                    if (SearchBuffArray(DRG.Buffs.SharperFangAndClaw) && level >= DRG.Levels.FangAndClaw)
+                    if (HasBuff(DRG.Buffs.SharperFangAndClaw) && level >= DRG.Levels.FangAndClaw)
                         return DRG.FangAndClaw;
-                    if (SearchBuffArray(DRG.Buffs.EnhancedWheelingThrust) && level >= DRG.Levels.WheelingThrust)
+                    if (HasBuff(DRG.Buffs.EnhancedWheelingThrust) && level >= DRG.Levels.WheelingThrust)
                         return DRG.WheelingThrust;
-                    if (SearchBuffArray(DRG.Buffs.RaidenThrustReady) && level >= DRG.Levels.RaidenThrust)
+                    if (HasBuff(DRG.Buffs.RaidenThrustReady) && level >= DRG.Levels.RaidenThrust)
                         return DRG.RaidenThrust;
                     return DRG.TrueThrust;
                 }
@@ -357,7 +357,7 @@ namespace XIVComboPlugin
             {
                 if (actionID == PLD.Requiescat)
                 {
-                    if (SearchBuffArray(PLD.Buffs.Requiescat) && level >= PLD.Levels.Confiteor)
+                    if (HasBuff(PLD.Buffs.Requiescat) && level >= PLD.Levels.Confiteor)
                         return PLD.Confiteor;
                     return PLD.Requiescat;
                 }
@@ -421,7 +421,7 @@ namespace XIVComboPlugin
                 if (actionID == SAM.Yukikaze)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(SAM.Buffs.MeikyoShisui))
+                    if (HasBuff(SAM.Buffs.MeikyoShisui))
                         return SAM.Yukikaze;
                     if (comboTime > 0)
                         if (lastMove == SAM.Hakaze && level >= SAM.Levels.Yukikaze)
@@ -436,7 +436,7 @@ namespace XIVComboPlugin
                 if (actionID == SAM.Gekko)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(SAM.Buffs.MeikyoShisui))
+                    if (HasBuff(SAM.Buffs.MeikyoShisui))
                         return SAM.Gekko;
                     if (comboTime > 0)
                     {
@@ -455,7 +455,7 @@ namespace XIVComboPlugin
                 if (actionID == SAM.Kasha)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(SAM.Buffs.MeikyoShisui))
+                    if (HasBuff(SAM.Buffs.MeikyoShisui))
                         return SAM.Kasha;
                     if (comboTime > 0)
                     {
@@ -474,7 +474,7 @@ namespace XIVComboPlugin
                 if (actionID == SAM.Mangetsu)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(SAM.Buffs.MeikyoShisui))
+                    if (HasBuff(SAM.Buffs.MeikyoShisui))
                         return SAM.Mangetsu;
                     if (comboTime > 0)
                         if (lastMove == SAM.Fuga && level >= SAM.Levels.Mangetsu)
@@ -489,7 +489,7 @@ namespace XIVComboPlugin
                 if (actionID == SAM.Oka)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(SAM.Buffs.MeikyoShisui))
+                    if (HasBuff(SAM.Buffs.MeikyoShisui))
                         return SAM.Oka;
                     if (comboTime > 0)
                         if (lastMove == SAM.Fuga && level >= SAM.Levels.Oka)
@@ -504,7 +504,7 @@ namespace XIVComboPlugin
                 if (actionID == SAM.Seigan)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(SAM.Buffs.EyesOpen))
+                    if (HasBuff(SAM.Buffs.EyesOpen))
                         return SAM.Seigan;
                     return SAM.ThirdEye;
                 }
@@ -564,7 +564,7 @@ namespace XIVComboPlugin
                 if (actionID == NIN.DreamWithinADream)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(NIN.Buffs.AssassinateReady))
+                    if (HasBuff(NIN.Buffs.AssassinateReady))
                         return NIN.Assassinate;
                     return NIN.DreamWithinADream;
                 }
@@ -600,11 +600,11 @@ namespace XIVComboPlugin
                         if (level >= GNB.Levels.Continuation)
                         {
                             UpdateBuffAddress();
-                            if (SearchBuffArray(GNB.Buffs.ReadyToRip))
+                            if (HasBuff(GNB.Buffs.ReadyToRip))
                                 return GNB.JugularRip;
-                            if (SearchBuffArray(GNB.Buffs.ReadyToTear))
+                            if (HasBuff(GNB.Buffs.ReadyToTear))
                                 return GNB.AbdomenTear;
-                            if (SearchBuffArray(GNB.Buffs.ReadyToGouge))
+                            if (HasBuff(GNB.Buffs.ReadyToGouge))
                                 return GNB.EyeGouge;
                         }
                     }
@@ -739,7 +739,7 @@ namespace XIVComboPlugin
             {
                 if (actionID == BLM.LeyLines)
                 {
-                    if (SearchBuffArray(BLM.Buffs.LeyLines) && level >= BLM.Levels.BetweenTheLines)
+                    if (HasBuff(BLM.Buffs.LeyLines) && level >= BLM.Levels.BetweenTheLines)
                         return BLM.BetweenTheLines;
                     return BLM.LeyLines;
                 }
@@ -858,7 +858,7 @@ namespace XIVComboPlugin
                         if (gauge.IsPhoenixReady())
                         {
                             UpdateBuffAddress();
-                            if (SearchBuffArray(SMN.Buffs.HellishConduit))
+                            if (HasBuff(SMN.Buffs.HellishConduit))
                                 return SMN.BrandOfPurgatory;
                             return SMN.FountainOfFire;
                         }
@@ -951,7 +951,7 @@ namespace XIVComboPlugin
                 if (actionID == DNC.FanDance1)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(DNC.Buffs.FlourishingFanDance))
+                    if (HasBuff(DNC.Buffs.FlourishingFanDance))
                         return DNC.FanDance3;
                     return DNC.FanDance1;
                 }
@@ -960,7 +960,7 @@ namespace XIVComboPlugin
                 if (actionID == DNC.FanDance2)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(DNC.Buffs.FlourishingFanDance))
+                    if (HasBuff(DNC.Buffs.FlourishingFanDance))
                         return DNC.FanDance3;
                     return DNC.FanDance2;
                 }
@@ -972,14 +972,14 @@ namespace XIVComboPlugin
                 if (actionID == DNC.StandardStep)
                 {
                     var gauge = clientState.JobGauges.Get<DNCGauge>();
-                    if (gauge.IsDancing() && SearchBuffArray(DNC.Buffs.StandardStep))
+                    if (gauge.IsDancing() && HasBuff(DNC.Buffs.StandardStep))
                         if (gauge.NumCompleteSteps < 2)
                             return gauge.NextStep();
                 }
                 if (actionID == DNC.TechnicalStep)
                 {
                     var gauge = clientState.JobGauges.Get<DNCGauge>();
-                    if (gauge.IsDancing() && SearchBuffArray(DNC.Buffs.TechnicalStep))
+                    if (gauge.IsDancing() && HasBuff(DNC.Buffs.TechnicalStep))
                         if (gauge.NumCompleteSteps < 4)
                             return gauge.NextStep();
                 }
@@ -991,13 +991,13 @@ namespace XIVComboPlugin
                 if (actionID == DNC.Flourish)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(DNC.Buffs.FlourishingFountain))
+                    if (HasBuff(DNC.Buffs.FlourishingFountain))
                         return DNC.Fountainfall;
-                    if (SearchBuffArray(DNC.Buffs.FlourishingCascade))
+                    if (HasBuff(DNC.Buffs.FlourishingCascade))
                         return DNC.ReverseCascade;
-                    if (SearchBuffArray(DNC.Buffs.FlourishingShower))
+                    if (HasBuff(DNC.Buffs.FlourishingShower))
                         return DNC.Bloodshower;
-                    if (SearchBuffArray(DNC.Buffs.FlourishingWindmill))
+                    if (HasBuff(DNC.Buffs.FlourishingWindmill))
                         return DNC.RisingWindmill;
                     return DNC.Flourish;
                 }
@@ -1010,10 +1010,10 @@ namespace XIVComboPlugin
                 {
                     UpdateBuffAddress();
                     // From Fountain
-                    if (SearchBuffArray(DNC.Buffs.FlourishingFountain))
+                    if (HasBuff(DNC.Buffs.FlourishingFountain))
                         return DNC.Fountainfall;
                     // From Cascade
-                    if (SearchBuffArray(DNC.Buffs.FlourishingCascade))
+                    if (HasBuff(DNC.Buffs.FlourishingCascade))
                         return DNC.ReverseCascade;
                     // Cascade Combo
                     if (lastMove == DNC.Cascade && level >= DNC.Levels.Fountain)
@@ -1029,10 +1029,10 @@ namespace XIVComboPlugin
                 {
                     UpdateBuffAddress();
                     // From Bladeshower
-                    if (SearchBuffArray(DNC.Buffs.FlourishingShower))
+                    if (HasBuff(DNC.Buffs.FlourishingShower))
                         return DNC.Bloodshower;
                     // From Windmill
-                    if (SearchBuffArray(DNC.Buffs.FlourishingWindmill))
+                    if (HasBuff(DNC.Buffs.FlourishingWindmill))
                         return DNC.RisingWindmill;
                     // Windmill Combo
                     if (lastMove == DNC.Windmill && level >= DNC.Levels.Bladeshower)
@@ -1088,7 +1088,7 @@ namespace XIVComboPlugin
                 if (actionID == BRD.HeavyShot || actionID == BRD.BurstShot)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(BRD.Buffs.StraightShotReady))
+                    if (HasBuff(BRD.Buffs.StraightShotReady))
                     {
                         if (level >= BRD.Levels.RefulgentArrow)
                             return BRD.RefulgentArrow;
@@ -1110,13 +1110,13 @@ namespace XIVComboPlugin
                 if (actionID == MNK.Rockbreaker)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(MNK.Buffs.PerfectBalance))
+                    if (HasBuff(MNK.Buffs.PerfectBalance))
                         return MNK.Rockbreaker;
-                    if (SearchBuffArray(MNK.Buffs.OpoOpoForm))
+                    if (HasBuff(MNK.Buffs.OpoOpoForm))
                         return MNK.ArmOfTheDestroyer;
-                    if (SearchBuffArray(MNK.Buffs.RaptorForm))
+                    if (HasBuff(MNK.Buffs.RaptorForm))
                         return MNK.FourPointFury;
-                    if (SearchBuffArray(MNK.Buffs.CoerlForm))
+                    if (HasBuff(MNK.Buffs.CoerlForm))
                         return MNK.Rockbreaker;
                     return MNK.ArmOfTheDestroyer;
                 }
@@ -1132,7 +1132,7 @@ namespace XIVComboPlugin
                 if (actionID == RDM.Veraero2)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(DoM.Buffs.Swiftcast) || SearchBuffArray(RDM.Buffs.Dualcast))
+                    if (HasBuff(DoM.Buffs.Swiftcast) || HasBuff(RDM.Buffs.Dualcast))
                     {
                         if (level >= RDM.Levels.Impact)
                             return RDM.Impact;
@@ -1144,7 +1144,7 @@ namespace XIVComboPlugin
                 if (actionID == RDM.Verthunder2)
                 {
                     UpdateBuffAddress();
-                    if (SearchBuffArray(DoM.Buffs.Swiftcast) || SearchBuffArray(RDM.Buffs.Dualcast))
+                    if (HasBuff(DoM.Buffs.Swiftcast) || HasBuff(RDM.Buffs.Dualcast))
                     {
                         if (level >= RDM.Levels.Impact)
                             return RDM.Impact;
@@ -1187,7 +1187,7 @@ namespace XIVComboPlugin
                     if (level >= RDM.Levels.Scorch && (lastMove == RDM.Verflare || lastMove == RDM.Verholy))
                         return RDM.Scorch;
                     UpdateBuffAddress();
-                    if (SearchBuffArray(RDM.Buffs.VerstoneReady))
+                    if (HasBuff(RDM.Buffs.VerstoneReady))
                         return RDM.Verstone;
                     if (level >= RDM.Levels.Jolt2)
                         return RDM.Jolt2;
@@ -1198,7 +1198,7 @@ namespace XIVComboPlugin
                     if (level >= RDM.Levels.Scorch && (lastMove == RDM.Verflare || lastMove == RDM.Verholy))
                         return RDM.Scorch;
                     UpdateBuffAddress();
-                    if (SearchBuffArray(RDM.Buffs.VerfireReady))
+                    if (HasBuff(RDM.Buffs.VerfireReady))
                         return RDM.Verfire;
                     if (level >= RDM.Levels.Jolt2)
                         return RDM.Jolt2;
@@ -1212,7 +1212,7 @@ namespace XIVComboPlugin
             return iconHook.Original(self, actionID);
         }
 
-        private bool SearchBuffArray(short needle)
+        private bool HasBuff(short needle)
         {
             if (activeBuffArray == IntPtr.Zero) return false;
             for (var i = 0; i < 60; i++)
