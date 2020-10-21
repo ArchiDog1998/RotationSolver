@@ -110,15 +110,6 @@ namespace XIVComboPlugin
             seenNoUpdate.Clear();
         }
 
-        private async void BuffTask()
-        {
-            while (!shutdown)
-            {
-                UpdateBuffAddress();
-                await Task.Delay(1000);
-            }
-        }
-
         // I hate this function. This is the dumbest function to exist in the game. Just return 1.
         // Determines which abilities are allowed to have their icons updated.
         private ulong CheckIsIconReplaceableDetour(uint actionID)
@@ -1216,6 +1207,15 @@ namespace XIVComboPlugin
                 if (Marshal.ReadInt16(activeBuffArray + (12 * i)) == needle)
                     return true;
             return false;
+        }
+
+        private async void BuffTask()
+        {
+            while (!shutdown)
+            {
+                UpdateBuffAddress();
+                await Task.Delay(1000);
+            }
         }
 
         private void UpdateBuffAddress()
