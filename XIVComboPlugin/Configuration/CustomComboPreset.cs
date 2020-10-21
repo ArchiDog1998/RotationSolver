@@ -32,6 +32,9 @@ namespace XIVComboPlugin
         [CustomComboInfo("Stalwart Soul Combo", "Replace Stalwart Soul with its combo chain", DRK.JobID, DRK.StalwartSoul)]
         DarkStalwartSoulCombo = 4,
 
+        [CustomComboInfo("Delirium Feature", "Replace Souleater and Stalwart Soul with Bloodspiller and Quietus when Delirium is active", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
+        DeliriumFeature = 57,
+
         #endregion
         // ====================================================================================
         #region PALADIN
@@ -121,7 +124,7 @@ namespace XIVComboPlugin
         // ====================================================================================
         #region MACHINIST
 
-        [CustomComboInfo("(Heated) Shot Combo", "Replace either form of Clean Shot with its combo chain", MCH.JobID, MCH.HeatedCleanShot, MCH.CleanShot)]
+        [CustomComboInfo("(Heated) Shot Combo", "Replace either form of Clean Shot with its combo chain", MCH.JobID, MCH.CleanShot, MCH.HeatedCleanShot)]
         MachinistMainCombo = 23,
 
         [CustomComboInfo("Spread Shot Heat", "Replace Spread Shot with Auto Crossbow when overheated", MCH.JobID, MCH.SpreadShot)]
@@ -307,6 +310,7 @@ namespace XIVComboPlugin
     }
 
     [Flags]
+    [Obsolete]
     public enum LegacyCustomComboPreset : long
     {
         None = 0,

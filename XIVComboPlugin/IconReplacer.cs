@@ -262,6 +262,10 @@ namespace XIVComboPlugin
             {
                 if (actionID == DRK.Souleater)
                 {
+                    if (Configuration.IsEnabled(CustomComboPreset.DeliriumFeature))
+                        if (level >= DRK.Levels.Bloodpiller && level >= DRK.Levels.Delirium && HasBuff(DRK.Buffs.Delirium))
+                            return DRK.Bloodspiller;
+
                     if (comboTime > 0)
                     {
                         if (lastMove == DRK.HardSlash && level >= DRK.Levels.SyphonStrike)
@@ -278,6 +282,10 @@ namespace XIVComboPlugin
             {
                 if (actionID == DRK.StalwartSoul)
                 {
+                    if (Configuration.IsEnabled(CustomComboPreset.DeliriumFeature))
+                        if (level >= DRK.Levels.Quietus && level >= DRK.Levels.Delirium && HasBuff(DRK.Buffs.Delirium))
+                            return DRK.Quietus;
+
                     if (comboTime > 0)
                         if (lastMove == DRK.Unleash && level >= DRK.Levels.StalwartSoul)
                             return DRK.StalwartSoul;

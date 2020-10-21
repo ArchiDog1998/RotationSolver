@@ -202,11 +202,14 @@ namespace XIVComboPlugin
             HardSlash = 3617,
             SyphonStrike = 3623,
             StalwartSoul = 16468,
-            Unleash = 3621;
+            Unleash = 3621,
+            Quietus = 7391,
+            Bloodspiller = 7392;
 
         public static class Buffs
         {
-            // public const short placeholder = 0;
+            public const short
+                Delirium = 1972;
         }
 
         public static class Levels
@@ -214,6 +217,9 @@ namespace XIVComboPlugin
             public const byte
                 SyphonStrike = 2,
                 Souleater = 26,
+                Bloodpiller = 62,
+                Quietus = 64,
+                Delirium = 68,
                 StalwartSoul = 72;
         }
     }
