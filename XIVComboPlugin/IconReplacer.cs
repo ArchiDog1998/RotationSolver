@@ -142,21 +142,28 @@ namespace XIVComboPlugin
         /// </summary>
         private ulong GetIconDetour(byte self, uint actionID)
         {
-            if (clientState.LocalPlayer == null) return iconHook.Original(self, actionID);
+            if (clientState.LocalPlayer == null) 
+                return iconHook.Original(self, actionID);
+
             var job = clientState.LocalPlayer.ClassJob.Id;
             if (lastJob != job)
             {
                 lastJob = job;
                 seenNoUpdate.Clear();
             }
+
             // TODO: More jobs, level checking for everything.
             if (noUpdateIcons.Contains(actionID) && !seenNoUpdate.Contains(actionID))
             {
                 seenNoUpdate.Add(actionID);
                 return actionID;
             }
-            if (!customIds.Contains(actionID)) return iconHook.Original(self, actionID);
-            if (activeBuffArray == IntPtr.Zero) return iconHook.Original(self, actionID);
+            
+            if (!customIds.Contains(actionID)) 
+                return iconHook.Original(self, actionID);
+            
+            if (activeBuffArray == IntPtr.Zero) 
+                return iconHook.Original(self, actionID);
 
             // Don't clutter the spaghetti any worse than it already is.
             var lastMove = Marshal.ReadInt32(Address.LastComboMove);
