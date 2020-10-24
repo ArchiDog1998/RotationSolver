@@ -9,7 +9,6 @@ using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Structs.JobGauge;
 using Dalamud.Hooking;
 using Dalamud.Plugin;
-using Serilog;
 
 namespace XIVComboPlugin
 {
@@ -50,11 +49,11 @@ namespace XIVComboPlugin
             UpdateEnabledActionIDs();
             UpdateHiddenActionIDs();
 
-            Log.Verbose("===== H O T B A R S =====");
-            Log.Verbose($"IsIconReplaceable address {Address.IsIconReplaceable.ToInt64():X}");
-            Log.Verbose($"GetIcon address {Address.GetIcon.ToInt64():X}");
-            Log.Verbose($"ComboTimer address {Address.ComboTimer.ToInt64():X}");
-            Log.Verbose($"LastComboMove address {Address.LastComboMove.ToInt64():X}");
+            PluginLog.Verbose("===== H O T B A R S =====");
+            PluginLog.Verbose($"IsIconReplaceable address {Address.IsIconReplaceable.ToInt64():X}");
+            PluginLog.Verbose($"GetIcon address {Address.GetIcon.ToInt64():X}");
+            PluginLog.Verbose($"ComboTimer address {Address.ComboTimer.ToInt64():X}");
+            PluginLog.Verbose($"LastComboMove address {Address.LastComboMove.ToInt64():X}");
 
             iconHook = new Hook<OnGetIconDelegate>(Address.GetIcon,
                 new OnGetIconDelegate(GetIconDetour), this);
