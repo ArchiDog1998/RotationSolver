@@ -89,7 +89,6 @@ namespace XIVComboPlugin
                     foreach (var (preset, info) in GroupedPresets[jobName])
                     {
                         bool enabled = Configuration.IsEnabled(preset);
-                        bool hidden = Configuration.IsHidden(preset);
 
                         ImGui.PushItemWidth(200);
                         if (ImGui.Checkbox(info.FancyName, ref enabled))
@@ -102,18 +101,6 @@ namespace XIVComboPlugin
                             SaveConfiguration();
                         }
                         ImGui.PopItemWidth();
-
-                        ImGui.SameLine(275);
-
-                        if (ImGui.Checkbox($"Prevent this chain from updating its icon###{info.FancyName}", ref hidden))
-                        {
-                            if (hidden)
-                                Configuration.HiddenActions.Add(preset);
-                            else
-                                Configuration.HiddenActions.Remove(preset);
-                            iconReplacer.UpdateHiddenActionIDs();
-                            SaveConfiguration();
-                        }
 
                         ImGui.TextColored(new Vector4(0.68f, 0.68f, 0.68f, 1.0f), $"#{i}: {info.Description}");
                         ImGui.Spacing();

@@ -27,7 +27,6 @@ namespace XIVComboPlugin
         private readonly XIVComboConfiguration Configuration;
 
         private readonly HashSet<uint> customIds = new HashSet<uint>();
-        private readonly HashSet<uint> noUpdateIcons = new HashSet<uint>();
         private readonly HashSet<uint> seenNoUpdate = new HashSet<uint>();
 
         private readonly Hook<OnGetIconDelegate> iconHook;
@@ -47,7 +46,6 @@ namespace XIVComboPlugin
             Address.Setup(scanner);
 
             UpdateEnabledActionIDs();
-            UpdateHiddenActionIDs();
 
             PluginLog.Verbose("===== H O T B A R S =====");
             PluginLog.Verbose($"IsIconReplaceable address {Address.IsIconReplaceable.ToInt64():X}");
@@ -93,27 +91,10 @@ namespace XIVComboPlugin
             customIds.UnionWith(actionIDs);
         }
 
-        /// <summary>
-        /// Maps to <see cref="XIVComboConfiguration.HiddenActions"/>, these actions do not update their icon per the user configuration.
-        /// </summary>
-        public void UpdateHiddenActionIDs()
-        {
-            var actionIDs = Configuration.EnabledActions
-                .Intersect(Configuration.HiddenActions)
-                .Select(preset => preset.GetAttribute<CustomComboInfoAttribute>())
-                .OfType<CustomComboInfoAttribute>()
-                .SelectMany(presetInfo => presetInfo.Abilities)
-                .ToHashSet();
-            noUpdateIcons.Clear();
-            noUpdateIcons.UnionWith(actionIDs);
-            seenNoUpdate.Clear();
-        }
-
         // I hate this function. This is the dumbest function to exist in the game. Just return 1.
         // Determines which abilities are allowed to have their icons updated.
         private ulong IsIconReplaceableDetour(uint actionID)
         {
-            if (!noUpdateIcons.Contains(actionID)) return 1;
             if (!seenNoUpdate.Contains(actionID)) return 1;
             return 0;
         }
@@ -139,8 +120,7 @@ namespace XIVComboPlugin
                 seenNoUpdate.Clear();
             }
 
-            // TODO: More jobs, level checking for everything.
-            if (noUpdateIcons.Contains(actionID) && !seenNoUpdate.Contains(actionID))
+            if (!seenNoUpdate.Contains(actionID))
             {
                 seenNoUpdate.Add(actionID);
                 return actionID;

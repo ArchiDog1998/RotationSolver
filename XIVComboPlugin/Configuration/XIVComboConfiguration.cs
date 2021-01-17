@@ -14,12 +14,7 @@ namespace XIVComboPlugin
         [JsonProperty("EnabledActionsV4")]
         public HashSet<CustomComboPreset> EnabledActions = new HashSet<CustomComboPreset>();
 
-        [JsonProperty("HiddenActionsV4")]
-        public HashSet<CustomComboPreset> HiddenActions = new HashSet<CustomComboPreset>();
-
         public bool IsEnabled(CustomComboPreset preset) => EnabledActions.Contains(preset);
-
-        public bool IsHidden(CustomComboPreset preset) => HiddenActions.Contains(preset);
 
         #region Obsolete
 #pragma warning disable IDE1006 // Naming Styles
@@ -37,7 +32,7 @@ namespace XIVComboPlugin
         [JsonProperty("HiddenActions")]
         [Obsolete("This was removed in favor of HiddenActions in version 4")]
         public List<bool> _HiddenActions { set { _HiddenActionsBacker = value; } }
-        
+
         [JsonIgnore]
         [Obsolete("This was added to prevent serialization of another obsolete property")]
         private List<bool> _HiddenActionsBacker = new List<bool>();
@@ -57,13 +52,15 @@ namespace XIVComboPlugin
         {
             PluginLog.Information("Upgrading configuration to version 3");
             foreach (var _ in Enum.GetValues(typeof(CustomComboPreset)))
+#pragma warning disable CS0618 // Type or member is obsolete
                 _HiddenActionsBacker.Add(false);
+#pragma warning restore CS0618 // Type or member is obsolete
             Version = 3;
         }
 
         private void UpgradeToVersion4()
         {
-#pragma warning disable CS0612 // Type or member is obsolete
+#pragma warning disable CS0612,CS0618 // Type or member is obsolete
             PluginLog.Information("Upgrading configuration to version 4");
             foreach (LegacyCustomComboPreset legacyPreset in Enum.GetValues(typeof(LegacyCustomComboPreset)))
             {
@@ -74,15 +71,13 @@ namespace XIVComboPlugin
                     if (Enum.IsDefined(typeof(CustomComboPreset), preset))
                     {
                         EnabledActions.Add(preset);
-                        if (_HiddenActionsBacker.Count < legacyPresetIndex && _HiddenActionsBacker[legacyPresetIndex])
-                            HiddenActions.Add(preset);
                     }
                 }
             }
             _ComboPresetsBacker = 0;
             _HiddenActionsBacker = null;
             Version = 4;
-#pragma warning restore CS0612 // Type or member is obsolete
+#pragma warning restore CS0612,CS0618 // Type or member is obsolete
         }
     }
 }
