@@ -652,15 +652,14 @@ namespace XIVComboPlugin
                 }
             }
 
-            // Replace Hypercharge with Heat Blast when overheated
+            // Replace Heat Blast and Auto crossbow with Hypercharge when not overheated
             if (Configuration.IsEnabled(CustomComboPreset.MachinistOverheatFeature))
             {
-                if (actionID == MCH.Hypercharge)
+                if (actionID == MCH.HeatBlast || actionID == MCH.AutoCrossbow)
                 {
                     var gauge = clientState.JobGauges.Get<MCHGauge>();
-                    if (gauge.IsOverheated() && level >= MCH.Levels.HeatBlast)
-                        return MCH.HeatBlast;
-                    return MCH.Hypercharge;
+                    if (!gauge.IsOverheated() && level >= MCH.Levels.Hypercharge)
+                        return MCH.Hypercharge;
                 }
             }
 
@@ -671,11 +670,21 @@ namespace XIVComboPlugin
                 {
                     if (clientState.JobGauges.Get<MCHGauge>().IsOverheated() && level >= MCH.Levels.AutoCrossbow)
                         return MCH.AutoCrossbow;
-                    return MCH.SpreadShot;
+                }
+            }
+
             // Replace Rook Turret and Automaton Queen with Overdrive while active.
             if (Configuration.IsEnabled(CustomComboPreset.MachinistOverdriveFeature))
             {
                 if (actionID == MCH.RookAutoturret || actionID == MCH.AutomatonQueen)
+                {
+                    if (clientState.JobGauges.Get<MCHGauge>().IsRobotActive())
+                    {
+                        if (level >= MCH.Levels.QueenOverdrive)
+                            return MCH.QueenOverdrive;
+                        if (level >= MCH.Levels.RookOverdrive)
+                            return MCH.RookOverdrive;
+                    }
                 }
             }
 

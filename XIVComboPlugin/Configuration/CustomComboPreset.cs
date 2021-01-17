@@ -4,6 +4,7 @@ namespace XIVComboPlugin
 {
     public enum CustomComboPreset
     {
+        // Last enum used: 58
         // ====================================================================================
         #region DRAGOON
 
@@ -130,8 +131,11 @@ namespace XIVComboPlugin
         [CustomComboInfo("Spread Shot Heat", "Replace Spread Shot with Auto Crossbow when overheated", MCH.JobID, MCH.SpreadShot)]
         MachinistSpreadShotFeature = 24,
 
-        [CustomComboInfo("Heat Blast when overheated", "Replace Hypercharge with Heat Blast when overheated", MCH.JobID, MCH.Hypercharge)]
+        [CustomComboInfo("Hypercharge Feature", "Replace Heat Blast and Auto Crossbow with Hypercharge when not overheated", MCH.JobID, MCH.HeatBlast, MCH.AutoCrossbow)]
         MachinistOverheatFeature = 47,
+
+        [CustomComboInfo("Overdrive Feature", "Replace Rook Autoturret and Automaton Queen with Overdrive while active", MCH.JobID, MCH.RookAutoturret, MCH.AutomatonQueen)]
+        MachinistOverdriveFeature = 58,
 
         #endregion
         // ====================================================================================

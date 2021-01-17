@@ -309,7 +309,11 @@ namespace XIVComboPlugin
             Hypercharge = 17209,
             HeatBlast = 7410,
             SpreadShot = 2870,
-            AutoCrossbow = 16497;
+            AutoCrossbow = 16497,
+            RookAutoturret = 2864,
+            RookOverdrive = 7415,
+            AutomatonQueen = 16501,
+            QueenOverdrive = 16502;
 
         public static class Buffs
         {
@@ -321,11 +325,14 @@ namespace XIVComboPlugin
             public const byte
                 SlugShot = 2,
                 CleanShot = 26,
+                Hypercharge = 30,
                 HeatBlast = 35,
+                RookOverdrive = 40,
                 AutoCrossbow = 52,
                 HeatedSplitShot = 54,
                 HeatedSlugshot = 60,
-                HeatedCleanShot = 64;
+                HeatedCleanShot = 64,
+                QueenOverdrive = 80;
         }
     }
 
