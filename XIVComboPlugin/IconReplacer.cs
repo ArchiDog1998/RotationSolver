@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Dalamud.Game;
 using Dalamud.Game.Chat;
@@ -34,11 +35,10 @@ namespace XIVComboPlugin
 
         private unsafe delegate int* getArray(long* address);
 
-        private bool shutdown;
+        private readonly CancellationTokenSource ShutdownSource = new CancellationTokenSource();
 
         public IconReplacer(SigScanner scanner, ClientState clientState, XIVComboConfiguration configuration)
         {
-            shutdown = false;
             Configuration = configuration;
             this.clientState = clientState;
 
@@ -59,7 +59,7 @@ namespace XIVComboPlugin
             checkerHook = new Hook<OnCheckIsIconReplaceableDelegate>(Address.IsIconReplaceable,
                 new OnCheckIsIconReplaceableDelegate(IsIconReplaceableDetour), this);
 
-            Task.Run(BuffTask);
+            Task.Run(() => BuffTask(ShutdownSource.Token));
         }
 
         public void Enable()
@@ -70,7 +70,7 @@ namespace XIVComboPlugin
 
         public void Dispose()
         {
-            shutdown = true;
+            ShutdownSource.Cancel();
             iconHook.Dispose();
             checkerHook.Dispose();
         }
@@ -672,6 +672,10 @@ namespace XIVComboPlugin
                     if (clientState.JobGauges.Get<MCHGauge>().IsOverheated() && level >= MCH.Levels.AutoCrossbow)
                         return MCH.AutoCrossbow;
                     return MCH.SpreadShot;
+            // Replace Rook Turret and Automaton Queen with Overdrive while active.
+            if (Configuration.IsEnabled(CustomComboPreset.MachinistOverdriveFeature))
+            {
+                if (actionID == MCH.RookAutoturret || actionID == MCH.AutomatonQueen)
                 }
             }
 
@@ -1196,13 +1200,17 @@ namespace XIVComboPlugin
             return false;
         }
 
-        private async void BuffTask()
+        private async void BuffTask(CancellationToken shutdownToken)
         {
-            while (!shutdown)
+            try
             {
-                UpdateBuffAddress();
-                await Task.Delay(1000);
+                while (!shutdownToken.IsCancellationRequested)
+                {
+                    UpdateBuffAddress();
+                    await Task.Delay(1000, shutdownToken);
+                }
             }
+            catch (OperationCanceledException) { }
         }
 
         private void UpdateBuffAddress()
