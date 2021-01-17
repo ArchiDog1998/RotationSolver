@@ -344,12 +344,15 @@ namespace XIVComboPlugin
                 OpoOpoForm = 107,
                 RaptorForm = 108,
                 CoerlForm = 109,
-                PerfectBalance = 110;
+                PerfectBalance = 110,
+                FormlessFist = 2513;
         }
 
         public static class Levels
         {
-            // public const byte placeholder = 0;
+            public const byte
+                Rockbreaker = 30,
+                FourPointFury = 45;
         }
     }
 

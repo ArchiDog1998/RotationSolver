@@ -59,7 +59,7 @@ namespace XIVComboPlugin
                 new OnGetIconDelegate(GetIconDetour), this);
 
             checkerHook = new Hook<OnCheckIsIconReplaceableDelegate>(Address.IsIconReplaceable,
-                new OnCheckIsIconReplaceableDelegate(CheckIsIconReplaceableDetour), this);
+                new OnCheckIsIconReplaceableDelegate(IsIconReplaceableDetour), this);
 
             Task.Run(BuffTask);
         }
@@ -111,7 +111,7 @@ namespace XIVComboPlugin
 
         // I hate this function. This is the dumbest function to exist in the game. Just return 1.
         // Determines which abilities are allowed to have their icons updated.
-        private ulong CheckIsIconReplaceableDetour(uint actionID)
+        private ulong IsIconReplaceableDetour(uint actionID)
         {
             if (!noUpdateIcons.Contains(actionID)) return 1;
             if (!seenNoUpdate.Contains(actionID)) return 1;
@@ -129,7 +129,7 @@ namespace XIVComboPlugin
         /// </summary>
         private ulong GetIconDetour(byte self, uint actionID)
         {
-            if (clientState.LocalPlayer == null) 
+            if (clientState.LocalPlayer == null)
                 return iconHook.Original(self, actionID);
 
             var job = clientState.LocalPlayer.ClassJob.Id;
@@ -145,11 +145,11 @@ namespace XIVComboPlugin
                 seenNoUpdate.Add(actionID);
                 return actionID;
             }
-            
-            if (!customIds.Contains(actionID)) 
+
+            if (!customIds.Contains(actionID))
                 return iconHook.Original(self, actionID);
-            
-            if (activeBuffArray == IntPtr.Zero) 
+
+            if (activeBuffArray == IntPtr.Zero)
                 return iconHook.Original(self, actionID);
 
             // Don't clutter the spaghetti any worse than it already is.
@@ -1105,13 +1105,13 @@ namespace XIVComboPlugin
                 if (actionID == MNK.Rockbreaker)
                 {
                     UpdateBuffAddress();
-                    if (HasBuff(MNK.Buffs.PerfectBalance))
+                    if (HasBuff(MNK.Buffs.PerfectBalance) || HasBuff(MNK.Buffs.FormlessFist))
                         return MNK.Rockbreaker;
                     if (HasBuff(MNK.Buffs.OpoOpoForm))
                         return MNK.ArmOfTheDestroyer;
-                    if (HasBuff(MNK.Buffs.RaptorForm))
+                    if (HasBuff(MNK.Buffs.RaptorForm) && level >= MNK.Levels.FourPointFury)
                         return MNK.FourPointFury;
-                    if (HasBuff(MNK.Buffs.CoerlForm))
+                    if (HasBuff(MNK.Buffs.CoerlForm) && level >= MNK.Levels.Rockbreaker)
                         return MNK.Rockbreaker;
                     return MNK.ArmOfTheDestroyer;
                 }
