@@ -28,10 +28,8 @@ namespace XIVComboPlugin
         private readonly XIVComboConfiguration Configuration;
 
         private readonly HashSet<uint> customIds = new HashSet<uint>();
-        private readonly HashSet<uint> seenNoUpdate = new HashSet<uint>();
 
         private readonly Hook<OnGetIconDelegate> iconHook;
-        private uint lastJob = 0;
 
         private unsafe delegate int* getArray(long* address);
 
@@ -91,13 +89,7 @@ namespace XIVComboPlugin
             customIds.UnionWith(actionIDs);
         }
 
-        // I hate this function. This is the dumbest function to exist in the game. Just return 1.
-        // Determines which abilities are allowed to have their icons updated.
-        private ulong IsIconReplaceableDetour(uint actionID)
-        {
-            if (!seenNoUpdate.Contains(actionID)) return 1;
-            return 0;
-        }
+        private ulong IsIconReplaceableDetour(uint actionID) => 1;
 
         /// <summary>
         ///     Replace an ability with another ability
@@ -114,17 +106,6 @@ namespace XIVComboPlugin
                 return iconHook.Original(self, actionID);
 
             var job = clientState.LocalPlayer.ClassJob.Id;
-            if (lastJob != job)
-            {
-                lastJob = job;
-                seenNoUpdate.Clear();
-            }
-
-            if (!seenNoUpdate.Contains(actionID))
-            {
-                seenNoUpdate.Add(actionID);
-                return actionID;
-            }
 
             if (!customIds.Contains(actionID))
                 return iconHook.Original(self, actionID);
