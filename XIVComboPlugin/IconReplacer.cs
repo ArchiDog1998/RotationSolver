@@ -641,6 +641,8 @@ namespace XIVComboPlugin
                     var gauge = clientState.JobGauges.Get<MCHGauge>();
                     if (!gauge.IsOverheated() && level >= MCH.Levels.Hypercharge)
                         return MCH.Hypercharge;
+                    if (level < MCH.Levels.AutoCrossbow)
+                        return MCH.HeatBlast;
                 }
             }
 
@@ -1017,22 +1019,22 @@ namespace XIVComboPlugin
             // Replace Solace with Misery when full blood lily
             if (Configuration.IsEnabled(CustomComboPreset.WhiteMageSolaceMiseryFeature))
             {
-                if (actionID == WHM.Solace)
+                if (actionID == WHM.AfflatusSolace)
                 {
                     if (clientState.JobGauges.Get<WHMGauge>().NumBloodLily == 3)
-                        return WHM.Misery;
-                    return WHM.Solace;
+                        return WHM.AfflatusMisery;
+                    return WHM.AfflatusSolace;
                 }
             }
 
             // Replace Solace with Misery when full blood lily
             if (Configuration.IsEnabled(CustomComboPreset.WhiteMageRaptureMiseryFeature))
             {
-                if (actionID == WHM.Rapture)
+                if (actionID == WHM.AfflatusRapture)
                 {
                     if (clientState.JobGauges.Get<WHMGauge>().NumBloodLily == 3)
-                        return WHM.Misery;
-                    return WHM.Rapture;
+                        return WHM.AfflatusMisery;
+                    return WHM.AfflatusRapture;
                 }
             }
 

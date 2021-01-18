@@ -561,9 +561,9 @@ namespace XIVComboPlugin
         public const byte JobID = 24;
 
         public const uint
-            Solace = 16531,
-            Rapture = 16534,
-            Misery = 16535;
+            AfflatusSolace = 16531,
+            AfflatusRapture = 16534,
+            AfflatusMisery = 16535;
 
         public static class Buffs
         {
