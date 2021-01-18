@@ -5,6 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{619DF476-7225-4783-95A5-D29A8816EE66}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <LangVersion>8.0</LangVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>XIVComboPlugin</RootNamespace>
     <AssemblyName>XIVCombo</AssemblyName>
