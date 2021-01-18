@@ -25,7 +25,9 @@ jobs:
         MSBuild.exe Dalamud.sln /t:Build /p:Configuration=Release /p:DefineConstants=XL_NOAUTOUPDATE /p:WarningLevel=0
       working-directory: lib\Dalamud
     - name: Build
-      run: dotnet build --configuration Release
+      run: |
+        dotnet restore -r win XIVCombo.sln
+        dotnet build --configuration Release
     - uses: actions/upload-artifact@v2
       with:
         name: PluginRepoZip
