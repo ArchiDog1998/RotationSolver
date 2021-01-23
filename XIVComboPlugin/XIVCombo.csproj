@@ -6,7 +6,7 @@
     <Version>1.0.3.8</Version>
     <Description>This plugin condenses combos and mutually exclusive abilities onto a single button.</Description>
     <Copyright>Copyleft attick 2020 baybeeee</Copyright>
-    <PackageProjectUrl>https://github.com/attickdoor/XIVComboPlugin</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/daemitus/XIVComboPlugin</PackageProjectUrl>
   </PropertyGroup>
   
   <PropertyGroup>
