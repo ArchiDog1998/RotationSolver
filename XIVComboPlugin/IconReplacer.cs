@@ -11,7 +11,7 @@ using Dalamud.Game.ClientState.Structs.JobGauge;
 using Dalamud.Hooking;
 using Dalamud.Plugin;
 
-namespace XIVComboPlugin
+namespace XIVComboExpandedPlugin
 {
     public class IconReplacer
     {
@@ -25,7 +25,7 @@ namespace XIVComboPlugin
         private readonly Hook<OnCheckIsIconReplaceableDelegate> checkerHook;
         private readonly ClientState clientState;
 
-        private readonly XIVComboConfiguration Configuration;
+        private readonly XIVComboExpandedConfiguration Configuration;
 
         private readonly HashSet<uint> customIds = new HashSet<uint>();
 
@@ -35,7 +35,7 @@ namespace XIVComboPlugin
 
         private readonly CancellationTokenSource ShutdownSource = new CancellationTokenSource();
 
-        public IconReplacer(SigScanner scanner, ClientState clientState, XIVComboConfiguration configuration)
+        public IconReplacer(SigScanner scanner, ClientState clientState, XIVComboExpandedConfiguration configuration)
         {
             Configuration = configuration;
             this.clientState = clientState;
@@ -74,7 +74,7 @@ namespace XIVComboPlugin
         }
 
         /// <summary>
-        /// Maps to <see cref="XIVComboConfiguration.EnabledActions"/>, these actions can potentially update their icon per the user configuration.
+        /// Maps to <see cref="XIVComboExpandedConfiguration.EnabledActions"/>, these actions can potentially update their icon per the user configuration.
         /// </summary>
         public void UpdateEnabledActionIDs()
         {

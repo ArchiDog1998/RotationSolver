@@ -1,53 +1,55 @@
 name: Build
+
 on: 
   workflow_dispatch:
   push:
     branches:
     - master
+
+env: 
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
 jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/setup-dotnet@v1
-      with: 
-        dotnet-version: 3.1.301
-    - uses: microsoft/setup-msbuild@v1.0.2
-    - uses: actions/checkout@v2
-    - name: Run actions/checkout@v2 (Dalamud)
+    - name: Checkout
       uses: actions/checkout@v2
-      with:
-        repository: goatcorp/Dalamud 
-        submodules: recursive
-        path: lib\Dalamud
-    - name: Build (Dalamud)
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Download Dalamud
       run: |
-        dotnet restore -r win Dalamud.sln
-        MSBuild.exe Dalamud.sln /t:Build /p:Configuration=Release /p:DefineConstants=XL_NOAUTOUPDATE /p:WarningLevel=0
-      working-directory: lib\Dalamud
+        Invoke-WebRequest -Uri https://goaaats.github.io/ffxiv/tools/launcher/addons/Hooks/latest.zip -OutFile latest.zip
+        Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\"
     - name: Build
       run: |
         dotnet restore -r win XIVCombo.sln
         dotnet build --configuration Release
-    - uses: actions/upload-artifact@v2
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
       with:
         name: PluginRepoZip
-        path: XIVComboPlugin\bin\Release\net472\XIVCombo
+        path: XIVComboPlugin\bin\Release\XIVComboExpanded
         if-no-files-found: error
+  
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
         repository: daemitus/MyDalamudPlugins
         token: ${{ secrets.PAT }}
-    - uses: actions/download-artifact@v2
+    - name: Download Artifact
+      uses: actions/download-artifact@v2
       with:
         name: PluginRepoZip
-        path: plugins/XIVCombo
-    - uses: EndBug/add-and-commit@v7
+        path: plugins/XIVComboExpanded
+    - name: Add, Commit, and Push
+      uses: EndBug/add-and-commit@v7
       with:
         add: --all
         author_name: GitHub Action
         author_email: github-actions[bot]@users.noreply.github.com
-        message: Update XIVCombo
+        message: Update XIVComboExpanded

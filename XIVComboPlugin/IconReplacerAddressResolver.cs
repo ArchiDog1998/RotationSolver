@@ -2,7 +2,7 @@
 using Dalamud.Game.Internal;
 using System;
 
-namespace XIVComboPlugin
+namespace XIVComboExpandedPlugin
 {
     class IconReplacerAddressResolver : BaseAddressResolver
     {

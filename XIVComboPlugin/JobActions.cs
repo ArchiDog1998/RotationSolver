@@ -1,4 +1,4 @@
-namespace XIVComboPlugin
+namespace XIVComboExpandedPlugin
 {
     public static class AST
     {

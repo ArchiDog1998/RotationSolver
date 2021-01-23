@@ -7,14 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace XIVComboPlugin
+namespace XIVComboExpandedPlugin
 {
-    class XIVComboPlugin : IDalamudPlugin
+    class XIVComboExpandedPlugin : IDalamudPlugin
     {
-        public string Name => "XIV Combo Plugin";
+        public string Name => "XIV Combo Expanded Plugin";
         public string Command => "/pcombo";
 
-        public XIVComboConfiguration Configuration;
+        public XIVComboExpandedConfiguration Configuration;
         public const int CURRENT_CONFIG_VERSION = 4;
 
         private DalamudPluginInterface pluginInterface;
@@ -32,8 +32,7 @@ namespace XIVComboPlugin
                 ShowInHelp = true
             });
 
-
-            Configuration = pluginInterface.GetPluginConfig() as XIVComboConfiguration ?? new XIVComboConfiguration();
+            Configuration = pluginInterface.GetPluginConfig() as XIVComboExpandedConfiguration ?? new XIVComboExpandedConfiguration();
             if (Configuration.Version < CURRENT_CONFIG_VERSION)
             {
                 Configuration.Upgrade();

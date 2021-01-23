@@ -1,6 +1,6 @@
 using System;
 
-namespace XIVComboPlugin
+namespace XIVComboExpandedPlugin
 {
     public enum CustomComboPreset
     {
