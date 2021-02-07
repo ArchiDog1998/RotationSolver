@@ -9,24 +9,24 @@ using System.Numerics;
 
 namespace XIVComboExpandedPlugin
 {
-    class XIVComboExpandedPlugin : IDalamudPlugin
+    public class XIVComboExpandedPlugin : IDalamudPlugin
     {
         public string Name => "XIV Combo Expanded Plugin";
         public string Command => "/pcombo";
 
-        public XIVComboExpandedConfiguration Configuration;
-        public const int CURRENT_CONFIG_VERSION = 4;
+        internal XIVComboExpandedConfiguration Configuration;
+        internal const int CURRENT_CONFIG_VERSION = 4;
 
-        private DalamudPluginInterface pluginInterface;
-        private IconReplacer iconReplacer;
+        internal DalamudPluginInterface Interface;
+        private IconReplacer IconReplacer;
 
         private Dictionary<string, List<(CustomComboPreset preset, CustomComboInfoAttribute info)>> GroupedPresets;
 
         public void Initialize(DalamudPluginInterface pluginInterface)
         {
-            this.pluginInterface = pluginInterface;
+            Interface = pluginInterface;
 
-            this.pluginInterface.CommandManager.AddHandler(Command, new CommandInfo(OnCommandDebugCombo)
+            Interface.CommandManager.AddHandler(Command, new CommandInfo(OnCommandDebugCombo)
             {
                 HelpMessage = "Open a window to edit custom combo settings.",
                 ShowInHelp = true
@@ -39,12 +39,10 @@ namespace XIVComboExpandedPlugin
                 SaveConfiguration();
             }
 
-            this.iconReplacer = new IconReplacer(pluginInterface.TargetModuleScanner, pluginInterface.ClientState, this.Configuration);
-
-            this.iconReplacer.Enable();
-
-            this.pluginInterface.UiBuilder.OnOpenConfigUi += (sender, args) => isImguiComboSetupOpen = true;
-            this.pluginInterface.UiBuilder.OnBuildUi += UiBuilder_OnBuildUi;
+            IconReplacer = new IconReplacer(pluginInterface.ClientState, pluginInterface.TargetModuleScanner, Configuration);
+            
+            Interface.UiBuilder.OnOpenConfigUi += (sender, args) => isImguiComboSetupOpen = true;
+            Interface.UiBuilder.OnBuildUi += UiBuilder_OnBuildUi;
 
             GroupedPresets = Enum
                 .GetValues(typeof(CustomComboPreset))
@@ -61,7 +59,7 @@ namespace XIVComboExpandedPlugin
 
         private void SaveConfiguration()
         {
-            pluginInterface.SavePluginConfig(Configuration);
+            Interface.SavePluginConfig(Configuration);
         }
 
         private void UiBuilder_OnBuildUi()
@@ -96,7 +94,7 @@ namespace XIVComboExpandedPlugin
                                 Configuration.EnabledActions.Add(preset);
                             else
                                 Configuration.EnabledActions.Remove(preset);
-                            iconReplacer.UpdateEnabledActionIDs();
+                            IconReplacer.UpdateEnabledActionIDs();
                             SaveConfiguration();
                         }
                         ImGui.PopItemWidth();
@@ -120,18 +118,18 @@ namespace XIVComboExpandedPlugin
             ImGui.Separator();
 
             if (ImGui.Button("Close"))
-                this.isImguiComboSetupOpen = false;
+                isImguiComboSetupOpen = false;
 
             ImGui.End();
         }
 
         public void Dispose()
         {
-            this.iconReplacer.Dispose();
+            IconReplacer.Dispose();
 
-            this.pluginInterface.CommandManager.RemoveHandler(Command);
+            Interface.CommandManager.RemoveHandler(Command);
 
-            this.pluginInterface.Dispose();
+            Interface.Dispose();
         }
 
         private void OnCommandDebugCombo(string command, string arguments)
@@ -143,17 +141,17 @@ namespace XIVComboExpandedPlugin
                 case "setall":
                     {
                         foreach (var preset in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
-                            this.Configuration.EnabledActions.Add(preset);
+                            Configuration.EnabledActions.Add(preset);
 
-                        this.pluginInterface.Framework.Gui.Chat.Print("All SET");
+                        Interface.Framework.Gui.Chat.Print("All SET");
                     }
                     break;
                 case "unsetall":
                     {
                         foreach (var preset in Enum.GetValues(typeof(CustomComboPreset)).Cast<CustomComboPreset>())
-                            this.Configuration.EnabledActions.Remove(preset);
+                            Configuration.EnabledActions.Remove(preset);
 
-                        this.pluginInterface.Framework.Gui.Chat.Print("All UNSET");
+                        Interface.Framework.Gui.Chat.Print("All UNSET");
                     }
                     break;
                 case "set":
@@ -164,8 +162,8 @@ namespace XIVComboExpandedPlugin
                             if (preset.ToString().ToLower() != targetPreset)
                                 continue;
 
-                            this.Configuration.EnabledActions.Add(preset);
-                            this.pluginInterface.Framework.Gui.Chat.Print($"{preset} SET");
+                            Configuration.EnabledActions.Add(preset);
+                            Interface.Framework.Gui.Chat.Print($"{preset} SET");
                         }
                     }
                     break;
@@ -177,15 +175,15 @@ namespace XIVComboExpandedPlugin
                             if (preset.ToString().ToLower() != targetPreset)
                                 continue;
 
-                            if (this.Configuration.EnabledActions.Contains(preset))
+                            if (Configuration.EnabledActions.Contains(preset))
                             {
-                                this.Configuration.EnabledActions.Remove(preset);
-                                this.pluginInterface.Framework.Gui.Chat.Print($"{preset} UNSET");
+                                Configuration.EnabledActions.Remove(preset);
+                                Interface.Framework.Gui.Chat.Print($"{preset} UNSET");
                             }
                             else
                             {
-                                this.Configuration.EnabledActions.Add(preset);
-                                this.pluginInterface.Framework.Gui.Chat.Print($"{preset} SET");
+                                Configuration.EnabledActions.Add(preset);
+                                Interface.Framework.Gui.Chat.Print($"{preset} SET");
                             }
                         }
                     }
@@ -198,8 +196,8 @@ namespace XIVComboExpandedPlugin
                             if (preset.ToString().ToLower() != targetPreset)
                                 continue;
 
-                            this.Configuration.EnabledActions.Remove(preset);
-                            this.pluginInterface.Framework.Gui.Chat.Print($"{preset} UNSET");
+                            Configuration.EnabledActions.Remove(preset);
+                            Interface.Framework.Gui.Chat.Print($"{preset} UNSET");
                         }
                     }
                     break;
@@ -215,27 +213,27 @@ namespace XIVComboExpandedPlugin
                         {
                             if (filter == "set")
                             {
-                                if (this.Configuration.EnabledActions.Contains(preset))
-                                    this.pluginInterface.Framework.Gui.Chat.Print(preset.ToString());
+                                if (Configuration.EnabledActions.Contains(preset))
+                                    Interface.Framework.Gui.Chat.Print(preset.ToString());
                             }
                             else if (filter == "unset")
                             {
-                                if (!this.Configuration.EnabledActions.Contains(preset))
-                                    this.pluginInterface.Framework.Gui.Chat.Print(preset.ToString());
+                                if (!Configuration.EnabledActions.Contains(preset))
+                                    Interface.Framework.Gui.Chat.Print(preset.ToString());
                             }
                             else if (filter == "all")
                             {
-                                this.pluginInterface.Framework.Gui.Chat.Print(preset.ToString());
+                                Interface.Framework.Gui.Chat.Print(preset.ToString());
                             }
                         }
                     }
                     break;
                 default:
-                    this.isImguiComboSetupOpen = true;
+                    isImguiComboSetupOpen = true;
                     break;
             }
 
-            this.pluginInterface.SavePluginConfig(this.Configuration);
+            Interface.SavePluginConfig(Configuration);
         }
     }
 }

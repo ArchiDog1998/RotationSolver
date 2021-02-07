@@ -1,6 +1,6 @@
 namespace XIVComboExpandedPlugin
 {
-    public static class AST
+    internal static class AST
     {
         public const byte JobID = 33;
 
@@ -25,7 +25,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class BLM
+    internal static class BLM
     {
         public const byte JobID = 25;
 
@@ -54,7 +54,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class BRD
+    internal static class BRD
     {
         public const byte JobID = 23;
 
@@ -80,7 +80,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class DoM
+    internal static class DoM
     {
         public const byte JobID = 0;
 
@@ -98,7 +98,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class DNC
+    internal static class DNC
     {
         public const byte JobID = 38;
 
@@ -145,7 +145,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class DRG
+    internal static class DRG
     {
         public const byte JobID = 22;
 
@@ -193,7 +193,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class DRK
+    internal static class DRK
     {
         public const byte JobID = 32;
 
@@ -224,7 +224,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class GNB
+    internal static class GNB
     {
         public const byte JobID = 37;
 
@@ -262,7 +262,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class PLD
+    internal static class PLD
     {
         public const byte JobID = 19;
 
@@ -295,7 +295,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class MCH
+    internal static class MCH
     {
         public const byte JobID = 31;
 
@@ -336,7 +336,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class MNK
+    internal static class MNK
     {
         public const byte JobID = 20;
 
@@ -363,7 +363,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class NIN
+    internal static class NIN
     {
         public const byte JobID = 30;
 
@@ -393,11 +393,13 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class RDM
+    internal static class RDM
     {
         public const byte JobID = 35;
 
         public const uint
+            Verthunder = 7505,
+            Veraero = 7507,
             Veraero2 = 16525,
             Verthunder2 = 16524,
             Impact = 16526,
@@ -435,7 +437,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class SAM
+    internal static class SAM
     {
         public const byte JobID = 34;
 
@@ -472,7 +474,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class SCH
+    internal static class SCH
     {
         public const byte JobID = 28;
 
@@ -493,7 +495,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class SMN
+    internal static class SMN
     {
         public const byte JobID = 27;
 
@@ -529,7 +531,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class WAR
+    internal static class WAR
     {
         public const byte JobID = 21;
 
@@ -556,7 +558,7 @@ namespace XIVComboExpandedPlugin
         }
     }
 
-    public static class WHM
+    internal static class WHM
     {
         public const byte JobID = 24;
 

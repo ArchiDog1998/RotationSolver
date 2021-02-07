@@ -2,75 +2,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
 using Dalamud.Game;
 using Dalamud.Game.Chat;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Structs.JobGauge;
 using Dalamud.Hooking;
-using Dalamud.Plugin;
 
 namespace XIVComboExpandedPlugin
 {
-    public class IconReplacer
+    internal class IconReplacer
     {
-        public delegate ulong OnCheckIsIconReplaceableDelegate(uint actionID);
-
-        public delegate ulong OnGetIconDelegate(byte param1, uint param2);
-
-        private IntPtr activeBuffArray = IntPtr.Zero;
-
-        private readonly IconReplacerAddressResolver Address;
-        private readonly Hook<OnCheckIsIconReplaceableDelegate> checkerHook;
-        private readonly ClientState clientState;
-
+        private readonly ClientState ClientState;
+        private readonly PluginAddressResolver Address;
         private readonly XIVComboExpandedConfiguration Configuration;
 
-        private readonly HashSet<uint> customIds = new HashSet<uint>();
+        private delegate ulong IsIconReplaceableDelegate(uint actionID);
+        private delegate ulong GetIconDelegate(byte param1, uint param2);
 
-        private readonly Hook<OnGetIconDelegate> iconHook;
+        private readonly Hook<IsIconReplaceableDelegate> IsIconReplaceableHook;
+        private readonly Hook<GetIconDelegate> GetIconHook;
 
-        private unsafe delegate int* getArray(long* address);
+        private readonly HashSet<uint> CustomIds = new HashSet<uint>();
 
-        private readonly CancellationTokenSource ShutdownSource = new CancellationTokenSource();
-
-        public IconReplacer(SigScanner scanner, ClientState clientState, XIVComboExpandedConfiguration configuration)
+        public IconReplacer(ClientState clientState, SigScanner scanner, XIVComboExpandedConfiguration configuration)
         {
+            ClientState = clientState;
             Configuration = configuration;
-            this.clientState = clientState;
 
-            Address = new IconReplacerAddressResolver();
+            Address = new PluginAddressResolver();
             Address.Setup(scanner);
 
             UpdateEnabledActionIDs();
 
-            PluginLog.Verbose("===== H O T B A R S =====");
-            PluginLog.Verbose($"IsIconReplaceable address {Address.IsIconReplaceable.ToInt64():X}");
-            PluginLog.Verbose($"GetIcon address {Address.GetIcon.ToInt64():X}");
-            PluginLog.Verbose($"ComboTimer address {Address.ComboTimer.ToInt64():X}");
-            PluginLog.Verbose($"LastComboMove address {Address.LastComboMove.ToInt64():X}");
+            GetIconHook = new Hook<GetIconDelegate>(Address.GetIcon, new GetIconDelegate(GetIconDetour), this);
+            IsIconReplaceableHook = new Hook<IsIconReplaceableDelegate>(Address.IsIconReplaceable, new IsIconReplaceableDelegate(IsIconReplaceableDetour), this);
 
-            iconHook = new Hook<OnGetIconDelegate>(Address.GetIcon,
-                new OnGetIconDelegate(GetIconDetour), this);
-
-            checkerHook = new Hook<OnCheckIsIconReplaceableDelegate>(Address.IsIconReplaceable,
-                new OnCheckIsIconReplaceableDelegate(IsIconReplaceableDetour), this);
-
-            Task.Run(() => BuffTask(ShutdownSource.Token));
+            GetIconHook.Enable();
+            IsIconReplaceableHook.Enable();
         }
 
-        public void Enable()
+        internal void Dispose()
         {
-            iconHook.Enable();
-            checkerHook.Enable();
-        }
-
-        public void Dispose()
-        {
-            ShutdownSource.Cancel();
-            iconHook.Dispose();
-            checkerHook.Dispose();
+            GetIconHook.Dispose();
+            IsIconReplaceableHook.Dispose();
         }
 
         /// <summary>
@@ -82,12 +56,14 @@ namespace XIVComboExpandedPlugin
                 .GetValues(typeof(CustomComboPreset))
                 .Cast<CustomComboPreset>()
                 .Select(preset => preset.GetAttribute<CustomComboInfoAttribute>())
-                .OfType<CustomComboInfoAttribute>()  // filters null
+                .OfType<CustomComboInfoAttribute>()
                 .SelectMany(comboInfo => comboInfo.Abilities)
                 .ToHashSet();
-            customIds.Clear();
-            customIds.UnionWith(actionIDs);
+            CustomIds.Clear();
+            CustomIds.UnionWith(actionIDs);
         }
+
+        private T GetJobGauge<T>() => ClientState.JobGauges.Get<T>();
 
         private ulong IsIconReplaceableDetour(uint actionID) => 1;
 
@@ -102,21 +78,15 @@ namespace XIVComboExpandedPlugin
         /// </summary>
         private ulong GetIconDetour(byte self, uint actionID)
         {
-            if (clientState.LocalPlayer == null)
-                return iconHook.Original(self, actionID);
+            if (ClientState.LocalPlayer == null)
+                return GetIconHook.Original(self, actionID);
 
-            var job = clientState.LocalPlayer.ClassJob.Id;
+            if (!CustomIds.Contains(actionID))
+                return GetIconHook.Original(self, actionID);
 
-            if (!customIds.Contains(actionID))
-                return iconHook.Original(self, actionID);
-
-            if (activeBuffArray == IntPtr.Zero)
-                return iconHook.Original(self, actionID);
-
-            // Don't clutter the spaghetti any worse than it already is.
             var lastMove = Marshal.ReadInt32(Address.LastComboMove);
             var comboTime = Marshal.PtrToStructure<float>(Address.ComboTimer);
-            var level = clientState.LocalPlayer.Level;
+            var level = ClientState.LocalPlayer.Level;
 
             // ====================================================================================
             #region DRAGOON
@@ -142,7 +112,7 @@ namespace XIVComboExpandedPlugin
                 {
                     if (level >= DRG.Levels.Stardiver)
                     {
-                        var gauge = clientState.JobGauges.Get<DRGGauge>();
+                        var gauge = GetJobGauge<DRGGauge>();
                         if (gauge.BOTDState == BOTDState.LOTD)
                             return DRG.Stardiver;
                     }
@@ -270,6 +240,7 @@ namespace XIVComboExpandedPlugin
                         if (lastMove == PLD.RiotBlade && level >= PLD.Levels.GoringBlade)
                             return PLD.GoringBlade;
                     }
+
                     return PLD.FastBlade;
                 }
             }
@@ -564,7 +535,7 @@ namespace XIVComboExpandedPlugin
                                 return GNB.EyeGouge;
                         }
                     }
-                    var ammoComboState = clientState.JobGauges.Get<GNBGauge>().AmmoComboStepNumber;
+                    var ammoComboState = GetJobGauge<GNBGauge>().AmmoComboStepNumber;
                     switch (ammoComboState)
                     {
                         case 1:
@@ -587,7 +558,7 @@ namespace XIVComboExpandedPlugin
                         {
                             if (Configuration.IsEnabled(CustomComboPreset.GunbreakerFatedCircleFeature))
                             {
-                                var gauge = clientState.JobGauges.Get<GNBGauge>();
+                                var gauge = GetJobGauge<GNBGauge>();
                                 if (gauge.NumAmmo == 2 && level >= GNB.Levels.FatedCircle)
                                 {
                                     return GNB.FatedCircle;
@@ -638,7 +609,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == MCH.HeatBlast || actionID == MCH.AutoCrossbow)
                 {
-                    var gauge = clientState.JobGauges.Get<MCHGauge>();
+                    var gauge = GetJobGauge<MCHGauge>();
                     if (!gauge.IsOverheated() && level >= MCH.Levels.Hypercharge)
                         return MCH.Hypercharge;
                     if (level < MCH.Levels.AutoCrossbow)
@@ -651,7 +622,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == MCH.SpreadShot)
                 {
-                    if (clientState.JobGauges.Get<MCHGauge>().IsOverheated() && level >= MCH.Levels.AutoCrossbow)
+                    if (GetJobGauge<MCHGauge>().IsOverheated() && level >= MCH.Levels.AutoCrossbow)
                         return MCH.AutoCrossbow;
                 }
             }
@@ -661,7 +632,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == MCH.RookAutoturret || actionID == MCH.AutomatonQueen)
                 {
-                    if (clientState.JobGauges.Get<MCHGauge>().IsRobotActive())
+                    if (GetJobGauge<MCHGauge>().IsRobotActive())
                     {
                         if (level >= MCH.Levels.QueenOverdrive)
                             return MCH.QueenOverdrive;
@@ -680,7 +651,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == BLM.Enochian)
                 {
-                    var gauge = clientState.JobGauges.Get<BLMGauge>();
+                    var gauge = GetJobGauge<BLMGauge>();
                     if (gauge.IsEnoActive())
                     {
                         if (gauge.InUmbralIce() && level >= BLM.Levels.Blizzard4)
@@ -698,7 +669,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == BLM.Transpose)
                 {
-                    var gauge = clientState.JobGauges.Get<BLMGauge>();
+                    var gauge = GetJobGauge<BLMGauge>();
                     if (gauge.InUmbralIce() && gauge.IsEnoActive() && level >= BLM.Levels.UmbralSoul)
                         return BLM.UmbralSoul;
                     return BLM.Transpose;
@@ -725,7 +696,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == AST.Play)
                 {
-                    var gauge = clientState.JobGauges.Get<ASTGauge>();
+                    var gauge = GetJobGauge<ASTGauge>();
                     switch (gauge.DrawnCard())
                     {
                         case CardType.BALANCE:
@@ -756,45 +727,12 @@ namespace XIVComboExpandedPlugin
             // ====================================================================================
             #region SUMMONER
 
-            // DWT changes. 
-            // Now contains DWT, Deathflare, Summon Bahamut, Enkindle Bahamut, FBT, and Enkindle Phoenix.
-            // What a monster of a button.
-            /*
-            if (Configuration.IsEnabled(CustomComboPreset.SummonerDwtCombo))
-                if (actionID == 3581)
-                {
-                    var gauge = clientState.JobGauges.Get<SMNGauge>();
-                    if (gauge.TimerRemaining > 0)
-                    {
-                        if (gauge.ReturnSummon > 0)
-                        {
-                            if (gauge.IsPhoenixReady()) return 16516;
-                            return 7429;
-                        }
-
-                        if (level >= 60) return 3582;
-                    }
-                    else
-                    {
-                        if (gauge.IsBahamutReady()) return 7427;
-                        if (gauge.IsPhoenixReady())
-                        {
-                            if (level == 80) return 16549;
-                            return 16513;
-                        }
-
-                        return 3581;
-                    }
-                }
-            */
-
             if (Configuration.IsEnabled(CustomComboPreset.SummonerDemiCombo))
             {
-
                 // Replace Deathflare with demi enkindles
                 if (actionID == SMN.Deathflare)
                 {
-                    var gauge = clientState.JobGauges.Get<SMNGauge>();
+                    var gauge = GetJobGauge<SMNGauge>();
                     if (gauge.IsPhoenixReady())
                         return SMN.EnkindlePhoenix;
                     if (gauge.TimerRemaining > 0 && gauge.ReturnSummon != SummonPet.NONE)
@@ -805,7 +743,7 @@ namespace XIVComboExpandedPlugin
                 //Replace DWT with demi summons
                 if (actionID == SMN.DreadwyrmTrance)
                 {
-                    var gauge = clientState.JobGauges.Get<SMNGauge>();
+                    var gauge = GetJobGauge<SMNGauge>();
                     if (gauge.IsBahamutReady())
                         return SMN.SummonBahamut;
                     if (gauge.IsPhoenixReady() ||
@@ -824,7 +762,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == SMN.Ruin1 || actionID == SMN.Ruin3)
                 {
-                    var gauge = clientState.JobGauges.Get<SMNGauge>();
+                    var gauge = GetJobGauge<SMNGauge>();
                     if (gauge.TimerRemaining > 0)
                         if (gauge.IsPhoenixReady())
                         {
@@ -845,7 +783,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == SMN.Fester)
                 {
-                    if (!clientState.JobGauges.Get<SMNGauge>().HasAetherflowStacks())
+                    if (!GetJobGauge<SMNGauge>().HasAetherflowStacks())
                         return SMN.EnergyDrain;
                     return SMN.Fester;
                 }
@@ -856,7 +794,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == SMN.Painflare)
                 {
-                    if (!clientState.JobGauges.Get<SMNGauge>().HasAetherflowStacks())
+                    if (!GetJobGauge<SMNGauge>().HasAetherflowStacks())
                         return SMN.EnergySyphon;
                     if (level >= SMN.Levels.Painflare)
                         return SMN.Painflare;
@@ -873,7 +811,8 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == SCH.FeyBless)
                 {
-                    if (clientState.JobGauges.Get<SCHGauge>().SeraphTimer > 0) return SCH.Consolation;
+                    if (GetJobGauge<SCHGauge>().SeraphTimer > 0)
+                        return SCH.Consolation;
                     return SCH.FeyBless;
                 }
             }
@@ -883,7 +822,8 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == SCH.EnergyDrain)
                 {
-                    if (clientState.JobGauges.Get<SCHGauge>().NumAetherflowStacks == 0) return SCH.Aetherflow;
+                    if (GetJobGauge<SCHGauge>().NumAetherflowStacks == 0)
+                        return SCH.Aetherflow;
                     return SCH.EnergyDrain;
                 }
             }
@@ -891,30 +831,6 @@ namespace XIVComboExpandedPlugin
             #endregion
             // ====================================================================================
             #region DANCER
-
-            // AoE GCDs are split into two buttons, because priority matters
-            // differently in different single-target moments. Thanks yoship.
-            // Replaces each GCD with its procced version.
-            /*
-            if (Configuration.IsEnabled(CustomComboPreset.DancerAoeGcdFeature))
-            {
-                if (actionID == DNC.Bloodshower)
-                {
-                    UpdateBuffAddress();
-                    if (SearchBuffArray(DNC.Buffs.FlourishingShower))
-                        return DNC.Bloodshower;
-                    return DNC.Bladeshower;
-                }
-
-                if (actionID == DNC.RisingWindmill)
-                {
-                    UpdateBuffAddress();
-                    if (SearchBuffArray(DNC.Buffs.FlourishingWindmill))
-                        return DNC.RisingWindmill;
-                    return DNC.Windmill;
-                }
-            }
-            */
 
             // Fan Dance changes into Fan Dance 3 while flourishing.
             if (Configuration.IsEnabled(CustomComboPreset.DancerFanDanceCombo))
@@ -942,14 +858,14 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == DNC.StandardStep)
                 {
-                    var gauge = clientState.JobGauges.Get<DNCGauge>();
+                    var gauge = GetJobGauge<DNCGauge>();
                     if (gauge.IsDancing() && HasBuff(DNC.Buffs.StandardStep))
                         if (gauge.NumCompleteSteps < 2)
                             return gauge.NextStep();
                 }
                 if (actionID == DNC.TechnicalStep)
                 {
-                    var gauge = clientState.JobGauges.Get<DNCGauge>();
+                    var gauge = GetJobGauge<DNCGauge>();
                     if (gauge.IsDancing() && HasBuff(DNC.Buffs.TechnicalStep))
                         if (gauge.NumCompleteSteps < 4)
                             return gauge.NextStep();
@@ -1021,7 +937,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == WHM.AfflatusSolace)
                 {
-                    if (clientState.JobGauges.Get<WHMGauge>().NumBloodLily == 3)
+                    if (GetJobGauge<WHMGauge>().NumBloodLily == 3)
                         return WHM.AfflatusMisery;
                     return WHM.AfflatusSolace;
                 }
@@ -1032,7 +948,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == WHM.AfflatusRapture)
                 {
-                    if (clientState.JobGauges.Get<WHMGauge>().NumBloodLily == 3)
+                    if (GetJobGauge<WHMGauge>().NumBloodLily == 3)
                         return WHM.AfflatusMisery;
                     return WHM.AfflatusRapture;
                 }
@@ -1047,7 +963,7 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == BRD.WanderersMinuet)
                 {
-                    if (clientState.JobGauges.Get<BRDGauge>().ActiveSong == CurrentSong.WANDERER)
+                    if (GetJobGauge<BRDGauge>().ActiveSong == CurrentSong.WANDERER)
                         return BRD.PitchPerfect;
                     return BRD.WanderersMinuet;
                 }
@@ -1097,7 +1013,6 @@ namespace XIVComboExpandedPlugin
             // ====================================================================================
             #region RED MAGE
 
-            // Replace Veraero/thunder 2 with Impact when Dualcast is active
             if (Configuration.IsEnabled(CustomComboPreset.RedMageAoECombo))
             {
                 if (actionID == RDM.Veraero2)
@@ -1125,12 +1040,11 @@ namespace XIVComboExpandedPlugin
                 }
             }
 
-            // Replace Redoublement with Redoublement combo, Enchanted if possible.
             if (Configuration.IsEnabled(CustomComboPreset.RedMageMeleeCombo))
             {
                 if (actionID == RDM.Redoublement)
                 {
-                    var gauge = clientState.JobGauges.Get<RDMGauge>();
+                    var gauge = GetJobGauge<RDMGauge>();
                     if ((lastMove == RDM.Riposte || lastMove == RDM.EnchantedRiposte) && level >= RDM.Levels.Zwerchhau)
                     {
                         if (gauge.BlackGauge >= 25 && gauge.WhiteGauge >= 25)
@@ -1180,40 +1094,34 @@ namespace XIVComboExpandedPlugin
             #endregion
             // ====================================================================================
 
-            return iconHook.Original(self, actionID);
+            return GetIconHook.Original(self, actionID);
         }
 
-        private bool HasBuff(short needle)
+        #region BuffArray
+
+        private IntPtr ActiveBuffArray = IntPtr.Zero;
+        private unsafe delegate int* GetBuffArray(long* address);
+
+        private bool HasBuff(params short[] needle)
         {
-            if (activeBuffArray == IntPtr.Zero) return false;
+            if (ActiveBuffArray == IntPtr.Zero)
+                return false;
+
             for (var i = 0; i < 60; i++)
-                if (Marshal.ReadInt16(activeBuffArray + (12 * i)) == needle)
+                if (needle.Contains(Marshal.ReadInt16(ActiveBuffArray + (12 * i))))
                     return true;
             return false;
-        }
-
-        private async void BuffTask(CancellationToken shutdownToken)
-        {
-            try
-            {
-                while (!shutdownToken.IsCancellationRequested)
-                {
-                    UpdateBuffAddress();
-                    await Task.Delay(1000, shutdownToken);
-                }
-            }
-            catch (OperationCanceledException) { }
         }
 
         private void UpdateBuffAddress()
         {
             try
             {
-                activeBuffArray = FindBuffAddress();
+                ActiveBuffArray = FindBuffAddress();
             }
             catch (Exception)
             {
-                activeBuffArray = IntPtr.Zero;
+                ActiveBuffArray = IntPtr.Zero;
             }
         }
 
@@ -1222,8 +1130,10 @@ namespace XIVComboExpandedPlugin
             var num = Marshal.ReadIntPtr(Address.BuffVTableAddr);
             var step2 = (IntPtr)(Marshal.ReadInt64(num) + 0x280);
             var step3 = Marshal.ReadIntPtr(step2);
-            var callback = Marshal.GetDelegateForFunctionPointer<getArray>(step3);
+            var callback = Marshal.GetDelegateForFunctionPointer<GetBuffArray>(step3);
             return (IntPtr)callback((long*)num) + 8;
         }
+
+        #endregion
     }
 }

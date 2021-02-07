@@ -8,7 +8,7 @@
     <Copyright>Copyleft attick 2020 baybeeee</Copyright>
     <PackageProjectUrl>https://github.com/daemitus/XIVComboPlugin</PackageProjectUrl>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -20,9 +20,9 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -50,7 +50,7 @@
 
   <ItemGroup>
     <PackageReference Include="DalamudPackager" Version="1.2.0" />
-    <PackageReference Include="ILRepack" Version="2.0.18" GeneratePathProperty="true" />
+    <!--<PackageReference Include="ILRepack" Version="2.0.18" GeneratePathProperty="true" />-->
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
 
+  <!--
   <Target Name="ILRepack" AfterTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
     <ItemGroup>
       <InputAssemblies Include="$(TargetPath)" />
@@ -84,6 +85,7 @@
     <Message Text="Deleting @(DeleteAssemblies)" Importance="high"/>
     <Delete Files="@(DeleteAssemblies)" />
   </Target>
+  -->
 
   <Target Name="PackagePlugin" AfterTargets="CleanOutDir" Condition=" '$(Configuration)' == 'Release' ">
     <Message Text="Starting DalamudPackager" Importance="high"/>

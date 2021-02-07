@@ -186,11 +186,6 @@ namespace XIVComboExpandedPlugin
         // ====================================================================================
         #region DANCER
 
-        /*
-        [CustomComboInfo("AoE GCD procs", "DNC AoE procs turn into their normal abilities when not procced", DNC.JobID, DNC.Bloodshower, DNC.RisingWindmill)]
-        DancerAoeGcdFeature = 32,
-        */
-
         [CustomComboInfo("Fan Dance Combos", "Change Fan Dance and Fan Dance 2 into Fan Dance 3 while flourishing", DNC.JobID, DNC.FanDance1, DNC.FanDance2)]
         DancerFanDanceCombo = 33,
 
@@ -250,7 +245,7 @@ namespace XIVComboExpandedPlugin
         // ====================================================================================
     }
 
-    public class CustomComboInfoAttribute : Attribute
+    internal class CustomComboInfoAttribute : Attribute
     {
         internal CustomComboInfoAttribute(string fancyName, string description, byte jobID, params uint[] abilities)
         {
@@ -268,48 +263,48 @@ namespace XIVComboExpandedPlugin
 
         private static string JobIDToName(byte key)
         {
-            switch (key)
+            return key switch
             {
-                default: return "Unknown";
-                case 1: return "Gladiator";
-                case 2: return "Pugilist";
-                case 3: return "Marauder";
-                case 4: return "Lancer";
-                case 5: return "Archer";
-                case 6: return "Conjurer";
-                case 7: return "Thaumaturge";
-                case 8: return "Carpenter";
-                case 9: return "Blacksmith";
-                case 10: return "Armorer";
-                case 11: return "Goldsmith";
-                case 12: return "Leatherworker";
-                case 13: return "Weaver";
-                case 14: return "Alchemist";
-                case 15: return "Culinarian";
-                case 16: return "Miner";
-                case 17: return "Botanist";
-                case 18: return "Fisher";
-                case 19: return "Paladin";
-                case 20: return "Monk";
-                case 21: return "Warrior";
-                case 22: return "Dragoon";
-                case 23: return "Bard";
-                case 24: return "White Mage";
-                case 25: return "Black Mage";
-                case 26: return "Arcanist";
-                case 27: return "Summoner";
-                case 28: return "Scholar";
-                case 29: return "Rogue";
-                case 30: return "Ninja";
-                case 31: return "Machinist";
-                case 32: return "Dark Knight";
-                case 33: return "Astrologian";
-                case 34: return "Samurai";
-                case 35: return "Red Mage";
-                case 36: return "Blue Mage";
-                case 37: return "Gunbreaker";
-                case 38: return "Dancer";
-            }
+                1 => "Gladiator",
+                2 => "Pugilist",
+                3 => "Marauder",
+                4 => "Lancer",
+                5 => "Archer",
+                6 => "Conjurer",
+                7 => "Thaumaturge",
+                8 => "Carpenter",
+                9 => "Blacksmith",
+                10 => "Armorer",
+                11 => "Goldsmith",
+                12 => "Leatherworker",
+                13 => "Weaver",
+                14 => "Alchemist",
+                15 => "Culinarian",
+                16 => "Miner",
+                17 => "Botanist",
+                18 => "Fisher",
+                19 => "Paladin",
+                20 => "Monk",
+                21 => "Warrior",
+                22 => "Dragoon",
+                23 => "Bard",
+                24 => "White Mage",
+                25 => "Black Mage",
+                26 => "Arcanist",
+                27 => "Summoner",
+                28 => "Scholar",
+                29 => "Rogue",
+                30 => "Ninja",
+                31 => "Machinist",
+                32 => "Dark Knight",
+                33 => "Astrologian",
+                34 => "Samurai",
+                35 => "Red Mage",
+                36 => "Blue Mage",
+                37 => "Gunbreaker",
+                38 => "Dancer",
+                _ => "Unknown",
+            };
         }
     }
 }
