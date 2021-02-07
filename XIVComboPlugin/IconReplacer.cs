@@ -262,6 +262,14 @@ namespace XIVComboExpandedPlugin
                                 return PLD.RageOfHalone;
                         }
                     }
+
+                    if (Configuration.IsEnabled(CustomComboPreset.PaladinAtonementFeature))
+                    {
+                        UpdateBuffAddress();
+                        if (HasBuff(PLD.Buffs.SwordOath))
+                            return PLD.Atonement;
+                    }
+
                     return PLD.FastBlade;
                 }
             }

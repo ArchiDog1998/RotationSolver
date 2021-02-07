@@ -4,7 +4,7 @@ namespace XIVComboExpandedPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 58
+        // Last enum used: 59
         // ====================================================================================
         #region DRAGOON
 
@@ -45,6 +45,9 @@ namespace XIVComboExpandedPlugin
 
         [CustomComboInfo("Royal Authority Combo", "Replace Royal Authority/Rage of Halone with its combo chain", PLD.JobID, PLD.RoyalAuthority, PLD.RageOfHalone)]
         PaladinRoyalAuthorityCombo = 6,
+
+        [CustomComboInfo("Atonement Feature", "Replace Royal Authority with Atonement when under the effect of Sword Oath", PLD.JobID, PLD.RoyalAuthority)]
+        PaladinAtonementFeature = 59,
 
         [CustomComboInfo("Prominence Combo", "Replace Prominence with its combo chain", PLD.JobID, PLD.Prominence)]
         PaladinProminenceCombo = 7,

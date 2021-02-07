@@ -275,12 +275,14 @@ namespace XIVComboExpandedPlugin
             Prominence = 16457,
             TotalEclipse = 7381,
             Requiescat = 7383,
+            Atonement = 16460,
             Confiteor = 16459;
 
         public static class Buffs
         {
             public const short
-                Requiescat = 1368;
+                Requiescat = 1368,
+                SwordOath = 1902;
         }
 
         public static class Levels
@@ -291,6 +293,7 @@ namespace XIVComboExpandedPlugin
                 Prominence = 40,
                 GoringBlade = 54,
                 RoyalAuthority = 60,
+                Atonement = 76,
                 Confiteor = 80;
         }
     }
