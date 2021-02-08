@@ -116,6 +116,14 @@ namespace XIVComboExpandedPlugin
             // Dancing
             StandardStep = 15997,
             TechnicalStep = 15998,
+            StandardFinish0 = 16003,
+            StandardFinish1 = 16191,
+            StandardFinish2 = 16192,
+            TechnicalFinish0 = 16004,
+            TechnicalFinish1 = 16193,
+            TechnicalFinish2 = 16194,
+            TechnicalFinish3 = 16195,
+            TechnicalFinish4 = 16196,
             // Fans
             FanDance1 = 16007,
             FanDance2 = 16008,

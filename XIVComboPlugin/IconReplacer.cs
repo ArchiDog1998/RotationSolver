@@ -866,17 +866,23 @@ namespace XIVComboExpandedPlugin
             {
                 if (actionID == DNC.StandardStep)
                 {
+                    UpdateBuffAddress();
                     var gauge = GetJobGauge<DNCGauge>();
                     if (gauge.IsDancing() && HasBuff(DNC.Buffs.StandardStep))
                         if (gauge.NumCompleteSteps < 2)
                             return gauge.NextStep();
+                        else
+                            return DNC.StandardFinish2;
                 }
                 if (actionID == DNC.TechnicalStep)
                 {
+                    UpdateBuffAddress();
                     var gauge = GetJobGauge<DNCGauge>();
                     if (gauge.IsDancing() && HasBuff(DNC.Buffs.TechnicalStep))
                         if (gauge.NumCompleteSteps < 4)
                             return gauge.NextStep();
+                        else
+                            return DNC.TechnicalFinish4;
                 }
             }
 
