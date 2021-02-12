@@ -286,6 +286,8 @@ namespace XIVComboExpandedestPlugin
             Prominence = 16457,
             TotalEclipse = 7381,
             Requiescat = 7383,
+            HolySpirit = 7384,
+            HolyCircle = 16458,
             Atonement = 16460,
             Confiteor = 16459;
 
@@ -304,6 +306,7 @@ namespace XIVComboExpandedestPlugin
                 Prominence = 40,
                 GoringBlade = 54,
                 RoyalAuthority = 60,
+                HolyCircle = 72,
                 Atonement = 76,
                 Confiteor = 80;
         }

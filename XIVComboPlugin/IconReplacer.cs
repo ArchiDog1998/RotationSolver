@@ -87,6 +87,7 @@ namespace XIVComboExpandedestPlugin
             var lastMove = Marshal.ReadInt32(Address.LastComboMove);
             var comboTime = Marshal.PtrToStructure<float>(Address.ComboTimer);
             var level = ClientState.LocalPlayer.Level;
+            var mp = ClientState.LocalPlayer.CurrentMp;
 
             // ====================================================================================
             #region DRAGOON
@@ -250,6 +251,18 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == PLD.RoyalAuthority || actionID == PLD.RageOfHalone)
                 {
+                    if (Configuration.IsEnabled(CustomComboPreset.PaladinRequiescatFeature))
+                    {
+                        //Replace with Holy Spirit when Requiescat is up
+                        if (HasBuff(PLD.Buffs.Requiescat))
+                        {
+                            //Replace with Confiteor when under 4000 MP
+                            if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature) && level >= PLD.Levels.Confiteor && mp < 4000)
+                                return PLD.Confiteor;
+                            return PLD.HolySpirit;
+                        }
+                    }
+                
                     if (comboTime > 0)
                     {
                         if (lastMove == PLD.FastBlade && level >= PLD.Levels.RiotBlade)
@@ -274,16 +287,47 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+
+
             // Replace Prominence with Prominence combo
             if (Configuration.IsEnabled(CustomComboPreset.PaladinProminenceCombo))
             {
                 if (actionID == PLD.Prominence)
                 {
+                    if (Configuration.IsEnabled(CustomComboPreset.PaladinRequiescatFeature))
+                    {
+                        //Replace with Holy Circle when Requiescat is up
+                        if (HasBuff(PLD.Buffs.Requiescat) && level >= PLD.Levels.HolyCircle)
+                        {
+                            //Replace with Confiteor when under 4000 MP
+                            if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature) && level >= PLD.Levels.Confiteor && mp < 4000)
+                                return PLD.Confiteor;
+                            return PLD.HolyCircle;
+                        }
+                    }
+                
                     if (comboTime > 0)
                         if (lastMove == PLD.TotalEclipse && level >= PLD.Levels.Prominence)
                             return PLD.Prominence;
 
                     return PLD.TotalEclipse;
+                }
+            }
+
+            // Replace Holy Spirit/Circle with Requiescat if under 4000 MP
+            if (Configuration.IsEnabled(CustomComboPreset.PaladinRequiescatFeature))
+            {
+                if (actionID == PLD.HolySpirit)
+                {
+                    if (HasBuff(PLD.Buffs.Requiescat) && level >= PLD.Levels.Confiteor && mp < 4000)
+                        return PLD.Confiteor;
+                    return PLD.HolySpirit;
+                }
+                if (actionID == PLD.HolyCircle)
+                {
+                    if (HasBuff(PLD.Buffs.Requiescat) && level >= PLD.Levels.Confiteor && mp < 4000)
+                        return PLD.Confiteor;
+                    return PLD.HolyCircle;
                 }
             }
 
