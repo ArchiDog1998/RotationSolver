@@ -946,29 +946,21 @@ namespace XIVComboExpandedestPlugin
             // ====================================================================================
             #region WHITE MAGE
 
-            // Replace Cure 2 with Cure 1 if below level 30
-            if (Configuration.IsEnabled(CustomComboPreset.WhiteMageCureFeature))
-            {
-                if (actionID == WHM.Cure2)
-                {
-                    if (level < (WHM.Levels.Cure2))
-                        return WHM.Cure;
-                    return WHM.Cure2;
-                }
-            }
-
             // Replace Cure 2/Medica with Afflatus Solace/Rapture if applicable and lilies are up.
-            if (Configuration.IsEnabled(CustomComboPreset.WhiteMageCureFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.WhiteMageAfflatusFeature))
             {
                 if (actionID == WHM.Cure2)
                 {
+                    // Replace Cure 2 with Cure 1 if below level 30
+                    if (level < (WHM.Levels.Cure2) && Configuration.IsEnabled(CustomComboPreset.WhiteMageCureFeature))
+                        return WHM.Cure;
                     if (GetJobGauge<WHMGauge>().NumLilies > 0)
                         return WHM.AfflatusSolace;
                     return WHM.Cure2;
                 }
                 if (actionID == WHM.Medica)
                 {
-                    if (level > WHM.Levels.AfflatusRapture)
+                    if (level >= WHM.Levels.AfflatusRapture)
                         if (GetJobGauge<WHMGauge>().NumLilies > 0)
                             return WHM.AfflatusRapture;
                     return WHM.Medica;
