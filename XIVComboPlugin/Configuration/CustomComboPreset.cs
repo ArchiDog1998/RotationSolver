@@ -80,7 +80,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate gauge", WAR.JobID, WAR.MythrilTempest, WAR.StormsEye, WAR.StormsPath)]
         WarriorGaugeOvercapFeature = 67,
 
-        [CustomComboInfo("Infuriate Gauge Overcap Feature", "Make Infuriate Decimate if Infuriate would overcap you", WAR.JobID, WAR.Infuriate)]
+        [CustomComboInfo("Infuriate Gauge Overcap Feature", "Make Infuriate Fell Cleave if Infuriate would overcap you", WAR.JobID, WAR.Infuriate)]
         WarriorInfuriateOvercapFeature = 68,
 
         [CustomComboInfo("Inner Release Feature", "Replace Single-target and AoE combo with Fell Cleave/Decimate during Inner Release to prevent wasted GCDs", WAR.JobID, WAR.MythrilTempest, WAR.StormsPath)]
