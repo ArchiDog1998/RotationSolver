@@ -1,10 +1,10 @@
 using System;
 
-namespace XIVComboExpandedPlugin
+namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 59
+        // Last enum used: 60
         // ====================================================================================
         #region DRAGOON
 
@@ -213,6 +213,9 @@ namespace XIVComboExpandedPlugin
 
         [CustomComboInfo("Rapture into Misery", "Replaces Afflatus Rapture with Afflatus Misery when Misery is ready to be used", WHM.JobID, WHM.AfflatusRapture)]
         WhiteMageRaptureMiseryFeature = 36,
+
+        [CustomComboInfo("Cure 2 to Cure Level Sync", "Changes Cure 2 to Cure when below level 30 in synced content.", WHM.JobID, WHM.Cure, WHM.Cure2)]
+        WhiteMageCureFeature = 60,
 
         #endregion
         // ====================================================================================

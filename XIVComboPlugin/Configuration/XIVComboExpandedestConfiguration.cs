@@ -4,10 +4,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace XIVComboExpandedPlugin
+namespace XIVComboExpandedestPlugin
 {
     [Serializable]
-    public class XIVComboExpandedConfiguration : IPluginConfiguration
+    public class XIVComboExpandedestConfiguration : IPluginConfiguration
     {
         public int Version { get; set; } = 4;
 

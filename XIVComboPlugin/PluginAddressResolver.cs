@@ -3,7 +3,7 @@ using Dalamud.Game.Internal;
 using Dalamud.Plugin;
 using System;
 
-namespace XIVComboExpandedPlugin
+namespace XIVComboExpandedestPlugin
 {
     internal class PluginAddressResolver : BaseAddressResolver
     {

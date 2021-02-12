@@ -1,4 +1,4 @@
-namespace XIVComboExpandedPlugin
+namespace XIVComboExpandedestPlugin
 {
     internal static class AST
     {
@@ -576,7 +576,9 @@ namespace XIVComboExpandedPlugin
         public const uint
             AfflatusSolace = 16531,
             AfflatusRapture = 16534,
-            AfflatusMisery = 16535;
+            AfflatusMisery = 16535,
+            Cure2 = 8896,
+            Cure = 8895;
 
         public static class Buffs
         {
@@ -585,7 +587,8 @@ namespace XIVComboExpandedPlugin
 
         public static class Levels
         {
-            // public const byte placeholder = 0;
+            public const byte
+                Cure2 = 30;
         }
     }
 }
