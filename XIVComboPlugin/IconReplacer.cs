@@ -1012,7 +1012,7 @@ namespace XIVComboExpandedestPlugin
                 }
                 if (actionID == WHM.Medica)
                 {
-                    if (Configuration.IsEnabled(CustomComboPreset.WhiteMageSolaceMiseryFeature) && GetJobGauge<WHMGauge>().NumBloodLily == 3)
+                    if (Configuration.IsEnabled(CustomComboPreset.WhiteMageRaptureMiseryFeature) && GetJobGauge<WHMGauge>().NumBloodLily == 3)
                         return WHM.AfflatusMisery;
                     if (level >= WHM.Levels.AfflatusRapture)
                         if (GetJobGauge<WHMGauge>().NumLilies > 0)
