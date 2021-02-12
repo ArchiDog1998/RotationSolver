@@ -957,6 +957,24 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            // Replace Cure 2/Medica with Afflatus Solace/Rapture if applicable and lilies are up.
+            if (Configuration.IsEnabled(CustomComboPreset.WhiteMageCureFeature))
+            {
+                if (actionID == WHM.Cure2)
+                {
+                    if (GetJobGauge<WHMGauge>().NumLilies > 0)
+                        return WHM.AfflatusSolace;
+                    return WHM.Cure2;
+                }
+                if (actionID == WHM.Medica)
+                {
+                    if (level > WHM.Levels.AfflatusRapture)
+                        if (GetJobGauge<WHMGauge>().NumLilies > 0)
+                            return WHM.AfflatusRapture;
+                    return WHM.Medica;
+                }
+            }
+
             // Replace Solace with Misery when full blood lily
             if (Configuration.IsEnabled(CustomComboPreset.WhiteMageSolaceMiseryFeature))
             {

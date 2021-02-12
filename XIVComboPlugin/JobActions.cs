@@ -578,7 +578,8 @@ namespace XIVComboExpandedestPlugin
             AfflatusRapture = 16534,
             AfflatusMisery = 16535,
             Cure2 = 135,
-            Cure = 120;
+            Cure = 120,
+            Medica = 124;
 
         public static class Buffs
         {
@@ -588,7 +589,8 @@ namespace XIVComboExpandedestPlugin
         public static class Levels
         {
             public const byte
-                Cure2 = 30;
+                Cure2 = 30,
+                AfflatusRapture = 76;
         }
     }
 }

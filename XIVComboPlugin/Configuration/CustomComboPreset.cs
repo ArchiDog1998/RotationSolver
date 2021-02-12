@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 60
+        // Last enum used: 61
         // ====================================================================================
         #region DRAGOON
 
@@ -216,6 +216,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Cure 2 to Cure Level Sync", "Changes Cure 2 to Cure when below level 30 in synced content.", WHM.JobID, WHM.Cure, WHM.Cure2)]
         WhiteMageCureFeature = 60,
+
+        [CustomComboInfo("Afflatus Feature", "Changes Cure 2 into Afflatus Solace, and Medica into Afflatus Rapture, when lilies are up.", WHM.JobID, WHM.AfflatusRapture, WHM.AfflatusSolace, WHM.Cure2)]
+        WhiteMageAfflatusFeature = 61,
 
         #endregion
         // ====================================================================================
