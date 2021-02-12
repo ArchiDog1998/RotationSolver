@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 64
+        // Last enum used: 66
         // ====================================================================================
         #region DRAGOON
 
@@ -245,6 +245,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Monk AoE Combo", "Replaces Rockbreaker with the AoE combo chain, or Rockbreaker when Perfect Balance is active", MNK.JobID, MNK.Rockbreaker)]
         MnkAoECombo = 54,
+
+        [CustomComboInfo("Monk Bootshine Feature", "Replaces Dragon Kick with Bootshine if both Opo-Opo Form (or equivalent) and Leaden Fist are up.", MNK.JobID, MNK.DragonKick)]
+        MnkBootshineFeature = 65,
 
         #endregion
         // ====================================================================================

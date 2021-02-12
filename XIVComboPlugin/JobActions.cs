@@ -358,6 +358,10 @@ namespace XIVComboExpandedestPlugin
         public const byte JobID = 20;
 
         public const uint
+            Bootshine = 53,
+            DragonKick = 74,
+            SnapPunch = 56,
+            Demolish = 66,
             ArmOfTheDestroyer = 62,
             FourPointFury = 16473,
             Rockbreaker = 70;
@@ -369,14 +373,23 @@ namespace XIVComboExpandedestPlugin
                 RaptorForm = 108,
                 CoerlForm = 109,
                 PerfectBalance = 110,
+                LeadenFist = 1861,
                 FormlessFist = 2513;
+        }
+        
+        public static class Debuffs
+        {
+            public const short
+                Demolish = 246;
         }
 
         public static class Levels
         {
             public const byte
                 Rockbreaker = 30,
-                FourPointFury = 45;
+                Demolish = 30,
+                FourPointFury = 45,
+                DragonKick = 50;
         }
     }
 

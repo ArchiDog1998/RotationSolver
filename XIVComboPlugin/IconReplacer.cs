@@ -1098,6 +1098,19 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            if (Configuration.IsEnabled(CustomComboPreset.MnkBootshineFeature))
+            {
+                if (actionID == MNK.DragonKick)
+                {
+                    UpdateBuffAddress();
+                    if ((HasBuff(MNK.Buffs.FormlessFist) || HasBuff(MNK.Buffs.OpoOpoForm) || HasBuff(MNK.Buffs.PerfectBalance) || HasBuff(MNK.Buffs.RaptorForm) || HasBuff(MNK.Buffs.CoerlForm)) && HasBuff(MNK.Buffs.LeadenFist))
+                        return MNK.Bootshine;
+                    if (level < MNK.Levels.DragonKick)
+                        return MNK.Bootshine;
+                    return MNK.DragonKick;
+                }
+            }
+
             #endregion
             // ====================================================================================
             #region RED MAGE
