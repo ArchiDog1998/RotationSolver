@@ -11,10 +11,14 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Royal Authority combo and Prominence combo become Holy Spirit/Circle when Requiescat is up
 * Holy Spirit/Circle become Confiteor when MP is lower than 4000 and Requiescat is up
 * Dragon Kick becomes Bootshine while a form is up and Leaden Fist is up.
+* Overcap prevention on GNB now extends to single-target combo and has also been added to WAR/DRK.
+* A second overcap prevention has been added for Infuriate/Bloodfest.
+* No Mercy will turn into Sonic Break while buff is active.
+* Single-target combo and AoE combo on WAR will be replaced by Fell Cleave/Decimate during Inner Release to prevent wasting GCDs.
 
 ## About
 XIVCombo is a plugin to allow for "one-button" combo chains, as well as implementing various other mutually-exclusive button consolidation and quality of life replacements. Some examples of the functionality it provides:
-* Most weaponskill combos are put onto a single button (sorry MNK!).
+* Most weaponskill combos are put onto a single button (sorry MNK... kinda!).
 * Enochian changes into Fire 4 and Blizzard 4 depending on your stacks, a la PvP Enochian.
 * Hypercharge turns into Heat Blast while Overheated.
 * Jump/High Jump turns into Mirage Dive while Dive Ready.

@@ -199,10 +199,15 @@ namespace XIVComboExpandedestPlugin
 
                     if (comboTime > 0)
                     {
+                        var gauge = GetJobGauge<DRKGauge>().Blood;
                         if (lastMove == DRK.HardSlash && level >= DRK.Levels.SyphonStrike)
                             return DRK.SyphonStrike;
                         if (lastMove == DRK.SyphonStrike && level >= DRK.Levels.Souleater)
+                        {
+                            if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature))
+                                return DRK.Bloodspiller;
                             return DRK.Souleater;
+                        }
                     }
                     return DRK.HardSlash;
                 }
@@ -219,7 +224,12 @@ namespace XIVComboExpandedestPlugin
 
                     if (comboTime > 0)
                         if (lastMove == DRK.Unleash && level >= DRK.Levels.StalwartSoul)
+                        {
+                            var gauge = GetJobGauge<DRKGauge>().Blood;
+                            if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature))
+                                return DRK.Quietus;
                             return DRK.StalwartSoul;
+                        }
 
                     return DRK.Unleash;
                 }
@@ -262,7 +272,7 @@ namespace XIVComboExpandedestPlugin
                             return PLD.HolySpirit;
                         }
                     }
-                
+
                     if (comboTime > 0)
                     {
                         if (lastMove == PLD.FastBlade && level >= PLD.Levels.RiotBlade)
@@ -305,7 +315,7 @@ namespace XIVComboExpandedestPlugin
                             return PLD.HolyCircle;
                         }
                     }
-                
+
                     if (comboTime > 0)
                         if (lastMove == PLD.TotalEclipse && level >= PLD.Levels.Prominence)
                             return PLD.Prominence;
@@ -346,17 +356,56 @@ namespace XIVComboExpandedestPlugin
             // ====================================================================================
             #region WARRIOR
 
+            // Replace Infuriate with Fell Cleave if >= 60 Beast Gauge
+            if (Configuration.IsEnabled(CustomComboPreset.WarriorInfuriateOvercapFeature))
+            { 
+                if (actionID == WAR.Infuriate)
+                {
+                    var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
+                    if (gauge >= 60)
+                    {
+                        if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
+                            return WAR.InnerChaos;
+                        return WAR.FellCleave;
+                    }
+                    return WAR.Infuriate;
+                }
+            }
+
             // Replace Storm's Path with Storm's Path combo
             if (Configuration.IsEnabled(CustomComboPreset.WarriorStormsPathCombo))
             {
                 if (actionID == WAR.StormsPath)
                 {
+                    if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
+                    {
+                        if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
+                            return WAR.InnerChaos;
+                        return WAR.FellCleave;
+                    }
                     if (comboTime > 0)
                     {
+                        var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
                         if (lastMove == WAR.HeavySwing && level >= WAR.Levels.Maim)
+                        {
+                            if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
+                            {
+                                if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
+                                    return WAR.InnerChaos;
+                                return WAR.FellCleave;
+                            }
                             return WAR.Maim;
+                        }
                         if (lastMove == WAR.Maim && level >= WAR.Levels.StormsPath)
+                        {
+                            if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
+                            {
+                                if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
+                                    return WAR.InnerChaos;
+                                return WAR.FellCleave;
+                            }
                             return WAR.StormsPath;
+                        }
                     }
                     return WAR.HeavySwing;
                 }
@@ -367,12 +416,36 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == WAR.StormsEye)
                 {
+                    if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
+                    {
+                        if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
+                            return WAR.InnerChaos;
+                        return WAR.FellCleave;
+                    }
+                
                     if (comboTime > 0)
                     {
+                        var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
                         if (lastMove == WAR.HeavySwing && level >= WAR.Levels.Maim)
+                        {
+                            if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
+                            {
+                                if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
+                                    return WAR.InnerChaos;
+                                return WAR.FellCleave;
+                            }
                             return WAR.Maim;
+                        }
                         if (lastMove == WAR.Maim && level >= WAR.Levels.StormsEye)
+                        {
+                            if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
+                            {
+                                if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
+                                    return WAR.InnerChaos;
+                                return WAR.FellCleave;
+                            }
                             return WAR.StormsEye;
+                        }
                     }
                     return WAR.HeavySwing;
                 }
@@ -383,9 +456,24 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == WAR.MythrilTempest)
                 {
+                    if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
+                    {
+                        if (HasBuff(WAR.Buffs.NascentChaos))
+                            return WAR.ChaoticCyclone;
+                        return WAR.Decimate;
+                    }
+                    var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
                     if (comboTime > 0)
                         if (lastMove == WAR.Overpower && level >= WAR.Levels.MythrilTempest)
+                        {
+                            if (gauge >= 90 && level >= WAR.Levels.MythrilTempestTrait && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
+                            {
+                                if (HasBuff(WAR.Buffs.NascentChaos))
+                                    return WAR.ChaoticCyclone;
+                                return WAR.Decimate;
+                            }
                             return WAR.MythrilTempest;
+                        }
                     return WAR.Overpower;
                 }
             }
@@ -483,9 +571,22 @@ namespace XIVComboExpandedestPlugin
                 if (actionID == SAM.Seigan)
                 {
                     UpdateBuffAddress();
+                    if (HasBuff(SAM.Buffs.MeikyoShisui) && Configuration.IsEnabled(CustomComboPreset.SamuraiJinpuShifuFeature))
+                        return SAM.Jinpu;
                     if (HasBuff(SAM.Buffs.EyesOpen))
                         return SAM.Seigan;
                     return SAM.ThirdEye;
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiJinpuShifuFeature))
+            {
+                if (actionID == SAM.Meditate)
+                {
+                    UpdateBuffAddress();
+                    if (HasBuff(SAM.Buffs.MeikyoShisui) && Configuration.IsEnabled(CustomComboPreset.SamuraiJinpuShifuFeature))
+                        return SAM.Shifu;
+                    return SAM.Meditate;
                 }
             }
 
@@ -553,6 +654,15 @@ namespace XIVComboExpandedestPlugin
             // ====================================================================================
             #region GUNBREAKER
 
+            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerBloodfestOvercapFeature))
+            {
+                if (actionID == GNB.Bloodfest)
+                {
+                    if (GetJobGauge<GNBGauge>().NumAmmo == 2)
+                        return GNB.BurstStrike;
+                    return GNB.Bloodfest;
+                }
+            }
             // Replace Solid Barrel with Solid Barrel combo
             if (Configuration.IsEnabled(CustomComboPreset.GunbreakerSolidBarrelCombo))
             {
@@ -563,12 +673,26 @@ namespace XIVComboExpandedestPlugin
                         if (lastMove == GNB.KeenEdge && level >= GNB.Levels.BrutalShell)
                             return GNB.BrutalShell;
                         if (lastMove == GNB.BrutalShell && level >= GNB.Levels.SolidBarrel)
+                        {
+                            if (GetJobGauge<GNBGauge>().NumAmmo == 2)
+                                return GNB.BurstStrike;
                             return GNB.SolidBarrel;
+                        }
                     }
                     return GNB.KeenEdge;
                 }
             }
+            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerSonicBreakFeature))
+            {
+                if (actionID == GNB.NoMercy)
+                {
+                    UpdateBuffAddress();
+                    if (HasBuff(GNB.Buffs.NoMercy) && level >= GNB.Levels.SonicBreak)
+                        return GNB.SonicBreak;
 
+                    return GNB.NoMercy;
+                }
+            }
             // Replace Wicked Talon with Gnashing Fang combo
             if (Configuration.IsEnabled(CustomComboPreset.GunbreakerGnashingFangCombo))
             {
@@ -608,7 +732,7 @@ namespace XIVComboExpandedestPlugin
                     if (comboTime > 0)
                         if (lastMove == GNB.DemonSlice && level >= GNB.Levels.DemonSlaughter)
                         {
-                            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerFatedCircleFeature))
+                            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerGaugeOvercapFeature))
                             {
                                 var gauge = GetJobGauge<GNBGauge>();
                                 if (gauge.NumAmmo == 2 && level >= GNB.Levels.FatedCircle)

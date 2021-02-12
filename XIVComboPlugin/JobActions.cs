@@ -240,7 +240,11 @@ namespace XIVComboExpandedestPlugin
         public const byte JobID = 37;
 
         public const uint
+            NoMercy = 16138,
+            Bloodfest = 16164,
             SolidBarrel = 16145,
+            BurstStrike = 16162,
+            SonicBreak = 16153,
             KeenEdge = 16137,
             BrutalShell = 16139,
             WickedTalon = 16150,
@@ -257,6 +261,7 @@ namespace XIVComboExpandedestPlugin
         public static class Buffs
         {
             public const short
+                NoMercy = 1831,
                 ReadyToRip = 1842,
                 ReadyToTear = 1843,
                 ReadyToGouge = 1844;
@@ -268,6 +273,7 @@ namespace XIVComboExpandedestPlugin
                 BrutalShell = 4,
                 SolidBarrel = 26,
                 DemonSlaughter = 40,
+                SonicBreak = 54,
                 Continuation = 70,
                 FatedCircle = 72;
         }
@@ -482,7 +488,8 @@ namespace XIVComboExpandedestPlugin
             Fuga = 7483,
             Oka = 7485,
             Seigan = 7501,
-            ThirdEye = 7498;
+            ThirdEye = 7498,
+            Meditate = 7497;
 
         public static class Buffs
         {
@@ -568,14 +575,22 @@ namespace XIVComboExpandedestPlugin
         public const uint
             StormsPath = 42,
             HeavySwing = 31,
+            Infuriate = 52,
             Maim = 37,
             StormsEye = 45,
             MythrilTempest = 16462,
-            Overpower = 41;
+            Overpower = 41,
+            FellCleave = 3549,
+            Decimate = 3550,
+            InnerBeast = 49,
+            InnerChaos = 16465,
+            ChaoticCyclone = 16463;
 
         public static class Buffs
         {
-            // public const short placeholder = 0;
+            public const short 
+                InnerRelease = 1177,
+                NascentChaos = 1897;
         }
 
         public static class Levels
@@ -584,7 +599,9 @@ namespace XIVComboExpandedestPlugin
                 Maim = 4,
                 StormsPath = 26,
                 MythrilTempest = 40,
-                StormsEye = 50;
+                StormsEye = 50,
+                MythrilTempestTrait = 74,
+                InnerChaos = 80;
         }
     }
 

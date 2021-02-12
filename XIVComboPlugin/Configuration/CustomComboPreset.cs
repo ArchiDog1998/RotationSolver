@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 66
+        // Last enum used: 72
         // ====================================================================================
         #region DRAGOON
 
@@ -35,6 +35,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Delirium Feature", "Replace Souleater and Stalwart Soul with Bloodspiller and Quietus when Delirium is active", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
         DeliriumFeature = 57,
+        
+        [CustomComboInfo("Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate gauge", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
+        DRKOvercapFeature = 71,
 
         #endregion
         // ====================================================================================
@@ -74,6 +77,15 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Mythril Tempest Combo", "Replace Mythril Tempest with its combo chain", WAR.JobID, WAR.MythrilTempest)]
         WarriorMythrilTempestCombo = 10,
 
+        [CustomComboInfo("Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate gauge", WAR.JobID, WAR.MythrilTempest, WAR.StormsEye, WAR.StormsPath)]
+        WarriorGaugeOvercapFeature = 67,
+
+        [CustomComboInfo("Infuriate Gauge Overcap Feature", "Make Infuriate Decimate if Infuriate would overcap you", WAR.JobID, WAR.Infuriate)]
+        WarriorInfuriateOvercapFeature = 68,
+
+        [CustomComboInfo("Inner Release Feature", "Replace Single-target and AoE combo with Fell Cleave/Decimate during Inner Release to prevent wasted GCDs", WAR.JobID, WAR.MythrilTempest, WAR.StormsPath)]
+        WarriorInnerReleaseFeature = 69,
+
         #endregion
         // ====================================================================================
         #region SAMURAI
@@ -95,6 +107,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Seigan to Third Eye", "Replace Seigan with Third Eye when not procced", SAM.JobID, SAM.Seigan)]
         SamuraiThirdEyeFeature = 51,
+
+        [CustomComboInfo("Jinpu/Shifu Feature", "Replace Seigan and Meditate with Jinpu/Shifu respectively during Meikyo", SAM.JobID, SAM.Seigan, SAM.Medit)]
+        SamuraiJinpuShifuFeature = 72,
 
         #endregion
         // ====================================================================================
@@ -127,8 +142,14 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Demon Slaughter Combo", "Replace Demon Slaughter with its combo chain", GNB.JobID, GNB.DemonSlaughter)]
         GunbreakerDemonSlaughterCombo = 22,
 
-        [CustomComboInfo("Fated Circle Feature", "In addition to the Demon Slaughter combo, add Fated Circle when charges are full", GNB.JobID, GNB.DemonSlaughter)]
-        GunbreakerFatedCircleFeature = 30,
+        [CustomComboInfo("Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate gauge", GNB.JobID, GNB.DemonSlaughter, GNB.SolidBarrel)]
+        GunbreakerGaugeOvercapFeature = 30,
+
+        [CustomComboInfo("Bloodfest Gauge Overcap Feature", "Replace Bloodfest with Burst Strike if it would cause you to overcap.", GNB.JobID, GNB.Bloodfest)]
+        GunbreakerBloodfestOvercapFeature = 70,
+
+        [CustomComboInfo("Sonic Break Feature", "Replace No Mercy with Sonic Break while No Mercy is active.", GNB.JobID, GNB.NoMercy)]
+        GunbreakerSonicBreakFeature = 66,
 
         #endregion
         // ====================================================================================
