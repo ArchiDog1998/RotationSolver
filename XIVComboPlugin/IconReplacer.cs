@@ -951,6 +951,8 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == WHM.Cure2)
                 {
+                    if (Configuration.IsEnabled(CustomComboPreset.WhiteMageSolaceMiseryFeature) && GetJobGauge<WHMGauge>().NumBloodLily == 3)
+                        return WHM.AfflatusMisery;
                     // Replace Cure 2 with Cure 1 if below level 30
                     if (level < (WHM.Levels.Cure2) && Configuration.IsEnabled(CustomComboPreset.WhiteMageCureFeature))
                         return WHM.Cure;
@@ -960,6 +962,8 @@ namespace XIVComboExpandedestPlugin
                 }
                 if (actionID == WHM.Medica)
                 {
+                    if (Configuration.IsEnabled(CustomComboPreset.WhiteMageSolaceMiseryFeature) && GetJobGauge<WHMGauge>().NumBloodLily == 3)
+                        return WHM.AfflatusMisery;
                     if (level >= WHM.Levels.AfflatusRapture)
                         if (GetJobGauge<WHMGauge>().NumLilies > 0)
                             return WHM.AfflatusRapture;
