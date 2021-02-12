@@ -108,7 +108,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Seigan to Third Eye", "Replace Seigan with Third Eye when not procced", SAM.JobID, SAM.Seigan)]
         SamuraiThirdEyeFeature = 51,
 
-        [CustomComboInfo("Jinpu/Shifu Feature", "Replace Seigan and Meditate with Jinpu/Shifu respectively during Meikyo", SAM.JobID, SAM.Seigan, SAM.Medit)]
+        [CustomComboInfo("Jinpu/Shifu Feature", "Replace Seigan and Meditate with Jinpu/Shifu respectively during Meikyo", SAM.JobID, SAM.Seigan, SAM.Meditate)]
         SamuraiJinpuShifuFeature = 72,
 
         #endregion
@@ -267,7 +267,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Monk AoE Combo", "Replaces Rockbreaker with the AoE combo chain, or Rockbreaker when Perfect Balance is active", MNK.JobID, MNK.Rockbreaker)]
         MnkAoECombo = 54,
 
-        [CustomComboInfo("Monk Bootshine Feature", "Replaces Dragon Kick with Bootshine if both Opo-Opo Form (or equivalent) and Leaden Fist are up.", MNK.JobID, MNK.DragonKick)]
+        [CustomComboInfo("Monk Bootshine Feature", "Replaces Dragon Kick with Bootshine if both a form and Leaden Fist are up.", MNK.JobID, MNK.DragonKick)]
         MnkBootshineFeature = 65,
 
         #endregion
