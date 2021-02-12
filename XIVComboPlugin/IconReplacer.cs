@@ -946,6 +946,17 @@ namespace XIVComboExpandedestPlugin
             // ====================================================================================
             #region WHITE MAGE
 
+            // Replace Cure 2 with Cure 1 if below level 30
+            if (Configuration.IsEnabled(CustomComboPreset.WhiteMageCureFeature))
+            {
+                if (actionID == WHM.Cure2)
+                {
+                    if (level < (WHM.Levels.Cure2))
+                        return WHM.Cure;
+                    return WHM.Cure2;
+                }
+            }
+
             // Replace Solace with Misery when full blood lily
             if (Configuration.IsEnabled(CustomComboPreset.WhiteMageSolaceMiseryFeature))
             {
