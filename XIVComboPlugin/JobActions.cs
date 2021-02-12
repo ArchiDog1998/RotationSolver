@@ -577,8 +577,8 @@ namespace XIVComboExpandedestPlugin
             AfflatusSolace = 16531,
             AfflatusRapture = 16534,
             AfflatusMisery = 16535,
-            Cure2 = 8896,
-            Cure = 8895;
+            Cure2 = 135,
+            Cure = 120;
 
         public static class Buffs
         {

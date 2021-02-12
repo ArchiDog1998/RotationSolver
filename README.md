@@ -3,7 +3,7 @@ This is an expanded version of Daemitus's XIVCombo Expanded for personal use, th
 
 ## Additions added
 
-* None yet!
+* Cure 2 becomes Cure 1 when synced below level 30
 
 ## About
 XIVCombo is a plugin to allow for "one-button" combo chains, as well as implementing various other mutually-exclusive button consolidation and quality of life replacements. Some examples of the functionality it provides:
