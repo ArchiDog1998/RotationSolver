@@ -731,6 +731,12 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            if (Configuration.IsEnabled(CustomComboPreset.AstrologianBeneficFeature) && actionID == AST.Benefic2)
+            {
+                if (level < (AST.Levels.Benefic2))
+                    return AST.Benefic;
+                return AST.Benefic2;
+            }
             #endregion
             // ====================================================================================
             #region SUMMONER

@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 61
+        // Last enum used: 62
         // ====================================================================================
         #region DRAGOON
 
@@ -159,6 +159,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Draw on Play", "Play turns into Draw when no card is drawn, as well as the usual Play behavior", AST.JobID, AST.Play)]
         AstrologianCardsOnDrawFeature = 27,
+
+        [CustomComboInfo("Benefic 2 to Benefic Level Sync", "Changes Benefic 2 to Benefic when below level 26 in synced content.", AST.JobID, AST.Benefic2)]
+        AstrologianBeneficFeature = 62,
 
         #endregion
         // ====================================================================================

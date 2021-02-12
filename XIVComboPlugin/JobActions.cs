@@ -12,7 +12,9 @@ namespace XIVComboExpandedestPlugin
             Arrow = 4402,
             Spear = 4403,
             Ewer = 4405,
-            Spire = 4406;
+            Spire = 4406,
+            Benefic2 = 3610,
+            Benefic = 3594;
 
         public static class Buffs
         {
@@ -21,7 +23,8 @@ namespace XIVComboExpandedestPlugin
 
         public static class Levels
         {
-            // public const byte placeholder = 0;
+            public const byte 
+                Benefic2 = 26;
         }
     }
 
