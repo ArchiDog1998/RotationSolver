@@ -204,7 +204,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (Configuration.IsEnabled(CustomComboPreset.DRKMPOvercapFeature))
                             {
-                                if (mp > 7000)
+                                if (mp > 8000)
                                 {
                                     if (level >= DRK.Levels.FloodOfDarkness && level < DRK.Levels.EdgeOfDarkness)
                                         return DRK.FloodOfDarkness;
@@ -241,7 +241,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (Configuration.IsEnabled(CustomComboPreset.DRKMPOvercapFeature))
                             {
-                                if (mp > 7000)
+                                if (mp > 8000)
                                 {
                                     if (level < DRK.Levels.Shadow)
                                         return DRK.FloodOfDarkness;

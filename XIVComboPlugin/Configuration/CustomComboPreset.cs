@@ -39,7 +39,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Dark Knight Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate blood gauge", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
         DRKOvercapFeature = 71,
 
-        [CustomComboInfo("Dark Knight MP Overcap Feature", "Weaves MP spenders between the first two steps of your combos if you are over 7000 MP.", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
+        [CustomComboInfo("Dark Knight MP Overcap Feature", "Weaves MP spenders between the first two steps of your combos if you are over 8000 MP.", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
         DRKMPOvercapFeature = 73,
 
         #endregion
