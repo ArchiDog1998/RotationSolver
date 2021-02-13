@@ -8,6 +8,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Cure 2 becomes Cure when synced below level 30
 * Cure 2 and Medica become Afflatus Solace and Rapture respectively when lilies are available
 * Benefic 2 becomes Benefic when synced below level 26
+* Sleeve Draw becomes Minor Arcana when a card is drawn.
 * Royal Authority combo and Prominence combo become Holy Spirit/Circle when Requiescat is up
 * Holy Spirit/Circle become Confiteor when MP is lower than 4000 and Requiescat is up
 * Dragon Kick becomes Bootshine while a form is up and Leaden Fist is up.
@@ -17,6 +18,10 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * No Mercy will turn into Sonic Break while buff is active.
 * Single-target combo and AoE combo on WAR will be replaced by Fell Cleave/Decimate during Inner Release to prevent wasting GCDs.
 * Meikyo will be replaced by Jinpu/Shifu while its buff is up.
+* Shoha will replace Iaijutsu/Tsubame when Meditation gauge is full.
+* Enochian/Fire 4 will be replaced with either Fire 1 and 3 depending on remaining time and firestarter proc.
+* Despair will replace Enochian/Fire 4 when MP is below 2400.
+* Red Mage Verholy/Verflare/Scorch now part of redoublement combo (separate option), based on gauge and procs.
 
 ## About
 XIVCombo is a plugin to allow for "one-button" combo chains, as well as implementing various other mutually-exclusive button consolidation and quality of life replacements. Some examples of the functionality it provides:

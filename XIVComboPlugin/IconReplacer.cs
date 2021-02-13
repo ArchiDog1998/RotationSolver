@@ -193,13 +193,16 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == DRK.Souleater)
                 {
+                    UpdateBuffAddress();
+                    var gauge = GetJobGauge<DRKGauge>().Blood;
+                    if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature) && HasBuff(DRK.Buffs.BloodWeapon))
+                        return DRK.Bloodspiller;
                     if (Configuration.IsEnabled(CustomComboPreset.DeliriumFeature))
                         if (level >= DRK.Levels.Bloodpiller && level >= DRK.Levels.Delirium && HasBuff(DRK.Buffs.Delirium))
                             return DRK.Bloodspiller;
 
                     if (comboTime > 0)
                     {
-                        var gauge = GetJobGauge<DRKGauge>().Blood;
                         if (lastMove == DRK.HardSlash && level >= DRK.Levels.SyphonStrike)
                         {
                             if (Configuration.IsEnabled(CustomComboPreset.DRKMPOvercapFeature))
@@ -214,11 +217,13 @@ namespace XIVComboExpandedestPlugin
                                         return DRK.EdgeOfShadow;
                                 }
                             }
+                            if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature) && HasBuff(DRK.Buffs.BloodWeapon))
+                                return DRK.Bloodspiller;
                             return DRK.SyphonStrike;
                         }
                         if (lastMove == DRK.SyphonStrike && level >= DRK.Levels.Souleater)
                         {
-                            if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature))
+                            if (((gauge >= 90) || (gauge >= 80 && HasBuff(DRK.Buffs.BloodWeapon)) && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature)))
                                 return DRK.Bloodspiller;
                             return DRK.Souleater;
                         }
@@ -232,6 +237,11 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == DRK.StalwartSoul)
                 {
+                    UpdateBuffAddress();
+                    var gauge = GetJobGauge<DRKGauge>().Blood;
+
+                    if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature) && HasBuff(DRK.Buffs.BloodWeapon))
+                        return DRK.Quietus;
                     if (Configuration.IsEnabled(CustomComboPreset.DeliriumFeature))
                         if (level >= DRK.Levels.Quietus && level >= DRK.Levels.Delirium && HasBuff(DRK.Buffs.Delirium))
                             return DRK.Quietus;
@@ -248,8 +258,7 @@ namespace XIVComboExpandedestPlugin
                                     return DRK.FloodOfShadow;
                                 }
                             }
-                            var gauge = GetJobGauge<DRKGauge>().Blood;
-                            if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature))
+                            if (((gauge >= 90) || (gauge >= 80 && HasBuff(DRK.Buffs.BloodWeapon)) && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature)))
                                 return DRK.Quietus;
                             return DRK.StalwartSoul;
                         }
@@ -617,6 +626,13 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiShohaFeature))
+            {
+                var gauge = GetJobGauge<SAMGauge>().MeditationStacks;
+                if ((actionID == SAM.Iaijutsu || actionID == SAM.Tsubame) && gauge == 3)
+                        return SAM.Shoha;
+            }
+
             #endregion
             // ====================================================================================
             #region NINJA
@@ -854,13 +870,22 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == BLM.Enochian)
                 {
+                    UpdateBuffAddress();
                     var gauge = GetJobGauge<BLMGauge>();
                     if (gauge.IsEnoActive())
                     {
                         if (gauge.InUmbralIce() && level >= BLM.Levels.Blizzard4)
                             return BLM.Blizzard4;
                         if (level >= BLM.Levels.Fire4)
+                        {
+                            if (gauge.ElementTimeRemaining < 3000 && HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
+                                return BLM.Fire3;
+                            if (mp < 2400 && level >= BLM.Levels.Despair && Configuration.IsEnabled(CustomComboPreset.BlackDespairFeature))
+                                return BLM.Despair;
+                            if (gauge.ElementTimeRemaining < 5000 && !HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
+                                return BLM.Fire;
                             return BLM.Fire4;
+                        }
                     }
 
                     return BLM.Enochian;
@@ -922,6 +947,28 @@ namespace XIVComboExpandedestPlugin
                         */
                         default:
                             return AST.Draw;
+                    }
+                }
+            }
+
+            // Make sleeve draw minor Arcana
+            if (Configuration.IsEnabled(CustomComboPreset.AstrologianSleeveDrawFeature))
+            {
+                if (actionID == AST.SleeveDraw && level >= AST.Levels.MinorArcana)
+                {
+                    var gauge = GetJobGauge<ASTGauge>();
+                    switch (gauge.DrawnCard())
+                    {
+                        case CardType.BALANCE:
+                        case CardType.ARROW:
+                        case CardType.SPEAR:
+                            return AST.Lord;
+                        case CardType.BOLE:
+                        case CardType.EWER:
+                        case CardType.SPIRE:
+                            return AST.Lady;
+                        default:
+                            return AST.SleeveDraw;
                     }
                 }
             }
@@ -1297,7 +1344,9 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == RDM.Redoublement)
                 {
+                    UpdateBuffAddress();
                     var gauge = GetJobGauge<RDMGauge>();
+
                     if ((lastMove == RDM.Riposte || lastMove == RDM.EnchantedRiposte) && level >= RDM.Levels.Zwerchhau)
                     {
                         if (gauge.BlackGauge >= 25 && gauge.WhiteGauge >= 25)
@@ -1310,6 +1359,28 @@ namespace XIVComboExpandedestPlugin
                         if (gauge.BlackGauge >= 25 && gauge.WhiteGauge >= 25)
                             return RDM.EnchantedRedoublement;
                         return RDM.Redoublement;
+                    }
+
+                    if (Configuration.IsEnabled(CustomComboPreset.RedMageMeleeComboPlus))
+                    {
+                        if ((lastMove == RDM.Verflare || lastMove == RDM.Verholy) && level >= RDM.Levels.Scorch)
+                            return RDM.Scorch;
+
+                        if (lastMove == RDM.EnchantedRedoublement)
+                        {
+                            if (gauge.BlackGauge >= gauge.WhiteGauge && level > RDM.Levels.Verholy)
+                            {
+                                if (HasBuff(RDM.Buffs.VerstoneReady) && !HasBuff(RDM.Buffs.VerfireReady))
+                                    return RDM.Verflare;
+                                return RDM.Verholy;
+                            }
+                            else if (level > RDM.Levels.Verflare)
+                            {
+                                if ((!HasBuff(RDM.Buffs.VerstoneReady) && HasBuff(RDM.Buffs.VerfireReady)) && level > RDM.Levels.Verholy)
+                                    return RDM.Verholy;
+                                return RDM.Verflare;
+                            }
+                        }
                     }
 
                     if (gauge.BlackGauge >= 30 && gauge.WhiteGauge >= 30)

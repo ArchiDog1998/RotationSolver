@@ -14,7 +14,10 @@ namespace XIVComboExpandedestPlugin
             Ewer = 4405,
             Spire = 4406,
             Benefic2 = 3610,
-            Benefic = 3594;
+            Benefic = 3594,
+            SleeveDraw = 7448,
+            Lady = 7445,
+            Lord = 7444;
 
         public static class Buffs
         {
@@ -24,7 +27,8 @@ namespace XIVComboExpandedestPlugin
         public static class Levels
         {
             public const byte 
-                Benefic2 = 26;
+                Benefic2 = 26,
+                MinorArcana = 50;
         }
     }
 
@@ -35,7 +39,12 @@ namespace XIVComboExpandedestPlugin
         public const uint
             Enochian = 3575,
             Blizzard4 = 3576,
+            Fire = 141,
+            Fire3 = 152,
             Fire4 = 3577,
+            Despair = 16505,
+            Flare = 162,
+            Freeze = 159,
             Transpose = 149,
             UmbralSoul = 16506,
             LeyLines = 3573,
@@ -44,15 +53,19 @@ namespace XIVComboExpandedestPlugin
         public static class Buffs
         {
             public const short
-                LeyLines = 737;
+                LeyLines = 737,
+                Firestarter = 165;
         }
 
         public static class Levels
         {
             public const byte
+                Freeze = 35,
+                Flare = 50,
                 Blizzard4 = 58,
                 Fire4 = 60,
                 BetweenTheLines = 62,
+                Despair = 72,
                 UmbralSoul = 76;
         }
     }
@@ -224,7 +237,8 @@ namespace XIVComboExpandedestPlugin
         public static class Buffs
         {
             public const short
-                Delirium = 1972;
+                Delirium = 1972,
+                BloodWeapon = 742;
         }
 
         public static class Levels
@@ -476,6 +490,8 @@ namespace XIVComboExpandedestPlugin
                 Redoublement = 50,
                 Jolt2 = 62,
                 Impact = 66,
+                Verflare = 68,
+                Verholy = 70,
                 Scorch = 80;
         }
     }
@@ -497,7 +513,13 @@ namespace XIVComboExpandedestPlugin
             Seigan = 7501,
             ThirdEye = 7498,
             Meditate = 7497,
-            MeikyoShisui = 7499;
+            MeikyoShisui = 7499,
+            Iaijutsu = 7867,
+            Tsubame = 16483,
+            Shoha = 16487,
+            Higanbana = 7489,
+            Tenka = 7488,
+            Midare = 7487;
 
         public static class Buffs
         {

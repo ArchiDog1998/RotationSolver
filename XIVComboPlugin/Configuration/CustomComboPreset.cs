@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 73
+        // Last enum used: 78
         // ====================================================================================
         #region DRAGOON
 
@@ -114,6 +114,9 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Jinpu/Shifu Feature", "Replace Meikyo Shisui with Jinpu or Shifu depending on what is needed.", SAM.JobID, SAM.MeikyoShisui)]
         SamuraiJinpuShifuFeature = 72,
 
+        [CustomComboInfo("Shoha Feature", "Replaces Iaijutsu/Tsubame with Shoha if gauge is capped.", SAM.JobID, SAM.Iaijutsu, SAM.Tsubame)]
+        SamuraiShohaFeature = 74,
+
         #endregion
         // ====================================================================================
         #region NINJA
@@ -183,6 +186,12 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("(Between the) Ley Lines", "Change Ley Lines into BTL when Ley Lines is active", BLM.JobID, BLM.LeyLines)]
         BlackLeyLines = 56,
 
+        [CustomComboInfo("Fire 1/3 Feature", "Fire 1 (and 3 if procced) will replace Fire 4 if below 5s (3s if Fire 3) on AF. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
+        BlackFireFeature = 76,
+
+        [CustomComboInfo("Despair Feature", "Despair replaces Fire 4 when below 2400 MP. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
+        BlackDespairFeature = 77,
+
         #endregion
         // ====================================================================================
         #region ASTROLOGIAN
@@ -192,6 +201,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Benefic 2 to Benefic Level Sync", "Changes Benefic 2 to Benefic when below level 26 in synced content.", AST.JobID, AST.Benefic2)]
         AstrologianBeneficFeature = 62,
+
+        [CustomComboInfo("Sleeve Draw to Minor Arcana", "Changes Sleeve Draw to Minor Arcana when a card is drawn.", AST.JobID, AST.SleeveDraw)]
+        AstrologianSleeveDrawFeature = 75,
 
         #endregion
         // ====================================================================================
@@ -280,8 +292,11 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Red Mage AoE Combo", "Replaces Veraero/thunder 2 with Impact when Dualcast or Swiftcast are active", RDM.JobID, RDM.Veraero2, RDM.Verthunder2)]
         RedMageAoECombo = 48,
 
-        [CustomComboInfo("Redoublement combo", "Replaces Redoublement with its combo chain, following enchantment rules", RDM.JobID, RDM.Redoublement)]
+        [CustomComboInfo("Redoublement Combo", "Replaces Redoublement with its combo chain, following enchantment rules", RDM.JobID, RDM.Redoublement)]
         RedMageMeleeCombo = 49,
+
+        [CustomComboInfo("Redoublement Combo Plus", "Adds Verholy/VerFlare/Scorch to Redoublement Combo, based on procs and mana gauge. Requires Redoublement Combo.", RDM.JobID, RDM.Redoublement)]
+        RedMageMeleeComboPlus = 78,
 
         [CustomComboInfo("Verproc into Jolt", "Replaces Verstone/Verfire with Jolt/Scorch when no proc is available.", RDM.JobID, RDM.Verstone, RDM.Verfire)]
         RedMageVerprocCombo = 53,
