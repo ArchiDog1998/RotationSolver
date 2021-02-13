@@ -201,7 +201,21 @@ namespace XIVComboExpandedestPlugin
                     {
                         var gauge = GetJobGauge<DRKGauge>().Blood;
                         if (lastMove == DRK.HardSlash && level >= DRK.Levels.SyphonStrike)
+                        {
+                            if (Configuration.IsEnabled(CustomComboPreset.DRKMPOvercapFeature))
+                            {
+                                if (mp > 7000)
+                                {
+                                    if (level >= DRK.Levels.FloodOfDarkness && level < DRK.Levels.EdgeOfDarkness)
+                                        return DRK.FloodOfDarkness;
+                                    if (level < DRK.Levels.Shadow && level >= DRK.Levels.EdgeOfDarkness)
+                                        return DRK.EdgeOfDarkness;
+                                    if (level >= DRK.Levels.Shadow)
+                                        return DRK.EdgeOfShadow;
+                                }
+                            }
                             return DRK.SyphonStrike;
+                        }
                         if (lastMove == DRK.SyphonStrike && level >= DRK.Levels.Souleater)
                         {
                             if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature))
@@ -225,6 +239,15 @@ namespace XIVComboExpandedestPlugin
                     if (comboTime > 0)
                         if (lastMove == DRK.Unleash && level >= DRK.Levels.StalwartSoul)
                         {
+                            if (Configuration.IsEnabled(CustomComboPreset.DRKMPOvercapFeature))
+                            {
+                                if (mp > 7000)
+                                {
+                                    if (level < DRK.Levels.Shadow)
+                                        return DRK.FloodOfDarkness;
+                                    return DRK.FloodOfShadow;
+                                }
+                            }
                             var gauge = GetJobGauge<DRKGauge>().Blood;
                             if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature))
                                 return DRK.Quietus;
@@ -571,8 +594,6 @@ namespace XIVComboExpandedestPlugin
                 if (actionID == SAM.Seigan)
                 {
                     UpdateBuffAddress();
-                    if (HasBuff(SAM.Buffs.MeikyoShisui) && Configuration.IsEnabled(CustomComboPreset.SamuraiJinpuShifuFeature))
-                        return SAM.Jinpu;
                     if (HasBuff(SAM.Buffs.EyesOpen))
                         return SAM.Seigan;
                     return SAM.ThirdEye;
@@ -581,12 +602,18 @@ namespace XIVComboExpandedestPlugin
 
             if (Configuration.IsEnabled(CustomComboPreset.SamuraiJinpuShifuFeature))
             {
-                if (actionID == SAM.Meditate)
+                if (actionID == SAM.MeikyoShisui)
                 {
                     UpdateBuffAddress();
                     if (HasBuff(SAM.Buffs.MeikyoShisui) && Configuration.IsEnabled(CustomComboPreset.SamuraiJinpuShifuFeature))
-                        return SAM.Shifu;
-                    return SAM.Meditate;
+                    {
+                        if (!HasBuff(SAM.Buffs.Jinpu))
+                            return SAM.Jinpu;
+                        if (!HasBuff(SAM.Buffs.Shifu))
+                            return SAM.Shifu;
+                        
+                    }
+                    return SAM.MeikyoShisui;
                 }
             }
 

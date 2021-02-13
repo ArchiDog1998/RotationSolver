@@ -215,7 +215,11 @@ namespace XIVComboExpandedestPlugin
             StalwartSoul = 16468,
             Unleash = 3621,
             Quietus = 7391,
-            Bloodspiller = 7392;
+            Bloodspiller = 7392,
+            EdgeOfDarkness = 16467,
+            EdgeOfShadow = 16470,
+            FloodOfDarkness = 16466,
+            FloodOfShadow = 16469;
 
         public static class Buffs
         {
@@ -228,10 +232,13 @@ namespace XIVComboExpandedestPlugin
             public const byte
                 SyphonStrike = 2,
                 Souleater = 26,
+                FloodOfDarkness = 30,
+                EdgeOfDarkness = 40,
                 Bloodpiller = 62,
                 Quietus = 64,
                 Delirium = 68,
-                StalwartSoul = 72;
+                StalwartSoul = 72,
+                Shadow = 74;
         }
     }
 
@@ -489,13 +496,16 @@ namespace XIVComboExpandedestPlugin
             Oka = 7485,
             Seigan = 7501,
             ThirdEye = 7498,
-            Meditate = 7497;
+            Meditate = 7497,
+            MeikyoShisui = 7499;
 
         public static class Buffs
         {
             public const short
                 MeikyoShisui = 1233,
-                EyesOpen = 1252;
+                EyesOpen = 1252,
+                Jinpu = 1298,
+                Shifu = 1299;
         }
 
         public static class Levels

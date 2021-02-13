@@ -13,9 +13,10 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Dragon Kick becomes Bootshine while a form is up and Leaden Fist is up.
 * Overcap prevention on GNB now extends to single-target combo and has also been added to WAR/DRK.
 * A second overcap prevention has been added for Infuriate/Bloodfest.
+* An MP overcap prevention that involves weaving a CD before syphon strike/stalwart soul has been added.
 * No Mercy will turn into Sonic Break while buff is active.
 * Single-target combo and AoE combo on WAR will be replaced by Fell Cleave/Decimate during Inner Release to prevent wasting GCDs.
-* Seigan/Meditate will be replaced with Jinpu/Shifu respectively while Meikyo is up.
+* Meikyo will be replaced by Jinpu/Shifu while its buff is up.
 
 ## About
 XIVCombo is a plugin to allow for "one-button" combo chains, as well as implementing various other mutually-exclusive button consolidation and quality of life replacements. Some examples of the functionality it provides:

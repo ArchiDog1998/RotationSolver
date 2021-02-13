@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 72
+        // Last enum used: 73
         // ====================================================================================
         #region DRAGOON
 
@@ -36,8 +36,11 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Delirium Feature", "Replace Souleater and Stalwart Soul with Bloodspiller and Quietus when Delirium is active", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
         DeliriumFeature = 57,
         
-        [CustomComboInfo("Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate gauge", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
+        [CustomComboInfo("Dark Knight Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate blood gauge", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
         DRKOvercapFeature = 71,
+
+        [CustomComboInfo("Dark Knight MP Overcap Feature", "Weaves MP spenders between the first two steps of your combos if you are over 7000 MP.", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
+        DRKMPOvercapFeature = 73,
 
         #endregion
         // ====================================================================================
@@ -77,7 +80,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Mythril Tempest Combo", "Replace Mythril Tempest with its combo chain", WAR.JobID, WAR.MythrilTempest)]
         WarriorMythrilTempestCombo = 10,
 
-        [CustomComboInfo("Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate gauge", WAR.JobID, WAR.MythrilTempest, WAR.StormsEye, WAR.StormsPath)]
+        [CustomComboInfo("Warrior Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate beast gauge", WAR.JobID, WAR.MythrilTempest, WAR.StormsEye, WAR.StormsPath)]
         WarriorGaugeOvercapFeature = 67,
 
         [CustomComboInfo("Infuriate Gauge Overcap Feature", "Make Infuriate Fell Cleave if Infuriate would overcap you", WAR.JobID, WAR.Infuriate)]
@@ -108,7 +111,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Seigan to Third Eye", "Replace Seigan with Third Eye when not procced", SAM.JobID, SAM.Seigan)]
         SamuraiThirdEyeFeature = 51,
 
-        [CustomComboInfo("Jinpu/Shifu Feature", "Replace Seigan and Meditate with Jinpu/Shifu respectively during Meikyo", SAM.JobID, SAM.Seigan, SAM.Meditate)]
+        [CustomComboInfo("Jinpu/Shifu Feature", "Replace Meikyo Shisui with Jinpu or Shifu depending on what is needed.", SAM.JobID, SAM.MeikyoShisui)]
         SamuraiJinpuShifuFeature = 72,
 
         #endregion
@@ -142,7 +145,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Demon Slaughter Combo", "Replace Demon Slaughter with its combo chain", GNB.JobID, GNB.DemonSlaughter)]
         GunbreakerDemonSlaughterCombo = 22,
 
-        [CustomComboInfo("Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate gauge", GNB.JobID, GNB.DemonSlaughter, GNB.SolidBarrel)]
+        [CustomComboInfo("Gunbreaker Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate powder gauge", GNB.JobID, GNB.DemonSlaughter, GNB.SolidBarrel)]
         GunbreakerGaugeOvercapFeature = 30,
 
         [CustomComboInfo("Bloodfest Gauge Overcap Feature", "Replace Bloodfest with Burst Strike if it would cause you to overcap.", GNB.JobID, GNB.Bloodfest)]
