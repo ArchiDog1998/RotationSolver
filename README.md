@@ -3,7 +3,7 @@ This is an expanded version of Daemitus's XIVCombo Expanded for personal use, th
 
 If you would like to use this plugin, you can get it from this repo: `https://github.com/grammernatzi/MyDalamudPlugins/raw/master/pluginmaster.json`
 
-## Additions added
+## Additions added (all optional!)
 
 * Cure 2 becomes Cure when synced below level 30
 * Cure 2 and Medica become Afflatus Solace and Rapture respectively when lilies are available
