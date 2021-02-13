@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 78
+        // Last enum used: 79
         // ====================================================================================
         #region DRAGOON
 
@@ -300,6 +300,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Verproc into Jolt", "Replaces Verstone/Verfire with Jolt/Scorch when no proc is available.", RDM.JobID, RDM.Verstone, RDM.Verfire)]
         RedMageVerprocCombo = 53,
+
+        [CustomComboInfo("Verproc into Jolt Plus", "Additionally replaces Verstone/Verfire with Veraero/Verthunder if dualcast/swiftcast are up. Requires Verproc into Jolt.", RDM.JobID, RDM.Verstone, RDM.Verfire)]
+        RedMageVerprocComboPlus= 79,
 
         #endregion
         // ====================================================================================

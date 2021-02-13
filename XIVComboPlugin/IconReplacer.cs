@@ -1396,6 +1396,13 @@ namespace XIVComboExpandedestPlugin
                     if (level >= RDM.Levels.Scorch && (lastMove == RDM.Verflare || lastMove == RDM.Verholy))
                         return RDM.Scorch;
                     UpdateBuffAddress();
+                    if (Configuration.IsEnabled(CustomComboPreset.RedMageVerprocComboPlus))
+                    {
+                        if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verholy)
+                            return RDM.Verholy;
+                        if (HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast))
+                            return RDM.Veraero;
+                    }
                     if (HasBuff(RDM.Buffs.VerstoneReady))
                         return RDM.Verstone;
                     if (level >= RDM.Levels.Jolt2)
@@ -1407,6 +1414,13 @@ namespace XIVComboExpandedestPlugin
                     if (level >= RDM.Levels.Scorch && (lastMove == RDM.Verflare || lastMove == RDM.Verholy))
                         return RDM.Scorch;
                     UpdateBuffAddress();
+                    if (Configuration.IsEnabled(CustomComboPreset.RedMageVerprocComboPlus))
+                    {
+                        if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verflare)
+                            return RDM.Verflare;
+                        if (HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast))
+                            return RDM.Verthunder;
+                    }
                     if (HasBuff(RDM.Buffs.VerfireReady))
                         return RDM.Verfire;
                     if (level >= RDM.Levels.Jolt2)
