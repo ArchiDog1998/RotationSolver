@@ -1400,7 +1400,7 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verholy)
                             return RDM.Verholy;
-                        if (HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast))
+                        if (HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast) || !ClientState.Condition[ConditionFlag.InCombat])
                             return RDM.Veraero;
                     }
                     if (HasBuff(RDM.Buffs.VerstoneReady))
@@ -1418,7 +1418,7 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verflare)
                             return RDM.Verflare;
-                        if (HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast))
+                        if (HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast) || !ClientState.Condition[ConditionFlag.InCombat])
                             return RDM.Verthunder;
                     }
                     if (HasBuff(RDM.Buffs.VerfireReady))

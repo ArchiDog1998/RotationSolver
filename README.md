@@ -22,7 +22,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Enochian/Fire 4 will be replaced with either Fire 1 and 3 depending on remaining time and firestarter proc.
 * Despair will replace Enochian/Fire 4 when MP is below 2400.
 * Red Mage Verholy/Verflare/Scorch now part of redoublement combo (separate option), based on gauge and procs.
-* Verstone/Verfire will turn into Veraero/Verthunder when Dualcast/Swiftcast is up.
+* Verstone/Verfire will turn into Veraero/Verthunder when Dualcast/Swiftcast is up or if you are out of combat (your opener is safe!).
 
 ## About
 XIVCombo is a plugin to allow for "one-button" combo chains, as well as implementing various other mutually-exclusive button consolidation and quality of life replacements. Some examples of the functionality it provides:
