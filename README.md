@@ -15,14 +15,18 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Overcap prevention on GNB now extends to single-target combo and has also been added to WAR/DRK.
 * A second overcap prevention has been added for Infuriate/Bloodfest.
 * An MP overcap prevention that involves weaving a CD before syphon strike/stalwart soul has been added.
-* No Mercy will turn into Sonic Break while buff is active.
+* No Mercy will turn into Sonic Break while buff is active.*
 * Single-target combo and AoE combo on WAR will be replaced by Fell Cleave/Decimate during Inner Release to prevent wasting GCDs.
 * Meikyo will be replaced by Jinpu/Shifu while its buff is up.
 * Shoha will replace Iaijutsu/Tsubame when Meditation gauge is full.
 * Enochian/Fire 4 will be replaced with either Fire 1 and 3 depending on remaining time and firestarter proc.
 * Despair will replace Enochian/Fire 4 when MP is below 2400.
 * Red Mage Verholy/Verflare/Scorch now part of redoublement combo (separate option), based on gauge and procs.
-* Verstone/Verfire will turn into Veraero/Verthunder when Dualcast/Swiftcast is up or if you are out of combat (your opener is safe!).
+* Verstone/Verfire will turn into Veraero/Verthunder when Dualcast/Swiftcast is up, with an additional feature that also does the same if out of combat for openers (and sets Vercure to Jolt below 52 so you can still pull without a long cast).
+* When Suiton (or Hidden) is up, Trick Attack will replace Kassatsu.*
+* In the same vein, Ten Chi Jin (the move) will turn into Meisui while Suiton is up*.
+
+For actions marked with a *, you may want Remind Me or a similar plugin to keep track of cooldowns while they are invisible.
 
 ## About
 XIVCombo is a plugin to allow for "one-button" combo chains, as well as implementing various other mutually-exclusive button consolidation and quality of life replacements. Some examples of the functionality it provides:

@@ -432,12 +432,18 @@ namespace XIVComboExpandedestPlugin
             HakkeMujinsatsu = 16488,
             DeathBlossom = 2254,
             DreamWithinADream = 3566,
-            Assassinate = 2246;
+            Assassinate = 2246,
+            TenChiJin = 7403,
+            Kassatsu = 2264,
+            Meisui = 16489,
+            TrickAttack = 2258;
 
         public static class Buffs
         {
             public const short
-                AssassinateReady = 1955;
+                AssassinateReady = 1955,
+                Hidden = 614,
+                Suiton = 507;
         }
 
         public static class Levels
@@ -446,7 +452,8 @@ namespace XIVComboExpandedestPlugin
                 GustSlash = 4,
                 AeolianEdge = 26,
                 HakkeMujinsatsu = 52,
-                ArmorCrush = 54;
+                ArmorCrush = 54,
+                Meisui = 72;
         }
     }
 
@@ -467,6 +474,7 @@ namespace XIVComboExpandedestPlugin
             Riposte = 7504,
             EnchantedRiposte = 7527,
             Scatter = 7509,
+            Vercure = 7514,
             Verstone = 7511,
             Verfire = 7510,
             Jolt = 7503,
@@ -488,6 +496,7 @@ namespace XIVComboExpandedestPlugin
             public const byte
                 Zwerchhau = 35,
                 Redoublement = 50,
+                Vercure = 54,
                 Jolt2 = 62,
                 Impact = 66,
                 Verflare = 68,
@@ -539,7 +548,8 @@ namespace XIVComboExpandedestPlugin
                 Mangetsu = 35,
                 Kasha = 40,
                 Oka = 45,
-                Yukikaze = 50;
+                Yukikaze = 50,
+                Tsubame = 76;
         }
     }
 

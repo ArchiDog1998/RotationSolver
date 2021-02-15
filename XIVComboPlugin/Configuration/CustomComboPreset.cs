@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 79
+        // Last enum used: 82
         // ====================================================================================
         #region DRAGOON
 
@@ -132,6 +132,13 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Dream to Assassinate", "Replace Dream Within a Dream with Assassinate when Assassinate Ready", NIN.JobID, NIN.DreamWithinADream)]
         NinjaAssassinateFeature = 45,
+
+        [CustomComboInfo("Kassatsu to Trick", "Replaces Kassatsu with Trick Attack while Suiton or Hidden is up. Cooldown tracking plugin recommended.", NIN.JobID, NIN.Kassatsu)]
+        NinjaKassatsuTrickFeature = 81,
+
+        [CustomComboInfo("Ten Chi Jin to Meisui", "Replaces Ten Chi Jin (the move) with Meisui while Suiton is up. Cooldown tracking plugin recommended.", NIN.JobID, NIN.TenChiJin)]
+        NinjaTCJMeisuiFeature = 82,
+
         #endregion
         // ====================================================================================
         #region GUNBREAKER
@@ -301,8 +308,11 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Verproc into Jolt", "Replaces Verstone/Verfire with Jolt/Scorch when no proc is available.", RDM.JobID, RDM.Verstone, RDM.Verfire)]
         RedMageVerprocCombo = 53,
 
-        [CustomComboInfo("Verproc into Jolt Plus", "Additionally replaces Verstone/Verfire with Veraero/Verthunder if dualcast/swiftcast are up or you are out of combat (for openers). Requires Verproc into Jolt.", RDM.JobID, RDM.Verstone, RDM.Verfire)]
+        [CustomComboInfo("Verproc into Jolt Plus", "Additionally replaces Verstone/Verfire with Veraero/Verthunder if dualcast/swiftcast are up. Requires Verproc into Jolt.", RDM.JobID, RDM.Verstone, RDM.Verfire)]
         RedMageVerprocComboPlus= 79,
+
+        [CustomComboInfo("Verproc into Jolt Plus Opener Feature", "Turns Verstone/Verfire into Veraero/Verthunder when out of combat. Requires Verproc into Jolt Plus. Also turns Vercure into Jolt below level 54 so you can still pull without long casting.", RDM.JobID, RDM.Verstone, RDM.Verfire, RDM.Vercure)]
+        RedMageVerprocOpenerFeature = 80,
 
         #endregion
         // ====================================================================================

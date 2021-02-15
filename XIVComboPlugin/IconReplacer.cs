@@ -390,7 +390,7 @@ namespace XIVComboExpandedestPlugin
 
             // Replace Infuriate with Fell Cleave if >= 60 Beast Gauge
             if (Configuration.IsEnabled(CustomComboPreset.WarriorInfuriateOvercapFeature))
-            { 
+            {
                 if (actionID == WAR.Infuriate)
                 {
                     var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
@@ -454,7 +454,7 @@ namespace XIVComboExpandedestPlugin
                             return WAR.InnerChaos;
                         return WAR.FellCleave;
                     }
-                
+
                     if (comboTime > 0)
                     {
                         var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
@@ -609,6 +609,7 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            // Replaces Meikyo with Jinpu/Shifu depending on what is needed, for AoE purposes
             if (Configuration.IsEnabled(CustomComboPreset.SamuraiJinpuShifuFeature))
             {
                 if (actionID == SAM.MeikyoShisui)
@@ -620,17 +621,18 @@ namespace XIVComboExpandedestPlugin
                             return SAM.Jinpu;
                         if (!HasBuff(SAM.Buffs.Shifu))
                             return SAM.Shifu;
-                        
+
                     }
                     return SAM.MeikyoShisui;
                 }
             }
 
+            // Replaces Iaijutsu and Tsubame with Shoha if meditation gauge is full.
             if (Configuration.IsEnabled(CustomComboPreset.SamuraiShohaFeature))
             {
                 var gauge = GetJobGauge<SAMGauge>().MeditationStacks;
                 if ((actionID == SAM.Iaijutsu || actionID == SAM.Tsubame) && gauge == 3)
-                        return SAM.Shoha;
+                    return SAM.Shoha;
             }
 
             #endregion
@@ -690,6 +692,30 @@ namespace XIVComboExpandedestPlugin
                     if (HasBuff(NIN.Buffs.AssassinateReady))
                         return NIN.Assassinate;
                     return NIN.DreamWithinADream;
+                }
+            }
+
+            //Replace Kassatsu with Trick Attack while Suiton or Hidden is up
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaKassatsuTrickFeature))
+            {
+                if (actionID == NIN.Kassatsu)
+                {
+                    UpdateBuffAddress();
+                    if (HasBuff(NIN.Buffs.Suiton) || HasBuff(NIN.Buffs.Hidden))
+                        return NIN.TrickAttack;
+                    return NIN.Kassatsu;
+                }
+            }
+
+            //Replace Ten Chi Jin (the move) with Meisui while Suiton is up
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaTCJMeisuiFeature))
+            {
+                if (actionID == NIN.TenChiJin)
+                {
+                    UpdateBuffAddress();
+                    if (HasBuff(NIN.Buffs.Suiton))
+                        return NIN.Meisui;
+                    return NIN.TenChiJin;
                 }
             }
 
@@ -1389,6 +1415,14 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            if (Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature))
+            {
+                if (actionID == RDM.Vercure && level < RDM.Levels.Vercure)
+                {
+                    return RDM.Jolt;
+                }
+            }
+
             if (Configuration.IsEnabled(CustomComboPreset.RedMageVerprocCombo))
             {
                 if (actionID == RDM.Verstone)
@@ -1400,7 +1434,7 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verholy)
                             return RDM.Verholy;
-                        if (HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast) || !ClientState.Condition[ConditionFlag.InCombat])
+                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast)) || (!ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature)))
                             return RDM.Veraero;
                     }
                     if (HasBuff(RDM.Buffs.VerstoneReady))
@@ -1418,7 +1452,7 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verflare)
                             return RDM.Verflare;
-                        if (HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast) || !ClientState.Condition[ConditionFlag.InCombat])
+                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast)) || (!ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature)))
                             return RDM.Verthunder;
                     }
                     if (HasBuff(RDM.Buffs.VerfireReady))
