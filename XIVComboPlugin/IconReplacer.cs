@@ -977,25 +977,12 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
-            // Make sleeve draw minor Arcana
+            // Make minor arcana into Sleeve Draw when no cards are drawn
             if (Configuration.IsEnabled(CustomComboPreset.AstrologianSleeveDrawFeature))
             {
-                if (actionID == AST.SleeveDraw && level >= AST.Levels.MinorArcana)
+                if (actionID == AST.MinorArcana && level >= AST.Levels.SleeveDraw && GetJobGauge<ASTGauge>().DrawnCard() == CardType.NONE)
                 {
-                    var gauge = GetJobGauge<ASTGauge>();
-                    switch (gauge.DrawnCard())
-                    {
-                        case CardType.BALANCE:
-                        case CardType.ARROW:
-                        case CardType.SPEAR:
-                            return AST.Lord;
-                        case CardType.BOLE:
-                        case CardType.EWER:
-                        case CardType.SPIRE:
-                            return AST.Lady;
-                        default:
-                            return AST.SleeveDraw;
-                    }
+                    return AST.SleeveDraw;
                 }
             }
 

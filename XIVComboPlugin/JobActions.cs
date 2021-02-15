@@ -16,6 +16,7 @@ namespace XIVComboExpandedestPlugin
             Benefic2 = 3610,
             Benefic = 3594,
             SleeveDraw = 7448,
+            MinorArcana = 7443,
             Lady = 7445,
             Lord = 7444;
 
@@ -28,7 +29,8 @@ namespace XIVComboExpandedestPlugin
         {
             public const byte 
                 Benefic2 = 26,
-                MinorArcana = 50;
+                MinorArcana = 50,
+                SleeveDraw = 70;
         }
     }
 

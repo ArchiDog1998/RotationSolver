@@ -209,7 +209,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Benefic 2 to Benefic Level Sync", "Changes Benefic 2 to Benefic when below level 26 in synced content.", AST.JobID, AST.Benefic2)]
         AstrologianBeneficFeature = 62,
 
-        [CustomComboInfo("Sleeve Draw to Minor Arcana", "Changes Sleeve Draw to Minor Arcana when a card is drawn.", AST.JobID, AST.SleeveDraw)]
+        [CustomComboInfo("Minor Arcana to Sleeve Draw", "Changes Minor Arcana to Sleeve Draw when a card is not drawn.", AST.JobID, AST.MinorArcana]
         AstrologianSleeveDrawFeature = 75,
 
         #endregion
