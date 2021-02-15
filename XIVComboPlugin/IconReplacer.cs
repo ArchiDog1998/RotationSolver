@@ -398,6 +398,8 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
                             return WAR.InnerChaos;
+                        if (level < WAR.Levels.FellCleave)
+                            return WAR.InnerBeast;
                         return WAR.FellCleave;
                     }
                     return WAR.Infuriate;
@@ -424,6 +426,8 @@ namespace XIVComboExpandedestPlugin
                             {
                                 if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
                                     return WAR.InnerChaos;
+                                if (level < WAR.Levels.FellCleave)
+                                    return WAR.InnerBeast;
                                 return WAR.FellCleave;
                             }
                             return WAR.Maim;
@@ -434,6 +438,8 @@ namespace XIVComboExpandedestPlugin
                             {
                                 if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
                                     return WAR.InnerChaos;
+                                if (level < WAR.Levels.FellCleave)
+                                    return WAR.InnerBeast;
                                 return WAR.FellCleave;
                             }
                             return WAR.StormsPath;
@@ -464,6 +470,8 @@ namespace XIVComboExpandedestPlugin
                             {
                                 if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
                                     return WAR.InnerChaos;
+                                if (level < WAR.Levels.FellCleave)
+                                    return WAR.InnerBeast;
                                 return WAR.FellCleave;
                             }
                             return WAR.Maim;
@@ -474,6 +482,8 @@ namespace XIVComboExpandedestPlugin
                             {
                                 if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
                                     return WAR.InnerChaos;
+                                if (level < WAR.Levels.FellCleave)
+                                    return WAR.InnerBeast;
                                 return WAR.FellCleave;
                             }
                             return WAR.StormsEye;

@@ -627,6 +627,7 @@ namespace XIVComboExpandedestPlugin
             FellCleave = 3549,
             Decimate = 3550,
             InnerBeast = 49,
+            SteelCyclone = 51,
             InnerChaos = 16465,
             ChaoticCyclone = 16463;
 
@@ -644,6 +645,8 @@ namespace XIVComboExpandedestPlugin
                 StormsPath = 26,
                 MythrilTempest = 40,
                 StormsEye = 50,
+                FellCleave = 54,
+                Decimate = 60,
                 MythrilTempestTrait = 74,
                 InnerChaos = 80;
         }
