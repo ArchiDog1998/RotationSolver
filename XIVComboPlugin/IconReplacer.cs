@@ -1381,13 +1381,13 @@ namespace XIVComboExpandedestPlugin
 
                         if (lastMove == RDM.EnchantedRedoublement)
                         {
-                            if (gauge.BlackGauge >= gauge.WhiteGauge && level > RDM.Levels.Verholy)
+                            if (gauge.BlackGauge >= gauge.WhiteGauge && level >= RDM.Levels.Verholy)
                             {
                                 if (HasBuff(RDM.Buffs.VerstoneReady) && !HasBuff(RDM.Buffs.VerfireReady))
                                     return RDM.Verflare;
                                 return RDM.Verholy;
                             }
-                            else if (level > RDM.Levels.Verflare)
+                            else if (level >= RDM.Levels.Verflare)
                             {
                                 if ((!HasBuff(RDM.Buffs.VerstoneReady) && HasBuff(RDM.Buffs.VerfireReady)) && level > RDM.Levels.Verholy)
                                     return RDM.Verholy;
