@@ -61,7 +61,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Requiescat Confiteor", "Replace Requiescat with Confiter while under the effect of Requiescat", PLD.JobID, PLD.Requiescat)]
         PaladinRequiescatCombo = 55,
 
-        [CustomComboInfo("Requiescat Feature", "Replace Royal Authority combo with Holy Spirit and Prominence combo with Holy Circle while Requiescat is active. Requires said combos to be activated.", PLD.JobID, PLD.RoyalAuthority, PLD.Prominence)]
+        [CustomComboInfo("Requiescat Feature", "Replace Royal Authority/Goring Blade combo with Holy Spirit and Prominence combo with Holy Circle while Requiescat is active. Requires said combos to be activated to work.", PLD.JobID, PLD.RoyalAuthority, PLD.GoringBlade, PLD.Prominence)]
         PaladinRequiescatFeature = 63,
 
         [CustomComboInfo("Confiteor Feature", "Replace Holy Spirit/Circle with Confiteor while MP is under 4000 and Requiescat is up.", PLD.JobID, PLD.HolySpirit, PLD.HolyCircle)]

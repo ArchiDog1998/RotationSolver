@@ -276,6 +276,17 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == PLD.GoringBlade)
                 {
+                    if (Configuration.IsEnabled(CustomComboPreset.PaladinRequiescatFeature))
+                    {
+                        //Replace with Holy Spirit when Requiescat is up
+                        if (HasBuff(PLD.Buffs.Requiescat))
+                        {
+                            //Replace with Confiteor when under 4000 MP
+                            if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature) && level >= PLD.Levels.Confiteor && mp < 4000)
+                                return PLD.Confiteor;
+                            return PLD.HolySpirit;
+                        }
+                    }
                     if (comboTime > 0)
                     {
                         if (lastMove == PLD.FastBlade && level >= PLD.Levels.RiotBlade)

@@ -9,7 +9,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Cure 2 and Medica become Afflatus Solace and Rapture respectively when lilies are available
 * Benefic 2 becomes Benefic when synced below level 26
 * Minor Arcana becomes Sleeve Draw when a card is not drawn.
-* Royal Authority combo and Prominence combo become Holy Spirit/Circle when Requiescat is up
+* Single-target and AoE combos become Holy Spirit/Circle when Requiescat is up
 * Holy Spirit/Circle become Confiteor when MP is lower than 4000 and Requiescat is up
 * Dragon Kick becomes Bootshine while a form is up and Leaden Fist is up.
 * Overcap prevention on GNB now extends to single-target combo and has also been added to WAR/DRK.
