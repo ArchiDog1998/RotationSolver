@@ -1404,13 +1404,13 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge.BlackGauge >= gauge.WhiteGauge && level >= RDM.Levels.Verholy)
                             {
-                                if (HasBuff(RDM.Buffs.VerstoneReady) && !HasBuff(RDM.Buffs.VerfireReady))
+                                if (HasBuff(RDM.Buffs.VerstoneReady) && !HasBuff(RDM.Buffs.VerfireReady) && (gauge.BlackGauge - gauge.WhiteGauge <= 9))
                                     return RDM.Verflare;
                                 return RDM.Verholy;
                             }
                             else if (level >= RDM.Levels.Verflare)
                             {
-                                if ((!HasBuff(RDM.Buffs.VerstoneReady) && HasBuff(RDM.Buffs.VerfireReady)) && level > RDM.Levels.Verholy)
+                                if ((!HasBuff(RDM.Buffs.VerstoneReady) && HasBuff(RDM.Buffs.VerfireReady)) && level >= RDM.Levels.Verholy && (gauge.WhiteGauge - gauge.BlackGauge <= 9))
                                     return RDM.Verholy;
                                 return RDM.Verflare;
                             }
