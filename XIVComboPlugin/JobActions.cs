@@ -44,6 +44,8 @@ namespace XIVComboExpandedestPlugin
             Fire = 141,
             Fire3 = 152,
             Fire4 = 3577,
+            Thunder = 144,
+            Thunder3 = 153,
             Despair = 16505,
             Flare = 162,
             Freeze = 159,
@@ -55,14 +57,23 @@ namespace XIVComboExpandedestPlugin
         public static class Buffs
         {
             public const short
+                Thundercloud = 164,
                 LeyLines = 737,
                 Firestarter = 165;
+        }
+        public static class Debuffs
+        {
+            public const short
+                Thunder = 161,
+                Thunder3 = 163;
         }
 
         public static class Levels
         {
             public const byte
                 Freeze = 35,
+                Blizzard3 = 40,
+                Thunder3 = 45,
                 Flare = 50,
                 Blizzard4 = 58,
                 Fire4 = 60,
@@ -80,9 +91,16 @@ namespace XIVComboExpandedestPlugin
             WanderersMinuet = 3559,
             PitchPerfect = 7404,
             HeavyShot = 97,
+            QuickNock = 106,
             BurstShot = 16495,
             StraightShot = 98,
-            RefulgentArrow = 7409;
+            VenomousBite = 100,
+            Windbite = 113,
+            IronJaws = 3560,
+            CausticBite = 7406,
+            Stormbite = 7407,
+            RefulgentArrow = 7409,
+            ApexArrow = 16496;
 
         public static class Buffs
         {
@@ -90,9 +108,22 @@ namespace XIVComboExpandedestPlugin
                 StraightShotReady = 122;
         }
 
+        public static class Debuffs
+        {
+            public const short
+                VenomousBite = 124,
+                Windbite = 129,
+                CausticBite = 1200,
+                Stormbite = 1201;
+        }
+
+
         public static class Levels
         {
             public const byte
+                Windbite = 30,
+                IronJaws = 56,
+                BiteUpgrade = 64,
                 RefulgentArrow = 70,
                 BurstShot = 76;
         }

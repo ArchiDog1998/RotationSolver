@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 82
+        // Last enum used: 86
         // ====================================================================================
         #region DRAGOON
 
@@ -199,6 +199,9 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Despair Feature", "Despair replaces Fire 4 when below 2400 MP. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
         BlackDespairFeature = 77,
 
+        [CustomComboInfo("Thunder Feature", "Thunder 1/3 replaces Enochian/Fire 4/Blizzard 4 when Thundercloud or Thunder", BLM.JobID, BLM.Enochian)]
+        BlackThunderFeature = 86,
+
         #endregion
         // ====================================================================================
         #region ASTROLOGIAN
@@ -282,6 +285,12 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Heavy Shot into Straight Shot", "Replaces Heavy Shot/Burst Shot with Straight Shot/Refulgent Arrow when procced", BRD.JobID, BRD.HeavyShot, BRD.BurstShot)]
         BardStraightShotUpgradeFeature = 42,
 
+        [CustomComboInfo("One Button DoT", "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up. Works for prior versions too, alternates between the two if Iron Jaws isn't available.", BRD.JobID, BRD.IronJaws)]
+        BardOneButtonDoT = 84,
+
+        [CustomComboInfo("Burst Shot/Quick Nock into Apex Arrow", "Replaces Burst Shot and Quick Nock with Apex Arrow when gauge is full.", BRD.JobID, BRD.BurstShot, BRD.QuickNock)]
+        BardApexFeature = 85,
+
         #endregion
         // ====================================================================================
         #region MONK
@@ -291,6 +300,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Monk Bootshine Feature", "Replaces Dragon Kick with Bootshine if both a form and Leaden Fist are up.", MNK.JobID, MNK.DragonKick)]
         MnkBootshineFeature = 65,
+
+        [CustomComboInfo("Monk Demolish Feature", "Replaces Demolish with Snap Punch if Demolish is active on current target and over 4s in duration left.", MNK.JobID, MNK.Demolish)]
+        MnkDemolishFeature = 83,
 
         #endregion
         // ====================================================================================

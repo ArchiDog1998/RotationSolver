@@ -12,6 +12,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Single-target and AoE combos become Holy Spirit/Circle when Requiescat is up
 * Holy Spirit/Circle become Confiteor when MP is lower than 4000 and Requiescat is up
 * Dragon Kick becomes Bootshine while a form is up and Leaden Fist is up.
+* Demolish will turn into snap punch when Demolish's DoT is above 5s.
 * Overcap prevention on GNB now extends to single-target combo and has also been added to WAR/DRK.
 * A second overcap prevention has been added for Infuriate/Bloodfest.
 * An MP overcap prevention that involves weaving a CD before syphon strike/stalwart soul has been added.
@@ -25,12 +26,14 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Verstone/Verfire will turn into Veraero/Verthunder when Dualcast/Swiftcast is up, with an additional feature that also does the same if out of combat for openers (and sets Vercure to Jolt below 52 so you can still pull without a long cast).
 * When Suiton (or Hidden) is up, Trick Attack will replace Kassatsu.*
 * In the same vein, Ten Chi Jin (the move) will turn into Meisui while Suiton is up*.
+* One button DoT on Bard! Now all your DoTs are on the Iron Jaws button, and when both are applied, it becomes Iron Jaws. Best of all, this is per your active target, so you can DoT multiple targets just fine!
+* Burst Shot/Quick Nock will turn into Apex Arrow when gauge is full.
 
 For actions marked with a *, you may want Remind Me or a similar plugin to keep track of cooldowns while they are invisible.
 
 ## About
 XIVCombo is a plugin to allow for "one-button" combo chains, as well as implementing various other mutually-exclusive button consolidation and quality of life replacements. Some examples of the functionality it provides:
-* Most weaponskill combos are put onto a single button (sorry MNK... kinda!).
+* Most weaponskill combos are put onto a single button (unfortunately not including MNK, though MNK gets a few good features too!).
 * Enochian changes into Fire 4 and Blizzard 4 depending on your stacks, a la PvP Enochian.
 * Hypercharge turns into Heat Blast while Overheated.
 * Jump/High Jump turns into Mirage Dive while Dive Ready.

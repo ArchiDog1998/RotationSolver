@@ -921,6 +921,19 @@ namespace XIVComboExpandedestPlugin
                     var gauge = GetJobGauge<BLMGauge>();
                     if (gauge.IsEnoActive())
                     {
+                        if (gauge.ElementTimeRemaining >= 5000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature))
+                        {
+                            if((HasBuff(BLM.Buffs.Thundercloud) && PlayerBuffDuration(BLM.Buffs.Thundercloud) < 3))
+                            {
+                                if (level < BLM.Levels.Thunder3)
+                                    return BLM.Thunder;
+                                return BLM.Thunder3;
+                            }
+                            if (level < BLM.Levels.Thunder3 && TargetHasBuff(BLM.Debuffs.Thunder) && TargetBuffDuration(BLM.Debuffs.Thunder) < 5)
+                                return BLM.Thunder;
+                            if (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 5)
+                                return BLM.Thunder3;
+                        }
                         if (gauge.InUmbralIce() && level >= BLM.Levels.Blizzard4)
                             return BLM.Blizzard4;
                         if (level >= BLM.Levels.Fire4)
@@ -928,7 +941,15 @@ namespace XIVComboExpandedestPlugin
                             if (gauge.ElementTimeRemaining < 3000 && HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
                                 return BLM.Fire3;
                             if (mp < 2400 && level >= BLM.Levels.Despair && Configuration.IsEnabled(CustomComboPreset.BlackDespairFeature))
+                            {
+                                if (gauge.ElementTimeRemaining >= 6000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature) && HasBuff(BLM.Buffs.Thundercloud) && PlayerBuffDuration(BLM.Buffs.Thundercloud) < 3)
+                                {
+                                    if (level < BLM.Levels.Thunder3)
+                                        return BLM.Thunder;
+                                    return BLM.Thunder3;
+                                }    
                                 return BLM.Despair;
+                            }
                             if (gauge.ElementTimeRemaining < 5000 && !HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
                                 return BLM.Fire;
                             return BLM.Fire4;
@@ -1295,6 +1316,8 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == BRD.HeavyShot || actionID == BRD.BurstShot)
                 {
+                    if (GetJobGauge<BRDGauge>().SoulVoiceValue == 100)
+                        return BRD.ApexArrow;
                     UpdateBuffAddress();
                     if (HasBuff(BRD.Buffs.StraightShotReady))
                     {
@@ -1307,6 +1330,44 @@ namespace XIVComboExpandedestPlugin
                         return BRD.BurstShot;
                     return BRD.HeavyShot;
                 }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.BardOneButtonDoT))
+            {
+                if (actionID == BRD.IronJaws)
+                { 
+                    if (level < BRD.Levels.IronJaws)
+                    {
+                        if (TargetHasBuff(BRD.Debuffs.VenomousBite) && TargetHasBuff(BRD.Debuffs.Windbite))
+                        {
+                            if (TargetBuffDuration(BRD.Debuffs.VenomousBite) < TargetBuffDuration(BRD.Debuffs.Windbite))
+                                return BRD.VenomousBite;
+                            return BRD.Windbite;
+                        }
+                        else if (TargetHasBuff(BRD.Debuffs.Windbite) || level < BRD.Levels.Windbite)
+                            return BRD.VenomousBite;
+                        return BRD.Windbite;
+                    }
+                    if (level < BRD.Levels.BiteUpgrade)
+                    {
+                        if (TargetHasBuff(BRD.Debuffs.VenomousBite) && TargetHasBuff(BRD.Debuffs.Windbite))
+                            return BRD.IronJaws;
+                        if (TargetHasBuff(BRD.Debuffs.Windbite))
+                            return BRD.VenomousBite;
+                        return BRD.Windbite;
+                    }
+                    if (TargetHasBuff(BRD.Debuffs.CausticBite) && TargetHasBuff(BRD.Debuffs.Stormbite))
+                        return BRD.IronJaws;
+                    if (TargetHasBuff(BRD.Debuffs.Stormbite))
+                        return BRD.CausticBite;
+                    return BRD.Stormbite;
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.BardApexFeature))
+            {
+                if (actionID == BRD.QuickNock && GetJobGauge<BRDGauge>().SoulVoiceValue == 100)
+                    return BRD.ApexArrow;
             }
 
             #endregion
@@ -1340,6 +1401,22 @@ namespace XIVComboExpandedestPlugin
                     if (level < MNK.Levels.DragonKick)
                         return MNK.Bootshine;
                     return MNK.DragonKick;
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.MnkDemolishFeature))
+            { 
+                if (actionID == MNK.Demolish)
+                {
+                    if (level < MNK.Levels.Demolish)
+                        return MNK.SnapPunch;
+                    if (TargetHasBuff(MNK.Debuffs.Demolish))
+                    {
+                        var duration = TargetBuffDuration(MNK.Debuffs.Demolish);
+                        if (duration > 4)
+                            return MNK.SnapPunch;
+                    }
+                    return MNK.Demolish;
                 }
             }
 
@@ -1494,6 +1571,69 @@ namespace XIVComboExpandedestPlugin
             catch (Exception)
             {
                 ActiveBuffArray = IntPtr.Zero;
+            }
+        }
+
+        private bool TargetHasBuff(params short[] needle)
+        {
+            try
+            {
+                var target = ClientState.Targets.CurrentTarget;
+
+                for (var i = 0; i < target.StatusEffects.Length; i++)
+                {
+                    if (needle.Contains(target.StatusEffects[i].EffectId) && target.StatusEffects[i].OwnerId == ClientState.LocalPlayer.ActorId)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private float TargetBuffDuration(params short[] needle)
+        {
+            try
+            {
+                var target = ClientState.Targets.CurrentTarget;
+
+                for (var i = 0; i < target.StatusEffects.Length; i++)
+                {
+                    if (needle.Contains(target.StatusEffects[i].EffectId) && target.StatusEffects[i].OwnerId == ClientState.LocalPlayer.ActorId)
+                    {
+                        return target.StatusEffects[i].Duration;
+                    }
+                }
+                return 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        private float PlayerBuffDuration(params short[] needle)
+        {
+            try
+            {
+                var target = ClientState.LocalPlayer;
+
+                for (var i = 0; i < target.StatusEffects.Length; i++)
+                {
+                    if (needle.Contains(target.StatusEffects[i].EffectId))
+                    {
+                        return target.StatusEffects[i].Duration;
+                    }
+                }
+                return 0;
+            }
+            catch (Exception)
+            {
+                return 0;
             }
         }
 
