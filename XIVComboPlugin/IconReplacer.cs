@@ -731,12 +731,9 @@ namespace XIVComboExpandedestPlugin
             //Replace Chi with Jin while Kassatsu is up and you have Enhanced Kassatsu
             if (Configuration.IsEnabled(CustomComboPreset.NinjaKassatsuTrickFeature))
             {
-                if (actionID == NIN.Chi && level > NIN.Levels.EnhancedKassatsu)
+                if (actionID == NIN.Chi && level > NIN.Levels.EnhancedKassatsu && (HasBuff(NIN.Buffs.Kassatsu)))
                 {
-                    UpdateBuffAddress();
-                    if (HasBuff(NIN.Buffs.Kassatsu))
                         return NIN.Jin;
-                    return NIN.Chi;
                 }
             }
 
