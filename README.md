@@ -22,6 +22,8 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Shoha will replace Iaijutsu/Tsubame when Meditation gauge is full.
 * Enochian/Fire 4 will be replaced with either Fire 1 and 3 depending on remaining time and firestarter proc.
 * Despair will replace Enochian/Fire 4 when MP is below 2400.
+* Fire 3 becomes Fire 1 when in Astral Fire when no Firestarter proc is up. Also replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).
+* Blizzard 3 becomes Blizzard 1 when synced below requirement level, same for Freeze and Blizzard 2.
 * Red Mage Verholy/Verflare/Scorch now part of redoublement combo (separate option), based on gauge and procs.
 * Verstone/Verfire will turn into Veraero/Verthunder when Dualcast/Swiftcast is up, with an additional feature that also does the same if out of combat for openers (and sets Vercure to Jolt below 52 so you can still pull without a long cast).
 * When Suiton (or Hidden) is up, Trick Attack will replace Kassatsu.*

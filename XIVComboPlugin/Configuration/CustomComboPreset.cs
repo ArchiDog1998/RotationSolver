@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 86
+        // Last enum used: 88
         // ====================================================================================
         #region DRAGOON
 
@@ -201,6 +201,12 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Thunder Feature", "Thunder 1/3 replaces Enochian/Fire 4/Blizzard 4 when Thundercloud or Thunder", BLM.JobID, BLM.Enochian)]
         BlackThunderFeature = 86,
+
+        [CustomComboInfo("Fire 3 to Fire 1 Feature", "Fire 3 becomes Fire 1 when in Astral Fire when no Firestarter proc is up. Also replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).", BLM.JobID, BLM.Enochian, BLM.Fire3)]
+        BlackFire3Feature = 87,
+
+        [CustomComboInfo("Blizzard Condensation Feature", "Blizzard 3 becomes Blizzard 1 when synced below requirement level, same for Freeze and Blizzard 2.", BLM.JobID, BLM.Blizzard3, BLM.Freeze)]
+        BlackBlizzardFeature = 88,
 
         #endregion
         // ====================================================================================

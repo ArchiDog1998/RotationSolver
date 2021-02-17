@@ -44,6 +44,9 @@ namespace XIVComboExpandedestPlugin
             Fire = 141,
             Fire3 = 152,
             Fire4 = 3577,
+            Blizzard = 142,
+            Blizzard2 = 146,
+            Blizzard3 = 154,
             Thunder = 144,
             Thunder3 = 153,
             Despair = 16505,
@@ -71,10 +74,12 @@ namespace XIVComboExpandedestPlugin
         public static class Levels
         {
             public const byte
+                Fire3 = 34,
                 Freeze = 35,
                 Blizzard3 = 40,
                 Thunder3 = 45,
                 Flare = 50,
+                Enochian = 56,
                 Blizzard4 = 58,
                 Fire4 = 60,
                 BetweenTheLines = 62,

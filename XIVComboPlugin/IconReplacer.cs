@@ -955,8 +955,47 @@ namespace XIVComboExpandedestPlugin
                             return BLM.Fire4;
                         }
                     }
+                    if (level < BLM.Levels.Fire3)
+                        return BLM.Fire;
+                    if (gauge.InAstralFire() && (level < BLM.Levels.Enochian || gauge.IsEnoActive()))
+                    {
+                        UpdateBuffAddress();
+                        if (HasBuff(BLM.Buffs.Firestarter))
+                            return BLM.Fire3;
+                        return BLM.Fire;
+                    }
 
                     return BLM.Enochian;
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.BlackFire3Feature) && actionID == BLM.Fire3)
+            {
+                var gauge = GetJobGauge<BLMGauge>();
+                if (level < BLM.Levels.Fire3)
+                    return BLM.Fire;
+                if (gauge.InAstralFire())
+                {
+                    UpdateBuffAddress();
+                    if (HasBuff(BLM.Buffs.Firestarter))
+                        return BLM.Fire3;
+                    return BLM.Fire;
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.BlackBlizzardFeature))
+            {
+                if (actionID == BLM.Blizzard3)
+                {
+                    if (level < BLM.Levels.Blizzard3)
+                        return BLM.Blizzard;
+                    return BLM.Blizzard3;
+                }
+                if (actionID == BLM.Freeze)
+                {
+                    if (level < BLM.Levels.Freeze)
+                        return BLM.Blizzard2;
+                    return BLM.Freeze;
                 }
             }
 
