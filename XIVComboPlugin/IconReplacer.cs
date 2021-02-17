@@ -728,6 +728,18 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            //Replace Chi with Jin while Kassatsu is up and you have Enhanced Kassatsu
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaKassatsuTrickFeature))
+            {
+                if (actionID == NIN.Chi && level > NIN.Levels.EnhancedKassatsu)
+                {
+                    UpdateBuffAddress();
+                    if (HasBuff(NIN.Buffs.Kassatsu))
+                        return NIN.Jin;
+                    return NIN.Chi;
+                }
+            }
+
             //Replace Ten Chi Jin (the move) with Meisui while Suiton is up
             if (Configuration.IsEnabled(CustomComboPreset.NinjaTCJMeisuiFeature))
             {

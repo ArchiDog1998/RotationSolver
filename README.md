@@ -28,6 +28,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Verstone/Verfire will turn into Veraero/Verthunder when Dualcast/Swiftcast is up, with an additional feature that also does the same if out of combat for openers (and sets Vercure to Jolt below 52 so you can still pull without a long cast).
 * When Suiton (or Hidden) is up, Trick Attack will replace Kassatsu.*
 * In the same vein, Ten Chi Jin (the move) will turn into Meisui while Suiton is up*.
+* Chi is replaced with Jin while Kassatsu is up if you have Enhanced Kassatsu to help with muscle memory.
 * One button DoT on Bard! Now all your DoTs are on the Iron Jaws button, and when both are applied, it becomes Iron Jaws. Best of all, this is per your active target, so you can DoT multiple targets just fine!
 * Burst Shot/Quick Nock will turn into Apex Arrow when gauge is full.
 

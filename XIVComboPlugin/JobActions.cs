@@ -474,13 +474,16 @@ namespace XIVComboExpandedestPlugin
             TenChiJin = 7403,
             Kassatsu = 2264,
             Meisui = 16489,
-            TrickAttack = 2258;
+            TrickAttack = 2258,
+            Chi = 2261,
+            Jin = 2263;
 
         public static class Buffs
         {
             public const short
                 AssassinateReady = 1955,
                 Hidden = 614,
+                Kassatsu = 497,
                 Suiton = 507;
         }
 
@@ -491,7 +494,8 @@ namespace XIVComboExpandedestPlugin
                 AeolianEdge = 26,
                 HakkeMujinsatsu = 52,
                 ArmorCrush = 54,
-                Meisui = 72;
+                Meisui = 72,
+                EnhancedKassatsu = 76;
         }
     }
 

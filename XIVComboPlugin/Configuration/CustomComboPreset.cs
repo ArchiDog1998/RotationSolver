@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 88
+        // Last enum used: 89
         // ====================================================================================
         #region DRAGOON
 
@@ -138,6 +138,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Ten Chi Jin to Meisui", "Replaces Ten Chi Jin (the move) with Meisui while Suiton is up. Cooldown tracking plugin recommended.", NIN.JobID, NIN.TenChiJin)]
         NinjaTCJMeisuiFeature = 82,
+
+        [CustomComboInfo("Kassatsu Chi/Jin Feature", "Replaces Chi with Jin while Kassatsu is up if you have Enhanced Kassatsu.", NIN.JobID, NIN.Chi)]
+        NinjaKassatsuChiJinFeature = 89,
 
         #endregion
         // ====================================================================================
