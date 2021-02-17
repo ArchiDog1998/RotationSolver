@@ -1423,14 +1423,6 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
-            if (Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature))
-            {
-                if (actionID == RDM.Vercure && level < RDM.Levels.Vercure)
-                {
-                    return RDM.Jolt;
-                }
-            }
-
             if (Configuration.IsEnabled(CustomComboPreset.RedMageVerprocCombo))
             {
                 if (actionID == RDM.Verstone)
@@ -1442,7 +1434,7 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verholy)
                             return RDM.Verholy;
-                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast)) || (!ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature)))
+                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast)))
                             return RDM.Veraero;
                     }
                     if (HasBuff(RDM.Buffs.VerstoneReady))

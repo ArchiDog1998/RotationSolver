@@ -311,7 +311,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Verproc into Jolt Plus", "Additionally replaces Verstone/Verfire with Veraero/Verthunder if dualcast/swiftcast are up. Requires Verproc into Jolt.", RDM.JobID, RDM.Verstone, RDM.Verfire)]
         RedMageVerprocComboPlus= 79,
 
-        [CustomComboInfo("Verproc into Jolt Plus Opener Feature", "Turns Verstone/Verfire into Veraero/Verthunder when out of combat. Requires Verproc into Jolt Plus. Also turns Vercure into Jolt below level 54 so you can still pull without long casting.", RDM.JobID, RDM.Verstone, RDM.Verfire, RDM.Vercure)]
+        [CustomComboInfo("Verproc into Jolt Plus Opener Feature", "Turns Verfire into Verthunder when out of combat. Requires Verproc into Jolt Plus.", RDM.JobID, RDM.Verfire)]
         RedMageVerprocOpenerFeature = 80,
 
         #endregion

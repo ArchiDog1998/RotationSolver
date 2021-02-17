@@ -496,6 +496,7 @@ namespace XIVComboExpandedestPlugin
         public static class Levels
         {
             public const byte
+                Jolt = 2,
                 Zwerchhau = 35,
                 Redoublement = 50,
                 Vercure = 54,
