@@ -476,7 +476,7 @@ namespace XIVComboExpandedestPlugin
             Meisui = 16489,
             TrickAttack = 2258,
             Chi = 2261,
-            Jin = 2263;
+            Jin = 18807;
 
         public static class Buffs
         {
