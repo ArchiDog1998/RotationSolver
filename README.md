@@ -22,6 +22,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Shoha will replace Iaijutsu/Tsubame when Meditation gauge is full.
 * Enochian/Fire 4 will be replaced with either Fire 1 and 3 depending on remaining time and firestarter proc.
 * Despair will replace Enochian/Fire 4 when MP is below 2400.
+* Thunder (3) will replace Enochian/Fire 4/Blizzard 4 when Thundercloud is up and either Thundercloud or Thunder (3) is about to run out, assuming it will not interrupt UI/AF upkeep.
 * Fire 3 becomes Fire 1 when in Astral Fire when no Firestarter proc is up. Also replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).
 * Blizzard 3 becomes Blizzard 1 when synced below requirement level, same for Freeze and Blizzard 2.
 * Red Mage Verholy/Verflare/Scorch now part of redoublement combo (separate option), based on gauge and procs.

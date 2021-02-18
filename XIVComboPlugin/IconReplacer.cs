@@ -930,40 +930,35 @@ namespace XIVComboExpandedestPlugin
                     var gauge = GetJobGauge<BLMGauge>();
                     if (gauge.IsEnoActive())
                     {
-                        if (gauge.ElementTimeRemaining >= 5000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature))
-                        {
-                            if((HasBuff(BLM.Buffs.Thundercloud) && PlayerBuffDuration(BLM.Buffs.Thundercloud) < 3))
-                            {
-                                if (level < BLM.Levels.Thunder3)
-                                    return BLM.Thunder;
-                                return BLM.Thunder3;
-                            }
-                            if (level < BLM.Levels.Thunder3 && TargetHasBuff(BLM.Debuffs.Thunder) && TargetBuffDuration(BLM.Debuffs.Thunder) < 5)
-                                return BLM.Thunder;
-                            if (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 5)
-                                return BLM.Thunder3;
-                        }
                         if (gauge.InUmbralIce() && level >= BLM.Levels.Blizzard4)
+                        {
+                            if (gauge.ElementTimeRemaining >= 5000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature))
+                                if (HasBuff(BLM.Buffs.Thundercloud))
+                                    if ((PlayerBuffDuration(BLM.Buffs.Thundercloud) < 4 && PlayerBuffDuration(BLM.Buffs.Thundercloud) > 0) || (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 4))
+                                        return BLM.Thunder3;
                             return BLM.Blizzard4;
+                        }
                         if (level >= BLM.Levels.Fire4)
                         {
+                            if (gauge.ElementTimeRemaining >= 6000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature))
+                                if (HasBuff(BLM.Buffs.Thundercloud))
+                                    if ((PlayerBuffDuration(BLM.Buffs.Thundercloud) < 4 && PlayerBuffDuration(BLM.Buffs.Thundercloud) > 0) || (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 4))
+                                        return BLM.Thunder3;
                             if (gauge.ElementTimeRemaining < 3000 && HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
                                 return BLM.Fire3;
                             if (mp < 2400 && level >= BLM.Levels.Despair && Configuration.IsEnabled(CustomComboPreset.BlackDespairFeature))
                             {
-                                if (gauge.ElementTimeRemaining >= 6000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature) && HasBuff(BLM.Buffs.Thundercloud) && PlayerBuffDuration(BLM.Buffs.Thundercloud) < 3)
-                                {
-                                    if (level < BLM.Levels.Thunder3)
-                                        return BLM.Thunder;
-                                    return BLM.Thunder3;
-                                }    
                                 return BLM.Despair;
                             }
-                            if (gauge.ElementTimeRemaining < 5000 && !HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
+                            if (gauge.ElementTimeRemaining < 6000 && !HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
                                 return BLM.Fire;
                             return BLM.Fire4;
                         }
                     }
+                    if (gauge.ElementTimeRemaining >= 5000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature) && level < BLM.Levels.Thunder3)
+                        if (HasBuff(BLM.Buffs.Thundercloud))
+                            if ((PlayerBuffDuration(BLM.Buffs.Thundercloud) < 4 && PlayerBuffDuration(BLM.Buffs.Thundercloud) > 0) || (TargetHasBuff(BLM.Debuffs.Thunder) && TargetBuffDuration(BLM.Debuffs.Thunder) < 4))
+                                return BLM.Thunder;
                     if (level < BLM.Levels.Fire3)
                         return BLM.Fire;
                     if (gauge.InAstralFire() && (level < BLM.Levels.Enochian || gauge.IsEnoActive()))

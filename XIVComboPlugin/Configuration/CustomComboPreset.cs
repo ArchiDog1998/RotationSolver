@@ -202,7 +202,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Despair Feature", "Despair replaces Fire 4 when below 2400 MP. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
         BlackDespairFeature = 77,
 
-        [CustomComboInfo("Thunder Feature", "Thunder 1/3 replaces Enochian/Fire 4/Blizzard 4 when Thundercloud or Thunder", BLM.JobID, BLM.Enochian)]
+        [CustomComboInfo("Thunder Feature", "Thunder 1/3 replaces Enochian/Fire 4/Blizzard 4 when Thundercloud is up and either Thundercloud or Thunder 1/3 is about to run out, assuming it won't interrupt timer upkeep. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
         BlackThunderFeature = 86,
 
         [CustomComboInfo("Fire 3 to Fire 1 Feature", "Fire 3 becomes Fire 1 when in Astral Fire when no Firestarter proc is up. Also replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).", BLM.JobID, BLM.Enochian, BLM.Fire3)]
