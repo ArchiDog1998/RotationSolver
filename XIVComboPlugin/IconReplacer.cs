@@ -1456,7 +1456,7 @@ namespace XIVComboExpandedestPlugin
                     if (TargetHasBuff(MNK.Debuffs.Demolish))
                     {
                         var duration = TargetBuffDuration(MNK.Debuffs.Demolish);
-                        if (duration > 4)
+                        if (duration > 5)
                             return MNK.SnapPunch;
                     }
                     return MNK.Demolish;

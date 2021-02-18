@@ -196,7 +196,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("(Between the) Ley Lines", "Change Ley Lines into BTL when Ley Lines is active", BLM.JobID, BLM.LeyLines)]
         BlackLeyLines = 56,
 
-        [CustomComboInfo("Fire 1/3 Feature", "Fire 1 (and 3 if procced) will replace Fire 4 if below 5s (3s if Fire 3) on AF. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
+        [CustomComboInfo("Fire 1/3 Feature", "Fire 1 (and 3 if procced) will replace Fire 4 if below 6s (3s if Fire 3) on AF. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
         BlackFireFeature = 76,
 
         [CustomComboInfo("Despair Feature", "Despair replaces Fire 4 when below 2400 MP. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
@@ -310,7 +310,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Monk Bootshine Feature", "Replaces Dragon Kick with Bootshine if both a form and Leaden Fist are up.", MNK.JobID, MNK.DragonKick)]
         MnkBootshineFeature = 65,
 
-        [CustomComboInfo("Monk Demolish Feature", "Replaces Demolish with Snap Punch if Demolish is active on current target and over 4s in duration left.", MNK.JobID, MNK.Demolish)]
+        [CustomComboInfo("Monk Demolish Feature", "Replaces Demolish with Snap Punch if Demolish is active on current target and over 5s in duration left.", MNK.JobID, MNK.Demolish)]
         MnkDemolishFeature = 83,
 
         #endregion
