@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 89
+        // Last enum used: 90
         // ====================================================================================
         #region DRAGOON
 
@@ -142,6 +142,9 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Kassatsu Chi/Jin Feature", "Replaces Chi with Jin while Kassatsu is up if you have Enhanced Kassatsu.", NIN.JobID, NIN.Chi)]
         NinjaKassatsuChiJinFeature = 89,
 
+        [CustomComboInfo("Hide to Mug", "Replaces Hide with Mug while in combat.", NIN.JobID, NIN.Hide)]
+        NinjaHideMugFeature = 90,
+
         #endregion
         // ====================================================================================
         #region GUNBREAKER
@@ -164,8 +167,8 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Bloodfest Gauge Overcap Feature", "Replace Bloodfest with Burst Strike if it would cause you to overcap.", GNB.JobID, GNB.Bloodfest)]
         GunbreakerBloodfestOvercapFeature = 70,
 
-        [CustomComboInfo("Sonic Break Feature", "Replace No Mercy with Sonic Break while No Mercy is active.", GNB.JobID, GNB.NoMercy)]
-        GunbreakerSonicBreakFeature = 66,
+        [CustomComboInfo("No Mercy Feature", "Replace No Mercy with Bow Shock, and then Sonic Break, while No Mercy is active.", GNB.JobID, GNB.NoMercy)]
+        GunbreakerNoMercyFeature = 66,
 
         #endregion
         // ====================================================================================

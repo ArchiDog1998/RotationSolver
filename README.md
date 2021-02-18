@@ -16,7 +16,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Overcap prevention on GNB now extends to single-target combo and has also been added to WAR/DRK.
 * A second overcap prevention has been added for Infuriate/Bloodfest.
 * An MP overcap prevention that involves weaving a CD before syphon strike/stalwart soul has been added.
-* No Mercy will turn into Sonic Break while buff is active.*
+* No Mercy will turn into Bow Shock, and then Sonic Break, while buff is active.*
 * Single-target combo and AoE combo on WAR will be replaced by Fell Cleave/Decimate during Inner Release to prevent wasting GCDs.
 * Meikyo will be replaced by Jinpu/Shifu while its buff is up.
 * Shoha will replace Iaijutsu/Tsubame when Meditation gauge is full.
@@ -30,6 +30,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * When Suiton (or Hidden) is up, Trick Attack will replace Kassatsu.*
 * In the same vein, Ten Chi Jin (the move) will turn into Meisui while Suiton is up*.
 * Chi is replaced with Jin while Kassatsu is up if you have Enhanced Kassatsu to help with muscle memory.
+* Hide becomes Mug while in combat.
 * One button DoT on Bard! Now all your DoTs are on the Iron Jaws button, and when both are applied, it becomes Iron Jaws. Best of all, this is per your active target, so you can DoT multiple targets just fine!
 * Burst Shot/Quick Nock will turn into Apex Arrow when gauge is full.
 

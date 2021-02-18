@@ -304,6 +304,7 @@ namespace XIVComboExpandedestPlugin
             SolidBarrel = 16145,
             BurstStrike = 16162,
             SonicBreak = 16153,
+            BowShock = 16159,
             KeenEdge = 16137,
             BrutalShell = 16139,
             WickedTalon = 16150,
@@ -326,6 +327,12 @@ namespace XIVComboExpandedestPlugin
                 ReadyToGouge = 1844;
         }
 
+        public static class Debuffs
+        {
+            public const short
+                BowShock = 1838;
+        }
+
         public static class Levels
         {
             public const byte
@@ -333,6 +340,7 @@ namespace XIVComboExpandedestPlugin
                 SolidBarrel = 26,
                 DemonSlaughter = 40,
                 SonicBreak = 54,
+                BowShock = 62,
                 Continuation = 70,
                 FatedCircle = 72;
         }
@@ -463,6 +471,8 @@ namespace XIVComboExpandedestPlugin
         public const byte JobID = 30;
 
         public const uint
+            Mug = 2248,
+            Hide = 2245,
             ArmorCrush = 3563,
             SpinningEdge = 2240,
             GustSlash = 2242,

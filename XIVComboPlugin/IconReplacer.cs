@@ -728,6 +728,17 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            //Replace Hide with Mug while out of combat
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaHideMugFeature))
+            {
+                if (actionID == NIN.Hide)
+                {
+                    if (ClientState.Condition[ConditionFlag.InCombat])
+                        return NIN.Mug;
+                    return NIN.Hide;
+                }
+            }
+
             //Replace Chi with Jin while Kassatsu is up and you have Enhanced Kassatsu
             if (Configuration.IsEnabled(CustomComboPreset.NinjaKassatsuChiJinFeature))
             {
@@ -781,13 +792,18 @@ namespace XIVComboExpandedestPlugin
                     return GNB.KeenEdge;
                 }
             }
-            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerSonicBreakFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerNoMercyFeature))
             {
                 if (actionID == GNB.NoMercy)
                 {
                     UpdateBuffAddress();
-                    if (HasBuff(GNB.Buffs.NoMercy) && level >= GNB.Levels.SonicBreak)
-                        return GNB.SonicBreak;
+                    if (HasBuff(GNB.Buffs.NoMercy))
+                    {
+                        if (level >= GNB.Levels.BowShock && !TargetHasBuff(GNB.Debuffs.BowShock))
+                            return GNB.BowShock;
+                        if (level >= GNB.Levels.SonicBreak)
+                            return GNB.SonicBreak;
+                    }
 
                     return GNB.NoMercy;
                 }
