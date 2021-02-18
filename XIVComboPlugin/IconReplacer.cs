@@ -1588,7 +1588,7 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verflare)
                             return RDM.Verflare;
-                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast)) || (!ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature)))
+                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast)) || (HasBuff(RDM.Buffs.VerfireReady) && !ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature)))
                             return RDM.Verthunder;
                     }
                     if (HasBuff(RDM.Buffs.VerfireReady))
