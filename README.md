@@ -12,7 +12,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Single-target and AoE combos become Holy Spirit/Circle when Requiescat is up
 * Holy Spirit/Circle become Confiteor when MP is lower than 4000 and Requiescat is up
 * Dragon Kick becomes Bootshine while a form is up and Leaden Fist is up.
-* Demolish will turn into snap punch when Demolish's DoT is above 5s.
+* Demolish will turn into snap punch when Demolish's DoT is above 6s.
 * Overcap prevention on GNB now extends to single-target combo and has also been added to WAR/DRK.
 * A second overcap prevention has been added for Infuriate/Bloodfest.
 * An MP overcap prevention that involves weaving a CD before syphon strike/stalwart soul has been added.

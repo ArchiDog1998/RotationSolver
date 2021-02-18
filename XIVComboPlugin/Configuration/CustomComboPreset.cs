@@ -310,7 +310,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Monk Bootshine Feature", "Replaces Dragon Kick with Bootshine if both a form and Leaden Fist are up.", MNK.JobID, MNK.DragonKick)]
         MnkBootshineFeature = 65,
 
-        [CustomComboInfo("Monk Demolish Feature", "Replaces Demolish with Snap Punch if Demolish is active on current target and over 5s in duration left.", MNK.JobID, MNK.Demolish)]
+        [CustomComboInfo("Monk Demolish Feature", "Replaces Demolish with Snap Punch if Demolish is active on current target and over 6s in duration left.", MNK.JobID, MNK.Demolish)]
         MnkDemolishFeature = 83,
 
         #endregion
