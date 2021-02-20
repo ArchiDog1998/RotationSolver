@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 92
+        // Last enum used: 93
         // ====================================================================================
         #region DRAGOON
 
@@ -61,7 +61,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Requiescat Confiteor", "Replace Requiescat with Confiter while under the effect of Requiescat", PLD.JobID, PLD.Requiescat)]
         PaladinRequiescatCombo = 55,
 
-        [CustomComboInfo("Requiescat Feature", "Replace Royal Authority/Goring Blade combo with Holy Spirit and Prominence combo with Holy Circle while Requiescat is active. Requires said combos to be activated to work.", PLD.JobID, PLD.RoyalAuthority, PLD.GoringBlade, PLD.Prominence)]
+        [CustomComboInfo("Requiescat Feature", "Replace Royal Authority/Goring Blade combo with Holy Spirit and Prominence combo with Holy Circle while Requiescat is active.\nRequires said combos to be activated to work.", PLD.JobID, PLD.RoyalAuthority, PLD.GoringBlade, PLD.Prominence)]
         PaladinRequiescatFeature = 63,
 
         [CustomComboInfo("Confiteor Feature", "Replace Holy Spirit/Circle with Confiteor while MP is under 4000 and Requiescat is up.", PLD.JobID, PLD.HolySpirit, PLD.HolyCircle)]
@@ -117,7 +117,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Shoha Feature", "Replaces Iaijutsu/Tsubame with Shoha if gauge is capped.", SAM.JobID, SAM.Iaijutsu, SAM.Tsubame)]
         SamuraiShohaFeature = 74,
 
-        [CustomComboInfo("Tsubame to Iaijutsu Feature", "Replaces Tsubama with Iaijutsu while Sens are up. Also deletes Kaeshi: Higanbana from the game, good riddance.", SAM.JobID, SAM.Tsubame)]
+        [CustomComboInfo("Tsubame to Iaijutsu Feature", "Replaces Tsubame with Iaijutsu while Sens are up.\nAlso deletes Kaeshi: Higanbana from the game, good riddance.", SAM.JobID, SAM.Tsubame)]
         SamuraiTsubameFeature = 91,
 
         #endregion
@@ -136,10 +136,10 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Dream to Assassinate", "Replace Dream Within a Dream with Assassinate when Assassinate Ready", NIN.JobID, NIN.DreamWithinADream)]
         NinjaAssassinateFeature = 45,
 
-        [CustomComboInfo("Kassatsu to Trick", "Replaces Kassatsu with Trick Attack while Suiton or Hidden is up. Cooldown tracking plugin recommended.", NIN.JobID, NIN.Kassatsu)]
+        [CustomComboInfo("Kassatsu to Trick", "Replaces Kassatsu with Trick Attack while Suiton or Hidden is up.\nCooldown tracking plugin recommended.", NIN.JobID, NIN.Kassatsu)]
         NinjaKassatsuTrickFeature = 81,
 
-        [CustomComboInfo("Ten Chi Jin to Meisui", "Replaces Ten Chi Jin (the move) with Meisui while Suiton is up. Cooldown tracking plugin recommended.", NIN.JobID, NIN.TenChiJin)]
+        [CustomComboInfo("Ten Chi Jin to Meisui", "Replaces Ten Chi Jin (the move) with Meisui while Suiton is up.\nCooldown tracking plugin recommended.", NIN.JobID, NIN.TenChiJin)]
         NinjaTCJMeisuiFeature = 82,
 
         [CustomComboInfo("Kassatsu Chi/Jin Feature", "Replaces Chi with Jin while Kassatsu is up if you have Enhanced Kassatsu.", NIN.JobID, NIN.Chi)]
@@ -202,16 +202,16 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("(Between the) Ley Lines", "Change Ley Lines into BTL when Ley Lines is active", BLM.JobID, BLM.LeyLines)]
         BlackLeyLines = 56,
 
-        [CustomComboInfo("Fire 1/3 Feature", "Fire 1 (and 3 if procced) will replace Fire 4 if below 6s (3s if Fire 3) on AF. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
+        [CustomComboInfo("Fire 1/3 Feature", "Fire 1 (and 3 if procced) will replace Fire 4 if below 6s (3s if Fire 3) on AF.\nEnochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
         BlackFireFeature = 76,
 
-        [CustomComboInfo("Despair Feature", "Despair replaces Fire 4 when below 2400 MP. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
+        [CustomComboInfo("Despair Feature", "Despair replaces Fire 4 when below 2400 MP.\nEnochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
         BlackDespairFeature = 77,
 
-        [CustomComboInfo("Thunder Feature", "Thunder 1/3 replaces Enochian/Fire 4/Blizzard 4 when Thundercloud is up and either Thundercloud or Thunder 1/3 is about to run out, assuming it won't interrupt timer upkeep. Enochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
+        [CustomComboInfo("Thunder Feature", "Thunder 1/3 replaces Enochian/Fire 4/Blizzard 4 when Thundercloud is up and either Thundercloud or Thunder 1/3 is about to run out, assuming it won't interrupt timer upkeep.\nEnochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
         BlackThunderFeature = 86,
 
-        [CustomComboInfo("Fire 3 to Fire 1 Feature", "Fire 3 becomes Fire 1 when in Astral Fire when no Firestarter proc is up. Also replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).", BLM.JobID, BLM.Enochian, BLM.Fire3)]
+        [CustomComboInfo("Fire 3 to Fire 1 Feature", "Fire 3 becomes Fire 1 when in Astral Fire when no Firestarter proc is up.\nAlso replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).", BLM.JobID, BLM.Enochian, BLM.Fire3)]
         BlackFire3Feature = 87,
 
         [CustomComboInfo("Blizzard Condensation Feature", "Blizzard 3 becomes Blizzard 1 when synced below requirement level, same for Freeze and Blizzard 2.", BLM.JobID, BLM.Blizzard3, BLM.Freeze)]
@@ -234,7 +234,7 @@ namespace XIVComboExpandedestPlugin
         // ====================================================================================
         #region SUMMONER
 
-        [CustomComboInfo("Demi-summon combiners", "Dreadwyrm Trance, Summon Bahamut, and Firebird Trance are now one button.\nDeathflare, Enkindle Bahamut, and Enkindle Phoenix are now one button", SMN.JobID, SMN.DreadwyrmTrance, SMN.Deathflare)]
+        [CustomComboInfo("Demi-Summon Combiners", "Dreadwyrm Trance, Summon Bahamut, and Firebird Trance are now one button.\nDeathflare, Enkindle Bahamut, and Enkindle Phoenix are now one button", SMN.JobID, SMN.DreadwyrmTrance, SMN.Deathflare)]
         SummonerDemiCombo = 28,
 
         [CustomComboInfo("Brand of Purgatory Combo", "Replaces Fountain of Fire with Brand of Purgatory when under the affect of Hellish Conduit", SMN.JobID, SMN.Ruin1, SMN.Ruin3)]
@@ -248,6 +248,10 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Egi Assault 1/2 to Ruin IV Feature", "Change Egi Assault 1/2 into Ruin IV when capped on Further Ruin.", SMN.JobID, SMN.EgiAssault, SMN.EgiAssault2)]
         SummonerRuinIVFeature = 92,
+
+        [CustomComboInfo("Demi-Summon Combiners Ultra", "Dreadwyrm Trance, Summon Bahamut, Firebird Trance, Deathflare, Enkindle Bahamut, and Enkindle Phoenix are now one button.\nRequires Demi-Summon Combiners feature.", SMN.JobID, SMN.DreadwyrmTrance)]
+        SummonerDemiComboUltra = 93,
+
         #endregion
         // ====================================================================================
         #region SCHOLAR
@@ -303,7 +307,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Heavy Shot into Straight Shot", "Replaces Heavy Shot/Burst Shot with Straight Shot/Refulgent Arrow when procced", BRD.JobID, BRD.HeavyShot, BRD.BurstShot)]
         BardStraightShotUpgradeFeature = 42,
 
-        [CustomComboInfo("One Button DoT", "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up. Works for prior versions too, alternates between the two if Iron Jaws isn't available.", BRD.JobID, BRD.IronJaws)]
+        [CustomComboInfo("One Button DoT", "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up.\nWorks for prior versions too, alternates between the two if Iron Jaws isn't available.", BRD.JobID, BRD.IronJaws)]
         BardOneButtonDoT = 84,
 
         [CustomComboInfo("Burst Shot/Quick Nock into Apex Arrow", "Replaces Burst Shot and Quick Nock with Apex Arrow when gauge is full.", BRD.JobID, BRD.BurstShot, BRD.QuickNock)]
@@ -332,16 +336,16 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Redoublement Combo", "Replaces Redoublement with its combo chain, following enchantment rules", RDM.JobID, RDM.Redoublement)]
         RedMageMeleeCombo = 49,
 
-        [CustomComboInfo("Redoublement Combo Plus", "Adds Verholy/VerFlare/Scorch to Redoublement Combo, based on procs and mana gauge. Requires Redoublement Combo.", RDM.JobID, RDM.Redoublement)]
+        [CustomComboInfo("Redoublement Combo Plus", "Adds Verholy/VerFlare/Scorch to Redoublement Combo, based on procs and mana gauge.\nRequires Redoublement Combo.", RDM.JobID, RDM.Redoublement)]
         RedMageMeleeComboPlus = 78,
 
         [CustomComboInfo("Verproc into Jolt", "Replaces Verstone/Verfire with Jolt/Scorch when no proc is available.", RDM.JobID, RDM.Verstone, RDM.Verfire)]
         RedMageVerprocCombo = 53,
 
-        [CustomComboInfo("Verproc into Jolt Plus", "Additionally replaces Verstone/Verfire with Veraero/Verthunder if dualcast/swiftcast are up. Requires Verproc into Jolt.", RDM.JobID, RDM.Verstone, RDM.Verfire)]
+        [CustomComboInfo("Verproc into Jolt Plus", "Additionally replaces Verstone/Verfire with Veraero/Verthunder if dualcast/swiftcast are up.\nRequires Verproc into Jolt.", RDM.JobID, RDM.Verstone, RDM.Verfire)]
         RedMageVerprocComboPlus= 79,
 
-        [CustomComboInfo("Verproc into Jolt Plus Opener Feature", "Turns Verfire into Verthunder when out of combat. Requires Verproc into Jolt Plus.", RDM.JobID, RDM.Verfire)]
+        [CustomComboInfo("Verproc into Jolt Plus Opener Feature", "Turns Verfire into Verthunder when out of combat.\nRequires Verproc into Jolt Plus.", RDM.JobID, RDM.Verfire)]
         RedMageVerprocOpenerFeature = 80,
 
         #endregion

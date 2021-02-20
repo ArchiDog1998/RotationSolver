@@ -650,7 +650,12 @@ namespace XIVComboExpandedestPlugin
             EnergySyphon = 16510,
             RuinIV = 7426,
             EgiAssault = 16509,
-            EgiAssault2 = 16512;
+            EgiAssault2 = 16512,
+            Bio = 164,
+            Bio2 = 178,
+            Bio3 = 7424,
+            Miasma = 168,
+            Miasma3 = 7425;
 
         public static class Buffs
         {
@@ -659,11 +664,24 @@ namespace XIVComboExpandedestPlugin
                 FurtherRuin = 1212;
         }
 
+        public static class Debuffs
+        {
+            public const short
+                Bio = 179,
+                Bio2 = 189,
+                Bio3 = 1214,
+                Miasma = 180,
+                Miasma3 = 1215;
+        }
+
         public static class Levels
         {
             public const byte
+                Miasma = 6,
+                Bio2 = 26,
                 Painflare = 52,
                 Ruin3 = 54,
+                DoTUpgrade = 66,
                 EnhancedFirebirdTrance = 80;
         }
     }

@@ -1145,10 +1145,17 @@ namespace XIVComboExpandedestPlugin
                 if (actionID == SMN.DreadwyrmTrance)
                 {
                     var gauge = GetJobGauge<SMNGauge>();
+                    if (gauge.TimerRemaining > 0 && Configuration.IsEnabled(CustomComboPreset.SummonerDemiComboUltra))
+                    {
+                        if (gauge.IsPhoenixReady())
+                            return SMN.EnkindlePhoenix;
+                        if (gauge.ReturnSummon != SummonPet.NONE)
+                            return SMN.EnkindleBahamut;
+                        return SMN.Deathflare;
+                    }
                     if (gauge.IsBahamutReady())
                         return SMN.SummonBahamut;
-                    if (gauge.IsPhoenixReady() ||
-                        gauge.TimerRemaining > 0 && gauge.ReturnSummon != SummonPet.NONE)
+                    if (gauge.IsPhoenixReady())
                     {
                         if (level >= SMN.Levels.EnhancedFirebirdTrance)
                             return SMN.FirebirdTranceHigh;
