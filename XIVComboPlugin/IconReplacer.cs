@@ -660,7 +660,7 @@ namespace XIVComboExpandedestPlugin
 
             // Replaces Tsubame with Iaijutsu while Sen are up.
             if (Configuration.IsEnabled(CustomComboPreset.SamuraiTsubameFeature))
-            { 
+            {
                 var gauge = GetJobGauge<SAMGauge>();
                 if (actionID == SAM.Tsubame && gauge.MeditationStacks == 3)
                     return SAM.Shoha;
@@ -775,7 +775,7 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == NIN.Chi && level > NIN.Levels.EnhancedKassatsu && (HasBuff(NIN.Buffs.Kassatsu)))
                 {
-                        return NIN.Jin;
+                    return NIN.Jin;
                 }
             }
 
@@ -1354,6 +1354,15 @@ namespace XIVComboExpandedestPlugin
             #endregion
             // ====================================================================================
             #region WHITE MAGE
+
+            if (!Configuration.IsEnabled(CustomComboPreset.WhiteMageAfflatusFeature) && Configuration.IsEnabled(CustomComboPreset.WhiteMageCureFeature))
+            {
+                if (actionID == WHM.Cure2)
+                {
+                    if (level < WHM.Levels.Cure2)
+                        return WHM.Cure;
+                }
+            }
 
             // Replace Cure 2/Medica with Afflatus Solace/Rapture if applicable and lilies are up.
             if (Configuration.IsEnabled(CustomComboPreset.WhiteMageAfflatusFeature))
