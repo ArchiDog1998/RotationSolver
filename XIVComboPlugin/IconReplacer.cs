@@ -661,30 +661,33 @@ namespace XIVComboExpandedestPlugin
             // Replaces Tsubame with Iaijutsu while Sen are up.
             if (Configuration.IsEnabled(CustomComboPreset.SamuraiTsubameFeature))
             {
-                var gauge = GetJobGauge<SAMGauge>();
-                if (actionID == SAM.Tsubame && gauge.MeditationStacks == 3)
-                    return SAM.Shoha;
-                if (actionID == SAM.Tsubame && gauge.Sen != Sen.NONE)
+                if (actionID == SAM.Tsubame)
                 {
-                    if (gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.GETSU) && gauge.Sen.HasFlag(Sen.KA))
+                    var gauge = GetJobGauge<SAMGauge>();
+                    if (gauge.MeditationStacks == 3 && Configuration.IsEnabled(CustomComboPreset.SamuraiShohaFeature))
+                        return SAM.Shoha;
+                    if (gauge.Sen != Sen.NONE)
                     {
-                        trashHiganbanaUp = false;
-                        return SAM.Midare;
+                        if (gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.GETSU) && gauge.Sen.HasFlag(Sen.KA))
+                        {
+                            trashHiganbanaUp = false;
+                            return SAM.Midare;
+                        }
+                        if ((gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.KA)) || (gauge.Sen.HasFlag(Sen.GETSU) && gauge.Sen.HasFlag(Sen.KA)) || (gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.GETSU)))
+                        {
+                            trashHiganbanaUp = false;
+                            return SAM.Tenka;
+                        }
+                        if (gauge.Sen.HasFlag(Sen.SETSU) || gauge.Sen.HasFlag(Sen.GETSU) || gauge.Sen.HasFlag(Sen.KA))
+                        {
+                            trashHiganbanaUp = true;
+                            return SAM.Higanbana;
+                        }
                     }
-                    if ((gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.KA)) || (gauge.Sen.HasFlag(Sen.GETSU) && gauge.Sen.HasFlag(Sen.KA)) || (gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.GETSU)))
-                    {
-                        trashHiganbanaUp = false;
-                        return SAM.Tenka;
-                    }
-                    if (gauge.Sen.HasFlag(Sen.SETSU) || gauge.Sen.HasFlag(Sen.GETSU) || gauge.Sen.HasFlag(Sen.KA))
-                    {
-                        trashHiganbanaUp = true;
-                        return SAM.Higanbana;
-                    }
+                    // Delete Kaeshi: Higanbana from the game because it is literally the only completely useless move in the game and it needs to be removed from existence already
+                    if (trashHiganbanaUp)
+                        return SAM.Tsubame;
                 }
-                // Delete Kaeshi: Higanbana from the game because it is literally the only completely useless move in the game and it needs to be removed from existence already
-                if (actionID == SAM.Tsubame && trashHiganbanaUp)
-                    return SAM.Tsubame;
             }
 
             #endregion
