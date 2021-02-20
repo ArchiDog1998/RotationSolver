@@ -23,7 +23,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Tsubame becomes Iaijutsu when Sen gauge isn't empty. Also, this feature deletes Kaeshi: Higanbana when active since it is literally the most useless action in the game, so you cannot accidentally use it.
 * Enochian/Fire 4 will be replaced with either Fire 1 and 3 depending on remaining time and firestarter proc.
 * Despair will replace Enochian/Fire 4 when MP is below 2400.
-* Thunder (3) will replace Enochian/Fire 4/Blizzard 4 when Thundercloud is up and either Thundercloud or Thunder (3) is about to run out, assuming it will not interrupt UI/AF upkeep.
+* Thunder (3) will replace Enochian/Fire 4/Blizzard 4 when Thunderbutt is up and either Thunderbutt or Thunder (3) is about to run out, assuming it will not interrupt UI/AF upkeep.
 * Fire 3 becomes Fire 1 when in Astral Fire when no Firestarter proc is up. Also replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).
 * Blizzard 3 becomes Blizzard 1 when synced below requirement level, same for Freeze and Blizzard 2.
 * Egi Assaults become Ruin IV when capped on Further Ruin.
@@ -50,7 +50,8 @@ XIVCombo is a plugin to allow for "one-button" combo chains, as well as implemen
 For some jobs, this frees a massive amount of hotbar space (looking at you, DRG). For most, it removes a lot of mindless tedium associated with having to press various buttons that have little logical reason to be separate.
 
 ## Installation
-* Type `/xlplugins` in-game to access the plugin installer and updater. Any releases on this github page have been removed to facilitate proper installation going forward.
+* Add the repo as a custom repo using /xlsettings in-game. Then, type `/xlplugins` in-game to access the plugin installer and updater. 
+
 ## In-game usage
 * Type `/pcombo` to pull up a GUI for editing active combo replacements.
 * Drag the named ability from your ability list onto your hotbar to use.
