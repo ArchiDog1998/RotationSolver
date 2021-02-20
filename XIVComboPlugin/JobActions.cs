@@ -581,7 +581,8 @@ namespace XIVComboExpandedestPlugin
             Shoha = 16487,
             Higanbana = 7489,
             Tenka = 7488,
-            Midare = 7487;
+            Midare = 7487,
+            TrashHiganbana = 16484;
 
         public static class Buffs
         {
@@ -646,12 +647,16 @@ namespace XIVComboExpandedestPlugin
             Fester = 181,
             EnergyDrain = 16508,
             Painflare = 3578,
-            EnergySyphon = 16510;
+            EnergySyphon = 16510,
+            RuinIV = 7426,
+            EgiAssault = 16509,
+            EgiAssault2 = 16512;
 
         public static class Buffs
         {
             public const short
-                HellishConduit = 1867;
+                HellishConduit = 1867,
+                FurtherRuin = 1212;
         }
 
         public static class Levels

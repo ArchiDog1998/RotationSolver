@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 90
+        // Last enum used: 92
         // ====================================================================================
         #region DRAGOON
 
@@ -116,6 +116,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Shoha Feature", "Replaces Iaijutsu/Tsubame with Shoha if gauge is capped.", SAM.JobID, SAM.Iaijutsu, SAM.Tsubame)]
         SamuraiShohaFeature = 74,
+
+        [CustomComboInfo("Tsubame to Iaijutsu Feature", "Replaces Tsubama with Iaijutsu while Sens are up. Also deletes Kaeshi: Higanbana from the game, good riddance.", SAM.JobID, SAM.Tsubame)]
+        SamuraiTsubameFeature = 91,
 
         #endregion
         // ====================================================================================
@@ -242,6 +245,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("ES Painflare", "Change Painflare into Energy Syphon when out of Aetherflow stacks", SMN.JobID, SMN.Painflare)]
         SummonerESPainflareCombo = 40,
+
+        [CustomComboInfo("Egi Assault 1/2 to Ruin IV Feature", "Change Egi Assault 1/2 into Ruin IV when capped on Further Ruin.", SMN.JobID, SMN.EgiAssault, SMN.EgiAssault2)]
+        SummonerRuinIVFeature = 92,
         #endregion
         // ====================================================================================
         #region SCHOLAR

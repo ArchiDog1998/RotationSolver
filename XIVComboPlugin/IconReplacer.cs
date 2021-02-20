@@ -23,6 +23,7 @@ namespace XIVComboExpandedestPlugin
         private readonly Hook<GetIconDelegate> GetIconHook;
 
         private readonly HashSet<uint> CustomIds = new HashSet<uint>();
+        private bool trashHiganbanaUp;
 
         public IconReplacer(ClientState clientState, SigScanner scanner, XIVComboExpandedestConfiguration configuration)
         {
@@ -31,6 +32,7 @@ namespace XIVComboExpandedestPlugin
 
             Address = new PluginAddressResolver();
             Address.Setup(scanner);
+            trashHiganbanaUp = false;
 
             UpdateEnabledActionIDs();
 
@@ -649,11 +651,40 @@ namespace XIVComboExpandedestPlugin
             }
 
             // Replaces Iaijutsu and Tsubame with Shoha if meditation gauge is full.
-            if (Configuration.IsEnabled(CustomComboPreset.SamuraiShohaFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiShohaFeature) && !Configuration.IsEnabled(CustomComboPreset.SamuraiTsubameFeature))
             {
                 var gauge = GetJobGauge<SAMGauge>().MeditationStacks;
                 if ((actionID == SAM.Iaijutsu || actionID == SAM.Tsubame) && gauge == 3)
                     return SAM.Shoha;
+            }
+
+            // Replaces Tsubame with Iaijutsu while Sen are up.
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiTsubameFeature))
+            { 
+                var gauge = GetJobGauge<SAMGauge>();
+                if (actionID == SAM.Tsubame && gauge.MeditationStacks == 3)
+                    return SAM.Shoha;
+                if (actionID == SAM.Tsubame && gauge.Sen != Sen.NONE)
+                {
+                    if (gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.GETSU) && gauge.Sen.HasFlag(Sen.KA))
+                    {
+                        trashHiganbanaUp = false;
+                        return SAM.Midare;
+                    }
+                    if ((gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.KA)) || (gauge.Sen.HasFlag(Sen.GETSU) && gauge.Sen.HasFlag(Sen.KA)) || (gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.GETSU)))
+                    {
+                        trashHiganbanaUp = false;
+                        return SAM.Tenka;
+                    }
+                    if (gauge.Sen.HasFlag(Sen.SETSU) || gauge.Sen.HasFlag(Sen.GETSU) || gauge.Sen.HasFlag(Sen.KA))
+                    {
+                        trashHiganbanaUp = true;
+                        return SAM.Higanbana;
+                    }
+                }
+                // Delete Kaeshi: Higanbana from the game because it is literally the only completely useless move in the game and it needs to be removed from existence already
+                if (actionID == SAM.Tsubame && trashHiganbanaUp)
+                    return SAM.Tsubame;
             }
 
             #endregion
@@ -1172,6 +1203,15 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            // Egi Assault 1 & 2 become Ruin IV if Further Ruin is capped
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerRuinIVFeature))
+            {
+                if ((actionID == SMN.EgiAssault || actionID == SMN.EgiAssault2) && HasBuff(SMN.Buffs.FurtherRuin) && PlayerBuffStacks(SMN.Buffs.FurtherRuin) == 4)
+                {
+                    return SMN.RuinIV;
+                }
+            }
+
             #endregion
             // ====================================================================================
             #region SCHOLAR
@@ -1686,6 +1726,27 @@ namespace XIVComboExpandedestPlugin
                     if (needle.Contains(target.StatusEffects[i].EffectId))
                     {
                         return target.StatusEffects[i].Duration;
+                    }
+                }
+                return 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        private float PlayerBuffStacks(params short[] needle)
+        {
+            try
+            {
+                var target = ClientState.LocalPlayer;
+
+                for (var i = 0; i < target.StatusEffects.Length; i++)
+                {
+                    if (needle.Contains(target.StatusEffects[i].EffectId))
+                    {
+                        return target.StatusEffects[i].StackCount;
                     }
                 }
                 return 0;
