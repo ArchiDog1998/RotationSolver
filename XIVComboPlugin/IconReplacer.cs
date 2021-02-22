@@ -23,7 +23,6 @@ namespace XIVComboExpandedestPlugin
         private readonly Hook<GetIconDelegate> GetIconHook;
 
         private readonly HashSet<uint> CustomIds = new HashSet<uint>();
-        private bool trashHiganbanaUp;
 
         public IconReplacer(ClientState clientState, SigScanner scanner, XIVComboExpandedestConfiguration configuration)
         {
@@ -32,7 +31,6 @@ namespace XIVComboExpandedestPlugin
 
             Address = new PluginAddressResolver();
             Address.Setup(scanner);
-            trashHiganbanaUp = false;
 
             UpdateEnabledActionIDs();
 
@@ -651,42 +649,31 @@ namespace XIVComboExpandedestPlugin
             }
 
             // Replaces Iaijutsu and Tsubame with Shoha if meditation gauge is full.
-            if (Configuration.IsEnabled(CustomComboPreset.SamuraiShohaFeature) && !Configuration.IsEnabled(CustomComboPreset.SamuraiTsubameFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.SamuraiShohaFeature))
             {
                 var gauge = GetJobGauge<SAMGauge>().MeditationStacks;
                 if ((actionID == SAM.Iaijutsu || actionID == SAM.Tsubame) && gauge == 3)
                     return SAM.Shoha;
             }
 
-            // Replaces Tsubame with Iaijutsu while Sen are up.
+            // Replaces Tsubame with Iaijutsu while Sen are up. Optimized new code created by Daemitus.
             if (Configuration.IsEnabled(CustomComboPreset.SamuraiTsubameFeature))
             {
                 if (actionID == SAM.Tsubame)
                 {
                     var gauge = GetJobGauge<SAMGauge>();
-                    if (gauge.MeditationStacks == 3 && Configuration.IsEnabled(CustomComboPreset.SamuraiShohaFeature))
-                        return SAM.Shoha;
-                    if (gauge.Sen != Sen.NONE)
+                    if (level >= SAM.Levels.Tsubame && gauge.Sen == Sen.NONE)
                     {
-                        if (gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.GETSU) && gauge.Sen.HasFlag(Sen.KA))
-                        {
-                            trashHiganbanaUp = false;
-                            return SAM.Midare;
-                        }
-                        if ((gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.KA)) || (gauge.Sen.HasFlag(Sen.GETSU) && gauge.Sen.HasFlag(Sen.KA)) || (gauge.Sen.HasFlag(Sen.SETSU) && gauge.Sen.HasFlag(Sen.GETSU)))
-                        {
-                            trashHiganbanaUp = false;
-                            return SAM.Tenka;
-                        }
-                        if (gauge.Sen.HasFlag(Sen.SETSU) || gauge.Sen.HasFlag(Sen.GETSU) || gauge.Sen.HasFlag(Sen.KA))
-                        {
-                            trashHiganbanaUp = true;
-                            return SAM.Higanbana;
-                        }
+                        var kaeshi = GetIconHook.Original(self, SAM.Tsubame);
+                        if (kaeshi == SAM.TrashHiganbana)
+                            return SAM.Tsubame;
+                        else
+                            return kaeshi;
                     }
-                    // Delete Kaeshi: Higanbana from the game because it is literally the only completely useless move in the game and it needs to be removed from existence already
-                    if (trashHiganbanaUp)
-                        return SAM.Tsubame;
+                    else
+                    {
+                        return GetIconHook.Original(self, SAM.Iaijutsu);
+                    }
                 }
             }
 
