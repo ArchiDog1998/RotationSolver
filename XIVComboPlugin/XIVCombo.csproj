@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Authors>attick, daemitus, grammernatzi</Authors>
     <Company>-</Company>
-    <Version>1.0.7.3</Version>
+    <Version>1.0.7.4</Version>
     <Description>This plugin condenses combos and mutually exclusive abilities onto a single button.</Description>
     <Copyright>Copyleft attick 2020 baybeeee</Copyright>
     <PackageProjectUrl>https://github.com/grammernatzi/XIVComboPluginExpandedest</PackageProjectUrl>

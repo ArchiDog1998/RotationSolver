@@ -1205,6 +1205,9 @@ namespace XIVComboExpandedestPlugin
             {
                 if ((actionID == SMN.EgiAssault || actionID == SMN.EgiAssault2) && HasBuff(SMN.Buffs.FurtherRuin) && PlayerBuffStacks(SMN.Buffs.FurtherRuin) == 4)
                 {
+                    var enkindle = GetIconHook.Original(self, SMN.Enkindle);
+                    if (enkindle == SMN.AerialBlast || (enkindle == SMN.EarthenFury && actionID == SMN.EgiAssault))
+                        return GetIconHook.Original(self, actionID);
                     return SMN.RuinIV;
                 }
             }
