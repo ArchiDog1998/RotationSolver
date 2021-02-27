@@ -434,6 +434,7 @@ namespace XIVComboExpandedestPlugin
             Bootshine = 53,
             DragonKick = 74,
             SnapPunch = 56,
+            TwinSnakes = 61,
             Demolish = 66,
             ArmOfTheDestroyer = 62,
             FourPointFury = 16473,
@@ -442,6 +443,7 @@ namespace XIVComboExpandedestPlugin
         public static class Buffs
         {
             public const short
+                TwinSnakes = 101,
                 OpoOpoForm = 107,
                 RaptorForm = 108,
                 CoerlForm = 109,

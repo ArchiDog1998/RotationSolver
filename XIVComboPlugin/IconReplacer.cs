@@ -1488,11 +1488,21 @@ namespace XIVComboExpandedestPlugin
                 {
                     UpdateBuffAddress();
                     if (HasBuff(MNK.Buffs.PerfectBalance) || HasBuff(MNK.Buffs.FormlessFist))
+                    {
+                        if (!HasBuff(MNK.Buffs.TwinSnakes))
+                            return MNK.TwinSnakes;
+                        if (PlayerBuffDuration(MNK.Buffs.TwinSnakes) < 4)
+                            return MNK.FourPointFury;
                         return MNK.Rockbreaker;
+                    }
                     if (HasBuff(MNK.Buffs.OpoOpoForm))
                         return MNK.ArmOfTheDestroyer;
                     if (HasBuff(MNK.Buffs.RaptorForm) && level >= MNK.Levels.FourPointFury)
+                    {
+                        if (!HasBuff(MNK.Buffs.TwinSnakes))
+                            return MNK.TwinSnakes;
                         return MNK.FourPointFury;
+                    }
                     if (HasBuff(MNK.Buffs.CoerlForm) && level >= MNK.Levels.Rockbreaker)
                         return MNK.Rockbreaker;
                     return MNK.ArmOfTheDestroyer;

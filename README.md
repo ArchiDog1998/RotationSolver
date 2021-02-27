@@ -13,6 +13,8 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Holy Spirit/Circle become Confiteor when MP is lower than 4000 and Requiescat is up
 * Dragon Kick becomes Bootshine while a form is up and Leaden Fist is up.
 * Demolish will turn into snap punch when Demolish's DoT is above 6s.
+* Four-point Fury is selected in MNK's AoE combo if Perfect Balance or Form Shift is up and Twin Snakes is below 4s. 
+* Twin Snakes will be selected in MNK's AoE combo instead of Four-Point Fury if the buff is not up.
 * Overcap prevention on GNB now extends to single-target combo and has also been added to WAR/DRK.
 * A second overcap prevention has been added for Infuriate/Bloodfest.
 * An MP overcap prevention that involves weaving a CD before syphon strike/stalwart soul has been added.
