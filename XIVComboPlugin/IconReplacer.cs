@@ -789,7 +789,7 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == GNB.Bloodfest)
                 {
-                    if (GetJobGauge<GNBGauge>().NumAmmo == 2)
+                    if (GetJobGauge<GNBGauge>().NumAmmo >= 1)
                         return GNB.BurstStrike;
                     return GNB.Bloodfest;
                 }
