@@ -654,8 +654,7 @@ namespace XIVComboExpandedestPlugin
             EgiAssault = 16509,
             EgiAssault2 = 16512,
             Enkindle = 184,
-            AerialBlast = 16802,
-            EarthenFury = 16801,
+            Inferno = 16803,
             Bio = 164,
             Bio2 = 178,
             Bio3 = 7424,
@@ -687,6 +686,7 @@ namespace XIVComboExpandedestPlugin
                 Painflare = 52,
                 Ruin3 = 54,
                 DoTUpgrade = 66,
+                EnhancedEgiAssault = 74,
                 EnhancedFirebirdTrance = 80;
         }
     }

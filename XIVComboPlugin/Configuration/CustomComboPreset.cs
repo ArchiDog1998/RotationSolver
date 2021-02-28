@@ -246,7 +246,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("ES Painflare", "Change Painflare into Energy Syphon when out of Aetherflow stacks", SMN.JobID, SMN.Painflare)]
         SummonerESPainflareCombo = 40,
 
-        [CustomComboInfo("Egi Assault 1/2 to Ruin IV Feature", "Change Egi Assault 1/2 into Ruin IV when capped on Further Ruin.\nIgnored if Garuda is out, and ignored for Egi Assault I if Titan is out.", SMN.JobID, SMN.EgiAssault, SMN.EgiAssault2, SMN.Enkindle)]
+        [CustomComboInfo("Egi Assault 1/2 to Ruin IV Feature", "Change Egi Assault 1/2 into Ruin IV when capped on Further Ruin, if level applies and Ifrit-Egi is out.", SMN.JobID, SMN.EgiAssault, SMN.EgiAssault2, SMN.Enkindle)]
         SummonerRuinIVFeature = 92,
 
         [CustomComboInfo("Demi-Summon Combiners Ultra", "Dreadwyrm Trance, Summon Bahamut, Firebird Trance, Deathflare, Enkindle Bahamut, and Enkindle Phoenix are now one button.\nRequires Demi-Summon Combiners feature.", SMN.JobID, SMN.DreadwyrmTrance)]
