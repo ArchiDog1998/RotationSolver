@@ -100,9 +100,7 @@ namespace XIVComboExpandedestPlugin
                     UpdateBuffAddress();
                     if (HasBuff(DRG.Buffs.DiveReady))
                         return DRG.MirageDive;
-                    if (level >= DRG.Levels.HighJump)
-                        return DRG.HighJump;
-                    return DRG.Jump;
+                    return GetIconHook.Original(self, DRG.HighJump);
                 }
             }
 
@@ -154,9 +152,7 @@ namespace XIVComboExpandedestPlugin
                         return DRG.FangAndClaw;
                     if (HasBuff(DRG.Buffs.EnhancedWheelingThrust) && level >= DRG.Levels.WheelingThrust)
                         return DRG.WheelingThrust;
-                    if (HasBuff(DRG.Buffs.RaidenThrustReady) && level >= DRG.Levels.RaidenThrust)
-                        return DRG.RaidenThrust;
-                    return DRG.TrueThrust;
+                    return GetIconHook.Original(self, DRG.TrueThrust);
                 }
             }
 
@@ -178,9 +174,7 @@ namespace XIVComboExpandedestPlugin
                         return DRG.FangAndClaw;
                     if (HasBuff(DRG.Buffs.EnhancedWheelingThrust) && level >= DRG.Levels.WheelingThrust)
                         return DRG.WheelingThrust;
-                    if (HasBuff(DRG.Buffs.RaidenThrustReady) && level >= DRG.Levels.RaidenThrust)
-                        return DRG.RaidenThrust;
-                    return DRG.TrueThrust;
+                    return GetIconHook.Original(self, DRG.TrueThrust);
                 }
             }
 
@@ -322,10 +316,7 @@ namespace XIVComboExpandedestPlugin
                             return PLD.RiotBlade;
                         if (lastMove == PLD.RiotBlade)
                         {
-                            if (level >= PLD.Levels.RoyalAuthority)
-                                return PLD.RoyalAuthority;
-                            if (level >= PLD.Levels.RageOfHalone)
-                                return PLD.RageOfHalone;
+                            return GetIconHook.Original(self, PLD.RoyalAuthority);
                         }
                     }
 
@@ -407,11 +398,7 @@ namespace XIVComboExpandedestPlugin
                     var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
                     if (gauge >= 60)
                     {
-                        if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
-                            return WAR.InnerChaos;
-                        if (level < WAR.Levels.FellCleave)
-                            return WAR.InnerBeast;
-                        return WAR.FellCleave;
+                        return GetIconHook.Original(self, WAR.FellCleave);
                     }
                     return WAR.Infuriate;
                 }
@@ -424,9 +411,7 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
                     {
-                        if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
-                            return WAR.InnerChaos;
-                        return WAR.FellCleave;
+                        return GetIconHook.Original(self, WAR.FellCleave);
                     }
                     if (comboTime > 0)
                     {
@@ -435,11 +420,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
                             {
-                                if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
-                                    return WAR.InnerChaos;
-                                if (level < WAR.Levels.FellCleave)
-                                    return WAR.InnerBeast;
-                                return WAR.FellCleave;
+                                return GetIconHook.Original(self, WAR.FellCleave);
                             }
                             return WAR.Maim;
                         }
@@ -447,11 +428,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
                             {
-                                if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
-                                    return WAR.InnerChaos;
-                                if (level < WAR.Levels.FellCleave)
-                                    return WAR.InnerBeast;
-                                return WAR.FellCleave;
+                                return GetIconHook.Original(self, WAR.FellCleave);
                             }
                             return WAR.StormsPath;
                         }
@@ -467,9 +444,7 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
                     {
-                        if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
-                            return WAR.InnerChaos;
-                        return WAR.FellCleave;
+                        return GetIconHook.Original(self, WAR.FellCleave);
                     }
 
                     if (comboTime > 0)
@@ -479,11 +454,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
                             {
-                                if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
-                                    return WAR.InnerChaos;
-                                if (level < WAR.Levels.FellCleave)
-                                    return WAR.InnerBeast;
-                                return WAR.FellCleave;
+                                return GetIconHook.Original(self, WAR.FellCleave);
                             }
                             return WAR.Maim;
                         }
@@ -491,11 +462,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
                             {
-                                if (HasBuff(WAR.Buffs.NascentChaos) && level >= WAR.Levels.InnerChaos)
-                                    return WAR.InnerChaos;
-                                if (level < WAR.Levels.FellCleave)
-                                    return WAR.InnerBeast;
-                                return WAR.FellCleave;
+                                return GetIconHook.Original(self, WAR.FellCleave);
                             }
                             return WAR.StormsEye;
                         }
@@ -511,9 +478,7 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
                     {
-                        if (HasBuff(WAR.Buffs.NascentChaos))
-                            return WAR.ChaoticCyclone;
-                        return WAR.Decimate;
+                        return GetIconHook.Original(self, WAR.Decimate);
                     }
                     var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
                     if (comboTime > 0)
@@ -521,9 +486,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge >= 90 && level >= WAR.Levels.MythrilTempestTrait && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
                             {
-                                if (HasBuff(WAR.Buffs.NascentChaos))
-                                    return WAR.ChaoticCyclone;
-                                return WAR.Decimate;
+                                return GetIconHook.Original(self, WAR.Decimate);
                             }
                             return WAR.MythrilTempest;
                         }
@@ -897,22 +860,14 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == MCH.SplitShot)
                         {
-                            if (level >= MCH.Levels.HeatedSlugshot)
-                                return MCH.HeatedSlugshot;
-                            if (level >= MCH.Levels.SlugShot)
-                                return MCH.SlugShot;
+                            return GetIconHook.Original(self, MCH.SlugShot);
                         }
                         if (lastMove == MCH.SlugShot)
                         {
-                            if (level >= MCH.Levels.HeatedCleanShot)
-                                return MCH.HeatedCleanShot;
-                            if (level >= MCH.Levels.CleanShot)
-                                return MCH.CleanShot;
+                            return GetIconHook.Original(self, MCH.CleanShot);
                         }
                     }
-                    if (level >= MCH.Levels.HeatedSplitShot)
-                        return MCH.HeatedSplitShot;
-                    return MCH.SplitShot;
+                    return GetIconHook.Original(self, MCH.SplitShot);
                 }
             }
 
@@ -946,10 +901,7 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (GetJobGauge<MCHGauge>().IsRobotActive())
                     {
-                        if (level >= MCH.Levels.QueenOverdrive)
-                            return MCH.QueenOverdrive;
-                        if (level >= MCH.Levels.RookOverdrive)
-                            return MCH.RookOverdrive;
+                        return GetIconHook.Original(self, MCH.QueenOverdrive);
                     }
                 }
             }
@@ -1147,9 +1099,7 @@ namespace XIVComboExpandedestPlugin
                         return SMN.SummonBahamut;
                     if (gauge.IsPhoenixReady())
                     {
-                        if (level >= SMN.Levels.EnhancedFirebirdTrance)
-                            return SMN.FirebirdTranceHigh;
-                        return SMN.FirebirdTranceLow;
+                        return GetIconHook.Original(self, SMN.FirebirdTranceLow);
                     }
                     return SMN.DreadwyrmTrance;
                 }
@@ -1170,9 +1120,7 @@ namespace XIVComboExpandedestPlugin
                             return SMN.FountainOfFire;
                         }
 
-                    if (level >= SMN.Levels.Ruin3)
-                        return SMN.Ruin3;
-                    return SMN.Ruin1;
+                    return GetIconHook.Original(self, SMN.Ruin3);
                 }
             }
 
@@ -1429,14 +1377,10 @@ namespace XIVComboExpandedestPlugin
                     UpdateBuffAddress();
                     if (HasBuff(BRD.Buffs.StraightShotReady))
                     {
-                        if (level >= BRD.Levels.RefulgentArrow)
-                            return BRD.RefulgentArrow;
-                        return BRD.StraightShot;
+                        return GetIconHook.Original(self, BRD.RefulgentArrow);
                     }
 
-                    if (level >= BRD.Levels.BurstShot)
-                        return BRD.BurstShot;
-                    return BRD.HeavyShot;
+                    return GetIconHook.Original(self, BRD.BurstShot);
                 }
             }
 
@@ -1549,9 +1493,7 @@ namespace XIVComboExpandedestPlugin
                     UpdateBuffAddress();
                     if (HasBuff(DoM.Buffs.Swiftcast) || HasBuff(RDM.Buffs.Dualcast))
                     {
-                        if (level >= RDM.Levels.Impact)
-                            return RDM.Impact;
-                        return RDM.Scatter;
+                        return GetIconHook.Original(self, RDM.Impact);
                     }
                     return RDM.Veraero2;
                 }
@@ -1561,9 +1503,7 @@ namespace XIVComboExpandedestPlugin
                     UpdateBuffAddress();
                     if (HasBuff(DoM.Buffs.Swiftcast) || HasBuff(RDM.Buffs.Dualcast))
                     {
-                        if (level >= RDM.Levels.Impact)
-                            return RDM.Impact;
-                        return RDM.Scatter;
+                        return GetIconHook.Original(self, RDM.Impact);
                     }
                     return RDM.Verthunder2;
                 }
@@ -1578,16 +1518,12 @@ namespace XIVComboExpandedestPlugin
 
                     if ((lastMove == RDM.Riposte || lastMove == RDM.EnchantedRiposte) && level >= RDM.Levels.Zwerchhau)
                     {
-                        if (gauge.BlackGauge >= 25 && gauge.WhiteGauge >= 25)
-                            return RDM.EnchantedZwerchhau;
-                        return RDM.Zwerchhau;
+                        return GetIconHook.Original(self, RDM.Zwerchhau);
                     }
 
                     if (lastMove == RDM.Zwerchhau && level >= RDM.Levels.Redoublement)
                     {
-                        if (gauge.BlackGauge >= 25 && gauge.WhiteGauge >= 25)
-                            return RDM.EnchantedRedoublement;
-                        return RDM.Redoublement;
+                        return GetIconHook.Original(self, RDM.Redoublement);
                     }
 
                     if (Configuration.IsEnabled(CustomComboPreset.RedMageMeleeComboPlus))
@@ -1612,9 +1548,7 @@ namespace XIVComboExpandedestPlugin
                         }
                     }
 
-                    if (gauge.BlackGauge >= 30 && gauge.WhiteGauge >= 30)
-                        return RDM.EnchantedRiposte;
-                    return RDM.Riposte;
+                    return GetIconHook.Original(self, RDM.Riposte);
                 }
             }
 
@@ -1634,9 +1568,7 @@ namespace XIVComboExpandedestPlugin
                     }
                     if (HasBuff(RDM.Buffs.VerstoneReady))
                         return RDM.Verstone;
-                    if (level >= RDM.Levels.Jolt2)
-                        return RDM.Jolt2;
-                    return RDM.Jolt;
+                    return GetIconHook.Original(self, RDM.Jolt2);
                 }
                 if (actionID == RDM.Verfire)
                 {
@@ -1647,14 +1579,13 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verflare)
                             return RDM.Verflare;
-                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast)) || (!HasBuff(RDM.Buffs.VerfireReady) && !ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature)))
+                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast))
+                            || (!HasBuff(RDM.Buffs.VerfireReady) && !ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature)))
                             return RDM.Verthunder;
                     }
                     if (HasBuff(RDM.Buffs.VerfireReady))
                         return RDM.Verfire;
-                    if (level >= RDM.Levels.Jolt2)
-                        return RDM.Jolt2;
-                    return RDM.Jolt;
+                    return GetIconHook.Original(self, RDM.Jolt2);
                 }
             }
 
