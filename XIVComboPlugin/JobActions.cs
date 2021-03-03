@@ -549,6 +549,8 @@ namespace XIVComboExpandedestPlugin
         {
             public const byte
                 Jolt = 2,
+                Verthunder = 4,
+                Veraero = 10,
                 Zwerchhau = 35,
                 Redoublement = 50,
                 Vercure = 54,

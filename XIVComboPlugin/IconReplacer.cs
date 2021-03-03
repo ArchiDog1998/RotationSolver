@@ -205,10 +205,8 @@ namespace XIVComboExpandedestPlugin
                                 {
                                     if (level >= DRK.Levels.FloodOfDarkness && level < DRK.Levels.EdgeOfDarkness)
                                         return DRK.FloodOfDarkness;
-                                    if (level < DRK.Levels.Shadow && level >= DRK.Levels.EdgeOfDarkness)
-                                        return DRK.EdgeOfDarkness;
-                                    if (level >= DRK.Levels.Shadow)
-                                        return DRK.EdgeOfShadow;
+                                    if (level >= DRK.Levels.EdgeOfDarkness)
+                                        return GetIconHook.Original(self, DRK.EdgeOfDarkness);
                                 }
                             }
                             if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature) && HasBuff(DRK.Buffs.BloodWeapon))
@@ -247,9 +245,7 @@ namespace XIVComboExpandedestPlugin
                             {
                                 if (mp > 8000)
                                 {
-                                    if (level < DRK.Levels.Shadow)
-                                        return DRK.FloodOfDarkness;
-                                    return DRK.FloodOfShadow;
+                                    return GetIconHook.Original(self, DRK.FloodOfDarkness);
                                 }
                             }
                             if (((gauge >= 90) || (gauge >= 80 && HasBuff(DRK.Buffs.BloodWeapon)) && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature)))
@@ -1563,7 +1559,7 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verholy)
                             return RDM.Verholy;
-                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast)))
+                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast)) && level >= RDM.Levels.Veraero)
                             return RDM.Veraero;
                     }
                     if (HasBuff(RDM.Buffs.VerstoneReady))
@@ -1579,8 +1575,8 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verflare)
                             return RDM.Verflare;
-                        if ((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast))
-                            || (!HasBuff(RDM.Buffs.VerfireReady) && !ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature)))
+                        if (((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast))
+                            || (!HasBuff(RDM.Buffs.VerfireReady) && !ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature))) && level >= RDM.Levels.Verthunder)
                             return RDM.Verthunder;
                     }
                     if (HasBuff(RDM.Buffs.VerfireReady))
