@@ -5,6 +5,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 
 ## Additions added (all optional!)
 
+* MCH/PLD/SMN/etc won't have action upgrade traits break due to unfinished job quests conflicting with XIVCombo features anymore.
 * Cure 2 becomes Cure when synced below level 30
 * Cure 2 and Medica become Afflatus Solace and Rapture respectively when lilies are available
 * Benefic 2 becomes Benefic when synced below level 26
