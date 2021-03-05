@@ -1321,7 +1321,7 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == BRD.HeavyShot || actionID == BRD.BurstShot)
                 {
-                    if (GetJobGauge<BRDGauge>().SoulVoiceValue == 100)
+                    if (GetJobGauge<BRDGauge>().SoulVoiceValue == 100 && Configuration.IsEnabled(CustomComboPreset.BardApexFeature))
                         return BRD.ApexArrow;
                     if (HasBuff(BRD.Buffs.StraightShotReady))
                     {
