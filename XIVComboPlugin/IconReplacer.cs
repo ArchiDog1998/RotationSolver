@@ -900,7 +900,8 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge.ElementTimeRemaining >= 5000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature))
                                 if (HasBuff(BLM.Buffs.Thundercloud))
-                                    if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0) || (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 4))
+                                    if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0) 
+                                        || (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 4))
                                         return BLM.Thunder3;
                             return BLM.Blizzard4;
                         }
@@ -908,7 +909,8 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge.ElementTimeRemaining >= 6000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature))
                                 if (HasBuff(BLM.Buffs.Thundercloud))
-                                    if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0) || (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 4))
+                                    if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0) 
+                                        || (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 4))
                                         return BLM.Thunder3;
                             if (gauge.ElementTimeRemaining < 3000 && HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
                                 return BLM.Fire3;
@@ -923,7 +925,8 @@ namespace XIVComboExpandedestPlugin
                     }
                     if (gauge.ElementTimeRemaining >= 5000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature) && level < BLM.Levels.Thunder3)
                         if (HasBuff(BLM.Buffs.Thundercloud))
-                            if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0) || (TargetHasBuff(BLM.Debuffs.Thunder) && TargetBuffDuration(BLM.Debuffs.Thunder) < 4))
+                            if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0) 
+                                || (TargetHasBuff(BLM.Debuffs.Thunder) && TargetBuffDuration(BLM.Debuffs.Thunder) < 4))
                                 return BLM.Thunder;
                     if (level < BLM.Levels.Fire3)
                         return BLM.Fire;
@@ -1000,29 +1003,8 @@ namespace XIVComboExpandedestPlugin
                 if (actionID == AST.Play)
                 {
                     var gauge = GetJobGauge<ASTGauge>();
-                    switch (gauge.DrawnCard())
-                    {
-                        case CardType.BALANCE:
-                            return AST.Balance;
-                        case CardType.BOLE:
-                            return AST.Bole;
-                        case CardType.ARROW:
-                            return AST.Arrow;
-                        case CardType.SPEAR:
-                            return AST.Spear;
-                        case CardType.EWER:
-                            return AST.Ewer;
-                        case CardType.SPIRE:
-                            return AST.Spire;
-                        /*
-                        case CardType.LORD:
-                            return AST.LordOfCrowns;
-                        case CardType.LADY:
-                            return AST.LadyOfCrowns;
-                        */
-                        default:
-                            return AST.Draw;
-                    }
+                    if (gauge.DrawnCard() == CardType.NONE)
+                        return AST.Draw;
                 }
             }
 
