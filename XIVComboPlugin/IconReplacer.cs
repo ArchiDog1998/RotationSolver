@@ -1125,9 +1125,7 @@ namespace XIVComboExpandedestPlugin
                 if (actionID == SMN.Resurrection)
                 {
                     if (CooldownLeft(SMN.CDs.Swiftcast) == 0)
-                    {
                         return SMN.Swiftcast;
-                    }
                     return SMN.Resurrection;
                 }
             }
