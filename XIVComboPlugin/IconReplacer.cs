@@ -1106,8 +1106,8 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
-            // Change Painflare into Energy Syphon
-            if (Configuration.IsEnabled(CustomComboPreset.SummonerEDFesterCombo))
+            //Change Painflare into Energy Syphon
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerESPainflareCombo))
             {
                 if (actionID == SMN.Painflare)
                 {
@@ -1120,7 +1120,7 @@ namespace XIVComboExpandedestPlugin
             }
 
             // Rez into Swiftcast when Swiftcast up
-            if (Configuration.IsEnabled(CustomComboPreset.SummonerRezFeature))
+            if (false)
             {
                 if (actionID == SMN.Resurrection)
                 {
