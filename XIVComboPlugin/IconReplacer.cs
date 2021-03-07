@@ -10,6 +10,16 @@ using Dalamud.Hooking;
 
 namespace XIVComboExpandedestPlugin
 {
+    [StructLayout(LayoutKind.Explicit)]
+    public struct CooldownStruct
+    {
+        [FieldOffset(0x0)] public bool IsCooldown;
+
+        [FieldOffset(0x4)] public uint ActionID;
+        [FieldOffset(0x8)] public float CooldownElapsed;
+        [FieldOffset(0xC)] public float CooldownTotal;
+    }
+
     internal class IconReplacer
     {
         private readonly ClientState ClientState;
@@ -23,6 +33,9 @@ namespace XIVComboExpandedestPlugin
         private readonly Hook<GetIconDelegate> GetIconHook;
 
         private readonly HashSet<uint> CustomIds = new HashSet<uint>();
+
+        private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
+        private GetActionCooldownSlotDelegate getActionCooldownSlot;
 
         public IconReplacer(ClientState clientState, SigScanner scanner, XIVComboExpandedestConfiguration configuration)
         {
@@ -39,6 +52,8 @@ namespace XIVComboExpandedestPlugin
 
             GetIconHook.Enable();
             IsIconReplaceableHook.Enable();
+
+            getActionCooldownSlot = Marshal.GetDelegateForFunctionPointer<GetActionCooldownSlotDelegate>(Address.GetActionCooldown);
         }
 
         internal void Dispose()
@@ -1091,8 +1106,8 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
-            //Change Painflare into Energy Syphon
-            if (Configuration.IsEnabled(CustomComboPreset.SummonerESPainflareCombo))
+            // Change Painflare into Energy Syphon
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerEDFesterCombo))
             {
                 if (actionID == SMN.Painflare)
                 {
@@ -1101,6 +1116,19 @@ namespace XIVComboExpandedestPlugin
                     if (level >= SMN.Levels.Painflare)
                         return SMN.Painflare;
                     return SMN.EnergySyphon;
+                }
+            }
+
+            // Rez into Swiftcast when Swiftcast up
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerRezFeature))
+            {
+                if (actionID == SMN.Resurrection)
+                {
+                    if (CooldownLeft(SMN.CDs.Swiftcast) == 0)
+                    {
+                        return SMN.Swiftcast;
+                    }
+                    return SMN.Resurrection;
                 }
             }
 
@@ -1600,6 +1628,23 @@ namespace XIVComboExpandedestPlugin
                     return status.StackCount;
             }
             return 0;
+        }
+
+        private CooldownStruct GetCooldown(byte cooldownGroup)
+        {
+            var cooldownPtr = getActionCooldownSlot(Address.ActionManager, cooldownGroup - 1);
+            return Marshal.PtrToStructure<CooldownStruct>(cooldownPtr);
+        }
+
+        // takes a cooldownGroup, which is NOT a cooldown ID.
+        // cooldown groups can be found in the CooldownGroup column of https://github.com/xivapi/ffxiv-datamining/blob/master/csv/Action.csv
+        // if an action has charges, returns the time left for all charges to regenerate (so Egi Assault will be usable if CooldownLeft < 30)
+        // default to GCD (group 58)
+        private float CooldownLeft(byte cooldownGroup = 58)
+        {
+            var cooldown = GetCooldown(cooldownGroup);
+            if (!cooldown.IsCooldown) return 0;
+            return cooldown.CooldownTotal - cooldown.CooldownElapsed;
         }
 
         #endregion

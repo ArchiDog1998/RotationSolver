@@ -240,11 +240,11 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Brand of Purgatory Combo", "Replaces Fountain of Fire with Brand of Purgatory when under the affect of Hellish Conduit", SMN.JobID, SMN.Ruin1, SMN.Ruin3)]
         SummonerBoPCombo = 38,
 
-        [CustomComboInfo("ED Fester", "Change Fester into Energy Drain when out of Aetherflow stacks", SMN.JobID, SMN.Fester)]
+        [CustomComboInfo("ED Fester/Painflare", "Change Fester into Energy Drain and Painflare into Energy Siphon when out of Aetherflow stacks", SMN.JobID, SMN.Fester, SMN.Painflare)]
         SummonerEDFesterCombo = 39,
 
-        [CustomComboInfo("ES Painflare", "Change Painflare into Energy Syphon when out of Aetherflow stacks", SMN.JobID, SMN.Painflare)]
-        SummonerESPainflareCombo = 40,
+        [CustomComboInfo("Swiftcast Rez", "Change Resurrection to Swiftcast when Swiftcast is off cooldown", SMN.JobID, SMN.Resurrection)]
+        SummonerRezFeature = 40,
 
         [CustomComboInfo("Egi Assault 1/2 to Ruin IV Feature", "Change Egi Assault 1/2 into Ruin IV when capped on Further Ruin, if level applies and Ifrit-Egi is out.", SMN.JobID, SMN.EgiAssault, SMN.EgiAssault2, SMN.Enkindle)]
         SummonerRuinIVFeature = 92,

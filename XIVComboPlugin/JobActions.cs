@@ -637,6 +637,8 @@ namespace XIVComboExpandedestPlugin
         public const byte JobID = 27;
 
         public const uint
+            Swiftcast = 7561,
+            Resurrection = 173,
             Deathflare = 3582,
             EnkindlePhoenix = 16516,
             EnkindleBahamut = 7429,
@@ -690,6 +692,12 @@ namespace XIVComboExpandedestPlugin
                 DoTUpgrade = 66,
                 EnhancedEgiAssault = 74,
                 EnhancedFirebirdTrance = 80;
+        }
+
+        public static class CDs
+        {
+            public const byte
+                Swiftcast = 43;
         }
     }
 
