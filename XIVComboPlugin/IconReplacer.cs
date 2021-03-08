@@ -103,6 +103,7 @@ namespace XIVComboExpandedestPlugin
             var comboTime = Marshal.PtrToStructure<float>(Address.ComboTimer);
             var level = ClientState.LocalPlayer.Level;
             var mp = ClientState.LocalPlayer.CurrentMp;
+            var job = ClientState.LocalPlayer.ClassJob;
 
             // ====================================================================================
             #region DRAGOON
@@ -1119,17 +1120,6 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
-            // Rez into Swiftcast when Swiftcast up
-            if (false)
-            {
-                if (actionID == SMN.Resurrection)
-                {
-                    if (CooldownLeft(SMN.CDs.Swiftcast) == 0)
-                        return SMN.Swiftcast;
-                    return SMN.Resurrection;
-                }
-            }
-
             // Egi Assault 1 & 2 become Ruin IV if Further Ruin is capped
             if (Configuration.IsEnabled(CustomComboPreset.SummonerRuinIVFeature))
             {
@@ -1558,6 +1548,20 @@ namespace XIVComboExpandedestPlugin
 
             #endregion
             // ====================================================================================
+            #region DISCIPLE OF MAGIC
+
+            // Replaces the respective raise on RDM/SMN/SCH/WHM/AST with Swiftcast when it is off cooldown (and Dualcast isn't up).
+            if (Configuration.IsEnabled(CustomComboPreset.DoMSwiftcastFeature))
+            {
+                if (actionID == WHM.Raise || actionID == SMN.Resurrection || actionID == AST.Ascend || actionID == RDM.Verraise)
+                {
+                    if (CooldownLeft(SMN.CDs.Swiftcast) == 0 && !HasBuff(RDM.Buffs.Dualcast))
+                        return DoM.Swiftcast;
+                }
+            }
+
+            #endregion
+            // ====================================================================================
 
             return GetIconHook.Original(self, actionID);
         }
@@ -1638,6 +1642,7 @@ namespace XIVComboExpandedestPlugin
         // cooldown groups can be found in the CooldownGroup column of https://github.com/xivapi/ffxiv-datamining/blob/master/csv/Action.csv
         // if an action has charges, returns the time left for all charges to regenerate (so Egi Assault will be usable if CooldownLeft < 30)
         // default to GCD (group 58)
+        // Thank you ALymphocyte for making this possible!
         private float CooldownLeft(byte cooldownGroup = 58)
         {
             var cooldown = GetCooldown(cooldownGroup);

@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 93
+        // Last enum used: 94
         // ====================================================================================
         #region DRAGOON
 
@@ -352,6 +352,13 @@ namespace XIVComboExpandedestPlugin
 
         #endregion
         // ====================================================================================
+        #region DISCIPLE OF MAGIC
+
+        [CustomComboInfo("Raise to Swiftcast Feature", "Replaces the respective raise on RDM/SMN/SCH/WHM/AST with Swiftcast when it is off cooldown (and Dualcast isn't up).", DoM.JobID, WHM.Raise, SMN.Resurrection, AST.Ascend, RDM.Verraise)]
+        DoMSwiftcastFeature = 94,
+
+        #endregion
+        // ====================================================================================
     }
 
     internal class CustomComboInfoAttribute : Attribute
@@ -412,6 +419,7 @@ namespace XIVComboExpandedestPlugin
                 36 => "Blue Mage",
                 37 => "Gunbreaker",
                 38 => "Dancer",
+                99 => "Disciple of Magic",
                 _ => "Unknown",
             };
         }
