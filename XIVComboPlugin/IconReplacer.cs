@@ -1555,7 +1555,7 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == WHM.Raise || actionID == SMN.Resurrection || actionID == AST.Ascend || actionID == RDM.Verraise)
                 {
-                    if (CooldownLeft(SMN.CDs.Swiftcast) == 0 && !HasBuff(RDM.Buffs.Dualcast))
+                    if (CooldownLeft(DoM.CDs.Swiftcast) == 0 && !HasBuff(RDM.Buffs.Dualcast))
                         return DoM.Swiftcast;
                 }
             }

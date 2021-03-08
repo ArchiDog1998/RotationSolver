@@ -163,6 +163,11 @@ namespace XIVComboExpandedestPlugin
             public const byte 
                 Raise = 12;
         }
+        public static class CDs
+        {
+            public const byte
+                Swiftcast = 43;
+        }
     }
 
     internal static class DNC
