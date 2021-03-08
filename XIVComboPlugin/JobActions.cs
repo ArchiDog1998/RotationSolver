@@ -4,6 +4,9 @@ namespace XIVComboExpandedestPlugin
     internal static class ACN
     {
         public const byte JobID = 26;
+
+        public const uint
+            Resurrection = 173;
     }
     internal static class AST
     {
@@ -138,11 +141,6 @@ namespace XIVComboExpandedestPlugin
                 RefulgentArrow = 70,
                 BurstShot = 76;
         }
-    }
-
-    internal static class CNJ
-    {
-        public const byte JobID = 6;
     }
 
     internal static class DoM
@@ -657,7 +655,6 @@ namespace XIVComboExpandedestPlugin
         public const byte JobID = 27;
 
         public const uint
-            Resurrection = 173,
             Deathflare = 3582,
             EnkindlePhoenix = 16516,
             EnkindleBahamut = 7429,
@@ -715,8 +712,7 @@ namespace XIVComboExpandedestPlugin
 
         public static class CDs
         {
-            public const byte
-                Swiftcast = 43;
+            // public const byte placeholder = 0;
         }
     }
 

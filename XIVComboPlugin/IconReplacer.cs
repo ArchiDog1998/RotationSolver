@@ -103,7 +103,6 @@ namespace XIVComboExpandedestPlugin
             var comboTime = Marshal.PtrToStructure<float>(Address.ComboTimer);
             var level = ClientState.LocalPlayer.Level;
             var mp = ClientState.LocalPlayer.CurrentMp;
-            var job = ClientState.LocalPlayer.ClassJob;
 
             // ====================================================================================
             #region DRAGOON
@@ -1553,9 +1552,11 @@ namespace XIVComboExpandedestPlugin
             // Replaces the respective raise on RDM/SMN/SCH/WHM/AST with Swiftcast when it is off cooldown (and Dualcast isn't up).
             if (Configuration.IsEnabled(CustomComboPreset.DoMSwiftcastFeature))
             {
-                if (actionID == WHM.Raise || actionID == SMN.Resurrection || actionID == AST.Ascend || actionID == RDM.Verraise)
+                if (actionID == WHM.Raise || actionID == ACN.Resurrection || actionID == AST.Ascend || actionID == RDM.Verraise)
                 {
-                    if (CooldownLeft(DoM.CDs.Swiftcast) == 0 && !HasBuff(RDM.Buffs.Dualcast))
+                    if ((CooldownLeft(DoM.CDs.Swiftcast) == 0 && !HasBuff(RDM.Buffs.Dualcast))
+                        || level <= DoM.Levels.Raise
+                        || (level <= RDM.Levels.Verraise && actionID == RDM.Verraise))
                         return DoM.Swiftcast;
                 }
             }

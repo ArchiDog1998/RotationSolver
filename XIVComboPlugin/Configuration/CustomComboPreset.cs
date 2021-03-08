@@ -354,7 +354,7 @@ namespace XIVComboExpandedestPlugin
         // ====================================================================================
         #region DISCIPLE OF MAGIC
 
-        [CustomComboInfo("Raise to Swiftcast Feature", "Replaces the respective raise on RDM/SMN/SCH/WHM/AST with Swiftcast when it is off cooldown (and Dualcast isn't up).", DoM.JobID, WHM.Raise, SMN.Resurrection, AST.Ascend, RDM.Verraise)]
+        [CustomComboInfo("Raise to Swiftcast Feature", "Replaces the respective raise on RDM/SMN/SCH/WHM/AST with Swiftcast when it is off cooldown (and Dualcast isn't up).", DoM.JobID, WHM.Raise, ACN.Resurrection, AST.Ascend, RDM.Verraise)]
         DoMSwiftcastFeature = 94,
 
         #endregion
