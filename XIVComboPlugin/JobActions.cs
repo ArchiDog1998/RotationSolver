@@ -1,10 +1,16 @@
 namespace XIVComboExpandedestPlugin
 {
+
+    internal static class ACN
+    {
+        public const byte JobID = 26;
+    }
     internal static class AST
     {
         public const byte JobID = 33;
 
         public const uint
+            Ascend = 3603,
             Play = 17055,
             Draw = 3590,
             Balance = 4401,
@@ -134,11 +140,17 @@ namespace XIVComboExpandedestPlugin
         }
     }
 
+    internal static class CNJ
+    {
+        public const byte JobID = 6;
+    }
+
     internal static class DoM
     {
-        public const byte JobID = 0;
+        public const byte JobID = 99;
 
-        // public const uint placeholder = 0;
+        public const uint
+            Swiftcast = 7561;
 
         public static class Buffs
         {
@@ -148,7 +160,8 @@ namespace XIVComboExpandedestPlugin
 
         public static class Levels
         {
-            // public const byte placeholder = 0;
+            public const byte 
+                Raise = 12;
         }
     }
 
@@ -533,6 +546,7 @@ namespace XIVComboExpandedestPlugin
             Verfire = 7510,
             Jolt = 7503,
             Jolt2 = 7524,
+            Verraise = 7523,
             Verholy = 7526,
             Verflare = 7525,
             Scorch = 16530;
@@ -551,6 +565,7 @@ namespace XIVComboExpandedestPlugin
                 Jolt = 2,
                 Verthunder = 4,
                 Veraero = 10,
+                Verraise = 64,
                 Zwerchhau = 35,
                 Redoublement = 50,
                 Vercure = 54,
@@ -637,6 +652,7 @@ namespace XIVComboExpandedestPlugin
         public const byte JobID = 27;
 
         public const uint
+            Resurrection = 173,
             Deathflare = 3582,
             EnkindlePhoenix = 16516,
             EnkindleBahamut = 7429,
@@ -691,6 +707,12 @@ namespace XIVComboExpandedestPlugin
                 EnhancedEgiAssault = 74,
                 EnhancedFirebirdTrance = 80;
         }
+
+        public static class CDs
+        {
+            public const byte
+                Swiftcast = 43;
+        }
     }
 
     internal static class WAR
@@ -743,6 +765,7 @@ namespace XIVComboExpandedestPlugin
             AfflatusMisery = 16535,
             Cure2 = 135,
             Cure = 120,
+            Raise = 125,
             Medica = 124;
 
         public static class Buffs
