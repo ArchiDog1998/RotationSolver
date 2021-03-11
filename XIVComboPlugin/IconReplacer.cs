@@ -722,7 +722,7 @@ namespace XIVComboExpandedestPlugin
             //Replace Chi with Jin while Kassatsu is up and you have Enhanced Kassatsu
             if (Configuration.IsEnabled(CustomComboPreset.NinjaKassatsuChiJinFeature))
             {
-                if (actionID == NIN.Chi && level > NIN.Levels.EnhancedKassatsu && (HasBuff(NIN.Buffs.Kassatsu)))
+                if (actionID == NIN.Chi && level >= NIN.Levels.EnhancedKassatsu && (HasBuff(NIN.Buffs.Kassatsu)))
                 {
                     return NIN.Jin;
                 }
@@ -914,8 +914,8 @@ namespace XIVComboExpandedestPlugin
                         if (gauge.InUmbralIce() && level >= BLM.Levels.Blizzard4)
                         {
                             if (gauge.ElementTimeRemaining >= 5000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature))
-                                if (HasBuff(BLM.Buffs.Thundercloud))
-                                    if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0) 
+                                if (HasBuff(BLM.Buffs.Thunderbutt))
+                                    if ((BuffDuration(BLM.Buffs.Thunderbutt) < 4 && BuffDuration(BLM.Buffs.Thunderbutt) > 0) 
                                         || (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 4))
                                         return BLM.Thunder3;
                             return BLM.Blizzard4;
@@ -923,8 +923,8 @@ namespace XIVComboExpandedestPlugin
                         if (level >= BLM.Levels.Fire4)
                         {
                             if (gauge.ElementTimeRemaining >= 6000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature))
-                                if (HasBuff(BLM.Buffs.Thundercloud))
-                                    if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0) 
+                                if (HasBuff(BLM.Buffs.Thunderbutt))
+                                    if ((BuffDuration(BLM.Buffs.Thunderbutt) < 4 && BuffDuration(BLM.Buffs.Thunderbutt) > 0) 
                                         || (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 4))
                                         return BLM.Thunder3;
                             if (gauge.ElementTimeRemaining < 3000 && HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
@@ -939,8 +939,8 @@ namespace XIVComboExpandedestPlugin
                         }
                     }
                     if (gauge.ElementTimeRemaining >= 5000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature) && level < BLM.Levels.Thunder3)
-                        if (HasBuff(BLM.Buffs.Thundercloud))
-                            if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0) 
+                        if (HasBuff(BLM.Buffs.Thunderbutt))
+                            if ((BuffDuration(BLM.Buffs.Thunderbutt) < 4 && BuffDuration(BLM.Buffs.Thunderbutt) > 0) 
                                 || (TargetHasBuff(BLM.Debuffs.Thunder) && TargetBuffDuration(BLM.Debuffs.Thunder) < 4))
                                 return BLM.Thunder;
                     if (level < BLM.Levels.Fire3)
