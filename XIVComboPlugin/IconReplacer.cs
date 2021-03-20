@@ -1429,7 +1429,7 @@ namespace XIVComboExpandedestPlugin
 
             if (Configuration.IsEnabled(CustomComboPreset.MnkDemolishFeature))
             { 
-                if (actionID == MNK.Demolish)
+                if (actionID == MNK.SnapPunch)
                 {
                     if (level < MNK.Levels.Demolish)
                         return MNK.SnapPunch;
