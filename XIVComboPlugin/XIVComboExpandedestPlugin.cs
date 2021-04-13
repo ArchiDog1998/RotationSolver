@@ -1,5 +1,5 @@
-using Dalamud.Game.Chat;
 using Dalamud.Game.Command;
+using Dalamud.Game.Text;
 using Dalamud.Plugin;
 using ImGuiNET;
 using System;

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Dalamud.Game;
-using Dalamud.Game.Chat;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Structs.JobGauge;
+using Dalamud.Game.Text;
 using Dalamud.Hooking;
 
 namespace XIVComboExpandedestPlugin
