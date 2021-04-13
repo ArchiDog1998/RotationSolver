@@ -1,3 +1,5 @@
+*I would recommend deleting the plugin (you can reach it in %appdata%/XIVLauncher/installedPlugins) until I update it for 5.5, at which point I will remove this notice. This is my first time dealing with a major patch, so I don't know how the plugin will react to the update. Ideally, it'll just fail to load and not crash the game or anything, but still.*
+
 # XIVComboPlugin Expandedest
 This is an expanded version of Daemitus's XIVCombo Expanded for personal use, that I am modifying for personal use by adding features that me and friends would like to use. These can be used in any fork you like, no credit needed. None of these features will be added to the original XIVCombo, so please do not bug the creator of that about it. Thank you Daemitus, attickdoor, goaaats, and everyone else who contributed to making this plugin possible. Additional thanks to ALymphocyte for coding help!
 
