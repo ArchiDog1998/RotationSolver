@@ -39,8 +39,8 @@ namespace XIVComboExpandedestPlugin
                 SaveConfiguration();
             }
 
-            IconReplacer = new IconReplacer(pluginInterface.ClientState, pluginInterface.TargetModuleScanner, Configuration);
-            
+            IconReplacer = new IconReplacer(pluginInterface, Configuration);
+
             Interface.UiBuilder.OnOpenConfigUi += (sender, args) => isImguiComboSetupOpen = true;
             Interface.UiBuilder.OnBuildUi += UiBuilder_OnBuildUi;
 
@@ -67,14 +67,13 @@ namespace XIVComboExpandedestPlugin
             if (!isImguiComboSetupOpen)
                 return;
 
-            ImGui.SetNextWindowSize(new Vector2(740, 490));
+            ImGui.SetNextWindowSize(new Vector2(740, 490), ImGuiCond.FirstUseEver);
 
-            ImGui.Begin("Custom Combo Setup", ref isImguiComboSetupOpen, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoScrollbar);
+            ImGui.Begin("Custom Combo Setup", ref isImguiComboSetupOpen);
 
             ImGui.Text("This window allows you to enable and disable custom combos to your liking.");
-            ImGui.Separator();
 
-            ImGui.BeginChild("scrolling", new Vector2(0, 400), true, ImGuiWindowFlags.HorizontalScrollbar);
+            ImGui.BeginChild("scrolling", new Vector2(0, -1), true);
 
             ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 5));
 
@@ -114,11 +113,6 @@ namespace XIVComboExpandedestPlugin
             ImGui.PopStyleVar();
 
             ImGui.EndChild();
-
-            ImGui.Separator();
-
-            if (ImGui.Button("Close"))
-                isImguiComboSetupOpen = false;
 
             ImGui.End();
         }

@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 94
+        // Last enum used: 96
         // ====================================================================================
         #region DRAGOON
 
@@ -88,6 +88,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Inner Release Feature", "Replace Single-target and AoE combo with Fell Cleave/Decimate during Inner Release to prevent wasted GCDs", WAR.JobID, WAR.MythrilTempest, WAR.StormsPath)]
         WarriorInnerReleaseFeature = 69,
+
+        [CustomComboInfo("Nascent Flash Feature", "Replace Nascent Flash with Raw intuition when level synced below 76", WAR.JobID, WAR.NascentFlash)]
+        WarriorNascentFlashFeature = 96,
 
         #endregion
         // ====================================================================================
@@ -188,6 +191,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Overdrive Feature", "Replace Rook Autoturret and Automaton Queen with Overdrive while active", MCH.JobID, MCH.RookAutoturret, MCH.AutomatonQueen)]
         MachinistOverdriveFeature = 58,
+
+        [CustomComboInfo("One Button Weave Feature", "Replace Gauss Round with Ricochet if Ricochet has more charges.", MCH.JobID, MCH.GaussRound)]
+        MachinistOneButtonWeave = 95,
 
         #endregion
         // ====================================================================================

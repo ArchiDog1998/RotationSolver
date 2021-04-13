@@ -12,7 +12,7 @@ namespace XIVComboExpandedestPlugin
         public int Version { get; set; } = 4;
 
         [JsonProperty("EnabledActionsV4")]
-        public HashSet<CustomComboPreset> EnabledActions = new HashSet<CustomComboPreset>();
+        public HashSet<CustomComboPreset> EnabledActions = new();
 
         public bool IsEnabled(CustomComboPreset preset) => EnabledActions.Contains(preset);
 

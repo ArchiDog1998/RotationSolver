@@ -161,11 +161,6 @@ namespace XIVComboExpandedestPlugin
             public const byte 
                 Raise = 12;
         }
-        public static class CDs
-        {
-            public const byte
-                Swiftcast = 43;
-        }
     }
 
     internal static class DNC
@@ -406,6 +401,8 @@ namespace XIVComboExpandedestPlugin
         public const byte JobID = 31;
 
         public const uint
+            GaussRound = 2874,
+            Ricochet = 2890,
             CleanShot = 2873,
             HeatedCleanShot = 7413,
             SplitShot = 2866,
@@ -434,12 +431,14 @@ namespace XIVComboExpandedestPlugin
                 Hypercharge = 30,
                 HeatBlast = 35,
                 RookOverdrive = 40,
+                Ricochet = 50,
                 AutoCrossbow = 52,
                 HeatedSplitShot = 54,
                 HeatedSlugshot = 60,
                 HeatedCleanShot = 64,
                 QueenOverdrive = 80;
         }
+
     }
 
     internal static class MNK
@@ -732,8 +731,10 @@ namespace XIVComboExpandedestPlugin
             Decimate = 3550,
             InnerBeast = 49,
             SteelCyclone = 51,
+            RawIntuition = 3551,
             InnerChaos = 16465,
-            ChaoticCyclone = 16463;
+            ChaoticCyclone = 16463,
+            NascentFlash = 16464;
 
         public static class Buffs
         {
@@ -752,6 +753,7 @@ namespace XIVComboExpandedestPlugin
                 FellCleave = 54,
                 Decimate = 60,
                 MythrilTempestTrait = 74,
+                NascentFlash = 76,
                 InnerChaos = 80;
         }
     }

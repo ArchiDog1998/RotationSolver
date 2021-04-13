@@ -22,6 +22,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * An MP overcap prevention that involves weaving a CD before syphon strike/stalwart soul has been added.
 * No Mercy will turn into Bow Shock, and then Sonic Break, while buff is active.*
 * Single-target combo and AoE combo on WAR will be replaced by Fell Cleave/Decimate during Inner Release to prevent wasting GCDs.
+* Nascent Flash will turn into Raw Intuition when you are below level 76.
 * Meikyo will be replaced by Jinpu/Shifu while its buff is up.
 * Shoha will replace Iaijutsu/Tsubame when Meditation gauge is full.
 * Tsubame becomes Iaijutsu when Sen gauge isn't empty. Also, this feature deletes Kaeshi: Higanbana when active since it is literally the most useless action in the game, so you cannot accidentally use it.
@@ -40,6 +41,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Hide becomes Mug while in combat.
 * One button DoT on Bard! Now all your DoTs are on the Iron Jaws button, and when both are applied, it becomes Iron Jaws. Best of all, this is per your active target, so you can DoT multiple targets just fine!
 * Burst Shot/Quick Nock will turn into Apex Arrow when gauge is full.
+* One button weaving on Machinist, now Gauss Barrel will turn into Ricochet when you have more stacks of the latter!
 
 For actions marked with a *, you may want Remind Me or a similar plugin to keep track of cooldowns while they are invisible.
 

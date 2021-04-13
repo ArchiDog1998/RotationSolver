@@ -2,48 +2,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Dalamud.Game;
 using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.Actors.Types;
 using Dalamud.Game.ClientState.Structs.JobGauge;
 using Dalamud.Game.Text;
 using Dalamud.Hooking;
+using Dalamud.Plugin;
 
 namespace XIVComboExpandedestPlugin
 {
-    [StructLayout(LayoutKind.Explicit)]
-    public struct CooldownStruct
-    {
-        [FieldOffset(0x0)] public bool IsCooldown;
-
-        [FieldOffset(0x4)] public uint ActionID;
-        [FieldOffset(0x8)] public float CooldownElapsed;
-        [FieldOffset(0xC)] public float CooldownTotal;
-    }
 
     internal class IconReplacer
     {
-        private readonly ClientState ClientState;
+        private readonly DalamudPluginInterface Interface;
         private readonly PluginAddressResolver Address;
         private readonly XIVComboExpandedestConfiguration Configuration;
 
         private delegate ulong IsIconReplaceableDelegate(uint actionID);
-        private delegate ulong GetIconDelegate(byte param1, uint param2);
+        private delegate ulong GetIconDelegate(IntPtr actionManager, uint actionID);
+        private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
 
         private readonly Hook<IsIconReplaceableDelegate> IsIconReplaceableHook;
         private readonly Hook<GetIconDelegate> GetIconHook;
 
         private readonly HashSet<uint> CustomIds = new HashSet<uint>();
 
-        private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
-        private GetActionCooldownSlotDelegate getActionCooldownSlot;
+        private GetActionCooldownSlotDelegate GetActionCooldownSlot;
+        private IntPtr ActionManager = IntPtr.Zero;
 
-        public IconReplacer(ClientState clientState, SigScanner scanner, XIVComboExpandedestConfiguration configuration)
+        public IconReplacer(DalamudPluginInterface pluginInterface, XIVComboExpandedestConfiguration configuration)
         {
-            ClientState = clientState;
+            Interface = pluginInterface;
             Configuration = configuration;
 
             Address = new PluginAddressResolver();
-            Address.Setup(scanner);
+            Address.Setup(pluginInterface.TargetModuleScanner);
 
             UpdateEnabledActionIDs();
 
@@ -53,7 +46,7 @@ namespace XIVComboExpandedestPlugin
             GetIconHook.Enable();
             IsIconReplaceableHook.Enable();
 
-            getActionCooldownSlot = Marshal.GetDelegateForFunctionPointer<GetActionCooldownSlotDelegate>(Address.GetActionCooldown);
+            GetActionCooldownSlot = Marshal.GetDelegateForFunctionPointer<GetActionCooldownSlotDelegate>(Address.GetActionCooldown);
         }
 
         internal void Dispose()
@@ -78,7 +71,7 @@ namespace XIVComboExpandedestPlugin
             CustomIds.UnionWith(actionIDs);
         }
 
-        private T GetJobGauge<T>() => ClientState.JobGauges.Get<T>();
+        private T GetJobGauge<T>() => Interface.ClientState.JobGauges.Get<T>();
 
         private ulong IsIconReplaceableDetour(uint actionID) => 1;
 
@@ -91,18 +84,20 @@ namespace XIVComboExpandedestPlugin
         ///     For example, Souleater combo on DRK happens by dragging Souleater
         ///     onto your bar and mashing it.
         /// </summary>
-        private ulong GetIconDetour(byte self, uint actionID)
+        private ulong GetIconDetour(IntPtr actionManager, uint actionID)
         {
-            if (ClientState.LocalPlayer == null)
-                return GetIconHook.Original(self, actionID);
+            ActionManager = actionManager;
+
+            if (Interface.ClientState.LocalPlayer == null)
+                return GetIconHook.Original(actionManager, actionID);
 
             if (!CustomIds.Contains(actionID))
-                return GetIconHook.Original(self, actionID);
+                return GetIconHook.Original(actionManager, actionID);
 
             var lastMove = Marshal.ReadInt32(Address.LastComboMove);
             var comboTime = Marshal.PtrToStructure<float>(Address.ComboTimer);
-            var level = ClientState.LocalPlayer.Level;
-            var mp = ClientState.LocalPlayer.CurrentMp;
+            var level = Interface.ClientState.LocalPlayer.Level;
+            var mp = Interface.ClientState.LocalPlayer.CurrentMp;
 
             // ====================================================================================
             #region DRAGOON
@@ -114,7 +109,7 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (HasBuff(DRG.Buffs.DiveReady))
                         return DRG.MirageDive;
-                    return GetIconHook.Original(self, DRG.HighJump);
+                    return GetIconHook.Original(actionManager, DRG.HighJump);
                 }
             }
 
@@ -165,7 +160,7 @@ namespace XIVComboExpandedestPlugin
                         return DRG.FangAndClaw;
                     if (HasBuff(DRG.Buffs.EnhancedWheelingThrust) && level >= DRG.Levels.WheelingThrust)
                         return DRG.WheelingThrust;
-                    return GetIconHook.Original(self, DRG.TrueThrust);
+                    return GetIconHook.Original(actionManager, DRG.TrueThrust);
                 }
             }
 
@@ -186,7 +181,7 @@ namespace XIVComboExpandedestPlugin
                         return DRG.FangAndClaw;
                     if (HasBuff(DRG.Buffs.EnhancedWheelingThrust) && level >= DRG.Levels.WheelingThrust)
                         return DRG.WheelingThrust;
-                    return GetIconHook.Original(self, DRG.TrueThrust);
+                    return GetIconHook.Original(actionManager, DRG.TrueThrust);
                 }
             }
 
@@ -217,7 +212,7 @@ namespace XIVComboExpandedestPlugin
                                     if (level >= DRK.Levels.FloodOfDarkness && level < DRK.Levels.EdgeOfDarkness)
                                         return DRK.FloodOfDarkness;
                                     if (level >= DRK.Levels.EdgeOfDarkness)
-                                        return GetIconHook.Original(self, DRK.EdgeOfDarkness);
+                                        return GetIconHook.Original(actionManager, DRK.EdgeOfDarkness);
                                 }
                             }
                             if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature) && HasBuff(DRK.Buffs.BloodWeapon))
@@ -255,7 +250,7 @@ namespace XIVComboExpandedestPlugin
                             {
                                 if (mp > 8000)
                                 {
-                                    return GetIconHook.Original(self, DRK.FloodOfDarkness);
+                                    return GetIconHook.Original(actionManager, DRK.FloodOfDarkness);
                                 }
                             }
                             if (((gauge >= 90) || (gauge >= 80 && HasBuff(DRK.Buffs.BloodWeapon)) && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature)))
@@ -322,7 +317,7 @@ namespace XIVComboExpandedestPlugin
                             return PLD.RiotBlade;
                         if (lastMove == PLD.RiotBlade)
                         {
-                            return GetIconHook.Original(self, PLD.RoyalAuthority);
+                            return GetIconHook.Original(actionManager, PLD.RoyalAuthority);
                         }
                     }
 
@@ -403,7 +398,7 @@ namespace XIVComboExpandedestPlugin
                     var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
                     if (gauge >= 60)
                     {
-                        return GetIconHook.Original(self, WAR.FellCleave);
+                        return GetIconHook.Original(actionManager, WAR.FellCleave);
                     }
                     return WAR.Infuriate;
                 }
@@ -416,7 +411,7 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
                     {
-                        return GetIconHook.Original(self, WAR.FellCleave);
+                        return GetIconHook.Original(actionManager, WAR.FellCleave);
                     }
                     if (comboTime > 0)
                     {
@@ -425,7 +420,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
                             {
-                                return GetIconHook.Original(self, WAR.FellCleave);
+                                return GetIconHook.Original(actionManager, WAR.FellCleave);
                             }
                             return WAR.Maim;
                         }
@@ -433,7 +428,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
                             {
-                                return GetIconHook.Original(self, WAR.FellCleave);
+                                return GetIconHook.Original(actionManager, WAR.FellCleave);
                             }
                             return WAR.StormsPath;
                         }
@@ -449,7 +444,7 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
                     {
-                        return GetIconHook.Original(self, WAR.FellCleave);
+                        return GetIconHook.Original(actionManager, WAR.FellCleave);
                     }
 
                     if (comboTime > 0)
@@ -459,7 +454,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
                             {
-                                return GetIconHook.Original(self, WAR.FellCleave);
+                                return GetIconHook.Original(actionManager, WAR.FellCleave);
                             }
                             return WAR.Maim;
                         }
@@ -467,7 +462,7 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
                             {
-                                return GetIconHook.Original(self, WAR.FellCleave);
+                                return GetIconHook.Original(actionManager, WAR.FellCleave);
                             }
                             return WAR.StormsEye;
                         }
@@ -483,7 +478,7 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
                     {
-                        return GetIconHook.Original(self, WAR.Decimate);
+                        return GetIconHook.Original(actionManager, WAR.Decimate);
                     }
                     var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
                     if (comboTime > 0)
@@ -491,11 +486,22 @@ namespace XIVComboExpandedestPlugin
                         {
                             if (gauge >= 90 && level >= WAR.Levels.MythrilTempestTrait && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
                             {
-                                return GetIconHook.Original(self, WAR.Decimate);
+                                return GetIconHook.Original(actionManager, WAR.Decimate);
                             }
                             return WAR.MythrilTempest;
                         }
                     return WAR.Overpower;
+                }
+            }
+
+            // Replace Nascent Flash with Raw Intuition if below level 76 (thanks dae)
+            if (Configuration.IsEnabled(CustomComboPreset.WarriorNascentFlashFeature))
+            {
+                if (actionID == WAR.NascentFlash)
+                {
+                    if (level >= WAR.Levels.NascentFlash)
+                        return WAR.NascentFlash;
+                    return WAR.RawIntuition;
                 }
             }
 
@@ -625,7 +631,7 @@ namespace XIVComboExpandedestPlugin
                     var gauge = GetJobGauge<SAMGauge>();
                     if (level >= SAM.Levels.Tsubame && gauge.Sen == Sen.NONE)
                     {
-                        var kaeshi = GetIconHook.Original(self, SAM.Tsubame);
+                        var kaeshi = GetIconHook.Original(actionManager, SAM.Tsubame);
                         if (kaeshi == SAM.TrashHiganbana)
                             return SAM.Tsubame;
                         else
@@ -633,7 +639,7 @@ namespace XIVComboExpandedestPlugin
                     }
                     else
                     {
-                        return GetIconHook.Original(self, SAM.Iaijutsu);
+                        return GetIconHook.Original(actionManager, SAM.Iaijutsu);
                     }
                 }
             }
@@ -713,7 +719,7 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == NIN.Hide)
                 {
-                    if (ClientState.Condition[ConditionFlag.InCombat])
+                    if (Interface.ClientState.Condition[ConditionFlag.InCombat])
                         return NIN.Mug;
                     return NIN.Hide;
                 }
@@ -853,14 +859,14 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == MCH.SplitShot)
                         {
-                            return GetIconHook.Original(self, MCH.SlugShot);
+                            return GetIconHook.Original(actionManager, MCH.SlugShot);
                         }
                         if (lastMove == MCH.SlugShot)
                         {
-                            return GetIconHook.Original(self, MCH.CleanShot);
+                            return GetIconHook.Original(actionManager, MCH.CleanShot);
                         }
                     }
-                    return GetIconHook.Original(self, MCH.SplitShot);
+                    return GetIconHook.Original(actionManager, MCH.SplitShot);
                 }
             }
 
@@ -894,8 +900,20 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (GetJobGauge<MCHGauge>().IsRobotActive())
                     {
-                        return GetIconHook.Original(self, MCH.QueenOverdrive);
+                        return GetIconHook.Original(actionManager, MCH.QueenOverdrive);
                     }
+                }
+            }
+
+            // Replaces Gauss Round with Ricochet if Ricochet has less cooldown left.
+            if (Configuration.IsEnabled(CustomComboPreset.MachinistOneButtonWeave))
+            {
+                if (actionID == MCH.GaussRound)
+                {
+                    var gaussCD = GetCooldown(MCH.GaussRound);
+                    var ricochetCD = GetCooldown(MCH.Ricochet);
+                    if (gaussCD.CooldownRemaining > ricochetCD.CooldownRemaining && level >= MCH.Levels.Ricochet)
+                        return MCH.Ricochet;
                 }
             }
 
@@ -1071,7 +1089,7 @@ namespace XIVComboExpandedestPlugin
                         return SMN.SummonBahamut;
                     if (gauge.IsPhoenixReady())
                     {
-                        return GetIconHook.Original(self, SMN.FirebirdTranceLow);
+                        return GetIconHook.Original(actionManager, SMN.FirebirdTranceLow);
                     }
                     return SMN.DreadwyrmTrance;
                 }
@@ -1091,7 +1109,7 @@ namespace XIVComboExpandedestPlugin
                             return SMN.FountainOfFire;
                         }
 
-                    return GetIconHook.Original(self, SMN.Ruin3);
+                    return GetIconHook.Original(actionManager, SMN.Ruin3);
                 }
             }
 
@@ -1124,7 +1142,7 @@ namespace XIVComboExpandedestPlugin
             {
                 if ((actionID == SMN.EgiAssault || actionID == SMN.EgiAssault2) && HasBuff(SMN.Buffs.FurtherRuin) && BuffStacks(SMN.Buffs.FurtherRuin) == 4)
                 {
-                    var enkindle = GetIconHook.Original(self, SMN.Enkindle);
+                    var enkindle = GetIconHook.Original(actionManager, SMN.Enkindle);
                     if (enkindle == SMN.Inferno)
                         if (!(actionID == SMN.EgiAssault2 && level < SMN.Levels.EnhancedEgiAssault))
                             return SMN.RuinIV;
@@ -1340,10 +1358,10 @@ namespace XIVComboExpandedestPlugin
                         return BRD.ApexArrow;
                     if (HasBuff(BRD.Buffs.StraightShotReady))
                     {
-                        return GetIconHook.Original(self, BRD.RefulgentArrow);
+                        return GetIconHook.Original(actionManager, BRD.RefulgentArrow);
                     }
 
-                    return GetIconHook.Original(self, BRD.BurstShot);
+                    return GetIconHook.Original(actionManager, BRD.BurstShot);
                 }
             }
 
@@ -1453,7 +1471,7 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (HasBuff(DoM.Buffs.Swiftcast) || HasBuff(RDM.Buffs.Dualcast))
                     {
-                        return GetIconHook.Original(self, RDM.Impact);
+                        return GetIconHook.Original(actionManager, RDM.Impact);
                     }
                     return RDM.Veraero2;
                 }
@@ -1462,7 +1480,7 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (HasBuff(DoM.Buffs.Swiftcast) || HasBuff(RDM.Buffs.Dualcast))
                     {
-                        return GetIconHook.Original(self, RDM.Impact);
+                        return GetIconHook.Original(actionManager, RDM.Impact);
                     }
                     return RDM.Verthunder2;
                 }
@@ -1476,12 +1494,12 @@ namespace XIVComboExpandedestPlugin
 
                     if ((lastMove == RDM.Riposte || lastMove == RDM.EnchantedRiposte) && level >= RDM.Levels.Zwerchhau)
                     {
-                        return GetIconHook.Original(self, RDM.Zwerchhau);
+                        return GetIconHook.Original(actionManager, RDM.Zwerchhau);
                     }
 
                     if (lastMove == RDM.Zwerchhau && level >= RDM.Levels.Redoublement)
                     {
-                        return GetIconHook.Original(self, RDM.Redoublement);
+                        return GetIconHook.Original(actionManager, RDM.Redoublement);
                     }
 
                     if (Configuration.IsEnabled(CustomComboPreset.RedMageMeleeComboPlus))
@@ -1506,7 +1524,7 @@ namespace XIVComboExpandedestPlugin
                         }
                     }
 
-                    return GetIconHook.Original(self, RDM.Riposte);
+                    return GetIconHook.Original(actionManager, RDM.Riposte);
                 }
             }
 
@@ -1525,7 +1543,7 @@ namespace XIVComboExpandedestPlugin
                     }
                     if (HasBuff(RDM.Buffs.VerstoneReady))
                         return RDM.Verstone;
-                    return GetIconHook.Original(self, RDM.Jolt2);
+                    return GetIconHook.Original(actionManager, RDM.Jolt2);
                 }
                 if (actionID == RDM.Verfire)
                 {
@@ -1536,12 +1554,12 @@ namespace XIVComboExpandedestPlugin
                         if (lastMove == RDM.EnchantedRedoublement && level >= RDM.Levels.Verflare)
                             return RDM.Verflare;
                         if (((HasBuff(RDM.Buffs.Dualcast) || HasBuff(DoM.Buffs.Swiftcast))
-                            || (!HasBuff(RDM.Buffs.VerfireReady) && !ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature))) && level >= RDM.Levels.Verthunder)
+                            || (!HasBuff(RDM.Buffs.VerfireReady) && !Interface.ClientState.Condition[ConditionFlag.InCombat] && Configuration.IsEnabled(CustomComboPreset.RedMageVerprocOpenerFeature))) && level >= RDM.Levels.Verthunder)
                             return RDM.Verthunder;
                     }
                     if (HasBuff(RDM.Buffs.VerfireReady))
                         return RDM.Verfire;
-                    return GetIconHook.Original(self, RDM.Jolt2);
+                    return GetIconHook.Original(actionManager, RDM.Jolt2);
                 }
             }
 
@@ -1554,7 +1572,8 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == WHM.Raise || actionID == ACN.Resurrection || actionID == AST.Ascend || actionID == RDM.Verraise)
                 {
-                    if ((CooldownLeft(DoM.CDs.Swiftcast) == 0 && !HasBuff(RDM.Buffs.Dualcast))
+                    var swiftCD = GetCooldown(DoM.Swiftcast);
+                    if ((swiftCD.CooldownRemaining == 0 && !HasBuff(RDM.Buffs.Dualcast))
                         || level <= DoM.Levels.Raise
                         || (level <= RDM.Levels.Verraise && actionID == RDM.Verraise))
                         return DoM.Swiftcast;
@@ -1564,91 +1583,93 @@ namespace XIVComboExpandedestPlugin
             #endregion
             // ====================================================================================
 
-            return GetIconHook.Original(self, actionID);
+            return GetIconHook.Original(actionManager, actionID);
         }
 
-        #region BuffArray
-
-        private bool HasBuff(short effectId)
-        {
-            var target = ClientState.LocalPlayer;
-            if (target == null) return false;
-
-            foreach (var status in target.StatusEffects)
-            {
-                if (status.EffectId == effectId)
-                    return true;
-            }
-            return false;
-        }
-        private bool TargetHasBuff(short effectId)
-        {
-            var target = ClientState.Targets.CurrentTarget;
-            if (target == null) return false;
-
-            foreach (var status in target.StatusEffects)
-            {
-                if (status.EffectId == effectId && status.OwnerId == ClientState.LocalPlayer?.ActorId)
-                    return true;
-            }
-            return false;
-        }
+        #region Buffs
 
         private float TargetBuffDuration(short effectId)
         {
-            var target = ClientState.Targets.CurrentTarget;
-            if (target == null) return 0;
-
-            foreach (var status in target.StatusEffects)
-            {
-                if (status.EffectId == effectId && status.OwnerId == ClientState.LocalPlayer?.ActorId)
-                    return status.Duration;
-            }
+            var buff = FindTargetBuff(effectId);
+            if (buff.HasValue)
+                return (byte)buff?.Duration;
             return 0;
         }
 
         private float BuffDuration(short effectId)
         {
-            var target = ClientState.LocalPlayer;
-            if (target == null) return 0;
-
-            foreach (var status in target.StatusEffects)
-            {
-                if (status.EffectId == effectId)
-                    return status.Duration;
-            }
+            var buff = FindBuff(effectId);
+            if (buff.HasValue)
+                return (byte)buff?.Duration;
             return 0;
         }
 
         private byte BuffStacks(short effectId)
         {
-            var target = ClientState.LocalPlayer;
-            if (target == null) return 0;
-
-            foreach (var status in target.StatusEffects)
-            {
-                if (status.EffectId == effectId)
-                    return status.StackCount;
-            }
+            var buff = FindBuff(effectId);
+            if (buff.HasValue)
+                return (byte)buff?.StackCount;
             return 0;
         }
 
-        private CooldownStruct GetCooldown(byte cooldownGroup)
+        private bool HasBuff(short effectId) => FindBuff(effectId) != null;
+
+        private bool TargetHasBuff(short effectId) => FindTargetBuff(effectId) != null;
+
+        private Dalamud.Game.ClientState.Structs.StatusEffect? FindBuff(short effectId) => FindBuff(effectId, Interface.ClientState.LocalPlayer, null);
+
+        private Dalamud.Game.ClientState.Structs.StatusEffect? FindTargetBuff(short effectId) => FindBuff(effectId, Interface.ClientState.Targets.CurrentTarget, Interface.ClientState.LocalPlayer?.ActorId);
+
+        private Dalamud.Game.ClientState.Structs.StatusEffect? FindBuff(short effectId, Actor actor, int? ownerId)
         {
-            var cooldownPtr = getActionCooldownSlot(Address.ActionManager, cooldownGroup - 1);
-            return Marshal.PtrToStructure<CooldownStruct>(cooldownPtr);
+            if (actor == null)
+                return null;
+            foreach (var status in actor.StatusEffects)
+            {
+                if (status.EffectId == effectId)
+                    if (!ownerId.HasValue || status.OwnerId == ownerId)
+                        return status;
+            }
+            return null;
         }
 
-        // takes a cooldownGroup, which is NOT a cooldown ID.
-        // cooldown groups can be found in the CooldownGroup column of https://github.com/xivapi/ffxiv-datamining/blob/master/csv/Action.csv
-        // if an action has charges, returns the time left for all charges to regenerate (so Egi Assault will be usable if CooldownLeft < 30)
-        // default to GCD (group 58)
-        // Thank you ALymphocyte for making this possible!
-        private float CooldownLeft(byte cooldownGroup = 58)
+        #endregion
+
+        #region Cooldowns
+
+
+        private readonly Dictionary<uint, byte> CooldownGroups = new();
+
+        private byte GetCooldownGroup(uint actionID)
         {
-            var cooldown = GetCooldown(cooldownGroup);
-            if (!cooldown.IsCooldown) return 0;
-            return cooldown.CooldownTotal - cooldown.CooldownElapsed;
+            if (CooldownGroups.TryGetValue(actionID, out var cooldownGroup))
+                return cooldownGroup;
+
+            var sheet = Interface.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>();
+            var row = sheet.GetRow(actionID);
+
+            return CooldownGroups[actionID] = row.CooldownGroup;
+        }
+
+        [StructLayout(LayoutKind.Explicit)]
+        public struct CooldownData
+        {
+            [FieldOffset(0x0)] public bool IsCooldown;
+            [FieldOffset(0x4)] public uint ActionID;
+            [FieldOffset(0x8)] public float CooldownElapsed;
+            [FieldOffset(0xC)] public float CooldownTotal;
+
+            public float CooldownRemaining => IsCooldown ? CooldownTotal - CooldownElapsed : 0;
+        }
+
+        internal CooldownData GetCooldown(uint actionID)
+        {
+            var cooldownGroup = GetCooldownGroup(actionID);
+            if (ActionManager == IntPtr.Zero)
+                return new CooldownData() { ActionID = actionID };
+
+            var cooldownPtr = GetActionCooldownSlot(ActionManager, cooldownGroup - 1);
+            return Marshal.PtrToStructure<CooldownData>(cooldownPtr);
         }
 
         #endregion
