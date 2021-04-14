@@ -285,9 +285,9 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == PLD.FastBlade && level >= PLD.Levels.RiotBlade)
                             return PLD.RiotBlade;
-                        if (lastMove == PLD.RiotBlade)
+                        if (lastMove == PLD.RiotBlade && level >= PLD.Levels.RageOfHalone)
                         {
-                            return GetIconHook.Original(actionManager, PLD.RoyalAuthority);
+                            return GetIconHook.Original(actionManager, PLD.RageOfHalone);
                         }
                     }
 
@@ -796,11 +796,11 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (comboTime > 0)
                     {
-                        if (lastMove == MCH.SplitShot)
+                        if (lastMove == MCH.SplitShot && level >= MCH.Levels.SlugShot)
                         {
                             return GetIconHook.Original(actionManager, MCH.SlugShot);
                         }
-                        if (lastMove == MCH.SlugShot)
+                        if (lastMove == MCH.SlugShot && level >= MCH.Levels.CleanShot)
                         {
                             return GetIconHook.Original(actionManager, MCH.CleanShot);
                         }
