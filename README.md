@@ -20,7 +20,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Single-target and AoE combos become Holy Spirit/Circle when Requiescat is up
 * Dragon Kick becomes Bootshine while a form is up and Leaden Fist is up.
 * Overcap prevention on GNB now extends to single-target combo and has also been added to WAR/DRK.
-* Fell Cleave and Burst Strike will now turn into Infuriate/Bloodfest if doing so would not overcap gauge.
+* Burst Strike will now turn into Bloodfest if gauge is empty.
 * No Mercy will turn into Bow Shock, and then Sonic Break, while buff is active.*
 * Single-target combo and AoE combo on WAR will be replaced by Fell Cleave/Decimate during Inner Release.
 * Nascent Flash will turn into Raw Intuition when you are below level 76.

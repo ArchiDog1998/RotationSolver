@@ -357,16 +357,17 @@ namespace XIVComboExpandedestPlugin
             // ====================================================================================
             #region WARRIOR
 
-            // Replace Infuriate with Fell Cleave if >= 60 Beast Gauge
-            if (Configuration.IsEnabled(CustomComboPreset.WarriorInfuriateOvercapFeature))
+            /* Replace Fell Cleave with Infuriate if <= 50 Beast Gauge
+            if (Configuration.IsEnabled(CustomComboPreset.WarriorInfuriateFeature))
             {
-                if (actionID == WAR.FellCleave)
+                if (GetIconHook.Original(actionManager, actionID) == GetIconHook.Original(actionManager, WAR.FellCleave))
                 {
                     var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
                     if (gauge <= 50 && level >= WAR.Levels.StormsEye && !HasBuff(WAR.Buffs.InnerRelease))
-                        return WAR.Infuriate;
+                        return GetIconHook.Original(actionManager,WAR.Infuriate);
                 }
-            }
+            }*/
+
 
             // Replace Storm's Path with Storm's Path combo
             if (Configuration.IsEnabled(CustomComboPreset.WarriorStormsPathCombo))
@@ -391,6 +392,7 @@ namespace XIVComboExpandedestPlugin
                     return WAR.HeavySwing;
                 }
             }
+
 
             // Replace Storm's Eye with Storm's Eye combo
             if (Configuration.IsEnabled(CustomComboPreset.WarriorStormsEyeCombo))
