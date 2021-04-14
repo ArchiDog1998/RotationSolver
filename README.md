@@ -19,7 +19,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Minor Arcana becomes Sleeve Draw when a card is not drawn.
 * Single-target and AoE combos become Holy Spirit/Circle when Requiescat is up
 * Dragon Kick becomes Bootshine while a form is up and Leaden Fist is up.
-* Overcap prevention on GNB now extends to single-target combo and has also been added to WAR/DRK.
+* AoE Overcap prevention on GNB has also been added to WAR/DRK.
 * Burst Strike will now turn into Bloodfest if gauge is empty.
 * No Mercy will turn into Bow Shock, and then Sonic Break, while buff is active.*
 * Single-target combo and AoE combo on WAR will be replaced by Fell Cleave/Decimate during Inner Release.
@@ -30,7 +30,6 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Fire 1 becomes Fire 3 outside of Astral Fire and when Firestarter proc is up. Also replaces Enochian with Fire 1/3 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).
 * Blizzard 3 becomes Blizzard 1 when synced below requirement level, same for Freeze and Blizzard 2.
 * All Bahamut/Phoenix/Dreadwyrm-related actions on Summoner are now on one button.
-* Red Mage Verholy/Verflare/Scorch now part of redoublement combo (separate option), based on gauge and procs.
 * Verstone/Verfire will turn into Veraero/Verthunder when Dualcast/Swiftcast is up, with an additional feature that makes Verfire Verthunder outside of combat for openers.
 * When Suiton (or Hidden) is up, Trick Attack will replace Kassatsu.*
 * In the same vein, Ten Chi Jin (the move) will turn into Meisui while Suiton is up*.
