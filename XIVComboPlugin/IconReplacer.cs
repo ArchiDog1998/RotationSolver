@@ -889,7 +889,7 @@ namespace XIVComboExpandedestPlugin
             if (Configuration.IsEnabled(CustomComboPreset.BlackFire3Feature) && actionID == BLM.Fire)
             {
                 var gauge = GetJobGauge<BLMGauge>();
-                if (level >= BLM.Levels.Fire3 || !gauge.InAstralFire())
+                if (level >= BLM.Levels.Fire3 && !gauge.InAstralFire())
                     return BLM.Fire3;
                 if (gauge.InAstralFire())
                     if (HasBuff(BLM.Buffs.Firestarter))
