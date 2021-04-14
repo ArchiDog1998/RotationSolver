@@ -5,6 +5,7 @@ namespace XIVComboExpandedestPlugin
     public enum CustomComboPreset
     {
         // Last enum used: 96
+        // Available enums: 73, 76, 77, 83, 86, 92
         // ====================================================================================
         #region DRAGOON
 
@@ -36,11 +37,9 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Delirium Feature", "Replace Souleater and Stalwart Soul with Bloodspiller and Quietus when Delirium is active", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
         DeliriumFeature = 57,
         
-        [CustomComboInfo("Dark Knight Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate blood gauge", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
+        [CustomComboInfo("Dark Knight Gauge Overcap Feature", "Replace AoE combo with gauge spender if you are about to overcap", DRK.JobID, DRK.StalwartSoul)]
         DRKOvercapFeature = 71,
 
-        [CustomComboInfo("Dark Knight MP Overcap Feature", "Weaves MP spenders between the first two steps of your combos if you are over 8000 MP.", DRK.JobID, DRK.Souleater, DRK.StalwartSoul)]
-        DRKMPOvercapFeature = 73,
 
         #endregion
         // ====================================================================================
@@ -64,9 +63,6 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Requiescat Feature", "Replace Royal Authority/Goring Blade combo with Holy Spirit and Prominence combo with Holy Circle while Requiescat is active.\nRequires said combos to be activated to work.", PLD.JobID, PLD.RoyalAuthority, PLD.GoringBlade, PLD.Prominence)]
         PaladinRequiescatFeature = 63,
 
-        [CustomComboInfo("Confiteor Feature", "Replace Holy Spirit/Circle with Confiteor while MP is under 4000 and Requiescat is up.", PLD.JobID, PLD.HolySpirit, PLD.HolyCircle)]
-        PaladinConfiteorFeature = 64,
-
         #endregion
         // ====================================================================================
         #region WARRIOR
@@ -83,10 +79,10 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Warrior Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate beast gauge", WAR.JobID, WAR.MythrilTempest, WAR.StormsEye, WAR.StormsPath)]
         WarriorGaugeOvercapFeature = 67,
 
-        [CustomComboInfo("Infuriate Gauge Overcap Feature", "Make Infuriate Fell Cleave if Infuriate would overcap you", WAR.JobID, WAR.Infuriate)]
+        [CustomComboInfo("Infuriate Gauge Overcap Feature", "Make Fell Cleave Infuriate if you are <= 50 gauge and have Infuriate unlocked", WAR.JobID, WAR.FellCleave)]
         WarriorInfuriateOvercapFeature = 68,
 
-        [CustomComboInfo("Inner Release Feature", "Replace Single-target and AoE combo with Fell Cleave/Decimate during Inner Release to prevent wasted GCDs", WAR.JobID, WAR.MythrilTempest, WAR.StormsPath)]
+        [CustomComboInfo("Inner Release Feature", "Replace Single-target and AoE combo with Fell Cleave/Decimate during Inner Release", WAR.JobID, WAR.MythrilTempest, WAR.StormsPath)]
         WarriorInnerReleaseFeature = 69,
 
         [CustomComboInfo("Nascent Flash Feature", "Replace Nascent Flash with Raw intuition when level synced below 76", WAR.JobID, WAR.NascentFlash)]
@@ -120,7 +116,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Shoha Feature", "Replaces Iaijutsu/Tsubame with Shoha if gauge is capped.", SAM.JobID, SAM.Iaijutsu, SAM.Tsubame)]
         SamuraiShohaFeature = 74,
 
-        [CustomComboInfo("Tsubame to Iaijutsu Feature", "Replaces Tsubame with Iaijutsu while Sens are up.\nAlso deletes Kaeshi: Higanbana from the game, good riddance.", SAM.JobID, SAM.Tsubame)]
+        [CustomComboInfo("Tsubame to Iaijutsu Feature", "Replaces Tsubame with Iaijutsu while Sens are up.", SAM.JobID, SAM.Tsubame)]
         SamuraiTsubameFeature = 91,
 
         #endregion
@@ -167,10 +163,10 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Demon Slaughter Combo", "Replace Demon Slaughter with its combo chain", GNB.JobID, GNB.DemonSlaughter)]
         GunbreakerDemonSlaughterCombo = 22,
 
-        [CustomComboInfo("Gunbreaker Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate powder gauge", GNB.JobID, GNB.DemonSlaughter, GNB.SolidBarrel)]
+        [CustomComboInfo("Gunbreaker Gauge Overcap Feature", "Replace AoE combo with gauge spender if you are about to overcap", GNB.JobID, GNB.DemonSlaughter)]
         GunbreakerGaugeOvercapFeature = 30,
 
-        [CustomComboInfo("Bloodfest Gauge Overcap Feature", "Replace Bloodfest with Burst Strike if it would cause you to overcap.", GNB.JobID, GNB.Bloodfest)]
+        [CustomComboInfo("Burst Strike to Bloodfest Feature", "Replace Burst Strike with Bloodfest if you have no powder gauge.", GNB.JobID, GNB.BurstStrike)]
         GunbreakerBloodfestOvercapFeature = 70,
 
         [CustomComboInfo("No Mercy Feature", "Replace No Mercy with Bow Shock, and then Sonic Break, while No Mercy is active.", GNB.JobID, GNB.NoMercy)]
@@ -192,8 +188,8 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Overdrive Feature", "Replace Rook Autoturret and Automaton Queen with Overdrive while active", MCH.JobID, MCH.RookAutoturret, MCH.AutomatonQueen)]
         MachinistOverdriveFeature = 58,
 
-        [CustomComboInfo("One Button Weave Feature", "Replace Gauss Round with Ricochet if Ricochet has more charges.", MCH.JobID, MCH.GaussRound)]
-        MachinistOneButtonWeave = 95,
+        [CustomComboInfo("Gauss Round to Ricochet Feature", "Replace Gauss Round with Ricochet if Ricochet has more charges.", MCH.JobID, MCH.GaussRound)]
+        MachinistGaussRicochetFeature = 95,
 
         #endregion
         // ====================================================================================
@@ -208,16 +204,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("(Between the) Ley Lines", "Change Ley Lines into BTL when Ley Lines is active", BLM.JobID, BLM.LeyLines)]
         BlackLeyLines = 56,
 
-        [CustomComboInfo("Fire 1/3 Feature", "Fire 1 (and 3 if procced) will replace Fire 4 if below 6s (3s if Fire 3) on AF.\nEnochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
-        BlackFireFeature = 76,
-
-        [CustomComboInfo("Despair Feature", "Despair replaces Fire 4 when below 2400 MP.\nEnochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
-        BlackDespairFeature = 77,
-
-        [CustomComboInfo("Thunder Feature", "Thunder 1/3 replaces Enochian/Fire 4/Blizzard 4 when Thundercloud is up and either Thundercloud or Thunder 1/3 is about to run out, assuming it won't interrupt timer upkeep.\nEnochian Stance Switcher must be active.", BLM.JobID, BLM.Enochian)]
-        BlackThunderFeature = 86,
-
-        [CustomComboInfo("Fire 3 to Fire 1 Feature", "Fire 3 becomes Fire 1 when in Astral Fire when no Firestarter proc is up.\nAlso replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).", BLM.JobID, BLM.Enochian, BLM.Fire3)]
+        [CustomComboInfo("Fire 3 to Fire 1 Feature", "Fire 1 becomes Fire 3 outside of combat, and when firestarter proc is up.\nAlso replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).", BLM.JobID, BLM.Enochian, BLM.Fire)]
         BlackFire3Feature = 87,
 
         [CustomComboInfo("Blizzard Condensation Feature", "Blizzard 3 becomes Blizzard 1 when synced below requirement level, same for Freeze and Blizzard 2.", BLM.JobID, BLM.Blizzard3, BLM.Freeze)]
@@ -252,9 +239,6 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("ES Painflare", "Change Painflare into Energy Syphon when out of Aetherflow stacks", SMN.JobID, SMN.Painflare)]
         SummonerESPainflareCombo = 40,
 
-        [CustomComboInfo("Egi Assault 1/2 to Ruin IV Feature", "Change Egi Assault 1/2 into Ruin IV when capped on Further Ruin, if level applies and Ifrit-Egi is out.", SMN.JobID, SMN.EgiAssault, SMN.EgiAssault2, SMN.Enkindle)]
-        SummonerRuinIVFeature = 92,
-
         [CustomComboInfo("Demi-Summon Combiners Ultra", "Dreadwyrm Trance, Summon Bahamut, Firebird Trance, Deathflare, Enkindle Bahamut, and Enkindle Phoenix are now one button.\nRequires Demi-Summon Combiners feature.", SMN.JobID, SMN.DreadwyrmTrance)]
         SummonerDemiComboUltra = 93,
 
@@ -277,6 +261,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Dance Step Combo", "Change Standard Step and Technical Step into each dance step while dancing", DNC.JobID, DNC.StandardStep, DNC.TechnicalStep)]
         DancerDanceStepCombo = 31,
+
+        [CustomComboInfo("Dance Step Feature", "Change Cascade, Flourish, and both Fan Dances into dance steps while dancing.\nThis helps ensure you can still dance with combos on, without using auto dance.", DNC.JobID, DNC.Cascade, DNC.Flourish, DNC.FanDance1, DNC.FanDance2)]
+        DancerDanceComboCompatibility = 64,
 
         [CustomComboInfo("Flourish Proc Saver", "Change Flourish into any available procs before using", DNC.JobID, DNC.Flourish)]
         DancerFlourishFeature = 34,
@@ -313,8 +300,8 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Heavy Shot into Straight Shot", "Replaces Heavy Shot/Burst Shot with Straight Shot/Refulgent Arrow when procced", BRD.JobID, BRD.HeavyShot, BRD.BurstShot)]
         BardStraightShotUpgradeFeature = 42,
 
-        [CustomComboInfo("One Button DoT", "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up.\nWorks for prior versions too, alternates between the two if Iron Jaws isn't available.", BRD.JobID, BRD.IronJaws)]
-        BardOneButtonDoT = 84,
+        [CustomComboInfo("Iron Jaws Feature", "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up.\nWorks for prior versions too, alternates between the two if Iron Jaws isn't available.", BRD.JobID, BRD.IronJaws)]
+        BardIronJawsFeature = 84,
 
         [CustomComboInfo("Burst Shot/Quick Nock into Apex Arrow", "Replaces Burst Shot and Quick Nock with Apex Arrow when gauge is full.", BRD.JobID, BRD.BurstShot, BRD.QuickNock)]
         BardApexFeature = 85,
@@ -323,16 +310,12 @@ namespace XIVComboExpandedestPlugin
         // ====================================================================================
         #region MONK
 
-        [CustomComboInfo("Monk AoE Combo", "Replaces Rockbreaker with the AoE combo chain, or Rockbreaker when Perfect Balance is active." +
-            "\nFour-point Fury is selected if Perfect balance or Form Shift is up and Twin Snakes is below 4s." +
-            "\nTwin Snakes will also replace Four-Point Fury at any point if the buff is not up.", MNK.JobID, MNK.Rockbreaker)]
+        [CustomComboInfo("Monk AoE Combo", "Replaces Rockbreaker with the AoE combo chain, or Rockbreaker when Perfect Balance is active.", MNK.JobID, MNK.Rockbreaker)]
         MnkAoECombo = 54,
 
         [CustomComboInfo("Monk Bootshine Feature", "Replaces Dragon Kick with Bootshine if both a form and Leaden Fist are up.", MNK.JobID, MNK.DragonKick)]
         MnkBootshineFeature = 65,
 
-        [CustomComboInfo("Monk Demolish Feature", "Replaces Snap Punch with Demolish if Demolish is active on current target and over 6s in duration left.", MNK.JobID, MNK.SnapPunch)]
-        MnkDemolishFeature = 83,
 
         #endregion
         // ====================================================================================
@@ -344,7 +327,7 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Redoublement Combo", "Replaces Redoublement with its combo chain, following enchantment rules", RDM.JobID, RDM.Redoublement)]
         RedMageMeleeCombo = 49,
 
-        [CustomComboInfo("Redoublement Combo Plus", "Adds Verholy/VerFlare/Scorch to Redoublement Combo, based on procs and mana gauge.\nRequires Redoublement Combo.", RDM.JobID, RDM.Redoublement)]
+        [CustomComboInfo("Redoublement Combo Plus", "Adds Scorch to Redoublement Combo.\nRequires Redoublement Combo.", RDM.JobID, RDM.Redoublement)]
         RedMageMeleeComboPlus = 78,
 
         [CustomComboInfo("Verproc into Jolt", "Replaces Verstone/Verfire with Jolt/Scorch when no proc is available.", RDM.JobID, RDM.Verstone, RDM.Verfire)]

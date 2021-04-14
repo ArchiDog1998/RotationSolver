@@ -353,7 +353,8 @@ namespace XIVComboExpandedestPlugin
                 SonicBreak = 54,
                 BowShock = 62,
                 Continuation = 70,
-                FatedCircle = 72;
+                FatedCircle = 72,
+                Bloodfest = 76;
         }
     }
 
