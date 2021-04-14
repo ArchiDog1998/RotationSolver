@@ -27,7 +27,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Meikyo will be replaced by Jinpu/Shifu while its buff is up.
 * Shoha will replace Iaijutsu/Tsubame when Meditation gauge is full.
 * Tsubame becomes Iaijutsu when Sen gauge isn't empty. Also, this feature deletes Kaeshi: Higanbana when active since it is literally the most useless action in the game, so you cannot accidentally use it.
-* Fire 1 becomes Fire 3 outside of Astral Fire. Also replaces Enochian with Fire 1/3 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).
+* Fire 1 becomes Fire 3 outside of Astral Fire and when Firestarter proc is up. Also replaces Enochian with Fire 1/3 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).
 * Blizzard 3 becomes Blizzard 1 when synced below requirement level, same for Freeze and Blizzard 2.
 * All Bahamut/Phoenix/Dreadwyrm-related actions on Summoner are now on one button.
 * Red Mage Verholy/Verflare/Scorch now part of redoublement combo (separate option), based on gauge and procs.
