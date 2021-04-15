@@ -600,9 +600,18 @@ namespace XIVComboExpandedestPlugin
             // ====================================================================================
             #region NINJA
 
-            if (Configuration.IsEnabled(CustomComboPreset.NinjaNinjutsuFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaNinjutsuFeature) || Configuration.IsEnabled(CustomComboPreset.NinjaGCDNinjutsuFeature))
             {
                 if (actionID == NIN.AeolianEdge)
+                {
+                    if (GetIconHook.Original(actionManager, NIN.JinNormal) == GetIconHook.Original(actionManager, NIN.Jin))
+                        return GetIconHook.Original(actionManager, NIN.Ninjutsu);
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaGCDNinjutsuFeature))
+            {
+                if (actionID == NIN.HakkeMujinsatsu || actionID == NIN.ArmorCrush)
                 {
                     if (GetIconHook.Original(actionManager, NIN.JinNormal) == GetIconHook.Original(actionManager, NIN.Jin))
                         return GetIconHook.Original(actionManager, NIN.Ninjutsu);

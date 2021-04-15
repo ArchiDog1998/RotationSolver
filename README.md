@@ -35,7 +35,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * In the same vein, Ten Chi Jin (the move) will turn into Meisui while Suiton is up*.
 * Chi is replaced with Jin while Kassatsu is up if you have Enhanced Kassatsu to help with muscle memory.
 * Hide becomes Mug while in combat.
-* Aeolian Edge (combo) becomes Ninjutsu while Mudras are being used.
+* Your combos can become Ninjutsu while you are using Mudra (so you don't have to bind Ninjutsu separately, it doesn't actually do the Mudras for you).
 * Bard DoTs alternate between each other and also turn into Iron Jaws when both are up.
 * Burst Shot/Quick Nock will turn into Apex Arrow when gauge is full.
 * Cascade, Flourish, and both Fan Dances change into dance steps while dancing. This helps ensure you can still dance with combos on, without using auto dance. You can additionally configure which actions you want to be replaced by dance steps, if you so desire.

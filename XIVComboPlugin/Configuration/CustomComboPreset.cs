@@ -4,7 +4,7 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 97
+        // Last enum used: 98
         // Unused enums: 73, 76, 77, 83, 86, 92
         // ====================================================================================
         #region DRAGOON
@@ -150,6 +150,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Aeolian to Ninjutsu Feature", "Replaces Aeolian Edge (combo) with Ninjutsu if any Mudra are used.", NIN.JobID, NIN.AeolianEdge)]
         NinjaNinjutsuFeature = 97,
+
+        [CustomComboInfo("GCDs to Ninjutsu Feature", "Every GCD combo becomes Ninjutsu while Mudras are being used.", NIN.JobID, NIN.AeolianEdge, NIN.ArmorCrush, NIN.HakkeMujinsatsu)]
+        NinjaGCDNinjutsuFeature = 98,
 
         #endregion
         // ====================================================================================
