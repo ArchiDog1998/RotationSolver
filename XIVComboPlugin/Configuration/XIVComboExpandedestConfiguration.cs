@@ -14,6 +14,8 @@ namespace XIVComboExpandedestPlugin
         [JsonProperty("EnabledActionsV4")]
         public HashSet<CustomComboPreset> EnabledActions = new();
 
+        public int DanceAction1, DanceAction2, DanceAction3, DanceAction4;
+
         public bool IsEnabled(CustomComboPreset preset) => EnabledActions.Contains(preset);
 
         #region Obsolete

@@ -77,6 +77,15 @@ namespace XIVComboExpandedestPlugin
 
             ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 5));
 
+            if (Configuration.DanceAction1 == 0)
+                Configuration.DanceAction1 = (int)DNC.Cascade;
+            if (Configuration.DanceAction2 == 0)
+                Configuration.DanceAction2 = (int)DNC.Flourish;
+            if (Configuration.DanceAction3 == 0)
+                Configuration.DanceAction3 = (int)DNC.FanDance1;
+            if (Configuration.DanceAction4 == 0)
+                Configuration.DanceAction4 = (int)DNC.FanDance2;
+
             int i = 1;
             foreach (var jobName in GroupedPresets.Keys)
             {
@@ -100,6 +109,26 @@ namespace XIVComboExpandedestPlugin
 
                         ImGui.TextColored(new Vector4(0.68f, 0.68f, 0.68f, 1.0f), $"#{i}: {info.Description}");
                         ImGui.Spacing();
+
+                        if (preset == CustomComboPreset.DancerDanceComboCompatibility)
+                        {
+                            if (ImGui.InputInt("Red ActionID", ref Configuration.DanceAction1))
+                            {
+                                SaveConfiguration();
+                            }
+                            if (ImGui.InputInt("Blue ActionID", ref Configuration.DanceAction2))
+                            {
+                                SaveConfiguration();
+                            }
+                            if (ImGui.InputInt("Green ActionID", ref Configuration.DanceAction3))
+                            {
+                                SaveConfiguration();
+                            }
+                            if (ImGui.InputInt("Yellow ActionID", ref Configuration.DanceAction4))
+                            {
+                                SaveConfiguration();
+                            }
+                        }
 
                         i++;
                     }

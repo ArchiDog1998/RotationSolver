@@ -91,8 +91,18 @@ namespace XIVComboExpandedestPlugin
             if (Interface.ClientState.LocalPlayer == null)
                 return GetIconHook.Original(actionManager, actionID);
 
-            if (!CustomIds.Contains(actionID))
-                return GetIconHook.Original(actionManager, actionID);
+            if (Configuration.DanceAction1 == 0)
+                Configuration.DanceAction1 = (int)DNC.Cascade;
+            if (Configuration.DanceAction2 == 0)
+                Configuration.DanceAction2 = (int)DNC.Flourish;
+            if (Configuration.DanceAction3 == 0)
+                Configuration.DanceAction3 = (int)DNC.FanDance1;
+            if (Configuration.DanceAction4 == 0)
+                Configuration.DanceAction4 = (int)DNC.FanDance2;
+
+            if (actionID != (uint)Configuration.DanceAction1 && actionID != (uint)Configuration.DanceAction2 && actionID != (uint)Configuration.DanceAction3 && actionID != (uint)Configuration.DanceAction4)
+                if (!CustomIds.Contains(actionID))
+                    return GetIconHook.Original(actionManager, actionID);
 
             var lastMove = Marshal.ReadInt32(Address.LastComboMove);
             var comboTime = Marshal.PtrToStructure<float>(Address.ComboTimer);
@@ -1082,19 +1092,19 @@ namespace XIVComboExpandedestPlugin
             {
                 if (GetJobGauge<DNCGauge>().IsDancing())
                 {
-                    if (actionID == DNC.Cascade)
+                    if (actionID == (uint)Configuration.DanceAction1)
                     {
                         return GetIconHook.Original(actionManager, DNC.Cascade);
                     }
-                    if (actionID == DNC.Flourish)
+                    if (actionID == (uint)Configuration.DanceAction2)
                     {
                         return GetIconHook.Original(actionManager, DNC.Fountain);
                     }
-                    if (actionID == DNC.FanDance1)
+                    if (actionID == (uint)Configuration.DanceAction3)
                     {
                         return GetIconHook.Original(actionManager, DNC.ReverseCascade);
                     }
-                    if (actionID == DNC.FanDance2)
+                    if (actionID == (uint)Configuration.DanceAction4)
                     {
                         return GetIconHook.Original(actionManager, DNC.Fountainfall);
                     }
