@@ -262,6 +262,9 @@ namespace XIVComboExpandedestPlugin
                         //Replace with Holy Spirit when Requiescat is up
                         if (HasBuff(PLD.Buffs.Requiescat))
                         {
+                            //Replace with Confiteor when under 4000 MP
+                            if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature) && level >= PLD.Levels.Confiteor && mp < 4000)
+                                return PLD.Confiteor;
                             return PLD.HolySpirit;
                         }
                     }
@@ -287,6 +290,9 @@ namespace XIVComboExpandedestPlugin
                         //Replace with Holy Spirit when Requiescat is up
                         if (HasBuff(PLD.Buffs.Requiescat))
                         {
+                            //Replace with Confiteor when under 4000 MP
+                            if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature) && level >= PLD.Levels.Confiteor && mp < 4000)
+                                return PLD.Confiteor;
                             return PLD.HolySpirit;
                         }
                     }
@@ -323,6 +329,9 @@ namespace XIVComboExpandedestPlugin
                         //Replace with Holy Circle when Requiescat is up
                         if (HasBuff(PLD.Buffs.Requiescat) && level >= PLD.Levels.HolyCircle)
                         {
+                            //Replace with Confiteor when under 4000 MP
+                            if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature) && level >= PLD.Levels.Confiteor && mp < 4000)
+                                return PLD.Confiteor;
                             return PLD.HolyCircle;
                         }
                     }
@@ -1393,6 +1402,25 @@ namespace XIVComboExpandedestPlugin
                 if (actionID == RDM.Redoublement)
                 {
                     var gauge = GetJobGauge<RDMGauge>();
+
+                    if (Configuration.IsEnabled(CustomComboPreset.RedMageMeleeComboPlus))
+                    {
+                        if (lastMove == RDM.EnchantedRedoublement)
+                        {
+                            if (gauge.BlackGauge >= gauge.WhiteGauge && level >= RDM.Levels.Verholy)
+                            {
+                                if (HasBuff(RDM.Buffs.VerstoneReady) && !HasBuff(RDM.Buffs.VerfireReady) && (gauge.BlackGauge - gauge.WhiteGauge <= 9))
+                                    return RDM.Verflare;
+                                return RDM.Verholy;
+                            }
+                            else if (level >= RDM.Levels.Verflare)
+                            {
+                                if ((!HasBuff(RDM.Buffs.VerstoneReady) && HasBuff(RDM.Buffs.VerfireReady)) && level >= RDM.Levels.Verholy && (gauge.WhiteGauge - gauge.BlackGauge <= 9))
+                                    return RDM.Verholy;
+                                return RDM.Verflare;
+                            }
+                        }
+                    }
 
                     if ((lastMove == RDM.Riposte || lastMove == RDM.EnchantedRiposte) && level >= RDM.Levels.Zwerchhau)
                     {

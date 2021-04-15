@@ -1,4 +1,5 @@
 using Dalamud.Configuration;
+using Dalamud.Game.Text;
 using Dalamud.Plugin;
 using Newtonsoft.Json;
 using System;
@@ -14,9 +15,14 @@ namespace XIVComboExpandedestPlugin
         [JsonProperty("EnabledActionsV4")]
         public HashSet<CustomComboPreset> EnabledActions = new();
 
+        [JsonProperty("Debug")]
+        public bool ShowSecrets = false;
+
         public int DanceAction1, DanceAction2, DanceAction3, DanceAction4;
 
         public bool IsEnabled(CustomComboPreset preset) => EnabledActions.Contains(preset);
+
+        public bool IsSecret(CustomComboPreset preset) => preset.GetAttribute<SecretCustomComboAttribute>() != default;
 
         #region Obsolete
 #pragma warning disable IDE1006 // Naming Styles
