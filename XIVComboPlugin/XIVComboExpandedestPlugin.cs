@@ -128,6 +128,7 @@ namespace XIVComboExpandedestPlugin
                             {
                                 SaveConfiguration();
                             }
+                            ImGui.Spacing();
                         }
 
                         i++;

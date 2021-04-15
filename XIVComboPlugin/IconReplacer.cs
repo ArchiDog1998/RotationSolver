@@ -908,18 +908,12 @@ namespace XIVComboExpandedestPlugin
 
             if (Configuration.IsEnabled(CustomComboPreset.BlackBlizzardFeature))
             {
-                if (actionID == BLM.Blizzard3)
-                {
-                    if (level < BLM.Levels.Blizzard3)
-                        return BLM.Blizzard;
-                    return BLM.Blizzard3;
-                }
+                if (actionID == BLM.Blizzard)
+                    if (level >= BLM.Levels.Blizzard3 && !GetJobGauge<BLMGauge>().InUmbralIce())
+                        return BLM.Blizzard3;
                 if (actionID == BLM.Freeze)
-                {
                     if (level < BLM.Levels.Freeze)
                         return BLM.Blizzard2;
-                    return BLM.Freeze;
-                }
             }
 
             // Umbral Soul and Transpose

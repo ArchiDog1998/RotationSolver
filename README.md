@@ -28,7 +28,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Shoha will replace Iaijutsu/Tsubame when Meditation gauge is full.
 * Tsubame becomes Iaijutsu when Sen gauge isn't empty.
 * Fire 1 becomes Fire 3 outside of Astral Fire and when Firestarter proc is up. Also replaces Enochian with Fire 1/3 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).
-* Blizzard 3 becomes Blizzard 1 when synced below requirement level, same for Freeze and Blizzard 2.
+* Blizzard 1 becomes Blizzard 3 when outside of Umbral Ice. Freeze now becomes Blizzard 2 when level-synced, as well.
 * All Bahamut/Phoenix/Dreadwyrm-related actions on Summoner are now on one button.
 * Verstone/Verfire will turn into Veraero/Verthunder when Dualcast/Swiftcast is up, with an additional feature that makes Verfire Verthunder outside of combat for openers.
 * When Suiton (or Hidden) is up, Trick Attack will replace Kassatsu.*

@@ -204,10 +204,10 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("(Between the) Ley Lines", "Change Ley Lines into BTL when Ley Lines is active", BLM.JobID, BLM.LeyLines)]
         BlackLeyLines = 56,
 
-        [CustomComboInfo("Fire 3 to Fire 1 Feature", "Fire 1 becomes Fire 3 outside of combat, and when firestarter proc is up.\nAlso replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).", BLM.JobID, BLM.Enochian, BLM.Fire)]
+        [CustomComboInfo("Fire 3 to Fire 1 Feature", "Fire 1 becomes Fire 3 outside of Astral Fire, and when firestarter proc is up.\nAlso replaces Enochian with Fire 3/1 before you get Fire 4 when in AF (if Enochian is up or you don't have it yet).", BLM.JobID, BLM.Enochian, BLM.Fire)]
         BlackFire3Feature = 87,
 
-        [CustomComboInfo("Blizzard Condensation Feature", "Blizzard 3 becomes Blizzard 1 when synced below requirement level, same for Freeze and Blizzard 2.", BLM.JobID, BLM.Blizzard3, BLM.Freeze)]
+        [CustomComboInfo("Blizzard Condensation Feature", "Blizzard 1 becomes Blizzard 3 when out of Umbral Ice. Freeze also becomes Blizzard 2 when synced.", BLM.JobID, BLM.Blizzard, BLM.Freeze)]
         BlackBlizzardFeature = 88,
 
         #endregion
