@@ -38,7 +38,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * Bard DoTs alternate between each other and also turn into Iron Jaws when both are up.
 * Burst Shot/Quick Nock will turn into Apex Arrow when gauge is full.
 * Gauss Round and Ricochet alternate between each other.
-* Cascade, Flourish, and both Fan Dances change into dance steps while dancing. This helps ensure you can still dance with combos on, without using auto dance.
+* Cascade, Flourish, and both Fan Dances change into dance steps while dancing. This helps ensure you can still dance with combos on, without using auto dance. You can additionally configure which actions you want to be replaced by dance steps, if you so desire.
 
 For actions marked with a *, you may want Remind Me or a similar plugin to keep track of cooldowns while they are invisible.
 
