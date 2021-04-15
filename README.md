@@ -35,6 +35,7 @@ If you would like to use this plugin, you can get it from this repo: `https://gi
 * In the same vein, Ten Chi Jin (the move) will turn into Meisui while Suiton is up*.
 * Chi is replaced with Jin while Kassatsu is up if you have Enhanced Kassatsu to help with muscle memory.
 * Hide becomes Mug while in combat.
+* Aeolian Edge (combo) becomes Ninjutsu while Mudras are being used.
 * Bard DoTs alternate between each other and also turn into Iron Jaws when both are up.
 * Burst Shot/Quick Nock will turn into Apex Arrow when gauge is full.
 * Gauss Round and Ricochet alternate between each other.

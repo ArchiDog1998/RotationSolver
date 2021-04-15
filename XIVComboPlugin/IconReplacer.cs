@@ -367,17 +367,6 @@ namespace XIVComboExpandedestPlugin
             // ====================================================================================
             #region WARRIOR
 
-            /* Replace Fell Cleave with Infuriate if <= 50 Beast Gauge
-            if (Configuration.IsEnabled(CustomComboPreset.WarriorInfuriateFeature))
-            {
-                if (GetIconHook.Original(actionManager, actionID) == GetIconHook.Original(actionManager, WAR.FellCleave))
-                {
-                    var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
-                    if (gauge <= 50 && level >= WAR.Levels.StormsEye && !HasBuff(WAR.Buffs.InnerRelease))
-                        return GetIconHook.Original(actionManager,WAR.Infuriate);
-                }
-            }*/
-
 
             // Replace Storm's Path with Storm's Path combo
             if (Configuration.IsEnabled(CustomComboPreset.WarriorStormsPathCombo))
@@ -601,6 +590,15 @@ namespace XIVComboExpandedestPlugin
             #endregion
             // ====================================================================================
             #region NINJA
+
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaNinjutsuFeature))
+            {
+                if (actionID == NIN.AeolianEdge)
+                {
+                    if (GetIconHook.Original(actionManager, NIN.JinNormal) == GetIconHook.Original(actionManager, NIN.Jin))
+                        return GetIconHook.Original(actionManager, NIN.Ninjutsu);
+                }
+            }
 
             // Replace Armor Crush with Armor Crush combo
             if (Configuration.IsEnabled(CustomComboPreset.NinjaArmorCrushCombo))

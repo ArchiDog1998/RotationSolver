@@ -4,8 +4,8 @@ namespace XIVComboExpandedestPlugin
 {
     public enum CustomComboPreset
     {
-        // Last enum used: 96
-        // Available enums: 68, 73, 76, 77, 83, 86, 92
+        // Last enum used: 97
+        // Unused enums: 68, 73, 76, 77, 83, 86, 92
         // ====================================================================================
         #region DRAGOON
 
@@ -79,9 +79,6 @@ namespace XIVComboExpandedestPlugin
         [CustomComboInfo("Warrior Gauge Overcap Feature", "Replace Single-target or AoE combo with gauge spender if you are about to overcap and are before a step of a combo that would generate beast gauge", WAR.JobID, WAR.MythrilTempest, WAR.StormsEye, WAR.StormsPath)]
         WarriorGaugeOvercapFeature = 67,
 
-        /*[CustomComboInfo("Infuriate Feature", "Make Fell Cleave Infuriate if you have less than 50 gauge and have Infuriate unlocked", WAR.JobID, WAR.FellCleave)]
-        WarriorInfuriateFeature = 68,*/
-
         [CustomComboInfo("Inner Release Feature", "Replace Single-target and AoE combo with Fell Cleave/Decimate during Inner Release", WAR.JobID, WAR.MythrilTempest, WAR.StormsPath)]
         WarriorInnerReleaseFeature = 69,
 
@@ -146,6 +143,9 @@ namespace XIVComboExpandedestPlugin
 
         [CustomComboInfo("Hide to Mug", "Replaces Hide with Mug while in combat.", NIN.JobID, NIN.Hide)]
         NinjaHideMugFeature = 90,
+
+        [CustomComboInfo("Aeolian to Ninjutsu Feature", "Replaces Aeolian Edge (combo) with Ninjutsu if any Mudra are used.", NIN.JobID, NIN.AeolianEdge)]
+        NinjaNinjutsuFeature = 97,
 
         #endregion
         // ====================================================================================

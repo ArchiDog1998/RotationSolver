@@ -491,6 +491,7 @@ namespace XIVComboExpandedestPlugin
         public const uint
             Mug = 2248,
             Hide = 2245,
+            Ninjutsu = 2260,
             ArmorCrush = 3563,
             SpinningEdge = 2240,
             GustSlash = 2242,
@@ -504,6 +505,7 @@ namespace XIVComboExpandedestPlugin
             Meisui = 16489,
             TrickAttack = 2258,
             Chi = 2261,
+            JinNormal = 2263,
             Jin = 18807;
 
         public static class Buffs
