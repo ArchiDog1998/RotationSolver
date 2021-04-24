@@ -345,7 +345,7 @@ namespace XIVComboExpandedestPlugin
             }
 
             // Replace Holy Spirit/Circle with Requiescat if under 4000 MP
-            if (Configuration.IsEnabled(CustomComboPreset.PaladinRequiescatFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature))
             {
                 if (actionID == PLD.HolySpirit)
                 {
