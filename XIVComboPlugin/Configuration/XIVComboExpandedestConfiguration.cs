@@ -20,6 +20,8 @@ namespace XIVComboExpandedestPlugin
 
         public int DanceAction1, DanceAction2, DanceAction3, DanceAction4;
 
+        public int gauge1;
+
         public bool IsEnabled(CustomComboPreset preset) => EnabledActions.Contains(preset);
 
         public bool IsSecret(CustomComboPreset preset) => preset.GetAttribute<SecretCustomComboAttribute>() != default;

@@ -26,13 +26,41 @@ namespace XIVComboExpandedestPlugin
             Benefic = 3594,
             SleeveDraw = 7448,
             MinorArcana = 7443,
+            Ð×ÐÇ=3596,
+            ÉÕ×Æ=3599,
+            ÔÖÐÇ=3598,
+            »öÐÇ=7442,
+            ³ã×Æ = 3608,
+            ·Ù×Æ = 16554,
+            É·ÐÇ =16555,
+            °×ÖçÑ§ÅÉ=3604,
+            Õ¼²·=16552,
+            ÑôÐÇÏàÎ»_°×=3601,
+            ÑôÐÇÏàÎ»_ºÚ = 17152,
+            ÑôÐÇ =3600,
+            ºÚÒ¹Ñ§ÅÉ=3605,
+            ÖÐ¼äÑ§ÅÉ=16559,
             Lady = 7445,
             Lord = 7444;
 
         public static class Buffs
         {
+            public const short
             // public const short placeholder = 0;
+            °×ÖçÑ§ÅÉ =839,
+            ÑôÐÇÏàÎ»=836,
+            ºÚÒ¹ÁìÓò=837,
+            ºÚÒ¹Ñ§ÅÉ=840;
         }
+
+        public static class Debuffs
+        {
+            public const short
+                ÉÕ×Æ=838,
+                ³ã×Æ=843,
+                ·Ù×Æ = 1881;
+        }
+
 
         public static class Levels
         {
@@ -281,6 +309,7 @@ namespace XIVComboExpandedestPlugin
             EdgeOfDarkness = 16467,
             EdgeOfShadow = 16470,
             FloodOfDarkness = 16466,
+            ¸¥À×=16472,
             FloodOfShadow = 16469;
 
         public static class Buffs
@@ -354,6 +383,7 @@ namespace XIVComboExpandedestPlugin
                 BowShock = 62,
                 Continuation = 70,
                 FatedCircle = 72,
+                BurstStrike=30,
                 Bloodfest = 76;
         }
     }
@@ -413,6 +443,9 @@ namespace XIVComboExpandedestPlugin
             Hypercharge = 17209,
             HeatBlast = 7410,
             SpreadShot = 2870,
+            Õû±¸=2876,
+            ×êÍ·=16498,
+            ¿ÕÆøÃª=16500,
             AutoCrossbow = 16497,
             RookAutoturret = 2864,
             RookOverdrive = 7415,
@@ -450,6 +483,10 @@ namespace XIVComboExpandedestPlugin
             Bootshine = 53,
             DragonKick = 74,
             SnapPunch = 56,
+            Ë«ÕÆ=61,
+            ÕýÈ­=54,
+            ½ð¸Õ¼«Òâ=7394,
+            Õæ±±=7546,
             TwinSnakes = 61,
             Demolish = 66,
             ArmOfTheDestroyer = 62,
@@ -465,6 +502,7 @@ namespace XIVComboExpandedestPlugin
                 CoerlForm = 109,
                 PerfectBalance = 110,
                 LeadenFist = 1861,
+                Õð½Å=110,
                 FormlessFist = 2513;
         }
         
@@ -491,6 +529,7 @@ namespace XIVComboExpandedestPlugin
         public const uint
             Mug = 2248,
             Hide = 2245,
+            ±³´Ì = 2258,
             Ninjutsu = 2260,
             ArmorCrush = 3563,
             SpinningEdge = 2240,
@@ -501,11 +540,15 @@ namespace XIVComboExpandedestPlugin
             DreamWithinADream = 3566,
             Assassinate = 2246,
             TenChiJin = 7403,
+            FenShen=16493,
+            LiuDao=7402,
+            Tian=2259,
             Kassatsu = 2264,
             Meisui = 16489,
             TrickAttack = 2258,
             Chi = 2261,
             JinNormal = 2263,
+            ShadowFang=2257,
             Jin = 18807;
 
         public static class Buffs
@@ -513,8 +556,15 @@ namespace XIVComboExpandedestPlugin
             public const short
                 AssassinateReady = 1955,
                 Hidden = 614,
+                Mudra=496,
                 Kassatsu = 497,
                 Suiton = 507;
+        }
+        public static class Debuffs
+        {
+            public const short
+                ShadowFang=508,
+                TrickAttack = 638;
         }
 
         public static class Levels
@@ -639,11 +689,26 @@ namespace XIVComboExpandedestPlugin
             FeyBless = 16543,
             Consolation = 16546,
             EnergyDrain = 167,
+            »ÙÃð=17869,
+            Èº¶Ü=186,
+            ¶¾¾ú=17864,
+            ÆøÑ×·¨=3584,
+            Ó¦¼±Õ½Êõ=3586,
+            Ä§Ñ×·¨=7435,
             Aetherflow = 166;
 
         public static class Buffs
         {
-            // public const short placeholder = 0;
+            public const short
+           Ó¦¼±Õ½Êõ =792;
+        }
+
+        public static class Debuffs
+        {
+            public const short
+                ¶¾¾ú=179,
+                ÃÍ¶¾¾ú=189,
+                ¹Æ¶¾·¨ = 1895;
         }
 
         public static class Levels
@@ -727,10 +792,13 @@ namespace XIVComboExpandedestPlugin
             HeavySwing = 31,
             Infuriate = 52,
             Maim = 37,
+            Berserk=38,
+            Ô­³õµÄ½â·Å=7389,
             StormsEye = 45,
             MythrilTempest = 16462,
             Overpower = 41,
             FellCleave = 3549,
+            ¶¯ÂÒ = 7387,
             Decimate = 3550,
             InnerBeast = 49,
             SteelCyclone = 51,
@@ -743,6 +811,7 @@ namespace XIVComboExpandedestPlugin
         {
             public const short 
                 InnerRelease = 1177,
+                ±©·çËé=90,
                 NascentChaos = 1897;
         }
 
@@ -764,6 +833,14 @@ namespace XIVComboExpandedestPlugin
     internal static class WHM
     {
         public const byte JobID = 24;
+        public static class Debuffs
+        {
+            public const short
+                ¼²·ç=143,
+                ÁÒ·ç=144,
+                Glare = 1871;
+        }
+
 
         public const uint
             AfflatusSolace = 16531,
@@ -772,6 +849,14 @@ namespace XIVComboExpandedestPlugin
             Cure2 = 135,
             Cure = 120,
             Raise = 125,
+            Glare= 16533,
+            Stone=119,
+            StoneTwo=127,
+            Ò½¼Ã=133,
+            StoneThree=3568,
+            StoneFour=7431,
+            Aero=121,
+            Dia=16532,
             Medica = 124;
 
         public static class Buffs

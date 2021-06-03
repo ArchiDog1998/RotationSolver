@@ -136,6 +136,14 @@ namespace XIVComboExpandedestPlugin
                             }
                             ImGui.Spacing();
                         }
+                        if (preset == CustomComboPreset.DRKOvercapFeature)
+                        {
+                            if (ImGui.InputInt("¡ø∆’÷µ", ref Configuration.gauge1))
+                            {
+                                SaveConfiguration();
+                            }
+                            ImGui.Spacing();
+                        }
 
                         i++;
                     }

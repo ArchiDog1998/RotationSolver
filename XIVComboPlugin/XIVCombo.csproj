@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Authors>attick, daemitus, grammernatzi</Authors>
     <Company>-</Company>
-    <Version>1.0.9.8</Version>
+    <Version>1.0.9.7</Version>
     <Description>This plugin condenses combos and mutually exclusive abilities onto a single button.</Description>
     <Copyright>Copyleft my butt 2020 baybeeee</Copyright>
     <PackageProjectUrl>https://github.com/grammernatzi/XIVComboPluginExpandedest</PackageProjectUrl>
@@ -48,35 +48,6 @@
     <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="1.2.1" />
-    <!--<PackageReference Include="ILRepack" Version="2.0.18" GeneratePathProperty="true" />-->
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Dalamud">
-      <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ImGui.NET">
-      <HintPath>$(DalamudLibPath)ImGui.NET.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ImGuiScene">
-      <HintPath>$(DalamudLibPath)ImGuiScene.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Lumina">
-      <HintPath>$(DalamudLibPath)Lumina.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Lumina.Excel">
-      <HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-
   <!--
   <Target Name="ILRepack" AfterTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
     <ItemGroup>
@@ -96,7 +67,28 @@
   -->
 
   <Target Name="PackagePlugin" AfterTargets="CleanOutDir" Condition=" '$(Configuration)' == 'Release' ">
-    <Message Text="Starting DalamudPackager" Importance="high"/>
+    <Message Text="Starting DalamudPackager" Importance="high" />
     <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" VersionComponents="4" MakeZip="true" />
   </Target>
+
+  <ItemGroup>
+    <Reference Include="Dalamud">
+      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\Dalamud.dll</HintPath>
+    </Reference>
+    <Reference Include="ImGui.NET">
+      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\ImGui.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="ImGuiScene">
+      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\ImGuiScene.dll</HintPath>
+    </Reference>
+    <Reference Include="Lumina">
+      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\Lumina.dll</HintPath>
+    </Reference>
+    <Reference Include="Lumina.Excel">
+      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\Lumina.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

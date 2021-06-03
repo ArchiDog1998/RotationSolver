@@ -99,6 +99,8 @@ namespace XIVComboExpandedestPlugin
                 Configuration.DanceAction3 = (int)DNC.FanDance1;
             if (Configuration.DanceAction4 == 0)
                 Configuration.DanceAction4 = (int)DNC.FanDance2;
+            if(Configuration.gauge1<=50)
+                 Configuration.gauge1 = (int)50;
 
             if (actionID != (uint)Configuration.DanceAction1 && actionID != (uint)Configuration.DanceAction2 && actionID != (uint)Configuration.DanceAction3 && actionID != (uint)Configuration.DanceAction4)
                 if (!CustomIds.Contains(actionID))
@@ -204,6 +206,13 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == DRK.Souleater)
                 {
+                    var gauge = GetJobGauge<DRKGauge>().Blood;
+                    var FeiLeiCD = GetCooldown(DRK.弗雷);
+                    var GCD = GetCooldown(DRK.HardSlash);
+                    if (gauge >= 50 && !FeiLeiCD.IsCooldown &&GCD.CooldownRemaining>0.7 && level >= 70 && Configuration.IsEnabled(CustomComboPreset.DRKFoLeiFeature))
+                        return DRK.弗雷;
+                    if (gauge >= (uint)Configuration.gauge1 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature) && HasBuff(DRK.Buffs.BloodWeapon))
+                        return DRK.Bloodspiller;
                     if (Configuration.IsEnabled(CustomComboPreset.DeliriumFeature))
                         if (level >= DRK.Levels.Bloodpiller && level >= DRK.Levels.Delirium && HasBuff(DRK.Buffs.Delirium))
                             return DRK.Bloodspiller;
@@ -212,10 +221,24 @@ namespace XIVComboExpandedestPlugin
                     {
                         if (lastMove == DRK.HardSlash && level >= DRK.Levels.SyphonStrike)
                         {
+                            if (Configuration.IsEnabled(CustomComboPreset.DRKMPOvercapFeature))
+                            {
+                                if (mp > 8000)
+                                {
+                                    if (level >= DRK.Levels.FloodOfDarkness && level < DRK.Levels.EdgeOfDarkness && GCD.CooldownRemaining > 0.7)
+                                        return DRK.FloodOfDarkness;
+                                    if (level >= DRK.Levels.EdgeOfDarkness && GCD.CooldownRemaining > 0.7)
+                                        return GetIconHook.Original(actionManager, DRK.EdgeOfDarkness);
+                                }
+                            }
+                            if (gauge >= (uint)Configuration.gauge1 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature) && HasBuff(DRK.Buffs.BloodWeapon))
+                                return DRK.Bloodspiller;
                             return DRK.SyphonStrike;
                         }
                         if (lastMove == DRK.SyphonStrike && level >= DRK.Levels.Souleater)
                         {
+                            if (((gauge >= (uint)Configuration.gauge1)  && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature)))
+                                return DRK.Bloodspiller;
                             return DRK.Souleater;
                         }
                     }
@@ -228,9 +251,12 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == DRK.StalwartSoul)
                 {
+                    var GCD = GetCooldown(DRK.HardSlash);
                     var gauge = GetJobGauge<DRKGauge>().Blood;
-
-                    if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature) && HasBuff(DRK.Buffs.BloodWeapon))
+                    var FeiLeiCD = GetCooldown(DRK.弗雷);
+                    if (gauge >= 50 && !FeiLeiCD.IsCooldown && level >= 80 && Configuration.IsEnabled(CustomComboPreset.DRKFoLeiFeature) && GCD.CooldownRemaining > 0.7)
+                        return DRK.弗雷;
+                    if (gauge >= 70 && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature) && HasBuff(DRK.Buffs.BloodWeapon))
                         return DRK.Quietus;
                     if (Configuration.IsEnabled(CustomComboPreset.DeliriumFeature))
                         if (level >= DRK.Levels.Quietus && level >= DRK.Levels.Delirium && HasBuff(DRK.Buffs.Delirium))
@@ -239,7 +265,14 @@ namespace XIVComboExpandedestPlugin
                     if (comboTime > 0)
                         if (lastMove == DRK.Unleash && level >= DRK.Levels.StalwartSoul)
                         {
-                            if (((gauge >= 90) || (gauge >= 80 && HasBuff(DRK.Buffs.BloodWeapon)) && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature)))
+                            if (Configuration.IsEnabled(CustomComboPreset.DRKMPOvercapFeature))
+                            {
+                                if (mp > 8000 && GCD.CooldownRemaining > 0.7)
+                                {
+                                    return GetIconHook.Original(actionManager, DRK.FloodOfDarkness);
+                                }
+                            }
+                            if (((gauge >= 70) && Configuration.IsEnabled(CustomComboPreset.DRKOvercapFeature)))
                                 return DRK.Quietus;
                             return DRK.StalwartSoul;
                         }
@@ -330,7 +363,7 @@ namespace XIVComboExpandedestPlugin
                         if (HasBuff(PLD.Buffs.Requiescat) && level >= PLD.Levels.HolyCircle)
                         {
                             //Replace with Confiteor when under 4000 MP
-                            if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature) && level >= PLD.Levels.Confiteor && mp < 4000)
+                            if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature) && level >= PLD.Levels.Confiteor && (mp < 4000 || BuffDuration(1368) < 3))
                                 return PLD.Confiteor;
                             return PLD.HolyCircle;
                         }
@@ -345,19 +378,27 @@ namespace XIVComboExpandedestPlugin
             }
 
             // Replace Holy Spirit/Circle with Requiescat if under 4000 MP
-            if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature))
+            if (Configuration.IsEnabled(CustomComboPreset.PaladinRequiescatFeature))
             {
                 if (actionID == PLD.HolySpirit)
                 {
-                    if (HasBuff(PLD.Buffs.Requiescat) && level >= PLD.Levels.Confiteor && mp < 4000)
-                        return PLD.Confiteor;
-                    return PLD.HolySpirit;
+                    if (HasBuff(PLD.Buffs.Requiescat))
+                    {
+                        //Replace with Confiteor when under 4000 MP
+                        if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature) && level >= PLD.Levels.Confiteor && (mp < 4000 || BuffDuration(1368) < 3))
+                            return PLD.Confiteor;
+                        return PLD.HolySpirit;
+                    }
                 }
                 if (actionID == PLD.HolyCircle)
                 {
-                    if (HasBuff(PLD.Buffs.Requiescat) && level >= PLD.Levels.Confiteor && mp < 4000)
-                        return PLD.Confiteor;
-                    return PLD.HolyCircle;
+                    if (HasBuff(PLD.Buffs.Requiescat))
+                    {
+                        //Replace with Confiteor when under 4000 MP
+                        if (Configuration.IsEnabled(CustomComboPreset.PaladinConfiteorFeature) && level >= PLD.Levels.Confiteor && (mp < 4000 ||BuffDuration(1368)<3))
+                            return PLD.Confiteor;
+                        return PLD.HolyCircle;
+                    }
                 }
             }
 
@@ -377,23 +418,55 @@ namespace XIVComboExpandedestPlugin
             #region WARRIOR
 
 
+            // Replace Infuriate with Fell Cleave if >= 60 Beast Gauge
+            if (Configuration.IsEnabled(CustomComboPreset.WarriorInfuriateOvercapFeature))
+            {
+                if (actionID == WAR.Infuriate)
+                {
+                    var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
+                    if (gauge >= 55)
+                    {
+                        return GetIconHook.Original(actionManager, WAR.InnerBeast);
+                    }
+                    return WAR.Infuriate;
+                }
+            }
             // Replace Storm's Path with Storm's Path combo
             if (Configuration.IsEnabled(CustomComboPreset.WarriorStormsPathCombo))
             {
                 if (actionID == WAR.StormsPath)
                 {
-                    if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
+                    var ZhongPiCD = GetCooldown(WAR.HeavySwing);
+                    var DongLuanCD = GetCooldown(WAR.动乱);
+                    var YuanChuCD = GetCooldown(WAR.原初的解放);
+                    var KuangBaoCD = GetCooldown(WAR.Berserk);
+                    if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && !DongLuanCD.IsCooldown &&HasBuff(WAR.Buffs.暴风碎) &&ZhongPiCD.CooldownRemaining>0.7&& level >=64 && (YuanChuCD.CooldownRemaining>25|| KuangBaoCD.CooldownRemaining > 2))
+                    {
+                        return WAR.动乱;
+                    }
+                    if (Configuration.IsEnabled(CustomComboPreset.WarriorDongLuanFeature) && HasBuff(WAR.Buffs.InnerRelease))
                     {
                         return GetIconHook.Original(actionManager, WAR.FellCleave);
                     }
                     if (comboTime > 0)
                     {
+                        var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
                         if (lastMove == WAR.HeavySwing && level >= WAR.Levels.Maim)
                         {
+                            if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
+                            {
+                                return GetIconHook.Original(actionManager, WAR.FellCleave);
+                            }
                             return WAR.Maim;
                         }
                         if (lastMove == WAR.Maim && level >= WAR.Levels.StormsPath)
                         {
+                            if (gauge >= 90 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
+                            {
+                                return GetIconHook.Original(actionManager, WAR.FellCleave);
+                            }
+                            if (BuffDuration(WAR.Buffs.暴风碎)<15 && Configuration.IsEnabled(CustomComboPreset.WARBuffpFeature) && level >= 50)
+                                return WAR.StormsEye;
                             return WAR.StormsPath;
                         }
                     }
@@ -414,12 +487,21 @@ namespace XIVComboExpandedestPlugin
 
                     if (comboTime > 0)
                     {
+                        var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
                         if (lastMove == WAR.HeavySwing && level >= WAR.Levels.Maim)
                         {
+                            if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
+                            {
+                                return GetIconHook.Original(actionManager, WAR.FellCleave);
+                            }
                             return WAR.Maim;
                         }
                         if (lastMove == WAR.Maim && level >= WAR.Levels.StormsEye)
                         {
+                            if (gauge == 100 && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
+                            {
+                                return GetIconHook.Original(actionManager, WAR.FellCleave);
+                            }
                             return WAR.StormsEye;
                         }
                     }
@@ -447,28 +529,6 @@ namespace XIVComboExpandedestPlugin
                             return WAR.MythrilTempest;
                         }
                     return WAR.Overpower;
-                }
-            }
-
-            // Replace Overpower with Mythril Tempest combo
-            if (Configuration.IsEnabled(CustomComboPreset.WarriorOverpowerCombo))
-            {
-                if (actionID == WAR.Overpower)
-                {
-                    if (Configuration.IsEnabled(CustomComboPreset.WarriorInnerReleaseFeature) && HasBuff(WAR.Buffs.InnerRelease))
-                    {
-                        return GetIconHook.Original(actionManager, WAR.Decimate);
-                    }
-                    var gauge = GetJobGauge<WARGauge>().BeastGaugeAmount;
-                    if (comboTime > 0)
-                        if (lastMove == WAR.Overpower && level >= WAR.Levels.MythrilTempest)
-                        {
-                            if (gauge >= 90 && level >= WAR.Levels.MythrilTempestTrait && Configuration.IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature))
-                            {
-                                return GetIconHook.Original(actionManager, WAR.Decimate);
-                            }
-                            return WAR.MythrilTempest;
-                        }
                 }
             }
 
@@ -626,7 +686,7 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == NIN.AeolianEdge)
                 {
-                    if (GetIconHook.Original(actionManager, NIN.JinNormal) == GetIconHook.Original(actionManager, NIN.Jin))
+                    if (HasBuff(NIN.Buffs.Mudra))
                         return GetIconHook.Original(actionManager, NIN.Ninjutsu);
                 }
             }
@@ -635,7 +695,7 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == NIN.HakkeMujinsatsu || actionID == NIN.ArmorCrush)
                 {
-                    if (GetIconHook.Original(actionManager, NIN.JinNormal) == GetIconHook.Original(actionManager, NIN.Jin))
+                    if (HasBuff(NIN.Buffs.Mudra))
                         return GetIconHook.Original(actionManager, NIN.Ninjutsu);
                 }
             }
@@ -647,10 +707,16 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (comboTime > 0)
                     {
+                        var yingyaCD = GetCooldown(NIN.ShadowFang);
+                        if (TargetHasBuff(NIN.Debuffs.TrickAttack) && !yingyaCD.IsCooldown &&level>=30)
+                        {
+                            return NIN.ShadowFang;
+                        }
                         if (lastMove == NIN.SpinningEdge && level >= NIN.Levels.GustSlash)
-                            return NIN.GustSlash;
-                        if (lastMove == NIN.GustSlash && level >= NIN.Levels.ArmorCrush)
-                            return NIN.ArmorCrush;
+                                return NIN.GustSlash;
+                            if (lastMove == NIN.GustSlash && level >= NIN.Levels.ArmorCrush)
+                                return NIN.ArmorCrush;
+
                     }
                     return NIN.SpinningEdge;
                 }
@@ -663,6 +729,9 @@ namespace XIVComboExpandedestPlugin
                 {
                     if (comboTime > 0)
                     {
+                        var yingyaCD = GetCooldown(NIN.ShadowFang);
+                        if (TargetHasBuff(NIN.Debuffs.TrickAttack) && !yingyaCD.IsCooldown && level >= 30)
+                            return NIN.ShadowFang;
                         if (lastMove == NIN.SpinningEdge && level >= NIN.Levels.GustSlash)
                             return NIN.GustSlash;
                         if (lastMove == NIN.GustSlash && level >= NIN.Levels.AeolianEdge)
@@ -712,7 +781,19 @@ namespace XIVComboExpandedestPlugin
                 if (actionID == NIN.Hide)
                 {
                     if (Interface.ClientState.Condition[ConditionFlag.InCombat])
-                        return NIN.Mug;
+                    {
+                        var gauge = GetJobGauge<NINGauge>().Ninki;
+                        var FenShenCD = GetCooldown(NIN.FenShen);
+                        if (gauge >= 50 && level > 68  & Configuration.IsEnabled(CustomComboPreset.NinjaLiangPuFeature))
+                        {
+                            if (!FenShenCD.IsCooldown && level > 79)
+                                return NIN.FenShen;
+                            if (FenShenCD.IsCooldown)
+                                return NIN.LiuDao;
+                            return NIN.Mug;
+                        }
+                       return NIN.Mug;
+                    }
                     return NIN.Hide;
                 }
             }
@@ -737,6 +818,83 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaFenShenFeature))
+            {
+                if (actionID == NIN.LiuDao)
+                {
+                    var FenShenCD = GetCooldown(NIN.FenShen);
+                    if (!FenShenCD.IsCooldown && level>79)
+                        return NIN.FenShen;
+                    return NIN.LiuDao;
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaLiangPuFeature))
+            {
+                if (actionID == NIN.Mug)
+                {
+                    var gauge = GetJobGauge<NINGauge>().Ninki;
+                    var FenShenCD = GetCooldown(NIN.FenShen);
+                    var MugCD = GetCooldown(NIN.Mug);
+                    if (gauge >=60 && level > 68 &&!MugCD.IsCooldown)
+                    {
+                        if (!FenShenCD.IsCooldown && level > 79)
+                            return NIN.FenShen;
+                        if (FenShenCD.IsCooldown)
+                            return NIN.LiuDao;
+                        return NIN.Mug;
+                    }
+                }
+                if (actionID == NIN.Meisui)
+                {
+                    var gauge = GetJobGauge<NINGauge>().Ninki;
+                    var FenShenCD = GetCooldown(NIN.FenShen);
+                    var MeishuiCD = GetCooldown(NIN.Meisui);
+                    if (gauge >= 50 && level > 68 && !MeishuiCD.IsCooldown)
+                    {
+                        if (!FenShenCD.IsCooldown && level > 79)
+                            return NIN.FenShen;
+                        if (FenShenCD.IsCooldown)
+                            return NIN.LiuDao;
+                        return NIN.Mug;
+                    }
+                }
+            }
+
+            //自动忍术
+            if (Configuration.IsEnabled(CustomComboPreset.NinjaRenShuFeature))
+            {
+                var gauge = GetJobGauge<NINGauge>().HutonTimeLeft;
+                if (actionID == NIN.Tian && gauge >= 5)
+                {
+                    var BeiCiCD = GetCooldown(NIN.背刺);
+                    if (HasBuff(496) && !HasBuff(497) && BuffStacks(496)==1&& level > 45  )
+                        return GetIconHook.Original(actionManager, NIN.Chi);
+                    if (HasBuff(496) && !HasBuff(497) && ((BuffStacks(496) == 9 && (BeiCiCD.CooldownRemaining >= 17) || HasBuff(NIN.Buffs.Suiton)) || BuffStacks(496) == 57) && level > 45  )
+                        return GetIconHook.Original(actionManager, NIN.Ninjutsu);
+                    if (HasBuff(496) && !HasBuff(497) && BuffStacks(496) == 9 && level > 45 && gauge >= 5 && BeiCiCD.CooldownRemaining < 17 &&!HasBuff(NIN.Buffs.Suiton))
+                        return GetIconHook.Original(actionManager, NIN.JinNormal);
+                    if(HasBuff(497) && HasBuff(496) && BuffStacks(496) == 1 && level >= 76)
+                        return GetIconHook.Original(actionManager, NIN.JinNormal);
+                    if (HasBuff(497) && HasBuff(496) && BuffStacks(496) == 13 && level >= 76)
+                        return GetIconHook.Original(actionManager, NIN.Ninjutsu);
+                    if (HasBuff(1186) && BuffStacks(1186) == 1 && level >=70)
+                        return GetIconHook.Original(actionManager, NIN.Chi);
+                    if (HasBuff(1186) && BuffStacks(1186) == 9 && level >= 70)
+                        return GetIconHook.Original(actionManager, NIN.JinNormal);
+                }
+                if (actionID == NIN.Tian && gauge < 5)
+                { 
+                    if (HasBuff(496) && !HasBuff(497) && BuffStacks(496) == 3 && level > 45)
+                        return GetIconHook.Original(actionManager, NIN.Chi);
+                if (HasBuff(496) && !HasBuff(497) && BuffStacks(496) == 11 && level > 45)
+                    return GetIconHook.Original(actionManager, NIN.Tian);
+                if (HasBuff(496) && !HasBuff(497) && BuffStacks(496) == 27 && level > 45)
+                    return GetIconHook.Original(actionManager, NIN.Ninjutsu);
+                 return GetIconHook.Original(actionManager, NIN.JinNormal);
+                 }  
+            }
+
             #endregion
             // ====================================================================================
             #region GUNBREAKER
@@ -754,12 +912,53 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == GNB.SolidBarrel)
                 {
+                    var gauge = GetJobGauge<GNBGauge>();
+                    var WuQingCD = GetCooldown(GNB.NoMercy);
+                    var LeiYaCD = GetCooldown(GNB.GnashingFang);
+                    var ammoComboState = GetJobGauge<GNBGauge>().AmmoComboStepNumber;
+                    var SonicBreakCD = GetCooldown(GNB.SonicBreak);
+                    if (Configuration.IsEnabled(CustomComboPreset.GunbreakerZiDongeature))
+                    {
+                        if (HasBuff(GNB.Buffs.NoMercy) && level >= 54 &&!SonicBreakCD.IsCooldown )
+                            return GNB.SonicBreak;
+                        {
+                            if (level >= GNB.Levels.Continuation)
+                            {
+                                if (HasBuff(GNB.Buffs.ReadyToRip))
+                                    return GNB.JugularRip;
+                                if (HasBuff(GNB.Buffs.ReadyToTear))
+                                    return GNB.AbdomenTear;
+                                if (HasBuff(GNB.Buffs.ReadyToGouge))
+                                    return GNB.EyeGouge;
+                            }
+                        }
+                        if (level >= 60 &&(WuQingCD.CooldownRemaining>20||(WuQingCD.CooldownRemaining <= 20 && HasBuff(GNB.Buffs.NoMercy))) )
+                        {
+
+                            if (ammoComboState == 0 && gauge.NumAmmo >= 1 &&!LeiYaCD.IsCooldown &&level>=60)
+                                return GNB.GnashingFang;
+                            if (ammoComboState == 1 )
+                                return GNB.SavageClaw;
+                            if (ammoComboState == 2 )
+                                return GNB.WickedTalon;
+                        }
+                        if (HasBuff(GNB.Buffs.NoMercy) && level >= 30 && gauge.NumAmmo >= 1)
+                            return GNB.BurstStrike;
+                    }
+
                     if (comboTime > 0)
                     {
                         if (lastMove == GNB.KeenEdge && level >= GNB.Levels.BrutalShell)
                             return GNB.BrutalShell;
                         if (lastMove == GNB.BrutalShell && level >= GNB.Levels.SolidBarrel)
                         {
+                            if (Configuration.IsEnabled(CustomComboPreset.GunbreakerGaugeOvercapFeature))
+                            {
+                                if (gauge.NumAmmo == 2 && level >= GNB.Levels.BurstStrike)
+                                {
+                                    return GNB.BurstStrike;
+                                }
+                            }
                             return GNB.SolidBarrel;
                         }
                     }
@@ -844,7 +1043,22 @@ namespace XIVComboExpandedestPlugin
             {
                 if (actionID == MCH.CleanShot || actionID == MCH.HeatedCleanShot)
                 {
-                    if (comboTime > 0)
+                    var ZhengBeiCD = GetCooldown(MCH.整备);
+                    var gauge = GetJobGauge<MCHGauge>();
+                    var ZuanTouCD = GetCooldown(MCH.钻头);
+                    var KongQiMaoCD = GetCooldown(MCH.空气锚);
+                    var CD = ZuanTouCD.CooldownRemaining - ZhengBeiCD.CooldownRemaining;
+                    if (Configuration.IsEnabled(CustomComboPreset.MachinistZiDongFeature))
+                    {
+                        if (gauge.IsOverheated())
+                            return MCH.HeatBlast;
+                        if (ZhengBeiCD.IsCooldown && ZuanTouCD.CooldownRemaining<=1 &&CD<0)
+                            return MCH.钻头;
+                        if (ZhengBeiCD.IsCooldown && KongQiMaoCD.CooldownRemaining<=1)
+                            return MCH.空气锚;
+
+                    }
+                        if (comboTime > 0)
                     {
                         if (lastMove == MCH.SplitShot && level >= MCH.Levels.SlugShot)
                         {
@@ -906,6 +1120,18 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            //机工自动连击.
+            if (Configuration.IsEnabled(CustomComboPreset.MachinistZiDongFeature))
+            {
+                if (actionID == MCH.SplitShot || actionID== MCH.HeatedSplitShot)
+                {
+                    var gaussCD = GetCooldown(MCH.GaussRound);
+                    var ricochetCD = GetCooldown(MCH.Ricochet);
+                    if (gaussCD.CooldownRemaining > ricochetCD.CooldownRemaining && level >= MCH.Levels.Ricochet)
+                        return MCH.Ricochet;
+                }
+            }
+
             #endregion
             // ====================================================================================
             #region BLACK MAGE
@@ -919,10 +1145,37 @@ namespace XIVComboExpandedestPlugin
                     if (gauge.IsEnoActive())
                     {
                         if (gauge.InUmbralIce() && level >= BLM.Levels.Blizzard4)
+                        {
+                            if (gauge.ElementTimeRemaining >= 5000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature) )
+                                if (HasBuff(BLM.Buffs.Thundercloud))
+                                    if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0)
+                                        || (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 4))
+                                        return BLM.Thunder3;
                             return BLM.Blizzard4;
+                        }
                         if (level >= BLM.Levels.Fire4)
+                        {
+                            if (gauge.ElementTimeRemaining >= 6000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature))
+                                if (HasBuff(BLM.Buffs.Thundercloud))
+                                    if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0)
+                                        || (TargetHasBuff(BLM.Debuffs.Thunder3) && TargetBuffDuration(BLM.Debuffs.Thunder3) < 4))
+                                        return BLM.Thunder3;
+                            if (gauge.ElementTimeRemaining < 3000 && HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
+                                return BLM.Fire3;
+                            if (mp < 2400 && mp> 0  && level >= BLM.Levels.Despair && Configuration.IsEnabled(CustomComboPreset.BlackDespairFeature))
+                            {
+                                return BLM.Despair;
+                            }
+                            if (gauge.ElementTimeRemaining < 6000 && !HasBuff(BLM.Buffs.Firestarter) && Configuration.IsEnabled(CustomComboPreset.BlackFireFeature))
+                                return BLM.Fire;
                             return BLM.Fire4;
+                        }
                     }
+                    if (gauge.ElementTimeRemaining >= 5000 && Configuration.IsEnabled(CustomComboPreset.BlackThunderFeature) && level < BLM.Levels.Thunder3)
+                        if (HasBuff(BLM.Buffs.Thundercloud))
+                            if ((BuffDuration(BLM.Buffs.Thundercloud) < 4 && BuffDuration(BLM.Buffs.Thundercloud) > 0)
+                                || (TargetHasBuff(BLM.Debuffs.Thunder) && TargetBuffDuration(BLM.Debuffs.Thunder) < 4))
+                                return BLM.Thunder;
                     if (level < BLM.Levels.Fire3)
                         return BLM.Fire;
                     if (gauge.InAstralFire() && (level < BLM.Levels.Enochian || gauge.IsEnoActive()))
@@ -1009,6 +1262,63 @@ namespace XIVComboExpandedestPlugin
                     return AST.Benefic;
                 return AST.Benefic2;
             }
+
+            if (Configuration.IsEnabled(CustomComboPreset.ASTdotFeature) && !Configuration.IsEnabled(CustomComboPreset.AST111Feature))
+            {
+                if (actionID == AST.凶星 || actionID == AST.灾星 || actionID == AST.煞星 || actionID == AST.祸星)
+                {
+                    if (((TargetBuffDuration(AST.Debuffs.焚灼) < 3 &&level>=72) || (TargetBuffDuration(AST.Debuffs.炽灼) < 3 &&level>=46 &&level<72) || (TargetBuffDuration(AST.Debuffs.烧灼) < 3 &&level>3 &&level<46)) && Interface.ClientState.Condition[ConditionFlag.InCombat])
+                        return GetIconHook.Original(actionManager, AST.烧灼);
+                    return GetIconHook.Original(actionManager, AST.凶星);
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.AST111Feature) && !Configuration.IsEnabled(CustomComboPreset.ASTdotFeature))
+            {
+                if (actionID == AST.烧灼 || actionID == AST.炽灼 || actionID == AST.焚灼)
+                {
+                    if (((TargetBuffDuration(AST.Debuffs.焚灼) > 3 && level >= 72) || (TargetBuffDuration(AST.Debuffs.炽灼) > 3 && level >= 46 && level < 72) || (TargetBuffDuration(AST.Debuffs.烧灼) > 3 && level > 3 && level < 46)) && Interface.ClientState.Condition[ConditionFlag.InCombat])
+                        return GetIconHook.Original(actionManager, AST.凶星);
+                    return GetIconHook.Original(actionManager, AST.烧灼);
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.ASTSectFeature))
+            {
+                if (actionID == AST.白昼学派)
+                {
+                    if (Interface.ClientState.Condition[ConditionFlag.InCombat])
+                        return GetIconHook.Original(actionManager, AST.中间学派);
+                    if (!Interface.ClientState.Condition[ConditionFlag.InCombat] &&HasBuff(AST.Buffs.白昼学派))
+                        return AST.黑夜学派;
+                    return AST.白昼学派;
+                }
+                if (actionID == AST.黑夜学派)
+                {
+                    if (Interface.ClientState.Condition[ConditionFlag.InCombat])
+                        return GetIconHook.Original(actionManager, AST.中间学派);
+                    if (!Interface.ClientState.Condition[ConditionFlag.InCombat] && HasBuff(AST.Buffs.白昼学派))
+                        return AST.白昼学派;
+                    return AST.黑夜学派;
+                }
+                if (actionID == AST.占卜)
+                {
+                    if (!Interface.ClientState.Condition[ConditionFlag.InCombat])
+                        return GetIconHook.Original(actionManager, AST.中间学派);
+                    return AST.占卜;
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.ASTYangXingFeature))
+            {
+                if (actionID == AST.阳星相位_白)
+                {
+                    if ((BuffDuration(AST.Buffs.阳星相位)>5||BuffDuration(AST.Buffs.黑夜领域) >5||lastMove==AST.阳星相位_白 || lastMove == AST.阳星相位_黑)&& Interface.ClientState.Condition[ConditionFlag.InCombat])
+                        return GetIconHook.Original(actionManager, AST.阳星);
+                    return GetIconHook.Original(actionManager, AST.阳星相位_白);
+                }
+            }
+
             #endregion
             // ====================================================================================
             #region SUMMONER
@@ -1088,7 +1398,26 @@ namespace XIVComboExpandedestPlugin
                         return SMN.Painflare;
                     return SMN.EnergySyphon;
                 }
-            }   
+            }
+            // Egi Assault 1 & 2 become Ruin IV if Further Ruin is capped
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerRuinIVFeature))
+            {
+                if ((actionID == SMN.EgiAssault || actionID == SMN.EgiAssault2) && HasBuff(SMN.Buffs.FurtherRuin) && BuffStacks(SMN.Buffs.FurtherRuin) == 4)
+                {
+                        if (!(actionID == SMN.EgiAssault2 && level < SMN.Levels.EnhancedEgiAssault))
+                            return SMN.RuinIV;
+                }
+            }
+            if (Configuration.IsEnabled(CustomComboPreset.SummonerLingGongFeature))
+            {
+                if (actionID == SMN.EgiAssault)
+                {
+                    var EgiAssaultCD = GetCooldown(SMN.EgiAssault);
+                    var EgiAssault2CD = GetCooldown(SMN.EgiAssault2);
+                    if (EgiAssaultCD.CooldownRemaining > EgiAssault2CD.CooldownRemaining)
+                        return GetIconHook.Original(actionManager, SMN.EgiAssault2);
+                }
+            }
 
             #endregion
             // ====================================================================================
@@ -1113,6 +1442,27 @@ namespace XIVComboExpandedestPlugin
                     if (GetJobGauge<SCHGauge>().NumAetherflowStacks == 0)
                         return SCH.Aetherflow;
                     return SCH.EnergyDrain;
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.SCHDotFeature))
+            {
+                if (actionID == SCH.毁灭 || actionID == SCH.气炎法 || actionID == SCH.魔炎法)
+                {
+                    if (((TargetBuffDuration(SCH.Debuffs.蛊毒法) < 3 &&level>=72) || (TargetBuffDuration(SCH.Debuffs.毒菌) < 3 &&level>1 &&level<26 ) || (TargetBuffDuration(SCH.Debuffs.猛毒菌) < 3 &&level>=26 &&level<72)) && Interface.ClientState.Condition[ConditionFlag.InCombat])
+                        return GetIconHook.Original(actionManager, SCH.毒菌);
+                    return GetIconHook.Original(actionManager, SCH.毁灭);
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.SCHYingJitFeature))
+            {
+                if (actionID == SCH.应急战术)
+                {
+                    var YingJiCD = GetCooldown(SCH.应急战术);
+                    if (BuffDuration(SCH.Buffs.应急战术)>5||lastMove==SCH.应急战术 ||YingJiCD.IsCooldown)
+                        return SCH.群盾;
+                    return SCH.应急战术;
                 }
             }
 
@@ -1298,6 +1648,28 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            // dot替换111
+            if (Configuration.IsEnabled(CustomComboPreset.WhiteStoneFeature))
+            {
+                if (actionID == WHM.Stone || actionID == WHM.StoneTwo || actionID == WHM.StoneThree || actionID == WHM.StoneFour || actionID == WHM.Glare)
+                {
+                    if (((TargetBuffDuration(WHM.Debuffs.Glare)<3 &&level>71) ||(TargetBuffDuration(WHM.Debuffs.烈风)<3) &&level>45 && level <=71|| (TargetBuffDuration(WHM.Debuffs.疾风)<3 &&level>3 &&level<46))&& Interface.ClientState.Condition[ConditionFlag.InCombat])
+                        return GetIconHook.Original(actionManager, WHM.Aero);
+                    return GetIconHook.Original(actionManager,WHM.Stone);
+                }
+            }
+
+            // 医济替换医治
+            if (Configuration.IsEnabled(CustomComboPreset.WhiteYiJiFeature))
+            {
+                if (actionID == WHM.医济)
+                {
+                    if (BuffDuration(150)>=5 ||lastMove==133)
+                        return WHM.Medica;
+                    return WHM.医济;
+                }
+            }
+
             #endregion
             // ====================================================================================
             #region BARD
@@ -1400,6 +1772,51 @@ namespace XIVComboExpandedestPlugin
                     if (level < MNK.Levels.DragonKick)
                         return MNK.Bootshine;
                     return MNK.DragonKick;
+                }
+            }
+            if (Configuration.IsEnabled(CustomComboPreset.MnkDemolishFeature))
+            {
+                if (actionID == MNK.SnapPunch)
+                {
+                    if (level < MNK.Levels.Demolish)
+                        return MNK.SnapPunch;
+                    if (TargetHasBuff(MNK.Debuffs.Demolish))
+                    {
+                        var duration = TargetBuffDuration(MNK.Debuffs.Demolish);
+                        if (duration > 6)
+                            return MNK.SnapPunch;
+                    }
+                    return MNK.Demolish;
+                }
+            }
+            //使金刚极意和真北CD相同
+            if (Configuration.IsEnabled(CustomComboPreset.MnkShenWeiFeature))
+            {
+                if (actionID == MNK.金刚极意)
+                {
+                    var JingGangCD = GetCooldown(MNK.金刚极意);
+                    var ZhenBeiCD = GetCooldown(MNK.真北);
+                    if (JingGangCD.CooldownRemaining > ZhenBeiCD.CooldownRemaining && level >= 64)
+                        return MNK.真北;
+                    return MNK.金刚极意;
+                }
+            }
+
+            if (Configuration.IsEnabled(CustomComboPreset.MnkZhenJiaoFeature))
+            {
+                if (actionID == MNK.DragonKick||actionID== MNK.Bootshine||actionID== MNK.双掌||actionID==MNK.正拳||actionID== MNK.SnapPunch||actionID== MNK.Demolish)
+                {
+                    if (HasBuff(MNK.Buffs.震脚) && TargetBuffDuration(MNK.Debuffs.Demolish) <= 3)
+                        return MNK.Demolish;
+                    if (HasBuff(MNK.Buffs.震脚) && BuffDuration(MNK.Buffs.TwinSnakes) > 3)
+                    {
+                        if (HasBuff(MNK.Buffs.LeadenFist))
+                            return MNK.Bootshine;
+                        if (!HasBuff(MNK.Buffs.LeadenFist))
+                            return MNK.DragonKick;
+                    }
+                    if (HasBuff(MNK.Buffs.震脚) && BuffDuration(MNK.Buffs.TwinSnakes) <= 3)
+                        return MNK.双掌;
                 }
             }
 
@@ -1508,6 +1925,29 @@ namespace XIVComboExpandedestPlugin
                 }
             }
 
+            if (Configuration.IsEnabled(CustomComboPreset.RedMageZiDONGFeature))
+            {
+                if (actionID == RDM.Jolt2 || actionID == RDM.Jolt )
+                {
+                    var gauge = GetJobGauge<RDMGauge>();
+                    if (gauge.BlackGauge >= gauge.WhiteGauge && level >= RDM.Levels.Verholy)
+                    {
+                        if (HasBuff(RDM.Buffs.VerstoneReady))
+                            return RDM.Verstone;
+                        if (HasBuff(RDM.Buffs.Dualcast))
+                            return RDM.Veraero;
+                    }
+                    if (gauge.BlackGauge < gauge.WhiteGauge && level >= RDM.Levels.Verholy)
+                    {
+                        if (HasBuff(RDM.Buffs.VerfireReady))
+                            return RDM.Verfire;
+                        if (HasBuff(RDM.Buffs.Dualcast))
+                            return RDM.Verthunder;
+                    }
+                    return GetIconHook.Original(actionManager, RDM.Jolt);
+                }
+            }
+
             #endregion
             // ====================================================================================
             #region DISCIPLE OF MAGIC
@@ -1535,7 +1975,7 @@ namespace XIVComboExpandedestPlugin
 
         private float TargetBuffDuration(short effectId)
         {
-            var buff = FindTargetBuff(effectId);
+            var buff = FindTargetBuff(effectId);;
             if (buff.HasValue)
                 return (byte)buff?.Duration;
             return 0;
