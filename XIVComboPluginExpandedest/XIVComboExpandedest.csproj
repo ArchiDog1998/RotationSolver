@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>XIVComboExpanded</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>Preview</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="Dalamud">
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Dalamud.dll</HintPath>
+    </Reference>
+    <Reference Include="ImGui.NET">
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\ImGui.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Lumina">
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Lumina.dll</HintPath>
+    </Reference>
+    <Reference Include="Lumina.Excel">
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Lumina.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="Copy &quot;$(TargetPath)&quot; &quot;E:\Software\Dalamud.Updater\XIVLauncher\installedPlugins\XIVComboExpandedest\1.0.0.8\XIVComboExpandedest.dll&quot;" />
+  </Target>
+</Project>

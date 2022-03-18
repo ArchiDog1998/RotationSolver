@@ -73,22 +73,22 @@
 
   <ItemGroup>
     <Reference Include="Dalamud">
-      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\Dalamud.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Dalamud.dll</HintPath>
     </Reference>
     <Reference Include="ImGui.NET">
-      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\ImGui.NET.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\ImGui.NET.dll</HintPath>
     </Reference>
     <Reference Include="ImGuiScene">
-      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\ImGuiScene.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\ImGuiScene.dll</HintPath>
     </Reference>
     <Reference Include="Lumina">
-      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\Lumina.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Lumina.dll</HintPath>
     </Reference>
     <Reference Include="Lumina.Excel">
-      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\Lumina.Excel.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Lumina.Excel.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Users\牙刷666\AppData\Roaming\XIVLauncher\addon\Hooks\5.2.5.8\Newtonsoft.Json.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
