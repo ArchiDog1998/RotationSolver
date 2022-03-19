@@ -14,46 +14,72 @@ namespace XIVComboPlus.Combos;
 internal abstract class CustomCombo
 {
     private const uint InvalidObjectID = 3758096384u;
+    #region Job
 
-    private static readonly Dictionary<Type, JobGaugeBase> JobGaugeCache = new Dictionary<Type, JobGaugeBase>();
+    protected abstract byte ClassID { get; }
 
-    protected internal abstract CustomComboPreset Preset { get; }
+    protected abstract byte JobID { get; }
 
+    public abstract string JobName { get; }
+    #endregion
+
+    #region Combo
     protected internal abstract uint[] ActionIDs { get; }
+    public abstract string ComboFancyName { get; }
 
-    protected byte ClassID { get; }
+    public abstract string Description { get; }
 
-    protected byte JobID { get; }
+    public virtual string[] ConflictingCombos => new string[0];
+    public virtual string ParentCombo => string.Empty;
 
+    public virtual bool SecretCombo => false;
+
+    public bool IsEnabled
+    {
+        get
+        {
+            if(Service.Configuration.IsEnabled(ComboFancyName))
+            {
+                if (!Service.Configuration.EnableSecretCombos)
+                {
+                    return !SecretCombo;
+                }
+                return true;
+            }
+            return false;
+        }
+    }
+
+    #endregion
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
 
     protected static GameObject CurrentTarget => Service.TargetManager.Target;
 
     protected CustomCombo()
     {
-        CustomComboInfoAttribute attribute = Preset.GetAttribute<CustomComboInfoAttribute>();
-        JobID = attribute.JobID;
-        ClassID = JobID switch
-        {
-            0 => 0,
-            25 => 7,
-            23 => 5,
-            22 => 4,
-            20 => 2,
-            30 => 29,
-            19 => 1,
-            28 => 15,
-            27 => 26,
-            21 => 3,
-            24 => 6,
-            _ => byte.MaxValue,
-        };
+        //CustomComboInfoAttribute attribute = Preset.GetAttribute<CustomComboInfoAttribute>();
+        //JobID = attribute.JobID;
+        //ClassID = JobID switch
+        //{
+        //    0 => 0,
+        //    25 => 7,
+        //    23 => 5,
+        //    22 => 4,
+        //    20 => 2,
+        //    30 => 29,
+        //    19 => 1,
+        //    28 => 15,
+        //    27 => 26,
+        //    21 => 3,
+        //    24 => 6,
+        //    _ => byte.MaxValue,
+        //};
     }
 
     public bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out uint newActionID)
     {
         newActionID = 0u;
-        if (!IsEnabled(Preset))
+        if (!IsEnabled)
         {
             return false;
         }
@@ -114,11 +140,6 @@ internal abstract class CustomCombo
     protected static uint OriginalHook(uint actionID)
     {
         return Service.IconReplacer.OriginalHook(actionID);
-    }
-
-    protected static bool IsEnabled(CustomComboPreset preset)
-    {
-        return Service.Configuration.IsEnabled(preset);
     }
 
     protected static bool HasCondition(ConditionFlag flag)
@@ -235,13 +256,5 @@ internal abstract class CustomCombo
         return Service.IconReplacer.GetCooldown(actionID);
     }
 
-    protected static T GetJobGauge<T>() where T : JobGaugeBase
-    {
-        if (!JobGaugeCache.TryGetValue(typeof(T), out var value))
-        {
-            JobGaugeBase val2 = JobGaugeCache[typeof(T)] = (JobGaugeBase)(object)Service.JobGauges.Get<T>();
-            value = val2;
-        }
-        return (T)(object)value;
-    }
+    protected abstract JobGaugeBase GetJobGaugeBase();
 }

@@ -7,7 +7,6 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
 using Dalamud.Logging;
-using Lumina.Excel.GeneratedSheets;
 using XIVComboPlus.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -48,8 +47,20 @@ internal sealed class IconReplacer : IDisposable
             }
         }
     }
-
-    private readonly List<CustomCombo> customCombos;
+    private List<CustomCombo> _customCombos;
+    internal List<CustomCombo> CustomCombos
+    {
+        get
+        {
+            if(_customCombos == null)
+            {
+                _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
+                                where t.BaseType == typeof(CustomCombo)
+                                select Activator.CreateInstance(t)).Cast<CustomCombo>().ToList();
+            }
+            return _customCombos;
+        }
+    }
 
     private readonly Hook<IsIconReplaceableDelegate> isIconReplaceableHook;
 
@@ -65,9 +76,7 @@ internal sealed class IconReplacer : IDisposable
 
     public IconReplacer()
     {
-        customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
-                        where t.BaseType == typeof(CustomCombo)
-                        select Activator.CreateInstance(t)).Cast<CustomCombo>().ToList();
+
         UpdateEnabledActionIDs();
         getActionCooldownSlot = Marshal.GetDelegateForFunctionPointer<GetActionCooldownSlotDelegate>(Service.Address.GetActionCooldown);
         getIconHook = new Hook<GetIconDelegate>(Service.Address.GetAdjustedActionId, GetIconDetour);
@@ -84,7 +93,7 @@ internal sealed class IconReplacer : IDisposable
 
     internal void UpdateEnabledActionIDs()
     {
-        comboActionIDs = customCombos.Where((combo) => Service.Configuration.EnabledActions.Contains(combo.Preset)).SelectMany((combo) => combo.ActionIDs).ToHashSet();
+        comboActionIDs = CustomCombos.Where((combo) => Service.Configuration.EnabledActions.Contains(combo.ComboFancyName)).SelectMany((combo) => combo.ActionIDs).ToHashSet();
     }
 
     internal uint OriginalHook(uint actionID)
@@ -105,7 +114,7 @@ internal sealed class IconReplacer : IDisposable
             uint lastComboActionID = *(uint*)(void*)Service.Address.LastComboMove;
             float comboTime = *(float*)(void*)Service.Address.ComboTimer;
             byte level = localPlayer.Level;
-            foreach (CustomCombo customCombo in customCombos)
+            foreach (CustomCombo customCombo in CustomCombos)
             {
                 if (customCombo.TryInvoke(actionID, lastComboActionID, comboTime, level, out var newActionID))
                 {

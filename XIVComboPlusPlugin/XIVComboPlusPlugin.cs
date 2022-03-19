@@ -9,7 +9,7 @@ using XIVComboPlus;
 
 namespace XIVComboPlus;
 
-public sealed class XIVComboExpandedPlugin : IDalamudPlugin, IDisposable
+public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 {
     private const string _command = "/pcombo";
 
@@ -19,7 +19,7 @@ public sealed class XIVComboExpandedPlugin : IDalamudPlugin, IDisposable
 
     public string Name => "XIV Combo Plus";
 
-    public XIVComboExpandedPlugin(DalamudPluginInterface pluginInterface)
+    public XIVComboPlusPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>(Array.Empty<object>());
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
@@ -53,13 +53,15 @@ public sealed class XIVComboExpandedPlugin : IDalamudPlugin, IDisposable
 
     private void OnCommand(string command, string arguments)
     {
+        string[] values = Service.IconReplacer.CustomCombos.Select(x => x.ComboFancyName).ToArray();
+
         string[] array = arguments.Split();
         switch (array[0])
         {
             case "setall":
                 {
-                    CustomComboPreset[] values = Enum.GetValues<CustomComboPreset>();
-                    foreach (CustomComboPreset item in values)
+
+                    foreach (string item in values)
                     {
                         Service.Configuration.EnabledActions.Add(item);
                     }
@@ -69,11 +71,7 @@ public sealed class XIVComboExpandedPlugin : IDalamudPlugin, IDisposable
                 }
             case "unsetall":
                 {
-                    CustomComboPreset[] values = Enum.GetValues<CustomComboPreset>();
-                    foreach (CustomComboPreset item2 in values)
-                    {
-                        Service.Configuration.EnabledActions.Remove(item2);
-                    }
+                    Service.Configuration.EnabledActions.Clear();
                     Service.ChatGui.Print("All UNSET");
                     Service.Configuration.Save();
                     break;
@@ -81,14 +79,14 @@ public sealed class XIVComboExpandedPlugin : IDalamudPlugin, IDisposable
             case "set":
                 {
                     string text3 = array[1].ToLowerInvariant();
-                    CustomComboPreset[] values = Enum.GetValues<CustomComboPreset>();
                     for (int i = 0; i < values.Length; i++)
                     {
-                        CustomComboPreset customComboPreset4 = values[i];
-                        if (!(customComboPreset4.ToString().ToLowerInvariant() != text3))
+                        string value = values[i];
+                        if (value.ToLowerInvariant() == text3)
                         {
-                            Service.Configuration.EnabledActions.Add(customComboPreset4);
-                            Service.ChatGui.Print($"{customComboPreset4} SET");
+                            Service.Configuration.EnabledActions.Add(value);
+                            Service.ChatGui.Print($"{value} SET");
+                            break;
                         }
                     }
                     Service.Configuration.Save();
@@ -102,11 +100,10 @@ public sealed class XIVComboExpandedPlugin : IDalamudPlugin, IDisposable
             case "toggle":
                 {
                     string text = array[1].ToLowerInvariant();
-                    CustomComboPreset[] values = Enum.GetValues<CustomComboPreset>();
                     for (int i = 0; i < values.Length; i++)
                     {
-                        CustomComboPreset customComboPreset2 = values[i];
-                        if (!(customComboPreset2.ToString().ToLowerInvariant() != text))
+                        string customComboPreset2 = values[i];
+                        if (customComboPreset2.ToLowerInvariant() == text)
                         {
                             if (Service.Configuration.EnabledActions.Contains(customComboPreset2))
                             {
@@ -123,32 +120,31 @@ public sealed class XIVComboExpandedPlugin : IDalamudPlugin, IDisposable
                     Service.Configuration.Save();
                     break;
                 }
-            case "dot":
-                if (Service.Configuration.EnabledActions.Contains(CustomComboPreset.SCHDotFeature))
-                {
-                    Service.Configuration.EnabledActions.Remove(CustomComboPreset.SCHDotFeature);
-                }
-                if (!Service.Configuration.EnabledActions.Contains(CustomComboPreset.SCHDotFeature))
-                {
-                    Service.Configuration.EnabledActions.Add(CustomComboPreset.SCHDotFeature);
-                }
-                if (Service.Configuration.EnabledActions.Contains(CustomComboPreset.ASTdotFeature))
-                {
-                    Service.Configuration.EnabledActions.Remove(CustomComboPreset.ASTdotFeature);
-                }
-                if (!Service.Configuration.EnabledActions.Contains(CustomComboPreset.ASTdotFeature))
-                {
-                    Service.Configuration.EnabledActions.Add(CustomComboPreset.ASTdotFeature);
-                }
-                Service.Configuration.Save();
-                break;
+            //case "dot":
+            //    if (Service.Configuration.EnabledActions.Contains(CustomComboPreset.SCHDotFeature))
+            //    {
+            //        Service.Configuration.EnabledActions.Remove(CustomComboPreset.SCHDotFeature);
+            //    }
+            //    if (!Service.Configuration.EnabledActions.Contains(CustomComboPreset.SCHDotFeature))
+            //    {
+            //        Service.Configuration.EnabledActions.Add(CustomComboPreset.SCHDotFeature);
+            //    }
+            //    if (Service.Configuration.EnabledActions.Contains(CustomComboPreset.ASTdotFeature))
+            //    {
+            //        Service.Configuration.EnabledActions.Remove(CustomComboPreset.ASTdotFeature);
+            //    }
+            //    if (!Service.Configuration.EnabledActions.Contains(CustomComboPreset.ASTdotFeature))
+            //    {
+            //        Service.Configuration.EnabledActions.Add(CustomComboPreset.ASTdotFeature);
+            //    }
+            //    Service.Configuration.Save();
+            //    break;
             case "unset":
                 {
                     string text2 = array[1].ToLowerInvariant();
-                    CustomComboPreset[] values = Enum.GetValues<CustomComboPreset>();
                     for (int i = 0; i < values.Length; i++)
                     {
-                        CustomComboPreset customComboPreset3 = values[i];
+                        string customComboPreset3 = values[i];
                         if (!(customComboPreset3.ToString().ToLowerInvariant() != text2))
                         {
                             Service.Configuration.EnabledActions.Remove(customComboPreset3);
@@ -162,14 +158,14 @@ public sealed class XIVComboExpandedPlugin : IDalamudPlugin, IDisposable
                 switch (array.Length > 1 ? array[1].ToLowerInvariant() : "all")
                 {
                     case "set":
-                        foreach (bool item3 in from preset in Enum.GetValues<CustomComboPreset>()
+                        foreach (bool item3 in from preset in values
                                                select Service.Configuration.IsEnabled(preset))
                         {
                             Service.ChatGui.Print(item3.ToString());
                         }
                         break;
                     case "unset":
-                        foreach (bool item4 in from preset in Enum.GetValues<CustomComboPreset>()
+                        foreach (bool item4 in from preset in values
                                                select !Service.Configuration.IsEnabled(preset))
                         {
                             Service.ChatGui.Print(item4.ToString());
@@ -177,11 +173,9 @@ public sealed class XIVComboExpandedPlugin : IDalamudPlugin, IDisposable
                         break;
                     case "all":
                         {
-                            CustomComboPreset[] values = Enum.GetValues<CustomComboPreset>();
                             for (int i = 0; i < values.Length; i++)
                             {
-                                CustomComboPreset customComboPreset = values[i];
-                                Service.ChatGui.Print(customComboPreset.ToString());
+                                Service.ChatGui.Print(values[i]);
                             }
                             break;
                         }

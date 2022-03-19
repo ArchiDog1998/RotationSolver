@@ -4,24 +4,24 @@ using XIVComboPlus.Combos;
 
 namespace XIVComboPlus.Combos.BLM;
 
-internal class BlackEnochianFeature : CustomCombo
+internal class BlackEnochianFeature : BLMCombo
 {
-    protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BlackEnochianFeature;
+    public override string ComboFancyName => "ÃÏ”Ô◊¥Ã¨";
 
+    public override string Description => "≤‚ ‘”√Œƒ◊÷";
 
-    protected internal override uint[] ActionIDs { get; } = new uint[2] { (uint)BLM.Actions.Blizzard4, (uint)BLM.Actions.Fire4 };
+    protected internal override uint[] ActionIDs { get; } = { (uint)Actions.Blizzard4, (uint)Actions.Fire4 };
 
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
     {
-        BLMGauge jobGauge = GetJobGauge<BLMGauge>();
-        if (level >= (byte)BLM.Levels.Blizzard4 && jobGauge.InUmbralIce)
+        if (level >= (byte)Levels.Blizzard4 && JobGauge.InUmbralIce)
         {
-            return (uint)BLM.Actions.Blizzard4;
+            return (uint)Actions.Blizzard4;
         }
-        if (level >= (byte)BLM.Levels.Fire4)
+        if (level >= (byte)Levels.Fire4)
         {
-            return (uint)BLM.Actions.Fire4;
+            return (uint)Actions.Fire4;
         }
         return actionID;
     }

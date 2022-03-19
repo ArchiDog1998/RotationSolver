@@ -4,6 +4,7 @@ using Dalamud.Configuration;
 using Dalamud.Utility;
 using Newtonsoft.Json;
 using XIVComboPlus.Attributes;
+using XIVComboPlus.Combos;
 
 namespace XIVComboPlus;
 
@@ -14,9 +15,7 @@ public class PluginConfiguration : IPluginConfiguration
 
 
     [JsonProperty("EnabledActionsV5")]
-    public HashSet<CustomComboPreset> EnabledActions { get; set; } = new HashSet<CustomComboPreset>();
-
-
+    public HashSet<string> EnabledActions { get; } = new HashSet<string>();
 
     [JsonProperty("Debug")]
     public bool EnableSecretCombos { get; set; }
@@ -29,31 +28,8 @@ public class PluginConfiguration : IPluginConfiguration
         Service.Interface.SavePluginConfig(this);
     }
 
-    public bool IsEnabled(CustomComboPreset preset)
+    public bool IsEnabled(string preset)
     {
-        if (EnabledActions.Contains(preset))
-        {
-            if (!EnableSecretCombos)
-            {
-                return !IsSecret(preset);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public bool IsSecret(CustomComboPreset preset)
-    {
-        return preset.GetAttribute<SecretCustomComboAttribute>() != null;
-    }
-
-    public CustomComboPreset[] GetConflicts(CustomComboPreset preset)
-    {
-        return preset.GetAttribute<ConflictingCombosAttribute>()?.ConflictingPresets ?? Array.Empty<CustomComboPreset>();
-    }
-
-    public CustomComboPreset? GetParent(CustomComboPreset preset)
-    {
-        return preset.GetAttribute<ParentComboAttribute>()?.ParentPreset;
+        return EnabledActions.Contains(preset);
     }
 }
