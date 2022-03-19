@@ -11,9 +11,7 @@ namespace XIVComboPlus.Combos.BLM
     {
         public sealed override string JobName => "黑魔法师";
 
-        protected sealed override byte ClassID => 7;
-
-        protected sealed override byte JobID => 25;
+        internal sealed override uint JobID => 25;
 
         private BLMGauge _gauge;
 

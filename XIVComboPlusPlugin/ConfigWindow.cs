@@ -15,17 +15,12 @@ namespace XIVComboPlus;
 
 internal class ConfigWindow : Window
 {
-    private readonly Dictionary<string, List<CustomCombo>> groupedPresets;
-
     private readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
 
     public ConfigWindow()
         : base("Custom Combo Setup", 0, false)
     {
         RespectCloseHotkey = true;
-
-        groupedPresets = Service.IconReplacer.CustomCombos.GroupBy((combo) => combo.JobName)
-                            .ToDictionary(x => x.Key, x => x.ToList());
 
         SizeCondition = (ImGuiCond)4;
         Size = new Vector2(740f, 490f);
@@ -51,15 +46,19 @@ internal class ConfigWindow : Window
         ImGui.PushStyleVar((ImGuiStyleVar)13, new Vector2(0f, 5f));
         int num = 1;
 
-        foreach (string key in groupedPresets.Keys)
+        foreach (uint key in IconReplacer.CustomCombosDict.Keys)
         {
-            if (ImGui.CollapsingHeader(key))
+            var combos = IconReplacer.CustomCombosDict[key];
+            if (combos == null || combos.Length == 0) continue;
+
+            string jobName = combos[0].JobName;
+            if (ImGui.CollapsingHeader(jobName))
             {
-                foreach (var combo in groupedPresets[key])
+                foreach (var combo in combos)
                 {
                     //ImGui.Text(combo.ComboFancyName);
 
-                    bool enable = Service.Configuration.IsEnabled(combo.ComboFancyName);
+                    bool enable = combo.IsEnabled;
                     string[] conflicts = combo.ConflictingCombos;
                     string parent = combo.ParentCombo;
                     if (combo.SecretCombo && !enableSecretCombos)
@@ -71,18 +70,17 @@ internal class ConfigWindow : Window
                     {
                         if (enable)
                         {
-                            Service.Configuration.EnabledActions.Add(combo.ComboFancyName);
+                            combo.IsEnabled = true;
                             string[] array = conflicts;
                             foreach (string item3 in array)
                             {
-                                Service.Configuration.EnabledActions.Remove(item3);
+                                IconReplacer.SetEnable(item3, false);
                             }
                         }
                         else
                         {
-                            Service.Configuration.EnabledActions.Remove(combo.ComboFancyName);
+                            combo.IsEnabled = false;
                         }
-                        Service.IconReplacer.UpdateEnabledActionIDs();
                         Service.Configuration.Save();
                     }
                     if (combo.SecretCombo)
@@ -131,7 +129,7 @@ internal class ConfigWindow : Window
             }
             else
             {
-                num += groupedPresets[key].Count;
+                num += combos.Length;
             }
         }
         ImGui.PopStyleVar();

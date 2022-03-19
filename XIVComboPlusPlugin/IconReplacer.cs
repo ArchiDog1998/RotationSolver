@@ -47,16 +47,26 @@ internal sealed class IconReplacer : IDisposable
             }
         }
     }
-    private List<CustomCombo> _customCombos;
-    internal List<CustomCombo> CustomCombos
+    private static SortedList<uint, CustomCombo[]> _customCombosDict;
+    internal static SortedList<uint, CustomCombo[]> CustomCombosDict
     {
         get
         {
-            if(_customCombos == null)
+            if(_customCombosDict == null)
             {
-                _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
-                                where t.BaseType.BaseType == typeof(CustomCombo)
-                                select Activator.CreateInstance(t)).Cast<CustomCombo>().ToList();
+                SetStaticValues();
+            }
+            return _customCombosDict;
+        }
+    }
+    private static CustomCombo[] _customCombos;
+    internal static CustomCombo[] CustomCombos 
+    {
+        get
+        {
+            if (_customCombos == null)
+            {
+                SetStaticValues();
             }
             return _customCombos;
         }
@@ -76,8 +86,6 @@ internal sealed class IconReplacer : IDisposable
 
     public IconReplacer()
     {
-
-        UpdateEnabledActionIDs();
         getActionCooldownSlot = Marshal.GetDelegateForFunctionPointer<GetActionCooldownSlotDelegate>(Service.Address.GetActionCooldown);
         getIconHook = new Hook<GetIconDelegate>(Service.Address.GetAdjustedActionId, GetIconDetour);
         isIconReplaceableHook = new Hook<IsIconReplaceableDelegate>(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);
@@ -85,15 +93,22 @@ internal sealed class IconReplacer : IDisposable
         isIconReplaceableHook.Enable();
     }
 
+    private static void SetStaticValues()
+    {
+        _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
+                         where t.BaseType.BaseType == typeof(CustomCombo)
+                         select (CustomCombo)Activator.CreateInstance(t) into combo
+                         orderby combo.JobID, combo.Priority
+                         select combo).ToArray();
+
+        _customCombosDict = new SortedList<uint, CustomCombo[]>
+            (_customCombos.GroupBy(g => g.JobID).ToDictionary(set => set.Key, set => set.ToArray()));
+    }
+
     public void Dispose()
     {
         getIconHook.Dispose();
         isIconReplaceableHook.Dispose();
-    }
-
-    internal void UpdateEnabledActionIDs()
-    {
-        comboActionIDs = CustomCombos.Where((combo) => Service.Configuration.EnabledActions.Contains(combo.ComboFancyName)).SelectMany((combo) => combo.ActionIDs).ToHashSet();
     }
 
     internal uint OriginalHook(uint actionID)
@@ -107,20 +122,23 @@ internal sealed class IconReplacer : IDisposable
         try
         {
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
-            if ((GameObject)(object)localPlayer == null || !comboActionIDs.Contains(actionID))
+            uint classId = localPlayer.ClassJob.Id;
+            if ((GameObject)(object)localPlayer == null || !CustomCombosDict.ContainsKey(classId))
             {
                 return OriginalHook(actionID);
             }
+
             uint lastComboActionID = *(uint*)(void*)Service.Address.LastComboMove;
             float comboTime = *(float*)(void*)Service.Address.ComboTimer;
             byte level = localPlayer.Level;
-            foreach (CustomCombo customCombo in CustomCombos)
+            foreach (CustomCombo customCombo in CustomCombosDict[classId])
             {
                 if (customCombo.TryInvoke(actionID, lastComboActionID, comboTime, level, out var newActionID))
                 {
                     return newActionID;
                 }
             }
+
             return OriginalHook(actionID);
         }
         catch (Exception ex)
@@ -155,5 +173,25 @@ internal sealed class IconReplacer : IDisposable
         }
         Action row = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
         return cooldownGroupCache[actionID] = row.CooldownGroup;
+    }
+
+    internal static void SetEnable(string comboName, bool enable)
+    {
+        foreach (var combo in CustomCombos)
+        {
+            if(combo.ComboFancyName == comboName)
+            {
+                combo.IsEnabled = enable;
+                return;
+            }
+        }
+    }
+
+    internal static void SetEnable( bool enable)
+    {
+        foreach (var combo in CustomCombos)
+        {
+            combo.IsEnabled = enable;
+        }
     }
 }

@@ -53,7 +53,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 
     private void OnCommand(string command, string arguments)
     {
-        string[] values = Service.IconReplacer.CustomCombos.Select(x => x.ComboFancyName).ToArray();
+        //string[] values = IconReplacer.CustomCombos.Select(c => c.ComboFancyName).ToArray();
 
         string[] array = arguments.Split();
         switch (array[0])
@@ -61,9 +61,9 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
             case "setall":
                 {
 
-                    foreach (string item in values)
+                    foreach (var item in IconReplacer.CustomCombos)
                     {
-                        Service.Configuration.EnabledActions.Add(item);
+                        item.IsEnabled = true;
                     }
                     Service.ChatGui.Print("All SET");
                     Service.Configuration.Save();
@@ -71,7 +71,10 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
                 }
             case "unsetall":
                 {
-                    Service.Configuration.EnabledActions.Clear();
+                    foreach (var item in IconReplacer.CustomCombos)
+                    {
+                        item.IsEnabled = false;
+                    }
                     Service.ChatGui.Print("All UNSET");
                     Service.Configuration.Save();
                     break;
@@ -79,12 +82,12 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
             case "set":
                 {
                     string text3 = array[1].ToLowerInvariant();
-                    for (int i = 0; i < values.Length; i++)
+                    for (int i = 0; i < IconReplacer.CustomCombos.Length; i++)
                     {
-                        string value = values[i];
-                        if (value.ToLowerInvariant() == text3)
+                        var value = IconReplacer.CustomCombos[i];
+                        if (value.ComboFancyName.ToLowerInvariant() == text3)
                         {
-                            Service.Configuration.EnabledActions.Add(value);
+                            value.IsEnabled = true;
                             Service.ChatGui.Print($"{value} SET");
                             break;
                         }
@@ -100,21 +103,13 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
             case "toggle":
                 {
                     string text = array[1].ToLowerInvariant();
-                    for (int i = 0; i < values.Length; i++)
+                    for (int i = 0; i < IconReplacer.CustomCombos.Length; i++)
                     {
-                        string customComboPreset2 = values[i];
-                        if (customComboPreset2.ToLowerInvariant() == text)
+                        var customComboPreset2 = IconReplacer.CustomCombos[i];
+                        if (customComboPreset2.ComboFancyName.ToLowerInvariant() == text)
                         {
-                            if (Service.Configuration.EnabledActions.Contains(customComboPreset2))
-                            {
-                                Service.Configuration.EnabledActions.Remove(customComboPreset2);
-                                Service.ChatGui.Print($"{customComboPreset2} UNSET");
-                            }
-                            else
-                            {
-                                Service.Configuration.EnabledActions.Add(customComboPreset2);
-                                Service.ChatGui.Print($"{customComboPreset2} SET");
-                            }
+                            customComboPreset2.IsEnabled = !customComboPreset2.IsEnabled;
+                            Service.ChatGui.Print(customComboPreset2.ComboFancyName + " " + (customComboPreset2.IsEnabled ? "SET": "UNSET"));
                         }
                     }
                     Service.Configuration.Save();
@@ -142,48 +137,49 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
             case "unset":
                 {
                     string text2 = array[1].ToLowerInvariant();
-                    for (int i = 0; i < values.Length; i++)
+                    for (int i = 0; i < IconReplacer.CustomCombos.Length; i++)
                     {
-                        string customComboPreset3 = values[i];
-                        if (!(customComboPreset3.ToString().ToLowerInvariant() != text2))
+                        var value = IconReplacer.CustomCombos[i];
+                        if (value.ComboFancyName.ToLowerInvariant() == text2)
                         {
-                            Service.Configuration.EnabledActions.Remove(customComboPreset3);
-                            Service.ChatGui.Print($"{customComboPreset3} UNSET");
+                            value.IsEnabled = true;
+                            Service.ChatGui.Print($"{value} UNSET");
+                            break;
                         }
                     }
                     Service.Configuration.Save();
                     break;
                 }
-            case "list":
-                switch (array.Length > 1 ? array[1].ToLowerInvariant() : "all")
-                {
-                    case "set":
-                        foreach (bool item3 in from preset in values
-                                               select Service.Configuration.IsEnabled(preset))
-                        {
-                            Service.ChatGui.Print(item3.ToString());
-                        }
-                        break;
-                    case "unset":
-                        foreach (bool item4 in from preset in values
-                                               select !Service.Configuration.IsEnabled(preset))
-                        {
-                            Service.ChatGui.Print(item4.ToString());
-                        }
-                        break;
-                    case "all":
-                        {
-                            for (int i = 0; i < values.Length; i++)
-                            {
-                                Service.ChatGui.Print(values[i]);
-                            }
-                            break;
-                        }
-                    default:
-                        Service.ChatGui.PrintError("Available list filters: set, unset, all");
-                        break;
-                }
-                break;
+            //case "list":
+            //    switch (array.Length > 1 ? array[1].ToLowerInvariant() : "all")
+            //    {
+            //        case "set":
+            //            foreach (bool item3 in from preset in values
+            //                                   select Service.Configuration.IsEnabled(preset))
+            //            {
+            //                Service.ChatGui.Print(item3.ToString());
+            //            }
+            //            break;
+            //        case "unset":
+            //            foreach (bool item4 in from preset in values
+            //                                   select !Service.Configuration.IsEnabled(preset))
+            //            {
+            //                Service.ChatGui.Print(item4.ToString());
+            //            }
+            //            break;
+            //        case "all":
+            //            {
+            //                for (int i = 0; i < values.Length; i++)
+            //                {
+            //                    Service.ChatGui.Print(values[i]);
+            //                }
+            //                break;
+            //            }
+            //        default:
+            //            Service.ChatGui.PrintError("Available list filters: set, unset, all");
+            //            break;
+            //    }
+            //    break;
             default:
                 configWindow.Toggle();
                 break;

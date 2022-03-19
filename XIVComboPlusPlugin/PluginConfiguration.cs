@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Dalamud.Configuration;
 using Dalamud.Utility;
@@ -15,7 +16,7 @@ public class PluginConfiguration : IPluginConfiguration
 
 
     //[JsonProperty("EnabledActionsV5")]
-    public HashSet<string> EnabledActions { get; } = new HashSet<string>();
+    public string[] EnabledActions => IconReplacer.CustomCombos.Select(c => c.ComboFancyName).ToArray();
 
    // [JsonProperty("Debug")]
     public bool EnableSecretCombos { get; set; }
@@ -26,10 +27,5 @@ public class PluginConfiguration : IPluginConfiguration
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);
-    }
-
-    public bool IsEnabled(string preset)
-    {
-        return EnabledActions.Contains(preset);
     }
 }

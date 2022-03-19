@@ -13,12 +13,9 @@ namespace XIVComboPlus.Combos;
 
 internal abstract class CustomCombo
 {
-    private const uint InvalidObjectID = 3758096384u;
     #region Job
 
-    protected abstract byte ClassID { get; }
-
-    protected abstract byte JobID { get; }
+    internal abstract uint JobID { get; }
 
     public abstract string JobName { get; }
     #endregion
@@ -33,22 +30,8 @@ internal abstract class CustomCombo
     public virtual string ParentCombo => string.Empty;
 
     public virtual bool SecretCombo => false;
-
-    public bool IsEnabled
-    {
-        get
-        {
-            if(Service.Configuration.IsEnabled(ComboFancyName))
-            {
-                if (!Service.Configuration.EnableSecretCombos)
-                {
-                    return !SecretCombo;
-                }
-                return true;
-            }
-            return false;
-        }
-    }
+    public virtual byte Priority => byte.MaxValue;
+    public bool IsEnabled { get; set; } = false;
 
     #endregion
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
@@ -80,12 +63,6 @@ internal abstract class CustomCombo
     {
         newActionID = 0u;
         if (!IsEnabled)
-        {
-            return false;
-        }
-        PlayerCharacter localPlayer = LocalPlayer;
-        uint? num = localPlayer != null ? new uint?(localPlayer.ClassJob.Id) : null;
-        if (JobID != 0 && ClassID != 0 && JobID != num && ClassID != num)
         {
             return false;
         }
