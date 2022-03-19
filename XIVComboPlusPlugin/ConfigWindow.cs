@@ -18,7 +18,7 @@ internal class ConfigWindow : Window
     private readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
 
     public ConfigWindow()
-        : base("Custom Combo Setup", 0, false)
+        : base("自定义连击设置", 0, false)
     {
         RespectCloseHotkey = true;
 
@@ -28,10 +28,10 @@ internal class ConfigWindow : Window
 
     public override void Draw()
     {
-        ImGui.Text("This window allows you to enable and disable custom combos to your liking.");
+        ImGui.Text("在这个窗口，你可以设定自己喜欢的连击设定。");
 
         bool enableSecretCombos = Service.Configuration.EnableSecretCombos;
-        if (ImGui.Checkbox("Enable secret forbidden knowledge", ref enableSecretCombos))
+        if (ImGui.Checkbox("可以使用一些禁忌的知识", ref enableSecretCombos))
         {
             Service.Configuration.EnableSecretCombos = enableSecretCombos;
             Service.Configuration.Save();

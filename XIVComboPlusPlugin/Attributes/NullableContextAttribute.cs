@@ -1,18 +1,18 @@
-using Microsoft.CodeAnalysis;
-using System;
-using System.Runtime.CompilerServices;
+//using Microsoft.CodeAnalysis;
+//using System;
+//using System.Runtime.CompilerServices;
 
-namespace XIVComboPlus.Attributes;
+//namespace XIVComboPlus.Attributes;
 
-[CompilerGenerated]
-[Embedded]
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Method | AttributeTargets.Interface | AttributeTargets.Delegate, AllowMultiple = false, Inherited = false)]
-internal sealed class NullableContextAttribute : Attribute
-{
-    public readonly byte Flag;
+//[CompilerGenerated]
+//[Embedded]
+//[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Method | AttributeTargets.Interface | AttributeTargets.Delegate, AllowMultiple = false, Inherited = false)]
+//internal sealed class NullableContextAttribute : Attribute
+//{
+//    public readonly byte Flag;
 
-    public NullableContextAttribute(byte P_0)
-    {
-        Flag = P_0;
-    }
-}
+//    public NullableContextAttribute(byte P_0)
+//    {
+//        Flag = P_0;
+//    }
+//}
