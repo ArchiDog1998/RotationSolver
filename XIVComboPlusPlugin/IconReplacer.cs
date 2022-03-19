@@ -101,6 +101,14 @@ internal sealed class IconReplacer : IDisposable
                          orderby combo.JobID, combo.Priority
                          select combo).ToArray();
 
+        foreach (var combo in _customCombos)
+        {
+            if (Service.Configuration.EnabledActions.Contains(combo.ComboFancyName))
+            {
+                combo.IsEnabled = true;
+            }
+        }
+
         _customCombosDict = new SortedList<uint, CustomCombo[]>
             (_customCombos.GroupBy(g => g.JobID).ToDictionary(set => set.Key, set => set.ToArray()));
     }

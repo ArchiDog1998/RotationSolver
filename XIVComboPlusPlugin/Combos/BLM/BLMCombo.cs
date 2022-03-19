@@ -69,6 +69,8 @@ namespace XIVComboPlus.Combos.BLM
 
             BetweenTheLines = 62,
 
+            Foul = 70,
+
             Despair = 72,
 
             UmbralSoul = 76,
@@ -112,6 +114,8 @@ namespace XIVComboPlus.Combos.BLM
             Fire4 = 3577u,
 
             BetweenTheLines = 7419u,
+
+            Foul = 7422u,
 
             Despair = 16505u,
 

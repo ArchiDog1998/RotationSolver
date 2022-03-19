@@ -192,16 +192,7 @@ internal abstract class CustomCombo
 
     protected float? TargetBuffDuration(ushort effectId)
     {
-        Status val = FindTargetEffect(effectId);
-        if (val != null)
-        {
-            if (val == null)
-            {
-                return null;
-            }
-            return val.RemainingTime;
-        }
-        return 0f;
+        return FindTargetEffect(effectId)?.RemainingTime;
     }
 
     protected byte BuffStacks(ushort effectId)
@@ -216,16 +207,7 @@ internal abstract class CustomCombo
 
     protected float? BuffDuration(ushort effectId)
     {
-        Status val = FindEffect(effectId);
-        if (val != null)
-        {
-            if (val == null)
-            {
-                return null;
-            }
-            return val.RemainingTime;
-        }
-        return 0f;
+        return FindEffect(effectId)?.RemainingTime;
     }
 
     protected static IconReplacer.CooldownData GetCooldown(uint actionID)

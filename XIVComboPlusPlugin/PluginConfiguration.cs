@@ -16,7 +16,7 @@ public class PluginConfiguration : IPluginConfiguration
 
 
     //[JsonProperty("EnabledActionsV5")]
-    public string[] EnabledActions => IconReplacer.CustomCombos.Select(c => c.ComboFancyName).ToArray();
+    public string[] EnabledActions { get; private set; }
 
    // [JsonProperty("Debug")]
     public bool EnableSecretCombos { get; set; }
@@ -26,6 +26,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public void Save()
     {
+        EnabledActions = IconReplacer.CustomCombos.Select(c => c.ComboFancyName).ToArray();
         Service.Interface.SavePluginConfig(this);
     }
 }
