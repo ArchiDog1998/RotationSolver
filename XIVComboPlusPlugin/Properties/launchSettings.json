@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FF14": {
+      "commandName": "Executable",
+      "executablePath": "E:\\WeGameApps\\rail_apps\\ffxiv(2000340)\\game\\ffxiv_dx11.exe"
+    }
+  }
+}

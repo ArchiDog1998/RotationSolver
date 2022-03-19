@@ -34,6 +34,7 @@ internal class ConfigWindow : Window
     public override void Draw()
     {
         ImGui.Text("This window allows you to enable and disable custom combos to your liking.");
+
         bool enableSecretCombos = Service.Configuration.EnableSecretCombos;
         if (ImGui.Checkbox("Enable secret forbidden knowledge", ref enableSecretCombos))
         {
@@ -49,12 +50,15 @@ internal class ConfigWindow : Window
         ImGui.BeginChild("scrolling", new Vector2(0f, -1f), true);
         ImGui.PushStyleVar((ImGuiStyleVar)13, new Vector2(0f, 5f));
         int num = 1;
+
         foreach (string key in groupedPresets.Keys)
         {
             if (ImGui.CollapsingHeader(key))
             {
                 foreach (var combo in groupedPresets[key])
                 {
+                    //ImGui.Text(combo.ComboFancyName);
+
                     bool enable = Service.Configuration.IsEnabled(combo.ComboFancyName);
                     string[] conflicts = combo.ConflictingCombos;
                     string parent = combo.ParentCombo;

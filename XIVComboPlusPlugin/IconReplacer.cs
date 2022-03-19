@@ -55,7 +55,7 @@ internal sealed class IconReplacer : IDisposable
             if(_customCombos == null)
             {
                 _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
-                                where t.BaseType == typeof(CustomCombo)
+                                where t.BaseType.BaseType == typeof(CustomCombo)
                                 select Activator.CreateInstance(t)).Cast<CustomCombo>().ToList();
             }
             return _customCombos;
