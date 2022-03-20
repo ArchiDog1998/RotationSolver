@@ -33,7 +33,7 @@ internal class BlackAOEGCDFeature : BLMCombo
                     return Actions.Fire2;
                 }
 
-                if (level >= Levels.Thunder2 && TargetBuffDuration((ushort)Debuffs.Thunder2) < 3f)
+                if (level >= Levels.Thunder2 && TargetBuffDuration((ushort)Debuffs.Thunder2) < 10f && lastComboMove != Actions.Thunder2)
                 {
                     return Actions.Thunder2;
                 }
@@ -58,13 +58,13 @@ internal class BlackAOEGCDFeature : BLMCombo
                 }
 
                 //补雷
-                if (TargetBuffDuration(Debuffs.Thunder4) < 3f)
+                if (TargetBuffDuration(Debuffs.Thunder4) < 10f && lastComboMove != Actions.Thunder4)
                 {
                     if (level >= Levels.Thunder4)
                     {
                         return Actions.Thunder4;
                     }
-                    else if (TargetBuffDuration(Debuffs.Thunder2) < 3f)
+                    else if (TargetBuffDuration(Debuffs.Thunder2) < 10f && lastComboMove != Actions.Thunder2)
                     {
                         return Actions.Thunder2;
                     }
@@ -76,7 +76,7 @@ internal class BlackAOEGCDFeature : BLMCombo
             // 打高冰2到满蓝，保持雷不断。
             else
             {
-                if (LocalPlayer.CurrentMp > 9000)
+                if (HaveEnoughMP)
                 {
                     return Actions.HighFire2;
                 }
@@ -86,7 +86,7 @@ internal class BlackAOEGCDFeature : BLMCombo
                     return Actions.Freeze;
                 }
 
-                if (TargetBuffDuration(Debuffs.Thunder4) < 3f)
+                if (TargetBuffDuration(Debuffs.Thunder4) < 10f && lastComboMove != Actions.Thunder4)
                 {
                     return Actions.Thunder4;
                 }
@@ -138,22 +138,33 @@ internal class BlackAOEGCDFeature : BLMCombo
                     return Actions.Flare;
                 }
 
+                //补秽浊，如果过多
+                if (level >= Levels.Foul)
+                {
+                    if (level >= Levels.Xenoglossy)
+                    {
+                        if (JobGauge.PolyglotStacks == 2)
+                        {
+                            return Actions.Foul;
+                        }
+                    }
+                    if (JobGauge.PolyglotStacks == 1)
+                    {
+                        return Actions.Foul;
+                    }
+                }
+
                 //补雷
-                if (TargetBuffDuration(Debuffs.Thunder4) < 3f)
+                if (TargetBuffDuration(Debuffs.Thunder4) < 10f && lastComboMove != Actions.Thunder4)
                 {
                     if (level >= Levels.Thunder4)
                     {
                         return Actions.Thunder4;
                     }
-                    else if (TargetBuffDuration(Debuffs.Thunder2) < 3f)
+                    else if (TargetBuffDuration(Debuffs.Thunder2) < 10f && lastComboMove != Actions.Thunder2)
                     {
                         return Actions.Thunder2;
                     }
-                }
-                //补秽浊，如果过多
-                if (level >= Levels.Foul && JobGauge.PolyglotStacks == 2)
-                {
-                    return Actions.Foul;
                 }
 
                 //上火2/高火2

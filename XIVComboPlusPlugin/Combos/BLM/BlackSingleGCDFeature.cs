@@ -15,6 +15,7 @@ internal class BlackSingleGCDFeature : BLMCombo
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
     {
+
         if(CanAddAbility(level, out uint act)) return act;
 
         //冰状态
@@ -23,7 +24,7 @@ internal class BlackSingleGCDFeature : BLMCombo
             // 35级以下，{冰1打到满蓝} 星灵
             if (level < Levels.Fire3)
             {
-                if (TargetBuffDuration(Debuffs.Thunder) < 3f)
+                if (TargetBuffDuration(Debuffs.Thunder) < 10f)
                 {
                     return Actions.Thunder;
                 }
@@ -36,26 +37,27 @@ internal class BlackSingleGCDFeature : BLMCombo
             // 60级以下，冰3 {蓝没满可以打冰1} 雷3/1
             else if (level < Levels.Fire4)
             {
-                if (HaveEnoughMP)
-                {
-                    return Actions.Fire3;
-                }
-
                 //补 Dot
                 if (level < Levels.Thunder3)
                 {
-                    if (TargetBuffDuration(Debuffs.Thunder) < 3f)
+                    if (TargetBuffDuration(Debuffs.Thunder) < 10f && lastComboMove != Actions.Thunder)
                     {
                         return Actions.Thunder;
                     }
                 }
                 else
                 {
-                    if (TargetBuffDuration(Debuffs.Thunder3) < 3f)
+                    if (TargetBuffDuration(Debuffs.Thunder3) < 10f && lastComboMove != Actions.Thunder3)
                     {
                         return Actions.Thunder3;
                     }
                 }
+
+                if (HaveEnoughMP)
+                {
+                    return Actions.Fire3;
+                }
+
 
                 if (level > Levels.Blizzard4)
                     return Actions.Blizzard4;
@@ -65,14 +67,16 @@ internal class BlackSingleGCDFeature : BLMCombo
             // 89级以下，冰4 雷3 火3
             else if (level < Levels.Paradox)
             {
-                if (lastComboMove == Actions.Thunder3)
-                {
-                    return Actions.Fire3;
-                }
-                if (lastComboMove == Actions.Blizzard4)
+                if (TargetBuffDuration(Debuffs.Thunder3) < 10f && lastComboMove != Actions.Thunder3)
                 {
                     return Actions.Thunder3;
                 }
+
+                if (HaveEnoughMP && JobGauge.UmbralHearts == 3)
+                {
+                    return Actions.Fire3;
+                }
+
 
                 return Actions.Blizzard4;
             }
@@ -103,7 +107,7 @@ internal class BlackSingleGCDFeature : BLMCombo
             // 35级以下，{火1打到没蓝} 星灵
             if (level < Levels.Fire3)
             {
-                if (TargetBuffDuration(Debuffs.Thunder) < 3f)
+                if (TargetBuffDuration(Debuffs.Thunder) < 10f)
                 {
                     return Actions.Thunder;
                 }
@@ -136,11 +140,14 @@ internal class BlackSingleGCDFeature : BLMCombo
                 {
                     if (LocalPlayer.CurrentMp > 3000)
                         return Actions.Fire;
-                    else if (LocalPlayer.CurrentMp < 800)
+
+                    else if (level < Levels.Despair && LocalPlayer.CurrentMp < 800)
                         return Actions.Blizzard3;
+
                     else return Actions.Despair;
                 }
 
+                //如果通晓太多，就丢掉。
                 switch (JobGauge.PolyglotStacks)
                 {
                     case 1:
@@ -153,14 +160,19 @@ internal class BlackSingleGCDFeature : BLMCombo
                         return Actions.Xenoglossy;
                 }
 
-                float buffTime = 7;
-                if (LocalPlayer.CurrentMp < 1600 || (TargetBuffDuration(Debuffs.Thunder3) < buffTime && TargetBuffDuration(Debuffs.Thunder) < buffTime))
+                if (LocalPlayer.CurrentMp < 1600)
                 {
                     if (level >= Levels.Despair && LocalPlayer.CurrentMp >= 800)
                     {
                         return Actions.Despair;
                     }
                     return Actions.Blizzard3;
+                }
+
+                //如果没有雷了，就补上！
+                if (TargetBuffDuration(Debuffs.Thunder3) < 10f && lastComboMove != Actions.Thunder3)
+                {
+                    return Actions.Thunder3;
                 }
 
                 return Actions.Fire4;
@@ -193,7 +205,7 @@ internal class BlackSingleGCDFeature : BLMCombo
                     return Actions.Fire;
                 }
 
-                if (TargetBuffDuration(Debuffs.Thunder3) < 3f)
+                if (TargetBuffDuration(Debuffs.Thunder3) < 10f)
                 {
                     return Actions.Thunder3;
                 }

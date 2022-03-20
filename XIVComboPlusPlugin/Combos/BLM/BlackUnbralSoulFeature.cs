@@ -16,6 +16,7 @@ namespace XIVComboPlus.Combos.BLM
 
         protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
         {
+
             if(level < Levels.UmbralSoul)
             {
                 return Actions.Transpose;
