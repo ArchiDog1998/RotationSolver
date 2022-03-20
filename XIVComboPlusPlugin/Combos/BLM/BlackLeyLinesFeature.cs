@@ -9,7 +9,7 @@ internal class BlackLeyLinesFeature : BLMCombo
 
     public override string Description => "当黑魔纹正在启用时，就把黑魔纹变成魔纹步！";
 
-    protected internal override uint[] ActionIDs { get; } = { Actions.LeyLines };
+    protected internal override uint[] ActionIDs => new uint[] { Actions.LeyLines };
 
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)

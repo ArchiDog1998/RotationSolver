@@ -79,6 +79,7 @@ internal abstract class CustomCombo
     protected static uint CalcBestAction(uint original, params uint[] actions)
     {
         return actions.Select(new Func<uint, (uint, IconReplacer.CooldownData)>(Selector)).Aggregate(((uint ActionID, IconReplacer.CooldownData Data) a1, (uint ActionID, IconReplacer.CooldownData Data) a2) => Compare(original, a1, a2)).Item1;
+        
         static (uint ActionID, IconReplacer.CooldownData Data) Compare(uint original, (uint ActionID, IconReplacer.CooldownData Data) a1, (uint ActionID, IconReplacer.CooldownData Data) a2)
         {
             if (!a1.Data.IsCooldown && !a2.Data.IsCooldown)
@@ -103,6 +104,7 @@ internal abstract class CustomCombo
             }
             return a2;
         }
+
         static (uint ActionID, IconReplacer.CooldownData Data) Selector(uint actionID)
         {
             return (actionID, GetCooldown(actionID));

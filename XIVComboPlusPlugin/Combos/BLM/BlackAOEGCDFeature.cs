@@ -10,7 +10,7 @@ internal class BlackAOEGCDFeature : BLMCombo
 
     public override string Description => "替换火2非常牛逼的群攻GCD。";
 
-    protected internal override uint[] ActionIDs { get; } = { (uint)Actions.Fire2 };
+    protected internal override uint[] ActionIDs => new uint[] { Actions.Fire2 };
 
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
@@ -28,7 +28,7 @@ internal class BlackAOEGCDFeature : BLMCombo
             // 低于58级，打冰2/玄冰到满蓝，保持雷不断。
             if (level < Levels.Blizzard4)
             {
-                if (LocalPlayer.CurrentMp > 9000)
+                if (HaveEnoughMP)
                 {
                     return Actions.Fire2;
                 }
@@ -47,7 +47,7 @@ internal class BlackAOEGCDFeature : BLMCombo
             // 低于82级，打玄冰到满蓝，保持雷不断。
             else if (level < Levels.HighBlizzard2)
             {
-                if (LocalPlayer.CurrentMp > 9000)
+                if (HaveEnoughMP)
                 {
                     return Actions.Fire2;
                 }
@@ -57,14 +57,19 @@ internal class BlackAOEGCDFeature : BLMCombo
                     return Actions.Freeze;
                 }
 
-                if (level >= Levels.Thunder4 && TargetBuffDuration(Debuffs.Thunder4) < 3f)
+                //补雷
+                if (TargetBuffDuration(Debuffs.Thunder4) < 3f)
                 {
-                    return Actions.Thunder4;
+                    if (level >= Levels.Thunder4)
+                    {
+                        return Actions.Thunder4;
+                    }
+                    else if (TargetBuffDuration(Debuffs.Thunder2) < 3f)
+                    {
+                        return Actions.Thunder2;
+                    }
                 }
-                else if (TargetBuffDuration(Debuffs.Thunder2) < 3f)
-                {
-                    return Actions.Thunder2;
-                }
+
 
                 return Actions.Freeze;
             }
@@ -134,17 +139,19 @@ internal class BlackAOEGCDFeature : BLMCombo
                 }
 
                 //补雷
-                if (level >= Levels.Thunder4 && TargetBuffDuration(Debuffs.Thunder4) < 3f)
+                if (TargetBuffDuration(Debuffs.Thunder4) < 3f)
                 {
-                    return Actions.Thunder4;
+                    if (level >= Levels.Thunder4)
+                    {
+                        return Actions.Thunder4;
+                    }
+                    else if (TargetBuffDuration(Debuffs.Thunder2) < 3f)
+                    {
+                        return Actions.Thunder2;
+                    }
                 }
-                else if (TargetBuffDuration(Debuffs.Thunder2) < 3f)
-                {
-                    return Actions.Thunder2;
-                }
-
-                //补秽浊
-                if (level >= Levels.Foul && JobGauge.PolyglotStacks != 0)
+                //补秽浊，如果过多
+                if (level >= Levels.Foul && JobGauge.PolyglotStacks == 2)
                 {
                     return Actions.Foul;
                 }
@@ -159,11 +166,7 @@ internal class BlackAOEGCDFeature : BLMCombo
         }
         else
         {
-            if (LocalPlayer.CurrentMp < 5000)
-            {
-                return Actions.Blizzard2;
-            }
-            return Actions.Fire2;
+            return Actions.Blizzard2;
         }
 
         return actionID;

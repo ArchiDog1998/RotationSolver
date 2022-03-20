@@ -37,6 +37,13 @@ namespace XIVComboPlus.Combos.BLM
         protected bool CanAddAbility(byte level, out uint action)
         {
             action = 0;
+            if (SpecialForTri(level, out uint tri))
+            {
+                action = tri;
+                return true;
+            }
+
+
             if (CanInsertAbility)
             {
                 //加个即刻
@@ -90,6 +97,20 @@ namespace XIVComboPlus.Combos.BLM
                     return true;
                 }
             }
+            return false;
+        }
+
+        protected bool SpecialForTri(byte level, out uint action)
+        {
+            action=0;
+            if(level < Levels.Triplecast) return false;
+
+            if (!GetCooldown(Actions.Triplecast).IsCooldown && JobGauge.InAstralFire)
+            {
+                action = Actions.Triplecast;
+                return true;
+            }
+
             return false;
         }
 
@@ -148,6 +169,8 @@ namespace XIVComboPlus.Combos.BLM
                 BetweenTheLines = 62,
 
                 Thunder4 = 64,
+
+                Triplecast = 66,
 
                 Foul = 70,
 
@@ -208,6 +231,8 @@ namespace XIVComboPlus.Combos.BLM
                 BetweenTheLines = 7419u,
 
                 Thunder4 = 7420u,
+
+                Triplecast = 7421u,
 
                 Foul = 7422u,
 

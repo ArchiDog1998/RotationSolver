@@ -10,7 +10,7 @@ internal class BlackSingleGCDFeature : BLMCombo
 
     public override string Description => "替换火1为持续的GCD循环！";
 
-    protected internal override uint[] ActionIDs { get; } = { (uint)Actions.Fire };
+    protected internal override uint[] ActionIDs => new uint[] { Actions.Fire };
 
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
@@ -129,7 +129,7 @@ internal class BlackSingleGCDFeature : BLMCombo
                 return Actions.Fire;
             }
             // 89级以下，火4 x 3 火1 火4 x 3 冰3
-            else if (level < (byte)Levels.Paradox)
+            else if (level < Levels.Paradox)
             {
                 //时间不够，赶紧火1
                 if (JobGauge.ElementTimeRemaining < 4000)
