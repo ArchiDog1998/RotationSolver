@@ -1,22 +1,23 @@
-//using XIVComboPlus;
-//using XIVComboPlus.Combos;
+using XIVComboPlus;
+using XIVComboPlus.Combos;
 
-//namespace XIVComboPlus.Combos.BLM;
+namespace XIVComboPlus.Combos.BLM;
 
-//internal class BlackLeyLinesFeature : CustomCombo
-//{
-//    protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BlackLeyLinesFeature;
+internal class BlackLeyLinesFeature : BLMCombo
+{
+    public override string ComboFancyName => "替换黑魔纹为魔纹步";
+
+    public override string Description => "当黑魔纹正在启用时，就把黑魔纹变成魔纹步！";
+
+    protected internal override uint[] ActionIDs { get; } = { Actions.LeyLines };
 
 
-//    protected internal override uint[] ActionIDs { get; } = new uint[1] { 3573u };
-
-
-//    protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
-//    {
-//        if (actionID == 3573 && level >= 62 && HasEffect(737))
-//        {
-//            return 7419u;
-//        }
-//        return actionID;
-//    }
-//}
+    protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
+    {
+        if (level >= Levels.BetweenTheLines && HasEffect(Buffs.LeyLines))
+        {
+            return Actions.BetweenTheLines;
+        }
+        return actionID;
+    }
+}

@@ -27,103 +27,205 @@ namespace XIVComboPlus.Combos.BLM
             }
         }
 
+        protected bool HaveEnoughMP => LocalPlayer.CurrentMp > 9000;
 
         protected sealed override JobGaugeBase GetJobGaugeBase()
         {
             return Service.JobGauges.Get<BLMGauge>();
         }
 
-        public enum Buffs : ushort
+        protected bool CanAddAbility(byte level, out uint action)
         {
-            雷云 = 164,
+            action = 0;
+            if (CanInsertAbility)
+            {
+                //加个即刻
+                if (GetCooldown(GenActions.Swiftcast).CooldownRemaining == 0 && level > GenLevels.Swiftcast)
+                    if (BuffDuration(Buffs.Triplecast) == 0 && JobGauge.InAstralFire && LocalPlayer.CurrentMp > 800)
+                    {
+                        action = GenActions.Swiftcast;
+                        return true;
+                    }
 
-            黑魔纹 = 737,
+                //加个通晓
+                if (GetCooldown(Actions.Amplifier).CooldownRemaining == 0 && level > Levels.Amplifier)
+                    if (JobGauge.PolyglotStacks < 2)
+                    {
+                        action = Actions.Amplifier;
+                        return true;
+                    }
 
-            三连咏唱 = 1211,
+                //加个魔泉
+                if (GetCooldown(Actions.Manafont).CooldownRemaining == 0 && level > Levels.Manafont)
+                    if (JobGauge.InAstralFire && LocalPlayer.CurrentMp == 0)
+                    {
+                        action = Actions.Manafont;
+                        return true;
+                    }
 
-            火苗 = 165,
+                //加个激情
+                if (GetCooldown(Actions.Sharpcast).CooldownRemaining == 0 && level > Levels.Sharpcast)
+                {
+                    action = Actions.Sharpcast;
+                    return true;
+                }
+                //加个混乱
+                if (GetCooldown(GenActions.Addle).CooldownRemaining == 0 && level > GenLevels.Addle)
+                {
+                    action = GenActions.Addle;
+                    return true;
+                }
+
+                //加个魔罩
+                if (GetCooldown(Actions.Manaward).CooldownRemaining == 0 && level > Levels.Manafont)
+                {
+                    action = Actions.Manaward;
+                    return true;
+                }
+
+                //加个醒梦
+                if (GetCooldown(GenActions.LucidDreaming).CooldownRemaining == 0 && level > GenLevels.LucidDreaming)
+                {
+                    action = GenActions.LucidDreaming;
+                    return true;
+                }
+            }
+            return false;
         }
 
-        public enum Debuffs : ushort
+        public struct Buffs
         {
-            Thunder = 161,
+            public const ushort
 
-            Thunder3 = 163,
+                Thundercloud = 164,
+
+                LeyLines = 737,
+
+                Triplecast = 1211,
+
+                Firestarter = 165;
         }
 
-        public enum Levels : byte
+        public struct Debuffs
         {
-            Fire3 = 35,
+            public const ushort 
 
-            Blizzard3 = 35,
+                Thunder = 161,
 
-            Freeze = 40,
+                Thunder2 = 162,
 
-            Thunder3 = 45,
+                Thunder3 = 163,
 
-            Flare = 50,
-
-            Blizzard4 = 58,
-
-            Fire4 = 60,
-
-            BetweenTheLines = 62,
-
-            Foul = 70,
-
-            Despair = 72,
-
-            UmbralSoul = 76,
-
-            Xenoglossy = 80,
-
-            HighFire2 = 82,
-
-            HighBlizzard2 = 82,
-
-            Paradox = 90,
+                Thunder4 = 1210;
         }
-        public enum Actions : uint
+
+        public struct Levels
         {
-            Fire = 141u,
+            public const byte
 
-            Blizzard = 142u,
+                Fire2 = 18,
 
-            Thunder = 144u,
+                Thunder2 = 26,
 
-            Blizzard2 = 146u,
+                Manafont = 30,
 
-            Transpose = 149u,
+                Fire3 = 35,
 
-            Fire3 = 152u,
+                Blizzard3 = 35,
 
-            Thunder3 = 153u,
+                Freeze = 40,
 
-            Blizzard3 = 154u,
+                Thunder3 = 45,
 
-            Scathe = 156u,
+                Flare = 50,
 
-            Freeze = 159u,
+                Blizzard4 = 58,
 
-            Flare = 162u,
+                Fire4 = 60,
 
-            LeyLines = 3573u,
+                Sharpcast = 54,
 
-            Blizzard4 = 3576u,
+                BetweenTheLines = 62,
 
-            Fire4 = 3577u,
+                Thunder4 = 64,
 
-            BetweenTheLines = 7419u,
+                Foul = 70,
 
-            Foul = 7422u,
+                Despair = 72,
 
-            Despair = 16505u,
+                UmbralSoul = 76,
 
-            UmbralSoul = 16506u,
+                Xenoglossy = 80,
 
-            Xenoglossy = 16507u,
+                HighFire2 = 82,
 
-            Paradox = 25797u,
+                HighBlizzard2 = 82,
+
+                Amplifier = 86,
+
+                Paradox = 90;
+        }
+        public struct Actions
+        {
+            public const uint
+
+                Fire = 141u,
+
+                Blizzard = 142u,
+
+                Thunder = 144u,
+
+                Blizzard2 = 25793u,
+
+                Fire2 = 147u,
+
+                Transpose = 149u,
+
+                Fire3 = 152u,
+
+                Thunder3 = 153u,
+
+                Blizzard3 = 154u,
+
+                Scathe = 156u,
+
+                Manaward = 157u,
+
+                Manafont = 158u,
+
+                Freeze = 159u,
+
+                Flare = 162u,
+
+                LeyLines = 3573u,
+
+                Sharpcast = 3574u,
+
+                Blizzard4 = 3576u,
+
+                Fire4 = 3577u,
+
+                BetweenTheLines = 7419u,
+
+                Thunder4 = 7420u,
+
+                Foul = 7422u,
+
+                Thunder2 = 7447u,
+
+                Despair = 16505u,
+
+                UmbralSoul = 16506u,
+
+                Xenoglossy = 16507u,
+
+                HighFire2 = 25794u,
+
+                HighBlizzard2 = 25795u,
+
+                Amplifier = 25796u,
+
+                Paradox = 25797u;
         }
     }
 }

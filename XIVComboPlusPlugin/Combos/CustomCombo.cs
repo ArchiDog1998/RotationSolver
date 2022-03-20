@@ -31,32 +31,29 @@ internal abstract class CustomCombo
 
     public virtual bool SecretCombo => false;
     public virtual byte Priority => byte.MaxValue;
-    public bool IsEnabled { get; set; } = false;
+    public bool IsEnabled
+    {
+        get => Service.Configuration.EnabledActions.Contains(ComboFancyName);
+        set
+        {
+            if (value)
+            {
+                Service.Configuration.EnabledActions.Add(ComboFancyName);
+            }
+            else
+            {
+                Service.Configuration.EnabledActions.Remove(ComboFancyName);
+            }
+        }
+    }
 
     #endregion
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
 
     protected static GameObject CurrentTarget => Service.TargetManager.Target;
-
+    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && GetCooldown(141u).CooldownRemaining > 0.76;
     protected CustomCombo()
     {
-        //CustomComboInfoAttribute attribute = Preset.GetAttribute<CustomComboInfoAttribute>();
-        //JobID = attribute.JobID;
-        //ClassID = JobID switch
-        //{
-        //    0 => 0,
-        //    25 => 7,
-        //    23 => 5,
-        //    22 => 4,
-        //    20 => 2,
-        //    30 => 29,
-        //    19 => 1,
-        //    28 => 15,
-        //    27 => 26,
-        //    21 => 3,
-        //    24 => 6,
-        //    _ => byte.MaxValue,
-        //};
     }
 
     public bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out uint newActionID)
@@ -130,7 +127,7 @@ internal abstract class CustomCombo
         return FindEffect(effectID) != null;
     }
 
-    protected static Status FindEffect(ushort effectID)
+    private static Status FindEffect(ushort effectID)
     {
         PlayerCharacter localPlayer = LocalPlayer;
         PlayerCharacter localPlayer2 = LocalPlayer;
@@ -142,7 +139,7 @@ internal abstract class CustomCombo
         return FindTargetEffect(effectID) != null;
     }
 
-    protected static Status FindTargetEffect(ushort effectID)
+    private static Status FindTargetEffect(ushort effectID)
     {
         GameObject currentTarget = CurrentTarget;
         PlayerCharacter localPlayer = LocalPlayer;
@@ -154,7 +151,7 @@ internal abstract class CustomCombo
         return FindEffectAny(effectID) != null;
     }
 
-    protected static Status FindEffectAny(ushort effectID)
+    private static Status FindEffectAny(ushort effectID)
     {
         return FindEffect(effectID, (GameObject)(object)LocalPlayer, null);
     }
@@ -164,12 +161,12 @@ internal abstract class CustomCombo
         return FindTargetEffectAny(effectID) != null;
     }
 
-    protected static Status FindTargetEffectAny(ushort effectID)
+    private static Status FindTargetEffectAny(ushort effectID)
     {
         return FindEffect(effectID, CurrentTarget, null);
     }
 
-    protected static Status FindEffect(ushort effectID, GameObject obj, uint? sourceID)
+    private static Status FindEffect(ushort effectID, GameObject obj, uint? sourceID)
     {
         if (obj == null)
         {
@@ -190,9 +187,9 @@ internal abstract class CustomCombo
         return null;
     }
 
-    protected float? TargetBuffDuration(ushort effectId)
+    protected float TargetBuffDuration(ushort effectId)
     {
-        return FindTargetEffect(effectId)?.RemainingTime;
+        return FindTargetEffect(effectId)?.RemainingTime ?? 0;
     }
 
     protected byte BuffStacks(ushort effectId)
@@ -205,9 +202,9 @@ internal abstract class CustomCombo
         return 0;
     }
 
-    protected float? BuffDuration(ushort effectId)
+    protected float BuffDuration(ushort effectId)
     {
-        return FindEffect(effectId)?.RemainingTime;
+        return FindEffect(effectId)?.RemainingTime ?? 0;
     }
 
     protected static IconReplacer.CooldownData GetCooldown(uint actionID)
@@ -216,4 +213,26 @@ internal abstract class CustomCombo
     }
 
     protected abstract JobGaugeBase GetJobGaugeBase();
+
+    public struct GenLevels
+    {
+        public const byte
+
+            Addle = 8,
+
+            Swiftcast = 18,
+
+            LucidDreaming = 24;
+    }
+
+    public struct GenActions
+    {
+        public const uint
+
+            Swiftcast = 7561u,
+
+            LucidDreaming = 7562u,
+
+            Addle = 7560u;
+    }
 }

@@ -47,6 +47,7 @@ internal sealed class IconReplacer : IDisposable
             }
         }
     }
+
     private static SortedList<uint, CustomCombo[]> _customCombosDict;
     internal static SortedList<uint, CustomCombo[]> CustomCombosDict
     {
@@ -95,19 +96,12 @@ internal sealed class IconReplacer : IDisposable
 
     private static void SetStaticValues()
     {
+
         _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
                          where t.BaseType.BaseType == typeof(CustomCombo)
                          select (CustomCombo)Activator.CreateInstance(t) into combo
                          orderby combo.JobID, combo.Priority
                          select combo).ToArray();
-
-        foreach (var combo in _customCombos)
-        {
-            if (Service.Configuration.EnabledActions.Contains(combo.ComboFancyName))
-            {
-                combo.IsEnabled = true;
-            }
-        }
 
         _customCombosDict = new SortedList<uint, CustomCombo[]>
             (_customCombos.GroupBy(g => g.JobID).ToDictionary(set => set.Key, set => set.ToArray()));

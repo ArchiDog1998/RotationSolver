@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Dalamud.Game;
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
@@ -36,8 +37,6 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         val.HelpMessage = "Open a window to edit custom combo settings.";
         val.ShowInHelp = true;
         commandManager.AddHandler(_command, val);
-
-        var a = IconReplacer.CustomCombos;
     }
 
     public void Dispose()

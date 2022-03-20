@@ -8,203 +8,207 @@ internal class BlackSingleGCDFeature : BLMCombo
 {
     public override string ComboFancyName => "单个目标GCD";
 
-    public override string Description => "这个很牛逼！";
+    public override string Description => "替换火1为持续的GCD循环！";
 
-    protected internal override uint[] ActionIDs { get; } = { (uint)Actions.Xenoglossy };
+    protected internal override uint[] ActionIDs { get; } = { (uint)Actions.Fire };
 
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
     {
+        if(CanAddAbility(level, out uint act)) return act;
+
         //冰状态
         if (JobGauge.InUmbralIce)
         {
             // 35级以下，{冰1打到满蓝} 星灵
-            if (level < (byte)Levels.Fire3)
+            if (level < Levels.Fire3)
             {
-                if(TargetBuffDuration((ushort)Debuffs.Thunder) < 3f)
+                if (TargetBuffDuration(Debuffs.Thunder) < 3f)
                 {
-                    return (uint)Actions.Thunder;
+                    return Actions.Thunder;
                 }
-                else  if(LocalPlayer.CurrentMp > 9000)
+                else if (HaveEnoughMP)
                 {
-                    return (uint)Actions.Transpose;
+                    return Actions.Transpose;
                 }
-                return (uint)Actions.Blizzard;
+                return Actions.Blizzard;
             }
             // 60级以下，冰3 {蓝没满可以打冰1} 雷3/1
-            else if (level < (byte)Levels.Fire4)
+            else if (level < Levels.Fire4)
             {
-                if (LocalPlayer.CurrentMp > 9000)
+                if (HaveEnoughMP)
                 {
-                    return (uint)Actions.Fire3;
+                    return Actions.Fire3;
                 }
 
                 //补 Dot
-                if(level < (byte)Levels.Thunder3)
+                if (level < Levels.Thunder3)
                 {
-                    if (TargetBuffDuration((ushort)Debuffs.Thunder) < 3f)
+                    if (TargetBuffDuration(Debuffs.Thunder) < 3f)
                     {
-                        return (uint)Actions.Thunder;
+                        return Actions.Thunder;
                     }
                 }
                 else
                 {
-                    if (TargetBuffDuration((ushort)Debuffs.Thunder3) < 3f)
+                    if (TargetBuffDuration(Debuffs.Thunder3) < 3f)
                     {
-                        return (uint)Actions.Thunder3;
+                        return Actions.Thunder3;
                     }
                 }
 
-                if(level > (byte)Levels.Blizzard4)
-                    return (uint)Actions.Blizzard4;
+                if (level > Levels.Blizzard4)
+                    return Actions.Blizzard4;
 
-                return (uint)Actions.Blizzard;
+                return Actions.Blizzard;
             }
             // 89级以下，冰4 雷3 火3
-            else if (level < (byte)Levels.Paradox)
+            else if (level < Levels.Paradox)
             {
-                if(lastComboMove == (uint)Actions.Thunder3)
+                if (lastComboMove == Actions.Thunder3)
                 {
-                    return (uint)Actions.Fire3;
+                    return Actions.Fire3;
                 }
-                if(lastComboMove == (uint)Actions.Blizzard4)
+                if (lastComboMove == Actions.Blizzard4)
                 {
-                    return (uint)Actions.Thunder3;
+                    return Actions.Thunder3;
                 }
 
-                return (uint)Actions.Blizzard4;
+                return Actions.Blizzard4;
             }
             //90 级
             else
             {
-                if (LocalPlayer.CurrentMp == LocalPlayer.MaxMp)
+                if (HaveEnoughMP)
                 {
-                    return (uint)Actions.Fire3;
+                    return Actions.Fire3;
                 }
 
                 if (JobGauge.UmbralHearts < 3)
                 {
-                    return (uint)Actions.Blizzard4;
+                    return Actions.Blizzard4;
                 }
 
                 if (JobGauge.IsParadoxActive)
                 {
-                    return (uint)Actions.Paradox;
+                    return Actions.Paradox;
                 }
 
-                return (uint)Actions.Thunder3;
+                return Actions.Thunder3;
             }
         }
         //火状态
         else if (JobGauge.InAstralFire)
         {
             // 35级以下，{火1打到没蓝} 星灵
-            if (level < (byte)Levels.Fire3)
+            if (level < Levels.Fire3)
             {
-                if (TargetBuffDuration((ushort)Debuffs.Thunder) < 3f)
+                if (TargetBuffDuration(Debuffs.Thunder) < 3f)
                 {
-                    return (uint)Actions.Thunder;
+                    return Actions.Thunder;
                 }
-                else  if (LocalPlayer.CurrentMp < 800)
+                else if (LocalPlayer.CurrentMp < 800)
                 {
-                    return (uint)Actions.Transpose;
+                    return Actions.Transpose;
                 }
-                return (uint)Actions.Fire;
+                return Actions.Fire;
             }
             // 60级以下，火3 {火1打到蓝量不够再打火1}
-            else if (level < (byte)Levels.Fire4)
+            else if (level < Levels.Fire4)
             {
                 if (LocalPlayer.CurrentMp < 1600)
                 {
-                    return (uint)Actions.Blizzard3;
+                    return Actions.Blizzard3;
                 }
 
-                if (BuffDuration((ushort)Buffs.火苗).HasValue)
+                if (BuffDuration(Buffs.Firestarter) > 0)
                 {
-                    return (uint)Actions.Fire3;
+                    return Actions.Fire3;
                 }
 
-                return (uint)Actions.Fire;
+                return Actions.Fire;
             }
             // 89级以下，火4 x 3 火1 火4 x 3 冰3
             else if (level < (byte)Levels.Paradox)
             {
-                if (JobGauge.ElementTimeRemaining < 5000)
+                //时间不够，赶紧火1
+                if (JobGauge.ElementTimeRemaining < 4000)
                 {
-                    return (uint)Actions.Fire;
+                    if (LocalPlayer.CurrentMp > 3000)
+                        return Actions.Fire;
+                    else if (LocalPlayer.CurrentMp < 800)
+                        return Actions.Blizzard3;
+                    else return Actions.Despair;
                 }
 
-                if (JobGauge.PolyglotStacks != 0)
+                switch (JobGauge.PolyglotStacks)
                 {
-                    if (level >= (byte)Levels.Xenoglossy)
+                    case 1:
+                        if(level < Levels.Xenoglossy)
+                        {
+                            return Actions.Foul;
+                        }
+                        break;
+                    case 2:
+                        return Actions.Xenoglossy;
+                }
+
+                float buffTime = 7;
+                if (LocalPlayer.CurrentMp < 1600 || (TargetBuffDuration(Debuffs.Thunder3) < buffTime && TargetBuffDuration(Debuffs.Thunder) < buffTime))
+                {
+                    if (level >= Levels.Despair && LocalPlayer.CurrentMp >= 800)
                     {
-                        return (uint)Actions.Xenoglossy;
+                        return Actions.Despair;
                     }
-                    return (uint)Actions.Foul;
+                    return Actions.Blizzard3;
                 }
 
-                if (LocalPlayer.CurrentMp < 1600)
-                {
-                    if(level >= (byte)Levels.Despair && LocalPlayer.CurrentMp >= 800)
-                    {
-                        return (uint)Actions.Despair;
-                    }
-                    return (uint)Actions.Blizzard3;
-                }
-
-                return(uint)Actions.Fire4;
+                return Actions.Fire4;
             }
 
             //90级别
             else
             {
-                if (JobGauge.PolyglotStacks != 0)
+                if (JobGauge.PolyglotStacks == 2)
                 {
-                    return (uint)Actions.Xenoglossy;
+                    return Actions.Xenoglossy;
                 }
 
                 if (LocalPlayer.CurrentMp < 1600)
                 {
-                    if (level >= (byte)Levels.Despair)
+                    if (level >= Levels.Despair)
                     {
-                        return (uint)Actions.Despair;
+                        return Actions.Despair;
                     }
-                    return (uint)Actions.Blizzard3;
+                    return Actions.Blizzard3;
                 }
 
-                if (JobGauge.ElementTimeRemaining < 10)
+                //时间不够，赶紧悖论或火1
+                if (JobGauge.ElementTimeRemaining < 5000)
                 {
                     if (JobGauge.IsParadoxActive)
                     {
-                        return (uint)Actions.Paradox;
+                        return Actions.Paradox;
                     }
-                    return (uint)Actions.Fire;
+                    return Actions.Fire;
                 }
 
-                if (TargetBuffDuration((ushort)Debuffs.Thunder3) < 3f)
+                if (TargetBuffDuration(Debuffs.Thunder3) < 3f)
                 {
-                    return (uint)Actions.Thunder3;
+                    return Actions.Thunder3;
                 }
 
-                return (uint)Actions.Fire4;
+                return Actions.Fire4;
             }
         }
 
-        if(level > (byte)Levels.Fire3)
+        if (level > Levels.Blizzard3)
         {
-            if(LocalPlayer.CurrentMp < 5000)
-            {
-                return (uint)Actions.Blizzard3;
-            }
-            return (uint)Actions.Fire3;
+            return Actions.Blizzard3;
         }
         else
         {
-            if (LocalPlayer.CurrentMp < 5000)
-            {
-                return (uint)Actions.Blizzard;
-            }
-            return (uint)Actions.Fire;
+            return Actions.Blizzard;
         }
         return actionID;
     }
