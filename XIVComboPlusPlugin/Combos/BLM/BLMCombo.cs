@@ -7,250 +7,201 @@ using System.Threading.Tasks;
 
 namespace XIVComboPlus.Combos.BLM
 {
-    internal abstract class BLMCombo : CustomCombo
+    internal abstract class BLMCombo : CustomComboJob<BLMGauge>
     {
-        public sealed override string JobName => "黑魔法师";
+        internal sealed override string JobName => "黑魔法师";
 
         internal sealed override uint JobID => 25;
 
-        private BLMGauge _gauge;
+        protected static bool HaveEnoughMP => LocalPlayer.CurrentMp > 9000;
 
-        public BLMGauge JobGauge
+        /// <summary>
+        /// 判断通晓是否满了。
+        /// </summary>
+        protected static bool IsPolyglotStacksFull
         {
             get
             {
-                if( _gauge == null)
+                if(Service.ClientState.LocalPlayer.Level < 80)
                 {
-                    _gauge = Service.JobGauges.Get<BLMGauge>();
+                    return JobGauge.PolyglotStacks == 1;
                 }
-                return _gauge;
+                else
+                {
+                    return JobGauge.PolyglotStacks == 2;
+                }
             }
         }
 
-        protected bool HaveEnoughMP => LocalPlayer.CurrentMp > 9000;
-
-        protected sealed override JobGaugeBase GetJobGaugeBase()
+        protected struct Actions
         {
-            return Service.JobGauges.Get<BLMGauge>();
+
+            public static readonly BaseAction
+                //雷1
+                Thunder = new BaseAction(6, 144u, 200)
+                {
+                    Debuffs = new ushort[]
+                {
+                    ObjectStatus.Thunder,
+                    ObjectStatus.Thunder3,
+                },
+                    OtherIDs = new uint[] { 153u } //雷3 ID
+                },
+
+                //雷2
+                Thunder2 = new BaseAction(26, 7447u, 400)
+                {
+                    Debuffs = new ushort[]
+                {
+                    ObjectStatus.Thunder2,
+                    ObjectStatus.Thunder4,
+                },
+                    OtherIDs = new uint[] { 7420u } //雷4 ID
+                },
+
+                ////雷3
+                //Thunder3 = new BaseAction(45, 153u, 400)
+                //{
+                //    Debuffs = new ushort[]
+                //    {
+                //        ObjectStatus.Thunder3,
+                //    }
+                //},
+
+                ////雷4
+                //Thunder4 = new BaseAction(64, 7420u, 400)
+                //{
+                //    Debuffs = new ushort[]
+                //{
+                //    ObjectStatus.Thunder4,
+                //}
+                //},
+
+                //火1
+                Fire = new BLMAction(2, 141u, 800, true),
+
+                //火2
+                Fire2 = new BLMAction(18, 147u, 1500, true),
+
+                //火3
+                Fire3 = new BLMAction(35, 152u, 2000, true),
+
+                //火4
+                Fire4 = new BLMAction(60, 3577u, 800, true) { OtherCheck = () => JobGauge.InAstralFire && JobGauge.ElementTimeRemaining > 5000 },
+
+                ////高火2
+                //HighFire2 = new BLMAction(82, 25794u, 1500, true),
+
+                //冰1
+                Blizzard = new BLMAction(1, 142u, 400, false),
+
+                //冰2
+                Blizzard2 = new BLMAction(12, 25793u, 800, false),
+
+                //冰3
+                Blizzard3 = new BLMAction(35, 154u, 800, false),
+
+                //冰4
+                Blizzard4 = new BLMAction(58, 3576u, 800, false) { OtherCheck = () => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5: 1)},
+
+                ////高冰2
+                //HighBlizzard2 = new BLMAction(82, 25795u, 800, false),
+
+                //冻结
+                Freeze = new BLMAction(40, 159u, 1000, false),
+
+                //星灵移位
+                Transpose = new BaseAction(4, 149u, ability: true) { OtherCheck = () => JobGauge.InUmbralIce || JobGauge.InAstralFire },
+
+                //灵极魂
+                UmbralSoul = new BaseAction(76, 16506u, ability: true) { OtherCheck = () => JobGauge.InUmbralIce },
+
+                //魔罩
+                Manaward = new BaseAction(30, 157u, ability: true),
+
+                //魔泉
+                Manafont = new BaseAction(30, 158u, ability: true) { OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp == 0},
+
+                //激情咏唱
+                Sharpcast = new BaseAction(54, 3574u, ability: true),
+
+                //三连咏唱
+                Triplecast = new BaseAction(66, 7421u, ability: true)
+                {
+                    BuffsProvide = new ushort[]
+                    {
+                        ObjectStatus.Swiftcast1,
+                        ObjectStatus.Swiftcast2,
+                        ObjectStatus.Triplecast,
+                    },
+                    OtherCheck = () => JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp > 5000,
+                },
+
+                //黑魔纹
+                Leylines = new BaseAction(52, 3573u, ability: true)
+                {
+                    BuffsProvide = new ushort[]
+                {
+                    ObjectStatus.LeyLines,
+                }
+                },
+
+                //魔纹步
+                BetweenTheLines = new BaseAction(62, 7419u, ability: true) { BuffNeed = ObjectStatus.LeyLines },
+
+                //详述
+                Amplifier = new BaseAction(86, 25796u, ability: true) { OtherCheck = () => !IsPolyglotStacksFull },
+
+                //核爆
+                Flare = new BaseAction(50, 162u, 800) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 2500 },
+
+                //绝望
+                Despair = new BaseAction(72, 16505u, 800) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 2500 },
+
+                //秽浊
+                Foul = new BaseAction(70, 7422u) { OtherCheck = () => JobGauge.PolyglotStacks != 0 },
+
+                //异言
+                Xenoglossy = new BaseAction(80, 16507u) { OtherCheck = () => JobGauge.PolyglotStacks != 0 },
+
+                //悖论
+                Paradox = new BaseAction(90, 25797u, 1600);
         }
 
         protected bool CanAddAbility(byte level, out uint action)
         {
-            action = 0;
-            if (SpecialForTri(level, out uint tri))
-            {
-                action = tri;
-                return true;
-            }
+            if(Actions.Triplecast.TryUseAction(level, out action)) return true;
 
 
             if (CanInsertAbility)
             {
                 //加个即刻
-                if (GetCooldown(GenActions.Swiftcast).CooldownRemaining == 0 && level > GenLevels.Swiftcast)
-                    if (BuffDuration(Buffs.Triplecast) == 0 && JobGauge.InAstralFire && LocalPlayer.CurrentMp > 800)
-                    {
-                        action = GenActions.Swiftcast;
-                        return true;
-                    }
+                if (JobGauge.InAstralFire && LocalPlayer.CurrentMp > 800)
+                {
+                    if (GeneralActions.Swiftcast.TryUseAction(level, out action)) return true;
+                }
 
                 //加个通晓
-                if (GetCooldown(Actions.Amplifier).CooldownRemaining == 0 && level > Levels.Amplifier)
-                    if (JobGauge.PolyglotStacks < 2)
-                    {
-                        action = Actions.Amplifier;
-                        return true;
-                    }
+                if (Actions.Amplifier.TryUseAction(level, out action)) return true;
 
                 //加个魔泉
-                if (GetCooldown(Actions.Manafont).CooldownRemaining == 0 && level > Levels.Manafont)
-                    if (JobGauge.InAstralFire && LocalPlayer.CurrentMp == 0)
-                    {
-                        action = Actions.Manafont;
-                        return true;
-                    }
+                if (Actions.Manafont.TryUseAction(level, out action)) return true;
 
                 //加个激情
-                if (GetCooldown(Actions.Sharpcast).CooldownRemaining == 0 && level > Levels.Sharpcast)
-                {
-                    action = Actions.Sharpcast;
-                    return true;
-                }
+                if (Actions.Sharpcast.TryUseAction(level, out action)) return true;
+
                 //加个混乱
-                if (GetCooldown(GenActions.Addle).CooldownRemaining == 0 && level > GenLevels.Addle)
-                {
-                    action = GenActions.Addle;
-                    return true;
-                }
+                if (GeneralActions.Addle.TryUseAction(level, out action)) return true;
 
                 //加个魔罩
-                if (GetCooldown(Actions.Manaward).CooldownRemaining == 0 && level > Levels.Manafont)
-                {
-                    action = Actions.Manaward;
-                    return true;
-                }
+                if (Actions.Manaward.TryUseAction(level, out action)) return true;
 
                 //加个醒梦
-                if (GetCooldown(GenActions.LucidDreaming).CooldownRemaining == 0 && level > GenLevels.LucidDreaming)
-                {
-                    action = GenActions.LucidDreaming;
-                    return true;
-                }
+                if (GeneralActions.LucidDreaming.TryUseAction(level, out action)) return true;
             }
             return false;
         }
 
-        protected bool SpecialForTri(byte level, out uint action)
-        {
-            action=0;
-            if(level < Levels.Triplecast) return false;
 
-            if (!GetCooldown(Actions.Triplecast).IsCooldown && JobGauge.InAstralFire)
-            {
-                action = Actions.Triplecast;
-                return true;
-            }
-
-            return false;
-        }
-
-        public struct Buffs
-        {
-            public const ushort
-
-                Thundercloud = 164,
-
-                LeyLines = 737,
-
-                Triplecast = 1211,
-
-                Firestarter = 165;
-        }
-
-        public struct Debuffs
-        {
-            public const ushort 
-
-                Thunder = 161,
-
-                Thunder2 = 162,
-
-                Thunder3 = 163,
-
-                Thunder4 = 1210;
-        }
-
-        public struct Levels
-        {
-            public const byte
-
-                Fire2 = 18,
-
-                Thunder2 = 26,
-
-                Manafont = 30,
-
-                Fire3 = 35,
-
-                Blizzard3 = 35,
-
-                Freeze = 40,
-
-                Thunder3 = 45,
-
-                Flare = 50,
-
-                Blizzard4 = 58,
-
-                Fire4 = 60,
-
-                Sharpcast = 54,
-
-                BetweenTheLines = 62,
-
-                Thunder4 = 64,
-
-                Triplecast = 66,
-
-                Foul = 70,
-
-                Despair = 72,
-
-                UmbralSoul = 76,
-
-                Xenoglossy = 80,
-
-                HighFire2 = 82,
-
-                HighBlizzard2 = 82,
-
-                Amplifier = 86,
-
-                Paradox = 90;
-        }
-        public struct Actions
-        {
-            public const uint
-
-                Fire = 141u,
-
-                Blizzard = 142u,
-
-                Thunder = 144u,
-
-                Blizzard2 = 25793u,
-
-                Fire2 = 147u,
-
-                Transpose = 149u,
-
-                Fire3 = 152u,
-
-                Thunder3 = 153u,
-
-                Blizzard3 = 154u,
-
-                Scathe = 156u,
-
-                Manaward = 157u,
-
-                Manafont = 158u,
-
-                Freeze = 159u,
-
-                Flare = 162u,
-
-                LeyLines = 3573u,
-
-                Sharpcast = 3574u,
-
-                Blizzard4 = 3576u,
-
-                Fire4 = 3577u,
-
-                BetweenTheLines = 7419u,
-
-                Thunder4 = 7420u,
-
-                Triplecast = 7421u,
-
-                Foul = 7422u,
-
-                Thunder2 = 7447u,
-
-                Despair = 16505u,
-
-                UmbralSoul = 16506u,
-
-                Xenoglossy = 16507u,
-
-                HighFire2 = 25794u,
-
-                HighBlizzard2 = 25795u,
-
-                Amplifier = 25796u,
-
-                Paradox = 25797u;
-        }
     }
 }

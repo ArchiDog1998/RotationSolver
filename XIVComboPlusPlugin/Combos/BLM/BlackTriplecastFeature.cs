@@ -10,21 +10,14 @@ namespace XIVComboPlus.Combos.BLM
     {
         public override string ComboFancyName => "防止手残三连";
 
-        public override string Description => "如果当前有三连咏唱，那就赶紧变成黑魔纹！";
+        public override string Description => "如果当前有即刻，那就赶紧变成不能按！";
 
-        protected internal override uint[] ActionIDs => new uint[] { Actions.Triplecast };
+        protected internal override uint[] ActionIDs => new uint[] { Actions.Triplecast.ActionID };
 
         protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
         {
-            if (BuffDuration(Buffs.Triplecast) != 0)
-            {
-                if (HasEffect(Buffs.LeyLines))
-                {
-                    return Actions.BetweenTheLines;
-                }
-                return Actions.LeyLines;
-            }
-            return actionID;
+            if (Actions.Triplecast.TryUseAction(level, out uint act)) return act;
+            return 0;
         }
     }
 }

@@ -17,7 +17,29 @@ internal abstract class CustomCombo
 
     internal abstract uint JobID { get; }
 
-    public abstract string JobName { get; }
+    internal abstract string JobName { get; }
+
+    protected struct GeneralActions
+    {
+        public static readonly BaseAction
+            //混乱
+            Addle = new BaseAction(8, 7560u, ability: true),
+
+            //即刻咏唱
+            Swiftcast = new BaseAction(18, 7561u, ability: true) { BuffsProvide = new ushort[]
+            {
+                ObjectStatus.Swiftcast1,
+                ObjectStatus.Swiftcast2,
+                ObjectStatus.Triplecast,
+            }},
+
+            //醒梦（如果MP低于5000那么使用）
+        LucidDreaming = new BaseAction(24, 7562u, ability: true)
+            {
+                OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp < 5000,
+            };
+
+    }
     #endregion
 
     #region Combo
@@ -30,7 +52,10 @@ internal abstract class CustomCombo
     public virtual string ParentCombo => string.Empty;
 
     public virtual bool SecretCombo => false;
-    public virtual byte Priority => byte.MaxValue;
+    /// <summary>
+    /// 优先级，越大就使用到的概率越高！
+    /// </summary>
+    public virtual byte Priority => 0;
     public bool IsEnabled
     {
         get => Service.Configuration.EnabledActions.Contains(ComboFancyName);
@@ -120,121 +145,11 @@ internal abstract class CustomCombo
 
     protected static bool HasCondition(ConditionFlag flag)
     {
-        //IL_0005: Unknown result type (might be due to invalid IL or missing references)
         return Service.Conditions[flag];
-    }
-
-    protected static bool HasEffect(ushort effectID)
-    {
-        return FindEffect(effectID) != null;
-    }
-
-    private static Status FindEffect(ushort effectID)
-    {
-        PlayerCharacter localPlayer = LocalPlayer;
-        PlayerCharacter localPlayer2 = LocalPlayer;
-        return FindEffect(effectID, (GameObject)(object)localPlayer, localPlayer2 != null ? new uint?(localPlayer2.ObjectId) : null);
-    }
-
-    protected static bool TargetHasEffect(ushort effectID)
-    {
-        return FindTargetEffect(effectID) != null;
-    }
-
-    private static Status FindTargetEffect(ushort effectID)
-    {
-        GameObject currentTarget = CurrentTarget;
-        PlayerCharacter localPlayer = LocalPlayer;
-        return FindEffect(effectID, currentTarget, localPlayer != null ? new uint?(localPlayer.ObjectId) : null);
-    }
-
-    protected static bool HasEffectAny(ushort effectID)
-    {
-        return FindEffectAny(effectID) != null;
-    }
-
-    private static Status FindEffectAny(ushort effectID)
-    {
-        return FindEffect(effectID, (GameObject)(object)LocalPlayer, null);
-    }
-
-    protected static bool TargetHasEffectAny(ushort effectID)
-    {
-        return FindTargetEffectAny(effectID) != null;
-    }
-
-    private static Status FindTargetEffectAny(ushort effectID)
-    {
-        return FindEffect(effectID, CurrentTarget, null);
-    }
-
-    private static Status FindEffect(ushort effectID, GameObject obj, uint? sourceID)
-    {
-        if (obj == null)
-        {
-            return null;
-        }
-        BattleChara val = (BattleChara)(object)(obj is BattleChara ? obj : null);
-        if (val == null)
-        {
-            return null;
-        }
-        foreach (Status status in val.StatusList)
-        {
-            if (status.StatusId == effectID && (!sourceID.HasValue || status.SourceID == 0 || status.SourceID == 3758096384u || status.SourceID == sourceID))
-            {
-                return status;
-            }
-        }
-        return null;
-    }
-
-    protected float TargetBuffDuration(ushort effectId)
-    {
-        return FindTargetEffect(effectId)?.RemainingTime ?? 0;
-    }
-
-    protected byte BuffStacks(ushort effectId)
-    {
-        Status val = FindEffect(effectId);
-        if (val != null)
-        {
-            return val.StackCount;
-        }
-        return 0;
-    }
-
-    protected float BuffDuration(ushort effectId)
-    {
-        return FindEffect(effectId)?.RemainingTime ?? 0;
     }
 
     protected static IconReplacer.CooldownData GetCooldown(uint actionID)
     {
         return Service.IconReplacer.GetCooldown(actionID);
-    }
-
-    protected abstract JobGaugeBase GetJobGaugeBase();
-
-    public struct GenLevels
-    {
-        public const byte
-
-            Addle = 8,
-
-            Swiftcast = 18,
-
-            LucidDreaming = 24;
-    }
-
-    public struct GenActions
-    {
-        public const uint
-
-            Swiftcast = 7561u,
-
-            LucidDreaming = 7562u,
-
-            Addle = 7560u;
     }
 }

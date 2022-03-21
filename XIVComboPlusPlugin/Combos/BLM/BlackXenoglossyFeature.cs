@@ -10,15 +10,12 @@ internal class BlackXenoglossyFeature : BLMCombo
 
     public override string Description => "如果等级不够高，那就替换异言为秽浊。";
 
-    protected internal override uint[] ActionIDs => new uint[] { Actions.Xenoglossy };
+    protected internal override uint[] ActionIDs => new uint[] { Actions.Xenoglossy.ActionID };
 
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
     {
-        if(level < Levels.Xenoglossy)
-        {
-            return Actions.Foul;
-        }
-        return actionID;
+        if(Actions.Xenoglossy.TryUseAction(level, out _)) return Actions.Xenoglossy.ActionID;
+        return Actions.Foul.ActionID;
     }
 }

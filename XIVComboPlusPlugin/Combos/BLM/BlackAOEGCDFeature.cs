@@ -10,176 +10,129 @@ internal class BlackAOEGCDFeature : BLMCombo
 
     public override string Description => "替换火2非常牛逼的群攻GCD。";
 
-    protected internal override uint[] ActionIDs => new uint[] { Actions.Fire2 };
+    protected internal override uint[] ActionIDs => new uint[] { Actions.Fire2.ActionID };
 
-
-    protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
+    protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
     {
         if (CanAddAbility(level, out uint act)) return act;
+        if (MantainceState(level, lastComboActionID, out act)) return act;
+        if (AttackAndExchange(level, out act)) return act;
+        return actionID;
+    }
 
-        //低于19级
-        if (level < Levels.Fire2)
-        {
-            return Actions.Blizzard2;
-        }
-        //冰状态
+    private bool AttackAndExchange(byte level, out uint act)
+    {
         if (JobGauge.InUmbralIce)
         {
-            // 低于58级，打冰2/玄冰到满蓝，保持雷不断。
-            if (level < Levels.Blizzard4)
+            if (HaveEnoughMP)
             {
-                if (HaveEnoughMP)
-                {
-                    return Actions.Fire2;
-                }
-
-                if (level >= Levels.Thunder2 && TargetBuffDuration((ushort)Debuffs.Thunder2) < 10f && lastComboMove != Actions.Thunder2)
-                {
-                    return Actions.Thunder2;
-                }
-
-                if (level >= Levels.Freeze)
-                {
-                    return Actions.Freeze;
-                }
-                return Actions.Blizzard2;
+                if (AddAstralFireStacks(level, out act)) return true;
             }
-            // 低于82级，打玄冰到满蓝，保持雷不断。
-            else if (level < Levels.HighBlizzard2)
-            {
-                if (HaveEnoughMP)
-                {
-                    return Actions.Fire2;
-                }
 
-                if (JobGauge.UmbralHearts < 3)
-                {
-                    return Actions.Freeze;
-                }
-
-                //补雷
-                if (TargetBuffDuration(Debuffs.Thunder4) < 10f && lastComboMove != Actions.Thunder4)
-                {
-                    if (level >= Levels.Thunder4)
-                    {
-                        return Actions.Thunder4;
-                    }
-                    else if (TargetBuffDuration(Debuffs.Thunder2) < 10f && lastComboMove != Actions.Thunder2)
-                    {
-                        return Actions.Thunder2;
-                    }
-                }
-
-
-                return Actions.Freeze;
-            }
-            // 打高冰2到满蓝，保持雷不断。
-            else
-            {
-                if (HaveEnoughMP)
-                {
-                    return Actions.HighFire2;
-                }
-
-                if (JobGauge.UmbralHearts < 3)
-                {
-                    return Actions.Freeze;
-                }
-
-                if (TargetBuffDuration(Debuffs.Thunder4) < 10f && lastComboMove != Actions.Thunder4)
-                {
-                    return Actions.Thunder4;
-                }
-
-                return Actions.HighBlizzard2;
-            }
+            if (Actions.Freeze.TryUseAction(level, out act)) return true;
+            if (Actions.Blizzard2.TryUseAction(level, out act)) return true;
         }
-        //火状态
         else if (JobGauge.InAstralFire)
         {
-            // 低于50 级，打火2到没蓝。
-            if (level < Levels.Flare)
+            //如果没蓝了，就直接冰状态。
+            if (Service.ClientState.LocalPlayer.CurrentMp == 0)
             {
-
-                if (LocalPlayer.CurrentMp < 3000)
-                {
-                    return Actions.Blizzard2;
-                }
-
-                return Actions.Fire2;
+                if (AddUmbralIceStacks(level, out act)) return true;
             }
-            // 低于58级，打火2，最终转核爆。
-            else if (level < Levels.Blizzard4)
+            //如果蓝不够了，赶紧一个绝望。
+            if (JobGauge.UmbralIceStacks < 2)
             {
-                if (LocalPlayer.CurrentMp == 0)
-                {
-                    return Actions.Blizzard2;
-                }
-                if (LocalPlayer.CurrentMp < 3800)
-                {
-                    return Actions.Flare;
-                }
-                return Actions.Fire2;
+                if (Actions.Despair.TryUseAction(level, out act)) return true;
             }
-            // 打双核爆，火2/高火2填充，保持雷不断。
-            else
+
+            //如果通晓满了，就放掉。
+            if (IsPolyglotStacksFull)
             {
-                if (LocalPlayer.CurrentMp == 0)
-                {
-                    if (level >= Levels.HighBlizzard2)
-                    {
-                        return Actions.HighBlizzard2;
-                    }
-                    return Actions.Blizzard2;
-                }
-
-                if (JobGauge.UmbralHearts < 2)
-                {
-                    return Actions.Flare;
-                }
-
-                //补秽浊，如果过多
-                if (level >= Levels.Foul)
-                {
-                    if (level >= Levels.Xenoglossy)
-                    {
-                        if (JobGauge.PolyglotStacks == 2)
-                        {
-                            return Actions.Foul;
-                        }
-                    }
-                    if (JobGauge.PolyglotStacks == 1)
-                    {
-                        return Actions.Foul;
-                    }
-                }
-
-                //补雷
-                if (TargetBuffDuration(Debuffs.Thunder4) < 10f && lastComboMove != Actions.Thunder4)
-                {
-                    if (level >= Levels.Thunder4)
-                    {
-                        return Actions.Thunder4;
-                    }
-                    else if (TargetBuffDuration(Debuffs.Thunder2) < 10f && lastComboMove != Actions.Thunder2)
-                    {
-                        return Actions.Thunder2;
-                    }
-                }
-
-                //上火2/高火2
-                if (level >= Levels.HighBlizzard2)
-                {
-                    return Actions.HighFire2;
-                }
-                return Actions.Fire2;
+                if (Actions.Foul.TryUseAction(level, out act)) return true;
             }
+
+            //试试看火2
+            if (Actions.Fire2.TryUseAction(level, out act)) return true;
+
+            //啥都放不了的话，转入冰状态。
+            if (AddUmbralIceStacks(level, out act)) return true;
+        }
+
+        act = 0;
+        return false;
+    }
+
+
+    /// <summary>
+    /// 保证冰火都是最大档数，保证有雷
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="lastAct"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    private bool MantainceState(byte level, uint lastAct, out uint act)
+    {
+        if (JobGauge.InUmbralIce)
+        {
+            if (AddUmbralIceStacks(level, out act)) return true;
+            if (AddUmbralHeartsArea(level, out act)) return true;
+            if (AddThunderArea(level, lastAct, out act)) return true;
+        }
+        else if (JobGauge.InAstralFire)
+        {
+            if (AddAstralFireStacks(level, out act)) return true;
+            if (AddThunderArea(level, lastAct, out act)) return true;
         }
         else
         {
-            return Actions.Blizzard2;
+            //没状态，就加个冰状态。
+            if (AddUmbralIceStacks(level, out act)) return true;
         }
 
-        return actionID;
+        return false;
+    }
+
+    private bool AddUmbralIceStacks(byte level, out uint act)
+    {
+        //如果冰满了，就别加了。
+        act = 0;
+        if (JobGauge.UmbralIceStacks > 2) return false;
+
+        //试试看冰2
+        if (Actions.Blizzard2.TryUseAction(level, out act)) return true;
+
+        return false;
+    }
+
+    private bool AddAstralFireStacks(byte level, out uint act)
+    {
+        //如果火满了，就别加了。
+        act = 0;
+        if (JobGauge.AstralFireStacks > 2) return false;
+
+        //试试看火2
+        if (Actions.Fire2.TryUseAction(level, out act)) return true;
+
+        return false;
+    }
+
+    private bool AddThunderArea(byte level, uint lastAct, out uint act)
+    {
+        //试试看雷2
+        if (Actions.Thunder2.TryUseAction(level, out act, lastAct)) return true;
+
+        return false;
+    }
+
+    private bool AddUmbralHeartsArea(byte level, out uint act)
+    {
+        //如果满了，就别加了。
+        act = 0;
+        if (JobGauge.UmbralHearts == 3) return false;
+
+        //冻结
+        if (Actions.Freeze.TryUseAction(level, out act)) return true;
+
+        return false;
     }
 }

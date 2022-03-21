@@ -96,15 +96,14 @@ internal sealed class IconReplacer : IDisposable
 
     private static void SetStaticValues()
     {
-
         _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
-                         where t.BaseType.BaseType == typeof(CustomCombo)
+                         where t.BaseType.BaseType?.BaseType == typeof(CustomCombo)
                          select (CustomCombo)Activator.CreateInstance(t) into combo
                          orderby combo.JobID, combo.Priority
                          select combo).ToArray();
 
         _customCombosDict = new SortedList<uint, CustomCombo[]>
-            (_customCombos.GroupBy(g => g.JobID).ToDictionary(set => set.Key, set => set.ToArray()));
+            (_customCombos.GroupBy(g => g.JobID).ToDictionary(set => set.Key, set => set.Reverse().ToArray()));
     }
 
     public void Dispose()
@@ -137,7 +136,7 @@ internal sealed class IconReplacer : IDisposable
             {
                 if (customCombo.TryInvoke(actionID, lastComboActionID, comboTime, level, out var newActionID))
                 {
-                    return newActionID;
+                    return OriginalHook(newActionID);
                 }
             }
 
@@ -189,7 +188,7 @@ internal sealed class IconReplacer : IDisposable
         }
     }
 
-    internal static void SetEnable( bool enable)
+    internal static void SetEnable(bool enable)
     {
         foreach (var combo in CustomCombos)
         {
