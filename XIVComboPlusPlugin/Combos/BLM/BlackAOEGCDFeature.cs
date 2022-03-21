@@ -24,11 +24,6 @@ internal class BlackAOEGCDFeature : BLMCombo
     {
         if (JobGauge.InUmbralIce)
         {
-            if (HaveEnoughMP)
-            {
-                if (AddAstralFireStacks(level, out act)) return true;
-            }
-
             if (Actions.Freeze.TryUseAction(level, out act)) return true;
             if (Actions.Blizzard2.TryUseAction(level, out act)) return true;
         }
@@ -68,7 +63,7 @@ internal class BlackAOEGCDFeature : BLMCombo
 
 
     /// <summary>
-    /// 保证冰火都是最大档数，保证有雷
+    /// 保证冰火都是最大档数，保证有雷，如果条件允许，赶紧转火。
     /// </summary>
     /// <param name="level"></param>
     /// <param name="lastAct"></param>
@@ -78,6 +73,11 @@ internal class BlackAOEGCDFeature : BLMCombo
     {
         if (JobGauge.InUmbralIce)
         {
+            if (HaveEnoughMP && (JobGauge.UmbralHearts == 3 || level < 58))
+            {
+                if (AddAstralFireStacks(level, out act)) return true;
+            }
+
             if (AddUmbralIceStacks(level, out act)) return true;
             if (AddUmbralHeartsArea(level, out act)) return true;
             if (AddThunderArea(level, lastAct, out act)) return true;
@@ -114,6 +114,11 @@ internal class BlackAOEGCDFeature : BLMCombo
         act = 0;
         if (JobGauge.AstralFireStacks > 2) return false;
 
+        if (Service.ClientState.LocalPlayer.CurrentMp < 5000)
+        {
+            if (AddUmbralIceStacks(level, out act)) return true;
+        }
+
         //试试看火2
         if (Actions.Fire2.TryUseAction(level, out act)) return true;
 
@@ -130,9 +135,9 @@ internal class BlackAOEGCDFeature : BLMCombo
 
     private bool AddUmbralHeartsArea(byte level, out uint act)
     {
-        //如果满了，就别加了。
+        //如果满了，或者等级太低，没有冰心，就别加了。
         act = 0;
-        if (JobGauge.UmbralHearts == 3 && level >= 58) return false;
+        if (JobGauge.UmbralHearts == 3 || level < 58) return false;
 
         //冻结
         if (Actions.Freeze.TryUseAction(level, out act)) return true;

@@ -45,7 +45,4 @@ internal class Service
 
     [PluginService]
     internal static TargetManager TargetManager { get; private set; }
-
-    [PluginService]
-    public static Framework Framework { get; private set; }
 }

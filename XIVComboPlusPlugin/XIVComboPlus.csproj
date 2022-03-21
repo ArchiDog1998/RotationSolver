@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>XIVComboExpanded</AssemblyName>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>

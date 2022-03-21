@@ -76,7 +76,7 @@ internal abstract class CustomCombo
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
 
     protected static GameObject CurrentTarget => Service.TargetManager.Target;
-    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && GetCooldown(141u).CooldownRemaining > 0.76;
+    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && GetCooldown(141u).CooldownRemaining > 0.67;
     protected CustomCombo()
     {
     }

@@ -30,7 +30,6 @@ namespace XIVComboPlus.Combos.BLM
                     }
                 }
             }
-
             return Actions.Transpose.ActionID;
         }
     }

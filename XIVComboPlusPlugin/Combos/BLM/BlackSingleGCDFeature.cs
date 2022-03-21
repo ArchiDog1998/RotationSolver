@@ -1,4 +1,6 @@
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Objects.Enums;
 using XIVComboPlus;
 using XIVComboPlus.Combos;
 
@@ -14,6 +16,26 @@ internal class BlackSingleGCDFeature : BLMCombo
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
     {
+        //uint act;
+        ////没有目标，就维持自己！
+        //if (Service.TargetManager.Target == null || Service.TargetManager.Target.ObjectKind != ObjectKind.BattleNpc)
+        //{
+        //    if (Actions.UmbralSoul.TryUseAction(level, out act))
+        //    {
+        //        if (level < Actions.Paradox.Level)
+        //        {
+        //            return act;
+        //        }
+        //        else
+        //        {
+        //            if (JobGauge.UmbralIceStacks > 2 && JobGauge.UmbralHearts > 2)
+        //            {
+        //                return act;
+        //            }
+        //        }
+        //    }
+        //    return Actions.Transpose.ActionID;
+        //}
         if (CanAddAbility(level, out uint act)) return act;
         if (MantainceState(level, lastComboMove, out act)) return act;
         if (AttackAndExchange(level, out act)) return act;
@@ -24,11 +46,6 @@ internal class BlackSingleGCDFeature : BLMCombo
     {
         if (JobGauge.InUmbralIce)
         {
-            if (HaveEnoughMP)
-            {
-                if (AddAstralFireStacks(level, out act)) return true;
-            }
-
             if (Actions.Blizzard4.TryUseAction(level, out act)) return true;
             if (Actions.Blizzard.TryUseAction(level, out act)) return true;
         }
@@ -80,12 +97,18 @@ internal class BlackSingleGCDFeature : BLMCombo
 
         if (Actions.Fire4.TryUseAction(level, out act)) return Actions.Fire4.MPNeed + addition;
         if (Actions.Paradox.TryUseAction(level, out act)) return Actions.Paradox.MPNeed + addition;
+        //如果有火苗了，那就来火3
+        if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.Firestarter)))
+        {
+            act = Actions.Fire3.ActionID;
+            return addition;
+        }
         if (Actions.Fire.TryUseAction(level, out act)) return Actions.Fire.MPNeed + addition;
         return uint.MaxValue;
     }
 
     /// <summary>
-    /// 保证冰火都是最大档数，保证有雷
+    /// 保证冰火都是最大档数，保证有雷，如果条件允许，赶紧转火。
     /// </summary>
     /// <param name="level"></param>
     /// <param name="act"></param>
@@ -94,6 +117,11 @@ internal class BlackSingleGCDFeature : BLMCombo
     {
         if (JobGauge.InUmbralIce)
         {
+            if (HaveEnoughMP && (JobGauge.UmbralHearts == 3 || level < 58))
+            {
+                if (AddAstralFireStacks(level, out act)) return true;
+            }
+
             if (AddUmbralIceStacks(level, out act)) return true;
             if (AddUmbralHeartsSingle(level, out act)) return true;
             if (AddThunderSingle(level, lastAct, out act)) return true;
@@ -134,6 +162,11 @@ internal class BlackSingleGCDFeature : BLMCombo
         act = 0;
         if (JobGauge.AstralFireStacks > 2) return false;
 
+        if(Service.ClientState.LocalPlayer.CurrentMp < 5000)
+        {
+            if(AddUmbralIceStacks(level, out act)) return true;
+        }
+
         //试试看火3
         if (Actions.Fire3.TryUseAction(level, out act)) return true;
 
@@ -154,9 +187,9 @@ internal class BlackSingleGCDFeature : BLMCombo
 
     private bool AddUmbralHeartsSingle(byte level, out uint act)
     {
-        //如果满了，就别加了。
+        //如果满了，或者等级太低，没有冰心，就别加了。
         act = 0;
-        if (JobGauge.UmbralHearts == 3 && level >= 58) return false;
+        if (JobGauge.UmbralHearts == 3 || level < 58) return false;
 
         //冰4
         if (Actions.Blizzard4.TryUseAction(level, out act)) return true;

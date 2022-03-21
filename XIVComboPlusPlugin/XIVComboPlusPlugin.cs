@@ -4,11 +4,13 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using Dalamud.Game;
+using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
+using Dalamud.IoC;
 using Dalamud.Plugin;
 using XIVComboPlus;
 
@@ -23,16 +25,20 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
     private readonly WindowSystem windowSystem;
 
     private readonly ConfigWindow configWindow;
+    private static IntPtr func;
 
     public string Name => "XIV Combo Plus";
-    //public static BattleNpc[] Targets =>
-    //        Service.ObjectTable.Where(obj => (BattleNpc)obj != null && DistanceToPlayer(obj) <= 25).Select(obj => (BattleNpc)obj).ToArray();
+    public static BattleNpc[] Targets25 => GetObjectInRadius(Targets, 25f);
+    public static BattleNpc Targets25Area => GetMostObjectInRadius(Targets, 25, 5);
 
-    //public static PlayerCharacter[] Friends =>
-    //        Service.ObjectTable.Where(obj => (PlayerCharacter)obj != null && DistanceToPlayer(obj) <= 25).Select(obj => (PlayerCharacter)obj).ToArray();
+    private static BattleNpc[] Targets =>
+            Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy && canAttack(obj)).Select(obj => (BattleNpc)obj).ToArray();
 
-    private static bool _lockHighMostHP = false;
-    public XIVComboPlusPlugin(DalamudPluginInterface pluginInterface)
+    public static PlayerCharacter[] PartyMembers =>
+            AllianceMenbers.Where(fri => (fri.StatusFlags&StatusFlags.AllianceMember) != 0).ToArray();
+    public static PlayerCharacter[] AllianceMenbers =>
+         Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
+    public XIVComboPlusPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner, [RequiredVersion("1.0")] ClientState clientState)
     {
         pluginInterface.Create<Service>(Array.Empty<object>());
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
@@ -41,22 +47,62 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         Service.IconReplacer = new IconReplacer();
         configWindow = new ConfigWindow();
         windowSystem = new WindowSystem(Name);
-        windowSystem.AddWindow((Window)(object)configWindow);
+        windowSystem.AddWindow(configWindow);
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
-        CommandManager commandManager = Service.CommandManager;
+
+        func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
 
         CommandInfo val = new CommandInfo(new CommandInfo.HandlerDelegate(OnCommand));
         val.HelpMessage = "Open a window to edit custom combo settings.";
         val.ShowInHelp = true;
         commandManager.AddHandler(_command, val);
 
-        //CommandInfo lockInfo = new CommandInfo(new CommandInfo.HandlerDelegate(OnLock));
-        //lockInfo.HelpMessage = "锁定想要的敌人。";
-        //lockInfo.ShowInHelp = true;
-        //commandManager.AddHandler(_lockCommand, lockInfo);
+        CommandInfo lockInfo = new CommandInfo(new CommandInfo.HandlerDelegate(OnLock));
+        lockInfo.HelpMessage = "锁定想要的敌人。";
+        lockInfo.ShowInHelp = true;
+        commandManager.AddHandler(_lockCommand, lockInfo);
+    }
 
-        //Service.Framework.Update += FrameworkUpdate;
+    public unsafe static bool canAttack(GameObject actor)
+    {
+        if ((object)actor == null)
+        {
+            return false;
+        }
+        return ((delegate*<long, IntPtr, long>)(void*)func)(142L, actor.Address) == 1;
+    }
+
+    private static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
+    {
+        return objects.Where(o => DistanceToPlayer(o) <= radius).ToArray();
+    }
+
+    private static T GetMostObjectInRadius<T>(T[] objects, float radius, float range) where T : BattleChara
+    {
+        T result = GetObjectInRadius(objects, radius).OrderByDescending(t =>
+        {
+            byte count = 0;
+            foreach (T obj in GetObjectInRadius(objects, radius + range))
+            {
+                if (Vector3.Distance(t.Position, obj.Position) <= range)
+                {
+                    count++;
+                }
+            }
+            return count + (float)t.CurrentHp / t.MaxHp;
+        }).First();
+
+        byte count = 0;
+        foreach (T obj in GetObjectInRadius(objects, radius + range))
+        {
+            if (Vector3.Distance(result.Position, obj.Position) <= range)
+            {
+                count++;
+            }
+        }
+        if (count == 1) return null;
+        return result;
     }
 
     private static float DistanceToPlayer(GameObject obj)
@@ -64,24 +110,12 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         return Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position);
     }
 
-    //private void FrameworkUpdate(Framework framework)
-    //{
-    //    //Service.TargetManager.SetTarget(Targets.OrderByDescending(tar => tar.CurrentHp).First());
-
-    //    if (_lockHighMostHP)
-    //    {
-    //        Service.TargetManager.SetTarget(Targets.OrderByDescending(tar => tar.CurrentHp).First());
-    //        _lockHighMostHP = false;
-    //    }
-    //}
-
     public void Dispose()
     {
         Service.CommandManager.RemoveHandler(_command);
         Service.CommandManager.RemoveHandler(_lockCommand);
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
-        //Service.Framework.Update -= FrameworkUpdate;
         Service.IconReplacer.Dispose();
     }
 
@@ -89,21 +123,47 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
     {
         configWindow.IsOpen = true;
     }
-    //private void OnLock(string command, string arguments)
-    //{
-    //    string[] array = arguments.Split();
+    private void OnLock(string command, string arguments)
+    {
+        string[] array = arguments.Split();
 
-    //    Service.TargetManager.SetTarget(Targets.OrderByDescending(tar => tar.CurrentHp).First());
+        switch (array[0])
+        {
+            case "HMHP":
+                SetTarget(Targets25.OrderByDescending(tar => tar.MaxHp).First());
+                break;
 
-    //    //_lockHighMostHP = true;
+            case "LMHP":
+                SetTarget(Targets25.OrderBy(tar => tar.MaxHp).First());
+                break;
 
-    //    switch (array[0])
-    //    {
-    //        case "HighMostHP":
-    //            _lockHighMostHP = true;
-    //            break;
-    //    }
-    //}
+            //case "HCHP":
+            //    SetTarget(Targets25.OrderByDescending(tar => tar.CurrentHp).First());
+            //    break;
+
+            //case "LCHP":
+            //    SetTarget(Targets25.OrderBy(tar => tar.CurrentHp).First());
+            //    break;
+
+            case "Area":
+                SetTarget(Targets25Area);                
+                break;
+
+            case "PLHP60":
+                PlayerCharacter lowChara = PartyMembers.OrderBy(p => (float)p.CurrentHp / p.MaxHp).First();
+                if((float)lowChara.CurrentHp / lowChara.MaxHp < 0.6) SetTarget(lowChara);
+                break;
+
+            case "HArea":
+                SetTarget(GetMostObjectInRadius(PartyMembers, 30, 8));
+                break;
+        }
+    }
+
+    private void SetTarget(GameObject? obj)
+    {
+        Service.TargetManager.SetTarget(obj);
+    }
     private void OnCommand(string command, string arguments)
     {
         //string[] values = IconReplacer.CustomCombos.Select(c => c.ComboFancyName).ToArray();

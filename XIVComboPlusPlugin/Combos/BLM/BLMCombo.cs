@@ -175,10 +175,11 @@ namespace XIVComboPlus.Combos.BLM
 
             if (CanInsertAbility)
             {
-                //加个即刻
+                //加个即刻或者黑魔纹
                 if (JobGauge.InAstralFire && LocalPlayer.CurrentMp > 800)
                 {
                     if (GeneralActions.Swiftcast.TryUseAction(level, out action)) return true;
+                    if (Actions.Leylines.TryUseAction(level, out action)) return true;
                 }
 
                 //加个通晓
