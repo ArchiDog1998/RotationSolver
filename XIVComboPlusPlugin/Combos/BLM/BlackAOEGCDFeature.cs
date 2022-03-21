@@ -39,11 +39,6 @@ internal class BlackAOEGCDFeature : BLMCombo
             {
                 if (AddUmbralIceStacks(level, out act)) return true;
             }
-            //如果蓝不够了，赶紧一个绝望。
-            if (JobGauge.UmbralIceStacks < 2)
-            {
-                if (Actions.Despair.TryUseAction(level, out act)) return true;
-            }
 
             //如果通晓满了，就放掉。
             if (IsPolyglotStacksFull)
@@ -51,8 +46,17 @@ internal class BlackAOEGCDFeature : BLMCombo
                 if (Actions.Foul.TryUseAction(level, out act)) return true;
             }
 
+            //如果蓝不够了，赶紧一个绝望。
+            if (level >= 58 && JobGauge.UmbralHearts < 2)
+            {
+                if (Actions.Flare.TryUseAction(level, out act)) return true;
+            }
+
             //试试看火2
             if (Actions.Fire2.TryUseAction(level, out act)) return true;
+
+            //再试试看绝望
+            if (Actions.Flare.TryUseAction(level, out act)) return true;
 
             //啥都放不了的话，转入冰状态。
             if (AddUmbralIceStacks(level, out act)) return true;
@@ -128,7 +132,7 @@ internal class BlackAOEGCDFeature : BLMCombo
     {
         //如果满了，就别加了。
         act = 0;
-        if (JobGauge.UmbralHearts == 3) return false;
+        if (JobGauge.UmbralHearts == 3 && level >= 58) return false;
 
         //冻结
         if (Actions.Freeze.TryUseAction(level, out act)) return true;

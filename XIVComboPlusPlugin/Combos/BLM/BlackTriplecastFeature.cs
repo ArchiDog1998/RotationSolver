@@ -17,7 +17,7 @@ namespace XIVComboPlus.Combos.BLM
         protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
         {
             if (Actions.Triplecast.TryUseAction(level, out uint act)) return act;
-            return 0;
+            return Actions.Leylines.ActionID;
         }
     }
 }

@@ -108,7 +108,7 @@ namespace XIVComboPlus.Combos.BLM
                 //HighBlizzard2 = new BLMAction(82, 25795u, 800, false),
 
                 //冻结
-                Freeze = new BLMAction(40, 159u, 1000, false),
+                Freeze = new BLMAction(40, 159u, 1000, false) { OtherCheck = () => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2800 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
 
                 //星灵移位
                 Transpose = new BaseAction(4, 149u, ability: true) { OtherCheck = () => JobGauge.InUmbralIce || JobGauge.InAstralFire },
@@ -153,10 +153,10 @@ namespace XIVComboPlus.Combos.BLM
                 Amplifier = new BaseAction(86, 25796u, ability: true) { OtherCheck = () => !IsPolyglotStacksFull },
 
                 //核爆
-                Flare = new BaseAction(50, 162u, 800) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 2500 },
+                Flare = new BaseAction(50, 162u, 800) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
 
                 //绝望
-                Despair = new BaseAction(72, 16505u, 800) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 2500 },
+                Despair = new BaseAction(72, 16505u, 800) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 3000 },
 
                 //秽浊
                 Foul = new BaseAction(70, 7422u) { OtherCheck = () => JobGauge.PolyglotStacks != 0 },
@@ -201,7 +201,5 @@ namespace XIVComboPlus.Combos.BLM
             }
             return false;
         }
-
-
     }
 }

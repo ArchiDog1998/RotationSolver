@@ -41,9 +41,17 @@ namespace XIVComboPlus.Combos.BLM
                     //冰魔法三层半魔力，前两层不变。
                     else
                     {
-                        if(JobGauge.UmbralIceStacks == 3)
+                        switch (JobGauge.UmbralIceStacks)
                         {
-                            multiply = 0.5;
+                            case 1:
+                                multiply = 0.75;
+                                break;
+                            case 2:
+                                multiply = 0.5;
+                                break;
+                            case 3:
+                                multiply = 0;
+                                break;
                         }
                     }
                 }

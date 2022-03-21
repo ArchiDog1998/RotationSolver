@@ -122,7 +122,7 @@ internal class BlackSingleGCDFeature : BLMCombo
         if (Actions.Blizzard3.TryUseAction(level, out act)) return true;
 
         //试试看冰1
-        if (JobGauge.InUmbralIce && Actions.Blizzard.TryUseAction(level, out act)) return true;
+        if (Actions.Blizzard.TryUseAction(level, out act)) return true;
 
         act = Actions.Transpose.ActionID;
         return true;
@@ -138,7 +138,7 @@ internal class BlackSingleGCDFeature : BLMCombo
         if (Actions.Fire3.TryUseAction(level, out act)) return true;
 
         //试试看火1
-        if (JobGauge.InAstralFire && Actions.Fire.TryUseAction(level, out act)) return true;
+        if (Actions.Fire.TryUseAction(level, out act)) return true;
 
         act = Actions.Transpose.ActionID;
         return true;
@@ -156,7 +156,7 @@ internal class BlackSingleGCDFeature : BLMCombo
     {
         //如果满了，就别加了。
         act = 0;
-        if (JobGauge.UmbralHearts == 3) return false;
+        if (JobGauge.UmbralHearts == 3 && level >= 58) return false;
 
         //冰4
         if (Actions.Blizzard4.TryUseAction(level, out act)) return true;

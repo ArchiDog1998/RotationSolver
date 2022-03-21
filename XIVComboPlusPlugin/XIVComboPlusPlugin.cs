@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using Dalamud.Game;
+using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
@@ -14,12 +18,20 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 {
     private const string _command = "/pcombo";
 
+    private const string _lockCommand = "/plock";
+
     private readonly WindowSystem windowSystem;
 
     private readonly ConfigWindow configWindow;
 
     public string Name => "XIV Combo Plus";
+    //public static BattleNpc[] Targets =>
+    //        Service.ObjectTable.Where(obj => (BattleNpc)obj != null && DistanceToPlayer(obj) <= 25).Select(obj => (BattleNpc)obj).ToArray();
 
+    //public static PlayerCharacter[] Friends =>
+    //        Service.ObjectTable.Where(obj => (PlayerCharacter)obj != null && DistanceToPlayer(obj) <= 25).Select(obj => (PlayerCharacter)obj).ToArray();
+
+    private static bool _lockHighMostHP = false;
     public XIVComboPlusPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>(Array.Empty<object>());
@@ -33,17 +45,43 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
         CommandManager commandManager = Service.CommandManager;
+
         CommandInfo val = new CommandInfo(new CommandInfo.HandlerDelegate(OnCommand));
         val.HelpMessage = "Open a window to edit custom combo settings.";
         val.ShowInHelp = true;
         commandManager.AddHandler(_command, val);
+
+        //CommandInfo lockInfo = new CommandInfo(new CommandInfo.HandlerDelegate(OnLock));
+        //lockInfo.HelpMessage = "锁定想要的敌人。";
+        //lockInfo.ShowInHelp = true;
+        //commandManager.AddHandler(_lockCommand, lockInfo);
+
+        //Service.Framework.Update += FrameworkUpdate;
     }
+
+    private static float DistanceToPlayer(GameObject obj)
+    {
+        return Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position);
+    }
+
+    //private void FrameworkUpdate(Framework framework)
+    //{
+    //    //Service.TargetManager.SetTarget(Targets.OrderByDescending(tar => tar.CurrentHp).First());
+
+    //    if (_lockHighMostHP)
+    //    {
+    //        Service.TargetManager.SetTarget(Targets.OrderByDescending(tar => tar.CurrentHp).First());
+    //        _lockHighMostHP = false;
+    //    }
+    //}
 
     public void Dispose()
     {
         Service.CommandManager.RemoveHandler(_command);
+        Service.CommandManager.RemoveHandler(_lockCommand);
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
+        //Service.Framework.Update -= FrameworkUpdate;
         Service.IconReplacer.Dispose();
     }
 
@@ -51,7 +89,21 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
     {
         configWindow.IsOpen = true;
     }
+    //private void OnLock(string command, string arguments)
+    //{
+    //    string[] array = arguments.Split();
 
+    //    Service.TargetManager.SetTarget(Targets.OrderByDescending(tar => tar.CurrentHp).First());
+
+    //    //_lockHighMostHP = true;
+
+    //    switch (array[0])
+    //    {
+    //        case "HighMostHP":
+    //            _lockHighMostHP = true;
+    //            break;
+    //    }
+    //}
     private void OnCommand(string command, string arguments)
     {
         //string[] values = IconReplacer.CustomCombos.Select(c => c.ComboFancyName).ToArray();

@@ -2,8 +2,19 @@ namespace XIVComboPlus.Combos;
 
 internal abstract class BRDCombo : CustomCombo
 {
-
+    internal sealed override string JobName => "吟游诗人";
     internal sealed override uint JobID => 23;
+
+    protected struct Actions
+    {
+        public static readonly BaseAction
+            //强力射击
+            HeavyShoot = new BaseAction(1, 97u),
+
+            //直线射击
+            StraitShoot = new BaseAction(2, 98u) { BuffNeed = 122};
+    }
+
     public static class Buffs
     {
         public const ushort StraightShotReady = 122;
