@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Enums;
+using System.Linq;
 using XIVComboPlus;
 using XIVComboPlus.Combos;
 
@@ -16,27 +17,38 @@ internal class BLM_SingleFeature : BLMCombo
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
     {
-        //uint act;
-        ////没有目标，就维持自己！
-        //if (Service.TargetManager.Target == null || Service.TargetManager.Target.ObjectKind != ObjectKind.BattleNpc)
-        //{
-        //    if (Actions.UmbralSoul.TryUseAction(level, out act))
-        //    {
-        //        if (level < Actions.Paradox.Level)
-        //        {
-        //            return act;
-        //        }
-        //        else
-        //        {
-        //            if (JobGauge.UmbralIceStacks > 2 && JobGauge.UmbralHearts > 2)
-        //            {
-        //                return act;
-        //            }
-        //        }
-        //    }
-        //    return Actions.Transpose.ActionID;
-        //}
-        if (CanAddAbility(level, out uint act)) return act;
+        uint act;
+        if (IsMoving)
+        {
+            //如果在移动并且有目标。
+            if (HaveValidTarget)
+            {
+                if (Actions.Xenoglossy.TryUseAction(level, out act)) return act;
+                if (Actions.Triplecast.TryUseAction(level, out act)) return act;
+                if (GeneralActions.Swiftcast.TryUseAction(level, out act)) return act;
+            }
+            //如果在移动，但是没有目标。
+            else
+            {
+                if (Actions.UmbralSoul.TryUseAction(level, out act))
+                {
+                    if (level < Actions.Paradox.Level)
+                    {
+                        return act;
+                    }
+                    else
+                    {
+                        if (JobGauge.UmbralIceStacks > 2 && JobGauge.UmbralHearts > 2)
+                        {
+                            return act;
+                        }
+                    }
+                }
+                return Actions.Transpose.ActionID;
+            }
+        }
+
+        if (CanAddAbility(level, out act)) return act;
         if (MantainceState(level, lastComboMove, out act)) return act;
         if (AttackAndExchange(level, out act)) return act;
         return actionID;

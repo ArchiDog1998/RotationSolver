@@ -9,19 +9,7 @@ namespace XIVComboPlus.Combos.BLM
 {
     internal class BLMAction : BaseAction
     {
-        private static BLMGauge _gauge;
-
-        private static BLMGauge JobGauge
-        {
-            get
-            {
-                if (_gauge == null)
-                {
-                    _gauge = Service.JobGauges.Get<BLMGauge>();
-                }
-                return _gauge;
-            }
-        }
+        private static BLMGauge JobGauge => BLMCombo.JobGauge;
 
         private readonly bool _isFire;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
@@ -73,9 +74,10 @@ internal abstract class CustomCombo
     }
 
     #endregion
+    protected static bool IsMoving => TargetHelper.IsMoving;
+    protected static bool HaveValidTarget => Target != null && Target.ObjectKind == ObjectKind.BattleNpc && ((BattleNpc)Target).CurrentHp != 0;
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
-
-    protected static GameObject CurrentTarget => Service.TargetManager.Target;
+    protected static GameObject Target => Service.TargetManager.Target;
     protected static bool CanInsertAbility => !LocalPlayer.IsCasting && Service.IconReplacer.GetCooldown(141u).CooldownRemaining > 0.67;
     protected CustomCombo()
     {

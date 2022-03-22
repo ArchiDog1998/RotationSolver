@@ -29,6 +29,8 @@ internal class ConfigWindow : Window
 
     public override void Draw()
     {
+        ImGui.Text(Service.ClientState.LocalPlayer.ClassJob.GameData?.RowId.ToString());
+
         ImGui.Text("在这个窗口，你可以设定自己喜欢的连击设定。");
 
         bool enableSecretCombos = Service.Configuration.EnableSecretCombos;

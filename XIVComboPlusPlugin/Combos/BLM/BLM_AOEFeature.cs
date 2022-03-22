@@ -14,7 +14,38 @@ internal class BLM_AOEFeature : BLMCombo
 
     protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
     {
-        if (CanAddAbility(level, out uint act)) return act;
+        uint act;
+        if (IsMoving)
+        {
+            //如果在移动并且有目标。
+            if (HaveValidTarget)
+            {
+                if (level >= Actions.Xenoglossy.Level &&  Actions.Flare.TryUseAction(level, out act)) return act;
+                if (Actions.Triplecast.TryUseAction(level, out act)) return act;
+                if (GeneralActions.Swiftcast.TryUseAction(level, out act)) return act;
+            }
+            //如果在移动，但是没有目标。
+            else
+            {
+                if (Actions.UmbralSoul.TryUseAction(level, out act))
+                {
+                    if (level < Actions.Paradox.Level)
+                    {
+                        return act;
+                    }
+                    else
+                    {
+                        if (JobGauge.UmbralIceStacks > 2 && JobGauge.UmbralHearts > 2)
+                        {
+                            return act;
+                        }
+                    }
+                }
+                return Actions.Transpose.ActionID;
+            }
+        }
+
+        if (CanAddAbility(level, out act)) return act;
         if (MantainceState(level, lastComboActionID, out act)) return act;
         if (AttackAndExchange(level, out act)) return act;
         return actionID;

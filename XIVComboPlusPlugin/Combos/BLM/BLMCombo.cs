@@ -9,10 +9,6 @@ namespace XIVComboPlus.Combos.BLM
 {
     internal abstract class BLMCombo : CustomComboJob<BLMGauge>
     {
-        internal sealed override string JobName => "黑魔法师";
-
-        internal sealed override uint JobID => 25;
-
         protected static bool HaveEnoughMP => LocalPlayer.CurrentMp > 9000;
 
         /// <summary>
