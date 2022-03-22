@@ -34,9 +34,9 @@ internal abstract class CustomCombo
             }},
 
             //醒梦（如果MP低于5000那么使用）
-        LucidDreaming = new BaseAction(24, 7562u, ability: true)
+            LucidDreaming = new BaseAction(24, 7562u, ability: true)
             {
-                OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp < 5000,
+                OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp < 6000,
             };
 
     }
@@ -76,7 +76,7 @@ internal abstract class CustomCombo
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
 
     protected static GameObject CurrentTarget => Service.TargetManager.Target;
-    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && GetCooldown(141u).CooldownRemaining > 0.67;
+    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && Service.IconReplacer.GetCooldown(141u).CooldownRemaining > 0.67;
     protected CustomCombo()
     {
     }
@@ -101,40 +101,40 @@ internal abstract class CustomCombo
         return true;
     }
 
-    protected static uint CalcBestAction(uint original, params uint[] actions)
-    {
-        return actions.Select(new Func<uint, (uint, IconReplacer.CooldownData)>(Selector)).Aggregate(((uint ActionID, IconReplacer.CooldownData Data) a1, (uint ActionID, IconReplacer.CooldownData Data) a2) => Compare(original, a1, a2)).Item1;
+    //protected static uint CalcBestAction(uint original, params uint[] actions)
+    //{
+    //    return actions.Select(new Func<uint, (uint, IconReplacer.CooldownData)>(Selector)).Aggregate(((uint ActionID, IconReplacer.CooldownData Data) a1, (uint ActionID, IconReplacer.CooldownData Data) a2) => Compare(original, a1, a2)).Item1;
         
-        static (uint ActionID, IconReplacer.CooldownData Data) Compare(uint original, (uint ActionID, IconReplacer.CooldownData Data) a1, (uint ActionID, IconReplacer.CooldownData Data) a2)
-        {
-            if (!a1.Data.IsCooldown && !a2.Data.IsCooldown)
-            {
-                if (original != a1.ActionID)
-                {
-                    return a2;
-                }
-                return a1;
-            }
-            if (a1.Data.IsCooldown && a2.Data.IsCooldown)
-            {
-                if (!(a1.Data.CooldownRemaining < a2.Data.CooldownRemaining))
-                {
-                    return a2;
-                }
-                return a1;
-            }
-            if (!a1.Data.IsCooldown)
-            {
-                return a1;
-            }
-            return a2;
-        }
+    //    static (uint ActionID, IconReplacer.CooldownData Data) Compare(uint original, (uint ActionID, IconReplacer.CooldownData Data) a1, (uint ActionID, IconReplacer.CooldownData Data) a2)
+    //    {
+    //        if (!a1.Data.IsCooldown && !a2.Data.IsCooldown)
+    //        {
+    //            if (original != a1.ActionID)
+    //            {
+    //                return a2;
+    //            }
+    //            return a1;
+    //        }
+    //        if (a1.Data.IsCooldown && a2.Data.IsCooldown)
+    //        {
+    //            if (!(a1.Data.CooldownRemaining < a2.Data.CooldownRemaining))
+    //            {
+    //                return a2;
+    //            }
+    //            return a1;
+    //        }
+    //        if (!a1.Data.IsCooldown)
+    //        {
+    //            return a1;
+    //        }
+    //        return a2;
+    //    }
 
-        static (uint ActionID, IconReplacer.CooldownData Data) Selector(uint actionID)
-        {
-            return (actionID, GetCooldown(actionID));
-        }
-    }
+    //    static (uint ActionID, IconReplacer.CooldownData Data) Selector(uint actionID)
+    //    {
+    //        return (actionID, GetCooldown(actionID));
+    //    }
+    //}
 
     protected abstract uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level);
 
@@ -146,10 +146,5 @@ internal abstract class CustomCombo
     protected static bool HasCondition(ConditionFlag flag)
     {
         return Service.Conditions[flag];
-    }
-
-    protected static IconReplacer.CooldownData GetCooldown(uint actionID)
-    {
-        return Service.IconReplacer.GetCooldown(actionID);
     }
 }

@@ -29,7 +29,6 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 
     public string Name => "XIV Combo Plus";
     public static BattleNpc[] Targets25 => GetObjectInRadius(Targets, 25f);
-    public static BattleNpc Targets25Area => GetMostObjectInRadius(Targets, 25, 5);
 
     private static BattleNpc[] Targets =>
             Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy && canAttack(obj)).Select(obj => (BattleNpc)obj).ToArray();
@@ -75,34 +74,28 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 
     private static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
     {
-        return objects.Where(o => DistanceToPlayer(o) <= radius).ToArray();
+        return objects.Where(o => DistanceToPlayer(o) <= radius + o.HitboxRadius).ToArray();
     }
 
     private static T GetMostObjectInRadius<T>(T[] objects, float radius, float range) where T : BattleChara
     {
-        T result = GetObjectInRadius(objects, radius).OrderByDescending(t =>
+        return (from t in GetObjectInRadius(objects, radius)
+                   select (t, Calculate(t, objects, radius, range)) into set
+                   where set.Item2 > 1
+                   orderby set.Item2 select set.t).Last();
+
+        static float Calculate(T t, T[] objects, float radius, float range)
         {
             byte count = 0;
             foreach (T obj in GetObjectInRadius(objects, radius + range))
             {
-                if (Vector3.Distance(t.Position, obj.Position) <= range)
+                if (Vector3.Distance(t.Position, obj.Position) <= range + obj.HitboxRadius)
                 {
                     count++;
                 }
             }
             return count + (float)t.CurrentHp / t.MaxHp;
-        }).First();
-
-        byte count = 0;
-        foreach (T obj in GetObjectInRadius(objects, radius + range))
-        {
-            if (Vector3.Distance(result.Position, obj.Position) <= range)
-            {
-                count++;
-            }
         }
-        if (count == 1) return null;
-        return result;
     }
 
     private static float DistanceToPlayer(GameObject obj)
@@ -137,16 +130,8 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
                 SetTarget(Targets25.OrderBy(tar => tar.MaxHp).First());
                 break;
 
-            //case "HCHP":
-            //    SetTarget(Targets25.OrderByDescending(tar => tar.CurrentHp).First());
-            //    break;
-
-            //case "LCHP":
-            //    SetTarget(Targets25.OrderBy(tar => tar.CurrentHp).First());
-            //    break;
-
             case "Area":
-                SetTarget(Targets25Area);                
+                SetTarget(GetMostObjectInRadius(Targets, 25, 5));                
                 break;
 
             case "PLHP60":

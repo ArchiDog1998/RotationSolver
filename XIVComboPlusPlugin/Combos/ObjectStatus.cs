@@ -31,6 +31,12 @@ namespace XIVComboPlus.Combos
             LeyLines = 737,
 
             //火苗
-            Firestarter = 165;
+            Firestarter = 165,
+
+            //白魔复活
+            Raise = 1140,
+
+            //学者复活
+            Resurrection = 2449;
     }
 }
