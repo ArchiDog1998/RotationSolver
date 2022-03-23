@@ -12,7 +12,7 @@ using XIVComboPlus.Attributes;
 
 namespace XIVComboPlus.Combos;
 
-internal abstract class CustomCombo
+public abstract class CustomCombo
 {
     #region Job
 
@@ -20,9 +20,9 @@ internal abstract class CustomCombo
 
     internal abstract string JobName { get; }
 
-    protected struct GeneralActions
+    internal struct GeneralActions
     {
-        public static readonly BaseAction
+        internal static readonly BaseAction
             //»ìÂÒ
             Addle = new BaseAction(7560u),
 
@@ -75,7 +75,20 @@ internal abstract class CustomCombo
 
     #endregion
     protected static bool IsMoving => TargetHelper.IsMoving;
-    protected static bool HaveValidTarget => Target != null && Target.ObjectKind == ObjectKind.BattleNpc && ((BattleNpc)Target).CurrentHp != 0;
+    protected static bool HaveTargetAngle
+    {
+        get
+        {
+            foreach (var item in TargetHelper.GetObjectInRadius( TargetHelper.Targets, 25))
+            {
+                if(item.TargetObject != null)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
     protected static GameObject Target => Service.TargetManager.Target;
     protected static bool CanInsertAbility => !LocalPlayer.IsCasting && Service.IconReplacer.GetCooldown(141u).CooldownRemaining > 0.67;

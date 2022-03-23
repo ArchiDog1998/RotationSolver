@@ -51,7 +51,7 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 使用了这个技能会得到的Buff，如果有这些Buff中的一种，那么就不会执行。 
         /// </summary>
-        internal ushort[] BuffsProvide { private get; set; } = null;
+        internal ushort[] BuffsProvide { get; set; } = null;
 
         /// <summary>
         /// 使用这个技能需要的前置Buff
@@ -127,6 +127,20 @@ namespace XIVComboPlus.Combos
 
             //如果是能力技能，还在冷却。
             if (IsAbility && Service.IconReplacer.GetCooldown(ActionID).IsCooldown) return false;
+
+            if (TargetHelper.IsMoving && IsSpell)
+            {
+                bool haveSwift = false;
+                foreach (var buff in CustomCombo.GeneralActions.Swiftcast.BuffsProvide)
+                {
+                    if (HaveStatus(FindStatusSelfFromSelf(buff)))
+                    {
+                        haveSwift = true;
+                        break;
+                    }
+                }
+                if(!haveSwift ) return false;
+            }
 
             //用于自定义的要求没达到
             if (OtherCheck!= null && !OtherCheck()) return false;

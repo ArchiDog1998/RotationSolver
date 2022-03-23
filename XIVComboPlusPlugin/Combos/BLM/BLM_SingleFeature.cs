@@ -21,7 +21,7 @@ internal class BLM_SingleFeature : BLMCombo
         if (IsMoving)
         {
             //如果在移动并且有目标。
-            if (HaveValidTarget)
+            if (HaveTargetAngle)
             {
                 if (Actions.Flare.TryUseAction(level, out act)) return act;
                 if (Actions.Xenoglossy.TryUseAction(level, out act)) return act;
@@ -88,6 +88,7 @@ internal class BLM_SingleFeature : BLMCombo
             {
                 if (Actions.Foul.TryUseAction(level, out act)) return true;
                 if (Actions.Xenoglossy.TryUseAction(level, out act)) return true;
+                if (Actions.Foul.TryUseAction(level, out act, mustUse: true)) return true;
             }
 
             //试试看火2

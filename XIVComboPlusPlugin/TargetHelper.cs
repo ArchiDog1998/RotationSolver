@@ -24,7 +24,7 @@ namespace XIVComboPlus
 
         };
 
-        private static BattleNpc[] Targets =>
+        internal static BattleNpc[] Targets =>
         Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy && CanAttack(obj)).Select(obj => (BattleNpc)obj).ToArray();
 
       //  public static PlayerCharacter[] PartyMembers =>
@@ -168,6 +168,11 @@ namespace XIVComboPlus
                 //找到没死的队友们。
                 PlayerCharacter[] availableCharas = PartyMembers.Where(player => player.CurrentHp != 0).ToArray();
 
+                if (!act.CanTargetSelf)
+                {
+                    availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalContentId).ToArray();
+                }
+
                 //判断是否是范围。
                 if (act.CastType > 0)
                 {
@@ -280,7 +285,7 @@ namespace XIVComboPlus
         /// <param name="objects"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        private static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
+        internal static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
         {
             return objects.Where(o => DistanceToPlayer(o) <= radius + o.HitboxRadius).ToArray();
         }
@@ -294,6 +299,8 @@ namespace XIVComboPlus
             //能打到MaxCount以上数量的怪的怪。
             List<T> objectMax = new List<T>(canGetObj.Length);
 
+            int maxCount = Service.Configuration.MultiCount;
+
             //循环能打中的目标。
             foreach (var t in canGetObj)
             {
@@ -301,19 +308,19 @@ namespace XIVComboPlus
                 byte count = HowMany(t, canAttack, range);
 
                 //如果只是检查一下，有了就可以别算了。
-                if(forCheck && count >= Service.Configuration.MultiCount)
+                if(forCheck && count >= maxCount)
                 {
                     objectMax.Add(t);
                     break;
                 }
 
-                if (count == Service.Configuration.MultiCount)
+                if (count == maxCount)
                 {
                     objectMax.Add(t);
                 }
-                else if (count > Service.Configuration.MultiCount)
+                else if (count > maxCount)
                 {
-                    Service.Configuration.MultiCount = count;
+                    maxCount = count;
                     objectMax.Clear();
                     objectMax.Add(t);
                 }
