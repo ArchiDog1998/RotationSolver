@@ -5,14 +5,17 @@ using System.Numerics;
 using System.Threading;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.JobGauge;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using XIVComboPlus;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVComboPlus;
 
@@ -20,7 +23,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 {
     private const string _command = "/pcombo";
 
-    private const string _lockCommand = "/plock";
+    private const string _lockCommand = "/tauto";
 
     private readonly WindowSystem windowSystem;
 
@@ -30,7 +33,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 
     private static Framework _framework;
 
-    public XIVComboPlusPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner, [RequiredVersion("1.0")] ClientState clientState)
+    public XIVComboPlusPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
     {
         pluginInterface.Create<Service>(Array.Empty<object>());
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
@@ -50,7 +53,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         val.ShowInHelp = true;
         commandManager.AddHandler(_command, val);
 
-        CommandInfo lockInfo = new CommandInfo(new CommandInfo.HandlerDelegate(TargetHelper.TargetObject));
+        CommandInfo lockInfo = new CommandInfo(new CommandInfo.HandlerDelegate(TargetObject));
         lockInfo.HelpMessage = "锁定想要的敌人。";
         lockInfo.ShowInHelp = true;
         commandManager.AddHandler(_lockCommand, lockInfo);
@@ -58,10 +61,6 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         _framework = framework;
         framework.Update += TargetHelper.Framework_Update;
     }
-
-
-
-
 
 
     public void Dispose()
@@ -79,7 +78,28 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         configWindow.IsOpen = true;
     }
 
+    internal void TargetObject(string command, string arguments)
+    {
+        string[] array = arguments.Split();
 
+        if(array.Length > 1)
+        {
+            if (array[1].Contains('H'))
+            {
+                Service.Configuration.IsTargetBoss = true;
+            }
+
+            if (array[1].Contains('L'))
+            {
+                Service.Configuration.IsTargetBoss = false;
+            }
+        }
+
+        uint inputActions = TargetHelper.GetActionsByName(array[0]).RowId;
+        uint outputActions = Service.IconReplacer.RemapActionID(inputActions);
+        TargetHelper.SetTarget(TargetHelper.GetBestTarget(Service.DataManager.GetExcelSheet<Action>().GetRow(outputActions)));
+
+    }
 
     private void OnCommand(string command, string arguments)
     {

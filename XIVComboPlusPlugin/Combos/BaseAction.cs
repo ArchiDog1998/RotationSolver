@@ -6,15 +6,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ActionCategory = Lumina.Excel.GeneratedSheets.ActionCategory;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVComboPlus.Combos
 {
     internal class BaseAction
     {
-        internal byte Level { get; }
-        internal uint ActionID { get; }
-        private bool IsAbility { get; }
-        internal virtual uint MPNeed { get; }
+        private Action _action;
+        private uint _actionType => _action.ActionCategory.Value.RowId;
+        internal byte Level => _action.ClassJobLevel;
+        internal uint ActionID => _action.RowId;
+        private bool IsAbility => _actionType == 4;
+        private bool IsSpell => _actionType == 2;
+        private bool IsWeaponskill => _actionType == 4;
+        internal short CastTime => (short)(_action.Cast100ms * 100);
+        internal virtual uint MPNeed
+        {
+            get
+            {
+                if(_action.PrimaryCostType == 3 || _action.PrimaryCostType == 4)
+                {
+                    return _action.PrimaryCostValue * 100u;
+                }
+                else if(_action.SecondaryCostType == 3 || _action.SecondaryCostType == 4)
+                {
+                    return _action.SecondaryCostValue * 100u;
+                }
+                return 0;
+            }
+        }
         /// <summary>
         /// 如果之前是这些ID，那么就不会执行。
         /// </summary>
@@ -42,15 +63,12 @@ namespace XIVComboPlus.Combos
         /// </summary>
         internal Func<bool> OtherCheck { private get; set; } = null;
 
-        internal BaseAction(byte level, uint actionID, uint mpNeed = 0, bool ability = false)
+        internal BaseAction(uint actionID)
         {
-            this.Level = level;
-            this.ActionID = actionID;
-            this.MPNeed = mpNeed;
-            this.IsAbility = ability;
+            _action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
         }
 
-        public bool TryUseAction(byte level, out uint action, uint lastAct = 0)
+        public bool TryUseAction(byte level, out uint action, uint lastAct = 0, bool mustUse = false)
         {
             action = ActionID;
 
@@ -112,6 +130,9 @@ namespace XIVComboPlus.Combos
 
             //用于自定义的要求没达到
             if (OtherCheck!= null && !OtherCheck()) return false;
+
+            //如果是个范围，并且人数不够的话，就算了。
+            if(!mustUse && !TargetHelper.ShoudUseAreaAction(_action)) return false;
 
             return true;
         }

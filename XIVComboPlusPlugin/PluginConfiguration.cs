@@ -14,14 +14,12 @@ public class PluginConfiguration : IPluginConfiguration
 {
     public int Version { get; set; } = 5;
 
+    public int MultiCount { get; set; } = 2;
 
-    //[JsonProperty("EnabledActionsV5")]
+    public bool IsTargetBoss { get; set; } = true;
     public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
 
-    // [JsonProperty("Debug")]
     public bool EnableSecretCombos { get; set; } = false;
-
-    //public uint[] DancerDanceCompatActionIDs { get; set; } = new uint[4] { 15989u, 16013u, 16007u, 16008u };
 
 
     public void Save()

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Numerics;
 using XIVComboPlus.Attributes;
 using XIVComboPlus.Combos;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVComboPlus
 {
@@ -18,18 +19,44 @@ namespace XIVComboPlus
         private static Vector3 _lastPosition;
         public static bool IsMoving { get; private set; }
 
-        public static BattleNpc[] Targets25 => GetObjectInRadius(Targets, 25f);
+        private static SortedList<uint, Func<Action, GameObject>> _specialGetTarget = new SortedList<uint, Func<Action, GameObject>>()
+        {
+
+        };
 
         private static BattleNpc[] Targets =>
         Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy && CanAttack(obj)).Select(obj => (BattleNpc)obj).ToArray();
 
-        public static PlayerCharacter[] PartyMembers =>
-        AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).ToArray();
+      //  public static PlayerCharacter[] PartyMembers =>
+      //AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).ToArray();
+        public static PlayerCharacter[] PartyMembers =>Service.PartyList.Select(obj => obj.GameObject as PlayerCharacter).ToArray();
+        /// <summary>
+        /// 玩家们
+        /// </summary>
         public static PlayerCharacter[] AllianceMembers =>
              Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
-        public static PlayerCharacter[] AllHealers => GetJobCategory(AllianceMembers, (jt) => jt == JobType.Healer);
-        public static PlayerCharacter[] AllDPS => GetJobCategory(AllianceMembers, (jt) => jt == JobType.Melee || jt == JobType.MagicalRanged || jt == JobType.PhysicalRanged);
-        public static PlayerCharacter[] AllTanks => GetJobCategory(AllianceMembers, (jt) => jt == JobType.Tank);
+        public static PlayerCharacter[] PartyHealers => GetJobCategory(PartyMembers, (jt) => jt == JobType.Healer);
+        public static PlayerCharacter[] PartyDPS => GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee || jt == JobType.MagicalRanged || jt == JobType.PhysicalRanged);
+        public static PlayerCharacter[] PartyTanks => GetJobCategory(PartyMembers, (jt) => jt == JobType.Tank);
+        public static PlayerCharacter[] PartyTanksAttached
+        {
+            get
+            {
+                var tanks = PartyTanks;
+
+                List<PlayerCharacter> attachedT = new List<PlayerCharacter>(tanks.Length);
+                foreach (var tank in tanks)
+                {
+                    if(tank.TargetObject.TargetObject == tank)
+                    {
+                        attachedT.Add(tank);
+                    }
+                }
+
+                return attachedT.ToArray();
+            }
+        }
+
         internal static void Init(SigScanner sigScanner)
         {
             _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
@@ -49,86 +76,169 @@ namespace XIVComboPlus
             return ((delegate*<long, IntPtr, long>)_func)(142L, actor.Address) == 1;
         }
 
-        internal static void TargetObject(string command, string arguments)
+
+
+        internal static void SetTarget(GameObject? obj)
         {
-            string[] array = arguments.Split();
+            Service.TargetManager.SetTarget(obj);
+        }
+        private static float DistanceToPlayer(GameObject obj)
+        {
+            return Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position);
+        }
 
-            switch (array[0])
+
+        private static PlayerCharacter[] GetJobCategory(PlayerCharacter[] objects, Func<JobType, bool> check)
+        {
+            List<PlayerCharacter> result = new List<PlayerCharacter>(objects.Length);
+
+            var validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => check(job.Type)).Select(job => job.Index));
+
+            foreach (var obj in objects)
             {
-                case "HMHP":
-                    SetTarget(Targets25.OrderByDescending(tar => tar.MaxHp).First());
-                    break;
+                if (validJobs.Contains((byte)obj.ClassJob.GameData?.RowId))
+                {
+                    result.Add(obj);
+                }
+            }
+            return result.ToArray();
+        }
 
-                case "LMHP":
-                    SetTarget(Targets25.OrderBy(tar => tar.MaxHp).First());
-                    break;
+        internal static Action GetActionsByName(string name)
+        {
+            var enumerator = Service.DataManager.GetExcelSheet<Action>().GetEnumerator();
 
-                case "Area":
-                    SetTarget(GetMostObjectInRadius(Targets, 25, 5));
-                    break;
+            while (enumerator.MoveNext())
+            {
+                var action = enumerator.Current;
+                if (action.Name == name && action.ClassJobLevel != 0)
+                {
+                    return action;
+                }
+            }
+            return null;
+        }
 
-                case "PLHP60":
-                    PlayerCharacter lowChara = PartyMembers.Where(p => p.CurrentHp != 0).OrderBy(p => (float)p.CurrentHp / p.MaxHp).First();
-                    if ((float)lowChara.CurrentHp / lowChara.MaxHp < 0.6) SetTarget(lowChara);
-                    break;
+        internal static GameObject GetBestTarget(Action act)
+        {
+            //如果都没有距离，这个还需要选对象嘛？
+            if (act.Range == 0) return null;
 
-                case "HArea8":
-                    SetTarget(GetMostObjectInRadius(PartyMembers, 30, 8));
-                    break;
+            //如果有特殊要求，这里写清楚！比如黑魔的以太步什么的。
+            if (_specialGetTarget.ContainsKey(act.RowId))
+            {
+                return _specialGetTarget[act.RowId].Invoke(act);
+            }
 
-                case "HArea6":
-                    SetTarget(GetMostObjectInRadius(PartyMembers, 30, 6));
-                    break;
+            //首先看看是不是能对小队成员进行操作的。
+            if (act.CanTargetParty)
+            {
+                //如果能选中队友，还消耗2400的蓝，那肯定是复活的。
+                if (act.CanTargetFriendly && act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
+                {
+                    //那就找到已经死了并且还没人救的还够得着的小可爱。
+                    var deadth = GetObjectInRadius(GetDeath(PartyMembers), act.Range);
 
-                case "Aetherial":
-                    PlayerCharacter target = (from heal in AllHealers
-                                              select (heal, DistanceToPlayer(heal) - heal.HitboxRadius) into gr
-                                              where gr.Item2 <= 25
-                                              orderby gr.Item2
-                                              select gr.heal).Last();
-                    if(target != null)
+                    //如果一个都没死，那为啥还要救呢？
+                    if (deadth.Length == 0) return null;
+
+                    //确认一下死了的T有哪些。
+                    var deathT = GetJobCategory(deadth, (j) => j == JobType.Tank);
+                    int TCount = PartyTanks.Length;
+
+                    //如果全死了，赶紧复活啊。
+                    if (TCount == deathT.Length)
                     {
-                        SetTarget(target);
-                        break;
+                        return deathT[0];
                     }
 
-                    target = (from heal in AllDPS
-                              select (heal, DistanceToPlayer(heal) - heal.HitboxRadius) into gr
-                              where gr.Item2 <= 25
-                              orderby gr.Item2
-                              select gr.heal).Last();
+                    //确认一下死了的H有哪些。
+                    var deathH = GetJobCategory(deadth, (j) => j == JobType.Tank);
 
-                    if (target != null)
-                    {
-                        SetTarget(target);
-                    }
-                    break;
+                    //如果H死了，就先救他。
+                    if (deathH.Length != 0) return deathH[0];
 
-                case "Death":
-                    PlayerCharacter death = GetDeath(AllHealers);
-                    if(death != null)
-                    {
-                        SetTarget(death);
-                        break;
-                    }
-                    death = GetDeath(AllTanks);
-                    if (death != null)
-                    {
-                        SetTarget(death);
-                        break;
-                    }
-                    death = GetDeath(AllDPS);
-                    if (death != null)
-                    {
-                        SetTarget(death);
-                        break;
-                    }
-                    break;
+                    //如果T死了，就再救他。
+                    if (deathT.Length != 0) return deathH[0];
+
+                    //T和H都还活着，那就随便救一个。
+                    return deadth[0];
+                }
+
+                //找到没死的队友们。
+                PlayerCharacter[] availableCharas = PartyMembers.Where(player => player.CurrentHp != 0).ToArray();
+
+                //判断是否是范围。
+                if (act.CastType > 0)
+                {
+                    //找到能覆盖最多的位置，并且选学最少的来。
+                    return GetMostObjectInRadius(availableCharas, act.Range, act.EffectRange, false).OrderBy(p => (float)p.CurrentHp / p.MaxHp).First();
+                }
+                else
+                {
+                    //选血量最少的那个。
+                    return GetObjectInRadius(availableCharas, act.Range).OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
+                }
+            }
+            //再看看是否可以选中敌对的。
+            else if (act.CanTargetHostile)
+            {
+                switch (act.CastType)
+                {
+                    case 1:
+                    default:
+                        //找到能打到的怪。
+                        var canReachTars = GetObjectInRadius(Targets, act.Range);
+
+                        //判断一下要选择打血最多的，还是最少的。
+                        if (Service.Configuration.IsTargetBoss)
+                        {
+                            return canReachTars.OrderBy(player => player.MaxHp).Last();
+                        }
+                        else
+                        {
+                            return canReachTars.OrderBy(player => player.MaxHp).First();
+                        }
+                    case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
+                        return GetMostObjectInRadius(Targets, act.Range, act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
+
+                    case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
+                        return GetMostObjectInArc(Targets, act.Range, false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+
+                    case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
+                        return GetMostObjectInLine(Targets, act.Range, false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+
+                }
+            }
+            //那么这个就不需要找到目标了，要么对着自己，要么就什么都不能选中。
+            else
+            {
+                return null;
             }
         }
 
-        private static PlayerCharacter GetDeath(PlayerCharacter[] charas)
+        internal static bool ShoudUseAreaAction(Action act)
         {
+            //如果在打Boss呢，那就不需要考虑AOE的问题了。
+            if (Service.Configuration.IsTargetBoss && act.CastType > 1) return false;
+
+            switch (act.CastType)
+            {
+                case 2: // 圆形范围攻击，看看人数够不够。
+                    return GetMostObjectInRadius(Targets, act.Range, act.EffectRange, true).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).Count() > 0;
+
+                case 3: // 扇形范围攻击。看看人数够不够。
+                    return GetMostObjectInArc(Targets, act.Range, true).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).Count() > 0;
+
+                case 4: //直线范围攻击。看看人数够不够。
+                    return GetMostObjectInLine(Targets, act.Range, true).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).Count() > 0;
+            }
+            return true;
+        }
+
+        private static PlayerCharacter[] GetDeath(PlayerCharacter[] charas)
+        {
+            List<PlayerCharacter> list = new List<PlayerCharacter>(charas.Length);
             foreach (var item in charas)
             {
                 //如果还有血，就算了。
@@ -150,68 +260,145 @@ namespace XIVComboPlus
                 bool isCasting = false;
                 foreach (var character in AllianceMembers)
                 {
-                    if(character.CastTargetObjectId == item.ObjectId)
+                    if (character.CastTargetObjectId == item.ObjectId)
                     {
                         isCasting = true;
                         break;
                     }
                 }
-                if(isCasting) continue;
+                if (isCasting) continue;
 
-                return item;
+                list.Add(item);
             }
-            return null;
+            return list.ToArray();
         }
 
-        private static void SetTarget(GameObject? obj)
-        {
-            Service.TargetManager.SetTarget(obj);
-        }
-        private static float DistanceToPlayer(GameObject obj)
-        {
-            return Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position);
-        }
-
+        /// <summary>
+        /// 获得玩家某范围内的所有怪。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objects"></param>
+        /// <param name="radius"></param>
+        /// <returns></returns>
         private static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
         {
             return objects.Where(o => DistanceToPlayer(o) <= radius + o.HitboxRadius).ToArray();
         }
 
-        private static T GetMostObjectInRadius<T>(T[] objects, float radius, float range) where T : BattleChara
+        private static T[] GetMostObject<T>(T[] canAttack, float radius, float range, Func<T, T[], float, byte> HowMany, bool forCheck) where T : BattleChara
         {
-            return (from t in GetObjectInRadius(objects, radius)
-                    select (t, Calculate(t, objects, radius, range)) into set
-                    where set.Item2 > 2
-                    orderby set.Item2
-                    select set.t).Last();
+            //能够打到的所有怪。
+            T[] canGetObj = GetObjectInRadius(canAttack, radius);
 
-            static float Calculate(T t, T[] objects, float radius, float range)
+
+            //能打到MaxCount以上数量的怪的怪。
+            List<T> objectMax = new List<T>(canGetObj.Length);
+
+            //循环能打中的目标。
+            foreach (var t in canGetObj)
+            {
+                //计算能达到的所有怪的数量。
+                byte count = HowMany(t, canAttack, range);
+
+                //如果只是检查一下，有了就可以别算了。
+                if(forCheck && count >= Service.Configuration.MultiCount)
+                {
+                    objectMax.Add(t);
+                    break;
+                }
+
+                if (count == Service.Configuration.MultiCount)
+                {
+                    objectMax.Add(t);
+                }
+                else if (count > Service.Configuration.MultiCount)
+                {
+                    Service.Configuration.MultiCount = count;
+                    objectMax.Clear();
+                    objectMax.Add(t);
+                }
+            }
+
+            return objectMax.ToArray();
+        }
+
+
+        private static T[] GetMostObjectInRadius<T>(T[] objects, float radius, float range, bool forCheck) where T : BattleChara
+        {
+            //可能可以蹭到的怪。
+            var canAttach = GetObjectInRadius(objects, radius + range);
+
+            return GetMostObject(canAttach, radius, range, CalculateCount, forCheck);
+
+            //计算一下在这些可选目标中有多少个目标可以受到攻击。
+            static byte CalculateCount(T t, T[] objects, float range)
             {
                 byte count = 0;
-                foreach (T obj in GetObjectInRadius(objects, radius + range))
+                foreach (T obj in objects)
                 {
-                    if (Vector3.Distance(t.Position, obj.Position) <= range + obj.HitboxRadius)
+                    if (Vector3.Distance(t.Position, obj.Position) <= range)
                     {
                         count++;
                     }
                 }
-                return count + (float)t.CurrentHp / t.MaxHp;
+                return count;
             }
         }
-        private static PlayerCharacter[] GetJobCategory(PlayerCharacter[] objects, Func<JobType, bool> check)
+
+        private static T[] GetMostObjectInArc<T>(T[] objects, float radius, bool forCheck) where T : BattleChara
         {
-            List<PlayerCharacter> result = new List<PlayerCharacter>(objects.Length);
+            //能够打到的所有怪。
+            var canGet = GetObjectInRadius(objects, radius);
 
-            var validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => check(job.Type)).Select(job => job.Index));
+            return GetMostObject(objects, radius, radius, CalculateCount, forCheck);
 
-            foreach (var obj in objects)
+            //计算一下在这些可选目标中有多少个目标可以受到攻击。
+            static byte CalculateCount(T t, T[] objects, float _)
             {
-                if (validJobs.Contains((byte)obj.ClassJob.GameData?.RowId))
+                byte count = 0;
+
+                Vector3 dir = t.Position - Service.ClientState.LocalPlayer.Position;
+
+                foreach (T obj in objects)
                 {
-                    result.Add(obj);
+                    Vector3 tdir = obj.Position - Service.ClientState.LocalPlayer.Position;
+
+                    double angle = Math.Acos(Vector3.Dot(dir, tdir)/(dir.Length() * tdir.Length()));
+                    if (angle <= Math.PI/3)
+                    {
+                        count++;
+                    }
                 }
+                return count;
             }
-            return result.ToArray();
+        }
+
+        private static T[] GetMostObjectInLine<T>(T[] objects, float radius, bool forCheck) where T : BattleChara
+        {
+            //能够打到的所有怪。
+            var canGet = GetObjectInRadius(objects, radius);
+
+            return GetMostObject(objects, radius, radius, CalculateCount, forCheck);
+
+            //计算一下在这些可选目标中有多少个目标可以受到攻击。
+            static byte CalculateCount(T t, T[] objects, float _)
+            {
+                byte count = 0;
+
+                Vector3 dir = t.Position - Service.ClientState.LocalPlayer.Position;
+
+                foreach (T obj in objects)
+                {
+                    Vector3 tdir = obj.Position - Service.ClientState.LocalPlayer.Position;
+
+                    double distance = Vector3.Cross(dir, tdir).Length()/dir.Length();
+                    if (distance <= 2)
+                    {
+                        count++;
+                    }
+                }
+                return count;
+            }
         }
     }
 }

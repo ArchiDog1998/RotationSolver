@@ -9,9 +9,9 @@ namespace XIVComboPlus.Combos.BLM;
 
 internal class BLM_SingleFeature : BLMCombo
 {
-    public override string ComboFancyName => "单个目标GCD";
+    public override string ComboFancyName => "黑魔GCD";
 
-    public override string Description => "替换火1为持续的GCD循环！";
+    public override string Description => "替换火1为持续的GCD循环，自动判断群攻还是单体！";
 
     protected internal override uint[] ActionIDs => new uint[] { Actions.Fire.ActionID };
 
@@ -23,6 +23,7 @@ internal class BLM_SingleFeature : BLMCombo
             //如果在移动并且有目标。
             if (HaveValidTarget)
             {
+                if (Actions.Flare.TryUseAction(level, out act)) return act;
                 if (Actions.Xenoglossy.TryUseAction(level, out act)) return act;
                 if (Actions.Triplecast.TryUseAction(level, out act)) return act;
                 if (GeneralActions.Swiftcast.TryUseAction(level, out act)) return act;
@@ -58,6 +59,9 @@ internal class BLM_SingleFeature : BLMCombo
     {
         if (JobGauge.InUmbralIce)
         {
+            if (Actions.Freeze.TryUseAction(level, out act)) return true;
+            if (Actions.Blizzard2.TryUseAction(level, out act)) return true;
+
             if (Actions.Blizzard4.TryUseAction(level, out act)) return true;
             if (Actions.Blizzard.TryUseAction(level, out act)) return true;
         }
@@ -68,11 +72,30 @@ internal class BLM_SingleFeature : BLMCombo
             {
                 if (AddUmbralIceStacks(level, out act)) return true;
             }
+
             //如果蓝不够了，赶紧一个绝望。
+            if (level >= 58 && JobGauge.UmbralHearts < 2)
+            {
+                if (Actions.Flare.TryUseAction(level, out act)) return true;
+            }
             if (Service.ClientState.LocalPlayer.CurrentMp < Actions.Fire4.MPNeed + Actions.Despair.MPNeed)
             {
                 if (Actions.Despair.TryUseAction(level, out act)) return true;
             }
+
+            //如果通晓满了，就放掉。
+            if (IsPolyglotStacksFull)
+            {
+                if (Actions.Foul.TryUseAction(level, out act)) return true;
+                if (Actions.Xenoglossy.TryUseAction(level, out act)) return true;
+            }
+
+            //试试看火2
+            if (Actions.Fire2.TryUseAction(level, out act)) return true;
+
+            //再试试看绝望
+            if (Actions.Flare.TryUseAction(level, out act)) return true;
+
 
             //如果MP够打一发伤害。
             if (Service.ClientState.LocalPlayer.CurrentMp >= AttackAstralFire(level, out act))
@@ -99,13 +122,6 @@ internal class BLM_SingleFeature : BLMCombo
     private uint AttackAstralFire(byte level, out uint act)
     {
         uint addition = level < Actions.Despair.Level ? 0u : 800u;
-
-        //如果通晓满了，就放掉。
-        if (IsPolyglotStacksFull)
-        {
-            if (Actions.Xenoglossy.TryUseAction(level, out act)) return addition;
-            if (Actions.Foul.TryUseAction(level, out act)) return addition;
-        }
 
         if (Actions.Fire4.TryUseAction(level, out act)) return Actions.Fire4.MPNeed + addition;
         if (Actions.Paradox.TryUseAction(level, out act)) return Actions.Paradox.MPNeed + addition;
@@ -156,7 +172,10 @@ internal class BLM_SingleFeature : BLMCombo
     {
         //如果冰满了，就别加了。
         act = 0;
-        if (JobGauge.UmbralIceStacks > 2)return false;
+        if (JobGauge.UmbralIceStacks > 2 && JobGauge.ElementTimeRemaining > 3000) return false;
+
+        //试试看冰2
+        if (Actions.Blizzard2.TryUseAction(level, out act)) return true;
 
         //试试看冰3
         if (Actions.Blizzard3.TryUseAction(level, out act)) return true;
@@ -172,12 +191,15 @@ internal class BLM_SingleFeature : BLMCombo
     {
         //如果火满了，就别加了。
         act = 0;
-        if (JobGauge.AstralFireStacks > 2) return false;
+        if (JobGauge.AstralFireStacks > 2 && JobGauge.ElementTimeRemaining > 3000) return false;
 
         if(Service.ClientState.LocalPlayer.CurrentMp < 5000)
         {
             if(AddUmbralIceStacks(level, out act)) return true;
         }
+
+        //试试看火2
+        if (Actions.Fire2.TryUseAction(level, out act)) return true;
 
         //试试看火3
         if (Actions.Fire3.TryUseAction(level, out act)) return true;
@@ -198,6 +220,9 @@ internal class BLM_SingleFeature : BLMCombo
 
     private bool AddThunderSingle(byte level, uint lastAct, out uint act)
     {
+        //试试看雷2
+        if (Actions.Thunder2.TryUseAction(level, out act, lastAct)) return true;
+
         //试试看雷1
         if (Actions.Thunder.TryUseAction(level, out act, lastAct)) return true;
 
@@ -209,6 +234,9 @@ internal class BLM_SingleFeature : BLMCombo
         //如果满了，或者等级太低，没有冰心，就别加了。
         act = 0;
         if (JobGauge.UmbralHearts == 3 || level < 58) return false;
+
+        //冻结
+        if (Actions.Freeze.TryUseAction(level, out act)) return true;
 
         //冰4
         if (Actions.Blizzard4.TryUseAction(level, out act)) return true;

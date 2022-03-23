@@ -4,6 +4,7 @@ using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge;
 using Dalamud.Game.ClientState.Objects;
+using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.IoC;
@@ -45,4 +46,10 @@ internal class Service
 
     [PluginService]
     internal static TargetManager TargetManager { get; private set; }
+
+    [PluginService]
+    internal static PartyList PartyList { get; private set; }
+
+    [PluginService]
+    internal static ChatGui Chat { get; private set; }
 }

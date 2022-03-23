@@ -24,18 +24,18 @@ internal abstract class CustomCombo
     {
         public static readonly BaseAction
             //混乱
-            Addle = new BaseAction(8, 7560u, ability: true),
+            Addle = new BaseAction(7560u),
 
             //即刻咏唱
-            Swiftcast = new BaseAction(18, 7561u, ability: true) { BuffsProvide = new ushort[]
+            Swiftcast = new BaseAction(7561u) { BuffsProvide = new ushort[]
             {
                 ObjectStatus.Swiftcast1,
                 ObjectStatus.Swiftcast2,
                 ObjectStatus.Triplecast,
-            }},
+            } },
 
-            //醒梦（如果MP低于5000那么使用）
-            LucidDreaming = new BaseAction(24, 7562u, ability: true)
+            //醒梦（如果MP低于6000那么使用）
+            LucidDreaming = new BaseAction(7562u)
             {
                 OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp < 6000,
             };
@@ -83,7 +83,7 @@ internal abstract class CustomCombo
     {
     }
 
-    public bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out uint newActionID)
+    internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out uint newActionID)
     {
         newActionID = 0u;
         if (!IsEnabled)
@@ -103,50 +103,6 @@ internal abstract class CustomCombo
         return true;
     }
 
-    //protected static uint CalcBestAction(uint original, params uint[] actions)
-    //{
-    //    return actions.Select(new Func<uint, (uint, IconReplacer.CooldownData)>(Selector)).Aggregate(((uint ActionID, IconReplacer.CooldownData Data) a1, (uint ActionID, IconReplacer.CooldownData Data) a2) => Compare(original, a1, a2)).Item1;
-        
-    //    static (uint ActionID, IconReplacer.CooldownData Data) Compare(uint original, (uint ActionID, IconReplacer.CooldownData Data) a1, (uint ActionID, IconReplacer.CooldownData Data) a2)
-    //    {
-    //        if (!a1.Data.IsCooldown && !a2.Data.IsCooldown)
-    //        {
-    //            if (original != a1.ActionID)
-    //            {
-    //                return a2;
-    //            }
-    //            return a1;
-    //        }
-    //        if (a1.Data.IsCooldown && a2.Data.IsCooldown)
-    //        {
-    //            if (!(a1.Data.CooldownRemaining < a2.Data.CooldownRemaining))
-    //            {
-    //                return a2;
-    //            }
-    //            return a1;
-    //        }
-    //        if (!a1.Data.IsCooldown)
-    //        {
-    //            return a1;
-    //        }
-    //        return a2;
-    //    }
-
-    //    static (uint ActionID, IconReplacer.CooldownData Data) Selector(uint actionID)
-    //    {
-    //        return (actionID, GetCooldown(actionID));
-    //    }
-    //}
-
     protected abstract uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level);
 
-    protected static uint OriginalHook(uint actionID)
-    {
-        return Service.IconReplacer.OriginalHook(actionID);
-    }
-
-    protected static bool HasCondition(ConditionFlag flag)
-    {
-        return Service.Conditions[flag];
-    }
 }

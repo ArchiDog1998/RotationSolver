@@ -9,8 +9,10 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using ImGuiNET;
+using Lumina.Excel.GeneratedSheets;
 using XIVComboPlus.Attributes;
 using XIVComboPlus.Combos;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVComboPlus;
 
@@ -29,7 +31,13 @@ internal class ConfigWindow : Window
 
     public override void Draw()
     {
-        ImGui.Text(Service.ClientState.LocalPlayer.ClassJob.GameData?.RowId.ToString());
+        int multiCount = Service.Configuration.MultiCount;
+        if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.05f, 1, 10))
+        {
+            Service.Configuration.MultiCount = multiCount;
+            Service.Configuration.Save();
+        }
+
 
         ImGui.Text("在这个窗口，你可以设定自己喜欢的连击设定。");
 

@@ -120,6 +120,11 @@ internal sealed class IconReplacer : IDisposable
     private unsafe uint GetIconDetour(IntPtr actionManager, uint actionID)
     {
         this.actionManager = actionManager;
+        return RemapActionID(actionID);
+    }
+
+    public uint RemapActionID(uint actionID)
+    {
         try
         {
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
@@ -129,12 +134,10 @@ internal sealed class IconReplacer : IDisposable
                 return OriginalHook(actionID);
             }
 
-            uint lastComboActionID = *(uint*)(void*)Service.Address.LastComboMove;
-            float comboTime = *(float*)(void*)Service.Address.ComboTimer;
             byte level = localPlayer.Level;
             foreach (CustomCombo customCombo in CustomCombosDict[classId])
             {
-                if (customCombo.TryInvoke(actionID, lastComboActionID, comboTime, level, out var newActionID))
+                if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newActionID))
                 {
                     return OriginalHook(newActionID);
                 }

@@ -61,8 +61,8 @@ namespace XIVComboPlus.Combos.BLM
             }
         }
 
-        internal BLMAction(byte level, uint actionID, uint mpNeed, bool isFire) 
-            : base(level, actionID, mpNeed, false)
+        internal BLMAction(uint actionID, bool isFire) 
+            : base(actionID)
         {
             this._isFire = isFire;
         }

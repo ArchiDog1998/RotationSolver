@@ -9,10 +9,10 @@ internal abstract class BRDCombo : CustomCombo
     {
         public static readonly BaseAction
             //强力射击
-            HeavyShoot = new BaseAction(1, 97u),
+            HeavyShoot = new BaseAction(97u),
 
             //直线射击
-            StraitShoot = new BaseAction(2, 98u) { BuffNeed = 122};
+            StraitShoot = new BaseAction(98u) { BuffNeed = 122};
     }
 
     public static class Buffs

@@ -34,24 +34,27 @@ namespace XIVComboPlus.Combos.BLM
 
             public static readonly BaseAction
                 //雷1
-                Thunder = new BaseAction(6, 144u, 200)
+                Thunder = new BaseAction(144u)
                 {
                     Debuffs = new ushort[]
                 {
                     ObjectStatus.Thunder,
+                    ObjectStatus.Thunder2,
                     ObjectStatus.Thunder3,
+                    ObjectStatus.Thunder4,
                 },
                     OtherIDs = new uint[] { 153u } //雷3 ID
                 },
 
                 //雷2
-                Thunder2 = new BaseAction(26, 7447u, 400)
+                Thunder2 = new BaseAction(7447u)
                 {
                     Debuffs = new ushort[]
                 {
+                    ObjectStatus.Thunder,
                     ObjectStatus.Thunder2,
-                    ObjectStatus.Thunder4,
-                },
+                    ObjectStatus.Thunder3,
+                    ObjectStatus.Thunder4,                },
                     OtherIDs = new uint[] { 7420u } //雷4 ID
                 },
 
@@ -74,55 +77,55 @@ namespace XIVComboPlus.Combos.BLM
                 //},
 
                 //火1
-                Fire = new BLMAction(2, 141u, 800, true),
+                Fire = new BLMAction(141u, true),
 
                 //火2
-                Fire2 = new BLMAction(18, 147u, 1500, true),
+                Fire2 = new BLMAction( 147u, true),
 
                 //火3
-                Fire3 = new BLMAction(35, 152u, 2000, true),
+                Fire3 = new BLMAction(152u, true),
 
                 //火4
-                Fire4 = new BLMAction(60, 3577u, 800, true) { OtherCheck = () => JobGauge.InAstralFire && JobGauge.ElementTimeRemaining > 5000 },
+                Fire4 = new BLMAction( 3577u,  true) { OtherCheck = () => JobGauge.InAstralFire && JobGauge.ElementTimeRemaining > 5000 },
 
                 ////高火2
                 //HighFire2 = new BLMAction(82, 25794u, 1500, true),
 
                 //冰1
-                Blizzard = new BLMAction(1, 142u, 400, false),
+                Blizzard = new BLMAction( 142u,  false),
 
                 //冰2
-                Blizzard2 = new BLMAction(12, 25793u, 800, false),
+                Blizzard2 = new BLMAction( 25793u,  false),
 
                 //冰3
-                Blizzard3 = new BLMAction(35, 154u, 800, false),
+                Blizzard3 = new BLMAction(154u, false),
 
                 //冰4
-                Blizzard4 = new BLMAction(58, 3576u, 800, false) { OtherCheck = () => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5: 1)},
+                Blizzard4 = new BLMAction( 3576u,  false) { OtherCheck = () => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5: 1)},
 
                 ////高冰2
                 //HighBlizzard2 = new BLMAction(82, 25795u, 800, false),
 
                 //冻结
-                Freeze = new BLMAction(40, 159u, 1000, false) { OtherCheck = () => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2800 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
+                Freeze = new BLMAction(159u, false) { OtherCheck = () => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2800 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
 
                 //星灵移位
-                Transpose = new BaseAction(4, 149u, ability: true) { OtherCheck = () => JobGauge.InUmbralIce || JobGauge.InAstralFire },
+                Transpose = new BaseAction(149u) { OtherCheck = () => JobGauge.InUmbralIce || JobGauge.InAstralFire },
 
                 //灵极魂
-                UmbralSoul = new BaseAction(76, 16506u, ability: true) { OtherCheck = () => JobGauge.InUmbralIce },
+                UmbralSoul = new BaseAction(16506u) { OtherCheck = () => JobGauge.InUmbralIce },
 
                 //魔罩
-                Manaward = new BaseAction(30, 157u, ability: true),
+                Manaward = new BaseAction( 157u),
 
                 //魔泉
-                Manafont = new BaseAction(30, 158u, ability: true) { OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp == 0},
+                Manafont = new BaseAction( 158u) { OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp == 0},
 
                 //激情咏唱
-                Sharpcast = new BaseAction(54, 3574u, ability: true),
+                Sharpcast = new BaseAction(3574u),
 
                 //三连咏唱
-                Triplecast = new BaseAction(66, 7421u, ability: true)
+                Triplecast = new BaseAction(7421u)
                 {
                     BuffsProvide = new ushort[]
                     {
@@ -134,7 +137,7 @@ namespace XIVComboPlus.Combos.BLM
                 },
 
                 //黑魔纹
-                Leylines = new BaseAction(52, 3573u, ability: true)
+                Leylines = new BaseAction( 3573u)
                 {
                     BuffsProvide = new ushort[]
                 {
@@ -143,25 +146,25 @@ namespace XIVComboPlus.Combos.BLM
                 },
 
                 //魔纹步
-                BetweenTheLines = new BaseAction(62, 7419u, ability: true) { BuffNeed = ObjectStatus.LeyLines },
+                BetweenTheLines = new BaseAction(7419u) { BuffNeed = ObjectStatus.LeyLines },
 
                 //详述
-                Amplifier = new BaseAction(86, 25796u, ability: true) { OtherCheck = () => !IsPolyglotStacksFull },
+                Amplifier = new BaseAction(25796u) { OtherCheck = () => !IsPolyglotStacksFull },
 
                 //核爆
-                Flare = new BaseAction(50, 162u, 800) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
+                Flare = new BaseAction(162u) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
 
                 //绝望
-                Despair = new BaseAction(72, 16505u, 800) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 3000 },
+                Despair = new BaseAction(16505u) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 3000 },
 
                 //秽浊
-                Foul = new BaseAction(70, 7422u) { OtherCheck = () => JobGauge.PolyglotStacks != 0 },
+                Foul = new BaseAction(7422u) { OtherCheck = () => JobGauge.PolyglotStacks != 0 },
 
                 //异言
-                Xenoglossy = new BaseAction(80, 16507u) { OtherCheck = () => JobGauge.PolyglotStacks != 0 },
+                Xenoglossy = new BaseAction(16507u) { OtherCheck = () => JobGauge.PolyglotStacks != 0 },
 
                 //悖论
-                Paradox = new BaseAction(90, 25797u, 1600);
+                Paradox = new BaseAction(25797u);
         }
 
         protected bool CanAddAbility(byte level, out uint action)
@@ -172,7 +175,7 @@ namespace XIVComboPlus.Combos.BLM
             if (CanInsertAbility)
             {
                 //加个即刻或者黑魔纹
-                if (JobGauge.InAstralFire && LocalPlayer.CurrentMp > 800)
+                if (JobGauge.InAstralFire && LocalPlayer.CurrentMp > 800 && JobGauge.UmbralHearts <2)
                 {
                     if (GeneralActions.Swiftcast.TryUseAction(level, out action)) return true;
                     if (Actions.Leylines.TryUseAction(level, out action)) return true;

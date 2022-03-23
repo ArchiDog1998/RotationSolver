@@ -38,5 +38,7 @@ namespace XIVComboPlus.Combos
 
             //学者复活
             Resurrection = 2449;
+
+
     }
 }
