@@ -43,19 +43,14 @@ namespace XIVComboPlus.Combos.BLM
                     ObjectStatus.Thunder3,
                     ObjectStatus.Thunder4,
                 },
-                    OtherIDs = new uint[] { 153u } //雷3 ID
+                    OtherIDs = new uint[] { 153u, 144u } //雷1,3 ID
                 },
 
                 //雷2
                 Thunder2 = new BaseAction(7447u)
                 {
-                    Debuffs = new ushort[]
-                {
-                    ObjectStatus.Thunder,
-                    ObjectStatus.Thunder2,
-                    ObjectStatus.Thunder3,
-                    ObjectStatus.Thunder4,                },
-                    OtherIDs = new uint[] { 7420u } //雷4 ID
+                    Debuffs = Thunder.Debuffs,
+                    OtherIDs = new uint[] { 7420u, 7447u } //雷2,4 ID
                 },
 
                 ////雷3
@@ -127,12 +122,7 @@ namespace XIVComboPlus.Combos.BLM
                 //三连咏唱
                 Triplecast = new BaseAction(7421u)
                 {
-                    BuffsProvide = new ushort[]
-                    {
-                        ObjectStatus.Swiftcast1,
-                        ObjectStatus.Swiftcast2,
-                        ObjectStatus.Triplecast,
-                    },
+                    BuffsProvide = GeneralActions.Swiftcast.BuffsProvide,
                     OtherCheck = () => JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp > 5000 && JobGauge.UmbralHearts < 2,
                 },
 

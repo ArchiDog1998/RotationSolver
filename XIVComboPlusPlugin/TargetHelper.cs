@@ -65,6 +65,8 @@ namespace XIVComboPlus
             }
         }
 
+        public static PlayerCharacter[] DeathPeople => GetObjectInRadius(GetDeath(PartyMembers), 30);
+
         internal static void Init(SigScanner sigScanner)
         {
             _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
@@ -139,14 +141,12 @@ namespace XIVComboPlus
                 //如果能选中队友，还消耗2400的蓝，那肯定是复活的。
                 if (act.CanTargetFriendly && act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
                 {
-                    //那就找到已经死了并且还没人救的还够得着的小可爱。
-                    var deadth = GetObjectInRadius(GetDeath(PartyMembers), act.Range);
 
                     //如果一个都没死，那为啥还要救呢？
-                    if (deadth.Length == 0) return null;
+                    if (DeathPeople.Length == 0) return null;
 
                     //确认一下死了的T有哪些。
-                    var deathT = GetJobCategory(deadth, (j) => j == JobType.Tank);
+                    var deathT = GetJobCategory(DeathPeople, (j) => j == JobType.Tank);
                     int TCount = PartyTanks.Length;
 
                     //如果全死了，赶紧复活啊。
@@ -156,7 +156,7 @@ namespace XIVComboPlus
                     }
 
                     //确认一下死了的H有哪些。
-                    var deathH = GetJobCategory(deadth, (j) => j == JobType.Tank);
+                    var deathH = GetJobCategory(DeathPeople, (j) => j == JobType.Tank);
 
                     //如果H死了，就先救他。
                     if (deathH.Length != 0) return deathH[0];
@@ -165,7 +165,7 @@ namespace XIVComboPlus
                     if (deathT.Length != 0) return deathH[0];
 
                     //T和H都还活着，那就随便救一个。
-                    return deadth[0];
+                    return DeathPeople[0];
                 }
 
                 //找到没死的队友们。
@@ -232,14 +232,14 @@ namespace XIVComboPlus
                         //找到能打到的怪。
                         var canReachTars = GetObjectInRadius(Targets, act.Range);
 
-                        //判断一下要选择打血最多的，还是最少的。
+                        //判断一下要选择打血最大的，还是最小的。
                         if (Service.Configuration.IsTargetBoss)
                         {
-                            return canReachTars.OrderBy(player => player.MaxHp).Last();
+                            return canReachTars.OrderBy(player => player.HitboxRadius).Last();
                         }
                         else
                         {
-                            return canReachTars.OrderBy(player => player.MaxHp).First();
+                            return canReachTars.OrderBy(player => player.HitboxRadius).First();
                         }
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
                         return GetMostObjectInRadius(Targets, act.Range, act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();

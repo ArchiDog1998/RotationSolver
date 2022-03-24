@@ -7,7 +7,7 @@ using XIVComboPlus.Combos;
 
 namespace XIVComboPlus.Combos.BLM;
 
-internal class BLM_SingleFeature : BLMCombo
+internal class BLM_Feature : BLMCombo
 {
     public override string ComboFancyName => "╨зд╖GCD";
 

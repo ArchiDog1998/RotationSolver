@@ -20,7 +20,8 @@ namespace XIVComboPlus.Combos
             //即刻咏唱
             Swiftcast1 = 1325,
             Swiftcast2 = 1987,
-
+            Swiftcast3 = 167,
+            Dualcast = 1249,
             //三连咏唱
             Triplecast = 1211,
 
@@ -37,7 +38,20 @@ namespace XIVComboPlus.Combos
             Raise = 1140,
 
             //学者复活
-            Resurrection = 2449;
+            Resurrection = 2449,
+
+            //止步
+            Bind1 = 13,
+            Bind2 = 1345,
+
+            //赤火炎预备
+            VerfireReady = 1234,
+
+            //赤飞石预备
+            VerstoneReady = 1235,
+
+            //促进
+            Acceleration = 1238;
 
 
     }

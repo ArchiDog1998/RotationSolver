@@ -84,12 +84,12 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 
         if(array.Length > 1)
         {
-            if (array[1].Contains('H'))
+            if (array[1].Contains('B'))
             {
                 Service.Configuration.IsTargetBoss = true;
             }
 
-            if (array[1].Contains('L'))
+            if (array[1].Contains('S'))
             {
                 Service.Configuration.IsTargetBoss = false;
             }

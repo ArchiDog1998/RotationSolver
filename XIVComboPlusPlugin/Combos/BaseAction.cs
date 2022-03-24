@@ -47,7 +47,7 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 给敌人造成的Debuff,如果有这些Debuff，那么不会执行。
         /// </summary>
-        internal ushort[] Debuffs { private get; set; } = null;
+        internal ushort[] Debuffs { get; set; } = null;
         /// <summary>
         /// 使用了这个技能会得到的Buff，如果有这些Buff中的一种，那么就不会执行。 
         /// </summary>
@@ -56,7 +56,12 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 使用这个技能需要的前置Buff，有任何一个就好。
         /// </summary>
-        internal ushort[] BuffsNeed { private get; set; } = null;
+        internal ushort[] BuffsNeed { get; set; } = null;
+
+        /// <summary>
+        /// 使用这个技能不能有的Buff。
+        /// </summary>
+        internal ushort[] BuffsCantHave { get; set; } = null;
 
         /// <summary>
         /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
@@ -71,16 +76,6 @@ namespace XIVComboPlus.Combos
         public bool TryUseAction(byte level, out uint action, uint lastAct = 0, bool mustUse = false)
         {
             action = ActionID;
-
-            //如果有输入上次的数据，那么上次不能和这次一样。
-            if(lastAct == ActionID) return false;
-            if(OtherIDs != null)
-            {
-                foreach (var id in OtherIDs)
-                {
-                    if (lastAct == id) return false;
-                }
-            }
 
             //等级不够。
             if (level < this.Level) return false;
@@ -100,16 +95,56 @@ namespace XIVComboPlus.Combos
                     }
                 }
                 if(!findFuff) return false;
-            } 
+            }
+
+            //如果有不能拥有的Buff的话，就返回。
+            if(BuffsCantHave != null)
+            {
+                foreach (var buff in BuffsCantHave)
+                {
+                    if (HaveStatus(FindStatusSelfFromSelf(buff)))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            //如果是能力技能，而且没法释放。
+            if (IsAbility)
+            {
+                int charge = _action.MaxCharges;
+                var CoolDown = Service.IconReplacer.GetCooldown(ActionID);
+                if (charge < 2 && CoolDown.IsCooldown) return false;
+
+                if (CoolDown.CooldownElapsed / CoolDown.CooldownTotal < 1f / charge) return false;
+            }
 
             //已有提供的Buff的任何一种
             if (BuffsProvide != null)
             {
                 foreach (var buff in BuffsProvide)
                 {
-                    if(HaveStatus(FindStatusSelfFromSelf(buff))) return false;
+                    if (HaveStatus(FindStatusSelfFromSelf(buff))) return false;
                 }
             }
+
+            //如果必须要用，那么以下的条件就不用判断了。
+            if (mustUse) return true;
+
+            //如果有输入上次的数据，那么上次不能是上述的ID。
+            if (OtherIDs != null)
+            {
+                foreach (var id in OtherIDs)
+                {
+                    if (lastAct == id) return false;
+                }
+            }
+
+            //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
+            uint comboAction = _action.ActionCombo.Row;
+            if (comboAction != 0 && lastAct != 0 && comboAction != lastAct) return false;
+
+
 
             //敌方已有充足的Debuff
             if (Debuffs != null)
@@ -136,9 +171,10 @@ namespace XIVComboPlus.Combos
                 }
             }
 
-            //如果是能力技能，还在冷却。
+            //如果是能力技能，还没填满。
             if (IsAbility && Service.IconReplacer.GetCooldown(ActionID).IsCooldown) return false;
 
+            //如果是个法术，并且还在移动，也没有即刻相关的技能。
             if (TargetHelper.IsMoving && IsSpell)
             {
                 bool haveSwift = false;
@@ -154,10 +190,10 @@ namespace XIVComboPlus.Combos
             }
 
             //用于自定义的要求没达到
-            if (OtherCheck!= null && !OtherCheck()) return false;
+            if (OtherCheck != null && !OtherCheck()) return false;
 
             //如果是个范围，并且人数不够的话，就算了。
-            if(!mustUse && !TargetHelper.ShoudUseAreaAction(_action)) return false;
+            if(!TargetHelper.ShoudUseAreaAction(_action)) return false;
 
             return true;
         }

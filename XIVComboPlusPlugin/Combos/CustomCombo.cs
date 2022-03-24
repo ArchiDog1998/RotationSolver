@@ -31,7 +31,9 @@ public abstract class CustomCombo
             {
                 ObjectStatus.Swiftcast1,
                 ObjectStatus.Swiftcast2,
+                ObjectStatus.Swiftcast3,
                 ObjectStatus.Triplecast,
+                ObjectStatus.Dualcast,
             } },
 
             //醒梦（如果MP低于6000那么使用）
@@ -108,7 +110,7 @@ public abstract class CustomCombo
             return false;
         }
         uint num2 = Invoke(actionID, lastComboActionID, comboTime, level);
-        if (num2 == 0 || actionID == num2)
+        if (actionID == num2)
         {
             return false;
         }
