@@ -12,12 +12,14 @@ namespace XIVComboPlus.Combos.RDM
 
         public override string Description => "替换短兵相接为爆发用6连";
 
-        protected internal override uint[] ActionIDs => new uint[] { Actions.CorpsAcorps.ActionID };
+        protected internal override uint[] ActionIDs => new uint[] { Actions.EnchantedRiposte.ActionID };
 
         protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
         {
-            if(CanBreak(lastComboActionID, level, out uint act, true)) return act;
-            return 0;
+            uint act;
+            if (CanBreak(lastComboActionID, level, out act, true)) return act;
+
+            return Actions.Verraise.ActionID;
         }
     }
 }

@@ -42,14 +42,13 @@ namespace XIVComboPlus.Combos.RDM
             //如果是合适的时候爆发，那赶紧的！
             if (CanBreak(lastComboActionID, level, out act, false)) return act;
 
+
             #region 常规输出
             if (Actions.Verfire.TryUseAction(level, out act)) return act;
             if (Actions.Verstone.TryUseAction(level, out act)) return act;
 
             //试试看散碎
             if (Actions.Scatter.TryUseAction(level, out act)) return act;
-            if (Actions.Jolt.TryUseAction(level, out act)) return act;
-
             //平衡魔元
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
@@ -61,9 +60,11 @@ namespace XIVComboPlus.Combos.RDM
                 if (Actions.Verthunder2.TryUseAction(level, out act)) return act;
                 if (Actions.Verthunder.TryUseAction(level, out act)) return act;
             }
+            if (Actions.Jolt.TryUseAction(level, out act)) return act;
+
             #endregion
 
-            if (Actions.Vercure.TryUseAction(level, out act, mustUse: true)) return act;
+            //if (Actions.Vercure.TryUseAction(level, out act, mustUse: true)) return act;
 
             return 0;
         }

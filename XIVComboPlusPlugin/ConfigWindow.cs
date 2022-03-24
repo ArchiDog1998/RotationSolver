@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
@@ -31,6 +32,7 @@ internal class ConfigWindow : Window
 
     public override void Draw()
     {
+        ImGui.Text(Service.Configuration.IsTargetBoss.ToString());
 
         int multiCount = Service.Configuration.MultiCount;
         if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))

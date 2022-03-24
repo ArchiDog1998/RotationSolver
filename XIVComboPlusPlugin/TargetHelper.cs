@@ -230,7 +230,7 @@ namespace XIVComboPlus
                     case 1:
                     default:
                         //找到能打到的怪。
-                        var canReachTars = GetObjectInRadius(Targets, act.Range);
+                        var canReachTars = GetObjectInRadius(Targets, Math.Max(act.Range, 3f));
 
                         //判断一下要选择打血最大的，还是最小的。
                         if (Service.Configuration.IsTargetBoss)
@@ -245,10 +245,10 @@ namespace XIVComboPlus
                         return GetMostObjectInRadius(Targets, act.Range, act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
 
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        return GetMostObjectInArc(Targets, act.Range, false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+                        return GetMostObjectInArc(Targets, Math.Max(act.Range, 3f), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
 
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        return GetMostObjectInLine(Targets, act.Range, false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+                        return GetMostObjectInLine(Targets, Math.Max(act.Range, 3f), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
 
                 }
             }
@@ -259,21 +259,23 @@ namespace XIVComboPlus
             }
         }
 
-        internal static bool ShoudUseAreaAction(Action act)
+        internal static bool ShoudUseAction(Action act)
         {
             //如果在打Boss呢，那就不需要考虑AOE的问题了。
             if (Service.Configuration.IsTargetBoss && act.CastType > 1) return false;
 
             switch (act.CastType)
             {
+                case 1:
+                    return GetObjectInRadius(Targets, Math.Max(act.Range, 3f)).Count() > 0;
                 case 2: // 圆形范围攻击，看看人数够不够。
-                    return GetMostObjectInRadius(Targets, act.Range, act.EffectRange, true).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).Count() > 0;
+                    return GetMostObjectInRadius(Targets, act.Range, act.EffectRange, true).Count() > 0;
 
                 case 3: // 扇形范围攻击。看看人数够不够。
-                    return GetMostObjectInArc(Targets, act.Range, true).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).Count() > 0;
+                    return GetMostObjectInArc(Targets, Math.Max(act.Range, 3f), true).Count() > 0;
 
                 case 4: //直线范围攻击。看看人数够不够。
-                    return GetMostObjectInLine(Targets, act.Range, true).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).Count() > 0;
+                    return GetMostObjectInLine(Targets, Math.Max(act.Range, 3f), true).Count() > 0;
             }
             return true;
         }

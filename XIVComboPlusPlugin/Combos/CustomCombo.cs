@@ -93,7 +93,7 @@ public abstract class CustomCombo
     }
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
     protected static GameObject Target => Service.TargetManager.Target;
-    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && Service.IconReplacer.GetCooldown(141u).CooldownRemaining > 0.67;
+    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && Service.IconReplacer.GetCooldown(141u).CooldownRemaining > 0.5;
     protected CustomCombo()
     {
     }
@@ -110,7 +110,7 @@ public abstract class CustomCombo
             return false;
         }
         uint num2 = Invoke(actionID, lastComboActionID, comboTime, level);
-        if (actionID == num2)
+        if (num2 == 0 || actionID == num2)
         {
             return false;
         }

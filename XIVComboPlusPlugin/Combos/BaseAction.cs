@@ -91,7 +91,8 @@ namespace XIVComboPlus.Combos
                 {
                     if (HaveStatus(FindStatusSelfFromSelf(buff)))
                     {
-                        findFuff = true; break;
+                        findFuff = true;
+                        break;
                     }
                 }
                 if(!findFuff) return false;
@@ -142,7 +143,7 @@ namespace XIVComboPlus.Combos
 
             //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
             uint comboAction = _action.ActionCombo.Row;
-            if (comboAction != 0 && lastAct != 0 && comboAction != lastAct) return false;
+            if (comboAction != lastAct) return false;
 
 
 
@@ -193,7 +194,7 @@ namespace XIVComboPlus.Combos
             if (OtherCheck != null && !OtherCheck()) return false;
 
             //如果是个范围，并且人数不够的话，就算了。
-            if(!TargetHelper.ShoudUseAreaAction(_action)) return false;
+            if(!TargetHelper.ShoudUseAction(_action)) return false;
 
             return true;
         }
