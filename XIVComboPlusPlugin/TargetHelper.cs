@@ -8,20 +8,28 @@ using System.Linq;
 using System.Numerics;
 using XIVComboPlus.Attributes;
 using XIVComboPlus.Combos;
+using XIVComboPlus.Combos.BLM;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVComboPlus
 {
     internal class TargetHelper
     {
+        internal enum GetTargetFunction
+        {
+            LowHP,
+            FaceDirction,
+        }
+
         private static IntPtr _func;
 
         private static Vector3 _lastPosition;
         public static bool IsMoving { get; private set; }
 
-        private static SortedList<uint, Func<Action, GameObject>> _specialGetTarget = new SortedList<uint, Func<Action, GameObject>>()
+        private static SortedList<uint, GetTargetFunction> _specialGetTarget = new SortedList<uint, GetTargetFunction>()
         {
-
+            //以太步，找面前的友军。
+            { 8869u, GetTargetFunction.FaceDirction},
         };
 
         internal static BattleNpc[] Targets =>
@@ -124,11 +132,6 @@ namespace XIVComboPlus
             //如果都没有距离，这个还需要选对象嘛？
             if (act.Range == 0) return null;
 
-            //如果有特殊要求，这里写清楚！比如黑魔的以太步什么的。
-            if (_specialGetTarget.ContainsKey(act.RowId))
-            {
-                return _specialGetTarget[act.RowId].Invoke(act);
-            }
 
             //首先看看是不是能对小队成员进行操作的。
             if (act.CanTargetParty)
@@ -181,8 +184,42 @@ namespace XIVComboPlus
                 }
                 else
                 {
+                    availableCharas = GetObjectInRadius(availableCharas, act.Range);
+
+                    //如果是特殊需求的话。
+                    if (_specialGetTarget.ContainsKey(act.RowId))
+                    {
+                        switch (_specialGetTarget[act.RowId])
+                        {
+                            //如果特殊需求就是选最少的血量，那就跳过，到最后再处理。
+                            case GetTargetFunction.LowHP:
+                            default:
+                                break;
+
+                                //找到面前夹角30度中最远的那个目标。
+                            case GetTargetFunction.FaceDirction:
+
+                                //把T去掉，省的突然暴毙。
+                                availableCharas = GetJobCategory(availableCharas, (jt) => !(jt == JobType.Tank));
+
+                                Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
+                                float rotation = Service.ClientState.LocalPlayer.Rotation;
+                                Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+
+                                return  availableCharas.Where(t =>
+                                {
+                                    Vector3 dir = t.Position - pPosition;
+                                    Vector2 dirVec = new Vector2(dir.Z, dir.X);
+                                    double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
+                                    return angle <= Math.PI / 6;
+                                }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
+
+                        }
+                    }
+
                     //选血量最少的那个。
-                    return GetObjectInRadius(availableCharas, act.Range).OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
+                    return availableCharas.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
+
                 }
             }
             //再看看是否可以选中敌对的。

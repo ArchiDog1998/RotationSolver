@@ -54,9 +54,9 @@ namespace XIVComboPlus.Combos
         internal ushort[] BuffsProvide { get; set; } = null;
 
         /// <summary>
-        /// 使用这个技能需要的前置Buff
+        /// 使用这个技能需要的前置Buff，有任何一个就好。
         /// </summary>
-        internal ushort BuffNeed { private get; set; } = 0;
+        internal ushort[] BuffsNeed { private get; set; } = null;
 
         /// <summary>
         /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
@@ -89,7 +89,18 @@ namespace XIVComboPlus.Combos
             if (Service.ClientState.LocalPlayer.CurrentMp < this.MPNeed) return false;
 
             //没有前置Buff
-            if(BuffNeed != 0 && !HaveStatus(FindStatusSelfFromSelf(BuffNeed))) return false;
+            if(BuffsNeed != null)
+            {
+                bool findFuff = false;
+                foreach (var buff in BuffsNeed)
+                {
+                    if (HaveStatus(FindStatusSelfFromSelf(buff)))
+                    {
+                        findFuff = true; break;
+                    }
+                }
+                if(!findFuff) return false;
+            } 
 
             //已有提供的Buff的任何一种
             if (BuffsProvide != null)

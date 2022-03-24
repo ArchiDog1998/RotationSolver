@@ -29,7 +29,7 @@ namespace XIVComboPlus.Combos.BLM
             }
         }
 
-        protected struct Actions
+        internal struct Actions
         {
 
             public static readonly BaseAction
@@ -133,20 +133,18 @@ namespace XIVComboPlus.Combos.BLM
                         ObjectStatus.Swiftcast2,
                         ObjectStatus.Triplecast,
                     },
-                    OtherCheck = () => JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp > 5000,
+                    OtherCheck = () => JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp > 5000 && JobGauge.UmbralHearts < 2,
                 },
 
                 //黑魔纹
-                Leylines = new BaseAction( 3573u)
+                Leylines = new BaseAction(3573u)
                 {
-                    BuffsProvide = new ushort[]
-                {
-                    ObjectStatus.LeyLines,
-                }
+                    BuffsProvide = new ushort[]{ObjectStatus.LeyLines,}, 
+                    BuffsNeed = GeneralActions.Swiftcast.BuffsProvide
                 },
 
                 //魔纹步
-                BetweenTheLines = new BaseAction(7419u) { BuffNeed = ObjectStatus.LeyLines },
+                BetweenTheLines = new BaseAction(7419u) { BuffsNeed = new ushort[] { ObjectStatus.LeyLines } },
 
                 //详述
                 Amplifier = new BaseAction(25796u) { OtherCheck = () => !IsPolyglotStacksFull },
@@ -178,7 +176,7 @@ namespace XIVComboPlus.Combos.BLM
                 if (JobGauge.InAstralFire && LocalPlayer.CurrentMp > 800 && JobGauge.UmbralHearts <2)
                 {
                     if (GeneralActions.Swiftcast.TryUseAction(level, out action)) return true;
-                    if (Actions.Leylines.TryUseAction(level, out action)) return true;
+                    //if (Actions.Leylines.TryUseAction(level, out action)) return true;
                 }
 
                 //加个通晓

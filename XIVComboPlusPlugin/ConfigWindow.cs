@@ -31,13 +31,15 @@ internal class ConfigWindow : Window
 
     public override void Draw()
     {
+
         int multiCount = Service.Configuration.MultiCount;
-        if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.05f, 1, 10))
+        if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
         {
             Service.Configuration.MultiCount = multiCount;
             Service.Configuration.Save();
         }
 
+        ImGui.Separator();
 
         ImGui.Text("在这个窗口，你可以设定自己喜欢的连击设定。");
 
@@ -50,11 +52,11 @@ internal class ConfigWindow : Window
         if (ImGui.IsItemHovered())
         {
             ImGui.BeginTooltip();
-            ImGui.TextUnformatted("Combos too dangerous for the common folk");
+            ImGui.TextUnformatted("这些连击对于普通人来说太危险了！");
             ImGui.EndTooltip();
         }
         ImGui.BeginChild("scrolling", new Vector2(0f, -1f), true);
-        ImGui.PushStyleVar((ImGuiStyleVar)13, new Vector2(0f, 5f));
+        ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
         int num = 1;
 
         foreach (uint key in IconReplacer.CustomCombosDict.Keys)
@@ -143,7 +145,10 @@ internal class ConfigWindow : Window
                 num += combos.Length;
             }
         }
+
         ImGui.PopStyleVar();
         ImGui.EndChild();
+
+
     }
 }

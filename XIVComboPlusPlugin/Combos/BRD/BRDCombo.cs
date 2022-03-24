@@ -12,7 +12,7 @@ internal abstract class BRDCombo : CustomCombo
             HeavyShoot = new BaseAction(97u),
 
             //Ö±ÏßÉä»÷
-            StraitShoot = new BaseAction(98u) { BuffNeed = 122};
+            StraitShoot = new BaseAction(98u) { BuffsNeed = new ushort[] { 122 } };
     }
 
     public static class Buffs
