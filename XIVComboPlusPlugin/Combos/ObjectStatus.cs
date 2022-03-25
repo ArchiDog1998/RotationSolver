@@ -51,8 +51,34 @@ namespace XIVComboPlus.Combos
             VerstoneReady = 1235,
 
             //促进
-            Acceleration = 1238;
+            Acceleration = 1238,
 
+            //疾风
+            Aero = 143,
+
+            //烈风
+            Aero2 = 144,
+
+            //天辉
+            Dia = 1871,
+
+            //医济的Hot
+            Medica2 = 150,
+            TrueMedica2 = 2792,
+
+            //再生
+            Regen1 = 158,
+            Regen2 = 897,
+            Regen3 = 1330,
+
+            //死斗
+            Holmgang = 409,
+
+            //死而不僵
+            WalkingDead = 811,
+
+            //超火流行
+            Superbolide = 1836;
 
     }
 }

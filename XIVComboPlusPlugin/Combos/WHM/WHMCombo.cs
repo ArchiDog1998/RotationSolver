@@ -1,66 +1,146 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-
+using Dalamud.Game.ClientState.Objects.SubKinds;
+using System.Linq;
 namespace XIVComboPlus.Combos;
 
-internal abstract class WHMCombo : CustomComboJob<BLMGauge>
+internal abstract class WHMCombo : CustomComboJob<WHMGauge>
 {
 
-    protected struct Actions
+    internal struct Actions
     {
+        public static readonly BaseAction
+            //飞石 平A
+            Stone = new BaseAction(119),
 
+            //疾风 Dot
+            Aero = new BaseAction(121)
+            {
+                TargetStatus = new ushort[]
+                {
+                    ObjectStatus.Aero,
+                    ObjectStatus.Aero2,
+                    ObjectStatus.Dia,
+                }
+            },
+            //苦难之心
+            AfflatusMisery = new BaseAction(16535)
+            {
+                OtherCheck = () => JobGauge.BloodLily == 3,
+            },
+            //神圣
+            Holy = new BaseAction(139),
+
+            //治疗
+            Cure = new BaseAction(120, true),
+            //救疗
+            Cure2 = new BaseAction(135, true),
+            //神名
+            Tetragrammaton = new BaseAction(3570, true),
+            //安慰之心 800
+            AfflatusSolace = new BaseAction(16531, true)
+            {
+                OtherCheck = () => JobGauge.Lily > 0,
+            },
+            //再生
+            Regen = new BaseAction(137, true)
+            {
+                TargetStatus = new ushort[]
+                {
+                    ObjectStatus.Regen1,
+                    ObjectStatus.Regen2,
+                    ObjectStatus.Regen3,
+                }
+            },
+            //水流幕
+            Aquaveil = new BaseAction(25861, true),
+            //神祝祷
+            DivineBenison = new BaseAction(7432, true),
+            //天赐
+            Benediction = new BaseAction(140, true),
+
+            //医治 群奶最基础的。300
+            Medica = new BaseAction(124, true),
+            //愈疗 600
+            Cure3 = new BaseAction(131, true),
+            //医济 群奶加Hot。
+            Medica2 = new BaseAction(133, true)
+            {
+                TargetStatus = new ushort[]
+                {
+                    ObjectStatus.Medica2,
+                    ObjectStatus.TrueMedica2,
+                },
+            },
+            //庇护所
+            Asylum = new BaseAction(3569, true),
+            //法令
+            Assize = new BaseAction(3571, true),
+            //狂喜之心 400
+            AfflatusRapture = new BaseAction(16534, true)
+            {
+                OtherCheck = () => JobGauge.Lily > 0,
+            },
+            //礼仪之铃
+            LiturgyoftheBell = new BaseAction(25862, true),
+
+            //复活
+            Raise = new BaseAction(125),
+
+            //神速咏唱
+            PresenseOfMind = new BaseAction(136),
+            //无中生有
+            ThinAir = new BaseAction(7430),
+
+            //全大赦
+            PlenaryIndulgence = new BaseAction(7433),
+            //节制
+            Temperance = new BaseAction(16536);
     }
 
-    public static class Debuffs
+    protected bool CanAddAbility(byte level, out uint action)
     {
-        public const ushort 疾风 = 143;
+        action = 0;
 
-        public const ushort 烈风 = 144;
+        if (CanInsertAbility)
+        {
+            //加个水流幕
+            if (Actions.Aquaveil.TryUseAction(level, out action)) return true;
 
-        public const ushort Glare = 1871;
+            //加个神祝祷
+            if (Actions.DivineBenison.TryUseAction(level, out action)) return true;
+
+            //加个法令
+            if (Actions.Assize.TryUseAction(level, out action)) return true;
+
+            //加个无中生有
+            if (Actions.ThinAir.TryUseAction(level, out action)) return true;
+
+            //加个神速咏唱
+            if (Actions.PresenseOfMind.TryUseAction(level, out action)) return true;
+
+            //加个醒梦
+            if (GeneralActions.LucidDreaming.TryUseAction(level, out action)) return true;
+        }
+        return false;
     }
 
-    public static class Levels
+    internal static bool UseBenediction(out PlayerCharacter dangeriousTank)
     {
-        public const byte Cure2 = 30;
+        dangeriousTank = null;
+        uint[] dangerousState = new uint[] { ObjectStatus.Holmgang, ObjectStatus.WalkingDead, ObjectStatus.Superbolide };
+        foreach (var tank in TargetHelper.PartyTanks)
+        {
+            foreach (var tag in tank.StatusList)
+            {
+                if (dangerousState.Contains(tag.StatusId) && tag.RemainingTime < 1)
+                {
+                    dangeriousTank = tank;
+                    return true;
+                }
+            }
+        }
 
-        public const byte AfflatusSolace = 52;
-
-        public const byte AfflatusMisery = 74;
-
-        public const byte AfflatusRapture = 76;
+        return false;
     }
 
-    public const byte ClassID = 6;
-
-    public const byte JobID = 24;
-
-    public const uint AfflatusSolace = 16531u;
-
-    public const uint AfflatusRapture = 16534u;
-
-    public const uint AfflatusMisery = 16535u;
-
-    public const uint Cure2 = 135u;
-
-    public const uint Cure = 120u;
-
-    public const uint Raise = 125u;
-
-    public const uint Glare = 16533u;
-
-    public const uint Stone = 119u;
-
-    public const uint StoneTwo = 127u;
-
-    public const uint 医济 = 133u;
-
-    public const uint StoneThree = 3568u;
-
-    public const uint StoneFour = 7431u;
-
-    public const uint Aero = 121u;
-
-    public const uint Dia = 16532u;
-
-    public const uint Medica = 124u;
 }

@@ -9,6 +9,7 @@ namespace XIVComboPlus.Combos.BLM
 {
     internal abstract class BLMCombo : CustomComboJob<BLMGauge>
     {
+        protected bool LastUseManafont = false;
         protected static bool HaveEnoughMP => LocalPlayer.CurrentMp > 9000;
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace XIVComboPlus.Combos.BLM
                 //雷1
                 Thunder = new BaseAction(144u)
                 {
-                    Debuffs = new ushort[]
+                    TargetStatus = new ushort[]
                 {
                     ObjectStatus.Thunder,
                     ObjectStatus.Thunder2,
@@ -49,7 +50,7 @@ namespace XIVComboPlus.Combos.BLM
                 //雷2
                 Thunder2 = new BaseAction(7447u)
                 {
-                    Debuffs = Thunder.Debuffs,
+                    TargetStatus = Thunder.TargetStatus,
                     OtherIDs = new uint[] { 7420u, 7447u } //雷2,4 ID
                 },
 
@@ -114,7 +115,7 @@ namespace XIVComboPlus.Combos.BLM
                 Manaward = new BaseAction( 157u),
 
                 //魔泉
-                Manafont = new BaseAction( 158u) { OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp == 0},
+                Manafont = new BaseAction( 158u) { OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp == 0 && JobGauge.InAstralFire},
 
                 //激情咏唱
                 Sharpcast = new BaseAction(3574u),
@@ -123,14 +124,13 @@ namespace XIVComboPlus.Combos.BLM
                 Triplecast = new BaseAction(7421u)
                 {
                     BuffsProvide = GeneralActions.Swiftcast.BuffsProvide,
-                    OtherCheck = () => JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp > 5000 && JobGauge.UmbralHearts < 2,
+                    OtherCheck = () => JobGauge.InAstralFire && JobGauge.UmbralHearts < 2,
                 },
 
                 //黑魔纹
                 Leylines = new BaseAction(3573u)
                 {
                     BuffsProvide = new ushort[]{ObjectStatus.LeyLines,}, 
-                    BuffsNeed = GeneralActions.Swiftcast.BuffsProvide
                 },
 
                 //魔纹步
@@ -159,6 +159,12 @@ namespace XIVComboPlus.Combos.BLM
         {
             if(Actions.Triplecast.TryUseAction(level, out action)) return true;
 
+            //加个魔泉
+            if (Actions.Manafont.TryUseAction(level, out action))
+            {
+                LastUseManafont = true;
+                return true;
+            }
 
             if (CanInsertAbility)
             {
@@ -166,17 +172,13 @@ namespace XIVComboPlus.Combos.BLM
                 if (JobGauge.InAstralFire && LocalPlayer.CurrentMp > 800 && JobGauge.UmbralHearts <2)
                 {
                     if (GeneralActions.Swiftcast.TryUseAction(level, out action)) return true;
-                    //if (Actions.Leylines.TryUseAction(level, out action)) return true;
                 }
 
                 //加个通晓
                 if (Actions.Amplifier.TryUseAction(level, out action)) return true;
 
-                //加个魔泉
-                if (Actions.Manafont.TryUseAction(level, out action)) return true;
-
                 //加个激情
-                if (Actions.Sharpcast.TryUseAction(level, out action)) return true;
+                if (Actions.Sharpcast.TryUseAction(level, out action, mustUse:true)) return true;
 
                 //加个混乱
                 if (GeneralActions.Addle.TryUseAction(level, out action)) return true;

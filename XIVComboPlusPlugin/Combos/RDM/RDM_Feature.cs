@@ -21,7 +21,7 @@ namespace XIVComboPlus.Combos.RDM
             //如果还在移动，并且有目标的角度。
             if(IsMoving && HaveTargetAngle)
             {
-                if( Actions.Acceleration.TryUseAction(level, out act, mustUse:true)) return act;
+                if (Actions.Acceleration.TryUseAction(level, out act, mustUse: true)) return act;
                 if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return act;
             }
 
@@ -31,15 +31,15 @@ namespace XIVComboPlus.Combos.RDM
                 if (Actions.Vercure.TryUseAction(level, out act, mustUse: true)) return act;
             }
 
-            if(TargetHelper.DeathPeople.Length != 0)
+            //如果现在可以增加能力技
+            if (CanAddAbility(level, lastComboActionID, out act)) return act;
+
+            if (TargetHelper.DeathPeopleParty.Length != 0)
             {
                 if (Actions.Verraise.TryUseAction(level, out act, mustUse: true)) return act;
             }
 
-            //如果现在可以增加能力技
-            if(CanAddAbility(level, lastComboActionID, out act)) return act;
-
-            //如果是合适的时候爆发，那赶紧的！
+            //如果已经在爆发了，那继续！
             if (CanBreak(lastComboActionID, level, out act, false)) return act;
 
 

@@ -45,14 +45,15 @@ internal class BLM_Feature : BLMCombo
                         }
                     }
                 }
-                return Actions.Transpose.ActionID;
+                if (JobGauge.ElementTimeRemaining < 5000)
+                    return Actions.Transpose.ActionID;
             }
         }
 
         if (CanAddAbility(level, out act)) return act;
         if (MantainceState(level, lastComboMove, out act)) return act;
         if (AttackAndExchange(level, out act)) return act;
-        return actionID;
+        return Actions.BetweenTheLines.ActionID;
     }
 
     private bool AttackAndExchange(byte level, out uint act)
@@ -70,7 +71,14 @@ internal class BLM_Feature : BLMCombo
             //如果没蓝了，就直接冰状态。
             if (Service.ClientState.LocalPlayer.CurrentMp == 0)
             {
-                if (AddUmbralIceStacks(level, out act)) return true;
+                if (LastUseManafont)
+                {
+                    LastUseManafont = false;
+                }
+                else
+                {
+                    if (AddUmbralIceStacks(level, out act)) return true;
+                }
             }
 
             //如果蓝不够了，赶紧一个绝望。
@@ -148,7 +156,7 @@ internal class BLM_Feature : BLMCombo
         {
             if (HaveEnoughMP && (JobGauge.UmbralHearts == 3 || level < 58))
             {
-                if (AddAstralFireStacks(level, out act)) return true;
+                if (AddAstralFireStacks(level, lastAct, out act)) return true;
             }
 
             if (AddUmbralIceStacks(level, out act)) return true;
@@ -157,7 +165,7 @@ internal class BLM_Feature : BLMCombo
         }
         else if (JobGauge.InAstralFire)
         {
-            if (AddAstralFireStacks(level, out act)) return true;
+            if (AddAstralFireStacks(level, lastAct, out act)) return true;
             if (AddThunderSingle(level, lastAct, out act)) return true;
         }
         else
@@ -184,17 +192,16 @@ internal class BLM_Feature : BLMCombo
         //试试看冰1
         if (Actions.Blizzard.TryUseAction(level, out act)) return true;
 
-        act = Actions.Transpose.ActionID;
-        return true;
+        return false;
     }
 
-    private bool AddAstralFireStacks(byte level, out uint act)
+    private bool AddAstralFireStacks(byte level, uint lastaction, out uint act)
     {
         //如果火满了，就别加了。
         act = 0;
         if (JobGauge.AstralFireStacks > 2 && JobGauge.ElementTimeRemaining > 3000) return false;
 
-        if(Service.ClientState.LocalPlayer.CurrentMp < 5000)
+        if(Service.ClientState.LocalPlayer.CurrentMp < 5000 && lastaction != Actions.Manafont.ActionID)
         {
             if(AddUmbralIceStacks(level, out act)) return true;
         }
@@ -203,7 +210,7 @@ internal class BLM_Feature : BLMCombo
         if (Actions.Fire2.TryUseAction(level, out act)) return true;
 
         //试试看火3
-        if (Actions.Fire3.TryUseAction(level, out act)) return true;
+        if (JobGauge.AstralFireStacks < 3 && Actions.Fire3.TryUseAction(level, out act)) return true;
 
         //如果时间够火1
         if (JobGauge.ElementTimeRemaining > 2500 && level >= Actions.Blizzard3.Level)
@@ -215,8 +222,7 @@ internal class BLM_Feature : BLMCombo
             if (Actions.Blizzard3.TryUseAction(level, out act)) return true;
         }
 
-        act = Actions.Transpose.ActionID;
-        return true;
+        return false;
     }
 
     private bool AddThunderSingle(byte level, uint lastAct, out uint act)

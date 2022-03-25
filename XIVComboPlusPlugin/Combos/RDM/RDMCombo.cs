@@ -61,9 +61,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             {
                 BuffsNeed = new ushort[] { ObjectStatus.VerfireReady },
                 BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new ushort[] { ObjectStatus.Acceleration }).ToArray(),
-
             },
-
 
             //赤飞石
             Verstone = new BaseAction(7511)
@@ -91,7 +89,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             EnchantedMoulinet = new BaseAction(7513),
 
             //赤治疗
-            Vercure = new BaseAction(7514)
+            Vercure = new BaseAction(7514, true)
             {
                 BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new ushort[] { ObjectStatus.Acceleration }).ToArray(),
             },
@@ -106,10 +104,10 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             Manafication = new BaseAction(7521),
 
             //赤复活
-            Verraise = new BaseAction(7523)
+            Verraise = new BaseAction(7523, true)
             {
                 BuffsNeed = GeneralActions.Swiftcast.BuffsProvide,
-                OtherCheck = () => TargetHelper.DeathPeople.Length > 0,
+                OtherCheck = () => TargetHelper.DeathPeopleAll.Length > 0,
             },
 
             //续斩
@@ -130,22 +128,20 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 
         if (CanInsertAbility)
         {
-            //鼓励要放到魔回刺之后
-            if (lastComboActionID == Actions.EnchantedRiposte.ActionID)
+            //鼓励要放到魔回刺或者魔划圆斩之后
+            if (lastComboActionID == Actions.EnchantedRiposte.ActionID || lastComboActionID == Actions.EnchantedMoulinet.ActionID)
             {
                 if (Actions.Embolden.TryUseAction(level, out act, mustUse:true)) return true;
             }
             //倍增要放到魔连攻击之后
-            if (lastComboActionID == Actions.EnchantedRedoublement.ActionID)
+            if (JobGauge.ManaStacks == 3)
             {
                 if (Actions.Manafication.TryUseAction(level, out act, mustUse:true)) return true;
             }
-            //如果是魔划圆斩，就把两个辅助都放了。
-            if(lastComboActionID == Actions.EnchantedMoulinet.ActionID)
-            {
-                if (Actions.Embolden.TryUseAction(level, out act, mustUse: true)) return true;
-                if (Actions.Manafication.TryUseAction(level, out act, mustUse: true)) return true;
-            }
+
+            //加个醒梦
+            if (GeneralActions.LucidDreaming.TryUseAction(level, out act)) return true;
+
 
             //促进满了就用。 
             if (Actions.Acceleration.TryUseAction(level, out act)) return true;
@@ -154,21 +150,17 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             if (Actions.ContreSixte.TryUseAction(level, out act, mustUse:true)) return true;
             if (Actions.Fleche.TryUseAction(level, out act)) return true;
             if (Actions.Engagement.TryUseAction(level, out act)) return true;
-            if (Actions.CorpsAcorps.TryUseAction(level, out act)) return true;
+            //if (Actions.CorpsAcorps.TryUseAction(level, out act)) return true;
 
             //团队减伤 
             if(Actions.MagickBarrier.TryUseAction(level, out act)) return true;
 
             //加个混乱
             if (GeneralActions.Addle.TryUseAction(level, out act)) return true;
-
-            //加个醒梦
-            if (GeneralActions.LucidDreaming.TryUseAction(level, out act)) return true;
-
         }
         return false;
     }
-    public static bool CanBreak(uint lastComboActionID, byte level, out uint act, bool mustUse)
+    public static bool CanBreak(uint lastComboActionID, byte level, out uint act, bool canOpen)
     {
         act = 0;
 
@@ -208,7 +200,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
-        if (JobGauge.BlackMana < 100 & JobGauge.WhiteMana < 100 && !mustUse)
+        if (JobGauge.BlackMana < 100 & JobGauge.WhiteMana < 100)
         {
             if (JobGauge.BlackMana == JobGauge.WhiteMana) return false;
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
@@ -227,16 +219,38 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             }
         }
 
-        //要来近战三连了。
-        if (JobGauge.BlackMana >= 60 && JobGauge.WhiteMana >= 60)
-        {
-            if (Actions.EnchantedMoulinet.TryUseAction(level, out act)) return true;
-            if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
-            if (Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
-        }
-
         #endregion
 
+        if (!canOpen) return false;
+
+        #region 开启爆发
+        //看看有没有即刻相关的技能。
+        bool haveIt = false;
+        foreach (var buff in GeneralActions.Swiftcast.BuffsProvide)
+        {
+            if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(buff)))
+            {
+                haveIt = true;
+                break;
+            }
+        }
+        //如果没有即刻相关的，就可以开始三连了！
+        if (!haveIt)
+        {
+            //要来可以使用近战三连了。
+            if (Service.Configuration.IsTargetBoss && JobGauge.BlackMana >= 50 && JobGauge.WhiteMana >= 50)
+            {
+                if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
+                if (Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
+            }
+            if (JobGauge.BlackMana >= 60 && JobGauge.WhiteMana >= 60)
+            {
+                if (Actions.EnchantedMoulinet.TryUseAction(level, out act)) return true;
+                if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
+                if (Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
+            }
+        }
+        #endregion
         return false;
     }
 

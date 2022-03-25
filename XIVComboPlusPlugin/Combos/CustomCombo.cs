@@ -34,6 +34,7 @@ public abstract class CustomCombo
                 ObjectStatus.Swiftcast3,
                 ObjectStatus.Triplecast,
                 ObjectStatus.Dualcast,
+                ObjectStatus.Acceleration,
             } },
 
             //醒梦（如果MP低于6000那么使用）
@@ -77,23 +78,11 @@ public abstract class CustomCombo
 
     #endregion
     protected static bool IsMoving => TargetHelper.IsMoving;
-    protected static bool HaveTargetAngle
-    {
-        get
-        {
-            foreach (var item in TargetHelper.GetObjectInRadius( TargetHelper.Targets, 25))
-            {
-                if(item.TargetObject != null)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
+    protected static bool HaveTargetAngle => TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, 25).Length > 0;
+
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
     protected static GameObject Target => Service.TargetManager.Target;
-    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && Service.IconReplacer.GetCooldown(141u).CooldownRemaining > 0.5;
+    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && Service.IconReplacer.GetCooldown(141u).CooldownRemaining > 0.67;
     protected CustomCombo()
     {
     }

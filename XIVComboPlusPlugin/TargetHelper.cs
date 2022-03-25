@@ -19,6 +19,8 @@ namespace XIVComboPlus
         {
             LowHP,
             FaceDirction,
+            MajorTank,
+            DangeriousTank,
         }
 
         private static IntPtr _func;
@@ -29,15 +31,45 @@ namespace XIVComboPlus
         private static SortedList<uint, GetTargetFunction> _specialGetTarget = new SortedList<uint, GetTargetFunction>()
         {
             //以太步，找面前的友军。
-            { 8869u, GetTargetFunction.FaceDirction},
+            { 155u, GetTargetFunction.FaceDirction},
+            {WHMCombo.Actions.Aquaveil.ActionID, GetTargetFunction.MajorTank },
+            {WHMCombo.Actions.DivineBenison.ActionID, GetTargetFunction.MajorTank },
+            {WHMCombo.Actions.Benediction.ActionID, GetTargetFunction.MajorTank },
         };
 
-        internal static BattleNpc[] Targets =>
+        //All Targes
+        internal static BattleNpc[] AllTargets =>
         Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy && CanAttack(obj)).Select(obj => (BattleNpc)obj).ToArray();
+
+        internal static BattleNpc[] HostileTargets => AllTargets.Where(t => t.TargetObject != null).ToArray();
+
+        internal static BattleNpc[] Targets
+        {
+            get
+            {
+                var allTarges = AllTargets;
+                var hosts = allTarges.Where(t => t.TargetObject != null).ToArray();
+                return hosts.Length == 0? allTarges : hosts;
+            }
+        }
 
       //  public static PlayerCharacter[] PartyMembers =>
       //AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).ToArray();
-        public static PlayerCharacter[] PartyMembers =>Service.PartyList.Select(obj => obj.GameObject as PlayerCharacter).ToArray();
+        public static PlayerCharacter[] PartyMembers
+        {
+            get
+            {
+                if (Service.PartyList.Length == 0)
+                {
+                    return new PlayerCharacter[] { Service.ClientState.LocalPlayer };
+                }
+                else
+                {
+                    return Service.PartyList.Select(obj => obj.GameObject as PlayerCharacter).ToArray();
+
+                }
+            }
+        }
         /// <summary>
         /// 玩家们
         /// </summary>
@@ -65,7 +97,8 @@ namespace XIVComboPlus
             }
         }
 
-        public static PlayerCharacter[] DeathPeople => GetObjectInRadius(GetDeath(PartyMembers), 30);
+        public static PlayerCharacter[] DeathPeopleAll => GetObjectInRadius(GetDeath(AllianceMembers), 30);
+        public static PlayerCharacter[] DeathPeopleParty => GetObjectInRadius(GetDeath(PartyMembers), 30);
 
         internal static void Init(SigScanner sigScanner)
         {
@@ -121,7 +154,7 @@ namespace XIVComboPlus
             while (enumerator.MoveNext())
             {
                 var action = enumerator.Current;
-                if (action.Name == name && action.ClassJobLevel != 0)
+                if (action.Name == name && action.ClassJobLevel != 0 && !action.IsPvP)
                 {
                     return action;
                 }
@@ -141,31 +174,47 @@ namespace XIVComboPlus
                 //如果能选中队友，还消耗2400的蓝，那肯定是复活的。
                 if (act.CanTargetFriendly && act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
                 {
+                    var deathAll = DeathPeopleAll;
+                    var deathParty = DeathPeopleParty;
 
                     //如果一个都没死，那为啥还要救呢？
-                    if (DeathPeople.Length == 0) return null;
+                    if (deathAll.Length == 0) return null;
 
-                    //确认一下死了的T有哪些。
-                    var deathT = GetJobCategory(DeathPeople, (j) => j == JobType.Tank);
-                    int TCount = PartyTanks.Length;
-
-                    //如果全死了，赶紧复活啊。
-                    if (TCount == deathT.Length)
+                    if(deathParty.Length != 0)
                     {
-                        return deathT[0];
+                        //确认一下死了的T有哪些。
+
+                        var deathT = GetJobCategory(deathParty, (j) => j == JobType.Tank);
+                        int TCount = PartyTanks.Length;
+
+                        //如果全死了，赶紧复活啊。
+                        if (TCount == deathT.Length)
+                        {
+                            return deathT[0];
+                        }
+
+                        //确认一下死了的H有哪些。
+                        var deathH = GetJobCategory(deathParty, (j) => j == JobType.Healer);
+
+                        //如果H死了，就先救他。
+                        if (deathH.Length != 0) return deathH[0];
+
+                        //如果T死了，就再救他。
+                        if (deathT.Length != 0) return deathH[0];
+
+                        //T和H都还活着，那就随便救一个。
+                        return deathParty[0];
                     }
 
                     //确认一下死了的H有哪些。
-                    var deathH = GetJobCategory(DeathPeople, (j) => j == JobType.Tank);
+                    var deathAllH = GetJobCategory(deathAll, (j) => j == JobType.Healer);
+                    if(deathAllH.Length != 0) return deathAllH[0];
 
-                    //如果H死了，就先救他。
-                    if (deathH.Length != 0) return deathH[0];
+                    //确认一下死了的T有哪些。
+                    var deathAllT = GetJobCategory(deathAll, (j) => j == JobType.Tank);
+                    if (deathAllT.Length != 0) return deathAllT[0];
 
-                    //如果T死了，就再救他。
-                    if (deathT.Length != 0) return deathH[0];
-
-                    //T和H都还活着，那就随便救一个。
-                    return DeathPeople[0];
+                    return deathAll[0];
                 }
 
                 //找到没死的队友们。
@@ -177,7 +226,7 @@ namespace XIVComboPlus
                 }
 
                 //判断是否是范围。
-                if (act.CastType > 0)
+                if (act.CastType > 1)
                 {
                     //找到能覆盖最多的位置，并且选学最少的来。
                     return GetMostObjectInRadius(availableCharas, act.Range, act.EffectRange, false).OrderBy(p => (float)p.CurrentHp / p.MaxHp).First();
@@ -214,6 +263,24 @@ namespace XIVComboPlus
                                     return angle <= Math.PI / 6;
                                 }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
 
+                                //找到被打的坦克中血最少的那个。
+                            case GetTargetFunction.MajorTank:
+                                var tanks = PartyTanksAttached;
+                                if(tanks.Length == 0)
+                                {
+                                    tanks = PartyTanks;
+                                }
+                                return  tanks.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
+
+                                //天赐给那个要死了的人！
+                            case GetTargetFunction.DangeriousTank:
+                                if (WHMCombo.UseBenediction(out PlayerCharacter tank)) return tank;
+                                tanks = PartyTanksAttached;
+                                if (tanks.Length == 0)
+                                {
+                                    tanks = PartyTanks;
+                                }
+                                return tanks.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
                         }
                     }
 
@@ -259,23 +326,28 @@ namespace XIVComboPlus
             }
         }
 
-        internal static bool ShoudUseAction(Action act)
+        internal static bool ActionGetATarget(Action act, bool isFriendly)
         {
+            //如果根本就不需要找目标，那肯定可以的。
+            if (!act.CanTargetFriendly && !act.CanTargetHostile && act.CastType == 1) return true;
+
             //如果在打Boss呢，那就不需要考虑AOE的问题了。
-            if (Service.Configuration.IsTargetBoss && act.CastType > 1) return false;
+            if (Service.Configuration.IsTargetBoss && !isFriendly && act.CastType > 1) return false;
+
+            BattleChara[] tar = isFriendly ? PartyMembers : Targets;
 
             switch (act.CastType)
             {
                 case 1:
-                    return GetObjectInRadius(Targets, Math.Max(act.Range, 3f)).Count() > 0;
+                    return GetObjectInRadius(tar, Math.Max(act.Range, 3f)).Count() > 0;
                 case 2: // 圆形范围攻击，看看人数够不够。
-                    return GetMostObjectInRadius(Targets, act.Range, act.EffectRange, true).Count() > 0;
+                    return GetMostObjectInRadius(tar, act.Range, act.EffectRange, true).Count() > 0;
 
                 case 3: // 扇形范围攻击。看看人数够不够。
-                    return GetMostObjectInArc(Targets, Math.Max(act.Range, 3f), true).Count() > 0;
+                    return GetMostObjectInArc(tar, Math.Max(act.Range, 3f), true).Count() > 0;
 
                 case 4: //直线范围攻击。看看人数够不够。
-                    return GetMostObjectInLine(Targets, Math.Max(act.Range, 3f), true).Count() > 0;
+                    return GetMostObjectInLine(tar, Math.Max(act.Range, 3f), true).Count() > 0;
             }
             return true;
         }
@@ -369,7 +441,7 @@ namespace XIVComboPlus
         }
 
 
-        private static T[] GetMostObjectInRadius<T>(T[] objects, float radius, float range, bool forCheck) where T : BattleChara
+        internal static T[] GetMostObjectInRadius<T>(T[] objects, float radius, float range, bool forCheck) where T : BattleChara
         {
             //可能可以蹭到的怪。
             var canAttach = GetObjectInRadius(objects, radius + range);
@@ -445,6 +517,35 @@ namespace XIVComboPlus
                 }
                 return count;
             }
+        }
+
+
+        internal static float GetBestHeal(PlayerCharacter[] members, Action action, byte strength)
+        {
+            float healRange = strength * 0.000352f;
+
+            //能够放到技能的队员。
+            var canGet = GetObjectInRadius(members, action.Range);
+
+            float bestHeal = 0;
+            foreach (var member in canGet)
+            {
+                float thisHeal = 0;
+                Vector3 centerPt = member.Position;
+                foreach (var ran in members)
+                {
+                    //如果不在范围内，那算了。
+                    if(Vector3.Distance(centerPt, ran.Position) > action.EffectRange)
+                    {
+                        continue;
+                    }
+
+                    thisHeal += Math.Min(1 - ran.CurrentHp / ran.MaxHp, healRange);
+                }
+
+                bestHeal = Math.Max(thisHeal, healRange);
+            }
+            return bestHeal;
         }
     }
 }

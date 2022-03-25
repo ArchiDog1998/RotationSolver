@@ -13,25 +13,26 @@ namespace XIVComboPlus.Combos
 {
     internal class BaseAction
     {
-        private Action _action;
-        private uint _actionType => _action.ActionCategory.Value.RowId;
-        internal byte Level => _action.ClassJobLevel;
-        internal uint ActionID => _action.RowId;
+        private bool _isFriendly;
+        internal Action Action { get; }
+        private uint _actionType => Action.ActionCategory.Value.RowId;
+        internal byte Level => Action.ClassJobLevel;
+        internal uint ActionID => Action.RowId;
         private bool IsAbility => _actionType == 4;
         private bool IsSpell => _actionType == 2;
         private bool IsWeaponskill => _actionType == 4;
-        internal short CastTime => (short)(_action.Cast100ms * 100);
+        internal short CastTime => (short)(Action.Cast100ms * 100);
         internal virtual uint MPNeed
         {
             get
             {
-                if(_action.PrimaryCostType == 3 || _action.PrimaryCostType == 4)
+                if(Action.PrimaryCostType == 3 || Action.PrimaryCostType == 4)
                 {
-                    return _action.PrimaryCostValue * 100u;
+                    return Action.PrimaryCostValue * 100u;
                 }
-                else if(_action.SecondaryCostType == 3 || _action.SecondaryCostType == 4)
+                else if(Action.SecondaryCostType == 3 || Action.SecondaryCostType == 4)
                 {
-                    return _action.SecondaryCostValue * 100u;
+                    return Action.SecondaryCostValue * 100u;
                 }
                 return 0;
             }
@@ -47,7 +48,7 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 给敌人造成的Debuff,如果有这些Debuff，那么不会执行。
         /// </summary>
-        internal ushort[] Debuffs { get; set; } = null;
+        internal ushort[] TargetStatus { get; set; } = null;
         /// <summary>
         /// 使用了这个技能会得到的Buff，如果有这些Buff中的一种，那么就不会执行。 
         /// </summary>
@@ -66,11 +67,12 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
         /// </summary>
-        internal Func<bool> OtherCheck { private get; set; } = null;
+        internal Func<bool> OtherCheck { get; set; } = null;
 
-        internal BaseAction(uint actionID)
+        internal BaseAction(uint actionID, bool isFriendly = false)
         {
-            _action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
+            Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
+            _isFriendly = isFriendly;
         }
 
         public bool TryUseAction(byte level, out uint action, uint lastAct = 0, bool mustUse = false)
@@ -113,7 +115,7 @@ namespace XIVComboPlus.Combos
             //如果是能力技能，而且没法释放。
             if (IsAbility)
             {
-                int charge = _action.MaxCharges;
+                int charge = Action.MaxCharges;
                 var CoolDown = Service.IconReplacer.GetCooldown(ActionID);
                 if (charge < 2 && CoolDown.IsCooldown) return false;
 
@@ -142,18 +144,18 @@ namespace XIVComboPlus.Combos
             }
 
             //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
-            uint comboAction = _action.ActionCombo.Row;
-            if (comboAction != lastAct) return false;
+            uint comboAction = Action.ActionCombo.Row;
+            if (comboAction != 0 && lastAct != 0 && comboAction != lastAct) return false;
 
 
 
             //敌方已有充足的Debuff
-            if (Debuffs != null)
+            if (TargetStatus != null)
             {
                 if (NeedAllDebuffs)
                 {
                     bool haveAll = true;
-                    foreach (var debuff in Debuffs)
+                    foreach (var debuff in TargetStatus)
                     {
                         if (!EnoughStatus(FindStatusTargetFromSelf(debuff)))
                         {
@@ -165,7 +167,7 @@ namespace XIVComboPlus.Combos
                 }
                 else
                 {
-                    foreach (var debuff in Debuffs)
+                    foreach (var debuff in TargetStatus)
                     {
                         if (EnoughStatus(FindStatusTargetFromSelf(debuff))) return false;
                     }
@@ -187,14 +189,14 @@ namespace XIVComboPlus.Combos
                         break;
                     }
                 }
-                if(!haveSwift ) return false;
+                if (!haveSwift) return false;
             }
 
             //用于自定义的要求没达到
             if (OtherCheck != null && !OtherCheck()) return false;
 
             //如果是个范围，并且人数不够的话，就算了。
-            if(!TargetHelper.ShoudUseAction(_action)) return false;
+            if (!TargetHelper.ActionGetATarget(Action, _isFriendly)) return false;
 
             return true;
         }
@@ -203,7 +205,14 @@ namespace XIVComboPlus.Combos
         {
             return StatusRemainTime(status) > 3f; ;
         }
-
+        //internal static bool HaveStatus(Status[] status)
+        //{
+        //    foreach (var sta in status)
+        //    {
+        //        if (HaveStatus(sta)) return true;
+        //    }
+        //    return false;
+        //}
         internal static bool HaveStatus(Status status)
         {
             return StatusRemainTime(status) != 0f;
