@@ -65,7 +65,17 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
             //神祝祷
             DivineBenison = new BaseAction(7432, true),
             //天赐
-            Benediction = new BaseAction(140, true),
+            Benediction = new BaseAction(140, true)
+            {
+                OtherCheck = () =>
+                {
+                    if(Service.TargetManager.Target is BattleChara b)
+                    {
+                        if (b.CurrentHp / b.MaxHp < 0.1) return true;
+                    }
+                    return false;
+                },
+            },
 
             //医治 群奶最基础的。300
             Medica = new BaseAction(124, true),
@@ -117,7 +127,20 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
             ThinAir = new BaseAction(7430),
 
             //全大赦
-            PlenaryIndulgence = new BaseAction(7433),
+            PlenaryIndulgence = new BaseAction(7433)
+            {
+                OtherCheck = () =>
+                {
+                    var members = TargetHelper.PartyMembers;
+                    float whole = 0;
+                    foreach (var member in members)
+                    {
+                        whole += member.CurrentHp / member.MaxHp;
+                    }
+                    whole /= members.Length;
+                    return whole < 0.5;
+                },
+            },
             //节制
             Temperance = new BaseAction(16536);
     }

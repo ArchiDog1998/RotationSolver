@@ -33,6 +33,8 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 
     private static Framework _framework;
 
+    internal static uint LastAction { get; private set; }
+
     public XIVComboPlusPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
     {
         pluginInterface.Create<Service>(Array.Empty<object>());
@@ -96,8 +98,8 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         }
 
         uint inputActions = TargetHelper.GetActionsByName(array[0]).RowId;
-        uint outputActions = Service.IconReplacer.RemapActionID(inputActions);
-        TargetHelper.SetTarget(TargetHelper.GetBestTarget(Service.DataManager.GetExcelSheet<Action>().GetRow(outputActions)));
+        LastAction = Service.IconReplacer.RemapActionID(inputActions);
+        TargetHelper.SetTarget(TargetHelper.GetBestTarget(Service.DataManager.GetExcelSheet<Action>().GetRow(LastAction)));
 
     }
 

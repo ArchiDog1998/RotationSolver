@@ -32,7 +32,11 @@ internal class ConfigWindow : Window
 
     public override void Draw()
     {
-        //ImGui.Text(TargetHelper.GetBestTarget(TargetHelper.GetActionsByName("以太步")).ToString());
+        //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+        //{
+        //    ImGui.Text(item.GameData.RowId.ToString());
+        //}
+
 
         int multiCount = Service.Configuration.MultiCount;
         if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))

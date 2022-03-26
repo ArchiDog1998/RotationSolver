@@ -37,6 +37,12 @@ public abstract class CustomCombo
                 ObjectStatus.Acceleration,
             } },
 
+            //康复
+            Esuna = new BaseAction(7568)
+            {
+                OtherCheck = () => TargetHelper.WeakenPeople.Length > 0,
+            },
+
             //醒梦（如果MP低于6000那么使用）
             LucidDreaming = new BaseAction(7562u)
             {

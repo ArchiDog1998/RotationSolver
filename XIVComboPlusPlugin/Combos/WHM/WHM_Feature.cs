@@ -21,6 +21,11 @@ namespace XIVComboPlus.Combos.WHM
             //有人搞超火！这很刺激！
             if (UseBenediction(out _) && Actions.Benediction.TryUseAction(level, out act, mustUse: true)) return act;
 
+            if (TargetHelper.DyingPeople.Length > 0)
+            {
+                if(GeneralActions.Esuna.TryUseAction(level, out act, mustUse: true)) return act;
+            }
+
             if (TargetHelper.DeathPeopleParty.Length != 0)
             {
                 //如果有人倒了，赶紧即刻拉人！

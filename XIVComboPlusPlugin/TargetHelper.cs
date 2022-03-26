@@ -21,6 +21,7 @@ namespace XIVComboPlus
             FaceDirction,
             MajorTank,
             DangeriousTank,
+            Esuna,
         }
 
         private static IntPtr _func;
@@ -35,6 +36,7 @@ namespace XIVComboPlus
             {WHMCombo.Actions.Aquaveil.ActionID, GetTargetFunction.MajorTank },
             {WHMCombo.Actions.DivineBenison.ActionID, GetTargetFunction.MajorTank },
             {WHMCombo.Actions.Benediction.ActionID, GetTargetFunction.MajorTank },
+            {CustomCombo.GeneralActions.Esuna.ActionID, GetTargetFunction.Esuna},
         };
 
         //All Targes
@@ -100,6 +102,35 @@ namespace XIVComboPlus
         public static PlayerCharacter[] DeathPeopleAll => GetObjectInRadius(GetDeath(AllianceMembers), 30);
         public static PlayerCharacter[] DeathPeopleParty => GetObjectInRadius(GetDeath(PartyMembers), 30);
 
+        public static PlayerCharacter[] WeakenPeople
+        {
+            get
+            {
+                return PartyMembers.Where(p =>
+                {
+                    foreach (var status in p.StatusList)
+                    {
+                        if (status.GameData.CanDispel) return true;
+                    }
+                    return false;
+                }).ToArray();
+            }
+        }
+
+        public static PlayerCharacter[] DyingPeople
+        {
+            get
+            {
+                return PartyMembers.Where(p =>
+                {
+                    foreach (var status in p.StatusList)
+                    {
+                        if (status.StatusId == ObjectStatus.Doom) return true;
+                    }
+                    return false;
+                }).ToArray();
+            }
+        }
         internal static void Init(SigScanner sigScanner)
         {
             _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
@@ -281,6 +312,11 @@ namespace XIVComboPlus
                                     tanks = PartyTanks;
                                 }
                                 return tanks.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
+
+                            case GetTargetFunction.Esuna:
+                                if (DyingPeople.Length != 0) return DyingPeople[0];
+                                if (WeakenPeople.Length != 0) return WeakenPeople[0];
+                                return PartyMembers[0];
                         }
                     }
 

@@ -69,7 +69,7 @@ internal class BLM_Feature : BLMCombo
         else if (JobGauge.InAstralFire)
         {
             //如果没蓝了，就直接冰状态。
-            if (Service.ClientState.LocalPlayer.CurrentMp == 0)
+            if (Service.ClientState.LocalPlayer.CurrentMp == 0 && XIVComboPlusPlugin.LastAction != Actions.Manafont.ActionID)
             {
                 if (AddUmbralIceStacks(level, out act)) return true;
             }

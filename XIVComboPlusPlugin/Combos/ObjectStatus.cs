@@ -35,7 +35,7 @@ namespace XIVComboPlus.Combos
             Firestarter = 165,
 
             //复活
-            Raise = 1140,
+            Raise = 148,
 
             //止步
             Bind1 = 13,
@@ -67,6 +67,9 @@ namespace XIVComboPlus.Combos
             Regen1 = 158,
             Regen2 = 897,
             Regen3 = 1330,
+
+            //死亡宣告，可以被解除的！
+            Doom = 910,
 
             //死斗
             Holmgang = 409,
