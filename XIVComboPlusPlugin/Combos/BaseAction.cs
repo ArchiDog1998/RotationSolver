@@ -145,11 +145,11 @@ namespace XIVComboPlus.Combos
 
             //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
             uint comboAction = Action.ActionCombo.Row;
-            if (comboAction != 0 && lastAct != 0 && comboAction != lastAct) return false;
+            if (comboAction != 0 && comboAction != lastAct) return false;
 
 
 
-            //敌方已有充足的Debuff
+            //目标已有充足的Debuff
             if (TargetStatus != null)
             {
                 if (NeedAllDebuffs)

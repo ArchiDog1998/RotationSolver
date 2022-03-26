@@ -9,7 +9,6 @@ namespace XIVComboPlus.Combos.BLM
 {
     internal abstract class BLMCombo : CustomComboJob<BLMGauge>
     {
-        protected bool LastUseManafont = false;
         protected static bool HaveEnoughMP => LocalPlayer.CurrentMp > 9000;
 
         /// <summary>
@@ -162,7 +161,6 @@ namespace XIVComboPlus.Combos.BLM
             //加个魔泉
             if (Actions.Manafont.TryUseAction(level, out action))
             {
-                LastUseManafont = true;
                 return true;
             }
 

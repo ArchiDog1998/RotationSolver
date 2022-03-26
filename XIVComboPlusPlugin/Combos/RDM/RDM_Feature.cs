@@ -34,6 +34,7 @@ namespace XIVComboPlus.Combos.RDM
             //如果现在可以增加能力技
             if (CanAddAbility(level, lastComboActionID, out act)) return act;
 
+            //死人了，赶紧救！
             if (TargetHelper.DeathPeopleParty.Length != 0)
             {
                 if (Actions.Verraise.TryUseAction(level, out act, mustUse: true)) return act;

@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.Types;
 using System.Linq;
 namespace XIVComboPlus.Combos;
 
@@ -8,6 +9,8 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
 
     internal struct Actions
     {
+        private static readonly float hotElement = 0.7f;
+
         public static readonly BaseAction
             //飞石 平A
             Stone = new BaseAction(119),
@@ -44,6 +47,12 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
             //再生
             Regen = new BaseAction(137, true)
             {
+                OtherCheck = () =>
+                {
+                    BattleChara t = Service.TargetManager.Target as BattleChara;
+                    if (t == null) return false;
+                    return t.CurrentHp / t.MaxHp >= hotElement;
+                },
                 TargetStatus = new ushort[]
                 {
                     ObjectStatus.Regen1,
@@ -70,6 +79,18 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
                     ObjectStatus.Medica2,
                     ObjectStatus.TrueMedica2,
                 },
+
+                OtherCheck = () => 
+                {
+                    foreach (var member in TargetHelper.PartyMembers)
+                    {
+                        if(member.CurrentHp/member.MaxHp < hotElement)
+                        {
+                            return false;
+                        }
+                    } 
+                    return true;
+                },
             },
             //庇护所
             Asylum = new BaseAction(3569, true),
@@ -84,7 +105,11 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
             LiturgyoftheBell = new BaseAction(25862, true),
 
             //复活
-            Raise = new BaseAction(125),
+            Raise = new BaseAction(125)
+            {
+                OtherCheck = () => TargetHelper.DeathPeopleAll.Length > 0,
+                BuffsProvide = new ushort[] { ObjectStatus.Raise },
+            },
 
             //神速咏唱
             PresenseOfMind = new BaseAction(136),

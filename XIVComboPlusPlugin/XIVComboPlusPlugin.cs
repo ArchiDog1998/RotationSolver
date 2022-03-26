@@ -49,7 +49,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         TargetHelper.Init(sigScanner);
 
         CommandInfo val = new CommandInfo(new CommandInfo.HandlerDelegate(OnCommand));
-        val.HelpMessage = "Open a window to edit custom combo settings.";
+        val.HelpMessage = "打开一个可以调整连击设置的窗口";
         val.ShowInHelp = true;
         commandManager.AddHandler(_command, val);
 

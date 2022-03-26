@@ -21,6 +21,12 @@ namespace XIVComboPlus.Combos.WHM
             //有人搞超火！这很刺激！
             if (UseBenediction(out _) && Actions.Benediction.TryUseAction(level, out act, mustUse: true)) return act;
 
+            //if (TargetHelper.DeathPeopleAll.Length != 0)
+            //{
+            //    //如果有人倒了，不管怎么样，赶紧拉！
+            //    if (Actions.Raise.TryUseAction(level, out act, mustUse: true)) return act;
+            //}
+
             if (CanInsertAbility)
             {
                 //法令
@@ -48,11 +54,14 @@ namespace XIVComboPlus.Combos.WHM
             if (Actions.AfflatusRapture.TryUseAction(level, out act)) return act;
             //加Hot
             if (Actions.Medica2.TryUseAction(level, out act)) return act;
+
+            float cure3 = TargetHelper.GetBestHeal(Actions.Cure3.Action, 600);
+            float medica = TargetHelper.GetBestHeal(Actions.Medica.Action, 300);
+
             //愈疗
-            if (Actions.Cure3.TryUseAction(level, out act)) return act;
-
-            return actionID;
-
+            if (cure3 > medica && Actions.Cure3.TryUseAction(level, out act)) return act;
+            if (Actions.Medica.TryUseAction(level, out act)) return act;
+            return Actions.Raise.ActionID;
         }
 
     }

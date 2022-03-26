@@ -71,14 +71,7 @@ internal class BLM_Feature : BLMCombo
             //如果没蓝了，就直接冰状态。
             if (Service.ClientState.LocalPlayer.CurrentMp == 0)
             {
-                if (LastUseManafont)
-                {
-                    LastUseManafont = false;
-                }
-                else
-                {
-                    if (AddUmbralIceStacks(level, out act)) return true;
-                }
+                if (AddUmbralIceStacks(level, out act)) return true;
             }
 
             //如果蓝不够了，赶紧一个绝望。

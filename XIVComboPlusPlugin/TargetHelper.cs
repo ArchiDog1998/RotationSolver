@@ -164,8 +164,8 @@ namespace XIVComboPlus
 
         internal static GameObject GetBestTarget(Action act)
         {
-            //如果都没有距离，这个还需要选对象嘛？
-            if (act.Range == 0) return null;
+            //如果都没有距离，这个还需要选对象嘛？选自己啊！
+            if (act.Range == 0) return Service.ClientState.LocalPlayer;
 
 
             //首先看看是不是能对小队成员进行操作的。
@@ -228,7 +228,7 @@ namespace XIVComboPlus
                 //判断是否是范围。
                 if (act.CastType > 1)
                 {
-                    //找到能覆盖最多的位置，并且选学最少的来。
+                    //找到能覆盖最多的位置，并且选血最少的来。
                     return GetMostObjectInRadius(availableCharas, act.Range, act.EffectRange, false).OrderBy(p => (float)p.CurrentHp / p.MaxHp).First();
                 }
                 else
@@ -322,17 +322,17 @@ namespace XIVComboPlus
             //那么这个就不需要找到目标了，要么对着自己，要么就什么都不能选中。
             else
             {
-                return null;
+                return Service.ClientState.LocalPlayer;
             }
         }
 
         internal static bool ActionGetATarget(Action act, bool isFriendly)
         {
             //如果根本就不需要找目标，那肯定可以的。
-            if (!act.CanTargetFriendly && !act.CanTargetHostile && act.CastType == 1) return true;
+            if (!act.CanTargetFriendly && !act.CanTargetHostile && (act.CastType == 1 ||act.CastType > 4)) return true;
 
             //如果在打Boss呢，那就不需要考虑AOE的问题了。
-            if (Service.Configuration.IsTargetBoss && !isFriendly && act.CastType > 1) return false;
+            if (Service.Configuration.IsTargetBoss && !isFriendly && act.CastType != 1) return false;
 
             BattleChara[] tar = isFriendly ? PartyMembers : Targets;
 
@@ -341,7 +341,15 @@ namespace XIVComboPlus
                 case 1:
                     return GetObjectInRadius(tar, Math.Max(act.Range, 3f)).Count() > 0;
                 case 2: // 圆形范围攻击，看看人数够不够。
-                    return GetMostObjectInRadius(tar, act.Range, act.EffectRange, true).Count() > 0;
+
+                    if (act.CanTargetHostile)
+                    {
+                        return GetMostObjectInRadius(tar, act.Range, act.EffectRange, true).Count() > 0;
+                    }
+                    else
+                    {
+                        return GetMostObjectInRadius(tar, new PlayerCharacter[] {Service.ClientState.LocalPlayer} , act.Range, act.EffectRange, true).Count() > 0;
+                    }
 
                 case 3: // 扇形范围攻击。看看人数够不够。
                     return GetMostObjectInArc(tar, Math.Max(act.Range, 3f), true).Count() > 0;
@@ -364,7 +372,7 @@ namespace XIVComboPlus
                 bool haveRase = false;
                 foreach (var status in item.StatusList)
                 {
-                    if (status.StatusId == ObjectStatus.Raise || status.StatusId == ObjectStatus.Resurrection)
+                    if (status.StatusId == ObjectStatus.Raise)
                     {
                         haveRase = true;
                         break;
@@ -405,7 +413,11 @@ namespace XIVComboPlus
         {
             //能够打到的所有怪。
             T[] canGetObj = GetObjectInRadius(canAttack, radius);
+            return GetMostObject(canAttack, canGetObj, range, range, HowMany, forCheck);
+        }
 
+        private static T[] GetMostObject<T>(T[] canAttack, T[] canGetObj ,float radius, float range, Func<T, T[], float, byte> HowMany, bool forCheck) where T : BattleChara
+        {
 
             //能打到MaxCount以上数量的怪的怪。
             List<T> objectMax = new List<T>(canGetObj.Length);
@@ -440,13 +452,22 @@ namespace XIVComboPlus
             return objectMax.ToArray();
         }
 
-
         internal static T[] GetMostObjectInRadius<T>(T[] objects, float radius, float range, bool forCheck) where T : BattleChara
         {
-            //可能可以蹭到的怪。
+            //可能可以被打到的怪。
+            var canAttach = GetObjectInRadius(objects, radius + range);
+            //能够打到的所有怪。
+            var canGet = GetObjectInRadius(objects, radius);
+
+            return GetMostObjectInRadius(canAttach, canGet, radius, range, forCheck);
+
+        }
+
+        internal static T[] GetMostObjectInRadius<T>(T[] objects, T[] canGetObjects, float radius, float range, bool forCheck) where T : BattleChara
+        {
             var canAttach = GetObjectInRadius(objects, radius + range);
 
-            return GetMostObject(canAttach, radius, range, CalculateCount, forCheck);
+            return GetMostObject(canAttach, canGetObjects, radius, range, CalculateCount, forCheck);
 
             //计算一下在这些可选目标中有多少个目标可以受到攻击。
             static byte CalculateCount(T t, T[] objects, float range)
@@ -520,19 +541,19 @@ namespace XIVComboPlus
         }
 
 
-        internal static float GetBestHeal(PlayerCharacter[] members, Action action, byte strength)
+        internal static float GetBestHeal(Action action, uint strength)
         {
             float healRange = strength * 0.000352f;
 
             //能够放到技能的队员。
-            var canGet = GetObjectInRadius(members, action.Range);
+            var canGet = GetObjectInRadius(PartyMembers, Math.Max(action.Range, 0.1f));
 
             float bestHeal = 0;
             foreach (var member in canGet)
             {
                 float thisHeal = 0;
                 Vector3 centerPt = member.Position;
-                foreach (var ran in members)
+                foreach (var ran in PartyMembers)
                 {
                     //如果不在范围内，那算了。
                     if(Vector3.Distance(centerPt, ran.Position) > action.EffectRange)

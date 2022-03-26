@@ -34,11 +34,8 @@ namespace XIVComboPlus.Combos
             //火苗
             Firestarter = 165,
 
-            //白魔复活
+            //复活
             Raise = 1140,
-
-            //学者复活
-            Resurrection = 2449,
 
             //止步
             Bind1 = 13,

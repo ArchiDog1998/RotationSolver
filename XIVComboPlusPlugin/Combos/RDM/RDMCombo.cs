@@ -108,6 +108,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             {
                 BuffsNeed = GeneralActions.Swiftcast.BuffsProvide,
                 OtherCheck = () => TargetHelper.DeathPeopleAll.Length > 0,
+                BuffsProvide = new ushort[] { ObjectStatus.Raise },
             },
 
             //ÐøÕ¶
