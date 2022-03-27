@@ -14,6 +14,9 @@
     <Reference Include="Dalamud">
       <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Dalamud.dll</HintPath>
     </Reference>
+    <Reference Include="FFXIVClientStructs">
+      <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\FFXIVClientStructs.dll</HintPath>
+    </Reference>
     <Reference Include="ImGui.NET">
       <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\ImGui.NET.dll</HintPath>
     </Reference>

@@ -9,7 +9,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
 
     internal struct Actions
     {
-        private static readonly float hotElement = 0.7f;
+        private static readonly float hotElement = 0.5f;
 
         public static readonly BaseAction
             //飞石 平A
@@ -51,7 +51,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
                 {
                     BattleChara t = Service.TargetManager.Target as BattleChara;
                     if (t == null) return false;
-                    return t.CurrentHp / t.MaxHp >= hotElement;
+                    return (float)t.CurrentHp / t.MaxHp >= hotElement;
                 },
                 TargetStatus = new ushort[]
                 {
@@ -71,7 +71,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
                 {
                     if(Service.TargetManager.Target is BattleChara b)
                     {
-                        if (b.CurrentHp / b.MaxHp < 0.1) return true;
+                        if ((float)b.CurrentHp / b.MaxHp < 0.1) return true;
                     }
                     return false;
                 },
@@ -90,17 +90,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
                     ObjectStatus.TrueMedica2,
                 },
 
-                OtherCheck = () => 
-                {
-                    foreach (var member in TargetHelper.PartyMembers)
-                    {
-                        if(member.CurrentHp/member.MaxHp < hotElement)
-                        {
-                            return false;
-                        }
-                    } 
-                    return true;
-                },
+                OtherCheck = () =>  TargetHelper.PartyMembersAverHP >= hotElement,
             },
             //庇护所
             Asylum = new BaseAction(3569, true),
@@ -129,17 +119,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
             //全大赦
             PlenaryIndulgence = new BaseAction(7433)
             {
-                OtherCheck = () =>
-                {
-                    var members = TargetHelper.PartyMembers;
-                    float whole = 0;
-                    foreach (var member in members)
-                    {
-                        whole += member.CurrentHp / member.MaxHp;
-                    }
-                    whole /= members.Length;
-                    return whole < 0.5;
-                },
+                OtherCheck = () => TargetHelper.PartyMembersAverHP < hotElement,
             },
             //节制
             Temperance = new BaseAction(16536);

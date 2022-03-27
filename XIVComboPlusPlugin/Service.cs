@@ -27,6 +27,9 @@ internal class Service
     internal static ChatGui ChatGui { get; private set; }
 
     [PluginService]
+    public static GameGui GameGui { get; private set; }
+
+    [PluginService]
     internal static ClientState ClientState { get; private set; }
 
     [PluginService]

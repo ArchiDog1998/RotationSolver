@@ -44,11 +44,8 @@ namespace XIVComboPlus.Combos.WHM
             //如果现在可以增加能力技
             if (CanAddAbility(level, out act)) return act;
 
-            if (CanInsertAbility)
-            {
-                //神名
-                if (Actions.Tetragrammaton.TryUseAction(level, out act)) return act;
-            }
+            //神名
+            if (Actions.Tetragrammaton.TryUseAction(level, out act)) return act;
 
             //安慰之心
             if (Actions.AfflatusSolace.TryUseAction(level, out act)) return act;
@@ -59,7 +56,10 @@ namespace XIVComboPlus.Combos.WHM
             //救疗
             if (Actions.Cure2.TryUseAction(level, out act)) return act;
 
-            return actionID;
+            //治疗
+            if (Actions.Cure.TryUseAction(level, out act)) return act;
+
+            return Actions.AfflatusSolace.ActionID;
         }
     }
 }

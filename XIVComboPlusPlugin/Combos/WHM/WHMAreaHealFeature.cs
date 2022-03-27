@@ -48,8 +48,6 @@ namespace XIVComboPlus.Combos.WHM
                 if (Actions.AfflatusRapture.TryUseAction(level, out act, mustUse: true)) return act;
             }
 
-            var members = TargetHelper.PartyMembers;
-
             //狂喜之心
             if (Actions.AfflatusRapture.TryUseAction(level, out act)) return act;
             //加Hot
@@ -61,7 +59,9 @@ namespace XIVComboPlus.Combos.WHM
             //愈疗
             if (cure3 > medica && Actions.Cure3.TryUseAction(level, out act)) return act;
             if (Actions.Medica.TryUseAction(level, out act)) return act;
-            return Actions.Raise.ActionID;
+
+
+            return Actions.AfflatusRapture.ActionID;
         }
 
     }

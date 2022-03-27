@@ -2,6 +2,8 @@
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.Gui;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,10 +70,41 @@ namespace XIVComboPlus
                 else
                 {
                     return Service.PartyList.Select(obj => obj.GameObject as PlayerCharacter).ToArray();
-
                 }
             }
         }
+
+        public static float[] PartyMembersHP => PartyMembers.Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
+
+        public static float PartyMembersAverHP
+        {
+            get
+            {
+                var members = PartyMembersHP;
+                float averHP = 0;
+                foreach (var hp in members)
+                {
+                    averHP += hp;
+                }
+                return averHP / members.Length;
+            }
+        }
+
+        public static float PartyMembersDifferHP
+        {
+            get
+            {
+                var members = PartyMembersHP;
+                float differHP = 0;
+                float average = PartyMembersAverHP;
+                foreach (var hp in members)
+                {
+                    differHP += Math.Abs(hp - average);
+                }
+                return differHP / members.Length;
+            }
+        }
+
         /// <summary>
         /// 玩家们
         /// </summary>
@@ -198,9 +231,13 @@ namespace XIVComboPlus
             //如果都没有距离，这个还需要选对象嘛？选自己啊！
             if (act.Range == 0) return Service.ClientState.LocalPlayer;
 
+            ////如果可以对友好的人进行操作。
+            //if (act.CanTargetFriendly)
+            //{
 
+            //}
             //首先看看是不是能对小队成员进行操作的。
-            if (act.CanTargetParty)
+            if (act.CanTargetParty || act.RowId == WHMCombo.Actions.Asylum.ActionID)
             {
                 //如果能选中队友，还消耗2400的蓝，那肯定是复活的。
                 if (act.CanTargetFriendly && act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
@@ -248,10 +285,13 @@ namespace XIVComboPlus
                     return deathAll[0];
                 }
 
+                //Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy).Select(obj => (BattleNpc)obj).ToArray();
+
+
                 //找到没死的队友们。
                 PlayerCharacter[] availableCharas = PartyMembers.Where(player => player.CurrentHp != 0).ToArray();
 
-                if (!act.CanTargetSelf)
+                if (!act.CanTargetSelf && act.RowId != WHMCombo.Actions.Asylum.ActionID)
                 {
                     availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalContentId).ToArray();
                 }
@@ -335,15 +375,31 @@ namespace XIVComboPlus
                         //找到能打到的怪。
                         var canReachTars = GetObjectInRadius(Targets, Math.Max(act.Range, 3f));
 
-                        //判断一下要选择打血最大的，还是最小的。
+                        //判断一下要选择打体积最大的，还是最小的。
                         if (Service.Configuration.IsTargetBoss)
                         {
-                            return canReachTars.OrderBy(player => player.HitboxRadius).Last();
+                            canReachTars = canReachTars.OrderByDescending(player => player.HitboxRadius).ToArray();
                         }
                         else
                         {
-                            return canReachTars.OrderBy(player => player.HitboxRadius).First();
+                            canReachTars = canReachTars.OrderBy(player => player.HitboxRadius).ToArray();
                         }
+
+                        //找到体积一样小的
+                        List<BattleNpc> canGet = new List<BattleNpc>(canReachTars.Length) { canReachTars[0] };
+
+                        float radius = canReachTars[0].HitboxRadius;
+                        for (int i = 1; i < canReachTars.Length; i++)
+                        {
+                            if(canReachTars[i].HitboxRadius == radius)
+                            {
+                                canGet.Add(canReachTars[i]);
+                            }
+                            else break;
+                        }
+
+                        return canGet.OrderBy(player => Vector3.Distance(player.Position, Service.ClientState.LocalPlayer.Position)).First();
+
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
                         return GetMostObjectInRadius(Targets, act.Range, act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
 
@@ -432,6 +488,25 @@ namespace XIVComboPlus
             }
             return list.ToArray();
         }
+
+        //unsafe void ResetAll(string s, string s1)
+        //{
+        //    IntPtr addonByName = Service.GameGui.GetAddonByName("_EnemyList", 1);
+        //    if (addonByName != IntPtr.Zero)
+        //    {
+        //        AddonEnemyList* ptr = (AddonEnemyList*)(void*)addonByName;
+        //        NumberArrayData* ptr2 = ((AtkArrayDataHolder)(&((AtkModule)(&((RaptureAtkModule)(&((UIModule)((Framework)Framework.Instance()).GetUiModule()).RaptureAtkModule)).AtkModule)).AtkArrayDataHolder)).NumberArrays[19];
+        //        for (int i = 0; i < ((AddonEnemyList)ptr).EnemyCount; i++)
+        //        {
+        //            int num = ((NumberArrayData)ptr2).IntArray[8 + i * 6];
+        //            BattleChara* ptr3 = ((CharacterManager)CharacterManager.Instance()).LookupBattleCharaByObjectId(num);
+        //            if (ptr3 != null && ((Character)(&((BattleChara)ptr3).Character)).NameID == 541)
+        //            {
+        //                Plugin.<.ctor > g__ResetEnmity | 23_0(num);
+        //            }
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// 获得玩家某范围内的所有怪。

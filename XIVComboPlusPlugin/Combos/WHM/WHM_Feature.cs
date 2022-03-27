@@ -31,7 +31,17 @@ namespace XIVComboPlus.Combos.WHM
                 //如果有人倒了，赶紧即刻拉人！
                 if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return act;
                 if (Actions.ThinAir.TryUseAction(level, out act, mustUse: true)) return act;
-                if (Actions.Raise.TryUseAction(level, out act)) return act;
+
+                bool haveSwift = false;
+                foreach (var status in Service.ClientState.LocalPlayer.StatusList)
+                {
+                    if (GeneralActions.Swiftcast.BuffsProvide.Contains((ushort)status.StatusId))
+                    {
+                        haveSwift = true;
+                        break;
+                    }
+                }
+                if (haveSwift && Actions.Raise.TryUseAction(level, out act)) return act;
             }
 
             if (IsMoving && HaveTargetAngle)
