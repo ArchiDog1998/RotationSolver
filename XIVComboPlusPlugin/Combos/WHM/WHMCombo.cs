@@ -38,20 +38,41 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
             //救疗
             Cure2 = new BaseAction(135, true),
             //神名
-            Tetragrammaton = new BaseAction(3570, true),
+            Tetragrammaton = new BaseAction(3570, true)
+            {
+                OtherCheck = () =>
+                {
+                    foreach (float rate in TargetHelper.PartyMembersHP)
+                    {
+                        if (rate < 0.8) return true;
+                    }
+                    return false;
+                },
+            },
             //安慰之心 800
             AfflatusSolace = new BaseAction(16531, true)
             {
-                OtherCheck = () => JobGauge.Lily > 0,
+                OtherCheck = () =>
+                {
+                    if(JobGauge.Lily == 0) return false;
+                    foreach (float rate in TargetHelper.PartyMembersHP)
+                    {
+                        if (rate < 0.8) return true;
+                    }
+                    return false;
+
+                }
             },
             //再生
             Regen = new BaseAction(137, true)
             {
                 OtherCheck = () =>
                 {
-                    BattleChara t = Service.TargetManager.Target as BattleChara;
-                    if (t == null) return false;
-                    return (float)t.CurrentHp / t.MaxHp >= hotElement;
+                    foreach (float rate in TargetHelper.PartyMembersHP)
+                    {
+                        if (rate >= hotElement) return true;
+                    }
+                    return false;
                 },
                 TargetStatus = new ushort[]
                 {
@@ -131,6 +152,9 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
 
         if (CanInsertAbility)
         {
+            //神名
+            if (Actions.Tetragrammaton.TryUseAction(level, out action)) return true;
+
             //加个水流幕
             if (Actions.Aquaveil.TryUseAction(level, out action)) return true;
 
@@ -156,19 +180,29 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
     {
         dangeriousTank = null;
         uint[] dangerousState = new uint[] { ObjectStatus.Holmgang, ObjectStatus.WalkingDead, ObjectStatus.Superbolide };
-        foreach (var tank in TargetHelper.PartyTanks)
+        foreach (var member in TargetHelper.PartyMembers)
         {
-            foreach (var tag in tank.StatusList)
+            //看看有没有人要搞死自己。
+            foreach (var tag in member.StatusList)
             {
-                if (dangerousState.Contains(tag.StatusId) && tag.RemainingTime < 1)
+                if (dangerousState.Contains(tag.StatusId))
                 {
-                    dangeriousTank = tank;
-                    return true;
+                    if (tag.RemainingTime < 1)
+                    {
+                        dangeriousTank = member;
+                        return true;
+                    }
+                    else return false;
                 }
             }
-        }
 
+            //如果没有人要搞死自己，那么就看看有没有人快死了。
+            if ((float)member.CurrentHp / member.MaxHp < 0.1)
+            {
+                dangeriousTank = member;
+                return true;
+            }
+        }
         return false;
     }
-
 }

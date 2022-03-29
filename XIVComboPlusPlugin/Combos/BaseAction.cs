@@ -177,8 +177,8 @@ namespace XIVComboPlus.Combos
             //如果是能力技能，还没填满。
             if (IsAbility && Service.IconReplacer.GetCooldown(ActionID).IsCooldown) return false;
 
-            //如果是个法术，并且还在移动，也没有即刻相关的技能。
-            if (TargetHelper.IsMoving && IsSpell)
+            //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
+            if (TargetHelper.IsMoving && IsSpell && Action.Cast100ms > 0)
             {
                 bool haveSwift = false;
                 foreach (var buff in CustomCombo.GeneralActions.Swiftcast.BuffsProvide)

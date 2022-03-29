@@ -29,11 +29,6 @@ namespace XIVComboPlus.Combos.WHM
 
             if (CanInsertAbility)
             {
-                //法令
-                if (Actions.Assize.TryUseAction(level, out act, mustUse: true)) return act;
-
-                //庇护所
-                if (Actions.Asylum.TryUseAction(level, out act, mustUse: true)) return act;
 
                 //礼仪之铃
                 if (Actions.LiturgyoftheBell.TryUseAction(level, out act, mustUse: true)) return act;
@@ -47,6 +42,12 @@ namespace XIVComboPlus.Combos.WHM
                 //狂喜之心
                 if (Actions.AfflatusRapture.TryUseAction(level, out act, mustUse: true)) return act;
             }
+
+            //法令
+            if (Actions.Assize.TryUseAction(level, out act, mustUse: true)) return act;
+
+            //庇护所
+            if (Actions.Asylum.TryUseAction(level, out act, mustUse: true)) return act;
 
             //狂喜之心
             if (Actions.AfflatusRapture.TryUseAction(level, out act)) return act;

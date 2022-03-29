@@ -18,7 +18,7 @@ namespace XIVComboPlus.Combos.WHM
         {
             uint act;
 
-            //有人搞超火！这很刺激！
+            //有人要死了！这很刺激！
             if (UseBenediction(out _) && Actions.Benediction.TryUseAction(level, out act, mustUse: true)) return act;
 
             if (TargetHelper.DyingPeople.Length > 0)

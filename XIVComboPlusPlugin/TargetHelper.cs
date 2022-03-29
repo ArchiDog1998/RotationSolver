@@ -228,8 +228,8 @@ namespace XIVComboPlus
 
         internal static GameObject GetBestTarget(Action act)
         {
-            //如果都没有距离，这个还需要选对象嘛？选自己啊！
-            if (act.Range == 0) return Service.ClientState.LocalPlayer;
+            //如果都没有距离，这个还需要选对象嘛？选原来的对象啊！
+            if (act.Range == 0) return Service.TargetManager.Target ?? Service.ClientState.LocalPlayer;
 
             ////如果可以对友好的人进行操作。
             //if (act.CanTargetFriendly)
@@ -239,8 +239,8 @@ namespace XIVComboPlus
             //首先看看是不是能对小队成员进行操作的。
             if (act.CanTargetParty || act.RowId == WHMCombo.Actions.Asylum.ActionID)
             {
-                //如果能选中队友，还消耗2400的蓝，那肯定是复活的。
-                if (act.CanTargetFriendly && act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
+                //还消耗2400的蓝，那肯定是复活的。
+                if (act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
                 {
                     var deathAll = DeathPeopleAll;
                     var deathParty = DeathPeopleParty;
@@ -345,7 +345,7 @@ namespace XIVComboPlus
 
                                 //天赐给那个要死了的人！
                             case GetTargetFunction.DangeriousTank:
-                                if (WHMCombo.UseBenediction(out PlayerCharacter tank)) return tank;
+                                if (WHMCombo.UseBenediction(out PlayerCharacter t)) return t;
                                 tanks = PartyTanksAttached;
                                 if (tanks.Length == 0)
                                 {
@@ -359,6 +359,10 @@ namespace XIVComboPlus
                                 return PartyMembers[0];
                         }
                     }
+
+                    ////如果坦克血不多了的话，那就先奶坦克。
+                    //var tank = PartyTanks.Where(player => player.CurrentHp != 0).OrderBy(play => (float)play.CurrentHp / play.MaxHp).First();
+                    //if ((float)tank.CurrentHp / tank.MaxHp < 0.5) return tank;
 
                     //选血量最少的那个。
                     return availableCharas.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
@@ -414,7 +418,7 @@ namespace XIVComboPlus
             //那么这个就不需要找到目标了，要么对着自己，要么就什么都不能选中。
             else
             {
-                return Service.ClientState.LocalPlayer;
+                return Service.TargetManager.Target ?? Service.ClientState.LocalPlayer;
             }
         }
 

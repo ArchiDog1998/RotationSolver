@@ -25,27 +25,16 @@ namespace XIVComboPlus.Combos.WHM
 
             if (IsMoving)
             {
-                if (CanInsertAbility)
-                {
-                    //神名
-                    if (Actions.Tetragrammaton.TryUseAction(level, out act)) return act;
-                }
-
-                //安慰之心
-                if (Actions.AfflatusSolace.TryUseAction(level, out act)) return act;
-
                 //再生
                 if (Actions.Regen.TryUseAction(level, out act)) return act;
 
-                //神名
-                if (Actions.Tetragrammaton.TryUseAction(level, out act)) return act;
+
+                //安慰之心
+                if (Actions.AfflatusSolace.TryUseAction(level, out act)) return act;
             }
 
             //如果现在可以增加能力技
             if (CanAddAbility(level, out act)) return act;
-
-            //神名
-            if (Actions.Tetragrammaton.TryUseAction(level, out act)) return act;
 
             //安慰之心
             if (Actions.AfflatusSolace.TryUseAction(level, out act)) return act;
