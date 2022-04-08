@@ -32,10 +32,8 @@ internal class ConfigWindow : Window
 
     public override void Draw()
     {
-        //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-        //{
-        //    ImGui.Text(item.GameData.RowId.ToString());
-        //}
+
+        //ImGui.Text(Service.JobGauges.Get<BLMGauge>().EnochianTimer.ToString());
 
 
         int multiCount = Service.Configuration.MultiCount;

@@ -175,7 +175,7 @@ namespace XIVComboPlus.Combos
             }
 
             //如果是能力技能，还没填满。
-            if (IsAbility && Service.IconReplacer.GetCooldown(ActionID).IsCooldown) return false;
+            if (IsAbility && Service.IconReplacer.GetCooldown(ActionID).CooldownRemaining > 5) return false;
 
             //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
             if (TargetHelper.IsMoving && IsSpell && Action.Cast100ms > 0)

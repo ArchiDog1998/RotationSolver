@@ -9,12 +9,10 @@ namespace XIVComboPlus.Combos.BLM
 {
     internal abstract class BLMCombo : CustomComboJob<BLMGauge>
     {
-        protected static bool HaveEnoughMP => LocalPlayer.CurrentMp > 9000;
-
         /// <summary>
         /// 判断通晓是否满了。
         /// </summary>
-        protected static bool IsPolyglotStacksFull
+        protected static bool IsPolyglotStacksMaxed
         {
             get
             {
@@ -43,14 +41,14 @@ namespace XIVComboPlus.Combos.BLM
                     ObjectStatus.Thunder3,
                     ObjectStatus.Thunder4,
                 },
-                    OtherIDs = new uint[] { 153u, 144u } //雷1,3 ID
+                    OtherIDs = new uint[] { 153u, 144u, 7420u, 7447u } //雷1,3 ID
                 },
 
                 //雷2
                 Thunder2 = new BaseAction(7447u)
                 {
                     TargetStatus = Thunder.TargetStatus,
-                    OtherIDs = new uint[] { 7420u, 7447u } //雷2,4 ID
+                    OtherIDs = new uint[] { 153u, 144u, 7420u, 7447u } //雷2,4 ID
                 },
 
                 ////雷3
@@ -123,7 +121,7 @@ namespace XIVComboPlus.Combos.BLM
                 Triplecast = new BaseAction(7421u)
                 {
                     BuffsProvide = GeneralActions.Swiftcast.BuffsProvide,
-                    OtherCheck = () => JobGauge.InAstralFire && JobGauge.UmbralHearts < 2,
+                    OtherCheck = () => JobGauge.InAstralFire && JobGauge.UmbralHearts < 2 && JobGauge.ElementTimeRemaining > 10000,
                 },
 
                 //黑魔纹
@@ -136,7 +134,7 @@ namespace XIVComboPlus.Combos.BLM
                 BetweenTheLines = new BaseAction(7419u) { BuffsNeed = new ushort[] { ObjectStatus.LeyLines } },
 
                 //详述
-                Amplifier = new BaseAction(25796u) { OtherCheck = () => !IsPolyglotStacksFull },
+                Amplifier = new BaseAction(25796u) { OtherCheck = () => !IsPolyglotStacksMaxed && JobGauge.EnochianTimer > 10000},
 
                 //核爆
                 Flare = new BaseAction(162u) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
@@ -166,6 +164,9 @@ namespace XIVComboPlus.Combos.BLM
 
             if (CanInsertAbility)
             {
+                //加个醒梦
+                if (JobGauge.InUmbralIce && GeneralActions.LucidDreaming.TryUseAction(level, out action)) return true;
+
                 //加个即刻或者黑魔纹
                 if (JobGauge.InAstralFire && LocalPlayer.CurrentMp > 800 && JobGauge.UmbralHearts <2)
                 {
@@ -183,9 +184,6 @@ namespace XIVComboPlus.Combos.BLM
 
                 //加个魔罩
                 if (Actions.Manaward.TryUseAction(level, out action)) return true;
-
-                //加个醒梦
-                if (GeneralActions.LucidDreaming.TryUseAction(level, out action)) return true;
             }
             return false;
         }

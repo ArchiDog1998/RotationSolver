@@ -3,7 +3,6 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Gui;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +51,8 @@ namespace XIVComboPlus
             get
             {
                 var allTarges = AllTargets;
-                var hosts = allTarges.Where(t => t.TargetObject != null).ToArray();
+                uint[] ids = GetEnemies();
+                var hosts = allTarges.Where(t => ids.Contains(t.ObjectId)).ToArray();
                 return hosts.Length == 0? allTarges : hosts;
             }
         }
@@ -493,24 +493,25 @@ namespace XIVComboPlus
             return list.ToArray();
         }
 
-        //unsafe void ResetAll(string s, string s1)
-        //{
-        //    IntPtr addonByName = Service.GameGui.GetAddonByName("_EnemyList", 1);
-        //    if (addonByName != IntPtr.Zero)
-        //    {
-        //        AddonEnemyList* ptr = (AddonEnemyList*)(void*)addonByName;
-        //        NumberArrayData* ptr2 = ((AtkArrayDataHolder)(&((AtkModule)(&((RaptureAtkModule)(&((UIModule)((Framework)Framework.Instance()).GetUiModule()).RaptureAtkModule)).AtkModule)).AtkArrayDataHolder)).NumberArrays[19];
-        //        for (int i = 0; i < ((AddonEnemyList)ptr).EnemyCount; i++)
-        //        {
-        //            int num = ((NumberArrayData)ptr2).IntArray[8 + i * 6];
-        //            BattleChara* ptr3 = ((CharacterManager)CharacterManager.Instance()).LookupBattleCharaByObjectId(num);
-        //            if (ptr3 != null && ((Character)(&((BattleChara)ptr3).Character)).NameID == 541)
-        //            {
-        //                Plugin.<.ctor > g__ResetEnmity | 23_0(num);
-        //            }
-        //        }
-        //    }
-        //}
+        private static unsafe uint[] GetEnemies()
+        {
+            var addonByName = Service.GameGui.GetAddonByName("_EnemyList", 1);
+            if (addonByName != IntPtr.Zero)
+            {
+                var addon = (FFXIVClientStructs.FFXIV.Client.UI.AddonEnemyList*)addonByName;
+                var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[19];
+
+                List<uint> list = new List<uint>(addon->EnemyCount);
+                for (var i = 0; i < addon->EnemyCount; i++)
+                {
+                    var enemyChara = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager.Instance()->LookupBattleCharaByObjectId(numArray->IntArray[8 + i * 6]);
+                    if (enemyChara is null) continue;
+                    list.Add(enemyChara->Character.GameObject.ObjectID);
+                }
+                return list.ToArray();
+            }
+            return new uint[0];
+        }
 
         /// <summary>
         /// 获得玩家某范围内的所有怪。
