@@ -11,6 +11,7 @@ using XIVComboPlus.Attributes;
 using XIVComboPlus.Combos;
 using XIVComboPlus.Combos.BLM;
 using Action = Lumina.Excel.GeneratedSheets.Action;
+using ClientBattle = FFXIVClientStructs.FFXIV.Client.Game.Character.BattleChara;
 
 namespace XIVComboPlus
 {
@@ -52,7 +53,7 @@ namespace XIVComboPlus
             {
                 var allTarges = AllTargets;
                 uint[] ids = GetEnemies();
-                var hosts = allTarges.Where(t => ids.Contains(t.ObjectId)).ToArray();
+                var hosts = allTarges.Where(t => t.TargetObject?.IsValid() ?? false || ids.Contains(t.ObjectId)).ToArray();
                 return hosts.Length == 0? allTarges : hosts;
             }
         }
@@ -493,14 +494,13 @@ namespace XIVComboPlus
             return list.ToArray();
         }
 
-        private static unsafe uint[] GetEnemies()
+        internal static unsafe uint[] GetEnemies()
         {
             var addonByName = Service.GameGui.GetAddonByName("_EnemyList", 1);
             if (addonByName != IntPtr.Zero)
             {
                 var addon = (FFXIVClientStructs.FFXIV.Client.UI.AddonEnemyList*)addonByName;
                 var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[19];
-
                 List<uint> list = new List<uint>(addon->EnemyCount);
                 for (var i = 0; i < addon->EnemyCount; i++)
                 {

@@ -33,7 +33,6 @@ internal class ConfigWindow : Window
     public override void Draw()
     {
 
-        //ImGui.Text(Service.JobGauges.Get<BLMGauge>().EnochianTimer.ToString());
 
 
         int multiCount = Service.Configuration.MultiCount;

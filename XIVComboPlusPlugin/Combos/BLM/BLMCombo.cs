@@ -168,7 +168,7 @@ namespace XIVComboPlus.Combos.BLM
                 if (JobGauge.InUmbralIce && GeneralActions.LucidDreaming.TryUseAction(level, out action)) return true;
 
                 //加个即刻或者黑魔纹
-                if (JobGauge.InAstralFire && LocalPlayer.CurrentMp > 800 && JobGauge.UmbralHearts <2)
+                if (JobGauge.InAstralFire && LocalPlayer.CurrentMp >= 800 && JobGauge.UmbralHearts < 2)
                 {
                     if (GeneralActions.Swiftcast.TryUseAction(level, out action)) return true;
                 }

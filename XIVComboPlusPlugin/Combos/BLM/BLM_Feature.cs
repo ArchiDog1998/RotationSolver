@@ -13,41 +13,18 @@ internal class BLM_Feature : BLMCombo
 
     public override string Description => "替换火1为持续的GCD循环，自动判断群攻还是单体！";
 
+    private bool HasFire => BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.Firestarter));
     protected internal override uint[] ActionIDs => new uint[] { Actions.Fire.ActionID };
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
     {
         uint act;
-        if (IsMoving)
+        if (IsMoving && HaveTargetAngle)
         {
-            //如果在移动并且有目标。
-            if (HaveTargetAngle)
-            {
-                if (Actions.Flare.TryUseAction(level, out act)) return act;
-                if (Actions.Xenoglossy.TryUseAction(level, out act)) return act;
-                if (Actions.Triplecast.TryUseAction(level, out act)) return act;
-                if (GeneralActions.Swiftcast.TryUseAction(level, out act)) return act;
-            }
-            //如果在移动，但是没有目标。
-            else
-            {
-                if (Actions.UmbralSoul.TryUseAction(level, out act))
-                {
-                    if (level < Actions.Paradox.Level)
-                    {
-                        return act;
-                    }
-                    else
-                    {
-                        if (JobGauge.UmbralIceStacks > 2 && JobGauge.UmbralHearts > 2)
-                        {
-                            return act;
-                        }
-                    }
-                }
-                if (JobGauge.ElementTimeRemaining < 10000)
-                    return Actions.Transpose.ActionID;
-            }
+            if (Actions.Flare.TryUseAction(level, out act)) return act;
+            if (Actions.Xenoglossy.TryUseAction(level, out act)) return act;
+            if (Actions.Triplecast.TryUseAction(level, out act, mustUse:true)) return act;
+            if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return act;
         }
 
 
@@ -70,8 +47,9 @@ internal class BLM_Feature : BLMCombo
         if (JobGauge.InUmbralIce)
         {
             //如果没有火苗且单体有悖论，那打掉！
-            if (!BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.Firestarter)) && 
+            if (!HasFire &&
                 JobGauge.IsParadoxActive && Actions.Blizzard.TryUseAction(level, out act)) return true;
+
 
             if (Actions.Freeze.TryUseAction(level, out act)) return true;
             if (Actions.Blizzard2.TryUseAction(level, out act)) return true;
@@ -154,14 +132,12 @@ internal class BLM_Feature : BLMCombo
     {
         if (JobGauge.InUmbralIce)
         {
-            bool hasFire = BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.Firestarter));
 
             if (LocalPlayer.CurrentMp > 9000 && (JobGauge.UmbralHearts == 3 || level < 58))
             {
-                if (AddAstralFireStacks(level, lastAct, out act)) return true;
-            }
-            else if (LocalPlayer.CurrentMp >= 7200 && hasFire)
-            {
+                //如果有冰悖论，赶紧打出去！
+                if (!HasFire && JobGauge.IsParadoxActive && Actions.Blizzard.TryUseAction(level, out act)) return true;
+
                 if (AddAstralFireStacks(level, lastAct, out act)) return true;
             }
 
@@ -247,7 +223,7 @@ internal class BLM_Feature : BLMCombo
     {
         //如果火满了，就别加了。
         act = 0;
-        if (JobGauge.AstralFireStacks > 2 && JobGauge.ElementTimeRemaining > 5100) return false;
+        if (JobGauge.AstralFireStacks > 2 && JobGauge.ElementTimeRemaining > 5400) return false;
 
         if(Service.ClientState.LocalPlayer.CurrentMp < 5000 && lastaction != Actions.Manafont.ActionID)
         {

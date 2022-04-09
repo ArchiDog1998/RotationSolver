@@ -129,13 +129,13 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 
         if (CanInsertAbility)
         {
-            //鼓励要放到魔回刺或者魔划圆斩之后
-            if (lastComboActionID == Actions.EnchantedRiposte.ActionID || lastComboActionID == Actions.EnchantedMoulinet.ActionID)
+            //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
+            if (lastComboActionID == Actions.EnchantedRiposte.ActionID || lastComboActionID == Actions.EnchantedZwerchhau.ActionID || lastComboActionID == Actions.EnchantedMoulinet.ActionID)
             {
                 if (Actions.Embolden.TryUseAction(level, out act, mustUse:true)) return true;
             }
             //倍增要放到魔连攻击之后
-            if (JobGauge.ManaStacks == 3)
+            if (JobGauge.ManaStacks == 3 || lastComboActionID == Actions.EnchantedRedoublement.ActionID)
             {
                 if (Actions.Manafication.TryUseAction(level, out act, mustUse:true)) return true;
             }
@@ -222,7 +222,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 
         #endregion
 
-        if (!canOpen) return false;
+        //if (!canOpen) return false;
 
         #region 开启爆发
         //看看有没有即刻相关的技能。
@@ -235,20 +235,20 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
                 break;
             }
         }
-        //如果没有即刻相关的，就可以开始三连了！
-        if (!haveIt)
+        //如果没有即刻相关的，并且鼓励要么还太早，要么已经来倍增了。就可以开始三连了！
+        if (!haveIt && (Actions.Embolden.CoolDown.CooldownRemaining > 20 || Actions.Embolden.CoolDown.CooldownRemaining < 1))
         {
             //要来可以使用近战三连了。
             if (Service.Configuration.IsTargetBoss && JobGauge.BlackMana >= 50 && JobGauge.WhiteMana >= 50)
             {
                 if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
-                if (Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
+                if (canOpen && Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
             }
             if (JobGauge.BlackMana >= 60 && JobGauge.WhiteMana >= 60)
             {
                 if (Actions.EnchantedMoulinet.TryUseAction(level, out act)) return true;
                 if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
-                if (Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
+                if (canOpen && Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
             }
         }
         #endregion

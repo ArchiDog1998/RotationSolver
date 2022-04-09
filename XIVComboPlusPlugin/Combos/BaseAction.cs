@@ -15,6 +15,7 @@ namespace XIVComboPlus.Combos
     {
         private bool _isFriendly;
         internal Action Action { get; }
+        internal IconReplacer.CooldownData CoolDown { get; }
         private uint _actionType => Action.ActionCategory.Value.RowId;
         internal byte Level => Action.ClassJobLevel;
         internal uint ActionID => Action.RowId;
@@ -73,6 +74,7 @@ namespace XIVComboPlus.Combos
         {
             Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
             _isFriendly = isFriendly;
+            CoolDown = Service.IconReplacer.GetCooldown(actionID);
         }
 
         public bool TryUseAction(byte level, out uint action, uint lastAct = 0, bool mustUse = false)
@@ -116,9 +118,7 @@ namespace XIVComboPlus.Combos
             if (IsAbility)
             {
                 int charge = Action.MaxCharges;
-                var CoolDown = Service.IconReplacer.GetCooldown(ActionID);
                 if (charge < 2 && CoolDown.IsCooldown) return false;
-
                 if (CoolDown.CooldownElapsed / CoolDown.CooldownTotal < 1f / charge) return false;
             }
 
@@ -175,7 +175,7 @@ namespace XIVComboPlus.Combos
             }
 
             //如果是能力技能，还没填满。
-            if (IsAbility && Service.IconReplacer.GetCooldown(ActionID).CooldownRemaining > 5) return false;
+            if (IsAbility && CoolDown.CooldownRemaining > 5) return false;
 
             //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
             if (TargetHelper.IsMoving && IsSpell && Action.Cast100ms > 0)
