@@ -78,7 +78,26 @@ namespace XIVComboPlus.Combos
             WalkingDead = 811,
 
             //超火流行
-            Superbolide = 1836;
+            Superbolide = 1836,
+
+            //直线射击预备
+            StraightShotReady = 122,
+
+            //毒咬箭Dot
+            VenomousBite = 124,
+
+            //风蚀箭Dot
+            Windbite = 129,
+
+            //毒咬箭 Plus Dot
+            CausticBite = 1200,
+
+            //风蚀箭 Plus Dot
+            Stormbite = 1201,
+
+
+            //影噬箭准备
+            ShadowbiteReady = 3002;
 
     }
 }

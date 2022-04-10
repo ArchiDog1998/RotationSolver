@@ -4,8 +4,11 @@ namespace XIVComboPlus.Combos;
 
 internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 {
+    //看看现在有没有促进
+    protected static bool IsBreaking => BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(1297)) || BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(2282));
     internal struct Actions
     {
+
         public static readonly BaseAction
             //震荡
             Jolt = new BaseAction(7503)
@@ -129,6 +132,13 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 
         if (CanInsertAbility)
         {
+            //开场爆发的时候释放。
+            if (JobGauge.WhiteMana == 12 & JobGauge.BlackMana == 6)
+            {
+                if (Actions.Embolden.TryUseAction(level, out act, mustUse: true)) return true;
+                if (Actions.Manafication.TryUseAction(level, out act, mustUse: true)) return true;
+            }
+
             //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
             if (lastComboActionID == Actions.EnchantedRiposte.ActionID || lastComboActionID == Actions.EnchantedZwerchhau.ActionID || lastComboActionID == Actions.EnchantedMoulinet.ActionID)
             {
@@ -150,11 +160,8 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             //攻击四个能力技。
             if (Actions.ContreSixte.TryUseAction(level, out act, mustUse:true)) return true;
             if (Actions.Fleche.TryUseAction(level, out act)) return true;
-            if (Actions.Engagement.TryUseAction(level, out act)) return true;
+            if (Actions.Engagement.TryUseAction(level, out act, Empty: IsBreaking)) return true;
             //if (Actions.CorpsAcorps.TryUseAction(level, out act)) return true;
-
-            //团队减伤 
-            if(Actions.MagickBarrier.TryUseAction(level, out act)) return true;
 
             //加个混乱
             if (GeneralActions.Addle.TryUseAction(level, out act)) return true;

@@ -11,7 +11,6 @@ using XIVComboPlus.Attributes;
 using XIVComboPlus.Combos;
 using XIVComboPlus.Combos.BLM;
 using Action = Lumina.Excel.GeneratedSheets.Action;
-using ClientBattle = FFXIVClientStructs.FFXIV.Client.Game.Character.BattleChara;
 
 namespace XIVComboPlus
 {
@@ -39,6 +38,8 @@ namespace XIVComboPlus
             {WHMCombo.Actions.DivineBenison.ActionID, GetTargetFunction.MajorTank },
             {WHMCombo.Actions.Benediction.ActionID, GetTargetFunction.MajorTank },
             {CustomCombo.GeneralActions.Esuna.ActionID, GetTargetFunction.Esuna},
+            {BRDCombo.Actions.NaturesMinne.ActionID, GetTargetFunction.MajorTank },
+            {BRDCombo.Actions.WardensPaean.ActionID, GetTargetFunction.Esuna },
         };
 
         //All Targes
@@ -378,7 +379,7 @@ namespace XIVComboPlus
                     case 1:
                     default:
                         //找到能打到的怪。
-                        var canReachTars = GetObjectInRadius(Targets, Math.Max(act.Range, 3f));
+                        var canReachTars = GetObjectInRadius(Targets, GetRange(act));
 
                         //判断一下要选择打体积最大的，还是最小的。
                         if (Service.Configuration.IsTargetBoss)
@@ -406,13 +407,13 @@ namespace XIVComboPlus
                         return canGet.OrderBy(player => Vector3.Distance(player.Position, Service.ClientState.LocalPlayer.Position)).First();
 
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        return GetMostObjectInRadius(Targets, act.Range, act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
+                        return GetMostObjectInRadius(Targets, GetRange(act), act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
 
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        return GetMostObjectInArc(Targets, Math.Max(act.Range, 3f), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+                        return GetMostObjectInArc(Targets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
 
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        return GetMostObjectInLine(Targets, Math.Max(act.Range, 3f), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+                        return GetMostObjectInLine(Targets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
 
                 }
             }
@@ -421,6 +422,13 @@ namespace XIVComboPlus
             {
                 return Service.TargetManager.Target ?? Service.ClientState.LocalPlayer;
             }
+        }
+
+        private static float GetRange(Action act)
+        {
+            sbyte range = act.Range;
+            if (range < 0) range = 25;
+            return Math.Max(range, 3f);
         }
 
         internal static bool ActionGetATarget(Action act, bool isFriendly)
@@ -436,23 +444,24 @@ namespace XIVComboPlus
             switch (act.CastType)
             {
                 case 1:
-                    return GetObjectInRadius(tar, Math.Max(act.Range, 3f)).Count() > 0;
+
+                    return GetObjectInRadius(tar, GetRange(act)).Count() > 0;
                 case 2: // 圆形范围攻击，看看人数够不够。
 
                     if (act.CanTargetHostile)
                     {
-                        return GetMostObjectInRadius(tar, act.Range, act.EffectRange, true).Count() > 0;
+                        return GetMostObjectInRadius(tar, GetRange(act), act.EffectRange, true).Count() > 0;
                     }
                     else
                     {
-                        return GetMostObjectInRadius(tar, new PlayerCharacter[] {Service.ClientState.LocalPlayer} , act.Range, act.EffectRange, true).Count() > 0;
+                        return GetMostObjectInRadius(tar, new PlayerCharacter[] {Service.ClientState.LocalPlayer}, GetRange(act), act.EffectRange, true).Count() > 0;
                     }
 
                 case 3: // 扇形范围攻击。看看人数够不够。
-                    return GetMostObjectInArc(tar, Math.Max(act.Range, 3f), true).Count() > 0;
+                    return GetMostObjectInArc(tar, GetRange(act), true).Count() > 0;
 
                 case 4: //直线范围攻击。看看人数够不够。
-                    return GetMostObjectInLine(tar, Math.Max(act.Range, 3f), true).Count() > 0;
+                    return GetMostObjectInLine(tar, GetRange(act), true).Count() > 0;
             }
             return true;
         }
@@ -504,9 +513,9 @@ namespace XIVComboPlus
                 List<uint> list = new List<uint>(addon->EnemyCount);
                 for (var i = 0; i < addon->EnemyCount; i++)
                 {
-                    var enemyChara = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager.Instance()->LookupBattleCharaByObjectId(numArray->IntArray[8 + i * 6]);
-                    if (enemyChara is null) continue;
-                    list.Add(enemyChara->Character.GameObject.ObjectID);
+                    //var enemyChara = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager.Instance()->LookupBattleCharaByObjectId(numArray->IntArray[8 + i * 6]);
+                    //if (enemyChara is null) continue;
+                    list.Add((uint)numArray->IntArray[8 + i * 6]);
                 }
                 return list.ToArray();
             }

@@ -15,11 +15,11 @@ namespace XIVComboPlus.Combos
     {
         private bool _isFriendly;
         internal Action Action { get; }
-        internal IconReplacer.CooldownData CoolDown { get; }
+        internal IconReplacer.CooldownData CoolDown => Service.IconReplacer.GetCooldown(ActionID);
         private uint _actionType => Action.ActionCategory.Value.RowId;
         internal byte Level => Action.ClassJobLevel;
         internal uint ActionID => Action.RowId;
-        private bool IsAbility => _actionType == 4;
+        private bool IsAbility => _actionType == 4 || _actionType == 1;
         private bool IsSpell => _actionType == 2;
         private bool IsWeaponskill => _actionType == 4;
         internal short CastTime => (short)(Action.Cast100ms * 100);
@@ -42,10 +42,6 @@ namespace XIVComboPlus.Combos
         /// 如果之前是这些ID，那么就不会执行。
         /// </summary>
         internal uint[] OtherIDs { private get; set; } = null;
-        /// <summary>
-        /// 是不是需要加上所有的Debuff
-        /// </summary>
-        internal bool NeedAllDebuffs { private get; set; } = false;
         /// <summary>
         /// 给敌人造成的Debuff,如果有这些Debuff，那么不会执行。
         /// </summary>
@@ -74,10 +70,9 @@ namespace XIVComboPlus.Combos
         {
             Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
             _isFriendly = isFriendly;
-            CoolDown = Service.IconReplacer.GetCooldown(actionID);
         }
 
-        public bool TryUseAction(byte level, out uint action, uint lastAct = 0, bool mustUse = false)
+        public bool TryUseAction(byte level, out uint action, uint lastAct = 0, bool mustUse = false, bool Empty = false)
         {
             action = ActionID;
 
@@ -117,7 +112,7 @@ namespace XIVComboPlus.Combos
             //如果是能力技能，而且没法释放。
             if (IsAbility)
             {
-                int charge = Action.MaxCharges;
+                byte charge = Action.MaxCharges;
                 if (charge < 2 && CoolDown.IsCooldown) return false;
                 if (CoolDown.CooldownElapsed / CoolDown.CooldownTotal < 1f / charge) return false;
             }
@@ -152,30 +147,14 @@ namespace XIVComboPlus.Combos
             //目标已有充足的Debuff
             if (TargetStatus != null)
             {
-                if (NeedAllDebuffs)
+                foreach (var debuff in TargetStatus)
                 {
-                    bool haveAll = true;
-                    foreach (var debuff in TargetStatus)
-                    {
-                        if (!EnoughStatus(FindStatusTargetFromSelf(debuff)))
-                        {
-                            haveAll = false;
-                            break;
-                        }
-                    }
-                    if (haveAll) return false;
-                }
-                else
-                {
-                    foreach (var debuff in TargetStatus)
-                    {
-                        if (EnoughStatus(FindStatusTargetFromSelf(debuff))) return false;
-                    }
+                    if (EnoughStatus(FindStatusTargetFromSelf(debuff))) return false;
                 }
             }
 
             //如果是能力技能，还没填满。
-            if (IsAbility && CoolDown.CooldownRemaining > 5) return false;
+            if (!Empty && IsAbility && CoolDown.CooldownRemaining > 5) return false;
 
             //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
             if (TargetHelper.IsMoving && IsSpell && Action.Cast100ms > 0)

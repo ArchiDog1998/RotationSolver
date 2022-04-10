@@ -27,7 +27,9 @@ public abstract class CustomCombo
             Addle = new BaseAction(7560u),
 
             //¼´¿ÌÓ½³ª
-            Swiftcast = new BaseAction(7561u) { BuffsProvide = new ushort[]
+            Swiftcast = new BaseAction(7561u)
+            {
+                BuffsProvide = new ushort[]
             {
                 ObjectStatus.Swiftcast1,
                 ObjectStatus.Swiftcast2,
@@ -35,7 +37,8 @@ public abstract class CustomCombo
                 ObjectStatus.Triplecast,
                 ObjectStatus.Dualcast,
                 ObjectStatus.Acceleration,
-            } },
+            }
+            },
 
             //¿µ¸´
             Esuna = new BaseAction(7568)
@@ -47,7 +50,25 @@ public abstract class CustomCombo
             LucidDreaming = new BaseAction(7562u)
             {
                 OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp < 6000,
-            };
+            },
+
+            //ÉËÍÈ
+            LegGraze = new BaseAction(7554)
+            {
+                BuffsProvide = new ushort[]
+                {
+                    13,564,1345,
+                },
+            },
+
+            //ÄÚµ¤
+            SecondWind = new BaseAction(7541)
+            {
+                OtherCheck = () => (double)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6,
+            },
+
+            //ÉË×ã
+            FootGraze = new BaseAction(7553);
 
     }
     #endregion
