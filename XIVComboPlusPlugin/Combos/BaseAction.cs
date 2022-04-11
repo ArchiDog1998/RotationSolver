@@ -182,7 +182,7 @@ namespace XIVComboPlus.Combos
 
         internal static bool EnoughStatus(Status status)
         {
-            return StatusRemainTime(status) > 3f; ;
+            return StatusRemainTime(status) > 5.5f;
         }
         //internal static bool HaveStatus(Status[] status)
         //{

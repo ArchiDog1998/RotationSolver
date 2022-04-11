@@ -43,6 +43,11 @@ namespace XIVComboPlus.Combos.RDM
             //如果已经在爆发了，那继续！
             if (CanBreak(lastComboActionID, level, out act, false)) return act;
 
+            if(comboTime == 0)
+            {
+                if (Actions.Verthunder2.TryUseAction(level, out act)) return act;
+                if (Actions.Verthunder.TryUseAction(level, out act)) return act;
+            }
 
             #region 常规输出
             if (Actions.Verfire.TryUseAction(level, out act)) return act;
@@ -64,8 +69,6 @@ namespace XIVComboPlus.Combos.RDM
             if (Actions.Jolt.TryUseAction(level, out act)) return act;
 
             #endregion
-
-            //if (Actions.Vercure.TryUseAction(level, out act, mustUse: true)) return act;
 
             return 0;
         }

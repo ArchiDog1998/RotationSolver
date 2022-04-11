@@ -44,9 +44,9 @@ namespace XIVComboPlus
 
         //All Targes
         internal static BattleNpc[] AllTargets =>
-        Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy && CanAttack(obj)).Select(obj => (BattleNpc)obj).ToArray();
+        Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleNpc)obj).ToArray();
 
-        internal static BattleNpc[] HostileTargets => AllTargets.Where(t => t.TargetObject != null).ToArray();
+        internal static BattleNpc[] HostileTargets => AllTargets.Where(t => t.TargetObject != null && t.BattleNpcKind == BattleNpcSubKind.Enemy).ToArray();
 
         internal static BattleNpc[] Targets
         {
@@ -201,16 +201,23 @@ namespace XIVComboPlus
         {
             List<PlayerCharacter> result = new List<PlayerCharacter>(objects.Length);
 
-            var validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => check(job.Type)).Select(job => job.Index));
+            SortedSet<byte> validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => check(job.Type)).Select(job => job.Index));
 
             foreach (var obj in objects)
             {
-                if (validJobs.Contains((byte)obj.ClassJob.GameData?.RowId))
-                {
-                    result.Add(obj);
-                }
+                if (GetJobCategory(obj, validJobs)) result.Add(obj);
             }
             return result.ToArray();
+        }
+        private static bool GetJobCategory(PlayerCharacter obj, Func<JobType, bool> check)
+        {
+            SortedSet<byte> validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => check(job.Type)).Select(job => job.Index));
+            return GetJobCategory(obj, validJobs);
+        }
+
+        private static bool GetJobCategory(PlayerCharacter obj, SortedSet<byte> validJobs)
+        {
+            return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
         }
 
         internal static Action GetActionsByName(string name)
@@ -228,64 +235,66 @@ namespace XIVComboPlus
             return null;
         }
 
+        private static GameObject GetDeathPeople()
+        {
+            var deathAll = DeathPeopleAll;
+            var deathParty = DeathPeopleParty;
+
+
+            if (deathParty.Length != 0)
+            {
+                //确认一下死了的T有哪些。
+
+                var deathT = GetJobCategory(deathParty, (j) => j == JobType.Tank);
+                int TCount = PartyTanks.Length;
+
+                //如果全死了，赶紧复活啊。
+                if (TCount == deathT.Length)
+                {
+                    return deathT[0];
+                }
+
+                //确认一下死了的H有哪些。
+                var deathH = GetJobCategory(deathParty, (j) => j == JobType.Healer);
+
+                //如果H死了，就先救他。
+                if (deathH.Length != 0) return deathH[0];
+
+                //如果T死了，就再救他。
+                if (deathT.Length != 0) return deathT[0];
+
+                //T和H都还活着，那就随便救一个。
+                return deathParty[0];
+            }
+
+            //如果一个都没死，那为啥还要救呢？
+            if (deathAll.Length == 0) return null;
+
+            //确认一下死了的H有哪些。
+            var deathAllH = GetJobCategory(deathAll, (j) => j == JobType.Healer);
+            if (deathAllH.Length != 0) return deathAllH[0];
+
+            //确认一下死了的T有哪些。
+            var deathAllT = GetJobCategory(deathAll, (j) => j == JobType.Tank);
+            if (deathAllT.Length != 0) return deathAllT[0];
+
+            return deathAll[0];
+        }
+
         internal static GameObject GetBestTarget(Action act)
         {
             //如果都没有距离，这个还需要选对象嘛？选原来的对象啊！
             if (act.Range == 0) return Service.TargetManager.Target ?? Service.ClientState.LocalPlayer;
 
-            ////如果可以对友好的人进行操作。
-            //if (act.CanTargetFriendly)
-            //{
-
-            //}
+            //还消耗2400的蓝，那肯定是复活的。
+            if (act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
+            {
+                return GetDeathPeople();
+            }
             //首先看看是不是能对小队成员进行操作的。
             if (act.CanTargetParty || act.RowId == WHMCombo.Actions.Asylum.ActionID)
             {
-                //还消耗2400的蓝，那肯定是复活的。
-                if (act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
-                {
-                    var deathAll = DeathPeopleAll;
-                    var deathParty = DeathPeopleParty;
 
-                    //如果一个都没死，那为啥还要救呢？
-                    if (deathAll.Length == 0) return null;
-
-                    if(deathParty.Length != 0)
-                    {
-                        //确认一下死了的T有哪些。
-
-                        var deathT = GetJobCategory(deathParty, (j) => j == JobType.Tank);
-                        int TCount = PartyTanks.Length;
-
-                        //如果全死了，赶紧复活啊。
-                        if (TCount == deathT.Length)
-                        {
-                            return deathT[0];
-                        }
-
-                        //确认一下死了的H有哪些。
-                        var deathH = GetJobCategory(deathParty, (j) => j == JobType.Healer);
-
-                        //如果H死了，就先救他。
-                        if (deathH.Length != 0) return deathH[0];
-
-                        //如果T死了，就再救他。
-                        if (deathT.Length != 0) return deathH[0];
-
-                        //T和H都还活着，那就随便救一个。
-                        return deathParty[0];
-                    }
-
-                    //确认一下死了的H有哪些。
-                    var deathAllH = GetJobCategory(deathAll, (j) => j == JobType.Healer);
-                    if(deathAllH.Length != 0) return deathAllH[0];
-
-                    //确认一下死了的T有哪些。
-                    var deathAllT = GetJobCategory(deathAll, (j) => j == JobType.Tank);
-                    if (deathAllT.Length != 0) return deathAllT[0];
-
-                    return deathAll[0];
-                }
 
                 //Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy).Select(obj => (BattleNpc)obj).ToArray();
 
@@ -427,7 +436,10 @@ namespace XIVComboPlus
         private static float GetRange(Action act)
         {
             sbyte range = act.Range;
-            if (range < 0) range = 25;
+            if (range < 0 && GetJobCategory(Service.ClientState.LocalPlayer, (type) => type == JobType.PhysicalRanged))
+            {
+                range = 25;
+            }
             return Math.Max(range, 3f);
         }
 
@@ -443,8 +455,11 @@ namespace XIVComboPlus
 
             switch (act.CastType)
             {
-                case 1:
-
+                case 1: // 单体攻击啊
+                    if (isFriendly && act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
+                    {
+                        return GetDeathPeople() != null;
+                    }
                     return GetObjectInRadius(tar, GetRange(act)).Count() > 0;
                 case 2: // 圆形范围攻击，看看人数够不够。
 
@@ -515,7 +530,7 @@ namespace XIVComboPlus
                 {
                     //var enemyChara = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager.Instance()->LookupBattleCharaByObjectId(numArray->IntArray[8 + i * 6]);
                     //if (enemyChara is null) continue;
-                    list.Add((uint)numArray->IntArray[8 + i * 6]);
+                    list.Add((uint  )numArray->IntArray[8 + i * 6]);
                 }
                 return list.ToArray();
             }
@@ -627,8 +642,8 @@ namespace XIVComboPlus
                 {
                     Vector3 tdir = obj.Position - Service.ClientState.LocalPlayer.Position;
 
-                    double angle = Math.Acos(Vector3.Dot(dir, tdir)/(dir.Length() * tdir.Length()));
-                    if (angle <= Math.PI/3)
+                    double cos = Vector3.Dot(dir, tdir)/(dir.Length() * tdir.Length());
+                    if (cos >= 0.5)
                     {
                         count++;
                     }

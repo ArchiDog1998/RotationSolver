@@ -95,9 +95,10 @@ namespace XIVComboPlus.Combos
             //风蚀箭 Plus Dot
             Stormbite = 1201,
 
-
             //影噬箭准备
-            ShadowbiteReady = 3002;
+            ShadowbiteReady = 3002,
+            
+            BlastArrowReady = 2692;
 
     }
 }

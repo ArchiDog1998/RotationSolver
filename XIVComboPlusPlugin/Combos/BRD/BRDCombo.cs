@@ -107,10 +107,7 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
             Sidewinder = new BaseAction(3562),
 
             //绝峰箭
-            ApexArrow = new BaseAction(16496)
-            {
-                OtherCheck = () => JobGauge.SoulVoice >= 80,
-            },
+            ApexArrow = new BaseAction(16496),
 
             //光明神的最终乐章
             RadiantFinale = new BaseAction(25785)
@@ -160,10 +157,10 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
             if (Actions.Sidewinder.TryUseAction(level, out action)) return true;
 
             //死亡剑雨
-            if (Actions.RainofDeath.TryUseAction(level, out action, Empty: IsBreaking)) return true;
+            if (Actions.RainofDeath.TryUseAction(level, out action, Empty: level == 90 ? IsBreaking : true)) return true;
 
             //失血箭
-            if (Actions.Bloodletter.TryUseAction(level, out action, Empty: IsBreaking)) return true;
+            if (Actions.Bloodletter.TryUseAction(level, out action, Empty: level == 90 ? IsBreaking : true)) return true;
 
 
             //大地神的抒情恋歌

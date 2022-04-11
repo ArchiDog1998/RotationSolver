@@ -175,31 +175,31 @@ internal class BLM_Feature : BLMCombo
         if (Actions.Blizzard2.TryUseAction(level, out act)) return true;
 
         //如果在火状态，切有火苗的话
-        if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.Firestarter)) && (JobGauge.PolyglotStacks > 0 || 
-            Service.ClientState.LocalPlayer.CurrentMp > 800))
-        {
-            if (JobGauge.InAstralFire)
-            {
-                //就变成冰状态！
-                if (CanInsertAbility && Actions.Transpose.TryUseAction(level, out act)) return true;
+        //if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.Firestarter)) && (JobGauge.PolyglotStacks > 0 || 
+        //    Service.ClientState.LocalPlayer.CurrentMp > 800))
+        //{
+        //    if (JobGauge.InAstralFire)
+        //    {
+        //        //就变成冰状态！
+        //        if (CanInsertAbility && Actions.Transpose.TryUseAction(level, out act)) return true;
 
-                //创造内插的状态！
-                if (JobGauge.PolyglotStacks > 0)
-                {
-                    if (Actions.Foul.TryUseAction(level, out act)) return true;
-                    if (Actions.Xenoglossy.TryUseAction(level, out act)) return true;
-                    if (Actions.Foul.TryUseAction(level, out act, mustUse: true)) return true;
-                }
+        //        //创造内插的状态！
+        //        if (JobGauge.PolyglotStacks > 0)
+        //        {
+        //            if (Actions.Foul.TryUseAction(level, out act)) return true;
+        //            if (Actions.Xenoglossy.TryUseAction(level, out act)) return true;
+        //            if (Actions.Foul.TryUseAction(level, out act, mustUse: true)) return true;
+        //        }
 
-                //加个能力技？
-                if (CanAddAbility(level, out act)) return true;
+        //        //加个能力技？
+        //        if (CanAddAbility(level, out act)) return true;
 
-                //试试看冰3
-                if (Actions.Blizzard3.TryUseAction(level, out act)) return true;
+        //        //试试看冰3
+        //        if (Actions.Blizzard3.TryUseAction(level, out act)) return true;
 
-            }
-        }
-        else
+        //    }
+        //}
+        //else
         {
             //加个能力技？
             if (CanAddAbility(level, out act)) return true;

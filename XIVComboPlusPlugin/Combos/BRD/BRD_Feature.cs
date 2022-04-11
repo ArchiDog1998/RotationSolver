@@ -31,6 +31,12 @@ namespace XIVComboPlus.Combos.BRD
             if (Actions.VenomousBite.TryUseAction(level, out act)) return act;
             if (Actions.Windbite.TryUseAction(level, out act)) return act;
 
+            //放大招！
+            if(JobGauge.SoulVoice >= 80 || BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.BlastArrowReady)))
+            {
+                if (Actions.ApexArrow.TryUseAction(level, out act, mustUse: true)) return act;
+            }
+
             if (Actions.HeavyShoot.TryUseAction(level, out act)) return act;
 
             //强力射击

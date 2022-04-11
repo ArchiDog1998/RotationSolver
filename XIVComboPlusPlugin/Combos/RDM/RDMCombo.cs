@@ -5,7 +5,7 @@ namespace XIVComboPlus.Combos;
 internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 {
     //看看现在有没有促进
-    protected static bool IsBreaking => BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(1297)) || BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(2282));
+    internal static bool IsBreaking => BaseAction.FindStatusSelfFromSelf(1239) != null;
     internal struct Actions
     {
 
@@ -133,7 +133,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
         if (CanInsertAbility)
         {
             //开场爆发的时候释放。
-            if (JobGauge.WhiteMana == 12 & JobGauge.BlackMana == 6)
+            if (JobGauge.WhiteMana == 6 & JobGauge.BlackMana == 12)
             {
                 if (Actions.Embolden.TryUseAction(level, out act, mustUse: true)) return true;
                 if (Actions.Manafication.TryUseAction(level, out act, mustUse: true)) return true;
@@ -155,7 +155,8 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 
 
             //促进满了就用。 
-            if (Actions.Acceleration.TryUseAction(level, out act)) return true;
+            if (Actions.Acceleration.TryUseAction(level, out act, mustUse: true)) return true;
+            if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return true;
 
             //攻击四个能力技。
             if (Actions.ContreSixte.TryUseAction(level, out act, mustUse:true)) return true;
@@ -187,13 +188,15 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
         //如果上一次打了赤神圣或者赤核爆了
         if (level >= 80 && (lastComboActionID == 7525 || lastComboActionID == 7526))
         {
-            if (Actions.Jolt.TryUseAction(level, out act, mustUse: true)) return true;
+            act = Actions.Jolt.ActionID;
+            return true;
         }
 
         //如果上一次打了焦热
         if (level >= 90 && lastComboActionID == 16530)
         {
-            if (Actions.Jolt.TryUseAction(level, out act, mustUse: true)) return true;
+            act = Actions.Jolt.ActionID;
+            return true;
         }
         #endregion
 
@@ -206,11 +209,16 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
         if (Actions.EnchantedZwerchhau.TryUseAction(level, out act,lastComboActionID)) return true;
         if (Actions.EnchantedRedoublement.TryUseAction(level, out act, lastComboActionID)) return true;
 
+        //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
+        bool mustStart = IsBreaking || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || Actions.Embolden.CoolDown.CooldownRemaining == 0
+            || (JobGauge.WhiteMana == 6 & JobGauge.BlackMana == 12);
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
-        if (JobGauge.BlackMana < 100 & JobGauge.WhiteMana < 100)
+        if (!mustStart)
         {
             if (JobGauge.BlackMana == JobGauge.WhiteMana) return false;
+
+            //要求较小的魔元不带触发，也可以强制要求跳过判断。
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
                 if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.VerstoneReady)))
@@ -225,38 +233,39 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
                     return false;
                 }
             }
+
+            //看看有没有即刻相关的技能。
+            foreach (var buff in Actions.Vercure.BuffsProvide)
+            {
+                if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(buff)))
+                {
+                    return false;
+                }
+            }
+
+            //如果倍增的时间快到了，但还是没好。
+            float emboldenRemain = Actions.Embolden.CoolDown.CooldownRemaining;
+            if (emboldenRemain < 30 && emboldenRemain > 1)
+            {
+                return false;
+            }
         }
 
         #endregion
 
-        //if (!canOpen) return false;
-
         #region 开启爆发
-        //看看有没有即刻相关的技能。
-        bool haveIt = false;
-        foreach (var buff in GeneralActions.Swiftcast.BuffsProvide)
+
+        //要来可以使用近战三连了。
+        if (Service.Configuration.IsTargetBoss && JobGauge.BlackMana >= 50 && JobGauge.WhiteMana >= 50)
         {
-            if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(buff)))
-            {
-                haveIt = true;
-                break;
-            }
+            if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
+            if (canOpen && Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
         }
-        //如果没有即刻相关的，并且鼓励要么还太早，要么已经来倍增了。就可以开始三连了！
-        if (!haveIt && (Actions.Embolden.CoolDown.CooldownRemaining > 20 || Actions.Embolden.CoolDown.CooldownRemaining < 1))
+        if (JobGauge.BlackMana >= 60 && JobGauge.WhiteMana >= 60)
         {
-            //要来可以使用近战三连了。
-            if (Service.Configuration.IsTargetBoss && JobGauge.BlackMana >= 50 && JobGauge.WhiteMana >= 50)
-            {
-                if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
-                if (canOpen && Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
-            }
-            if (JobGauge.BlackMana >= 60 && JobGauge.WhiteMana >= 60)
-            {
-                if (Actions.EnchantedMoulinet.TryUseAction(level, out act)) return true;
-                if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
-                if (canOpen && Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
-            }
+            if (Actions.EnchantedMoulinet.TryUseAction(level, out act)) return true;
+            if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
+            if (canOpen && Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
         }
         #endregion
         return false;

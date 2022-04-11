@@ -105,7 +105,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
             //医济 群奶加Hot。
             Medica2 = new BaseAction(133, true)
             {
-                TargetStatus = new ushort[]
+                BuffsProvide = new ushort[]
                 {
                     ObjectStatus.Medica2,
                     ObjectStatus.TrueMedica2,
@@ -126,7 +126,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
             LiturgyoftheBell = new BaseAction(25862, true),
 
             //复活
-            Raise = new BaseAction(125)
+            Raise = new BaseAction(125, true)
             {
                 OtherCheck = () => TargetHelper.DeathPeopleAll.Length > 0,
                 BuffsProvide = new ushort[] { ObjectStatus.Raise },
@@ -197,7 +197,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
             }
 
             //如果没有人要搞死自己，那么就看看有没有人快死了。
-            if ((float)member.CurrentHp / member.MaxHp < 0.1)
+            if ((float)member.CurrentHp / member.MaxHp < 0.15 && member.CurrentHp != 0)
             {
                 dangeriousTank = member;
                 return true;

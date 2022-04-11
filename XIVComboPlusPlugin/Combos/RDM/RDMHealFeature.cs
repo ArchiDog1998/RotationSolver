@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace XIVComboPlus.Combos.RDM
 {
-    internal class RDMBreakFeature : RDMCombo
+    internal class RDMHealFeature : RDMCombo
     {
-        public override string ComboFancyName => "爆发6连";
+        public override string ComboFancyName => "治疗救命";
 
-        public override string Description => "替换短兵相接为爆发用6连";
+        public override string Description => "看看整个团队有没有死人，如果有，就救人啦！";
 
-        protected internal override uint[] ActionIDs => new uint[] { Actions.EnchantedRiposte.ActionID };
+        protected internal override uint[] ActionIDs => new uint[] { Actions.Vercure.ActionID };
 
         protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
         {
@@ -20,10 +20,6 @@ namespace XIVComboPlus.Combos.RDM
 
             //能力技，必须要有
             if (CanAddAbility(level, lastComboActionID, out act)) return act;
-
-            //如果是合适的时候爆发，那赶紧的！
-            if (CanBreak(lastComboActionID, level, out act, true)) return act;
-
 
             //整个队伍里面有人死了。
             if (TargetHelper.DeathPeopleAll.Length > 0)
