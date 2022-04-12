@@ -41,14 +41,14 @@ namespace XIVComboPlus.Combos.BLM
                     ObjectStatus.Thunder3,
                     ObjectStatus.Thunder4,
                 },
-                    OtherIDs = new uint[] { 153u, 144u, 7420u, 7447u } //雷1,3 ID
+                    OtherIDsNot = new uint[] { 153u, 144u, 7420u, 7447u } //雷1,3 ID
                 },
 
                 //雷2
                 Thunder2 = new BaseAction(7447u)
                 {
                     TargetStatus = Thunder.TargetStatus,
-                    OtherIDs = new uint[] { 153u, 144u, 7420u, 7447u } //雷2,4 ID
+                    OtherIDsNot = new uint[] { 153u, 144u, 7420u, 7447u } //雷2,4 ID
                 },
 
                 ////雷3

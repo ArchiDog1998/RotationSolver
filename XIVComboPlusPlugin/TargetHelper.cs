@@ -544,9 +544,9 @@ namespace XIVComboPlus
         /// <param name="objects"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        internal static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
+        internal static T[] GetObjectInRadius<T>(T[] objects, float radius, bool needAddHitbox = true) where T : GameObject
         {
-            return objects.Where(o => DistanceToPlayer(o) <= radius + o.HitboxRadius).ToArray();
+            return objects.Where(o => DistanceToPlayer(o) <= (needAddHitbox ? radius + o.HitboxRadius : radius)).ToArray();
         }
 
         private static T[] GetMostObject<T>(T[] canAttack, float radius, float range, Func<T, T[], float, byte> HowMany, bool forCheck) where T : BattleChara
@@ -627,7 +627,7 @@ namespace XIVComboPlus
         private static T[] GetMostObjectInArc<T>(T[] objects, float radius, bool forCheck) where T : BattleChara
         {
             //能够打到的所有怪。
-            var canGet = GetObjectInRadius(objects, radius);
+            var canGet = GetObjectInRadius(objects, radius, false);
 
             return GetMostObject(objects, radius, radius, CalculateCount, forCheck);
 

@@ -65,7 +65,7 @@ namespace XIVComboPlus.Combos.WHM
             if (Actions.Aero.TryUseAction(level, out act)) return act;
             if (Actions.Stone.TryUseAction(level, out act)) return act;
 
-            return actionID;
+            return Actions.Holy.ActionID;
         }
     }
 }

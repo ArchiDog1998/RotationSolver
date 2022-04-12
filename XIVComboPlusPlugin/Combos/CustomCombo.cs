@@ -109,7 +109,8 @@ public abstract class CustomCombo
 
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
     protected static GameObject Target => Service.TargetManager.Target;
-    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && Service.IconReplacer.GetCooldown(141u).CooldownRemaining > 0.67;
+    protected static float WeaponRemain => Service.IconReplacer.GetCooldown(141u).CooldownRemaining;
+    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && WeaponRemain > 0.6;
     protected CustomCombo()
     {
     }

@@ -41,7 +41,12 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 如果之前是这些ID，那么就不会执行。
         /// </summary>
-        internal uint[] OtherIDs { private get; set; } = null;
+        internal uint[] OtherIDsNot { private get; set; } = null;
+
+        /// <summary>
+        /// 如果之前不是这些ID中的某个，那么就不会执行。
+        /// </summary>
+        internal uint[] OtherIDsCombo { private get; set; } = null;
         /// <summary>
         /// 给敌人造成的Debuff,如果有这些Debuff，那么不会执行。
         /// </summary>
@@ -110,12 +115,9 @@ namespace XIVComboPlus.Combos
             }
 
             //如果是能力技能，而且没法释放。
-            if (IsAbility)
-            {
-                byte charge = Action.MaxCharges;
-                if (charge < 2 && CoolDown.IsCooldown) return false;
-                if (CoolDown.CooldownElapsed / CoolDown.CooldownTotal < 1f / charge) return false;
-            }
+            byte charge = Action.MaxCharges;
+            if (charge < 2 && CoolDown.IsCooldown) return false;
+            if (CoolDown.CooldownElapsed / CoolDown.CooldownTotal < 1f / charge) return false;
 
             //已有提供的Buff的任何一种
             if (BuffsProvide != null)
@@ -130,17 +132,27 @@ namespace XIVComboPlus.Combos
             if (mustUse) return true;
 
             //如果有输入上次的数据，那么上次不能是上述的ID。
-            if (OtherIDs != null)
+            if (OtherIDsNot != null)
             {
-                foreach (var id in OtherIDs)
+                foreach (var id in OtherIDsNot)
                 {
                     if (lastAct == id) return false;
                 }
             }
 
             //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
-            uint comboAction = Action.ActionCombo.Row;
-            if (comboAction != 0 && comboAction != lastAct) return false;
+            uint[] comboActions = Action.ActionCombo.Row == 0 ? new uint[0] : new uint[] { Action.ActionCombo.Row };
+            if(OtherIDsCombo != null) comboActions = comboActions.Union(OtherIDsCombo).ToArray();
+            bool findCombo = false;
+            foreach (var comboAction in comboActions)
+            {
+                if (comboAction == lastAct)
+                {
+                    findCombo = true;
+                    break;
+                }
+            }
+            if (!findCombo && comboActions.Length > 0) return false;
 
 
 
