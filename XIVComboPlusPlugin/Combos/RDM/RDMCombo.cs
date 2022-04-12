@@ -104,7 +104,10 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             Embolden = new BaseAction(7520),
 
             //倍增
-            Manafication = new BaseAction(7521),
+            Manafication = new BaseAction(7521)
+            {
+                OtherCheck = () => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50,
+            },
 
             //赤复活
             Verraise = new BaseAction(7523, true)
@@ -136,7 +139,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             if (JobGauge.WhiteMana == 6 & JobGauge.BlackMana == 12)
             {
                 if (Actions.Embolden.TryUseAction(level, out act, mustUse: true)) return true;
-                if (Actions.Manafication.TryUseAction(level, out act, mustUse: true)) return true;
+                if (Actions.Manafication.TryUseAction(level, out act)) return true;
             }
 
             //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
@@ -147,7 +150,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             //倍增要放到魔连攻击之后
             if (JobGauge.ManaStacks == 3 || lastComboActionID == Actions.EnchantedRedoublement.ActionID)
             {
-                if (Actions.Manafication.TryUseAction(level, out act, mustUse:true)) return true;
+                if (Actions.Manafication.TryUseAction(level, out act)) return true;
             }
 
             //加个醒梦
@@ -205,6 +208,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
         if (lastComboActionID == Actions.EnchantedMoulinet.ActionID && JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20)
         {
             if (Actions.EnchantedMoulinet.TryUseAction(level, out act)) return true;
+            if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
         }
         if (Actions.EnchantedZwerchhau.TryUseAction(level, out act,lastComboActionID)) return true;
         if (Actions.EnchantedRedoublement.TryUseAction(level, out act, lastComboActionID)) return true;

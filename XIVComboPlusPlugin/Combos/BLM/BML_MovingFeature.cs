@@ -16,22 +16,9 @@ namespace XIVComboPlus.Combos.BLM
 
         protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
         {
-            bool isFull = JobGauge.UmbralIceStacks > 2 && JobGauge.UmbralHearts > 2;
+            //bool isFull = JobGauge.UmbralIceStacks > 2 && JobGauge.UmbralHearts > 2;
 
-            if (Actions.UmbralSoul.TryUseAction(level, out _))
-            {
-                if (level < Actions.Paradox.Level)
-                {
-                    return Actions.UmbralSoul.ActionID;
-                }
-                else
-                {
-                    if (!isFull || JobGauge.IsParadoxActive)
-                    {
-                        return Actions.UmbralSoul.ActionID;
-                    }
-                }
-            }
+            if (Actions.UmbralSoul.TryUseAction(level, out uint act)) return act;
 
             if (JobGauge.InAstralFire || JobGauge.InUmbralIce)
                 return Actions.Transpose.ActionID;
