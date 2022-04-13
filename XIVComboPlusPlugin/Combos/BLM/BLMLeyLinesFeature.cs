@@ -13,8 +13,11 @@ internal class BLMLeyLinesFeature : BLMCombo
 
     protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
     {
-        if(Actions.BetweenTheLines.TryUseAction(level, out uint act)) return act;
-        //if (Actions.Leylines.TryUseAction(level, out act)) return act;
-        return Actions.Leylines.ActionID;
+        if (CanInsertAbility) 
+        {
+            if (Actions.BetweenTheLines.TryUseAction(level, out uint act)) return act;
+            return Actions.Leylines.ActionID;
+        }
+        return base.Invoke(actionID, lastComboMove, comboTime, level);
     }
 }

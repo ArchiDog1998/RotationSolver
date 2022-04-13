@@ -68,7 +68,32 @@ public abstract class CustomCombo
             },
 
             //ÉË×ã
-            FootGraze = new BaseAction(7553);
+            FootGraze = new BaseAction(7553),
+
+            //Ç×Êè×ÔÐÐ
+            ArmsLength = new BaseAction(7548),
+
+            //Ìú±Ú
+            Rampart = new BaseAction(7531)
+            {
+                BuffsProvide = new ushort[]
+                {
+                    ObjectStatus.Rampart1, ObjectStatus.Rampart2, ObjectStatus.Rampart3,
+                    //Ô­³õµÄÖ±¾õºÍÑªÆø
+                    ObjectStatus.RawIntuition, ObjectStatus.Bloodwhetting,
+                    //¸´³ð
+                    ObjectStatus.Vengeance,
+                },
+            },
+
+            //ÌôÐÆ
+            Provoke = new BaseAction(7533),
+
+            //Ñ©³ð
+            Reprisal = new BaseAction(7535),
+
+            //ÍË±Ü
+            Shirk = new BaseAction(7537);
 
     }
     #endregion

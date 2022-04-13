@@ -23,6 +23,7 @@ namespace XIVComboPlus
             MajorTank,
             DangeriousTank,
             Esuna,
+            Provoke,
         }
 
         private static IntPtr _func;
@@ -40,15 +41,15 @@ namespace XIVComboPlus
             {CustomCombo.GeneralActions.Esuna.ActionID, GetTargetFunction.Esuna},
             {BRDCombo.Actions.NaturesMinne.ActionID, GetTargetFunction.MajorTank },
             {BRDCombo.Actions.WardensPaean.ActionID, GetTargetFunction.Esuna },
+            {CustomCombo.GeneralActions.Provoke.ActionID, GetTargetFunction.Provoke },
+            {WARCombo.Actions.Tomahawk.ActionID, GetTargetFunction.Provoke },
         };
 
         //All Targes
         internal static BattleNpc[] AllTargets =>
         Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleNpc)obj).ToArray();
 
-        internal static BattleNpc[] HostileTargets => AllTargets.Where(t => t.TargetObject != null && t.BattleNpcKind == BattleNpcSubKind.Enemy).ToArray();
-
-        internal static BattleNpc[] Targets
+        internal static BattleNpc[] HostileTargets
         {
             get
             {
@@ -59,8 +60,10 @@ namespace XIVComboPlus
             }
         }
 
-      //  public static PlayerCharacter[] PartyMembers =>
-      //AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).ToArray();
+        internal static BattleNpc[] HostileTargetsNotAimedMe => HostileTargets.Where(t => t.TargetObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+
+        //  public static PlayerCharacter[] PartyMembers =>
+        //AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).ToArray();
         public static PlayerCharacter[] PartyMembers
         {
             get
@@ -387,8 +390,22 @@ namespace XIVComboPlus
                 {
                     case 1:
                     default:
+
+                        //如果是特殊需求的话。
+                        if (_specialGetTarget.ContainsKey(act.RowId))
+                        {
+                            switch (_specialGetTarget[act.RowId])
+                            {
+                                case GetTargetFunction.Provoke:
+                                    var tars = GetObjectInRadius(ProvokeTarget(), GetRange(act));
+                                    if (tars.Length == 0) return null;
+                                    return tars.OrderBy(player => Vector3.Distance(player.Position, Service.ClientState.LocalPlayer.Position)).First();
+                            }
+                        }
+
                         //找到能打到的怪。
-                        var canReachTars = GetObjectInRadius(Targets, GetRange(act));
+                        var canReachTars = GetObjectInRadius(HostileTargets, GetRange(act));
+
 
                         //判断一下要选择打体积最大的，还是最小的。
                         if (Service.Configuration.IsTargetBoss)
@@ -416,13 +433,13 @@ namespace XIVComboPlus
                         return canGet.OrderBy(player => Vector3.Distance(player.Position, Service.ClientState.LocalPlayer.Position)).First();
 
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        return GetMostObjectInRadius(Targets, GetRange(act), act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
+                        return GetMostObjectInRadius(HostileTargets, GetRange(act), act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
 
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        return GetMostObjectInArc(Targets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+                        return GetMostObjectInArc(HostileTargets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
 
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        return GetMostObjectInLine(Targets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+                        return GetMostObjectInLine(HostileTargets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
 
                 }
             }
@@ -431,6 +448,33 @@ namespace XIVComboPlus
             {
                 return Service.TargetManager.Target ?? Service.ClientState.LocalPlayer;
             }
+        }
+
+        internal static BattleNpc[] ProvokeTarget()
+        {
+            var tankIDS = GetJobCategory(AllianceMembers, (jt) => jt == JobType.Tank).Select(member => member.ObjectId);
+            var loc = Service.ClientState.LocalPlayer.Position;
+
+            bool someTargetsHaveTarget = false;
+            List<BattleNpc> targets = new List<BattleNpc>();
+            foreach (var target in HostileTargets)
+            {
+                //有目标
+                if (target.TargetObject?.IsValid() ?? false)
+                {
+                    someTargetsHaveTarget = true;
+
+                    //居然在打非T！
+                    if (!tankIDS.Contains(target.TargetObjectId) && Vector3.Distance(target.Position, loc) > 3)
+                    {
+                        targets.Add(target);
+                    }
+                }
+            }
+            //没有敌对势力，那随便用
+            if (!someTargetsHaveTarget) return HostileTargets;
+            //返回在打队友的讨厌鬼！
+            return targets.ToArray();
         }
 
         private static float GetRange(Action act)
@@ -451,7 +495,7 @@ namespace XIVComboPlus
             //如果在打Boss呢，那就不需要考虑AOE的问题了。
             if (Service.Configuration.IsTargetBoss && !isFriendly && act.CastType != 1) return false;
 
-            BattleChara[] tar = isFriendly ? PartyMembers : Targets;
+            BattleChara[] tar = isFriendly ? PartyMembers : HostileTargets;
 
             switch (act.CastType)
             {

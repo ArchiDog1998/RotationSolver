@@ -115,9 +115,10 @@ namespace XIVComboPlus.Combos
             }
 
             //如果是能力技能，而且没法释放。
+            var cool = CoolDown;
             byte charge = Action.MaxCharges;
-            if (charge < 2 && CoolDown.IsCooldown) return false;
-            if (CoolDown.CooldownElapsed / CoolDown.CooldownTotal < 1f / charge) return false;
+            if (charge < 2 && cool.IsCooldown) return false;
+            if (cool.IsCooldown && cool.CooldownElapsed < cool.CooldownTotal / charge) return false;
 
             //已有提供的Buff的任何一种
             if (BuffsProvide != null)
@@ -166,7 +167,7 @@ namespace XIVComboPlus.Combos
             }
 
             //如果是能力技能，还没填满。
-            if (!Empty && IsAbility && CoolDown.CooldownRemaining > 5) return false;
+            if (!Empty && IsAbility && cool.CooldownRemaining > 5) return false;
 
             //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
             if (TargetHelper.IsMoving && IsSpell && Action.Cast100ms > 0)

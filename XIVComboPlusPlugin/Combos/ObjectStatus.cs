@@ -97,8 +97,37 @@ namespace XIVComboPlus.Combos
 
             //影噬箭准备
             ShadowbiteReady = 3002,
-            
-            BlastArrowReady = 2692;
 
+            //
+            BlastArrowReady = 2692,
+
+            //铁壁
+            Rampart1 = 71,
+            Rampart2 = 1191,
+            Rampart3 = 1978,
+
+            //复仇
+            Vengeance = 89,
+
+            //守护 盾姿
+            Defiance = 91,
+
+            //原初的直觉
+            RawIntuition = 735,
+
+            //原初的血气
+            Bloodwhetting = 2678,
+
+            //原初的解放
+            InnerRelease = 1177,
+
+            //原初的混沌
+            NascentChaos = 1897,
+
+            //战场风暴
+            SurgingTempest = 2677,
+
+            //蛮荒崩裂预备
+            PrimalRendReady = 2624;
     }
 }
