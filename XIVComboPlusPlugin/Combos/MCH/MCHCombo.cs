@@ -59,7 +59,6 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
                 {
                     //热量不足，怎么超荷？
                     if (JobGauge.Heat < 50) return false;
-                    if (WeaponRemain > 1) return false;
 
                     byte level = Service.ClientState.LocalPlayer.Level;
                     if (level >= Drill.Level && Drill.CoolDown.CooldownRemaining < 8) return false;
@@ -114,7 +113,7 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
                 //野火
                 if (Actions.Wildfire.TryUseAction(level, out action)) return true;
                 action = Actions.Hypercharge.ActionID;
-                return true;
+                if (WeaponRemain <= 1) return true;
             }
 
             //两个能力技都还在冷却

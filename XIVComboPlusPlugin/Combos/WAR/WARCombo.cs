@@ -21,7 +21,7 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
             //暴风碎 红斧
             StormsEye = new BaseAction(45)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.SurgingTempest },
+                OtherCheck = () => BaseAction.StatusRemainTime(  BaseAction.FindStatusSelfFromSelf(ObjectStatus.SurgingTempest)) < 10,
             },
 
             //飞斧
@@ -44,10 +44,16 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
 
 
             //原初之魂
-            InnerBeast = new BaseAction(49),
+            InnerBeast = new BaseAction(49)
+            {
+                OtherCheck = () => JobGauge.BeastGauge >= 50,
+            },
 
             //钢铁旋风
-            SteelCyclone = new BaseAction(51),
+            SteelCyclone = new BaseAction(51)
+            {
+                OtherCheck = () => JobGauge.BeastGauge >= 50,
+            },
 
             //战嚎
             Infuriate = new BaseAction(52)
@@ -122,6 +128,8 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
             if (GeneralActions.Provoke.TryUseAction(level, out act)) return act;
         }
 
+        if (CanAddAbility(level, out act)) return act;
+
         //兽魂输出
         //钢铁旋风
         if (Actions.SteelCyclone.TryUseAction(level, out act)) return act;
@@ -131,14 +139,14 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
         if (Actions.PrimalRend.TryUseAction(level, out act)) return act;
 
         //群体
-        if (Actions.MythrilTempest.TryUseAction(level, out act)) return act;
-        if (Actions.Overpower.TryUseAction(level, out act)) return act;
+        if (Actions.MythrilTempest.TryUseAction(level, out act, lastComboActionID)) return act;
+        if (Actions.Overpower.TryUseAction(level, out act, lastComboActionID)) return act;
 
         //单体
-        if (Actions.StormsEye.TryUseAction(level, out act)) return act;
-        if (Actions.StormsPath.TryUseAction(level, out act)) return act;
-        if (Actions.Maim.TryUseAction(level, out act)) return act;
-        if (Actions.HeavySwing.TryUseAction(level, out act)) return act;
+        if (Actions.StormsEye.TryUseAction(level, out act, lastComboActionID)) return act;
+        if (Actions.StormsPath.TryUseAction(level, out act, lastComboActionID)) return act;
+        if (Actions.Maim.TryUseAction(level, out act, lastComboActionID)) return act;
+        if (Actions.HeavySwing.TryUseAction(level, out act, lastComboActionID)) return act;
 
         return 0;
     }

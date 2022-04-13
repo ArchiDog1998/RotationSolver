@@ -25,7 +25,7 @@ namespace XIVComboPlus.Combos.MCH
                 return Actions.Bioblaster.ActionID;
             }
 
-            if (Actions.Drill.TryUseAction(level, out _, mustUse: true))
+            if (Actions.Drill.TryUseAction(level, out _))
             {
                 if (Actions.Reassemble.TryUseAction(level, out act, mustUse: true)) return act;
                 if (CanAddAbility(level, out act)) return act;
@@ -34,7 +34,7 @@ namespace XIVComboPlus.Combos.MCH
 
             if(level >= Actions.AirAnchor.Level)
             {
-                if (Actions.AirAnchor.TryUseAction(level, out _, mustUse: true))
+                if (Actions.AirAnchor.TryUseAction(level, out _))
                 {
                     if (Actions.Reassemble.TryUseAction(level, out act, mustUse: true)) return act;
                     if (CanAddAbility(level, out act)) return act;
@@ -43,10 +43,15 @@ namespace XIVComboPlus.Combos.MCH
             }
             else
             {
-                if (CanAddAbility(level, out act)) return act;
-                if (Actions.HotShow.TryUseAction(level, out act)) return act;
+                if (Actions.HotShow.TryUseAction(level, out _))
+                {
+                    if (Actions.Reassemble.TryUseAction(level, out act, mustUse: true)) return act;
+                    if (CanAddAbility(level, out act)) return act;
+                    if (Actions.HotShow.TryUseAction(level, out act)) return act;
+                }
             }
-            if (Actions.ChainSaw.TryUseAction(level, out _, mustUse:true))
+
+            if (Actions.ChainSaw.TryUseAction(level, out _))
             {
                 if (Actions.Reassemble.TryUseAction(level, out act, mustUse: true)) return act;
                 if (CanAddAbility(level, out act)) return act;

@@ -20,8 +20,19 @@ namespace XIVComboPlus.Combos.BLM
 
             if (Actions.UmbralSoul.TryUseAction(level, out uint act)) return act;
 
-            if (JobGauge.InAstralFire || JobGauge.InUmbralIce)
-                return Actions.Transpose.ActionID;
+            if(level >= Actions.UmbralSoul.Level)
+            {
+                if(JobGauge.InAstralFire)
+                {
+                    return Actions.Transpose.ActionID;
+
+                }
+            }
+            else
+            {
+                if (JobGauge.InAstralFire || JobGauge.InUmbralIce)
+                    return Actions.Transpose.ActionID;
+            }
 
             return Actions.UmbralSoul.ActionID;
 

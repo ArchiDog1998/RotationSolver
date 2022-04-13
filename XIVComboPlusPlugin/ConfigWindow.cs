@@ -44,17 +44,17 @@ internal class ConfigWindow : Window
         ImGui.Text("在这个窗口，你可以设定自己喜欢的连击设定。");
 
         bool enableSecretCombos = Service.Configuration.EnableSecretCombos;
-        if (ImGui.Checkbox("可以使用一些禁忌的知识", ref enableSecretCombos))
-        {
-            Service.Configuration.EnableSecretCombos = enableSecretCombos;
-            Service.Configuration.Save();
-        }
-        if (ImGui.IsItemHovered())
-        {
-            ImGui.BeginTooltip();
-            ImGui.TextUnformatted("这些连击对于普通人来说太危险了！");
-            ImGui.EndTooltip();
-        }
+        //if (ImGui.Checkbox("可以使用一些禁忌的知识", ref enableSecretCombos))
+        //{
+        //    Service.Configuration.EnableSecretCombos = enableSecretCombos;
+        //    Service.Configuration.Save();
+        //}
+        //if (ImGui.IsItemHovered())
+        //{
+        //    ImGui.BeginTooltip();
+        //    ImGui.TextUnformatted("这些连击对于普通人来说太危险了！");
+        //    ImGui.EndTooltip();
+        //}
         ImGui.BeginChild("scrolling", new Vector2(0f, -1f), true);
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
         int num = 1;

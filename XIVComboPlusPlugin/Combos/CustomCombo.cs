@@ -152,9 +152,14 @@ public abstract class CustomCombo
             return false;
         }
         uint num2 = Invoke(actionID, lastComboActionID, comboTime, level);
-        if (num2 == 0 || actionID == num2)
+        if (actionID == num2)
         {
             return false;
+        }
+        else if (num2 == 0)
+        {
+            newActionID = GeneralActions.LucidDreaming.ActionID;
+            return true;
         }
         newActionID = num2;
         return true;

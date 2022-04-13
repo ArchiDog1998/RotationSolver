@@ -47,7 +47,8 @@ namespace XIVComboPlus
 
         //All Targes
         internal static BattleNpc[] AllTargets =>
-        Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleNpc)obj).ToArray();
+        Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && CanAttack(obj) && 
+        (((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy || ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.None)).Select(obj => (BattleNpc)obj).ToArray();
 
         internal static BattleNpc[] HostileTargets
         {
