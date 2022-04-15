@@ -197,7 +197,7 @@ namespace XIVComboPlus.Combos.BLM
             uint act;
             if (IsMoving && HaveTargetAngle)
             {
-                if(JobGauge.ElementTimeRemaining <= 3000)
+                if(JobGauge.InAstralFire)
                 {
                     if (Actions.Transpose.TryUseAction(level, out act)) return act;
                 }

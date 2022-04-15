@@ -16,7 +16,7 @@ namespace XIVComboPlus.Combos.WAR
 
         protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
         {
-            if (CanInsertAbility && Actions.Onslaught.TryUseAction(level, out uint action)) return action;
+            if (CanInsertAbility && Actions.Onslaught.TryUseAction(level, out uint action, Empty:true)) return action;
             return base.Invoke(actionID, lastComboActionID, comboTime, level);
         }
     }

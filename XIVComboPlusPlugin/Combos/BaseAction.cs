@@ -118,7 +118,7 @@ namespace XIVComboPlus.Combos
             var cool = CoolDown;
             byte charge = Action.MaxCharges;
             if (charge < 2 && cool.IsCooldown) return false;
-            if (cool.IsCooldown && cool.CooldownElapsed < cool.CooldownTotal / charge) return false;
+            if (cool.IsCooldown && cool.CooldownElapsed < Action.Recast100ms / 10f) return false;
 
             //已有提供的Buff的任何一种
             if (BuffsProvide != null)

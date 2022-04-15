@@ -158,7 +158,9 @@ public abstract class CustomCombo
         }
         else if (num2 == 0)
         {
-            newActionID = GeneralActions.LucidDreaming.ActionID;
+            SortedSet<byte> validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => job.Type == JobType.MagicalRanged || job.Type == JobType.Healer).Select(job => job.Index));
+
+            newActionID = TargetHelper.GetJobCategory( Service.ClientState.LocalPlayer, validJobs) ? GeneralActions.SecondWind.ActionID : GeneralActions.LucidDreaming.ActionID;
             return true;
         }
         newActionID = num2;

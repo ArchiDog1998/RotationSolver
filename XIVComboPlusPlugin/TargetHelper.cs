@@ -195,7 +195,7 @@ namespace XIVComboPlus
         {
             Service.TargetManager.SetTarget(obj);
         }
-        private static float DistanceToPlayer(GameObject obj)
+        internal static float DistanceToPlayer(GameObject obj)
         {
             return Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position);
         }
@@ -219,7 +219,7 @@ namespace XIVComboPlus
             return GetJobCategory(obj, validJobs);
         }
 
-        private static bool GetJobCategory(PlayerCharacter obj, SortedSet<byte> validJobs)
+        internal static bool GetJobCategory(PlayerCharacter obj, SortedSet<byte> validJobs)
         {
             return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
         }
@@ -398,9 +398,9 @@ namespace XIVComboPlus
                             switch (_specialGetTarget[act.RowId])
                             {
                                 case GetTargetFunction.Provoke:
-                                    var tars = GetObjectInRadius(ProvokeTarget(), GetRange(act));
-                                    if (tars.Length == 0) return null;
-                                    return tars.OrderBy(player => Vector3.Distance(player.Position, Service.ClientState.LocalPlayer.Position)).First();
+                                    var tars = GetObjectInRadius(ProvokeTarget(out _), GetRange(act));
+                                    if (tars.Length != 0) return tars.OrderBy(player => Vector3.Distance(player.Position, Service.ClientState.LocalPlayer.Position)).First();
+                                    break;
                             }
                         }
 
@@ -437,7 +437,7 @@ namespace XIVComboPlus
                         return GetMostObjectInRadius(HostileTargets, GetRange(act), act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
 
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        return GetMostObjectInArc(HostileTargets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+                        return GetMostObjectInArc(HostileTargets, act.EffectRange, false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
 
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
                         return GetMostObjectInLine(HostileTargets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
@@ -451,12 +451,14 @@ namespace XIVComboPlus
             }
         }
 
-        internal static BattleNpc[] ProvokeTarget()
+        internal static BattleNpc[] ProvokeTarget(out bool haveTargetOnme)
         {
             var tankIDS = GetJobCategory(AllianceMembers, (jt) => jt == JobType.Tank).Select(member => member.ObjectId);
             var loc = Service.ClientState.LocalPlayer.Position;
+            var id = Service.ClientState.LocalPlayer.ObjectId;
 
             bool someTargetsHaveTarget = false;
+            haveTargetOnme = false;
             List<BattleNpc> targets = new List<BattleNpc>();
             foreach (var target in HostileTargets)
             {
@@ -466,9 +468,14 @@ namespace XIVComboPlus
                     someTargetsHaveTarget = true;
 
                     //居然在打非T！
-                    if (!tankIDS.Contains(target.TargetObjectId) && Vector3.Distance(target.Position, loc) > 3)
+                    if (!tankIDS.Contains(target.TargetObjectId) && Vector3.Distance(target.Position, loc) > 5)
                     {
                         targets.Add(target);
+                    }
+
+                    if (!haveTargetOnme && target.TargetObjectId == id)
+                    {
+                        haveTargetOnme = true;
                     }
                 }
             }
@@ -518,7 +525,7 @@ namespace XIVComboPlus
                     }
 
                 case 3: // 扇形范围攻击。看看人数够不够。
-                    return GetMostObjectInArc(tar, GetRange(act), true).Count() > 0;
+                    return GetMostObjectInArc(tar, act.EffectRange, true).Count() > 0;
 
                 case 4: //直线范围攻击。看看人数够不够。
                     return GetMostObjectInLine(tar, GetRange(act), true).Count() > 0;

@@ -5,6 +5,7 @@ namespace XIVComboPlus.Combos;
 internal abstract class WARCombo : CustomComboJob<WARGauge>
 {
     internal static bool HaveShield => BaseAction.FindStatusSelf(ObjectStatus.Defiance) != null;
+    internal static float BuffTime => BaseAction.StatusRemainTime(BaseAction.FindStatusSelfFromSelf(ObjectStatus.SurgingTempest));
 
     internal struct Actions
     {
@@ -21,14 +22,17 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
             //暴风碎 红斧
             StormsEye = new BaseAction(45)
             {
-                OtherCheck = () => BaseAction.StatusRemainTime(  BaseAction.FindStatusSelfFromSelf(ObjectStatus.SurgingTempest)) < 10,
+                OtherCheck = () => BuffTime < 10,
             },
 
             //飞斧
             Tomahawk = new BaseAction(46),
 
             //猛攻
-            Onslaught = new BaseAction(7386),
+            Onslaught = new BaseAction(7386)
+            {
+                OtherCheck = () => TargetHelper.DistanceToPlayer(Service.TargetManager.Target) > 5,
+            },
 
             //动乱    
             Upheaval = new BaseAction(7387),
@@ -42,18 +46,11 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
             //群山隆起
             Orogeny = new BaseAction(25752),
 
-
             //原初之魂
-            InnerBeast = new BaseAction(49)
-            {
-                OtherCheck = () => JobGauge.BeastGauge >= 50,
-            },
+            InnerBeast = new BaseAction(49),
 
             //钢铁旋风
-            SteelCyclone = new BaseAction(51)
-            {
-                OtherCheck = () => JobGauge.BeastGauge >= 50,
-            },
+            SteelCyclone = new BaseAction(51),
 
             //战嚎
             Infuriate = new BaseAction(52)
@@ -72,10 +69,7 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
             ThrillofBattle = new BaseAction(40),
 
             //泰然自若
-            Equilibrium = new BaseAction(3552)
-            {
-                OtherCheck = () => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6,
-            },
+            Equilibrium = new BaseAction(3552),
 
             //原初的勇猛
             NascentFlash = new BaseAction(16464),
@@ -98,13 +92,13 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
             },
 
-            //摆脱
-            ShakeItOff = new BaseAction(7388),
+            ////摆脱
+            //ShakeItOff = new BaseAction(7388),
 
             //死斗
             Holmgang = new BaseAction(43)
             {
-                OtherCheck = () => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.1,
+                OtherCheck = () => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.15,
             },
 
             ////原初的解放
@@ -121,20 +115,23 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
     {
         uint act;
 
-        if (HaveShield && TargetHelper.ProvokeTarget().Length > 0)
+        if (TargetHelper.ProvokeTarget(out bool haveTargetOnme).Length > 0 && HaveShield)
         {
             //挑衅一下？
             if (Actions.Tomahawk.TryUseAction(level, out act)) return act;
             if (GeneralActions.Provoke.TryUseAction(level, out act)) return act;
         }
 
-        if (CanAddAbility(level, out act)) return act;
+        if (CanAddAbility(level, haveTargetOnme, out act)) return act;
 
         //兽魂输出
-        //钢铁旋风
-        if (Actions.SteelCyclone.TryUseAction(level, out act)) return act;
-        //原初之魂
-        if (Actions.InnerBeast.TryUseAction(level, out act)) return act;
+        if (JobGauge.BeastGauge >= 50 || BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.InnerRelease)))
+        {
+            //钢铁旋风
+            if (Actions.SteelCyclone.TryUseAction(level, out act)) return act;
+            //原初之魂
+            if (Actions.InnerBeast.TryUseAction(level, out act)) return act;
+        }
         //放个大 蛮荒崩裂 会往前飞
         if (Actions.PrimalRend.TryUseAction(level, out act)) return act;
 
@@ -148,25 +145,38 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
         if (Actions.Maim.TryUseAction(level, out act, lastComboActionID)) return act;
         if (Actions.HeavySwing.TryUseAction(level, out act, lastComboActionID)) return act;
 
+        //够不着，随便打一个吧。
+        if (Actions.Tomahawk.TryUseAction(level, out act)) return act;
+
         return 0;
     }
 
-    protected bool CanAddAbility(byte level, out uint act)
+    protected bool CanAddAbility(byte level, bool haveTargetOnme, out uint act)
     {
         act = 0;
 
         if (CanInsertAbility)
         {
-            if (!IsMoving && CanAddRampart(level, out act)) return true;
+            if (!IsMoving && haveTargetOnme && CanAddRampart(level, out act)) return true;
 
             //爆发
-            //狂暴
-            if (Actions.Berserk.TryUseAction(level, out act)) return true;
-            //战嚎
-            if (Actions.Infuriate.TryUseAction(level, out act)) return true;
+            if(BuffTime > 3 || level < Actions.MythrilTempest.Level)
+            {
+                //战嚎
+                if (Actions.Infuriate.TryUseAction(level, out act)) return true;
+                //狂暴
+                if (Actions.Berserk.TryUseAction(level, out act)) return true;
+                //战嚎
+                if (Actions.Infuriate.TryUseAction(level, out act, Empty: true)) return true;
+            }
 
-            //泰然自若 自奶啊！
-            if (Actions.Equilibrium.TryUseAction(level, out act)) return true;
+            if ((float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6)
+            {
+                //战栗
+                if (Actions.ThrillofBattle.TryUseAction(level, out act)) return true;
+                //泰然自若 自奶啊！
+                if (Actions.Equilibrium.TryUseAction(level, out act)) return true;
+            }
 
             //普通攻击
             //群山隆起
@@ -185,15 +195,15 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
         //死斗 如果谢不够了。
         if (Actions.Holmgang.TryUseAction(level, out act)) return true;
 
+        //原初的直觉（减伤10%）
+        if (Actions.RawIntuition.TryUseAction(level, out act)) return true;
+
         //降低伤害
         //复仇（减伤30%）
         if (Actions.Vengeance.TryUseAction(level, out act)) return true;
 
         //铁壁（减伤20%）
         if (GeneralActions.Rampart.TryUseAction(level, out act)) return true;
-
-        //原初的直觉（减伤10%）
-        if (Actions.RawIntuition.TryUseAction(level, out act)) return true;
 
         //降低攻击
         //雪仇
@@ -203,10 +213,8 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
         if (GeneralActions.ArmsLength.TryUseAction(level, out act)) return true;
         
         //增加血量
-        //摆脱 队友套盾
-        if (Actions.ShakeItOff.TryUseAction(level, out act)) return true;
-        //战栗
-        if (Actions.ThrillofBattle.TryUseAction(level, out act)) return true;
+        ////摆脱 队友套盾
+        //if (Actions.ShakeItOff.TryUseAction(level, out act)) return true;
         return false;
     }
 

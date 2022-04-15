@@ -132,12 +132,8 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
                 //弹射
                 if (Actions.Ricochet.TryUseAction(level, out action, mustUse:true)) return true;
             }
-            else
-            {
                 //虹吸弹
                 if (Actions.GaussRound.TryUseAction(level, out action, mustUse: true)) return true;
-            }
-
 
             //伤腿
             if (GeneralActions.FootGraze.TryUseAction(level, out action)) return true;
