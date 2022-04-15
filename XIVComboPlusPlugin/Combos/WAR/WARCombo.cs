@@ -118,7 +118,7 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
         if (TargetHelper.ProvokeTarget(out bool haveTargetOnme).Length > 0 && HaveShield)
         {
             //挑衅一下？
-            if (Actions.Tomahawk.TryUseAction(level, out act)) return act;
+            //if (Actions.Tomahawk.TryUseAction(level, out act)) return act;
             if (GeneralActions.Provoke.TryUseAction(level, out act)) return act;
         }
 
@@ -177,6 +177,9 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
                 //泰然自若 自奶啊！
                 if (Actions.Equilibrium.TryUseAction(level, out act)) return true;
             }
+
+            //奶个队友啊。
+            if (!haveTargetOnme && Actions.NascentFlash.TryUseAction(level, out act)) return true;
 
             //普通攻击
             //群山隆起

@@ -34,7 +34,7 @@ namespace XIVComboPlus
         private static SortedList<uint, GetTargetFunction> _specialGetTarget = new SortedList<uint, GetTargetFunction>()
         {
             //以太步，找面前的友军。
-            { 155u, GetTargetFunction.FaceDirction},
+            { BLMCombo.Actions.AetherialManipulation.ActionID, GetTargetFunction.FaceDirction},
             {WHMCombo.Actions.Aquaveil.ActionID, GetTargetFunction.MajorTank },
             {WHMCombo.Actions.DivineBenison.ActionID, GetTargetFunction.MajorTank },
             {WHMCombo.Actions.Benediction.ActionID, GetTargetFunction.MajorTank },
@@ -43,6 +43,7 @@ namespace XIVComboPlus
             {BRDCombo.Actions.WardensPaean.ActionID, GetTargetFunction.Esuna },
             {CustomCombo.GeneralActions.Provoke.ActionID, GetTargetFunction.Provoke },
             {WARCombo.Actions.Tomahawk.ActionID, GetTargetFunction.Provoke },
+            {WARCombo.Actions.NascentFlash.ActionID, GetTargetFunction.MajorTank },
         };
 
         //All Targes
