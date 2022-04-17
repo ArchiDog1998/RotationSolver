@@ -254,7 +254,7 @@ namespace XIVComboPlus
                 int TCount = PartyTanks.Length;
 
                 //如果全死了，赶紧复活啊。
-                if (TCount == deathT.Length)
+                if (TCount > 0 && deathT.Length == TCount)
                 {
                     return deathT[0];
                 }
@@ -508,7 +508,8 @@ namespace XIVComboPlus
 
             switch (act.CastType)
             {
-                case 1: // 单体攻击啊
+                case 1: // 单体啊
+                    //是个救人啊！
                     if (isFriendly && act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
                     {
                         return GetDeathPeople() != null;
