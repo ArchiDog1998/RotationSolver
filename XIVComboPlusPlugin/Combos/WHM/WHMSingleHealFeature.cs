@@ -48,7 +48,7 @@ namespace XIVComboPlus.Combos.WHM
             //治疗
             if (Actions.Cure.TryUseAction(level, out act)) return act;
 
-            return Actions.AfflatusSolace.ActionID;
+            return 0;
         }
     }
 }

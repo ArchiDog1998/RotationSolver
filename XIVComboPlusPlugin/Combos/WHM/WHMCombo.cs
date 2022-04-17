@@ -44,7 +44,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
                 {
                     foreach (float rate in TargetHelper.PartyMembersHP)
                     {
-                        if (rate < 0.8) return true;
+                        if (rate < 0.7) return true;
                     }
                     return false;
                 },

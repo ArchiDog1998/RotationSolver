@@ -128,6 +128,23 @@ namespace XIVComboPlus.Combos
             SurgingTempest = 2677,
 
             //蛮荒崩裂预备
-            PrimalRendReady = 2624;
+            PrimalRendReady = 2624,
+
+            //烧灼Dot
+            Combust = 838,
+            Combust2 = 843,
+            Combust3 = 1881,
+            Combust4 = 2041,
+
+            //光速
+            LightSpeed = 841,
+
+
+            //地星主宰
+            EarthlyDominance = 1224,
+            //巨星主宰
+            GiantDominance = 1248;
+
+
     }
 }

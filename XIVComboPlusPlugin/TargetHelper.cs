@@ -24,6 +24,8 @@ namespace XIVComboPlus
             DangeriousTank,
             Esuna,
             Provoke,
+            Melee,
+            Range,
         }
 
         private static IntPtr _func;
@@ -44,6 +46,14 @@ namespace XIVComboPlus
             {CustomCombo.GeneralActions.Provoke.ActionID, GetTargetFunction.Provoke },
             {WARCombo.Actions.Tomahawk.ActionID, GetTargetFunction.Provoke },
             {WARCombo.Actions.NascentFlash.ActionID, GetTargetFunction.MajorTank },
+
+            {ASTCombo.Actions.Balance.ActionID, GetTargetFunction.Melee },
+            {ASTCombo.Actions.Arrow.ActionID, GetTargetFunction.Melee },
+            {ASTCombo.Actions.Spear.ActionID, GetTargetFunction.Melee },
+            {ASTCombo.Actions.Bole.ActionID, GetTargetFunction.Range },
+            {ASTCombo.Actions.Ewer.ActionID, GetTargetFunction.Range },
+            {ASTCombo.Actions.Spire.ActionID, GetTargetFunction.Range },
+            {ASTCombo.Actions.Exaltation.ActionID, GetTargetFunction.MajorTank},
         };
 
         //All Targes
@@ -102,15 +112,16 @@ namespace XIVComboPlus
             get
             {
                 var members = PartyMembersHP;
-                float differHP = 0;
+                double differHP = 0;
                 float average = PartyMembersAverHP;
                 foreach (var hp in members)
                 {
-                    differHP += Math.Abs(hp - average);
+                    differHP += Math.Pow(hp - average,2);
                 }
-                return differHP / members.Length;
+                return (float)Math.Sqrt(differHP / members.Length);
             }
         }
+
 
         /// <summary>
         /// 玩家们
@@ -285,24 +296,53 @@ namespace XIVComboPlus
 
             return deathAll[0];
         }
+        private static GameObject GetMeleeTarget()
+        {
+            var targets = GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee);
+            if(targets.Length > 0) return RandomObject(targets);
+
+            targets = PartyDPS;
+            if (targets.Length > 0) return RandomObject(targets);
+
+            targets = PartyMembers;
+            if (targets.Length > 0) return RandomObject(targets);
+
+            return null;
+        }
+        private static GameObject GetRangeTarget()
+        {
+            var targets = GetJobCategory(PartyMembers, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged);
+            if (targets.Length > 0) return RandomObject(targets);
+
+            targets = PartyDPS;
+            if (targets.Length > 0) return RandomObject(targets);
+
+            targets = PartyMembers;
+            if (targets.Length > 0) return RandomObject(targets);
+
+            return null;
+        }
+
+        private static GameObject RandomObject(GameObject[] objs)
+        {
+            Random ran = new Random(DateTime.Now.Millisecond);
+            return objs[ran.Next(objs.Length)];
+        }
 
         internal static GameObject GetBestTarget(Action act)
         {
             //如果都没有距离，这个还需要选对象嘛？选原来的对象啊！
             if (act.Range == 0) return Service.TargetManager.Target ?? Service.ClientState.LocalPlayer;
 
-            //还消耗2400的蓝，那肯定是复活的。
-            if (act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
-            {
-                return GetDeathPeople();
-            }
+
             //首先看看是不是能对小队成员进行操作的。
             if (act.CanTargetParty || act.RowId == WHMCombo.Actions.Asylum.ActionID)
             {
-
-
-                //Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy).Select(obj => (BattleNpc)obj).ToArray();
-
+                //还消耗2400的蓝，那肯定是复活的。
+                if (act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
+                {
+                    return GetDeathPeople();
+                }
 
                 //找到没死的队友们。
                 PlayerCharacter[] availableCharas = PartyMembers.Where(player => player.CurrentHp != 0).ToArray();
@@ -331,6 +371,12 @@ namespace XIVComboPlus
                             case GetTargetFunction.LowHP:
                             default:
                                 break;
+
+                            case GetTargetFunction.Melee:
+                                return GetMeleeTarget();
+
+                            case GetTargetFunction.Range:
+                                return GetRangeTarget();
 
                                 //找到面前夹角30度中最远的那个目标。
                             case GetTargetFunction.FaceDirction:
@@ -734,7 +780,12 @@ namespace XIVComboPlus
             }
         }
 
-
+        /// <summary>
+        /// 返回总共能大约回复的血量，非常大概。
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="strength"></param>
+        /// <returns></returns>
         internal static float GetBestHeal(Action action, uint strength)
         {
             float healRange = strength * 0.000352f;
