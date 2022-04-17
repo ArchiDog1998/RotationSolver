@@ -136,8 +136,17 @@ namespace XIVComboPlus.Combos
             Combust3 = 1881,
             Combust4 = 2041,
 
+            //吉星相位
+            AspectedBenefic = 835,
+
+            //阳星相位
+            AspectedHelios = 836,
+
             //光速
             LightSpeed = 841,
+
+            //可以重抽
+            ClarifyingDraw = 2713,
 
 
             //地星主宰

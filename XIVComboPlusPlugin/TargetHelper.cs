@@ -317,28 +317,28 @@ namespace XIVComboPlus
 
             return deathAll[0];
         }
-        private static GameObject GetMeleeTarget()
+        private static GameObject GetMeleeTarget(float range)
         {
-            var targets = GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee);
-            if(targets.Length > 0) return RandomObject(targets);
-
-            targets = PartyDPS;
+            var targets = GetObjectInRadius(GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee), range);
             if (targets.Length > 0) return RandomObject(targets);
 
-            targets = PartyMembers;
+            targets = GetObjectInRadius(GetJobCategory(PartyMembers, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged), range);
+            if (targets.Length > 0) return RandomObject(targets);
+
+            targets = GetObjectInRadius(PartyMembers, 30);
             if (targets.Length > 0) return RandomObject(targets);
 
             return null;
         }
-        private static GameObject GetRangeTarget()
+        private static GameObject GetRangeTarget(float range)
         {
-            var targets = GetJobCategory(PartyMembers, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged);
+            var targets = GetObjectInRadius(GetJobCategory(PartyMembers, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged), range);
             if (targets.Length > 0) return RandomObject(targets);
 
-            targets = PartyDPS;
+            targets = GetObjectInRadius(GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee), range);
             if (targets.Length > 0) return RandomObject(targets);
 
-            targets = PartyMembers;
+            targets = GetObjectInRadius(PartyMembers, 30);
             if (targets.Length > 0) return RandomObject(targets);
 
             return null;
@@ -394,10 +394,10 @@ namespace XIVComboPlus
                                 break;
 
                             case GetTargetFunction.Melee:
-                                return GetMeleeTarget();
+                                return GetMeleeTarget(GetRange(act));
 
                             case GetTargetFunction.Range:
-                                return GetRangeTarget();
+                                return GetRangeTarget(GetRange(act));
 
                                 //找到面前夹角30度中最远的那个目标。
                             case GetTargetFunction.FaceDirction:
@@ -510,6 +510,10 @@ namespace XIVComboPlus
                         return GetMostObjectInLine(HostileTargets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
 
                 }
+            }
+            else if (act.CanTargetSelf)
+            {
+                return Service.ClientState.LocalPlayer;
             }
             //那么这个就不需要找到目标了，要么对着自己，要么就什么都不能选中。
             else

@@ -20,9 +20,6 @@ namespace XIVComboPlus.Combos.AST
             //在移动，还有光速，肯定用啊！
             if (IsMoving)
             {
-                //吉星相位
-                if (Actions.AspectedHelios.TryUseAction(level, out act)) return act;
-
                 if (Actions.Lightspeed.TryUseAction(level, out act)) return act;
             }
 

@@ -47,7 +47,7 @@ namespace XIVComboPlus
             new ClassJob(20, "武僧", JobType.Melee, typeof(MNKGauge)),
             new ClassJob(21, "战士", JobType.Tank, typeof(WARGauge)),
             new ClassJob(22, "龙骑士", JobType.Melee, typeof(DRGGauge)),
-            new ClassJob(23, "诗人", JobType.PhysicalRanged, typeof(BRDGauge)),
+            new ClassJob(23, "游吟诗人", JobType.PhysicalRanged, typeof(BRDGauge)),
             new ClassJob(24, "白魔法师", JobType.Healer, typeof(WHMGauge)),
             new ClassJob(25, "黑魔法师", JobType.MagicalRanged, typeof(BLMGauge)),
             new ClassJob(26, "秘术师", JobType.MagicalRanged, null),
