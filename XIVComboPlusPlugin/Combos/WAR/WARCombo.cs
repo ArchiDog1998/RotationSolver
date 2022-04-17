@@ -114,7 +114,11 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
     protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
     {
         uint act;
-
+        //如果救我一个T，那还不开盾姿？
+        if(!HaveShield && TargetHelper.PartyTanks.Length < 2)
+        {
+            if (Actions.Defiance.TryUseAction(level, out act)) return act;
+        }
         if (TargetHelper.ProvokeTarget(out bool haveTargetOnme).Length > 0 && HaveShield)
         {
             //挑衅一下？

@@ -80,6 +80,12 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
             //大宇宙
             Macrocosmos = new BaseAction(25874),
 
+            //星力
+            Astrodyne = new BaseAction(25870),
+
+            //占卜
+            Divination = new BaseAction(16552),
+
             //抽卡
             Draw = new BaseAction(3590),
 
@@ -151,8 +157,11 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         }
 
         //如果现在可以增加能力技
-        if (CanAddAbility(level, out act)) return act;
+        if (CanAddAbility(level, false, false, out act)) return act;
 
+
+        //攻击后奶。
+        if (Actions.Macrocosmos.TryUseAction(level, out act, mustUse:true)) return act;
         //群体输出
         if (Actions.Gravity.TryUseAction(level, out act)) return act;
 
@@ -163,7 +172,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         return 0;
     }
 
-    protected bool CanAddAbility(byte level, out uint act)
+    protected bool CanAddAbility(byte level, bool healSingle, bool healArea, out uint act)
     {
         act = 0;
 
@@ -174,7 +183,9 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
             //给T减伤，这个很重要。
             if (Actions.Exaltation.TryUseAction(level, out act)) return true;
 
-            bool needAreaHeal = TargetHelper.PartyMembersAverHP < 0.8 && TargetHelper.PartyMembersDifferHP < 0.3;
+            //团队曾伤害
+            if(Actions.Divination.TryUseAction(level, out act)) return true;
+            bool needAreaHeal  = healArea || TargetHelper.PartyMembersAverHP < 0.8 && TargetHelper.PartyMembersDifferHP < 0.3;
 
             //如果有巨星主宰
             if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.GiantDominance)))
@@ -187,9 +198,6 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
             {
                 if (!IsMoving && Actions.EarthlyStar.TryUseAction(level, out act)) return true;
             }
-
-            //攻击后奶。
-            if (Actions.Macrocosmos.TryUseAction(level, out act)) return true;
 
             #region 群奶
             if (needAreaHeal)
@@ -210,7 +218,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
                 }
             }
 
-            if (haveOneNeedHeal)
+            if (healSingle || haveOneNeedHeal)
             {
                 //带盾奶
                 if (Actions.CelestialIntersection.TryUseAction(level, out act)) return true;
@@ -224,16 +232,27 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
 
             #endregion
 
+            //发牌
+            if(DrawCard(level, false, out act)) return true;
+            if(DrawCrownCard(level, out act)) return true;
+            if(DrawCard(level, true, out act)) return true;
+
+            //加个醒梦
+            if (GeneralActions.LucidDreaming.TryUseAction(level, out act)) return true;
+
         }
 
         return false;
     }
 
-    protected bool DrawCard(byte level, out uint act)
+    protected bool DrawCard(byte level, bool empty, out uint act)
     {
+        //加Buff
+        if (JobGauge.Seals.Length == 3 && Actions.Astrodyne.TryUseAction(level, out act)) return true;
+
         //如果当前还没有卡牌，那就抽一张
-        if(JobGauge.DrawnCard == CardType.NONE
-            && Actions.Draw.TryUseAction(level, out act, Empty: true)) return true;
+        if (JobGauge.DrawnCard == CardType.NONE
+            && Actions.Draw.TryUseAction(level, out act, Empty: empty)) return true;
 
         //如果当前卡牌已经拥有了，就重抽
         if (JobGauge.Seals.Contains(GetCardSeal(JobGauge.DrawnCard))

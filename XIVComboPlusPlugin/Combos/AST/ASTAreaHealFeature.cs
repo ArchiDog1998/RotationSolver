@@ -28,7 +28,7 @@ namespace XIVComboPlus.Combos.AST
 
             //如果现在可以增加能力技，天宫图啊
             if (CanInsertAbility && Actions.Horoscope.TryUseAction(level, out act)) return act;
-            if (CanAddAbility(level, out act)) return act;
+            if (CanAddAbility(level, false, true, out act)) return act;
 
 
             //阳星相位

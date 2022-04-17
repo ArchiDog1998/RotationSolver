@@ -176,30 +176,23 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    internal static bool UseBenediction(out PlayerCharacter dangeriousTank)
+    internal static bool UseBenediction()
     {
-        dangeriousTank = null;
-        uint[] dangerousState = new uint[] { ObjectStatus.Holmgang, ObjectStatus.WalkingDead, ObjectStatus.Superbolide };
+        TargetHelper.GetDangerousTanks(out float[] times);
+        if(times.Length > 0)
+        {
+            foreach (var time in times)
+            {
+                if (time < 2) return true;
+            }
+            return false;
+        }
         foreach (var member in TargetHelper.PartyMembers)
         {
-            //看看有没有人要搞死自己。
-            foreach (var tag in member.StatusList)
-            {
-                if (dangerousState.Contains(tag.StatusId))
-                {
-                    if (tag.RemainingTime < 1)
-                    {
-                        dangeriousTank = member;
-                        return true;
-                    }
-                    else return false;
-                }
-            }
 
             //如果没有人要搞死自己，那么就看看有没有人快死了。
-            if ((float)member.CurrentHp / member.MaxHp < 0.15 && member.CurrentHp != 0)
+            if ((float)member.CurrentHp / member.MaxHp < 0.15 && member.CurrentHp != 0 && TargetHelper.PartyMembersDifferHP > 0.3)
             {
-                dangeriousTank = member;
                 return true;
             }
         }

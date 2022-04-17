@@ -29,7 +29,7 @@ namespace XIVComboPlus.Combos.AST
 
             //如果现在可以增加能力技,优先星位合图
             if (CanInsertAbility && Actions.Synastry.TryUseAction(level, out act)) return act;
-            if (CanAddAbility(level, out act)) return act;
+            if (CanAddAbility(level, true, false, out act)) return act;
 
 
             //吉星相位

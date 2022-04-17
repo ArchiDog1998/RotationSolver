@@ -122,7 +122,6 @@ namespace XIVComboPlus
             }
         }
 
-
         /// <summary>
         /// 玩家们
         /// </summary>
@@ -251,6 +250,28 @@ namespace XIVComboPlus
             return null;
         }
 
+        public static PlayerCharacter[] GetDangerousTanks(out float[] times)
+        {
+            var tanks = PartyTanks;
+            List<PlayerCharacter> dangeriousTanks = new List<PlayerCharacter>(tanks.Length);
+            List<float> time = new List<float>(tanks.Length);
+            uint[] dangerousState = new uint[] { ObjectStatus.Holmgang, ObjectStatus.WalkingDead, ObjectStatus.Superbolide };
+            foreach (var member in tanks)
+            {
+                //看看有没有人要搞死自己。
+                foreach (var tag in member.StatusList)
+                {
+                    if (dangerousState.Contains(tag.StatusId))
+                    {
+                        dangeriousTanks.Add(member);
+                        time.Add(tag.RemainingTime);
+                        break;
+                    }
+                }
+            }
+            times = time.ToArray();
+            return dangeriousTanks.ToArray();
+        }
         private static GameObject GetDeathPeople()
         {
             var deathAll = DeathPeopleAll;
@@ -407,13 +428,12 @@ namespace XIVComboPlus
 
                                 //天赐给那个要死了的人！
                             case GetTargetFunction.DangeriousTank:
-                                if (WHMCombo.UseBenediction(out PlayerCharacter t)) return t;
-                                tanks = PartyTanksAttached;
-                                if (tanks.Length == 0)
+                                if (WHMCombo.UseBenediction())
                                 {
-                                    tanks = PartyTanks;
+                                    tanks = GetDangerousTanks(out _);
+                                    if (tanks.Length > 0) return tanks[0];
                                 }
-                                return tanks.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
+                                break;
 
                             case GetTargetFunction.Esuna:
                                 if (DyingPeople.Length != 0) return DyingPeople[0];
