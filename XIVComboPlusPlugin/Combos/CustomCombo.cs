@@ -107,7 +107,6 @@ public abstract class CustomCombo
     public virtual string[] ConflictingCombos => new string[0];
     public virtual string ParentCombo => string.Empty;
 
-    public virtual bool SecretCombo => false;
     /// <summary>
     /// 优先级，越大就使用到的概率越高！
     /// </summary>
@@ -136,6 +135,11 @@ public abstract class CustomCombo
     protected static GameObject Target => Service.TargetManager.Target;
     protected static float WeaponRemain => Service.IconReplacer.GetCooldown(141u).CooldownRemaining;
     protected static bool CanInsertAbility => !LocalPlayer.IsCasting && WeaponRemain > 0.6;
+    protected static bool CanHealAreaAbility => TargetHelper.PartyMembersDifferHP < Service.Configuration.HealthDifference && TargetHelper.PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
+    protected static bool CanHealAreaSpell => TargetHelper.PartyMembersDifferHP < Service.Configuration.HealthDifference && TargetHelper.PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
+
+    protected static bool CanHealSingleAbility => TargetHelper.PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
+    protected static bool CanHealSingleSpell => TargetHelper.PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
     protected CustomCombo()
     {
     }

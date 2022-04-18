@@ -38,23 +38,50 @@ internal class ConfigWindow : Window
             Service.Configuration.MultiCount = multiCount;
             Service.Configuration.Save();
         }
+        ImGui.Separator();
+        float healthDiff = Service.Configuration.HealthDifference;
+        if (ImGui.DragFloat("多少的HP标准差以下，可以用群疗", ref healthDiff, 0.01f, 0, 0.5f))
+        {
+            Service.Configuration.HealthDifference = healthDiff;
+            Service.Configuration.Save();
+        }
+
+        float speed = 0.01f;
+
+        float healthAreaA = Service.Configuration.HealthAreaAbility;
+        if (ImGui.DragFloat("多少的HP，可以用能力技群疗", ref healthAreaA, speed, 0, 1))
+        {
+            Service.Configuration.HealthAreaAbility = healthAreaA;
+            Service.Configuration.Save();
+        }
+
+        float healthAreaS = Service.Configuration.HealthAreafSpell;
+        if (ImGui.DragFloat("多少的HP，可以用GCD群疗", ref healthAreaS, speed, 0, 1))
+        {
+            Service.Configuration.HealthAreafSpell = healthAreaS;
+            Service.Configuration.Save();
+        }
+
+        ImGui.Separator();
+
+        float healthSingleA = Service.Configuration.HealthSingleAbility;
+        if (ImGui.DragFloat("多少的HP，可以用能力技单奶", ref healthSingleA, speed, 0, 1))
+        {
+            Service.Configuration.HealthSingleAbility = healthSingleA;
+            Service.Configuration.Save();
+        }
+
+        float healthSingleS = Service.Configuration.HealthSingleSpell;
+        if (ImGui.DragFloat("多少的HP，可以用GCD单奶", ref healthSingleS, speed, 0, 1))
+        {
+            Service.Configuration.HealthSingleSpell = healthSingleS;
+            Service.Configuration.Save();
+        }
 
         ImGui.Separator();
 
         ImGui.Text("在这个窗口，你可以设定自己喜欢的连击设定。");
 
-        bool enableSecretCombos = Service.Configuration.EnableSecretCombos;
-        //if (ImGui.Checkbox("可以使用一些禁忌的知识", ref enableSecretCombos))
-        //{
-        //    Service.Configuration.EnableSecretCombos = enableSecretCombos;
-        //    Service.Configuration.Save();
-        //}
-        //if (ImGui.IsItemHovered())
-        //{
-        //    ImGui.BeginTooltip();
-        //    ImGui.TextUnformatted("这些连击对于普通人来说太危险了！");
-        //    ImGui.EndTooltip();
-        //}
         ImGui.BeginChild("scrolling", new Vector2(0f, -1f), true);
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
         int num = 1;
@@ -74,10 +101,6 @@ internal class ConfigWindow : Window
                     bool enable = combo.IsEnabled;
                     string[] conflicts = combo.ConflictingCombos;
                     string parent = combo.ParentCombo;
-                    if (combo.SecretCombo && !enableSecretCombos)
-                    {
-                        continue;
-                    }
                     ImGui.PushItemWidth(200f);
                     if (ImGui.Checkbox(combo.ComboFancyName, ref enable))
                     {
@@ -95,23 +118,6 @@ internal class ConfigWindow : Window
                             combo.IsEnabled = false;
                         }
                         Service.Configuration.Save();
-                    }
-                    if (combo.SecretCombo)
-                    {
-                        ImGui.SameLine();
-                        ImGui.Text("  ");
-                        ImGui.SameLine();
-                        ImGui.PushFont(UiBuilder.IconFont);
-                        ImGui.PushStyleColor((ImGuiCol)0, ImGuiColors.HealerGreen);
-                        ImGui.Text(((FontAwesomeIcon)61445).ToIconString());
-                        ImGui.PopStyleColor();
-                        ImGui.PopFont();
-                        if (ImGui.IsItemHovered())
-                        {
-                            ImGui.BeginTooltip();
-                            ImGui.TextUnformatted("Secret");
-                            ImGui.EndTooltip();
-                        }
                     }
                     ImGui.PopItemWidth();
                     string text = $"#{num}: {combo.Description}";

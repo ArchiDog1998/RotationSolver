@@ -258,7 +258,7 @@ namespace XIVComboPlus.Combos
             return FindStatus(effectID, localPlayer, localPlayer2 != null ? new uint?(localPlayer2.ObjectId) : null);
         }
 
-        private static Status FindStatus(ushort effectID, GameObject obj, uint? sourceID)
+        internal static Status FindStatus(ushort effectID, GameObject obj, uint? sourceID)
         {
             if (obj == null)
             {

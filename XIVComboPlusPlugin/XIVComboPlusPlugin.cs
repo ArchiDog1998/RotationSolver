@@ -147,11 +147,6 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
                     Service.Configuration.Save();
                     break;
                 }
-            case "secrets":
-                Service.Configuration.EnableSecretCombos = !Service.Configuration.EnableSecretCombos;
-                Service.ChatGui.Print(Service.Configuration.EnableSecretCombos ? "Secret combos are now shown" : "Secret combos are now hidden");
-                Service.Configuration.Save();
-                break;
             case "toggle":
                 {
                     string text = array[1].ToLowerInvariant();

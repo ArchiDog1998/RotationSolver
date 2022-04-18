@@ -18,28 +18,8 @@ namespace XIVComboPlus.Combos.AST
         {
             uint act;
 
-            //在移动，还有光速，肯定用啊！
-            if (IsMoving)
-            {
-                //吉星相位
-                if (Actions.AspectedBenefic.TryUseAction(level, out act)) return act;
-
-                if (Actions.Lightspeed.TryUseAction(level, out act)) return act;
-            }
-
-            //如果现在可以增加能力技,优先星位合图
-            if (CanInsertAbility && Actions.Synastry.TryUseAction(level, out act)) return act;
-            if (CanAddAbility(level, true, false, out act)) return act;
-
-
-            //吉星相位
-            if (Actions.AspectedBenefic.TryUseAction(level, out act)) return act;
-
-            //福星
-            if (Actions.Benefic2.TryUseAction(level, out act)) return act;
-
-            //吉星
-            if (Actions.Benefic.TryUseAction(level, out act)) return act;
+            if (Base(level, out act)) return act;
+            if (HealSingle(level, out act)) return act;
 
             return 0;
         }

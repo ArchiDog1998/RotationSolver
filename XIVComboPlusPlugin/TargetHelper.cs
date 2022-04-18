@@ -2,12 +2,11 @@
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.Gui;
+using Dalamud.Game.ClientState.Statuses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using XIVComboPlus.Attributes;
 using XIVComboPlus.Combos;
 using XIVComboPlus.Combos.BLM;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -91,7 +90,7 @@ namespace XIVComboPlus
             }
         }
 
-        public static float[] PartyMembersHP => PartyMembers.Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
+        public static float[] PartyMembersHP => GetObjectInRadius(PartyMembers, 30).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
 
         public static float PartyMembersAverHP
         {
@@ -317,28 +316,54 @@ namespace XIVComboPlus
 
             return deathAll[0];
         }
-        private static GameObject GetMeleeTarget(float range)
+        private static GameObject ASTGetMeleeTarget(float range, PlayerCharacter[] ASTTargets)
         {
-            var targets = GetObjectInRadius(GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee), range);
+
+            var targets = GetObjectInRadius(GetJobCategory(ASTTargets, (jt) => jt == JobType.Melee), range);
             if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetObjectInRadius(GetJobCategory(PartyMembers, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged), range);
+            targets = GetObjectInRadius(GetJobCategory(ASTTargets, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged), range);
             if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetObjectInRadius(PartyMembers, 30);
+            targets = GetObjectInRadius(ASTTargets, range);
             if (targets.Length > 0) return RandomObject(targets);
 
             return null;
         }
-        private static GameObject GetRangeTarget(float range)
+        private static PlayerCharacter[] GetASTTargets()
         {
-            var targets = GetObjectInRadius(GetJobCategory(PartyMembers, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged), range);
+            var allStatus = new uint[] 
+            {
+                ObjectStatus.TheArrow,
+                ObjectStatus.TheBalance,
+                ObjectStatus.TheBole,
+                ObjectStatus.TheEwer,
+                ObjectStatus.TheSpear,
+                ObjectStatus.TheSpire,
+
+            };
+            return PartyMembers.Where((t) =>
+            {
+                foreach (Status status in t.StatusList)
+                {
+                    if(allStatus.Contains(status.StatusId))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }).ToArray();
+        }
+        private static GameObject ASTGetRangeTarget(float range, PlayerCharacter[] ASTTargets)
+        {
+
+            var targets = GetObjectInRadius(GetJobCategory(ASTTargets, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged), range);
             if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetObjectInRadius(GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee), range);
+            targets = GetObjectInRadius(GetJobCategory(ASTTargets, (jt) => jt == JobType.Melee), range);
             if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetObjectInRadius(PartyMembers, 30);
+            targets = GetObjectInRadius(ASTTargets, range);
             if (targets.Length > 0) return RandomObject(targets);
 
             return null;
@@ -394,10 +419,10 @@ namespace XIVComboPlus
                                 break;
 
                             case GetTargetFunction.Melee:
-                                return GetMeleeTarget(GetRange(act));
+                                return ASTGetMeleeTarget(GetRange(act), GetASTTargets());
 
                             case GetTargetFunction.Range:
-                                return GetRangeTarget(GetRange(act));
+                                return ASTGetRangeTarget(GetRange(act), GetASTTargets());
 
                                 //找到面前夹角30度中最远的那个目标。
                             case GetTargetFunction.FaceDirction:
@@ -436,8 +461,12 @@ namespace XIVComboPlus
                                 break;
 
                             case GetTargetFunction.Esuna:
-                                if (DyingPeople.Length != 0) return DyingPeople[0];
-                                if (WeakenPeople.Length != 0) return WeakenPeople[0];
+                                availableCharas = GetObjectInRadius(DyingPeople, act.Range);
+
+                                if (availableCharas.Length != 0) return availableCharas[0];
+                                availableCharas = GetObjectInRadius(WeakenPeople, act.Range);
+
+                                if (availableCharas.Length != 0) return availableCharas[0];
                                 return PartyMembers[0];
                         }
                     }

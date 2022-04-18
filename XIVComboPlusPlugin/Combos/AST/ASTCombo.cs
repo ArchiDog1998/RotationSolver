@@ -37,7 +37,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
             //吉星相位
             AspectedBenefic = new BaseAction(3595, true)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.AspectedBenefic },
+                TargetStatus = new ushort[] { ObjectStatus.AspectedBenefic },
             },
 
             //先天禀赋
@@ -144,17 +144,28 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
     {
         uint act = 0;
 
+        if (Base(level, out act)) return act;
+        if (CanHealAreaSpell && HealArea(level, out act)) return act;
+        if (CanHealSingleSpell && HealSingle(level, out act)) return act;
+        if (Attack(level, out act)) return act;
+
+        return 0;
+    }
+    protected bool Base(byte level, out uint act)
+    {
+        act = 0;
+
         //有某些非常危险的状态。
         if (TargetHelper.DyingPeople.Length > 0)
         {
-            if (GeneralActions.Esuna.TryUseAction(level, out act, mustUse: true)) return act;
+            if (GeneralActions.Esuna.TryUseAction(level, out act, mustUse: true)) return true;
         }
 
         //有人死了，看看能不能救。
         if (TargetHelper.DeathPeopleParty.Length != 0)
         {
             //如果有人倒了，赶紧即刻拉人！
-            if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return act;
+            if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return true;
 
             bool haveSwift = false;
             foreach (var status in Service.ClientState.LocalPlayer.StatusList)
@@ -165,31 +176,72 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
                     break;
                 }
             }
-            if (haveSwift && Actions.Ascend.TryUseAction(level, out act)) return act;
+            if (haveSwift && Actions.Ascend.TryUseAction(level, out act)) return true;
         }
 
+        return false;
+    }
+
+    protected bool Attack(byte level, out uint act)
+    {
         //在移动，还有光速，肯定用啊！
-        if (IsMoving && Actions.Lightspeed.TryUseAction(level, out act)) return act;
+        if (IsMoving && HaveTargetAngle && Actions.Lightspeed.TryUseAction(level, out act)) return true;
         //在移动，没光速，需要瞬发。
         if (IsMoving && HaveTargetAngle && !BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.LightSpeed)))
         {
-            if (Actions.Combust.TryUseAction(level, out act, mustUse: true)) return act;
+            if (Actions.Combust.TryUseAction(level, out act, mustUse: true)) return true;
         }
 
         //如果现在可以增加能力技
-        if (CanAddAbility(level, false, false, out act)) return act;
+        if (CanAddAbility(level, CanHealSingleAbility, CanHealAreaAbility, out act)) return true;
 
 
         //攻击后奶。
-        if (Actions.Macrocosmos.TryUseAction(level, out act, mustUse:true)) return act;
+        if (Actions.Macrocosmos.TryUseAction(level, out act, mustUse: true)) return true;
         //群体输出
-        if (Actions.Gravity.TryUseAction(level, out act)) return act;
+        if (Actions.Gravity.TryUseAction(level, out act)) return true;
 
         //单体输出
-        if (Actions.Combust.TryUseAction(level, out act)) return act;
-        if (Actions.Malefic.TryUseAction(level, out act)) return act;
+        if (Actions.Combust.TryUseAction(level, out act)) return true;
+        if (Actions.Malefic.TryUseAction(level, out act)) return true;
 
-        return 0;
+        return false;
+    }
+
+    protected bool HealArea(byte level, out uint act)
+    {
+        //如果现在可以增加能力技，天宫图啊
+        if (CanInsertAbility && Actions.Horoscope.TryUseAction(level, out act)) return true;
+        if (CanAddAbility(level, false, true, out act)) return true;
+
+
+        //阳星相位
+        if (Actions.AspectedHelios.TryUseAction(level, out act)) return true;
+
+        //阳星
+        if (Actions.Helios.TryUseAction(level, out act)) return true;
+
+        return false;
+
+    }
+
+    protected bool HealSingle(byte level, out uint act)
+    {
+        //如果现在可以增加能力技,优先星位合图
+        if (Actions.Synastry.TryUseAction(level, out act)) return true;
+        if (CanAddAbility(level, true, false, out act)) return true;
+
+
+        //吉星相位
+        if (Actions.AspectedBenefic.TryUseAction(level, out act)) return true;
+
+        //福星
+        if (Actions.Benefic2.TryUseAction(level, out act)) return true;
+
+        //吉星
+        if (Actions.Benefic.TryUseAction(level, out act)) return true;
+
+        return false;
     }
 
     protected bool CanAddAbility(byte level, bool healSingle, bool healArea, out uint act)
@@ -203,15 +255,14 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
             //给T减伤，这个很重要。
             if (Actions.Exaltation.TryUseAction(level, out act)) return true;
 
-            //团队曾伤害
+            //团队增伤害
             if(Actions.Divination.TryUseAction(level, out act)) return true;
-            bool needAreaHeal  = healArea || TargetHelper.PartyMembersAverHP < 0.8 && TargetHelper.PartyMembersDifferHP < 0.3;
 
             //如果有巨星主宰
             if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.GiantDominance)))
             {
                 //需要回血的时候炸了。
-                if (needAreaHeal && Actions.EarthlyStar.TryUseAction(level, out act)) return true;
+                if (healArea && Actions.EarthlyStar.TryUseAction(level, out act)) return true;
             }
             //如果没有地星也没有巨星，那就试试看能不能放个。
             else if (!BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.EarthlyDominance)))
@@ -220,7 +271,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
             }
 
             #region 群奶
-            if (needAreaHeal)
+            if (healArea)
             {
                 //群Hot
                 if (Actions.CelestialOpposition.TryUseAction(level, out act)) return true;
@@ -228,17 +279,8 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
             #endregion
 
             #region 单奶
-            bool haveOneNeedHeal = false;
-            foreach (float rate in TargetHelper.PartyMembersHP)
-            {
-                if (rate < 0.7)
-                {
-                    haveOneNeedHeal = true;
-                    break;
-                }
-            }
 
-            if (healSingle || haveOneNeedHeal)
+            if (healSingle)
             {
                 //带盾奶
                 if (Actions.CelestialIntersection.TryUseAction(level, out act)) return true;

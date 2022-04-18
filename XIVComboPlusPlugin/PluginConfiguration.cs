@@ -19,9 +19,11 @@ public class PluginConfiguration : IPluginConfiguration
     public bool IsTargetBoss { get; set; } = true;
     public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
 
-    public bool EnableSecretCombos { get; set; } = false;
-
-
+    public float HealthDifference { get; set; } = 0.1f;
+    public float HealthAreaAbility { get; set; } = 0.8f;
+    public float HealthAreafSpell { get; set; } = 0.6f;
+    public float HealthSingleAbility { get; set; } = 0.7f;
+    public float HealthSingleSpell { get; set; } = 0.5f;
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);

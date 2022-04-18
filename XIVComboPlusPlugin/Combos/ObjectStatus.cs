@@ -148,6 +148,13 @@ namespace XIVComboPlus.Combos
             //可以重抽
             ClarifyingDraw = 2713,
 
+            //六个Buff
+            TheBalance = 829,
+            TheBole = 830,
+            TheArrow = 831,
+            TheSpear = 832,
+            TheEwer = 833,
+            TheSpire = 834,
 
             //地星主宰
             EarthlyDominance = 1224,
