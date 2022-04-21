@@ -53,6 +53,4 @@ internal class Service
     [PluginService]
     internal static PartyList PartyList { get; private set; }
 
-    [PluginService]
-    internal static ChatGui Chat { get; private set; }
 }

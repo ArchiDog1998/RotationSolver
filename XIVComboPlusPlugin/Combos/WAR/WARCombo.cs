@@ -56,13 +56,13 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
             Infuriate = new BaseAction(52)
             {
                 BuffsProvide = new ushort[] { ObjectStatus.InnerRelease },
-                OtherCheck = () => TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, 3).Length > 0,
+                OtherCheck = () => TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge <= 50,
             },
 
             //狂暴
             Berserk = new BaseAction(38)
             {
-                OtherCheck = () => TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, 3).Length > 0,
+                OtherCheck = () => TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0,
             },
 
             //战栗
@@ -92,8 +92,8 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
             },
 
-            ////摆脱
-            //ShakeItOff = new BaseAction(7388),
+            //摆脱
+            ShakeItOff = new BaseAction(7388),
 
             //死斗
             Holmgang = new BaseAction(43)
@@ -107,121 +107,107 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
             //蛮荒崩裂
             PrimalRend = new BaseAction(25753)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.PrimalRendReady},
+                BuffsNeed = new ushort[] { ObjectStatus.PrimalRendReady },
             };
     }
 
-    protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
+    private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
-        uint act;
         //如果救我一个T，那还不开盾姿？
-        if(!HaveShield && TargetHelper.PartyTanks.Length < 2)
+        if (!HaveShield && TargetHelper.PartyTanks.Length < 2)
         {
-            if (Actions.Defiance.TryUseAction(level, out act)) return act;
+            if (Actions.Defiance.TryUseAction(level, out act)) return true;
         }
-        if (TargetHelper.ProvokeTarget(out bool haveTargetOnme).Length > 0 && HaveShield)
-        {
-            //挑衅一下？
-            //if (Actions.Tomahawk.TryUseAction(level, out act)) return act;
-            if (GeneralActions.Provoke.TryUseAction(level, out act)) return act;
-        }
+        act = null;
+        return false;
+    }
 
-        if (CanAddAbility(level, haveTargetOnme, out act)) return act;
-
+    private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+    {
         //兽魂输出
         if (JobGauge.BeastGauge >= 50 || BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.InnerRelease)))
         {
             //钢铁旋风
-            if (Actions.SteelCyclone.TryUseAction(level, out act)) return act;
+            if (Actions.SteelCyclone.TryUseAction(level, out act)) return true;
             //原初之魂
-            if (Actions.InnerBeast.TryUseAction(level, out act)) return act;
+            if (Actions.InnerBeast.TryUseAction(level, out act)) return true;
         }
-        //放个大 蛮荒崩裂 会往前飞
-        if (Actions.PrimalRend.TryUseAction(level, out act)) return act;
 
         //群体
-        if (Actions.MythrilTempest.TryUseAction(level, out act, lastComboActionID)) return act;
-        if (Actions.Overpower.TryUseAction(level, out act, lastComboActionID)) return act;
+        if (Actions.MythrilTempest.TryUseAction(level, out act, lastComboActionID)) return true;
+        if (Actions.Overpower.TryUseAction(level, out act, lastComboActionID)) return true;
 
         //单体
-        if (Actions.StormsEye.TryUseAction(level, out act, lastComboActionID)) return act;
-        if (Actions.StormsPath.TryUseAction(level, out act, lastComboActionID)) return act;
-        if (Actions.Maim.TryUseAction(level, out act, lastComboActionID)) return act;
-        if (Actions.HeavySwing.TryUseAction(level, out act, lastComboActionID)) return act;
+        if (Actions.StormsEye.TryUseAction(level, out act, lastComboActionID)) return true;
+        if (Actions.StormsPath.TryUseAction(level, out act, lastComboActionID)) return true;
+        if (Actions.Maim.TryUseAction(level, out act, lastComboActionID)) return true;
+        if (Actions.HeavySwing.TryUseAction(level, out act, lastComboActionID)) return true;
 
         //够不着，随便打一个吧。
-        if (Actions.Tomahawk.TryUseAction(level, out act)) return act;
+        if (Actions.Tomahawk.TryUseAction(level, out act)) return true;
 
-        return 0;
-    }
-
-    protected bool CanAddAbility(byte level, bool haveTargetOnme, out uint act)
-    {
-        act = 0;
-
-        if (CanInsertAbility)
-        {
-            if (!IsMoving && haveTargetOnme && CanAddRampart(level, out act)) return true;
-
-            //爆发
-            if(BuffTime > 3 || level < Actions.MythrilTempest.Level)
-            {
-                //战嚎
-                if (Actions.Infuriate.TryUseAction(level, out act)) return true;
-                //狂暴
-                if (Actions.Berserk.TryUseAction(level, out act)) return true;
-                //战嚎
-                if (Actions.Infuriate.TryUseAction(level, out act, Empty: true)) return true;
-            }
-
-            if ((float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6)
-            {
-                //战栗
-                if (Actions.ThrillofBattle.TryUseAction(level, out act)) return true;
-                //泰然自若 自奶啊！
-                if (Actions.Equilibrium.TryUseAction(level, out act)) return true;
-            }
-
-            //奶个队友啊。
-            if (!haveTargetOnme && Actions.NascentFlash.TryUseAction(level, out act)) return true;
-
-            //普通攻击
-            //群山隆起
-            if (Actions.Orogeny.TryUseAction(level, out act)) return true;
-            //动乱 
-            if (Actions.Overpower.TryUseAction(level, out act)) return true;
-
-        }
         return false;
     }
 
-    private bool CanAddRampart(byte level, out uint act)
+    private protected override bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act)
     {
-        act = 0;
+        TargetHelper.ProvokeTarget(out bool haveTargetOnme);
+        if (!IsMoving && haveTargetOnme)
+        {
+            //死斗 如果谢不够了。
+            if (Actions.Holmgang.TryUseAction(level, out act)) return true;
 
-        //死斗 如果谢不够了。
-        if (Actions.Holmgang.TryUseAction(level, out act)) return true;
+            //原初的直觉（减伤10%）
+            if (Actions.RawIntuition.TryUseAction(level, out act)) return true;
 
-        //原初的直觉（减伤10%）
-        if (Actions.RawIntuition.TryUseAction(level, out act)) return true;
+            //降低伤害
+            //复仇（减伤30%）
+            if (Actions.Vengeance.TryUseAction(level, out act)) return true;
 
-        //降低伤害
-        //复仇（减伤30%）
-        if (Actions.Vengeance.TryUseAction(level, out act)) return true;
+            //铁壁（减伤20%）
+            if (GeneralActions.Rampart.TryUseAction(level, out act)) return true;
 
-        //铁壁（减伤20%）
-        if (GeneralActions.Rampart.TryUseAction(level, out act)) return true;
+            //降低攻击
+            //雪仇
+            if (GeneralActions.Reprisal.TryUseAction(level, out act)) return true;
 
-        //降低攻击
-        //雪仇
-        if (GeneralActions.Reprisal.TryUseAction(level, out act)) return true;
+            //亲疏自行
+            if (GeneralActions.ArmsLength.TryUseAction(level, out act)) return true;
 
-        //亲疏自行
-        if (GeneralActions.ArmsLength.TryUseAction(level, out act)) return true;
-        
-        //增加血量
-        ////摆脱 队友套盾
-        //if (Actions.ShakeItOff.TryUseAction(level, out act)) return true;
+            //增加血量
+            ////摆脱 队友套盾
+            //if (Actions.ShakeItOff.TryUseAction(level, out act)) return true;
+
+        }
+
+        //爆发
+        if (BuffTime > 3 || level < Actions.MythrilTempest.Level)
+        {
+            //战嚎
+            if (Actions.Infuriate.TryUseAction(level, out act)) return true;
+            //狂暴
+            if (!new BaseAction(7389).CoolDown.IsCooldown && Actions.Berserk.TryUseAction(level, out act)) return true;
+            //战嚎
+            if (Actions.Infuriate.TryUseAction(level, out act, Empty: true)) return true;
+        }
+
+        if ((float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6)
+        {
+            //战栗
+            if (Actions.ThrillofBattle.TryUseAction(level, out act)) return true;
+            //泰然自若 自奶啊！
+            if (Actions.Equilibrium.TryUseAction(level, out act)) return true;
+        }
+
+        //奶个队友啊。
+        if (!haveTargetOnme && Actions.NascentFlash.TryUseAction(level, out act)) return true;
+
+        //普通攻击
+        //群山隆起
+        if (Actions.Orogeny.TryUseAction(level, out act)) return true;
+        //动乱 
+        if (Actions.Upheaval.TryUseAction(level, out act)) return true;
+
         return false;
     }
 

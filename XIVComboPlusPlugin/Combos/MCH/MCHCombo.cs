@@ -35,7 +35,7 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
             HotShow = new BaseAction(2872),
 
             //空气锚
-            AirAnchor = new BaseAction(16500),
+            //AirAnchor = new BaseAction(16500),
 
             //钻头
             Drill = new BaseAction(16498),
@@ -47,36 +47,12 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
             Bioblaster = new BaseAction(16499),
 
             //整备
-            Reassemble = new BaseAction(2876)
-            {
-                OtherCheck = () => HaveTargetAngle,
-            },
+            Reassemble = new BaseAction(2876),
 
             //超荷
             Hypercharge = new BaseAction(17209)
             {
-                OtherCheck = () =>
-                {
-                    //热量不足，怎么超荷？
-                    if (JobGauge.Heat < 50) return false;
-
-                    byte level = Service.ClientState.LocalPlayer.Level;
-                    if (level >= Drill.Level && Drill.CoolDown.CooldownRemaining < 8) return false;
-                    if(level >= AirAnchor.Level)
-                    {
-                        if(AirAnchor.CoolDown.CooldownRemaining < 8) return false;
-                    }
-                    else
-                    {
-                        if (level >= HotShow.Level && HotShow.CoolDown.CooldownRemaining < 8) return false;
-                    }
-                    if (level >= ChainSaw.Level && ChainSaw.CoolDown.CooldownRemaining < 8) return false;
-
-                    //两个能力技满了，暂时不超荷
-                    if (level >= GaussRound.Level && !GaussRound.CoolDown.IsCooldown) return false;
-                    if (level >= Ricochet.Level && !Ricochet.CoolDown.IsCooldown) return false;
-                    return true;
-                },
+                OtherCheck = () => JobGauge.Heat >= 50,
             },
 
             //野火
@@ -98,52 +74,94 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
             RookAutoturret = new BaseAction(2864)
             {
                 OtherCheck = () => JobGauge.Battery >= 50,
+            },
+
+            //策动
+            Tactician = new BaseAction(16889)
+            {
+                BuffsProvide = new ushort[]
+                {
+                    ObjectStatus.Troubadour,
+                    ObjectStatus.Tactician1,
+                    ObjectStatus.Tactician2,
+                    ObjectStatus.ShieldSamba,
+                },
             };
     }
 
-    protected bool CanAddAbility(byte level, out uint action)
+    private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
-        action = 0;
+        // 四个牛逼的技能。
+        if (Actions.Bioblaster.TryUseAction(level, out act)) return true;
+        if (Actions.Drill.TryUseAction(level, out act)) return true;
+        if (Actions.HotShow.TryUseAction(level, out act)) return true;
+        if (Actions.ChainSaw.TryUseAction(level, out act)) return true;
 
-        if (CanInsertAbility)
+        //群体常规GCD
+        if (JobGauge.IsOverheated && Actions.AutoCrossbow.TryUseAction(level, out act)) return true;
+        if (Actions.SpreadShot.TryUseAction(level, out act)) return true;
+
+        //单体常规GCD
+        if (JobGauge.IsOverheated && Actions.HeatBlast.TryUseAction(level, out act)) return true;
+        if (Actions.CleanShot.TryUseAction(level, out act, lastComboActionID)) return true;
+        if (Actions.SlugShot.TryUseAction(level, out act, lastComboActionID)) return true;
+        if (Actions.SplitShot.TryUseAction(level, out act, lastComboActionID)) return true;
+
+        return false;
+    }
+
+    private protected override bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    {
+        //如果接下来要搞三大金刚了，整备吧！
+        if(nextGCD.ActionID == Actions.HotShow.ActionID || nextGCD.ActionID == Actions.Drill.ActionID || nextGCD.ActionID == Actions.ChainSaw.ActionID)
         {
-            //超荷
-            if (Actions.Hypercharge.TryUseAction(level, out _))
-            {
-                //野火
-                if (Actions.Wildfire.TryUseAction(level, out action)) return true;
-                action = Actions.Hypercharge.ActionID;
-                if (WeaponRemain <= 1) return true;
-            }
-
-            //两个能力技都还在冷却
-            if (Actions.GaussRound.CoolDown.IsCooldown && Actions.Ricochet.CoolDown.IsCooldown)
-            {
-                //车式浮空炮塔
-                if (Actions.RookAutoturret.TryUseAction(level, out action)) return true;
-
-                //枪管加热
-                if (Actions.BarrelStabilizer.TryUseAction(level, out action)) return true;
-            }
-
-
-            if (!Actions.Ricochet.CoolDown.IsCooldown || Actions.GaussRound.CoolDown.CooldownRemaining > Actions.Ricochet.CoolDown.CooldownRemaining)
-            {
-                //弹射
-                if (Actions.Ricochet.TryUseAction(level, out action, mustUse:true)) return true;
-            }
-                //虹吸弹
-                if (Actions.GaussRound.TryUseAction(level, out action, mustUse: true)) return true;
-
-            //伤腿
-            if (GeneralActions.FootGraze.TryUseAction(level, out action)) return true;
-
-            //伤足
-            if (GeneralActions.LegGraze.TryUseAction(level, out action)) return true;
-
-            //内丹
-            if (GeneralActions.SecondWind.TryUseAction(level, out action)) return true;
+            if (Actions.Reassemble.TryUseAction(level, out act, mustUse: true)) return true;
         }
+
+        act = null;
+        return false;
+    }
+
+    private protected override bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act)
+    {
+        float time = WeaponRemain + 8;
+        
+        if((level < Actions.HotShow.Level || Actions.HotShow.CoolDown.CooldownRemaining > time) &&
+            (level < Actions.Drill.Level || Actions.Drill.CoolDown.CooldownRemaining > time) &&
+            (level < Actions.ChainSaw.Level || Actions.ChainSaw.CoolDown.CooldownRemaining > time))
+        {
+            if(abilityRemain == 1 && Actions.Hypercharge.TryUseAction(level, out act)) return true;
+            if(abilityRemain > 1 && Actions.Wildfire.TryUseAction(level, out act)) return true;
+        }
+
+        //两个能力技都还在冷却
+        if (Actions.GaussRound.CoolDown.IsCooldown && Actions.Ricochet.CoolDown.IsCooldown)
+        {
+            //车式浮空炮塔
+            if (Actions.RookAutoturret.TryUseAction(level, out act)) return true;
+
+            //枪管加热
+            if (Actions.BarrelStabilizer.TryUseAction(level, out act)) return true;
+        }
+
+
+        if (!Actions.Ricochet.CoolDown.IsCooldown || Actions.GaussRound.CoolDown.CooldownRemaining > Actions.Ricochet.CoolDown.CooldownRemaining)
+        {
+            //弹射
+            if (Actions.Ricochet.TryUseAction(level, out act, mustUse: true)) return true;
+        }
+        //虹吸弹
+        if (Actions.GaussRound.TryUseAction(level, out act, mustUse: true)) return true;
+
+        //伤腿
+        if (GeneralActions.FootGraze.TryUseAction(level, out act)) return true;
+
+        //伤足
+        if (GeneralActions.LegGraze.TryUseAction(level, out act)) return true;
+
+        //内丹
+        if (GeneralActions.SecondWind.TryUseAction(level, out act)) return true;
+
         return false;
     }
 

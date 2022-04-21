@@ -7,9 +7,9 @@ namespace XIVComboPlus;
 internal class PluginAddressResolver : BaseAddressResolver
 {
     private IntPtr ComboTimer { get; set; }
-    public unsafe float ComboTime => *(float*)(void*)ComboTimer;
+    public unsafe float ComboTime => *(float*)ComboTimer;
     private IntPtr LastComboMove => ComboTimer + 4;
-    public unsafe uint LastComboAction => *(uint*)(void*)LastComboMove;
+    public unsafe uint LastComboAction => *(uint*)LastComboMove;
 
 
     public IntPtr GetAdjustedActionId { get; private set; }

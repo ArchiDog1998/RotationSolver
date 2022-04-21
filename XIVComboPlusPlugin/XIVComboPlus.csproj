@@ -11,6 +11,9 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <PackageReference Include="System.Speech" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Dalamud">
       <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Dalamud.dll</HintPath>
     </Reference>

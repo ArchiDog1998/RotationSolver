@@ -10,17 +10,12 @@ namespace XIVComboPlus.Combos.AST
     {
         public override string ComboFancyName => "占星群奶";
 
-        public override string Description => "替换阳星为必要的群奶。";
+        public override string Description => "替换营救为必要的群奶。";
 
-        protected internal override uint[] ActionIDs => new uint[] { Actions.Helios.ActionID};
-        protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
-        {
-            uint act = 0;
+        protected override bool CanHealAreaAbility => true;
 
-            if (Base(level, out act)) return act;
-            if (HealArea(level, out act)) return act;
+        protected override bool CanHealAreaSpell => true;
 
-            return 0;
-        }
+        protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Rescue.ActionID};
     }
 }

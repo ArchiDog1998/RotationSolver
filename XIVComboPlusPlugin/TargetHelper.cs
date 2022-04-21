@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVComboPlus.Combos;
-using XIVComboPlus.Combos.BLM;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVComboPlus
@@ -34,17 +33,16 @@ namespace XIVComboPlus
 
         private static SortedList<uint, GetTargetFunction> _specialGetTarget = new SortedList<uint, GetTargetFunction>()
         {
-            //以太步，找面前的友军。
-            { BLMCombo.Actions.AetherialManipulation.ActionID, GetTargetFunction.FaceDirction},
+            ////以太步，找面前的友军。
+            //{ BLMCombo.Actions.AetherialManipulation.ActionID, GetTargetFunction.FaceDirction},
             {WHMCombo.Actions.Aquaveil.ActionID, GetTargetFunction.MajorTank },
             {WHMCombo.Actions.DivineBenison.ActionID, GetTargetFunction.MajorTank },
-            {WHMCombo.Actions.Benediction.ActionID, GetTargetFunction.MajorTank },
+            {WHMCombo.Actions.Benediction.ActionID, GetTargetFunction.DangeriousTank },
             {CustomCombo.GeneralActions.Esuna.ActionID, GetTargetFunction.Esuna},
-            {BRDCombo.Actions.NaturesMinne.ActionID, GetTargetFunction.MajorTank },
             {BRDCombo.Actions.WardensPaean.ActionID, GetTargetFunction.Esuna },
             {CustomCombo.GeneralActions.Provoke.ActionID, GetTargetFunction.Provoke },
-            {WARCombo.Actions.Tomahawk.ActionID, GetTargetFunction.Provoke },
-            {WARCombo.Actions.NascentFlash.ActionID, GetTargetFunction.MajorTank },
+            //{WARCombo.Actions.Tomahawk.ActionID, GetTargetFunction.Provoke },
+            //{WARCombo.Actions.NascentFlash.ActionID, GetTargetFunction.MajorTank },
 
             {ASTCombo.Actions.Balance.ActionID, GetTargetFunction.Melee },
             {ASTCombo.Actions.Arrow.ActionID, GetTargetFunction.Melee },
@@ -90,7 +88,7 @@ namespace XIVComboPlus
             }
         }
 
-        public static float[] PartyMembersHP => GetObjectInRadius(PartyMembers, 30).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
+        public static float[] PartyMembersHP => GetObjectInRadius(PartyMembers, 30).Select(p => (float)p.CurrentHp / p.MaxHp).Where(r => r != 0).ToArray();
 
         public static float PartyMembersAverHP
         {
@@ -316,7 +314,7 @@ namespace XIVComboPlus
 
             return deathAll[0];
         }
-        private static GameObject ASTGetMeleeTarget(float range, PlayerCharacter[] ASTTargets)
+        private static GameObject ASTMeleeTarget(float range, PlayerCharacter[] ASTTargets)
         {
 
             var targets = GetObjectInRadius(GetJobCategory(ASTTargets, (jt) => jt == JobType.Melee), range);
@@ -354,7 +352,7 @@ namespace XIVComboPlus
                 return true;
             }).ToArray();
         }
-        private static GameObject ASTGetRangeTarget(float range, PlayerCharacter[] ASTTargets)
+        private static GameObject ASTRangeTarget(float range, PlayerCharacter[] ASTTargets)
         {
 
             var targets = GetObjectInRadius(GetJobCategory(ASTTargets, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged), range);
@@ -395,7 +393,7 @@ namespace XIVComboPlus
 
                 if (!act.CanTargetSelf && act.RowId != WHMCombo.Actions.Asylum.ActionID)
                 {
-                    availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalContentId).ToArray();
+                    availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
                 }
 
                 //判断是否是范围。
@@ -419,10 +417,10 @@ namespace XIVComboPlus
                                 break;
 
                             case GetTargetFunction.Melee:
-                                return ASTGetMeleeTarget(GetRange(act), GetASTTargets());
+                                return ASTMeleeTarget(GetRange(act), GetASTTargets());
 
                             case GetTargetFunction.Range:
-                                return ASTGetRangeTarget(GetRange(act), GetASTTargets());
+                                return ASTRangeTarget(GetRange(act), GetASTTargets());
 
                                 //找到面前夹角30度中最远的那个目标。
                             case GetTargetFunction.FaceDirction:
@@ -600,8 +598,8 @@ namespace XIVComboPlus
             //如果根本就不需要找目标，那肯定可以的。
             if (!act.CanTargetFriendly && !act.CanTargetHostile && (act.CastType == 1 ||act.CastType > 4)) return true;
 
-            //如果在打Boss呢，那就不需要考虑AOE的问题了。
-            if (Service.Configuration.IsTargetBoss && !isFriendly && act.CastType != 1) return false;
+            ////如果在打Boss呢，那就不需要考虑AOE的问题了。
+            //if (Service.Configuration.IsTargetBoss && !isFriendly && act.CastType != 1) return false;
 
             BattleChara[] tar = isFriendly ? PartyMembers : HostileTargets;
 
@@ -706,10 +704,10 @@ namespace XIVComboPlus
         {
             //能够打到的所有怪。
             T[] canGetObj = GetObjectInRadius(canAttack, radius);
-            return GetMostObject(canAttack, canGetObj, range, range, HowMany, forCheck);
+            return GetMostObject(canAttack, canGetObj, range, HowMany, forCheck);
         }
 
-        private static T[] GetMostObject<T>(T[] canAttack, T[] canGetObj ,float radius, float range, Func<T, T[], float, byte> HowMany, bool forCheck) where T : BattleChara
+        private static T[] GetMostObject<T>(T[] canAttack, T[] canGetObj ,float range, Func<T, T[], float, byte> HowMany, bool forCheck) where T : BattleChara
         {
 
             //能打到MaxCount以上数量的怪的怪。
@@ -760,7 +758,7 @@ namespace XIVComboPlus
         {
             var canAttach = GetObjectInRadius(objects, radius + range);
 
-            return GetMostObject(canAttach, canGetObjects, radius, range, CalculateCount, forCheck);
+            return GetMostObject(canAttach, canGetObjects,  range, CalculateCount, forCheck);
 
             //计算一下在这些可选目标中有多少个目标可以受到攻击。
             static byte CalculateCount(T t, T[] objects, float range)
@@ -777,12 +775,12 @@ namespace XIVComboPlus
             }
         }
 
-        private static T[] GetMostObjectInArc<T>(T[] objects, float radius, bool forCheck) where T : BattleChara
+        internal static T[] GetMostObjectInArc<T>(T[] objects, float radius, bool forCheck) where T : BattleChara
         {
             //能够打到的所有怪。
             var canGet = GetObjectInRadius(objects, radius, false);
 
-            return GetMostObject(objects, radius, radius, CalculateCount, forCheck);
+            return GetMostObject(canGet, radius, radius, CalculateCount, forCheck);
 
             //计算一下在这些可选目标中有多少个目标可以受到攻击。
             static byte CalculateCount(T t, T[] objects, float _)
@@ -810,7 +808,7 @@ namespace XIVComboPlus
             //能够打到的所有怪。
             var canGet = GetObjectInRadius(objects, radius);
 
-            return GetMostObject(objects, radius, radius, CalculateCount, forCheck);
+            return GetMostObject(canGet, radius, radius, CalculateCount, forCheck);
 
             //计算一下在这些可选目标中有多少个目标可以受到攻击。
             static byte CalculateCount(T t, T[] objects, float _)

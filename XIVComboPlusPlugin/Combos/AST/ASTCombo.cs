@@ -69,13 +69,17 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
             EarthlyStar = new BaseAction(7439, true),
 
             //命运之轮 减伤，手动放。
-            //CollectiveUnconscious = new BaseAction(3613),
+            CollectiveUnconscious = new BaseAction(3613),
 
             //天宫图
             Horoscope = new BaseAction(16557, true),
 
             //生辰
-            Ascend = new BaseAction(3603, true),
+            Ascend = new BaseAction(3603, true)
+            {
+                OtherCheck = () => TargetHelper.DeathPeopleAll.Length > 0,
+            },
+
 
             //光速
             Lightspeed = new BaseAction(3606),
@@ -140,21 +144,8 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
             Spire = new BaseAction(4406);
     }
 
-    protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
+    private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
-        uint act = 0;
-
-        if (Base(level, out act)) return act;
-        if (CanHealAreaSpell && HealArea(level, out act)) return act;
-        if (CanHealSingleSpell && HealSingle(level, out act)) return act;
-        if (Attack(level, out act)) return act;
-
-        return 0;
-    }
-    protected bool Base(byte level, out uint act)
-    {
-        act = 0;
-
         //有某些非常危险的状态。
         if (TargetHelper.DyingPeople.Length > 0)
         {
@@ -162,41 +153,22 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         }
 
         //有人死了，看看能不能救。
-        if (TargetHelper.DeathPeopleParty.Length != 0)
+        if (TargetHelper.DeathPeopleParty.Length > 0)
         {
             //如果有人倒了，赶紧即刻拉人！
-            if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return true;
-
-            bool haveSwift = false;
-            foreach (var status in Service.ClientState.LocalPlayer.StatusList)
+            if (!GeneralActions.Swiftcast.CoolDown.IsCooldown || HaveSwift)
             {
-                if (GeneralActions.Swiftcast.BuffsProvide.Contains((ushort)status.StatusId))
-                {
-                    haveSwift = true;
-                    break;
-                }
+                if (Actions.Ascend.TryUseAction(level, out act, mustUse: true)) return true;
             }
-            if (haveSwift && Actions.Ascend.TryUseAction(level, out act)) return true;
         }
 
+        act = null;
         return false;
     }
 
-    protected bool Attack(byte level, out uint act)
+    private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
-        //在移动，还有光速，肯定用啊！
-        if (IsMoving && HaveTargetAngle && Actions.Lightspeed.TryUseAction(level, out act)) return true;
-        //在移动，没光速，需要瞬发。
-        if (IsMoving && HaveTargetAngle && !BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.LightSpeed)))
-        {
-            if (Actions.Combust.TryUseAction(level, out act, mustUse: true)) return true;
-        }
-
-        //如果现在可以增加能力技
-        if (CanAddAbility(level, CanHealSingleAbility, CanHealAreaAbility, out act)) return true;
-
-
-        //攻击后奶。
+        //大宇宙
         if (Actions.Macrocosmos.TryUseAction(level, out act, mustUse: true)) return true;
         //群体输出
         if (Actions.Gravity.TryUseAction(level, out act)) return true;
@@ -205,33 +177,58 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         if (Actions.Combust.TryUseAction(level, out act)) return true;
         if (Actions.Malefic.TryUseAction(level, out act)) return true;
 
+        act = null;
         return false;
     }
 
-    protected bool HealArea(byte level, out uint act)
+    private protected override bool HealAreaGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
-        //如果现在可以增加能力技，天宫图啊
-        if (CanInsertAbility && Actions.Horoscope.TryUseAction(level, out act)) return true;
-        if (CanAddAbility(level, false, true, out act)) return true;
-
-
         //阳星相位
         if (Actions.AspectedHelios.TryUseAction(level, out act)) return true;
 
         //阳星
         if (Actions.Helios.TryUseAction(level, out act)) return true;
 
+        act = null;
         return false;
-
     }
 
-    protected bool HealSingle(byte level, out uint act)
+    private protected override bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
-        //如果现在可以增加能力技,优先星位合图
-        if (Actions.Synastry.TryUseAction(level, out act)) return true;
-        if (CanAddAbility(level, true, false, out act)) return true;
+        if (base.FirstActionAbility(level, abilityRemain, nextGCD, out act)) return true;
 
+        //如果要群奶了，先上个天宫图！
+        if (nextGCD == Actions.AspectedHelios || nextGCD == Actions.Helios)
+        {
+            if (Actions.Horoscope.TryUseAction(level, out act)) return true;
+        }
 
+        //如果要单奶了，先上星位合图！
+        if (nextGCD == Actions.Benefic || nextGCD == Actions.Benefic2 || nextGCD == Actions.AspectedBenefic)
+        {
+            if (Actions.Synastry.TryUseAction(level, out act)) return true;
+        }
+        return false;
+    }
+
+    private protected override bool GeneralAbility(byte level, byte abilityRemain, out BaseAction act)
+    {
+        //如果当前还没有皇冠卡牌，那就抽一张
+        if (Actions.MinorArcana.TryUseAction(level, out act, Empty: true)) return true;
+
+        //如果当前还没有卡牌，那就抽一张
+        if (JobGauge.DrawnCard == CardType.NONE
+            && Actions.Draw.TryUseAction(level, out act, Empty: true)) return true;
+
+        //如果当前卡牌已经拥有了，就重抽
+        if (JobGauge.DrawnCard != CardType.NONE && JobGauge.Seals.Contains(GetCardSeal(JobGauge.DrawnCard))
+            && Actions.Redraw.TryUseAction(level, out act)) return true;
+
+        return false;
+    }
+
+    private protected override bool HealSingleGCD(byte level, uint lastComboActionID, out BaseAction act)
+    {
         //吉星相位
         if (Actions.AspectedBenefic.TryUseAction(level, out act)) return true;
 
@@ -241,115 +238,76 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         //吉星
         if (Actions.Benefic.TryUseAction(level, out act)) return true;
 
+        act = null;
         return false;
     }
 
-    protected bool CanAddAbility(byte level, bool healSingle, bool healArea, out uint act)
+    private protected override bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act)
     {
-        act = 0;
+        //光速，创造更多的内插能力技的机会。
+        if (Actions.Lightspeed.TryUseAction(level, out act)) return true;
+        //给T减伤，这个很重要。
+        if (Actions.Exaltation.TryUseAction(level, out act)) return true;
 
-        if (CanInsertAbility)
+        //团队增伤害
+        if (Actions.Divination.TryUseAction(level, out act)) return true;
+
+        //如果没有地星也没有巨星，那就试试看能不能放个。
+        if (!BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.EarthlyDominance))
+            && !BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.GiantDominance)))
         {
-            //光速，创造更多的内插能力技的机会。
-            if (HaveTargetAngle && Actions.Lightspeed.TryUseAction(level, out act)) return true;
-            //给T减伤，这个很重要。
-            if (Actions.Exaltation.TryUseAction(level, out act)) return true;
-
-            //团队增伤害
-            if(Actions.Divination.TryUseAction(level, out act)) return true;
-
-            //如果有巨星主宰
-            if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.GiantDominance)))
-            {
-                //需要回血的时候炸了。
-                if (healArea && Actions.EarthlyStar.TryUseAction(level, out act)) return true;
-            }
-            //如果没有地星也没有巨星，那就试试看能不能放个。
-            else if (!BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.EarthlyDominance)))
-            {
-                if (!IsMoving && Actions.EarthlyStar.TryUseAction(level, out act)) return true;
-            }
-
-            #region 群奶
-            if (healArea)
-            {
-                //群Hot
-                if (Actions.CelestialOpposition.TryUseAction(level, out act)) return true;
-            }
-            #endregion
-
-            #region 单奶
-
-            if (healSingle)
-            {
-                //带盾奶
-                if (Actions.CelestialIntersection.TryUseAction(level, out act)) return true;
-                //单体Hot
-                if (Actions.AspectedBenefic.TryUseAction(level, out act)) return true;
-                //常规奶
-                if (Actions.EssentialDignity.TryUseAction(level, out act)) return true;
-
-                if (Actions.CelestialIntersection.TryUseAction(level, out act, Empty:true)) return true;
-            }
-
-            #endregion
-
-            //发牌
-            if(DrawCard(level, false, out act)) return true;
-            if(DrawCrownCard(level, out act)) return true;
-            if(DrawCard(level, true, out act)) return true;
-
-            //加个醒梦
-            if (GeneralActions.LucidDreaming.TryUseAction(level, out act)) return true;
-
+            if (!IsMoving && Actions.EarthlyStar.TryUseAction(level, out act)) return true;
         }
 
-        return false;
-    }
-
-    protected bool DrawCard(byte level, bool empty, out uint act)
-    {
-        //加Buff
-        if (Actions.Astrodyne.TryUseAction(level, out act)) return true;
-
-        //如果当前还没有卡牌，那就抽一张
-        if (JobGauge.DrawnCard == CardType.NONE
-            && Actions.Draw.TryUseAction(level, out act, Empty: empty)) return true;
-
-        //如果当前卡牌已经拥有了，就重抽
-        if (JobGauge.DrawnCard != CardType.NONE &&　JobGauge.Seals.Contains(GetCardSeal(JobGauge.DrawnCard))
-            && Actions.Redraw.TryUseAction(level, out act)) return true;
-
-        //有牌了，也不需要重抽，那就只能发出。
-        if (JobGauge.DrawnCard != CardType.NONE && Actions.Play.TryUseAction(level, out act, mustUse:true)) return true;
-
-        return false;
-    }
-
-    protected bool DrawCrownCard(byte level, out uint act)
-    {
-        act = 0;
-
-        //如果当前还没有皇冠卡牌，那就抽一张
-        if (JobGauge.DrawnCrownCard == CardType.NONE
-            && Actions.MinorArcana.TryUseAction(level, out act, Empty: true)) return true;
-
-        if(JobGauge.DrawnCrownCard == CardType.LADY)
-        {
-            //奶量牌，要看情况。
-            if (TargetHelper.PartyMembersAverHP < 0.85 && TargetHelper.PartyMembersDifferHP < 0.3
-                && Actions.CrownPlay.TryUseAction(level, out act)) return true;
-        }
-        else if (JobGauge.DrawnCrownCard == CardType.LORD)
+        if (JobGauge.DrawnCrownCard == CardType.LORD)
         {
             //进攻牌，随便发。
             if (Actions.CrownPlay.TryUseAction(level, out act)) return true;
         }
 
+        //加星星的进攻Buff
+        if (Actions.Astrodyne.TryUseAction(level, out act)) return true;
+
+        //发牌
+        if (JobGauge.DrawnCard != CardType.NONE && Actions.Play.TryUseAction(level, out act, mustUse: true)) return true;
+
+        //加个醒梦
+        if (GeneralActions.LucidDreaming.TryUseAction(level, out act)) return true;
+
         return false;
     }
 
-    internal static SealType GetCardSeal(CardType card)
+    private protected override bool HealSingleAbility(byte level, byte abilityRemain, out BaseAction act)
+    {
+        //带盾奶
+        if (Actions.CelestialIntersection.TryUseAction(level, out act)) return true;
+        //单体Hot
+        if (Actions.AspectedBenefic.TryUseAction(level, out act)) return true;
+        //常规奶
+        if (Actions.EssentialDignity.TryUseAction(level, out act)) return true;
+        //带盾奶
+        if (Actions.CelestialIntersection.TryUseAction(level, out act, Empty: true)) return true;
+
+        return false;
+    }
+
+    private protected override bool HealAreaAbility(byte level, byte abilityRemain, out BaseAction act)
+    {
+        //如果有巨星主宰
+        if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.GiantDominance)))
+        {
+            //需要回血的时候炸了。
+            if (Actions.EarthlyStar.TryUseAction(level, out act)) return true;
+        }
+        //奶量牌，要看情况。
+        if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.TryUseAction(level, out act)) return true;
+        //群Hot
+        if (Actions.CelestialOpposition.TryUseAction(level, out act)) return true;
+
+        return false;
+    }
+
+    private static SealType GetCardSeal(CardType card)
     {
         switch (card)
         {

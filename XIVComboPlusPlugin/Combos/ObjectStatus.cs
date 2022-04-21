@@ -159,8 +159,14 @@ namespace XIVComboPlus.Combos
             //地星主宰
             EarthlyDominance = 1224,
             //巨星主宰
-            GiantDominance = 1248;
+            GiantDominance = 1248,
 
-
+            //行吟
+            Troubadour = 1934,
+            //策动
+            Tactician1 = 1951,
+            Tactician2 = 2177,
+            //防守之桑巴
+            ShieldSamba = 1826;
     }
 }

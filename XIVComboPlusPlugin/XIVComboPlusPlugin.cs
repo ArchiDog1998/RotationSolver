@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Speech.Synthesis;
 using System.Threading;
+using System.Threading.Tasks;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.JobGauge;
@@ -33,7 +35,6 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 
     private static Framework _framework;
 
-    internal static uint LastAction { get; private set; }
 
     public XIVComboPlusPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
     {
@@ -64,7 +65,6 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         framework.Update += TargetHelper.Framework_Update;
     }
 
-
     public void Dispose()
     {
         Service.CommandManager.RemoveHandler(_command);
@@ -73,6 +73,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.IconReplacer.Dispose();
         _framework.Update -= TargetHelper.Framework_Update;
+
     }
 
     private void OnOpenConfigUi()
@@ -97,10 +98,10 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
             }
         }
 
-        uint inputActions = TargetHelper.GetActionsByName(array[0]).RowId;
-        LastAction = Service.IconReplacer.RemapActionID(inputActions);
-        TargetHelper.SetTarget(TargetHelper.GetBestTarget(Service.DataManager.GetExcelSheet<Action>().GetRow(LastAction)));
 
+        uint inputActions = TargetHelper.GetActionsByName(array[0]).RowId;
+        uint remapAction = Service.IconReplacer.RemapActionID(inputActions);
+        TargetHelper.SetTarget(TargetHelper.GetBestTarget(Service.DataManager.GetExcelSheet<Action>().GetRow(remapAction)));
     }
 
     private void OnCommand(string command, string arguments)

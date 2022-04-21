@@ -79,10 +79,6 @@ internal sealed class IconReplacer : IDisposable
 
     private IntPtr actionManager = IntPtr.Zero;
 
-    private HashSet<uint> comboActionIDs = new HashSet<uint>();
-
-    private readonly Dictionary<uint, byte> cooldownGroupCache = new Dictionary<uint, byte>();
-
     private readonly GetActionCooldownSlotDelegate getActionCooldownSlot;
 
     public IconReplacer()
@@ -123,13 +119,13 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
-    public uint RemapActionID(uint actionID)
+    internal uint RemapActionID(uint actionID)
     {
         try
         {
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
             uint classId = localPlayer.ClassJob.Id;
-            if ((GameObject)(object)localPlayer == null || !CustomCombosDict.ContainsKey(classId))
+            if (localPlayer == null || !CustomCombosDict.ContainsKey(classId))
             {
                 return OriginalHook(actionID);
             }
@@ -157,26 +153,13 @@ internal sealed class IconReplacer : IDisposable
         return 1uL;
     }
 
-    internal CooldownData GetCooldown(uint actionID)
+    internal CooldownData GetCooldown(byte cooldownGroup)
     {
-        byte cooldownGroup = GetCooldownGroup(actionID);
         if (actionManager == IntPtr.Zero)
         {
-            CooldownData result = default;
-            result.ActionID = actionID;
-            return result;
+            return default;
         }
         return Marshal.PtrToStructure<CooldownData>(getActionCooldownSlot(actionManager, cooldownGroup - 1));
-    }
-
-    private byte GetCooldownGroup(uint actionID)
-    {
-        if (cooldownGroupCache.TryGetValue(actionID, out var value))
-        {
-            return value;
-        }
-        Action row = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
-        return cooldownGroupCache[actionID] = row.CooldownGroup;
     }
 
     internal static void SetEnable(string comboName, bool enable)
@@ -188,14 +171,6 @@ internal sealed class IconReplacer : IDisposable
                 combo.IsEnabled = enable;
                 return;
             }
-        }
-    }
-
-    internal static void SetEnable(bool enable)
-    {
-        foreach (var combo in CustomCombos)
-        {
-            combo.IsEnabled = enable;
         }
     }
 }

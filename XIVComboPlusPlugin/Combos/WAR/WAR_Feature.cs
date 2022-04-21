@@ -10,8 +10,13 @@ namespace XIVComboPlus.Combos.WAR
     {
         public override string ComboFancyName => "战士GCD";
 
-        public override string Description => "替换重劈为连续的GCD";
+        public override string Description => "替换沉静为连续的GCD";
 
-        protected internal override uint[] ActionIDs => new uint[] {Actions.HeavySwing.ActionID};
+        protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Repose.ActionID };
+
+        public WAR_Feature()
+        {
+            this.ShouldSayout = true;
+        }
     }
 }

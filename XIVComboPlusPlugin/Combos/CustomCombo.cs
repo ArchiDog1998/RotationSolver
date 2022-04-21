@@ -1,19 +1,36 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Speech.Synthesis;
+using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
-using Dalamud.Utility;
-using XIVComboPlus.Attributes;
 
 namespace XIVComboPlus.Combos;
 
 public abstract class CustomCombo
 {
+    //private static SpeechSynthesizer ssh = new SpeechSynthesizer() { Rate = 0 };
+    private uint _lastGCDAction;
+
+    internal static bool HaveSwift
+    {
+        get
+        {
+            foreach (var status in Service.ClientState.LocalPlayer.StatusList)
+            {
+                if (GeneralActions.Swiftcast.BuffsProvide.Contains((ushort)status.StatusId))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
     #region Job
 
     internal abstract uint JobID { get; }
@@ -45,6 +62,12 @@ public abstract class CustomCombo
             {
                 OtherCheck = () => TargetHelper.WeakenPeople.Length > 0,
             },
+
+            //营救
+            Rescue = new BaseAction(7571),
+
+            //沉静
+            Repose = new BaseAction(16560),
 
             //醒梦（如果MP低于6000那么使用）
             LucidDreaming = new BaseAction(7562u)
@@ -93,7 +116,10 @@ public abstract class CustomCombo
             Reprisal = new BaseAction(7535),
 
             //退避
-            Shirk = new BaseAction(7537);
+            Shirk = new BaseAction(7537),
+
+            //浴血
+            Bloodbath = new BaseAction(7542);
 
     }
     #endregion
@@ -128,18 +154,27 @@ public abstract class CustomCombo
     }
 
     #endregion
-    protected static bool IsMoving => TargetHelper.IsMoving;
-    protected static bool HaveTargetAngle => TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, 25).Length > 0;
 
     protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
     protected static GameObject Target => Service.TargetManager.Target;
-    protected static float WeaponRemain => Service.IconReplacer.GetCooldown(141u).CooldownRemaining;
-    protected static bool CanInsertAbility => !LocalPlayer.IsCasting && WeaponRemain > 0.6;
-    protected static bool CanHealAreaAbility => TargetHelper.PartyMembersDifferHP < Service.Configuration.HealthDifference && TargetHelper.PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
-    protected static bool CanHealAreaSpell => TargetHelper.PartyMembersDifferHP < Service.Configuration.HealthDifference && TargetHelper.PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
 
-    protected static bool CanHealSingleAbility => TargetHelper.PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
-    protected static bool CanHealSingleSpell => TargetHelper.PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
+    protected static bool IsMoving => TargetHelper.IsMoving;
+    private static bool HaveTargetAngle => TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, 25).Length > 0;
+    internal static byte AbilityRemainCount => (byte)(WeaponRemain / 0.67f);
+
+    protected static float WeaponRemain => Service.IconReplacer.GetCooldown(BaseAction.GCDCooldownGroup).CooldownRemaining;
+
+    protected virtual bool CanHealAreaAbility => TargetHelper.PartyMembersDifferHP < Service.Configuration.HealthDifference && TargetHelper.PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
+    protected virtual bool CanHealAreaSpell => TargetHelper.PartyMembersDifferHP < Service.Configuration.HealthDifference && TargetHelper.PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
+
+    protected virtual bool CanHealSingleAbility => TargetHelper.PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
+    protected virtual bool CanHealSingleSpell => TargetHelper.PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
+
+    private bool HPFull => TargetHelper.PartyMembersHP.Min() > 0.99f;
+    /// <summary>
+    /// Only one feature can set it to true!
+    /// </summary>
+    protected bool ShouldSayout { get; set; } = false;
     protected CustomCombo()
     {
     }
@@ -155,22 +190,112 @@ public abstract class CustomCombo
         {
             return false;
         }
-        uint num2 = Invoke(actionID, lastComboActionID, comboTime, level);
-        if (actionID == num2)
+
+        uint actNew = Invoke(actionID, lastComboActionID, comboTime, level);
+        if (actionID == actNew)
         {
             return false;
         }
-        else if (num2 == 0)
+        else if (actNew == 0)
         {
             SortedSet<byte> validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => job.Type == JobType.MagicalRanged || job.Type == JobType.Healer).Select(job => job.Index));
 
-            newActionID = TargetHelper.GetJobCategory( Service.ClientState.LocalPlayer, validJobs) ? GeneralActions.SecondWind.ActionID : GeneralActions.LucidDreaming.ActionID;
+            newActionID = TargetHelper.GetJobCategory(Service.ClientState.LocalPlayer, validJobs) ? GeneralActions.SecondWind.ActionID : GeneralActions.LucidDreaming.ActionID;
             return true;
         }
-        newActionID = num2;
+        newActionID = actNew;
         return true;
     }
 
-    protected abstract uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level);
+    private bool CheckAction(uint actionID)
+    {
+        //return false;
+        if (ShouldSayout && _lastGCDAction != actionID)
+        {
+            _lastGCDAction = actionID;
+            return true;
+        }
+        else return false;
+    }
 
+    private uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
+    {
+
+        byte abilityRemain = AbilityRemainCount;
+        BaseAction GCDaction = GCD(level, lastComboActionID);
+        if (GCDaction == null) return 0;
+
+        //Sayout!
+        if (CheckAction(GCDaction.ActionID) && GCDaction.SayoutText != EnemyLocation.None)
+        {
+            Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            {
+                Message = GCDaction.Action.Name + " " + GCDaction.SayoutText.ToString(),
+                Type = Dalamud.Game.Text.XivChatType.Notice,
+            });
+        }
+
+        uint GCDact = GCDaction.ActionID;
+
+        //return GCDact;
+        switch (AbilityRemainCount)
+        {
+            case 0:
+                return GCDact;
+            default:
+                BaseAction AbilityAction;
+                if (FirstActionAbility(level, abilityRemain, GCDaction, out AbilityAction)) return AbilityAction.ActionID;
+                if (!HPFull)
+                {
+                    if (CanHealAreaAbility && HealAreaAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
+                    if (CanHealSingleAbility && HealSingleAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
+                }
+                if (GeneralAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
+                if (HaveTargetAngle && ForAttachAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
+                return GCDact;
+        }
+    }
+
+    private BaseAction GCD(byte level, uint lastComboActionID)
+    {
+        if (EmergercyGCD(level, lastComboActionID, out BaseAction act)) return act;
+        if (!HPFull)
+        {
+            if (CanHealAreaSpell && HealAreaGCD(level, lastComboActionID, out act)) return act;
+            if (CanHealSingleSpell && HealSingleGCD(level, lastComboActionID, out act)) return act;
+        }
+        if (AttackGCD(level, lastComboActionID, out act)) return act;
+        return null;
+    }
+    private protected abstract bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act);
+    private protected virtual bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    {
+        if (nextGCD.CastTime > 7000 && GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return true;
+        act = null; return false;
+    }
+    private protected virtual bool GeneralAbility(byte level, byte abilityRemain, out BaseAction act)
+    {
+        act = null; return false;
+    }
+    private protected virtual bool HealSingleAbility(byte level, byte abilityRemain, out BaseAction act)
+    {
+        act = null; return false;
+    }
+    private protected virtual bool HealAreaAbility(byte level, byte abilityRemain, out BaseAction act)
+    {
+        act = null; return false;
+    }
+    private protected virtual bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
+    {
+        act = null; return false;
+    }
+    private protected abstract bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act);
+    private protected virtual bool HealSingleGCD(byte level, uint lastComboActionID, out BaseAction act)
+    {
+        act = null; return false;
+    }
+    private protected virtual bool HealAreaGCD(byte level, uint lastComboActionID, out BaseAction act)
+    {
+        act = null; return false;
+    }
 }
