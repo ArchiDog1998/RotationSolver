@@ -4,8 +4,16 @@ namespace XIVComboPlus.Combos;
 
 internal abstract class WARCombo : CustomComboJob<WARGauge>
 {
-    internal static bool HaveShield => BaseAction.FindStatusSelf(ObjectStatus.Defiance) != null;
-    internal static float BuffTime => BaseAction.StatusRemainTime(BaseAction.FindStatusSelfFromSelf(ObjectStatus.SurgingTempest));
+    internal static bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
+    internal static float BuffTime 
+    {
+        get
+        {
+            var time = BaseAction.FindStatusSelfFromSelf(ObjectStatus.SurgingTempest);
+            if (time.Length == 0) return 0;
+            return time[0];
+        }
+    }
 
     internal struct Actions
     {
@@ -125,7 +133,7 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
     private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         //ÊÞ»êÊä³ö
-        if (JobGauge.BeastGauge >= 50 || BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.InnerRelease)))
+        if (JobGauge.BeastGauge >= 50 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease))
         {
             //¸ÖÌúÐý·ç
             if (Actions.SteelCyclone.TryUseAction(level, out act)) return true;

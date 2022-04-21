@@ -14,10 +14,5 @@ namespace XIVComboPlus.Combos.AST
         public override string Description => "替换沉静为自动占星GCD";
 
         protected internal override uint[] ActionIDs => new uint[] {GeneralActions.Repose.ActionID};
-
-        public AST_Feature()
-        {
-            this.ShouldSayout = true;
-        }
     }
 }

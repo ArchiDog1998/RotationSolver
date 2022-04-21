@@ -21,7 +21,6 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
                     ObjectStatus.Combust2,
                     ObjectStatus.Combust3,
                     ObjectStatus.Combust4,
-
                 }
             },
 
@@ -222,7 +221,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
 
         //如果当前卡牌已经拥有了，就重抽
         if (JobGauge.DrawnCard != CardType.NONE && JobGauge.Seals.Contains(GetCardSeal(JobGauge.DrawnCard))
-            && Actions.Redraw.TryUseAction(level, out act)) return true;
+            && (JobGauge.Seals.Length < 3 || !JobGauge.Seals.Contains(SealType.NONE)) && Actions.Redraw.TryUseAction(level, out act)) return true;
 
         return false;
     }
@@ -253,8 +252,8 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         if (Actions.Divination.TryUseAction(level, out act)) return true;
 
         //如果没有地星也没有巨星，那就试试看能不能放个。
-        if (!BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.EarthlyDominance))
-            && !BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.GiantDominance)))
+        if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.EarthlyDominance)
+            && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
         {
             if (!IsMoving && Actions.EarthlyStar.TryUseAction(level, out act)) return true;
         }
@@ -294,7 +293,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
     private protected override bool HealAreaAbility(byte level, byte abilityRemain, out BaseAction act)
     {
         //如果有巨星主宰
-        if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.GiantDominance)))
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
         {
             //需要回血的时候炸了。
             if (Actions.EarthlyStar.TryUseAction(level, out act)) return true;

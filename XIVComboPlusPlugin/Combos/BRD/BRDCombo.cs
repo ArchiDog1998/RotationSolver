@@ -1,21 +1,19 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-
+using System.Linq;
 namespace XIVComboPlus.Combos;
 
 internal abstract class BRDCombo : CustomComboJob<BRDGauge>
 {
     //看看现在有没有开猛者强击
-    protected static bool IsBreaking => BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(125));
+    protected static bool IsBreaking => BaseAction.HaveStatusSelfFromSelf(125);
 
     internal struct Actions
     {
         private static bool AddOnDot(ushort status1, ushort status2)
         {
-            var sta1 = BaseAction.FindStatusTargetFromSelf(status1);
-            var sta2 = BaseAction.FindStatusTargetFromSelf(status2);
-
-            return BaseAction.HaveStatus(sta1) && BaseAction.HaveStatus(sta2)
-                 && (!BaseAction.EnoughStatus(sta1) || !BaseAction.EnoughStatus(sta2));
+            var results = BaseAction.FindStatusTargetFromSelf(status1, status2);
+            if(results.Length != 2) return false;
+            return results.Min() < 5.5f;
         }
 
         public static readonly BaseAction
@@ -105,6 +103,8 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
             //绝峰箭
             ApexArrow = new BaseAction(16496),
 
+
+
             //光明神的最终乐章
             RadiantFinale = new BaseAction(25785)
             {
@@ -137,6 +137,12 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
 
     private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
+        //放大招！
+        if (JobGauge.SoulVoice >= 80 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady))
+        {
+            if (Actions.ApexArrow.TryUseAction(level, out act, mustUse: true)) return true;
+        }
+
         //群体GCD
         if (Actions.Shadowbite.TryUseAction(level, out act)) return true;
         if (Actions.QuickNock.TryUseAction(level, out act)) return true;
@@ -148,12 +154,6 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
         if (Actions.IronJaws.TryUseAction(level, out act)) return true;
         if (Actions.VenomousBite.TryUseAction(level, out act)) return true;
         if (Actions.Windbite.TryUseAction(level, out act)) return true;
-
-        //放大招！
-        if (JobGauge.SoulVoice >= 80 || BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.BlastArrowReady)))
-        {
-            if (Actions.ApexArrow.TryUseAction(level, out act, mustUse: true)) return true;
-        }
 
         //强力射击
         if (Actions.HeavyShoot.TryUseAction(level, out act)) return true;

@@ -13,10 +13,5 @@ namespace XIVComboPlus.Combos.WAR
         public override string Description => "替换沉静为连续的GCD";
 
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Repose.ActionID };
-
-        public WAR_Feature()
-        {
-            this.ShouldSayout = true;
-        }
     }
 }

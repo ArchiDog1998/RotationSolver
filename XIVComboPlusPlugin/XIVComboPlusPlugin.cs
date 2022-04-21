@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Speech.Synthesis;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Dalamud.Game;
@@ -30,7 +33,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
     private readonly WindowSystem windowSystem;
 
     private readonly ConfigWindow configWindow;
-
+    //private readonly SystemSound sound;
     public string Name => "XIV Combo Plus";
 
     private static Framework _framework;
@@ -46,6 +49,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         configWindow = new ConfigWindow();
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(configWindow);
+        //sound = new SystemSound();
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
 
@@ -64,6 +68,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         _framework = framework;
         framework.Update += TargetHelper.Framework_Update;
     }
+
 
     public void Dispose()
     {

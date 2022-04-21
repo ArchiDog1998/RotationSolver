@@ -5,7 +5,7 @@ namespace XIVComboPlus.Combos;
 internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 {
     //看看现在有没有促进
-    internal static bool IsBreaking => BaseAction.FindStatusSelfFromSelf(1239) != null;
+    internal static bool IsBreaking => BaseAction.HaveStatusSelfFromSelf(1239);
     internal struct Actions
     {
 
@@ -28,7 +28,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             //短兵相接
             CorpsAcorps = new BaseAction(7506)
             {
-                BuffsCantHave = new ushort[]
+                BuffsProvide = new ushort[]
                 {
                     ObjectStatus.Bind1,
                     ObjectStatus.Bind2,
@@ -261,14 +261,14 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             //要求较小的魔元不带触发，也可以强制要求跳过判断。
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
-                if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.VerstoneReady)))
+                if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.VerstoneReady))
                 {
                     return false;
                 }
             }
             if (JobGauge.WhiteMana > JobGauge.BlackMana)
             {
-                if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(ObjectStatus.VerfireReady)))
+                if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.VerfireReady))
                 {
                     return false;
                 }
@@ -277,7 +277,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             //看看有没有即刻相关的技能。
             foreach (var buff in Actions.Vercure.BuffsProvide)
             {
-                if (BaseAction.HaveStatus(BaseAction.FindStatusSelfFromSelf(buff)))
+                if (BaseAction.HaveStatusSelfFromSelf(buff))
                 {
                     return false;
                 }

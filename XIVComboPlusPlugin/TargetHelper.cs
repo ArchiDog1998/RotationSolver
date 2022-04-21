@@ -123,7 +123,7 @@ namespace XIVComboPlus
         /// 玩家们
         /// </summary>
         public static PlayerCharacter[] AllianceMembers =>
-             Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
+             Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).Where(obj => CanAttack(obj)).ToArray();
         public static PlayerCharacter[] PartyHealers => GetJobCategory(PartyMembers, (jt) => jt == JobType.Healer);
         public static PlayerCharacter[] PartyDPS => GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee || jt == JobType.MagicalRanged || jt == JobType.PhysicalRanged);
         public static PlayerCharacter[] PartyTanks => GetJobCategory(PartyMembers, (jt) => jt == JobType.Tank);

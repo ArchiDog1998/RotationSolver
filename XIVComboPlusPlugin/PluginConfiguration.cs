@@ -14,12 +14,12 @@ public class PluginConfiguration : IPluginConfiguration
 {
     public int Version { get; set; } = 5;
 
-    public int MultiCount { get; set; } = 2;
+    public int MultiCount { get; set; } = 3;
 
     public bool IsTargetBoss { get; set; } = true;
     public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
 
-    public float HealthDifference { get; set; } = 0.1f;
+    public float HealthDifference { get; set; } = 0.2f;
     public float HealthAreaAbility { get; set; } = 0.8f;
     public float HealthAreafSpell { get; set; } = 0.6f;
     public float HealthSingleAbility { get; set; } = 0.7f;

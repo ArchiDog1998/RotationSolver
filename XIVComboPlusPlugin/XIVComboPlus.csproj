@@ -11,9 +11,6 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <PackageReference Include="System.Speech" Version="6.0.0" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="Dalamud">
       <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Dalamud.dll</HintPath>
     </Reference>
@@ -31,6 +28,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Speech">
+      <HintPath>E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\System.Speech.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

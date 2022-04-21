@@ -98,7 +98,7 @@ namespace XIVComboPlus.Combos
             //影噬箭准备
             ShadowbiteReady = 3002,
 
-            //
+            //爆破箭准备
             BlastArrowReady = 2692,
 
             //铁壁
@@ -167,6 +167,27 @@ namespace XIVComboPlus.Combos
             Tactician1 = 1951,
             Tactician2 = 2177,
             //防守之桑巴
-            ShieldSamba = 1826;
+            ShieldSamba = 1826,
+
+            //死亡烙印
+            DeathsDesign = 2586,
+
+            //妖异之镰
+            SoulReaver = 2587,
+
+            //绞决效果提高
+            EnhancedGibbet = 2588,
+            EnhancedVoidReaping = 2590,
+
+            //夜游魂
+            Enshrouded = 2593,
+
+            //死亡祭祀
+            CircleofSacrifice = 2600,
+            //死亡祭品
+            ImmortalSacrifice = 2592,
+
+            //回退准备
+            Threshold = 2595;
     }
 }

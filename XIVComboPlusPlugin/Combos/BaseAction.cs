@@ -30,7 +30,7 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 咏唱时间
         /// </summary>
-        private int Cast100 => Action.Cast100ms - (HaveStatus(FindStatusSelfFromSelf(ObjectStatus.LightSpeed)) ? 25 : 0);
+        private int Cast100 => Action.Cast100ms - (HaveStatusSelfFromSelf(ObjectStatus.LightSpeed) ? 25 : 0);
         /// <summary>
         /// 如果之前是这些ID，那么就不会执行。
         /// </summary>
@@ -55,11 +55,6 @@ namespace XIVComboPlus.Combos
         internal ushort[] BuffsNeed { get; set; } = null;
 
         /// <summary>
-        /// 使用这个技能不能有的Buff。
-        /// </summary>
-        internal ushort[] BuffsCantHave { get; set; } = null;
-
-        /// <summary>
         /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
         /// </summary>
         internal Func<bool> OtherCheck { get; set; } = null;
@@ -68,7 +63,7 @@ namespace XIVComboPlus.Combos
         {
             this.Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
             _isFriendly = isFriendly;
-            this.IsGCD = Action.CooldownGroup == GCDCooldownGroup || Action.AdditionalCooldownGroup == GCDCooldownGroup;
+            this.IsGCD = Action.CooldownGroup == GCDCooldownGroup;
 
             if (Action.PrimaryCostType == 3 || Action.PrimaryCostType == 4)
             {
@@ -95,39 +90,16 @@ namespace XIVComboPlus.Combos
             if (Service.ClientState.LocalPlayer.CurrentMp < this.MPNeed) return false;
 
             //没有前置Buff
+
             if(BuffsNeed != null)
             {
-                bool findFuff = false;
-                foreach (var buff in BuffsNeed)
-                {
-                    if (HaveStatus(FindStatusSelfFromSelf(buff)))
-                    {
-                        findFuff = true;
-                        break;
-                    }
-                }
-                if(!findFuff) return false;
-            }
-
-            //如果有不能拥有的Buff的话，就返回。
-            if(BuffsCantHave != null)
-            {
-                foreach (var buff in BuffsCantHave)
-                {
-                    if (HaveStatus(FindStatusSelfFromSelf(buff)))
-                    {
-                        return false;
-                    }
-                }
+                if (!HaveStatusSelfFromSelf(BuffsNeed)) return false;
             }
 
             //已有提供的Buff的任何一种
             if (BuffsProvide != null)
             {
-                foreach (var buff in BuffsProvide)
-                {
-                    if (HaveStatus(FindStatusSelfFromSelf(buff))) return false;
-                }
+                if (HaveStatusSelfFromSelf(BuffsProvide)) return false;
             }
 
 
@@ -174,25 +146,13 @@ namespace XIVComboPlus.Combos
                 //目标已有充足的Debuff
                 if (TargetStatus != null)
                 {
-                    foreach (var debuff in TargetStatus)
-                    {
-                        if (EnoughStatus(FindStatusTargetFromSelf(debuff))) return false;
-                    }
+                    if (EnoughStatusTargetFromSelfOne(TargetStatus)) return false;
                 }
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (Cast100 > 0 && TargetHelper.IsMoving)
                 {
-                    bool haveSwift = false;
-                    foreach (var buff in CustomCombo.GeneralActions.Swiftcast.BuffsProvide)
-                    {
-                        if (HaveStatus(FindStatusSelfFromSelf(buff)))
-                        {
-                            haveSwift = true;
-                            break;
-                        }
-                    }
-                    if (!haveSwift) return false;
+                    if (!HaveStatusSelfFromSelf(CustomCombo.GeneralActions.Swiftcast.BuffsProvide)) return false;
                 }
             }
             else
@@ -210,83 +170,66 @@ namespace XIVComboPlus.Combos
             return true;
         }
 
-        internal static bool EnoughStatus(Status status)
-        {
-            return StatusRemainTime(status) > 5.5f;
-        }
-
-        internal static bool HaveStatus(Status status)
-        {
-            return StatusRemainTime(status) != 0f;
-        }
-        internal static float StatusRemainTime(Status status)
-        {
-            return status?.RemainingTime ?? 0f;
-        }
-
-        /// <summary>
-        /// 找到任何对象附加到自己敌人的状态。
-        /// </summary>
-        /// <param name="effectID"></param>
-        /// <returns></returns>
-        internal static Status FindStatusTarget(ushort effectID)
-        {
-            return FindStatus(effectID, Service.TargetManager.Target, null);
-        }
-
-        /// <summary>
-        /// 找到任何对象附加到自己身上的状态。
-        /// </summary>
-        /// <param name="effectID"></param>
-        /// <returns></returns>
-        internal static Status FindStatusSelf(ushort effectID)
-        {
-            return FindStatus(effectID, Service.ClientState.LocalPlayer, null);
-        }
-
         /// <summary>
         /// 找到玩家附加到敌人身上的状态。
         /// </summary>
         /// <param name="effectID"></param>
         /// <returns></returns>
-        internal static Status FindStatusTargetFromSelf(ushort effectID)
+        internal static float[] FindStatusTargetFromSelf(params ushort[] effectIDs)
         {
-            GameObject currentTarget = Service.TargetManager.Target;
-            PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
-            return FindStatus(effectID, currentTarget, localPlayer != null ? new uint?(localPlayer.ObjectId) : null);
+            if(Service.TargetManager.Target is BattleChara chara)
+            {
+                return FindStatusFromSelf(chara, effectIDs);
+            }
+            else return new float[0];
         }
 
-        /// <summary>
-        /// 找到自己附加到自己身上的状态。
-        /// </summary>
-        /// <param name="effectID"></param>
-        /// <returns></returns>
-        internal static Status FindStatusSelfFromSelf(ushort effectID)
+
+        internal static bool HaveStatusSelfFromSelf(params ushort[] effectIDs)
         {
-            PlayerCharacter localPlayer = Service.ClientState.LocalPlayer,
-                            localPlayer2 = Service.ClientState.LocalPlayer;
-            return FindStatus(effectID, localPlayer, localPlayer2 != null ? new uint?(localPlayer2.ObjectId) : null);
+            return FindStatusSelfFromSelf(effectIDs).Length > 0;
+        }
+        internal static float[] FindStatusSelfFromSelf(params ushort[] effectIDs)
+        {
+            return FindStatusFromSelf(Service.ClientState.LocalPlayer, effectIDs);
+        }
+        internal static bool EnoughStatusTargetFromSelfOne(params ushort[] effectIDs)
+        {
+            var result = FindStatusTargetFromSelf(effectIDs);
+            if (result.Length == 0) return false;
+            return result.Min() > 5.5f;
+        }
+        private  static float[] FindStatusFromSelf(BattleChara obj, ushort[] effectIDs)
+        {
+            uint[] newEffects = effectIDs.Select(a => (uint)a).ToArray();
+            return FindStatusFromSelf(obj).Where(status => newEffects.Contains(status.StatusId)).Select(status => status.RemainingTime).ToArray();
         }
 
-        internal static Status FindStatus(ushort effectID, GameObject obj, uint? sourceID)
+        private static Status[] FindStatusFromSelf(BattleChara obj)
         {
-            if (obj == null)
-            {
-                return null;
-            }
-            BattleChara val = (BattleChara)obj;
-            if (val == null)
-            {
-                return null;
-            }
-            foreach (Status status in val.StatusList)
-            {
-                if (status.StatusId == effectID && (!sourceID.HasValue || status.SourceID == 0 || status.SourceID == 3758096384u || status.SourceID == sourceID))
-                {
-                    return status;
-                }
-            }
-            return null;
+            if (obj == null) return new Status[0];
+
+            return  obj.StatusList.Where(status => status.SourceID == Service.ClientState.LocalPlayer.ObjectId && status.RemainingTime != 0).ToArray();
         }
+
+        //internal static Status FindStatus(ushort effectID, GameObject obj, uint? sourceID)
+        //{
+        //    if (obj == null)
+        //    {
+        //        return null;
+        //    }
+        //    BattleChara val = (BattleChara)obj;
+        //    if (val == null)  return null;
+
+        //    if (val.StatusList == null) return null;
+        //    foreach (Status status in val.StatusList)
+        //    {
+        //        if (status.StatusId == effectID && (!sourceID.HasValue || status.SourceID == 0 || status.SourceID == 3758096384u || status.SourceID == sourceID))
+        //        {
+        //            return status;
+        //        }
+        //    }
+        //    return null;
+        //}
     }
 }

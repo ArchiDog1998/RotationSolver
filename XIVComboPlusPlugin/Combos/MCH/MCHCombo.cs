@@ -35,7 +35,7 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
             HotShow = new BaseAction(2872),
 
             //空气锚
-            //AirAnchor = new BaseAction(16500),
+            AirAnchor = new BaseAction(16500),
 
             //钻头
             Drill = new BaseAction(16498),
@@ -94,7 +94,7 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
         // 四个牛逼的技能。
         if (Actions.Bioblaster.TryUseAction(level, out act)) return true;
         if (Actions.Drill.TryUseAction(level, out act)) return true;
-        if (Actions.HotShow.TryUseAction(level, out act)) return true;
+        if (Actions.AirAnchor.TryUseAction(level, out _) && Actions.HotShow.TryUseAction(level, out act)) return true;
         if (Actions.ChainSaw.TryUseAction(level, out act)) return true;
 
         //群体常规GCD
@@ -126,7 +126,8 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
     {
         float time = WeaponRemain + 8;
         
-        if((level < Actions.HotShow.Level || Actions.HotShow.CoolDown.CooldownRemaining > time) &&
+        if((level < Actions.HotShow.Level || Actions.HotShow.CoolDown.CooldownRemaining > time
+            || Actions.AirAnchor.CoolDown.CooldownRemaining > time) &&
             (level < Actions.Drill.Level || Actions.Drill.CoolDown.CooldownRemaining > time) &&
             (level < Actions.ChainSaw.Level || Actions.ChainSaw.CoolDown.CooldownRemaining > time))
         {

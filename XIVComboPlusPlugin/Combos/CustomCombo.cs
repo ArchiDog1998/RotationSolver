@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
+using System.Text;
 using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
@@ -13,7 +16,7 @@ namespace XIVComboPlus.Combos;
 
 public abstract class CustomCombo
 {
-    //private static SpeechSynthesizer ssh = new SpeechSynthesizer() { Rate = 0 };
+    //private SpeechSynthesizer ssh = new SpeechSynthesizer() { Rate = 0 };
     private uint _lastGCDAction;
 
     internal static bool HaveSwift
@@ -119,7 +122,13 @@ public abstract class CustomCombo
             Shirk = new BaseAction(7537),
 
             //Ô¡Ñª
-            Bloodbath = new BaseAction(7542);
+            Bloodbath = new BaseAction(7542)
+            {
+                OtherCheck = SecondWind.OtherCheck,
+            },
+
+            //Ç£ÖÆ
+            Feint = new BaseAction(7549);
 
     }
     #endregion
@@ -159,8 +168,8 @@ public abstract class CustomCombo
     protected static GameObject Target => Service.TargetManager.Target;
 
     protected static bool IsMoving => TargetHelper.IsMoving;
-    private static bool HaveTargetAngle => TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, 25).Length > 0;
-    internal static byte AbilityRemainCount => (byte)(WeaponRemain / 0.67f);
+    protected static bool HaveTargetAngle => TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, 25).Length > 0;
+    internal static byte AbilityRemainCount => IsMoving ? (byte)1 : (byte)(WeaponRemain / 0.62f);
 
     protected static float WeaponRemain => Service.IconReplacer.GetCooldown(BaseAction.GCDCooldownGroup).CooldownRemaining;
 
@@ -175,6 +184,7 @@ public abstract class CustomCombo
     /// Only one feature can set it to true!
     /// </summary>
     protected bool ShouldSayout { get; set; } = false;
+    protected virtual bool ShouldSayoutState => true;
     protected CustomCombo()
     {
     }
@@ -218,6 +228,40 @@ public abstract class CustomCombo
         else return false;
     }
 
+    public static void Speak(string text, bool wait = false)
+    {
+        ExecuteCommand(
+            $@"Add-Type -AssemblyName System.speech; 
+                $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; 
+                $speak.Speak(""{text}"");");
+
+        void ExecuteCommand(string command)
+        {
+            string path = Path.GetTempPath() + Guid.NewGuid() + ".ps1";
+
+            // make sure to be using System.Text
+            using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
+            {
+                sw.Write(command);
+
+                ProcessStartInfo start = new ProcessStartInfo()
+                {
+                    FileName = @"C:\Windows\System32\windowspowershell\v1.0\powershell.exe",
+                    LoadUserProfile = false,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    Arguments = $"-executionpolicy bypass -File {path}",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                Process process = Process.Start(start);
+
+                if (wait)
+                    process.WaitForExit();
+            }
+        }
+    }
+
     private uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
     {
 
@@ -226,13 +270,15 @@ public abstract class CustomCombo
         if (GCDaction == null) return 0;
 
         //Sayout!
-        if (CheckAction(GCDaction.ActionID) && GCDaction.SayoutText != EnemyLocation.None)
+        if (CheckAction(GCDaction.ActionID) && GCDaction.SayoutText != EnemyLocation.None && ShouldSayoutState)
         {
-            Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
-            {
-                Message = GCDaction.Action.Name + " " + GCDaction.SayoutText.ToString(),
-                Type = Dalamud.Game.Text.XivChatType.Notice,
-            });
+            string text = GCDaction.Action.Name + " " + GCDaction.SayoutText.ToString();
+            //Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            //{
+            //    Message = text,
+            //    Type = Dalamud.Game.Text.XivChatType.Notice,
+            //});
+            Speak(text);
         }
 
         uint GCDact = GCDaction.ActionID;
