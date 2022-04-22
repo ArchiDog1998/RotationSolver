@@ -54,130 +54,44 @@ namespace XIVComboPlus
         };
 
         //All Targes
-        internal static BattleNpc[] AllTargets =>
-        Service.ObjectTable.Where(obj => obj is BattleNpc && ((BattleNpc)obj).CurrentHp != 0 && CanAttack(obj) && 
-        (((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.Enemy || ((BattleNpc)obj).BattleNpcKind == BattleNpcSubKind.None)).Select(obj => (BattleNpc)obj).ToArray();
+        internal static BattleChara[] AllTargets { get; private set; } = new BattleChara[0];
 
-        internal static BattleNpc[] HostileTargets
-        {
-            get
-            {
-                var allTarges = AllTargets;
-                uint[] ids = GetEnemies();
-                var hosts = allTarges.Where(t => t.TargetObject?.IsValid() ?? false || ids.Contains(t.ObjectId)).ToArray();
-                return hosts.Length == 0? allTarges : hosts;
-            }
-        }
+        internal static BattleChara[] HostileTargets { get; private set; } = new BattleChara[0];
 
-        internal static BattleNpc[] HostileTargetsNotAimedMe => HostileTargets.Where(t => t.TargetObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+        internal static bool HaveTargetAngle { get; private set; } = false;
+
+        internal static float WeaponRemain { get; private set; } = 0;
+        internal static byte AbilityRemainCount { get; private set; } = 0;
+
 
         //  public static PlayerCharacter[] PartyMembers =>
         //AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).ToArray();
-        public static PlayerCharacter[] PartyMembers
-        {
-            get
-            {
-                if (Service.PartyList.Length == 0)
-                {
-                    return new PlayerCharacter[] { Service.ClientState.LocalPlayer };
-                }
-                else
-                {
-                    return Service.PartyList.Select(obj => obj.GameObject as PlayerCharacter).ToArray();
-                }
-            }
-        }
+        public static PlayerCharacter[] PartyMembers { get; private set; } = new PlayerCharacter[0];
 
-        public static float[] PartyMembersHP => GetObjectInRadius(PartyMembers, 30).Select(p => (float)p.CurrentHp / p.MaxHp).Where(r => r != 0).ToArray();
-
-        public static float PartyMembersAverHP
-        {
-            get
-            {
-                var members = PartyMembersHP;
-                float averHP = 0;
-                foreach (var hp in members)
-                {
-                    averHP += hp;
-                }
-                return averHP / members.Length;
-            }
-        }
-
-        public static float PartyMembersDifferHP
-        {
-            get
-            {
-                var members = PartyMembersHP;
-                double differHP = 0;
-                float average = PartyMembersAverHP;
-                foreach (var hp in members)
-                {
-                    differHP += Math.Pow(hp - average,2);
-                }
-                return (float)Math.Sqrt(differHP / members.Length);
-            }
-        }
 
         /// <summary>
         /// 玩家们
         /// </summary>
-        public static PlayerCharacter[] AllianceMembers =>
-             Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).Where(obj => CanAttack(obj)).ToArray();
-        public static PlayerCharacter[] PartyHealers => GetJobCategory(PartyMembers, (jt) => jt == JobType.Healer);
-        public static PlayerCharacter[] PartyDPS => GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee || jt == JobType.MagicalRanged || jt == JobType.PhysicalRanged);
-        public static PlayerCharacter[] PartyTanks => GetJobCategory(PartyMembers, (jt) => jt == JobType.Tank);
-        public static PlayerCharacter[] PartyTanksAttached
-        {
-            get
-            {
-                var tanks = PartyTanks;
+        internal static PlayerCharacter[] AllianceMembers { get; private set; } = new PlayerCharacter[0];
+        internal static PlayerCharacter[] PartyHealers { get; private set; } = new PlayerCharacter[0];
+        internal static PlayerCharacter[] PartyDPS { get; private set; } = new PlayerCharacter[0];
+        internal static PlayerCharacter[] PartyTanks { get; private set; } = new PlayerCharacter[0];
+        internal static PlayerCharacter[] PartyTanksAttached { get; private set; } = new PlayerCharacter[0];
+        internal static PlayerCharacter[] DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
+        internal static PlayerCharacter[] DeathPeopleParty { get; private set; } = new PlayerCharacter[0];
+        internal static PlayerCharacter[] WeakenPeople { get; private set; } = new PlayerCharacter[0];
+        internal static PlayerCharacter[] DyingPeople { get; private set; } = new PlayerCharacter[0];
+        internal static float[] PartyMembersHP { get; private set; } = new float[0];
+        internal static float PartyMembersAverHP { get; private set; } = 0;
+        internal static float PartyMembersDifferHP { get; private set; } = 0;
 
-                List<PlayerCharacter> attachedT = new List<PlayerCharacter>(tanks.Length);
-                foreach (var tank in tanks)
-                {
-                    if(tank.TargetObject.TargetObject == tank)
-                    {
-                        attachedT.Add(tank);
-                    }
-                }
+        internal static bool CanHealAreaAbility { get; private set; } = false;
+        internal static bool CanHealAreaSpell { get; private set; } = false;
+        internal static bool CanHealSingleAbility { get; private set; } = false;
+        internal static bool CanHealSingleSpell { get; private set; } = false;
+        internal static bool HPFull { get; private set; } = false;
 
-                return attachedT.ToArray();
-            }
-        }
 
-        public static PlayerCharacter[] DeathPeopleAll => GetObjectInRadius(GetDeath(AllianceMembers), 30);
-        public static PlayerCharacter[] DeathPeopleParty => GetObjectInRadius(GetDeath(PartyMembers), 30);
-
-        public static PlayerCharacter[] WeakenPeople
-        {
-            get
-            {
-                return PartyMembers.Where(p =>
-                {
-                    foreach (var status in p.StatusList)
-                    {
-                        if (status.GameData.CanDispel) return true;
-                    }
-                    return false;
-                }).ToArray();
-            }
-        }
-
-        public static PlayerCharacter[] DyingPeople
-        {
-            get
-            {
-                return PartyMembers.Where(p =>
-                {
-                    foreach (var status in p.StatusList)
-                    {
-                        if (status.StatusId == ObjectStatus.Doom) return true;
-                    }
-                    return false;
-                }).ToArray();
-            }
-        }
         internal static void Init(SigScanner sigScanner)
         {
             _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
@@ -188,6 +102,88 @@ namespace XIVComboPlus
             Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
             IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
             _lastPosition = thisPosition;
+
+            #region Hostile
+            AllTargets = Service.ObjectTable.Where(obj => obj is BattleChara && ((BattleChara)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
+
+            uint[] ids = GetEnemies();
+            var hosts = AllTargets.Where(t => t.TargetObject?.IsValid() ?? false || ids.Contains(t.ObjectId)).ToArray();
+            HostileTargets = hosts.Length == 0 ? AllTargets : hosts;
+
+            HaveTargetAngle = GetObjectInRadius(HostileTargets, 25).Length > 0;
+            #endregion
+
+            WeaponRemain = Service.IconReplacer.GetCooldown(BaseAction.GCDCooldownGroup).CooldownRemaining;
+            AbilityRemainCount = IsMoving ? (byte)1 : (byte)(WeaponRemain / 0.62f);
+
+
+            #region Friend
+            var party = Service.PartyList;
+            PartyMembers = party.Length == 0 ? new PlayerCharacter[] { Service.ClientState.LocalPlayer } :
+                party.Where(obj => obj != null && obj.GameObject is PlayerCharacter).Select(obj => obj.GameObject as PlayerCharacter).ToArray();
+
+            AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
+
+            PartyHealers = GetJobCategory(PartyMembers, (jt) => jt == JobType.Healer);
+            PartyDPS = GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee || jt == JobType.MagicalRanged || jt == JobType.PhysicalRanged);
+            PartyTanks = GetJobCategory(PartyMembers, (jt) => jt == JobType.Tank);
+
+            List<PlayerCharacter> attachedT = new List<PlayerCharacter>(PartyTanks.Length);
+            foreach (var tank in PartyTanks)
+            {
+                if (tank.TargetObject.TargetObject == tank)
+                {
+                    attachedT.Add(tank);
+                }
+            }
+            PartyTanksAttached = attachedT.ToArray();
+
+            DeathPeopleAll = GetObjectInRadius(GetDeath(AllianceMembers), 30);
+            DeathPeopleParty = GetObjectInRadius(GetDeath(PartyMembers), 30);
+
+            WeakenPeople = PartyMembers.Where(p =>
+            {
+                foreach (var status in p.StatusList)
+                {
+                    if (status.GameData.CanDispel) return true;
+                }
+                return false;
+            }).ToArray();
+
+            DyingPeople = PartyMembers.Where(p =>
+            {
+                foreach (var status in p.StatusList)
+                {
+                    if (status.StatusId == ObjectStatus.Doom) return true;
+                }
+                return false;
+            }).ToArray();
+            #endregion
+
+            #region Health
+            PartyMembersHP = GetObjectInRadius(PartyMembers, 30).Select(p => (float)p.CurrentHp / p.MaxHp).Where(r => r != 0).ToArray();
+
+            float averHP = 0;
+            foreach (var hp in PartyMembersHP)
+            {
+                averHP += hp;
+            }
+            PartyMembersAverHP = averHP / PartyMembersHP.Length;
+
+            double differHP = 0;
+            float average = PartyMembersAverHP;
+            foreach (var hp in PartyMembersHP)
+            {
+                differHP += Math.Pow(hp - average, 2);
+            }
+            PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Length);
+
+            CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
+            CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
+            CanHealSingleAbility = PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
+            CanHealSingleSpell = PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
+            HPFull = PartyMembersHP.Min() > 0.99f;
+            #endregion
         }
 
 
@@ -513,7 +509,7 @@ namespace XIVComboPlus
                         }
 
                         //找到体积一样小的
-                        List<BattleNpc> canGet = new List<BattleNpc>(canReachTars.Length) { canReachTars[0] };
+                        List<BattleChara> canGet = new List<BattleChara>(canReachTars.Length) { canReachTars[0] };
 
                         float radius = canReachTars[0].HitboxRadius;
                         for (int i = 1; i < canReachTars.Length; i++)
@@ -549,7 +545,7 @@ namespace XIVComboPlus
             }
         }
 
-        internal static BattleNpc[] ProvokeTarget(out bool haveTargetOnme)
+        internal static BattleChara[] ProvokeTarget(out bool haveTargetOnme)
         {
             var tankIDS = GetJobCategory(AllianceMembers, (jt) => jt == JobType.Tank).Select(member => member.ObjectId);
             var loc = Service.ClientState.LocalPlayer.Position;
@@ -557,7 +553,7 @@ namespace XIVComboPlus
 
             bool someTargetsHaveTarget = false;
             haveTargetOnme = false;
-            List<BattleNpc> targets = new List<BattleNpc>();
+            List<BattleChara> targets = new List<BattleChara>();
             foreach (var target in HostileTargets)
             {
                 //有目标

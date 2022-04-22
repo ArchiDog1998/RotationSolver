@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Conditions;
@@ -128,7 +127,19 @@ public abstract class CustomCombo
             },
 
             //牵制
-            Feint = new BaseAction(7549);
+            Feint = new BaseAction(7549),
+
+            //插言
+            Interject = new BaseAction(7538),
+
+            //下踢
+            LowBlow = new BaseAction(7540),
+
+            //扫腿
+            LegSweep = new BaseAction(7863),
+
+            //伤头
+            HeadGraze = new BaseAction(7551);
 
     }
     #endregion
@@ -168,23 +179,21 @@ public abstract class CustomCombo
     protected static GameObject Target => Service.TargetManager.Target;
 
     protected static bool IsMoving => TargetHelper.IsMoving;
-    protected static bool HaveTargetAngle => TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, 25).Length > 0;
-    internal static byte AbilityRemainCount => IsMoving ? (byte)1 : (byte)(WeaponRemain / 0.62f);
+    protected static bool HaveTargetAngle => TargetHelper.HaveTargetAngle;
+    internal static byte AbilityRemainCount => TargetHelper.AbilityRemainCount;
 
-    protected static float WeaponRemain => Service.IconReplacer.GetCooldown(BaseAction.GCDCooldownGroup).CooldownRemaining;
+    protected static float WeaponRemain => TargetHelper.WeaponRemain;
 
-    protected virtual bool CanHealAreaAbility => TargetHelper.PartyMembersDifferHP < Service.Configuration.HealthDifference && TargetHelper.PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
-    protected virtual bool CanHealAreaSpell => TargetHelper.PartyMembersDifferHP < Service.Configuration.HealthDifference && TargetHelper.PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
+    protected virtual bool CanHealAreaAbility => TargetHelper.CanHealAreaAbility;
+    protected virtual bool CanHealAreaSpell => TargetHelper.CanHealAreaSpell;
 
-    protected virtual bool CanHealSingleAbility => TargetHelper.PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
-    protected virtual bool CanHealSingleSpell => TargetHelper.PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
+    protected virtual bool CanHealSingleAbility => TargetHelper.CanHealSingleAbility;
+    protected virtual bool CanHealSingleSpell => TargetHelper.CanHealSingleSpell;
 
-    private bool HPFull => TargetHelper.PartyMembersHP.Min() > 0.99f;
     /// <summary>
     /// Only one feature can set it to true!
     /// </summary>
-    protected bool ShouldSayout { get; set; } = false;
-    protected virtual bool ShouldSayoutState => true;
+    protected virtual bool ShouldSayout => false;
     protected CustomCombo()
     {
     }
@@ -228,7 +237,7 @@ public abstract class CustomCombo
         else return false;
     }
 
-    public static void Speak(string text, bool wait = false)
+    private static void Speak(string text, bool wait = false)
     {
         ExecuteCommand(
             $@"Add-Type -AssemblyName System.speech; 
@@ -270,7 +279,7 @@ public abstract class CustomCombo
         if (GCDaction == null) return 0;
 
         //Sayout!
-        if (CheckAction(GCDaction.ActionID) && GCDaction.SayoutText != EnemyLocation.None && ShouldSayoutState)
+        if (CheckAction(GCDaction.ActionID) && GCDaction.SayoutText != EnemyLocation.None)
         {
             string text = GCDaction.Action.Name + " " + GCDaction.SayoutText.ToString();
             //Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
@@ -291,7 +300,7 @@ public abstract class CustomCombo
             default:
                 BaseAction AbilityAction;
                 if (FirstActionAbility(level, abilityRemain, GCDaction, out AbilityAction)) return AbilityAction.ActionID;
-                if (!HPFull)
+                if (!TargetHelper.HPFull)
                 {
                     if (CanHealAreaAbility && HealAreaAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
                     if (CanHealSingleAbility && HealSingleAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
@@ -305,41 +314,132 @@ public abstract class CustomCombo
     private BaseAction GCD(byte level, uint lastComboActionID)
     {
         if (EmergercyGCD(level, lastComboActionID, out BaseAction act)) return act;
-        if (!HPFull)
+        if (!TargetHelper.HPFull)
         {
             if (CanHealAreaSpell && HealAreaGCD(level, lastComboActionID, out act)) return act;
             if (CanHealSingleSpell && HealSingleGCD(level, lastComboActionID, out act)) return act;
         }
-        if (AttackGCD(level, lastComboActionID, out act)) return act;
+        if (GeneralGCD(level, lastComboActionID, out act)) return act;
         return null;
     }
+    /// <summary>
+    /// 覆盖写一些用于攻击的能力技，只有附近有敌人的时候才会有效。
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected abstract bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act);
+    /// <summary>
+    /// 覆盖写一些用于因为后面的GCD技能而要适应的能力技能
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="abilityRemain"></param>
+    /// <param name="nextGCD"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected virtual bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
+        if(Target is BattleChara b && b.IsCasting && b.IsCastInterruptible)
+        {
+            JobType type = JobType.None;
+            foreach (var job in ClassJob.AllJobs)
+            {
+                if (job.Index == JobID)
+                {
+                    type = job.Type;
+                    break;
+                }
+            }
+
+            switch (type)
+            {
+                case JobType.Tank:
+                    if (GeneralActions.Interject.TryUseAction(level, out act, mustUse: true)) return true;
+                    if (GeneralActions.LowBlow.TryUseAction(level, out act, mustUse:true)) return true;
+                    break;
+                case JobType.Melee:
+                    if (GeneralActions.LegSweep.TryUseAction(level, out act, mustUse: true)) return true;
+                    break;
+                case JobType.PhysicalRanged:
+                    if (GeneralActions.HeadGraze.TryUseAction(level, out act, mustUse: true)) return true;
+                    break;
+            }
+        }
+
         if (nextGCD.CastTime > 7000 && GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return true;
         act = null; return false;
     }
+    /// <summary>
+    /// 常规的能力技，啥时候都能使用。
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected virtual bool GeneralAbility(byte level, byte abilityRemain, out BaseAction act)
     {
         act = null; return false;
     }
+    /// <summary>
+    /// 单体治疗的能力技
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected virtual bool HealSingleAbility(byte level, byte abilityRemain, out BaseAction act)
     {
         act = null; return false;
     }
+    /// <summary>
+    /// 范围治疗的能力技
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected virtual bool HealAreaAbility(byte level, byte abilityRemain, out BaseAction act)
     {
         act = null; return false;
     }
+    /// <summary>
+    /// 一些非常紧急的GCD战技，比如拉人什么的。优先级最高
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="lastComboActionID"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected virtual bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         act = null; return false;
     }
-    private protected abstract bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act);
+    /// <summary>
+    /// 常规GCD技能
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="lastComboActionID"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    private protected abstract bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act);
+    /// <summary>
+    /// 单体治疗GCD
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="lastComboActionID"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected virtual bool HealSingleGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         act = null; return false;
     }
+    /// <summary>
+    /// 范围治疗GCD
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="lastComboActionID"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected virtual bool HealAreaGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         act = null; return false;

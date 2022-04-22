@@ -21,11 +21,11 @@ namespace XIVComboPlus.Combos.RPR
             return base.ForAttachAbility(level, abilityRemain, out act);
         }
 
-        private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+        private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
         {
             //地狱入境
             if (Actions.HellsIngress.TryUseAction(level, out act)) return true;
-            return base.AttackGCD(level, lastComboActionID, out act);
+            return base.GeneralGCD(level, lastComboActionID, out act);
         }
     }
 }

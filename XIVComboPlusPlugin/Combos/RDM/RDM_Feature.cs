@@ -11,12 +11,8 @@ namespace XIVComboPlus.Combos.RDM
         public override string ComboFancyName => "赤魔GCD";
 
         public override string Description => "替换沉静相接为自动GCD";
-
+        protected override bool ShouldSayout => true;
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Repose.ActionID };
 
-        public RDM_Feature()
-        {
-            this.ShouldSayout = true;
-        }
     }
 }

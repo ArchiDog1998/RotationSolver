@@ -33,7 +33,7 @@ namespace XIVComboPlus
             this.JobGauge = gauge;
         }
 
-        public static ClassJob[] AllJobs =  new ClassJob[]
+        public static readonly ClassJob[] AllJobs =  new ClassJob[]
         {
             new ClassJob(0, "冒险者", JobType.None, null),
             new ClassJob(1, "剑术师", JobType.Tank, null),

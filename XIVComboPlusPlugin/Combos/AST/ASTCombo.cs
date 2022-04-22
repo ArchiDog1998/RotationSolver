@@ -95,10 +95,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
                 OtherCheck = () =>
                 {
                     if (JobGauge.Seals.Length != 3) return false;
-                    foreach (var item in JobGauge.Seals)
-                    {
-                        if(item == SealType.NONE) return false;
-                    }
+                    if (JobGauge.Seals.Contains(SealType.NONE)) return false;
                     return true;
                 },
             },
@@ -165,7 +162,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         //大宇宙
         if (Actions.Macrocosmos.TryUseAction(level, out act, mustUse: true)) return true;
@@ -175,6 +172,11 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         //单体输出
         if (Actions.Combust.TryUseAction(level, out act)) return true;
         if (Actions.Malefic.TryUseAction(level, out act)) return true;
+
+        if (IsMoving)
+        {
+            if (Actions.Combust.TryUseAction(level, out act, mustUse:true)) return true;
+        }
 
         act = null;
         return false;
@@ -212,17 +214,17 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
 
     private protected override bool GeneralAbility(byte level, byte abilityRemain, out BaseAction act)
     {
-        //如果当前还没有皇冠卡牌，那就抽一张
-        if (Actions.MinorArcana.TryUseAction(level, out act, Empty: true)) return true;
-
         //如果当前还没有卡牌，那就抽一张
         if (JobGauge.DrawnCard == CardType.NONE
-            && Actions.Draw.TryUseAction(level, out act, Empty: true)) return true;
+            && Actions.Draw.TryUseAction(level, out act)) return true;
+
+        bool canUse = Actions.Astrodyne.OtherCheck();
 
         //如果当前卡牌已经拥有了，就重抽
-        if (JobGauge.DrawnCard != CardType.NONE && JobGauge.Seals.Contains(GetCardSeal(JobGauge.DrawnCard))
-            && (JobGauge.Seals.Length < 3 || !JobGauge.Seals.Contains(SealType.NONE)) && Actions.Redraw.TryUseAction(level, out act)) return true;
+        if (!canUse && JobGauge.DrawnCard != CardType.NONE && JobGauge.Seals.Contains(GetCardSeal(JobGauge.DrawnCard))
+            && Actions.Redraw.TryUseAction(level, out act)) return true;
 
+        act = null;
         return false;
     }
 
@@ -243,10 +245,15 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
 
     private protected override bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act)
     {
+        //如果当前还没有皇冠卡牌，那就抽一张
+        if (Actions.MinorArcana.TryUseAction(level, out act, Empty: true)) return true;
+
+        //如果当前还没有卡牌，那就抽一张
+        if (JobGauge.DrawnCard == CardType.NONE
+            && Actions.Draw.TryUseAction(level, out act, Empty: true)) return true;
+
         //光速，创造更多的内插能力技的机会。
         if (Actions.Lightspeed.TryUseAction(level, out act)) return true;
-        //给T减伤，这个很重要。
-        if (Actions.Exaltation.TryUseAction(level, out act)) return true;
 
         //团队增伤害
         if (Actions.Divination.TryUseAction(level, out act)) return true;
@@ -280,8 +287,6 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
     {
         //带盾奶
         if (Actions.CelestialIntersection.TryUseAction(level, out act)) return true;
-        //单体Hot
-        if (Actions.AspectedBenefic.TryUseAction(level, out act)) return true;
         //常规奶
         if (Actions.EssentialDignity.TryUseAction(level, out act)) return true;
         //带盾奶

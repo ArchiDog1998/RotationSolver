@@ -176,7 +176,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
         return false;
     }
 
-    private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         //如果已经在爆发了，那继续！
         if (CanBreak(lastComboActionID, level, out act)) return true;

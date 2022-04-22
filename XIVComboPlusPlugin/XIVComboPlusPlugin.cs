@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -78,7 +77,6 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.IconReplacer.Dispose();
         _framework.Update -= TargetHelper.Framework_Update;
-
     }
 
     private void OnOpenConfigUi()

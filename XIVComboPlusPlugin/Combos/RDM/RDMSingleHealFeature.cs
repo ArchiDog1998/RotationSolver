@@ -14,10 +14,10 @@ namespace XIVComboPlus.Combos.RDM
 
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.LucidDreaming.ActionID };
 
-        private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+        private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
         {
             if (Actions.Vercure.TryUseAction(level, out act, mustUse: true)) return true;
-            return base.AttackGCD(level, lastComboActionID, out act);
+            return base.GeneralGCD(level, lastComboActionID, out act);
         }
     }
 }

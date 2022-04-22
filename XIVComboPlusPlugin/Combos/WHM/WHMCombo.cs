@@ -207,7 +207,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         //苦难之心
         if (Actions.AfflatusMisery.OtherCheck() && Actions.AfflatusMisery.TryUseAction(level, out act, mustUse: true)) return true;

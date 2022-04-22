@@ -135,7 +135,7 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
         return false;
     }
 
-    private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         //·Å´óÕÐ£¡
         if (JobGauge.SoulVoice >= 80 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady))

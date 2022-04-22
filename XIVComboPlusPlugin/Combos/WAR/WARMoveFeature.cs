@@ -21,12 +21,11 @@ namespace XIVComboPlus.Combos.WAR
             return base.ForAttachAbility(level, abilityRemain, out act);
         }
 
-        private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+        private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
         {
             //放个大 蛮荒崩裂 会往前飞
             if (Actions.PrimalRend.TryUseAction(level, out act)) return true;
-            if (Actions.Onslaught.TryUseAction(level, out act, Empty: true)) return true;
-            return base.AttackGCD(level, lastComboActionID, out act);
+            return base.GeneralGCD(level, lastComboActionID, out act);
         }
     }
 }

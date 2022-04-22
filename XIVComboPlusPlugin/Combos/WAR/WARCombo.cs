@@ -1,5 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Linq;
+using System.Numerics;
+
 namespace XIVComboPlus.Combos;
 
 internal abstract class WARCombo : CustomComboJob<WARGauge>
@@ -80,7 +82,7 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
             Equilibrium = new BaseAction(3552),
 
             //原初的勇猛
-            NascentFlash = new BaseAction(16464),
+            //NascentFlash = new BaseAction(16464),
 
             ////原初的血气
             //Bloodwhetting = new BaseAction(25751),
@@ -130,7 +132,7 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
         return false;
     }
 
-    private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         //兽魂输出
         if (JobGauge.BeastGauge >= 50 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease))
@@ -208,13 +210,20 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
         }
 
         //奶个队友啊。
-        if (!haveTargetOnme && Actions.NascentFlash.TryUseAction(level, out act)) return true;
+        //if (!haveTargetOnme && Actions.NascentFlash.TryUseAction(level, out act)) return true;
 
         //普通攻击
         //群山隆起
         if (Actions.Orogeny.TryUseAction(level, out act)) return true;
         //动乱 
         if (Actions.Upheaval.TryUseAction(level, out act)) return true;
+
+        //搞搞攻击
+        var target = Service.TargetManager.Target;
+        if(Vector3.Distance( Service.ClientState.LocalPlayer.Position, target.Position) - target.HitboxRadius < 3)
+        {
+            if (Actions.Onslaught.TryUseAction(level, out act)) return true;
+        }
 
         return false;
     }

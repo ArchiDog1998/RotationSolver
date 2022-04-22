@@ -89,7 +89,7 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
             };
     }
 
-    private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         // 四个牛逼的技能。
         if (Actions.Bioblaster.TryUseAction(level, out act)) return true;

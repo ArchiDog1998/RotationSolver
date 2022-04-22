@@ -4,7 +4,6 @@ namespace XIVComboPlus.Combos;
 
 internal abstract class RPRCombo : CustomComboJob<RPRGauge>
 {
-    protected override bool ShouldSayoutState => !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);
 
     internal struct Actions
     {
@@ -92,10 +91,10 @@ internal abstract class RPRCombo : CustomComboJob<RPRGauge>
             PlentifulHarvest = new BaseAction(24385);
     }
 
-    private protected override bool AttackGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
     {
         //处于变身状态。
-        if (!ShouldSayoutState)
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
         {
             if (JobGauge.LemureShroud == 1)
             {
@@ -160,7 +159,7 @@ internal abstract class RPRCombo : CustomComboJob<RPRGauge>
     private protected override bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act)
     {
         //变身用能力
-        if (!ShouldSayoutState)
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
         {
             if (JobGauge.VoidShroud > 1)
             {

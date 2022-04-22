@@ -12,12 +12,10 @@ namespace XIVComboPlus.Combos.RPR
 
         public override string Description => "替换沉静为镰刀GCD循环";
 
-        protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Repose.ActionID };
+        protected override bool ShouldSayout => !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);
 
-        public RPR_Feature()
-        {
-            this.ShouldSayout = true;
-        }
+
+        protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Repose.ActionID };
 
     }
 }

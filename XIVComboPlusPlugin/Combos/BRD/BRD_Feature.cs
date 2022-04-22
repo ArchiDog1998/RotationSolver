@@ -12,11 +12,7 @@ namespace XIVComboPlus.Combos.BRD
 
         public override string Description => "替换沉静为诗人GCD循环";
 
+        protected override bool ShouldSayout => true;
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Repose.ActionID };
-
-        public BRD_Feature()
-        {
-            this.ShouldSayout = true;
-        }
     }
 }

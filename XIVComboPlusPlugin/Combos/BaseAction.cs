@@ -4,7 +4,6 @@ using Dalamud.Game.ClientState.Statuses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -209,7 +208,7 @@ namespace XIVComboPlus.Combos
         {
             if (obj == null) return new Status[0];
 
-            return  obj.StatusList.Where(status => status.SourceID == Service.ClientState.LocalPlayer.ObjectId && status.RemainingTime != 0).ToArray();
+            return  obj.StatusList.Where(status => status.SourceID == Service.ClientState.LocalPlayer.ObjectId).ToArray();
         }
 
         //internal static Status FindStatus(ushort effectID, GameObject obj, uint? sourceID)

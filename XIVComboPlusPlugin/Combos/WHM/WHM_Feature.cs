@@ -11,12 +11,8 @@ namespace XIVComboPlus.Combos.WHM
         public override string ComboFancyName => "白魔GCD";
 
         public override string Description => "替换沉静为自动白魔GCD";
+        protected override bool ShouldSayout => true;
 
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Repose.ActionID };
-
-        public WHM_Feature()
-        {
-            this.ShouldSayout = true;
-        }
     }
 }
