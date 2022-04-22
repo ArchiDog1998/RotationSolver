@@ -10,9 +10,9 @@ namespace XIVComboPlus.Combos.AST
     {
         public override string ComboFancyName => "占星拉人";
 
-        public override string Description => "替换即刻咏唱为拉人。";
+        public override string Description => "替换浴血为拉人。";
 
-        protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Swiftcast.ActionID};
+        protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Bloodbath.ActionID};
 
         private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act, byte actabilityRemain)
         {

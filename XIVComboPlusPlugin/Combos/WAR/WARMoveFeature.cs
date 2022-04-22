@@ -10,9 +10,9 @@ namespace XIVComboPlus.Combos.WAR
     {
         public override string ComboFancyName => "战士突进";
 
-        public override string Description => "替换即刻咏唱为一个会往前飞的GCD";
+        public override string Description => "替换浴血为一个会往前飞的GCD";
 
-        protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Swiftcast.ActionID };
+        protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Bloodbath.ActionID };
 
         private protected override bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act)
         {

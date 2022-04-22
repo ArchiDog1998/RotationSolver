@@ -1,5 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Linq;
+using System.Numerics;
+
 namespace XIVComboPlus.Combos;
 
 internal abstract class RDMCombo : CustomComboJob<RDMGauge>
@@ -17,7 +19,10 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             },
 
             //回刺
-            EnchantedRiposte = new BaseAction(7504),
+            Riposte = new BaseAction(7504)
+            {
+                OtherCheck = () => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
+            },
 
             //赤闪雷
             Verthunder = new BaseAction(7505)
@@ -74,7 +79,10 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             },
 
             //交击斩
-            Zwerchhau = new BaseAction(7512),
+            Zwerchhau = new BaseAction(7512)
+            {
+                OtherCheck = () => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
+            },
 
             //交剑
             Engagement = new BaseAction(16527),
@@ -83,7 +91,11 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             Fleche = new BaseAction(7517),
 
             //连攻
-            Redoublement = new BaseAction(7516),
+            Redoublement = new BaseAction(7516)
+            {
+                OtherCheck = () => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
+            },
+
 
             //促进
             Acceleration = new BaseAction(7518)
@@ -147,6 +159,12 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             if (Actions.Manafication.TryUseAction(level, out act)) return true;
         }
 
+        if (JobGauge.ManaStacks == 0)
+        {
+            //即刻咏唱
+            if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return true;
+        }
+
         act = null;
         return false;
     }
@@ -158,7 +176,6 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 
         //促进满了就用。 
         if (Actions.Acceleration.TryUseAction(level, out act, mustUse: true)) return true;
-        if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return true;
 
         //攻击四个能力技。
         if (Actions.ContreSixte.TryUseAction(level, out act, mustUse: true)) return true;
@@ -166,6 +183,11 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
         if (Actions.Engagement.TryUseAction(level, out act, Empty: IsBreaking)) return true;
         //if (Actions.CorpsAcorps.TryUseAction(level, out act)) return true;
 
+        var target = Service.TargetManager.Target;
+        if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, target.Position) - target.HitboxRadius < 1)
+        {
+            if (Actions.CorpsAcorps.TryUseAction(level, out act)) return true;
+        }
         return false;
     }
 
@@ -183,8 +205,8 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
 
         if (lastComboActionID == 0)
         {
-            if (Actions.Verthunder2.TryUseAction(level, out act)) return true;
-            if (Actions.Verthunder.TryUseAction(level, out act)) return true;
+            act = Actions.Verthunder;
+            return true;
         }
 
         #region 常规输出
@@ -245,7 +267,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
         if (lastComboActionID == Actions.Moulinet.ActionID && JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20)
         {
             if (Actions.Moulinet.TryUseAction(level, out act)) return true;
-            if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
+            if (Actions.Riposte.TryUseAction(level, out act)) return true;
         }
         if (Actions.Zwerchhau.TryUseAction(level, out act, lastComboActionID)) return true;
         if (Actions.Redoublement.TryUseAction(level, out act, lastComboActionID)) return true;
@@ -296,16 +318,15 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
         #region 开启爆发
 
         //要来可以使用近战三连了。
-        if (Service.Configuration.IsTargetBoss && JobGauge.BlackMana >= 50 && JobGauge.WhiteMana >= 50)
+        if(Actions.Moulinet.TryUseAction(level, out act))
         {
-            if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
+            if (JobGauge.BlackMana >= 60 && JobGauge.WhiteMana >= 60) return true;
+        }
+        else
+        {
+            if (JobGauge.BlackMana >= 50 && JobGauge.WhiteMana >= 50 && Actions.Riposte.TryUseAction(level, out act)) return true;
+        }
 
-        }
-        if (JobGauge.BlackMana >= 60 && JobGauge.WhiteMana >= 60)
-        {
-            if (Actions.Moulinet.TryUseAction(level, out act)) return true;
-            if (Actions.EnchantedRiposte.TryUseAction(level, out act)) return true;
-        }
         #endregion
         return false;
     }

@@ -10,9 +10,9 @@ namespace XIVComboPlus.Combos.RPR
     {
         public override string ComboFancyName => "镰刀突进";
 
-        public override string Description => "替换即刻咏唱为一个会往前飞的";
+        public override string Description => "替换浴血为一个会往前飞的";
 
-        protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Swiftcast.ActionID };
+        protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Bloodbath.ActionID };
 
         private protected override bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act)
         {

@@ -24,6 +24,7 @@ namespace XIVComboPlus
             Provoke,
             Melee,
             Range,
+            Interrupt,
         }
 
         private static IntPtr _func;
@@ -41,7 +42,7 @@ namespace XIVComboPlus
             {CustomCombo.GeneralActions.Esuna.ActionID, GetTargetFunction.Esuna},
             {BRDCombo.Actions.WardensPaean.ActionID, GetTargetFunction.Esuna },
             {CustomCombo.GeneralActions.Provoke.ActionID, GetTargetFunction.Provoke },
-            //{WARCombo.Actions.Tomahawk.ActionID, GetTargetFunction.Provoke },
+            {WARCombo.Actions.Tomahawk.ActionID, GetTargetFunction.Provoke },
             //{WARCombo.Actions.NascentFlash.ActionID, GetTargetFunction.MajorTank },
 
             {ASTCombo.Actions.Balance.ActionID, GetTargetFunction.Melee },
@@ -51,12 +52,18 @@ namespace XIVComboPlus
             {ASTCombo.Actions.Ewer.ActionID, GetTargetFunction.Range },
             {ASTCombo.Actions.Spire.ActionID, GetTargetFunction.Range },
             {ASTCombo.Actions.Exaltation.ActionID, GetTargetFunction.MajorTank},
+
+            {CustomCombo.GeneralActions.Interject.ActionID, GetTargetFunction.Interrupt },
+            {CustomCombo.GeneralActions.LowBlow.ActionID, GetTargetFunction.Interrupt },
+            {CustomCombo.GeneralActions.LegSweep.ActionID, GetTargetFunction.Interrupt },
+            {CustomCombo.GeneralActions.HeadGraze.ActionID, GetTargetFunction.Interrupt },
         };
 
         //All Targes
         internal static BattleChara[] AllTargets { get; private set; } = new BattleChara[0];
 
         internal static BattleChara[] HostileTargets { get; private set; } = new BattleChara[0];
+        internal static BattleChara[] CanInterruptTargets { get; private set; } = new BattleChara[0];
 
         internal static bool HaveTargetAngle { get; private set; } = false;
 
@@ -110,11 +117,13 @@ namespace XIVComboPlus
             var hosts = AllTargets.Where(t => t.TargetObject?.IsValid() ?? false || ids.Contains(t.ObjectId)).ToArray();
             HostileTargets = hosts.Length == 0 ? AllTargets : hosts;
 
+            CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible).ToArray();
+
             HaveTargetAngle = GetObjectInRadius(HostileTargets, 25).Length > 0;
             #endregion
 
             WeaponRemain = Service.IconReplacer.GetCooldown(BaseAction.GCDCooldownGroup).CooldownRemaining;
-            AbilityRemainCount = IsMoving ? (byte)1 : (byte)(WeaponRemain / 0.62f);
+            AbilityRemainCount = (byte)(WeaponRemain / 0.62f);
 
 
             #region Friend
@@ -482,20 +491,24 @@ namespace XIVComboPlus
                     case 1:
                     default:
 
+                        BattleChara[] canReachTars = new BattleChara[0];
                         //如果是特殊需求的话。
                         if (_specialGetTarget.ContainsKey(act.RowId))
                         {
                             switch (_specialGetTarget[act.RowId])
                             {
                                 case GetTargetFunction.Provoke:
-                                    var tars = GetObjectInRadius(ProvokeTarget(out _), GetRange(act));
-                                    if (tars.Length != 0) return tars.OrderBy(player => Vector3.Distance(player.Position, Service.ClientState.LocalPlayer.Position)).First();
+                                    canReachTars = GetObjectInRadius(ProvokeTarget(out _), GetRange(act));
                                     break;
+                                case GetTargetFunction.Interrupt:
+                                    canReachTars = CanInterruptTargets;
+                                    break;
+
                             }
                         }
 
                         //找到能打到的怪。
-                        var canReachTars = GetObjectInRadius(HostileTargets, GetRange(act));
+                        if(canReachTars.Length == 0) canReachTars = GetObjectInRadius(HostileTargets, GetRange(act));
 
 
                         //判断一下要选择打体积最大的，还是最小的。

@@ -172,7 +172,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         if (Actions.Combust.TryUseAction(level, out act)) return true;
         if (Actions.Malefic.TryUseAction(level, out act)) return true;
 
-        if (IsMoving)
+        if (IsMoving && HaveTargetAngle)
         {
             if (Actions.Combust.TryUseAction(level, out act, mustUse:true)) return true;
         }
@@ -254,24 +254,27 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         //光速，创造更多的内插能力技的机会。
         if (Actions.Lightspeed.TryUseAction(level, out act)) return true;
 
-        //团队增伤害
-        if (Actions.Divination.TryUseAction(level, out act)) return true;
 
-        //如果没有地星也没有巨星，那就试试看能不能放个。
-        if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.EarthlyDominance)
-            && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
+        if (!IsMoving)
         {
-            if (!IsMoving && Actions.EarthlyStar.TryUseAction(level, out act)) return true;
+            //团队增伤害
+            if (Actions.Divination.TryUseAction(level, out act)) return true;
+
+            //如果没有地星也没有巨星，那就试试看能不能放个。
+            if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.EarthlyDominance)
+                && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
+            {
+                if (Actions.EarthlyStar.TryUseAction(level, out act)) return true;
+            }
+            //加星星的进攻Buff
+            if (Actions.Astrodyne.TryUseAction(level, out act)) return true;
         }
 
-        if (JobGauge.DrawnCrownCard == CardType.LORD)
+        if (JobGauge.DrawnCrownCard == CardType.LORD || Actions.MinorArcana.CoolDown.CooldownRemaining < 3)
         {
-            //进攻牌，随便发。
+            //进攻牌，随便发。或者CD要转好了，赶紧发掉。
             if (Actions.CrownPlay.TryUseAction(level, out act)) return true;
         }
-
-        //加星星的进攻Buff
-        if (Actions.Astrodyne.TryUseAction(level, out act)) return true;
 
         //发牌
         if (JobGauge.DrawnCard != CardType.NONE && Actions.Play.TryUseAction(level, out act, mustUse: true)) return true;
@@ -300,7 +303,8 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
         {
             //需要回血的时候炸了。
-            if (Actions.EarthlyStar.TryUseAction(level, out act)) return true;
+            act = Actions.EarthlyStar;
+            return true;
         }
         //奶量牌，要看情况。
         if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.TryUseAction(level, out act)) return true;

@@ -18,7 +18,7 @@ namespace XIVComboPlus.Combos.RDM
         {
             if (base.EmergercyAbility(level, abilityRemain, nextGCD, out act)) return true;
             //摆脱 队友套盾
-            if (Actions.CorpsAcorps.TryUseAction(level, out act)) return true;
+            if (Actions.CorpsAcorps.TryUseAction(level, out act, mustUse: true)) return true;
             return false;
         }
 

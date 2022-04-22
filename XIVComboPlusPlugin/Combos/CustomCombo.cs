@@ -274,38 +274,35 @@ public abstract class CustomCombo
 
         byte abilityRemain = TargetHelper.AbilityRemainCount;
         BaseAction GCDaction = GCD(level, lastComboActionID, abilityRemain);
-        if (GCDaction == null) return 0;
 
         //Sayout!
-        if (CheckAction(GCDaction.ActionID) && GCDaction.SayoutText != EnemyLocation.None)
+        if (GCDaction != null)
         {
-            string text = GCDaction.Action.Name + " " + GCDaction.SayoutText.ToString();
-            //Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
-            //{
-            //    Message = text,
-            //    Type = Dalamud.Game.Text.XivChatType.Notice,
-            //});
-            Speak(text);
+            if(CheckAction(GCDaction.ActionID) && GCDaction.SayoutText != EnemyLocation.None)
+            {
+                string text = GCDaction.Action.Name + " " + GCDaction.SayoutText.ToString();
+                //Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+                //{
+                //    Message = text,
+                //    Type = Dalamud.Game.Text.XivChatType.Notice,
+                //});
+                Speak(text);
+            }
+
+            //return GCDact;
+            switch (abilityRemain)
+            {
+                case 0:
+                    return GCDaction.ActionID;
+                default:
+                    if (Ability(level, abilityRemain, GCDaction, out BaseAction ability)) return ability.ActionID;
+                    return GCDaction.ActionID;
+            }
         }
-
-        uint GCDact = GCDaction.ActionID;
-
-        //return GCDact;
-        switch (abilityRemain)
+        else
         {
-            case 0:
-                return GCDact;
-            default:
-                BaseAction AbilityAction;
-                if (EmergercyAbility(level, abilityRemain, GCDaction, out AbilityAction)) return AbilityAction.ActionID;
-                if (TargetHelper.HPNotFull)
-                {
-                    if (CanHealAreaAbility && HealAreaAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
-                    if (CanHealSingleAbility && HealSingleAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
-                }
-                if (GeneralAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
-                if (HaveTargetAngle && ForAttachAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
-                return GCDact;
+            if (Ability(level, abilityRemain, GeneralActions.Addle, out BaseAction ability)) return ability.ActionID;
+            return 0;
         }
     }
 
@@ -319,6 +316,19 @@ public abstract class CustomCombo
         }
         if (GeneralGCD(level, lastComboActionID, out act)) return act;
         return null;
+    }
+
+    private bool Ability(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    {
+        if (EmergercyAbility(level, abilityRemain, nextGCD, out act)) return true;
+        if (TargetHelper.HPNotFull)
+        {
+            if (CanHealAreaAbility && HealAreaAbility(level, abilityRemain, out act)) return true;
+            if (CanHealSingleAbility && HealSingleAbility(level, abilityRemain, out act)) return true;
+        }
+        if (GeneralAbility(level, abilityRemain, out act)) return true;
+        if (HaveTargetAngle && ForAttachAbility(level, abilityRemain, out act)) return true;
+        return false;
     }
     /// <summary>
     /// 覆盖写一些用于攻击的能力技，只有附近有敌人的时候才会有效。
@@ -338,7 +348,7 @@ public abstract class CustomCombo
     /// <returns></returns>
     private protected virtual bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
-        if(Target is BattleChara b && b.IsCasting && b.IsCastInterruptible)
+        if(TargetHelper.CanInterruptTargets.Length > 0)
         {
             JobType type = JobType.None;
             foreach (var job in ClassJob.AllJobs)

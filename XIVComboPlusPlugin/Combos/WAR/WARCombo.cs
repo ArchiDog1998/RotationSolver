@@ -220,7 +220,7 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
 
         //¸ã¸ã¹¥»÷
         var target = Service.TargetManager.Target;
-        if(Vector3.Distance( Service.ClientState.LocalPlayer.Position, target.Position) - target.HitboxRadius < 3)
+        if(Vector3.Distance( Service.ClientState.LocalPlayer.Position, target.Position) - target.HitboxRadius < 1)
         {
             if (Actions.Onslaught.TryUseAction(level, out act)) return true;
         }
