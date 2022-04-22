@@ -110,7 +110,7 @@ internal abstract class MCHCombo : CustomComboJob<MCHGauge>
         return false;
     }
 
-    private protected override bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
         //如果接下来要搞三大金刚了，整备吧！
         if(nextGCD.ActionID == Actions.HotShow.ActionID || nextGCD.ActionID == Actions.Drill.ActionID || nextGCD.ActionID == Actions.ChainSaw.ActionID)

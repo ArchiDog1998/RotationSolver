@@ -14,9 +14,9 @@ namespace XIVComboPlus.Combos.AST
 
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Rampart.ActionID };
 
-        private protected override bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+        private protected override bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
         {
-            if (base.FirstActionAbility(level, abilityRemain, nextGCD, out act)) return true;
+            if (base.EmergercyAbility(level, abilityRemain, nextGCD, out act)) return true;
             //给T减伤，这个很重要。
             if (Actions.Exaltation.TryUseAction(level, out act)) return true;
             return false;

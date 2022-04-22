@@ -162,7 +162,7 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
         return false;
     }
 
-    private protected override bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
         //如果接下来要上毒或者要直线射击，那算了。
         if(nextGCD.ActionID == Actions.StraitShoot.ActionID || nextGCD.ActionID == Actions.VenomousBite.ActionID ||

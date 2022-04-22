@@ -14,7 +14,7 @@ namespace XIVComboPlus.Combos.AST
 
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Swiftcast.ActionID};
 
-        private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
+        private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act, byte actabilityRemain)
         {
             //有人死了，看看马上救。
             if (TargetHelper.DeathPeopleParty.Length > 0)

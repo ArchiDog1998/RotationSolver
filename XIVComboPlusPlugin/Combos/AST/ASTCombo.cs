@@ -140,7 +140,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
             Spire = new BaseAction(4406);
     }
 
-    private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act, byte actabilityRemain)
     {
         //有某些非常危险的状态。
         if (TargetHelper.DyingPeople.Length > 0)
@@ -151,8 +151,7 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         //有人死了，看看能不能救。
         if (TargetHelper.DeathPeopleParty.Length > 0)
         {
-            //如果有人倒了，赶紧即刻拉人！
-            if (!GeneralActions.Swiftcast.CoolDown.IsCooldown || HaveSwift)
+            if (HaveSwift || (!GeneralActions.Swiftcast.CoolDown.IsCooldown && actabilityRemain > 0))
             {
                 if (Actions.Ascend.TryUseAction(level, out act, mustUse: true)) return true;
             }
@@ -194,9 +193,9 @@ internal abstract class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
-        if (base.FirstActionAbility(level, abilityRemain, nextGCD, out act)) return true;
+        if (base.EmergercyAbility(level, abilityRemain, nextGCD, out act)) return true;
 
         //如果要群奶了，先上个天宫图！
         if (nextGCD == Actions.AspectedHelios || nextGCD == Actions.Helios)

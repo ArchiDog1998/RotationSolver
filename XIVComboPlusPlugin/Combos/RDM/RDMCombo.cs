@@ -127,7 +127,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
             MagickBarrier = new BaseAction(25857);
     }
 
-    private protected override bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
 
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
@@ -169,7 +169,7 @@ internal abstract class RDMCombo : CustomComboJob<RDMGauge>
         return false;
     }
 
-    private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act, byte actabilityRemain)
     {
         //努力救人！
         if (Actions.Verraise.TryUseAction(level, out act)) return true;

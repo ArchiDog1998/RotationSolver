@@ -137,7 +137,6 @@ internal class ConfigWindow : Window
                 }
 
 
-
                 float healthAreaA = Service.Configuration.HealthAreaAbility;
                 if (ImGui.DragFloat("多少的HP，可以用能力技群疗", ref healthAreaA, speed, 0, 1))
                 {

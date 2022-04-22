@@ -89,7 +89,7 @@ namespace XIVComboPlus
         internal static bool CanHealAreaSpell { get; private set; } = false;
         internal static bool CanHealSingleAbility { get; private set; } = false;
         internal static bool CanHealSingleSpell { get; private set; } = false;
-        internal static bool HPFull { get; private set; } = false;
+        internal static bool HPNotFull { get; private set; } = false;
 
 
         internal static void Init(SigScanner sigScanner)
@@ -182,7 +182,7 @@ namespace XIVComboPlus
             CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
             CanHealSingleAbility = PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
             CanHealSingleSpell = PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
-            HPFull = PartyMembersHP.Min() > 0.99f;
+            HPNotFull = PartyMembersHP.Min() < 1;
             #endregion
         }
 

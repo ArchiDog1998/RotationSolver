@@ -14,9 +14,9 @@ namespace XIVComboPlus.Combos.RDM
 
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Bloodbath.ActionID };
 
-        private protected override bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+        private protected override bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
         {
-            if (base.FirstActionAbility(level, abilityRemain, nextGCD, out act)) return true;
+            if (base.EmergercyAbility(level, abilityRemain, nextGCD, out act)) return true;
             //摆脱 队友套盾
             if (Actions.CorpsAcorps.TryUseAction(level, out act)) return true;
             return false;

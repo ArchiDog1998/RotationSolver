@@ -180,8 +180,6 @@ public abstract class CustomCombo
 
     protected static bool IsMoving => TargetHelper.IsMoving;
     protected static bool HaveTargetAngle => TargetHelper.HaveTargetAngle;
-    internal static byte AbilityRemainCount => TargetHelper.AbilityRemainCount;
-
     protected static float WeaponRemain => TargetHelper.WeaponRemain;
 
     protected virtual bool CanHealAreaAbility => TargetHelper.CanHealAreaAbility;
@@ -274,8 +272,8 @@ public abstract class CustomCombo
     private uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
     {
 
-        byte abilityRemain = AbilityRemainCount;
-        BaseAction GCDaction = GCD(level, lastComboActionID);
+        byte abilityRemain = TargetHelper.AbilityRemainCount;
+        BaseAction GCDaction = GCD(level, lastComboActionID, abilityRemain);
         if (GCDaction == null) return 0;
 
         //Sayout!
@@ -293,14 +291,14 @@ public abstract class CustomCombo
         uint GCDact = GCDaction.ActionID;
 
         //return GCDact;
-        switch (AbilityRemainCount)
+        switch (abilityRemain)
         {
             case 0:
                 return GCDact;
             default:
                 BaseAction AbilityAction;
-                if (FirstActionAbility(level, abilityRemain, GCDaction, out AbilityAction)) return AbilityAction.ActionID;
-                if (!TargetHelper.HPFull)
+                if (EmergercyAbility(level, abilityRemain, GCDaction, out AbilityAction)) return AbilityAction.ActionID;
+                if (TargetHelper.HPNotFull)
                 {
                     if (CanHealAreaAbility && HealAreaAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
                     if (CanHealSingleAbility && HealSingleAbility(level, abilityRemain, out AbilityAction)) return AbilityAction.ActionID;
@@ -311,10 +309,10 @@ public abstract class CustomCombo
         }
     }
 
-    private BaseAction GCD(byte level, uint lastComboActionID)
+    private BaseAction GCD(byte level, uint lastComboActionID, byte abilityRemain)
     {
-        if (EmergercyGCD(level, lastComboActionID, out BaseAction act)) return act;
-        if (!TargetHelper.HPFull)
+        if (EmergercyGCD(level, lastComboActionID, out BaseAction act, abilityRemain)) return act;
+        if (TargetHelper.HPNotFull)
         {
             if (CanHealAreaSpell && HealAreaGCD(level, lastComboActionID, out act)) return act;
             if (CanHealSingleSpell && HealSingleGCD(level, lastComboActionID, out act)) return act;
@@ -338,7 +336,7 @@ public abstract class CustomCombo
     /// <param name="nextGCD"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected virtual bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
         if(Target is BattleChara b && b.IsCasting && b.IsCastInterruptible)
         {
@@ -410,7 +408,7 @@ public abstract class CustomCombo
     /// <param name="lastComboActionID"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected virtual bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act, byte abilityRemain)
     {
         act = null; return false;
     }

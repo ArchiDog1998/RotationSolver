@@ -14,9 +14,9 @@ namespace XIVComboPlus.Combos.AST
 
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Reprisal.ActionID };
 
-        private protected override bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+        private protected override bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
         {
-            if (base.FirstActionAbility(level, abilityRemain, nextGCD, out act)) return true;
+            if (base.EmergercyAbility(level, abilityRemain, nextGCD, out act)) return true;
             //来个命运之轮
             if(Actions.CollectiveUnconscious.TryUseAction(level, out act)) return true;
 

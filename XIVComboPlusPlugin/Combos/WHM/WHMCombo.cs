@@ -127,7 +127,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act, byte actabilityRemain)
     {
         //有某些非常危险的状态。
         if (TargetHelper.DyingPeople.Length > 0)
@@ -139,7 +139,7 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
         if (TargetHelper.DeathPeopleParty.Length > 0)
         {
             //如果有人倒了，赶紧即刻拉人！
-            if (!GeneralActions.Swiftcast.CoolDown.IsCooldown || HaveSwift)
+            if ((!GeneralActions.Swiftcast.CoolDown.IsCooldown && actabilityRemain > 0) || HaveSwift)
             {
                 if (Actions.Raise.TryUseAction(level, out act, mustUse: true)) return true;
             }
@@ -185,9 +185,9 @@ internal abstract class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool FirstActionAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
-        if (base.FirstActionAbility(level, abilityRemain, nextGCD, out act)) return true;
+        if (base.EmergercyAbility(level, abilityRemain, nextGCD, out act)) return true;
 
         if (nextGCD.ActionID == Actions.Medica.ActionID || nextGCD.ActionID == Actions.Medica2.ActionID ||
             nextGCD.ActionID == Actions.Cure3.ActionID || nextGCD.ActionID == Actions.AfflatusRapture.ActionID)

@@ -121,7 +121,7 @@ internal abstract class WARCombo : CustomComboJob<WARGauge>
             };
     }
 
-    private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act, byte actabilityRemain)
     {
         //如果救我一个T，那还不开盾姿？
         if (!HaveShield && TargetHelper.PartyTanks.Length < 2)

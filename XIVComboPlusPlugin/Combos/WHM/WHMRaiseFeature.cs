@@ -14,7 +14,7 @@ namespace XIVComboPlus.Combos.WHM
 
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Bloodbath.ActionID };
 
-        private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act)
+        private protected override bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act, byte abilityRemain)
         {
             if (TargetHelper.DeathPeopleParty.Length > 0)
             {
