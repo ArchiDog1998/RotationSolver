@@ -35,7 +35,7 @@ namespace XIVComboPlus
         private static SortedList<uint, GetTargetFunction> _specialGetTarget = new SortedList<uint, GetTargetFunction>()
         {
             ////以太步，找面前的友军。
-            //{ BLMCombo.Actions.AetherialManipulation.ActionID, GetTargetFunction.FaceDirction},
+            {BLMCombo.Actions.AetherialManipulation.ActionID, GetTargetFunction.FaceDirction},
             {WHMCombo.Actions.Aquaveil.ActionID, GetTargetFunction.MajorTank },
             {WHMCombo.Actions.DivineBenison.ActionID, GetTargetFunction.MajorTank },
             {WHMCombo.Actions.Benediction.ActionID, GetTargetFunction.DangeriousTank },
@@ -68,6 +68,18 @@ namespace XIVComboPlus
         internal static bool HaveTargetAngle { get; private set; } = false;
 
         internal static float WeaponRemain { get; private set; } = 0;
+        private static float _weaponTotal = 0;
+        internal static float WeaponTotal 
+        {
+            get => _weaponTotal;
+            private set
+            {
+                if(value > 0.1)
+                {
+                    _weaponTotal = value;
+                }
+            }
+        }
         internal static byte AbilityRemainCount { get; private set; } = 0;
 
 
@@ -122,7 +134,9 @@ namespace XIVComboPlus
             HaveTargetAngle = GetObjectInRadius(HostileTargets, 25).Length > 0;
             #endregion
 
-            WeaponRemain = Service.IconReplacer.GetCooldown(BaseAction.GCDCooldownGroup).CooldownRemaining;
+            var cool = Service.IconReplacer.GetCooldown(BaseAction.GCDCooldownGroup);
+            WeaponRemain = cool.CooldownRemaining;
+            WeaponTotal = cool.CooldownTotal;
             AbilityRemainCount = (byte)(WeaponRemain / 0.62f);
 
 

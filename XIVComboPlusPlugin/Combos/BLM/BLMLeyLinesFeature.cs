@@ -1,23 +1,20 @@
-//using XIVComboPlus;
-//using XIVComboPlus.Combos;
+using XIVComboPlus;
+using XIVComboPlus.Combos;
 
-//namespace XIVComboPlus.Combos.BLM;
+namespace XIVComboPlus.Combos.BLM;
 
-//internal class BLMLeyLinesFeature : BLMCombo
-//{
-//    public override string ComboFancyName => "替换黑魔纹为魔纹步";
+internal class BLMLeyLinesFeature : BLMCombo
+{
+    public override string ComboFancyName => "替换黑魔纹为魔纹步";
 
-//    public override string Description => "当黑魔纹正在启用时，就把黑魔纹变成魔纹步！";
+    public override string Description => "替换浴血为,当黑魔纹正在启用时，就把黑魔纹变成魔纹步！";
 
-//    protected internal override uint[] ActionIDs => new uint[] { Actions.Leylines.ActionID };
+    protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Bloodbath.ActionID };
 
-//    protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
-//    {
-//        if (CanInsertAbility) 
-//        {
-//            if (Actions.BetweenTheLines.TryUseAction(level, out uint act)) return act;
-//            return Actions.Leylines.ActionID;
-//        }
-//        return base.Invoke(actionID, lastComboMove, comboTime, level);
-//    }
-//}
+    private protected override bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    {
+        if (Actions.BetweenTheLines.TryUseAction(level, out act)) return true;
+        if (Actions.Leylines.TryUseAction(level, out act)) return true;
+        return base.EmergercyAbility(level, abilityRemain, nextGCD, out act);
+    }
+}

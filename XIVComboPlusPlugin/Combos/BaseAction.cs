@@ -196,7 +196,7 @@ namespace XIVComboPlus.Combos
         {
             var result = FindStatusTargetFromSelf(effectIDs);
             if (result.Length == 0) return false;
-            return result.Min() > 5.5f;
+            return result.Min() > 5.5;
         }
         private  static float[] FindStatusFromSelf(BattleChara obj, ushort[] effectIDs)
         {

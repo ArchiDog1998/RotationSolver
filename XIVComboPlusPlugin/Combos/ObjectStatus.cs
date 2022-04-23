@@ -25,6 +25,9 @@ namespace XIVComboPlus.Combos
             //三连咏唱
             Triplecast = 1211,
 
+            //激情咏唱
+            Sharpcast = 867,
+
             //雷云
             Thundercloud = 164,
 
