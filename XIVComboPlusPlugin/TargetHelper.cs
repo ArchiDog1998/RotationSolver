@@ -57,6 +57,8 @@ namespace XIVComboPlus
             {CustomCombo.GeneralActions.LowBlow.ActionID, GetTargetFunction.Interrupt },
             {CustomCombo.GeneralActions.LegSweep.ActionID, GetTargetFunction.Interrupt },
             {CustomCombo.GeneralActions.HeadGraze.ActionID, GetTargetFunction.Interrupt },
+
+            {DRGCombo.Actions.DragonSight.ActionID, GetTargetFunction.Melee },
         };
 
         //All Targes

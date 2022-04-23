@@ -191,6 +191,25 @@ namespace XIVComboPlus.Combos
             ImmortalSacrifice = 2592,
 
             //回退准备
-            Threshold = 2595;
+            Threshold = 2595,
+
+            //龙牙龙爪预备状态
+            SharperFangandClaw = 802,
+
+            //龙尾大回旋预备状态
+            EnhancedWheelingThrust = 803,
+
+            //龙枪状态
+            PowerSurge = 2720,
+
+            //龙剑状态
+            LifeSurge = 2175,
+
+            //猛枪
+            LanceCharge = 1864,
+
+            //幻象冲预备状态
+        DiveReady = 1243;
+
     }
 }

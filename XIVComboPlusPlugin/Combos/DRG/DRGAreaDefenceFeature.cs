@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XIVComboPlus.Combos.RPR
+namespace XIVComboPlus.Combos.DRG
 {
-    internal class RPRAreaDefenceFeature : RPRCombo
+    internal class DRGAreaDefenceFeature : DRGCombo
     {
-        public override string ComboFancyName => "镰刀群防";
+        public override string ComboFancyName => "龙骑群防";
 
-        public override string Description => "替换血仇为镰刀的群防技能。";
+        public override string Description => "替换血仇为龙骑的群防技能。";
 
         protected internal override uint[] ActionIDs => new uint[] { GeneralActions.Reprisal.ActionID };
 
