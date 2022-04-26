@@ -13,7 +13,6 @@ using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using XIVComboPlus.Attributes;
 using XIVComboPlus.Combos;
-using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVComboPlus;
 
@@ -42,52 +41,30 @@ internal class ConfigWindow : Window
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
                 int num = 1;
 
-                foreach (uint key in IconReplacer.CustomCombosDict.Keys)
+
+                //ImGui.Text(IconReplacer.CustomCombosDict.Keys.ToString());
+                foreach (string key in IconReplacer.CustomCombosDict.Keys)
                 {
                     var combos = IconReplacer.CustomCombosDict[key];
                     if (combos == null || combos.Length == 0) continue;
 
-                    string jobName = combos[0].JobName;
-                    if (ImGui.CollapsingHeader(jobName))
+                    if (ImGui.CollapsingHeader(key))
                     {
                         foreach (var combo in combos)
                         {
                             //ImGui.Text(combo.ComboFancyName);
 
                             bool enable = combo.IsEnabled;
-                            string[] conflicts = combo.ConflictingCombos;
-                            string parent = combo.ParentCombo;
                             ImGui.PushItemWidth(200f);
-                            if (ImGui.Checkbox(combo.ComboFancyName, ref enable))
+                            if (ImGui.Checkbox(combo.JobName, ref enable))
                             {
-                                if (enable)
-                                {
-                                    combo.IsEnabled = true;
-                                    string[] array = conflicts;
-                                    foreach (string item3 in array)
-                                    {
-                                        IconReplacer.SetEnable(item3, false);
-                                    }
-                                }
-                                else
-                                {
-                                    combo.IsEnabled = false;
-                                }
+                                combo.IsEnabled = enable;
                                 Service.Configuration.Save();
                             }
                             ImGui.PopItemWidth();
-                            string text = $"#{num}: {combo.Description}";
-                            if (!string.IsNullOrEmpty(parent))
-                            {
-                                text += "\nRequires " + combo.ComboFancyName;
-                            }
+                            string text = $"#{num}: 替换沉静为{combo.JobName}的连续GCD战技、技能。";
                             ImGui.TextColored(shadedColor, text);
-                            ImGui.Spacing();
-                            if (conflicts.Length != 0)
-                            {
-                                ImGui.TextColored(shadedColor, "Conflicts with: " + string.Join("\n - ", conflicts));
-                                ImGui.Spacing();
-                            }
+                            //ImGui.Spacing();
                             //if (item == CustomComboPreset.DancerDanceComboCompatibility && enable)
                             //{
                             //    int[] array2 = Service.Configuration.DancerDanceCompatActionIDs.Cast<int>().ToArray();
@@ -118,11 +95,18 @@ internal class ConfigWindow : Window
 
             if (ImGui.BeginTabItem("参数设定"))
             {
-                ImGui.Text(Service.Address.LastComboAction.ToString());
-                int multiCount = Service.Configuration.MultiCount;
+                int multiCount = Service.Configuration.HostileCount;
                 if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
                 {
-                    Service.Configuration.MultiCount = multiCount;
+                    Service.Configuration.HostileCount = multiCount;
+                    Service.Configuration.Save();
+                }
+                ImGui.Separator();
+
+                int partyCount = Service.Configuration.PartyCount;
+                if (ImGui.DragInt("范围治疗最少需要多少人", ref partyCount, 0.02f, 2, 5))
+                {
+                    Service.Configuration.PartyCount = partyCount;
                     Service.Configuration.Save();
                 }
                 ImGui.Separator();

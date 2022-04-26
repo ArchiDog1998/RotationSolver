@@ -23,37 +23,5 @@ namespace XIVComboPlus.Combos
                 return _gauge;
             }
         }
-
-        private ClassJob _myJob = null;
-        internal sealed override uint JobID
-        {
-            get
-            {
-                if(_myJob == null)
-                {
-                    _myJob = ClassJob.GetJobByGauge<T>();
-                }
-                if(_myJob == null)
-                {
-                    return 0;
-                }
-                return _myJob.Index;
-            }
-        }
-        internal sealed override string JobName
-        {
-            get
-            {
-                if (_myJob == null)
-                {
-                    _myJob = ClassJob.GetJobByGauge<T>();
-                }
-                if (_myJob == null)
-                {
-                    return "";
-                }
-                return _myJob.Name;
-            }
-        }
     }
 }

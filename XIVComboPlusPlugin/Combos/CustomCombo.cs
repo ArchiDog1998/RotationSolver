@@ -34,10 +34,11 @@ public abstract class CustomCombo
     }
 
     #region Job
-
+    private static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
     internal abstract uint JobID { get; }
+    internal string RoleName => ((Role)XIVComboPlusPlugin.AllJobs.First(job => job.RowId == JobID).Role).ToString();
 
-    internal abstract string JobName { get; }
+    internal string JobName => XIVComboPlusPlugin.AllJobs.First(job => job.RowId == JobID).Name;
 
     internal struct GeneralActions
     {
@@ -62,7 +63,28 @@ public abstract class CustomCombo
             //康复
             Esuna = new BaseAction(7568)
             {
-                OtherCheck = () => TargetHelper.WeakenPeople.Length > 0,
+                ChoiceFriend = (tars) =>
+                {
+                    HashSet<BattleChara> dying = new (tars.Length);
+                    HashSet<BattleChara> weaken = new (tars.Length);
+                    foreach (var p in tars)
+                    {
+                        foreach (var status in p.StatusList)
+                        {
+                            if (status.StatusId == ObjectStatus.Doom) dying.Add(p);
+                            if (status.GameData.CanDispel) weaken.Add(p);
+                        }
+                    }
+                    if(dying.Count > 0)
+                    {
+                        return dying.OrderBy(b => BaseAction.DistanceToPlayer(b)).First();
+                    }
+                    else if(weaken.Count > 0)
+                    {
+                        return weaken.OrderBy(b => BaseAction.DistanceToPlayer(b)).First();
+                    }
+                    return null;
+                },
             },
 
             //营救
@@ -74,7 +96,7 @@ public abstract class CustomCombo
             //醒梦（如果MP低于6000那么使用）
             LucidDreaming = new BaseAction(7562u)
             {
-                OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp < 6000,
+                OtherCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000,
             },
 
             //伤腿
@@ -89,7 +111,7 @@ public abstract class CustomCombo
             //内丹
             SecondWind = new BaseAction(7541)
             {
-                OtherCheck = () => (double)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6,
+                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6,
             },
 
             //伤足
@@ -139,36 +161,29 @@ public abstract class CustomCombo
             LegSweep = new BaseAction(7863),
 
             //伤头
-            HeadGraze = new BaseAction(7551);
+            HeadGraze = new BaseAction(7551),
+
+            //沉稳咏唱
+            Surecast = new BaseAction(7559);
 
     }
     #endregion
 
     #region Combo
-    protected internal abstract uint[] ActionIDs { get; }
-    public abstract string ComboFancyName { get; }
+    protected internal uint ActionID => GeneralActions.Repose.ActionID;
 
-    public abstract string Description { get; }
-
-    public virtual string[] ConflictingCombos => new string[0];
-    public virtual string ParentCombo => string.Empty;
-
-    /// <summary>
-    /// 优先级，越大就使用到的概率越高！
-    /// </summary>
-    public virtual byte Priority => 0;
     public bool IsEnabled
     {
-        get => Service.Configuration.EnabledActions.Contains(ComboFancyName);
+        get => Service.Configuration.EnabledActions.Contains(JobName);
         set
         {
             if (value)
             {
-                Service.Configuration.EnabledActions.Add(ComboFancyName);
+                Service.Configuration.EnabledActions.Add(JobName);
             }
             else
             {
-                Service.Configuration.EnabledActions.Remove(ComboFancyName);
+                Service.Configuration.EnabledActions.Remove(JobName);
             }
         }
     }
@@ -192,35 +207,40 @@ public abstract class CustomCombo
     /// Only one feature can set it to true!
     /// </summary>
     protected virtual bool ShouldSayout => false;
-    protected CustomCombo()
+    private protected virtual BaseAction Raise => null;
+    private protected CustomCombo()
     {
     }
 
-    internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out uint newActionID)
+    internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out BaseAction newAction)
     {
-        newActionID = 0u;
+
+        newAction = null;
         if (!IsEnabled)
         {
             return false;
         }
-        if (!ActionIDs.Contains(actionID))
+        if (ActionID != actionID)
         {
             return false;
         }
 
-        uint actNew = Invoke(actionID, lastComboActionID, comboTime, level);
-        if (actionID == actNew)
-        {
-            return false;
-        }
-        else if (actNew == 0)
-        {
-            SortedSet<byte> validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => job.Type == JobType.MagicalRanged || job.Type == JobType.Healer).Select(job => job.Index));
+        newAction = Invoke(actionID, lastComboActionID, comboTime);
 
-            newActionID = TargetHelper.GetJobCategory(Service.ClientState.LocalPlayer, validJobs) ? GeneralActions.SecondWind.ActionID : GeneralActions.LucidDreaming.ActionID;
-            return true;
-        }
-        newActionID = actNew;
+        //没获得对象
+        if (newAction == null) return false;
+
+        //和之前一样
+        if (actionID == newAction.ActionID) return false;
+        //else if (actNew == null)
+        //{
+        //    //SortedSet<byte> validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => job.Type == JobType.MagicalRanged || job.Type == JobType.Healer).Select(job => job.Index));
+
+        //    //newActionID = TargetHelper.GetJobCategory(Service.ClientState.LocalPlayer, validJobs) ? GeneralActions.SecondWind.ActionID : GeneralActions.LucidDreaming.ActionID;
+        //    return true;
+        //}
+
+
         return true;
     }
 
@@ -235,7 +255,7 @@ public abstract class CustomCombo
         else return false;
     }
 
-    private static void Speak(string text, bool wait = false)
+    internal static void Speak(string text, bool wait = false)
     {
         ExecuteCommand(
             $@"Add-Type -AssemblyName System.speech; 
@@ -269,18 +289,17 @@ public abstract class CustomCombo
         }
     }
 
-    private uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
+    private BaseAction Invoke(uint actionID, uint lastComboActionID, float comboTime)
     {
 
         byte abilityRemain = TargetHelper.AbilityRemainCount;
-        BaseAction GCDaction = GCD(level, lastComboActionID, abilityRemain);
-
+        BaseAction GCDaction = GCD(lastComboActionID, abilityRemain);
         //Sayout!
         if (GCDaction != null)
         {
-            if(CheckAction(GCDaction.ActionID) && GCDaction.SayoutText != EnemyLocation.None)
+            if(CheckAction(GCDaction.ActionID) && GCDaction.EnermyLocation != EnemyLocation.None)
             {
-                string text = GCDaction.Action.Name + " " + GCDaction.SayoutText.ToString();
+                string text = GCDaction.Action.Name + " " + GCDaction.EnermyLocation.ToString();
                 //Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
                 //{
                 //    Message = text,
@@ -289,45 +308,90 @@ public abstract class CustomCombo
                 Speak(text);
             }
 
-            //return GCDact;
             switch (abilityRemain)
             {
                 case 0:
-                    return GCDaction.ActionID;
+                    return GCDaction;
                 default:
-                    if (Ability(level, abilityRemain, GCDaction, out BaseAction ability)) return ability.ActionID;
-                    return GCDaction.ActionID;
+                    if (Ability(abilityRemain, GCDaction, out BaseAction ability)) return ability;
+                    return GCDaction;
             }
         }
         else
         {
-            if (Ability(level, abilityRemain, GeneralActions.Addle, out BaseAction ability)) return ability.ActionID;
-            return 0;
+            if (Ability(abilityRemain, GeneralActions.Addle, out BaseAction ability)) return ability;
+            return null;
         }
     }
 
-    private BaseAction GCD(byte level, uint lastComboActionID, byte abilityRemain)
+    private BaseAction GCD(uint lastComboActionID, byte abilityRemain)
     {
-        if (EmergercyGCD(level, lastComboActionID, out BaseAction act, abilityRemain)) return act;
+        if (EmergercyGCD(out BaseAction act, abilityRemain)) return act;
         if (TargetHelper.HPNotFull)
         {
-            if (CanHealAreaSpell && HealAreaGCD(level, lastComboActionID, out act)) return act;
-            if (CanHealSingleSpell && HealSingleGCD(level, lastComboActionID, out act)) return act;
+            if ((IconReplacer.HealArea || CanHealAreaSpell) && HealAreaGCD(lastComboActionID, out act)) return act;
+            if ((IconReplacer.HealSingle || CanHealSingleSpell) && HealSingleGCD(lastComboActionID, out act)) return act;
         }
-        if (GeneralGCD(level, lastComboActionID, out act)) return act;
+        if (GeneralGCD(lastComboActionID, out act)) return act;
         return null;
     }
 
-    private bool Ability(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private bool Ability(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
-        if (EmergercyAbility(level, abilityRemain, nextGCD, out act)) return true;
+        if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
+        if (IconReplacer.AntiRepulsion)
+        {
+            switch( XIVComboPlusPlugin.AllJobs.First(job => job.RowId == JobID).Role)
+            {
+                case (byte)Role.防护:
+                case (byte)Role.近战:
+                    if(GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
+                    break;
+                case (byte)Role.治疗:
+                    if (GeneralActions.Surecast.ShouldUseAction(out act)) return true;
+                    break;
+                case (byte)Role.远程:
+                    if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+                    {
+                        if (GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
+                    }
+                    else
+                    {
+                        if (GeneralActions.Surecast.ShouldUseAction(out act)) return true;
+                    }
+                    break;
+            }
+        }
+        if (TargetHelper.CanInterruptTargets.Length > 0)
+        {
+            switch (XIVComboPlusPlugin.AllJobs.First(job => job.RowId == JobID).Role)
+            {
+                case (byte)Role.防护:
+                    if (GeneralActions.Interject.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.LowBlow.ShouldUseAction(out act)) return true;
+                    break;
+
+                case (byte)Role.近战:
+                    if (GeneralActions.LegSweep.ShouldUseAction(out act)) return true;
+                    break;
+                case (byte)Role.远程:
+                    if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+                    {
+                        if (GeneralActions.HeadGraze.ShouldUseAction(out act)) return true;
+                    }
+                    break;
+            }
+       }
+
+        if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
+        if(IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         if (TargetHelper.HPNotFull)
         {
-            if (CanHealAreaAbility && HealAreaAbility(level, abilityRemain, out act)) return true;
-            if (CanHealSingleAbility && HealSingleAbility(level, abilityRemain, out act)) return true;
+            if ((IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act)) return true;
+            if ((IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act)) return true;
         }
-        if (GeneralAbility(level, abilityRemain, out act)) return true;
-        if (HaveTargetAngle && ForAttachAbility(level, abilityRemain, out act)) return true;
+        if (GeneralAbility(abilityRemain, out act)) return true;
+        if (HaveTargetAngle && ForAttachAbility(abilityRemain, out act)) return true;
         return false;
     }
     /// <summary>
@@ -337,7 +401,7 @@ public abstract class CustomCombo
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected abstract bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act);
+    private protected abstract bool ForAttachAbility(byte abilityRemain, out BaseAction act);
     /// <summary>
     /// 覆盖写一些用于因为后面的GCD技能而要适应的能力技能
     /// </summary>
@@ -346,36 +410,9 @@ public abstract class CustomCombo
     /// <param name="nextGCD"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected virtual bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
-        if(TargetHelper.CanInterruptTargets.Length > 0)
-        {
-            JobType type = JobType.None;
-            foreach (var job in ClassJob.AllJobs)
-            {
-                if (job.Index == JobID)
-                {
-                    type = job.Type;
-                    break;
-                }
-            }
-
-            switch (type)
-            {
-                case JobType.Tank:
-                    if (GeneralActions.Interject.TryUseAction(level, out act, mustUse: true)) return true;
-                    if (GeneralActions.LowBlow.TryUseAction(level, out act, mustUse:true)) return true;
-                    break;
-                case JobType.Melee:
-                    if (GeneralActions.LegSweep.TryUseAction(level, out act, mustUse: true)) return true;
-                    break;
-                case JobType.PhysicalRanged:
-                    if (GeneralActions.HeadGraze.TryUseAction(level, out act, mustUse: true)) return true;
-                    break;
-            }
-        }
-
-        if (nextGCD.CastTime > 7000 && GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return true;
+        if (nextGCD.Cast100 > 70 && GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
         act = null; return false;
     }
     /// <summary>
@@ -385,7 +422,7 @@ public abstract class CustomCombo
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool GeneralAbility(byte level, byte abilityRemain, out BaseAction act)
+    private protected virtual bool GeneralAbility(byte abilityRemain, out BaseAction act)
     {
         act = null; return false;
     }
@@ -396,7 +433,16 @@ public abstract class CustomCombo
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool HealSingleAbility(byte level, byte abilityRemain, out BaseAction act)
+    private protected virtual bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    {
+        act = null; return false;
+    }
+
+    private protected virtual bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    {
+        act = null; return false;
+    }
+    private protected virtual bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
     {
         act = null; return false;
     }
@@ -407,7 +453,7 @@ public abstract class CustomCombo
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool HealAreaAbility(byte level, byte abilityRemain, out BaseAction act)
+    private protected virtual bool HealAreaAbility(byte abilityRemain, out BaseAction act)
     {
         act = null; return false;
     }
@@ -418,9 +464,31 @@ public abstract class CustomCombo
     /// <param name="lastComboActionID"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool EmergercyGCD(byte level, uint lastComboActionID, out BaseAction act, byte abilityRemain)
+    private bool EmergercyGCD(out BaseAction act, byte actabilityRemain)
     {
-        act = null; return false;
+        if (Raise == null)
+        {
+            act = null;
+            return false;
+        }
+
+        //有某些非常危险的状态。
+        if ((IconReplacer.Esuna && TargetHelper.WeakenPeople.Length > 0) ||TargetHelper.DyingPeople.Length > 0)
+        {
+            if (GeneralActions.Esuna.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+
+        //有人死了，看看能不能救。
+        if (TargetHelper.DeathPeopleAll.Length > 0)
+        {
+            if (IconReplacer.Raise || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
+            {
+                if (Raise.ShouldUseAction(out act, mustUse: true)) return true;
+            }
+        }
+
+        act = null;
+        return false;
     }
     /// <summary>
     /// 常规GCD技能
@@ -429,7 +497,7 @@ public abstract class CustomCombo
     /// <param name="lastComboActionID"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected abstract bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act);
+    private protected abstract bool GeneralGCD(uint lastComboActionID, out BaseAction act);
     /// <summary>
     /// 单体治疗GCD
     /// </summary>
@@ -437,7 +505,7 @@ public abstract class CustomCombo
     /// <param name="lastComboActionID"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool HealSingleGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected virtual bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
     {
         act = null; return false;
     }
@@ -448,7 +516,7 @@ public abstract class CustomCombo
     /// <param name="lastComboActionID"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool HealAreaGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected virtual bool HealAreaGCD(uint lastComboActionID, out BaseAction act)
     {
         act = null; return false;
     }

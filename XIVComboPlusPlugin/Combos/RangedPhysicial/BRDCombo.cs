@@ -1,18 +1,21 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Objects.Types;
 using System.Linq;
 namespace XIVComboPlus.Combos;
 
-internal abstract class BRDCombo : CustomComboJob<BRDGauge>
+internal class BRDCombo : CustomComboJob<BRDGauge>
 {
     //看看现在有没有开猛者强击
     protected static bool IsBreaking => BaseAction.HaveStatusSelfFromSelf(125);
 
+    internal override uint JobID => 23;
+
     internal struct Actions
     {
-        private static bool AddOnDot(ushort status1, ushort status2)
+        private static bool AddOnDot(BattleChara b, ushort status1, ushort status2)
         {
-            var results = BaseAction.FindStatusTargetFromSelf(status1, status2);
-            if(results.Length != 2) return false;
+            var results = BaseAction.FindStatusFromSelf(b, status1, status2);
+            if (results.Length != 2) return false;
             return results.Min() < 5.5f;
         }
 
@@ -35,10 +38,10 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
             //伶牙俐齿
             IronJaws = new BaseAction(3560)
             {
-                OtherCheck = () =>
+                OtherCheck = b =>
                 {
-                    bool needLow = AddOnDot(ObjectStatus.VenomousBite, ObjectStatus.Windbite);
-                    bool needHigh = AddOnDot(ObjectStatus.CausticBite, ObjectStatus.Stormbite);
+                    bool needLow = AddOnDot(b, ObjectStatus.VenomousBite, ObjectStatus.Windbite);
+                    bool needHigh = AddOnDot(b, ObjectStatus.CausticBite, ObjectStatus.Stormbite);
                     return needLow || needHigh;
                 },
             },
@@ -76,7 +79,7 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
             //完美音调
             PitchPerfect = new BaseAction(7404)
             {
-                OtherCheck = () =>
+                OtherCheck = b =>
             {
                 if (JobGauge.Song != Dalamud.Game.ClientState.JobGauge.Enums.Song.WANDERER) return false;
                 if (JobGauge.SongTimer < 3000 && JobGauge.Repertoire > 0) return true;
@@ -88,7 +91,7 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
             //光阴神的礼赞凯歌
             WardensPaean = new BaseAction(3561)
             {
-                OtherCheck = () => TargetHelper.WeakenPeople.Length > 0,
+                OtherCheck = b => TargetHelper.WeakenPeople.Length > 0,
             },
 
             //战斗之声
@@ -108,9 +111,9 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
             //光明神的最终乐章
             RadiantFinale = new BaseAction(25785)
             {
-                OtherCheck = () =>
+                OtherCheck = b =>
                 {
-                    return JobGauge.Coda.Length > 2 || MagesBallad.CoolDown.CooldownRemaining < 0.1;
+                    return JobGauge.Coda.Length > 2 || MagesBallad.RecastTimeRemain < 0.1;
                 },
             },
 
@@ -127,107 +130,119 @@ internal abstract class BRDCombo : CustomComboJob<BRDGauge>
             };
     }
 
-    private protected override bool HealSingleAbility(byte level, byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
     {
-        //大地神的抒情恋歌
-        if (Actions.NaturesMinne.TryUseAction(level, out act)) return true;
+        //行吟
+        if (Actions.Troubadour.ShouldUseAction(out act)) return true;
 
         return false;
     }
 
-    private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
+    private protected override bool HealSingleAbility( byte abilityRemain, out BaseAction act)
+    {
+        //大地神的抒情恋歌
+        if (Actions.NaturesMinne.ShouldUseAction(out act)) return true;
+
+        return false;
+    }
+
+    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
         //放大招！
         if (JobGauge.SoulVoice >= 80 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady))
         {
-            if (Actions.ApexArrow.TryUseAction(level, out act, mustUse: true)) return true;
+            if (Actions.ApexArrow.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         //群体GCD
-        if (Actions.Shadowbite.TryUseAction(level, out act)) return true;
-        if (Actions.QuickNock.TryUseAction(level, out act)) return true;
+        if (Actions.Shadowbite.ShouldUseAction(out act)) return true;
+        if (Actions.QuickNock.ShouldUseAction(out act)) return true;
 
         //直线射击
-        if (Actions.StraitShoot.TryUseAction(level, out act)) return true;
+        if (Actions.StraitShoot.ShouldUseAction(out act)) return true;
 
         //上毒
-        if (Actions.IronJaws.TryUseAction(level, out act)) return true;
-        if (Actions.VenomousBite.TryUseAction(level, out act)) return true;
-        if (Actions.Windbite.TryUseAction(level, out act)) return true;
+        if (Actions.IronJaws.ShouldUseAction(out act)) return true;
+        if (Actions.VenomousBite.ShouldUseAction(out act)) return true;
+        if (Actions.Windbite.ShouldUseAction(out act)) return true;
 
         //强力射击
-        if (Actions.HeavyShoot.TryUseAction(level, out act)) return true;
+        if (Actions.HeavyShoot.ShouldUseAction(out act)) return true;
 
-        
+
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte level, byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
+        if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
+
         //如果接下来要上毒或者要直线射击，那算了。
-        if(nextGCD.ActionID == Actions.StraitShoot.ActionID || nextGCD.ActionID == Actions.VenomousBite.ActionID ||
+        if (nextGCD.ActionID == Actions.StraitShoot.ActionID || nextGCD.ActionID == Actions.VenomousBite.ActionID ||
             nextGCD.ActionID == Actions.Windbite.ActionID || nextGCD.ActionID == Actions.IronJaws.ActionID)
         {
-            act= null;
+            act = null;
             return false;
         }
-        else
+        else if(abilityRemain != 0)
         {
             //纷乱箭
-            if (Actions.Barrage.TryUseAction(level, out act)) return true;
+            if (Actions.Barrage.ShouldUseAction(out act)) return true;
         }
 
         act = null;
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
         //放浪神的小步舞曲
-        if (Actions.WanderersMinuet.TryUseAction(level, out act)) return true;
+        if (Actions.WanderersMinuet.ShouldUseAction(out act)) return true;
 
         //完美音调
-        if (Actions.PitchPerfect.TryUseAction(level, out act)) return true;
+        if (Actions.PitchPerfect.ShouldUseAction(out act)) return true;
 
         //贤者的叙事谣
-        if (JobGauge.SongTimer < 3000 && Actions.MagesBallad.TryUseAction(level, out act)) return true;
+        if (JobGauge.SongTimer < 3000 && Actions.MagesBallad.ShouldUseAction(out act)) return true;
 
         //军神的赞美歌
         if (JobGauge.SongTimer < 12000 && (JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.MAGE
-            || JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.NONE) && Actions.ArmysPaeon.TryUseAction(level, out act)) return true;
+            || JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.NONE) && Actions.ArmysPaeon.ShouldUseAction(out act)) return true;
 
         //猛者强击
-        if (Actions.RagingStrikes.TryUseAction(level, out act)) return true;
+        if (Actions.RagingStrikes.ShouldUseAction(out act)) return true;
 
         //战斗之声
-        if (Actions.BattleVoice.TryUseAction(level, out act, mustUse: true)) return true;
+        if (Actions.BattleVoice.ShouldUseAction(out act, mustUse: true)) return true;
 
         //光明神的最终乐章
-        if (Actions.RadiantFinale.TryUseAction(level, out act)) return true;
+        if (Actions.RadiantFinale.ShouldUseAction(out act)) return true;
 
         //九天连箭
-        if (Actions.EmpyrealArrow.TryUseAction(level, out act)) return true;
+        if (Actions.EmpyrealArrow.ShouldUseAction(out act)) return true;
 
         //测风诱导箭
-        if (Actions.Sidewinder.TryUseAction(level, out act)) return true;
+        if (Actions.Sidewinder.ShouldUseAction(out act)) return true;
+
+        byte level = Service.ClientState.LocalPlayer.Level;
 
         //死亡剑雨
-        if (Actions.RainofDeath.TryUseAction(level, out act, Empty: level == 90 ? IsBreaking : true)) return true;
+        if (Actions.RainofDeath.ShouldUseAction(out act, Empty: level == 90 ? IsBreaking : true)) return true;
 
         //失血箭
-        if (Actions.Bloodletter.TryUseAction(level, out act, Empty: level == 90 ? IsBreaking : true)) return true;
+        if (Actions.Bloodletter.ShouldUseAction(out act, Empty: level == 90 ? IsBreaking : true)) return true;
 
         //光阴神的礼赞凯歌 减少Debuff
-        if (Actions.WardensPaean.TryUseAction(level, out act)) return true;
+        if (Actions.WardensPaean.ShouldUseAction(out act)) return true;
 
         //伤腿
-        if (GeneralActions.FootGraze.TryUseAction(level, out act)) return true;
+        if (GeneralActions.FootGraze.ShouldUseAction( out act)) return true;
 
         //伤足
-        if (GeneralActions.LegGraze.TryUseAction(level, out act)) return true;
+        if (GeneralActions.LegGraze.ShouldUseAction(out act)) return true;
 
         //内丹
-        if (GeneralActions.SecondWind.TryUseAction(level, out act)) return true;
+        if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
 
         return false;
     }

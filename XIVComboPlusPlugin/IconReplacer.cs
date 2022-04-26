@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -7,6 +8,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
 using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using XIVComboPlus.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -20,36 +22,134 @@ internal sealed class IconReplacer : IDisposable
 
     private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
 
-    [StructLayout(LayoutKind.Explicit)]
-    internal struct CooldownData
+    //[StructLayout(LayoutKind.Explicit)]
+    //internal struct CooldownData
+    //{
+    //    [FieldOffset(0)]
+    //    public bool IsCooldown;
+
+    //    [FieldOffset(4)]
+    //    public uint ActionID;
+
+    //    [FieldOffset(8)]
+    //    public float CooldownElapsed;
+
+    //    [FieldOffset(12)]
+    //    public float CooldownTotal;
+
+    //    public float CooldownRemaining
+    //    {
+    //        get
+    //        {
+    //            if (!IsCooldown)
+    //            {
+    //                return 0f;
+    //            }
+    //            return CooldownTotal - CooldownElapsed;
+    //        }
+    //    }
+    //}
+
+    private static Stopwatch _fastClickStopwatch = new Stopwatch();
+
+    private static Stopwatch _specialStateStopwatch = new Stopwatch();
+
+    internal static uint LastAction { get; private set; } = 0;
+
+    private static bool _autoAttack = false;
+    internal static bool AutoAttack
     {
-        [FieldOffset(0)]
-        public bool IsCooldown;
-
-        [FieldOffset(4)]
-        public uint ActionID;
-
-        [FieldOffset(8)]
-        public float CooldownElapsed;
-
-        [FieldOffset(12)]
-        public float CooldownTotal;
-
-        public float CooldownRemaining
+        private get => _autoAttack;
+        set
         {
-            get
+            if (_autoAttack != value)
             {
-                if (!IsCooldown)
-                {
-                    return 0f;
-                }
-                return CooldownTotal - CooldownElapsed;
+                _autoAttack = value;
+                CustomCombo.Speak(value ? "Attack" : "Cancel");
+            }
+        }
+    }
+    private static bool _autoTarget = true;
+    internal static bool AutoTarget
+    {
+        get => _autoTarget;
+        set
+        {
+            if (_autoTarget != value)
+            {
+                _autoTarget = value;
+                CustomCombo.Speak(value ? "Auto" : "Manual");
             }
         }
     }
 
-    private static SortedList<uint, CustomCombo[]> _customCombosDict;
-    internal static SortedList<uint, CustomCombo[]> CustomCombosDict
+    internal static bool HealArea { get; private set; } = false;
+    internal static void StartHealArea()
+    {
+        ResetSpecial();
+        _specialStateStopwatch.Start();
+        CustomCombo.Speak("Start Heal Area");
+        HealArea = true;
+    }
+    internal static bool HealSingle { get; private set; } = false;
+    internal static void StartHealSingle()
+    {
+        ResetSpecial();
+        _specialStateStopwatch.Start();
+        CustomCombo.Speak("Start Heal Single");
+        HealSingle = true;
+    }
+    internal static bool DefenseArea { get; private set; } = false;
+    internal static void StartDefenseArea()
+    {
+        ResetSpecial();
+        _specialStateStopwatch.Start();
+        CustomCombo.Speak("Start Defense Area");
+        DefenseArea = true;
+    }
+    internal static bool DefenseSingle { get; private set; } = false;
+    internal static void StartDefenseSingle()
+    {
+        ResetSpecial();
+        _specialStateStopwatch.Start();
+        CustomCombo.Speak("Start Defense Single");
+        DefenseSingle = true;
+    }
+    internal static bool Esuna { get; private set; } = false;
+    internal static void StartEsuna()
+    {
+        ResetSpecial();
+        _specialStateStopwatch.Start();
+        CustomCombo.Speak("Start Esuna");
+        Esuna = true;
+    }
+    internal static bool Raise { get; private set; } = false;
+    internal static void StartRaise()
+    {
+        ResetSpecial();
+        _specialStateStopwatch.Start();
+        CustomCombo.Speak("Start Raise");
+        Raise = true;
+    }
+    internal static bool AntiRepulsion { get; private set; } = false;
+    internal static void StartAntiRepulsion()
+    {
+        ResetSpecial();
+        _specialStateStopwatch.Start();
+        CustomCombo.Speak("Start Anti repulsion");
+        AntiRepulsion = true;
+    }
+
+    private static void ResetSpecial()
+    {
+        _specialStateStopwatch.Stop();
+        _specialStateStopwatch.Reset();
+        HealArea = HealSingle = DefenseArea = DefenseSingle = Esuna = Raise
+            = AntiRepulsion = false;
+    }
+
+    private static SortedList<string, CustomCombo[]> _customCombosDict;
+    internal static SortedList<string, CustomCombo[]> CustomCombosDict
     {
         get
         {
@@ -79,12 +179,14 @@ internal sealed class IconReplacer : IDisposable
 
     private IntPtr actionManager = IntPtr.Zero;
 
-    private readonly GetActionCooldownSlotDelegate getActionCooldownSlot;
 
     public IconReplacer()
     {
-        getActionCooldownSlot = Marshal.GetDelegateForFunctionPointer<GetActionCooldownSlotDelegate>(Service.Address.GetActionCooldown);
-        getIconHook = new Hook<GetIconDelegate>(Service.Address.GetAdjustedActionId, GetIconDetour);
+        unsafe
+        {
+            getIconHook = new((IntPtr)ActionManager.fpGetAdjustedActionId, GetIconDetour);
+        }
+        //getIconHook = new Hook<GetIconDelegate>(Service.Address.GetAdjustedActionId, GetIconDetour);
         isIconReplaceableHook = new Hook<IsIconReplaceableDelegate>(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);
         getIconHook.Enable();
         isIconReplaceableHook.Enable();
@@ -93,13 +195,13 @@ internal sealed class IconReplacer : IDisposable
     private static void SetStaticValues()
     {
         _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
-                         where t.BaseType.BaseType?.BaseType == typeof(CustomCombo)
+                         where t.BaseType.BaseType == typeof(CustomCombo)
                          select (CustomCombo)Activator.CreateInstance(t) into combo
-                         orderby combo.JobID, combo.Priority
+                         orderby combo.JobID
                          select combo).ToArray();
 
-        _customCombosDict = new SortedList<uint, CustomCombo[]>
-            (_customCombos.GroupBy(g => g.JobID).ToDictionary(set => set.Key, set => set.Reverse().ToArray()));
+        _customCombosDict = new SortedList<string, CustomCombo[]>
+            (_customCombos.GroupBy(g => g.RoleName).ToDictionary(set => set.Key, set => set.Reverse().ToArray()));
     }
 
     public void Dispose()
@@ -119,23 +221,65 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
+    internal void DoAnAction()
+    {
+        //停止特殊状态
+        if (_specialStateStopwatch.IsRunning && _specialStateStopwatch.ElapsedMilliseconds > 5000)
+        {
+            ResetSpecial();
+            CustomCombo.Speak("End Special");
+        }
+
+        if (!AutoAttack) return;
+
+        //0.1s内，不能重复按按钮。
+        if (_fastClickStopwatch.IsRunning && _fastClickStopwatch.ElapsedMilliseconds < 100) return;
+
+        PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
+        if (localPlayer == null) return;
+
+        foreach (CustomCombo customCombo in CustomCombos)
+        {
+            if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
+
+            if (!customCombo.TryInvoke(CustomCombo.GeneralActions.Repose.ActionID, Service.Address.LastComboAction, Service.Address.ComboTime,
+                 localPlayer.Level, out var newAction)) return;
+
+            if (newAction.UseAction())
+            {
+                if (TargetHelper.CanAttack(newAction.Target))
+                {
+                    Service.TargetManager.SetTarget(newAction.Target);
+                }
+                if(newAction.ActionID != LastAction)
+                {
+                    LastAction = newAction.ActionID;
+                    newAction.SayingOut();
+                }
+                _fastClickStopwatch.Restart();
+            }
+            return;
+        }
+    }
+
     internal uint RemapActionID(uint actionID)
     {
         try
         {
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
-            uint classId = localPlayer.ClassJob.Id;
-            if (localPlayer == null || !CustomCombosDict.ContainsKey(classId))
+            if (localPlayer == null)
             {
                 return OriginalHook(actionID);
             }
 
             byte level = localPlayer.Level;
-            foreach (CustomCombo customCombo in CustomCombosDict[classId])
+            foreach (CustomCombo customCombo in CustomCombos)
             {
-                if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newActionID))
+                if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
+
+                if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction))
                 {
-                    return OriginalHook(newActionID);
+                    return OriginalHook(newAction.ActionID);
                 }
             }
 
@@ -153,20 +297,11 @@ internal sealed class IconReplacer : IDisposable
         return 1uL;
     }
 
-    internal CooldownData GetCooldown(byte cooldownGroup)
-    {
-        if (actionManager == IntPtr.Zero)
-        {
-            return default;
-        }
-        return Marshal.PtrToStructure<CooldownData>(getActionCooldownSlot(actionManager, cooldownGroup - 1));
-    }
-
     internal static void SetEnable(string comboName, bool enable)
     {
         foreach (var combo in CustomCombos)
         {
-            if(combo.ComboFancyName == comboName)
+            if(combo.JobName == comboName)
             {
                 combo.IsEnabled = enable;
                 return;

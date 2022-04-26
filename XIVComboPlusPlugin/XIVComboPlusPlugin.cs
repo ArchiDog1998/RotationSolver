@@ -18,7 +18,9 @@ using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using XIVComboPlus;
+using XIVComboPlus.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVComboPlus;
@@ -37,8 +39,9 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 
     private static Framework _framework;
 
+    internal static Lumina.Excel.GeneratedSheets.ClassJob[] AllJobs;
 
-    public XIVComboPlusPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
+    public  XIVComboPlusPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
     {
         pluginInterface.Create<Service>(Array.Empty<object>());
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
@@ -66,6 +69,8 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
 
         _framework = framework;
         framework.Update += TargetHelper.Framework_Update;
+
+        AllJobs = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.ClassJob>().Where(x => x.JobIndex != 0).ToArray();
     }
 
 
@@ -84,27 +89,53 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         configWindow.IsOpen = true;
     }
 
-    internal void TargetObject(string command, string arguments)
+    internal unsafe void TargetObject(string command, string arguments)
     {
         string[] array = arguments.Split();
-
-        if(array.Length > 1)
+        if(array.Length > 0)
         {
-            if (array[1].Contains('B'))
+            switch (array[0])
             {
-                Service.Configuration.IsTargetBoss = true;
-            }
-
-            if (array[1].Contains('S'))
-            {
-                Service.Configuration.IsTargetBoss = false;
+                case "HealArea":
+                    IconReplacer.StartHealArea();
+                    break;
+                case "HealSingle":
+                    IconReplacer.StartHealSingle();
+                    break;
+                case "DefenseArea":
+                    IconReplacer.StartDefenseArea();
+                    break;
+                case "DefenseSingle":
+                    IconReplacer.StartDefenseSingle();
+                    break;
+                case "Esuna":
+                    IconReplacer.StartEsuna();
+                    break;
+                case "Raise":
+                    IconReplacer.StartRaise();
+                    break;
+                case "AntiRepulsion":
+                    IconReplacer.StartAntiRepulsion();
+                    break;
+                case "AttackBig":
+                    Service.Configuration.IsTargetBoss = true;
+                    IconReplacer.AutoTarget = true;
+                    IconReplacer.AutoAttack = true;
+                    break;
+                case "AttackSmall":
+                    Service.Configuration.IsTargetBoss = false;
+                    IconReplacer.AutoTarget = true;
+                    IconReplacer.AutoAttack = true;
+                    break;
+                case "AttackManual":
+                    IconReplacer.AutoTarget = false;
+                    IconReplacer.AutoAttack = true;
+                    break;
+                case "AttackCancel":
+                    IconReplacer.AutoAttack = false;
+                    break;
             }
         }
-
-
-        uint inputActions = TargetHelper.GetActionsByName(array[0]).RowId;
-        uint remapAction = Service.IconReplacer.RemapActionID(inputActions);
-        TargetHelper.SetTarget(TargetHelper.GetBestTarget(Service.DataManager.GetExcelSheet<Action>().GetRow(remapAction)));
     }
 
     private void OnCommand(string command, string arguments)
@@ -141,7 +172,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
                     for (int i = 0; i < IconReplacer.CustomCombos.Length; i++)
                     {
                         var value = IconReplacer.CustomCombos[i];
-                        if (value.ComboFancyName.ToLowerInvariant() == text3)
+                        if (value.JobName.ToLowerInvariant() == text3)
                         {
                             value.IsEnabled = true;
                             Service.ChatGui.Print($"{value} SET");
@@ -157,10 +188,10 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
                     for (int i = 0; i < IconReplacer.CustomCombos.Length; i++)
                     {
                         var customComboPreset2 = IconReplacer.CustomCombos[i];
-                        if (customComboPreset2.ComboFancyName.ToLowerInvariant() == text)
+                        if (customComboPreset2.JobName.ToLowerInvariant() == text)
                         {
                             customComboPreset2.IsEnabled = !customComboPreset2.IsEnabled;
-                            Service.ChatGui.Print(customComboPreset2.ComboFancyName + " " + (customComboPreset2.IsEnabled ? "SET": "UNSET"));
+                            Service.ChatGui.Print(customComboPreset2.JobName + " " + (customComboPreset2.IsEnabled ? "SET": "UNSET"));
                         }
                     }
                     Service.Configuration.Save();
@@ -191,7 +222,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
                     for (int i = 0; i < IconReplacer.CustomCombos.Length; i++)
                     {
                         var value = IconReplacer.CustomCombos[i];
-                        if (value.ComboFancyName.ToLowerInvariant() == text2)
+                        if (value.JobName.ToLowerInvariant() == text2)
                         {
                             value.IsEnabled = true;
                             Service.ChatGui.Print($"{value} UNSET");

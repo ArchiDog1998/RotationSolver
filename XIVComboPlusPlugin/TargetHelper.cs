@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,6 @@ namespace XIVComboPlus
             LowHP,
             FaceDirction,
             MajorTank,
-            DangeriousTank,
             Esuna,
             Provoke,
             Melee,
@@ -34,31 +34,30 @@ namespace XIVComboPlus
 
         private static SortedList<uint, GetTargetFunction> _specialGetTarget = new SortedList<uint, GetTargetFunction>()
         {
-            ////以太步，找面前的友军。
-            {BLMCombo.Actions.AetherialManipulation.ActionID, GetTargetFunction.FaceDirction},
-            {WHMCombo.Actions.Aquaveil.ActionID, GetTargetFunction.MajorTank },
-            {WHMCombo.Actions.DivineBenison.ActionID, GetTargetFunction.MajorTank },
-            {WHMCombo.Actions.Benediction.ActionID, GetTargetFunction.DangeriousTank },
-            {CustomCombo.GeneralActions.Esuna.ActionID, GetTargetFunction.Esuna},
-            {BRDCombo.Actions.WardensPaean.ActionID, GetTargetFunction.Esuna },
-            {CustomCombo.GeneralActions.Provoke.ActionID, GetTargetFunction.Provoke },
-            {WARCombo.Actions.Tomahawk.ActionID, GetTargetFunction.Provoke },
-            //{WARCombo.Actions.NascentFlash.ActionID, GetTargetFunction.MajorTank },
+            //////以太步，找面前的友军。
+            //{BLMCombo.Actions.AetherialManipulation.ActionID, GetTargetFunction.FaceDirction},
+            //{WHMCombo.Actions.Aquaveil.ActionID, GetTargetFunction.MajorTank },
+            //{WHMCombo.Actions.DivineBenison.ActionID, GetTargetFunction.MajorTank },
+            //{CustomCombo.GeneralActions.Esuna.ActionID, GetTargetFunction.Esuna},
+            //{BRDCombo.Actions.WardensPaean.ActionID, GetTargetFunction.Esuna },
+            //{CustomCombo.GeneralActions.Provoke.ActionID, GetTargetFunction.Provoke },
+            //{WARCombo.Actions.Tomahawk.ActionID, GetTargetFunction.Provoke },
+            ////{WARCombo.Actions.NascentFlash.ActionID, GetTargetFunction.MajorTank },
 
-            {ASTCombo.Actions.Balance.ActionID, GetTargetFunction.Melee },
-            {ASTCombo.Actions.Arrow.ActionID, GetTargetFunction.Melee },
-            {ASTCombo.Actions.Spear.ActionID, GetTargetFunction.Melee },
-            {ASTCombo.Actions.Bole.ActionID, GetTargetFunction.Range },
-            {ASTCombo.Actions.Ewer.ActionID, GetTargetFunction.Range },
-            {ASTCombo.Actions.Spire.ActionID, GetTargetFunction.Range },
-            {ASTCombo.Actions.Exaltation.ActionID, GetTargetFunction.MajorTank},
+            //{ASTCombo.Actions.Balance.ActionID, GetTargetFunction.Melee },
+            //{ASTCombo.Actions.Arrow.ActionID, GetTargetFunction.Melee },
+            //{ASTCombo.Actions.Spear.ActionID, GetTargetFunction.Melee },
+            //{ASTCombo.Actions.Bole.ActionID, GetTargetFunction.Range },
+            //{ASTCombo.Actions.Ewer.ActionID, GetTargetFunction.Range },
+            //{ASTCombo.Actions.Spire.ActionID, GetTargetFunction.Range },
+            //{ASTCombo.Actions.Exaltation.ActionID, GetTargetFunction.MajorTank},
 
-            {CustomCombo.GeneralActions.Interject.ActionID, GetTargetFunction.Interrupt },
-            {CustomCombo.GeneralActions.LowBlow.ActionID, GetTargetFunction.Interrupt },
-            {CustomCombo.GeneralActions.LegSweep.ActionID, GetTargetFunction.Interrupt },
-            {CustomCombo.GeneralActions.HeadGraze.ActionID, GetTargetFunction.Interrupt },
+            //{CustomCombo.GeneralActions.Interject.ActionID, GetTargetFunction.Interrupt },
+            //{CustomCombo.GeneralActions.LowBlow.ActionID, GetTargetFunction.Interrupt },
+            //{CustomCombo.GeneralActions.LegSweep.ActionID, GetTargetFunction.Interrupt },
+            //{CustomCombo.GeneralActions.HeadGraze.ActionID, GetTargetFunction.Interrupt },
 
-            {DRGCombo.Actions.DragonSight.ActionID, GetTargetFunction.Melee },
+            //{DRGCombo.Actions.DragonSight.ActionID, GetTargetFunction.Melee },
         };
 
         //All Targes
@@ -70,38 +69,29 @@ namespace XIVComboPlus
         internal static bool HaveTargetAngle { get; private set; } = false;
 
         internal static float WeaponRemain { get; private set; } = 0;
-        private static float _weaponTotal = 0;
-        internal static float WeaponTotal 
-        {
-            get => _weaponTotal;
-            private set
-            {
-                if(value > 0.1)
-                {
-                    _weaponTotal = value;
-                }
-            }
-        }
+        internal static float WeaponTotal { get; private set; } = 0;
+
         internal static byte AbilityRemainCount { get; private set; } = 0;
 
-
+        private const float WeaponInterval = 0.68f;
         //  public static PlayerCharacter[] PartyMembers =>
         //AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).ToArray();
-        public static PlayerCharacter[] PartyMembers { get; private set; } = new PlayerCharacter[0];
+        public static BattleChara[] PartyMembers { get; private set; } = new PlayerCharacter[0];
 
 
         /// <summary>
         /// 玩家们
         /// </summary>
-        internal static PlayerCharacter[] AllianceMembers { get; private set; } = new PlayerCharacter[0];
-        internal static PlayerCharacter[] PartyHealers { get; private set; } = new PlayerCharacter[0];
-        internal static PlayerCharacter[] PartyDPS { get; private set; } = new PlayerCharacter[0];
-        internal static PlayerCharacter[] PartyTanks { get; private set; } = new PlayerCharacter[0];
-        internal static PlayerCharacter[] PartyTanksAttached { get; private set; } = new PlayerCharacter[0];
-        internal static PlayerCharacter[] DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
-        internal static PlayerCharacter[] DeathPeopleParty { get; private set; } = new PlayerCharacter[0];
-        internal static PlayerCharacter[] WeakenPeople { get; private set; } = new PlayerCharacter[0];
-        internal static PlayerCharacter[] DyingPeople { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] AllianceMembers { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] PartyHealers { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] PartyMelee { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] PartyRange { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] PartyTanks { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] PartyTanksAttached { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] DeathPeopleParty { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] WeakenPeople { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] DyingPeople { get; private set; } = new PlayerCharacter[0];
         internal static float[] PartyMembersHP { get; private set; } = new float[0];
         internal static float PartyMembersAverHP { get; private set; } = 0;
         internal static float PartyMembersDifferHP { get; private set; } = 0;
@@ -118,7 +108,7 @@ namespace XIVComboPlus
             _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
         }
 
-        internal static void Framework_Update(Framework framework)
+        internal unsafe static void Framework_Update(Framework framework)
         {
             Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
             IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
@@ -136,10 +126,16 @@ namespace XIVComboPlus
             HaveTargetAngle = GetObjectInRadius(HostileTargets, 25).Length > 0;
             #endregion
 
-            var cool = Service.IconReplacer.GetCooldown(BaseAction.GCDCooldownGroup);
-            WeaponRemain = cool.CooldownRemaining;
-            WeaponTotal = cool.CooldownTotal;
-            AbilityRemainCount = (byte)(WeaponRemain / 0.62f);
+            unsafe
+            {
+                var instance = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
+                var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
+
+                WeaponTotal = instance-> GetRecastTime(spell, 11);
+                WeaponRemain = WeaponTotal - instance->GetRecastTimeElapsed(spell, 11);
+
+                AbilityRemainCount = (byte)(WeaponRemain / WeaponInterval);
+            }
 
 
             #region Friend
@@ -148,12 +144,14 @@ namespace XIVComboPlus
                 party.Where(obj => obj != null && obj.GameObject is PlayerCharacter).Select(obj => obj.GameObject as PlayerCharacter).ToArray();
 
             AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
+            //PartyMembers = AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).Union(new PlayerCharacter[] { Service.ClientState.LocalPlayer }).ToArray();
 
-            PartyHealers = GetJobCategory(PartyMembers, (jt) => jt == JobType.Healer);
-            PartyDPS = GetJobCategory(PartyMembers, (jt) => jt == JobType.Melee || jt == JobType.MagicalRanged || jt == JobType.PhysicalRanged);
-            PartyTanks = GetJobCategory(PartyMembers, (jt) => jt == JobType.Tank);
+            PartyHealers = GetJobCategory(PartyMembers, Role.治疗);
+            PartyMelee = GetJobCategory(PartyMembers, Role.近战);
+            PartyRange = GetJobCategory(PartyMembers, Role.远程);
+            PartyTanks = GetJobCategory(PartyMembers, Role.防护);
 
-            List<PlayerCharacter> attachedT = new List<PlayerCharacter>(PartyTanks.Length);
+            List<BattleChara> attachedT = new List<BattleChara>(PartyTanks.Length);
             foreach (var tank in PartyTanks)
             {
                 if (tank.TargetObject.TargetObject == tank)
@@ -186,7 +184,9 @@ namespace XIVComboPlus
             #endregion
 
             #region Health
-            PartyMembersHP = GetObjectInRadius(PartyMembers, 30).Select(p => (float)p.CurrentHp / p.MaxHp).Where(r => r != 0).ToArray();
+            var members = PartyMembers;
+
+            PartyMembersHP = GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
 
             float averHP = 0;
             foreach (var hp in PartyMembersHP)
@@ -203,12 +203,18 @@ namespace XIVComboPlus
             }
             PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Length);
 
-            CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
+            CanHealAreaAbility =PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
             CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
             CanHealSingleAbility = PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
             CanHealSingleSpell = PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
             HPNotFull = PartyMembersHP.Min() < 1;
             #endregion
+
+            if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
+            if (WeaponRemain < 0.05) Service.IconReplacer.DoAnAction();
+            //要超出GCD了，那就不放技能了。
+            if (WeaponRemain + WeaponInterval > WeaponTotal) return;
+            else if (WeaponRemain % WeaponInterval < 0.05) Service.IconReplacer.DoAnAction();
         }
 
 
@@ -230,11 +236,11 @@ namespace XIVComboPlus
         }
 
 
-        private static PlayerCharacter[] GetJobCategory(PlayerCharacter[] objects, Func<JobType, bool> check)
+        private static BattleChara[] GetJobCategory(BattleChara[] objects, Role role)
         {
-            List<PlayerCharacter> result = new List<PlayerCharacter>(objects.Length);
+            List<BattleChara> result = new List<BattleChara>(objects.Length);
 
-            SortedSet<byte> validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => check(job.Type)).Select(job => job.Index));
+            SortedSet<byte> validJobs = new SortedSet<byte>(XIVComboPlusPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
 
             foreach (var obj in objects)
             {
@@ -242,13 +248,14 @@ namespace XIVComboPlus
             }
             return result.ToArray();
         }
-        private static bool GetJobCategory(PlayerCharacter obj, Func<JobType, bool> check)
+        private static bool GetJobCategory(BattleChara obj, Role role)
         {
-            SortedSet<byte> validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => check(job.Type)).Select(job => job.Index));
+            
+            SortedSet<byte> validJobs = new SortedSet<byte>(XIVComboPlusPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
             return GetJobCategory(obj, validJobs);
         }
 
-        internal static bool GetJobCategory(PlayerCharacter obj, SortedSet<byte> validJobs)
+        internal static bool GetJobCategory(BattleChara obj, SortedSet<byte> validJobs)
         {
             return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
         }
@@ -268,29 +275,7 @@ namespace XIVComboPlus
             return null;
         }
 
-        public static PlayerCharacter[] GetDangerousTanks(out float[] times)
-        {
-            var tanks = PartyTanks;
-            List<PlayerCharacter> dangeriousTanks = new List<PlayerCharacter>(tanks.Length);
-            List<float> time = new List<float>(tanks.Length);
-            uint[] dangerousState = new uint[] { ObjectStatus.Holmgang, ObjectStatus.WalkingDead, ObjectStatus.Superbolide };
-            foreach (var member in tanks)
-            {
-                //看看有没有人要搞死自己。
-                foreach (var tag in member.StatusList)
-                {
-                    if (dangerousState.Contains(tag.StatusId))
-                    {
-                        dangeriousTanks.Add(member);
-                        time.Add(tag.RemainingTime);
-                        break;
-                    }
-                }
-            }
-            times = time.ToArray();
-            return dangeriousTanks.ToArray();
-        }
-        private static GameObject GetDeathPeople()
+        internal static BattleChara GetDeathPeople()
         {
             var deathAll = DeathPeopleAll;
             var deathParty = DeathPeopleParty;
@@ -300,7 +285,7 @@ namespace XIVComboPlus
             {
                 //确认一下死了的T有哪些。
 
-                var deathT = GetJobCategory(deathParty, (j) => j == JobType.Tank);
+                var deathT = GetJobCategory(deathParty, Role.防护);
                 int TCount = PartyTanks.Length;
 
                 //如果全死了，赶紧复活啊。
@@ -310,7 +295,7 @@ namespace XIVComboPlus
                 }
 
                 //确认一下死了的H有哪些。
-                var deathH = GetJobCategory(deathParty, (j) => j == JobType.Healer);
+                var deathH = GetJobCategory(deathParty, Role.治疗);
 
                 //如果H死了，就先救他。
                 if (deathH.Length != 0) return deathH[0];
@@ -326,67 +311,67 @@ namespace XIVComboPlus
             if (deathAll.Length == 0) return null;
 
             //确认一下死了的H有哪些。
-            var deathAllH = GetJobCategory(deathAll, (j) => j == JobType.Healer);
+            var deathAllH = GetJobCategory(deathAll, Role.治疗);
             if (deathAllH.Length != 0) return deathAllH[0];
 
             //确认一下死了的T有哪些。
-            var deathAllT = GetJobCategory(deathAll, (j) => j == JobType.Tank);
+            var deathAllT = GetJobCategory(deathAll, Role.防护);
             if (deathAllT.Length != 0) return deathAllT[0];
 
             return deathAll[0];
         }
-        private static GameObject ASTMeleeTarget(float range, PlayerCharacter[] ASTTargets)
-        {
+        //private static GameObject ASTMeleeTarget(float range, BattleChara[] ASTTargets)
+        //{
 
-            var targets = GetObjectInRadius(GetJobCategory(ASTTargets, (jt) => jt == JobType.Melee), range);
-            if (targets.Length > 0) return RandomObject(targets);
+        //    var targets = GetObjectInRadius(GetJobCategory(ASTTargets, Role.近战), range);
+        //    if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetObjectInRadius(GetJobCategory(ASTTargets, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged), range);
-            if (targets.Length > 0) return RandomObject(targets);
+        //    targets = GetObjectInRadius(GetJobCategory(ASTTargets, Role.远程), range);
+        //    if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetObjectInRadius(ASTTargets, range);
-            if (targets.Length > 0) return RandomObject(targets);
+        //    targets = GetObjectInRadius(ASTTargets, range);
+        //    if (targets.Length > 0) return RandomObject(targets);
 
-            return null;
-        }
-        private static PlayerCharacter[] GetASTTargets()
-        {
-            var allStatus = new uint[] 
-            {
-                ObjectStatus.TheArrow,
-                ObjectStatus.TheBalance,
-                ObjectStatus.TheBole,
-                ObjectStatus.TheEwer,
-                ObjectStatus.TheSpear,
-                ObjectStatus.TheSpire,
+        //    return null;
+        //}
+        //private static BattleChara[] GetASTTargets()
+        //{
+        //    var allStatus = new uint[] 
+        //    {
+        //        ObjectStatus.TheArrow,
+        //        ObjectStatus.TheBalance,
+        //        ObjectStatus.TheBole,
+        //        ObjectStatus.TheEwer,
+        //        ObjectStatus.TheSpear,
+        //        ObjectStatus.TheSpire,
 
-            };
-            return PartyMembers.Where((t) =>
-            {
-                foreach (Status status in t.StatusList)
-                {
-                    if(allStatus.Contains(status.StatusId))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }).ToArray();
-        }
-        private static GameObject ASTRangeTarget(float range, PlayerCharacter[] ASTTargets)
-        {
+        //    };
+        //    return PartyMembers.Where((t) =>
+        //    {
+        //        foreach (Status status in t.StatusList)
+        //        {
+        //            if(allStatus.Contains(status.StatusId))
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //        return true;
+        //    }).ToArray();
+        //}
+        //private static GameObject ASTRangeTarget(float range, BattleChara[] ASTTargets)
+        //{
 
-            var targets = GetObjectInRadius(GetJobCategory(ASTTargets, (jt) => jt == JobType.PhysicalRanged || jt == JobType.MagicalRanged), range);
-            if (targets.Length > 0) return RandomObject(targets);
+        //    var targets = GetObjectInRadius(GetJobCategory(ASTTargets, Role.远程), range);
+        //    if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetObjectInRadius(GetJobCategory(ASTTargets, (jt) => jt == JobType.Melee), range);
-            if (targets.Length > 0) return RandomObject(targets);
+        //    targets = GetObjectInRadius(GetJobCategory(ASTTargets, Role.近战), range);
+        //    if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetObjectInRadius(ASTTargets, range);
-            if (targets.Length > 0) return RandomObject(targets);
+        //    targets = GetObjectInRadius(ASTTargets, range);
+        //    if (targets.Length > 0) return RandomObject(targets);
 
-            return null;
-        }
+        //    return null;
+        //}
 
         private static GameObject RandomObject(GameObject[] objs)
         {
@@ -394,189 +379,194 @@ namespace XIVComboPlus
             return objs[ran.Next(objs.Length)];
         }
 
-        internal static GameObject GetBestTarget(Action act)
-        {
-            //如果都没有距离，这个还需要选对象嘛？选原来的对象啊！
-            if (act.Range == 0) return Service.TargetManager.Target ?? Service.ClientState.LocalPlayer;
+        //internal static GameObject GetBestTarget(Action act)
+        //{
+        //    //如果都没有距离，这个还需要选对象嘛？选原来的对象啊！
+        //    if (act.Range == 0) return Service.TargetManager.Target ?? Service.ClientState.LocalPlayer;
 
 
-            //首先看看是不是能对小队成员进行操作的。
-            if (act.CanTargetParty || act.RowId == WHMCombo.Actions.Asylum.ActionID)
-            {
-                //还消耗2400的蓝，那肯定是复活的。
-                if (act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
-                {
-                    return GetDeathPeople();
-                }
+        //    //首先看看是不是能对小队成员进行操作的。
+        //    if (act.CanTargetParty)
+        //        //if (act.CanTargetParty || act.RowId == WHMCombo.Actions.Asylum.ActionID)
+        //    {
+        //        //还消耗2400的蓝，那肯定是复活的。
+        //        if (act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
+        //        {
+        //            return GetDeathPeople();
+        //        }
 
-                //找到没死的队友们。
-                PlayerCharacter[] availableCharas = PartyMembers.Where(player => player.CurrentHp != 0).ToArray();
+        //        //找到没死的队友们。
+        //        BattleChara[] availableCharas = PartyMembers.Where(player => player.CurrentHp != 0).ToArray();
 
-                if (!act.CanTargetSelf && act.RowId != WHMCombo.Actions.Asylum.ActionID)
-                {
-                    availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
-                }
+        //        //if (!act.CanTargetSelf && act.RowId != WHMCombo.Actions.Asylum.ActionID)
+        //        if (!act.CanTargetSelf)
+        //            {
+        //            availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+        //        }
 
-                //判断是否是范围。
-                if (act.CastType > 1)
-                {
-                    //找到能覆盖最多的位置，并且选血最少的来。
-                    return GetMostObjectInRadius(availableCharas, act.Range, act.EffectRange, false).OrderBy(p => (float)p.CurrentHp / p.MaxHp).First();
-                }
-                else
-                {
-                    availableCharas = GetObjectInRadius(availableCharas, act.Range);
+        //        //判断是否是范围。
+        //        if (act.CastType > 1)
+        //        {
+        //            //找到能覆盖最多的位置，并且选血最少的来。
+        //            return GetMostObjectInRadius(availableCharas, act.Range, act.EffectRange, false).OrderBy(p => (float)p.CurrentHp / p.MaxHp).First();
+        //        }
+        //        else
+        //        {
+        //            //bool shouldHeal = GetDangerousTanks(GetObjectInRadius(PartyTanks, act.Range), out var dangeriousTank);
+        //            availableCharas = GetObjectInRadius(availableCharas, act.Range);
 
-                    //如果是特殊需求的话。
-                    if (_specialGetTarget.ContainsKey(act.RowId))
-                    {
-                        switch (_specialGetTarget[act.RowId])
-                        {
-                            //如果特殊需求就是选最少的血量，那就跳过，到最后再处理。
-                            case GetTargetFunction.LowHP:
-                            default:
-                                break;
+        //            //如果是特殊需求的话。
+        //            if (_specialGetTarget.ContainsKey(act.RowId))
+        //            {
+        //                switch (_specialGetTarget[act.RowId])
+        //                {
+        //                    //如果特殊需求就是选最少的血量，那就跳过，到最后再处理。
+        //                    case GetTargetFunction.LowHP:
+        //                    default:
+        //                        break;
 
-                            case GetTargetFunction.Melee:
-                                return ASTMeleeTarget(GetRange(act), GetASTTargets());
+        //                    case GetTargetFunction.Melee:
+        //                        return ASTMeleeTarget(GetRange(act), GetASTTargets());
 
-                            case GetTargetFunction.Range:
-                                return ASTRangeTarget(GetRange(act), GetASTTargets());
+        //                    case GetTargetFunction.Range:
+        //                        return ASTRangeTarget(GetRange(act), GetASTTargets());
 
-                                //找到面前夹角30度中最远的那个目标。
-                            case GetTargetFunction.FaceDirction:
+        //                        //找到面前夹角30度中最远的那个目标。
+        //                    case GetTargetFunction.FaceDirction:
 
-                                //把T去掉，省的突然暴毙。
-                                availableCharas = GetJobCategory(availableCharas, (jt) => !(jt == JobType.Tank));
+        //                        //把T去掉，省的突然暴毙。
+        //                        availableCharas = GetJobCategory(availableCharas, Role.防护);
 
-                                Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
-                                float rotation = Service.ClientState.LocalPlayer.Rotation;
-                                Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+        //                        Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
+        //                        float rotation = Service.ClientState.LocalPlayer.Rotation;
+        //                        Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
 
-                                return  availableCharas.Where(t =>
-                                {
-                                    Vector3 dir = t.Position - pPosition;
-                                    Vector2 dirVec = new Vector2(dir.Z, dir.X);
-                                    double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
-                                    return angle <= Math.PI / 6;
-                                }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
+        //                        return  availableCharas.Where(t =>
+        //                        {
+        //                            Vector3 dir = t.Position - pPosition;
+        //                            Vector2 dirVec = new Vector2(dir.Z, dir.X);
+        //                            double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
+        //                            return angle <= Math.PI / 6;
+        //                        }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
 
-                                //找到被打的坦克中血最少的那个。
-                            case GetTargetFunction.MajorTank:
-                                var tanks = PartyTanksAttached;
-                                if(tanks.Length == 0)
-                                {
-                                    tanks = PartyTanks;
-                                }
-                                return  tanks.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
+        //                        //找到被打的坦克中血最少的那个。
+        //                    case GetTargetFunction.MajorTank:
+        //                        var tanks = PartyTanksAttached;
+        //                        if(tanks.Length == 0)
+        //                        {
+        //                            tanks = PartyTanks;
+        //                        }
+        //                        return  tanks.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
 
-                                //天赐给那个要死了的人！
-                            case GetTargetFunction.DangeriousTank:
-                                if (WHMCombo.UseBenediction())
-                                {
-                                    tanks = GetDangerousTanks(out _);
-                                    if (tanks.Length > 0) return tanks[0];
-                                }
-                                break;
+        //                    //    //天赐给那个要死了的人！
+        //                    //case GetTargetFunction.DangeriousTank:
+        //                    //    if (WHMCombo.UseBenediction())
+        //                    //    {
+        //                    //        tanks = GetDangerousTanks(out _);
+        //                    //        if (tanks.Length > 0) return tanks[0];
+        //                    //    }
+        //                    //    break;
 
-                            case GetTargetFunction.Esuna:
-                                availableCharas = GetObjectInRadius(DyingPeople, act.Range);
+        //                    case GetTargetFunction.Esuna:
+        //                        availableCharas = GetObjectInRadius(DyingPeople, act.Range);
 
-                                if (availableCharas.Length != 0) return availableCharas[0];
-                                availableCharas = GetObjectInRadius(WeakenPeople, act.Range);
+        //                        if (availableCharas.Length != 0) return availableCharas[0];
+        //                        availableCharas = GetObjectInRadius(WeakenPeople, act.Range);
 
-                                if (availableCharas.Length != 0) return availableCharas[0];
-                                return PartyMembers[0];
-                        }
-                    }
+        //                        if (availableCharas.Length != 0) return availableCharas[0];
+        //                        return PartyMembers[0];
+        //                }
+        //            }
 
-                    ////如果坦克血不多了的话，那就先奶坦克。
-                    //var tank = PartyTanks.Where(player => player.CurrentHp != 0).OrderBy(play => (float)play.CurrentHp / play.MaxHp).First();
-                    //if ((float)tank.CurrentHp / tank.MaxHp < 0.5) return tank;
+        //            ////如果不用治疗，那就不治疗。
+        //            //if (!shouldHeal)
+        //            //{
+        //            //    availableCharas = availableCharas.Except(dangeriousTank).ToArray();
+        //            //}
 
-                    //选血量最少的那个。
-                    return availableCharas.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
+        //            //选血量最少的那个。
+        //            return availableCharas.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
 
-                }
-            }
-            //再看看是否可以选中敌对的。
-            else if (act.CanTargetHostile)
-            {
-                switch (act.CastType)
-                {
-                    case 1:
-                    default:
+        //        }
+        //    }
+        //    //再看看是否可以选中敌对的。
+        //    else if (act.CanTargetHostile)
+        //    {
+        //        switch (act.CastType)
+        //        {
+        //            case 1:
+        //            default:
 
-                        BattleChara[] canReachTars = new BattleChara[0];
-                        //如果是特殊需求的话。
-                        if (_specialGetTarget.ContainsKey(act.RowId))
-                        {
-                            switch (_specialGetTarget[act.RowId])
-                            {
-                                case GetTargetFunction.Provoke:
-                                    canReachTars = GetObjectInRadius(ProvokeTarget(out _), GetRange(act));
-                                    break;
-                                case GetTargetFunction.Interrupt:
-                                    canReachTars = CanInterruptTargets;
-                                    break;
+        //                BattleChara[] canReachTars = new BattleChara[0];
+        //                //如果是特殊需求的话。
+        //                if (_specialGetTarget.ContainsKey(act.RowId))
+        //                {
+        //                    switch (_specialGetTarget[act.RowId])
+        //                    {
+        //                        case GetTargetFunction.Provoke:
+        //                            canReachTars = GetObjectInRadius(ProvokeTarget(out _), GetRange(act));
+        //                            break;
+        //                        case GetTargetFunction.Interrupt:
+        //                            canReachTars = CanInterruptTargets;
+        //                            break;
 
-                            }
-                        }
+        //                    }
+        //                }
 
-                        //找到能打到的怪。
-                        if(canReachTars.Length == 0) canReachTars = GetObjectInRadius(HostileTargets, GetRange(act));
+        //                //找到能打到的怪。
+        //                if(canReachTars.Length == 0) canReachTars = GetObjectInRadius(HostileTargets, GetRange(act));
 
 
-                        //判断一下要选择打体积最大的，还是最小的。
-                        if (Service.Configuration.IsTargetBoss)
-                        {
-                            canReachTars = canReachTars.OrderByDescending(player => player.HitboxRadius).ToArray();
-                        }
-                        else
-                        {
-                            canReachTars = canReachTars.OrderBy(player => player.HitboxRadius).ToArray();
-                        }
+        //                //判断一下要选择打体积最大的，还是最小的。
+        //                if (Service.Configuration.IsTargetBoss)
+        //                {
+        //                    canReachTars = canReachTars.OrderByDescending(player => player.HitboxRadius).ToArray();
+        //                }
+        //                else
+        //                {
+        //                    canReachTars = canReachTars.OrderBy(player => player.HitboxRadius).ToArray();
+        //                }
 
-                        //找到体积一样小的
-                        List<BattleChara> canGet = new List<BattleChara>(canReachTars.Length) { canReachTars[0] };
+        //                //找到体积一样小的
+        //                List<BattleChara> canGet = new List<BattleChara>(canReachTars.Length) { canReachTars[0] };
 
-                        float radius = canReachTars[0].HitboxRadius;
-                        for (int i = 1; i < canReachTars.Length; i++)
-                        {
-                            if(canReachTars[i].HitboxRadius == radius)
-                            {
-                                canGet.Add(canReachTars[i]);
-                            }
-                            else break;
-                        }
+        //                float radius = canReachTars[0].HitboxRadius;
+        //                for (int i = 1; i < canReachTars.Length; i++)
+        //                {
+        //                    if(canReachTars[i].HitboxRadius == radius)
+        //                    {
+        //                        canGet.Add(canReachTars[i]);
+        //                    }
+        //                    else break;
+        //                }
 
-                        return canGet.OrderBy(player => Vector3.Distance(player.Position, Service.ClientState.LocalPlayer.Position)).First();
+        //                return canGet.OrderBy(player => Vector3.Distance(player.Position, Service.ClientState.LocalPlayer.Position)).First();
 
-                    case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        return GetMostObjectInRadius(HostileTargets, GetRange(act), act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
+        //            case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
+        //                return GetMostObjectInRadius(HostileTargets, GetRange(act), act.EffectRange, false).OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
 
-                    case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        return GetMostObjectInArc(HostileTargets, act.EffectRange, false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+        //            case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
+        //                return GetMostObjectInArc(HostileTargets, act.EffectRange, false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
 
-                    case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        return GetMostObjectInLine(HostileTargets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
+        //            case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
+        //                return GetMostObjectInLine(HostileTargets, GetRange(act), false).OrderByDescending(p => Vector3.Distance(Service.ClientState.LocalPlayer.Position, p.Position)).First();
 
-                }
-            }
-            else if (act.CanTargetSelf)
-            {
-                return Service.ClientState.LocalPlayer;
-            }
-            //那么这个就不需要找到目标了，要么对着自己，要么就什么都不能选中。
-            else
-            {
-                return Service.TargetManager.Target ?? Service.ClientState.LocalPlayer;
-            }
-        }
+        //        }
+        //    }
+        //    else if (act.CanTargetSelf)
+        //    {
+        //        return Service.ClientState.LocalPlayer;
+        //    }
+        //    //那么这个就不需要找到目标了，要么对着自己，要么就什么都不能选中。
+        //    else
+        //    {
+        //        return Service.TargetManager.Target ?? Service.ClientState.LocalPlayer;
+        //    }
+        //}
 
         internal static BattleChara[] ProvokeTarget(out bool haveTargetOnme)
         {
-            var tankIDS = GetJobCategory(AllianceMembers, (jt) => jt == JobType.Tank).Select(member => member.ObjectId);
+            var tankIDS = GetJobCategory(AllianceMembers, Role.防护).Select(member => member.ObjectId);
             var loc = Service.ClientState.LocalPlayer.Position;
             var id = Service.ClientState.LocalPlayer.ObjectId;
 
@@ -608,10 +598,10 @@ namespace XIVComboPlus
             return targets.ToArray();
         }
 
-        private static float GetRange(Action act)
+        internal static float GetRange(Action act)
         {
             sbyte range = act.Range;
-            if (range < 0 && GetJobCategory(Service.ClientState.LocalPlayer, (type) => type == JobType.PhysicalRanged))
+            if (range < 0 && GetJobCategory(Service.ClientState.LocalPlayer, Role.远程))
             {
                 range = 25;
             }
@@ -636,6 +626,15 @@ namespace XIVComboPlus
                     {
                         return GetDeathPeople() != null;
                     }
+                    if (_specialGetTarget.ContainsKey(act.RowId))
+                    {
+                        switch (_specialGetTarget[act.RowId])
+                        {
+                            case GetTargetFunction.Interrupt:
+                                tar = CanInterruptTargets;
+                                break;
+                        }
+                    }
                     return GetObjectInRadius(tar, GetRange(act)).Count() > 0;
                 case 2: // 圆形范围攻击，看看人数够不够。
 
@@ -657,9 +656,9 @@ namespace XIVComboPlus
             return true;
         }
 
-        private static PlayerCharacter[] GetDeath(PlayerCharacter[] charas)
+        private static BattleChara[] GetDeath(BattleChara[] charas)
         {
-            List<PlayerCharacter> list = new List<PlayerCharacter>(charas.Length);
+            List<BattleChara> list = new List<BattleChara>(charas.Length);
             foreach (var item in charas)
             {
                 //如果还有血，就算了。
@@ -738,7 +737,7 @@ namespace XIVComboPlus
             //能打到MaxCount以上数量的怪的怪。
             List<T> objectMax = new List<T>(canGetObj.Length);
 
-            int maxCount = Service.Configuration.MultiCount;
+            int maxCount = Service.Configuration.HostileCount;
 
             //循环能打中的目标。
             foreach (var t in canGetObj)
