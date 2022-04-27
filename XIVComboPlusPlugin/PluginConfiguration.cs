@@ -16,10 +16,8 @@ public class PluginConfiguration : IPluginConfiguration
 
     public int HostileCount { get; set; } = 2;
     public int PartyCount { get; set; } = 2;
-
-    public bool IsTargetBoss { get; set; } = true;
     public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
-
+    public List<ActionEvents> Events { get; private set; } = new List<ActionEvents>();
     public float HealthDifference { get; set; } = 0.2f;
     public float HealthAreaAbility { get; set; } = 0.85f;
     public float HealthAreafSpell { get; set; } = 0.6f;

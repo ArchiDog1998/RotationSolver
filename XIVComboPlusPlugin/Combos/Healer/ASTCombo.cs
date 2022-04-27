@@ -106,8 +106,27 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             //抽卡
             Draw = new BaseAction(3590),
 
-            //出卡
-            //Play = new BaseAction(17055),
+            ////出卡
+            //Play = new BaseAction(17055)
+            //{
+            //    ChangeRange = a => 30,
+            //    TargetFriendly = a => true,
+            //    ChoiceFriend = bs =>
+            //    {
+            //        switch (JobGauge.DrawnCard)
+            //        {
+            //            case CardType.BALANCE:
+            //            case CardType.ARROW:
+            //            case CardType.SPEAR:
+            //                return ASTMeleeTarget(bs);
+            //            case CardType.BOLE:
+            //            case CardType.EWER:
+            //            case CardType.SPIRE:
+            //                return ASTRangeTarget(bs);
+            //            default: return null;
+            //        }
+            //    }
+            //},
 
             //重抽
             Redraw = new BaseAction(3593)
@@ -176,7 +195,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
         //大宇宙
-        if (Actions.Macrocosmos.ShouldUseAction( out act, mustUse: true)) return true;
+        if (Actions.Macrocosmos.ShouldUseAction(out act, mustUse: true)) return true;
         //群体输出
         if (Actions.Gravity.ShouldUseAction(out act)) return true;
 
@@ -201,7 +220,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool EmergercyAbility( byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
         if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
@@ -272,7 +291,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.EarthlyDominance)
                 && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
             {
-                if (Actions.EarthlyStar.ShouldUseAction(out act)) return true;
+                if (Actions.EarthlyStar.ShouldUseAction(out act, mustUse:true)) return true;
             }
             //加星星的进攻Buff
             if (Actions.Astrodyne.ShouldUseAction(out act)) return true;
@@ -404,7 +423,6 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             ObjectStatus.TheEwer,
             ObjectStatus.TheSpear,
             ObjectStatus.TheSpire,
-
         };
         return sources.Where((t) =>
         {

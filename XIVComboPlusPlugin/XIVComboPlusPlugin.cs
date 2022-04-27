@@ -71,8 +71,14 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         framework.Update += TargetHelper.Framework_Update;
 
         AllJobs = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.ClassJob>().Where(x => x.JobIndex != 0).ToArray();
+
+        Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
     }
 
+    private void ClientState_TerritoryChanged(object sender, ushort e)
+    {
+        IconReplacer.AutoAttack = false;
+    }
 
     public void Dispose()
     {
@@ -82,6 +88,8 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.IconReplacer.Dispose();
         _framework.Update -= TargetHelper.Framework_Update;
+        Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
+
     }
 
     private void OnOpenConfigUi()
@@ -92,7 +100,8 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
     internal unsafe void TargetObject(string command, string arguments)
     {
         string[] array = arguments.Split();
-        if(array.Length > 0)
+
+        if (array.Length > 0)
         {
             switch (array[0])
             {
@@ -118,14 +127,10 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
                     IconReplacer.StartAntiRepulsion();
                     break;
                 case "AttackBig":
-                    Service.Configuration.IsTargetBoss = true;
-                    IconReplacer.AutoTarget = true;
-                    IconReplacer.AutoAttack = true;
+                    IconReplacer.AttackBig = true;
                     break;
                 case "AttackSmall":
-                    Service.Configuration.IsTargetBoss = false;
-                    IconReplacer.AutoTarget = true;
-                    IconReplacer.AutoAttack = true;
+                    IconReplacer.AttackBig = false;
                     break;
                 case "AttackManual":
                     IconReplacer.AutoTarget = false;

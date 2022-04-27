@@ -152,12 +152,12 @@ namespace XIVComboPlus.Combos
             ClarifyingDraw = 2713,
 
             //六个Buff
-            TheBalance = 829,
-            TheBole = 830,
-            TheArrow = 831,
-            TheSpear = 832,
-            TheEwer = 833,
-            TheSpire = 834,
+            TheBalance = 1882,
+            TheBole = 1883,
+            TheArrow = 1884,
+            TheSpear = 1885,
+            TheEwer = 1886,
+            TheSpire = 1887,
 
             //地星主宰
             EarthlyDominance = 1224,

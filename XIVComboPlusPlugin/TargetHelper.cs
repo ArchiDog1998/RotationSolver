@@ -110,111 +110,119 @@ namespace XIVComboPlus
 
         internal unsafe static void Framework_Update(Framework framework)
         {
-            Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
-            IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
-            _lastPosition = thisPosition;
-
-            #region Hostile
-            AllTargets = Service.ObjectTable.Where(obj => obj is BattleChara && ((BattleChara)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
-
-            uint[] ids = GetEnemies();
-            var hosts = AllTargets.Where(t => t.TargetObject?.IsValid() ?? false || ids.Contains(t.ObjectId)).ToArray();
-            HostileTargets = hosts.Length == 0 ? AllTargets : hosts;
-
-            CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible).ToArray();
-
-            HaveTargetAngle = GetObjectInRadius(HostileTargets, 25).Length > 0;
-            #endregion
-
-            unsafe
+            try
             {
-                var instance = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
-                var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
+                Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
+                IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
+                _lastPosition = thisPosition;
 
-                WeaponTotal = instance-> GetRecastTime(spell, 11);
-                WeaponRemain = WeaponTotal - instance->GetRecastTimeElapsed(spell, 11);
+                #region Hostile
+                AllTargets = Service.ObjectTable.Where(obj => obj is BattleChara && ((BattleChara)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
 
-                AbilityRemainCount = (byte)(WeaponRemain / WeaponInterval);
-            }
+                uint[] ids = GetEnemies();
+                var hosts = AllTargets.Where(t => t.TargetObject?.IsValid() ?? false || ids.Contains(t.ObjectId)).ToArray();
+                HostileTargets = hosts.Length == 0 ? AllTargets : hosts;
 
+                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible).ToArray();
 
-            #region Friend
-            var party = Service.PartyList;
-            PartyMembers = party.Length == 0 ? new PlayerCharacter[] { Service.ClientState.LocalPlayer } :
-                party.Where(obj => obj != null && obj.GameObject is PlayerCharacter).Select(obj => obj.GameObject as PlayerCharacter).ToArray();
+                HaveTargetAngle = BaseAction.GetObjectInRadius(HostileTargets, 25).Length > 0;
+                #endregion
 
-            AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
-            //PartyMembers = AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).Union(new PlayerCharacter[] { Service.ClientState.LocalPlayer }).ToArray();
-
-            PartyHealers = GetJobCategory(PartyMembers, Role.治疗);
-            PartyMelee = GetJobCategory(PartyMembers, Role.近战);
-            PartyRange = GetJobCategory(PartyMembers, Role.远程);
-            PartyTanks = GetJobCategory(PartyMembers, Role.防护);
-
-            List<BattleChara> attachedT = new List<BattleChara>(PartyTanks.Length);
-            foreach (var tank in PartyTanks)
-            {
-                if (tank.TargetObject.TargetObject == tank)
+                unsafe
                 {
-                    attachedT.Add(tank);
+                    var instance = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
+                    var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
+
+                    WeaponTotal = instance->GetRecastTime(spell, 11);
+                    WeaponRemain = WeaponTotal - instance->GetRecastTimeElapsed(spell, 11);
+
+                    AbilityRemainCount = (byte)(WeaponRemain / WeaponInterval);
                 }
-            }
-            PartyTanksAttached = attachedT.ToArray();
 
-            DeathPeopleAll = GetObjectInRadius(GetDeath(AllianceMembers), 30);
-            DeathPeopleParty = GetObjectInRadius(GetDeath(PartyMembers), 30);
+                #region Friend
+                var party = Service.PartyList;
+                PartyMembers = party.Length == 0 ? new BattleChara[] { Service.ClientState.LocalPlayer } :
+                    party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara).ToArray();
 
-            WeakenPeople = PartyMembers.Where(p =>
-            {
-                foreach (var status in p.StatusList)
+                AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
+                //PartyMembers = AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).Union(new PlayerCharacter[] { Service.ClientState.LocalPlayer }).ToArray();
+
+                PartyHealers = GetJobCategory(PartyMembers, Role.治疗);
+                PartyMelee = GetJobCategory(PartyMembers, Role.近战);
+                PartyRange = GetJobCategory(PartyMembers, Role.远程);
+                PartyTanks = GetJobCategory(PartyMembers, Role.防护);
+
+                List<BattleChara> attachedT = new List<BattleChara>(PartyTanks.Length);
+                foreach (var tank in PartyTanks)
                 {
-                    if (status.GameData.CanDispel) return true;
+                    if (tank.TargetObject?.TargetObject == tank)
+                    {
+                        attachedT.Add(tank);
+                    }
                 }
-                return false;
-            }).ToArray();
+                PartyTanksAttached = attachedT.ToArray();
 
-            DyingPeople = PartyMembers.Where(p =>
-            {
-                foreach (var status in p.StatusList)
+
+                DeathPeopleAll = BaseAction.GetObjectInRadius(GetDeath(AllianceMembers), 30);
+                DeathPeopleParty = BaseAction.GetObjectInRadius(GetDeath(PartyMembers), 30);
+
+                WeakenPeople = PartyMembers.Where(p =>
                 {
-                    if (status.StatusId == ObjectStatus.Doom) return true;
+                    foreach (var status in p.StatusList)
+                    {
+                        if (status.GameData.CanDispel) return true;
+                    }
+                    return false;
+                }).ToArray();
+
+                DyingPeople = PartyMembers.Where(p =>
+                {
+                    foreach (var status in p.StatusList)
+                    {
+                        if (status.StatusId == ObjectStatus.Doom) return true;
+                    }
+                    return false;
+                }).ToArray();
+                #endregion
+
+                #region Health
+                var members = PartyMembers;
+
+                PartyMembersHP = BaseAction.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
+
+                float averHP = 0;
+                foreach (var hp in PartyMembersHP)
+                {
+                    averHP += hp;
                 }
-                return false;
-            }).ToArray();
-            #endregion
+                PartyMembersAverHP = averHP / PartyMembersHP.Length;
 
-            #region Health
-            var members = PartyMembers;
+                double differHP = 0;
+                float average = PartyMembersAverHP;
+                foreach (var hp in PartyMembersHP)
+                {
+                    differHP += Math.Pow(hp - average, 2);
+                }
+                PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Length);
 
-            PartyMembersHP = GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
 
-            float averHP = 0;
-            foreach (var hp in PartyMembersHP)
-            {
-                averHP += hp;
+                CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
+                CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
+                CanHealSingleAbility = PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
+                CanHealSingleSpell = PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
+                HPNotFull = PartyMembersHP.Min() < 1;
+                #endregion
             }
-            PartyMembersAverHP = averHP / PartyMembersHP.Length;
-
-            double differHP = 0;
-            float average = PartyMembersAverHP;
-            foreach (var hp in PartyMembersHP)
+            catch (Exception ex)
             {
-                differHP += Math.Pow(hp - average, 2);
+                Service.ChatGui.PrintError(ex.Message);
             }
-            PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Length);
-
-            CanHealAreaAbility =PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
-            CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
-            CanHealSingleAbility = PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
-            CanHealSingleSpell = PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
-            HPNotFull = PartyMembersHP.Min() < 1;
-            #endregion
 
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
             if (WeaponRemain < 0.05) Service.IconReplacer.DoAnAction();
             //要超出GCD了，那就不放技能了。
-            if (WeaponRemain + WeaponInterval > WeaponTotal) return;
-            else if (WeaponRemain % WeaponInterval < 0.05) Service.IconReplacer.DoAnAction();
+            else if (WeaponRemain + WeaponInterval > WeaponTotal || Service.ClientState.LocalPlayer.IsCasting) return;
+            if (WeaponRemain % WeaponInterval < 0.05) Service.IconReplacer.DoAnAction();
         }
 
 
@@ -236,11 +244,11 @@ namespace XIVComboPlus
         }
 
 
-        private static BattleChara[] GetJobCategory(BattleChara[] objects, Role role)
+        internal static BattleChara[] GetJobCategory(BattleChara[] objects, Role role)
         {
-            List<BattleChara> result = new List<BattleChara>(objects.Length);
+            List<BattleChara> result = new (objects.Length);
 
-            SortedSet<byte> validJobs = new SortedSet<byte>(XIVComboPlusPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
+            SortedSet<byte> validJobs = new (XIVComboPlusPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
 
             foreach (var obj in objects)
             {
@@ -373,11 +381,11 @@ namespace XIVComboPlus
         //    return null;
         //}
 
-        private static GameObject RandomObject(GameObject[] objs)
-        {
-            Random ran = new Random(DateTime.Now.Millisecond);
-            return objs[ran.Next(objs.Length)];
-        }
+        //private static GameObject RandomObject(GameObject[] objs)
+        //{
+        //    Random ran = new Random(DateTime.Now.Millisecond);
+        //    return objs[ran.Next(objs.Length)];
+        //}
 
         //internal static GameObject GetBestTarget(Action act)
         //{
@@ -564,97 +572,65 @@ namespace XIVComboPlus
         //    }
         //}
 
-        internal static BattleChara[] ProvokeTarget(out bool haveTargetOnme)
-        {
-            var tankIDS = GetJobCategory(AllianceMembers, Role.防护).Select(member => member.ObjectId);
-            var loc = Service.ClientState.LocalPlayer.Position;
-            var id = Service.ClientState.LocalPlayer.ObjectId;
 
-            bool someTargetsHaveTarget = false;
-            haveTargetOnme = false;
-            List<BattleChara> targets = new List<BattleChara>();
-            foreach (var target in HostileTargets)
-            {
-                //有目标
-                if (target.TargetObject?.IsValid() ?? false)
-                {
-                    someTargetsHaveTarget = true;
 
-                    //居然在打非T！
-                    if (!tankIDS.Contains(target.TargetObjectId) && Vector3.Distance(target.Position, loc) > 5)
-                    {
-                        targets.Add(target);
-                    }
+        //internal static float GetRange(Action act)
+        //{
+        //    sbyte range = act.Range;
+        //    if (range < 0 && GetJobCategory(Service.ClientState.LocalPlayer, Role.远程))
+        //    {
+        //        range = 25;
+        //    }
+        //    return Math.Max(range, 3f);
+        //}
 
-                    if (!haveTargetOnme && target.TargetObjectId == id)
-                    {
-                        haveTargetOnme = true;
-                    }
-                }
-            }
-            //没有敌对势力，那随便用
-            if (!someTargetsHaveTarget) return HostileTargets;
-            //返回在打队友的讨厌鬼！
-            return targets.ToArray();
-        }
+        //internal static bool ActionGetATarget(Action act, bool isFriendly)
+        //{
+        //    //如果根本就不需要找目标，那肯定可以的。
+        //    if (!act.CanTargetFriendly && !act.CanTargetHostile && (act.CastType == 1 ||act.CastType > 4)) return true;
 
-        internal static float GetRange(Action act)
-        {
-            sbyte range = act.Range;
-            if (range < 0 && GetJobCategory(Service.ClientState.LocalPlayer, Role.远程))
-            {
-                range = 25;
-            }
-            return Math.Max(range, 3f);
-        }
+        //    ////如果在打Boss呢，那就不需要考虑AOE的问题了。
+        //    //if (Service.Configuration.IsTargetBoss && !isFriendly && act.CastType != 1) return false;
 
-        internal static bool ActionGetATarget(Action act, bool isFriendly)
-        {
-            //如果根本就不需要找目标，那肯定可以的。
-            if (!act.CanTargetFriendly && !act.CanTargetHostile && (act.CastType == 1 ||act.CastType > 4)) return true;
+        //    BattleChara[] tar = isFriendly ? PartyMembers : HostileTargets;
 
-            ////如果在打Boss呢，那就不需要考虑AOE的问题了。
-            //if (Service.Configuration.IsTargetBoss && !isFriendly && act.CastType != 1) return false;
+        //    switch (act.CastType)
+        //    {
+        //        case 1: // 单体啊
+        //            //是个救人啊！
+        //            if (isFriendly && act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
+        //            {
+        //                return GetDeathPeople() != null;
+        //            }
+        //            if (_specialGetTarget.ContainsKey(act.RowId))
+        //            {
+        //                switch (_specialGetTarget[act.RowId])
+        //                {
+        //                    case GetTargetFunction.Interrupt:
+        //                        tar = CanInterruptTargets;
+        //                        break;
+        //                }
+        //            }
+        //            return GetObjectInRadius(tar, GetRange(act)).Count() > 0;
+        //        case 2: // 圆形范围攻击，看看人数够不够。
 
-            BattleChara[] tar = isFriendly ? PartyMembers : HostileTargets;
+        //            if (act.CanTargetHostile)
+        //            {
+        //                return GetMostObjectInRadius(tar, GetRange(act), act.EffectRange, true).Count() > 0;
+        //            }
+        //            else
+        //            {
+        //                return GetMostObjectInRadius(tar, new PlayerCharacter[] {Service.ClientState.LocalPlayer}, GetRange(act), act.EffectRange, true).Count() > 0;
+        //            }
 
-            switch (act.CastType)
-            {
-                case 1: // 单体啊
-                    //是个救人啊！
-                    if (isFriendly && act.PrimaryCostType == 3 && act.PrimaryCostValue == 24)
-                    {
-                        return GetDeathPeople() != null;
-                    }
-                    if (_specialGetTarget.ContainsKey(act.RowId))
-                    {
-                        switch (_specialGetTarget[act.RowId])
-                        {
-                            case GetTargetFunction.Interrupt:
-                                tar = CanInterruptTargets;
-                                break;
-                        }
-                    }
-                    return GetObjectInRadius(tar, GetRange(act)).Count() > 0;
-                case 2: // 圆形范围攻击，看看人数够不够。
+        //        case 3: // 扇形范围攻击。看看人数够不够。
+        //            return GetMostObjectInArc(tar, act.EffectRange, true).Count() > 0;
 
-                    if (act.CanTargetHostile)
-                    {
-                        return GetMostObjectInRadius(tar, GetRange(act), act.EffectRange, true).Count() > 0;
-                    }
-                    else
-                    {
-                        return GetMostObjectInRadius(tar, new PlayerCharacter[] {Service.ClientState.LocalPlayer}, GetRange(act), act.EffectRange, true).Count() > 0;
-                    }
-
-                case 3: // 扇形范围攻击。看看人数够不够。
-                    return GetMostObjectInArc(tar, act.EffectRange, true).Count() > 0;
-
-                case 4: //直线范围攻击。看看人数够不够。
-                    return GetMostObjectInLine(tar, GetRange(act), true).Count() > 0;
-            }
-            return true;
-        }
+        //        case 4: //直线范围攻击。看看人数够不够。
+        //            return GetMostObjectInLine(tar, GetRange(act), true).Count() > 0;
+        //    }
+        //    return true;
+        //}
 
         private static BattleChara[] GetDeath(BattleChara[] charas)
         {
@@ -712,181 +688,181 @@ namespace XIVComboPlus
             return new uint[0];
         }
 
-        /// <summary>
-        /// 获得玩家某范围内的所有怪。
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="objects"></param>
-        /// <param name="radius"></param>
-        /// <returns></returns>
-        internal static T[] GetObjectInRadius<T>(T[] objects, float radius, bool needAddHitbox = true) where T : GameObject
-        {
-            return objects.Where(o => DistanceToPlayer(o) <= (needAddHitbox ? radius + o.HitboxRadius : radius)).ToArray();
-        }
+        ///// <summary>
+        ///// 获得玩家某范围内的所有怪。
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="objects"></param>
+        ///// <param name="radius"></param>
+        ///// <returns></returns>
+        //internal static T[] GetObjectInRadius<T>(T[] objects, float radius, bool needAddHitbox = true) where T : GameObject
+        //{
+        //    return objects.Where(o => DistanceToPlayer(o) <= (needAddHitbox ? radius + o.HitboxRadius : radius)).ToArray();
+        //}
 
-        private static T[] GetMostObject<T>(T[] canAttack, float radius, float range, Func<T, T[], float, byte> HowMany, bool forCheck) where T : BattleChara
-        {
-            //能够打到的所有怪。
-            T[] canGetObj = GetObjectInRadius(canAttack, radius);
-            return GetMostObject(canAttack, canGetObj, range, HowMany, forCheck);
-        }
+        //private static T[] GetMostObject<T>(T[] canAttack, float radius, float range, Func<T, T[], float, byte> HowMany, bool forCheck) where T : BattleChara
+        //{
+        //    //能够打到的所有怪。
+        //    T[] canGetObj = GetObjectInRadius(canAttack, radius);
+        //    return GetMostObject(canAttack, canGetObj, range, HowMany, forCheck);
+        //}
 
-        private static T[] GetMostObject<T>(T[] canAttack, T[] canGetObj ,float range, Func<T, T[], float, byte> HowMany, bool forCheck) where T : BattleChara
-        {
+        //private static T[] GetMostObject<T>(T[] canAttack, T[] canGetObj ,float range, Func<T, T[], float, byte> HowMany, bool forCheck) where T : BattleChara
+        //{
 
-            //能打到MaxCount以上数量的怪的怪。
-            List<T> objectMax = new List<T>(canGetObj.Length);
+        //    //能打到MaxCount以上数量的怪的怪。
+        //    List<T> objectMax = new List<T>(canGetObj.Length);
 
-            int maxCount = Service.Configuration.HostileCount;
+        //    int maxCount = Service.Configuration.HostileCount;
 
-            //循环能打中的目标。
-            foreach (var t in canGetObj)
-            {
-                //计算能达到的所有怪的数量。
-                byte count = HowMany(t, canAttack, range);
+        //    //循环能打中的目标。
+        //    foreach (var t in canGetObj)
+        //    {
+        //        //计算能达到的所有怪的数量。
+        //        byte count = HowMany(t, canAttack, range);
 
-                //如果只是检查一下，有了就可以别算了。
-                if(forCheck && count >= maxCount)
-                {
-                    objectMax.Add(t);
-                    break;
-                }
+        //        //如果只是检查一下，有了就可以别算了。
+        //        if(forCheck && count >= maxCount)
+        //        {
+        //            objectMax.Add(t);
+        //            break;
+        //        }
 
-                if (count == maxCount)
-                {
-                    objectMax.Add(t);
-                }
-                else if (count > maxCount)
-                {
-                    maxCount = count;
-                    objectMax.Clear();
-                    objectMax.Add(t);
-                }
-            }
+        //        if (count == maxCount)
+        //        {
+        //            objectMax.Add(t);
+        //        }
+        //        else if (count > maxCount)
+        //        {
+        //            maxCount = count;
+        //            objectMax.Clear();
+        //            objectMax.Add(t);
+        //        }
+        //    }
 
-            return objectMax.ToArray();
-        }
+        //    return objectMax.ToArray();
+        //}
 
-        internal static T[] GetMostObjectInRadius<T>(T[] objects, float radius, float range, bool forCheck) where T : BattleChara
-        {
-            //可能可以被打到的怪。
-            var canAttach = GetObjectInRadius(objects, radius + range);
-            //能够打到的所有怪。
-            var canGet = GetObjectInRadius(objects, radius);
+        //internal static T[] GetMostObjectInRadius<T>(T[] objects, float radius, float range, bool forCheck) where T : BattleChara
+        //{
+        //    //可能可以被打到的怪。
+        //    var canAttach = GetObjectInRadius(objects, radius + range);
+        //    //能够打到的所有怪。
+        //    var canGet = GetObjectInRadius(objects, radius);
 
-            return GetMostObjectInRadius(canAttach, canGet, radius, range, forCheck);
+        //    return GetMostObjectInRadius(canAttach, canGet, radius, range, forCheck);
 
-        }
+        //}
 
-        internal static T[] GetMostObjectInRadius<T>(T[] objects, T[] canGetObjects, float radius, float range, bool forCheck) where T : BattleChara
-        {
-            var canAttach = GetObjectInRadius(objects, radius + range);
+        //internal static T[] GetMostObjectInRadius<T>(T[] objects, T[] canGetObjects, float radius, float range, bool forCheck) where T : BattleChara
+        //{
+        //    var canAttach = GetObjectInRadius(objects, radius + range);
 
-            return GetMostObject(canAttach, canGetObjects,  range, CalculateCount, forCheck);
+        //    return GetMostObject(canAttach, canGetObjects,  range, CalculateCount, forCheck);
 
-            //计算一下在这些可选目标中有多少个目标可以受到攻击。
-            static byte CalculateCount(T t, T[] objects, float range)
-            {
-                byte count = 0;
-                foreach (T obj in objects)
-                {
-                    if (Vector3.Distance(t.Position, obj.Position) <= range)
-                    {
-                        count++;
-                    }
-                }
-                return count;
-            }
-        }
+        //    //计算一下在这些可选目标中有多少个目标可以受到攻击。
+        //    static byte CalculateCount(T t, T[] objects, float range)
+        //    {
+        //        byte count = 0;
+        //        foreach (T obj in objects)
+        //        {
+        //            if (Vector3.Distance(t.Position, obj.Position) <= range)
+        //            {
+        //                count++;
+        //            }
+        //        }
+        //        return count;
+        //    }
+        //}
 
-        internal static T[] GetMostObjectInArc<T>(T[] objects, float radius, bool forCheck) where T : BattleChara
-        {
-            //能够打到的所有怪。
-            var canGet = GetObjectInRadius(objects, radius, false);
+        //internal static T[] GetMostObjectInArc<T>(T[] objects, float radius, bool forCheck) where T : BattleChara
+        //{
+        //    //能够打到的所有怪。
+        //    var canGet = GetObjectInRadius(objects, radius, false);
 
-            return GetMostObject(canGet, radius, radius, CalculateCount, forCheck);
+        //    return GetMostObject(canGet, radius, radius, CalculateCount, forCheck);
 
-            //计算一下在这些可选目标中有多少个目标可以受到攻击。
-            static byte CalculateCount(T t, T[] objects, float _)
-            {
-                byte count = 0;
+        //    //计算一下在这些可选目标中有多少个目标可以受到攻击。
+        //    static byte CalculateCount(T t, T[] objects, float _)
+        //    {
+        //        byte count = 0;
 
-                Vector3 dir = t.Position - Service.ClientState.LocalPlayer.Position;
+        //        Vector3 dir = t.Position - Service.ClientState.LocalPlayer.Position;
 
-                foreach (T obj in objects)
-                {
-                    Vector3 tdir = obj.Position - Service.ClientState.LocalPlayer.Position;
+        //        foreach (T obj in objects)
+        //        {
+        //            Vector3 tdir = obj.Position - Service.ClientState.LocalPlayer.Position;
 
-                    double cos = Vector3.Dot(dir, tdir)/(dir.Length() * tdir.Length());
-                    if (cos >= 0.5)
-                    {
-                        count++;
-                    }
-                }
-                return count;
-            }
-        }
+        //            double cos = Vector3.Dot(dir, tdir)/(dir.Length() * tdir.Length());
+        //            if (cos >= 0.5)
+        //            {
+        //                count++;
+        //            }
+        //        }
+        //        return count;
+        //    }
+        //}
 
-        private static T[] GetMostObjectInLine<T>(T[] objects, float radius, bool forCheck) where T : BattleChara
-        {
-            //能够打到的所有怪。
-            var canGet = GetObjectInRadius(objects, radius);
+        //private static T[] GetMostObjectInLine<T>(T[] objects, float radius, bool forCheck) where T : BattleChara
+        //{
+        //    //能够打到的所有怪。
+        //    var canGet = GetObjectInRadius(objects, radius);
 
-            return GetMostObject(canGet, radius, radius, CalculateCount, forCheck);
+        //    return GetMostObject(canGet, radius, radius, CalculateCount, forCheck);
 
-            //计算一下在这些可选目标中有多少个目标可以受到攻击。
-            static byte CalculateCount(T t, T[] objects, float _)
-            {
-                byte count = 0;
+        //    //计算一下在这些可选目标中有多少个目标可以受到攻击。
+        //    static byte CalculateCount(T t, T[] objects, float _)
+        //    {
+        //        byte count = 0;
 
-                Vector3 dir = t.Position - Service.ClientState.LocalPlayer.Position;
+        //        Vector3 dir = t.Position - Service.ClientState.LocalPlayer.Position;
 
-                foreach (T obj in objects)
-                {
-                    Vector3 tdir = obj.Position - Service.ClientState.LocalPlayer.Position;
+        //        foreach (T obj in objects)
+        //        {
+        //            Vector3 tdir = obj.Position - Service.ClientState.LocalPlayer.Position;
 
-                    double distance = Vector3.Cross(dir, tdir).Length()/dir.Length();
-                    if (distance <= 2)
-                    {
-                        count++;
-                    }
-                }
-                return count;
-            }
-        }
+        //            double distance = Vector3.Cross(dir, tdir).Length()/dir.Length();
+        //            if (distance <= 2)
+        //            {
+        //                count++;
+        //            }
+        //        }
+        //        return count;
+        //    }
+        //}
 
-        /// <summary>
-        /// 返回总共能大约回复的血量，非常大概。
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="strength"></param>
-        /// <returns></returns>
-        internal static float GetBestHeal(Action action, uint strength)
-        {
-            float healRange = strength * 0.000352f;
+        ///// <summary>
+        ///// 返回总共能大约回复的血量，非常大概。
+        ///// </summary>
+        ///// <param name="action"></param>
+        ///// <param name="strength"></param>
+        ///// <returns></returns>
+        //internal static float GetBestHeal(Action action, uint strength)
+        //{
+        //    float healRange = strength * 0.000352f;
 
-            //能够放到技能的队员。
-            var canGet = GetObjectInRadius(PartyMembers, Math.Max(action.Range, 0.1f));
+        //    //能够放到技能的队员。
+        //    var canGet = GetObjectInRadius(PartyMembers, Math.Max(action.Range, 0.1f));
 
-            float bestHeal = 0;
-            foreach (var member in canGet)
-            {
-                float thisHeal = 0;
-                Vector3 centerPt = member.Position;
-                foreach (var ran in PartyMembers)
-                {
-                    //如果不在范围内，那算了。
-                    if(Vector3.Distance(centerPt, ran.Position) > action.EffectRange)
-                    {
-                        continue;
-                    }
+        //    float bestHeal = 0;
+        //    foreach (var member in canGet)
+        //    {
+        //        float thisHeal = 0;
+        //        Vector3 centerPt = member.Position;
+        //        foreach (var ran in PartyMembers)
+        //        {
+        //            //如果不在范围内，那算了。
+        //            if(Vector3.Distance(centerPt, ran.Position) > action.EffectRange)
+        //            {
+        //                continue;
+        //            }
 
-                    thisHeal += Math.Min(1 - ran.CurrentHp / ran.MaxHp, healRange);
-                }
+        //            thisHeal += Math.Min(1 - ran.CurrentHp / ran.MaxHp, healRange);
+        //        }
 
-                bestHeal = Math.Max(thisHeal, healRange);
-            }
-            return bestHeal;
-        }
+        //        bestHeal = Math.Max(thisHeal, healRange);
+        //    }
+        //    return bestHeal;
+        //}
     }
 }

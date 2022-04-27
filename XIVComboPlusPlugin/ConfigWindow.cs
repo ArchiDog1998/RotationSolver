@@ -95,13 +95,25 @@ internal class ConfigWindow : Window
 
             if (ImGui.BeginTabItem("参数设定"))
             {
+                //ImGui.Text(WARCombo.Actions.Overpower.Target.Name.ToString());
+
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
+                //    if(item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
+                ImGui.Text("在这个窗口，你可以设定释放技能所需的参数。");
+
+                ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
+
                 int multiCount = Service.Configuration.HostileCount;
                 if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
                 {
                     Service.Configuration.HostileCount = multiCount;
                     Service.Configuration.Save();
                 }
-                ImGui.Separator();
 
                 int partyCount = Service.Configuration.PartyCount;
                 if (ImGui.DragInt("范围治疗最少需要多少人", ref partyCount, 0.02f, 2, 5))
@@ -150,7 +162,61 @@ internal class ConfigWindow : Window
                     Service.Configuration.Save();
                 }
 
+                ImGui.PopStyleVar();
+
+
                 ImGui.EndTabItem();
+
+            }
+
+            if (ImGui.BeginTabItem("技能释放事件"))
+            {
+                ImGui.Text("在这个窗口，你可以设定一些技能释放后，使用什么宏。");
+
+                ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
+
+                if (ImGui.Button("添加"))
+                {
+                    Service.Configuration.Events.Add(new ActionEvents());
+                }
+
+                if (ImGui.BeginChild("事件", new Vector2(0f, -1f), true))
+                {
+                    for (int i = 0; i < Service.Configuration.Events.Count; i++)
+                    {
+                        string name = Service.Configuration.Events[i].Name;
+                        if (ImGui.InputText("技能名称" + i.ToString(), ref name, 50))
+                        {
+                            Service.Configuration.Events[i].Name = name;
+                            Service.Configuration.Save();
+                        }
+
+                        //ImGui.SameLine();
+
+                        int macroindex = Service.Configuration.Events[i].MacroIndex;
+                        if (ImGui.DragInt("宏编号" + i.ToString(), ref macroindex, 1, 0, 99))
+                        {
+                            Service.Configuration.Events[i].MacroIndex = macroindex;
+                        }
+
+
+                        bool isShared = Service.Configuration.Events[i].IsShared;
+                        if (ImGui.Checkbox("共享宏" + i.ToString(), ref isShared))
+                        {
+                            Service.Configuration.Events[i].IsShared = isShared;
+                            Service.Configuration.Save();
+                        }
+
+                        ImGui.SameLine();
+                        if (ImGui.Button("删除" + i.ToString()))
+                        {
+                            Service.Configuration.Events.RemoveAt(i);
+                        }
+                        ImGui.Separator();
+                    }
+                    ImGui.EndChild();
+                }
+                ImGui.PopStyleVar();
 
             }
 
@@ -158,4 +224,26 @@ internal class ConfigWindow : Window
         }
         ImGui.End();
     }
+
+    //private static uint GetActionsByName(string name)
+    //{
+    //    var enumerator = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetEnumerator();
+
+    //    while (enumerator.MoveNext())
+    //    {
+    //        var action = enumerator.Current;
+    //        if (action.Name == name && action.ClassJobLevel != 0 && !action.IsPvP)
+    //        {
+    //            return action.RowId;
+    //        }
+    //    }
+    //    return 0;
+    //}
+
+    //private static string GetActionsByName(uint actionID)
+    //{
+    //    var act = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(actionID);
+
+    //    return act == null ? "" : act.Name;
+    //}
 }

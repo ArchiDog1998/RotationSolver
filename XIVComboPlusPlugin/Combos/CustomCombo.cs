@@ -34,7 +34,7 @@ public abstract class CustomCombo
     }
 
     #region Job
-    private static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
+    internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
     internal abstract uint JobID { get; }
     internal string RoleName => ((Role)XIVComboPlusPlugin.AllJobs.First(job => job.RowId == JobID).Role).ToString();
 
@@ -134,7 +134,10 @@ public abstract class CustomCombo
             },
 
             //挑衅
-            Provoke = new BaseAction(7533),
+            Provoke = new BaseAction(7533)
+            {
+
+            },
 
             //雪仇
             Reprisal = new BaseAction(7535),
@@ -327,6 +330,7 @@ public abstract class CustomCombo
     private BaseAction GCD(uint lastComboActionID, byte abilityRemain)
     {
         if (EmergercyGCD(out BaseAction act, abilityRemain)) return act;
+        if (IconReplacer.RaiseorMove && MoveGCD(lastComboActionID, out act)) return act;
         if (TargetHelper.HPNotFull)
         {
             if ((IconReplacer.HealArea || CanHealAreaSpell) && HealAreaGCD(lastComboActionID, out act)) return act;
@@ -381,10 +385,10 @@ public abstract class CustomCombo
                     }
                     break;
             }
-       }
-
+        }
+        if (IconReplacer.RaiseorMove && MoveAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
-        if(IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
+        if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         if (TargetHelper.HPNotFull)
         {
             if ((IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act)) return true;
@@ -426,6 +430,12 @@ public abstract class CustomCombo
     {
         act = null; return false;
     }
+
+    private protected virtual bool MoveAbility(byte abilityRemain, out BaseAction act)
+    {
+        act = null; return false;
+    }
+
     /// <summary>
     /// 单体治疗的能力技
     /// </summary>
@@ -479,9 +489,9 @@ public abstract class CustomCombo
         }
 
         //有人死了，看看能不能救。
-        if (TargetHelper.DeathPeopleAll.Length > 0)
+        if (TargetHelper.DeathPeopleParty.Length > 0)
         {
-            if (IconReplacer.Raise || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
+            if (IconReplacer.RaiseorMove || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
             {
                 if (Raise.ShouldUseAction(out act, mustUse: true)) return true;
             }
@@ -509,6 +519,12 @@ public abstract class CustomCombo
     {
         act = null; return false;
     }
+
+    private protected virtual bool MoveGCD(uint lastComboActionID, out BaseAction act)
+    {
+        act = null; return false;
+    }
+
     /// <summary>
     /// 范围治疗GCD
     /// </summary>

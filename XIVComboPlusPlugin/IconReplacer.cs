@@ -65,7 +65,23 @@ internal sealed class IconReplacer : IDisposable
             if (_autoAttack != value)
             {
                 _autoAttack = value;
-                CustomCombo.Speak(value ? "Attack" : "Cancel");
+                if (!value) CustomCombo.Speak("Cancel");
+            }
+        }
+    }
+    private static bool _attackBig = true;
+
+    internal static bool AttackBig
+    {
+        get => _attackBig;
+        set
+        {
+            CustomCombo.Speak(value ? "Attack Big" : "Attack Small");
+            AutoTarget = true;
+            AutoAttack = true;
+            if (_attackBig != value)
+            {
+                _attackBig = value;
             }
         }
     }
@@ -123,13 +139,13 @@ internal sealed class IconReplacer : IDisposable
         CustomCombo.Speak("Start Esuna");
         Esuna = true;
     }
-    internal static bool Raise { get; private set; } = false;
+    internal static bool RaiseorMove { get; private set; } = false;
     internal static void StartRaise()
     {
         ResetSpecial();
         _specialStateStopwatch.Start();
         CustomCombo.Speak("Start Raise");
-        Raise = true;
+        RaiseorMove = true;
     }
     internal static bool AntiRepulsion { get; private set; } = false;
     internal static void StartAntiRepulsion()
@@ -144,7 +160,7 @@ internal sealed class IconReplacer : IDisposable
     {
         _specialStateStopwatch.Stop();
         _specialStateStopwatch.Reset();
-        HealArea = HealSingle = DefenseArea = DefenseSingle = Esuna = Raise
+        HealArea = HealSingle = DefenseArea = DefenseSingle = Esuna = RaiseorMove
             = AntiRepulsion = false;
     }
 
@@ -223,6 +239,7 @@ internal sealed class IconReplacer : IDisposable
 
     internal void DoAnAction()
     {
+
         //停止特殊状态
         if (_specialStateStopwatch.IsRunning && _specialStateStopwatch.ElapsedMilliseconds > 5000)
         {
@@ -230,7 +247,10 @@ internal sealed class IconReplacer : IDisposable
             CustomCombo.Speak("End Special");
         }
 
-        if (!AutoAttack) return;
+        if (!AutoAttack)
+        {
+            return;
+        }
 
         //0.1s内，不能重复按按钮。
         if (_fastClickStopwatch.IsRunning && _fastClickStopwatch.ElapsedMilliseconds < 100) return;
@@ -243,7 +263,10 @@ internal sealed class IconReplacer : IDisposable
             if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
 
             if (!customCombo.TryInvoke(CustomCombo.GeneralActions.Repose.ActionID, Service.Address.LastComboAction, Service.Address.ComboTime,
-                 localPlayer.Level, out var newAction)) return;
+                 localPlayer.Level, out var newAction))
+            {
+                return;
+            }
 
             if (newAction.UseAction())
             {
@@ -256,8 +279,8 @@ internal sealed class IconReplacer : IDisposable
                     LastAction = newAction.ActionID;
                     newAction.SayingOut();
                 }
-                _fastClickStopwatch.Restart();
             }
+            _fastClickStopwatch.Restart();
             return;
         }
     }

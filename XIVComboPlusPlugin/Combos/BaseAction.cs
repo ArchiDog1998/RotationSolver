@@ -9,11 +9,17 @@ using System.Threading.Tasks;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System.Numerics;
+using System.Runtime.InteropServices;
+using Dalamud.Utility.Signatures;
+using FFXIVClientStructs.FFXIV.Client.UI;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 
 namespace XIVComboPlus.Combos
 {
     internal class BaseAction
     {
+
         internal const byte GCDCooldownGroup = 58;
 
         private bool _isFriendly;
@@ -24,7 +30,6 @@ namespace XIVComboPlus.Combos
         internal bool IsGCD { get; }
 
         internal EnemyLocation EnermyLocation { get; set; } = EnemyLocation.None;
-        internal string SayWhenUsing { private get; set; } = string.Empty;
         internal virtual uint MPNeed { get; }
 
         #region CoolDown
@@ -71,14 +76,26 @@ namespace XIVComboPlus.Combos
         /// </summary>
         internal Func<BattleChara, bool> OtherCheck { get; set; } = null;
 
-        internal void SayingOut()
+        internal unsafe void SayingOut()
         {
-            if (string.IsNullOrEmpty(SayWhenUsing)) return;
-            Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            foreach (var item in Service.Configuration.Events)
             {
-                Message = this.SayWhenUsing,
-                //Type = Dalamud.Game.Text.XivChatType.Party,
-            });
+                if(item.Name == Action.Name)
+                {
+                    if (item.MacroIndex < 0 || item.MacroIndex > 99) return;
+
+                    var tar = Service.TargetManager.Target;
+                    Service.TargetManager.SetTarget(Target);
+
+                    var macro = item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
+                        RaptureMacroModule.Instance->Individual[item.MacroIndex];
+
+                    RaptureShellModule.Instance->ExecuteMacro(macro);
+
+                    Service.TargetManager.SetTarget(tar);
+                    return;
+                }
+            }
         }
 
         internal Func<BattleChara[], BattleChara> ChoiceFriend { get; set; } = availableCharas =>
@@ -86,7 +103,7 @@ namespace XIVComboPlus.Combos
             if (availableCharas == null || availableCharas.Length == 0) return null;
 
             //判断一下要选择打体积最大的，还是最小的。
-            if (Service.Configuration.IsTargetBoss)
+            if (IconReplacer.AttackBig)
             {
                 availableCharas = availableCharas.OrderByDescending(player => player.HitboxRadius).ToArray();
             }
@@ -116,7 +133,7 @@ namespace XIVComboPlus.Combos
             if (availableCharas == null || availableCharas.Length == 0) return null;
 
             //判断一下要选择打体积最大的，还是最小的。
-            if (Service.Configuration.IsTargetBoss)
+            if (IconReplacer.AttackBig)
             {
                 availableCharas = availableCharas.OrderByDescending(player => player.HitboxRadius).ToArray();
             }
@@ -138,7 +155,7 @@ namespace XIVComboPlus.Combos
                 else break;
             }
 
-            return availableCharas.OrderBy(b => DistanceToPlayer(b)).First();
+            return canGet.OrderBy(b => DistanceToPlayer(b)).First();
         };
 
         internal Func<BattleChara[], BattleChara[]> FilterForHostile { get; set; } = availableCharas => availableCharas;
@@ -180,13 +197,14 @@ namespace XIVComboPlus.Combos
             float range = GetRange(Action);
             if (Action.TargetArea)
             {
-                Target = GetMostObjectInRadius(_isFriendly ? TargetHelper.PartyMembers : TargetHelper.HostileTargets, range, Action.EffectRange, _isFriendly, mustUse)
-                    .OrderByDescending(p => (float)p.CurrentHp / p.MaxHp).First();
+                var tars = GetMostObjectInRadius(_isFriendly ? TargetHelper.PartyMembers : TargetHelper.HostileTargets, range, Action.EffectRange, _isFriendly, mustUse)
+                    .OrderByDescending(p => (float)p.CurrentHp / p.MaxHp);
+                Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
                 _position = Target.Position;
-
+                return true;
             }
             //首先看看是不是能对小队成员进行操作的。
-            else  if (Action.CanTargetParty)
+            else if (Action.CanTargetParty)
             {
                 //还消耗2400的蓝，那肯定是复活的。
                 if (Action.PrimaryCostType == 3 && Action.PrimaryCostValue == 24)
@@ -236,24 +254,24 @@ namespace XIVComboPlus.Combos
                 {
                     case 1:
                     default:
-                        BattleChara[] canReachTars = FilterForHostile(TargetHelper.GetObjectInRadius(TargetHelper.HostileTargets, TargetHelper.GetRange(Action)));
+                        BattleChara[] canReachTars = FilterForHostile(GetObjectInRadius(TargetHelper.HostileTargets, GetRange(Action)));
                         var tar = ChoiceHostile(canReachTars);
                         if (tar == null) return false;
                         Target = tar;
                         return true;
 
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        tar = ChoiceHostile(GetMostObjectInRadius(TargetHelper.HostileTargets, range, Action.EffectRange, false, mustUse));
+                        tar = ChoiceHostile(GetMostObjectInRadius(FilterForHostile(TargetHelper.HostileTargets), range, Action.EffectRange, false, mustUse));
                         if (tar == null) return false;
                         Target = tar;
                         return true;
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        tar = ChoiceHostile(GetMostObjectInArc(TargetHelper.HostileTargets, Action.EffectRange, mustUse));
+                        tar = ChoiceHostile(GetMostObjectInArc(FilterForHostile(TargetHelper.HostileTargets), Action.EffectRange, mustUse));
                         if (tar == null) return false;
                         Target = tar;
                         return true;
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        tar = ChoiceHostile(GetMostObjectInLine(TargetHelper.HostileTargets, range, mustUse));
+                        tar = ChoiceHostile(GetMostObjectInLine(FilterForHostile(TargetHelper.HostileTargets), range, mustUse));
                         if (tar == null) return false;
                         Target = tar;
                         return true;
@@ -263,6 +281,40 @@ namespace XIVComboPlus.Combos
 
             Target = Service.ClientState.LocalPlayer;
             return true;
+        }
+
+        internal static BattleChara[] ProvokeTarget(BattleChara[] inputCharas, out bool haveTargetOnme, bool needDistance = false)
+        {
+            var tankIDS = TargetHelper.GetJobCategory(TargetHelper.AllianceMembers, Role.防护).Select(member => member.ObjectId);
+            var loc = Service.ClientState.LocalPlayer.Position;
+            var id = Service.ClientState.LocalPlayer.ObjectId;
+
+            bool someTargetsHaveTarget = false;
+            haveTargetOnme = false;
+            List<BattleChara> targets = new List<BattleChara>();
+            foreach (var target in inputCharas)
+            {
+                //有目标
+                if (target.TargetObject?.IsValid() ?? false)
+                {
+                    someTargetsHaveTarget = true;
+
+                    //居然在打非T！
+                    if (!tankIDS.Contains(target.TargetObjectId) &&(!needDistance || Vector3.Distance(target.Position, loc) > 5))
+                    {
+                        targets.Add(target);
+                    }
+
+                    if (!haveTargetOnme && target.TargetObjectId == id)
+                    {
+                        haveTargetOnme = true;
+                    }
+                }
+            }
+            //没有敌对势力，那随便用
+            if (!someTargetsHaveTarget) return inputCharas;
+            //返回在打队友的讨厌鬼！
+            return targets.ToArray();
         }
         internal static float DistanceToPlayer(GameObject obj)
         {
@@ -397,25 +449,25 @@ namespace XIVComboPlus.Combos
             }
         }
 
-        internal static float GetRange(Action act)
+        private static float GetRange(Action act)
         {
             sbyte range = act.Range;
-            if (range < 0 && GetJobCategory(Service.ClientState.LocalPlayer, Role.远程))
+            if (range < 0 && CustomCombo.RangePhysicial.Contains( Service.ClientState.LocalPlayer.ClassJob.GameData.RowId))
             {
                 range = 25;
             }
             return Math.Max(range, 3f);
         }
 
-        private static bool GetJobCategory(PlayerCharacter obj, Role role)
-        {
-            SortedSet<byte> validJobs = new SortedSet<byte>(XIVComboPlusPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
-            return GetJobCategory(obj, validJobs);
-        }
-        private static bool GetJobCategory(PlayerCharacter obj, SortedSet<byte> validJobs)
-        {
-            return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
-        }
+        //private static bool GetJobCategory(BattleChara obj, Role role)
+        //{
+        //    SortedSet<byte> validJobs = new SortedSet<byte>(XIVComboPlusPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
+        //    return GetJobCategory(obj, validJobs);
+        //}
+        //private static bool GetJobCategory(BattleChara obj, SortedSet<byte> validJobs)
+        //{
+        //    return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
+        //}
         public bool ShouldUseAction(out BaseAction act, uint lastAct = 0, bool mustUse = false, bool Empty = false)
         {
             act = this;
@@ -505,6 +557,7 @@ namespace XIVComboPlus.Combos
         internal unsafe bool UseAction()
         {
             var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y,  Z = _position.Z };
+
             return Action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ActionID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
              ActionManager.Instance()->UseAction(ActionType.Spell, Service.IconReplacer.OriginalHook(ActionID), Target.ObjectId);
         }
