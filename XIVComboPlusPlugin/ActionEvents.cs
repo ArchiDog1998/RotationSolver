@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XIVComboPlus
 {
-    public  class ActionEvents
+    public class ActionEvents
     {
         public string Name { get; set; }
         public int MacroIndex { get; set; }

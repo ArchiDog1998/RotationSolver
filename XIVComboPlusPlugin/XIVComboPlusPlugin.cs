@@ -101,6 +101,7 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
     {
         string[] array = arguments.Split();
 
+
         if (array.Length > 0)
         {
             switch (array[0])

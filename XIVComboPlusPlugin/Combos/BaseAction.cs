@@ -245,10 +245,18 @@ namespace XIVComboPlus.Combos
             else if (Action.CanTargetHostile)
             {
                 //如果不用自动找目标，那就直接返回。
-                if (!IconReplacer.AutoTarget && Service.TargetManager.Target is BattleChara b)
+                if (!IconReplacer.AutoTarget)
                 {
-                    this.Target = b;
-                    return true;
+                    if(Service.TargetManager.Target is BattleChara b && TargetHelper.CanAttack(b) && DistanceToPlayer(b) <= GetRange(Action))
+                    {
+                        this.Target = b;
+                        return true;
+                    }
+                    else
+                    {
+                        this.Target = null;
+                        return false;
+                    }
                 }
                 switch (Action.CastType)
                 {

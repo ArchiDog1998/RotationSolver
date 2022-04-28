@@ -209,7 +209,7 @@ namespace XIVComboPlus.Combos
             LanceCharge = 1864,
 
             //幻象冲预备状态
-        DiveReady = 1243;
+            DiveReady = 1243;
 
     }
 }

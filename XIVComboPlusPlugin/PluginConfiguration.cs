@@ -14,7 +14,7 @@ public class PluginConfiguration : IPluginConfiguration
 {
     public int Version { get; set; } = 5;
 
-    public int HostileCount { get; set; } = 2;
+    public int HostileCount { get; set; } = 3;
     public int PartyCount { get; set; } = 2;
     public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
     public List<ActionEvents> Events { get; private set; } = new List<ActionEvents>();

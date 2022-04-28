@@ -91,10 +91,11 @@ internal sealed class IconReplacer : IDisposable
         get => _autoTarget;
         set
         {
+            if(!value) CustomCombo.Speak("Manual");
+
             if (_autoTarget != value)
             {
                 _autoTarget = value;
-                CustomCombo.Speak(value ? "Auto" : "Manual");
             }
         }
     }

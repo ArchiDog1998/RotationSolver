@@ -101,7 +101,7 @@ namespace XIVComboPlus
         internal static bool CanHealSingleAbility { get; private set; } = false;
         internal static bool CanHealSingleSpell { get; private set; } = false;
         internal static bool HPNotFull { get; private set; } = false;
-
+        internal static bool InBattle { get; private set; } = false;
 
         internal static void Init(SigScanner sigScanner)
         {
@@ -115,11 +115,18 @@ namespace XIVComboPlus
                 Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
                 IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
                 _lastPosition = thisPosition;
-
+            }
+            catch (Exception ex)
+            {
+                Service.ChatGui?.Print("Moving Error");
+            }
+            try
+            {
                 #region Hostile
                 AllTargets = Service.ObjectTable.Where(obj => obj is BattleChara && ((BattleChara)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
 
                 uint[] ids = GetEnemies();
+                InBattle = ids.Length > 0;
                 var hosts = AllTargets.Where(t => t.TargetObject?.IsValid() ?? false || ids.Contains(t.ObjectId)).ToArray();
                 HostileTargets = hosts.Length == 0 ? AllTargets : hosts;
 
@@ -141,7 +148,7 @@ namespace XIVComboPlus
 
                 #region Friend
                 var party = Service.PartyList;
-                PartyMembers = party.Length == 0 ? new BattleChara[] { Service.ClientState.LocalPlayer } :
+                PartyMembers = party.Length == 0 ? (Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer } ):
                     party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara).ToArray();
 
                 AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
@@ -184,7 +191,13 @@ namespace XIVComboPlus
                     return false;
                 }).ToArray();
                 #endregion
-
+            }
+            catch (Exception ex)
+            {
+                Service.ChatGui?.Print("Hostile Error");
+            }
+            try
+            {
                 #region Health
                 var members = PartyMembers;
 
@@ -215,7 +228,7 @@ namespace XIVComboPlus
             }
             catch (Exception ex)
             {
-                Service.ChatGui.PrintError(ex.Message);
+                Service.ChatGui?.Print("Party Error");
             }
 
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
