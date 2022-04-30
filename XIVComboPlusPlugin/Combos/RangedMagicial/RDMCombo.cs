@@ -10,6 +10,13 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
     protected override bool CanHealSingleSpell => false;
     //看看现在有没有促进
     internal static bool IsBreaking => BaseAction.HaveStatusSelfFromSelf(1239);
+
+    private protected override BaseAction Raise => new BaseAction(7523, true)
+    {
+        BuffsNeed = GeneralActions.Swiftcast.BuffsProvide,
+        OtherCheck = b => TargetHelper.DeathPeopleAll.Length > 0,
+        BuffsProvide = new ushort[] { ObjectStatus.Raise },
+    };
     internal struct Actions
     {
 
@@ -118,20 +125,12 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
             ContreSixte = new BaseAction(7519u),
 
             //鼓励
-            Embolden = new BaseAction(7520),
+            Embolden = new BaseAction(7520, true),
 
             //倍增
             Manafication = new BaseAction(7521)
             {
                 OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50,
-            },
-
-            //赤复活
-            Verraise = new BaseAction(7523, true)
-            {
-                BuffsNeed = GeneralActions.Swiftcast.BuffsProvide,
-                OtherCheck = b => TargetHelper.DeathPeopleAll.Length > 0,
-                BuffsProvide = new ushort[] { ObjectStatus.Raise },
             },
 
             //续斩
@@ -155,6 +154,11 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         return false;
     }
 
+    private bool GetRightValue(byte value)
+    {
+        return value >= 6 && value <= 12;
+    }
+
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
         //倍增要放到魔连攻击之后
@@ -163,7 +167,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
             if (Actions.Manafication.ShouldUseAction(out act)) return true;
         }
         //开场爆发的时候释放。
-        if (JobGauge.WhiteMana == 6 & JobGauge.BlackMana == 12)
+        if (GetRightValue(JobGauge.WhiteMana) & GetRightValue(JobGauge.BlackMana))
         {
             if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
             if (Actions.Manafication.ShouldUseAction(out act)) return true;

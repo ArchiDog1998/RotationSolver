@@ -84,15 +84,9 @@ namespace XIVComboPlus.Combos
                 {
                     if (item.MacroIndex < 0 || item.MacroIndex > 99) return;
 
-                    var tar = Service.TargetManager.Target;
-                    Service.TargetManager.SetTarget(Target);
+                    TargetHelper.Macros.Enqueue(new MacroItem(Target, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
+                        RaptureMacroModule.Instance->Individual[item.MacroIndex]));
 
-                    var macro = item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
-                        RaptureMacroModule.Instance->Individual[item.MacroIndex];
-
-                    RaptureShellModule.Instance->ExecuteMacro(macro);
-
-                    Service.TargetManager.SetTarget(tar);
                     return;
                 }
             }
@@ -186,15 +180,15 @@ namespace XIVComboPlus.Combos
         public bool FindTarget(bool mustUse)
         {
             _position = Service.ClientState.LocalPlayer.Position;
+            float range = GetRange(Action);
 
             //如果都没有距离，这个还需要选对象嘛？选自己啊！
-            if (Action.Range == 0)
+            if (range == 0 &&　Action.EffectRange == 0)
             {
                 Target = Service.ClientState.LocalPlayer;
                 return true;
             }
 
-            float range = GetRange(Action);
             if (Action.TargetArea)
             {
                 var tars = GetMostObjectInRadius(_isFriendly ? TargetHelper.PartyMembers : TargetHelper.HostileTargets, range, Action.EffectRange, _isFriendly, mustUse)
@@ -247,7 +241,7 @@ namespace XIVComboPlus.Combos
                 //如果不用自动找目标，那就直接返回。
                 if (!IconReplacer.AutoTarget)
                 {
-                    if(Service.TargetManager.Target is BattleChara b && TargetHelper.CanAttack(b) && DistanceToPlayer(b) <= GetRange(Action))
+                    if(Service.TargetManager.Target is BattleChara b && TargetHelper.CanAttack(b) && DistanceToPlayer(b) <= range)
                     {
                         this.Target = b;
                         return true;
@@ -286,8 +280,13 @@ namespace XIVComboPlus.Combos
                 }
             }
             //如果只能选自己，那就选自己吧。
-
             Target = Service.ClientState.LocalPlayer;
+            if(Action.EffectRange > 0 && !_isFriendly)
+            {
+                var count = GetObjectInRadius( TargetHelper.HostileTargets, Action.EffectRange).Length;
+                if (count < Service.Configuration.HostileCount) return false;
+            }
+
             return true;
         }
 
@@ -547,7 +546,9 @@ namespace XIVComboPlus.Combos
                 //目标已有充足的Debuff
                 if (!mustUse && TargetStatus != null)
                 {
-                    if (FindStatusFromSelf(Target, TargetStatus).Length != 0) return false;
+                    var tar = Target == Service.ClientState.LocalPlayer ? TargetHelper.HostileTargets.OrderBy(p=>DistanceToPlayer(p)).First() : Target;
+                    var times = FindStatusFromSelf(tar, TargetStatus);
+                    if (times.Length > 0 && times.Max() > 5.5) return false;
                 }
             }
             else

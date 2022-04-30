@@ -190,6 +190,9 @@ namespace XIVComboPlus.Combos
             //死亡祭品
             ImmortalSacrifice = 2592,
 
+            //播魂种
+            Soulsow = 2594,
+
             //回退准备
             Threshold = 2595,
 

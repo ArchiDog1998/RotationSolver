@@ -101,7 +101,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             },
 
             //占卜
-            Divination = new BaseAction(16552),
+            Divination = new BaseAction(16552, true),
 
             //抽卡
             Draw = new BaseAction(3590),

@@ -302,7 +302,7 @@ public abstract class CustomCombo
         {
             if(CheckAction(GCDaction.ActionID) && GCDaction.EnermyLocation != EnemyLocation.None)
             {
-                string text = GCDaction.Action.Name + " " + GCDaction.EnermyLocation.ToString();
+                string text = GCDaction.EnermyLocation.ToString();
                 //Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
                 //{
                 //    Message = text,
@@ -488,14 +488,22 @@ public abstract class CustomCombo
             if (GeneralActions.Esuna.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
-        //有人死了，看看能不能救。
         if (TargetHelper.DeathPeopleParty.Length > 0)
         {
-            if (IconReplacer.RaiseorMove || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
+            if (Service.ClientState.LocalPlayer.ClassJob.Id == 35)
             {
-                if (Raise.ShouldUseAction(out act, mustUse: true)) return true;
+                if (HaveSwift && Raise.ShouldUseAction(out act)) return true;
+            }
+            else
+            {
+                if (IconReplacer.RaiseorMove || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
+                {
+                    if (Raise.ShouldUseAction(out act)) return true;
+                }
             }
         }
+        //有人死了，看看能不能救。
+
 
         act = null;
         return false;

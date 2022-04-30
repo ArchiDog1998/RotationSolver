@@ -3,7 +3,8 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
-
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,6 +104,9 @@ namespace XIVComboPlus
         internal static bool HPNotFull { get; private set; } = false;
         internal static bool InBattle { get; private set; } = false;
 
+        internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
+        internal static MacroItem DoingMacro;
+
         internal static void Init(SigScanner sigScanner)
         {
             _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
@@ -110,132 +114,143 @@ namespace XIVComboPlus
 
         internal unsafe static void Framework_Update(Framework framework)
         {
-            try
+            if (Service.ClientState.LocalPlayer == null) return;
+            if (Service.ClientState.LocalPlayer.CurrentHp == 0) IconReplacer.AutoAttack = false;
+
+            Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
+            IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
+            _lastPosition = thisPosition;
+            #region Hostile
+            AllTargets = Service.ObjectTable.Where(obj => obj is BattleChara && ((BattleChara)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
+            uint[] ids = GetEnemies();
+            InBattle = ids.Length > 0;
+            var hosts = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
+            HostileTargets = hosts.Length == 0 ? AllTargets : hosts;
+
+            CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible).ToArray();
+
+            HaveTargetAngle = BaseAction.GetObjectInRadius(HostileTargets, 25).Length > 0;
+            #endregion
+
+            unsafe
             {
-                Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
-                IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
-                _lastPosition = thisPosition;
+                var instance = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
+                var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
+
+                WeaponTotal = instance->GetRecastTime(spell, 11);
+                WeaponRemain = WeaponTotal - instance->GetRecastTimeElapsed(spell, 11);
+
+                AbilityRemainCount = (byte)(WeaponRemain / WeaponInterval);
             }
-            catch (Exception ex)
+
+            #region Friend
+            var party = Service.PartyList;
+            PartyMembers = party.Length == 0 ? (Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer }) :
+                party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara).ToArray();
+
+            AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
+            //PartyMembers = AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).Union(new PlayerCharacter[] { Service.ClientState.LocalPlayer }).ToArray();
+
+            PartyHealers = GetJobCategory(PartyMembers, Role.治疗);
+            PartyMelee = GetJobCategory(PartyMembers, Role.近战);
+            PartyRange = GetJobCategory(PartyMembers, Role.远程);
+            PartyTanks = GetJobCategory(PartyMembers, Role.防护);
+
+            List<BattleChara> attachedT = new List<BattleChara>(PartyTanks.Length);
+            foreach (var tank in PartyTanks)
             {
-                Service.ChatGui?.Print("Moving Error");
-            }
-            try
-            {
-                #region Hostile
-                AllTargets = Service.ObjectTable.Where(obj => obj is BattleChara && ((BattleChara)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
-
-                uint[] ids = GetEnemies();
-                InBattle = ids.Length > 0;
-                var hosts = AllTargets.Where(t => t.TargetObject?.IsValid() ?? false || ids.Contains(t.ObjectId)).ToArray();
-                HostileTargets = hosts.Length == 0 ? AllTargets : hosts;
-
-                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible).ToArray();
-
-                HaveTargetAngle = BaseAction.GetObjectInRadius(HostileTargets, 25).Length > 0;
-                #endregion
-
-                unsafe
+                if (tank.TargetObject?.TargetObject == tank)
                 {
-                    var instance = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
-                    var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
-
-                    WeaponTotal = instance->GetRecastTime(spell, 11);
-                    WeaponRemain = WeaponTotal - instance->GetRecastTimeElapsed(spell, 11);
-
-                    AbilityRemainCount = (byte)(WeaponRemain / WeaponInterval);
+                    attachedT.Add(tank);
                 }
-
-                #region Friend
-                var party = Service.PartyList;
-                PartyMembers = party.Length == 0 ? (Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer } ):
-                    party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara).ToArray();
-
-                AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
-                //PartyMembers = AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).Union(new PlayerCharacter[] { Service.ClientState.LocalPlayer }).ToArray();
-
-                PartyHealers = GetJobCategory(PartyMembers, Role.治疗);
-                PartyMelee = GetJobCategory(PartyMembers, Role.近战);
-                PartyRange = GetJobCategory(PartyMembers, Role.远程);
-                PartyTanks = GetJobCategory(PartyMembers, Role.防护);
-
-                List<BattleChara> attachedT = new List<BattleChara>(PartyTanks.Length);
-                foreach (var tank in PartyTanks)
-                {
-                    if (tank.TargetObject?.TargetObject == tank)
-                    {
-                        attachedT.Add(tank);
-                    }
-                }
-                PartyTanksAttached = attachedT.ToArray();
-
-
-                DeathPeopleAll = BaseAction.GetObjectInRadius(GetDeath(AllianceMembers), 30);
-                DeathPeopleParty = BaseAction.GetObjectInRadius(GetDeath(PartyMembers), 30);
-
-                WeakenPeople = PartyMembers.Where(p =>
-                {
-                    foreach (var status in p.StatusList)
-                    {
-                        if (status.GameData.CanDispel) return true;
-                    }
-                    return false;
-                }).ToArray();
-
-                DyingPeople = PartyMembers.Where(p =>
-                {
-                    foreach (var status in p.StatusList)
-                    {
-                        if (status.StatusId == ObjectStatus.Doom) return true;
-                    }
-                    return false;
-                }).ToArray();
-                #endregion
             }
-            catch (Exception ex)
+            PartyTanksAttached = attachedT.ToArray();
+
+
+            DeathPeopleAll = BaseAction.GetObjectInRadius(GetDeath(AllianceMembers), 30);
+            DeathPeopleParty = BaseAction.GetObjectInRadius(GetDeath(PartyMembers), 30);
+
+            WeakenPeople = PartyMembers.Where(p =>
             {
-                Service.ChatGui?.Print("Hostile Error");
-            }
-            try
-            {
-                #region Health
-                var members = PartyMembers;
-
-                PartyMembersHP = BaseAction.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
-
-                float averHP = 0;
-                foreach (var hp in PartyMembersHP)
+                foreach (var status in p.StatusList)
                 {
-                    averHP += hp;
+                    if (status.GameData.CanDispel) return true;
                 }
-                PartyMembersAverHP = averHP / PartyMembersHP.Length;
+                return false;
+            }).ToArray();
 
-                double differHP = 0;
-                float average = PartyMembersAverHP;
-                foreach (var hp in PartyMembersHP)
-                {
-                    differHP += Math.Pow(hp - average, 2);
-                }
-                PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Length);
-
-
-                CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
-                CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
-                CanHealSingleAbility = PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
-                CanHealSingleSpell = PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
-                HPNotFull = PartyMembersHP.Min() < 1;
-                #endregion
-            }
-            catch (Exception ex)
+            DyingPeople = PartyMembers.Where(p =>
             {
-                Service.ChatGui?.Print("Party Error");
+                foreach (var status in p.StatusList)
+                {
+                    if (status.StatusId == ObjectStatus.Doom) return true;
+                }
+                return false;
+            }).ToArray();
+            #endregion
+            #region Health
+            var members = PartyMembers;
+
+            PartyMembersHP = BaseAction.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
+
+            float averHP = 0;
+            foreach (var hp in PartyMembersHP)
+            {
+                averHP += hp;
             }
+            PartyMembersAverHP = averHP / PartyMembersHP.Length;
+
+            double differHP = 0;
+            float average = PartyMembersAverHP;
+            foreach (var hp in PartyMembersHP)
+            {
+                differHP += Math.Pow(hp - average, 2);
+            }
+            PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Length);
+
+
+            CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
+            CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
+            CanHealSingleAbility = PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
+            CanHealSingleSpell = PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
+            HPNotFull = PartyMembersHP.Min() < 1;
+            #endregion
 
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
-            if (WeaponRemain < 0.05) Service.IconReplacer.DoAnAction();
+            if (WeaponRemain < 0.05) Service.IconReplacer.DoAnAction(true);
             //要超出GCD了，那就不放技能了。
             else if (WeaponRemain + WeaponInterval > WeaponTotal || Service.ClientState.LocalPlayer.IsCasting) return;
-            if (WeaponRemain % WeaponInterval < 0.05) Service.IconReplacer.DoAnAction();
+            if (WeaponRemain % WeaponInterval < 0.05) Service.IconReplacer.DoAnAction(false);
+
+            #region 宏
+            //如果没有有正在运行的宏，弄一个出来
+            if (DoingMacro == null && Macros.TryDequeue(out var macro))
+            {
+                DoingMacro = macro;
+            }
+
+            //如果有正在处理的宏
+            if (DoingMacro != null)
+            {
+                //正在跑的话，就尝试停止，停止成功就放弃它。
+                if (DoingMacro.IsRunning)
+                {
+                    if (DoingMacro.EndUseMacro())
+                    {
+                        DoingMacro = null;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                //否则，始终开始。
+                else
+                {
+                    DoingMacro.StartUseMacro();
+                }
+            }
+            #endregion
         }
 
 

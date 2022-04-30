@@ -10,6 +10,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
 
     internal override uint JobID => 23;
 
+    protected override bool CanHealSingleAbility => false;
     internal struct Actions
     {
         private static bool AddOnDot(BattleChara b, ushort status1, ushort status2)
@@ -95,7 +96,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
             },
 
             //战斗之声
-            BattleVoice = new BaseAction(118),
+            BattleVoice = new BaseAction(118, true),
 
             //大地神的抒情恋歌
             NaturesMinne = new BaseAction(7408),
@@ -109,13 +110,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
 
 
             //光明神的最终乐章
-            RadiantFinale = new BaseAction(25785)
-            {
-                OtherCheck = b =>
-                {
-                    return JobGauge.Coda.Length > 2 || MagesBallad.RecastTimeRemain < 0.1;
-                },
-            },
+            RadiantFinale = new BaseAction(25785, true),
 
             //行吟
             Troubadour = new BaseAction(7405)
@@ -212,11 +207,15 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         //猛者强击
         if (Actions.RagingStrikes.ShouldUseAction(out act)) return true;
 
-        //战斗之声
-        if (Actions.BattleVoice.ShouldUseAction(out act, mustUse: true)) return true;
+        //光明神只有在战斗之声释放之前0.6s内，才会释放。
+        if(Actions.BattleVoice.RecastTimeRemain < 0.6)
+        {
+            //光明神的最终乐章
+            if (Actions.RadiantFinale.ShouldUseAction(out act, mustUse: true)) return true;
 
-        //光明神的最终乐章
-        if (Actions.RadiantFinale.ShouldUseAction(out act)) return true;
+            //战斗之声
+            if (Actions.BattleVoice.ShouldUseAction(out act, mustUse: true)) return true;
+        }
 
         //九天连箭
         if (Actions.EmpyrealArrow.ShouldUseAction(out act)) return true;

@@ -5,7 +5,7 @@ namespace XIVComboPlus.Combos;
 internal class RPRCombo : CustomComboJob<RPRGauge>
 {
     internal override uint JobID => 39;
-
+    protected override bool ShouldSayout => !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);
     internal struct Actions
     {
         public static readonly BaseAction
@@ -132,7 +132,7 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.CircleofSacrifice))
         {
             //大丰收！
-            if (Actions.PlentifulHarvest.ShouldUseAction(out act)) return true;
+            if (Actions.PlentifulHarvest.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         //获得灵魂 50.
@@ -142,9 +142,14 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             if (Actions.SoulSlice.ShouldUseAction(out act, Empty: true)) return true;
         }
 
+        //上Debuff
+        if (Actions.WhorlofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.ShadowofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
+
         //群体二连
         if (Actions.NightmareScythe.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.SpinningScythe.ShouldUseAction(out act, lastComboActionID)) return true;
+
 
         //单体三连
         if (Actions.InfernalSlice.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -169,7 +174,8 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             }
         }
         //蓝条够了，变身！
-        if (JobGauge.Shroud >= 50 && Actions.Enshroud.ShouldUseAction(out act)) return true;
+        if (JobGauge.Shroud >= 50 && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver)
+            && Actions.Enshroud.ShouldUseAction(out act)) return true;
 
         //灵魂够了，拿蓝条状态。
         if (JobGauge.Soul >= 50)

@@ -7,6 +7,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
 {
     internal override uint JobID => 22;
 
+    protected override bool ShouldSayout => true;
     internal struct Actions
     {
         public static readonly BaseAction

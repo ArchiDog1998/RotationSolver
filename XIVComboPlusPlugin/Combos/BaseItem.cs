@@ -24,9 +24,9 @@ namespace XIVComboPlus.Combos
             }
         }
 
-        public bool ShoudUseItem()
+        public unsafe bool ShoudUseItem()
         {
-            return true;
+            return ActionManager.Instance()->GetRecastTime(ActionType.Item, Item.RowId) == 0;
         }
 
         public unsafe bool UseItem()

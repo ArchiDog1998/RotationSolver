@@ -238,7 +238,7 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
-    internal void DoAnAction()
+    internal void DoAnAction(bool isGCD)
     {
 
         //停止特殊状态
@@ -253,8 +253,8 @@ internal sealed class IconReplacer : IDisposable
             return;
         }
 
-        //0.1s内，不能重复按按钮。
-        if (_fastClickStopwatch.IsRunning && _fastClickStopwatch.ElapsedMilliseconds < 100) return;
+        //0.2s内，不能重复按按钮。
+        if (_fastClickStopwatch.IsRunning && _fastClickStopwatch.ElapsedMilliseconds < 200) return;
 
         PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
         if (localPlayer == null) return;
@@ -268,6 +268,8 @@ internal sealed class IconReplacer : IDisposable
             {
                 return;
             }
+
+            if (newAction.IsGCD ^ isGCD) return;
 
             if (newAction.UseAction())
             {

@@ -97,13 +97,17 @@ internal class ConfigWindow : Window
             {
                 //ImGui.Text(WARCombo.Actions.Overpower.Target.Name.ToString());
 
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
+                ImGui.Text(TargetHelper.DeathPeopleAll.Length.ToString());
+                ImGui.Text(TargetHelper.DeathPeopleParty.Length.ToString());
+
+
                 ImGui.Text("在这个窗口，你可以设定释放技能所需的参数。");
 
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
