@@ -20,35 +20,12 @@ internal sealed class IconReplacer : IDisposable
 
     private delegate uint GetIconDelegate(IntPtr actionManager, uint actionID);
 
+#if DEBUG
+    private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint a4, uint a5, uint a6, void* a7);
+    private readonly Hook<UseActionDelegate> getActionHook;
+#endif
+
     private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
-
-    //[StructLayout(LayoutKind.Explicit)]
-    //internal struct CooldownData
-    //{
-    //    [FieldOffset(0)]
-    //    public bool IsCooldown;
-
-    //    [FieldOffset(4)]
-    //    public uint ActionID;
-
-    //    [FieldOffset(8)]
-    //    public float CooldownElapsed;
-
-    //    [FieldOffset(12)]
-    //    public float CooldownTotal;
-
-    //    public float CooldownRemaining
-    //    {
-    //        get
-    //        {
-    //            if (!IsCooldown)
-    //            {
-    //                return 0f;
-    //            }
-    //            return CooldownTotal - CooldownElapsed;
-    //        }
-    //    }
-    //}
 
     private static Stopwatch _fastClickStopwatch = new Stopwatch();
 
@@ -202,13 +179,24 @@ internal sealed class IconReplacer : IDisposable
         unsafe
         {
             getIconHook = new((IntPtr)ActionManager.fpGetAdjustedActionId, GetIconDetour);
+
+#if DEBUG
+            getActionHook = new((IntPtr)ActionManager.fpUseAction, UseAction);
+            getActionHook.Enable();
+#endif
         }
-        //getIconHook = new Hook<GetIconDelegate>(Service.Address.GetAdjustedActionId, GetIconDetour);
         isIconReplaceableHook = new Hook<IsIconReplaceableDelegate>(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);
         getIconHook.Enable();
         isIconReplaceableHook.Enable();
     }
 
+#if DEBUG
+    private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
+    {
+        Service.ChatGui.Print(actionType.ToString() + '\n' + actionID.ToString() + '\n' + targetID.ToString() + '\n' + a4.ToString() + '\n' + a5.ToString() + '\n' + a6.ToString());
+        return getActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
+    }
+#endif
     private static void SetStaticValues()
     {
         _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
@@ -225,6 +213,9 @@ internal sealed class IconReplacer : IDisposable
     {
         getIconHook.Dispose();
         isIconReplaceableHook.Dispose();
+#if DEBUG
+        getActionHook.Dispose();
+#endif
     }
 
     internal uint OriginalHook(uint actionID)
