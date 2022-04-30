@@ -2,7 +2,7 @@
   {
     "Disabled": false,
     "Testing": false,
-    "IsThirdParty": true,
+    "IsThirdParty": false,
     "Author": "ArchiTed",
     "Name": "XIV Auto Attack",
     "Punchline": "Auto attack!",
