@@ -36,9 +36,9 @@ public abstract class CustomCombo
     #region Job
     internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
     internal abstract uint JobID { get; }
-    internal string RoleName => ((Role)XIVComboPlusPlugin.AllJobs.First(job => job.RowId == JobID).Role).ToString();
+    internal string RoleName => ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role).ToString();
 
-    internal string JobName => XIVComboPlusPlugin.AllJobs.First(job => job.RowId == JobID).Name;
+    internal string JobName => XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Name;
 
     internal struct GeneralActions
     {
@@ -190,6 +190,7 @@ public abstract class CustomCombo
             }
         }
     }
+    internal virtual string Description { get; }
 
     #endregion
 
@@ -345,7 +346,7 @@ public abstract class CustomCombo
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
         if (IconReplacer.AntiRepulsion)
         {
-            switch( XIVComboPlusPlugin.AllJobs.First(job => job.RowId == JobID).Role)
+            switch( XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role)
             {
                 case (byte)Role.防护:
                 case (byte)Role.近战:
@@ -368,7 +369,7 @@ public abstract class CustomCombo
         }
         if (TargetHelper.CanInterruptTargets.Length > 0)
         {
-            switch (XIVComboPlusPlugin.AllJobs.First(job => job.RowId == JobID).Role)
+            switch (XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role)
             {
                 case (byte)Role.防护:
                     if (GeneralActions.Interject.ShouldUseAction(out act)) return true;

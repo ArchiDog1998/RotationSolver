@@ -242,7 +242,7 @@ internal sealed class IconReplacer : IDisposable
     {
 
         //Í£Ö¹ÌØÊâ×´Ì¬
-        if (_specialStateStopwatch.IsRunning && _specialStateStopwatch.ElapsedMilliseconds > 5000)
+        if (_specialStateStopwatch.IsRunning && _specialStateStopwatch.ElapsedMilliseconds > Service.Configuration.SpecialDuration * 1000)
         {
             ResetSpecial();
             CustomCombo.Speak("End Special");

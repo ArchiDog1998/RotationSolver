@@ -18,11 +18,13 @@ public class PluginConfiguration : IPluginConfiguration
     public int PartyCount { get; set; } = 2;
     public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
     public List<ActionEvents> Events { get; private set; } = new List<ActionEvents>();
+    public bool AllTargeAsHostile { get; set; } = false;
     public float HealthDifference { get; set; } = 0.2f;
     public float HealthAreaAbility { get; set; } = 0.85f;
     public float HealthAreafSpell { get; set; } = 0.6f;
     public float HealthSingleAbility { get; set; } = 0.75f;
     public float HealthSingleSpell { get; set; } = 0.5f;
+    public float SpecialDuration { get; set; } = 5;
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);

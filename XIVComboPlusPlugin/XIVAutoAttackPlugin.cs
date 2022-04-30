@@ -25,23 +25,23 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVComboPlus;
 
-public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
+public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 {
-    private const string _command = "/pcombo";
+    private const string _command = "/pattack";
 
-    private const string _lockCommand = "/tauto";
+    private const string _lockCommand = "/aauto";
 
     private readonly WindowSystem windowSystem;
 
     private readonly ConfigWindow configWindow;
     //private readonly SystemSound sound;
-    public string Name => "XIV Combo Plus";
+    public string Name => "XIV Auto Attack";
 
     private static Framework _framework;
 
     internal static Lumina.Excel.GeneratedSheets.ClassJob[] AllJobs;
 
-    public  XIVComboPlusPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
+    public  XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
     {
         pluginInterface.Create<Service>(Array.Empty<object>());
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
@@ -58,12 +58,12 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         TargetHelper.Init(sigScanner);
 
         CommandInfo val = new CommandInfo(new CommandInfo.HandlerDelegate(OnCommand));
-        val.HelpMessage = "打开一个可以调整连击设置的窗口";
+        val.HelpMessage = "打开一个设置各个职业是否启用自动攻击的窗口";
         val.ShowInHelp = true;
         commandManager.AddHandler(_command, val);
 
         CommandInfo lockInfo = new CommandInfo(new CommandInfo.HandlerDelegate(TargetObject));
-        lockInfo.HelpMessage = "锁定想要的敌人。";
+        lockInfo.HelpMessage = "设置攻击的模式";
         lockInfo.ShowInHelp = true;
         commandManager.AddHandler(_lockCommand, lockInfo);
 
@@ -89,7 +89,6 @@ public sealed class XIVComboPlusPlugin : IDalamudPlugin, IDisposable
         Service.IconReplacer.Dispose();
         _framework.Update -= TargetHelper.Framework_Update;
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
-
     }
 
     private void OnOpenConfigUi()

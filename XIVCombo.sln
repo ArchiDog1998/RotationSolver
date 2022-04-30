@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github Actions", "Github Ac
 		.github\workflows\build.yml = .github\workflows\build.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XIVComboPlus", "XIVComboPlusPlugin\XIVComboPlus.csproj", "{37F4893B-1975-42F6-A0A4-F7C9F6341142}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XIVAutoAttack", "XIVComboPlusPlugin\XIVAutoAttack.csproj", "{37F4893B-1975-42F6-A0A4-F7C9F6341142}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

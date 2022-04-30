@@ -102,7 +102,7 @@ namespace XIVComboPlus
         internal static bool CanHealSingleAbility { get; private set; } = false;
         internal static bool CanHealSingleSpell { get; private set; } = false;
         internal static bool HPNotFull { get; private set; } = false;
-        internal static bool InBattle { get; private set; } = false;
+        //internal static bool InBattle { get; private set; } = false;
 
         internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
         internal static MacroItem DoingMacro;
@@ -123,9 +123,9 @@ namespace XIVComboPlus
             #region Hostile
             AllTargets = Service.ObjectTable.Where(obj => obj is BattleChara && ((BattleChara)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
             uint[] ids = GetEnemies();
-            InBattle = ids.Length > 0;
+            //InBattle = ids.Length > 0;
             var hosts = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
-            HostileTargets = hosts.Length == 0 ? AllTargets : hosts;
+            HostileTargets = (Service.Configuration.AllTargeAsHostile || hosts.Length == 0) ? AllTargets : hosts;
 
             CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible).ToArray();
 
@@ -276,7 +276,7 @@ namespace XIVComboPlus
         {
             List<BattleChara> result = new (objects.Length);
 
-            SortedSet<byte> validJobs = new (XIVComboPlusPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
+            SortedSet<byte> validJobs = new (XIVAutoAttackPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
 
             foreach (var obj in objects)
             {
@@ -287,7 +287,7 @@ namespace XIVComboPlus
         private static bool GetJobCategory(BattleChara obj, Role role)
         {
             
-            SortedSet<byte> validJobs = new SortedSet<byte>(XIVComboPlusPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
+            SortedSet<byte> validJobs = new SortedSet<byte>(XIVAutoAttackPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
             return GetJobCategory(obj, validJobs);
         }
 

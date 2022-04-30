@@ -29,9 +29,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>E:\Software\Dalamud.Updater\6.3.0.7\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System.Speech">
-      <HintPath>E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\System.Speech.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="Copy &quot;$(TargetPath)&quot; &quot;E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\$(ProjectName).dll&quot;" />

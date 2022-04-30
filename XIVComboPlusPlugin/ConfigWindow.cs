@@ -21,7 +21,7 @@ internal class ConfigWindow : Window
     private readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
 
     public ConfigWindow()
-        : base("自定义连击设置", 0, false)
+        : base("自动攻击设置", 0, false)
     {
         RespectCloseHotkey = true;
 
@@ -33,11 +33,11 @@ internal class ConfigWindow : Window
     {
         if (ImGui.BeginTabBar("##tabbar"))
         {
-            if (ImGui.BeginTabItem("连击设定"))
+            if (ImGui.BeginTabItem("攻击设定"))
             {
-                ImGui.Text("在这个窗口，你可以设定自己喜欢的连击设定。");
+                ImGui.Text("在这个窗口，你可以设定自己喜欢的自动攻击设定。");
 
-                ImGui.BeginChild("scrolling", new Vector2(0f, -1f), true);
+                ImGui.BeginChild("攻击", new Vector2(0f, -1f), true);
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
                 int num = 1;
 
@@ -63,6 +63,10 @@ internal class ConfigWindow : Window
                             }
                             ImGui.PopItemWidth();
                             string text = $"#{num}: 替换沉静为{combo.JobName}的连续GCD战技、技能。";
+                            if(!string.IsNullOrEmpty(combo.Description))
+                            {
+                                text += '\n' + combo.Description;
+                            }
                             ImGui.TextColored(shadedColor, text);
                             //ImGui.Spacing();
                             //if (item == CustomComboPreset.DancerDanceComboCompatibility && enable)
@@ -104,66 +108,84 @@ internal class ConfigWindow : Window
                 //        ImGui.Text(item.GameData.Name + item.StatusId);
                 //    }
                 //}
-                ImGui.Text(TargetHelper.DeathPeopleAll.Length.ToString());
-                ImGui.Text(TargetHelper.DeathPeopleParty.Length.ToString());
 
 
                 ImGui.Text("在这个窗口，你可以设定释放技能所需的参数。");
 
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-                int multiCount = Service.Configuration.HostileCount;
-                if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
+                if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
-                    Service.Configuration.HostileCount = multiCount;
-                    Service.Configuration.Save();
-                }
+                    bool isAllTargetAsHostile = Service.Configuration.AllTargeAsHostile;
+                    if (ImGui.Checkbox("是否设定所有可以攻击的目标均为敌对目标", ref isAllTargetAsHostile))
+                    {
+                        Service.Configuration.AllTargeAsHostile = isAllTargetAsHostile;
+                        Service.Configuration.Save();
+                    }
 
-                int partyCount = Service.Configuration.PartyCount;
-                if (ImGui.DragInt("范围治疗最少需要多少人", ref partyCount, 0.02f, 2, 5))
-                {
-                    Service.Configuration.PartyCount = partyCount;
-                    Service.Configuration.Save();
-                }
-                ImGui.Separator();
+                    float specialDuration = Service.Configuration.SpecialDuration;
+                    if (ImGui.DragFloat("特殊状态持续多久，如范围治疗", ref specialDuration, 0.02f, 1, 20))
+                    {
+                        Service.Configuration.SpecialDuration = specialDuration;
+                        Service.Configuration.Save();
+                    }
 
-                float speed = 0.005f;
-                float healthDiff = Service.Configuration.HealthDifference;
-                if (ImGui.DragFloat("多少的HP标准差以下，可以用群疗", ref healthDiff, speed * 2, 0, 0.5f))
-                {
-                    Service.Configuration.HealthDifference = healthDiff;
-                    Service.Configuration.Save();
-                }
+                    ImGui.Separator();
+
+                    int multiCount = Service.Configuration.HostileCount;
+                    if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
+                    {
+                        Service.Configuration.HostileCount = multiCount;
+                        Service.Configuration.Save();
+                    }
+
+                    int partyCount = Service.Configuration.PartyCount;
+                    if (ImGui.DragInt("范围治疗最少需要多少人", ref partyCount, 0.02f, 2, 5))
+                    {
+                        Service.Configuration.PartyCount = partyCount;
+                        Service.Configuration.Save();
+                    }
+                    ImGui.Separator();
+
+                    float speed = 0.005f;
+                    float healthDiff = Service.Configuration.HealthDifference;
+                    if (ImGui.DragFloat("多少的HP标准差以下，可以用群疗", ref healthDiff, speed * 2, 0, 0.5f))
+                    {
+                        Service.Configuration.HealthDifference = healthDiff;
+                        Service.Configuration.Save();
+                    }
 
 
-                float healthAreaA = Service.Configuration.HealthAreaAbility;
-                if (ImGui.DragFloat("多少的HP，可以用能力技群疗", ref healthAreaA, speed, 0, 1))
-                {
-                    Service.Configuration.HealthAreaAbility = healthAreaA;
-                    Service.Configuration.Save();
-                }
+                    float healthAreaA = Service.Configuration.HealthAreaAbility;
+                    if (ImGui.DragFloat("多少的HP，可以用能力技群疗", ref healthAreaA, speed, 0, 1))
+                    {
+                        Service.Configuration.HealthAreaAbility = healthAreaA;
+                        Service.Configuration.Save();
+                    }
 
-                float healthAreaS = Service.Configuration.HealthAreafSpell;
-                if (ImGui.DragFloat("多少的HP，可以用GCD群疗", ref healthAreaS, speed, 0, 1))
-                {
-                    Service.Configuration.HealthAreafSpell = healthAreaS;
-                    Service.Configuration.Save();
-                }
+                    float healthAreaS = Service.Configuration.HealthAreafSpell;
+                    if (ImGui.DragFloat("多少的HP，可以用GCD群疗", ref healthAreaS, speed, 0, 1))
+                    {
+                        Service.Configuration.HealthAreafSpell = healthAreaS;
+                        Service.Configuration.Save();
+                    }
 
-                ImGui.Separator();
+                    ImGui.Separator();
 
-                float healthSingleA = Service.Configuration.HealthSingleAbility;
-                if (ImGui.DragFloat("多少的HP，可以用能力技单奶", ref healthSingleA, speed, 0, 1))
-                {
-                    Service.Configuration.HealthSingleAbility = healthSingleA;
-                    Service.Configuration.Save();
-                }
+                    float healthSingleA = Service.Configuration.HealthSingleAbility;
+                    if (ImGui.DragFloat("多少的HP，可以用能力技单奶", ref healthSingleA, speed, 0, 1))
+                    {
+                        Service.Configuration.HealthSingleAbility = healthSingleA;
+                        Service.Configuration.Save();
+                    }
 
-                float healthSingleS = Service.Configuration.HealthSingleSpell;
-                if (ImGui.DragFloat("多少的HP，可以用GCD单奶", ref healthSingleS, speed, 0, 1))
-                {
-                    Service.Configuration.HealthSingleSpell = healthSingleS;
-                    Service.Configuration.Save();
+                    float healthSingleS = Service.Configuration.HealthSingleSpell;
+                    if (ImGui.DragFloat("多少的HP，可以用GCD单奶", ref healthSingleS, speed, 0, 1))
+                    {
+                        Service.Configuration.HealthSingleSpell = healthSingleS;
+                        Service.Configuration.Save();
+                    }
+                    ImGui.EndChild();
                 }
 
                 ImGui.PopStyleVar();
@@ -221,7 +243,45 @@ internal class ConfigWindow : Window
                     ImGui.EndChild();
                 }
                 ImGui.PopStyleVar();
+                ImGui.EndTabItem();
+            }
 
+            if (ImGui.BeginTabItem("帮助文档"))
+            {
+                ImGui.Text("在这个窗口，你可以看到一大堆帮助内容。");
+
+                if (ImGui.BeginChild("帮助", new Vector2(0f, -1f), true))
+                {
+
+                    ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
+
+                    ImGui.Text("/aauto HealArea 表示开启一段范围治疗的窗口期。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto HealSingle 表示开启一段单体治疗的窗口期。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto DefenseArea 表示开启一段范围防御的窗口期。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto DefenseSingle 表示开启一段单体防御的窗口期。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto Esuna 表示开启一段康复的窗口期。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto Raise 表示开启强制救人或突进的窗口期。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto AntiRepulsion 表示开启一段防击退的窗口期。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto AttackBig 开始进攻，进攻对象为HitBox最大的。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto AttackSmall 开始进攻，进攻对象为HitBox最小的。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto AttackManual 开始进攻，进攻对象为手动选择。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto AttackCancel 停止进攻，记得一定要经常关掉！");
+
+                    ImGui.EndChild();
+                }
+                ImGui.PopStyleVar();
+
+                ImGui.EndTabItem();
             }
 
             ImGui.EndTabBar();
