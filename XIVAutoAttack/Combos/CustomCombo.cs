@@ -343,6 +343,12 @@ public abstract class CustomCombo
 
     private bool Ability(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
+        if (Service.Configuration.OnlyGCD)
+        {
+            act = null;
+            return false;
+        }
+
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
         if (IconReplacer.AntiRepulsion)
         {

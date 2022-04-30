@@ -123,8 +123,15 @@ internal class ConfigWindow : Window
                         Service.Configuration.Save();
                     }
 
+                    bool isOnlyGCD = Service.Configuration.OnlyGCD;
+                    if (ImGui.Checkbox("是否只使用GCD循环，除去能力技", ref isOnlyGCD))
+                    {
+                        Service.Configuration.OnlyGCD = isOnlyGCD;
+                        Service.Configuration.Save();
+                    }
+
                     float specialDuration = Service.Configuration.SpecialDuration;
-                    if (ImGui.DragFloat("特殊状态持续多久，如范围治疗", ref specialDuration, 0.02f, 1, 20))
+                    if (ImGui.DragFloat("特殊状态持续多久", ref specialDuration, 0.02f, 1, 20))
                     {
                         Service.Configuration.SpecialDuration = specialDuration;
                         Service.Configuration.Save();
