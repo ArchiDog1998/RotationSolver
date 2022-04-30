@@ -13,24 +13,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github Actions", "Github Ac
 		.github\workflows\build.yml = .github\workflows\build.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XIVAutoAttack", "XIVComboPlusPlugin\XIVAutoAttack.csproj", "{37F4893B-1975-42F6-A0A4-F7C9F6341142}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XIVAutoAttack", "XIVAutoAttack\XIVAutoAttack.csproj", "{D115EA3F-F5F9-49C2-97A6-1D55A412C946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
-		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{37F4893B-1975-42F6-A0A4-F7C9F6341142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37F4893B-1975-42F6-A0A4-F7C9F6341142}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37F4893B-1975-42F6-A0A4-F7C9F6341142}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{37F4893B-1975-42F6-A0A4-F7C9F6341142}.Debug|x64.Build.0 = Debug|Any CPU
-		{37F4893B-1975-42F6-A0A4-F7C9F6341142}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37F4893B-1975-42F6-A0A4-F7C9F6341142}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37F4893B-1975-42F6-A0A4-F7C9F6341142}.Release|x64.ActiveCfg = Release|Any CPU
-		{37F4893B-1975-42F6-A0A4-F7C9F6341142}.Release|x64.Build.0 = Release|Any CPU
+		{D115EA3F-F5F9-49C2-97A6-1D55A412C946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D115EA3F-F5F9-49C2-97A6-1D55A412C946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D115EA3F-F5F9-49C2-97A6-1D55A412C946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D115EA3F-F5F9-49C2-97A6-1D55A412C946}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

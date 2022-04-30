@@ -1,0 +1,11 @@
+{
+  "Author": "ArchiTed",
+  "Name": "XIV Auto Attack",
+  "InternalName": "XIVAutoAttack",
+  "AssemblyVersion": "0.9.0.0",
+  "Description": "让自动攻击成为可能，请合理使用！目前为测试阶段，非常刺激！",
+  "ApplicableVersion": "any",
+  "RepoUrl": "https://github.com/ArchiDog1998/XIVAutoAttack",
+  "DalamudApiLevel": 5,
+  "LoadPriority": 0
+}

@@ -31,6 +31,6 @@
     </Reference>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="Copy &quot;$(TargetPath)&quot; &quot;E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\$(ProjectName).dll&quot;" />
+    <Exec Command="Copy &quot;$(TargetPath)&quot; &quot;E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\$(ProjectName).dll&quot;&#xD;&#xA;Copy &quot;$(TargetPath)&quot; &quot;D:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\XIVAutoAttack\latest\$(ProjectName).dll&quot;" />
   </Target>
 </Project>
