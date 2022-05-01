@@ -548,7 +548,7 @@ namespace XIVComboPlus.Combos
                 {
                     var tar = Target == Service.ClientState.LocalPlayer ? TargetHelper.HostileTargets.OrderBy(p=>DistanceToPlayer(p)).First() : Target;
                     var times = FindStatusFromSelf(tar, TargetStatus);
-                    if (times.Length > 0 && times.Max() > 5.5) return false;
+                    if (times.Length > 0 && times.Max() > 6) return false;
                 }
             }
             else

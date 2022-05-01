@@ -212,7 +212,31 @@ namespace XIVComboPlus.Combos
             LanceCharge = 1864,
 
             //幻象冲预备状态
-            DiveReady = 1243;
+            DiveReady = 1243,
+
+            //魔猿形
+            OpoOpoForm = 107,
+
+            //盗龙形
+            RaptorForm = 108,
+
+            //猛豹形
+            CoerlForm = 109,
+
+            //连击效果提高
+            LeadenFist = 1861,
+
+            //功力
+            DisciplinedFist = 3001,
+
+            //破碎拳
+            Demolish = 246,
+
+            //震脚
+            PerfectBalance = 110,
+
+            //无相身形
+            FormlessFist = 2513;
 
     }
 }

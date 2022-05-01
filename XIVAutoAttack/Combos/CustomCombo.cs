@@ -393,6 +393,7 @@ public abstract class CustomCombo
                     break;
             }
         }
+        if (IconReplacer.Break && BreakAbility(abilityRemain, out act)) return true;
         if (IconReplacer.RaiseorMove && MoveAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
@@ -548,6 +549,10 @@ public abstract class CustomCombo
     /// <param name="act"></param>
     /// <returns></returns>
     private protected virtual bool HealAreaGCD(uint lastComboActionID, out BaseAction act)
+    {
+        act = null; return false;
+    }
+    private protected virtual bool BreakAbility(byte abilityRemain, out BaseAction act)
     {
         act = null; return false;
     }

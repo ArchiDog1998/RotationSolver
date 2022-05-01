@@ -126,6 +126,9 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                 case "AntiRepulsion":
                     IconReplacer.StartAntiRepulsion();
                     break;
+                case "Break":
+                    IconReplacer.StartBreak();
+                    break;
                 case "AttackBig":
                     IconReplacer.AttackBig = true;
                     break;

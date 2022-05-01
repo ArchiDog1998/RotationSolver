@@ -125,6 +125,14 @@ internal sealed class IconReplacer : IDisposable
         CustomCombo.Speak("Start Raise");
         RaiseorMove = true;
     }
+    internal static bool Break { get; private set; } = false;
+    internal static void StartBreak()
+    {
+        ResetSpecial();
+        _specialStateStopwatch.Start();
+        CustomCombo.Speak("Start Break");
+        Break = true;
+    }
     internal static bool AntiRepulsion { get; private set; } = false;
     internal static void StartAntiRepulsion()
     {
@@ -138,7 +146,7 @@ internal sealed class IconReplacer : IDisposable
     {
         _specialStateStopwatch.Stop();
         _specialStateStopwatch.Reset();
-        HealArea = HealSingle = DefenseArea = DefenseSingle = Esuna = RaiseorMove
+        HealArea = HealSingle = DefenseArea = DefenseSingle = Esuna = RaiseorMove = Break
             = AntiRepulsion = false;
     }
 
