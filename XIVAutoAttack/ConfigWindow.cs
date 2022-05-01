@@ -276,6 +276,8 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
                     ImGui.Text("/aauto AntiRepulsion 表示开启一段防击退的窗口期。");
                     ImGui.Separator();
+                    ImGui.Text("/aauto Break 表示开启一段爆发的窗口期。");
+                    ImGui.Separator();
                     ImGui.Text("/aauto AttackBig 开始进攻，进攻对象为HitBox最大的。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AttackSmall 开始进攻，进攻对象为HitBox最小的。");

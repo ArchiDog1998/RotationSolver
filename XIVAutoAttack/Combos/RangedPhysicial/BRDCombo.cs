@@ -189,6 +189,23 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         return false;
     }
 
+    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    {
+        //猛者强击
+        if (Actions.RagingStrikes.ShouldUseAction(out act)) return true;
+
+        //光明神只有在战斗之声释放之前0.6s内，才会释放。
+        if (Actions.BattleVoice.RecastTimeRemain < 0.6)
+        {
+            //光明神的最终乐章
+            if (Actions.RadiantFinale.ShouldUseAction(out act, mustUse: true)) return true;
+
+            //战斗之声
+            if (Actions.BattleVoice.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+        return false;
+    }
+
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
         //放浪神的小步舞曲
@@ -204,18 +221,6 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         if (JobGauge.SongTimer < 12000 && (JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.MAGE
             || JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.NONE) && Actions.ArmysPaeon.ShouldUseAction(out act)) return true;
 
-        //猛者强击
-        if (Actions.RagingStrikes.ShouldUseAction(out act)) return true;
-
-        //光明神只有在战斗之声释放之前0.6s内，才会释放。
-        if(Actions.BattleVoice.RecastTimeRemain < 0.6)
-        {
-            //光明神的最终乐章
-            if (Actions.RadiantFinale.ShouldUseAction(out act, mustUse: true)) return true;
-
-            //战斗之声
-            if (Actions.BattleVoice.ShouldUseAction(out act, mustUse: true)) return true;
-        }
 
         //九天连箭
         if (Actions.EmpyrealArrow.ShouldUseAction(out act)) return true;

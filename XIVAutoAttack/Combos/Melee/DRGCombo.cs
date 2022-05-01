@@ -98,12 +98,17 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
     {
         //3 BUff
         if (Actions.LanceCharge.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.DragonSight.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.BattleLitany.ShouldUseAction(out act, mustUse: true)) return true;
+        return false;
+    }
+
+    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    {
 
         if (JobGauge.IsLOTDActive)
         {
@@ -123,10 +128,13 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
-        //»ØÑª
-        if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
-        if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+        return false;
+    }
 
+    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    {
+        if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
         return false;
     }
 

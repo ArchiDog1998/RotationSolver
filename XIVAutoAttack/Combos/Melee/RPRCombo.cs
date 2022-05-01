@@ -184,12 +184,23 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             if (Actions.GrimSwathe.ShouldUseAction(out act)) return true;
             if (Actions.BloodStalk.ShouldUseAction(out act)) return true;
         }
+
+        act = null;
+        return false;
+    }
+
+    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    {
         //究极团辅
         if (Actions.ArcaneCircle.ShouldUseAction(out act)) return true;
+        return false;
+    }
 
+    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    {
         //回血
-        if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
         if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
 
         return false;
     }
