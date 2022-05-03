@@ -204,12 +204,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         //如果已经在爆发了，那继续！
         if (CanBreak(lastComboActionID, out act)) return true;
 
-        //if (lastComboActionID == 0)
-        //{
-        //    if (Actions.Veraero2.ShouldUseAction(out act)) return true;
-        //    act = Actions.Verthunder;
-        //    return true;
-        //}
+        if (JobGauge.ManaStacks == 3) return false;
 
         #region 常规输出
         if (Actions.Verfire.ShouldUseAction(out act)) return true;

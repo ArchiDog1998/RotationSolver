@@ -108,7 +108,10 @@ internal class ConfigWindow : Window
                 //        ImGui.Text(item.GameData.Name + item.StatusId);
                 //    }
                 //}
-
+                //ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
+                //ImGui.Text(TargetHelper.Time.ToString());
+                //if (TargetHelper.times.Count > 0)
+                //    ImGui.Text(TargetHelper.times.Average().ToString());
 
                 ImGui.Text("在这个窗口，你可以设定释放技能所需的参数。");
 

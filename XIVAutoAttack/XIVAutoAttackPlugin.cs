@@ -73,6 +73,8 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         AllJobs = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.ClassJob>().Where(x => x.JobIndex != 0).ToArray();
 
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
+
+
     }
 
     private void ClientState_TerritoryChanged(object sender, ushort e)

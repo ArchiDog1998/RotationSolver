@@ -10,6 +10,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.UI;
 
 namespace XIVComboPlus.Combos;
 
@@ -56,7 +57,6 @@ public abstract class CustomCombo
                 ObjectStatus.Swiftcast3,
                 ObjectStatus.Triplecast,
                 ObjectStatus.Dualcast,
-                ObjectStatus.Acceleration,
             }
             },
 
@@ -293,6 +293,11 @@ public abstract class CustomCombo
         }
     }
 
+    private static unsafe void ShowText(string text)
+    {
+        ((UIModule*)Service.GameGui.GetUIModule())->ShowWideText(text);
+    }
+
     private BaseAction Invoke(uint actionID, uint lastComboActionID, float comboTime)
     {
 
@@ -304,11 +309,7 @@ public abstract class CustomCombo
             if(CheckAction(GCDaction.ActionID) && GCDaction.EnermyLocation != EnemyLocation.None)
             {
                 string text = GCDaction.EnermyLocation.ToString();
-                //Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
-                //{
-                //    Message = text,
-                //    Type = Dalamud.Game.Text.XivChatType.Notice,
-                //});
+                ShowText(text);
                 Speak(text);
             }
 

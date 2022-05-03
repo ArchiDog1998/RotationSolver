@@ -7,6 +7,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using XIVComboPlus.Combos;
@@ -112,10 +113,42 @@ namespace XIVComboPlus
             _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
         }
 
+        //private static uint lastMP = 0;
+        //private static long lasttime = 0;
+        //private static Stopwatch stop = new Stopwatch();
+        //internal static long Time = 0;
+        //internal static List<long> times = new List<long>();
+        //internal static long AnotherTime = 0;
+
         internal unsafe static void Framework_Update(Framework framework)
         {
             if (Service.ClientState.LocalPlayer == null) return;
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) IconReplacer.AutoAttack = false;
+
+            //if(Service.ClientState.LocalPlayer.CurrentMp != 0)
+            //{
+            //    if (Service.ClientState.LocalPlayer.CurrentMp != lastMP)
+            //    {
+            //        lastMP = Service.ClientState.LocalPlayer.CurrentMp;
+            //        AnotherTime = stop.ElapsedMilliseconds;
+            //        stop.Restart();
+            //    }
+            //    var t = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->ServerTime % 3;
+            //    if (t != lasttime)
+            //    {
+            //        lasttime = t;
+            //        if (t == 0)
+            //        {
+            //            Time = stop.ElapsedMilliseconds;
+            //            if (Time < 750)
+            //            {
+            //                times.Add(Time);
+            //            }
+            //        }
+            //    }
+
+            //}
+
 
             Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
             IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
