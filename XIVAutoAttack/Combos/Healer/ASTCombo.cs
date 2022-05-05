@@ -386,7 +386,6 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
 
     private static BattleChara ASTRangeTarget(BattleChara[] ASTTargets)
     {
-
         var targets = GetASTTargets(BaseAction.GetObjectInRadius(TargetHelper.PartyRange, 30));
         if (targets.Length > 0) return RandomObject(targets);
 
@@ -399,8 +398,10 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return null;
     }
 
-    private static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
+    internal static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
     {
+        if (ASTTargets == null || ASTTargets.Length == 0) return null;
+
         var targets = GetASTTargets(BaseAction.GetObjectInRadius(TargetHelper.PartyMelee, 30));
         if (targets.Length > 0) return RandomObject(targets);
 

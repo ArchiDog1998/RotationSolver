@@ -181,7 +181,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
         var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets, out bool haveTargetOnme).Length > 0;
-        if (!IsMoving && haveTargetOnme)
+        if (!IsMoving && haveTargetOnme && abilityRemain == 1)
         {
             //死斗 如果谢不够了。
             if (Actions.Holmgang.ShouldUseAction(out act)) return true;

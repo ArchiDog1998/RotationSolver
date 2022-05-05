@@ -113,7 +113,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
             RadiantFinale = new BaseAction(25785, true),
 
             //ÐÐÒ÷
-            Troubadour = new BaseAction(7405)
+            Troubadour = new BaseAction(7405, true)
             {
                 BuffsProvide = new ushort[]
                 {

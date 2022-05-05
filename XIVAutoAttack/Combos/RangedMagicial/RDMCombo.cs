@@ -9,14 +9,8 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
     internal override uint JobID => 35;
     protected override bool CanHealSingleSpell => false;
     //看看现在有没有促进
-    internal static bool IsBreaking => BaseAction.HaveStatusSelfFromSelf(1239);
 
-    private protected override BaseAction Raise => new BaseAction(7523, true)
-    {
-        BuffsNeed = GeneralActions.Swiftcast.BuffsProvide,
-        OtherCheck = b => TargetHelper.DeathPeopleAll.Length > 0,
-        BuffsProvide = new ushort[] { ObjectStatus.Raise },
-    };
+    private protected override BaseAction Raise => new BaseAction(7523, true);
     internal struct Actions
     {
 
@@ -137,18 +131,28 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
             Reprise = new BaseAction(16529),
 
             //抗死
-            MagickBarrier = new BaseAction(25857);
+            MagickBarrier = new BaseAction(25857),
+
+            //赤核爆
+            Verflare = new BaseAction(7525),
+
+            //赤神圣
+            Verholy = new BaseAction(7526),
+
+            //焦热
+            Scorch = new BaseAction(16530),
+
+            //决断
+            Resolution = new BaseAction(25858);
     }
 
     private protected override bool EmergercyAbility( byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
-
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
         if (nextGCD.ActionID == Actions.Zwerchhau.ActionID || nextGCD.ActionID == Actions.Redoublement.ActionID || nextGCD.ActionID == Actions.Moulinet.ActionID)
         {
             if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
         }
-
 
         act = null;
         return false;
@@ -188,7 +192,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         //攻击四个能力技。
         if (Actions.ContreSixte.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.Fleche.ShouldUseAction(out act)) return true;
-        if (Actions.Engagement.ShouldUseAction(out act, Empty: IsBreaking)) return true;
+        if (Actions.Engagement.ShouldUseAction(out act, Empty: BaseAction.HaveStatusSelfFromSelf(1239))) return true;
         //if (Actions.CorpsAcorps.TryUseAction(level, out act)) return true;
 
         var target = Service.TargetManager.Target;
@@ -248,7 +252,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         if (GeneralActions.Addle.ShouldUseAction(out act)) return true;
         return false;
     }
-    internal static bool CanBreak(uint lastComboActionID, out BaseAction act)
+    private static bool CanBreak(uint lastComboActionID, out BaseAction act)
     {
         byte level = Service.ClientState.LocalPlayer.Level;
         #region 远程三连
@@ -257,23 +261,21 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         {
             if (JobGauge.BlackMana > JobGauge.WhiteMana && level >= 70)
             {
-                if (Actions.Veraero2.ShouldUseAction(out act, mustUse: true)) return true;
+                if (Actions.Verholy.ShouldUseAction(out act, mustUse: true)) return true;
             }
-            if (Actions.Verthunder2.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.Verflare.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         //如果上一次打了赤神圣或者赤核爆了
-        if (level >= 80 && (lastComboActionID == 7525 || lastComboActionID == 7526))
+        if (lastComboActionID == Actions.Verholy.ActionID || lastComboActionID == Actions.Verflare.ActionID)
         {
-            act = Actions.Jolt;
-            return true;
+            if (Actions.Scorch.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         //如果上一次打了焦热
-        if (level >= 90 && lastComboActionID == 16530)
+        if (lastComboActionID == Actions.Scorch.ActionID)
         {
-            act = Actions.Jolt;
-            return true;
+            if (Actions.Resolution.ShouldUseAction(out act, mustUse: true)) return true;
         }
         #endregion
 
@@ -288,7 +290,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         if (Actions.Redoublement.ShouldUseAction(out act, lastComboActionID)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
-        bool mustStart = IsBreaking || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;
+        bool mustStart = BaseAction.HaveStatusSelfFromSelf(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
         if (!mustStart)

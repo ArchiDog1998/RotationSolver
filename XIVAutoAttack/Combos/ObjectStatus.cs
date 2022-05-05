@@ -236,7 +236,37 @@ namespace XIVComboPlus.Combos
             PerfectBalance = 110,
 
             //无相身形
-            FormlessFist = 2513;
+            FormlessFist = 2513,
 
+            //对称投掷
+            SilkenSymmetry = 2693,
+
+            //非对称投掷
+            SilkenFlow = 2694,
+
+            //扇舞·急
+            ThreefoldFanDance = 1820,
+
+            //扇舞·终
+            FourfoldFanDance = 2699,
+
+            //流星舞预备
+            FlourishingStarfall = 2700,
+
+            //标准舞步
+            StandardStep = 1818,
+
+            //技巧舞步
+            TechnicalStep = 1819,
+
+            //闭式舞姿
+            ClosedPosition1 = 1823,
+            ClosedPosition2 = 2026,
+
+            //进攻之探戈
+            Devilment = 1825,
+
+            //提拉纳预备
+            FlourishingFinish = 2698;
     }
 }

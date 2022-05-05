@@ -76,7 +76,7 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
             },
 
             //策动
-            Tactician = new BaseAction(16889)
+            Tactician = new BaseAction(16889, true)
             {
                 BuffsProvide = new ushort[]
                 {

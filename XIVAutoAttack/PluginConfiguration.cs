@@ -19,6 +19,7 @@ public class PluginConfiguration : IPluginConfiguration
     public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
     public List<ActionEvents> Events { get; private set; } = new List<ActionEvents>();
     public bool AllTargeAsHostile { get; set; } = false;
+    public bool AutoBreak { get; set; } = true;
     public bool OnlyGCD { get; set; } = false;
     public float HealthDifference { get; set; } = 0.2f;
     public float HealthAreaAbility { get; set; } = 0.85f;

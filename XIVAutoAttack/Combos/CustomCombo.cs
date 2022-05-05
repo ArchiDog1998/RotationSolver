@@ -206,6 +206,7 @@ public abstract class CustomCombo
 
     protected virtual bool CanHealSingleAbility => TargetHelper.CanHealSingleAbility;
     protected virtual bool CanHealSingleSpell => TargetHelper.CanHealSingleSpell;
+    protected bool SettingBreak => IconReplacer.Break || Service.Configuration.AutoBreak;
 
     /// <summary>
     /// Only one feature can set it to true!
@@ -394,7 +395,7 @@ public abstract class CustomCombo
                     break;
             }
         }
-        if (IconReplacer.Break && BreakAbility(abilityRemain, out act)) return true;
+        if (SettingBreak && BreakAbility(abilityRemain, out act)) return true;
         if (IconReplacer.RaiseorMove && MoveAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;

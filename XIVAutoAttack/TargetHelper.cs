@@ -892,38 +892,38 @@ namespace XIVComboPlus
         //    }
         //}
 
-        ///// <summary>
-        ///// 返回总共能大约回复的血量，非常大概。
-        ///// </summary>
-        ///// <param name="action"></param>
-        ///// <param name="strength"></param>
-        ///// <returns></returns>
-        //internal static float GetBestHeal(Action action, uint strength)
-        //{
-        //    float healRange = strength * 0.000352f;
+        /// <summary>
+        /// 返回总共能大约回复的血量，非常大概。
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="strength"></param>
+        /// <returns></returns>
+        internal static float GetBestHeal(Action action, uint strength)
+        {
+            float healRange = strength * 0.000352f;
 
-        //    //能够放到技能的队员。
-        //    var canGet = GetObjectInRadius(PartyMembers, Math.Max(action.Range, 0.1f));
+            //能够放到技能的队员。
+            var canGet = BaseAction.GetObjectInRadius(PartyMembers, Math.Max(action.Range, 0.1f));
 
-        //    float bestHeal = 0;
-        //    foreach (var member in canGet)
-        //    {
-        //        float thisHeal = 0;
-        //        Vector3 centerPt = member.Position;
-        //        foreach (var ran in PartyMembers)
-        //        {
-        //            //如果不在范围内，那算了。
-        //            if(Vector3.Distance(centerPt, ran.Position) > action.EffectRange)
-        //            {
-        //                continue;
-        //            }
+            float bestHeal = 0;
+            foreach (var member in canGet)
+            {
+                float thisHeal = 0;
+                Vector3 centerPt = member.Position;
+                foreach (var ran in PartyMembers)
+                {
+                    //如果不在范围内，那算了。
+                    if (Vector3.Distance(centerPt, ran.Position) > action.EffectRange)
+                    {
+                        continue;
+                    }
 
-        //            thisHeal += Math.Min(1 - ran.CurrentHp / ran.MaxHp, healRange);
-        //        }
+                    thisHeal += Math.Min(1 - ran.CurrentHp / ran.MaxHp, healRange);
+                }
 
-        //        bestHeal = Math.Max(thisHeal, healRange);
-        //    }
-        //    return bestHeal;
-        //}
+                bestHeal = Math.Max(thisHeal, healRange);
+            }
+            return bestHeal;
+        }
     }
 }

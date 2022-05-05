@@ -99,15 +99,16 @@ internal class ConfigWindow : Window
 
             if (ImGui.BeginTabItem("参数设定"))
             {
-                //ImGui.Text(WARCombo.Actions.Overpower.Target.Name.ToString());
-
-                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                //{
-                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //    {
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //    }
-                //}
+#if DEBUG
+                ImGui.Text(DNCCombo.JobGauge.CompletedSteps.ToString());
+                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                {
+                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    {
+                        ImGui.Text(item.GameData.Name + item.StatusId);
+                    }
+                }
+#endif
                 //ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
                 //ImGui.Text(TargetHelper.Time.ToString());
                 //if (TargetHelper.times.Count > 0)
@@ -130,6 +131,13 @@ internal class ConfigWindow : Window
                     if (ImGui.Checkbox("是否只使用GCD循环，除去能力技", ref isOnlyGCD))
                     {
                         Service.Configuration.OnlyGCD = isOnlyGCD;
+                        Service.Configuration.Save();
+                    }
+
+                    bool autoBreak = Service.Configuration.AutoBreak;
+                    if (ImGui.Checkbox("是否自动进行爆发", ref autoBreak))
+                    {
+                        Service.Configuration.AutoBreak = autoBreak;
                         Service.Configuration.Save();
                     }
 
