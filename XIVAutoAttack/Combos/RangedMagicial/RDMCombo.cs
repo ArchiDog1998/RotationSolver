@@ -174,7 +174,6 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         if (GetRightValue(JobGauge.WhiteMana) & GetRightValue(JobGauge.BlackMana))
         {
             if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
-            if (Actions.Manafication.ShouldUseAction(out act)) return true;
         }
 
         if (JobGauge.ManaStacks == 0)
