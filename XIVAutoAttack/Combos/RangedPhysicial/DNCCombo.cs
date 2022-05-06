@@ -126,7 +126,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             //标准舞步
             StandardStep = new BaseAction(15997)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.StandardStep },
+                BuffsProvide = new ushort[] {  ObjectStatus.StandardStep },
             },
 
             //技巧舞步
@@ -162,11 +162,15 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             },
 
             //进攻之探戈
-            Devilment = new BaseAction(16011, true),
+            Devilment = new BaseAction(16011, true)
+            {
+                BuffsNeed = new ushort[] {ObjectStatus.TechnicalFinish },
+            },
 
             //百花争艳
             Flourish = new BaseAction(16013)
             {
+                BuffsNeed = new ushort[] {ObjectStatus.StandardFinish },
                 BuffsProvide = new ushort[]
                 {
                     ObjectStatus.SilkenSymmetry,
@@ -188,13 +192,23 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
-        if (Actions.Flourish.ShouldUseAction(out act, Empty: true)) return true;
-        return false;
-    }
-
-    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
-    {
+        //尝试爆发
         if (Actions.Devilment.ShouldUseAction(out act, Empty: true)) return true;
+
+        //百花
+        if (Actions.Flourish.ShouldUseAction(out act, Empty: true)) return true;
+
+        //扇舞·急
+        if (Actions.FanDance4.ShouldUseAction(out act)) return true;
+        if (Actions.FanDance3.ShouldUseAction(out act)) return true;
+
+        //扇舞
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Devilment) || JobGauge.Feathers > 3)
+        {
+            if (Actions.FanDance2.ShouldUseAction(out act)) return true;
+            if (Actions.FanDance.ShouldUseAction(out act)) return true;
+        }
+
         return false;
     }
 
@@ -219,13 +233,10 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
-        if (Actions.StandardStep.ShouldUseAction(out act)) return true;
         if (SettingBreak)
         {
             if (Actions.TechnicalStep.ShouldUseAction(out act)) return true;
         }
-        if (Actions.Tillana.ShouldUseAction(out act, mustUse: true)) return true;
-
 
         if (StepGCD(out act)) return true;
         if (AttackGCD(out act, BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Devilment), lastComboActionID)) return true;
@@ -265,23 +276,9 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
     private bool AttackGCD(out BaseAction act, bool breaking, uint lastComboActionID)
     {
-        //剑舞
-        if ((breaking || JobGauge.Esprit >= 75) && 
-            Actions.SaberDance.ShouldUseAction(out act)) return true;
-
+        //提纳拉
+        if (Actions.Tillana.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.StarfallDance.ShouldUseAction(out act)) return true;
-
-
-        //扇舞·急
-        if (Actions.FanDance4.ShouldUseAction(out act)) return true;
-        if (Actions.FanDance3.ShouldUseAction(out act)) return true;
-
-        //扇舞
-        if (breaking || JobGauge.Feathers > 3)
-        {
-            if (Actions.FanDance2.ShouldUseAction(out act)) return true;
-            if (Actions.FanDance.ShouldUseAction(out act)) return true;
-        }
 
         //用掉Buff
         if (Actions.Bloodshower.ShouldUseAction(out act)) return true;
@@ -289,6 +286,13 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
         if (Actions.RisingWindmill.ShouldUseAction(out act)) return true;
         if (Actions.ReverseCascade.ShouldUseAction(out act)) return true;
+
+        //剑舞
+        if ((breaking || JobGauge.Esprit >= 75) &&
+            Actions.SaberDance.ShouldUseAction(out act)) return true;
+
+        //标准舞步
+        if (Actions.StandardStep.ShouldUseAction(out act)) return true;
 
         //aoe
         if (Actions.Bladeshower.ShouldUseAction(out act, lastComboActionID)) return true;

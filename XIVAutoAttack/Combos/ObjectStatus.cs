@@ -256,6 +256,12 @@ namespace XIVComboPlus.Combos
             //标准舞步
             StandardStep = 1818,
 
+            //标准舞步结束
+            StandardFinish = 1821,
+
+            //技巧舞步结束
+            TechnicalFinish = 1822,
+
             //技巧舞步
             TechnicalStep = 1819,
 

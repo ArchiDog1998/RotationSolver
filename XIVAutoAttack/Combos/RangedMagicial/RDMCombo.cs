@@ -153,6 +153,17 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         {
             if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
         }
+        //开场爆发的时候释放。
+        if (GetRightValue(JobGauge.WhiteMana) & GetRightValue(JobGauge.BlackMana))
+        {
+            if (Actions.Manafication.ShouldUseAction(out act)) return true;
+            if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+        //倍增要放到魔连攻击之后
+        if (JobGauge.ManaStacks == 3 || (Service.ClientState.LocalPlayer.Level < 68 && nextGCD.ActionID != Actions.Zwerchhau.ActionID && nextGCD.ActionID != Actions.Riposte.ActionID))
+        {
+            if (Actions.Manafication.ShouldUseAction(out act)) return true;
+        }
 
         act = null;
         return false;
@@ -165,16 +176,6 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
-        //倍增要放到魔连攻击之后
-        if (JobGauge.ManaStacks == 3 || Service.ClientState.LocalPlayer.Level < 68)
-        {
-            if (Actions.Manafication.ShouldUseAction(out act)) return true;
-        }
-        //开场爆发的时候释放。
-        if (GetRightValue(JobGauge.WhiteMana) & GetRightValue(JobGauge.BlackMana))
-        {
-            if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
-        }
 
         if (JobGauge.ManaStacks == 0)
         {
