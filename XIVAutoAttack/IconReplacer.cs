@@ -141,8 +141,12 @@ internal sealed class IconReplacer : IDisposable
         CustomCombo.Speak("Start Anti repulsion");
         AntiRepulsion = true;
     }
-
-    private static void ResetSpecial()
+    //internal static void EndSpecial()
+    //{
+    //    ResetSpecial();
+    //    CustomCombo.Speak("End Special");
+    //}
+    internal static void ResetSpecial()
     {
         _specialStateStopwatch.Stop();
         _specialStateStopwatch.Reset();

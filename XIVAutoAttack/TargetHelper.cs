@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
 using XIVComboPlus.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -17,50 +18,11 @@ namespace XIVComboPlus
 {
     internal class TargetHelper
     {
-        internal enum GetTargetFunction
-        {
-            LowHP,
-            FaceDirction,
-            MajorTank,
-            Esuna,
-            Provoke,
-            Melee,
-            Range,
-            Interrupt,
-        }
 
         private static IntPtr _func;
 
         private static Vector3 _lastPosition;
         public static bool IsMoving { get; private set; }
-
-        private static SortedList<uint, GetTargetFunction> _specialGetTarget = new SortedList<uint, GetTargetFunction>()
-        {
-            //////以太步，找面前的友军。
-            //{BLMCombo.Actions.AetherialManipulation.ActionID, GetTargetFunction.FaceDirction},
-            //{WHMCombo.Actions.Aquaveil.ActionID, GetTargetFunction.MajorTank },
-            //{WHMCombo.Actions.DivineBenison.ActionID, GetTargetFunction.MajorTank },
-            //{CustomCombo.GeneralActions.Esuna.ActionID, GetTargetFunction.Esuna},
-            //{BRDCombo.Actions.WardensPaean.ActionID, GetTargetFunction.Esuna },
-            //{CustomCombo.GeneralActions.Provoke.ActionID, GetTargetFunction.Provoke },
-            //{WARCombo.Actions.Tomahawk.ActionID, GetTargetFunction.Provoke },
-            ////{WARCombo.Actions.NascentFlash.ActionID, GetTargetFunction.MajorTank },
-
-            //{ASTCombo.Actions.Balance.ActionID, GetTargetFunction.Melee },
-            //{ASTCombo.Actions.Arrow.ActionID, GetTargetFunction.Melee },
-            //{ASTCombo.Actions.Spear.ActionID, GetTargetFunction.Melee },
-            //{ASTCombo.Actions.Bole.ActionID, GetTargetFunction.Range },
-            //{ASTCombo.Actions.Ewer.ActionID, GetTargetFunction.Range },
-            //{ASTCombo.Actions.Spire.ActionID, GetTargetFunction.Range },
-            //{ASTCombo.Actions.Exaltation.ActionID, GetTargetFunction.MajorTank},
-
-            //{CustomCombo.GeneralActions.Interject.ActionID, GetTargetFunction.Interrupt },
-            //{CustomCombo.GeneralActions.LowBlow.ActionID, GetTargetFunction.Interrupt },
-            //{CustomCombo.GeneralActions.LegSweep.ActionID, GetTargetFunction.Interrupt },
-            //{CustomCombo.GeneralActions.HeadGraze.ActionID, GetTargetFunction.Interrupt },
-
-            //{DRGCombo.Actions.DragonSight.ActionID, GetTargetFunction.Melee },
-        };
 
         //All Targes
         internal static BattleChara[] AllTargets { get; private set; } = new BattleChara[0];
@@ -125,34 +87,66 @@ namespace XIVComboPlus
             if (Service.ClientState.LocalPlayer == null) return;
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) IconReplacer.AutoAttack = false;
 
-            //if(Service.ClientState.LocalPlayer.CurrentMp != 0)
-            //{
-            //    if (Service.ClientState.LocalPlayer.CurrentMp != lastMP)
-            //    {
-            //        lastMP = Service.ClientState.LocalPlayer.CurrentMp;
-            //        AnotherTime = stop.ElapsedMilliseconds;
-            //        stop.Restart();
-            //    }
-            //    var t = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->ServerTime % 3;
-            //    if (t != lasttime)
-            //    {
-            //        lasttime = t;
-            //        if (t == 0)
-            //        {
-            //            Time = stop.ElapsedMilliseconds;
-            //            if (Time < 750)
-            //            {
-            //                times.Add(Time);
-            //            }
-            //        }
-            //    }
-
-            //}
-
 
             Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
             IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
             _lastPosition = thisPosition;
+
+            unsafe
+            {
+                var instance = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
+                var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
+
+                WeaponTotal = instance->GetRecastTime(spell, 11);
+                WeaponRemain = WeaponTotal - instance->GetRecastTimeElapsed(spell, 11);
+
+                AbilityRemainCount = (byte)(WeaponRemain / WeaponInterval);
+            }
+
+            UpdateTargets();
+
+            if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
+
+            if (WeaponRemain < 0.05) Service.IconReplacer.DoAnAction(true);
+            //要超出GCD了，那就不放技能了。
+            else if (WeaponRemain + WeaponInterval > WeaponTotal || Service.ClientState.LocalPlayer.IsCasting) return;
+            if (WeaponRemain % WeaponInterval < 0.05) Service.IconReplacer.DoAnAction(false);
+
+            #region 宏
+            //如果没有有正在运行的宏，弄一个出来
+            if (DoingMacro == null && Macros.TryDequeue(out var macro))
+            {
+                DoingMacro = macro;
+            }
+
+            //如果有正在处理的宏
+            if (DoingMacro != null)
+            {
+                //正在跑的话，就尝试停止，停止成功就放弃它。
+                if (DoingMacro.IsRunning)
+                {
+                    if (DoingMacro.EndUseMacro())
+                    {
+                        DoingMacro = null;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                //否则，始终开始。
+                else
+                {
+                    DoingMacro.StartUseMacro();
+                }
+            }
+#endregion
+        }
+
+
+        private static void UpdateTargets()
+        {
+
             #region Hostile
 
 #if DEBUG
@@ -173,23 +167,11 @@ namespace XIVComboPlus
             }
             catch (Exception ex)
             {
-                Service.ChatGui.PrintError(ex.Message);
+                Service.ChatGui.Print(ex.Message);
             }
 
 #endif
             #endregion
-
-            unsafe
-            {
-                var instance = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
-                var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
-
-                WeaponTotal = instance->GetRecastTime(spell, 11);
-                WeaponRemain = WeaponTotal - instance->GetRecastTimeElapsed(spell, 11);
-
-                AbilityRemainCount = (byte)(WeaponRemain / WeaponInterval);
-            }
-
             #region Friend
             var party = Service.PartyList;
             PartyMembers = party.Length == 0 ? (Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer }) :
@@ -234,8 +216,8 @@ namespace XIVComboPlus
                 }
                 return false;
             }).ToArray();
-#endregion
-#region Health
+            #endregion
+            #region Health
             var members = PartyMembers;
 
             PartyMembersHP = BaseAction.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
@@ -261,45 +243,9 @@ namespace XIVComboPlus
             CanHealSingleAbility = PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
             CanHealSingleSpell = PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
             HPNotFull = PartyMembersHP.Min() < 1;
-#endregion
+            #endregion
 
-            if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
-            if (WeaponRemain < 0.05) Service.IconReplacer.DoAnAction(true);
-            //要超出GCD了，那就不放技能了。
-            else if (WeaponRemain + WeaponInterval > WeaponTotal || Service.ClientState.LocalPlayer.IsCasting) return;
-            if (WeaponRemain % WeaponInterval < 0.05) Service.IconReplacer.DoAnAction(false);
-
-#region 宏
-            //如果没有有正在运行的宏，弄一个出来
-            if (DoingMacro == null && Macros.TryDequeue(out var macro))
-            {
-                DoingMacro = macro;
-            }
-
-            //如果有正在处理的宏
-            if (DoingMacro != null)
-            {
-                //正在跑的话，就尝试停止，停止成功就放弃它。
-                if (DoingMacro.IsRunning)
-                {
-                    if (DoingMacro.EndUseMacro())
-                    {
-                        DoingMacro = null;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                //否则，始终开始。
-                else
-                {
-                    DoingMacro.StartUseMacro();
-                }
-            }
-#endregion
         }
-
 
         public unsafe static bool CanAttack(GameObject actor)
         {

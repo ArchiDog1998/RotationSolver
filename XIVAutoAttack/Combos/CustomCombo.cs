@@ -118,7 +118,7 @@ public abstract class CustomCombo
             FootGraze = new BaseAction(7553),
 
             //亲疏自行
-            ArmsLength = new BaseAction(7548),
+            ArmsLength = new BaseAction(7548, shouldEndSpecial:true),
 
             //铁壁
             Rampart = new BaseAction(7531)
@@ -167,7 +167,7 @@ public abstract class CustomCombo
             HeadGraze = new BaseAction(7551),
 
             //沉稳咏唱
-            Surecast = new BaseAction(7559);
+            Surecast = new BaseAction(7559, shouldEndSpecial:true);
 
     }
     #endregion
@@ -358,7 +358,7 @@ public abstract class CustomCombo
             {
                 case (byte)Role.防护:
                 case (byte)Role.近战:
-                    if(GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
                     break;
                 case (byte)Role.治疗:
                     if (GeneralActions.Surecast.ShouldUseAction(out act)) return true;

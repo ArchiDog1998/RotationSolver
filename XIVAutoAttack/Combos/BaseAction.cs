@@ -23,6 +23,7 @@ namespace XIVComboPlus.Combos
         internal const byte GCDCooldownGroup = 58;
 
         private bool _isFriendly;
+        private bool _shouldEndSpecial;
         internal Action Action { get; }
         //internal IconReplacer.CooldownData CoolDown => Service.IconReplacer.GetCooldown(Action.CooldownGroup);
         internal byte Level => Action.ClassJobLevel;
@@ -154,9 +155,10 @@ namespace XIVComboPlus.Combos
 
         internal Func<BattleChara[], BattleChara[]> FilterForHostile { get; set; } = availableCharas => availableCharas;
 
-        internal BaseAction(uint actionID, bool isFriendly = false)
+        internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
         {
             this.Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
+            this._shouldEndSpecial = shouldEndSpecial;
             _isFriendly = isFriendly;
             this.IsGCD = Action.CooldownGroup == GCDCooldownGroup;
 
@@ -173,10 +175,23 @@ namespace XIVComboPlus.Combos
                 this.MPNeed = 0;
             }
         }
-        //public BattleChara FindTarget(bool mustUse)
-        //{
-        //    return null;
-        //}
+
+        internal static BattleChara FindMoveTarget(BattleChara[] charas)
+        {
+            Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
+            float rotation = Service.ClientState.LocalPlayer.Rotation;
+            Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+
+            return charas.Where(t =>
+            {
+                Vector3 dir = t.Position - pPosition;
+                Vector2 dirVec = new Vector2(dir.Z, dir.X);
+                double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
+                return angle <= Math.PI / 6;
+            }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
+
+        }
+
         public bool FindTarget(bool mustUse)
         {
             _position = Service.ClientState.LocalPlayer.Position;
@@ -196,6 +211,18 @@ namespace XIVComboPlus.Combos
                 Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
                 _position = Target.Position;
                 return true;
+            }
+            //如果能对友方和敌方都能选中
+            else if (Action.CanTargetParty && Action.CanTargetHostile)
+            {
+                BattleChara[] availableCharas = TargetHelper.PartyMembers.Union(TargetHelper.HostileTargets).ToArray();
+                availableCharas = GetObjectInRadius(availableCharas, range);
+                //特殊选队友的方法。
+                var tar = ChoiceFriend(availableCharas);
+                if (tar == null) return false;
+                Target = tar;
+                return true;
+
             }
             //首先看看是不是能对小队成员进行操作的。
             else if (Action.CanTargetParty)
@@ -283,8 +310,8 @@ namespace XIVComboPlus.Combos
             Target = Service.ClientState.LocalPlayer;
             if(Action.EffectRange > 0 && !_isFriendly)
             {
-                var count = GetObjectInRadius( TargetHelper.HostileTargets, Action.EffectRange).Length;
-                if (count < Service.Configuration.HostileCount) return false;
+                var count = GetObjectInRadius(TargetHelper.HostileTargets, Action.EffectRange).Length;
+                if (count < (mustUse ? 1 :Service.Configuration.HostileCount)) return false;
             }
 
             return true;
@@ -327,9 +354,9 @@ namespace XIVComboPlus.Combos
         {
             return Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position);
         }
-        internal static T[] GetObjectInRadius<T>(T[] objects, float radius, bool needAddHitbox = true) where T : GameObject
+        internal static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
         {
-            return objects.Where(o => DistanceToPlayer(o) <= (needAddHitbox ? radius + o.HitboxRadius : radius)).ToArray();
+            return objects.Where(o => DistanceToPlayer(o) <= radius + o.HitboxRadius).ToArray();
         }
 
         private static T[] GetMostObject<T>(T[] canAttack, float radius, float range, Func<T, T[], float, byte> HowMany, bool isfriend, bool mustUse) where T : BattleChara
@@ -403,7 +430,7 @@ namespace XIVComboPlus.Combos
         internal static T[] GetMostObjectInArc<T>(T[] objects, float radius, bool mustUse) where T : BattleChara
         {
             //能够打到的所有怪。
-            var canGet = GetObjectInRadius(objects, radius, false);
+            var canGet = GetObjectInRadius(objects, radius);
 
             return GetMostObject(canGet, radius, radius, CalculateCount, false, mustUse);
 
@@ -567,8 +594,12 @@ namespace XIVComboPlus.Combos
         {
             var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y,  Z = _position.Z };
 
-            return Action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ActionID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
+            bool result = Action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ActionID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
              ActionManager.Instance()->UseAction(ActionType.Spell, Service.IconReplacer.OriginalHook(ActionID), Target.ObjectId);
+
+            if (_shouldEndSpecial) IconReplacer.ResetSpecial();
+
+            return result;
         }
 
         internal static bool HaveStatusSelfFromSelf(params ushort[] effectIDs)

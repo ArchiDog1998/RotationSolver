@@ -100,20 +100,17 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                ImGui.Text(DNCCombo.JobGauge.CompletedSteps.ToString());
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
-#endif
-                //ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
-                //ImGui.Text(TargetHelper.Time.ToString());
-                //if (TargetHelper.times.Count > 0)
-                //    ImGui.Text(TargetHelper.times.Average().ToString());
+                //ImGui.Text(DNCCombo.JobGauge.CompletedSteps.ToString());
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
 
+                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
+#endif
                 ImGui.Text("在这个窗口，你可以设定释放技能所需的参数。");
 
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
