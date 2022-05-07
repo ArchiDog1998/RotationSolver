@@ -310,7 +310,7 @@ public abstract class CustomCombo
             if(CheckAction(GCDaction.ActionID) && GCDaction.EnermyLocation != EnemyLocation.None)
             {
                 string text = GCDaction.EnermyLocation.ToString();
-                ShowText(text);
+                //(text);
                 Speak(text);
             }
 
@@ -395,6 +395,7 @@ public abstract class CustomCombo
                     break;
             }
         }
+
         if (SettingBreak && BreakAbility(abilityRemain, out act)) return true;
         if (IconReplacer.RaiseorMove && MoveAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;

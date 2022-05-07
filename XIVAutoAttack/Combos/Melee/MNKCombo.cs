@@ -17,10 +17,10 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             },
 
             //Á¬»÷
-            Bootshine = new BaseAction(53)
-            {
-                BuffsNeed = new ushort[] { ObjectStatus.LeadenFist },
-            },
+            Bootshine = new BaseAction(53),
+            //{
+            //    BuffsNeed = new ushort[] { ObjectStatus.LeadenFist },
+            //},
 
             //ÆÆ»µÉñ³å aoe
             ArmoftheDestroyer = new BaseAction(62),
@@ -126,18 +126,12 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
-    {
-        if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
-        if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
-        return false;
-    }
 
     private bool OpoOpoForm(out BaseAction act)
     {
-        if(Actions.ArmoftheDestroyer.ShouldUseAction(out act)) return true;
-        if(Actions.Bootshine.ShouldUseAction(out act)) return true;
-        if(Actions.DragonKick.ShouldUseAction(out act)) return true;
+        if(Actions.ArmoftheDestroyer.ShouldUseAction(out act)) return true; 
+        if (Actions.DragonKick.ShouldUseAction(out act)) return true;
+        if (Actions.Bootshine.ShouldUseAction(out act)) return true;
         return false;
     }
 
@@ -257,6 +251,10 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             if (Actions.HowlingFist.ShouldUseAction(out act)) return true;
             if (Actions.SteelPeak.ShouldUseAction(out act)) return true;
         }
+
+        if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
+
 
         return false;
     }

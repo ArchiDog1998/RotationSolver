@@ -154,15 +154,29 @@ namespace XIVComboPlus
             IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
             _lastPosition = thisPosition;
             #region Hostile
-            AllTargets = Service.ObjectTable.Where(obj => obj is BattleChara && ((BattleChara)obj).CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
-            uint[] ids = GetEnemies();
-            //InBattle = ids.Length > 0;
-            var hosts = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
-            HostileTargets = (Service.Configuration.AllTargeAsHostile || hosts.Length == 0) ? AllTargets : hosts;
 
-            CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible).ToArray();
+#if DEBUG
+            try
+            {
+#endif
+                AllTargets = Service.ObjectTable.Where(obj => obj is BattleChara c && c.CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
+                uint[] ids = GetEnemies() ?? new uint[0];
+                //InBattle = ids.Length > 0;
+                var hosts = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
+                HostileTargets = (Service.Configuration.AllTargeAsHostile || hosts.Length == 0) ? AllTargets : hosts;
 
-            HaveTargetAngle = BaseAction.GetObjectInRadius(HostileTargets, 25).Length > 0;
+                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible).ToArray();
+
+                HaveTargetAngle = BaseAction.GetObjectInRadius(HostileTargets, 25).Length > 0;
+
+#if DEBUG
+            }
+            catch (Exception ex)
+            {
+                Service.ChatGui.PrintError(ex.Message);
+            }
+
+#endif
             #endregion
 
             unsafe
@@ -220,8 +234,8 @@ namespace XIVComboPlus
                 }
                 return false;
             }).ToArray();
-            #endregion
-            #region Health
+#endregion
+#region Health
             var members = PartyMembers;
 
             PartyMembersHP = BaseAction.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
@@ -247,7 +261,7 @@ namespace XIVComboPlus
             CanHealSingleAbility = PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
             CanHealSingleSpell = PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
             HPNotFull = PartyMembersHP.Min() < 1;
-            #endregion
+#endregion
 
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
             if (WeaponRemain < 0.05) Service.IconReplacer.DoAnAction(true);
@@ -255,7 +269,7 @@ namespace XIVComboPlus
             else if (WeaponRemain + WeaponInterval > WeaponTotal || Service.ClientState.LocalPlayer.IsCasting) return;
             if (WeaponRemain % WeaponInterval < 0.05) Service.IconReplacer.DoAnAction(false);
 
-            #region 宏
+#region 宏
             //如果没有有正在运行的宏，弄一个出来
             if (DoingMacro == null && Macros.TryDequeue(out var macro))
             {
@@ -283,7 +297,7 @@ namespace XIVComboPlus
                     DoingMacro.StartUseMacro();
                 }
             }
-            #endregion
+#endregion
         }
 
 

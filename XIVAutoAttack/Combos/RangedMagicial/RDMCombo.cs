@@ -176,24 +176,23 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
-
         if (JobGauge.ManaStacks == 0)
         {
             //即刻咏唱
             if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
+
+            //促进满了就用。 
+            if (Actions.Acceleration.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         //加个醒梦
         if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
 
-        //促进满了就用。 
-        if (Actions.Acceleration.ShouldUseAction(out act, mustUse: true)) return true;
 
         //攻击四个能力技。
         if (Actions.ContreSixte.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.Fleche.ShouldUseAction(out act)) return true;
         if (Actions.Engagement.ShouldUseAction(out act, Empty: BaseAction.HaveStatusSelfFromSelf(1239))) return true;
-        //if (Actions.CorpsAcorps.TryUseAction(level, out act)) return true;
 
         var target = Service.TargetManager.Target;
         if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, target.Position) - target.HitboxRadius < 1)
@@ -250,8 +249,17 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
     {
         //混乱
         if (GeneralActions.Addle.ShouldUseAction(out act)) return true;
+        if (Actions.MagickBarrier.ShouldUseAction(out act)) return true;
         return false;
     }
+
+    //private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    //{
+    //    if (Actions.Manafication.ShouldUseAction(out act)) return true;
+    //    if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
+    //    return false;
+    //}
+
     private static bool CanBreak(uint lastComboActionID, out BaseAction act)
     {
         byte level = Service.ClientState.LocalPlayer.Level;

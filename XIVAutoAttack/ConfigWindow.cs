@@ -120,6 +120,13 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
+                    bool neverReplaceIcon = Service.Configuration.NeverReplaceIcon;
+                    if (ImGui.Checkbox("不替换图标，", ref neverReplaceIcon))
+                    {
+                        Service.Configuration.NeverReplaceIcon = neverReplaceIcon;
+                        Service.Configuration.Save();
+                    }
+
                     bool isAllTargetAsHostile = Service.Configuration.AllTargeAsHostile;
                     if (ImGui.Checkbox("是否设定所有可以攻击的目标均为敌对目标", ref isAllTargetAsHostile))
                     {

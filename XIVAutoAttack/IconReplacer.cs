@@ -201,7 +201,7 @@ internal sealed class IconReplacer : IDisposable
 #if DEBUG
     private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
     {
-        Service.ChatGui.Print(actionType.ToString() + '\n' + actionID.ToString() + '\n' + targetID.ToString() + '\n' + a4.ToString() + '\n' + a5.ToString() + '\n' + a6.ToString());
+        //Service.ChatGui.Print(actionType.ToString() + '\n' + actionID.ToString() + '\n' + targetID.ToString() + '\n' + a4.ToString() + '\n' + a5.ToString() + '\n' + a6.ToString());
         return getActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
     }
 #endif
@@ -239,7 +239,6 @@ internal sealed class IconReplacer : IDisposable
 
     internal void DoAnAction(bool isGCD)
     {
-
         //Í£Ö¹ÌØÊâ×´Ì¬
         if (_specialStateStopwatch.IsRunning && _specialStateStopwatch.ElapsedMilliseconds > Service.Configuration.SpecialDuration * 1000)
         {
@@ -292,7 +291,7 @@ internal sealed class IconReplacer : IDisposable
         try
         {
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
-            if (localPlayer == null)
+            if (localPlayer == null || Service.Configuration.NeverReplaceIcon)
             {
                 return OriginalHook(actionID);
             }

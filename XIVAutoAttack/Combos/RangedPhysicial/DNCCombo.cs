@@ -209,6 +209,16 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             if (Actions.FanDance.ShouldUseAction(out act)) return true;
         }
 
+        //ÉËÍÈ
+        if (GeneralActions.FootGraze.ShouldUseAction(out act)) return true;
+
+        //ÉË×ã
+        if (GeneralActions.LegGraze.ShouldUseAction(out act)) return true;
+
+        //ÄÚµ¤
+        if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+
+
         return false;
     }
 
