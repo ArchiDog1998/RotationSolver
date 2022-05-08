@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Dalamud.Configuration;
 using Dalamud.Utility;
 using Newtonsoft.Json;
-using XIVComboPlus.Attributes;
 using XIVComboPlus.Combos;
 
 namespace XIVComboPlus;

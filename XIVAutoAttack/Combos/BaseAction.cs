@@ -182,7 +182,7 @@ namespace XIVComboPlus.Combos
             float rotation = Service.ClientState.LocalPlayer.Rotation;
             Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
 
-            return charas.Where(t =>
+            var tar = charas.Where(t =>
             {
                 Vector3 dir = t.Position - pPosition;
                 Vector2 dirVec = new Vector2(dir.Z, dir.X);
@@ -190,6 +190,9 @@ namespace XIVComboPlus.Combos
                 return angle <= Math.PI / 6;
             }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
 
+            if (TargetHelper.DistanceToPlayer(tar) < 5) return null;
+
+            return tar;
         }
 
         public bool FindTarget(bool mustUse)

@@ -82,14 +82,14 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
             LiturgyoftheBell = new BaseAction(25862, true),
 
             //神速咏唱
-            PresenseOfMind = new BaseAction(136),
+            PresenseOfMind = new BaseAction(136, true),
             //无中生有
-            ThinAir = new BaseAction(7430),
+            ThinAir = new BaseAction(7430, true),
 
             //全大赦
-            PlenaryIndulgence = new BaseAction(7433),
+            PlenaryIndulgence = new BaseAction(7433, true),
             //节制
-            Temperance = new BaseAction(16536);
+            Temperance = new BaseAction(16536, true);
     }
 
 

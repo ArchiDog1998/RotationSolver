@@ -75,7 +75,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             EarthlyStar = new BaseAction(7439, true),
 
             //命运之轮 减伤，手动放。
-            CollectiveUnconscious = new BaseAction(3613),
+            CollectiveUnconscious = new BaseAction(3613, true),
 
             //天宫图
             Horoscope = new BaseAction(16557, true),
@@ -386,10 +386,11 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
 
     private static BattleChara ASTRangeTarget(BattleChara[] ASTTargets)
     {
-        var targets = GetASTTargets(BaseAction.GetObjectInRadius(TargetHelper.PartyRange, 30));
+        
+        var targets = GetASTTargets(TargetHelper.GetJobCategory(ASTTargets, Role.远程));
         if (targets.Length > 0) return RandomObject(targets);
 
-        targets = GetASTTargets(BaseAction.GetObjectInRadius(TargetHelper.PartyMelee, 30));
+        targets = GetASTTargets(TargetHelper.GetJobCategory(ASTTargets, Role.近战));
         if (targets.Length > 0) return RandomObject(targets);
 
         targets = GetASTTargets(ASTTargets);
@@ -400,12 +401,10 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
 
     internal static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
     {
-        if (ASTTargets == null || ASTTargets.Length == 0) return null;
-
-        var targets = GetASTTargets(BaseAction.GetObjectInRadius(TargetHelper.PartyMelee, 30));
+        var targets = GetASTTargets(TargetHelper.GetJobCategory(ASTTargets, Role.近战));
         if (targets.Length > 0) return RandomObject(targets);
 
-        targets = GetASTTargets(BaseAction.GetObjectInRadius(TargetHelper.PartyRange, 30));
+        targets = GetASTTargets(TargetHelper.GetJobCategory(ASTTargets, Role.远程));
         if (targets.Length > 0) return RandomObject(targets);
 
         targets = GetASTTargets(ASTTargets);
@@ -438,7 +437,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         }).ToArray();
     }
 
-    private static BattleChara RandomObject(BattleChara[] objs)
+    internal static BattleChara RandomObject(BattleChara[] objs)
     {
         Random ran = new Random(DateTime.Now.Millisecond);
         return objs[ran.Next(objs.Length)];

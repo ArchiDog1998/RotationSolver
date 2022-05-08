@@ -97,7 +97,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             },
 
             //前冲步
-            EnAvant = new BaseAction(16010),
+            EnAvant = new BaseAction(16010, shouldEndSpecial:true),
 
             //蔷薇曲脚步
             Emboite = new BaseAction(15999)
@@ -126,13 +126,21 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             //标准舞步
             StandardStep = new BaseAction(15997)
             {
-                BuffsProvide = new ushort[] {  ObjectStatus.StandardStep },
+                BuffsProvide = new ushort[] 
+                {  
+                    ObjectStatus.StandardStep,
+                    ObjectStatus.TechnicalStep,
+                },
             },
 
             //技巧舞步
             TechnicalStep = new BaseAction(15998)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.TechnicalStep },
+                BuffsProvide = new ushort[]
+                {
+                    ObjectStatus.StandardStep,
+                    ObjectStatus.TechnicalStep,
+                },
             },
 
             //防守之桑巴
@@ -153,7 +161,19 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             //闭式舞姿
             ClosedPosition = new BaseAction(16006, true)
             {
-                ChoiceFriend = ASTCombo.ASTMeleeTarget,
+                ChoiceFriend = Targets =>
+                {
+                    var targets = TargetHelper.GetJobCategory(Targets, Role.近战);
+                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+
+                    targets = TargetHelper.GetJobCategory(Targets, Role.远程);
+                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+
+                    targets = Targets;
+                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+
+                    return null;
+                },
                 BuffsProvide = new ushort[]
                 {
                     ObjectStatus.ClosedPosition1,
@@ -259,15 +279,18 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         act = null;
         if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.StandardStep, ObjectStatus.TechnicalStep)) return false;
 
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.StandardStep) && JobGauge.CompletedSteps == 2)
+        if (HaveTargetAngle)
         {
-            act = Actions.StandardStep;
-            return true;
-        }
-        else if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TechnicalStep) && JobGauge.CompletedSteps == 4)
-        {
-            act = Actions.TechnicalStep;
-            return true;
+            if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.StandardStep) && JobGauge.CompletedSteps == 2)
+            {
+                act = Actions.StandardStep;
+                return true;
+            }
+            else if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TechnicalStep) && JobGauge.CompletedSteps == 4)
+            {
+                act = Actions.TechnicalStep;
+                return true;
+            }
         }
 
         if (Actions.Emboite.ShouldUseAction(out act)) return true;

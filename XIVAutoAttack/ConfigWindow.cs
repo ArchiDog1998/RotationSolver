@@ -11,7 +11,6 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
-using XIVComboPlus.Attributes;
 using XIVComboPlus.Combos;
 
 namespace XIVComboPlus;

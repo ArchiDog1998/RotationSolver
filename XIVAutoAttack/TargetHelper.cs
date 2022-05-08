@@ -47,9 +47,6 @@ namespace XIVComboPlus
         /// 玩家们
         /// </summary>
         internal static BattleChara[] AllianceMembers { get; private set; } = new PlayerCharacter[0];
-        internal static BattleChara[] PartyHealers { get; private set; } = new PlayerCharacter[0];
-        internal static BattleChara[] PartyMelee { get; private set; } = new PlayerCharacter[0];
-        internal static BattleChara[] PartyRange { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] PartyTanks { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] PartyTanksAttached { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
@@ -178,11 +175,7 @@ namespace XIVComboPlus
                 party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara).ToArray();
 
             AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
-            //PartyMembers = AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).Union(new PlayerCharacter[] { Service.ClientState.LocalPlayer }).ToArray();
 
-            PartyHealers = GetJobCategory(PartyMembers, Role.治疗);
-            PartyMelee = GetJobCategory(PartyMembers, Role.近战);
-            PartyRange = GetJobCategory(PartyMembers, Role.远程);
             PartyTanks = GetJobCategory(PartyMembers, Role.防护);
 
             List<BattleChara> attachedT = new List<BattleChara>(PartyTanks.Length);
