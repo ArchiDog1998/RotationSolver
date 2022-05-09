@@ -6,7 +6,7 @@
     "Author": "ArchiTed",
     "Name": "XIV Auto Attack",
     "Punchline": "Auto attack!",
-    "Description": "让自动攻击成为可能，请合理使用！目前为测试阶段，非常刺激！\n 输入/pattack以设置帮助菜单。",
+    "Description": "让自动攻击成为可能，请合理使用！目前为测试阶段较为不稳定，且非常刺激！\n 输入/pattack以设置帮助菜单。",
     "Changelog": "",
     "Tags": [
       "Attacks"
@@ -16,7 +16,7 @@
     ],
     "IsHide": false,
     "InternalName": "XIVAutoAttack",
-    "AssemblyVersion": "0.9.1.0",
+    "AssemblyVersion": "0.9.2.0",
     "IsTestingExclusive": false,
     "RepoUrl": "https://github.com/ArchiDog1998/XIVAutoAttack",
     "ApplicableVersion": "any",
