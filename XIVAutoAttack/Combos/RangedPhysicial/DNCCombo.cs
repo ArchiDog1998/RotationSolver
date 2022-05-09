@@ -97,7 +97,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             },
 
             //前冲步
-            EnAvant = new BaseAction(16010, shouldEndSpecial:true),
+            EnAvant = new BaseAction(16010, shouldEndSpecial: true),
 
             //蔷薇曲脚步
             Emboite = new BaseAction(15999)
@@ -126,8 +126,8 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             //标准舞步
             StandardStep = new BaseAction(15997)
             {
-                BuffsProvide = new ushort[] 
-                {  
+                BuffsProvide = new ushort[]
+                {
                     ObjectStatus.StandardStep,
                     ObjectStatus.TechnicalStep,
                 },
@@ -136,6 +136,10 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             //技巧舞步
             TechnicalStep = new BaseAction(15998)
             {
+                BuffsNeed = new ushort[]
+                {
+                    ObjectStatus.StandardFinish,
+                },
                 BuffsProvide = new ushort[]
                 {
                     ObjectStatus.StandardStep,
@@ -184,13 +188,13 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             //进攻之探戈
             Devilment = new BaseAction(16011, true)
             {
-                BuffsNeed = new ushort[] {ObjectStatus.TechnicalFinish },
+                BuffsNeed = new ushort[] { ObjectStatus.TechnicalFinish },
             },
 
             //百花争艳
             Flourish = new BaseAction(16013)
             {
-                BuffsNeed = new ushort[] {ObjectStatus.StandardFinish },
+                BuffsNeed = new ushort[] { ObjectStatus.StandardFinish },
                 BuffsProvide = new ushort[]
                 {
                     ObjectStatus.SilkenSymmetry,
@@ -207,7 +211,13 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             Tillana = new BaseAction(25790)
             {
                 BuffsNeed = new ushort[] { ObjectStatus.FlourishingFinish },
-            };
+            },
+
+            //标准舞步结束
+            StandardFinish = new BaseAction(16003),
+
+            //技巧舞步结束
+            TechnicalFinish = new BaseAction(16004);
     }
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
@@ -279,24 +289,21 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         act = null;
         if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.StandardStep, ObjectStatus.TechnicalStep)) return false;
 
-        if (HaveTargetAngle)
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.StandardStep) && JobGauge.CompletedSteps == 2)
         {
-            if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.StandardStep) && JobGauge.CompletedSteps == 2)
-            {
-                act = Actions.StandardStep;
-                return true;
-            }
-            else if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TechnicalStep) && JobGauge.CompletedSteps == 4)
-            {
-                act = Actions.TechnicalStep;
-                return true;
-            }
+            if (Actions.StandardFinish.ShouldUseAction(out act, mustUse:true)) return true;
         }
-
-        if (Actions.Emboite.ShouldUseAction(out act)) return true;
-        if (Actions.Entrechat.ShouldUseAction(out act)) return true;
-        if (Actions.Jete.ShouldUseAction(out act)) return true;
-        if (Actions.Pirouette.ShouldUseAction(out act)) return true;
+        else if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TechnicalStep) && JobGauge.CompletedSteps == 4)
+        {
+            if (Actions.TechnicalFinish.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+        else
+        {
+            if (Actions.Emboite.ShouldUseAction(out act)) return true;
+            if (Actions.Entrechat.ShouldUseAction(out act)) return true;
+            if (Actions.Jete.ShouldUseAction(out act)) return true;
+            if (Actions.Pirouette.ShouldUseAction(out act)) return true;
+        }
 
         return false;
     }

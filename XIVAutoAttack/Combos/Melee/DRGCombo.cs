@@ -62,7 +62,10 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             Jump = new BaseAction(92),
 
             //幻象冲
-            MirageDive = new BaseAction(7399) { BuffsNeed = new ushort[] { ObjectStatus.DiveReady }, },
+            MirageDive = new BaseAction(7399) 
+            { 
+                BuffsNeed = new ushort[] { ObjectStatus.DiveReady }, 
+            },
 
             //武神枪
             Geirskogul = new BaseAction(3555),
@@ -83,7 +86,22 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             LanceCharge = new BaseAction(85),
 
             //巨龙视线
-            DragonSight = new BaseAction(7398),
+            DragonSight = new BaseAction(7398)
+            {
+                ChoiceFriend = Targets =>
+                {
+                    var targets = TargetHelper.GetJobCategory(Targets, Role.近战);
+                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+
+                    targets = TargetHelper.GetJobCategory(Targets, Role.远程);
+                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+
+                    targets = Targets;
+                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+
+                    return null;
+                },
+            },
 
             //战斗连祷
             BattleLitany = new BaseAction(3557);
@@ -119,11 +137,12 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
 
         //尝试进入红龙血
         if (Actions.Geirskogul.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.MirageDive.ShouldUseAction(out act, mustUse: true)) return true;
 
-        if (abilityRemain > 1 && Vector3.Distance(LocalPlayer.Position, Target.Position) - Target.HitboxRadius < 2)
+        if (abilityRemain > 1 && Vector3.Distance(LocalPlayer.Position, Target.Position) - Target.HitboxRadius < 2 && !IsMoving)
         {
             if (Actions.Jump.ShouldUseAction(out act)) return true;
+            if (Actions.MirageDive.ShouldUseAction(out act)) return true;
+
             if (Actions.SpineshatterDive.ShouldUseAction(out act, Empty: true)) return true;
             if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true)) return true;
         }

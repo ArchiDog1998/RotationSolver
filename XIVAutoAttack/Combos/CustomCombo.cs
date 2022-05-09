@@ -396,7 +396,7 @@ public abstract class CustomCombo
             }
         }
 
-        if (SettingBreak && BreakAbility(abilityRemain, out act)) return true;
+        if (HaveTargetAngle && SettingBreak && BreakAbility(abilityRemain, out act)) return true;
         if (IconReplacer.RaiseorMove && MoveAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;

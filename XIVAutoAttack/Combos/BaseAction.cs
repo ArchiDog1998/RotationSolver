@@ -218,7 +218,7 @@ namespace XIVComboPlus.Combos
             //如果能对友方和敌方都能选中
             else if (Action.CanTargetParty && Action.CanTargetHostile)
             {
-                BattleChara[] availableCharas = TargetHelper.PartyMembers.Union(TargetHelper.HostileTargets).ToArray();
+                BattleChara[] availableCharas = TargetHelper.PartyMembers.Union(TargetHelper.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
                 availableCharas = GetObjectInRadius(availableCharas, range);
                 //特殊选队友的方法。
                 var tar = ChoiceFriend(availableCharas);
