@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Linq;
 using System.Numerics;
 
 namespace XIVComboPlus.Combos;
@@ -90,6 +91,8 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             {
                 ChoiceFriend = Targets =>
                 {
+                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+
                     var targets = TargetHelper.GetJobCategory(Targets, Role.½üÕ½);
                     if (targets.Length > 0) return ASTCombo.RandomObject(targets);
 

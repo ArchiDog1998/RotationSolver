@@ -99,16 +99,16 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                //ImGui.Text(DNCCombo.JobGauge.CompletedSteps.ToString());
-                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                //{
-                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //    {
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //    }
-                //}
+                ImGui.Text(DNCCombo.JobGauge.CompletedSteps.ToString());
+                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                {
+                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    {
+                        ImGui.Text(item.GameData.Name + item.StatusId);
+                    }
+                }
 
-                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
+                //ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
 #endif
                 ImGui.Text("在这个窗口，你可以设定释放技能所需的参数。");
 
@@ -299,7 +299,8 @@ internal class ConfigWindow : Window
                     ImGui.Text("/aauto AttackManual 开始进攻，进攻对象为手动选择。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AttackCancel 停止进攻，记得一定要经常关掉！");
-
+                    ImGui.Separator();
+                    ImGui.Text("/aauto EndSpecial 停止特殊状态！");
                     ImGui.EndChild();
                 }
                 ImGui.PopStyleVar();

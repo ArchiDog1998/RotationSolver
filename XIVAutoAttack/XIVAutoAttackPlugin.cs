@@ -144,6 +144,10 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                 case "AttackCancel":
                     IconReplacer.AutoAttack = false;
                     break;
+                case "EndSpecial":
+                    IconReplacer.ResetSpecial();
+                    CustomCombo.Speak("End Special");
+                    break;
             }
         }
     }

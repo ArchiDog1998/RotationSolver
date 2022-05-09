@@ -1,5 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-
+using System.Linq;
 namespace XIVComboPlus.Combos;
 
 internal class DNCCombo : CustomComboJob<DNCGauge>
@@ -167,6 +167,8 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             {
                 ChoiceFriend = Targets =>
                 {
+                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+
                     var targets = TargetHelper.GetJobCategory(Targets, Role.近战);
                     if (targets.Length > 0) return ASTCombo.RandomObject(targets);
 
@@ -211,13 +213,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             Tillana = new BaseAction(25790)
             {
                 BuffsNeed = new ushort[] { ObjectStatus.FlourishingFinish },
-            },
-
-            //标准舞步结束
-            StandardFinish = new BaseAction(16003),
-
-            //技巧舞步结束
-            TechnicalFinish = new BaseAction(16004);
+            };
     }
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
@@ -254,12 +250,14 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
+
         if (Actions.EnAvant.ShouldUseAction(out act, Empty: true)) return true;
         return false;
     }
 
     private protected override bool HealAreaAbility(byte abilityRemain, out BaseAction act)
     {
+
         if (Actions.CuringWaltz.ShouldUseAction(out act, Empty: true)) return true;
         if (Actions.Improvisation.ShouldUseAction(out act, Empty: true)) return true;
         return false;
@@ -267,12 +265,15 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
     {
+
         if (Actions.ShieldSamba.ShouldUseAction(out act, Empty: true)) return true;
         return false;
     }
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
+        if (Actions.ClosedPosition.ShouldUseAction(out act)) return true;
+
         if (SettingBreak)
         {
             if (Actions.TechnicalStep.ShouldUseAction(out act)) return true;
@@ -291,11 +292,13 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.StandardStep) && JobGauge.CompletedSteps == 2)
         {
-            if (Actions.StandardFinish.ShouldUseAction(out act, mustUse:true)) return true;
+            act = Actions.StandardStep;
+            return true;
         }
         else if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TechnicalStep) && JobGauge.CompletedSteps == 4)
         {
-            if (Actions.TechnicalFinish.ShouldUseAction(out act, mustUse: true)) return true;
+            act = Actions.TechnicalStep;
+            return true;
         }
         else
         {
@@ -308,24 +311,21 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         return false;
     }
 
-    private protected override bool GeneralAbility(byte abilityRemain, out BaseAction act)
-    {
-        if (Actions.ClosedPosition.ShouldUseAction(out act)) return true;
-        return false;
-    }
-
     private bool AttackGCD(out BaseAction act, bool breaking, uint lastComboActionID)
     {
         //提纳拉
         if (Actions.Tillana.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.StarfallDance.ShouldUseAction(out act)) return true;
 
-        //用掉Buff
-        if (Actions.Bloodshower.ShouldUseAction(out act)) return true;
-        if (Actions.Fountainfall.ShouldUseAction(out act)) return true;
+        if (!JobGauge.IsDancing)
+        {
+            //用掉Buff
+            if (Actions.Bloodshower.ShouldUseAction(out act)) return true;
+            if (Actions.Fountainfall.ShouldUseAction(out act)) return true;
 
-        if (Actions.RisingWindmill.ShouldUseAction(out act)) return true;
-        if (Actions.ReverseCascade.ShouldUseAction(out act)) return true;
+            if (Actions.RisingWindmill.ShouldUseAction(out act)) return true;
+            if (Actions.ReverseCascade.ShouldUseAction(out act)) return true;
+        }
 
         //剑舞
         if ((breaking || JobGauge.Esprit >= 75) &&
@@ -334,13 +334,16 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         //标准舞步
         if (Actions.StandardStep.ShouldUseAction(out act)) return true;
 
-        //aoe
-        if (Actions.Bladeshower.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.Windmill.ShouldUseAction(out act)) return true;
+        if (!JobGauge.IsDancing)
+        {
+            //aoe
+            if (Actions.Bladeshower.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Windmill.ShouldUseAction(out act)) return true;
 
-        //single
-        if (Actions.Fountain.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.Cascade.ShouldUseAction(out act)) return true;
+            //single
+            if (Actions.Fountain.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Cascade.ShouldUseAction(out act)) return true;
+        }
 
         return false;
     }

@@ -304,7 +304,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         }
 
         //发牌
-        if (abilityRemain == 1 && JobGauge.DrawnCard != CardType.NONE)
+        if (abilityRemain == 1 && JobGauge.DrawnCard != CardType.NONE && JobGauge.Seals.Contains(SealType.NONE))
         {
             switch (JobGauge.DrawnCard)
             {
