@@ -28,7 +28,8 @@ namespace XIVComboPlus.Combos
         //internal IconReplacer.CooldownData CoolDown => Service.IconReplacer.GetCooldown(Action.CooldownGroup);
         internal byte Level => Action.ClassJobLevel;
         internal uint ActionID => Action.RowId;
-        internal bool IsGCD { get; }
+        internal bool IsGeneralGCD { get; }
+        internal bool IsRealGCD { get; }
 
         internal EnemyLocation EnermyLocation { get; set; } = EnemyLocation.None;
         internal virtual uint MPNeed { get; }
@@ -160,7 +161,8 @@ namespace XIVComboPlus.Combos
             this.Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
             this._shouldEndSpecial = shouldEndSpecial;
             _isFriendly = isFriendly;
-            this.IsGCD = Action.CooldownGroup == GCDCooldownGroup;
+            this.IsGeneralGCD = Action.CooldownGroup == GCDCooldownGroup;
+            this.IsRealGCD = IsGeneralGCD || Action.AdditionalCooldownGroup == GCDCooldownGroup;
 
             if (Action.PrimaryCostType == 3 || Action.PrimaryCostType == 4)
             {
@@ -271,7 +273,8 @@ namespace XIVComboPlus.Combos
                 //如果不用自动找目标，那就直接返回。
                 if (!IconReplacer.AutoTarget)
                 {
-                    if(Service.TargetManager.Target is BattleChara b && TargetHelper.CanAttack(b) && DistanceToPlayer(b) <= range)
+                    if(Service.TargetManager.Target is BattleChara b && TargetHelper.CanAttack(b) && DistanceToPlayer(b) <= range
+                        && (Action.CastType == 1 || mustUse))
                     {
                         this.Target = b;
                         return true;
@@ -516,14 +519,14 @@ namespace XIVComboPlus.Combos
             //MP不够
             if (Service.ClientState.LocalPlayer.CurrentMp < this.MPNeed) return false;
 
+            //没有前置Buff
+            if (BuffsNeed != null)
+            {
+                if (!HaveStatusSelfFromSelf(BuffsNeed)) return false;
+            }
+
             if (!mustUse)
             {
-                //没有前置Buff
-                if (BuffsNeed != null)
-                {
-                    if (!HaveStatusSelfFromSelf(BuffsNeed)) return false;
-                }
-
                 //已有提供的Buff的任何一种
                 if (BuffsProvide != null)
                 {
@@ -533,7 +536,7 @@ namespace XIVComboPlus.Combos
 
 
             //如果是能力技能，而且没法释放。
-            if (!IsGCD && IsCoolDown)
+            if (!IsGeneralGCD && IsCoolDown)
             {
                 //冷却时间没超过一成
                 if (RecastTimeElapsed < RecastTime / MaxCharges) return false;
@@ -542,7 +545,7 @@ namespace XIVComboPlus.Combos
             //看看有没有目标，如果没有，就说明不符合条件。
             if(!FindTarget(mustUse)) return false;
 
-            if (IsGCD)
+            if (IsGeneralGCD)
             {
                 //如果有输入上次的数据，那么上次不能是上述的ID。
                 if (OtherIDsNot != null)
@@ -600,7 +603,7 @@ namespace XIVComboPlus.Combos
             bool result = Action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ActionID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
              ActionManager.Instance()->UseAction(ActionType.Spell, Service.IconReplacer.OriginalHook(ActionID), Target.ObjectId);
 
-            if (_shouldEndSpecial) IconReplacer.ResetSpecial();
+            if (_shouldEndSpecial) IconReplacer.ResetSpecial(false);
 
             return result;
         }

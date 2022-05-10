@@ -110,6 +110,13 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             BattleLitany = new BaseAction(3557);
     }
 
+
+    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    {
+        if (Actions.SpineshatterDive.ShouldUseAction(out act, Empty: true)) return true;
+        if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true)) return true;
+        return false;
+    }
     private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
         if (nextGCD == Actions.FullThrust || nextGCD == Actions.CoerthanTorment || (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.WheelingThrust))
@@ -141,13 +148,13 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
         //³¢ÊÔ½øÈëºìÁúÑª
         if (Actions.Geirskogul.ShouldUseAction(out act, mustUse: true)) return true;
 
-        if (abilityRemain > 1 && Vector3.Distance(LocalPlayer.Position, Target.Position) - Target.HitboxRadius < 2 && !IsMoving)
+        if (abilityRemain > 1 && !IsMoving)
         {
-            if (Actions.Jump.ShouldUseAction(out act)) return true;
-            if (Actions.MirageDive.ShouldUseAction(out act)) return true;
+            if (Actions.Jump.ShouldUseAction(out act) && Vector3.Distance(LocalPlayer.Position, Actions.Jump.Target.Position) - Actions.Jump.Target.HitboxRadius < 2 ) return true;
+            if (Actions.MirageDive.ShouldUseAction(out act) && Vector3.Distance(LocalPlayer.Position, Actions.MirageDive.Target.Position) - Actions.MirageDive.Target.HitboxRadius < 2) return true;
 
-            if (Actions.SpineshatterDive.ShouldUseAction(out act, Empty: true)) return true;
-            if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.SpineshatterDive.ShouldUseAction(out act, Empty: true) && Vector3.Distance(LocalPlayer.Position, Actions.SpineshatterDive.Target.Position) - Actions.SpineshatterDive.Target.HitboxRadius < 2) return true;
+            if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true) && Vector3.Distance(LocalPlayer.Position, Actions.DragonfireDive.Target.Position) - Actions.DragonfireDive.Target.HitboxRadius < 2) return true;
         }
 
         return false;

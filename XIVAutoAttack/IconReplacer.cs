@@ -80,78 +80,108 @@ internal sealed class IconReplacer : IDisposable
     internal static bool HealArea { get; private set; } = false;
     internal static void StartHealArea()
     {
-        ResetSpecial();
-        _specialStateStopwatch.Start();
-        CustomCombo.Speak("Start Heal Area");
-        HealArea = true;
+        bool last = HealArea;
+        ResetSpecial(last);
+        if (!last)
+        {
+            _specialStateStopwatch.Start();
+            CustomCombo.Speak("Start Heal Area");
+            HealArea = true;
+        }
     }
     internal static bool HealSingle { get; private set; } = false;
     internal static void StartHealSingle()
     {
-        ResetSpecial();
-        _specialStateStopwatch.Start();
-        CustomCombo.Speak("Start Heal Single");
-        HealSingle = true;
+        bool last = HealSingle;
+        ResetSpecial(last);
+        if (!last)
+        {
+            _specialStateStopwatch.Start();
+            CustomCombo.Speak("Start Heal Single");
+            HealSingle = true;
+        }
     }
     internal static bool DefenseArea { get; private set; } = false;
     internal static void StartDefenseArea()
     {
-        ResetSpecial();
-        _specialStateStopwatch.Start();
-        CustomCombo.Speak("Start Defense Area");
-        DefenseArea = true;
+        bool last = DefenseArea;
+        ResetSpecial(last);
+        if (!last)
+        {
+            _specialStateStopwatch.Start();
+            CustomCombo.Speak("Start Defense Area");
+            DefenseArea = true;
+        }
     }
     internal static bool DefenseSingle { get; private set; } = false;
     internal static void StartDefenseSingle()
     {
-        ResetSpecial();
-        _specialStateStopwatch.Start();
-        CustomCombo.Speak("Start Defense Single");
-        DefenseSingle = true;
+        bool last = DefenseSingle;
+        ResetSpecial(last);
+        if (!last)
+        {
+            _specialStateStopwatch.Start();
+            CustomCombo.Speak("Start Defense Single");
+            DefenseSingle = true;
+        }
     }
     internal static bool Esuna { get; private set; } = false;
     internal static void StartEsuna()
     {
-        ResetSpecial();
-        _specialStateStopwatch.Start();
-        CustomCombo.Speak("Start Esuna");
-        Esuna = true;
+        bool last = Esuna;
+        ResetSpecial(last);
+        if (!last)
+        {
+            _specialStateStopwatch.Start();
+            CustomCombo.Speak("Start Esuna");
+            Esuna = true;
+        }
     }
     internal static bool RaiseorMove { get; private set; } = false;
     internal static void StartRaise()
     {
-        ResetSpecial();
-        _specialStateStopwatch.Start();
-        CustomCombo.Speak("Start Raise");
-        RaiseorMove = true;
+        bool last = RaiseorMove;
+        ResetSpecial(last);
+        if (!last)
+        {
+            _specialStateStopwatch.Start();
+            CustomCombo.Speak("Start Raise");
+            RaiseorMove = true;
+        }
     }
     internal static bool Break { get; private set; } = false;
     internal static void StartBreak()
     {
-        ResetSpecial();
-        _specialStateStopwatch.Start();
-        CustomCombo.Speak("Start Break");
-        Break = true;
+        bool last = Break;
+        ResetSpecial(last);
+        if (!last)
+        {
+            _specialStateStopwatch.Start();
+            CustomCombo.Speak("Start Break");
+            Break = true;
+        }
     }
     internal static bool AntiRepulsion { get; private set; } = false;
     internal static void StartAntiRepulsion()
     {
-        ResetSpecial();
-        _specialStateStopwatch.Start();
-        CustomCombo.Speak("Start Anti repulsion");
-        AntiRepulsion = true;
+        bool last = AntiRepulsion;
+        ResetSpecial(last);
+        if (!last)
+        {
+            _specialStateStopwatch.Start();
+            CustomCombo.Speak("Start Anti repulsion");
+            AntiRepulsion = true;
+        }
     }
-    //internal static void EndSpecial()
-    //{
-    //    ResetSpecial();
-    //    CustomCombo.Speak("End Special");
-    //}
-    internal static void ResetSpecial()
+
+    internal static void ResetSpecial(bool sayout)
     {
         _specialStateStopwatch.Stop();
         _specialStateStopwatch.Reset();
         HealArea = HealSingle = DefenseArea = DefenseSingle = Esuna = RaiseorMove = Break
             = AntiRepulsion = false;
+        if(sayout)CustomCombo.Speak("End Special");
+
     }
 
     private static SortedList<string, CustomCombo[]> _customCombosDict;
@@ -246,8 +276,7 @@ internal sealed class IconReplacer : IDisposable
         //Í£Ö¹ÌØÊâ×´Ì¬
         if (_specialStateStopwatch.IsRunning && _specialStateStopwatch.ElapsedMilliseconds > Service.Configuration.SpecialDuration * 1000)
         {
-            ResetSpecial();
-            CustomCombo.Speak("End Special");
+            ResetSpecial(true);
         }
 
         if (!AutoAttack)
@@ -271,7 +300,7 @@ internal sealed class IconReplacer : IDisposable
                 return;
             }
 
-            if (newAction.IsGCD ^ isGCD) return;
+            if (newAction.IsRealGCD ^ isGCD) return;
 
             if (newAction.UseAction())
             {

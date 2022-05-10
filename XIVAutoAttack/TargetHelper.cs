@@ -97,17 +97,18 @@ namespace XIVComboPlus
                 WeaponTotal = instance->GetRecastTime(spell, 11);
                 WeaponRemain = WeaponTotal - instance->GetRecastTimeElapsed(spell, 11);
 
-                AbilityRemainCount = (byte)(WeaponRemain / WeaponInterval);
+                var min = Math.Max(WeaponTotal - WeaponInterval, 0);
+                AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / WeaponInterval);
             }
 
             UpdateTargets();
 
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
 
-            if (WeaponRemain < 0.05) Service.IconReplacer.DoAnAction(true);
+            if (WeaponRemain < 0.1) Service.IconReplacer.DoAnAction(true);
             //要超出GCD了，那就不放技能了。
-            else if (WeaponRemain + WeaponInterval > WeaponTotal || Service.ClientState.LocalPlayer.IsCasting) return;
-            if (WeaponRemain % WeaponInterval < 0.05) Service.IconReplacer.DoAnAction(false);
+            else if (WeaponRemain < WeaponInterval || Service.ClientState.LocalPlayer.IsCasting) return;
+            if (WeaponRemain % WeaponInterval < 0.1) Service.IconReplacer.DoAnAction(false);
 
             #region 宏
             //如果没有有正在运行的宏，弄一个出来
@@ -158,7 +159,15 @@ namespace XIVComboPlus
 
                 CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible).ToArray();
 
-                HaveTargetAngle = BaseAction.GetObjectInRadius(HostileTargets, 25).Length > 0;
+                float radius = 25;
+                switch (XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role)
+                {
+                    case (byte)Role.防护:
+                    case (byte)Role.近战:
+                        radius = 3;
+                        break;
+                }
+                HaveTargetAngle = BaseAction.GetObjectInRadius(HostileTargets, radius).Length > 0;
 
 #if DEBUG
             }

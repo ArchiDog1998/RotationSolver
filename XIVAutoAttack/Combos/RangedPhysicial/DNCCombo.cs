@@ -225,8 +225,8 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         if (Actions.Flourish.ShouldUseAction(out act, Empty: true)) return true;
 
         //ÉÈÎè¡¤¼±
-        if (Actions.FanDance4.ShouldUseAction(out act)) return true;
-        if (Actions.FanDance3.ShouldUseAction(out act)) return true;
+        if (Actions.FanDance4.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.FanDance3.ShouldUseAction(out act, mustUse: true)) return true;
 
         //ÉÈÎè
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Devilment) || JobGauge.Feathers > 3)
@@ -332,7 +332,9 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             Actions.SaberDance.ShouldUseAction(out act)) return true;
 
         //±ê×¼Îè²½
-        if (Actions.StandardStep.ShouldUseAction(out act)) return true;
+
+        bool canstandard = Actions.TechnicalStep.RecastTimeRemain == 0 || Actions.TechnicalStep.RecastTimeRemain > 5;
+        if (canstandard && Actions.StandardStep.ShouldUseAction(out act)) return true;
 
         if (!JobGauge.IsDancing)
         {

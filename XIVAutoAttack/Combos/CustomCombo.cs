@@ -65,8 +65,8 @@ public abstract class CustomCombo
             {
                 ChoiceFriend = (tars) =>
                 {
-                    HashSet<BattleChara> dying = new (tars.Length);
-                    HashSet<BattleChara> weaken = new (tars.Length);
+                    HashSet<BattleChara> dying = new(tars.Length);
+                    HashSet<BattleChara> weaken = new(tars.Length);
                     foreach (var p in tars)
                     {
                         foreach (var status in p.StatusList)
@@ -75,11 +75,11 @@ public abstract class CustomCombo
                             if (status.GameData.CanDispel) weaken.Add(p);
                         }
                     }
-                    if(dying.Count > 0)
+                    if (dying.Count > 0)
                     {
                         return dying.OrderBy(b => BaseAction.DistanceToPlayer(b)).First();
                     }
-                    else if(weaken.Count > 0)
+                    else if (weaken.Count > 0)
                     {
                         return weaken.OrderBy(b => BaseAction.DistanceToPlayer(b)).First();
                     }
@@ -104,8 +104,9 @@ public abstract class CustomCombo
             {
                 BuffsProvide = new ushort[]
                 {
-                    13,564,1345,
+                    13, 564, 1345,
                 },
+                OtherCheck = b => b.TargetObject != null,
             },
 
             //内丹
@@ -115,7 +116,10 @@ public abstract class CustomCombo
             },
 
             //伤足
-            FootGraze = new BaseAction(7553),
+            FootGraze = new BaseAction(7553)
+            {
+                OtherCheck = b => b.TargetObject != null,
+            },
 
             //亲疏自行
             ArmsLength = new BaseAction(7548, shouldEndSpecial:true),
@@ -354,7 +358,7 @@ public abstract class CustomCombo
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
         if (IconReplacer.AntiRepulsion)
         {
-            switch( XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role)
+            switch(XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role)
             {
                 case (byte)Role.防护:
                 case (byte)Role.近战:
