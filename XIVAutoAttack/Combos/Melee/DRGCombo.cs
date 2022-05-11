@@ -61,7 +61,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
 
             //Ã¯‘æ
             Jump = new BaseAction(92),
-
+            HighJump = new BaseAction(16478),
             //ª√œÛ≥Â
             MirageDive = new BaseAction(7399) 
             { 
@@ -150,7 +150,14 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
 
         if (abilityRemain > 1 && !IsMoving)
         {
-            if (Actions.Jump.ShouldUseAction(out act) && Vector3.Distance(LocalPlayer.Position, Actions.Jump.Target.Position) - Actions.Jump.Target.HitboxRadius < 2 ) return true;
+            if(Service.ClientState.LocalPlayer.Level >= Actions.HighJump.Level)
+            {
+                if (Actions.HighJump.ShouldUseAction(out act) && Vector3.Distance(LocalPlayer.Position, Actions.HighJump.Target.Position) - Actions.HighJump.Target.HitboxRadius < 2) return true;
+            }
+            else
+            {
+                if (Actions.Jump.ShouldUseAction(out act) && Vector3.Distance(LocalPlayer.Position, Actions.Jump.Target.Position) - Actions.Jump.Target.HitboxRadius < 2) return true;
+            }
             if (Actions.MirageDive.ShouldUseAction(out act) && Vector3.Distance(LocalPlayer.Position, Actions.MirageDive.Target.Position) - Actions.MirageDive.Target.HitboxRadius < 2) return true;
 
             if (Actions.SpineshatterDive.ShouldUseAction(out act, Empty: true) && Vector3.Distance(LocalPlayer.Position, Actions.SpineshatterDive.Target.Position) - Actions.SpineshatterDive.Target.HitboxRadius < 2) return true;

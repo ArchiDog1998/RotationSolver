@@ -286,6 +286,9 @@ internal sealed class IconReplacer : IDisposable
 
         //0.2s内，不能重复按按钮。
         if (_fastClickStopwatch.IsRunning && _fastClickStopwatch.ElapsedMilliseconds < 200) return;
+        _fastClickStopwatch.Restart();
+
+
 
         PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
         if (localPlayer == null) return;
@@ -300,8 +303,12 @@ internal sealed class IconReplacer : IDisposable
                 return;
             }
 
-            if (newAction.IsRealGCD ^ isGCD) return;
+            if(!isGCD && newAction.IsRealGCD) return;
 
+
+#if DEBUG
+            Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + newAction.Action.Name + TargetHelper.AbilityRemainCount.ToString());
+#endif
             if (newAction.UseAction())
             {
                 if (TargetHelper.CanAttack(newAction.Target))
@@ -314,7 +321,6 @@ internal sealed class IconReplacer : IDisposable
                     newAction.SayingOut();
                 }
             }
-            _fastClickStopwatch.Restart();
             return;
         }
     }

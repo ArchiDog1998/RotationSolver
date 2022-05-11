@@ -89,17 +89,15 @@ namespace XIVComboPlus
             IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
             _lastPosition = thisPosition;
 
-            unsafe
-            {
-                var instance = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
-                var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
+            var instance = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
+            var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
 
-                WeaponTotal = instance->GetRecastTime(spell, 11);
-                WeaponRemain = WeaponTotal - instance->GetRecastTimeElapsed(spell, 11);
+            WeaponTotal = instance->GetRecastTime(spell, 11);
+            var weaponelapsed = instance->GetRecastTimeElapsed(spell, 11);
 
-                var min = Math.Max(WeaponTotal - WeaponInterval, 0);
-                AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / WeaponInterval);
-            }
+            WeaponRemain = WeaponTotal - weaponelapsed;
+            var min = Math.Max(WeaponTotal - WeaponInterval, 0);
+            AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / WeaponInterval);
 
             UpdateTargets();
 
@@ -108,7 +106,7 @@ namespace XIVComboPlus
             if (WeaponRemain < 0.1) Service.IconReplacer.DoAnAction(true);
             //要超出GCD了，那就不放技能了。
             else if (WeaponRemain < WeaponInterval || Service.ClientState.LocalPlayer.IsCasting) return;
-            if (WeaponRemain % WeaponInterval < 0.1) Service.IconReplacer.DoAnAction(false);
+            if (weaponelapsed % WeaponInterval < 0.1 && WeaponTotal - WeaponRemain > 0.5) Service.IconReplacer.DoAnAction(false);
 
             #region 宏
             //如果没有有正在运行的宏，弄一个出来
