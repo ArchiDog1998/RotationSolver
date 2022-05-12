@@ -262,6 +262,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
         {
             if (Actions.HowlingFist.ShouldUseAction(out act)) return true;
             if (Actions.SteelPeak.ShouldUseAction(out act)) return true;
+            if (Actions.HowlingFist.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;

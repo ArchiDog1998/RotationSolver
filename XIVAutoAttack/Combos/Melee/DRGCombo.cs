@@ -91,7 +91,8 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             {
                 ChoiceFriend = Targets =>
                 {
-                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
+                    b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
 
                     var targets = TargetHelper.GetJobCategory(Targets, Role.½üÕ½);
                     if (targets.Length > 0) return ASTCombo.RandomObject(targets);
@@ -113,8 +114,12 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
 
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
-        if (Actions.SpineshatterDive.ShouldUseAction(out act, Empty: true)) return true;
-        if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true)) return true;
+        if(abilityRemain > 1)
+        {
+            if (Actions.SpineshatterDive.ShouldUseAction(out act, Empty: true)) return true;
+            if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+        act = null;
         return false;
     }
     private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)

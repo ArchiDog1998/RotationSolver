@@ -386,7 +386,9 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
 
     private static BattleChara ASTRangeTarget(BattleChara[] ASTTargets)
     {
-        
+        ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+
+
         var targets = GetASTTargets(TargetHelper.GetJobCategory(ASTTargets, Role.远程));
         if (targets.Length > 0) return RandomObject(targets);
 
@@ -399,8 +401,10 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return null;
     }
 
-    internal static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
+    private static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
     {
+        ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+
         var targets = GetASTTargets(TargetHelper.GetJobCategory(ASTTargets, Role.近战));
         if (targets.Length > 0) return RandomObject(targets);
 

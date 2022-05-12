@@ -273,6 +273,23 @@ namespace XIVComboPlus.Combos
             Devilment = 1825,
 
             //提拉纳预备
-            FlourishingFinish = 2698;
+            FlourishingFinish = 2698,
+
+            //要死了
+            Weakness = 43,
+            BrinkofDeath = 44,
+
+
+            //心关
+            Kardia = 2604,
+
+            //均衡
+            Eukrasia = 2606,
+
+
+            //均衡注药
+            EukrasianDosis = 2614,
+            EukrasianDosis2 = 2615,
+            EukrasianDosis3 = 2616;
     }
 }

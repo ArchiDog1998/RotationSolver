@@ -99,7 +99,6 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                ImGui.Text(DNCCombo.JobGauge.CompletedSteps.ToString());
                 foreach (var item in Service.ClientState.LocalPlayer.StatusList)
                 {
                     if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
@@ -108,7 +107,6 @@ internal class ConfigWindow : Window
                     }
                 }
 
-                ImGui.Text(TargetHelper.AbilityRemainCount.ToString());
 
                 //ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
 #endif
@@ -119,7 +117,7 @@ internal class ConfigWindow : Window
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
                     bool neverReplaceIcon = Service.Configuration.NeverReplaceIcon;
-                    if (ImGui.Checkbox("不替换图标，", ref neverReplaceIcon))
+                    if (ImGui.Checkbox("不替换图标", ref neverReplaceIcon))
                     {
                         Service.Configuration.NeverReplaceIcon = neverReplaceIcon;
                         Service.Configuration.Save();
@@ -143,6 +141,13 @@ internal class ConfigWindow : Window
                     if (ImGui.Checkbox("是否自动进行爆发", ref autoBreak))
                     {
                         Service.Configuration.AutoBreak = autoBreak;
+                        Service.Configuration.Save();
+                    }
+
+                    float weaponInterval = Service.Configuration.WeaponInterval;
+                    if (ImGui.DragFloat("特殊状态持续多久", ref weaponInterval, 0.002f, 0.6f, 0.7f))
+                    {
+                        Service.Configuration.WeaponInterval = weaponInterval;
                         Service.Configuration.Save();
                     }
 

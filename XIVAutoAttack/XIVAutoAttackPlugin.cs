@@ -125,6 +125,9 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                 case "Raise":
                     IconReplacer.StartRaise();
                     break;
+                case "Move":
+                    IconReplacer.StartMove();
+                    break;
                 case "AntiRepulsion":
                     IconReplacer.StartAntiRepulsion();
                     break;

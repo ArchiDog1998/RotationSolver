@@ -337,7 +337,7 @@ public abstract class CustomCombo
     private BaseAction GCD(uint lastComboActionID, byte abilityRemain)
     {
         if (EmergercyGCD(out BaseAction act, abilityRemain)) return act;
-        if (IconReplacer.RaiseorMove && MoveGCD(lastComboActionID, out act)) return act;
+        if (IconReplacer.Move && MoveGCD(lastComboActionID, out act)) return act;
         if (TargetHelper.HPNotFull)
         {
             if ((IconReplacer.HealArea || CanHealAreaSpell) && HealAreaGCD(lastComboActionID, out act)) return act;
@@ -401,7 +401,7 @@ public abstract class CustomCombo
         }
 
         if (HaveTargetAngle && SettingBreak && BreakAbility(abilityRemain, out act)) return true;
-        if (IconReplacer.RaiseorMove && MoveAbility(abilityRemain, out act)) return true;
+        if (IconReplacer.Move && MoveAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         if (TargetHelper.HPNotFull)
@@ -511,7 +511,7 @@ public abstract class CustomCombo
             }
             else
             {
-                if (IconReplacer.RaiseorMove || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
+                if (IconReplacer.Raise || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
                 {
                     if (Raise.ShouldUseAction(out act)) return true;
                 }

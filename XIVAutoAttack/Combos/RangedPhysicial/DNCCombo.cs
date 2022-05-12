@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Objects.Types;
 using System.Linq;
 namespace XIVComboPlus.Combos;
 
@@ -167,7 +168,8 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             {
                 ChoiceFriend = Targets =>
                 {
-                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
+                    b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
 
                     var targets = TargetHelper.GetJobCategory(Targets, Role.½üÕ½);
                     if (targets.Length > 0) return ASTCombo.RandomObject(targets);
@@ -273,6 +275,19 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
         if (Actions.ClosedPosition.ShouldUseAction(out act)) return true;
+
+        foreach (var friend in TargetHelper.PartyMembers)
+        {
+            var statuses = friend.StatusList.Select(status => status.StatusId);
+            if (statuses.Contains(ObjectStatus.ClosedPosition2))
+            {
+                if(statuses.Intersect(new uint[] {ObjectStatus.Weakness, ObjectStatus.BrinkofDeath}).Count() > 0)
+                {
+                    return true;
+                }
+                break;
+            }
+        }
 
         if (SettingBreak)
         {

@@ -37,7 +37,6 @@ namespace XIVComboPlus
 
         internal static byte AbilityRemainCount { get; private set; } = 0;
 
-        private const float WeaponInterval = 0.68f;
         //  public static PlayerCharacter[] PartyMembers =>
         //AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).ToArray();
         public static BattleChara[] PartyMembers { get; private set; } = new PlayerCharacter[0];
@@ -96,8 +95,8 @@ namespace XIVComboPlus
             var weaponelapsed = instance->GetRecastTimeElapsed(spell, 11);
 
             WeaponRemain = WeaponTotal - weaponelapsed;
-            var min = Math.Max(WeaponTotal - WeaponInterval, 0);
-            AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / WeaponInterval);
+            var min = Math.Max(WeaponTotal - Service.Configuration.WeaponInterval, 0);
+            AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
 
             UpdateTargets();
 
@@ -105,8 +104,8 @@ namespace XIVComboPlus
 
             if (WeaponRemain < 0.1) Service.IconReplacer.DoAnAction(true);
             //要超出GCD了，那就不放技能了。
-            else if (WeaponRemain < WeaponInterval || Service.ClientState.LocalPlayer.IsCasting) return;
-            if (weaponelapsed % WeaponInterval < 0.1 && WeaponTotal - WeaponRemain > 0.5) Service.IconReplacer.DoAnAction(false);
+            else if (WeaponRemain < Service.Configuration.WeaponInterval || Service.ClientState.LocalPlayer.IsCasting) return;
+            if (weaponelapsed % Service.Configuration.WeaponInterval < 0.1 && WeaponTotal - WeaponRemain > 0.5) Service.IconReplacer.DoAnAction(false);
 
             #region 宏
             //如果没有有正在运行的宏，弄一个出来

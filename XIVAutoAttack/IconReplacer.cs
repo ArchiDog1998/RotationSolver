@@ -137,16 +137,16 @@ internal sealed class IconReplacer : IDisposable
             Esuna = true;
         }
     }
-    internal static bool RaiseorMove { get; private set; } = false;
+    internal static bool Raise { get; private set; } = false;
     internal static void StartRaise()
     {
-        bool last = RaiseorMove;
+        bool last = Raise;
         ResetSpecial(last);
         if (!last)
         {
             _specialStateStopwatch.Start();
             CustomCombo.Speak("Start Raise");
-            RaiseorMove = true;
+            Raise = true;
         }
     }
     internal static bool Break { get; private set; } = false;
@@ -174,12 +174,25 @@ internal sealed class IconReplacer : IDisposable
         }
     }
 
+    internal static bool Move { get; private set; } = false;
+    internal static void StartMove()
+    {
+        bool last = Move;
+        ResetSpecial(last);
+        if (!last)
+        {
+            _specialStateStopwatch.Start();
+            CustomCombo.Speak("Start Move");
+            Move = true;
+        }
+    }
+
     internal static void ResetSpecial(bool sayout)
     {
         _specialStateStopwatch.Stop();
         _specialStateStopwatch.Reset();
-        HealArea = HealSingle = DefenseArea = DefenseSingle = Esuna = RaiseorMove = Break
-            = AntiRepulsion = false;
+        HealArea = HealSingle = DefenseArea = DefenseSingle = Esuna = Raise = Break
+            = AntiRepulsion = Move = false;
         if(sayout)CustomCombo.Speak("End Special");
 
     }
