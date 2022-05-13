@@ -278,11 +278,10 @@ namespace XIVComboPlus.Combos
             //要死了
             Weakness = 43,
             BrinkofDeath = 44,
-
-
+            //关心
+            Kardia = 2604,
             //关心
             Kardion = 2605,
-
 
             //均衡注药
             EukrasianDosis = 2614,

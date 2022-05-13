@@ -126,7 +126,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
     {
         if (nextGCD == Actions.FullThrust || nextGCD == Actions.CoerthanTorment || (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.WheelingThrust))
         {
-            if (Actions.LifeSurge.ShouldUseAction(out act, Empty: true)) return true;
+            if (abilityRemain == 1 && Actions.LifeSurge.ShouldUseAction(out act, Empty: true)) return true;
         }
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }

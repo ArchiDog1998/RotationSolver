@@ -42,7 +42,7 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 咏唱时间
         /// </summary>
-        internal int Cast100 => Action.Cast100ms - (HaveStatusSelfFromSelf(ObjectStatus.LightSpeed) ? 25 : 0);
+        internal int Cast100 => Action.Cast100ms - (HaveStatusSelfFromSelf(ObjectStatus.LightSpeed) || SGECombo.JobGauge.Eukrasia ? 25 : 0);
         internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
         internal unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Spell, ActionID);
         internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ActionID, Service.ClientState.LocalPlayer.Level), (ushort)1);

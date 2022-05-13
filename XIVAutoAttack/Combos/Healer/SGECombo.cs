@@ -23,6 +23,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             //心关
             Kardia = new BaseAction(24285, true)
             {
+                BuffsProvide = new ushort[] { ObjectStatus.Kardia},
                 ChoiceFriend = Targets =>
                 {
                     Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
@@ -73,7 +74,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             Druochole = new BaseAction(24296, true),
 
             //失衡
-            Dyskrasia = new BaseAction(24297, true),
+            Dyskrasia = new BaseAction(24297),
 
             //坚角清汁
             Kerachole = new BaseAction(24298, true),
@@ -203,15 +204,11 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
-    {
-        //诊断
-        if (Actions.Diagnosis.ShouldUseAction(out act)) return true;
-        return false;
-    }
-
     private protected override bool GeneralAbility(byte abilityRemain, out BaseAction act)
     {
+        //心关
+        if (Actions.Kardia.ShouldUseAction(out act)) return true;
+
         //根素
         if (JobGauge.Addersgall < 2 && Actions.Rhizomata.ShouldUseAction(out act)) return true;
 
@@ -235,9 +232,6 @@ internal class SGECombo : CustomComboJob<SGEGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
-        //心关
-        if (Actions.Kardia.ShouldUseAction(out act)) return true;
-
         //魂灵风息
         if (Actions.Pneuma.ShouldUseAction(out act, mustUse:true)) return true;
 
@@ -253,22 +247,26 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         //失衡
         if (Actions.Dyskrasia.ShouldUseAction(out act)) return true;
 
-        //注药
-        if (Actions.Dosis.ShouldUseAction(out act))
+        Actions.Dosis.ShouldUseAction(out _);
+        var times = BaseAction.FindStatusFromSelf(Actions.Dosis.Target,
+            new ushort[] { ObjectStatus.EukrasianDosis, ObjectStatus.EukrasianDosis2, ObjectStatus.EukrasianDosis3 });
+        if (times.Length == 0 || times.Max() < 3)
         {
-            var times = BaseAction.FindStatusFromSelf(Actions.Dosis.Target,
-                new ushort[] { ObjectStatus.EukrasianDosis, ObjectStatus.EukrasianDosis2, ObjectStatus.EukrasianDosis3 });
-            if (times.Length == 0 || times.Max() < 3)
-            {
-                //发炎
-                if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
-            }
-            act = Actions.Dosis;
-            return true;
+            //发炎
+            if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
         }
+        //注药
+        if (Actions.Dosis.ShouldUseAction(out act)) return true;
 
         return false;
     }
+    private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
+    {
+        //诊断
+        if (Actions.Diagnosis.ShouldUseAction(out act)) return true;
+        return false;
+    }
+
     private protected override bool HealAreaGCD(uint lastComboActionID, out BaseAction act)
     {
         //预后
@@ -291,42 +289,4 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         if (Actions.Physis.ShouldUseAction(out act)) return true;
         return false;
     }
-    public static class Buffs
-    {
-        public const ushort Placeholder = 0;
-    }
-
-    public static class Debuffs
-    {
-        public const ushort Placeholder = 0;
-    }
-
-    public static class Levels
-    {
-        public const ushort Dosis = 1;
-
-        public const ushort Prognosis = 10;
-
-        public const ushort Druochole = 45;
-
-        public const ushort Kerachole = 50;
-
-        public const ushort Taurochole = 62;
-
-        public const ushort Ixochole = 52;
-
-        public const ushort Dosis2 = 72;
-
-        public const ushort Holos = 76;
-
-        public const ushort Rizomata = 74;
-
-        public const ushort Dosis3 = 82;
-    }
-
-    public const uint Diagnosis = 24284u;
-
-    public const uint Holos = 24310u;
-
-    public const uint Ixochole = 24299u;
 }
