@@ -220,6 +220,20 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
+        foreach (var friend in TargetHelper.PartyMembers)
+        {
+            var statuses = friend.StatusList.Select(status => status.StatusId);
+            if (statuses.Contains(ObjectStatus.ClosedPosition2))
+            {
+                if (statuses.Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() > 0)
+                {
+                    Actions.ClosedPosition.ShouldUseAction(out act);
+                    return true;
+                }
+                break;
+            }
+        }
+
         //≥¢ ‘±¨∑¢
         if (Actions.Devilment.ShouldUseAction(out act, Empty: true)) return true;
 
@@ -275,19 +289,6 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
         if (Actions.ClosedPosition.ShouldUseAction(out act)) return true;
-
-        foreach (var friend in TargetHelper.PartyMembers)
-        {
-            var statuses = friend.StatusList.Select(status => status.StatusId);
-            if (statuses.Contains(ObjectStatus.ClosedPosition2))
-            {
-                if(statuses.Intersect(new uint[] {ObjectStatus.Weakness, ObjectStatus.BrinkofDeath}).Count() > 0)
-                {
-                    return true;
-                }
-                break;
-            }
-        }
 
         if (SettingBreak)
         {

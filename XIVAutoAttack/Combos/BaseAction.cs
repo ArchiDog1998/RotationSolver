@@ -197,6 +197,11 @@ namespace XIVComboPlus.Combos
             return tar;
         }
 
+        internal static BattleChara FindBeAttacked(BattleChara[] charas)
+        {
+            return ASTCombo.RandomObject(charas.Where(t => t.TargetObject?.TargetObject?.ObjectId == t.ObjectId).ToArray());
+        }
+
         public bool FindTarget(bool mustUse)
         {
             _position = Service.ClientState.LocalPlayer.Position;

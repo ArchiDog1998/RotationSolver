@@ -280,11 +280,8 @@ namespace XIVComboPlus.Combos
             BrinkofDeath = 44,
 
 
-            //心关
-            Kardia = 2604,
-
-            //均衡
-            Eukrasia = 2606,
+            //关心
+            Kardion = 2605,
 
 
             //均衡注药
