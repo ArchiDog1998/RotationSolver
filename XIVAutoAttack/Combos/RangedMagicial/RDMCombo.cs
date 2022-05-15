@@ -182,7 +182,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
             if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
 
             //促进满了就用。 
-            if (Actions.Acceleration.ShouldUseAction(out act, mustUse: true)) return true;
+            if (abilityRemain == 1 && Actions.Acceleration.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         //加个醒梦

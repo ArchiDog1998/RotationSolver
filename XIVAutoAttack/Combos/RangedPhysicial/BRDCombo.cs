@@ -191,6 +191,12 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
 
     private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
     {
+        if(JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.NONE || Service.ClientState.LocalPlayer.Level < Actions.MagesBallad.Level)
+        {
+            act = null;
+            return false;
+        }
+
         //猛者强击
         if (Actions.RagingStrikes.ShouldUseAction(out act)) return true;
 
@@ -209,7 +215,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
         //放浪神的小步舞曲
-        if (Actions.WanderersMinuet.ShouldUseAction(out act)) return true;
+        if (JobGauge.SongTimer < 3000 && Actions.WanderersMinuet.ShouldUseAction(out act)) return true;
 
         //完美音调
         if (Actions.PitchPerfect.ShouldUseAction(out act)) return true;

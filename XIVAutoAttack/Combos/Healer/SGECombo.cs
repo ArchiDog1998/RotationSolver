@@ -153,11 +153,23 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             if (Actions.Taurochole.ShouldUseAction(out act)) return true;
         }
 
-        //均衡
-        if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
 
         //诊断
-        if (Actions.Diagnosis.ShouldUseAction(out act)) return true;
+        if (Actions.Diagnosis.ShouldUseAction(out act))
+        {
+            if (Actions.Diagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
+            {
+                ObjectStatus.EukrasianDiagnosis,
+                ObjectStatus.EukrasianPrognosis,
+                ObjectStatus.Galvanize,
+            }).Count() > 0) return false;
+
+            //均衡
+            if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
+
+            act = Actions.Diagnosis;
+            return true;
+        }
 
         act = null;
         return false;
@@ -174,11 +186,22 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             if (Actions.Kerachole.ShouldUseAction(out act)) return true;
         }
 
-        //均衡
-        if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
-
         //预后
-        if (Actions.Prognosis.ShouldUseAction(out act)) return true;
+        if (Actions.Prognosis.ShouldUseAction(out act))
+        {
+            if (Actions.Diagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
+            {
+                ObjectStatus.EukrasianDiagnosis,
+                ObjectStatus.EukrasianPrognosis,
+                ObjectStatus.Galvanize,
+            }).Count() > 0) return false;
+
+            //均衡
+            if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
+
+            act = Actions.Prognosis;
+            return true;
+        }
 
         act = null;
         return false;

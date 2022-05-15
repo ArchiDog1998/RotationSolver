@@ -286,6 +286,13 @@ namespace XIVComboPlus.Combos
             //均衡注药
             EukrasianDosis = 2614,
             EukrasianDosis2 = 2615,
-            EukrasianDosis3 = 2616;
+            EukrasianDosis3 = 2616,
+
+            //均衡诊断
+            EukrasianDiagnosis = 2607,
+            EukrasianPrognosis = 2609,
+
+            //鼓舞
+            Galvanize = 297;
     }
 }

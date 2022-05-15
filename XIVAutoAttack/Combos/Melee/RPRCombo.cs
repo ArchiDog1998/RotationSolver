@@ -70,10 +70,10 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             Communio = new BaseAction(24398),
 
             //神秘纹 加盾
-            ArcaneCrest = new BaseAction(24404),
+            ArcaneCrest = new BaseAction(24404, true),
 
             //神秘环 加Buff
-            ArcaneCircle = new BaseAction(24405),
+            ArcaneCircle = new BaseAction(24405, true),
 
             //播魂种
             Soulsow = new BaseAction(24387)
@@ -128,6 +128,11 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             }
         }
 
+        //上Debuff
+        if (Actions.WhorlofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.ShadowofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
+
+
         if (JobGauge.Shroud <= 50 && BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) &&
             !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.CircleofSacrifice))
         {
@@ -142,9 +147,6 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             if (Actions.SoulSlice.ShouldUseAction(out act, Empty: true)) return true;
         }
 
-        //上Debuff
-        if (Actions.WhorlofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.ShadowofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
 
         //群体二连
         if (Actions.NightmareScythe.ShouldUseAction(out act, lastComboActionID)) return true;
