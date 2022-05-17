@@ -17,7 +17,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         {
             var results = BaseAction.FindStatusFromSelf(b, status1, status2);
             if (results.Length != 2) return false;
-            return results.Min() < 5.5f;
+            return results.Min() < 6f;
         }
 
         public static readonly BaseAction
@@ -179,7 +179,9 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
             act = null;
             return false;
         }
-        else if(abilityRemain != 0)
+        else if(abilityRemain != 0 && 
+            (Service.ClientState.LocalPlayer.Level < Actions.RagingStrikes.Level ||  BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RagingStrikes)) &&
+            (Service.ClientState.LocalPlayer.Level < Actions.BattleVoice.Level || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BattleVoice)))
         {
             //·×ÂÒ¼ý
             if (Actions.Barrage.ShouldUseAction(out act)) return true;

@@ -37,7 +37,6 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             Demolish = new BaseAction(66)
             {
                 EnermyLocation = EnemyLocation.Back,
-                TargetStatus = new ushort[] { ObjectStatus.Demolish },
             },
 
             //±¿»≠
@@ -158,7 +157,11 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
     private bool CoerlForm(out BaseAction act)
     {
         if (Actions.Rockbreaker.ShouldUseAction(out act)) return true;
-        if (Actions.Demolish.ShouldUseAction(out act)) return true;
+        if (Actions.Demolish.ShouldUseAction(out act))
+        {
+            var times = BaseAction.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
+            if (times.Length == 0 || times[0] < 4 + WeaponRemain || Math.Abs(times[0] - 4 + WeaponRemain) < 0.1) return true;
+        }
         if (Actions.SnapPunch.ShouldUseAction(out act)) return true;
         return false;
     }
@@ -243,7 +246,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
                 var dis = BaseAction.FindStatusSelfFromSelf(ObjectStatus.DisciplinedFist);
                 Actions.Demolish.ShouldUseAction(out _);
                 var demo = BaseAction.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
-                if (dis.Length != 0 && dis[0] > 6 && demo.Length != 0 && demo[0] > 6)
+                if (dis.Length != 0 && dis[0] > 6 && ((demo.Length != 0 && demo[0] > 6) || !Actions.PerfectBalance.IsCoolDown))
                 {
                     if (Actions.PerfectBalance.ShouldUseAction(out act, Empty:true)) return true;
                 }
@@ -251,7 +254,6 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             else
             {
                 if (Actions.PerfectBalance.ShouldUseAction(out act, Empty: true)) return true;
-
             }
 
         }

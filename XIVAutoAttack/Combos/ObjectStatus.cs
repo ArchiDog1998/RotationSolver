@@ -104,6 +104,12 @@ namespace XIVComboPlus.Combos
             //爆破箭准备
             BlastArrowReady = 2692,
 
+            //猛者强击
+            RagingStrikes = 125,
+
+            //战斗之声
+            BattleVoice = 141,
+
             //铁壁
             Rampart1 = 71,
             Rampart2 = 1191,
