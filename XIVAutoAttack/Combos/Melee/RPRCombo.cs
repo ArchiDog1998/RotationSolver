@@ -28,7 +28,7 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             BloodStalk = new BaseAction(24389),
 
             //¹´ÈÐ
-            Harpe = new BaseAction(24386),
+            Harpe = new BaseAction(24386) { BuffsProvide = new ushort[] { ObjectStatus.SoulReaver } },
 
             //½Ê¾ö
             Gibbet = new BaseAction(24382) { EnermyLocation = EnemyLocation.Side },
@@ -175,16 +175,19 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
                 if (Actions.BloodStalk.ShouldUseAction(out act)) return true;
             }
         }
-        //À¶Ìõ¹»ÁË£¬±äÉí£¡
-        if (JobGauge.Shroud >= 50 && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver)
-            && Actions.Enshroud.ShouldUseAction(out act)) return true;
 
-        //Áé»ê¹»ÁË£¬ÄÃÀ¶Ìõ×´Ì¬¡£
-        if (JobGauge.Soul >= 50)
+        if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
         {
-            if (Actions.Gluttony.ShouldUseAction(out act, mustUse: true)) return true;
-            if (Actions.GrimSwathe.ShouldUseAction(out act)) return true;
-            if (Actions.BloodStalk.ShouldUseAction(out act)) return true;
+            //À¶Ìõ¹»ÁË£¬±äÉí£¡
+            if (JobGauge.Shroud >= 50 && Actions.Enshroud.ShouldUseAction(out act)) return true;
+
+            //Áé»ê¹»ÁË£¬ÄÃÀ¶Ìõ×´Ì¬¡£
+            if (JobGauge.Soul >= 50)
+            {
+                if (Actions.Gluttony.ShouldUseAction(out act, mustUse: true)) return true;
+                if (Actions.GrimSwathe.ShouldUseAction(out act)) return true;
+                if (Actions.BloodStalk.ShouldUseAction(out act)) return true;
+            }
         }
 
         act = null;

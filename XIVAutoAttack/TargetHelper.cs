@@ -47,7 +47,7 @@ namespace XIVComboPlus
         /// </summary>
         internal static BattleChara[] AllianceMembers { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] PartyTanks { get; private set; } = new PlayerCharacter[0];
-        internal static BattleChara[] PartyTanksAttached { get; private set; } = new PlayerCharacter[0];
+        //internal static BattleChara[] PartyTanksAttached { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] DeathPeopleParty { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] WeakenPeople { get; private set; } = new PlayerCharacter[0];
@@ -183,17 +183,6 @@ namespace XIVComboPlus
             AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
 
             PartyTanks = GetJobCategory(PartyMembers, Role.防护);
-
-            List<BattleChara> attachedT = new List<BattleChara>(PartyTanks.Length);
-            foreach (var tank in PartyTanks)
-            {
-                if (tank.TargetObject?.TargetObject == tank)
-                {
-                    attachedT.Add(tank);
-                }
-            }
-            PartyTanksAttached = attachedT.ToArray();
-
 
             DeathPeopleAll = BaseAction.GetObjectInRadius(GetDeath(AllianceMembers), 30);
             DeathPeopleParty = BaseAction.GetObjectInRadius(GetDeath(PartyMembers), 30);

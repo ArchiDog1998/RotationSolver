@@ -299,6 +299,24 @@ namespace XIVComboPlus.Combos
             EukrasianPrognosis = 2609,
 
             //鼓舞
-            Galvanize = 297;
+            Galvanize = 297,
+
+            //钢铁信念 盾姿
+            IronWill = 79,
+
+            //预警
+            Sentinel = 74,
+
+            //沥血剑
+            GoringBlade = 725,
+
+            //英勇之剑
+            BladeofValor = 2721,
+
+            //赎罪剑
+            SwordOath = 190,
+
+            //安魂祈祷
+            Requiescat = 1368;
     }
 }

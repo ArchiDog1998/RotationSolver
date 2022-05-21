@@ -41,6 +41,8 @@ public abstract class CustomCombo
 
     internal string JobName => XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Name;
 
+    internal virtual bool HaveShield => true;
+
     internal struct GeneralActions
     {
         internal static readonly BaseAction
@@ -51,13 +53,13 @@ public abstract class CustomCombo
             Swiftcast = new BaseAction(7561u)
             {
                 BuffsProvide = new ushort[]
-            {
-                ObjectStatus.Swiftcast1,
-                ObjectStatus.Swiftcast2,
-                ObjectStatus.Swiftcast3,
-                ObjectStatus.Triplecast,
-                ObjectStatus.Dualcast,
-            }
+                {
+                    ObjectStatus.Swiftcast1,
+                    ObjectStatus.Swiftcast2,
+                    ObjectStatus.Swiftcast3,
+                    ObjectStatus.Triplecast,
+                    ObjectStatus.Dualcast,
+                }
             },
 
             //康复
@@ -134,6 +136,8 @@ public abstract class CustomCombo
                     ObjectStatus.RawIntuition, ObjectStatus.Bloodwhetting,
                     //复仇
                     ObjectStatus.Vengeance,
+                    //预警
+                    ObjectStatus.Sentinel,
                 },
             },
 
@@ -217,6 +221,8 @@ public abstract class CustomCombo
     /// </summary>
     protected virtual bool ShouldSayout => false;
     private protected virtual BaseAction Raise => null;
+    private protected virtual BaseAction Shield => null;
+
     private protected CustomCombo()
     {
     }
@@ -336,12 +342,18 @@ public abstract class CustomCombo
 
     private BaseAction GCD(uint lastComboActionID, byte abilityRemain)
     {
+
         if (EmergercyGCD(out BaseAction act, abilityRemain)) return act;
         if (IconReplacer.Move && MoveGCD(lastComboActionID, out act)) return act;
         if (TargetHelper.HPNotFull)
         {
             if ((IconReplacer.HealArea || CanHealAreaSpell) && HealAreaGCD(lastComboActionID, out act)) return act;
             if ((IconReplacer.HealSingle || CanHealSingleSpell) && HealSingleGCD(lastComboActionID, out act)) return act;
+        }
+        //如果救我一个活着的T，那还不开盾姿？
+        if (!HaveShield && TargetHelper.PartyTanks.Select(t => t.CurrentHp != 0).Count() < 2)
+        {
+            if (Shield.ShouldUseAction(out act)) return act;
         }
         if (GeneralGCD(lastComboActionID, out act)) return act;
         return null;
@@ -356,18 +368,20 @@ public abstract class CustomCombo
         }
 
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
+        Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
+
         if (IconReplacer.AntiRepulsion)
         {
-            switch(XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role)
+            switch(role)
             {
-                case (byte)Role.防护:
-                case (byte)Role.近战:
+                case Role.防护:
+                case Role.近战:
                     if (GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
                     break;
-                case (byte)Role.治疗:
+                case Role.治疗:
                     if (GeneralActions.Surecast.ShouldUseAction(out act)) return true;
                     break;
-                case (byte)Role.远程:
+                case Role.远程:
                     if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
                     {
                         if (GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
@@ -381,17 +395,17 @@ public abstract class CustomCombo
         }
         if (TargetHelper.CanInterruptTargets.Length > 0)
         {
-            switch (XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role)
+            switch (role)
             {
-                case (byte)Role.防护:
+                case Role.防护:
                     if (GeneralActions.Interject.ShouldUseAction(out act)) return true;
                     if (GeneralActions.LowBlow.ShouldUseAction(out act)) return true;
                     break;
 
-                case (byte)Role.近战:
+                case Role.近战:
                     if (GeneralActions.LegSweep.ShouldUseAction(out act)) return true;
                     break;
-                case (byte)Role.远程:
+                case Role.远程:
                     if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
                     {
                         if (GeneralActions.HeadGraze.ShouldUseAction(out act)) return true;
@@ -410,7 +424,25 @@ public abstract class CustomCombo
             if ((IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act)) return true;
         }
         if (GeneralAbility(abilityRemain, out act)) return true;
-        if (HaveTargetAngle && ForAttachAbility(abilityRemain, out act)) return true;
+        if (HaveTargetAngle) 
+        {
+            if(role == Role.防护)
+            {
+                var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets, out bool haveTargetOnme).Length > 0;
+                if (!IsMoving && haveTargetOnme && Service.Configuration.AutoDefenseForTank)
+                {
+                    //防卫
+                    if (DefenceSingleAbility(abilityRemain, out act)) return true;
+                }
+                if (HaveShield && haveTargets)
+                {
+                    //挑衅
+                    if (GeneralActions.Provoke.ShouldUseAction(out act, mustUse: true)) return true;
+                }
+            }
+            if (ForAttachAbility(abilityRemain, out act)) return true;
+        }
+
         return false;
     }
     /// <summary>

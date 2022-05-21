@@ -1,4 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Objects.Types;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -6,9 +8,9 @@ namespace XIVComboPlus.Combos;
 
 internal class WARCombo : CustomComboJob<WARGauge>
 {
-
     internal override uint JobID => 21;
-    internal static bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
+    internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
+    private protected override BaseAction Shield => new BaseAction(48);
     internal static float BuffTime
     {
         get
@@ -84,13 +86,27 @@ internal class WARCombo : CustomComboJob<WARGauge>
             Equilibrium = new BaseAction(3552),
 
             //原初的勇猛
-            //NascentFlash = new BaseAction(16464),
+            NascentFlash = new BaseAction(16464)
+            {
+                ChoiceFriend = friends =>
+                {
+                    if (friends.Length == 0) return null;
+
+                    List<BattleChara> attachedT = new List<BattleChara>(friends.Length);
+                    foreach (var tank in friends)
+                    {
+                        if (tank.TargetObject?.TargetObject == tank)
+                        {
+                            attachedT.Add(tank);
+                        }
+                    }
+
+                    return (attachedT.Count > 0 ? attachedT.ToArray() : friends).OrderBy(f => (float)f.CurrentHp / f.MaxHp).First();
+                },
+            },
 
             ////原初的血气
             //Bloodwhetting = new BaseAction(25751),
-
-            //守护
-            Defiance = new BaseAction(48),
 
             //复仇
             Vengeance = new BaseAction(44)
@@ -147,12 +163,6 @@ internal class WARCombo : CustomComboJob<WARGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
-        //如果救我一个活着的T，那还不开盾姿？
-        if (!HaveShield && TargetHelper.PartyTanks.Select(t => t.CurrentHp != 0).Count() < 2)
-        {
-            if (Actions.Defiance.ShouldUseAction(out act)) return true;
-        }
-
         //兽魂输出
         if (JobGauge.BeastGauge >= 50 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease))
         {
@@ -178,10 +188,9 @@ internal class WARCombo : CustomComboJob<WARGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
     {
-        var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets, out bool haveTargetOnme).Length > 0;
-        if (!IsMoving && haveTargetOnme && abilityRemain == 1)
+        if (abilityRemain == 1)
         {
             //死斗 如果谢不够了。
             if (Actions.Holmgang.ShouldUseAction(out act)) return true;
@@ -189,7 +198,6 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //原初的直觉（减伤10%）
             if (Actions.RawIntuition.ShouldUseAction(out act)) return true;
 
-            //降低伤害
             //复仇（减伤30%）
             if (Actions.Vengeance.ShouldUseAction(out act)) return true;
 
@@ -199,20 +207,14 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //降低攻击
             //雪仇
             if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
-
-            ////亲疏自行
-            //if (GeneralActions.ArmsLength.TryUseAction(level, out act)) return true;
-
-            //增加血量
-            ////摆脱 队友套盾
-            //if (Actions.ShakeItOff.TryUseAction(level, out act)) return true;
-        }
-        if (HaveShield && haveTargets)
-        {
-            //挑衅
-            if (GeneralActions.Provoke.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
+        act = null;
+        return false;
+    }
+
+    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    {
         //爆发
         if (BuffTime > 3 || Service.ClientState.LocalPlayer.Level < Actions.MythrilTempest.Level)
         {
@@ -233,7 +235,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
         }
 
         //奶个队友啊。
-        //if (!haveTargetOnme && Actions.NascentFlash.TryUseAction(level, out act)) return true;
+        if (!HaveShield && Actions.NascentFlash.ShouldUseAction(out act)) return true;
 
         //普通攻击
         //群山隆起
@@ -247,7 +249,6 @@ internal class WARCombo : CustomComboJob<WARGauge>
             if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, Actions.Onslaught.Target.Position) - Actions.Onslaught.Target.HitboxRadius < 1)
             {
                 return true;
-
             }
         }
 

@@ -363,7 +363,7 @@ namespace XIVComboPlus.Combos
         }
         internal static float DistanceToPlayer(GameObject obj)
         {
-            return Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position);
+            return Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
         }
         internal static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
         {
@@ -429,7 +429,7 @@ namespace XIVComboPlus.Combos
                 byte count = 0;
                 foreach (T obj in objects)
                 {
-                    if (Vector3.Distance(t.Position, obj.Position) <= range)
+                    if (Vector3.Distance(t.Position, obj.Position) <= range + obj.HitboxRadius)
                     {
                         count++;
                     }
@@ -628,7 +628,7 @@ namespace XIVComboPlus.Combos
             return FindStatusFromSelf(obj).Where(status => newEffects.Contains(status.StatusId)).Select(status => status.RemainingTime).ToArray();
         }
 
-        private static Dalamud.Game.ClientState.Statuses.Status[] FindStatusFromSelf(BattleChara obj)
+        internal static Dalamud.Game.ClientState.Statuses.Status[] FindStatusFromSelf(BattleChara obj)
         {
             if (obj == null) return new Dalamud.Game.ClientState.Statuses.Status[0];
 

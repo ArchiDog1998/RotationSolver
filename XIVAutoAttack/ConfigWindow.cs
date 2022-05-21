@@ -116,6 +116,13 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
+                    bool autoDefenseforTank = Service.Configuration.AutoDefenseForTank;
+                    if (ImGui.Checkbox("T自动上减伤", ref autoDefenseforTank))
+                    {
+                        Service.Configuration.AutoDefenseForTank = autoDefenseforTank;
+                        Service.Configuration.Save();
+                    }
+
                     bool neverReplaceIcon = Service.Configuration.NeverReplaceIcon;
                     if (ImGui.Checkbox("不替换图标", ref neverReplaceIcon))
                     {
