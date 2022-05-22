@@ -10,11 +10,13 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
     protected override bool CanHealSingleSpell => false;
     //看看现在有没有促进
 
-    private protected override BaseAction Raise => new BaseAction(7523, true);
+    private protected override BaseAction Raise => Actions.Verraise;
     internal struct Actions
     {
-
         public static readonly BaseAction
+            //赤复活
+            Verraise = new BaseAction(7523, true),
+
             //震荡
             Jolt = new BaseAction(7503)
             {

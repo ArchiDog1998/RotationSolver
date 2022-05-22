@@ -201,15 +201,6 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
-    {
-        //»ØÑª
-        if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
-        if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
-
-        return false;
-    }
-
     private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
     {
         //Ç£ÖÆ

@@ -11,11 +11,14 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
 {
     internal override uint JobID => 33;
 
-    private protected override BaseAction Raise => new BaseAction(3603, true);
+    private protected override BaseAction Raise => Actions.Ascend;
 
     internal struct Actions
     {
         public static readonly BaseAction
+            //生辰
+            Ascend = new BaseAction(3603, true),
+
             //凶星
             Malefic = new BaseAction(3596),
 

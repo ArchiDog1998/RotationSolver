@@ -47,7 +47,10 @@ public abstract class CustomCombo
     {
         internal static readonly BaseAction
             //»ìÂÒ
-            Addle = new BaseAction(7560u),
+            Addle = new BaseAction(7560u)
+            {
+                TargetStatus = new ushort[] { 1203 },
+            },
 
             //¼´¿ÌÓ½³ª
             Swiftcast = new BaseAction(7561u)
@@ -114,7 +117,7 @@ public abstract class CustomCombo
             //ÄÚµ¤
             SecondWind = new BaseAction(7541)
             {
-                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6,
+                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.2,
             },
 
             //ÉË×ã
@@ -144,7 +147,7 @@ public abstract class CustomCombo
             //ÌôÐÆ
             Provoke = new BaseAction(7533)
             {
-
+                FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
             },
 
             //Ñ©³ð
@@ -168,7 +171,10 @@ public abstract class CustomCombo
             },
 
             //Ç£ÖÆ
-            Feint = new BaseAction(7549),
+            Feint = new BaseAction(7549)
+            {
+                TargetStatus = new ushort[] {1195},
+            },
 
             //²åÑÔ
             Interject = new BaseAction(7538),
@@ -378,7 +384,7 @@ public abstract class CustomCombo
             if (IconReplacer.RaiseOrShirk)
             {
                 if (GeneralActions.Shirk.ShouldUseAction(out act)) return true;
-                if (Shield.ShouldUseAction(out act)) return true;
+                if (HaveShield && Shield.ShouldUseAction(out act)) return true;
             }
 
             if (IconReplacer.EsunaOrShield && Shield.ShouldUseAction(out act)) return true;
@@ -386,9 +392,9 @@ public abstract class CustomCombo
             var defenses = new uint[] { ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill, ObjectStatus.Defiance };
             //Tanks with shield.
             var defensesTanks = TargetHelper.PartyTanks.Where(t => t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
-            if (!HaveShield && (defensesTanks == null || defensesTanks.Count() == 0))
+            if (defensesTanks == null || defensesTanks.Count() == 0)
             {
-                if (Shield.ShouldUseAction(out act)) return true;
+                if (!HaveShield && Shield.ShouldUseAction(out act)) return true;
             }
         }
 
@@ -445,6 +451,18 @@ public abstract class CustomCombo
             if ((IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act)) return true;
             if ((IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act)) return true;
         }
+
+        //»ØÑª
+        if(role == Role.½üÕ½)
+        {
+            if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+            if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
+        }
+        else if (role == Role.½üÕ½ && RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+        {
+            if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+        }
+
         if (GeneralAbility(abilityRemain, out act)) return true;
         if (HaveTargetAngle) 
         {

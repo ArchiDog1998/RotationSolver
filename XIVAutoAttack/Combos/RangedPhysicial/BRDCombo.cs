@@ -253,9 +253,6 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         //ÉË×ã
         if (GeneralActions.LegGraze.ShouldUseAction(out act)) return true;
 
-        //ÄÚµ¤
-        if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
-
         return false;
     }
 

@@ -6,11 +6,14 @@ internal class SGECombo : CustomComboJob<SGEGauge>
 {
     internal override uint JobID => 40;
 
-    private protected override BaseAction Raise => new BaseAction(24287);
+    private protected override BaseAction Raise => Actions.Egeiro;
 
     internal struct Actions
     {
         public static readonly BaseAction
+            //¸´ËÕ
+            Egeiro =  new BaseAction(24287),
+
             //×¢Ò©
             Dosis = new BaseAction(24283),
 
@@ -62,7 +65,22 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             },
 
             //Õü¾È
-            Soteria = new BaseAction(24294, true),
+            Soteria = new BaseAction(24294, true)
+            {
+                ChoiceFriend = Targets =>
+                {
+                    foreach (var friend in Targets)
+                    {
+                        var statuses = friend.StatusList.Select(status => status.StatusId);
+                        if (statuses.Contains(ObjectStatus.Kardion))
+                        {
+                            return friend;
+                        }
+                    }
+                    return null;
+                },
+                OtherCheck = b => (float)b.CurrentHp / b.MaxHp < 0.7,
+            },
 
             //ÉñÒí
             Icarus = new BaseAction(24295, shouldEndSpecial: true)
@@ -235,20 +253,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         //¸ùËØ
         if (JobGauge.Addersgall < 2 && Actions.Rhizomata.ShouldUseAction(out act)) return true;
 
-        foreach (var friend in TargetHelper.PartyMembers)
-        {
-            var statuses = friend.StatusList.Select(status => status.StatusId);
-            if (statuses.Contains(ObjectStatus.Kardion))
-            {
-                if ((float)friend.CurrentHp/friend.MaxHp < 0.7)
-                {
-                    Actions.Soteria.ShouldUseAction(out act);
-                    return true;
-                }
-                break;
-            }
-        }
-
+        if (Actions.Soteria.ShouldUseAction(out act)) return true;
         act = null;
         return false;
     }

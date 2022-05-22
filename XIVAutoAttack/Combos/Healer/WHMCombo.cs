@@ -7,10 +7,13 @@ namespace XIVComboPlus.Combos;
 internal class WHMCombo : CustomComboJob<WHMGauge>
 {
     internal override uint JobID => 24;
-    private protected override BaseAction Raise => new BaseAction(125, true);
+    private protected override BaseAction Raise => Actions.Raise;
     internal struct Actions
     {
         public static readonly BaseAction
+            //复活
+            Raise =  new BaseAction(125, true),
+
             //飞石 平A
             Stone = new BaseAction(119),
 

@@ -298,9 +298,9 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
                     ImGui.Text("/aauto DefenseSingle 表示开启一段单体防御的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto Esuna 表示开启一段康复或者盾姿的窗口期。");
+                    ImGui.Text("/aauto EsunaShield 表示开启一段康复或者盾姿的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto Raise 表示开启强制救人或退避的窗口期。");
+                    ImGui.Text("/aauto RaiseShirk 表示开启强制救人或退避的窗口期。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AntiRepulsion 表示开启一段防击退的窗口期。");
                     ImGui.Separator();

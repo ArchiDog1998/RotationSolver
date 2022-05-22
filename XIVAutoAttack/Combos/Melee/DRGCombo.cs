@@ -142,7 +142,6 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
-
         if (JobGauge.IsLOTDActive)
         {
             if (abilityRemain > 1 && Actions.Stardiver.ShouldUseAction(out act, mustUse: true)) return true;
@@ -169,13 +168,6 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true) && Vector3.Distance(LocalPlayer.Position, Actions.DragonfireDive.Target.Position) - Actions.DragonfireDive.Target.HitboxRadius < 2) return true;
         }
 
-        return false;
-    }
-
-    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
-    {
-        if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
-        if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
         return false;
     }
 

@@ -10,7 +10,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
 {
     internal override uint JobID => 21;
     internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
-    private protected override BaseAction Shield => new BaseAction(48, shouldEndSpecial:true);
+    private protected override BaseAction Shield => Actions.Defiance;
     internal static float BuffTime
     {
         get
@@ -24,6 +24,9 @@ internal class WARCombo : CustomComboJob<WARGauge>
     internal struct Actions
     {
         public static readonly BaseAction
+            // ÿª§
+            Defiance =  new BaseAction(48, shouldEndSpecial:true),
+
             //÷ÿ≈¸
             HeavySwing = new BaseAction(31),
 
@@ -40,7 +43,15 @@ internal class WARCombo : CustomComboJob<WARGauge>
             },
 
             //∑…∏´
-            Tomahawk = new BaseAction(46),
+            Tomahawk = new BaseAction(46)
+            {
+                FilterForHostile = b =>
+                {
+                    var tars = BaseAction.ProvokeTarget(b, out _);
+                    if (tars == null || tars.Length == 0) return b;
+                    return tars;
+                },
+            },
 
             //√Õπ•
             Onslaught = new BaseAction(7386)

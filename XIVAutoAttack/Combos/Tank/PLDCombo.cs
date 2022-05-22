@@ -10,7 +10,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
 
     internal override  bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.IronWill);
 
-    private protected override BaseAction Shield => new BaseAction(28, shouldEndSpecial:true);
+    private protected override BaseAction Shield => Actions.IronWill;
 
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
@@ -18,6 +18,9 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
     internal struct Actions
     {
         public static readonly BaseAction
+            //钢铁信念
+            IronWill =  new BaseAction(28, shouldEndSpecial:true),
+
             //先锋剑
             FastBlade = new BaseAction(9),
 
@@ -38,7 +41,15 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             RageofHalone = new BaseAction(21),
 
             //投盾
-            ShieldLob = new BaseAction(24),
+            ShieldLob = new BaseAction(24)
+            {
+                FilterForHostile = b => 
+                {
+                    var tars = BaseAction.ProvokeTarget(b, out _);
+                    if (tars == null || tars.Length == 0) return b;
+                    return tars;
+                },
+            },
 
             //战逃反应
             FightorFlight = new BaseAction(20),

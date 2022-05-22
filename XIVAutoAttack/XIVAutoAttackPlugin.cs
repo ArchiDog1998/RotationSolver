@@ -147,6 +147,8 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                 case "AttackCancel":
                     IconReplacer.AutoAttack = false;
                     break;
+                default:
+                    Service.ChatGui.PrintError("无法识别 " + array[0]);
                     break;
             }
         }
@@ -154,14 +156,11 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     private void OnCommand(string command, string arguments)
     {
-        //string[] values = IconReplacer.CustomCombos.Select(c => c.ComboFancyName).ToArray();
-
         string[] array = arguments.Split();
         switch (array[0])
         {
             case "setall":
                 {
-
                     foreach (var item in IconReplacer.CustomCombos)
                     {
                         item.IsEnabled = true;
@@ -211,25 +210,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                     Service.Configuration.Save();
                     break;
                 }
-            //case "dot":
-            //    if (Service.Configuration.EnabledActions.Contains(CustomComboPreset.SCHDotFeature))
-            //    {
-            //        Service.Configuration.EnabledActions.Remove(CustomComboPreset.SCHDotFeature);
-            //    }
-            //    if (!Service.Configuration.EnabledActions.Contains(CustomComboPreset.SCHDotFeature))
-            //    {
-            //        Service.Configuration.EnabledActions.Add(CustomComboPreset.SCHDotFeature);
-            //    }
-            //    if (Service.Configuration.EnabledActions.Contains(CustomComboPreset.ASTdotFeature))
-            //    {
-            //        Service.Configuration.EnabledActions.Remove(CustomComboPreset.ASTdotFeature);
-            //    }
-            //    if (!Service.Configuration.EnabledActions.Contains(CustomComboPreset.ASTdotFeature))
-            //    {
-            //        Service.Configuration.EnabledActions.Add(CustomComboPreset.ASTdotFeature);
-            //    }
-            //    Service.Configuration.Save();
-            //    break;
             case "unset":
                 {
                     string text2 = array[1].ToLowerInvariant();
@@ -246,36 +226,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                     Service.Configuration.Save();
                     break;
                 }
-            //case "list":
-            //    switch (array.Length > 1 ? array[1].ToLowerInvariant() : "all")
-            //    {
-            //        case "set":
-            //            foreach (bool item3 in from preset in values
-            //                                   select Service.Configuration.IsEnabled(preset))
-            //            {
-            //                Service.ChatGui.Print(item3.ToString());
-            //            }
-            //            break;
-            //        case "unset":
-            //            foreach (bool item4 in from preset in values
-            //                                   select !Service.Configuration.IsEnabled(preset))
-            //            {
-            //                Service.ChatGui.Print(item4.ToString());
-            //            }
-            //            break;
-            //        case "all":
-            //            {
-            //                for (int i = 0; i < values.Length; i++)
-            //                {
-            //                    Service.ChatGui.Print(values[i]);
-            //                }
-            //                break;
-            //            }
-            //        default:
-            //            Service.ChatGui.PrintError("Available list filters: set, unset, all");
-            //            break;
-            //    }
-            //    break;
             default:
                 configWindow.Toggle();
                 break;

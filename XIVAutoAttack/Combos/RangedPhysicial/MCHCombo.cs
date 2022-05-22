@@ -172,9 +172,6 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
         //伤足
         if (GeneralActions.LegGraze.ShouldUseAction(out act)) return true;
 
-        //内丹
-        if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
-
         return false;
     }
 
