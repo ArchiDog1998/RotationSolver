@@ -119,11 +119,11 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                 case "DefenseSingle":
                     IconReplacer.StartDefenseSingle();
                     break;
-                case "Esuna":
-                    IconReplacer.StartEsuna();
+                case "EsunaShield":
+                    IconReplacer.StartEsunaOrShield();
                     break;
-                case "Raise":
-                    IconReplacer.StartRaise();
+                case "RaiseShirk":
+                    IconReplacer.StartRaiseOrShirk();
                     break;
                 case "Move":
                     IconReplacer.StartMove();

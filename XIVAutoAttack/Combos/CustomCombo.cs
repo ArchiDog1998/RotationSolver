@@ -124,7 +124,7 @@ public abstract class CustomCombo
             },
 
             //亲疏自行
-            ArmsLength = new BaseAction(7548, shouldEndSpecial:true),
+            ArmsLength = new BaseAction(7548, shouldEndSpecial: true),
 
             //铁壁
             Rampart = new BaseAction(7531)
@@ -151,7 +151,15 @@ public abstract class CustomCombo
             Reprisal = new BaseAction(7535),
 
             //退避
-            Shirk = new BaseAction(7537),
+            Shirk = new BaseAction(7537, true)
+            {
+                ChoiceFriend = friends =>
+                {
+                    var tanks = TargetHelper.GetJobCategory(friends, Role.防护);
+                    if (tanks == null || tanks.Length == 0) return null;
+                    return tanks[0];
+                },
+            },
 
             //浴血
             Bloodbath = new BaseAction(7542)
@@ -175,8 +183,7 @@ public abstract class CustomCombo
             HeadGraze = new BaseAction(7551),
 
             //沉稳咏唱
-            Surecast = new BaseAction(7559, shouldEndSpecial:true);
-
+            Surecast = new BaseAction(7559, shouldEndSpecial: true);
     }
     #endregion
 
@@ -350,11 +357,7 @@ public abstract class CustomCombo
             if ((IconReplacer.HealArea || CanHealAreaSpell) && HealAreaGCD(lastComboActionID, out act)) return act;
             if ((IconReplacer.HealSingle || CanHealSingleSpell) && HealSingleGCD(lastComboActionID, out act)) return act;
         }
-        //如果救我一个活着的T，那还不开盾姿？
-        if (!HaveShield && TargetHelper.PartyTanks.Select(t => t.CurrentHp != 0).Count() < 2)
-        {
-            if (Shield.ShouldUseAction(out act)) return act;
-        }
+
         if (GeneralGCD(lastComboActionID, out act)) return act;
         return null;
     }
@@ -369,6 +372,25 @@ public abstract class CustomCombo
 
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
         Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
+
+        if(role == Role.防护)
+        {
+            if (IconReplacer.RaiseOrShirk)
+            {
+                if (GeneralActions.Shirk.ShouldUseAction(out act)) return true;
+                if (Shield.ShouldUseAction(out act)) return true;
+            }
+
+            if (IconReplacer.EsunaOrShield && Shield.ShouldUseAction(out act)) return true;
+
+            var defenses = new uint[] { ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill, ObjectStatus.Defiance };
+            //Tanks with shield.
+            var defensesTanks = TargetHelper.PartyTanks.Where(t => t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
+            if (!HaveShield && (defensesTanks == null || defensesTanks.Count() == 0))
+            {
+                if (Shield.ShouldUseAction(out act)) return true;
+            }
+        }
 
         if (IconReplacer.AntiRepulsion)
         {
@@ -426,7 +448,7 @@ public abstract class CustomCombo
         if (GeneralAbility(abilityRemain, out act)) return true;
         if (HaveTargetAngle) 
         {
-            if(role == Role.防护)
+            if(role == Role.防护 && HaveShield)
             {
                 var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets, out bool haveTargetOnme).Length > 0;
                 if (!IsMoving && haveTargetOnme && Service.Configuration.AutoDefenseForTank)
@@ -530,7 +552,7 @@ public abstract class CustomCombo
         }
 
         //有某些非常危险的状态。
-        if ((IconReplacer.Esuna && TargetHelper.WeakenPeople.Length > 0) ||TargetHelper.DyingPeople.Length > 0)
+        if ((IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0) ||TargetHelper.DyingPeople.Length > 0)
         {
             if (GeneralActions.Esuna.ShouldUseAction(out act, mustUse: true)) return true;
         }
@@ -543,7 +565,7 @@ public abstract class CustomCombo
             }
             else
             {
-                if (IconReplacer.Raise || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
+                if (IconReplacer.RaiseOrShirk || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
                 {
                     if (Raise.ShouldUseAction(out act)) return true;
                 }

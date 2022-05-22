@@ -138,21 +138,21 @@ internal class ConfigWindow : Window
                     }
 
                     bool isOnlyGCD = Service.Configuration.OnlyGCD;
-                    if (ImGui.Checkbox("是否只使用GCD循环，除去能力技", ref isOnlyGCD))
+                    if (ImGui.Checkbox("只使用GCD循环，除去能力技", ref isOnlyGCD))
                     {
                         Service.Configuration.OnlyGCD = isOnlyGCD;
                         Service.Configuration.Save();
                     }
 
                     bool autoBreak = Service.Configuration.AutoBreak;
-                    if (ImGui.Checkbox("是否自动进行爆发", ref autoBreak))
+                    if (ImGui.Checkbox("自动进行爆发", ref autoBreak))
                     {
                         Service.Configuration.AutoBreak = autoBreak;
                         Service.Configuration.Save();
                     }
 
                     float weaponInterval = Service.Configuration.WeaponInterval;
-                    if (ImGui.DragFloat("特殊状态持续多久", ref weaponInterval, 0.002f, 0.6f, 0.7f))
+                    if (ImGui.DragFloat("间隔多久释放能力技", ref weaponInterval, 0.002f, 0.6f, 0.7f))
                     {
                         Service.Configuration.WeaponInterval = weaponInterval;
                         Service.Configuration.Save();
@@ -298,9 +298,9 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
                     ImGui.Text("/aauto DefenseSingle 表示开启一段单体防御的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto Esuna 表示开启一段康复的窗口期。");
+                    ImGui.Text("/aauto Esuna 表示开启一段康复或者盾姿的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto Raise 表示开启强制救人或突进的窗口期。");
+                    ImGui.Text("/aauto Raise 表示开启强制救人或退避的窗口期。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AntiRepulsion 表示开启一段防击退的窗口期。");
                     ImGui.Separator();

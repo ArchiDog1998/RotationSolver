@@ -317,6 +317,13 @@ namespace XIVComboPlus.Combos
             SwordOath = 190,
 
             //安魂祈祷
-            Requiescat = 1368;
+            Requiescat = 1368,
+
+            //深恶痛绝
+            Grit = 743,
+
+            //王室亲卫
+            RoyalGuard = 392;
+
     }
 }

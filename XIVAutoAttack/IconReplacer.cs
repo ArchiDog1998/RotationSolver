@@ -125,28 +125,30 @@ internal sealed class IconReplacer : IDisposable
             DefenseSingle = true;
         }
     }
-    internal static bool Esuna { get; private set; } = false;
-    internal static void StartEsuna()
+    internal static bool EsunaOrShield { get; private set; } = false;
+    internal static void StartEsunaOrShield()
     {
-        bool last = Esuna;
+        bool last = EsunaOrShield;
         ResetSpecial(last);
         if (!last)
         {
             _specialStateStopwatch.Start();
-            CustomCombo.Speak("Start Esuna");
-            Esuna = true;
+            Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
+            CustomCombo.Speak("Start " + (role == Role.·À»¤ ? "Shield" : "Esuna"));
+            EsunaOrShield = true;
         }
     }
-    internal static bool Raise { get; private set; } = false;
-    internal static void StartRaise()
+    internal static bool RaiseOrShirk { get; private set; } = false;
+    internal static void StartRaiseOrShirk()
     {
-        bool last = Raise;
+        bool last = RaiseOrShirk;
         ResetSpecial(last);
         if (!last)
         {
             _specialStateStopwatch.Start();
-            CustomCombo.Speak("Start Raise");
-            Raise = true;
+            Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
+            CustomCombo.Speak("Start " + (role == Role.·À»¤ ? "Shirk" : "Raise"));
+            RaiseOrShirk = true;
         }
     }
     internal static bool Break { get; private set; } = false;
@@ -191,7 +193,7 @@ internal sealed class IconReplacer : IDisposable
     {
         _specialStateStopwatch.Stop();
         _specialStateStopwatch.Reset();
-        HealArea = HealSingle = DefenseArea = DefenseSingle = Esuna = Raise = Break
+        HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = Break
             = AntiRepulsion = Move = false;
         if(sayout)CustomCombo.Speak("End Special");
 

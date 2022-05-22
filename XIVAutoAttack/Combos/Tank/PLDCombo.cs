@@ -10,7 +10,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
 
     internal override  bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.IronWill);
 
-    private protected override BaseAction Shield => new BaseAction(28);
+    private protected override BaseAction Shield => new BaseAction(28, shouldEndSpecial:true);
 
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
@@ -215,8 +215,11 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
     {
         if (abilityRemain == 1)
         {
-            //ËÀ¶· Èç¹ûÐ»²»¹»ÁË¡£
+            //ÉñÊ¥ÁìÓò Èç¹ûÐ»²»¹»ÁË¡£
             if (Actions.HallowedGround.ShouldUseAction(out act)) return true;
+
+            //¶ÜÕó
+            if (JobGauge.OathGauge >= 50 && Actions.Sheltron.ShouldUseAction(out act)) return true;
 
             //Ô¤¾¯£¨¼õÉË30%£©
             if (Actions.Sentinel.ShouldUseAction(out act)) return true;
@@ -230,10 +233,6 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             //½µµÍ¹¥»÷
             //Ñ©³ð
             if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
-
-            //¶ÜÕó
-            if (Actions.Sheltron.ShouldUseAction(out act)) return true;
-
         }
 
         act = null;

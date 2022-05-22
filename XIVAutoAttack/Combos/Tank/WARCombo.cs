@@ -10,7 +10,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
 {
     internal override uint JobID => 21;
     internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
-    private protected override BaseAction Shield => new BaseAction(48);
+    private protected override BaseAction Shield => new BaseAction(48, shouldEndSpecial:true);
     internal static float BuffTime
     {
         get
