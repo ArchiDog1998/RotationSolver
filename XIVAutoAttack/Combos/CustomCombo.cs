@@ -173,7 +173,7 @@ public abstract class CustomCombo
             //牵制
             Feint = new BaseAction(7549)
             {
-                TargetStatus = new ushort[] {1195},
+                TargetStatus = new ushort[] { 1195 },
             },
 
             //插言
@@ -189,7 +189,10 @@ public abstract class CustomCombo
             HeadGraze = new BaseAction(7551),
 
             //沉稳咏唱
-            Surecast = new BaseAction(7559, shouldEndSpecial: true);
+            Surecast = new BaseAction(7559, shouldEndSpecial: true),
+
+            //极限技
+            LimitBreak = new BaseAction(209, shouldEndSpecial: true);
     }
     #endregion
 
@@ -355,6 +358,8 @@ public abstract class CustomCombo
 
     private BaseAction GCD(uint lastComboActionID, byte abilityRemain)
     {
+        //放LB
+        if(IconReplacer.LimitBreak && GeneralActions.LimitBreak.ShouldUseAction(out BaseAction action)) return action;
 
         if (EmergercyGCD(out BaseAction act, abilityRemain)) return act;
         if (IconReplacer.Move && MoveGCD(lastComboActionID, out act)) return act;

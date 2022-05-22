@@ -318,13 +318,18 @@ namespace XIVComboPlus.Combos
                 }
             }
             //如果只能选自己，那就选自己吧。
-            Target = Service.ClientState.LocalPlayer;
-            if(Action.EffectRange > 0 && !_isFriendly)
+            else if (Action.CanTargetSelf)
             {
-                var count = GetObjectInRadius(TargetHelper.HostileTargets, Action.EffectRange).Length;
-                if (count < (mustUse ? 1 :Service.Configuration.HostileCount)) return false;
+                Target = Service.ClientState.LocalPlayer;
+                if (Action.EffectRange > 0 && !_isFriendly)
+                {
+                    var count = GetObjectInRadius(TargetHelper.HostileTargets, Action.EffectRange).Length;
+                    if (count < (mustUse ? 1 : Service.Configuration.HostileCount)) return false;
+                }
+                return true;
             }
 
+            Target = Service.TargetManager.Target is BattleChara battle ? battle : Service.ClientState.LocalPlayer;
             return true;
         }
 

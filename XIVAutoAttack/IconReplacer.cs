@@ -76,7 +76,18 @@ internal sealed class IconReplacer : IDisposable
             }
         }
     }
-
+    internal static bool LimitBreak { get; private set; } = false;
+    internal static void StartLimitBreak()
+    {
+        bool last = LimitBreak;
+        ResetSpecial(last);
+        if (!last)
+        {
+            _specialStateStopwatch.Start();
+            CustomCombo.Speak("Start Limit Break");
+            LimitBreak = true;
+        }
+    }
     internal static bool HealArea { get; private set; } = false;
     internal static void StartHealArea()
     {
@@ -193,7 +204,7 @@ internal sealed class IconReplacer : IDisposable
     {
         _specialStateStopwatch.Stop();
         _specialStateStopwatch.Reset();
-        HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = Break
+        HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = Break = LimitBreak
             = AntiRepulsion = Move = false;
         if(sayout)CustomCombo.Speak("End Special");
 
