@@ -171,7 +171,11 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             if (Actions.Taurochole.ShouldUseAction(out act)) return true;
         }
 
+        return false;
+    }
 
+    private protected override bool DefenseSingleGCD(uint lastComboActionID, out BaseAction act)
+    {
         //’Ô∂œ
         if (Actions.Diagnosis.ShouldUseAction(out act))
         {

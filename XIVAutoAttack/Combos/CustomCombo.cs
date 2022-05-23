@@ -368,6 +368,8 @@ public abstract class CustomCombo
             if ((IconReplacer.HealArea || CanHealAreaSpell) && HealAreaGCD(lastComboActionID, out act)) return act;
             if ((IconReplacer.HealSingle || CanHealSingleSpell) && HealSingleGCD(lastComboActionID, out act)) return act;
         }
+        if (IconReplacer.DefenseArea && DefenseAreaGCD(abilityRemain, out act)) return act;
+        if (IconReplacer.DefenseSingle && DefenseSingleGCD(abilityRemain, out act)) return act;
 
         if (GeneralGCD(lastComboActionID, out act)) return act;
         return null;
@@ -621,6 +623,14 @@ public abstract class CustomCombo
     }
 
     private protected virtual bool MoveGCD(uint lastComboActionID, out BaseAction act)
+    {
+        act = null; return false;
+    }
+    private protected virtual bool DefenseSingleGCD(uint lastComboActionID, out BaseAction act)
+    {
+        act = null; return false;
+    }
+    private protected virtual bool DefenseAreaGCD(uint lastComboActionID, out BaseAction act)
     {
         act = null; return false;
     }

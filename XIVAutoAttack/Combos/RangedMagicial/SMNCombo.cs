@@ -1,119 +1,197 @@
-//using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.JobGauge.Types;
 
-//namespace XIVComboPlus.Combos;
+namespace XIVComboPlus.Combos;
 
-//internal abstract class SMNCombo : CustomComboJob<SMNGauge>
-//{
-//    internal struct Actions
-//    {
-//        public static readonly BaseAction
-//            //灼热之光 团辅
-//            SearingLight = new BaseAction(25801),
+internal class SMNCombo : CustomComboJob<SMNGauge>
+{
+    internal override uint JobID => 27;
+    protected override bool CanHealSingleSpell => false;
+    private protected override BaseAction Raise => Actions.Resurrection;
+    internal struct Actions
+    {
+        public static readonly BaseAction
+            //宝石兽召唤
+            SummonCarbuncle = new BaseAction(25798)
+            {
+                OtherCheck = b => JobGauge.ReturnSummon == Dalamud.Game.ClientState.JobGauge.Enums.SummonPet.NONE,
+            },
 
-//            //守护之光 给自己戴套
-//            RadiantAegis = new BaseAction(25799),
+            //灼热之光 团辅
+            SearingLight = new BaseAction(25801),
 
-//            //以太蓄能 成为龙神,不死鸟
-//            Aethercharge = new BaseAction(25800),
+            //守护之光 给自己戴套
+            RadiantAegis = new BaseAction(25799),
 
-//            //毁灭 单体攻击
-//            Ruin = new BaseAction(163),
+            //医术
+            Physick = new BaseAction(16230, true),
 
-//            //迸裂 范围伤害
-//            Outburst = new BaseAction(16511);
-//    }
-//    public static class Buffs
-//    {
-//        public const ushort FurtherRuin = 2701;
-//    }
+            //以太蓄能 
+            Aethercharge = new BaseAction(25800),
 
-//    public static class Debuffs
-//    {
-//        public const ushort Placeholder = 0;
-//    }
+            //红宝石召唤
+            SummonRuby = new BaseAction(25802)
+            {
+                OtherCheck = b => JobGauge.IsIfritReady,
+            },
 
-//    public static class Levels
-//    {
-//        public const byte RadiantAegis = 2;
+            //黄宝石召唤
+            SummonTopaz = new BaseAction(25803)
+            {
+                OtherCheck = b => JobGauge.IsTitanReady,
+            },
 
-//        public const byte Gemshine = 6;
+            //绿宝石召唤
+            SummonEmerald = new BaseAction(25804)
+            {
+                OtherCheck = b => JobGauge.IsGarudaReady,
+            },
 
-//        public const byte EnergyDrain = 10;
+            //宝石耀
+            Gemshine = new BaseAction(25883)
+            {
+                OtherCheck = b => JobGauge.Attunement > 0,
+            },
 
-//        public const byte PreciousBrilliance = 26;
+            //毁灭 单体攻击
+            Ruin = new BaseAction(163),
 
-//        public const byte Painflare = 40;
+            //宝石辉
+            PreciousBrilliance = new BaseAction(25884)
+            {
+                OtherCheck = b => JobGauge.Attunement > 0,
+            },
 
-//        public const byte EnergySyphon = 52;
+            //迸裂 范围伤害
+            Outburst = new BaseAction(16511),
 
-//        public const byte Ruin3 = 54;
+            //复生
+            Resurrection = new BaseAction(173, true),
 
-//        public const byte Ruin4 = 62;
+            //能量吸收
+            EnergyDrain = new BaseAction(16508)
+            {
+                BuffsProvide = new ushort[] { ObjectStatus.FurtherRuin },
+            },
 
-//        public const byte SearingLight = 66;
+            //溃烂爆发
+            Fester = new BaseAction(181),
 
-//        public const byte EnkindleBahamut = 70;
+            //痛苦核爆
+            Painflare = new BaseAction(3578),
 
-//        public const byte SummonBahamut = 70;
+            //毁绝
+            RuinIV = new BaseAction(7426)
+            {
+                BuffsNeed = new ushort[] { ObjectStatus.FurtherRuin },
+            },
 
-//        public const byte Rekindle = 80;
+            //龙神迸发
+            EnkindleBahamut = new BaseAction(7429)
+            {
+                OtherCheck = b => JobGauge.ReturnSummonGlam == Dalamud.Game.ClientState.JobGauge.Enums.PetGlam.CARBUNCLE,
+            },
 
-//        public const byte SummonPhoenix = 80;
-//    }
+            //死星核爆
+            Deathflare = new BaseAction(3582)
+            {
+                OtherCheck = b => (byte)JobGauge.ReturnSummon == 10,
+            },
 
-//    public const byte ClassID = 26;
+            //苏生之炎
+            Rekindle = new BaseAction(25830, true)
+            {
+                OtherCheck = b => (byte)JobGauge.ReturnSummon == 20,
+            },
 
-//    public const byte JobID = 27;
+            //深红旋风
+            CrimsonCyclone = new BaseAction(25835)
+            {
+                BuffsNeed = new ushort[] { ObjectStatus.IfritsFavor },
+            },
 
-//    public const uint Deathflare = 3582u;
+            //山崩
+            MountainBuster = new BaseAction(25836)
+            {
+                BuffsNeed = new ushort[] { ObjectStatus.TitansFavor },
+            },
 
-//    public const uint EnkindlePhoenix = 16516u;
+            //螺旋气流
+            Slipstream = new BaseAction(25837)
+            {
+                BuffsNeed = new ushort[] { ObjectStatus.GarudasFavor },
+            };
+    }
 
-//    public const uint EnkindleBahamut = 7429u;
+    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    {
+        //灼热之光
+        if (Actions.SearingLight.ShouldUseAction(out act)) return true;
 
-//    public const uint DreadwyrmTrance = 3581u;
+        return false;
+    }
 
-//    public const uint SummonBahamut = 7427u;
+    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    {
+        //宝石兽召唤
+        if (Actions.SummonCarbuncle.ShouldUseAction(out act)) return true;
 
-//    public const uint SummonPhoenix = 25831u;
+        //大招
+        if (Actions.CrimsonCyclone.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.Slipstream.ShouldUseAction(out act, mustUse: true)) return true;
 
-//    public const uint Aethercharge = 25800u;
+        if (Actions.RuinIV.ShouldUseAction(out act, mustUse:true)) return true;
+        if (Actions.EnkindleBahamut.ShouldUseAction(out act, mustUse:true)) return true;
 
-//    public const uint Ruin1 = 163u;
+        //召唤
+        if (Actions.Aethercharge.ShouldUseAction(out act)) return true;
+        if (JobGauge.Attunement == 0)
+        {
+            if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+            if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+            if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+        }
 
-//    public const uint Ruin2 = 172u;
+        //AOE
+        if (Actions.PreciousBrilliance.ShouldUseAction(out act)) return true;
+        if (Actions.Outburst.ShouldUseAction(out act)) return true;
 
-//    public const uint Ruin3 = 3579u;
+        //单体
+        if (Actions.Gemshine.ShouldUseAction(out act)) return true;
+        if (Actions.Ruin.ShouldUseAction(out act)) return true;
+        return false;
+    }
 
-//    public const uint Ruin4 = 7426u;
+    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    {
+        if (Actions.Deathflare.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.Rekindle.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.MountainBuster.ShouldUseAction(out act, mustUse: true)) return true;
 
-//    public const uint BrandOfPurgatory = 16515u;
 
-//    public const uint FountainOfFire = 16514u;
+        //能量吸收
+        if (JobGauge.HasAetherflowStacks)
+        {
+            if (Actions.Painflare.ShouldUseAction(out act)) return true;
+            if (Actions.Fester.ShouldUseAction(out act)) return true;
+        }
+        else if (Actions.EnergyDrain.ShouldUseAction(out act)) return true;
 
-//    public const uint AstralImpulse = 25820u;
+        return false;
+    }
 
-//    public const uint Fester = 181u;
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    {
+        //守护之光
+        if (Actions.RadiantAegis.ShouldUseAction(out act)) return true;
 
-//    public const uint EnergyDrain = 16508u;
+        return false;
+    }
 
-//    public const uint Painflare = 3578u;
+    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    {
+        //医术
+        if (Actions.Physick.ShouldUseAction(out act)) return true;
 
-//    public const uint EnergySyphon = 16510u;
-
-//    public const uint SummonCarbuncle = 25798u;
-
-//    public const uint RadiantAegis = 25799u;
-
-//    public const uint Outburst = 16511u;
-
-//    public const uint TriDisaster = 25826u;
-
-//    public const uint Gemshine = 25883u;
-
-//    public const uint PreciousBrilliance = 25884u;
-
-//    public const uint AstralFlow = 25822u;
-
-//    public const uint MountainBuster = 25836u;
-//}
+        return false;
+    }
+}

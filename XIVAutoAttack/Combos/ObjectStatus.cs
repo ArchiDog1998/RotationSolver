@@ -323,7 +323,23 @@ namespace XIVComboPlus.Combos
             Grit = 743,
 
             //王室亲卫
-            RoyalGuard = 392;
+            RoyalGuard = 392,
 
+            //毁绝预备
+            FurtherRuin = 2701,
+
+            //深红旋风预备
+            IfritsFavor = 2724,
+
+            //螺旋气流预备
+            GarudasFavor = 2725,
+
+            //山崩预备
+            TitansFavor = 2853,
+
+            //毒菌
+            Bio = 179,
+            Bio2 = 189,
+            Biolysis = 1895;
     }
 }
