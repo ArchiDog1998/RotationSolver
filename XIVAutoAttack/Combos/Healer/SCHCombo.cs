@@ -186,6 +186,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             if (Actions.DeploymentTactics.ShouldUseAction(out act)) return true;
             if (Actions.Adloquium.ShouldUseAction(out act)) return true;
         }
+        if (Actions.SummonSeraph.ShouldUseAction(out act)) return true;
         if (Actions.FeyIllumination.ShouldUseAction(out act)) return true;
 
 
@@ -196,6 +197,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
     {
         if(abilityRemain == 1)
         {
+            if (Actions.SummonSeraph.ShouldUseAction(out act)) return true;
             if (Actions.WhisperingDawn.ShouldUseAction(out act)) return true;
             if (Actions.FeyBlessing.ShouldUseAction(out act)) return true;
 

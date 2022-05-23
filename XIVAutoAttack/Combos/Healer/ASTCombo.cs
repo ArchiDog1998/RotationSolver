@@ -332,9 +332,6 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             }
         }
 
-        //加个醒梦
-        if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
-
         return false;
     }
 

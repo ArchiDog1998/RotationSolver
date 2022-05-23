@@ -196,15 +196,6 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-
-    private protected override bool GeneralAbility(byte abilityRemain, out BaseAction act)
-    {
-        //加个醒梦
-        if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
-
-        return false;
-    }
-
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
         //苦难之心

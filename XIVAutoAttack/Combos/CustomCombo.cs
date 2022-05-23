@@ -465,9 +465,20 @@ public abstract class CustomCombo
             if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
             if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
         }
-        else if (role == Role.近战 && RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+        else if (role == Role.远程)
         {
-            if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+            if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+            {
+                if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+            }
+            else
+            {
+                if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
+            }
+        }
+        else if (role == Role.治疗)
+        {
+            if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
         }
 
         if (GeneralAbility(abilityRemain, out act)) return true;

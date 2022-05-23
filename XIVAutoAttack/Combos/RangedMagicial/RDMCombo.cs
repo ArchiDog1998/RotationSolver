@@ -187,10 +187,6 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
             if (abilityRemain == 1 && Actions.Acceleration.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
-        //加个醒梦
-        if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
-
-
         //攻击四个能力技。
         if (Actions.ContreSixte.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.Fleche.ShouldUseAction(out act)) return true;
