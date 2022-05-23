@@ -99,21 +99,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //原初的勇猛
             NascentFlash = new BaseAction(16464)
             {
-                ChoiceFriend = friends =>
-                {
-                    if (friends.Length == 0) return null;
-
-                    List<BattleChara> attachedT = new List<BattleChara>(friends.Length);
-                    foreach (var tank in friends)
-                    {
-                        if (tank.TargetObject?.TargetObject == tank)
-                        {
-                            attachedT.Add(tank);
-                        }
-                    }
-
-                    return (attachedT.Count > 0 ? attachedT.ToArray() : friends).OrderBy(f => (float)f.CurrentHp / f.MaxHp).First();
-                },
+                ChoiceFriend = BaseAction.FindAttackedTarget,
             },
 
             ////原初的血气

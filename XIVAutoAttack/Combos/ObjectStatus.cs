@@ -340,6 +340,19 @@ namespace XIVComboPlus.Combos
             //毒菌
             Bio = 179,
             Bio2 = 189,
-            Biolysis = 1895;
+            Biolysis = 1895,
+
+            //暗影墙
+            ShadowWall = 747,
+
+            //弃明投暗
+            DarkMind = 746,
+
+            //腐秽大地
+            SaltedEarth = 749,
+
+            //血乱
+            Delirium = 1972;
+
     }
 }

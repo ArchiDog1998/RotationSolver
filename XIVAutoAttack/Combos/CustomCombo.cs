@@ -141,6 +141,8 @@ public abstract class CustomCombo
                     ObjectStatus.Vengeance,
                     //Ô¤¾¯
                     ObjectStatus.Sentinel,
+                    //°µÓ°Ç½
+                    ObjectStatus.ShadowWall, ObjectStatus.DarkMind,
                 },
             },
 

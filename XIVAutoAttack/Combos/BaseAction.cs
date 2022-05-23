@@ -197,6 +197,21 @@ namespace XIVComboPlus.Combos
             return tar;
         }
 
+        internal static BattleChara FindAttackedTarget(BattleChara[] charas)
+        {
+            if (charas.Length == 0) return null;
+            List<BattleChara> attachedT = new List<BattleChara>(charas.Length);
+            foreach (var tank in charas)
+            {
+                if (tank.TargetObject?.TargetObject == tank)
+                {
+                    attachedT.Add(tank);
+                }
+            }
+
+            return (attachedT.Count > 0 ? attachedT.ToArray() : charas).OrderBy(f => (float)f.CurrentHp / f.MaxHp).First();
+        }
+
         internal static BattleChara FindBeAttacked(BattleChara[] charas)
         {
             return ASTCombo.RandomObject(charas.Where(t => t.TargetObject?.TargetObject?.ObjectId == t.ObjectId).ToArray());

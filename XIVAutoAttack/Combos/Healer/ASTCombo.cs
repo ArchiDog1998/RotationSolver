@@ -109,28 +109,6 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             //抽卡
             Draw = new BaseAction(3590),
 
-            ////出卡
-            //Play = new BaseAction(17055)
-            //{
-            //    ChangeRange = a => 30,
-            //    TargetFriendly = a => true,
-            //    ChoiceFriend = bs =>
-            //    {
-            //        switch (JobGauge.DrawnCard)
-            //        {
-            //            case CardType.BALANCE:
-            //            case CardType.ARROW:
-            //            case CardType.SPEAR:
-            //                return ASTMeleeTarget(bs);
-            //            case CardType.BOLE:
-            //            case CardType.EWER:
-            //            case CardType.SPIRE:
-            //                return ASTRangeTarget(bs);
-            //            default: return null;
-            //        }
-            //    }
-            //},
-
             //重抽
             Redraw = new BaseAction(3593)
             {
