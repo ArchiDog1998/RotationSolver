@@ -191,10 +191,8 @@ public abstract class CustomCombo
             HeadGraze = new BaseAction(7551),
 
             //沉稳咏唱
-            Surecast = new BaseAction(7559, shouldEndSpecial: true),
+            Surecast = new BaseAction(7559, shouldEndSpecial: true);
 
-            //极限技
-            LimitBreak = new BaseAction(209, shouldEndSpecial: true);
     }
     #endregion
 
@@ -337,9 +335,7 @@ public abstract class CustomCombo
         {
             if(CheckAction(GCDaction.ActionID) && GCDaction.EnermyLocation != EnemyLocation.None)
             {
-                string text = GCDaction.EnermyLocation.ToString();
-                //(text);
-                Speak(text);
+                Speak(GCDaction.EnermyLocation.ToString());
             }
 
             switch (abilityRemain)
@@ -361,7 +357,7 @@ public abstract class CustomCombo
     private BaseAction GCD(uint lastComboActionID, byte abilityRemain)
     {
         //放LB
-        if(IconReplacer.LimitBreak && GeneralActions.LimitBreak.ShouldUseAction(out BaseAction action)) return action;
+        //if(IconReplacer.LimitBreak && GeneralActions.LimitBreak.ShouldUseAction(out BaseAction action)) return action;
 
         if (EmergercyGCD(out BaseAction act, abilityRemain)) return act;
         if (IconReplacer.Move && MoveGCD(lastComboActionID, out act)) return act;

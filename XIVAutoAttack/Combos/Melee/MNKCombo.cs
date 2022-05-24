@@ -228,6 +228,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             if (OpoOpoForm(out act)) return true;
         }
 
+        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
         if (JobGauge.Chakra < 5 && Actions.Meditation.ShouldUseAction(out act)) return true;
         if (Actions.FormShift.ShouldUseAction(out act)) return true;
 

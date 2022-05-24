@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Objects.Types;
 using System.Linq;
 using System.Numerics;
 
@@ -43,12 +44,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             //Õ∂∂‹
             ShieldLob = new BaseAction(24)
             {
-                FilterForHostile = b => 
-                {
-                    var tars = BaseAction.ProvokeTarget(b, out _);
-                    if (tars == null || tars.Length == 0) return b;
-                    return tars;
-                },
+                FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
             },
 
             //’ΩÃ”∑¥”¶
@@ -82,10 +78,13 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             DivineVeil = new BaseAction(3540),
 
             //…Ó» ∫Ò‘Û
-            Clemency = new BaseAction(3541, true),
+            Clemency = new BaseAction(3541, true, true),
 
             //∏…‘§
-            Intervention = new BaseAction(7382, true),
+            Intervention = new BaseAction(7382, true)
+            {
+                ChoiceFriend = BaseAction.FindAttackedTarget,
+            },
 
             //µ˜Õ£
             Intervene = new BaseAction(16461),
@@ -122,6 +121,9 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
 
             //Œ‰◊∞ ˘Œ¿
             PassageofArms = new BaseAction(7385),
+
+            //±£ª§
+            //Cover = new BaseAction(27, true),
 
             //∂‹’Û
             Sheltron = new BaseAction(3542);
@@ -198,13 +200,14 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         if (Actions.FightorFlight.ShouldUseAction(out act)) return true;
 
         //∂Ú‘À¡˜◊™
-        if (Actions.CircleofScorn.ShouldUseAction(out act, mustUse:true)) return true;
+        if (Actions.CircleofScorn.ShouldUseAction(out act, mustUse: true)) return true;
 
         //≥• ÍΩ£
         if (Actions.Expiacion.ShouldUseAction(out act, mustUse: true)) return true;
 
         //∞≤ªÍ∆Ìµª
-        if (BaseAction.FindStatusSelfFromSelf(ObjectStatus.GoringBlade, ObjectStatus.BladeofValor).Max() > 10 &&
+        if (Service.TargetManager.Target is BattleChara b && BaseAction.FindStatusFromSelf(b, ObjectStatus.GoringBlade, ObjectStatus.BladeofValor) is float[] times &&
+            times != null && times.Length > 0 && times.Max() > 10 &&
             Actions.Requiescat.ShouldUseAction(out act, mustUse: true)) return true;
 
         //…Ó∞¬÷Æ¡È
@@ -229,8 +232,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             //…Ò •¡Ï”Ú »Áπ˚–ª≤ªπª¡À°£
             if (Actions.HallowedGround.ShouldUseAction(out act)) return true;
 
-            //∂‹’Û
-            if (JobGauge.OathGauge >= 50 && Actions.Sheltron.ShouldUseAction(out act)) return true;
+
 
             //‘§æØ£®ºı…À30%£©
             if (Actions.Sentinel.ShouldUseAction(out act)) return true;
@@ -238,13 +240,19 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             //Ã˙±⁄£®ºı…À20%£©
             if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
 
-            //∏…‘§£®ºı…À10%£©
-            if (Actions.Intervention.ShouldUseAction(out act)) return true;
+            if (JobGauge.OathGauge >= 50) 
+            {
+                //∂‹’Û
+                if (Actions.Sheltron.ShouldUseAction(out act)) return true;
+            }
 
             //ΩµµÕπ•ª˜
             //—©≥
             if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
         }
+
+        //∏…‘§£®ºı…À10%£©
+        if (!HaveShield && Actions.Intervention.ShouldUseAction(out act)) return true;
 
         act = null;
         return false;

@@ -190,7 +190,8 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         //攻击四个能力技。
         if (Actions.ContreSixte.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.Fleche.ShouldUseAction(out act)) return true;
-        if (Actions.Engagement.ShouldUseAction(out act, Empty: BaseAction.HaveStatusSelfFromSelf(1239))) return true;
+        //Empty: BaseAction.HaveStatusSelfFromSelf(1239)
+        if (Actions.Engagement.ShouldUseAction(out act)) return true;
 
         var target = Service.TargetManager.Target;
         if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, target.Position) - target.HitboxRadius < 1)

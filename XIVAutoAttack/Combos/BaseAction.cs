@@ -42,7 +42,7 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 咏唱时间
         /// </summary>
-        internal int Cast100 => Action.Cast100ms - (HaveStatusSelfFromSelf(ObjectStatus.LightSpeed) || SGECombo.JobGauge.Eukrasia ? 25 : 0);
+        internal int Cast100 => Action.Cast100ms - (HaveStatusSelfFromSelf(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) || SGECombo.JobGauge.Eukrasia ? 25 : 0);
         internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
         internal unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Spell, ActionID);
         internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ActionID, Service.ClientState.LocalPlayer.Level), (ushort)1);
@@ -354,7 +354,6 @@ namespace XIVComboPlus.Combos
             var loc = Service.ClientState.LocalPlayer.Position;
             var id = Service.ClientState.LocalPlayer.ObjectId;
 
-            bool someTargetsHaveTarget = false;
             haveTargetOnme = false;
             List<BattleChara> targets = new List<BattleChara>();
             foreach (var target in inputCharas)
@@ -362,8 +361,6 @@ namespace XIVComboPlus.Combos
                 //有目标
                 if (target.TargetObject?.IsValid() ?? false)
                 {
-                    someTargetsHaveTarget = true;
-
                     //居然在打非T！
                     if (!tankIDS.Contains(target.TargetObjectId) &&(!needDistance || Vector3.Distance(target.Position, loc) > 5))
                     {
@@ -377,7 +374,7 @@ namespace XIVComboPlus.Combos
                 }
             }
             //没有敌对势力，那随便用
-            if (!someTargetsHaveTarget) return inputCharas;
+            if (targets.Count == 0) return inputCharas;
             //返回在打队友的讨厌鬼！
             return targets.ToArray();
         }

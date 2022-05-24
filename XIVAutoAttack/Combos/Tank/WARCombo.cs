@@ -45,12 +45,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //∑…∏´
             Tomahawk = new BaseAction(46)
             {
-                FilterForHostile = b =>
-                {
-                    var tars = BaseAction.ProvokeTarget(b, out _);
-                    if (tars == null || tars.Length == 0) return b;
-                    return tars;
-                },
+                FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
             },
 
             //√Õπ•

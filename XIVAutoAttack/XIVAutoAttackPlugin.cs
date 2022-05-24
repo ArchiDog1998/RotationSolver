@@ -134,6 +134,9 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                 case "Break":
                     IconReplacer.StartBreak();
                     break;
+                case "LimitBreak":
+                    IconReplacer.StartLimitBreak();
+                    break;
                 case "AttackBig":
                     IconReplacer.AttackBig = true;
                     break;

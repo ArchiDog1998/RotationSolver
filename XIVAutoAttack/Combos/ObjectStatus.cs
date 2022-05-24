@@ -352,7 +352,13 @@ namespace XIVComboPlus.Combos
             SaltedEarth = 749,
 
             //血乱
-            Delirium = 1972;
+            Delirium = 1972,
+
+            //残影镰鼬预备
+            PhantomKamaitachiReady = 2723,
+
+            //月影雷兽预备
+            RaijuReady = 2690;
 
     }
 }

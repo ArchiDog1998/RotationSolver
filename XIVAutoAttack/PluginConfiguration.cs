@@ -23,11 +23,11 @@ public class PluginConfiguration : IPluginConfiguration
     public bool NeverReplaceIcon { get; set; } = false;
     public bool AutoDefenseForTank { get; set; } = true;
     public float HealthDifference { get; set; } = 0.2f;
-    public float HealthAreaAbility { get; set; } = 0.8f;
-    public float HealthAreafSpell { get; set; } = 0.6f;
-    public float HealthSingleAbility { get; set; } = 0.75f;
-    public float HealthSingleSpell { get; set; } = 0.5f;
-    public float SpecialDuration { get; set; } = 5;
+    public float HealthAreaAbility { get; set; } = 0.75f;
+    public float HealthAreafSpell { get; set; } = 0.65f;
+    public float HealthSingleAbility { get; set; } = 0.7f;
+    public float HealthSingleSpell { get; set; } = 0.55f;
+    public float SpecialDuration { get; set; } = 3;
     public float WeaponInterval { get; set; } = 0.67f;
     public void Save()
     {

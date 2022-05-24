@@ -29,7 +29,10 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
             Grit = new BaseAction(3629, shouldEndSpecial: true),
 
             //伤残
-            Unmend = new BaseAction(3624),
+            Unmend = new BaseAction(3624)
+            {
+                FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
+            },
 
             //噬魂斩
             Souleater = new BaseAction(3632),
@@ -141,7 +144,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         if (Actions.SyphonStrike.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.HardSlash.ShouldUseAction(out act, lastComboActionID)) return true;
 
-        if (Actions.Souleater.ShouldUseAction(out act)) return true;
+        if (Actions.Unmend.ShouldUseAction(out act)) return true;
 
         return false;
     }
@@ -189,7 +192,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
             if (Actions.Oblation.ShouldUseAction(out act)) return true;
 
             //减伤30%
-            if (Actions.EdgeofDarkness.ShouldUseAction(out act)) return true;
+            if (Actions.ShadowWall.ShouldUseAction(out act)) return true;
 
             //减伤20%
             if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
