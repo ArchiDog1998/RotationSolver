@@ -99,13 +99,18 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
+                ImGui.Text(SMNCombo.JobGauge.SummonTimerRemaining.ToString());
+                ImGui.Text(SMNCombo.JobGauge.ReturnSummon.ToString());
+                ImGui.Text(SMNCombo.JobGauge.ReturnSummonGlam.ToString());
+
+                ImGui.Text(SMNCombo.JobGauge.AttunmentTimerRemaining.ToString());
 
 #endif
                 ImGui.Text("在这个窗口，你可以设定释放技能所需的参数。");

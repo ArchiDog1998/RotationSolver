@@ -60,8 +60,9 @@ namespace XIVComboPlus
         internal static bool CanHealAreaSpell { get; private set; } = false;
         internal static bool CanHealSingleAbility { get; private set; } = false;
         internal static bool CanHealSingleSpell { get; private set; } = false;
+        internal static bool HavePet { get; private set; } = false;
         internal static bool HPNotFull { get; private set; } = false;
-        //internal static bool InBattle { get; private set; } = false;
+        internal static bool InBattle { get; private set; } = false;
 
         internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
         internal static MacroItem DoingMacro;
@@ -82,7 +83,7 @@ namespace XIVComboPlus
         {
             if (Service.ClientState.LocalPlayer == null) return;
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) IconReplacer.AutoAttack = false;
-
+            InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
             Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
             IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
@@ -148,13 +149,13 @@ namespace XIVComboPlus
             try
             {
 #endif
-                AllTargets = Service.ObjectTable.Where(obj => obj is BattleChara c && c.CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
+                AllTargets = BaseAction.GetObjectInRadius(Service.ObjectTable.Where(obj => obj is BattleChara c && c.CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray(), 30);
                 uint[] ids = GetEnemies() ?? new uint[0];
                 //InBattle = ids.Length > 0;
                 var hosts = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
                 HostileTargets = (Service.Configuration.AllTargeAsHostile || hosts.Length == 0) ? AllTargets : hosts;
 
-                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible).ToArray();
+                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 5).ToArray();
 
                 float radius = 25;
                 switch (XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role)
@@ -179,6 +180,7 @@ namespace XIVComboPlus
             var party = Service.PartyList;
             PartyMembers = party.Length == 0 ? (Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer }) :
                 party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara).ToArray();
+            HavePet = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc && npc.BattleNpcKind == BattleNpcSubKind.Pet && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
 
             AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
 
@@ -239,17 +241,6 @@ namespace XIVComboPlus
         {
             if (actor == null) return false;
             return ((delegate*<long, IntPtr, long>)_func)(142L, actor.Address) == 1;
-        }
-
-
-
-        internal static void SetTarget(GameObject? obj)
-        {
-            Service.TargetManager.SetTarget(obj);
-        }
-        internal static float DistanceToPlayer(GameObject obj)
-        {
-            return Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position);
         }
 
 

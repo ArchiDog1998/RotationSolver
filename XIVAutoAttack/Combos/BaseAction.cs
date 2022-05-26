@@ -42,7 +42,7 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 咏唱时间
         /// </summary>
-        internal int Cast100 => Action.Cast100ms - (HaveStatusSelfFromSelf(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) || SGECombo.JobGauge.Eukrasia ? 25 : 0);
+        internal virtual int Cast100 => Action.Cast100ms - (HaveStatusSelfFromSelf(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) || SGECombo.JobGauge.Eukrasia ? 25 : 0);
         internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
         internal unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Spell, ActionID);
         internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ActionID, Service.ClientState.LocalPlayer.Level), (ushort)1);
@@ -72,6 +72,7 @@ namespace XIVComboPlus.Combos
         /// 使用这个技能需要的前置Buff，有任何一个就好。
         /// </summary>
         internal ushort[] BuffsNeed { get; set; } = null;
+        internal System.Action AfterUse { get; set; } = null;
 
         /// <summary>
         /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
@@ -192,7 +193,7 @@ namespace XIVComboPlus.Combos
                 return angle <= Math.PI / 6;
             }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
 
-            if (TargetHelper.DistanceToPlayer(tar) < 5) return null;
+            if (DistanceToPlayer(tar) < 5) return null;
 
             return tar;
         }
@@ -626,6 +627,7 @@ namespace XIVComboPlus.Combos
              ActionManager.Instance()->UseAction(ActionType.Spell, Service.IconReplacer.OriginalHook(ActionID), Target.ObjectId);
 
             if (_shouldEndSpecial) IconReplacer.ResetSpecial(false);
+            if (AfterUse != null) AfterUse.Invoke();
 
             return result;
         }

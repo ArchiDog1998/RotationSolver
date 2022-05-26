@@ -18,6 +18,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             //朝日召唤
             SummonEos = new BaseAction(17215)
             {
+                OtherCheck = b => !TargetHelper.HavePet,
             },
 
             //毒菌
@@ -35,7 +36,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             //鼓舞激励之策
             Adloquium = new BaseAction(185, true)
             {
-                BuffsProvide = new ushort[]
+                TargetStatus = new ushort[]
                 {
                     ObjectStatus.EukrasianDiagnosis,
                     ObjectStatus.EukrasianPrognosis,
@@ -44,7 +45,10 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             },
 
             //士气高扬之策
-            Succor = new BaseAction(186, true),
+            Succor = new BaseAction(186, true)
+            {
+                BuffsProvide = new ushort[] {ObjectStatus.Succor},
+            },
 
             //仙光的低语
             WhisperingDawn = new BaseAction(16537),
@@ -56,7 +60,10 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             FeyBlessing = new BaseAction(16543),
 
             //以太超流
-            Aetherflow = new BaseAction(166),
+            Aetherflow = new BaseAction(166)
+            {
+                OtherCheck = b => TargetHelper.InBattle,
+            },
 
             //能量吸收
             EnergyDrain = new BaseAction(167),
@@ -141,7 +148,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
         //召唤小仙女
-        //if (Actions.SummonEos.ShouldUseAction(out act)) return true;
+        if (Actions.SummonEos.ShouldUseAction(out act)) return true;
 
         //AOE
         if (Actions.ArtofWar.ShouldUseAction(out act)) return true;
@@ -156,7 +163,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
     private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
     {
         if (Actions.Adloquium.ShouldUseAction(out act)) return true;
-        if (Actions.Physick.ShouldUseAction(out act)) return true;
+        //if (Actions.Physick.ShouldUseAction(out act)) return true;
 
         return false;
     }
@@ -179,6 +186,13 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         return false;
     }
 
+    private protected override bool HealAreaGCD(uint lastComboActionID, out BaseAction act)
+    {
+        if (Actions.Succor.ShouldUseAction(out act)) return true;
+        return false;
+
+    }
+
     private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
     {
         if (!Actions.DeploymentTactics.IsCoolDown)
@@ -197,13 +211,16 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
     {
         if(abilityRemain == 1)
         {
+            if (JobGauge.Aetherflow > 0)
+            {
+                if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+            }
             if (Actions.SummonSeraph.ShouldUseAction(out act)) return true;
             if (Actions.WhisperingDawn.ShouldUseAction(out act)) return true;
             if (Actions.FeyBlessing.ShouldUseAction(out act)) return true;
 
             if (JobGauge.Aetherflow > 0)
             {
-                if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
                 if (Actions.Indomitability.ShouldUseAction(out act)) return true;
             }
         }
@@ -233,7 +250,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         {
             if (Actions.Aetherflow.ShouldUseAction(out act)) return true;
         }
-        else if (!Actions.Aetherflow.IsCoolDown)
+        else if (Actions.Aetherflow.RecastTimeRemain < 6)
         {
             if (Actions.EnergyDrain.ShouldUseAction(out act)) return true;
         }

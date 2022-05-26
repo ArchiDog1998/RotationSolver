@@ -4,16 +4,27 @@ namespace XIVComboPlus.Combos;
 
 internal class SMNCombo : CustomComboJob<SMNGauge>
 {
+    public class SMNAction : BaseAction
+    {
+        internal override int Cast100 => (JobGauge.SummonTimerRemaining > 0 && JobGauge.ReturnSummon == Dalamud.Game.ClientState.JobGauge.Enums.SummonPet.NONE) ||
+            !JobGauge.IsIfritAttuned ?  0 : base.Cast100;
+        public SMNAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
+            : base(actionID, isFriendly, shouldEndSpecial)
+        {
+
+        }
+    }
     internal override uint JobID => 27;
     protected override bool CanHealSingleSpell => false;
     private protected override BaseAction Raise => Actions.Resurrection;
+
     internal struct Actions
     {
         public static readonly BaseAction
             //±¶ Ø ﬁ’ŸªΩ
             SummonCarbuncle = new BaseAction(25798)
             {
-                OtherCheck = b => JobGauge.ReturnSummon == Dalamud.Game.ClientState.JobGauge.Enums.SummonPet.NONE,
+                OtherCheck = b => !TargetHelper.HavePet,
             },
 
             //◊∆»»÷Æπ‚ Õ≈∏®
@@ -26,7 +37,10 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             Physick = new BaseAction(16230, true),
 
             //“‘Ã´–Óƒ‹ 
-            Aethercharge = new BaseAction(25800),
+            Aethercharge = new BaseAction(25800)
+            {
+                OtherCheck = b => TargetHelper.InBattle,
+            },
 
             //∫Ï±¶ Ø’ŸªΩ
             SummonRuby = new BaseAction(25802)
@@ -47,22 +61,22 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             },
 
             //±¶ Ø“´
-            Gemshine = new BaseAction(25883)
+            Gemshine = new SMNAction(25883)
+            {
+                OtherCheck = b => JobGauge.Attunement > 0,
+            },
+
+            //±¶ Øª‘
+            PreciousBrilliance = new SMNAction(25884)
             {
                 OtherCheck = b => JobGauge.Attunement > 0,
             },
 
             //ªŸ√ µ•ÃÂπ•ª˜
-            Ruin = new BaseAction(163),
-
-            //±¶ Øª‘
-            PreciousBrilliance = new BaseAction(25884)
-            {
-                OtherCheck = b => JobGauge.Attunement > 0,
-            },
+            Ruin = new SMNAction(163),
 
             //±≈¡— ∑∂Œß…À∫¶
-            Outburst = new BaseAction(16511),
+            Outburst = new SMNAction(16511),
 
             //∏¥…˙
             Resurrection = new BaseAction(173, true),
@@ -143,12 +157,19 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         if (Actions.EnkindleBahamut.ShouldUseAction(out act, mustUse:true)) return true;
 
         //’ŸªΩ
-        if (Actions.Aethercharge.ShouldUseAction(out act)) return true;
         if (JobGauge.Attunement == 0)
         {
-            if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
-            if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
-            if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+            if (Actions.Aethercharge.ShouldUseAction(out act)) return true;
+
+            if ((JobGauge.IsIfritReady && JobGauge.IsGarudaReady && JobGauge.IsTitanReady) ? JobGauge.SummonTimerRemaining == 0 : true)
+            {
+                //∑Á
+                if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                //ª
+                if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                //Õ¡
+                if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+            }
         }
 
         //AOE
@@ -187,11 +208,12 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
     {
         //“Ω ı
         if (Actions.Physick.ShouldUseAction(out act)) return true;
 
         return false;
     }
+
 }

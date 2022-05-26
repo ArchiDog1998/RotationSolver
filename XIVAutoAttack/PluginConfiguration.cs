@@ -22,7 +22,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool OnlyGCD { get; set; } = false;
     public bool NeverReplaceIcon { get; set; } = false;
     public bool AutoDefenseForTank { get; set; } = true;
-    public float HealthDifference { get; set; } = 0.2f;
+    public float HealthDifference { get; set; } = 0.25f;
     public float HealthAreaAbility { get; set; } = 0.75f;
     public float HealthAreafSpell { get; set; } = 0.65f;
     public float HealthSingleAbility { get; set; } = 0.7f;

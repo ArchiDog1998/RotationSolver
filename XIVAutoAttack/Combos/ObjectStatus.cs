@@ -358,7 +358,22 @@ namespace XIVComboPlus.Combos
             PhantomKamaitachiReady = 2723,
 
             //月影雷兽预备
-            RaijuReady = 2690;
+            RaijuReady = 2690,
 
+            //士气高扬之策
+            Succor = 166,
+
+            //生杀予夺
+            Kassatsu = 497,
+
+            //土遁之术
+            Doton = 501,
+            //水遁
+            Suiton = 507,
+            //隐遁
+            Hidden = 614,
+
+            //天地人
+            TenChiJin = 1186;
     }
 }
