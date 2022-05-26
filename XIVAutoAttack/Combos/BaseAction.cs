@@ -591,7 +591,7 @@ namespace XIVComboPlus.Combos
                         break;
                     }
                 }
-                if (!findCombo && comboActions.Length > 0) return false;
+                if (!mustUse && !findCombo && comboActions.Length > 0) return false;
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (Cast100 > 0 && TargetHelper.IsMoving)
@@ -627,7 +627,7 @@ namespace XIVComboPlus.Combos
              ActionManager.Instance()->UseAction(ActionType.Spell, Service.IconReplacer.OriginalHook(ActionID), Target.ObjectId);
 
             if (_shouldEndSpecial) IconReplacer.ResetSpecial(false);
-            if (AfterUse != null) AfterUse.Invoke();
+            if (result && AfterUse != null) AfterUse.Invoke();
 
             return result;
         }

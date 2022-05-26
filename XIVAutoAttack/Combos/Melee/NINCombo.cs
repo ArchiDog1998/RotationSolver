@@ -16,16 +16,18 @@ internal class NINCombo : CustomComboJob<NINGauge>
             Ninjutsus = ninjutsus;
         }
     }
-    internal enum Ninjutsu
+    internal enum Ninjutsu : byte
     {
         None,
         Ten,
         Chi,
         Jin,
     }
+
     private static bool _break = false;
-    protected static readonly List<Ninjutsu> _ninjutsus = new List<Ninjutsu>(3);
-    protected static NinAction _ninactionAim = null;
+    private static bool _TenChiJin = false;
+    internal static readonly List<Ninjutsu> _ninjutsus = new List<Ninjutsu>(3);
+    internal static NinAction _ninactionAim = null;
 
     internal struct Actions
     {
@@ -51,9 +53,8 @@ internal class NINCombo : CustomComboJob<NINGauge>
             //攻其不备
             TrickAttack = new BaseAction(2258)
             {
-                BuffsNeed = new ushort[] {ObjectStatus.Suiton, ObjectStatus.Hidden},
+                BuffsNeed = new ushort[] { ObjectStatus.Suiton, ObjectStatus.Hidden },
                 EnermyLocation = EnemyLocation.Back,
-                AfterUse = () => _break = false,
             },
 
             //旋风刃
@@ -86,7 +87,8 @@ internal class NINCombo : CustomComboJob<NINGauge>
             //天地人
             TenChiJin = new BaseAction(7403)
             {
-                BuffsProvide = new ushort[] {ObjectStatus.Kassatsu},
+                BuffsProvide = new ushort[] { ObjectStatus.Kassatsu },
+                AfterUse = () => _TenChiJin = true,
             },
 
             //缩地
@@ -103,7 +105,10 @@ internal class NINCombo : CustomComboJob<NINGauge>
             },
 
             //生杀予夺
-            Kassatsu = new BaseAction(2264),
+            Kassatsu = new BaseAction(2264)
+            {
+                OtherCheck = b => Ten.IsCoolDown,
+            },
 
             //八卦无刃杀
             HakkeMujinsatsu = new BaseAction(16488),
@@ -146,20 +151,23 @@ internal class NINCombo : CustomComboJob<NINGauge>
             Huraijin = new BaseAction(25876)
             {
                 OtherCheck = b => JobGauge.HutonTimer == 0,
-            };
+            },
+
+            //梦幻三段
+            DreamWithinaDream = new BaseAction(3566);
 
         public static readonly NinAction
 
             //火遁之术
             Katon = new NinAction(2266, new Ninjutsu[] { Ninjutsu.Chi, Ninjutsu.Ten })
             {
-                AfterUse = () => _ninjutsus.Clear(),
+                AfterUse = ClearNinjutsus,
             },
 
             //雷遁之术
             Raiton = new NinAction(2267, new Ninjutsu[] { Ninjutsu.Ten, Ninjutsu.Chi })
             {
-                AfterUse = () => _ninjutsus.Clear(),
+                AfterUse = ClearNinjutsus,
             },
 
 
@@ -170,52 +178,169 @@ internal class NINCombo : CustomComboJob<NINGauge>
             Huton = new NinAction(2269, new Ninjutsu[] { Ninjutsu.Jin, Ninjutsu.Chi, Ninjutsu.Ten })
             {
                 OtherCheck = b => JobGauge.HutonTimer == 0,
-                AfterUse = () => _ninjutsus.Clear(),
+                AfterUse = ClearNinjutsus,
             },
 
             //土遁之术
             Doton = new NinAction(2270, new Ninjutsu[] { Ninjutsu.Jin, Ninjutsu.Ten,Ninjutsu.Chi })
             {
                 BuffsProvide = new ushort[] { ObjectStatus.Doton },
-                AfterUse = () => _ninjutsus.Clear(),
+                AfterUse = ClearNinjutsus,
             },
 
             //水遁之术
             Suiton = new NinAction(2271, new Ninjutsu[] { Ninjutsu.Ten, Ninjutsu.Chi, Ninjutsu.Jin })
             {
-                AfterUse = () => _ninjutsus.Clear(),
+                EnermyLocation = EnemyLocation.Back,
+                BuffsProvide = new ushort[] { ObjectStatus.Suiton },
+                AfterUse = () => 
+                {
+                    ClearNinjutsus();
+                    _break = false;
+                },
             },
 
 
             //劫火灭却之术
             GokaMekkyaku = new NinAction(16491, new Ninjutsu[] { Ninjutsu.Chi, Ninjutsu.Ten })
             {
-                AfterUse = () => _ninjutsus.Clear(),
+                AfterUse = ClearNinjutsus,
             },
 
 
             //冰晶乱流之术
             HyoshoRanryu = new NinAction(16492, new Ninjutsu[] { Ninjutsu.Ten, Ninjutsu.Jin })
             {
-                AfterUse = () => _ninjutsus.Clear(),
+                AfterUse = ClearNinjutsus,
             };
+    }
+
+    private static void ClearNinjutsus()
+    {
+        _ninactionAim = null;
+        _ninjutsus.Clear();
     }
 
     private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
     {
         _break = true;
-        if (Actions.TenChiJin.ShouldUseAction(out act))
-        {
-            if(Actions.Katon.ShouldUseAction(out _)) _ninactionAim = Actions.Doton;
-            if (Actions.Raiton.ShouldUseAction(out _)) _ninactionAim = Actions.Suiton;
-            return true;
-        }
-
+        act = null;
         return false;
     }
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
+        bool haveKassatsu = BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu) && Actions.Kassatsu.RecastTimeElapsed < 2;
+
+        //没时间释放忍术了
+        var times = BaseAction.FindStatusSelfFromSelf(ObjectStatus.Ninjutsu);
+        int count = _ninjutsus.Count;
+
+        if ((_ninjutsus.Count > 0 && (times != null && times[0] < 0.1)) || (_ninjutsus.Count > 1 && times == null))
+        {
+            ClearNinjutsus();
+        }
+
+        //看看有没有机会调整
+        if (_ninactionAim != null && count == 0)
+        {
+            if (haveKassatsu)
+            {
+                ClearNinjutsus();
+                if (Actions.GokaMekkyaku.ShouldUseAction(out _)) _ninactionAim = Actions.GokaMekkyaku;
+                if (Actions.HyoshoRanryu.ShouldUseAction(out _)) _ninactionAim = Actions.HyoshoRanryu;
+                if (Actions.Katon.ShouldUseAction(out _)) _ninactionAim = Actions.Katon;
+                if (Actions.Raiton.ShouldUseAction(out _)) _ninactionAim = Actions.Raiton;
+            }
+            //调整忍术！
+            if (_ninactionAim.OtherCheck != null && !_ninactionAim.OtherCheck(null))
+            {
+                ClearNinjutsus();
+            }
+        }
+        else
+        {
+            //看看能否背刺
+            if (Actions.Ten.ShouldUseAction(out _, Empty: true) && Actions.TrickAttack.RecastTimeRemain < 3 && _break && !haveKassatsu)
+            {
+                if (Actions.Suiton.ShouldUseAction(out _)) _ninactionAim = Actions.Suiton;
+            }
+            //常规忍术
+            else if (Actions.Ten.ShouldUseAction(out _) || haveKassatsu)
+            {
+                if (!IsMoving && Actions.Doton.ShouldUseAction(out _)) _ninactionAim = Actions.Doton;
+                if (Actions.Katon.ShouldUseAction(out _)) _ninactionAim = Actions.Katon;
+                if (Actions.Raiton.ShouldUseAction(out _)) _ninactionAim = Actions.Raiton;
+
+                if (!TargetHelper.InBattle)
+                {
+                    //加状态
+                    if (Actions.Huton.ShouldUseAction(out _)) _ninactionAim = Actions.Huton;
+                }
+            }
+        }
+
+        //释放忍术
+        if (_ninactionAim != null)
+        {
+
+            if (count == _ninactionAim.Ninjutsus.Length)
+            {
+                bool correct = true;
+                for (int i = 0; i < _ninactionAim.Ninjutsus.Length; i++)
+                {
+                    if (_ninactionAim.Ninjutsus[i] != _ninjutsus[i])
+                    {
+                        correct = false;
+                        break;
+                    }
+                }
+                //如果按对了
+                if (correct)
+                {
+                    //天地人的话，就使用了
+                    if (_TenChiJin)
+                    {
+                        _TenChiJin = false;
+                        ClearNinjutsus();
+                    }
+                    else if (_ninactionAim.ShouldUseAction(out act, mustUse: true)) return true;
+                    //暂时打不到，先不释普通技能。
+                    else
+                    {
+                        act = null;
+                        return true;
+                    }
+                }
+                //如果有错误，重置
+                else
+                {
+                    ClearNinjutsus();
+                }
+            }
+            //释放忍术没中断
+            else if(count == 0 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Ninjutsu))
+            {
+                switch (_ninactionAim.Ninjutsus[count])
+                {
+                    case Ninjutsu.Ten:
+                        act = Actions.Ten;
+                        return true;
+                    case Ninjutsu.Chi:
+                        act = Actions.Chi;
+                        return true;
+                    case Ninjutsu.Jin:
+                        act = Actions.Jin;
+                        return true;
+                }
+            }
+            //中断了，没救了。
+            else
+            {
+                ClearNinjutsus();
+            }
+        }
+
         //大招
         if (Actions.FleetingRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.ForkedRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -223,68 +348,6 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
         //加状态
         if (Actions.Huraijin.ShouldUseAction(out act, lastComboActionID)) return true;
-
-        //选择忍术
-        bool haveKassatsu = BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu);
-        if (_ninactionAim == null && (Actions.Ten.ShouldUseAction(out _, Empty:_break) || haveKassatsu))
-        {
-            if (TargetHelper.InBattle)
-            {
-                if (haveKassatsu)
-                {
-                    if (Actions.GokaMekkyaku.ShouldUseAction(out _)) _ninactionAim = Actions.GokaMekkyaku;
-                    if (Actions.HyoshoRanryu.ShouldUseAction(out _)) _ninactionAim = Actions.HyoshoRanryu;
-                }
-                else if (_break)
-                {
-                    if (Actions.Suiton.ShouldUseAction(out _)) _ninactionAim = Actions.Suiton;
-                }
-                else
-                {
-                    if (Actions.Doton.ShouldUseAction(out _)) _ninactionAim = Actions.Doton;
-                    if (Actions.Katon.ShouldUseAction(out _)) _ninactionAim = Actions.Katon;
-                    if (Actions.Raiton.ShouldUseAction(out _)) _ninactionAim = Actions.Raiton;
-                }
-            }
-            else
-            {
-                //加状态
-                if (Actions.Huton.ShouldUseAction(out _)) _ninactionAim = Actions.Huton;
-                //加个土
-                if (Actions.Doton.ShouldUseAction(out _)) _ninactionAim = Actions.Doton;
-            }
-        }
-
-        //释放忍术
-        if (_ninactionAim != null)
-        {
-            int count = _ninjutsus.Count;
-            if (count == _ninactionAim.Ninjutsus.Length)
-            {
-                _ninactionAim.ShouldUseAction(out act, mustUse: true);
-                return true;
-            }
-            else
-            {
-                Ninjutsu ninjutsu = _ninactionAim.Ninjutsus[count];
-                if (count == 2 && BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TenChiJin))
-                {
-                    _ninactionAim = null;
-                }
-                switch (ninjutsu)
-                {
-                    case Ninjutsu.Ten:
-                        if(Actions.Ten.ShouldUseAction(out act)) return true;
-                        break;
-                    case Ninjutsu.Chi:
-                        if (Actions.Chi.ShouldUseAction(out act)) return true;
-                        break;
-                    case Ninjutsu.Jin:
-                        if (Actions.Jin.ShouldUseAction(out act)) return true;
-                        break;
-                }
-            }
-        }
 
         //AOE
         if (Actions.HakkeMujinsatsu.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -311,18 +374,37 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
+        if(Actions.TrickAttack.RecastTimeElapsed <= 12 && Actions.TrickAttack.IsCoolDown)
+        {
+            if (Actions.TenChiJin.ShouldUseAction(out act))
+            {
+                if (Actions.Katon.ShouldUseAction(out _)) _ninactionAim = Actions.Doton;
+                if (Actions.Raiton.ShouldUseAction(out _)) _ninactionAim = Actions.Suiton;
+                return true;
+            }
+            if (Actions.Kassatsu.ShouldUseAction(out act)) return true;
+        }
+        if (Actions.TrickAttack.ShouldUseAction(out act)) return true;
+
         if (JobGauge.Ninki >= 50)
         {
             if (Actions.Bunshin.ShouldUseAction(out act)) return true;
             if (Actions.HellfrogMedium.ShouldUseAction(out act)) return true;
             if (Actions.Bhavacakra.ShouldUseAction(out act)) return true;
         }
-        if (Actions.TrickAttack.ShouldUseAction(out act)) return true;
         if (Actions.Meisui.ShouldUseAction(out act)) return true;
 
-        if (Actions.Kassatsu.ShouldUseAction(out act)) return true;
+
         if (Actions.Mug.ShouldUseAction(out act)) return true;
-        if (Actions.Assassinate.ShouldUseAction(out act)) return true;
+
+        if(Service.ClientState.LocalPlayer.Level < Actions.DreamWithinaDream.Level)
+        {
+            if (Actions.Assassinate.ShouldUseAction(out act)) return true;
+        }
+        else
+        {
+            if (Actions.DreamWithinaDream.ShouldUseAction(out act)) return true;
+        }
         return false;
     }
 
@@ -332,116 +414,116 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
         return false;
     }
-    public static class Buffs
-    {
-        public const ushort Mudra = 496;
+    //public static class Buffs
+    //{
+    //    public const ushort Mudra = 496;
 
-        public const ushort Kassatsu = 497;
+    //    public const ushort Kassatsu = 497;
 
-        public const ushort Suiton = 507;
+    //    public const ushort Suiton = 507;
 
-        public const ushort Hidden = 614;
+    //    public const ushort Hidden = 614;
 
-        public const ushort Bunshin = 1954;
+    //    public const ushort Bunshin = 1954;
 
-        public const ushort PhantomKamaitachiReady = 2723;
+    //    public const ushort PhantomKamaitachiReady = 2723;
 
-        public const ushort ForkedRaijuReady = 2690;
+    //    public const ushort ForkedRaijuReady = 2690;
 
-        public const ushort FleetingRaijuReady = 2691;
-    }
+    //    public const ushort FleetingRaijuReady = 2691;
+    //}
 
-    public static class Debuffs
-    {
-        public const ushort TrickAttack = 638;
+    //public static class Debuffs
+    //{
+    //    public const ushort TrickAttack = 638;
 
-        public const ushort Placeholder = 0;
-    }
+    //    public const ushort Placeholder = 0;
+    //}
 
-    public static class Levels
-    {
-        public const byte GustSlash = 4;
+    //public static class Levels
+    //{
+    //    public const byte GustSlash = 4;
 
-        public const byte Hide = 10;
+    //    public const byte Hide = 10;
 
-        public const byte Mug = 15;
+    //    public const byte Mug = 15;
 
-        public const byte AeolianEdge = 26;
+    //    public const byte AeolianEdge = 26;
 
-        public const byte Ninjitsu = 30;
+    //    public const byte Ninjitsu = 30;
 
-        public const byte Suiton = 45;
+    //    public const byte Suiton = 45;
 
-        public const byte HakkeMujinsatsu = 52;
+    //    public const byte HakkeMujinsatsu = 52;
 
-        public const byte ArmorCrush = 54;
+    //    public const byte ArmorCrush = 54;
 
-        public const byte Huraijin = 60;
+    //    public const byte Huraijin = 60;
 
-        public const byte TenChiJin = 70;
+    //    public const byte TenChiJin = 70;
 
-        public const byte Meisui = 72;
+    //    public const byte Meisui = 72;
 
-        public const byte EnhancedKassatsu = 76;
+    //    public const byte EnhancedKassatsu = 76;
 
-        public const byte Bunshin = 80;
+    //    public const byte Bunshin = 80;
 
-        public const byte PhantomKamaitachi = 82;
+    //    public const byte PhantomKamaitachi = 82;
 
-        public const byte ForkedRaiju = 90;
-    }
+    //    public const byte ForkedRaiju = 90;
+    //}
 
-    public const uint SpinningEdge = 2240u;
+    //public const uint SpinningEdge = 2240u;
 
-    public const uint GustSlash = 2242u;
+    //public const uint GustSlash = 2242u;
 
-    public const uint Hide = 2245u;
+    //public const uint Hide = 2245u;
 
-    public const uint Assassinate = 8814u;
+    //public const uint Assassinate = 8814u;
 
-    public const uint Mug = 2248u;
+    //public const uint Mug = 2248u;
 
-    public const uint DeathBlossom = 2254u;
+    //public const uint DeathBlossom = 2254u;
 
-    public const uint AeolianEdge = 2255u;
+    //public const uint AeolianEdge = 2255u;
 
-    public const uint TrickAttack = 2258u;
+    //public const uint TrickAttack = 2258u;
 
-    //public const uint Ninjutsu = 2260u;
+    ////public const uint Ninjutsu = 2260u;
 
-    public const uint Chi = 2261u;
+    //public const uint Chi = 2261u;
 
-    public const uint Tian = 2259u;
+    //public const uint Tian = 2259u;
 
-    public const uint FenShen = 16493u;
+    //public const uint FenShen = 16493u;
 
-    public const uint JinNormal = 2263u;
+    //public const uint JinNormal = 2263u;
 
-    public const uint Kassatsu = 2264u;
+    //public const uint Kassatsu = 2264u;
 
-    public const uint ArmorCrush = 3563u;
+    //public const uint ArmorCrush = 3563u;
 
-    public const uint DreamWithinADream = 3566u;
+    //public const uint DreamWithinADream = 3566u;
 
-    public const uint TenChiJin = 7403u;
+    //public const uint TenChiJin = 7403u;
 
-    public const uint LiuDao = 7402u;
+    //public const uint LiuDao = 7402u;
 
-    public const uint HakkeMujinsatsu = 16488u;
+    //public const uint HakkeMujinsatsu = 16488u;
 
-    public const uint Meisui = 16489u;
+    //public const uint Meisui = 16489u;
 
-    public const uint Jin = 18807u;
+    //public const uint Jin = 18807u;
 
-    public const uint 背刺 = 2258u;
+    //public const uint 背刺 = 2258u;
 
-    public const uint Bunshin = 16493u;
+    //public const uint Bunshin = 16493u;
 
-    public const uint Huraijin = 25876u;
+    //public const uint Huraijin = 25876u;
 
-    public const uint PhantomKamaitachi = 25774u;
+    //public const uint PhantomKamaitachi = 25774u;
 
-    public const uint ForkedRaiju = 25777u;
+    //public const uint ForkedRaiju = 25777u;
 
-    public const uint FleetingRaiju = 25778u;
+    //public const uint FleetingRaiju = 25778u;
 }

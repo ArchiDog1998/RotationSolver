@@ -262,7 +262,7 @@ internal sealed class IconReplacer : IDisposable
     private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
     {
         var a = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
-        Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
+        //Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
         return getActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
     }
 #endif

@@ -111,7 +111,7 @@ public abstract class CustomCombo
                 {
                     13, 564, 1345,
                 },
-                OtherCheck = b => b.TargetObject != null,
+                OtherCheck = b => TargetHelper.InBattle,
             },
 
             //内丹
@@ -123,7 +123,7 @@ public abstract class CustomCombo
             //伤足
             FootGraze = new BaseAction(7553)
             {
-                OtherCheck = b => b.TargetObject != null,
+                OtherCheck = b => TargetHelper.InBattle,
             },
 
             //亲疏自行
@@ -134,6 +134,7 @@ public abstract class CustomCombo
             {
                 BuffsProvide = new ushort[]
                 {
+                    ObjectStatus.Defiance, ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill,
                     ObjectStatus.Rampart1, ObjectStatus.Rampart2, ObjectStatus.Rampart3,
                     //原初的直觉和血气
                     ObjectStatus.RawIntuition, ObjectStatus.Bloodwhetting,
@@ -143,6 +144,8 @@ public abstract class CustomCombo
                     ObjectStatus.Sentinel,
                     //暗影墙
                     ObjectStatus.ShadowWall, ObjectStatus.DarkMind,
+                    //伪装
+                    ObjectStatus.Camouflage, ObjectStatus.Nebula, ObjectStatus.HeartofStone,
                 },
             },
 

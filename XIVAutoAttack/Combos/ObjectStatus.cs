@@ -323,7 +323,7 @@ namespace XIVComboPlus.Combos
             Grit = 743,
 
             //王室亲卫
-            RoyalGuard = 392,
+            RoyalGuard = 1833,
 
             //毁绝预备
             FurtherRuin = 2701,
@@ -363,6 +363,9 @@ namespace XIVComboPlus.Combos
             //士气高扬之策
             Succor = 166,
 
+            //忍术
+            Ninjutsu = 496,
+
             //生杀予夺
             Kassatsu = 497,
 
@@ -374,6 +377,30 @@ namespace XIVComboPlus.Combos
             Hidden = 614,
 
             //天地人
-            TenChiJin = 1186;
+            TenChiJin = 1186,
+
+            //极光
+            Aurora = 1835,
+
+            //伪装
+            Camouflage = 1832,
+
+            //星云
+            Nebula = 1834,
+
+            //石之心
+            HeartofStone = 1840,
+
+            //撕喉预备
+            ReadyToRip = 1842,
+
+            //裂膛预备
+            ReadyToTear = 1843,
+
+            //穿目预备
+            ReadyToGouge = 1844,
+
+            //超高速预备
+            ReadyToBlast = 2686;
     }
 }

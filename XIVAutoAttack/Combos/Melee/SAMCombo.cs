@@ -1,8 +1,15 @@
+//using Dalamud.Game.ClientState.JobGauge.Types;
+
 //namespace XIVComboPlus.Combos;
 
-//internal static class SAM
+//internal class SAMCombo : CustomComboJob<SAMGauge>
 //{
-//    public static class Buffs
+//    internal override uint JobID => 34;
+//    internal struct Actions
+//    {
+//        public static readonly BaseAction 
+//    }
+//public static class Buffs
 //    {
 //        public const ushort MeikyoShisui = 1233;
 

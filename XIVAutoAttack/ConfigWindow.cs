@@ -106,11 +106,14 @@ internal class ConfigWindow : Window
                 //        ImGui.Text(item.GameData.Name + item.StatusId);
                 //    }
                 //}
-                ImGui.Text(SMNCombo.JobGauge.SummonTimerRemaining.ToString());
-                ImGui.Text(SMNCombo.JobGauge.ReturnSummon.ToString());
-                ImGui.Text(SMNCombo.JobGauge.ReturnSummonGlam.ToString());
+                string show = "";
+                foreach (var item in NINCombo._ninjutsus)
+                {
+                    show += item.ToString() + ", ";
+                }
+                ImGui.Text(show);
+                if(NINCombo._ninactionAim != null) ImGui.Text(NINCombo._ninactionAim.Action.Name.ToString());
 
-                ImGui.Text(SMNCombo.JobGauge.AttunmentTimerRemaining.ToString());
 
 #endif
                 ImGui.Text("在这个窗口，你可以设定释放技能所需的参数。");
