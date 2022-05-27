@@ -163,7 +163,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
     private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
     {
         if (Actions.Adloquium.ShouldUseAction(out act)) return true;
-        //if (Actions.Physick.ShouldUseAction(out act)) return true;
+        if (Service.ClientState.LocalPlayer.Level < Actions.Adloquium.Level && Actions.Physick.ShouldUseAction(out act)) return true;
 
         return false;
     }
@@ -211,7 +211,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
     {
         if(abilityRemain == 1)
         {
-            if (JobGauge.Aetherflow > 0)
+            if (JobGauge.Aetherflow > 0 && !IsMoving)
             {
                 if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
             }

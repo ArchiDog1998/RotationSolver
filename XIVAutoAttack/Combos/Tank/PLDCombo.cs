@@ -163,6 +163,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         if (Actions.FastBlade.ShouldUseAction(out act, lastComboActionID)) return true;
 
         //Í¶¶Ü
+        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
         if (Actions.ShieldLob.ShouldUseAction(out act)) return true;
 
         return false;
@@ -214,7 +215,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         if (Actions.SpiritsWithin.ShouldUseAction(out act)) return true;
 
         //¸ã¸ã¹¥»÷
-        if (Actions.Intervene.ShouldUseAction(out act))
+        if (Actions.Intervene.ShouldUseAction(out act) && ! IsMoving)
         {
             if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, Actions.Intervene.Target.Position) - Actions.Intervene.Target.HitboxRadius < 1)
             {

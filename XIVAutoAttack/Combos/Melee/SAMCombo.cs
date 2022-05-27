@@ -1,102 +1,241 @@
-//using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.JobGauge.Types;
 
-//namespace XIVComboPlus.Combos;
+namespace XIVComboPlus.Combos;
 
-//internal class SAMCombo : CustomComboJob<SAMGauge>
-//{
-//    internal override uint JobID => 34;
-//    internal struct Actions
-//    {
-//        public static readonly BaseAction 
-//    }
-//public static class Buffs
-//    {
-//        public const ushort MeikyoShisui = 1233;
+internal class SAMCombo : CustomComboJob<SAMGauge>
+{
+    internal override uint JobID => 34;
+    private static bool _shouldUseGoken = false;
+    private static bool _shouldUseSetsugekka = false;
+    private static bool _shouldUseOgiNamikiri = false;
+    private static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
+    internal struct Actions
+    {
+        public static readonly BaseAction
+            //刃风
+            Hakaze = new BaseAction(7477),
 
-//        public const ushort EyesOpen = 1252;
+            //阵风
+            Jinpu = new BaseAction(7478),
 
-//        public const ushort Jinpu = 1298;
+            //心眼
+            ThirdEye = new BaseAction(7498),
 
-//        public const ushort Shifu = 1299;
+            //燕飞
+            Enpi = new BaseAction(7486),
 
-//        public const ushort OgiNamikiriReady = 2959;
-//    }
+            //士风
+            Shifu = new BaseAction(7479),
 
-//    public static class Debuffs
-//    {
-//        public const ushort Placeholder = 0;
-//    }
+            //风雅
+            Fuga = new BaseAction(7483),
 
-//    public static class Levels
-//    {
-//        public const byte Jinpu = 4;
+            //月光
+            Gekko = new BaseAction(7481)
+            {
+                EnermyLocation = EnemyLocation.Back,
+            },
 
-//        public const byte Shifu = 18;
+            //彼岸花
+            Higanbana = new BaseAction(7489)
+            {
+                TargetStatus = new ushort[] {ObjectStatus.Higanbana},
+                OtherCheck = b => SenCount > 0,
+            },
 
-//        public const byte Gekko = 30;
+            //天下五剑
+            TenkaGoken = new BaseAction(7488)
+            {
+                OtherCheck = b => SenCount > 1,
+                AfterUse = () => _shouldUseGoken = true,
+            },
 
-//        public const byte Mangetsu = 35;
+            //纷乱雪月花
+            MidareSetsugekka = new BaseAction(7487)
+            {
+                OtherCheck = b => SenCount > 2,
+                AfterUse = () => _shouldUseSetsugekka = true,
+            },
 
-//        public const byte Kasha = 40;
+            //满月
+            Mangetsu = new BaseAction(7484),
 
-//        public const byte Oka = 45;
+            //花车
+            Kasha = new BaseAction(7482)
+            {
+                EnermyLocation = EnemyLocation.Side,
+            },
 
-//        public const byte Yukikaze = 50;
+            //樱花
+            Oka = new BaseAction(7485),
 
-//        public const byte MeikyoShisui = 50;
+            //明镜止水
+            MeikyoShisui = new BaseAction(7499),
 
-//        public const byte HissatsuKyuten = 64;
+            //雪风
+            Yukikaze = new BaseAction(7480),
 
-//        public const byte TsubameGaeshi = 76;
+            //必杀剑·回天
+            HissatsuKaiten = new BaseAction(7494),
 
-//        public const byte Shoha = 80;
+            //必杀剑·晓天
+            HissatsuGyoten = new BaseAction(7492),
 
-//        public const byte Shoha2 = 82;
+            //必杀剑·震天
+            HissatsuShinten = new BaseAction(7490),
 
-//        public const byte Hyosetsu = 86;
+            //必杀剑·九天
+            HissatsuKyuten = new BaseAction(7491),
 
-//        public const byte Fuko = 86;
+            //意气冲天
+            Ikishoten = new BaseAction(16482),
 
-//        public const byte OgiNamikiri = 90;
-//    }
+            //必杀剑·红莲
+            HissatsuGuren = new BaseAction(7496),
 
-//    public const byte JobID = 34;
+            //必杀剑·闪影
+            HissatsuSenei = new BaseAction(16481),
 
-//    public const uint Hakaze = 7477u;
+            //燕回返
+            Tsubamegaeshi = new BaseAction(16483),
 
-//    public const uint Jinpu = 7478u;
+            //回返五剑
+            KaeshiGoken = new BaseAction(16485)
+            {
+                OtherCheck = b => _shouldUseGoken,
+                AfterUse = () => _shouldUseGoken = false,
+            },
 
-//    public const uint Shifu = 7479u;
+            //回返雪月花
+            KaeshiSetsugekka = new BaseAction(16486)
+            {
+                OtherCheck = b => _shouldUseSetsugekka,
+                AfterUse = () => _shouldUseSetsugekka = false,
+            },
 
-//    public const uint Yukikaze = 7480u;
+            //照破
+            Shoha = new BaseAction(16487),
 
-//    public const uint Gekko = 7481u;
+            //无明照破
+            Shoha2 = new BaseAction(25779),
 
-//    public const uint Kasha = 7482u;
+            //奥义斩浪
+            OgiNamikiri = new BaseAction(25781)
+            {
+                BuffsNeed = new ushort[] { ObjectStatus.OgiNamikiriReady },
+                AfterUse = () => _shouldUseOgiNamikiri = true,
+            },
 
-//    public const uint Fuga = 7483u;
+            //回返斩浪
+            KaeshiNamikiri = new BaseAction(25782)
+            {
+                OtherCheck = b => _shouldUseOgiNamikiri,
+                AfterUse = () => _shouldUseOgiNamikiri = false,
+            };
+    }
 
-//    public const uint Mangetsu = 7484u;
+    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    {
+        if (Actions.OgiNamikiri.ShouldUseAction(out act, mustUse:true)) return true;
+        if (Actions.TenkaGoken.ShouldUseAction(out act)) return true;
+        if (Actions.Higanbana.ShouldUseAction(out act)) return true;
+        if (Actions.MidareSetsugekka.ShouldUseAction(out act)) return true;
 
-//    public const uint Oka = 7485u;
 
-//    public const uint Fuko = 25780u;
+        //123
+        bool haveMeikyoShisui = BaseAction.HaveStatusSelfFromSelf(ObjectStatus.MeikyoShisui);
+        //如果是单体，且明镜止水的冷却时间小于3秒。
+        if (!JobGauge.HasSetsu && !Actions.Fuga.ShouldUseAction(out _) && Actions.MeikyoShisui.RecastTimeRemain < 3)
+        {
+            if (Actions.Yukikaze.ShouldUseAction(out act, lastComboActionID)) return true;
+        }
+        if (!JobGauge.HasGetsu)
+        {
+            if (Actions.Mangetsu.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Gekko.ShouldUseAction(out act, lastComboActionID, mustUse: haveMeikyoShisui)) return true;
+            if (Actions.Jinpu.ShouldUseAction(out act, lastComboActionID)) return true;
+        }
+        if (!JobGauge.HasKa)
+        {
+            if (Actions.Oka.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Kasha.ShouldUseAction(out act, lastComboActionID, mustUse: haveMeikyoShisui)) return true;
+            if (Actions.Shifu.ShouldUseAction(out act, lastComboActionID)) return true;
+        }
+        if (!JobGauge.HasSetsu)
+        {
+            if (Actions.Yukikaze.ShouldUseAction(out act, lastComboActionID)) return true;
+        }
+        if (Actions.Fuga.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.Hakaze.ShouldUseAction(out act, lastComboActionID)) return true;
 
-//    public const uint Iaijutsu = 7867u;
 
-//    public const uint TsubameGaeshi = 16483u;
 
-//    public const uint KaeshiHiganbana = 16484u;
+        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
+        if (!haveMeikyoShisui && Actions.Enpi.ShouldUseAction(out act)) return true;
 
-//    public const uint Shoha = 16487u;
+        return false;
+    }
 
-//    public const uint HissatsuKyuten = 7491u;
+    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    {
+        if (JobGauge.Kenki >= 30 && Actions.HissatsuGyoten.ShouldUseAction(out act)) return true;
+        act = null;
+        return false;
+    }
 
-//    public const uint Ikishoten = 16482u;
+    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    {
+        if (Actions.KaeshiNamikiri.ShouldUseAction(out act)) return true;
+        if (Actions.KaeshiNamikiri.ShouldUseAction(out _, mustUse:true, Empty: true))
+        {
+            if (Actions.KaeshiGoken.ShouldUseAction(out act)) return true;
+            if (Actions.KaeshiSetsugekka.ShouldUseAction(out act)) return true;
+        }
+        else
+        {
+            _shouldUseGoken = _shouldUseSetsugekka = false;
+        }
 
-//    public const uint Shoha2 = 25779u;
+        if (JobGauge.MeditationStacks == 3)
+        {
+            if (Actions.Shoha2.ShouldUseAction(out act)) return true;
+            if (Actions.Shoha.ShouldUseAction(out act)) return true;
+        }
 
-//    public const uint OgiNamikiri = 25781u;
+        if (JobGauge.Kenki >= 45)
+        {
+            if (Actions.HissatsuGuren.ShouldUseAction(out act)) return true;
+            if (Actions.HissatsuKyuten.ShouldUseAction(out act)) return true;
 
-//    public const uint KaeshiNamikiri = 25782u;
-//}
+            if (Actions.HissatsuSenei.ShouldUseAction(out act)) return true;
+            if (Actions.HissatsuShinten.ShouldUseAction(out act)) return true;
+        }
+        else
+        {
+            if (Actions.Ikishoten.ShouldUseAction(out act)) return true;
+        }
+        act = null;
+        return false;
+    }
+
+    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    {
+        if(nextGCD.ActionID == Actions.Hakaze.ActionID && JobGauge.HasSetsu && (!JobGauge.HasGetsu || !JobGauge.HasKa))
+        {
+            if (Actions.MeikyoShisui.ShouldUseAction(out act)) return true;
+        }
+        if(nextGCD.ActionID == Actions.TenkaGoken.ActionID || nextGCD.ActionID == Actions.Higanbana.ActionID || nextGCD.ActionID == Actions.MidareSetsugekka.ActionID)
+        {
+            if (JobGauge.Kenki >= 20 && Actions.HissatsuKaiten.ShouldUseAction(out act)) return true;
+        }
+
+        act = null;
+        return false;
+    }
+
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    {
+        if (Actions.ThirdEye.ShouldUseAction(out act)) return true;
+        return false;
+    }
+}

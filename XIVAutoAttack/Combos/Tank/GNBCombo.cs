@@ -73,7 +73,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
             SonicBreak = new BaseAction(16153),
 
             //´Ö·ÖÕ¶
-            RoughDivide = new BaseAction(16154),
+            RoughDivide = new BaseAction(16154, shouldEndSpecial:true),
 
             //ÁÒÑÀ
             GnashingFang = new BaseAction(16146),
@@ -165,6 +165,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         if (Actions.BrutalShell.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.KeenEdge.ShouldUseAction(out act, lastComboActionID)) return true;
 
+        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
         if (Actions.LightningShot.ShouldUseAction(out act)) return true;
 
         return false;
@@ -184,7 +185,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         if (Actions.DangerZone.ShouldUseAction(out act)) return true;
 
         //¸ã¸ã¹¥»÷
-        if (Actions.RoughDivide.ShouldUseAction(out act))
+        if (Actions.RoughDivide.ShouldUseAction(out act) && !IsMoving)
         {
             if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, Actions.RoughDivide.Target.Position) - Actions.RoughDivide.Target.HitboxRadius < 1)
             {

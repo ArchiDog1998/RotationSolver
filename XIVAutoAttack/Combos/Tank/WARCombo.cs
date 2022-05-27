@@ -175,6 +175,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
         if (Actions.HeavySwing.ShouldUseAction(out act, lastComboActionID)) return true;
 
         //¹»²»×Å£¬Ëæ±ã´òÒ»¸ö°É¡£
+        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
         if (Actions.Tomahawk.ShouldUseAction(out act)) return true;
 
         return false;
@@ -236,7 +237,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
         if (Actions.Upheaval.ShouldUseAction(out act)) return true;
 
         //¸ã¸ã¹¥»÷
-        if (Actions.Onslaught.ShouldUseAction(out act))
+        if (Actions.Onslaught.ShouldUseAction(out act) && !IsMoving)
         {
             if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, Actions.Onslaught.Target.Position) - Actions.Onslaught.Target.HitboxRadius < 1)
             {

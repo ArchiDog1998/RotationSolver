@@ -144,6 +144,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         if (Actions.SyphonStrike.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.HardSlash.ShouldUseAction(out act, lastComboActionID)) return true;
 
+        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
         if (Actions.Unmend.ShouldUseAction(out act)) return true;
 
         return false;
@@ -171,7 +172,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
 
 
         //搞搞攻击
-        if (Actions.Plunge.ShouldUseAction(out act))
+        if (Actions.Plunge.ShouldUseAction(out act) && ! IsMoving)
         {
             if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, Actions.Plunge.Target.Position) - Actions.Plunge.Target.HitboxRadius < 1)
             {

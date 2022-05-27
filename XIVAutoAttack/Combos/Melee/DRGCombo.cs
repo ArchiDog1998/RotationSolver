@@ -196,9 +196,9 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
         {
             if (Actions.Disembowel.ShouldUseAction(out act, lastComboActionID)) return true;
         }
-
-
         if (Actions.TrueThrust.ShouldUseAction(out act)) return true;
+
+        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
         if (Actions.PiercingTalon.ShouldUseAction(out act)) return true;
 
         return false;

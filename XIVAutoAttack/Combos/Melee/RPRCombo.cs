@@ -159,6 +159,7 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
         if (Actions.Slice.ShouldUseAction(out act, lastComboActionID)) return true;
 
         //¹»²»×ÅÁË
+        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
         if (Actions.Harpe.ShouldUseAction(out act, lastComboActionID)) return true;
 
         return false;

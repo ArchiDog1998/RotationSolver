@@ -387,7 +387,27 @@ public abstract class CustomCombo
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
         Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
 
-        if(role == Role.防护)
+        if (TargetHelper.CanInterruptTargets.Length > 0)
+        {
+            switch (role)
+            {
+                case Role.防护:
+                    if (GeneralActions.Interject.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.LowBlow.ShouldUseAction(out act)) return true;
+                    break;
+
+                case Role.近战:
+                    if (GeneralActions.LegSweep.ShouldUseAction(out act)) return true;
+                    break;
+                case Role.远程:
+                    if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+                    {
+                        if (GeneralActions.HeadGraze.ShouldUseAction(out act)) return true;
+                    }
+                    break;
+            }
+        }
+        if (role == Role.防护)
         {
             if (IconReplacer.RaiseOrShirk)
             {
@@ -429,26 +449,7 @@ public abstract class CustomCombo
                     break;
             }
         }
-        if (TargetHelper.CanInterruptTargets.Length > 0)
-        {
-            switch (role)
-            {
-                case Role.防护:
-                    if (GeneralActions.Interject.ShouldUseAction(out act)) return true;
-                    if (GeneralActions.LowBlow.ShouldUseAction(out act)) return true;
-                    break;
 
-                case Role.近战:
-                    if (GeneralActions.LegSweep.ShouldUseAction(out act)) return true;
-                    break;
-                case Role.远程:
-                    if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
-                    {
-                        if (GeneralActions.HeadGraze.ShouldUseAction(out act)) return true;
-                    }
-                    break;
-            }
-        }
 
         if (HaveTargetAngle && SettingBreak && BreakAbility(abilityRemain, out act)) return true;
         if (IconReplacer.Move && MoveAbility(abilityRemain, out act)) return true;
@@ -474,7 +475,7 @@ public abstract class CustomCombo
             }
             else
             {
-                if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
+                if (Service.ClientState.LocalPlayer.ClassJob.Id != 25 && GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
             }
         }
         else if (role == Role.治疗)

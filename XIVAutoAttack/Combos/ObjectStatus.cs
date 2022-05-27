@@ -401,6 +401,15 @@ namespace XIVComboPlus.Combos
             ReadyToGouge = 1844,
 
             //超高速预备
-            ReadyToBlast = 2686;
+            ReadyToBlast = 2686,
+
+            //明镜止水
+            MeikyoShisui = 1233,
+
+            //奥义斩浪预备
+            OgiNamikiriReady = 2959,
+
+            //彼岸花
+            Higanbana = 1228;
     }
 }

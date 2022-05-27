@@ -4,6 +4,8 @@
 //{
 //    internal abstract class BLMCombo : CustomComboJob<BLMGauge>
 //    {
+//        internal override uint JobID => 25;
+
 //        /// <summary>
 //        /// 判断通晓是否满了。
 //        /// </summary>
@@ -75,7 +77,7 @@
 //                Fire3 = new BLMAction(152u, true),
 
 //                //火4
-//                Fire4 = new BLMAction(3577u, true) { OtherCheck = () => JobGauge.InAstralFire && JobGauge.ElementTimeRemaining > 5000 },
+//                Fire4 = new BLMAction(3577u, true) { OtherCheck = b => JobGauge.InAstralFire && JobGauge.ElementTimeRemaining > 5000 },
 
 //                ////高火2
 //                //HighFire2 = new BLMAction(82, 25794u, 1500, true),
@@ -90,25 +92,25 @@
 //                Blizzard3 = new BLMAction(154u, false),
 
 //                //冰4
-//                Blizzard4 = new BLMAction(3576u, false) { OtherCheck = () => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
+//                Blizzard4 = new BLMAction(3576u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
 
 //                ////高冰2
 //                //HighBlizzard2 = new BLMAction(82, 25795u, 800, false),
 
 //                //冻结
-//                Freeze = new BLMAction(159u, false) { OtherCheck = () => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2800 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
+//                Freeze = new BLMAction(159u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2800 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
 
 //                //星灵移位
-//                Transpose = new BaseAction(149u) { OtherCheck = () => JobGauge.InUmbralIce || JobGauge.InAstralFire },
+//                Transpose = new BaseAction(149u) { OtherCheck = b => JobGauge.InUmbralIce || JobGauge.InAstralFire },
 
 //                //灵极魂
-//                UmbralSoul = new BaseAction(16506u) { OtherCheck = () => JobGauge.InUmbralIce },
+//                UmbralSoul = new BaseAction(16506u) { OtherCheck = b => JobGauge.InUmbralIce },
 
 //                //魔罩
 //                Manaward = new BaseAction(157u),
 
 //                //魔泉
-//                Manafont = new BaseAction(158u) { OtherCheck = () => Service.ClientState.LocalPlayer.CurrentMp == 0 && JobGauge.InAstralFire },
+//                Manafont = new BaseAction(158u) { OtherCheck = b => Service.ClientState.LocalPlayer.CurrentMp == 0 && JobGauge.InAstralFire },
 
 //                //激情咏唱
 //                Sharpcast = new BaseAction(3574u)
@@ -136,40 +138,40 @@
 //                AetherialManipulation = new BaseAction(155),
 
 //                //详述
-//                Amplifier = new BaseAction(25796u) { OtherCheck = () => !IsPolyglotStacksMaxed && JobGauge.EnochianTimer > 10000 },
+//                Amplifier = new BaseAction(25796u) { OtherCheck = b => !IsPolyglotStacksMaxed && JobGauge.EnochianTimer > 10000 },
 
 //                //核爆
-//                Flare = new BaseAction(162u) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
+//                Flare = new BaseAction(162u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
 
 //                //绝望
-//                Despair = new BaseAction(16505u) { OtherCheck = () => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 3000 },
+//                Despair = new BaseAction(16505u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 3000 },
 
 //                //秽浊
-//                Foul = new BaseAction(7422u) { OtherCheck = () => JobGauge.PolyglotStacks != 0 },
+//                Foul = new BaseAction(7422u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 },
 
 //                //异言
-//                Xenoglossy = new BaseAction(16507u) { OtherCheck = () => JobGauge.PolyglotStacks != 0 },
+//                Xenoglossy = new BaseAction(16507u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 },
 
 //                //悖论
 //                Paradox = new BaseAction(25797u);
 //        }
 
-//        private protected override bool ForAttachAbility(byte level, byte abilityRemain, out BaseAction act)
+//        private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
 //        {
 //            //加个魔泉
-//            if(abilityRemain == 1)
+//            if (abilityRemain == 1)
 //            {
-//                if (Actions.Manafont.TryUseAction(level, out act)) return true;
+//                if (Actions.Manafont.ShouldUseAction(out act)) return true;
 
 //                if (HasFire)
 //                {
-//                    if(JobGauge.InAstralFire && LocalPlayer.CurrentMp < 800)
+//                    if (JobGauge.InAstralFire && LocalPlayer.CurrentMp < 800)
 //                    {
-//                        if (Actions.Transpose.TryUseAction(level, out act)) return true;
+//                        if (Actions.Transpose.ShouldUseAction(out act)) return true;
 //                    }
 //                    else if (JobGauge.InUmbralIce && (LocalPlayer.CurrentMp > 9000 || (JobGauge.PolyglotStacks == 0 && LocalPlayer.CurrentMp > 7200)))
 //                    {
-//                        if (Actions.Transpose.TryUseAction(level, out act)) return true;
+//                        if (Actions.Transpose.ShouldUseAction(out act)) return true;
 //                    }
 //                }
 //            }
@@ -178,50 +180,44 @@
 //            {
 //                if (JobGauge.InAstralFire && (LocalPlayer.CurrentMp < 5000 || JobGauge.ElementTimeRemaining < 5000))
 //                {
-//                    if (Actions.Transpose.TryUseAction(level, out act)) return true;
+//                    if (Actions.Transpose.ShouldUseAction(out act)) return true;
 //                }
-//                if (Actions.Triplecast.TryUseAction(level, out act, mustUse: true)) return true;
-//                if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return true;
+//                if (Actions.Triplecast.ShouldUseAction(out act, mustUse: true)) return true;
+//                if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
 //            }
 
 //            //加个醒梦
-//            if (JobGauge.InUmbralIce && HasFire && GeneralActions.LucidDreaming.TryUseAction(level, out act)) return true;
+//            if (JobGauge.InUmbralIce && HasFire && GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
 
 
-//            if (Actions.Triplecast.TryUseAction(level, out act)) return true;
+//            if (Actions.Triplecast.ShouldUseAction(out act)) return true;
 
 
 //            //加个即刻
 //            if (JobGauge.InAstralFire && LocalPlayer.CurrentMp >= 800 && JobGauge.UmbralHearts < 2)
 //            {
-//                if (GeneralActions.Swiftcast.TryUseAction(level, out act)) return true;
+//                if (GeneralActions.Swiftcast.ShouldUseAction(out act)) return true;
 //            }
 
 //            //加个通晓
-//            if (Actions.Amplifier.TryUseAction(level, out act)) return true;
+//            if (Actions.Amplifier.ShouldUseAction(out act)) return true;
 
 //            //加个激情
-//            if (Actions.Sharpcast.TryUseAction(level, out act, Empty: true)) return true;
+//            if (Actions.Sharpcast.ShouldUseAction(out act, Empty: true)) return true;
 
 
 
 //            return false;
 //        }
 
-//        private protected override bool GeneralGCD(byte level, uint lastComboActionID, out BaseAction act)
+//        private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
 //        {
-//            if(lastComboActionID == 0)
-//            {
-//                //加个激情
-//                if (Actions.Sharpcast.TryUseAction(level, out act, Empty: true)) return true;
-//            }
-
 //            if (IsMoving && HaveTargetAngle)
 //            {
 //                if (AddPolyglotAttach(level, out act)) return true;
 
-//                if (Actions.Triplecast.TryUseAction(level, out act, mustUse: true)) return true;
-//                if (GeneralActions.Swiftcast.TryUseAction(level, out act, mustUse: true)) return true;
+//                if (Actions.Triplecast.ShouldUseAction(level, out act, mustUse: true)) return true;
+//                if (GeneralActions.Swiftcast.ShouldUseAction(level, out act, mustUse: true)) return true;
 //            }
 
 //            //冰状态
@@ -238,14 +234,14 @@
 //                    else
 //                    {
 //                        //把冰悖论放掉
-//                        if (JobGauge.IsParadoxActive && Actions.Blizzard.TryUseAction(level, out act)) return true;
+//                        if (JobGauge.IsParadoxActive && Actions.Blizzard.ShouldUseAction(level, out act)) return true;
 //                    }
 
 
 //                    //进入火状态
 //                    //试试看火2,3
-//                    if (Actions.Fire2.TryUseAction(level, out act)) return true;
-//                    if (Actions.Fire3.TryUseAction(level, out act)) return true;
+//                    if (Actions.Fire2.ShouldUseAction(level, out act)) return true;
+//                    if (Actions.Fire3.ShouldUseAction(level, out act)) return true;
 //                }
 
 //                //常规攻击
@@ -258,18 +254,18 @@
 //                    if (AddPolyglotAttach(level, out act)) return true;
 
 //                    //把冰悖论放掉
-//                    if (JobGauge.IsParadoxActive && Actions.Blizzard.TryUseAction(level, out act)) return true;
+//                    if (JobGauge.IsParadoxActive && Actions.Blizzard.ShouldUseAction(level, out act)) return true;
 
 //                    //试试看冰2,3
-//                    if (Actions.Blizzard2.TryUseAction(level, out act)) return true;
-//                    if (Actions.Blizzard4.TryUseAction(level, out act)) return true;
+//                    if (Actions.Blizzard2.ShouldUseAction(level, out act)) return true;
+//                    if (Actions.Blizzard4.ShouldUseAction(level, out act)) return true;
 //                }
 //                else
 //                {
 //                    //如果通晓满了，就放掉。
 //                    if (IsPolyglotStacksMaxed && JobGauge.EnochianTimer < 10000)
 //                    {
-//                        if(AddPolyglotAttach(level, out act)) return true;
+//                        if (AddPolyglotAttach(level, out act)) return true;
 //                    }
 //                    //补雷补心
 //                    if (AddThunder(level, lastComboActionID, out act)) return true;
@@ -283,14 +279,14 @@
 //            else if (JobGauge.InAstralFire)
 //            {
 //                //如果需要续时间,提高档数
-//                if(JobGauge.ElementTimeRemaining < 5400 || JobGauge.AstralFireStacks == 2)
+//                if (JobGauge.ElementTimeRemaining < 5400 || JobGauge.AstralFireStacks == 2)
 //                {
-//                    if (Actions.Fire.TryUseAction(level, out act)) return true;
+//                    if (Actions.Fire.ShouldUseAction(level, out act)) return true;
 //                }
-//                if(JobGauge.AstralFireStacks == 1)
+//                if (JobGauge.AstralFireStacks == 1)
 //                {
-//                    if (Actions.Fire3.TryUseAction(level, out act)) return true;
-//                    if (Actions.Fire.TryUseAction(level, out act)) return true;
+//                    if (Actions.Fire3.ShouldUseAction(level, out act)) return true;
+//                    if (Actions.Fire.ShouldUseAction(level, out act)) return true;
 //                }
 //                //补雷，如果需要
 //                if (AddThunder(level, lastComboActionID, out act)) return true;
@@ -304,24 +300,24 @@
 //                //如果蓝不够了，赶紧一个绝望。
 //                if (level >= 58 && JobGauge.UmbralHearts < 2)
 //                {
-//                    if (Actions.Flare.TryUseAction(level, out act)) return true;
+//                    if (Actions.Flare.ShouldUseAction(level, out act)) return true;
 //                }
 //                if (Service.ClientState.LocalPlayer.CurrentMp < Actions.Fire4.MPNeed + Actions.Despair.MPNeed)
 //                {
-//                    if (Actions.Despair.TryUseAction(level, out act)) return true;
+//                    if (Actions.Despair.ShouldUseAction(level, out act)) return true;
 //                }
 
 //                //试试看火2
-//                if (Actions.Fire2.TryUseAction(level, out act)) return true;
+//                if (Actions.Fire2.ShouldUseAction(level, out act)) return true;
 
 //                //再试试看核爆
-//                if (Actions.Flare.TryUseAction(level, out act)) return true;
+//                if (Actions.Flare.ShouldUseAction(level, out act)) return true;
 
 
 //                //如果MP够打一发伤害。
 //                if (Service.ClientState.LocalPlayer.CurrentMp >= AttackAstralFire(level, out act))
 //                {
-//                    if(Actions.Triplecast.TryUseAction(level, out BaseAction action)) act = action;
+//                    if (Actions.Triplecast.ShouldUseAction(level, out BaseAction action)) act = action;
 //                    return true;
 //                }
 //                //否则，转入冰状态。
@@ -333,9 +329,9 @@
 
 //            //进入冰状态
 //            //试试看冰2,3,1给个冰状态
-//            if (Actions.Blizzard2.TryUseAction(level, out act)) return true;
-//            if (Actions.Blizzard3.TryUseAction(level, out act)) return true;
-//            if (Actions.Blizzard.TryUseAction(level, out act)) return true;
+//            if (Actions.Blizzard2.ShouldUseAction(level, out act)) return true;
+//            if (Actions.Blizzard3.ShouldUseAction(level, out act)) return true;
+//            if (Actions.Blizzard.ShouldUseAction(level, out act)) return true;
 
 //            return false;
 //        }
@@ -388,17 +384,16 @@
 //            return false;
 //        }
 
-//        private bool AddPolyglotAttach(byte level, out BaseAction act)
+//        private bool AddPolyglotAttach(out BaseAction act)
 //        {
 //            if (JobGauge.PolyglotStacks > 0)
 //            {
-//                if (Actions.Foul.TryUseAction(level, out act)) return true;
-//                if (Actions.Xenoglossy.TryUseAction(level, out act)) return true;
-//                if (Actions.Foul.TryUseAction(level, out act, mustUse: true)) return true;
+//                if (Actions.Foul.ShouldUseAction(out act)) return true;
+//                if (Actions.Xenoglossy.ShouldUseAction(out act)) return true;
+//                if (Actions.Foul.ShouldUseAction(out act, mustUse: true)) return true;
 //            }
 //            act = null;
 //            return false;
 //        }
-
 //    }
 //}
