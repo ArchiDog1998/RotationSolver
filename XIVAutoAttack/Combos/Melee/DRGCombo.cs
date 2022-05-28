@@ -56,29 +56,24 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             //∆∆ÀÈ≥Â
             SpineshatterDive = new BaseAction(95)
             {
-                AfterUse = () => IconReplacer.NoOneAbility = true,
             },
 
             //¡˙—◊≥Â
             DragonfireDive = new BaseAction(96)
             {
-                AfterUse = () => IconReplacer.NoOneAbility = true,
             },
 
             //Ã¯‘æ
             Jump = new BaseAction(92)
             {
-                AfterUse = () => IconReplacer.NoOneAbility = true,
             },
             HighJump = new BaseAction(16478)
             {
-                AfterUse = () => IconReplacer.NoOneAbility = true,
             },
             //ª√œÛ≥Â
             MirageDive = new BaseAction(7399) 
             { 
                 BuffsNeed = new ushort[] { ObjectStatus.DiveReady },
-                AfterUse = () => IconReplacer.NoOneAbility = true,
             },
 
             //Œ‰…Ò«π
@@ -90,7 +85,6 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             //◊π–«≥Â
             Stardiver = new BaseAction(16480)
             {
-                AfterUse = () => IconReplacer.NoOneAbility = true,
             },
 
             //ÃÏ¡˙µ„æ¶
@@ -140,10 +134,11 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
     }
     private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
-        if (nextGCD == Actions.FullThrust || nextGCD == Actions.CoerthanTorment || (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.WheelingThrust))
+        if (nextGCD.ActionID == Actions.FullThrust.ActionID || nextGCD.ActionID == Actions.CoerthanTorment.ActionID || (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.WheelingThrust))
         {
             if (abilityRemain == 1 && Actions.LifeSurge.ShouldUseAction(out act, Empty: true)) return true;
         }
+
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
@@ -158,18 +153,16 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
-        if (JobGauge.IsLOTDActive)
-        {
-            if (Actions.Nastrond.ShouldUseAction(out act, mustUse: true)) return true;
-            if (abilityRemain > 1 && Actions.Stardiver.ShouldUseAction(out act, mustUse: true)) return true;
-        }
+        if (JobGauge.IsLOTDActive && Actions.Nastrond.ShouldUseAction(out act, mustUse: true)) return true;
 
         //≥¢ ‘Ω¯»Î∫Ï¡˙—™
         if (Actions.Geirskogul.ShouldUseAction(out act, mustUse: true)) return true;
 
         if (abilityRemain > 1 && !IsMoving)
         {
-            if(Service.ClientState.LocalPlayer.Level >= Actions.HighJump.Level)
+            if (JobGauge.IsLOTDActive && JobGauge.LOTDTimer < 25000 && Actions.Stardiver.ShouldUseAction(out act, mustUse: true)) return true;
+
+            if (Service.ClientState.LocalPlayer.Level >= Actions.HighJump.Level)
             {
                 if (Actions.HighJump.ShouldUseAction(out act) && Vector3.Distance(LocalPlayer.Position, Actions.HighJump.Target.Position) - Actions.HighJump.Target.HitboxRadius < 2) return true;
             }
@@ -182,6 +175,8 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true) && BaseAction.DistanceToPlayer(Actions.DragonfireDive.Target, true) < 2) return true;
             if (Actions.SpineshatterDive.ShouldUseAction(out act, Empty: true) && BaseAction.DistanceToPlayer(Actions.SpineshatterDive.Target, true) < 2) return true;
         }
+
+
         if (JobGauge.FirstmindsFocusCount == 2 && Actions.WyrmwindThrust.ShouldUseAction(out act, mustUse: true)) return true;
 
         return false;

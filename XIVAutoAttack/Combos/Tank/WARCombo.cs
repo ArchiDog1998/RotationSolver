@@ -118,7 +118,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //死斗
             Holmgang = new BaseAction(43)
             {
-                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.15,
+                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
             },
 
             ////原初的解放

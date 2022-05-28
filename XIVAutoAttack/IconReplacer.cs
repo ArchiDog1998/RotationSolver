@@ -32,9 +32,7 @@ internal sealed class IconReplacer : IDisposable
     private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
 
     private static Stopwatch _fastClickStopwatch = new Stopwatch();
-
     private static Stopwatch _specialStateStopwatch = new Stopwatch();
-    internal static bool NoOneAbility { get; set; } = false;
     internal static uint LastAction { get; private set; } = 0;
 
     private static bool _autoAttack = false;
@@ -375,8 +373,6 @@ internal sealed class IconReplacer : IDisposable
         if (_fastClickStopwatch.IsRunning && _fastClickStopwatch.ElapsedMilliseconds < 200) return;
         _fastClickStopwatch.Restart();
 
-
-
         PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
         if (localPlayer == null) return;
 
@@ -390,16 +386,8 @@ internal sealed class IconReplacer : IDisposable
                 return;
             }
 
-            if(!isGCD && newAction.IsRealGCD) return;
+            if (!isGCD && newAction.IsRealGCD) return;
 
-            if  (TargetHelper.AbilityRemainCount == 1 && NoOneAbility)
-            {
-                NoOneAbility = false;
-#if DEBUG
-                Service.ChatGui.Print("Stoped!");
-#endif
-                return;
-            }
 #if DEBUG
             Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + newAction.Action.Name + TargetHelper.AbilityRemainCount.ToString());
 #endif

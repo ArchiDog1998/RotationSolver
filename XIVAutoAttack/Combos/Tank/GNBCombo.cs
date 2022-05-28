@@ -66,7 +66,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
             //³¬»ðÁ÷ÐÇ
             Superbolide = new BaseAction(16152)
             {
-                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.15,
+                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
             },
 
             //ÒôËÙÆÆ

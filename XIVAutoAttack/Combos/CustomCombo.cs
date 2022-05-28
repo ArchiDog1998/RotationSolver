@@ -372,12 +372,6 @@ public abstract class CustomCombo
             return false;
         }
 
-        if(IconReplacer.NoOneAbility && abilityRemain == 1)
-        {
-            act = null;
-            return false;
-        }
-
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
         Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
 

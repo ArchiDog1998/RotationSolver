@@ -25,6 +25,10 @@ namespace XIVComboPlus
         private static Vector3 _lastPosition;
         public static bool IsMoving { get; private set; }
 
+        private static Stopwatch _weaponDelayStopwatch = new Stopwatch();
+
+        private static long _weaponRandomDelay = 0;
+
         //All Targes
         internal static BattleChara[] AllTargets { get; private set; } = new BattleChara[0];
 
@@ -156,14 +160,34 @@ namespace XIVComboPlus
             if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted]) return;
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
 
-            if (WeaponRemain < 0.1) Service.IconReplacer.DoAnAction(true);
+            if (WeaponRemain < 0.1)
+            {
+                if (!_weaponDelayStopwatch.IsRunning)
+                {
+                    _weaponDelayStopwatch.Start();
+                    return;
+                }
+                else if (_weaponDelayStopwatch.ElapsedMilliseconds > _weaponRandomDelay)
+                {
+                    _weaponDelayStopwatch.Stop();
+                    _weaponDelayStopwatch.Reset();
+
+                    Service.IconReplacer.DoAnAction(true);
+
+                    Random ran = new Random(DateTime.Now.Millisecond);
+                    _weaponRandomDelay = (long)(ran.NextDouble() * Service.Configuration.WeaponDelay * 1000);
+
+                    return;
+                }
+                else return;
+            }
             //要超出GCD了，那就不放技能了。
             else if (WeaponRemain < Service.Configuration.WeaponInterval || Service.ClientState.LocalPlayer.IsCasting) return;
 
             if (weaponelapsed % Service.Configuration.WeaponInterval < 0.1 && WeaponTotal - WeaponRemain > 0.5)
             {
-
                 Service.IconReplacer.DoAnAction(false);
+                return;
             }
 
         }

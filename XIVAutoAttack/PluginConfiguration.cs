@@ -33,8 +33,11 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthAreafSpell { get; set; } = 0.65f;
     public float HealthSingleAbility { get; set; } = 0.7f;
     public float HealthSingleSpell { get; set; } = 0.55f;
+    public float HealthForDyingTank { get; set; } = 0.15f;
+
     public float SpecialDuration { get; set; } = 3;
     public float WeaponInterval { get; set; } = 0.67f;
+    public float WeaponDelay { get; set; } = 0;
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);

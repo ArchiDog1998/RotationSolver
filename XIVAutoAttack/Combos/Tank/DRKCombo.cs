@@ -61,7 +61,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
             //行尸走肉
             LivingDead = new BaseAction(3638)
             {
-                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.15,
+                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
             },
 
             //腐秽大地

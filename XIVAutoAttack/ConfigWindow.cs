@@ -196,6 +196,15 @@ internal class ConfigWindow : Window
                         Service.Configuration.Save();
                     }
 
+                    ImGui.Separator();
+
+                    float weaponDelay = Service.Configuration.WeaponDelay;
+                    if (ImGui.DragFloat("需要GCD随机手残多少秒", ref weaponDelay, 0.002f, 0, 1))
+                    {
+                        Service.Configuration.WeaponDelay = weaponDelay;
+                        Service.Configuration.Save();
+                    }
+
                     float weaponInterval = Service.Configuration.WeaponInterval;
                     if (ImGui.DragFloat("间隔多久释放能力技", ref weaponInterval, 0.002f, 0.6f, 0.7f))
                     {
@@ -263,6 +272,13 @@ internal class ConfigWindow : Window
                     if (ImGui.DragFloat("多少的HP，可以用GCD单奶", ref healthSingleS, speed, 0, 1))
                     {
                         Service.Configuration.HealthSingleSpell = healthSingleS;
+                        Service.Configuration.Save();
+                    }
+
+                    float healthTank = Service.Configuration.HealthForDyingTank;
+                    if (ImGui.DragFloat("低于多少的HP，坦克要放大招了", ref healthTank, speed, 0, 1))
+                    {
+                        Service.Configuration.HealthForDyingTank = healthTank;
                         Service.Configuration.Save();
                     }
                     ImGui.EndChild();

@@ -71,7 +71,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             //ÉñÊ¥ÁìÓò
             HallowedGround = new BaseAction(30)
             {
-                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.15,
+                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
             },
 
             //Ê¥¹âÄ»Á±
