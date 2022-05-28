@@ -122,6 +122,27 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
+                    int voiceVolume = Service.Configuration.VoiceVolume;
+                    if (ImGui.DragInt("语音音量", ref voiceVolume, 0.2f, 0, 100))
+                    {
+                        Service.Configuration.VoiceVolume = voiceVolume;
+                        Service.Configuration.Save();
+                    }
+
+                    bool textlocation = Service.Configuration.TextLocation;
+                    if (ImGui.Checkbox("写出战技身位", ref textlocation))
+                    {
+                        Service.Configuration.TextLocation = textlocation;
+                        Service.Configuration.Save();
+                    }
+
+                    bool sayingLocation = Service.Configuration.SayingLocation;
+                    if (ImGui.Checkbox("喊出战技身位", ref sayingLocation))
+                    {
+                        Service.Configuration.SayingLocation = sayingLocation;
+                        Service.Configuration.Save();
+                    }
+
                     bool autoSayingOut = Service.Configuration.AutoSayingOut;
                     if (ImGui.Checkbox("状态变化时喊出", ref autoSayingOut))
                     {

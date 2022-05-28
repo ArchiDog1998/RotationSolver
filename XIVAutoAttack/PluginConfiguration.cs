@@ -15,6 +15,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public int HostileCount { get; set; } = 3;
     public int PartyCount { get; set; } = 2;
+    public int VoiceVolume { get; set; } = 80;
     public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
     public List<ActionEvents> Events { get; private set; } = new List<ActionEvents>();
     public bool AllTargeAsHostile { get; set; } = false;
@@ -24,6 +25,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AutoDefenseForTank { get; set; } = true;
     public bool AutoSayingOut { get; set; } = false;
     public bool UseDtr { get; set; } = true;
+    public bool SayingLocation { get; set; } = true;
+    public bool TextLocation { get; set; } = true;
     public bool UseToast { get; set; } = true;
     public float HealthDifference { get; set; } = 0.25f;
     public float HealthAreaAbility { get; set; } = 0.75f;

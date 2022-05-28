@@ -75,7 +75,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             //Õğ½Å
             PerfectBalance = new BaseAction(69)
             {
-                OtherCheck = b => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RaptorForm),
+                OtherCheck = b => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RaptorForm) && TargetHelper.InBattle,
             },
 
             //²ÔÆøÅÚ Òõ

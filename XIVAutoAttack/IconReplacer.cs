@@ -22,7 +22,7 @@ internal sealed class IconReplacer : IDisposable
 
     private static string _stateString = "Off";
     private static string _specialString = string.Empty;
-    internal static string StateString => "Auto Attack: " + _stateString + (string.IsNullOrEmpty(_specialString) ? string.Empty : " - " + _specialString);
+    internal static string StateString => _stateString + (string.IsNullOrEmpty(_specialString) ? string.Empty : " - " + _specialString);
 
 #if DEBUG
     private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint a4, uint a5, uint a6, void* a7);
@@ -40,7 +40,7 @@ internal sealed class IconReplacer : IDisposable
     private static bool _autoAttack = false;
     internal static bool AutoAttack
     {
-        private get => _autoAttack;
+        get => _autoAttack;
         set
         {
             if (_autoAttack != value)
@@ -254,7 +254,10 @@ internal sealed class IconReplacer : IDisposable
     {
         if (!Service.Configuration.UseToast) return;
 
-        Service.ToastGui.ShowQuest(StateString);
+        Service.ToastGui.ShowQuest(" " + StateString, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+        {
+            IconId = 101,
+        });
     }
 
     internal static void ResetSpecial(bool sayout)
@@ -319,7 +322,7 @@ internal sealed class IconReplacer : IDisposable
     private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
     {
         var a = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
-        //Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
+        Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
         return getActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
     }
 #endif

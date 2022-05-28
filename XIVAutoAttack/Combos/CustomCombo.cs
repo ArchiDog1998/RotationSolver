@@ -271,7 +271,7 @@ public abstract class CustomCombo
     private bool CheckAction(uint actionID)
     {
         //return false;
-        if (ShouldSayout && _lastGCDAction != actionID)
+        if (ShouldSayout && _lastGCDAction != actionID && IconReplacer.AutoAttack)
         {
             _lastGCDAction = actionID;
             return true;
@@ -284,6 +284,7 @@ public abstract class CustomCombo
         ExecuteCommand(
             $@"Add-Type -AssemblyName System.speech; 
                 $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; 
+                $speak.Volume = ""{Service.Configuration.VoiceVolume}"";
                 $speak.Speak(""{text}"");");
 
         void ExecuteCommand(string command)
@@ -313,11 +314,6 @@ public abstract class CustomCombo
         }
     }
 
-    private static unsafe void ShowText(string text)
-    {
-        ((UIModule*)Service.GameGui.GetUIModule())->ShowWideText(text);
-    }
-
     private BaseAction Invoke(uint actionID, uint lastComboActionID, float comboTime)
     {
 
@@ -328,7 +324,12 @@ public abstract class CustomCombo
         {
             if(CheckAction(GCDaction.ActionID) && GCDaction.EnermyLocation != EnemyLocation.None)
             {
-                Speak(GCDaction.EnermyLocation.ToString());
+                string location = GCDaction.EnermyLocation.ToString();
+                if (Service.Configuration.SayingLocation) Speak(location);
+                if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                {
+                    IconId = GCDaction.Action.Icon,
+                });
             }
 
             switch (abilityRemain)

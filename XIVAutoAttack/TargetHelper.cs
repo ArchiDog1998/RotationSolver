@@ -91,7 +91,7 @@ namespace XIVComboPlus
                     XIVAutoAttackPlugin.dtrEntry = Service.DtrBar.Get("Auto Attack");
                 }
                 XIVAutoAttackPlugin.dtrEntry.Shown = true;
-                XIVAutoAttackPlugin.dtrEntry.Text = (SeString)IconReplacer.StateString;
+                XIVAutoAttackPlugin.dtrEntry.Text = (SeString)"Auto Attack: " + IconReplacer.StateString;
             }
             else if (XIVAutoAttackPlugin.dtrEntry != null)
             {
