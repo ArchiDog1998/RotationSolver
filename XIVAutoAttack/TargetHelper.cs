@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
+using Dalamud.Game.Text.SeStringHandling;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 using System;
@@ -81,6 +82,22 @@ namespace XIVComboPlus
 
         internal unsafe static void Framework_Update(Framework framework)
         {
+
+            //Update State.
+            if (Service.Configuration.UseDtr && IconReplacer.StateString != null)
+            {
+                if (XIVAutoAttackPlugin.dtrEntry == null)
+                {
+                    XIVAutoAttackPlugin.dtrEntry = Service.DtrBar.Get("Auto Attack");
+                }
+                XIVAutoAttackPlugin.dtrEntry.Shown = true;
+                XIVAutoAttackPlugin.dtrEntry.Text = (SeString)IconReplacer.StateString;
+            }
+            else if (XIVAutoAttackPlugin.dtrEntry != null)
+            {
+                XIVAutoAttackPlugin.dtrEntry.Shown = false;
+            }
+
             if (Service.ClientState.LocalPlayer == null) return;
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) IconReplacer.AutoAttack = false;
             InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
@@ -189,20 +206,44 @@ namespace XIVComboPlus
             DeathPeopleAll = BaseAction.GetObjectInRadius(GetDeath(AllianceMembers), 30);
             DeathPeopleParty = BaseAction.GetObjectInRadius(GetDeath(PartyMembers), 30);
 
-            WeakenPeople = PartyMembers.Where(p =>
+            WeakenPeople = BaseAction.GetObjectInRadius(PartyMembers, 30).Where(p =>
             {
                 foreach (var status in p.StatusList)
                 {
-                    if (status.GameData.CanDispel) return true;
+                    if (status.GameData.CanDispel && status.RemainingTime > 2) return true;
                 }
                 return false;
             }).ToArray();
 
-            DyingPeople = PartyMembers.Where(p =>
+            uint[] dangeriousStatus = new uint[]
+            {
+                ObjectStatus.Doom,
+                ObjectStatus.Amnesia,
+                ObjectStatus.Stun,
+                ObjectStatus.Stun2,
+                ObjectStatus.Sleep,
+                ObjectStatus.Sleep2,
+                ObjectStatus.Sleep3,
+                ObjectStatus.Pacification,
+                ObjectStatus.Pacification2,
+                ObjectStatus.Silence,
+                ObjectStatus.Slow,
+                ObjectStatus.Slow2,
+                ObjectStatus.Slow3,
+                ObjectStatus.Slow4,
+                ObjectStatus.Slow5,
+                ObjectStatus.Blind,
+                ObjectStatus.Blind2,
+                ObjectStatus.Blind3,
+                ObjectStatus.Paralysis,
+                ObjectStatus.Paralysis2,
+                ObjectStatus.Nightmare,
+            };
+            DyingPeople = WeakenPeople.Where(p =>
             {
                 foreach (var status in p.StatusList)
                 {
-                    if (status.StatusId == ObjectStatus.Doom) return true;
+                    if (dangeriousStatus.Contains(status.StatusId)) return true;
                 }
                 return false;
             }).ToArray();

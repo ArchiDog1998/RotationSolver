@@ -7,6 +7,8 @@ using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
+using Dalamud.Game.Gui.Dtr;
+using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 
@@ -52,5 +54,11 @@ internal class Service
 
     [PluginService]
     internal static PartyList PartyList { get; private set; }
+
+    [PluginService]
+    public static DtrBar DtrBar { get; private set; }
+
+    [PluginService]
+    public static ToastGui ToastGui { get; private set; }
 
 }

@@ -6,6 +6,7 @@ namespace XIVComboPlus.Combos;
 internal class NINCombo : CustomComboJob<NINGauge>
 {
     internal override uint JobID => 30;
+    protected override bool ShouldSayout => true;
 
     public class NinAction : BaseAction
     {

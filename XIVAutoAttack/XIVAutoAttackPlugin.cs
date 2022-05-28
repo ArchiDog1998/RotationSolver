@@ -15,6 +15,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
+using Dalamud.Game.Gui.Dtr;
 using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
@@ -40,6 +41,8 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     private static Framework _framework;
 
     internal static Lumina.Excel.GeneratedSheets.ClassJob[] AllJobs;
+
+    internal static DtrBarEntry dtrEntry;
 
     public  XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
     {
@@ -68,7 +71,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         commandManager.AddHandler(_lockCommand, lockInfo);
 
         _framework = framework;
-        framework.Update += TargetHelper.Framework_Update;
+        _framework.Update += TargetHelper.Framework_Update;
 
         AllJobs = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.ClassJob>().Where(x => x.JobIndex != 0).ToArray();
 
@@ -91,6 +94,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.IconReplacer.Dispose();
         _framework.Update -= TargetHelper.Framework_Update;
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
+        dtrEntry?.Dispose();
     }
 
     private void OnOpenConfigUi()
@@ -131,12 +135,12 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                 case "AntiRepulsion":
                     IconReplacer.StartAntiRepulsion();
                     break;
-                case "Break":
-                    IconReplacer.StartBreak();
+                case "BreakProvoke":
+                    IconReplacer.StartBreakOrProvoke();
                     break;
-                case "LimitBreak":
-                    IconReplacer.StartLimitBreak();
-                    break;
+                //case "LimitBreak":
+                //    IconReplacer.StartLimitBreak();
+                //    break;
                 case "AttackBig":
                     IconReplacer.AttackBig = true;
                     break;

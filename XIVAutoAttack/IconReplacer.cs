@@ -20,6 +20,10 @@ internal sealed class IconReplacer : IDisposable
 
     private delegate uint GetIconDelegate(IntPtr actionManager, uint actionID);
 
+    private static string _stateString = "Off";
+    private static string _specialString = string.Empty;
+    internal static string StateString => "Auto Attack: " + _stateString + (string.IsNullOrEmpty(_specialString) ? string.Empty : " - " + _specialString);
+
 #if DEBUG
     private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint a4, uint a5, uint a6, void* a7);
     private readonly Hook<UseActionDelegate> getActionHook;
@@ -42,7 +46,12 @@ internal sealed class IconReplacer : IDisposable
             if (_autoAttack != value)
             {
                 _autoAttack = value;
-                if (!value) CustomCombo.Speak("Cancel");
+                if (!value)
+                {
+                    if(Service.Configuration.AutoSayingOut) CustomCombo.Speak("Cancel");
+                    _stateString = "Off";
+                    UpdateToast();
+                }
             }
         }
     }
@@ -53,13 +62,16 @@ internal sealed class IconReplacer : IDisposable
         get => _attackBig;
         set
         {
-            CustomCombo.Speak(value ? "Attack Big" : "Attack Small");
+            string speak = value ? "Big" : "Small";
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Attack " + speak);
+            _stateString = speak;
             AutoTarget = true;
             AutoAttack = true;
             if (_attackBig != value)
             {
                 _attackBig = value;
             }
+            UpdateToast();
         }
     }
     private static bool _autoTarget = true;
@@ -68,26 +80,33 @@ internal sealed class IconReplacer : IDisposable
         get => _autoTarget;
         set
         {
-            if(!value) CustomCombo.Speak("Manual");
-
+            if (!value) 
+            {
+                if(Service.Configuration.AutoSayingOut) CustomCombo.Speak("Manual");
+                _stateString = "Manual";
+                UpdateToast();
+            }
             if (_autoTarget != value)
             {
                 _autoTarget = value;
             }
         }
     }
-    internal static bool LimitBreak { get; private set; } = false;
-    internal static void StartLimitBreak()
-    {
-        bool last = LimitBreak;
-        ResetSpecial(last);
-        if (!last)
-        {
-            _specialStateStopwatch.Start();
-            CustomCombo.Speak("Start Limit Break");
-            LimitBreak = true;
-        }
-    }
+    //internal static bool LimitBreak { get; private set; } = false;
+    //internal static void StartLimitBreak()
+    //{
+    //    bool last = LimitBreak;
+    //    ResetSpecial(last);
+    //    if (!last)
+    //    {
+    //        _specialStateStopwatch.Start();
+    //        if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Limit Break");
+    //        _specialString = "Limit Break";
+    //        LimitBreak = true;
+    //        UpdateToast();
+
+    //    }
+    //}
     internal static bool HealArea { get; private set; } = false;
     internal static void StartHealArea()
     {
@@ -96,8 +115,11 @@ internal sealed class IconReplacer : IDisposable
         if (!last)
         {
             _specialStateStopwatch.Start();
-            CustomCombo.Speak("Start Heal Area");
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Heal Area");
+            _specialString = "Heal Area";
             HealArea = true;
+            UpdateToast();
+
         }
     }
     internal static bool HealSingle { get; private set; } = false;
@@ -108,8 +130,11 @@ internal sealed class IconReplacer : IDisposable
         if (!last)
         {
             _specialStateStopwatch.Start();
-            CustomCombo.Speak("Start Heal Single");
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Heal Single");
+            _specialString = "Heal Single";
             HealSingle = true;
+            UpdateToast();
+
         }
     }
     internal static bool DefenseArea { get; private set; } = false;
@@ -120,8 +145,11 @@ internal sealed class IconReplacer : IDisposable
         if (!last)
         {
             _specialStateStopwatch.Start();
-            CustomCombo.Speak("Start Defense Area");
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Defense Area");
+            _specialString = "Defense Area";
             DefenseArea = true;
+            UpdateToast();
+
         }
     }
     internal static bool DefenseSingle { get; private set; } = false;
@@ -132,8 +160,11 @@ internal sealed class IconReplacer : IDisposable
         if (!last)
         {
             _specialStateStopwatch.Start();
-            CustomCombo.Speak("Start Defense Single");
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Defense Single");
+            _specialString = "Defense Single";
             DefenseSingle = true;
+            UpdateToast();
+
         }
     }
     internal static bool EsunaOrShield { get; private set; } = false;
@@ -145,8 +176,12 @@ internal sealed class IconReplacer : IDisposable
         {
             _specialStateStopwatch.Start();
             Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
-            CustomCombo.Speak("Start " + (role == Role.防护 ? "Shield" : "Esuna"));
+            string speak = role == Role.防护 ? "Shield" : "Esuna";
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start " + speak);
+            _specialString = speak;
             EsunaOrShield = true;
+            UpdateToast();
+
         }
     }
     internal static bool RaiseOrShirk { get; private set; } = false;
@@ -158,20 +193,30 @@ internal sealed class IconReplacer : IDisposable
         {
             _specialStateStopwatch.Start();
             Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
-            CustomCombo.Speak("Start " + (role == Role.防护 ? "Shirk" : "Raise"));
+            string speak = role == Role.防护 ? "Shirk" : "Raise";
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start " + speak);
+            _specialString = speak;
+
             RaiseOrShirk = true;
+            UpdateToast();
+
         }
     }
-    internal static bool Break { get; private set; } = false;
-    internal static void StartBreak()
+    internal static bool BreakorProvoke { get; private set; } = false;
+    internal static void StartBreakOrProvoke()
     {
-        bool last = Break;
+        bool last = BreakorProvoke;
         ResetSpecial(last);
         if (!last)
         {
             _specialStateStopwatch.Start();
-            CustomCombo.Speak("Start Break");
-            Break = true;
+            Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
+            string speak = role == Role.防护 ? "Provoke" : "Break";
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start " + speak);
+            _specialString = speak;
+            BreakorProvoke = true;
+            UpdateToast();
+
         }
     }
     internal static bool AntiRepulsion { get; private set; } = false;
@@ -182,8 +227,11 @@ internal sealed class IconReplacer : IDisposable
         if (!last)
         {
             _specialStateStopwatch.Start();
-            CustomCombo.Speak("Start Anti repulsion");
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Anti repulsion");
+            _specialString = "Anti repulsion";
             AntiRepulsion = true;
+            UpdateToast();
+
         }
     }
 
@@ -195,19 +243,28 @@ internal sealed class IconReplacer : IDisposable
         if (!last)
         {
             _specialStateStopwatch.Start();
-            CustomCombo.Speak("Start Move");
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Move");
+            _specialString = "Move";
             Move = true;
+            UpdateToast();
         }
+    }
+
+    private static void UpdateToast()
+    {
+        if (!Service.Configuration.UseToast) return;
+
+        Service.ToastGui.ShowQuest(StateString);
     }
 
     internal static void ResetSpecial(bool sayout)
     {
         _specialStateStopwatch.Stop();
         _specialStateStopwatch.Reset();
-        HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = Break = LimitBreak
+        HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = BreakorProvoke
             = AntiRepulsion = Move = false;
-        if(sayout)CustomCombo.Speak("End Special");
-
+        if(sayout && Service.Configuration.AutoSayingOut) CustomCombo.Speak("End Special");
+        _specialString = string.Empty;
     }
 
     private static SortedList<string, CustomCombo[]> _customCombosDict;

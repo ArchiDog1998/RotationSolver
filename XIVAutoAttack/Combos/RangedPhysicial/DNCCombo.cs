@@ -245,7 +245,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         if (Actions.FanDance3.ShouldUseAction(out act, mustUse: true)) return true;
 
         //ÉÈÎè
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Devilment) || JobGauge.Feathers > 3)
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Devilment) || JobGauge.Feathers > 3 || Service.ClientState.LocalPlayer.Level < 70)
         {
             if (Actions.FanDance2.ShouldUseAction(out act)) return true;
             if (Actions.FanDance.ShouldUseAction(out act)) return true;

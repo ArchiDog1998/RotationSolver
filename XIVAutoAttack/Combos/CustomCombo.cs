@@ -70,23 +70,13 @@ public abstract class CustomCombo
             {
                 ChoiceFriend = (tars) =>
                 {
-                    HashSet<BattleChara> dying = new(tars.Length);
-                    HashSet<BattleChara> weaken = new(tars.Length);
-                    foreach (var p in tars)
+                    if (TargetHelper.DyingPeople.Length > 0)
                     {
-                        foreach (var status in p.StatusList)
-                        {
-                            if (status.StatusId == ObjectStatus.Doom) dying.Add(p);
-                            if (status.GameData.CanDispel) weaken.Add(p);
-                        }
+                        return TargetHelper.DyingPeople.OrderBy(b => BaseAction.DistanceToPlayer(b)).First();
                     }
-                    if (dying.Count > 0)
+                    else if (TargetHelper.WeakenPeople.Length > 0)
                     {
-                        return dying.OrderBy(b => BaseAction.DistanceToPlayer(b)).First();
-                    }
-                    else if (weaken.Count > 0)
-                    {
-                        return weaken.OrderBy(b => BaseAction.DistanceToPlayer(b)).First();
+                        return TargetHelper.WeakenPeople.OrderBy(b => BaseAction.DistanceToPlayer(b)).First();
                     }
                     return null;
                 },
@@ -233,7 +223,7 @@ public abstract class CustomCombo
 
     protected virtual bool CanHealSingleAbility => TargetHelper.CanHealSingleAbility;
     protected virtual bool CanHealSingleSpell => TargetHelper.CanHealSingleSpell;
-    protected bool SettingBreak => IconReplacer.Break || Service.Configuration.AutoBreak;
+    protected bool SettingBreak => IconReplacer.BreakorProvoke || Service.Configuration.AutoBreak;
 
     /// <summary>
     /// Only one feature can set it to true!
@@ -359,9 +349,6 @@ public abstract class CustomCombo
 
     private BaseAction GCD(uint lastComboActionID, byte abilityRemain)
     {
-        //∑≈LB
-        //if(IconReplacer.LimitBreak && GeneralActions.LimitBreak.ShouldUseAction(out BaseAction action)) return action;
-
         if (EmergercyGCD(out BaseAction act, abilityRemain)) return act;
         if (IconReplacer.Move && MoveGCD(lastComboActionID, out act)) return act;
         if (TargetHelper.HPNotFull)
@@ -488,13 +475,13 @@ public abstract class CustomCombo
         {
             if(role == Role.∑¿ª§ && HaveShield)
             {
-                var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets, out bool haveTargetOnme).Length > 0;
+                var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets, out bool haveTargetOnme);
                 if (!IsMoving && haveTargetOnme && Service.Configuration.AutoDefenseForTank)
                 {
                     //∑¿Œ¿
                     if (DefenceSingleAbility(abilityRemain, out act)) return true;
                 }
-                if (HaveShield && haveTargets)
+                if (HaveShield && (haveTargets != TargetHelper.HostileTargets || IconReplacer.BreakorProvoke))
                 {
                     //ÃÙ–∆
                     if (GeneralActions.Provoke.ShouldUseAction(out act, mustUse: true)) return true;

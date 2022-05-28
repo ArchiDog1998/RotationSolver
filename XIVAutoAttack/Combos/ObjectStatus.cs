@@ -410,6 +410,40 @@ namespace XIVComboPlus.Combos
             OgiNamikiriReady = 2959,
 
             //彼岸花
-            Higanbana = 1228;
+            Higanbana = 1228,
+
+            //不能使用能力技
+            Amnesia = 5,
+
+            //不能干活
+            Stun = 2,
+            Stun2 = 1343,
+            Sleep = 3,
+            Sleep2 = 926,
+            Sleep3 = 1348,
+            Pacification = 6,
+            Pacification2 = 620,
+            Silence = 7,
+            Silence2 = 1347,
+
+            //m慢
+            Slow = 9,
+            Slow2 = 10,
+            Slow3 = 193,
+            Slow4 = 561,
+            Slow5 = 1346,
+
+
+            //打不中！
+            Blind = 15,
+            Blind2 = 564,
+            Blind3 = 1345,
+
+            //麻痹
+            Paralysis = 17,
+            Paralysis2 = 482,
+
+            //噩梦
+            Nightmare = 423;
     }
 }

@@ -122,6 +122,29 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
+                    bool autoSayingOut = Service.Configuration.AutoSayingOut;
+                    if (ImGui.Checkbox("状态变化时喊出", ref autoSayingOut))
+                    {
+                        Service.Configuration.AutoSayingOut = autoSayingOut;
+                        Service.Configuration.Save();
+                    }
+
+                    bool useDtr = Service.Configuration.UseDtr;
+                    if (ImGui.Checkbox("状态显示在系统信息上", ref useDtr))
+                    {
+                        Service.Configuration.UseDtr = useDtr;
+                        Service.Configuration.Save();
+                    }
+
+                    bool useToast = Service.Configuration.UseToast;
+                    if (ImGui.Checkbox("状态显示在屏幕中央", ref useToast))
+                    {
+                        Service.Configuration.UseToast = useToast;
+                        Service.Configuration.Save();
+                    }
+
+                    ImGui.Separator();
+
                     bool autoDefenseforTank = Service.Configuration.AutoDefenseForTank;
                     if (ImGui.Checkbox("T自动上减伤", ref autoDefenseforTank))
                     {
@@ -137,7 +160,7 @@ internal class ConfigWindow : Window
                     }
 
                     bool isAllTargetAsHostile = Service.Configuration.AllTargeAsHostile;
-                    if (ImGui.Checkbox("是否设定所有可以攻击的目标均为敌对目标", ref isAllTargetAsHostile))
+                    if (ImGui.Checkbox("所有可以攻击的目标均为敌对目标", ref isAllTargetAsHostile))
                     {
                         Service.Configuration.AllTargeAsHostile = isAllTargetAsHostile;
                         Service.Configuration.Save();
@@ -310,7 +333,7 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
                     ImGui.Text("/aauto AntiRepulsion 表示开启一段防击退的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto Break 表示开启一段爆发的窗口期。");
+                    ImGui.Text("/aauto BreakProvoke 表示开启一段爆发或挑衅的窗口期。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AttackBig 开始进攻，进攻对象为HitBox最大的。");
                     ImGui.Separator();
