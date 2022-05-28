@@ -74,6 +74,9 @@ namespace XIVComboPlus.Combos
             //死亡宣告，可以被解除的！
             Doom = 910,
 
+            //神圣领域
+            HallowedGround = 82,
+
             //死斗
             Holmgang = 409,
 

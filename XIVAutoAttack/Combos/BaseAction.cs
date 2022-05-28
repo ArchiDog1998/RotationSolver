@@ -232,9 +232,18 @@ namespace XIVComboPlus.Combos
 
             if (Action.TargetArea)
             {
-                var tars = GetMostObjectInRadius(_isFriendly ? TargetHelper.PartyMembers : TargetHelper.HostileTargets, range, Action.EffectRange, _isFriendly, mustUse)
-                    .OrderByDescending(p => (float)p.CurrentHp / p.MaxHp);
-                Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
+                if(Action.EffectRange == 0)
+                {
+                    BattleChara[] availableCharas = TargetHelper.PartyMembers.Union(TargetHelper.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+
+                    Target = FindMoveTarget(availableCharas);
+                }
+                else
+                {
+                    var tars = GetMostObjectInRadius(_isFriendly ? TargetHelper.PartyMembers : TargetHelper.HostileTargets, range, Action.EffectRange, _isFriendly, mustUse)
+                        .OrderByDescending(p => (float)p.CurrentHp / p.MaxHp);
+                    Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
+                }
                 _position = Target.Position;
                 return true;
             }
@@ -379,9 +388,11 @@ namespace XIVComboPlus.Combos
             //返回在打队友的讨厌鬼！
             return targets.ToArray();
         }
-        internal static float DistanceToPlayer(GameObject obj)
+        internal static float DistanceToPlayer(GameObject obj, bool minusTargetHitbox = false)
         {
-            return Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
+            var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
+            if (minusTargetHitbox) distance -= obj.HitboxRadius;
+            return distance;
         }
         internal static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
         {

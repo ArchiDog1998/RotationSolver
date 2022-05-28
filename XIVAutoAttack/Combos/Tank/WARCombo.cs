@@ -155,6 +155,15 @@ internal class WARCombo : CustomComboJob<WARGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
+        //¸ã¸ã¹¥»÷
+        if (Actions.PrimalRend.ShouldUseAction(out act) && !IsMoving)
+        {
+            if (BaseAction.DistanceToPlayer(Actions.PrimalRend.Target, true) < 2)
+            {
+                return true;
+            }
+        }
+
         //ÊÞ»êÊä³ö
         if (JobGauge.BeastGauge >= 50 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease))
         {
@@ -244,7 +253,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.Onslaught.ShouldUseAction(out act) && !IsMoving)
         {
-            if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, Actions.Onslaught.Target.Position) - Actions.Onslaught.Target.HitboxRadius < 1)
+            if (BaseAction.DistanceToPlayer(Actions.Onslaught.Target, true) < 1)
             {
                 return true;
             }

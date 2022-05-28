@@ -33,7 +33,6 @@ public abstract class CustomCombo
             return false;
         }
     }
-
     #region Job
     internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
     internal abstract uint JobID { get; }
@@ -120,11 +119,11 @@ public abstract class CustomCombo
             ArmsLength = new BaseAction(7548, shouldEndSpecial: true),
 
             //铁壁
-            Rampart = new BaseAction(7531)
+            Rampart = new BaseAction(7531, true)
             {
                 BuffsProvide = new ushort[]
                 {
-                    ObjectStatus.Defiance, ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill,
+                    ObjectStatus.Holmgang, ObjectStatus.WalkingDead, ObjectStatus.Superbolide, ObjectStatus.HallowedGround,
                     ObjectStatus.Rampart1, ObjectStatus.Rampart2, ObjectStatus.Rampart3,
                     //原初的直觉和血气
                     ObjectStatus.RawIntuition, ObjectStatus.Bloodwhetting,
@@ -368,6 +367,12 @@ public abstract class CustomCombo
     private bool Ability(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
         if (Service.Configuration.OnlyGCD)
+        {
+            act = null;
+            return false;
+        }
+
+        if(IconReplacer.NoOneAbility && abilityRemain == 1)
         {
             act = null;
             return false;

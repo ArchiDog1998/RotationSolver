@@ -34,7 +34,7 @@ internal sealed class IconReplacer : IDisposable
     private static Stopwatch _fastClickStopwatch = new Stopwatch();
 
     private static Stopwatch _specialStateStopwatch = new Stopwatch();
-
+    internal static bool NoOneAbility { get; set; } = false;
     internal static uint LastAction { get; private set; } = 0;
 
     private static bool _autoAttack = false;
@@ -322,7 +322,7 @@ internal sealed class IconReplacer : IDisposable
     private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
     {
         var a = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
-        Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
+        //Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
         return getActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
     }
 #endif
@@ -392,9 +392,16 @@ internal sealed class IconReplacer : IDisposable
 
             if(!isGCD && newAction.IsRealGCD) return;
 
-
+            if  (TargetHelper.AbilityRemainCount == 1 && NoOneAbility)
+            {
+                NoOneAbility = false;
 #if DEBUG
-            //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + newAction.Action.Name + TargetHelper.AbilityRemainCount.ToString());
+                Service.ChatGui.Print("Stoped!");
+#endif
+                return;
+            }
+#if DEBUG
+            Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + newAction.Action.Name + TargetHelper.AbilityRemainCount.ToString());
 #endif
             if (newAction.UseAction())
             {

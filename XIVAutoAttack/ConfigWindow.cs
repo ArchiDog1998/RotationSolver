@@ -106,13 +106,8 @@ internal class ConfigWindow : Window
                 //        ImGui.Text(item.GameData.Name + item.StatusId);
                 //    }
                 //}
-                string show = "";
-                foreach (var item in NINCombo._ninjutsus)
-                {
-                    show += item.ToString() + ", ";
-                }
-                ImGui.Text(show);
-                if(NINCombo._ninactionAim != null) ImGui.Text(NINCombo._ninactionAim.Action.Name.ToString());
+
+                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted].ToString());
 
 
 #endif

@@ -217,7 +217,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.Intervene.ShouldUseAction(out act) && ! IsMoving)
         {
-            if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, Actions.Intervene.Target.Position) - Actions.Intervene.Target.HitboxRadius < 1)
+            if (BaseAction.DistanceToPlayer(Actions.Intervene.Target, true) < 1)
             {
                 return true;
             }

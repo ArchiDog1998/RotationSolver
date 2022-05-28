@@ -194,7 +194,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.RoughDivide.ShouldUseAction(out act) && !IsMoving)
         {
-            if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, Actions.RoughDivide.Target.Position) - Actions.RoughDivide.Target.HitboxRadius < 1)
+            if (BaseAction.DistanceToPlayer(Actions.RoughDivide.Target, true) < 1)
             {
                 return true;
             }

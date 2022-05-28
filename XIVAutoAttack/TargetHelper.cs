@@ -65,6 +65,7 @@ namespace XIVComboPlus
         internal static bool HPNotFull { get; private set; } = false;
         internal static bool InBattle { get; private set; } = false;
 
+
         internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
         internal static MacroItem DoingMacro;
 
@@ -117,13 +118,7 @@ namespace XIVComboPlus
             AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
 
             UpdateTargets();
-
-            if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
-
-            if (WeaponRemain < 0.1) Service.IconReplacer.DoAnAction(true);
-            //要超出GCD了，那就不放技能了。
-            else if (WeaponRemain < Service.Configuration.WeaponInterval || Service.ClientState.LocalPlayer.IsCasting) return;
-            if (weaponelapsed % Service.Configuration.WeaponInterval < 0.1 && WeaponTotal - WeaponRemain > 0.5) Service.IconReplacer.DoAnAction(false);
+            DoAction(weaponelapsed);
 
             #region 宏
             //如果没有有正在运行的宏，弄一个出来
@@ -156,7 +151,22 @@ namespace XIVComboPlus
 #endregion
         }
 
+        private static void DoAction(float weaponelapsed)
+        {
+            if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted]) return;
+            if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
 
+            if (WeaponRemain < 0.1) Service.IconReplacer.DoAnAction(true);
+            //要超出GCD了，那就不放技能了。
+            else if (WeaponRemain < Service.Configuration.WeaponInterval || Service.ClientState.LocalPlayer.IsCasting) return;
+
+            if (weaponelapsed % Service.Configuration.WeaponInterval < 0.1 && WeaponTotal - WeaponRemain > 0.5)
+            {
+
+                Service.IconReplacer.DoAnAction(false);
+            }
+
+        }
         private static void UpdateTargets()
         {
 
