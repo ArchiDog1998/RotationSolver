@@ -180,13 +180,18 @@ internal class WARCombo : CustomComboJob<WARGauge>
 
         return false;
     }
+    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    {
+        //死斗 如果谢不够了。
+        if (Actions.Holmgang.ShouldUseAction(out act)) return true;
+        return false;
+    }
+
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
     {
         if (abilityRemain == 1)
         {
-            //死斗 如果谢不够了。
-            if (Actions.Holmgang.ShouldUseAction(out act)) return true;
 
             //原初的直觉（减伤10%）
             if (Actions.RawIntuition.ShouldUseAction(out act)) return true;

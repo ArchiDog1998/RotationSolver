@@ -328,7 +328,8 @@ public abstract class CustomCombo
                 if (Service.Configuration.SayingLocation) Speak(location);
                 if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                 {
-                    IconId = GCDaction.Action.Icon,
+                    IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
+                        Service.IconReplacer.OriginalHook(GCDaction.ActionID)).Icon,
                 });
             }
 

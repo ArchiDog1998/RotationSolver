@@ -372,6 +372,10 @@ internal class NINCombo : CustomComboJob<NINGauge>
             if (IconReplacer.Move && MoveAbility(1, out act)) return true;
             if (Actions.ThrowingDagger.ShouldUseAction(out act)) return true;
         }
+        else
+        {
+            ClearNinjutsus();
+        }
 
         act = null;
         return false;

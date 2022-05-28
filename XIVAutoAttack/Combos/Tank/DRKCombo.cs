@@ -183,11 +183,16 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         return false;
     }
 
+    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    {
+        if (Actions.LivingDead.ShouldUseAction(out act)) return true;
+        return false;
+    }
+
     private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
     {
         if (abilityRemain == 1)
         {
-            if (Actions.LivingDead.ShouldUseAction(out act)) return true;
 
             //减伤10%
             if (Actions.Oblation.ShouldUseAction(out act)) return true;

@@ -171,6 +171,13 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         return false;
     }
 
+    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    {
+        //神圣领域 如果谢不够了。
+        if (Actions.Superbolide.ShouldUseAction(out act)) return true;
+        return false;
+    }
+
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
         if (Actions.JugularRip.ShouldUseAction(out act)) return true;
@@ -211,8 +218,6 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
     {
         if (abilityRemain == 1)
         {
-            //神圣领域 如果谢不够了。
-            if (Actions.Superbolide.ShouldUseAction(out act)) return true;
 
             //减伤10%）
             if (Actions.HeartofStone.ShouldUseAction(out act)) return true;

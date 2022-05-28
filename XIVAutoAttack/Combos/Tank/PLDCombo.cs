@@ -225,15 +225,16 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
 
         return false;
     }
-
+    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    {
+        //神圣领域 如果谢不够了。
+        if (Actions.HallowedGround.ShouldUseAction(out act)) return true;
+        return false;
+    }
     private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
     {
         if (abilityRemain == 1)
         {
-            //神圣领域 如果谢不够了。
-            if (Actions.HallowedGround.ShouldUseAction(out act)) return true;
-
-
 
             //预警（减伤30%）
             if (Actions.Sentinel.ShouldUseAction(out act)) return true;
