@@ -42,20 +42,17 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             Higanbana = new BaseAction(7489)
             {
                 TargetStatus = new ushort[] {ObjectStatus.Higanbana},
-                OtherCheck = b => SenCount > 0,
             },
 
             //天下五剑
             TenkaGoken = new BaseAction(7488)
             {
-                OtherCheck = b => SenCount > 1,
                 AfterUse = () => _shouldUseGoken = true,
             },
 
             //纷乱雪月花
             MidareSetsugekka = new BaseAction(7487)
             {
-                OtherCheck = b => SenCount > 2,
                 AfterUse = () => _shouldUseSetsugekka = true,
             },
 
@@ -72,7 +69,10 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             Oka = new BaseAction(7485),
 
             //明镜止水
-            MeikyoShisui = new BaseAction(7499),
+            MeikyoShisui = new BaseAction(7499)
+            {
+                BuffsProvide = new ushort[] {ObjectStatus.MeikyoShisui},
+            },
 
             //雪风
             Yukikaze = new BaseAction(7480),
@@ -139,9 +139,15 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
         if (Actions.OgiNamikiri.ShouldUseAction(out act, mustUse:true)) return true;
-        if (Actions.TenkaGoken.ShouldUseAction(out act)) return true;
-        if (Actions.Higanbana.ShouldUseAction(out act)) return true;
-        if (Actions.MidareSetsugekka.ShouldUseAction(out act)) return true;
+        if (Actions.TenkaGoken.ShouldUseAction(out act))
+        {
+            if (SenCount > 1) return true;
+        }
+        else if(SenCount > 0)
+        {
+            if (SenCount == 3 && Actions.MidareSetsugekka.ShouldUseAction(out act)) return true;
+            if (Actions.Higanbana.ShouldUseAction(out act)) return true;
+        }
 
 
         //123
@@ -153,19 +159,19 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
         }
         if (!JobGauge.HasGetsu)
         {
-            if (Actions.Mangetsu.ShouldUseAction(out act, lastComboActionID)) return true;
-            if (Actions.Gekko.ShouldUseAction(out act, lastComboActionID, mustUse: haveMeikyoShisui)) return true;
+            if (Actions.Mangetsu.ShouldUseAction(out act, lastComboActionID, empty: haveMeikyoShisui)) return true;
+            if (Actions.Gekko.ShouldUseAction(out act, lastComboActionID, empty: haveMeikyoShisui)) return true;
             if (Actions.Jinpu.ShouldUseAction(out act, lastComboActionID)) return true;
         }
         if (!JobGauge.HasKa)
         {
-            if (Actions.Oka.ShouldUseAction(out act, lastComboActionID)) return true;
-            if (Actions.Kasha.ShouldUseAction(out act, lastComboActionID, mustUse: haveMeikyoShisui)) return true;
+            if (Actions.Oka.ShouldUseAction(out act, lastComboActionID, empty: haveMeikyoShisui)) return true;
+            if (Actions.Kasha.ShouldUseAction(out act, lastComboActionID, empty: haveMeikyoShisui)) return true;
             if (Actions.Shifu.ShouldUseAction(out act, lastComboActionID)) return true;
         }
         if (!JobGauge.HasSetsu)
         {
-            if (Actions.Yukikaze.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Yukikaze.ShouldUseAction(out act, lastComboActionID, empty: haveMeikyoShisui)) return true;
         }
         if (Actions.Fuga.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.Hakaze.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -188,7 +194,7 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
         if (Actions.KaeshiNamikiri.ShouldUseAction(out act)) return true;
-        if (Actions.KaeshiNamikiri.ShouldUseAction(out _, mustUse:true, Empty: true))
+        if (Actions.KaeshiNamikiri.ShouldUseAction(out _, mustUse:true, empty: true))
         {
             if (Actions.KaeshiGoken.ShouldUseAction(out act)) return true;
             if (Actions.KaeshiSetsugekka.ShouldUseAction(out act)) return true;
@@ -222,10 +228,8 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
-        if(nextGCD.ActionID == Actions.Hakaze.ActionID && JobGauge.HasSetsu && (!JobGauge.HasGetsu || !JobGauge.HasKa))
-        {
-            if (Actions.MeikyoShisui.ShouldUseAction(out act)) return true;
-        }
+        if (HaveTargetAngle && Actions.MeikyoShisui.ShouldUseAction(out act, empty:true)) return true;
+
         if(nextGCD.ActionID == Actions.TenkaGoken.ActionID || nextGCD.ActionID == Actions.Higanbana.ActionID || nextGCD.ActionID == Actions.MidareSetsugekka.ActionID)
         {
             if (JobGauge.Kenki >= 20 && Actions.HissatsuKaiten.ShouldUseAction(out act)) return true;

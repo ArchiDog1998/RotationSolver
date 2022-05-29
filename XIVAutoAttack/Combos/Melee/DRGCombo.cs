@@ -126,7 +126,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
     {
         if(abilityRemain > 1)
         {
-            if (Actions.SpineshatterDive.ShouldUseAction(out act, Empty: true)) return true;
+            if (Actions.SpineshatterDive.ShouldUseAction(out act, empty: true)) return true;
             if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true)) return true;
         }
         act = null;
@@ -136,7 +136,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
     {
         if (nextGCD.ActionID == Actions.FullThrust.ActionID || nextGCD.ActionID == Actions.CoerthanTorment.ActionID || (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.WheelingThrust))
         {
-            if (abilityRemain == 1 && Actions.LifeSurge.ShouldUseAction(out act, Empty: true)) return true;
+            if (abilityRemain == 1 && Actions.LifeSurge.ShouldUseAction(out act, empty: true)) return true;
         }
 
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
@@ -173,7 +173,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             if (Actions.MirageDive.ShouldUseAction(out act) && Vector3.Distance(LocalPlayer.Position, Actions.MirageDive.Target.Position) - Actions.MirageDive.Target.HitboxRadius < 2) return true;
 
             if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true) && BaseAction.DistanceToPlayer(Actions.DragonfireDive.Target, true) < 2) return true;
-            if (Actions.SpineshatterDive.ShouldUseAction(out act, Empty: true) && BaseAction.DistanceToPlayer(Actions.SpineshatterDive.Target, true) < 2) return true;
+            if (Actions.SpineshatterDive.ShouldUseAction(out act, empty: true) && BaseAction.DistanceToPlayer(Actions.SpineshatterDive.Target, true) < 2) return true;
         }
 
 

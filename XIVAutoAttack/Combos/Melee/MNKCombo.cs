@@ -94,7 +94,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             },
 
             //金刚极意 盾
-            RiddleofEarth = new BaseAction(7394),
+            RiddleofEarth = new BaseAction(7394, shouldEndSpecial:true),
 
             //疾风极意
             RiddleofWind = new BaseAction(25766);
@@ -116,7 +116,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
     {
-        if (Actions.RiddleofEarth.ShouldUseAction(out act)) return true;
+        if (Actions.RiddleofEarth.ShouldUseAction(out act, empty:true)) return true;
         return false;
     }
 
@@ -128,7 +128,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
 
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
-        if (Actions.Thunderclap.ShouldUseAction(out act, Empty:true)) return true;
+        if (Actions.Thunderclap.ShouldUseAction(out act, empty:true)) return true;
         return false;
     }
 
@@ -249,12 +249,12 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
                 var demo = BaseAction.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
                 if (dis.Length != 0 && dis[0] > 6 && ((demo.Length != 0 && demo[0] > 6) || !Actions.PerfectBalance.IsCoolDown))
                 {
-                    if (Actions.PerfectBalance.ShouldUseAction(out act, Empty:true)) return true;
+                    if (Actions.PerfectBalance.ShouldUseAction(out act, empty:true)) return true;
                 }
             }
             else
             {
-                if (Actions.PerfectBalance.ShouldUseAction(out act, Empty: true)) return true;
+                if (Actions.PerfectBalance.ShouldUseAction(out act, empty: true)) return true;
             }
 
         }

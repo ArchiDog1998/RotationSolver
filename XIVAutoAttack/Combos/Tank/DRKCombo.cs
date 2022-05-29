@@ -215,7 +215,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
 
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
-        if (Actions.Plunge.ShouldUseAction(out act, Empty:true)) return true;
+        if (Actions.Plunge.ShouldUseAction(out act, empty:true)) return true;
 
         return false;
     }

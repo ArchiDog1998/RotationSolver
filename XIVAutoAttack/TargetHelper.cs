@@ -4,6 +4,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 using System;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 using System.Threading;
 using XIVComboPlus.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -78,16 +80,8 @@ namespace XIVComboPlus
             _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
         }
 
-        //private static uint lastMP = 0;
-        //private static long lasttime = 0;
-        //private static Stopwatch stop = new Stopwatch();
-        //internal static long Time = 0;
-        //internal static List<long> times = new List<long>();
-        //internal static long AnotherTime = 0;
-
         internal unsafe static void Framework_Update(Framework framework)
         {
-
             //Update State.
             if (Service.Configuration.UseDtr && IconReplacer.StateString != null)
             {
@@ -96,7 +90,10 @@ namespace XIVComboPlus
                     XIVAutoAttackPlugin.dtrEntry = Service.DtrBar.Get("Auto Attack");
                 }
                 XIVAutoAttackPlugin.dtrEntry.Shown = true;
-                XIVAutoAttackPlugin.dtrEntry.Text = (SeString)"Auto Attack: " + IconReplacer.StateString;
+                XIVAutoAttackPlugin.dtrEntry.Text = new SeString(
+                    new IconPayload(BitmapFontIcon.DPS),
+                    new TextPayload(IconReplacer.StateString)
+                    );
             }
             else if (XIVAutoAttackPlugin.dtrEntry != null)
             {

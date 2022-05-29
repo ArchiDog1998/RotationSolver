@@ -239,10 +239,10 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         byte level = Service.ClientState.LocalPlayer.Level;
 
         //À¿ÕˆΩ£”Í
-        if (Actions.RainofDeath.ShouldUseAction(out act, Empty: level == 90 ? IsBreaking : true)) return true;
+        if (Actions.RainofDeath.ShouldUseAction(out act, empty: level == 90 ? IsBreaking : true)) return true;
 
         // ß—™º˝
-        if (Actions.Bloodletter.ShouldUseAction(out act, Empty: level == 90 ? IsBreaking : true)) return true;
+        if (Actions.Bloodletter.ShouldUseAction(out act, empty: level == 90 ? IsBreaking : true)) return true;
 
         //π‚“ı…Òµƒ¿Ò‘ﬁø≠∏Ë ºı…ŸDebuff
         if (Actions.WardensPaean.ShouldUseAction(out act)) return true;

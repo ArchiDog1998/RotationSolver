@@ -253,11 +253,11 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
         //如果当前还没有皇冠卡牌，那就抽一张
-        if (Actions.MinorArcana.ShouldUseAction(out act, Empty: true)) return true;
+        if (Actions.MinorArcana.ShouldUseAction(out act, empty: true)) return true;
 
         //如果当前还没有卡牌，那就抽一张
         if (JobGauge.DrawnCard == CardType.NONE
-            && Actions.Draw.ShouldUseAction(out act, Empty: true)) return true;
+            && Actions.Draw.ShouldUseAction(out act, empty: true)) return true;
 
         //光速，创造更多的内插能力技的机会。
         if (Actions.Lightspeed.ShouldUseAction(out act)) return true;
@@ -320,7 +320,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         //常规奶
         if (Actions.EssentialDignity.ShouldUseAction(out act)) return true;
         //带盾奶
-        if (Actions.CelestialIntersection.ShouldUseAction(out act, Empty: true)) return true;
+        if (Actions.CelestialIntersection.ShouldUseAction(out act, empty: true)) return true;
 
         return false;
     }

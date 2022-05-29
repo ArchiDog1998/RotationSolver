@@ -148,7 +148,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
         //Í»½ø
-        if (Actions.Onslaught.ShouldUseAction(out act, Empty: true)) return true;
+        if (Actions.Onslaught.ShouldUseAction(out act, empty: true)) return true;
         return false;
 
     }
@@ -230,7 +230,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //¿ñ±©
             if (!new BaseAction(7389).IsCoolDown && Actions.Berserk.ShouldUseAction(out act)) return true;
             //Õ½º¿
-            if (Actions.Infuriate.ShouldUseAction(out act, Empty: true)) return true;
+            if (Actions.Infuriate.ShouldUseAction(out act, empty: true)) return true;
         }
 
         if ((float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6)

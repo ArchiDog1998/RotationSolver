@@ -190,10 +190,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             },
 
             //进攻之探戈
-            Devilment = new BaseAction(16011, true)
-            {
-                BuffsNeed = new ushort[] { ObjectStatus.TechnicalFinish },
-            },
+            Devilment = new BaseAction(16011, true),
 
             //百花争艳
             Flourish = new BaseAction(16013)
@@ -235,10 +232,11 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         }
 
         //尝试爆发
-        if (Actions.Devilment.ShouldUseAction(out act, Empty: true)) return true;
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TechnicalFinish) 
+            && Actions.Devilment.ShouldUseAction(out act, empty: true)) return true;
 
         //百花
-        if (Actions.Flourish.ShouldUseAction(out act, Empty: true)) return true;
+        if (Actions.Flourish.ShouldUseAction(out act, empty: true)) return true;
 
         //扇舞·急
         if (Actions.FanDance4.ShouldUseAction(out act, mustUse: true)) return true;
@@ -263,22 +261,22 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
 
-        if (Actions.EnAvant.ShouldUseAction(out act, Empty: true)) return true;
+        if (Actions.EnAvant.ShouldUseAction(out act, empty: true)) return true;
         return false;
     }
 
     private protected override bool HealAreaAbility(byte abilityRemain, out BaseAction act)
     {
 
-        if (Actions.CuringWaltz.ShouldUseAction(out act, Empty: true)) return true;
-        if (Actions.Improvisation.ShouldUseAction(out act, Empty: true)) return true;
+        if (Actions.CuringWaltz.ShouldUseAction(out act, empty: true)) return true;
+        if (Actions.Improvisation.ShouldUseAction(out act, empty: true)) return true;
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
     {
 
-        if (Actions.ShieldSamba.ShouldUseAction(out act, Empty: true)) return true;
+        if (Actions.ShieldSamba.ShouldUseAction(out act, empty: true)) return true;
         return false;
     }
 
@@ -295,6 +293,13 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         if (AttackGCD(out act, BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Devilment), lastComboActionID)) return true;
 
         return false;
+    }
+    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    {
+        if (Service.ClientState.LocalPlayer.Level < Actions.TechnicalStep.Level
+            && Actions.Devilment.ShouldUseAction(out act, empty: true)) return true;
+
+        return base.BreakAbility(abilityRemain, out act);
     }
 
     private bool StepGCD(out BaseAction act)
