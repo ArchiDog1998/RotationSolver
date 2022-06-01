@@ -203,9 +203,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
-        //如果已经在爆发了，那继续！
-        if (CanBreak(lastComboActionID, out act)) return true;
-
+        act = null;
         if (JobGauge.ManaStacks == 3) return false;
 
         #region 常规输出
@@ -259,7 +257,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
     //    return false;
     //}
 
-    private static bool CanBreak(uint lastComboActionID, out BaseAction act)
+    private protected override bool EmergercyGCD(uint lastComboActionID, out BaseAction act)
     {
         byte level = Service.ClientState.LocalPlayer.Level;
         #region 远程三连
@@ -336,7 +334,6 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
                 return false;
             }
         }
-
         #endregion
 
         #region 开启爆发
@@ -350,9 +347,10 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         {
             if (JobGauge.BlackMana >= 50 && JobGauge.WhiteMana >= 50 && Actions.Riposte.ShouldUseAction(out act)) return true;
         }
-
         #endregion
+
+
+
         return false;
     }
-
 }

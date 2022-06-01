@@ -116,7 +116,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
     {
-        if (Actions.RiddleofEarth.ShouldUseAction(out act, empty:true)) return true;
+        if (Actions.RiddleofEarth.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
         return false;
     }
 
@@ -128,7 +128,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
 
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
-        if (Actions.Thunderclap.ShouldUseAction(out act, empty:true)) return true;
+        if (Actions.Thunderclap.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
         return false;
     }
 
@@ -249,12 +249,12 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
                 var demo = BaseAction.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
                 if (dis.Length != 0 && dis[0] > 6 && ((demo.Length != 0 && demo[0] > 6) || !Actions.PerfectBalance.IsCoolDown))
                 {
-                    if (Actions.PerfectBalance.ShouldUseAction(out act, empty:true)) return true;
+                    if (Actions.PerfectBalance.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
                 }
             }
             else
             {
-                if (Actions.PerfectBalance.ShouldUseAction(out act, empty: true)) return true;
+                if (Actions.PerfectBalance.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
             }
 
         }

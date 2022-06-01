@@ -168,25 +168,25 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             {
                 ChoiceFriend = Targets =>
                 {
-                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
+                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b.CurrentHp != 0 &&
                     b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
 
                     var targets = TargetHelper.GetJobCategory(Targets, Role.近战);
-                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+                    if (targets.Length > 0) return targets[0];
 
                     targets = TargetHelper.GetJobCategory(Targets, Role.远程);
-                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+                    if (targets.Length > 0) return targets[0];
 
                     targets = Targets;
-                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+                    if (targets.Length > 0) return targets[0];
 
                     return null;
                 },
-                BuffsProvide = new ushort[]
-                {
-                    ObjectStatus.ClosedPosition1,
-                    ObjectStatus.ClosedPosition2,
-                },
+                //BuffsProvide = new ushort[]
+                //{
+                //    ObjectStatus.ClosedPosition1,
+                //    ObjectStatus.ClosedPosition2,
+                //},
             },
 
             //进攻之探戈
@@ -220,23 +220,24 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         foreach (var friend in TargetHelper.PartyMembers)
         {
             var statuses = friend.StatusList.Select(status => status.StatusId);
-            if (statuses.Contains(ObjectStatus.ClosedPosition2))
+            if (statuses.Contains( ObjectStatus.ClosedPosition2))
             {
-                if (statuses.Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() > 0)
+                Actions.ClosedPosition.ShouldUseAction(out act);
+                if (Actions.ClosedPosition.Target != friend)
                 {
-                    Actions.ClosedPosition.ShouldUseAction(out act);
                     return true;
                 }
+
                 break;
             }
         }
 
         //尝试爆发
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TechnicalFinish) 
-            && Actions.Devilment.ShouldUseAction(out act, empty: true)) return true;
+            && Actions.Devilment.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         //百花
-        if (Actions.Flourish.ShouldUseAction(out act, empty: true)) return true;
+        if (Actions.Flourish.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         //扇舞·急
         if (Actions.FanDance4.ShouldUseAction(out act, mustUse: true)) return true;
@@ -249,40 +250,34 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             if (Actions.FanDance.ShouldUseAction(out act)) return true;
         }
 
-        //伤腿
-        if (GeneralActions.FootGraze.ShouldUseAction(out act)) return true;
-
-        //伤足
-        if (GeneralActions.LegGraze.ShouldUseAction(out act)) return true;
-
         return false;
     }
 
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
 
-        if (Actions.EnAvant.ShouldUseAction(out act, empty: true)) return true;
+        if (Actions.EnAvant.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
     private protected override bool HealAreaAbility(byte abilityRemain, out BaseAction act)
     {
 
-        if (Actions.CuringWaltz.ShouldUseAction(out act, empty: true)) return true;
-        if (Actions.Improvisation.ShouldUseAction(out act, empty: true)) return true;
+        if (Actions.CuringWaltz.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.Improvisation.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
     {
 
-        if (Actions.ShieldSamba.ShouldUseAction(out act, empty: true)) return true;
+        if (Actions.ShieldSamba.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
-        if (Actions.ClosedPosition.ShouldUseAction(out act)) return true;
+        if (!TargetHelper.InBattle && BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1) && Actions.ClosedPosition.ShouldUseAction(out act)) return true;
 
         if (SettingBreak)
         {
@@ -297,7 +292,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
     private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
     {
         if (Service.ClientState.LocalPlayer.Level < Actions.TechnicalStep.Level
-            && Actions.Devilment.ShouldUseAction(out act, empty: true)) return true;
+            && Actions.Devilment.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         return base.BreakAbility(abilityRemain, out act);
     }
@@ -332,7 +327,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
     {
         //提纳拉
         if (Actions.Tillana.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.StarfallDance.ShouldUseAction(out act)) return true;
+        if (Actions.StarfallDance.ShouldUseAction(out act, mustUse: true)) return true;
 
         if (!JobGauge.IsDancing)
         {
@@ -346,7 +341,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
         //剑舞
         if ((breaking || JobGauge.Esprit >= 75) &&
-            Actions.SaberDance.ShouldUseAction(out act)) return true;
+            Actions.SaberDance.ShouldUseAction(out act, mustUse:true)) return true;
 
         //标准舞步
 

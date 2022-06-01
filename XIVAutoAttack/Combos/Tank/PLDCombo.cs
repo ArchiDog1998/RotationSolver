@@ -172,7 +172,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
         //µ÷Í£
-        if (Actions.Intervene.ShouldUseAction(out act, empty:true)) return true;
+        if (Actions.Intervene.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
 
         return false;
     }

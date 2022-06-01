@@ -15,6 +15,9 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             //毁坏
             Ruin2 = new BaseAction(17870),
 
+            //毁坏
+            Broil = new BaseAction(3584),
+
             //朝日召唤
             SummonEos = new BaseAction(17215)
             {
@@ -154,6 +157,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         if (Actions.ArtofWar.ShouldUseAction(out act)) return true;
         //单体
         if (Actions.Bio.ShouldUseAction(out act)) return true;
+        if (Actions.Broil.ShouldUseAction(out act)) return true;
         if (Actions.Ruin2.ShouldUseAction(out act)) return true;
         if (Actions.Ruin.ShouldUseAction(out act)) return true;
 
@@ -232,6 +236,8 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
     {
+        if (Actions.Aetherpact.ShouldUseAction(out act) && JobGauge.FairyGauge >= 90) return true;
+
         if (Actions.Protraction.ShouldUseAction(out act)) return true;
 
         if (JobGauge.Aetherflow > 0)
@@ -246,7 +252,8 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
-        if(JobGauge.Aetherflow == 0)
+
+        if (JobGauge.Aetherflow == 0)
         {
             if (Actions.Aetherflow.ShouldUseAction(out act)) return true;
         }

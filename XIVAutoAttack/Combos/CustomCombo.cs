@@ -93,15 +93,15 @@ public abstract class CustomCombo
                 OtherCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000,
             },
 
-            //伤腿
-            LegGraze = new BaseAction(7554)
-            {
-                BuffsProvide = new ushort[]
-                {
-                    13, 564, 1345,
-                },
-                OtherCheck = b => TargetHelper.InBattle,
-            },
+            ////伤腿
+            //LegGraze = new BaseAction(7554)
+            //{
+            //    BuffsProvide = new ushort[]
+            //    {
+            //        13, 564, 1345,
+            //    },
+            //    OtherCheck = b => TargetHelper.InBattle,
+            //},
 
             //内丹
             SecondWind = new BaseAction(7541)
@@ -109,11 +109,11 @@ public abstract class CustomCombo
                 OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.2,
             },
 
-            //伤足
-            FootGraze = new BaseAction(7553)
-            {
-                OtherCheck = b => TargetHelper.InBattle,
-            },
+            ////伤足
+            //FootGraze = new BaseAction(7553)
+            //{
+            //    OtherCheck = b => TargetHelper.InBattle,
+            //},
 
             //亲疏自行
             ArmsLength = new BaseAction(7548, shouldEndSpecial: true),
@@ -350,7 +350,9 @@ public abstract class CustomCombo
 
     private BaseAction GCD(uint lastComboActionID, byte abilityRemain)
     {
-        if (EmergercyGCD(out BaseAction act, abilityRemain)) return act;
+        if (EmergercyGCD(lastComboActionID, out BaseAction act)) return act;
+
+        if (EsunaRaise(out act, abilityRemain)) return act;
         if (IconReplacer.Move && MoveGCD(lastComboActionID, out act)) return act;
         if (TargetHelper.HPNotFull)
         {
@@ -363,7 +365,39 @@ public abstract class CustomCombo
         if (GeneralGCD(lastComboActionID, out act)) return act;
         return null;
     }
+    private bool EsunaRaise(out BaseAction act, byte actabilityRemain)
+    {
+        if (Raise == null)
+        {
+            act = null;
+            return false;
+        }
+        //有某些非常危险的状态。
+        if ((IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0) || TargetHelper.DyingPeople.Length > 0)
+        {
+            if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗
+                && GeneralActions.Esuna.ShouldUseAction(out act, mustUse: true)) return true;
+        }
 
+        //有人死了，看看能不能救。
+        if (TargetHelper.DeathPeopleParty.Length > 0)
+        {
+            if (Service.ClientState.LocalPlayer.ClassJob.Id == 35)
+            {
+                if (HaveSwift && Raise.ShouldUseAction(out act)) return true;
+            }
+            else
+            {
+                if (IconReplacer.RaiseOrShirk || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
+                {
+                    if (Raise.ShouldUseAction(out act)) return true;
+                }
+            }
+        }
+
+        act = null;
+        return false;
+    }
     private bool Ability(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
         if (Service.Configuration.OnlyGCD)
@@ -563,45 +597,15 @@ public abstract class CustomCombo
         act = null; return false;
     }
     /// <summary>
-    /// 一些非常紧急的GCD战技，比如拉人什么的。优先级最高
+    /// 一些非常紧急的GCD战技，优先级最高
     /// </summary>
     /// <param name="level"></param>
     /// <param name="lastComboActionID"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private bool EmergercyGCD(out BaseAction act, byte actabilityRemain)
+    private protected virtual bool EmergercyGCD(uint lastComboActionID, out BaseAction act)
     {
-        if (Raise == null)
-        {
-            act = null;
-            return false;
-        }
-
-        //有某些非常危险的状态。
-        if ((IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0) ||TargetHelper.DyingPeople.Length > 0)
-        {
-            if (GeneralActions.Esuna.ShouldUseAction(out act, mustUse: true)) return true;
-        }
-
-        if (TargetHelper.DeathPeopleParty.Length > 0)
-        {
-            if (Service.ClientState.LocalPlayer.ClassJob.Id == 35)
-            {
-                if (HaveSwift && Raise.ShouldUseAction(out act)) return true;
-            }
-            else
-            {
-                if (IconReplacer.RaiseOrShirk || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
-                {
-                    if (Raise.ShouldUseAction(out act)) return true;
-                }
-            }
-        }
-        //有人死了，看看能不能救。
-
-
-        act = null;
-        return false;
+        act = null; return false;
     }
     /// <summary>
     /// 常规GCD技能

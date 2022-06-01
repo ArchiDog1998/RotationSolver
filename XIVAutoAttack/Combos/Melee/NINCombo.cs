@@ -266,7 +266,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
         else
         {
             //看看能否背刺
-            if (Actions.Ten.ShouldUseAction(out _, empty: true) && Actions.TrickAttack.RecastTimeRemain < 3 && _break && !haveKassatsu)
+            if (Actions.Ten.ShouldUseAction(out _, emptyOrSkipCombo: true) && Actions.TrickAttack.RecastTimeRemain < 3 && _break && !haveKassatsu)
             {
                 if (Actions.Suiton.ShouldUseAction(out _)) _ninactionAim = Actions.Suiton;
             }

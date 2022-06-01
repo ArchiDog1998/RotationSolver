@@ -533,7 +533,7 @@ namespace XIVComboPlus.Combos
             return Math.Max(range, 3f);
         }
 
-        public bool ShouldUseAction(out BaseAction act, uint lastAct = 0, bool mustUse = false, bool empty = false)
+        public bool ShouldUseAction(out BaseAction act, uint lastAct = 0, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
             byte level = Service.ClientState.LocalPlayer.Level;
@@ -593,7 +593,7 @@ namespace XIVComboPlus.Combos
                         break;
                     }
                 }
-                if (!empty && !findCombo && comboActions.Length > 0) return false;
+                if (!emptyOrSkipCombo && !findCombo && comboActions.Length > 0) return false;
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (Cast100 > 0 && TargetHelper.IsMoving)
@@ -612,7 +612,7 @@ namespace XIVComboPlus.Combos
             else
             {
                 //如果是能力技能，还没填满。
-                if (!(mustUse ||empty) && RecastTimeRemain > 5) return false;
+                if (!(mustUse ||emptyOrSkipCombo) && RecastTimeRemain > 5) return false;
             }
 
             //用于自定义的要求没达到

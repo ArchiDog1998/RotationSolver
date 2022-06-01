@@ -143,8 +143,8 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
         //ªÒµ√¡ÈªÍ 50.
         if (JobGauge.Soul <= 50)
         {
-            if (Actions.SoulScythe.ShouldUseAction(out act, empty: true)) return true;
-            if (Actions.SoulSlice.ShouldUseAction(out act, empty: true)) return true;
+            if (Actions.SoulScythe.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            if (Actions.SoulSlice.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }
 
 

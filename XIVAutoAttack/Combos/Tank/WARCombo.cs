@@ -141,14 +141,14 @@ internal class WARCombo : CustomComboJob<WARGauge>
     private protected override bool MoveGCD(uint lastComboActionID, out BaseAction act)
     {
         //·Å¸ö´ó Âù»Ä±ÀÁÑ »áÍùÇ°·É
-        if (Actions.PrimalRend.ShouldUseAction(out act)) return true;
+        if (Actions.PrimalRend.ShouldUseAction(out act, mustUse: true)) return true;
         return false;
     }
 
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
         //Í»½ø
-        if (Actions.Onslaught.ShouldUseAction(out act, empty: true)) return true;
+        if (Actions.Onslaught.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
 
     }
@@ -156,7 +156,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
         //¸ã¸ã¹¥»÷
-        if (Actions.PrimalRend.ShouldUseAction(out act) && !IsMoving)
+        if (Actions.PrimalRend.ShouldUseAction(out act, mustUse:true) && !IsMoving)
         {
             if (BaseAction.DistanceToPlayer(Actions.PrimalRend.Target, true) < 2)
             {
@@ -230,7 +230,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //¿ñ±©
             if (!new BaseAction(7389).IsCoolDown && Actions.Berserk.ShouldUseAction(out act)) return true;
             //Õ½º¿
-            if (Actions.Infuriate.ShouldUseAction(out act, empty: true)) return true;
+            if (Actions.Infuriate.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }
 
         if ((float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6)

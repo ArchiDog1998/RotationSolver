@@ -204,14 +204,14 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
     {
-        if (Actions.HeartofLight.ShouldUseAction(out act, empty: true)) return true;
+        if (Actions.HeartofLight.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
     private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
     {
         //Í»½ø
-        if (Actions.RoughDivide.ShouldUseAction(out act, empty: true)) return true;
+        if (Actions.RoughDivide.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
     private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
@@ -242,7 +242,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
     {
-        if (Actions.Aurora.ShouldUseAction(out act, empty:true) && abilityRemain == 1) return true;
+        if (Actions.Aurora.ShouldUseAction(out act, emptyOrSkipCombo:true) && abilityRemain == 1) return true;
 
         return false;
     }

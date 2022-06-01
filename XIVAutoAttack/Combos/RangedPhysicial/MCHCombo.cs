@@ -134,7 +134,7 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
-        float time = WeaponRemain + 8;
+        float time = 10;
         
         byte level = Service.ClientState.LocalPlayer.Level;
 
@@ -165,12 +165,6 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
         }
         //虹吸弹
         if (Actions.GaussRound.ShouldUseAction(out act, mustUse: true)) return true;
-
-        //伤腿
-        if (GeneralActions.FootGraze.ShouldUseAction(out act)) return true;
-
-        //伤足
-        if (GeneralActions.LegGraze.ShouldUseAction(out act)) return true;
 
         return false;
     }

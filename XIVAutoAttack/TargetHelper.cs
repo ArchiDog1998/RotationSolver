@@ -5,8 +5,10 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -82,6 +84,8 @@ namespace XIVComboPlus
 
         internal unsafe static void Framework_Update(Framework framework)
         {
+            //((UIModule*)Service.GameGui.GetUIModule())->ShowPoisonText("Dead");
+
             //Update State.
             if (Service.Configuration.UseDtr && IconReplacer.StateString != null)
             {
