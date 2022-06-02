@@ -250,6 +250,21 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         return false;
     }
 
+    //private protected override bool GeneralAbility(byte abilityRemain, out BaseAction act)
+    //{
+    //    foreach (var friend in TargetHelper.PartyMembers)
+    //    {
+    //        if (BaseAction.FindStatusFromSelf(friend, ObjectStatus.ClosedPosition2)?.Length > 0)
+    //        {
+    //            if (Actions.ClosedPosition.ShouldUseAction(out act) && Actions.ClosedPosition.Target != friend)
+    //            {
+    //                return true;
+    //            }
+    //            break;
+    //        }
+    //    }
+    //}
+
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
 

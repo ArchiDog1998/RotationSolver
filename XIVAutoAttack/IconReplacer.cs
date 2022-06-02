@@ -407,7 +407,7 @@ internal sealed class IconReplacer : IDisposable
         }
     }
 
-    internal uint RemapActionID(uint actionID)
+    private uint RemapActionID(uint actionID)
     {
         try
         {

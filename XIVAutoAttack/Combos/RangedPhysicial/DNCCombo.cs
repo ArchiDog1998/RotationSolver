@@ -169,7 +169,10 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
                 ChoiceFriend = Targets =>
                 {
                     Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b.CurrentHp != 0 &&
-                    b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+                    //Remove Weak
+                    b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0 &&
+                    //Remove other partner.
+                    b.StatusList.Where(s =>s.StatusId == ObjectStatus.ClosedPosition2 && s.SourceID != Service.ClientState.LocalPlayer.ObjectId).Count() > 0).ToArray();
 
                     var targets = TargetHelper.GetJobCategory(Targets, Role.近战);
                     if (targets.Length > 0) return targets[0];
@@ -182,6 +185,8 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
                     return null;
                 },
+
+                OtherCheck = b => !JobGauge.IsDancing,
                 //BuffsProvide = new ushort[]
                 //{
                 //    ObjectStatus.ClosedPosition1,
@@ -217,24 +222,25 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
-        foreach (var friend in TargetHelper.PartyMembers)
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1))
         {
-            var statuses = friend.StatusList.Select(status => status.StatusId);
-            if (statuses.Contains( ObjectStatus.ClosedPosition2))
+            foreach (var friend in TargetHelper.PartyMembers)
             {
-                Actions.ClosedPosition.ShouldUseAction(out act);
-                if (Actions.ClosedPosition.Target != friend)
+                if (BaseAction.FindStatusFromSelf(friend, ObjectStatus.ClosedPosition2)?.Length > 0)
                 {
-                    return true;
+                    if (Actions.ClosedPosition.ShouldUseAction(out act) && Actions.ClosedPosition.Target != friend)
+                    {
+                        return true;
+                    }
+                    break;
                 }
-
-                break;
             }
         }
+        else if (Actions.ClosedPosition.ShouldUseAction(out act)) return true;
 
         //尝试爆发
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TechnicalFinish) 
-            && Actions.Devilment.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TechnicalFinish)
+        && Actions.Devilment.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         //百花
         if (Actions.Flourish.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
@@ -277,7 +283,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
-        if (!TargetHelper.InBattle && BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1) && Actions.ClosedPosition.ShouldUseAction(out act)) return true;
+        if (!TargetHelper.InBattle && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1) && Actions.ClosedPosition.ShouldUseAction(out act)) return true;
 
         if (SettingBreak)
         {

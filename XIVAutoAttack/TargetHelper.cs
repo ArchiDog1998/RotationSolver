@@ -76,6 +76,7 @@ namespace XIVComboPlus
 
         internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
         internal static MacroItem DoingMacro;
+        private static bool _lastCasting = false;
 
         internal static void Init(SigScanner sigScanner)
         {
@@ -161,7 +162,7 @@ namespace XIVComboPlus
             if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted]) return;
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
 
-            if (WeaponRemain < 0.1)
+            if (WeaponRemain <= Service.Configuration.WeaponFaster)
             {
                 if (!_weaponDelayStopwatch.IsRunning)
                 {
@@ -182,12 +183,22 @@ namespace XIVComboPlus
                 }
                 else return;
             }
-            //要超出GCD了，那就不放技能了。
-            else if (WeaponRemain < Service.Configuration.WeaponInterval || Service.ClientState.LocalPlayer.IsCasting) return;
 
-            if (weaponelapsed % Service.Configuration.WeaponInterval < 0.1 && WeaponTotal - WeaponRemain > 0.5)
+
+            //要超出GCD了，那就不放技能了。
+            if (WeaponRemain < Service.Configuration.WeaponInterval) return;
+            //IsCasting.
+            if (Service.ClientState.LocalPlayer.IsCasting)
+            {
+                _lastCasting = true;
+                return;
+            }
+
+            if ((weaponelapsed % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster || _lastCasting)
+                && WeaponTotal - WeaponRemain > Service.Configuration.WeaponInterval)
             {
                 Service.IconReplacer.DoAnAction(false);
+                _lastCasting = false;
                 return;
             }
 

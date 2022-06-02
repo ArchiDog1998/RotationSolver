@@ -18,6 +18,9 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
     protected override bool CanHealSingleSpell => false;
     private protected override BaseAction Raise => Actions.Resurrection;
 
+    private static bool InBahamut => Service.IconReplacer.OriginalHook(25822) == Actions.Deathflare.ActionID;
+    private static bool InPhoenix => Service.IconReplacer.OriginalHook(25822) == Actions.Rekindle.ActionID;
+    private static bool InBreak => InBahamut || InPhoenix || Service.ClientState.LocalPlayer.Level < Actions.SummonBahamut.Level;
     internal struct Actions
     {
         public static readonly BaseAction
@@ -28,7 +31,11 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             },
 
             //灼热之光 团辅
-            SearingLight = new BaseAction(25801),
+            SearingLight = new BaseAction(25801)
+            {
+                OtherCheck = b => TargetHelper.InBattle && !InBahamut && !InPhoenix &&
+                JobGauge.ReturnSummon == Dalamud.Game.ClientState.JobGauge.Enums.SummonPet.NONE,
+            },
 
             //守护之光 给自己戴套
             RadiantAegis = new BaseAction(25799),
@@ -41,6 +48,9 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             {
                 OtherCheck = b => TargetHelper.InBattle,
             },
+
+            //龙神召唤
+            SummonBahamut = new BaseAction(7427),
 
             //红宝石召唤
             SummonRuby = new BaseAction(25802)
@@ -82,10 +92,10 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             Resurrection = new BaseAction(173, true),
 
             //能量吸收
-            EnergyDrain = new BaseAction(16508)
-            {
-                BuffsProvide = new ushort[] { ObjectStatus.FurtherRuin },
-            },
+            EnergyDrain = new BaseAction(16508),
+
+            //能量抽取
+            EnergySiphon = new BaseAction(16510),
 
             //溃烂爆发
             Fester = new BaseAction(181),
@@ -102,19 +112,19 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             //龙神迸发
             EnkindleBahamut = new BaseAction(7429)
             {
-                OtherCheck = b => JobGauge.ReturnSummonGlam == Dalamud.Game.ClientState.JobGauge.Enums.PetGlam.CARBUNCLE,
+                OtherCheck = b => InBahamut || InPhoenix,
             },
 
             //死星核爆
             Deathflare = new BaseAction(3582)
             {
-                OtherCheck = b => (byte)JobGauge.ReturnSummon == 10,
+                OtherCheck = b => InBahamut,
             },
 
             //苏生之炎
             Rekindle = new BaseAction(25830, true)
             {
-                OtherCheck = b => (byte)JobGauge.ReturnSummon == 20,
+                OtherCheck = b => InPhoenix,
             },
 
             //深红旋风
@@ -122,6 +132,9 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             {
                 BuffsNeed = new ushort[] { ObjectStatus.IfritsFavor },
             },
+
+            //深红强袭
+            CrimsonStrike = new BaseAction(25885),
 
             //山崩
             MountainBuster = new BaseAction(25836)
@@ -150,23 +163,32 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         if (Actions.SummonCarbuncle.ShouldUseAction(out act)) return true;
 
         //大招
-        if (Actions.CrimsonCyclone.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.Slipstream.ShouldUseAction(out act, mustUse: true)) return true;
+        if (!InBahamut && !InPhoenix)
+        {
+            if (Actions.RuinIV.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.CrimsonStrike.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
+            if (Actions.CrimsonCyclone.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.Slipstream.ShouldUseAction(out act, mustUse: true)) return true;
+        }
 
-        if (Actions.RuinIV.ShouldUseAction(out act, mustUse:true)) return true;
-        if (Actions.EnkindleBahamut.ShouldUseAction(out act, mustUse:true)) return true;
 
         //召唤
         if (JobGauge.Attunement == 0)
         {
-            if (Actions.Aethercharge.ShouldUseAction(out act)) return true;
+            if (Actions.SummonBahamut.ShouldUseAction(out act))
+            {
+                if (Actions.SearingLight.IsCoolDown || Service.ClientState.LocalPlayer.Level < Actions.SearingLight.Level)
+                    return true;
+            }
+            else if (Actions.Aethercharge.ShouldUseAction(out act)) return true;
 
             if ((JobGauge.IsIfritReady && JobGauge.IsGarudaReady && JobGauge.IsTitanReady) ? JobGauge.SummonTimerRemaining == 0 : true)
             {
+                //火
+                if (!TargetHelper.IsMoving && Actions.SummonRuby.ShouldUseAction(out act)) return true;
+
                 //风
                 if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
-                //火
-                if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
                 //土
                 if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
             }
@@ -184,18 +206,23 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
+        if (Actions.EnkindleBahamut.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.Deathflare.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.Rekindle.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.MountainBuster.ShouldUseAction(out act, mustUse: true)) return true;
 
 
         //能量吸收
-        if (JobGauge.HasAetherflowStacks)
+        if (JobGauge.HasAetherflowStacks && InBreak)
         {
             if (Actions.Painflare.ShouldUseAction(out act)) return true;
             if (Actions.Fester.ShouldUseAction(out act)) return true;
         }
-        else if (Actions.EnergyDrain.ShouldUseAction(out act)) return true;
+        else
+        {
+            if (Actions.EnergySiphon.ShouldUseAction(out act)) return true;
+            if (Actions.EnergyDrain.ShouldUseAction(out act)) return true;
+        }
 
         return false;
     }

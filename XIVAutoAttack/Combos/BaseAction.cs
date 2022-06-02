@@ -555,7 +555,7 @@ namespace XIVComboPlus.Combos
                 //已有提供的Buff的任何一种
                 if (BuffsProvide != null)
                 {
-                    if (HaveStatusSelfFromSelf(BuffsProvide)) return false;
+                    if (Service.ClientState.LocalPlayer.StatusList.Select(s => (ushort)s.StatusId).Intersect(BuffsProvide).Count() > 0) return false;
                 }
             }
 
