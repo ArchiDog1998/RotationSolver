@@ -5,9 +5,9 @@ namespace XIVComboPlus.Combos;
 internal class SAMCombo : CustomComboJob<SAMGauge>
 {
     internal override uint JobID => 34;
-    private static bool _shouldUseGoken = false;
-    private static bool _shouldUseSetsugekka = false;
-    private static bool _shouldUseOgiNamikiri = false;
+    //private static bool _shouldUseGoken = false;
+    //private static bool _shouldUseSetsugekka = false;
+    //private static bool _shouldUseOgiNamikiri = false;
     protected override bool ShouldSayout => true;
 
     private static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
@@ -45,16 +45,10 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             },
 
             //天下五剑
-            TenkaGoken = new BaseAction(7488)
-            {
-                AfterUse = () => _shouldUseGoken = true,
-            },
+            TenkaGoken = new BaseAction(7488),
 
             //纷乱雪月花
-            MidareSetsugekka = new BaseAction(7487)
-            {
-                AfterUse = () => _shouldUseSetsugekka = true,
-            },
+            MidareSetsugekka = new BaseAction(7487),
 
             //满月
             Mangetsu = new BaseAction(7484),
@@ -98,22 +92,11 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             //必杀剑·闪影
             HissatsuSenei = new BaseAction(16481),
 
-            //燕回返
-            Tsubamegaeshi = new BaseAction(16483),
-
             //回返五剑
-            KaeshiGoken = new BaseAction(16485)
-            {
-                OtherCheck = b => _shouldUseGoken,
-                AfterUse = () => _shouldUseGoken = false,
-            },
+            KaeshiGoken = new BaseAction(16485),
 
             //回返雪月花
-            KaeshiSetsugekka = new BaseAction(16486)
-            {
-                OtherCheck = b => _shouldUseSetsugekka,
-                AfterUse = () => _shouldUseSetsugekka = false,
-            },
+            KaeshiSetsugekka = new BaseAction(16486),
 
             //照破
             Shoha = new BaseAction(16487),
@@ -122,18 +105,10 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             Shoha2 = new BaseAction(25779),
 
             //奥义斩浪
-            OgiNamikiri = new BaseAction(25781)
-            {
-                BuffsNeed = new ushort[] { ObjectStatus.OgiNamikiriReady },
-                AfterUse = () => _shouldUseOgiNamikiri = true,
-            },
+            OgiNamikiri = new BaseAction(25781),
 
             //回返斩浪
-            KaeshiNamikiri = new BaseAction(25782)
-            {
-                OtherCheck = b => _shouldUseOgiNamikiri,
-                AfterUse = () => _shouldUseOgiNamikiri = false,
-            };
+            KaeshiNamikiri = new BaseAction(25782);
     }
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
@@ -193,15 +168,18 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
     {
-        if (Actions.KaeshiNamikiri.ShouldUseAction(out act)) return true;
-        if (Actions.KaeshiNamikiri.ShouldUseAction(out _, mustUse:true, emptyOrSkipCombo: true))
+        //赶紧回返！
+        if (Service.IconReplacer.OriginalHook(Actions.OgiNamikiri.ActionID) == Actions.KaeshiNamikiri.ActionID)
         {
-            if (Actions.KaeshiGoken.ShouldUseAction(out act)) return true;
-            if (Actions.KaeshiSetsugekka.ShouldUseAction(out act)) return true;
+            if (Actions.KaeshiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;
         }
-        else
+        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiGoken.ActionID)
         {
-            _shouldUseGoken = _shouldUseSetsugekka = false;
+            if (Actions.KaeshiGoken.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiSetsugekka.ActionID)
+        {
+            if (Actions.KaeshiSetsugekka.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         if (JobGauge.MeditationStacks == 3)

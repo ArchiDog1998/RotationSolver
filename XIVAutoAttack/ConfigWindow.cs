@@ -100,16 +100,16 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                //{
-                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //    {
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //    }
-                //}
+                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                {
+                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    {
+                        ImGui.Text(item.GameData.Name + item.StatusId);
+                    }
+                }
 
-                ImGui.Text(Service.Address.LastComboAction.ToString());
-
+                if (NINCombo._ninactionAim != null) ImGui.Text(NINCombo._ninactionAim.Action.Name.ToString());
+                ImGui.Text(Service.IconReplacer.OriginalHook(NINCombo.Actions.Ten.ActionID).ToString());
                 //foreach (var item in Service.ObjectTable)
                 //{
                 //    if(item is BattleChara battle && item != Service.ClientState.LocalPlayer)

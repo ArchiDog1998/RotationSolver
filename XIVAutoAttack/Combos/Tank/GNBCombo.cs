@@ -111,25 +111,25 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
             //Ëººí
             JugularRip = new BaseAction(16156)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.ReadyToRip },
+                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == JugularRip.ActionID,
             },
 
             //ÁÑÌÅ
             AbdomenTear = new BaseAction(16157)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.ReadyToTear },
+                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == AbdomenTear.ActionID,
             },
 
             //´©Ä¿
             EyeGouge = new BaseAction(16158)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.ReadyToGouge },
+                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == EyeGouge.ActionID,
             },
 
             //³¬¸ßËÙ
             Hypervelocity = new BaseAction(25759)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.ReadyToBlast },
+                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ActionID,
             };
     }
 
@@ -150,8 +150,6 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         }
         if (Actions.WickedTalon.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.SavageClaw.ShouldUseAction(out act, lastComboActionID)) return true;
-
-
 
         //AOE
         if (Actions.DemonSlaughter.ShouldUseAction(out act, lastComboActionID)) return true;
