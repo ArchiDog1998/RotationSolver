@@ -48,7 +48,7 @@ namespace XIVComboPlus.Combos
         internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ActionID, Service.ClientState.LocalPlayer.Level), (ushort)1);
         internal unsafe bool IsCoolDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Spell, ActionID);
         #endregion
-        internal BattleChara Target { get; private set; } = Service.ClientState.LocalPlayer;
+        internal BattleChara Target { get; set; } = Service.ClientState.LocalPlayer;
         private Vector3 _position = default;
         /// <summary>
         /// 如果之前是这些ID，那么就不会执行。
@@ -232,11 +232,13 @@ namespace XIVComboPlus.Combos
 
             if (Action.TargetArea)
             {
-                if(Action.EffectRange == 0)
+                //缩地
+                if(Action.EffectRange == 1 && Action.Range == 20)
                 {
-                    BattleChara[] availableCharas = TargetHelper.PartyMembers.Union(TargetHelper.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+                    BattleChara[] availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b is BattleChara)
+                        .Select(b =>(BattleChara)b).ToArray();
 
-                    Target = FindMoveTarget(availableCharas);
+                    Target = FindMoveTarget(GetObjectInRadius(availableCharas, 20));
                 }
                 else
                 {

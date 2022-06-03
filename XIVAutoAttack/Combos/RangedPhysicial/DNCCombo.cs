@@ -172,7 +172,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
                     //Remove Weak
                     b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0 &&
                     //Remove other partner.
-                    b.StatusList.Where(s =>s.StatusId == ObjectStatus.ClosedPosition2 && s.SourceID != Service.ClientState.LocalPlayer.ObjectId).Count() > 0).ToArray();
+                    b.StatusList.Where(s =>s.StatusId == ObjectStatus.ClosedPosition2 && s.SourceID != Service.ClientState.LocalPlayer.ObjectId).Count() == 0).ToArray();
 
                     var targets = TargetHelper.GetJobCategory(Targets, Role.½üÕ½);
                     if (targets.Length > 0) return targets[0];
@@ -186,7 +186,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
                     return null;
                 },
 
-                OtherCheck = b => !JobGauge.IsDancing,
+                //OtherCheck = b => !JobGauge.IsDancing,
                 //BuffsProvide = new ushort[]
                 //{
                 //    ObjectStatus.ClosedPosition1,

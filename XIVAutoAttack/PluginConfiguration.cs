@@ -37,7 +37,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public float SpecialDuration { get; set; } = 3;
     public float WeaponInterval { get; set; } = 0.67f;
-    public float WeaponFaster { get; set; } = 0.04f;
+    public float WeaponFaster { get; set; } = 0.05f;
     public float WeaponDelay { get; set; } = 0;
     public void Save()
     {

@@ -222,4 +222,6 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
         if (Actions.ArcaneCrest.ShouldUseAction(out act)) return true;
         return false;
     }
+
+
 }

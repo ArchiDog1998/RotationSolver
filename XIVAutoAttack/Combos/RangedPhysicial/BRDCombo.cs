@@ -144,7 +144,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
         //·Å´óÕÐ£¡
-        if (JobGauge.SoulVoice >= 80 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady))
+        if (JobGauge.SoulVoice == 100 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady))
         {
             if (Actions.ApexArrow.ShouldUseAction(out act, mustUse: true)) return true;
         }

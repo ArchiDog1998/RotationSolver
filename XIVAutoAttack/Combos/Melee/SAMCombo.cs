@@ -244,4 +244,11 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
         if (Actions.ThirdEye.ShouldUseAction(out act)) return true;
         return false;
     }
+
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    {
+        //Ç£ÖÆ
+        if (GeneralActions.Feint.ShouldUseAction(out act)) return true;
+        return false;
+    }
 }

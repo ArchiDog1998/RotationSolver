@@ -270,4 +270,6 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
 
         return false;
     }
+
+
 }

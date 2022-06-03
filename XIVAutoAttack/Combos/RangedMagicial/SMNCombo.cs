@@ -6,8 +6,7 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
 {
     public class SMNAction : BaseAction
     {
-        internal override int Cast100 => (JobGauge.SummonTimerRemaining > 0 && JobGauge.ReturnSummon == Dalamud.Game.ClientState.JobGauge.Enums.SummonPet.NONE) ||
-            !JobGauge.IsIfritAttuned ?  0 : base.Cast100;
+        internal override int Cast100 => InBahamut || InPhoenix || !JobGauge.IsIfritAttuned ? 0 : base.Cast100;
         public SMNAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
         {

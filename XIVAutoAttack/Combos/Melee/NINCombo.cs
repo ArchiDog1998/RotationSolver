@@ -1,5 +1,4 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using System.Collections.Generic;
 
 namespace XIVComboPlus.Combos;
 
@@ -10,29 +9,22 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
     public class NinAction : BaseAction
     {
-        internal Ninjutsu[] Ninjutsus { get; }
-        public NinAction(uint actionID, Ninjutsu[] ninjutsus)
+        internal BaseAction[] Ninjutsus { get; }
+        public NinAction(uint actionID, params BaseAction[] ninjutsus)
             : base(actionID, false, false)
         {
             Ninjutsus = ninjutsus;
         }
     }
-    internal enum Ninjutsu : byte
-    {
-        None,
-        Ten,
-        Chi,
-        Jin,
-    }
 
     private static bool _break = false;
-    private static bool _TenChiJin = false;
-    internal static readonly List<Ninjutsu> _ninjutsus = new List<Ninjutsu>(3);
     internal static NinAction _ninactionAim = null;
 
     internal struct Actions
     {
         public static readonly BaseAction
+            //隐遁
+            Hide = new BaseAction(2245),
             //双刃旋
             SpinningEdge = new BaseAction(2240),
 
@@ -68,28 +60,18 @@ internal class NINCombo : CustomComboJob<NINGauge>
             DeathBlossom = new BaseAction(2254),
 
             //天之印
-            Ten = new BaseAction(2259)
-            {
-                AfterUse = () => _ninjutsus.Add(Ninjutsu.Ten),
-            },
+            Ten = new BaseAction(2259),
 
             //地之印
-            Chi = new BaseAction(2261)
-            {
-                AfterUse = () => _ninjutsus.Add(Ninjutsu.Chi),
-            },
+            Chi = new BaseAction(2261),
 
             //人之印
-            Jin = new BaseAction(2263)
-            {
-                AfterUse = () => _ninjutsus.Add(Ninjutsu.Jin),
-            },
+            Jin = new BaseAction(2263),
 
             //天地人
             TenChiJin = new BaseAction(7403)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.Kassatsu },
-                AfterUse = () => _TenChiJin = true,
+                BuffsProvide = new ushort[] { ObjectStatus.Kassatsu , ObjectStatus.TenChiJin},
             },
 
             //缩地
@@ -109,6 +91,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
             Kassatsu = new BaseAction(2264)
             {
                 OtherCheck = b => Ten.IsCoolDown,
+                BuffsProvide = new ushort[] { ObjectStatus.Kassatsu, ObjectStatus.TenChiJin },
             },
 
             //八卦无刃杀
@@ -118,7 +101,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
             ArmorCrush = new BaseAction(3563)
             {
                 EnermyLocation = EnemyLocation.Side,
-                OtherCheck = b => JobGauge.HutonTimer < 30000,
+                OtherCheck = b => JobGauge.HutonTimer < 30000 && JobGauge.HutonTimer > 0,
             },
 
             //通灵之术·大虾蟆
@@ -155,45 +138,53 @@ internal class NINCombo : CustomComboJob<NINGauge>
             },
 
             //梦幻三段
-            DreamWithinaDream = new BaseAction(3566),
-
-            //通灵之术
-            RabbitMedium = new BaseAction(2272);
+            DreamWithinaDream = new BaseAction(3566);
 
         public static readonly NinAction
 
+            //通灵之术
+            RabbitMedium = new NinAction(2272),
+
+
+            //风魔手里剑
+            FumaShuriken = new NinAction(2265, Ten )
+            {
+                OtherCheck = b => Service.ClientState.LocalPlayer.Level < 35,
+                AfterUse = ClearNinjutsus,
+            },
+
             //火遁之术
-            Katon = new NinAction(2266, new Ninjutsu[] { Ninjutsu.Chi, Ninjutsu.Ten })
+            Katon = new NinAction(2266, Chi, Ten )
             {
                 AfterUse = ClearNinjutsus,
             },
 
             //雷遁之术
-            Raiton = new NinAction(2267, new Ninjutsu[] { Ninjutsu.Ten, Ninjutsu.Chi })
+            Raiton = new NinAction(2267,  Ten, Chi )
             {
                 AfterUse = ClearNinjutsus,
             },
 
 
             //冰遁之术
-            //Hyoton = new NinAction(2268, new Ninjutsu[] { Ninjutsu.Ten, Ninjutsu.Jin }),
+            Hyoton = new NinAction(2268,Ten, Jin ),
 
             //风遁之术
-            Huton = new NinAction(2269, new Ninjutsu[] { Ninjutsu.Jin, Ninjutsu.Chi, Ninjutsu.Ten })
+            Huton = new NinAction(2269,  Jin, Chi, Ten )
             {
                 OtherCheck = b => JobGauge.HutonTimer == 0,
                 AfterUse = ClearNinjutsus,
             },
 
             //土遁之术
-            Doton = new NinAction(2270, new Ninjutsu[] { Ninjutsu.Jin, Ninjutsu.Ten,Ninjutsu.Chi })
+            Doton = new NinAction(2270,  Jin, Ten, Chi )
             {
                 BuffsProvide = new ushort[] { ObjectStatus.Doton },
                 AfterUse = ClearNinjutsus,
             },
 
             //水遁之术
-            Suiton = new NinAction(2271, new Ninjutsu[] { Ninjutsu.Ten, Ninjutsu.Chi, Ninjutsu.Jin })
+            Suiton = new NinAction(2271,  Ten, Chi, Jin )
             {
                 EnermyLocation = EnemyLocation.Back,
                 BuffsProvide = new ushort[] { ObjectStatus.Suiton },
@@ -206,23 +197,159 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
 
             //劫火灭却之术
-            GokaMekkyaku = new NinAction(16491, new Ninjutsu[] { Ninjutsu.Chi, Ninjutsu.Ten })
+            GokaMekkyaku = new NinAction(16491,  Chi, Ten )
             {
                 AfterUse = ClearNinjutsus,
             },
 
 
             //冰晶乱流之术
-            HyoshoRanryu = new NinAction(16492, new Ninjutsu[] { Ninjutsu.Ten, Ninjutsu.Jin })
+            HyoshoRanryu = new NinAction(16492,  Ten, Jin )
             {
                 AfterUse = ClearNinjutsus,
             };
     }
 
+    private static void ChoiceNinjutsus()
+    {
+        if (Service.IconReplacer.OriginalHook(2260) != 2260) return;
+        //有生杀予夺
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu) && Actions.Kassatsu.RecastTimeElapsed < 2)
+        {
+            if (Actions.GokaMekkyaku.ShouldUseAction(out _)) _ninactionAim = Actions.GokaMekkyaku;
+            if (Actions.HyoshoRanryu.ShouldUseAction(out _)) _ninactionAim = Actions.HyoshoRanryu;
+            if (Actions.Katon.ShouldUseAction(out _)) _ninactionAim = Actions.Katon;
+            if (Actions.Raiton.ShouldUseAction(out _)) _ninactionAim = Actions.Raiton;
+        }
+
+        else
+        {
+            //看看能否背刺
+            if (Actions.Ten.RecastTimeRemain <= 20 && Actions.TrickAttack.RecastTimeRemain < 3 && _break)
+            {
+                if (Actions.Suiton.ShouldUseAction(out _)) _ninactionAim = Actions.Suiton;
+            }
+            //常规忍术
+            else if (Actions.Ten.ShouldUseAction(out _))
+            {
+                if (!IsMoving && Actions.Doton.ShouldUseAction(out _)) _ninactionAim = Actions.Doton;
+                if (Actions.Katon.ShouldUseAction(out _)) _ninactionAim = Actions.Katon;
+                if (Actions.Raiton.ShouldUseAction(out _)) _ninactionAim = Actions.Raiton;
+                if (Actions.FumaShuriken.ShouldUseAction(out _)) _ninactionAim = Actions.FumaShuriken;
+
+                if (!TargetHelper.InBattle)
+                {
+                    //加状态
+                    if (Actions.Huton.ShouldUseAction(out _)) _ninactionAim = Actions.Huton;
+                }
+            }
+        }
+    }
+
     private static void ClearNinjutsus()
     {
         _ninactionAim = null;
-        _ninjutsus.Clear();
+    }
+
+    private static bool DoNinjutsus(out BaseAction act)
+    {
+        act = null;
+
+        uint tenId = Service.IconReplacer.OriginalHook(Actions.Ten.ActionID);
+        //有天地人
+        if (tenId != Actions.Ten.ActionID)
+        {
+            uint chiId = Service.IconReplacer.OriginalHook(Actions.Chi.ActionID);
+            uint jinId = Service.IconReplacer.OriginalHook(Actions.Jin.ActionID);
+
+            //第一个
+            if (tenId == Actions.FumaShuriken.ActionID)
+            {
+                //AOE
+                if (Actions.Katon.ShouldUseAction(out _))
+                {
+                    act = Actions.Jin;
+                    return true;
+                }
+                //Single
+                if (Actions.Raiton.ShouldUseAction(out _))
+                {
+                    act = Actions.Ten;
+                    return true;
+                }
+            }
+
+            //第二击杀AOE
+            else if(tenId == Actions.Katon.ActionID)
+            {
+                Actions.Katon.ShouldUseAction(out _, mustUse: true);
+                Actions.Ten.Target = Actions.Katon.Target;
+                act = Actions.Ten;
+                return true;
+            }
+            //其他几击
+            else if (chiId == Actions.Raiton.ActionID)
+            {
+                Actions.Raiton.ShouldUseAction(out _, mustUse:true);
+                Actions.Chi.Target = Actions.Raiton.Target;
+                act = Actions.Chi;
+                return true;
+            }
+            else if (chiId == Actions.Doton.ActionID)
+            {
+                Actions.Doton.ShouldUseAction(out _, mustUse: true);
+                Actions.Chi.Target = Actions.Doton.Target;
+                act = Actions.Chi;
+                return true;
+            }
+            else if (jinId == Actions.Suiton.ActionID)
+            {
+                Actions.Suiton.ShouldUseAction(out _, mustUse: true);
+                Actions.Jin.Target = Actions.Suiton.Target;
+                act = Actions.Jin;
+                return true;
+            }
+        }
+
+        if (_ninactionAim == null) return false;
+
+        uint id = Service.IconReplacer.OriginalHook(2260);
+
+        //没开始，释放第一个
+        if (id == 2260)
+        {
+            if(_ninactionAim.Ninjutsus[0].ShouldUseAction(out act)) return true;
+        }
+        //失败了
+        else if (id == Actions.RabbitMedium.ActionID)
+        {
+            act = Actions.RabbitMedium;
+            return true;
+        }
+        //结束了
+        else if (id == _ninactionAim.ActionID)
+        {
+            if (_ninactionAim.ShouldUseAction(out act, mustUse:true)) return true;
+        }
+        //释放第二个
+        else if (id == Actions.FumaShuriken.ActionID )
+        {
+            if (_ninactionAim.Ninjutsus.Length > 1)
+            {
+                act = _ninactionAim.Ninjutsus[1];
+                return true;
+            }
+        }
+        //释放第三个
+        else if (id == Actions.Katon.ActionID || id == Actions.Raiton.ActionID || id == Actions.Hyoton.ActionID)
+        {
+            if (_ninactionAim.Ninjutsus.Length > 2)
+            {
+                act = _ninactionAim.Ninjutsus[2];
+                return true;
+            }
+        }
+        return false;
     }
 
     private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
@@ -234,121 +361,12 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
     {
-        bool haveKassatsu = BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu) && Actions.Kassatsu.RecastTimeElapsed < 2;
-        bool onninjutsus = BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Ninjutsu);
+        ChoiceNinjutsus();
+        if(DoNinjutsus(out act)) return true;
+        if (!TargetHelper.InBattle && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
 
-        //没时间释放忍术了
-        var times = BaseAction.FindStatusSelfFromSelf(ObjectStatus.Ninjutsu);
-        int count = _ninjutsus.Count;
 
-        if ((_ninjutsus.Count > 0 && (times != null && times[0] < 0.1)) || (_ninjutsus.Count > 1 && times == null))
-        {
-            ClearNinjutsus();
-        }
-
-        //看看有没有机会调整
-        if (_ninactionAim != null && count == 0)
-        {
-            if (haveKassatsu)
-            {
-                ClearNinjutsus();
-                if (Actions.GokaMekkyaku.ShouldUseAction(out _)) _ninactionAim = Actions.GokaMekkyaku;
-                if (Actions.HyoshoRanryu.ShouldUseAction(out _)) _ninactionAim = Actions.HyoshoRanryu;
-                if (Actions.Katon.ShouldUseAction(out _)) _ninactionAim = Actions.Katon;
-                if (Actions.Raiton.ShouldUseAction(out _)) _ninactionAim = Actions.Raiton;
-            }
-            //调整忍术！
-            if (_ninactionAim.OtherCheck != null && !_ninactionAim.OtherCheck(null))
-            {
-                ClearNinjutsus();
-            }
-        }
-        else
-        {
-            //看看能否背刺
-            if (Actions.Ten.ShouldUseAction(out _, emptyOrSkipCombo: true) && Actions.TrickAttack.RecastTimeRemain < 3 && _break && !haveKassatsu)
-            {
-                if (Actions.Suiton.ShouldUseAction(out _)) _ninactionAim = Actions.Suiton;
-            }
-            //常规忍术
-            else if (Actions.Ten.ShouldUseAction(out _) || haveKassatsu)
-            {
-                if (!IsMoving && Actions.Doton.ShouldUseAction(out _)) _ninactionAim = Actions.Doton;
-                if (Actions.Katon.ShouldUseAction(out _)) _ninactionAim = Actions.Katon;
-                if (Actions.Raiton.ShouldUseAction(out _)) _ninactionAim = Actions.Raiton;
-
-                if (!TargetHelper.InBattle)
-                {
-                    //加状态
-                    if (Actions.Huton.ShouldUseAction(out _)) _ninactionAim = Actions.Huton;
-                }
-            }
-        }
-
-        //释放忍术
-        if (_ninactionAim != null)
-        {
-
-            if (count == _ninactionAim.Ninjutsus.Length)
-            {
-                bool correct = true;
-                for (int i = 0; i < _ninactionAim.Ninjutsus.Length; i++)
-                {
-                    if (_ninactionAim.Ninjutsus[i] != _ninjutsus[i])
-                    {
-                        correct = false;
-                        break;
-                    }
-                }
-                //如果按对了
-                if (correct)
-                {
-                    //天地人的话，就使用了
-                    if (_TenChiJin)
-                    {
-                        _TenChiJin = false;
-                        ClearNinjutsus();
-                    }
-                    else if (_ninactionAim.ShouldUseAction(out act, mustUse: true)) return true;
-                    //暂时打不到，先不释普通技能。
-                    else
-                    {
-                        act = null;
-                        return true;
-                    }
-                }
-                //如果有错误，重置
-                else
-                {
-                    ClearNinjutsus();
-                }
-            }
-            //释放忍术没中断
-            else if(count == 0 || onninjutsus)
-            {
-                switch (_ninactionAim.Ninjutsus[count])
-                {
-                    case Ninjutsu.Ten:
-                        act = Actions.Ten;
-                        return true;
-                    case Ninjutsu.Chi:
-                        act = Actions.Chi;
-                        return true;
-                    case Ninjutsu.Jin:
-                        act = Actions.Jin;
-                        return true;
-                }
-            }
-            //中断了，没救了。
-            else
-            {
-                ClearNinjutsus();
-                act = Actions.RabbitMedium;
-                return true;
-            }
-        }
-
-        if (!onninjutsus)
+        if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Ninjutsu))
         {
             //大招
             if (Actions.FleetingRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -381,6 +399,8 @@ internal class NINCombo : CustomComboJob<NINGauge>
         return false;
     }
 
+
+
     private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
     {
         if (Actions.ShadeShift.ShouldUseAction(out act)) return true;
@@ -392,12 +412,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
     {
         if(Actions.TrickAttack.RecastTimeElapsed <= 12 && Actions.TrickAttack.IsCoolDown)
         {
-            if (Actions.TenChiJin.ShouldUseAction(out act))
-            {
-                if (Actions.Katon.ShouldUseAction(out _)) _ninactionAim = Actions.Doton;
-                if (Actions.Raiton.ShouldUseAction(out _)) _ninactionAim = Actions.Suiton;
-                return true;
-            }
+            if (Actions.TenChiJin.ShouldUseAction(out act)) return true;
             if (Actions.Kassatsu.ShouldUseAction(out act)) return true;
         }
         if (Actions.TrickAttack.ShouldUseAction(out act)) return true;
@@ -413,7 +428,8 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
         if (Actions.Mug.ShouldUseAction(out act)) return true;
 
-        if(Service.ClientState.LocalPlayer.Level < Actions.DreamWithinaDream.Level)
+
+        if (Service.ClientState.LocalPlayer.Level < Actions.DreamWithinaDream.Level)
         {
             if (Actions.Assassinate.ShouldUseAction(out act)) return true;
         }
@@ -428,6 +444,12 @@ internal class NINCombo : CustomComboJob<NINGauge>
     {
         if (Actions.Shukuchi.ShouldUseAction(out act)) return true;
 
+        return false;
+    }
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    {
+        //牵制
+        if (GeneralActions.Feint.ShouldUseAction(out act)) return true;
         return false;
     }
 }
