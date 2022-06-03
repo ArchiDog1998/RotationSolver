@@ -170,25 +170,23 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
     {
-        if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //如果接下来要上毒或者要直线射击，那算了。
         if (nextGCD.ActionID == Actions.StraitShoot.ActionID || nextGCD.ActionID == Actions.VenomousBite.ActionID ||
             nextGCD.ActionID == Actions.Windbite.ActionID || nextGCD.ActionID == Actions.IronJaws.ActionID)
         {
-            act = null;
-            return false;
+            return base.EmergercyAbility(abilityRemain, nextGCD, out act);
         }
         else if(abilityRemain != 0 && 
-            (Service.ClientState.LocalPlayer.Level < Actions.RagingStrikes.Level ||  BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RagingStrikes)) &&
+            (Service.ClientState.LocalPlayer.Level < Actions.RagingStrikes.Level || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RagingStrikes)) &&
             (Service.ClientState.LocalPlayer.Level < Actions.BattleVoice.Level || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BattleVoice)))
         {
             //纷乱箭
             if (Actions.Barrage.ShouldUseAction(out act)) return true;
         }
 
-        act = null;
-        return false;
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+
     }
 
     private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)

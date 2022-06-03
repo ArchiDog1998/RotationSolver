@@ -105,7 +105,10 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             Shoha2 = new BaseAction(25779),
 
             //∞¬“Â’∂¿À
-            OgiNamikiri = new BaseAction(25781),
+            OgiNamikiri = new BaseAction(25781)
+            {
+                BuffsNeed = new ushort[] {ObjectStatus.OgiNamikiriReady},
+            },
 
             //ªÿ∑µ’∂¿À
             KaeshiNamikiri = new BaseAction(25782);

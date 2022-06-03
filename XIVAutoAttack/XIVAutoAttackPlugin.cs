@@ -46,7 +46,19 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     public  XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
     {
-        pluginInterface.Create<Service>(Array.Empty<object>());
+        commandManager.AddHandler(_command, new CommandInfo(OnCommand)
+        {
+            HelpMessage = "打开一个设置各个职业是否启用自动攻击的窗口",
+            ShowInHelp = true,
+        });
+
+        commandManager.AddHandler(_lockCommand, new CommandInfo(TargetObject)
+        {
+            HelpMessage = "设置攻击的模式",
+            ShowInHelp = true,
+        });
+
+        pluginInterface.Create<Service>();
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
         Service.Address = new PluginAddressResolver();
         Service.Address.Setup();
@@ -54,21 +66,10 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         configWindow = new ConfigWindow();
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(configWindow);
-        //sound = new SystemSound();
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
 
         TargetHelper.Init(sigScanner);
-
-        CommandInfo val = new CommandInfo(new CommandInfo.HandlerDelegate(OnCommand));
-        val.HelpMessage = "打开一个设置各个职业是否启用自动攻击的窗口";
-        val.ShowInHelp = true;
-        commandManager.AddHandler(_command, val);
-
-        CommandInfo lockInfo = new CommandInfo(new CommandInfo.HandlerDelegate(TargetObject));
-        lockInfo.HelpMessage = "设置攻击的模式";
-        lockInfo.ShowInHelp = true;
-        commandManager.AddHandler(_lockCommand, lockInfo);
 
         _framework = framework;
         _framework.Update += TargetHelper.Framework_Update;
@@ -76,8 +77,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         AllJobs = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.ClassJob>().Where(x => x.JobIndex != 0).ToArray();
 
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
-
-
     }
 
     private void ClientState_TerritoryChanged(object sender, ushort e)
