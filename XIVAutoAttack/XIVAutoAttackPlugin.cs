@@ -20,11 +20,9 @@ using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using XIVComboPlus;
-using XIVComboPlus.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace XIVComboPlus;
+namespace XIVAutoAttack;
 
 public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 {
@@ -38,13 +36,13 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     //private readonly SystemSound sound;
     public string Name => "XIV Auto Attack";
 
-    private static Framework _framework;
-
     internal static Lumina.Excel.GeneratedSheets.ClassJob[] AllJobs;
 
     internal static DtrBarEntry dtrEntry;
 
-    public  XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
+    internal static SoundsWatcher watcher;
+
+    public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
     {
         commandManager.AddHandler(_command, new CommandInfo(OnCommand)
         {
@@ -71,13 +69,17 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         TargetHelper.Init(sigScanner);
 
-        _framework = framework;
-        _framework.Update += TargetHelper.Framework_Update;
 
-        AllJobs = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.ClassJob>().Where(x => x.JobIndex != 0).ToArray();
+        Service.Framework.Update += TargetHelper.Framework_Update;
+
+        AllJobs = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.ClassJob>().ToArray();
 
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
+
+        watcher = new SoundsWatcher();
+        watcher.Enable();
     }
+
 
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
@@ -91,9 +93,13 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.IconReplacer.Dispose();
-        _framework.Update -= TargetHelper.Framework_Update;
+        TargetHelper.Dispose();
+        Service.Framework.Update -= TargetHelper.Framework_Update;
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
+
         dtrEntry?.Dispose();
+
+        watcher.Dispose();
     }
 
     private void OnOpenConfigUi()
@@ -103,6 +109,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     internal unsafe void TargetObject(string command, string arguments)
     {
+
         string[] array = arguments.Split();
 
 
@@ -162,6 +169,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     private void OnCommand(string command, string arguments)
     {
+
         string[] array = arguments.Split();
         switch (array[0])
         {
@@ -210,7 +218,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                         if (customComboPreset2.JobName.ToLowerInvariant() == text)
                         {
                             customComboPreset2.IsEnabled = !customComboPreset2.IsEnabled;
-                            Service.ChatGui.Print(customComboPreset2.JobName + " " + (customComboPreset2.IsEnabled ? "SET": "UNSET"));
+                            Service.ChatGui.Print(customComboPreset2.JobName + " " + (customComboPreset2.IsEnabled ? "SET" : "UNSET"));
                         }
                     }
                     Service.Configuration.Save();

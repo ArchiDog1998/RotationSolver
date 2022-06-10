@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XIVComboPlus.Combos
+namespace XIVAutoAttack.Combos
 {
     internal unsafe class MacroItem
     {

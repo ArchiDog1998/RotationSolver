@@ -12,9 +12,9 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
-using XIVComboPlus.Combos;
+using XIVAutoAttack.Combos.Disciplines;
 
-namespace XIVComboPlus;
+namespace XIVAutoAttack;
 
 internal class ConfigWindow : Window
 {
@@ -41,8 +41,6 @@ internal class ConfigWindow : Window
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
                 int num = 1;
 
-
-                //ImGui.Text(IconReplacer.CustomCombosDict.Keys.ToString());
                 foreach (string key in IconReplacer.CustomCombosDict.Keys)
                 {
                     var combos = IconReplacer.CustomCombosDict[key];
@@ -63,23 +61,12 @@ internal class ConfigWindow : Window
                             }
                             ImGui.PopItemWidth();
                             string text = $"#{num}: 替换沉静为{combo.JobName}的连续GCD战技、技能。";
-                            if(!string.IsNullOrEmpty(combo.Description))
+                            if (!string.IsNullOrEmpty(combo.Description))
                             {
                                 text += '\n' + combo.Description;
                             }
                             ImGui.TextColored(shadedColor, text);
-                            //ImGui.Spacing();
-                            //if (item == CustomComboPreset.DancerDanceComboCompatibility && enable)
-                            //{
-                            //    int[] array2 = Service.Configuration.DancerDanceCompatActionIDs.Cast<int>().ToArray();
-                            //    if (false | ImGui.InputInt("Emboite (Red) ActionID", ref array2[0], 0) | ImGui.InputInt("Entrechat (Blue) ActionID", ref array2[1], 0) | ImGui.InputInt("Jete (Green) ActionID", ref array2[2], 0) | ImGui.InputInt("Pirouette (Yellow) ActionID", ref array2[3], 0))
-                            //    {
-                            //        Service.Configuration.DancerDanceCompatActionIDs = array2.Cast<uint>().ToArray();
-                            //        Service.IconReplacer.UpdateEnabledActionIDs();
-                            //        Service.Configuration.Save();
-                            //    }
-                            //    ImGui.Spacing();
-                            //}
+
                             num++;
                         }
                     }
@@ -100,16 +87,16 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
 
-                if (NINCombo._ninactionAim != null) ImGui.Text(NINCombo._ninactionAim.Action.Name.ToString());
-                ImGui.Text(Service.IconReplacer.OriginalHook(NINCombo.Actions.Ten.ActionID).ToString());
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
+
+
                 //foreach (var item in Service.ObjectTable)
                 //{
                 //    if(item is BattleChara battle && item != Service.ClientState.LocalPlayer)
@@ -131,6 +118,20 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
+                    bool usePowerfule = Service.Configuration.UsePowerfulHookset;
+                    if (ImGui.Checkbox("三个感叹号用强力提钩", ref usePowerfule))
+                    {
+                        Service.Configuration.UsePowerfulHookset = usePowerfule;
+                        Service.Configuration.Save();
+                    }
+
+                    bool useItem = Service.Configuration.UseItem;
+                    if (ImGui.Checkbox("使用道具", ref useItem))
+                    {
+                        Service.Configuration.UseItem = useItem;
+                        Service.Configuration.Save();
+                    }
+
                     int voiceVolume = Service.Configuration.VoiceVolume;
                     if (ImGui.DragInt("语音音量", ref voiceVolume, 0.2f, 0, 100))
                     {

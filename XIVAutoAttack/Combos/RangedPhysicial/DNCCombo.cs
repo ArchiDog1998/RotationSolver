@@ -1,7 +1,9 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Linq;
-namespace XIVComboPlus.Combos;
+using XIVAutoAttack.Combos;
+
+namespace XIVAutoAttack.Combos.RangedPhysicial;
 
 internal class DNCCombo : CustomComboJob<DNCGauge>
 {
@@ -172,7 +174,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
                     //Remove Weak
                     b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0 &&
                     //Remove other partner.
-                    b.StatusList.Where(s =>s.StatusId == ObjectStatus.ClosedPosition2 && s.SourceID != Service.ClientState.LocalPlayer.ObjectId).Count() == 0).ToArray();
+                    b.StatusList.Where(s => s.StatusId == ObjectStatus.ClosedPosition2 && s.SourceID != Service.ClientState.LocalPlayer.ObjectId).Count() == 0).ToArray();
 
                     var targets = TargetHelper.GetJobCategory(Targets, Role.近战);
                     if (targets.Length > 0) return targets[0];
@@ -220,7 +222,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             };
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1))
         {
@@ -259,14 +261,14 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
 
         if (Actions.EnAvant.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
-    private protected override bool HealAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
 
         if (Actions.CuringWaltz.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
@@ -274,14 +276,14 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
 
         if (Actions.ShieldSamba.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         if (!TargetHelper.InBattle && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1) && Actions.ClosedPosition.ShouldUseAction(out act)) return true;
 
@@ -295,7 +297,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
         return false;
     }
-    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         if (Service.ClientState.LocalPlayer.Level < Actions.TechnicalStep.Level
             && Actions.Devilment.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
@@ -303,7 +305,7 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         return base.BreakAbility(abilityRemain, out act);
     }
 
-    private bool StepGCD(out BaseAction act)
+    private bool StepGCD(out IAction act)
     {
         act = null;
         if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.StandardStep, ObjectStatus.TechnicalStep)) return false;
@@ -329,41 +331,45 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         return false;
     }
 
-    private bool AttackGCD(out BaseAction act, bool breaking, uint lastComboActionID)
+    private bool AttackGCD(out IAction act, bool breaking, uint lastComboActionID)
     {
+        //剑舞
+        if ((breaking || JobGauge.Esprit >= 75) &&
+            Actions.SaberDance.ShouldUseAction(out act, mustUse: true)) return true;
+
         //提纳拉
         if (Actions.Tillana.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.StarfallDance.ShouldUseAction(out act, mustUse: true)) return true;
 
-        if (!JobGauge.IsDancing)
-        {
-            //用掉Buff
-            if (Actions.Bloodshower.ShouldUseAction(out act)) return true;
-            if (Actions.Fountainfall.ShouldUseAction(out act)) return true;
-
-            if (Actions.RisingWindmill.ShouldUseAction(out act)) return true;
-            if (Actions.ReverseCascade.ShouldUseAction(out act)) return true;
-        }
-
-        //剑舞
-        if ((breaking || JobGauge.Esprit >= 75) &&
-            Actions.SaberDance.ShouldUseAction(out act, mustUse:true)) return true;
-
-        //标准舞步
+        if (JobGauge.IsDancing) return false;
 
         bool canstandard = Actions.TechnicalStep.RecastTimeRemain == 0 || Actions.TechnicalStep.RecastTimeRemain > 5;
+
+        if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TechnicalFinish))
+        {
+            //标准舞步
+            if (canstandard && Actions.StandardStep.ShouldUseAction(out act)) return true;
+        }
+
+        //用掉Buff
+        if (Actions.Bloodshower.ShouldUseAction(out act)) return true;
+        if (Actions.Fountainfall.ShouldUseAction(out act)) return true;
+
+        if (Actions.RisingWindmill.ShouldUseAction(out act)) return true;
+        if (Actions.ReverseCascade.ShouldUseAction(out act)) return true;
+
+
+        //标准舞步
         if (canstandard && Actions.StandardStep.ShouldUseAction(out act)) return true;
 
-        if (!JobGauge.IsDancing)
-        {
-            //aoe
-            if (Actions.Bladeshower.ShouldUseAction(out act, lastComboActionID)) return true;
-            if (Actions.Windmill.ShouldUseAction(out act)) return true;
 
-            //single
-            if (Actions.Fountain.ShouldUseAction(out act, lastComboActionID)) return true;
-            if (Actions.Cascade.ShouldUseAction(out act)) return true;
-        }
+        //aoe
+        if (Actions.Bladeshower.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.Windmill.ShouldUseAction(out act)) return true;
+
+        //single
+        if (Actions.Fountain.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.Cascade.ShouldUseAction(out act)) return true;
 
         return false;
     }

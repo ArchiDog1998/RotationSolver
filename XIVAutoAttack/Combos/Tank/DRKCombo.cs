@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Tank;
 
 internal class DRKCombo : CustomComboJob<DRKGauge>
 {
@@ -113,23 +113,23 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
             };
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.TheBlackestNight.ShouldUseAction(out act)) return true;
 
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.DarkMissionary.ShouldUseAction(out act)) return true;
 
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if(JobGauge.Blood >= 50 && Actions.LivingShadow.ShouldUseAction(out act)) return true;
+        if (JobGauge.Blood >= 50 && Actions.LivingShadow.ShouldUseAction(out act)) return true;
         if (JobGauge.Blood >= 50 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Delirium))
         {
             if (Actions.Quietus.ShouldUseAction(out act)) return true;
@@ -149,10 +149,10 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
 
         return false;
     }
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //续Buff
-        if(JobGauge.DarksideTimeRemaining < 30000 && Service.ClientState.LocalPlayer.CurrentMp >= 6000)
+        if (JobGauge.DarksideTimeRemaining < 30000 && Service.ClientState.LocalPlayer.CurrentMp >= 6000)
         {
             if (Actions.FloodofDarkness.ShouldUseAction(out act)) return true;
             if (Actions.EdgeofDarkness.ShouldUseAction(out act)) return true;
@@ -164,15 +164,15 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
 
         if (Actions.SaltandDarkness.ShouldUseAction(out act)) return true;
         if (Actions.BloodWeapon.ShouldUseAction(out act)) return true;
-        if (!IsMoving && Actions.SaltedEarth.ShouldUseAction(out act, mustUse:true)) return true;
+        if (!IsMoving && Actions.SaltedEarth.ShouldUseAction(out act, mustUse: true)) return true;
 
         if (Actions.AbyssalDrain.ShouldUseAction(out act)) return true;
         if (Actions.CarveandSpit.ShouldUseAction(out act)) return true;
-        if (Actions.AbyssalDrain.ShouldUseAction(out act, mustUse:true)) return true;
+        if (Actions.AbyssalDrain.ShouldUseAction(out act, mustUse: true)) return true;
 
 
         //搞搞攻击
-        if (Actions.Plunge.ShouldUseAction(out act) && ! IsMoving)
+        if (Actions.Plunge.ShouldUseAction(out act) && !IsMoving)
         {
             if (BaseAction.DistanceToPlayer(Actions.Plunge.Target, true) < 1)
             {
@@ -183,13 +183,13 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (Actions.LivingDead.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (abilityRemain == 1)
         {
@@ -213,9 +213,9 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Plunge.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+        if (Actions.Plunge.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         return false;
     }

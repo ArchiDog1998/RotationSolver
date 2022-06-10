@@ -11,8 +11,9 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using XIVAutoAttack;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos;
 
 public abstract class CustomCombo
 {
@@ -189,7 +190,7 @@ public abstract class CustomCombo
     #endregion
 
     #region Combo
-    protected internal uint ActionID => GeneralActions.Repose.ActionID;
+    protected internal uint ActionID => GeneralActions.Repose.ID;
 
     public bool IsEnabled
     {
@@ -235,7 +236,7 @@ public abstract class CustomCombo
     {
     }
 
-    internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out BaseAction newAction)
+    internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out IAction newAction)
     {
 
         newAction = null;
@@ -254,7 +255,7 @@ public abstract class CustomCombo
         if (newAction == null) return false;
 
         //和之前一样
-        if (actionID == newAction.ActionID) return false;
+        if (actionID == newAction.ID) return false;
         //else if (actNew == null)
         //{
         //    //SortedSet<byte> validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => job.Type == JobType.MagicalRanged || job.Type == JobType.Healer).Select(job => job.Index));
@@ -313,44 +314,48 @@ public abstract class CustomCombo
         }
     }
 
-    private BaseAction Invoke(uint actionID, uint lastComboActionID, float comboTime)
+    private IAction Invoke(uint actionID, uint lastComboActionID, float comboTime)
     {
 
         byte abilityRemain = TargetHelper.AbilityRemainCount;
-        BaseAction GCDaction = GCD(lastComboActionID, abilityRemain);
+        IAction act = GCD(lastComboActionID, abilityRemain);
         //Sayout!
-        if (GCDaction != null)
+        if(act is BaseAction GCDaction)
         {
-            if(CheckAction(GCDaction.ActionID) && GCDaction.EnermyLocation != EnemyLocation.None)
+            if (act != null)
             {
-                string location = GCDaction.EnermyLocation.ToString();
-                if (Service.Configuration.SayingLocation) Speak(location);
-                if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                if (CheckAction(GCDaction.ID) && GCDaction.EnermyLocation != EnemyLocation.None)
                 {
-                    IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
-                        Service.IconReplacer.OriginalHook(GCDaction.ActionID)).Icon,
-                });
-            }
+                    string location = GCDaction.EnermyLocation.ToString();
+                    if (Service.Configuration.SayingLocation) Speak(location);
+                    if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
+                            Service.IconReplacer.OriginalHook(GCDaction.ID)).Icon,
+                    });
+                }
 
-            switch (abilityRemain)
+                switch (abilityRemain)
+                {
+                    case 0:
+                        return GCDaction;
+                    default:
+                        if (Ability(abilityRemain, GCDaction, out IAction ability)) return ability;
+                        return GCDaction;
+                }
+            }
+            else
             {
-                case 0:
-                    return GCDaction;
-                default:
-                    if (Ability(abilityRemain, GCDaction, out BaseAction ability)) return ability;
-                    return GCDaction;
+                if (Ability(abilityRemain, GeneralActions.Addle, out IAction ability)) return ability;
+                return null;
             }
         }
-        else
-        {
-            if (Ability(abilityRemain, GeneralActions.Addle, out BaseAction ability)) return ability;
-            return null;
-        }
+        return act;
     }
 
-    private BaseAction GCD(uint lastComboActionID, byte abilityRemain)
+    private IAction GCD(uint lastComboActionID, byte abilityRemain)
     {
-        if (EmergercyGCD(lastComboActionID, out BaseAction act)) return act;
+        if (EmergercyGCD(lastComboActionID, out IAction act)) return act;
 
         if (EsunaRaise(out act, abilityRemain)) return act;
         if (IconReplacer.Move && MoveGCD(lastComboActionID, out act)) return act;
@@ -362,10 +367,10 @@ public abstract class CustomCombo
         if (IconReplacer.DefenseArea && DefenseAreaGCD(abilityRemain, out act)) return act;
         if (IconReplacer.DefenseSingle && DefenseSingleGCD(abilityRemain, out act)) return act;
 
-        if (GeneralGCD(lastComboActionID, out act)) return act;
+        if (GeneralGCD(lastComboActionID, out var action)) return action;
         return null;
     }
-    private bool EsunaRaise(out BaseAction act, byte actabilityRemain)
+    private bool EsunaRaise(out IAction act, byte actabilityRemain)
     {
         if (Raise == null)
         {
@@ -373,7 +378,7 @@ public abstract class CustomCombo
             return false;
         }
         //有某些非常危险的状态。
-        if ((IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0) || TargetHelper.DyingPeople.Length > 0)
+        if (IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0 || TargetHelper.DyingPeople.Length > 0)
         {
             if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗
                 && GeneralActions.Esuna.ShouldUseAction(out act, mustUse: true)) return true;
@@ -388,7 +393,7 @@ public abstract class CustomCombo
             }
             else
             {
-                if (IconReplacer.RaiseOrShirk || HaveSwift || (!GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0))
+                if (IconReplacer.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0)
                 {
                     if (Raise.ShouldUseAction(out act)) return true;
                 }
@@ -398,7 +403,7 @@ public abstract class CustomCombo
         act = null;
         return false;
     }
-    private bool Ability(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (Service.Configuration.OnlyGCD)
         {
@@ -450,7 +455,7 @@ public abstract class CustomCombo
 
         if (IconReplacer.AntiRepulsion)
         {
-            switch(role)
+            switch (role)
             {
                 case Role.防护:
                 case Role.近战:
@@ -484,7 +489,7 @@ public abstract class CustomCombo
         }
 
         //回血
-        if(role == Role.近战)
+        if (role == Role.近战)
         {
             if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
             if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
@@ -506,9 +511,9 @@ public abstract class CustomCombo
         }
 
         if (GeneralAbility(abilityRemain, out act)) return true;
-        if (HaveTargetAngle) 
+        if (HaveTargetAngle)
         {
-            if(role == Role.防护 && HaveShield)
+            if (role == Role.防护 && HaveShield)
             {
                 var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets, out bool haveTargetOnme);
                 if (!IsMoving && haveTargetOnme && Service.Configuration.AutoDefenseForTank)
@@ -534,7 +539,7 @@ public abstract class CustomCombo
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected abstract bool ForAttachAbility(byte abilityRemain, out BaseAction act);
+    private protected abstract bool ForAttachAbility(byte abilityRemain, out IAction act);
     /// <summary>
     /// 覆盖写一些用于因为后面的GCD技能而要适应的能力技能
     /// </summary>
@@ -543,9 +548,9 @@ public abstract class CustomCombo
     /// <param name="nextGCD"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected virtual bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.Cast100 > 70 && GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
+        if (nextGCD is BaseAction action && action.Cast100 > 70 && GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
         act = null; return false;
     }
     /// <summary>
@@ -555,12 +560,12 @@ public abstract class CustomCombo
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool GeneralAbility(byte abilityRemain, out BaseAction act)
+    private protected virtual bool GeneralAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected virtual bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected virtual bool MoveAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
@@ -572,16 +577,16 @@ public abstract class CustomCombo
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected virtual bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected virtual bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected virtual bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
-    private protected virtual bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected virtual bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
@@ -592,7 +597,7 @@ public abstract class CustomCombo
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool HealAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected virtual bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
@@ -603,7 +608,7 @@ public abstract class CustomCombo
     /// <param name="lastComboActionID"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool EmergercyGCD(uint lastComboActionID, out BaseAction act)
+    private protected virtual bool EmergercyGCD(uint lastComboActionID, out IAction act)
     {
         act = null; return false;
     }
@@ -614,7 +619,7 @@ public abstract class CustomCombo
     /// <param name="lastComboActionID"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected abstract bool GeneralGCD(uint lastComboActionID, out BaseAction act);
+    private protected abstract bool GeneralGCD(uint lastComboActionID, out IAction act);
     /// <summary>
     /// 单体治疗GCD
     /// </summary>
@@ -622,20 +627,20 @@ public abstract class CustomCombo
     /// <param name="lastComboActionID"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
+    private protected virtual bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected virtual bool MoveGCD(uint lastComboActionID, out BaseAction act)
+    private protected virtual bool MoveGCD(uint lastComboActionID, out IAction act)
     {
         act = null; return false;
     }
-    private protected virtual bool DefenseSingleGCD(uint lastComboActionID, out BaseAction act)
+    private protected virtual bool DefenseSingleGCD(uint lastComboActionID, out IAction act)
     {
         act = null; return false;
     }
-    private protected virtual bool DefenseAreaGCD(uint lastComboActionID, out BaseAction act)
+    private protected virtual bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
     {
         act = null; return false;
     }
@@ -647,11 +652,11 @@ public abstract class CustomCombo
     /// <param name="lastComboActionID"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool HealAreaGCD(uint lastComboActionID, out BaseAction act)
+    private protected virtual bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
         act = null; return false;
     }
-    private protected virtual bool BreakAbility(byte abilityRemain, out BaseAction act)
+    private protected virtual bool BreakAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }

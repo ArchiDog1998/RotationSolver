@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XIVComboPlus.Combos
+namespace XIVAutoAttack.Combos
 {
     internal struct ObjectStatus
     {
@@ -447,6 +447,12 @@ namespace XIVComboPlus.Combos
             Paralysis2 = 482,
 
             //噩梦
-            Nightmare = 423;
+            Nightmare = 423,
+
+            //耐心
+            Patience = 850,
+
+            //捕鱼人之技
+            AnglersArt = 2778;
     }
 }

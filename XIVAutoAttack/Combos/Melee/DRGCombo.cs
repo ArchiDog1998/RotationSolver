@@ -1,8 +1,9 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Linq;
 using System.Numerics;
+using XIVAutoAttack.Combos.Healer;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Melee;
 
 internal class DRGCombo : CustomComboJob<DRGGauge>
 {
@@ -71,8 +72,8 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             {
             },
             //ª√œÛ≥Â
-            MirageDive = new BaseAction(7399) 
-            { 
+            MirageDive = new BaseAction(7399)
+            {
                 BuffsNeed = new ushort[] { ObjectStatus.DiveReady },
             },
 
@@ -122,9 +123,9 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
     }
 
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if(abilityRemain > 1)
+        if (abilityRemain > 1)
         {
             if (Actions.SpineshatterDive.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
             if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true)) return true;
@@ -132,9 +133,9 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
         act = null;
         return false;
     }
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.ActionID == Actions.FullThrust.ActionID || nextGCD.ActionID == Actions.CoerthanTorment.ActionID || (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.WheelingThrust))
+        if (nextGCD.ID == Actions.FullThrust.ID || nextGCD.ID == Actions.CoerthanTorment.ID || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.WheelingThrust)
         {
             if (abilityRemain == 1 && Actions.LifeSurge.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }
@@ -142,7 +143,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //3 BUff
         if (Actions.LanceCharge.ShouldUseAction(out act, mustUse: true)) return true;
@@ -151,7 +152,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         if (JobGauge.IsLOTDActive && Actions.Nastrond.ShouldUseAction(out act, mustUse: true)) return true;
 
@@ -182,7 +183,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         #region »∫…À
         if (Actions.CoerthanTorment.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -217,7 +218,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
         #endregion
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //«£÷∆
         if (GeneralActions.Feint.ShouldUseAction(out act)) return true;

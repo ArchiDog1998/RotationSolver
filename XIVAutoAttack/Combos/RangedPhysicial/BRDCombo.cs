@@ -1,16 +1,17 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Linq;
-namespace XIVComboPlus.Combos;
+using XIVAutoAttack.Combos;
+
+namespace XIVAutoAttack.Combos.RangedPhysicial;
 
 internal class BRDCombo : CustomComboJob<BRDGauge>
 {
     //看看现在有没有开猛者强击
-    protected static bool IsBreaking => BaseAction.HaveStatusSelfFromSelf(125);
+    //protected static bool IsBreaking => BaseAction.HaveStatusSelfFromSelf(125);
 
     internal override uint JobID => 23;
 
-    protected override bool CanHealSingleAbility => false;
     internal struct Actions
     {
         private static bool AddOnDot(BattleChara b, ushort status1, ushort status2)
@@ -125,7 +126,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
             };
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //行吟
         if (Actions.Troubadour.ShouldUseAction(out act)) return true;
@@ -133,7 +134,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         return false;
     }
 
-    private protected override bool HealSingleAbility( byte abilityRemain, out BaseAction act)
+    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //大地神的抒情恋歌
         if (Actions.NaturesMinne.ShouldUseAction(out act)) return true;
@@ -141,7 +142,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //放大招！
         if (JobGauge.SoulVoice == 100 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady))
@@ -168,16 +169,16 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
 
         //如果接下来要上毒或者要直线射击，那算了。
-        if (nextGCD.ActionID == Actions.StraitShoot.ActionID || nextGCD.ActionID == Actions.VenomousBite.ActionID ||
-            nextGCD.ActionID == Actions.Windbite.ActionID || nextGCD.ActionID == Actions.IronJaws.ActionID)
+        if (nextGCD.ID == Actions.StraitShoot.ID || nextGCD.ID == Actions.VenomousBite.ID ||
+            nextGCD.ID == Actions.Windbite.ID || nextGCD.ID == Actions.IronJaws.ID)
         {
             return base.EmergercyAbility(abilityRemain, nextGCD, out act);
         }
-        else if(abilityRemain != 0 && 
+        else if (abilityRemain != 0 &&
             (Service.ClientState.LocalPlayer.Level < Actions.RagingStrikes.Level || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RagingStrikes)) &&
             (Service.ClientState.LocalPlayer.Level < Actions.BattleVoice.Level || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BattleVoice)))
         {
@@ -189,9 +190,9 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
 
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
-        if(JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.NONE || Service.ClientState.LocalPlayer.Level < Actions.MagesBallad.Level)
+        if (JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.NONE || Service.ClientState.LocalPlayer.Level < Actions.MagesBallad.Level)
         {
             act = null;
             return false;
@@ -212,7 +213,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //放浪神的小步舞曲
         if (JobGauge.SongTimer < 3000 && Actions.WanderersMinuet.ShouldUseAction(out act)) return true;
@@ -236,11 +237,14 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
 
         byte level = Service.ClientState.LocalPlayer.Level;
 
-        //死亡剑雨
-        if (Actions.RainofDeath.ShouldUseAction(out act, emptyOrSkipCombo: level == 90 ? IsBreaking : true)) return true;
+        if (abilityRemain == 2)
+        {
+            //死亡剑雨
+            if (Actions.RainofDeath.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
-        //失血箭
-        if (Actions.Bloodletter.ShouldUseAction(out act, emptyOrSkipCombo: level == 90 ? IsBreaking : true)) return true;
+            //失血箭
+            if (Actions.Bloodletter.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        }
 
         //光阴神的礼赞凯歌 减少Debuff
         if (Actions.WardensPaean.ShouldUseAction(out act)) return true;

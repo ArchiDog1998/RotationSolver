@@ -1,6 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Melee;
 
 internal class SAMCombo : CustomComboJob<SAMGauge>
 {
@@ -41,7 +41,7 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             //彼岸花
             Higanbana = new BaseAction(7489)
             {
-                TargetStatus = new ushort[] {ObjectStatus.Higanbana},
+                TargetStatus = new ushort[] { ObjectStatus.Higanbana },
             },
 
             //天下五剑
@@ -65,7 +65,7 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             //明镜止水
             MeikyoShisui = new BaseAction(7499)
             {
-                BuffsProvide = new ushort[] {ObjectStatus.MeikyoShisui},
+                BuffsProvide = new ushort[] { ObjectStatus.MeikyoShisui },
             },
 
             //雪风
@@ -107,21 +107,21 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             //奥义斩浪
             OgiNamikiri = new BaseAction(25781)
             {
-                BuffsNeed = new ushort[] {ObjectStatus.OgiNamikiriReady},
+                BuffsNeed = new ushort[] { ObjectStatus.OgiNamikiriReady },
             },
 
             //回返斩浪
             KaeshiNamikiri = new BaseAction(25782);
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (Actions.OgiNamikiri.ShouldUseAction(out act, mustUse:true)) return true;
+        if (Actions.OgiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.TenkaGoken.ShouldUseAction(out act))
         {
             if (SenCount > 1) return true;
         }
-        else if(SenCount > 0)
+        else if (SenCount > 0)
         {
             if (SenCount == 3 && Actions.MidareSetsugekka.ShouldUseAction(out act)) return true;
             if (Actions.Higanbana.ShouldUseAction(out act)) return true;
@@ -162,25 +162,25 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         if (JobGauge.Kenki >= 30 && Actions.HissatsuGyoten.ShouldUseAction(out act)) return true;
         act = null;
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //赶紧回返！
-        if (Service.IconReplacer.OriginalHook(Actions.OgiNamikiri.ActionID) == Actions.KaeshiNamikiri.ActionID)
+        if (Service.IconReplacer.OriginalHook(Actions.OgiNamikiri.ID) == Actions.KaeshiNamikiri.ID)
         {
             if (Actions.KaeshiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;
         }
-        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiGoken.ActionID)
+        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiGoken.ID)
         {
             if (Actions.KaeshiGoken.ShouldUseAction(out act, mustUse: true)) return true;
         }
-        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiSetsugekka.ActionID)
+        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiSetsugekka.ID)
         {
             if (Actions.KaeshiSetsugekka.ShouldUseAction(out act, mustUse: true)) return true;
         }
@@ -201,17 +201,17 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
         }
         else
         {
-            if (Actions.Ikishoten.ShouldUseAction(out act)) return true;
+            if (TargetHelper.InBattle && Actions.Ikishoten.ShouldUseAction(out act)) return true;
         }
         act = null;
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (HaveTargetAngle && Actions.MeikyoShisui.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+        if (HaveTargetAngle && Actions.MeikyoShisui.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
-        if(nextGCD.ActionID == Actions.TenkaGoken.ActionID || nextGCD.ActionID == Actions.Higanbana.ActionID || nextGCD.ActionID == Actions.MidareSetsugekka.ActionID)
+        if (nextGCD.ID == Actions.TenkaGoken.ID || nextGCD.ID == Actions.Higanbana.ID || nextGCD.ID == Actions.MidareSetsugekka.ID)
         {
             if (JobGauge.Kenki >= 20 && !IsMoving && Actions.HissatsuKaiten.ShouldUseAction(out act)) return true;
         }
@@ -220,13 +220,13 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.ThirdEye.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
         if (GeneralActions.Feint.ShouldUseAction(out act)) return true;

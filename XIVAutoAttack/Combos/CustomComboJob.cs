@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XIVComboPlus.Combos
+namespace XIVAutoAttack.Combos
 {
-    internal abstract class CustomComboJob<T>: CustomCombo where T : JobGaugeBase
+    internal abstract class CustomComboJob<T> : CustomCombo where T : JobGaugeBase
     {
         private static T _gauge;
 

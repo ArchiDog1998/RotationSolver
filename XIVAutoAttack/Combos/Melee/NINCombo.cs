@@ -1,6 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Melee;
 
 internal class NINCombo : CustomComboJob<NINGauge>
 {
@@ -164,47 +164,47 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
 
             //风魔手里剑
-            FumaShuriken = new NinAction(2265, Ten )
+            FumaShuriken = new NinAction(2265, Ten)
             {
                 AfterUse = ClearNinjutsus,
             },
 
             //火遁之术
-            Katon = new NinAction(2266, Chi, Ten )
+            Katon = new NinAction(2266, Chi, Ten)
             {
                 AfterUse = ClearNinjutsus,
             },
 
             //雷遁之术
-            Raiton = new NinAction(2267,  Ten, Chi )
+            Raiton = new NinAction(2267, Ten, Chi)
             {
                 AfterUse = ClearNinjutsus,
             },
 
 
             //冰遁之术
-            Hyoton = new NinAction(2268,Ten, Jin ),
+            Hyoton = new NinAction(2268, Ten, Jin),
 
             //风遁之术
-            Huton = new NinAction(2269,  Jin, Chi, Ten )
+            Huton = new NinAction(2269, Jin, Chi, Ten)
             {
                 OtherCheck = b => JobGauge.HutonTimer == 0,
                 AfterUse = ClearNinjutsus,
             },
 
             //土遁之术
-            Doton = new NinAction(2270,  Jin, Ten, Chi )
+            Doton = new NinAction(2270, Jin, Ten, Chi)
             {
                 BuffsProvide = new ushort[] { ObjectStatus.Doton },
                 AfterUse = ClearNinjutsus,
             },
 
             //水遁之术
-            Suiton = new NinAction(2271,  Ten, Chi, Jin )
+            Suiton = new NinAction(2271, Ten, Chi, Jin)
             {
                 EnermyLocation = EnemyLocation.Back,
                 BuffsProvide = new ushort[] { ObjectStatus.Suiton },
-                AfterUse = () => 
+                AfterUse = () =>
                 {
                     ClearNinjutsus();
                     _break = false;
@@ -213,14 +213,14 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
 
             //劫火灭却之术
-            GokaMekkyaku = new NinAction(16491,  Chi, Ten )
+            GokaMekkyaku = new NinAction(16491, Chi, Ten)
             {
                 AfterUse = ClearNinjutsus,
             },
 
 
             //冰晶乱流之术
-            HyoshoRanryu = new NinAction(16492,  Ten, Jin )
+            HyoshoRanryu = new NinAction(16492, Ten, Jin)
             {
                 AfterUse = ClearNinjutsus,
             };
@@ -258,7 +258,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
         else
         {
             //看看能否背刺
-            if (Actions.Ten.ShouldUseAction(out _, mustUse:true) && Actions.TrickAttack.RecastTimeRemain < 2 && _break)
+            if (Actions.Ten.ShouldUseAction(out _, mustUse: true) && Actions.TrickAttack.RecastTimeRemain < 2 && _break)
             {
                 if (Actions.Suiton.ShouldUseAction(out _)) _ninactionAim = Actions.Suiton;
             }
@@ -304,19 +304,19 @@ internal class NINCombo : CustomComboJob<NINGauge>
         _ninactionAim = null;
     }
 
-    private static bool DoNinjutsus(out BaseAction act)
+    private static bool DoNinjutsus(out IAction act)
     {
         act = null;
 
         //有天地人
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TenChiJin))
         {
-            uint tenId = Service.IconReplacer.OriginalHook(Actions.Ten.ActionID);
-            uint chiId = Service.IconReplacer.OriginalHook(Actions.Chi.ActionID);
-            uint jinId = Service.IconReplacer.OriginalHook(Actions.Jin.ActionID);
+            uint tenId = Service.IconReplacer.OriginalHook(Actions.Ten.ID);
+            uint chiId = Service.IconReplacer.OriginalHook(Actions.Chi.ID);
+            uint jinId = Service.IconReplacer.OriginalHook(Actions.Jin.ID);
 
             //第一个
-            if (tenId == Actions.FumaShurikenTen.ActionID)
+            if (tenId == Actions.FumaShurikenTen.ID)
             {
                 //AOE
                 if (Actions.Katon.ShouldUseAction(out _))
@@ -328,20 +328,20 @@ internal class NINCombo : CustomComboJob<NINGauge>
             }
 
             //第二击杀AOE
-            else if(tenId == Actions.KatonTen.ActionID)
+            else if (tenId == Actions.KatonTen.ID)
             {
                 if (Actions.KatonTen.ShouldUseAction(out act, mustUse: true)) return true;
             }
             //其他几击
-            else if (chiId == Actions.RaitonChi.ActionID)
+            else if (chiId == Actions.RaitonChi.ID)
             {
                 if (Actions.RaitonChi.ShouldUseAction(out act, mustUse: true)) return true;
             }
-            else if (chiId == Actions.DotonChi.ActionID)
+            else if (chiId == Actions.DotonChi.ID)
             {
                 if (Actions.DotonChi.ShouldUseAction(out act, mustUse: true)) return true;
             }
-            else if (jinId == Actions.SuitonJin.ActionID)
+            else if (jinId == Actions.SuitonJin.ID)
             {
                 if (Actions.SuitonJin.ShouldUseAction(out act, mustUse: true)) return true;
             }
@@ -358,18 +358,18 @@ internal class NINCombo : CustomComboJob<NINGauge>
             return true;
         }
         //失败了
-        else if (id == Actions.RabbitMedium.ActionID)
+        else if (id == Actions.RabbitMedium.ID)
         {
             act = Actions.RabbitMedium;
             return true;
         }
         //结束了
-        else if (id == _ninactionAim.ActionID)
+        else if (id == _ninactionAim.ID)
         {
-            if (_ninactionAim.ShouldUseAction(out act, mustUse:true)) return true;
+            if (_ninactionAim.ShouldUseAction(out act, mustUse: true)) return true;
         }
         //释放第二个
-        else if (id == Actions.FumaShuriken.ActionID )
+        else if (id == Actions.FumaShuriken.ID)
         {
             if (_ninactionAim.Ninjutsus.Length > 1)
             {
@@ -378,7 +378,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
             }
         }
         //释放第三个
-        else if (id == Actions.Katon.ActionID || id == Actions.Raiton.ActionID || id == Actions.Hyoton.ActionID)
+        else if (id == Actions.Katon.ID || id == Actions.Raiton.ID || id == Actions.Hyoton.ID)
         {
             if (_ninactionAim.Ninjutsus.Length > 2)
             {
@@ -389,17 +389,17 @@ internal class NINCombo : CustomComboJob<NINGauge>
         return false;
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         _break = true;
         act = null;
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         ChoiceNinjutsus();
-        if(DoNinjutsus(out act)) return true;
+        if (DoNinjutsus(out act)) return true;
 
 
         if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Ninjutsu))
@@ -439,14 +439,14 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
 
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.ShadeShift.ShouldUseAction(out act)) return true;
 
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         if (!TargetHelper.InBattle && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
 
@@ -480,13 +480,13 @@ internal class NINCombo : CustomComboJob<NINGauge>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.Shukuchi.ShouldUseAction(out act)) return true;
 
         return false;
     }
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
         if (GeneralActions.Feint.ShouldUseAction(out act)) return true;

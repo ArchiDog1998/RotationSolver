@@ -5,35 +5,59 @@ using System.Text;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
-namespace XIVComboPlus.Combos
+
+namespace XIVAutoAttack.Combos
 {
-    internal class BaseItem
+    internal class BaseItem : IAction
     {
         public Item Item { get; } = null;
-        public BaseItem(string name)
+        private uint A4 { get; } = 0;
+
+        public uint ID => Item.RowId;
+        public BaseItem(string name, uint a4 = 0)
         {
             var enmu = Service.DataManager.GetExcelSheet<Item>().GetEnumerator();
 
-            while(enmu.MoveNext())
+            while (enmu.MoveNext())
             {
-                if(enmu.Current.Name == name)
+                if (enmu.Current.Name == name)
                 {
                     Item = enmu.Current;
                     break;
                 }
             }
+            A4 = a4;
         }
 
-        public unsafe bool ShoudUseItem()
+        public BaseItem(uint row, uint a4 = 0)
         {
-            return ActionManager.Instance()->GetRecastTime(ActionType.Item, Item.RowId) == 0;
+            Item = Service.DataManager.GetExcelSheet<Item>().GetRow(row);
+            A4 = a4;
         }
 
-        public unsafe bool UseItem()
+        public unsafe bool ShoudUseItem(out IAction item)
+        {
+            item = this;
+
+            if (!Service.Configuration.UseItem) return false;
+
+            if (ActionManager.Instance()->GetRecastTime(ActionType.Item, Item.RowId) > 0) return false;
+
+            return InventoryManager.Instance()->GetInventoryItemCount(Item.RowId, false) > 0 ||
+                InventoryManager.Instance()->GetInventoryItemCount(Item.RowId, true) > 0;
+
+        }
+
+        public unsafe bool Use()
         {
             if (Item == null) return false;
 
-            return ActionManager.Instance()->UseAction(ActionType.Item, Item.RowId, Service.ClientState.LocalPlayer.ObjectId);
+            if(InventoryManager.Instance()->GetInventoryItemCount(Item.RowId, true) > 0)
+            {
+                return ActionManager.Instance()->UseAction(ActionType.Item, Item.RowId + 1000000, Service.ClientState.LocalPlayer.ObjectId, A4);
+            }
+
+            return ActionManager.Instance()->UseAction(ActionType.Item, Item.RowId, Service.ClientState.LocalPlayer.ObjectId, A4);
         }
     }
 }

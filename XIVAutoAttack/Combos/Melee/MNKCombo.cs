@@ -1,8 +1,10 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
+using XIVAutoAttack;
+using XIVAutoAttack.Combos;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Melee;
 
 internal class MNKCombo : CustomComboJob<MNKGauge>
 {
@@ -52,10 +54,16 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             Meditation = new BaseAction(3546),
 
             //铁山靠
-            SteelPeak = new BaseAction(25761),
+            SteelPeak = new BaseAction(25761)
+            {
+                OtherCheck = b => TargetHelper.InBattle,
+            },
 
             //空鸣拳
-            HowlingFist = new BaseAction(25763),
+            HowlingFist = new BaseAction(25763)
+            {
+                OtherCheck = b => TargetHelper.InBattle,
+            },
 
             //义结金兰
             Brotherhood = new BaseAction(7396, true),
@@ -64,7 +72,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             RiddleofFire = new BaseAction(7395),
 
             //突进技能
-            Thunderclap = new BaseAction(25762, shouldEndSpecial:true)
+            Thunderclap = new BaseAction(25762, shouldEndSpecial: true)
             {
                 ChoiceFriend = BaseAction.FindMoveTarget,
             },
@@ -83,9 +91,13 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
 
             //爆裂脚 阳
             FlintStrike = new BaseAction(25882),
+            //凤凰舞
+            RisingPhoenix = new BaseAction(25768),
+
 
             //斗魂旋风脚 阴阳
             TornadoKick = new BaseAction(3543),
+            PhantomRush = new BaseAction(25769),
 
             //演武
             FormShift = new BaseAction(4262)
@@ -94,55 +106,56 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             },
 
             //金刚极意 盾
-            RiddleofEarth = new BaseAction(7394, shouldEndSpecial:true),
+            RiddleofEarth = new BaseAction(7394, shouldEndSpecial: true),
 
             //疾风极意
             RiddleofWind = new BaseAction(25766);
+
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.RiddleofFire.ShouldUseAction(out act)) return true;
         if (Actions.Brotherhood.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool HealAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.Mantra.ShouldUseAction(out act)) return true;
         return false;
     }
 
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.RiddleofEarth.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+        if (Actions.RiddleofEarth.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (GeneralActions.Feint.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Thunderclap.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+        if (Actions.Thunderclap.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
 
-    private bool OpoOpoForm(out BaseAction act)
+    private bool OpoOpoForm(out IAction act)
     {
-        if(Actions.ArmoftheDestroyer.ShouldUseAction(out act)) return true; 
+        if (Actions.ArmoftheDestroyer.ShouldUseAction(out act)) return true;
         if (Actions.DragonKick.ShouldUseAction(out act)) return true;
         if (Actions.Bootshine.ShouldUseAction(out act)) return true;
         return false;
     }
 
 
-    private bool RaptorForm(out BaseAction act)
+    private bool RaptorForm(out IAction act)
     {
         if (Actions.FourpointFury.ShouldUseAction(out act)) return true;
 
@@ -154,7 +167,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
         return false;
     }
 
-    private bool CoerlForm(out BaseAction act)
+    private bool CoerlForm(out IAction act)
     {
         if (Actions.Rockbreaker.ShouldUseAction(out act)) return true;
         if (Actions.Demolish.ShouldUseAction(out act))
@@ -166,13 +179,13 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
         return false;
     }
 
-    private bool LunarNadi(out BaseAction act)
+    private bool LunarNadi(out IAction act)
     {
         if (OpoOpoForm(out act)) return true;
         return false;
     }
 
-    private bool SolarNadi(out BaseAction act)
+    private bool SolarNadi(out IAction act)
     {
         if (!JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.RAPTOR))
         {
@@ -190,7 +203,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         bool havesolar = (JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.SOLAR) != 0;
         bool havelunar = (JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.LUNAR) != 0;
@@ -198,9 +211,14 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
         //满了的话，放三个大招
         if (!JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.NONE))
         {
-            if (havesolar && havelunar && Actions.TornadoKick.ShouldUseAction(out act, mustUse: true)) return true;
+            if (havesolar && havelunar)
+            {
+                if (Actions.PhantomRush.ShouldUseAction(out act, mustUse: true)) return true;
+                if (Actions.TornadoKick.ShouldUseAction(out act, mustUse: true)) return true;
+            }
             if (JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.RAPTOR))
             {
+                if (Actions.RisingPhoenix.ShouldUseAction(out act, mustUse: true)) return true;
                 if (Actions.FlintStrike.ShouldUseAction(out act, mustUse: true)) return true;
             }
             else
@@ -209,7 +227,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
             }
         }
         //有震脚就阴阳
-        else if(BaseAction.HaveStatusSelfFromSelf(ObjectStatus.PerfectBalance))
+        else if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.PerfectBalance))
         {
             if (havesolar && LunarNadi(out act)) return true;
             if (SolarNadi(out act)) return true;
@@ -235,7 +253,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //震脚
         if (JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.NONE))
@@ -247,9 +265,9 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
                 var dis = BaseAction.FindStatusSelfFromSelf(ObjectStatus.DisciplinedFist);
                 Actions.Demolish.ShouldUseAction(out _);
                 var demo = BaseAction.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
-                if (dis.Length != 0 && dis[0] > 6 && ((demo.Length != 0 && demo[0] > 6) || !Actions.PerfectBalance.IsCoolDown))
+                if (dis.Length != 0 && dis[0] > 6 && (demo.Length != 0 && demo[0] > 6 || !Actions.PerfectBalance.IsCoolDown))
                 {
-                    if (Actions.PerfectBalance.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+                    if (Actions.PerfectBalance.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
                 }
             }
             else
@@ -261,7 +279,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
 
         if (Actions.RiddleofWind.ShouldUseAction(out act)) return true;
 
-        if(JobGauge.Chakra == 5)
+        if (JobGauge.Chakra == 5)
         {
             if (Actions.HowlingFist.ShouldUseAction(out act)) return true;
             if (Actions.SteelPeak.ShouldUseAction(out act)) return true;

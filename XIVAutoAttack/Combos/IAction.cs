@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace XIVAutoAttack.Combos
 {
-    public enum EnemyLocation
+    internal interface IAction
     {
-        None,
-        Back,
-        Side,
+        bool Use();
+        uint ID { get; }
     }
 }

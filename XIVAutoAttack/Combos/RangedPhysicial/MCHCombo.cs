@@ -1,6 +1,8 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using XIVAutoAttack;
+using XIVAutoAttack.Combos;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.RangedPhysicial;
 
 internal class MCHCombo : CustomComboJob<MCHGauge>
 {
@@ -88,7 +90,7 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
             };
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //策动
         if (Actions.Tactician.ShouldUseAction(out act, mustUse: true)) return true;
@@ -96,14 +98,14 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //四个牛逼的技能。
         if (Actions.Bioblaster.ShouldUseAction(out act)) return true;
         if (Actions.Drill.ShouldUseAction(out act)) return true;
         if (Actions.AirAnchor.ShouldUseAction(out act) ||
-            (Service.ClientState.LocalPlayer.Level < Actions.AirAnchor.Level && Actions.HotShow.ShouldUseAction(out _))) return true;
-        if (Actions.ChainSaw.ShouldUseAction(out act, mustUse:true)) return true;
+            Service.ClientState.LocalPlayer.Level < Actions.AirAnchor.Level && Actions.HotShow.ShouldUseAction(out _)) return true;
+        if (Actions.ChainSaw.ShouldUseAction(out act, mustUse: true)) return true;
 
         //群体常规GCD
         if (JobGauge.IsOverheated && Actions.AutoCrossbow.ShouldUseAction(out act)) return true;
@@ -118,12 +120,12 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if(base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
+        if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //如果接下来要搞三大金刚了，整备吧！
-        if(nextGCD.ActionID == Actions.HotShow.ActionID || nextGCD.ActionID == Actions.Drill.ActionID || nextGCD.ActionID == Actions.ChainSaw.ActionID)
+        if (nextGCD.ID == Actions.HotShow.ID || nextGCD.ID == Actions.Drill.ID || nextGCD.ID == Actions.ChainSaw.ID)
         {
             if (Actions.Reassemble.ShouldUseAction(out act, mustUse: true)) return true;
         }
@@ -132,26 +134,26 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         float time = 10;
-        
+
         byte level = Service.ClientState.LocalPlayer.Level;
 
-        if(JobGauge.Heat >= 50 && (level < Actions.HotShow.Level || Actions.HotShow.RecastTimeRemain > time
+        if (JobGauge.Heat >= 50 && (level < Actions.HotShow.Level || Actions.HotShow.RecastTimeRemain > time
             || Actions.AirAnchor.RecastTimeRemain > time) &&
             (level < Actions.Drill.Level || Actions.Drill.RecastTimeRemain > time) &&
             (level < Actions.ChainSaw.Level || Actions.ChainSaw.RecastTimeRemain > time))
         {
-            if(abilityRemain == 1 && Actions.Hypercharge.ShouldUseAction(out act)) return true;
-            if(abilityRemain > 1 && Actions.Wildfire.ShouldUseAction(out act)) return true;
+            if (abilityRemain == 1 && Actions.Hypercharge.ShouldUseAction(out act)) return true;
+            if (abilityRemain > 1 && Actions.Wildfire.ShouldUseAction(out act)) return true;
         }
 
         //两个能力技都还在冷却
         if (Actions.GaussRound.IsCoolDown && Actions.Ricochet.IsCoolDown)
         {
             //车式浮空炮塔
-            if (Actions.RookAutoturret.ShouldUseAction(out act, mustUse:true)) return true;
+            if (Actions.RookAutoturret.ShouldUseAction(out act, mustUse: true)) return true;
 
             //枪管加热
             if (Actions.BarrelStabilizer.ShouldUseAction(out act)) return true;

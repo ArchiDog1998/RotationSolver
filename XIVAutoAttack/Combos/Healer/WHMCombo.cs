@@ -2,7 +2,8 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Linq;
-namespace XIVComboPlus.Combos;
+
+namespace XIVAutoAttack.Combos.Healer;
 
 internal class WHMCombo : CustomComboJob<WHMGauge>
 {
@@ -12,7 +13,7 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
     {
         public static readonly BaseAction
             //复活
-            Raise =  new BaseAction(125, true),
+            Raise = new BaseAction(125, true),
 
             //飞石 平A
             Stone = new BaseAction(119),
@@ -96,7 +97,7 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
     }
 
 
-    private protected override bool HealAreaGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
         //狂喜之心
         if (Actions.AfflatusRapture.ShouldUseAction(out act)) return true;
@@ -113,7 +114,7 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //加个神祝祷
         if (Actions.DivineBenison.ShouldUseAction(out act)) return true;
@@ -122,7 +123,7 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //节制
         if (Actions.Temperance.ShouldUseAction(out act)) return true;
@@ -131,7 +132,7 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //加个神速咏唱
         if (Actions.PresenseOfMind.ShouldUseAction(out act)) return true;
@@ -139,17 +140,17 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //加个无中生有
-        if (nextGCD.MPNeed > 500 && Actions.ThinAir.ShouldUseAction(out act)) return true;
+        if (nextGCD is BaseAction action && action.MPNeed > 500 && Actions.ThinAir.ShouldUseAction(out act)) return true;
 
 
         //天赐救人啊！
         if (Actions.Benediction.ShouldUseAction(out act)) return true;
 
-        if (nextGCD.ActionID == Actions.Medica.ActionID || nextGCD.ActionID == Actions.Medica2.ActionID ||
-            nextGCD.ActionID == Actions.Cure3.ActionID || nextGCD.ActionID == Actions.AfflatusRapture.ActionID)
+        if (nextGCD.ID == Actions.Medica.ID || nextGCD.ID == Actions.Medica2.ID ||
+            nextGCD.ID == Actions.Cure3.ID || nextGCD.ID == Actions.AfflatusRapture.ID)
         {
             //加个全大赦
             if (Actions.PlenaryIndulgence.ShouldUseAction(out act)) return true;
@@ -160,7 +161,7 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool HealAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //庇护所
         if (Actions.Asylum.ShouldUseAction(out act)) return true;
@@ -171,7 +172,7 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //神名
         if (Actions.Tetragrammaton.ShouldUseAction(out act)) return true;
@@ -179,7 +180,7 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //安慰之心
         if (Actions.AfflatusSolace.ShouldUseAction(out act)) return true;
@@ -196,7 +197,7 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //苦难之心
         if (Actions.AfflatusMisery.ShouldUseAction(out act, mustUse: true)) return true;

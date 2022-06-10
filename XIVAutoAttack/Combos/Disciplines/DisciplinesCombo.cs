@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XIVAutoAttack.Combos
+namespace XIVAutoAttack.Combos.Disciplines
 {
-    public enum EnemyLocation
+    internal abstract class DisciplinesCombo : CustomCombo
     {
-        None,
-        Back,
-        Side,
     }
 }

@@ -2,14 +2,16 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Linq;
 using System.Numerics;
+using XIVAutoAttack;
+using XIVAutoAttack.Combos;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Tank;
 
 internal class PLDCombo : CustomComboJob<PLDGauge>
 {
     internal override uint JobID => 19;
 
-    internal override  bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.IronWill);
+    internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.IronWill);
 
     private protected override BaseAction Shield => Actions.IronWill;
 
@@ -20,7 +22,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
     {
         public static readonly BaseAction
             //钢铁信念
-            IronWill =  new BaseAction(28, shouldEndSpecial:true),
+            IronWill = new BaseAction(28, shouldEndSpecial: true),
 
             //先锋剑
             FastBlade = new BaseAction(9),
@@ -131,19 +133,19 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         //ShieldBash = new BaseAction(16),
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //三个大招
-        if (Actions.BladeofValor.ShouldUseAction(out act, lastComboActionID, mustUse:true)) return true;
+        if (Actions.BladeofValor.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
         if (Actions.BladeofTruth.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
         if (Actions.BladeofFaith.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
 
         //魔法三种姿势
         var status = BaseAction.FindStatusFromSelf(Service.ClientState.LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
-        if(status != null && status.Count() > 0)
+        if (status != null && status.Count() > 0)
         {
             var s = status.First();
-            if ((s.StackCount == 1 || s.RemainingTime < 2.5) && 
+            if ((s.StackCount == 1 || s.RemainingTime < 2.5) &&
                 Actions.Confiteor.ShouldUseAction(out act, mustUse: true)) return true;
             if (Actions.HolyCircle.ShouldUseAction(out act)) return true;
             if (Actions.HolySpirit.ShouldUseAction(out act)) return true;
@@ -169,15 +171,15 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //调停
-        if (Actions.Intervene.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+        if (Actions.Intervene.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //深仁厚泽
         if (Actions.Clemency.ShouldUseAction(out act)) return true;
@@ -185,7 +187,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //圣光幕帘
         if (Actions.DivineVeil.ShouldUseAction(out act)) return true;
@@ -195,7 +197,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //战逃反应 加Buff
         if (Actions.FightorFlight.ShouldUseAction(out act)) return true;
@@ -215,7 +217,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         if (Actions.SpiritsWithin.ShouldUseAction(out act)) return true;
 
         //搞搞攻击
-        if (Actions.Intervene.ShouldUseAction(out act) && ! IsMoving)
+        if (Actions.Intervene.ShouldUseAction(out act) && !IsMoving)
         {
             if (BaseAction.DistanceToPlayer(Actions.Intervene.Target, true) < 1)
             {
@@ -225,13 +227,13 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
 
         return false;
     }
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //神圣领域 如果谢不够了。
         if (Actions.HallowedGround.ShouldUseAction(out act)) return true;
         return false;
     }
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (abilityRemain == 1)
         {
@@ -242,7 +244,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             //铁壁（减伤20%）
             if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
 
-            if (JobGauge.OathGauge >= 50) 
+            if (JobGauge.OathGauge >= 50)
             {
                 //盾阵
                 if (Actions.Sheltron.ShouldUseAction(out act)) return true;

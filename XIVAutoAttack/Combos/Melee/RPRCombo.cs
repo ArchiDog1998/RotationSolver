@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Linq;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Melee;
 
 internal class RPRCombo : CustomComboJob<RPRGauge>
 {
@@ -92,7 +93,7 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             PlentifulHarvest = new BaseAction(24385);
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //处于变身状态。
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
@@ -133,12 +134,10 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
         if (Actions.ShadowofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
 
 
-        if (JobGauge.Shroud <= 50 && BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) &&
-            !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.CircleofSacrifice))
-        {
-            //大丰收！
-            if (Actions.PlentifulHarvest.ShouldUseAction(out act, mustUse: true)) return true;
-        }
+        if (JobGauge.Shroud <= 50 && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.CircleofSacrifice)
+            && BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) &&
+             Actions.PlentifulHarvest.ShouldUseAction(out act, mustUse: true)) return true;
+
 
         //获得灵魂 50.
         if (JobGauge.Soul <= 50)
@@ -165,7 +164,7 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //变身用能力
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
@@ -195,28 +194,28 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
         return false;
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //究极团辅
         if (Actions.ArcaneCircle.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
         if (GeneralActions.Feint.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //地狱入境
         if (Actions.HellsIngress.ShouldUseAction(out act) && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Threshold)) return true;
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //神秘纹
         if (Actions.ArcaneCrest.ShouldUseAction(out act)) return true;

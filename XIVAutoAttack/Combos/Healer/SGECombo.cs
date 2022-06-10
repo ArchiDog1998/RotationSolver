@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Linq;
-namespace XIVComboPlus.Combos;
+
+namespace XIVAutoAttack.Combos.Healer;
 
 internal class SGECombo : CustomComboJob<SGEGauge>
 {
@@ -12,7 +13,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
     {
         public static readonly BaseAction
             //复苏
-            Egeiro =  new BaseAction(24287),
+            Egeiro = new BaseAction(24287),
 
             //注药
             Dosis = new BaseAction(24283),
@@ -26,7 +27,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             //心关
             Kardia = new BaseAction(24285, true)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.Kardia},
+                BuffsProvide = new ushort[] { ObjectStatus.Kardia },
                 ChoiceFriend = Targets =>
                 {
                     Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
@@ -134,22 +135,22 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             Pneuma = new BaseAction(24318);
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         act = null;
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.ActionID == Actions.Diagnosis.ActionID ||
-            nextGCD.ActionID == Actions.Prognosis.ActionID)
+        if (nextGCD.ID == Actions.Diagnosis.ID ||
+            nextGCD.ID == Actions.Prognosis.ID)
         {
             //活化
             if (Actions.Zoe.ShouldUseAction(out act)) return true;
         }
 
-        if (nextGCD.ActionID == Actions.Diagnosis.ActionID)
+        if (nextGCD.ID == Actions.Diagnosis.ID)
         {
             //混合
             if (Actions.Krasis.ShouldUseAction(out act)) return true;
@@ -160,7 +161,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
 
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //输血
         if (Actions.Haima.ShouldUseAction(out act)) return true;
@@ -174,7 +175,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         return false;
     }
 
-    private protected override bool DefenseSingleGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool DefenseSingleGCD(uint lastComboActionID, out IAction act)
     {
         //诊断
         if (Actions.Diagnosis.ShouldUseAction(out act))
@@ -197,7 +198,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //泛输血
         if (Actions.Panhaima.ShouldUseAction(out act)) return true;
@@ -229,10 +230,10 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
 
-        if(JobGauge.Addersgall > 1)
+        if (JobGauge.Addersgall > 1)
         {
             //灵橡清汁
             if (Actions.Druochole.ShouldUseAction(out act)) return true;
@@ -242,14 +243,14 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //神翼
         if (Actions.Icarus.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool GeneralAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
     {
         //心关
         if (Actions.Kardia.ShouldUseAction(out act)) return true;
@@ -262,15 +263,15 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //魂灵风息
-        if (Actions.Pneuma.ShouldUseAction(out act, mustUse:true)) return true;
+        if (Actions.Pneuma.ShouldUseAction(out act, mustUse: true)) return true;
 
         if (JobGauge.Addersting > 0)
         {
             //箭毒
-            if (Actions.Toxikon.ShouldUseAction(out act, mustUse:true)) return true;
+            if (Actions.Toxikon.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         //发炎
@@ -292,20 +293,20 @@ internal class SGECombo : CustomComboJob<SGEGauge>
 
         return false;
     }
-    private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //诊断
         if (Actions.Diagnosis.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool HealAreaGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
         //预后
         if (Actions.Prognosis.ShouldUseAction(out act)) return true;
         return false;
     }
-    private protected override bool HealAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //整体论
         if (Actions.Holos.ShouldUseAction(out act)) return true;

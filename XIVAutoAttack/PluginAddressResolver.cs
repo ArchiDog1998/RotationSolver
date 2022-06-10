@@ -2,7 +2,7 @@ using System;
 using Dalamud.Game;
 using Dalamud.Logging;
 
-namespace XIVComboPlus;
+namespace XIVAutoAttack;
 
 internal class PluginAddressResolver : BaseAddressResolver
 {

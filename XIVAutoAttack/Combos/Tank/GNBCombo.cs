@@ -1,7 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Numerics;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Tank;
 
 internal class GNBCombo : CustomComboJob<GNBGauge>
 {
@@ -73,7 +73,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
             SonicBreak = new BaseAction(16153),
 
             //粗分斩
-            RoughDivide = new BaseAction(16154, shouldEndSpecial:true),
+            RoughDivide = new BaseAction(16154, shouldEndSpecial: true),
 
             //烈牙
             GnashingFang = new BaseAction(16146),
@@ -111,29 +111,29 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
             //撕喉
             JugularRip = new BaseAction(16156)
             {
-                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == JugularRip.ActionID,
+                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == JugularRip.ID,
             },
 
             //裂膛
             AbdomenTear = new BaseAction(16157)
             {
-                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == AbdomenTear.ActionID,
+                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == AbdomenTear.ID,
             },
 
             //穿目
             EyeGouge = new BaseAction(16158)
             {
-                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == EyeGouge.ActionID,
+                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == EyeGouge.ID,
             },
 
             //超高速
             Hypervelocity = new BaseAction(25759)
             {
-                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ActionID,
+                OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ID,
             };
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         if (Actions.DoubleDown.ShouldUseAction(out act))
         {
@@ -142,7 +142,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
                 return true;
             }
         }
-        else  if (JobGauge.Ammo > 0)
+        else if (JobGauge.Ammo > 0)
         {
             if (Actions.FatedCircle.ShouldUseAction(out act)) return true;
             if (Actions.GnashingFang.ShouldUseAction(out act)) return true;
@@ -169,14 +169,14 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //神圣领域 如果谢不够了。
         if (Actions.Superbolide.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.JugularRip.ShouldUseAction(out act)) return true;
         if (Actions.AbdomenTear.ShouldUseAction(out act)) return true;
@@ -200,19 +200,19 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.HeartofLight.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //突进
         if (Actions.RoughDivide.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (abilityRemain == 1)
         {
@@ -238,9 +238,9 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Aurora.ShouldUseAction(out act, emptyOrSkipCombo:true) && abilityRemain == 1) return true;
+        if (Actions.Aurora.ShouldUseAction(out act, emptyOrSkipCombo: true) && abilityRemain == 1) return true;
 
         return false;
     }

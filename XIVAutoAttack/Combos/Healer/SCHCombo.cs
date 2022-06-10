@@ -1,6 +1,9 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using XIVAutoAttack;
+using XIVAutoAttack.Combos;
+using XIVAutoAttack.Combos.RangedMagicial;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Healer;
 
 internal class SCHCombo : CustomComboJob<SCHGauge>
 {
@@ -50,7 +53,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             //士气高扬之策
             Succor = new BaseAction(186, true)
             {
-                BuffsProvide = new ushort[] {ObjectStatus.Succor},
+                BuffsProvide = new ushort[] { ObjectStatus.Succor },
             },
 
             //仙光的低语
@@ -122,33 +125,33 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             Expedient = new BaseAction(25868);
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.Expedient.ShouldUseAction(out act)) return true;
 
         return false;
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.ChainStratagem.ShouldUseAction(out act)) return true;
 
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if(nextGCD.ActionID == Actions.Adloquium.ActionID ||
-            nextGCD.ActionID == Actions.Succor.ActionID ||
-            nextGCD.ActionID == Actions.Indomitability.ActionID ||
-            nextGCD.ActionID == Actions.Excogitation.ActionID)
+        if (nextGCD.ID == Actions.Adloquium.ID ||
+            nextGCD.ID == Actions.Succor.ID ||
+            nextGCD.ID == Actions.Indomitability.ID ||
+            nextGCD.ID == Actions.Excogitation.ID)
         {
             if (Actions.Recitation.ShouldUseAction(out act)) return true;
         }
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //召唤小仙女
         if (Actions.SummonEos.ShouldUseAction(out act)) return true;
@@ -164,7 +167,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         if (Actions.Adloquium.ShouldUseAction(out act)) return true;
         if (Service.ClientState.LocalPlayer.Level < Actions.Adloquium.Level && Actions.Physick.ShouldUseAction(out act)) return true;
@@ -172,13 +175,13 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.Adloquium.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool DefenseAreaGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
     {
         if (Actions.Succor.ShouldUseAction(out act)) return true;
         if (JobGauge.Aetherflow > 0)
@@ -190,14 +193,14 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         return false;
     }
 
-    private protected override bool HealAreaGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
         if (Actions.Succor.ShouldUseAction(out act)) return true;
         return false;
 
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (!Actions.DeploymentTactics.IsCoolDown)
         {
@@ -211,9 +214,9 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         return false;
     }
 
-    private protected override bool HealAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
-        if(abilityRemain == 1)
+        if (abilityRemain == 1)
         {
             if (JobGauge.Aetherflow > 0 && !IsMoving)
             {
@@ -234,7 +237,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
     }
 
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.Aetherpact.ShouldUseAction(out act) && JobGauge.FairyGauge >= 90) return true;
 
@@ -265,7 +268,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
     //    }
     //}
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
 
         if (JobGauge.Aetherflow == 0)

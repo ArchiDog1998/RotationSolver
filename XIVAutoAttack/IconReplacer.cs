@@ -9,10 +9,13 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using XIVComboPlus.Combos;
+using FFXIVClientStructs.FFXIV.Client.UI;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using XIVAutoAttack.Combos;
+using XIVAutoAttack.Combos.Disciplines;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace XIVComboPlus;
+namespace XIVAutoAttack;
 
 internal sealed class IconReplacer : IDisposable
 {
@@ -46,7 +49,7 @@ internal sealed class IconReplacer : IDisposable
                 _autoAttack = value;
                 if (!value)
                 {
-                    if(Service.Configuration.AutoSayingOut) CustomCombo.Speak("Cancel");
+                    if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Cancel");
                     _stateString = "Off";
                     UpdateToast();
                 }
@@ -78,9 +81,9 @@ internal sealed class IconReplacer : IDisposable
         get => _autoTarget;
         set
         {
-            if (!value) 
+            if (!value)
             {
-                if(Service.Configuration.AutoSayingOut) CustomCombo.Speak("Manual");
+                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Manual");
                 _stateString = "Manual";
                 UpdateToast();
             }
@@ -90,21 +93,7 @@ internal sealed class IconReplacer : IDisposable
             }
         }
     }
-    //internal static bool LimitBreak { get; private set; } = false;
-    //internal static void StartLimitBreak()
-    //{
-    //    bool last = LimitBreak;
-    //    ResetSpecial(last);
-    //    if (!last)
-    //    {
-    //        _specialStateStopwatch.Start();
-    //        if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Limit Break");
-    //        _specialString = "Limit Break";
-    //        LimitBreak = true;
-    //        UpdateToast();
 
-    //    }
-    //}
     internal static bool HealArea { get; private set; } = false;
     internal static void StartHealArea()
     {
@@ -264,7 +253,7 @@ internal sealed class IconReplacer : IDisposable
         _specialStateStopwatch.Reset();
         HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = BreakorProvoke
             = AntiRepulsion = Move = false;
-        if(sayout && Service.Configuration.AutoSayingOut) CustomCombo.Speak("End Special");
+        if (sayout && Service.Configuration.AutoSayingOut) CustomCombo.Speak("End Special");
         _specialString = string.Empty;
     }
 
@@ -273,7 +262,7 @@ internal sealed class IconReplacer : IDisposable
     {
         get
         {
-            if(_customCombosDict == null)
+            if (_customCombosDict == null)
             {
                 SetStaticValues();
             }
@@ -281,7 +270,7 @@ internal sealed class IconReplacer : IDisposable
         }
     }
     private static CustomCombo[] _customCombos;
-    internal static CustomCombo[] CustomCombos 
+    internal static CustomCombo[] CustomCombos
     {
         get
         {
@@ -320,26 +309,28 @@ internal sealed class IconReplacer : IDisposable
     private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
     {
         var a = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
-        //Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
+        Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
         return getActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
     }
 #endif
     private static void SetStaticValues()
     {
-        _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
-                         where t.BaseType.BaseType == typeof(CustomCombo)
+        _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo)).GetTypes()
+                         where t.BaseType?.BaseType == typeof(CustomCombo)
                          select (CustomCombo)Activator.CreateInstance(t) into combo
                          orderby combo.JobID
                          select combo).ToArray();
 
         _customCombosDict = new SortedList<string, CustomCombo[]>
-            (_customCombos.GroupBy(g => g.RoleName).ToDictionary(set => set.Key, set => set.Reverse().ToArray()));
+            (_customCombos.GroupBy(g => g.RoleName).OrderBy(g => g.Key).ToDictionary(set => set.Key, set => set.ToArray()));
     }
 
     public void Dispose()
     {
         getIconHook.Dispose();
         isIconReplaceableHook.Dispose();
+        _fastClickStopwatch.Stop();
+        _specialStateStopwatch.Stop();
 #if DEBUG
         getActionHook.Dispose();
 #endif
@@ -356,7 +347,7 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
-    internal void DoAnAction(bool isGCD)
+    internal unsafe void DoAnAction(bool isGCD)
     {
         //Í£Ö¹ÌØÊâ×´Ì¬
         if (_specialStateStopwatch.IsRunning && _specialStateStopwatch.ElapsedMilliseconds > Service.Configuration.SpecialDuration * 1000)
@@ -380,27 +371,39 @@ internal sealed class IconReplacer : IDisposable
         {
             if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
 
-            if (!customCombo.TryInvoke(CustomCombo.GeneralActions.Repose.ActionID, Service.Address.LastComboAction, Service.Address.ComboTime,
-                 localPlayer.Level, out var newAction))
+            if (!customCombo.TryInvoke(CustomCombo.GeneralActions.Repose.ID, Service.Address.LastComboAction, Service.Address.ComboTime,
+                 localPlayer.Level, out var newiAction))
             {
                 return;
             }
 
-            if (!isGCD && newAction.IsRealGCD) return;
+            if (!isGCD && newiAction is BaseAction act1 && act1.IsRealGCD) return;
 
 #if DEBUG
-            Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + newAction.Action.Name + TargetHelper.AbilityRemainCount.ToString());
+            //Service.ChatGui.Print(newiAction.ID.ToString());
+            //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + newAction.Action.Name + TargetHelper.AbilityRemainCount.ToString());
 #endif
-            if (newAction.UseAction())
+            if (newiAction.Use() && newiAction is BaseAction act)
             {
-                if (TargetHelper.CanAttack(newAction.Target))
+                if (TargetHelper.CanAttack(act.Target))
                 {
-                    Service.TargetManager.SetTarget(newAction.Target);
+                    Service.TargetManager.SetTarget(act.Target);
                 }
-                if(newAction.ActionID != LastAction)
+                if (act.ID != LastAction)
                 {
-                    LastAction = newAction.ActionID;
-                    newAction.SayingOut();
+                    LastAction = newiAction.ID;
+                    foreach (var item in Service.Configuration.Events)
+                    {
+                        if (item.Name == act.Action.Name)
+                        {
+                            if (item.MacroIndex < 0 || item.MacroIndex > 99) return;
+
+                            TargetHelper.Macros.Enqueue(new MacroItem(act.Target, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
+                                RaptureMacroModule.Instance->Individual[item.MacroIndex]));
+
+                            return;
+                        }
+                    }
                 }
             }
             return;
@@ -422,9 +425,10 @@ internal sealed class IconReplacer : IDisposable
             {
                 if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
 
-                if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction))
+                if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction) 
+                    && newAction is BaseAction action)
                 {
-                    return OriginalHook(newAction.ActionID);
+                    return OriginalHook(action.ID);
                 }
             }
 
@@ -446,7 +450,7 @@ internal sealed class IconReplacer : IDisposable
     {
         foreach (var combo in CustomCombos)
         {
-            if(combo.JobName == comboName)
+            if (combo.JobName == comboName)
             {
                 combo.IsEnabled = enable;
                 return;

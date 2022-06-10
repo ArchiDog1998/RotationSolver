@@ -1,6 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.RangedMagicial;
 
 internal class SMNCombo : CustomComboJob<SMNGauge>
 {
@@ -17,8 +17,8 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
     protected override bool CanHealSingleSpell => false;
     private protected override BaseAction Raise => Actions.Resurrection;
 
-    private static bool InBahamut => Service.IconReplacer.OriginalHook(25822) == Actions.Deathflare.ActionID;
-    private static bool InPhoenix => Service.IconReplacer.OriginalHook(25822) == Actions.Rekindle.ActionID;
+    private static bool InBahamut => Service.IconReplacer.OriginalHook(25822) == Actions.Deathflare.ID;
+    private static bool InPhoenix => Service.IconReplacer.OriginalHook(25822) == Actions.Rekindle.ID;
     private static bool InBreak => InBahamut || InPhoenix || Service.ClientState.LocalPlayer.Level < Actions.SummonBahamut.Level;
     internal struct Actions
     {
@@ -148,7 +148,7 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             };
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //灼热之光
         if (Actions.SearingLight.ShouldUseAction(out act)) return true;
@@ -156,7 +156,7 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //宝石兽召唤
         if (Actions.SummonCarbuncle.ShouldUseAction(out act)) return true;
@@ -181,7 +181,7 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             }
             else if (Actions.Aethercharge.ShouldUseAction(out act)) return true;
 
-            if ((JobGauge.IsIfritReady && JobGauge.IsGarudaReady && JobGauge.IsTitanReady) ? JobGauge.SummonTimerRemaining == 0 : true)
+            if (JobGauge.IsIfritReady && JobGauge.IsGarudaReady && JobGauge.IsTitanReady ? JobGauge.SummonTimerRemaining == 0 : true)
             {
                 //火
                 if (!TargetHelper.IsMoving && Actions.SummonRuby.ShouldUseAction(out act)) return true;
@@ -203,7 +203,7 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.EnkindleBahamut.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.Deathflare.ShouldUseAction(out act, mustUse: true)) return true;
@@ -226,7 +226,7 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //守护之光
         if (Actions.RadiantAegis.ShouldUseAction(out act)) return true;
@@ -234,7 +234,7 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //医术
         if (Actions.Physick.ShouldUseAction(out act)) return true;

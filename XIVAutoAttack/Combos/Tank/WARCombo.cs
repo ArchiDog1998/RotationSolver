@@ -3,8 +3,10 @@ using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using XIVAutoAttack;
+using XIVAutoAttack.Combos;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Tank;
 
 internal class WARCombo : CustomComboJob<WARGauge>
 {
@@ -25,7 +27,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
     {
         public static readonly BaseAction
             //守护
-            Defiance =  new BaseAction(48, shouldEndSpecial:true),
+            Defiance = new BaseAction(48, shouldEndSpecial: true),
 
             //重劈
             HeavySwing = new BaseAction(31),
@@ -131,21 +133,21 @@ internal class WARCombo : CustomComboJob<WARGauge>
             };
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //摆脱 队友套盾
         if (Actions.ShakeItOff.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool MoveGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool MoveGCD(uint lastComboActionID, out IAction act)
     {
         //放个大 蛮荒崩裂 会往前飞
         if (Actions.PrimalRend.ShouldUseAction(out act, mustUse: true)) return true;
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //突进
         if (Actions.Onslaught.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
@@ -153,10 +155,10 @@ internal class WARCombo : CustomComboJob<WARGauge>
 
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //搞搞攻击
-        if (Actions.PrimalRend.ShouldUseAction(out act, mustUse:true) && !IsMoving)
+        if (Actions.PrimalRend.ShouldUseAction(out act, mustUse: true) && !IsMoving)
         {
             if (BaseAction.DistanceToPlayer(Actions.PrimalRend.Target, true) < 2)
             {
@@ -180,7 +182,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
         //单体
         if (Actions.StormsEye.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.StormsPath.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.Maim.ShouldUseAction( out act, lastComboActionID)) return true;
+        if (Actions.Maim.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.HeavySwing.ShouldUseAction(out act, lastComboActionID)) return true;
 
         //够不着，随便打一个吧。
@@ -189,7 +191,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
 
         return false;
     }
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //死斗 如果谢不够了。
         if (Actions.Holmgang.ShouldUseAction(out act)) return true;
@@ -197,7 +199,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
     }
 
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (abilityRemain == 1)
         {
@@ -220,7 +222,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //爆发
         if (BuffTime > 3 || Service.ClientState.LocalPlayer.Level < Actions.MythrilTempest.Level)

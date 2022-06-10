@@ -14,10 +14,11 @@ using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
+using XIVAutoAttack.Combos.Healer;
 
-namespace XIVComboPlus.Combos
+namespace XIVAutoAttack.Combos
 {
-    internal class BaseAction
+    internal class BaseAction : IAction
     {
 
         internal const byte GCDCooldownGroup = 58;
@@ -27,7 +28,7 @@ namespace XIVComboPlus.Combos
         internal Action Action { get; }
         //internal IconReplacer.CooldownData CoolDown => Service.IconReplacer.GetCooldown(Action.CooldownGroup);
         internal byte Level => Action.ClassJobLevel;
-        internal uint ActionID => Action.RowId;
+        public uint ID => Action.RowId;
         internal bool IsGeneralGCD { get; }
         internal bool IsRealGCD { get; }
 
@@ -38,15 +39,15 @@ namespace XIVComboPlus.Combos
         /// <summary>
         /// 复唱时间
         /// </summary>
-        internal unsafe float RecastTime => ActionManager.Instance()->GetRecastTime(ActionType.Spell, ActionID);
+        internal unsafe float RecastTime => ActionManager.Instance()->GetRecastTime(ActionType.Spell, ID);
         /// <summary>
         /// 咏唱时间
         /// </summary>
         internal virtual int Cast100 => Action.Cast100ms - (HaveStatusSelfFromSelf(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) || SGECombo.JobGauge.Eukrasia ? 25 : 0);
         internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
-        internal unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Spell, ActionID);
-        internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ActionID, Service.ClientState.LocalPlayer.Level), (ushort)1);
-        internal unsafe bool IsCoolDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Spell, ActionID);
+        internal unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Spell, ID);
+        internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ID, Service.ClientState.LocalPlayer.Level), (ushort)1);
+        internal unsafe bool IsCoolDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Spell, ID);
         #endregion
         internal BattleChara Target { get; set; } = Service.ClientState.LocalPlayer;
         private Vector3 _position = default;
@@ -78,22 +79,6 @@ namespace XIVComboPlus.Combos
         /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
         /// </summary>
         internal Func<BattleChara, bool> OtherCheck { get; set; } = null;
-
-        internal unsafe void SayingOut()
-        {
-            foreach (var item in Service.Configuration.Events)
-            {
-                if(item.Name == Action.Name)
-                {
-                    if (item.MacroIndex < 0 || item.MacroIndex > 99) return;
-
-                    TargetHelper.Macros.Enqueue(new MacroItem(Target, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
-                        RaptureMacroModule.Instance->Individual[item.MacroIndex]));
-
-                    return;
-                }
-            }
-        }
 
         internal Func<BattleChara[], BattleChara> ChoiceFriend { get; set; } = availableCharas =>
         {
@@ -159,23 +144,23 @@ namespace XIVComboPlus.Combos
 
         internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
         {
-            this.Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
-            this._shouldEndSpecial = shouldEndSpecial;
+            Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
+            _shouldEndSpecial = shouldEndSpecial;
             _isFriendly = isFriendly;
-            this.IsGeneralGCD = Action.CooldownGroup == GCDCooldownGroup;
-            this.IsRealGCD = IsGeneralGCD || Action.AdditionalCooldownGroup == GCDCooldownGroup;
+            IsGeneralGCD = Action.CooldownGroup == GCDCooldownGroup;
+            IsRealGCD = IsGeneralGCD || Action.AdditionalCooldownGroup == GCDCooldownGroup;
 
             if (Action.PrimaryCostType == 3 || Action.PrimaryCostType == 4)
             {
-                this.MPNeed = Action.PrimaryCostValue * 100u;
+                MPNeed = Action.PrimaryCostValue * 100u;
             }
             else if (Action.SecondaryCostType == 3 || Action.SecondaryCostType == 4)
             {
-                this.MPNeed = Action.SecondaryCostValue * 100u;
+                MPNeed = Action.SecondaryCostValue * 100u;
             }
             else
             {
-                this.MPNeed = 0;
+                MPNeed = 0;
             }
         }
 
@@ -224,7 +209,7 @@ namespace XIVComboPlus.Combos
             float range = GetRange(Action);
 
             //如果都没有距离，这个还需要选对象嘛？选自己啊！
-            if (range == 0 &&　Action.EffectRange == 0)
+            if (range == 0 && Action.EffectRange == 0)
             {
                 Target = Service.ClientState.LocalPlayer;
                 return true;
@@ -233,10 +218,10 @@ namespace XIVComboPlus.Combos
             if (Action.TargetArea)
             {
                 //缩地
-                if(Action.EffectRange == 1 && Action.Range == 20)
+                if (Action.EffectRange == 1 && Action.Range == 20)
                 {
                     BattleChara[] availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b is BattleChara)
-                        .Select(b =>(BattleChara)b).ToArray();
+                        .Select(b => (BattleChara)b).ToArray();
 
                     Target = FindMoveTarget(GetObjectInRadius(availableCharas, 20));
                 }
@@ -268,7 +253,7 @@ namespace XIVComboPlus.Combos
                 if (Action.PrimaryCostType == 3 && Action.PrimaryCostValue == 24)
                 {
                     var tar = TargetHelper.GetDeathPeople();
-                    if(tar == null) return false;
+                    if (tar == null) return false;
                     Target = tar;
                     return true;
                 }
@@ -305,15 +290,15 @@ namespace XIVComboPlus.Combos
                 //如果不用自动找目标，那就直接返回。
                 if (!IconReplacer.AutoTarget)
                 {
-                    if(Service.TargetManager.Target is BattleChara b && TargetHelper.CanAttack(b) && DistanceToPlayer(b) <= range
+                    if (Service.TargetManager.Target is BattleChara b && TargetHelper.CanAttack(b) && DistanceToPlayer(b) <= range
                         && (Action.CastType == 1 || mustUse))
                     {
-                        this.Target = b;
+                        Target = b;
                         return true;
                     }
                     else
                     {
-                        this.Target = null;
+                        Target = null;
                         return false;
                     }
                 }
@@ -374,7 +359,7 @@ namespace XIVComboPlus.Combos
                 if (target.TargetObject?.IsValid() ?? false)
                 {
                     //居然在打非T！
-                    if (!tankIDS.Contains(target.TargetObjectId) &&(!needDistance || Vector3.Distance(target.Position, loc) > 5))
+                    if (!tankIDS.Contains(target.TargetObjectId) && (!needDistance || Vector3.Distance(target.Position, loc) > 5))
                     {
                         targets.Add(target);
                     }
@@ -414,7 +399,7 @@ namespace XIVComboPlus.Combos
             //能打到MaxCount以上数量的怪的怪。
             List<T> objectMax = new List<T>(canGetObj.Length);
 
-            int maxCount = mustUse ? 1 : (isfriend ? Service.Configuration.PartyCount : Service.Configuration.HostileCount);
+            int maxCount = mustUse ? 1 : isfriend ? Service.Configuration.PartyCount : Service.Configuration.HostileCount;
 
             //循环能打中的目标。
             foreach (var t in canGetObj)
@@ -528,23 +513,23 @@ namespace XIVComboPlus.Combos
         private static float GetRange(Action act)
         {
             sbyte range = act.Range;
-            if (range < 0 && CustomCombo.RangePhysicial.Contains( Service.ClientState.LocalPlayer.ClassJob.GameData.RowId))
+            if (range < 0 && CustomCombo.RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.GameData.RowId))
             {
                 range = 25;
             }
             return Math.Max(range, 3f);
         }
 
-        public bool ShouldUseAction(out BaseAction act, uint lastAct = 0, bool mustUse = false, bool emptyOrSkipCombo = false)
+        public bool ShouldUseAction(out IAction act, uint lastAct = 0, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
             byte level = Service.ClientState.LocalPlayer.Level;
 
             //等级不够。
-            if (level < this.Level) return false;
+            if (level < Level) return false;
 
             //MP不够
-            if (Service.ClientState.LocalPlayer.CurrentMp < this.MPNeed) return false;
+            if (Service.ClientState.LocalPlayer.CurrentMp < MPNeed) return false;
 
             //没有前置Buff
             if (BuffsNeed != null)
@@ -570,7 +555,7 @@ namespace XIVComboPlus.Combos
             }
 
             //看看有没有目标，如果没有，就说明不符合条件。
-            if(!FindTarget(mustUse)) return false;
+            if (!FindTarget(mustUse)) return false;
 
             if (IsGeneralGCD)
             {
@@ -606,7 +591,7 @@ namespace XIVComboPlus.Combos
                 //目标已有充足的Debuff
                 if (!mustUse && TargetStatus != null)
                 {
-                    var tar = Target == Service.ClientState.LocalPlayer ? TargetHelper.HostileTargets.OrderBy(p=>DistanceToPlayer(p)).First() : Target;
+                    var tar = Target == Service.ClientState.LocalPlayer ? TargetHelper.HostileTargets.OrderBy(p => DistanceToPlayer(p)).First() : Target;
                     var times = FindStatusFromSelf(tar, TargetStatus);
                     if (times.Length > 0 && times.Max() > 6) return false;
                 }
@@ -614,7 +599,7 @@ namespace XIVComboPlus.Combos
             else
             {
                 //如果是能力技能，还没填满。
-                if (!(mustUse ||emptyOrSkipCombo) && RecastTimeRemain > 5) return false;
+                if (!(mustUse || emptyOrSkipCombo) && RecastTimeRemain > 5) return false;
             }
 
             //用于自定义的要求没达到
@@ -623,12 +608,12 @@ namespace XIVComboPlus.Combos
             return true;
         }
 
-        internal unsafe bool UseAction()
+        public unsafe bool Use()
         {
-            var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y,  Z = _position.Z };
+            var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
 
-            bool result = Action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ActionID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
-             ActionManager.Instance()->UseAction(ActionType.Spell, Service.IconReplacer.OriginalHook(ActionID), Target.ObjectId);
+            bool result = Action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
+             ActionManager.Instance()->UseAction(ActionType.Spell, Service.IconReplacer.OriginalHook(ID), Target.ObjectId);
 
             if (_shouldEndSpecial) IconReplacer.ResetSpecial(false);
             if (result && AfterUse != null) AfterUse.Invoke();
@@ -645,7 +630,7 @@ namespace XIVComboPlus.Combos
             return FindStatusFromSelf(Service.ClientState.LocalPlayer, effectIDs);
         }
 
-        internal  static float[] FindStatusFromSelf(BattleChara obj, params ushort[] effectIDs)
+        internal static float[] FindStatusFromSelf(BattleChara obj, params ushort[] effectIDs)
         {
             uint[] newEffects = effectIDs.Select(a => (uint)a).ToArray();
             return FindStatusFromSelf(obj).Where(status => newEffects.Contains(status.StatusId)).Select(status => status.RemainingTime).ToArray();
@@ -655,7 +640,7 @@ namespace XIVComboPlus.Combos
         {
             if (obj == null) return new Dalamud.Game.ClientState.Statuses.Status[0];
 
-            return  obj.StatusList.Where(status => status.SourceID == Service.ClientState.LocalPlayer.ObjectId).ToArray();
+            return obj.StatusList.Where(status => status.SourceID == Service.ClientState.LocalPlayer.ObjectId).ToArray();
         }
     }
 }

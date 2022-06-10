@@ -5,7 +5,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.Healer;
 
 internal class ASTCombo : CustomComboJob<ASTGauge>
 {
@@ -158,7 +158,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             };
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //来个命运之轮
         if (Actions.CollectiveUnconscious.ShouldUseAction(out act)) return true;
@@ -166,14 +166,14 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //给T减伤，这个很重要。
         if (Actions.Exaltation.ShouldUseAction(out act)) return true;
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //大宇宙
         if (Actions.Macrocosmos.ShouldUseAction(out act, mustUse: true)) return true;
@@ -189,7 +189,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool HealAreaGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
         //阳星相位
         if (Actions.AspectedHelios.ShouldUseAction(out act)) return true;
@@ -201,7 +201,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
@@ -219,7 +219,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool GeneralAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
     {
         //如果当前还没有卡牌，那就抽一张
         if (JobGauge.DrawnCard == CardType.NONE
@@ -235,7 +235,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //吉星相位
         if (Actions.AspectedBenefic.ShouldUseAction(out act)) return true;
@@ -250,7 +250,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //如果当前还没有皇冠卡牌，那就抽一张
         if (Actions.MinorArcana.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
@@ -272,7 +272,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.EarthlyDominance)
                 && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
             {
-                if (Actions.EarthlyStar.ShouldUseAction(out act, mustUse:true)) return true;
+                if (Actions.EarthlyStar.ShouldUseAction(out act, mustUse: true)) return true;
             }
             //加星星的进攻Buff
             if (Actions.Astrodyne.ShouldUseAction(out act)) return true;
@@ -313,7 +313,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //带盾奶
         if (Actions.CelestialIntersection.ShouldUseAction(out act)) return true;
@@ -325,7 +325,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool HealAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //如果有巨星主宰
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
@@ -335,7 +335,7 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             return true;
         }
         //奶量牌，要看情况。
-        if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUseAction( out act)) return true;
+        if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUseAction(out act)) return true;
         //群Hot
         if (Actions.CelestialOpposition.ShouldUseAction(out act)) return true;
 

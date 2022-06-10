@@ -2,7 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Linq;
 using System.Numerics;
 
-namespace XIVComboPlus.Combos;
+namespace XIVAutoAttack.Combos.RangedMagicial;
 
 internal class RDMCombo : CustomComboJob<RDMGauge>
 {
@@ -148,10 +148,10 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
             Resolution = new BaseAction(25858);
     }
 
-    private protected override bool EmergercyAbility( byte abilityRemain, BaseAction nextGCD, out BaseAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
-        if (nextGCD.ActionID == Actions.Zwerchhau.ActionID || nextGCD.ActionID == Actions.Redoublement.ActionID || nextGCD.ActionID == Actions.Moulinet.ActionID)
+        if (nextGCD.ID == Actions.Zwerchhau.ID || nextGCD.ID == Actions.Redoublement.ID || nextGCD.ID == Actions.Moulinet.ID)
         {
             if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
         }
@@ -162,7 +162,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
             if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
         }
         //倍增要放到魔连攻击之后
-        if (JobGauge.ManaStacks == 3 || (Service.ClientState.LocalPlayer.Level < 68 && nextGCD.ActionID != Actions.Zwerchhau.ActionID && nextGCD.ActionID != Actions.Riposte.ActionID))
+        if (JobGauge.ManaStacks == 3 || Service.ClientState.LocalPlayer.Level < 68 && nextGCD.ID != Actions.Zwerchhau.ID && nextGCD.ID != Actions.Riposte.ID)
         {
             if (Actions.Manafication.ShouldUseAction(out act)) return true;
         }
@@ -176,7 +176,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         return value >= 6 && value <= 12;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         if (JobGauge.ManaStacks == 0)
         {
@@ -201,7 +201,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         act = null;
         if (JobGauge.ManaStacks == 3) return false;
@@ -231,18 +231,18 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         if (Actions.Vercure.ShouldUseAction(out act, mustUse: true)) return true;
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.CorpsAcorps.ShouldUseAction(out act, mustUse: true)) return true;
         return false;
     }
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out BaseAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //混乱
         if (GeneralActions.Addle.ShouldUseAction(out act)) return true;
@@ -257,7 +257,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
     //    return false;
     //}
 
-    private protected override bool EmergercyGCD(uint lastComboActionID, out BaseAction act)
+    private protected override bool EmergercyGCD(uint lastComboActionID, out IAction act)
     {
         byte level = Service.ClientState.LocalPlayer.Level;
         #region 远程三连
@@ -272,13 +272,13 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         }
 
         //如果上一次打了赤神圣或者赤核爆了
-        if (lastComboActionID == Actions.Verholy.ActionID || lastComboActionID == Actions.Verflare.ActionID)
+        if (lastComboActionID == Actions.Verholy.ID || lastComboActionID == Actions.Verflare.ID)
         {
             if (Actions.Scorch.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         //如果上一次打了焦热
-        if (lastComboActionID == Actions.Scorch.ActionID)
+        if (lastComboActionID == Actions.Scorch.ID)
         {
             if (Actions.Resolution.ShouldUseAction(out act, mustUse: true)) return true;
         }
@@ -286,7 +286,7 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
 
         #region 近战三连
 
-        if (lastComboActionID == Actions.Moulinet.ActionID && JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20)
+        if (lastComboActionID == Actions.Moulinet.ID && JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20)
         {
             if (Actions.Moulinet.ShouldUseAction(out act)) return true;
             if (Actions.Riposte.ShouldUseAction(out act)) return true;
