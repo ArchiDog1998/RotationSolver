@@ -14,6 +14,7 @@ using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Network;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack;
 

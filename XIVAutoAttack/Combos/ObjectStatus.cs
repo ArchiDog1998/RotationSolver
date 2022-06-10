@@ -195,7 +195,7 @@ namespace XIVAutoAttack.Combos
             Enshrouded = 2593,
 
             //死亡祭祀
-            CircleofSacrifice = 2600,
+            CircleofSacrifice = 2972,
             //死亡祭品
             ImmortalSacrifice = 2592,
 
@@ -453,6 +453,12 @@ namespace XIVAutoAttack.Combos
             Patience = 850,
 
             //捕鱼人之技
-            AnglersArt = 2778;
+            AnglersArt = 2778,
+
+            //钓组
+            Snagging = 761,
+
+            //撒饵
+            Chum = 763;
     }
 }

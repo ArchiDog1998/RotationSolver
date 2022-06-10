@@ -5,7 +5,7 @@ using Dalamud.Configuration;
 using Dalamud.Utility;
 using Newtonsoft.Json;
 
-namespace XIVAutoAttack;
+namespace XIVAutoAttack.Configuration;
 
 [Serializable]
 public class PluginConfiguration : IPluginConfiguration
@@ -17,6 +17,7 @@ public class PluginConfiguration : IPluginConfiguration
     public int VoiceVolume { get; set; } = 80;
     public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
     public List<ActionEvents> Events { get; private set; } = new List<ActionEvents>();
+    public Dictionary<string, ActionConfiguration> ActionsConfigurations { get; private set; } = new Dictionary<string, ActionConfiguration>();
     public bool AllTargeAsHostile { get; set; } = false;
     public bool AutoBreak { get; set; } = true;
     public bool OnlyGCD { get; set; } = false;
@@ -27,7 +28,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool SayingLocation { get; set; } = true;
     public bool TextLocation { get; set; } = true;
     public bool UseToast { get; set; } = true;
-    public bool UsePowerfulHookset { get; set; } = true;
+    //public bool UsePowerfulHookset { get; set; } = true;
     public bool UseItem { get; set; } = true;
     public float HealthDifference { get; set; } = 0.25f;
     public float HealthAreaAbility { get; set; } = 0.75f;

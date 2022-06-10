@@ -18,7 +18,7 @@ using XIVAutoAttack.Combos.Healer;
 
 namespace XIVAutoAttack.Combos
 {
-    internal class BaseAction : IAction
+    public class BaseAction : IAction
     {
 
         internal const byte GCDCooldownGroup = 58;
@@ -608,7 +608,7 @@ namespace XIVAutoAttack.Combos
             return true;
         }
 
-        public unsafe bool Use()
+        public virtual unsafe bool Use()
         {
             var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
 

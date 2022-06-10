@@ -12,6 +12,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using XIVAutoAttack;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos;
 
@@ -19,7 +20,21 @@ public abstract class CustomCombo
 {
     //private SpeechSynthesizer ssh = new SpeechSynthesizer() { Rate = 0 };
     private uint _lastGCDAction;
-
+    internal ActionConfiguration config 
+    {
+        get
+        {
+            var con = CreateConfiguration();
+            if (Service.Configuration.ActionsConfigurations.TryGetValue(JobName, out var lastcom))
+            {
+                if (con.IsTheSame(lastcom)) return lastcom;
+            }
+            //con.Supply(lastcom);
+            Service.Configuration.ActionsConfigurations[JobName] = con;
+            Service.Configuration.Save();
+            return con;
+        }
+    }
     internal static bool HaveSwift
     {
         get
@@ -37,7 +52,7 @@ public abstract class CustomCombo
     #region Job
     internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
     internal abstract uint JobID { get; }
-    internal string RoleName => ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role).ToString();
+    internal Role RoleName => (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
 
     internal string JobName => XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Name;
 
@@ -190,7 +205,7 @@ public abstract class CustomCombo
     #endregion
 
     #region Combo
-    protected internal uint ActionID => GeneralActions.Repose.ID;
+    protected static internal BaseAction ActionID => GeneralActions.Repose;
 
     public bool IsEnabled
     {
@@ -244,7 +259,7 @@ public abstract class CustomCombo
         {
             return false;
         }
-        if (ActionID != actionID)
+        if (ActionID.ID != actionID)
         {
             return false;
         }
@@ -267,7 +282,10 @@ public abstract class CustomCombo
 
         return true;
     }
-
+    private protected virtual ActionConfiguration CreateConfiguration()
+    {
+        return new ActionConfiguration();
+    }
     private bool CheckAction(uint actionID)
     {
         //return false;
@@ -320,35 +338,33 @@ public abstract class CustomCombo
         byte abilityRemain = TargetHelper.AbilityRemainCount;
         IAction act = GCD(lastComboActionID, abilityRemain);
         //Sayout!
-        if(act is BaseAction GCDaction)
+        if (act != null && act is BaseAction GCDaction)
         {
-            if (act != null)
+            if (CheckAction(GCDaction.ID) && GCDaction.EnermyLocation != EnemyLocation.None)
             {
-                if (CheckAction(GCDaction.ID) && GCDaction.EnermyLocation != EnemyLocation.None)
+                string location = GCDaction.EnermyLocation.ToString();
+                if (Service.Configuration.SayingLocation) Speak(location);
+                if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                 {
-                    string location = GCDaction.EnermyLocation.ToString();
-                    if (Service.Configuration.SayingLocation) Speak(location);
-                    if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                    {
-                        IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
-                            Service.IconReplacer.OriginalHook(GCDaction.ID)).Icon,
-                    });
-                }
+                    IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
+                        Service.IconReplacer.OriginalHook(GCDaction.ID)).Icon,
+                });
+            }
 
-                switch (abilityRemain)
-                {
-                    case 0:
-                        return GCDaction;
-                    default:
-                        if (Ability(abilityRemain, GCDaction, out IAction ability)) return ability;
-                        return GCDaction;
-                }
-            }
-            else
+            switch (abilityRemain)
             {
-                if (Ability(abilityRemain, GeneralActions.Addle, out IAction ability)) return ability;
-                return null;
+                case 0:
+                    return GCDaction;
+                default:
+                    if (Ability(abilityRemain, GCDaction, out IAction ability)) return ability;
+                    return GCDaction;
             }
+
+        }
+        else if(act == null)
+        {
+            if (Ability(abilityRemain, GeneralActions.Addle, out IAction ability)) return ability;
+            return null;
         }
         return act;
     }

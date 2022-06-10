@@ -32,8 +32,9 @@ namespace XIVAutoAttack
 
         private static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
 
-        private static readonly Stopwatch _fisherTimer = new Stopwatch();
-
+        internal static readonly Stopwatch _fisherTimer = new Stopwatch();
+        internal static readonly Stopwatch _unfishingTimer = new Stopwatch();
+        private static bool _isLastFishing = false;
 
         private static long _weaponRandomDelay = 0;
 
@@ -43,7 +44,7 @@ namespace XIVAutoAttack
         {
             get
             {
-                if (_fisherTimer.IsRunning && _fisherTimer.ElapsedMilliseconds > 200)
+                if (_fisherTimer.IsRunning && _fishType != FishType.Mooch && _fisherTimer.ElapsedMilliseconds > 3000)
                 {
                     _fisherTimer.Stop();
                     _fisherTimer.Reset();
@@ -130,7 +131,7 @@ namespace XIVAutoAttack
                     bool newValue = Service.Conditions[(Dalamud.Game.ClientState.Conditions.ConditionFlag)indexs[i]];
                     if (_valus.ContainsKey(i) && _valus[i] != newValue && indexs[i] != 48)
                     {
-                        //Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key);
+                        //Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
                     }
                     _valus[i] = newValue;
                 }
@@ -146,6 +147,13 @@ namespace XIVAutoAttack
             //    _valus[i] = newValue;
             //}
 #endif
+            //UpdateFishing.
+            bool fishing = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Fishing];
+            if(_isLastFishing && !fishing)
+            {
+                _unfishingTimer.Restart();
+            }
+            _isLastFishing = fishing;
 
             //Update State.
             if (Service.Configuration.UseDtr && IconReplacer.StateString != null)
@@ -570,6 +578,7 @@ namespace XIVAutoAttack
         {
             _weaponDelayStopwatch.Stop();
             _fisherTimer.Stop();
+            _unfishingTimer.Stop();
         }
     }
 }

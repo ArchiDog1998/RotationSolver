@@ -12,7 +12,9 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
+using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.Disciplines;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack;
 
@@ -41,16 +43,18 @@ internal class ConfigWindow : Window
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
                 int num = 1;
 
-                foreach (string key in IconReplacer.CustomCombosDict.Keys)
+                foreach (Role key in IconReplacer.CustomCombosDict.Keys)
                 {
                     var combos = IconReplacer.CustomCombosDict[key];
                     if (combos == null || combos.Length == 0) continue;
 
-                    if (ImGui.CollapsingHeader(key))
+                    if (ImGui.CollapsingHeader(key.ToString()))
                     {
-                        foreach (var combo in combos)
+                        for (int i = 0; i < combos.Length; i++)
                         {
-                            //ImGui.Text(combo.ComboFancyName);
+                            if (i > 0) ImGui.Separator();
+
+                            var combo = combos[i];
 
                             bool enable = combo.IsEnabled;
                             ImGui.PushItemWidth(200f);
@@ -60,12 +64,48 @@ internal class ConfigWindow : Window
                                 Service.Configuration.Save();
                             }
                             ImGui.PopItemWidth();
-                            string text = $"#{num}: 替换沉静为{combo.JobName}的连续GCD战技、技能。";
+                            string text = $"#{num}: 替换{CustomCombo.ActionID.Action.Name}为{combo.JobName}的连续GCD战技、技能。";
                             if (!string.IsNullOrEmpty(combo.Description))
                             {
                                 text += '\n' + combo.Description;
                             }
                             ImGui.TextColored(shadedColor, text);
+
+                            
+                            if(enable)
+                            {
+                                ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(0f, 0f));
+                                var actions = combo.config;
+                                foreach (var boolean in actions.bools)
+                                {
+                                    bool val = boolean.value;
+                                    if (ImGui.Checkbox(boolean.description, ref val))
+                                    {
+                                        boolean.value = val;
+                                        Service.Configuration.Save();
+                                    }
+                                }
+                                foreach (var doubles in actions.doubles)
+                                {
+                                    float val = doubles.value;
+                                    if (ImGui.DragFloat(doubles.description, ref val, doubles.speed, doubles.min, doubles.max))
+                                    {
+                                        doubles.value = val;
+                                        Service.Configuration.Save();
+                                    }
+                                }
+                                foreach (var textItem in actions.texts)
+                                {
+                                    string val = textItem.value;
+                                    if (ImGui.InputText(textItem.description + num.ToString(), ref val, 15))
+                                    {
+                                        textItem.value = val;
+                                        Service.Configuration.Save();
+                                    }
+                                }
+                                ImGui.PopStyleVar();
+
+                            }
 
                             num++;
                         }
@@ -87,15 +127,16 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                //{
+                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                {
 
-                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //    {
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //    }
-                //}
+                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    {
+                        ImGui.Text(item.GameData.Name + item.StatusId);
+                    }
+                }
 
+                ImGui.Text(XIVAutoAttackPlugin.watcher.Scds.Count.ToString());
 
                 //foreach (var item in Service.ObjectTable)
                 //{
@@ -118,12 +159,6 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
-                    bool usePowerfule = Service.Configuration.UsePowerfulHookset;
-                    if (ImGui.Checkbox("三个感叹号用强力提钩", ref usePowerfule))
-                    {
-                        Service.Configuration.UsePowerfulHookset = usePowerfule;
-                        Service.Configuration.Save();
-                    }
 
                     bool useItem = Service.Configuration.UseItem;
                     if (ImGui.Checkbox("使用道具", ref useItem))

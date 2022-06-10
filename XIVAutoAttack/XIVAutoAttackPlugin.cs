@@ -20,6 +20,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using XIVAutoAttack.Configuration;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack;
@@ -40,7 +41,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     internal static DtrBarEntry dtrEntry;
 
-    internal static SoundsWatcher watcher;
+    internal static Watcher watcher;
 
     public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
     {
@@ -76,7 +77,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
-        watcher = new SoundsWatcher();
+        watcher = new Watcher();
         watcher.Enable();
     }
 

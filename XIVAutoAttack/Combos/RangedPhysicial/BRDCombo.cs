@@ -144,6 +144,9 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        //±¨∑¢“©
+        //if (BreakItem.ShoudUseItem(out act)) return true;
+
         //∑≈¥Û’–£°
         if (JobGauge.SoulVoice == 100 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady))
         {

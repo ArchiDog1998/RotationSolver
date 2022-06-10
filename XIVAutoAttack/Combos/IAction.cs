@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XIVAutoAttack.Combos
 {
-    internal interface IAction
+    public interface IAction
     {
         bool Use();
         uint ID { get; }

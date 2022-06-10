@@ -95,6 +95,10 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        //上Debuff
+        if (Actions.WhorlofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.ShadowofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
+
         //处于变身状态。
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
         {
@@ -128,11 +132,6 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
                 if (Actions.Gallows.ShouldUseAction(out act)) return true;
             }
         }
-
-        //上Debuff
-        if (Actions.WhorlofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.ShadowofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
-
 
         if (JobGauge.Shroud <= 50 && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.CircleofSacrifice)
             && BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) &&

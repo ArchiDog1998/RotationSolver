@@ -7,13 +7,16 @@ using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using Dalamud.Game;
+using Dalamud.Game.Gui.Toast;
+using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.System.Resource;
 using FFXIVClientStructs.FFXIV.Client.System.Resource.Handle;
+using XIVAutoAttack.Combos.Disciplines;
 
 namespace XIVAutoAttack
 {
-    internal class SoundsWatcher : IDisposable
+    internal class Watcher : IDisposable
     {
 
         private static class Signatures
@@ -48,7 +51,6 @@ namespace XIVAutoAttack
         private Hook<GetResourceAsyncPrototype> GetResourceAsyncHook { get; set; }
 
         private Hook<LoadSoundFileDelegate> LoadSoundFileHook { get; set; }
-
         internal ConcurrentDictionary<IntPtr, FishType> Scds { get; } = new ConcurrentDictionary<IntPtr, FishType>();
 
 
@@ -74,6 +76,18 @@ namespace XIVAutoAttack
             LoadSoundFileHook?.Enable();
             GetResourceSyncHook?.Enable();
             GetResourceAsyncHook?.Enable();
+            Service.ChatGui.ChatMessage += ChatGui_ChatMessage;
+        }
+
+        private void ChatGui_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled)
+        {
+            if (message.TextValue.Contains(FSHCombo.Actions.Mooch.Action.Name) && (byte)type == 67)
+            {
+#if DEBUG
+                Service.ChatGui.Print("Send!");
+#endif
+                TargetHelper.Fish = FishType.Mooch;
+            }
         }
 
         internal void Disable()
@@ -82,6 +96,8 @@ namespace XIVAutoAttack
             LoadSoundFileHook?.Disable();
             GetResourceSyncHook?.Disable();
             GetResourceAsyncHook?.Disable();
+            Service.ChatGui.ChatMessage -= ChatGui_ChatMessage;
+
         }
 
         public void Dispose()
@@ -90,6 +106,8 @@ namespace XIVAutoAttack
             LoadSoundFileHook?.Dispose();
             GetResourceSyncHook?.Dispose();
             GetResourceAsyncHook?.Dispose();
+            Service.ChatGui.ChatMessage -= ChatGui_ChatMessage;
+
         }
 
         private unsafe void* PlaySpecificSoundDetour(long a1, int idx)
@@ -184,9 +202,9 @@ namespace XIVAutoAttack
         private static FishType GetFishType(string name)
         {
             name = name.ToLowerInvariant();
-            if (name.Contains("sound/battle/live/se_craft_fsh_m_hit_s.scd")) return FishType.Small;
-            if (name.Contains("sound/battle/live/se_craft_fsh_m_hit_m.scd")) return FishType.Medium;
-            if (name.Contains("sound/battle/live/se_craft_fsh_m_hit_l.scd")) return FishType.Large;
+            if (name.Contains("sound/vibration/live/vib_live_fish_hit01.scd")) return FishType.Small;
+            if (name.Contains("sound/vibration/live/vib_live_fish_hit02.scd")) return FishType.Medium;
+            if (name.Contains("sound/vibration/live/vib_live_fish_hit03.scd")) return FishType.Large;
             return FishType.None;
         }
     }
@@ -197,5 +215,6 @@ namespace XIVAutoAttack
         Small,
         Medium,
         Large,
+        Mooch,
     }
 }

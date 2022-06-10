@@ -14,6 +14,9 @@ namespace XIVAutoAttack.Combos
         private uint A4 { get; } = 0;
 
         public uint ID => Item.RowId;
+        public Func<bool> OtherCheck {private get; set; }
+        public unsafe bool HaveIt => InventoryManager.Instance()->GetInventoryItemCount(Item.RowId, false) > 0 ||
+                InventoryManager.Instance()->GetInventoryItemCount(Item.RowId, true) > 0;
         public BaseItem(string name, uint a4 = 0)
         {
             var enmu = Service.DataManager.GetExcelSheet<Item>().GetEnumerator();
@@ -39,12 +42,15 @@ namespace XIVAutoAttack.Combos
         {
             item = this;
 
+            if (Item == null) return false;
+
             if (!Service.Configuration.UseItem) return false;
 
             if (ActionManager.Instance()->GetRecastTime(ActionType.Item, Item.RowId) > 0) return false;
 
-            return InventoryManager.Instance()->GetInventoryItemCount(Item.RowId, false) > 0 ||
-                InventoryManager.Instance()->GetInventoryItemCount(Item.RowId, true) > 0;
+            if (OtherCheck != null &&!OtherCheck()) return false;
+
+            return HaveIt;
 
         }
 

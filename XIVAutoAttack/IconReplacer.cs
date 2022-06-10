@@ -257,8 +257,8 @@ internal sealed class IconReplacer : IDisposable
         _specialString = string.Empty;
     }
 
-    private static SortedList<string, CustomCombo[]> _customCombosDict;
-    internal static SortedList<string, CustomCombo[]> CustomCombosDict
+    private static SortedList<Role, CustomCombo[]> _customCombosDict;
+    internal static SortedList<Role, CustomCombo[]> CustomCombosDict
     {
         get
         {
@@ -309,7 +309,7 @@ internal sealed class IconReplacer : IDisposable
     private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
     {
         var a = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
-        Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
+        //Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
         return getActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
     }
 #endif
@@ -317,12 +317,10 @@ internal sealed class IconReplacer : IDisposable
     {
         _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo)).GetTypes()
                          where t.BaseType?.BaseType == typeof(CustomCombo)
-                         select (CustomCombo)Activator.CreateInstance(t) into combo
-                         orderby combo.JobID
-                         select combo).ToArray();
+                         select (CustomCombo)Activator.CreateInstance(t)).ToArray();
 
-        _customCombosDict = new SortedList<string, CustomCombo[]>
-            (_customCombos.GroupBy(g => g.RoleName).OrderBy(g => g.Key).ToDictionary(set => set.Key, set => set.ToArray()));
+        _customCombosDict = new SortedList<Role, CustomCombo[]>
+            (_customCombos.GroupBy(g => g.RoleName).ToDictionary(set => set.Key, set => set.OrderBy(i =>i.JobID).ToArray()));
     }
 
     public void Dispose()
