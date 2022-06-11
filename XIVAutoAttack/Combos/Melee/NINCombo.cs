@@ -23,8 +23,10 @@ internal class NINCombo : CustomComboJob<NINGauge>
     internal struct Actions
     {
         public static readonly BaseAction
+
             //隐遁
             Hide = new BaseAction(2245),
+
             //双刃旋
             SpinningEdge = new BaseAction(2240),
 
@@ -398,14 +400,14 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        if (!TargetHelper.InBattle && HaveTargetAngle && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
+
         ChoiceNinjutsus();
         if (DoNinjutsus(out act)) return true;
 
 
         if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Ninjutsu))
         {
-            if (!TargetHelper.InBattle && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
-
             //大招
             if (Actions.FleetingRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
             if (Actions.ForkedRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -448,7 +450,6 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (!TargetHelper.InBattle && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
 
         if (Actions.TrickAttack.RecastTimeElapsed <= 12 && Actions.TrickAttack.IsCoolDown)
         {

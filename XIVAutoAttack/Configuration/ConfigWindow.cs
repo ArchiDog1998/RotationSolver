@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
@@ -32,7 +33,7 @@ internal class ConfigWindow : Window
         Size = new Vector2(740f, 490f);
     }
 
-    public override void Draw()
+    public override unsafe void Draw()
     {
         if (ImGui.BeginTabBar("##tabbar"))
         {

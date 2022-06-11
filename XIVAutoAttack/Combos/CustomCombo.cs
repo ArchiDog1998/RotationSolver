@@ -468,8 +468,8 @@ public abstract class CustomCombo
             if (IconReplacer.EsunaOrShield && Shield.ShouldUseAction(out act)) return true;
 
             var defenses = new uint[] { ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill, ObjectStatus.Defiance };
-            //Tanks with shield.
-            var defensesTanks = TargetHelper.PartyTanks.Where(t => t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
+            //Alive Tanks with shield.
+            var defensesTanks = TargetHelper.PartyTanks.Where(t => t.CurrentHp != 0 && t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
             if (defensesTanks == null || defensesTanks.Count() == 0)
             {
                 if (!HaveShield && Shield.ShouldUseAction(out act)) return true;

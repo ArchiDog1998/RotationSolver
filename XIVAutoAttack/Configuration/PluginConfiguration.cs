@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using Dalamud.Configuration;
 using Dalamud.Utility;
-using Newtonsoft.Json;
 
 namespace XIVAutoAttack.Configuration;
 
