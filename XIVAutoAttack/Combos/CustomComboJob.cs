@@ -12,14 +12,6 @@ namespace XIVAutoAttack.Combos
     {
         private static T _gauge;
 
-        protected BaseItem BreakItem => new BaseItem(config.GetTextByName("BreakingItem"), 2)
-        {
-            OtherCheck = () => Service.ClientState.LocalPlayer.Level == 90,
-        };
-        private protected override ActionConfiguration CreateConfiguration()
-        {
-            return base.CreateConfiguration().SetText("BreakingItem", "", JobName + "爆发药名称");
-        }
         public static T JobGauge
         {
             get
@@ -30,6 +22,11 @@ namespace XIVAutoAttack.Combos
                 }
                 return _gauge;
             }
+        }
+
+        private protected virtual bool UseBreakItem(uint lastComboActionID, out IAction act)
+        {
+            act = null; return false;
         }
     }
 }

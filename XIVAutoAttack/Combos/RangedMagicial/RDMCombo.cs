@@ -153,10 +153,10 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
         if (nextGCD.ID == Actions.Zwerchhau.ID || nextGCD.ID == Actions.Redoublement.ID || nextGCD.ID == Actions.Moulinet.ID)
         {
-            if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Service.Configuration.AutoBreak && Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
         }
         //开场爆发的时候释放。
-        if (GetRightValue(JobGauge.WhiteMana) & GetRightValue(JobGauge.BlackMana))
+        if (Service.Configuration.AutoBreak && GetRightValue(JobGauge.WhiteMana) && GetRightValue(JobGauge.BlackMana))
         {
             if (Actions.Manafication.ShouldUseAction(out act)) return true;
             if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
@@ -250,12 +250,12 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
         return false;
     }
 
-    //private protected override bool BreakAbility(byte abilityRemain, out BaseAction act)
-    //{
-    //    if (Actions.Manafication.ShouldUseAction(out act)) return true;
-    //    if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
-    //    return false;
-    //}
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
+    {
+        if (Actions.Manafication.ShouldUseAction(out act)) return true;
+        if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
+        return false;
+    }
 
     private protected override bool EmergercyGCD(uint lastComboActionID, out IAction act)
     {

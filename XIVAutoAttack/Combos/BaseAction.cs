@@ -520,7 +520,7 @@ namespace XIVAutoAttack.Combos
             return Math.Max(range, 3f);
         }
 
-        public bool ShouldUseAction(out IAction act, uint lastAct = 0, bool mustUse = false, bool emptyOrSkipCombo = false)
+        public bool ShouldUseAction(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
             byte level = Service.ClientState.LocalPlayer.Level;
@@ -571,8 +571,8 @@ namespace XIVAutoAttack.Combos
                 //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
                 uint[] comboActions = Action.ActionCombo.Row == 0 ? new uint[0] : new uint[] { Action.ActionCombo.Row };
                 if (OtherIDsCombo != null) comboActions = comboActions.Union(OtherIDsCombo).ToArray();
-                bool findCombo = false;
-                foreach (var comboAction in comboActions)
+                bool findCombo = lastAct == uint.MaxValue;
+                if(!findCombo) foreach (var comboAction in comboActions)
                 {
                     if (comboAction == lastAct)
                     {

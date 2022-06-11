@@ -11,6 +11,7 @@ namespace XIVAutoAttack.Configuration
         public List<FloatConfiguration> doubles { get; set; } = new List<FloatConfiguration>();
         public List<BooleanConfiguration> bools { get; set; } = new List<BooleanConfiguration>();
         public List<TextConfiguration> texts { get; set; } = new List<TextConfiguration>();
+        public List<ComboConfiguration> combos { get; set; } = new List<ComboConfiguration>();
         public ActionConfiguration SetFloat(string name, float value, float min = 0, float max = 1, string des = "", float speed = 0.002f)
         {
             foreach (var item in doubles)
@@ -92,6 +93,31 @@ namespace XIVAutoAttack.Configuration
             return "";
         }
 
+        public ActionConfiguration SetCombo(string name, int value, string[] items = null, string des = "")
+        {
+            foreach (var item in combos)
+            {
+                if (item.name == name)
+                {
+                    item.value = value;
+                    return this;
+                }
+            }
+            combos.Add(new ComboConfiguration() { name = name, value = value, items = items == null ? new string[0] : items, description = des });
+            return this;
+        }
+        public int GetComboByName(string name)
+        {
+            foreach (var item in combos)
+            {
+                if (item.name == name)
+                {
+                    return item.value;
+                }
+            }
+            return 0;
+        }
+
         public bool IsTheSame(ActionConfiguration other)
         {
             if (this.texts.Count != other.texts.Count) return false;
@@ -109,33 +135,13 @@ namespace XIVAutoAttack.Configuration
             {
                 if (this.bools[i].name != other.bools[i].name) return false;
             }
+            if (this.combos.Count != other.combos.Count) return false;
+            for (int i = 0; i < this.combos.Count; i++)
+            {
+                if (this.combos[i].name != other.combos[i].name) return false;
+            }
             return true;
         }
-
-        //public void Supply(ActionConfiguration other)
-        //{
-        //    foreach (var item in other.texts)
-        //    {
-        //        if(this.texts.Count > 0 && this.texts.Any(x => x.name == item.name))
-        //        {
-        //            this.SetText(item.name, item.value, item.description);
-        //        }
-        //    }
-        //    foreach (var item in other.bools)
-        //    {
-        //        if (this.bools.Count > 0 && this.bools.Any(x => x.name == item.name))
-        //        {
-        //            this.SetBool(item.name, item.value, item.description);
-        //        }
-        //    }
-        //    foreach (var item in other.doubles)
-        //    {
-        //        if (this.doubles.Count > 0 && this.doubles.Any(x => x.name == item.name))
-        //        {
-        //            this.SetFloat(item.name, item.value, item.min, item.max, item.description, item.speed);
-        //        }
-        //    }
-        //}
     }
 
     public class FloatConfiguration
@@ -160,5 +166,13 @@ namespace XIVAutoAttack.Configuration
         public string name;
         public string description;
         public string value;
+    }
+
+    public class ComboConfiguration
+    {
+        public string name;
+        public string description;
+        public int value;
+        public string[] items;
     }
 }

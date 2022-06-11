@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
@@ -54,7 +55,7 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             //ºì±¦Ê¯ÕÙ»½
             SummonRuby = new BaseAction(25802)
             {
-                OtherCheck = b => JobGauge.IsIfritReady,
+                OtherCheck = b => JobGauge.IsIfritReady && !TargetHelper.IsMoving,
             },
 
             //»Æ±¦Ê¯ÕÙ»½
@@ -183,13 +184,57 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
 
             if (JobGauge.IsIfritReady && JobGauge.IsGarudaReady && JobGauge.IsTitanReady ? JobGauge.SummonTimerRemaining == 0 : true)
             {
-                //»ð
-                if (!TargetHelper.IsMoving && Actions.SummonRuby.ShouldUseAction(out act)) return true;
-
-                //·ç
-                if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
-                //ÍÁ
-                if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                switch (config.GetComboByName("SummonOrder"))
+                {
+                    default:
+                        //ºì »ð
+                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        //»Æ ÍÁ
+                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        //ÂÌ ·ç
+                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        break;
+                    case 1:
+                        //ºì »ð
+                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        //ÂÌ ·ç
+                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        //»Æ ÍÁ
+                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        break;
+                    case 2:
+                        //»Æ ÍÁ
+                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        //ÂÌ ·ç
+                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        //ºì »ð
+                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        break;
+                    case 3:
+                        //»Æ ÍÁ
+                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        //ºì »ð
+                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        //ÂÌ ·ç
+                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        break;
+                    case 4:
+                        //ÂÌ ·ç
+                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        //ºì »ð
+                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        //»Æ ÍÁ
+                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        break;
+                    case 5:
+                        //ÂÌ ·ç
+                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        //»Æ ÍÁ
+                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        //ºì »ð
+                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        break;
+                }
             }
         }
 
@@ -202,7 +247,14 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         if (Actions.Ruin.ShouldUseAction(out act)) return true;
         return false;
     }
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetCombo("SummonOrder", 0, new string[]
+        {
+            "ºì-»Æ-ÂÌ", "ºì-ÂÌ-»Æ", "»Æ-ÂÌ-ºì", "»Æ-ºì-ÂÌ", "ÂÌ-ºì-»Æ", "ÂÌ-»Æ-ºì",
 
+        }, "ÈýÉñÕÙ»½Ë³Ðò");
+    }
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.EnkindleBahamut.ShouldUseAction(out act, mustUse: true)) return true;
@@ -241,5 +293,6 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
 
         return false;
     }
+
 
 }

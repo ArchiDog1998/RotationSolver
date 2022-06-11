@@ -18,6 +18,13 @@ namespace XIVAutoAttack.Combos;
 
 public abstract class CustomCombo
 {
+    public enum DescType : byte
+    {
+        范围治疗,
+        单体治疗,
+        范围防御,
+        单体防御,
+    }
     //private SpeechSynthesizer ssh = new SpeechSynthesizer() { Rate = 0 };
     private uint _lastGCDAction;
     internal ActionConfiguration config 
@@ -222,7 +229,7 @@ public abstract class CustomCombo
             }
         }
     }
-    internal virtual string Description { get; }
+    internal virtual SortedList<DescType, string> Description { get; } = new SortedList<DescType, string>();
 
     #endregion
 

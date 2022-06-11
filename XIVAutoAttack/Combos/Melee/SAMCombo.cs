@@ -171,20 +171,6 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        //¸Ï½ô»Ø·µ£¡
-        if (Service.IconReplacer.OriginalHook(Actions.OgiNamikiri.ID) == Actions.KaeshiNamikiri.ID)
-        {
-            if (Actions.KaeshiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;
-        }
-        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiGoken.ID)
-        {
-            if (Actions.KaeshiGoken.ShouldUseAction(out act, mustUse: true)) return true;
-        }
-        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiSetsugekka.ID)
-        {
-            if (Actions.KaeshiSetsugekka.ShouldUseAction(out act, mustUse: true)) return true;
-        }
-
         if (JobGauge.MeditationStacks == 3)
         {
             if (Actions.Shoha2.ShouldUseAction(out act)) return true;
@@ -209,6 +195,21 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
+        //¸Ï½ô»Ø·µ£¡
+        if (Service.IconReplacer.OriginalHook(Actions.OgiNamikiri.ID) == Actions.KaeshiNamikiri.ID)
+        {
+            if (Actions.KaeshiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiGoken.ID)
+        {
+            if (Actions.KaeshiGoken.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiSetsugekka.ID)
+        {
+            if (Actions.KaeshiSetsugekka.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+
+
         if (HaveTargetAngle && Actions.MeikyoShisui.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         if (nextGCD.ID == Actions.TenkaGoken.ID || nextGCD.ID == Actions.Higanbana.ID || nextGCD.ID == Actions.MidareSetsugekka.ID)

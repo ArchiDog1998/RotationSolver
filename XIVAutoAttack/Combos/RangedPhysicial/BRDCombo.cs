@@ -7,8 +7,6 @@ namespace XIVAutoAttack.Combos.RangedPhysicial;
 
 internal class BRDCombo : CustomComboJob<BRDGauge>
 {
-    //看看现在有没有开猛者强击
-    //protected static bool IsBreaking => BaseAction.HaveStatusSelfFromSelf(125);
 
     internal override uint JobID => 23;
 
@@ -144,9 +142,6 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        //爆发药
-        //if (BreakItem.ShoudUseItem(out act)) return true;
-
         //放大招！
         if (JobGauge.SoulVoice == 100 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady))
         {
@@ -242,11 +237,13 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
 
         if (abilityRemain == 2)
         {
+            //看看现在有没有开猛者强击
+            bool empty = BaseAction.HaveStatusSelfFromSelf(125) || JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.MAGE;
             //死亡剑雨
-            if (Actions.RainofDeath.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            if (Actions.RainofDeath.ShouldUseAction(out act, emptyOrSkipCombo: empty)) return true;
 
             //失血箭
-            if (Actions.Bloodletter.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            if (Actions.Bloodletter.ShouldUseAction(out act, emptyOrSkipCombo: empty)) return true;
         }
 
         //光阴神的礼赞凯歌 减少Debuff

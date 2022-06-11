@@ -14,9 +14,10 @@ using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.Disciplines;
-using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Combos.RangedMagicial;
+using XIVAutoAttack.Combos.Tank;
 
-namespace XIVAutoAttack;
+namespace XIVAutoAttack.Configuration;
 
 internal class ConfigWindow : Window
 {
@@ -65,16 +66,17 @@ internal class ConfigWindow : Window
                             }
                             ImGui.PopItemWidth();
                             string text = $"#{num}: 替换{CustomCombo.ActionID.Action.Name}为{combo.JobName}的连续GCD战技、技能。";
-                            if (!string.IsNullOrEmpty(combo.Description))
+                            foreach (var pair in combo.Description)
                             {
-                                text += '\n' + combo.Description;
+                                text += '\n' + pair.Key.ToString() + " -> " + pair.Value;
                             }
+
                             ImGui.TextColored(shadedColor, text);
 
-                            
-                            if(enable)
+
+                            if (enable)
                             {
-                                ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(0f, 0f));
+                                ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(2f, 2f));
                                 var actions = combo.config;
                                 foreach (var boolean in actions.bools)
                                 {
@@ -97,9 +99,18 @@ internal class ConfigWindow : Window
                                 foreach (var textItem in actions.texts)
                                 {
                                     string val = textItem.value;
-                                    if (ImGui.InputText(textItem.description + num.ToString(), ref val, 15))
+                                    if (ImGui.InputText(textItem.description, ref val, 15))
                                     {
                                         textItem.value = val;
+                                        Service.Configuration.Save();
+                                    }
+                                }
+                                foreach (var comboItem in actions.combos)
+                                {
+                                    int val = comboItem.value;
+                                    if (ImGui.Combo(comboItem.description, ref val, comboItem.items, comboItem.items.Length))
+                                    {
+                                        comboItem.value = val;
                                         Service.Configuration.Save();
                                     }
                                 }
@@ -135,8 +146,6 @@ internal class ConfigWindow : Window
                         ImGui.Text(item.GameData.Name + item.StatusId);
                     }
                 }
-
-                ImGui.Text(XIVAutoAttackPlugin.watcher.Scds.Count.ToString());
 
                 //foreach (var item in Service.ObjectTable)
                 //{

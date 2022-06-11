@@ -423,10 +423,10 @@ internal sealed class IconReplacer : IDisposable
             {
                 if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
 
-                if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction) 
+                if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction)
                     && newAction is BaseAction action)
                 {
-                    return OriginalHook(action.ID);
+                    return OriginalHook(newAction.ID);
                 }
             }
 

@@ -12,7 +12,10 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
     internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Grit);
     private protected override BaseAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
-    internal override string Description => "黑盾在单体治疗中，选择的是被打的那个小可怜。";
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        { DescType.单体治疗, "黑盾，选择被打的小可怜。 " }
+    };
     internal struct Actions
     {
         public static readonly BaseAction
@@ -130,7 +133,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         if (JobGauge.Blood >= 50 && Actions.LivingShadow.ShouldUseAction(out act)) return true;
-        if (JobGauge.Blood >= 50 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Delirium))
+        if (JobGauge.Blood >= 80 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Delirium))
         {
             if (Actions.Quietus.ShouldUseAction(out act)) return true;
             if (Actions.Bloodspiller.ShouldUseAction(out act)) return true;
@@ -158,7 +161,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
             if (Actions.EdgeofDarkness.ShouldUseAction(out act)) return true;
             if (Actions.FloodofDarkness.ShouldUseAction(out act, mustUse: true)) return true;
         }
-        if (JobGauge.DarksideTimeRemaining > 0 && Actions.Shadowbringer.ShouldUseAction(out act)) return true;
+        if (JobGauge.DarksideTimeRemaining > 0 && Actions.Shadowbringer.ShouldUseAction(out act, mustUse:true, emptyOrSkipCombo:true)) return true;
 
         if (Actions.Delirium.ShouldUseAction(out act)) return true;
 
@@ -219,83 +222,4 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
 
         return false;
     }
-
-    public static class Buffs
-    {
-        public const ushort BloodWeapon = 742;
-
-        public const ushort Darkside = 751;
-
-        public const ushort Delirium = 1972;
-    }
-
-    public static class Debuffs
-    {
-        public const ushort Placeholder = 0;
-    }
-
-    public static class Levels
-    {
-        public const byte SyphonStrike = 2;
-
-        public const byte Souleater = 26;
-
-        public const byte FloodOfDarkness = 30;
-
-        public const byte EdgeOfDarkness = 40;
-
-        public const byte SaltedEarth = 52;
-
-        public const byte AbyssalDrain = 56;
-
-        public const byte CarveAndSpit = 60;
-
-        public const byte Bloodpiller = 62;
-
-        public const byte Quietus = 64;
-
-        public const byte Delirium = 68;
-
-        public const byte StalwartSoul = 72;
-
-        public const byte Shadow = 74;
-
-        public const byte SaltAndDarkness = 86;
-
-        public const byte Shadowbringer = 90;
-    }
-
-    public const uint HardSlash = 3617u;
-
-    public const uint Unleash = 3621u;
-
-    public const uint SyphonStrike = 3623u;
-
-    public const uint Souleater = 3632u;
-
-    public const uint SaltedEarth = 3639u;
-
-    public const uint AbyssalDrain = 3641u;
-
-    public const uint CarveAndSpit = 3643u;
-
-    public const uint Quietus = 7391u;
-
-    public const uint Bloodspiller = 7392u;
-
-    public const uint FloodOfDarkness = 16466u;
-
-    public const uint EdgeOfDarkness = 16467u;
-
-    public const uint StalwartSoul = 16468u;
-
-    public const uint FloodOfShadow = 16469u;
-
-    public const uint 弗雷 = 16472u;
-
-    public const uint EdgeOfShadow = 16470u;
-
-    public const uint SaltAndDarkness = 25755u;
-
-    public const uint Shadowbringer = 25757u;
 }
