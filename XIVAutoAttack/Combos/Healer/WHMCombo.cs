@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace XIVAutoAttack.Combos.Healer;
@@ -95,7 +96,13 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
             //节制
             Temperance = new BaseAction(16536, true);
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.范围治疗, $"GCD: {Actions.AfflatusRapture.Action.Name}, {Actions.Medica2.Action.Name}, {Actions.Cure3.Action.Name}, {Actions.Medica.Action.Name}\n                     能力: {Actions.Asylum.Action.Name}, {Actions.Assize.Action.Name}"},
+        {DescType.单体治疗, $"GCD: {Actions.AfflatusSolace.Action.Name}, {Actions.Regen.Action.Name}, {Actions.Cure2.Action.Name}, {Actions.Cure.Action.Name}\n                     能力: {Actions.Tetragrammaton.Action.Name}"},
+        {DescType.范围防御, $"{Actions.Temperance.Action.Name}, {Actions.LiturgyoftheBell.Action.Name}"},
+        {DescType.单体防御, $"{Actions.DivineBenison.Action.Name}, {Actions.Aquaveil.Action.Name}"},
+    };
 
     private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {

@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace XIVAutoAttack.Combos.Healer;
@@ -134,7 +135,14 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             //魂灵风息
             Pneuma = new BaseAction(24318);
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.范围治疗, $"GCD: {Actions.Prognosis.Action.Name}\n                     能力: {Actions.Holos.Action.Name}, {Actions.Ixochole.Action.Name}, {Actions.Physis2.Action.Name}, {Actions.Physis.Action.Name}"},
+        {DescType.单体治疗, $"GCD: {Actions.Diagnosis.Action.Name}\n                     能力: {Actions.Druochole.Action.Name}"},
+        {DescType.范围防御, $"{Actions.Panhaima.Action.Name}, {Actions.Kerachole.Action.Name}, {Actions.Prognosis.Action.Name}"},
+        {DescType.单体防御, $"GCD: {Actions.Diagnosis.Action.Name}\n                     能力: {Actions.Haima.Action.Name}, {Actions.Taurochole.Action.Name}"},
+        {DescType.移动, $"{Actions.Icarus.Action.Name}"},
+    };
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         act = null;

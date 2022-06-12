@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Collections.Generic;
 using XIVAutoAttack;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.RangedMagicial;
@@ -124,7 +125,14 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             //疾风怒涛之计
             Expedient = new BaseAction(25868);
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.范围治疗, $"GCD: {Actions.Succor.Action.Name}\n                     能力: {Actions.SacredSoil.Action.Name}, {Actions.SummonSeraph.Action.Name}, {Actions.WhisperingDawn.Action.Name}, {Actions.FeyBlessing.Action.Name}, {Actions.Indomitability.Action.Name}"},
+        {DescType.单体治疗, $"GCD: {Actions.Adloquium.Action.Name}, {Actions.Physick.Action.Name}\n                     能力: {Actions.Aetherpact.Action.Name}, {Actions.Protraction.Action.Name}, {Actions.Excogitation.Action.Name}, {Actions.Lustrate.Action.Name}"},
+        {DescType.范围防御, $"GCD: {Actions.Succor.Action.Name}, {Actions.SacredSoil.Action.Name}\n                     能力: {Actions.DeploymentTactics.Action.Name}, {Actions.Adloquium.Action.Name}, {Actions.SummonSeraph.Action.Name}, {Actions.FeyIllumination.Action.Name}"},
+        {DescType.单体防御, $"{Actions.Adloquium.Action.Name}"},
+        {DescType.移动, $"{Actions.Expedient.Action.Name}"},
+    };
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.Expedient.ShouldUseAction(out act)) return true;
@@ -236,7 +244,6 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         return false;
     }
 
-
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.Aetherpact.ShouldUseAction(out act) && JobGauge.FairyGauge >= 90) return true;
@@ -252,21 +259,6 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
         return false;
     }
-
-    //private protected override bool GeneralAbility(byte abilityRemain, out BaseAction act)
-    //{
-    //    foreach (var friend in TargetHelper.PartyMembers)
-    //    {
-    //        if (BaseAction.FindStatusFromSelf(friend, ObjectStatus.ClosedPosition2)?.Length > 0)
-    //        {
-    //            if (Actions.ClosedPosition.ShouldUseAction(out act) && Actions.ClosedPosition.Target != friend)
-    //            {
-    //                return true;
-    //            }
-    //            break;
-    //        }
-    //    }
-    //}
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {

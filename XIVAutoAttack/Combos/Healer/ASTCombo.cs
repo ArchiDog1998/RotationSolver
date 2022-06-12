@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
@@ -157,7 +158,13 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
                 ChoiceFriend = ASTRangeTarget,
             };
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.范围治疗, $"GCD: {Actions.AspectedHelios.Action.Name}, {Actions.Helios.Action.Name}\n                     能力: {Actions.EarthlyStar.Action.Name}, {Actions.CrownPlay.Action.Name}, {Actions.CelestialOpposition.Action.Name}"},
+        {DescType.单体治疗, $"GCD: {Actions.AspectedBenefic.Action.Name}, {Actions.Benefic2.Action.Name}, {Actions.Benefic.Action.Name}\n                     能力: {Actions.CelestialIntersection.Action.Name}, {Actions.EssentialDignity.Action.Name}"},
+        {DescType.范围防御, $"{Actions.CollectiveUnconscious.Action.Name}"},
+        {DescType.单体防御, $"{Actions.Exaltation.Action.Name}，给被挨打的T"},
+    };
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //来个命运之轮

@@ -329,10 +329,6 @@ internal sealed class IconReplacer : IDisposable
         isIconReplaceableHook.Dispose();
         _fastClickStopwatch.Stop();
         _specialStateStopwatch.Stop();
-        foreach (var combo in _customCombos)
-        {
-            combo.Texture?.Dispose();
-        }
 #if DEBUG
         getActionHook.Dispose();
 #endif

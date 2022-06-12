@@ -87,7 +87,7 @@ internal class ConfigWindow : Window
                                 var str = string.Join('\n', combo.Description.Select(pair => pair.Key.ToString() + " → " + pair.Value));
                                 if(!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
                             }
-                            string text = $"#{num}: 替换 {CustomCombo.ActionID.Action.Name} 为 {combo.JobName} 的连续GCD战技、技能。";
+                            string text = $"#{num}: 替换-{CustomCombo.ActionID.Action.Name}-为{combo.JobName}的连续GCD战技、技能。";
                             ImGui.TextColored(shadedColor, text);
                             ImGui.Columns(1);
 
