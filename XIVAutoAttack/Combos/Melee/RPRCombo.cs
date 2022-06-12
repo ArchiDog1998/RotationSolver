@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace XIVAutoAttack.Combos.Melee;
@@ -92,7 +93,11 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             //大丰收
             PlentifulHarvest = new BaseAction(24385);
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.单体防御, $"{Actions.ArcaneCrest.Action.Name}"},
+        {DescType.移动, $"{Actions.HellsIngress.Action.Name}"},
+    };
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //上Debuff

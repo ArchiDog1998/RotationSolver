@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Collections.Generic;
 using XIVAutoAttack;
 using XIVAutoAttack.Combos;
 
@@ -89,7 +90,10 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
                 },
             };
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.范围防御, $"{Actions.Tactician.Action.Name}"},
+    };
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //策动

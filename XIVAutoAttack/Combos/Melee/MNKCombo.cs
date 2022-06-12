@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack;
 using XIVAutoAttack.Combos;
@@ -110,8 +111,14 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
 
             //疾风极意
             RiddleofWind = new BaseAction(25766);
-
     }
+
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.范围治疗, $"{Actions.Mantra.Action.Name}"},
+        {DescType.单体防御, $"{Actions.RiddleofEarth.Action.Name}"},
+        {DescType.移动, $"{Actions.Thunderclap.Action.Name}"},
+    };
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {

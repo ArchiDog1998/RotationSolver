@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Collections.Generic;
 
 namespace XIVAutoAttack.Combos.Melee;
 
@@ -227,7 +228,11 @@ internal class NINCombo : CustomComboJob<NINGauge>
                 AfterUse = ClearNinjutsus,
             };
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.单体防御, $"{Actions.ShadeShift.Action.Name}"},
+        {DescType.移动, $"{Actions.Shukuchi.Action.Name}"},
+    };
     private static void ChoiceNinjutsus()
     {
         if (Service.IconReplacer.OriginalHook(2260) != 2260) return;

@@ -174,7 +174,10 @@ namespace XIVAutoAttack
             }
 
             if (Service.ClientState.LocalPlayer == null) return;
-            if (Service.ClientState.LocalPlayer.CurrentHp == 0) IconReplacer.AutoAttack = false;
+            if (Service.ClientState.LocalPlayer.CurrentHp == 0
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]) IconReplacer.AutoAttack = false;
+
             InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
             Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
@@ -230,7 +233,6 @@ namespace XIVAutoAttack
             if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]) return;
             if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied33]) return;
             if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInQuestEvent]) return;
-            if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]) return;
             if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted]) return;
             if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
 

@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Collections.Generic;
 
 namespace XIVAutoAttack.Combos.Melee;
 
@@ -113,7 +114,11 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             //回返斩浪
             KaeshiNamikiri = new BaseAction(25782);
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.单体防御, $"{Actions.ThirdEye.Action.Name}"},
+        {DescType.移动, $"{Actions.HissatsuGyoten.Action.Name}"},
+    };
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         if (Actions.OgiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;

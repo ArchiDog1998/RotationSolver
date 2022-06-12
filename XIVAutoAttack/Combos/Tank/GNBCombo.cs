@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace XIVAutoAttack.Combos.Tank;
@@ -132,7 +133,13 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
                 OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ID,
             };
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.单体治疗, $"{Actions.Aurora.Action.Name}"},
+        {DescType.范围防御, $"{Actions.HeartofLight.Action.Name}"},
+        {DescType.单体防御, $"{Actions.HeartofStone.Action.Name}, {Actions.Nebula.Action.Name}, {Actions.Camouflage.Action.Name}"},
+        {DescType.移动, $"{Actions.RoughDivide.Action.Name}"},
+    };
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //使用晶囊

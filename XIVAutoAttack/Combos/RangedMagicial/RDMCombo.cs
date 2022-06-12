@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -147,7 +148,12 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
             //决断
             Resolution = new BaseAction(25858);
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.单体治疗, $"{Actions.Vercure.Action.Name}"},
+        {DescType.范围防御, $"{Actions.MagickBarrier.Action.Name}"},
+        {DescType.移动, $"{Actions.CorpsAcorps.Action.Name}"},
+    };
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后

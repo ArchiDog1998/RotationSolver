@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos.Healer;
@@ -55,22 +56,14 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             CoerthanTorment = new BaseAction(16477),
 
             //ÆÆËé³å
-            SpineshatterDive = new BaseAction(95)
-            {
-            },
+            SpineshatterDive = new BaseAction(95),
 
             //ÁúÑ×³å
-            DragonfireDive = new BaseAction(96)
-            {
-            },
+            DragonfireDive = new BaseAction(96),
 
             //ÌøÔ¾
-            Jump = new BaseAction(92)
-            {
-            },
-            HighJump = new BaseAction(16478)
-            {
-            },
+            Jump = new BaseAction(92),
+            HighJump = new BaseAction(16478),
             //»ÃÏó³å
             MirageDive = new BaseAction(7399)
             {
@@ -84,9 +77,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             Nastrond = new BaseAction(7400),
 
             //×¹ÐÇ³å
-            Stardiver = new BaseAction(16480)
-            {
-            },
+            Stardiver = new BaseAction(16480),
 
             //ÌìÁúµã¾¦
             WyrmwindThrust = new BaseAction(25773),
@@ -122,6 +113,10 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             BattleLitany = new BaseAction(3557);
     }
 
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.ÒÆ¶¯, $"{Actions.SpineshatterDive.Action.Name}, {Actions.DragonfireDive.Action.Name}"},
+    };
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {

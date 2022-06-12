@@ -320,7 +320,7 @@ internal sealed class IconReplacer : IDisposable
                          select (CustomCombo)Activator.CreateInstance(t)).ToArray();
 
         _customCombosDict = new SortedList<Role, CustomCombo[]>
-            (_customCombos.GroupBy(g => g.RoleName).ToDictionary(set => set.Key, set => set.OrderBy(i =>i.JobID).ToArray()));
+            (_customCombos.GroupBy(g => g.Role).ToDictionary(set => set.Key, set => set.OrderBy(i =>i.JobID).ToArray()));
     }
 
     public void Dispose()
@@ -329,6 +329,10 @@ internal sealed class IconReplacer : IDisposable
         isIconReplaceableHook.Dispose();
         _fastClickStopwatch.Stop();
         _specialStateStopwatch.Stop();
+        foreach (var combo in _customCombos)
+        {
+            combo.Texture?.Dispose();
+        }
 #if DEBUG
         getActionHook.Dispose();
 #endif

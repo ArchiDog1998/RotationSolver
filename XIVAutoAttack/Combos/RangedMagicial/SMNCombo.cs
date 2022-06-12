@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System.Collections.Generic;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
@@ -148,7 +149,11 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
                 BuffsNeed = new ushort[] { ObjectStatus.GarudasFavor },
             };
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.单体防御, $"{Actions.RadiantAegis.Action.Name}"},
+        {DescType.单体治疗, $"{Actions.Physick.Action.Name}"},
+    };
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //灼热之光

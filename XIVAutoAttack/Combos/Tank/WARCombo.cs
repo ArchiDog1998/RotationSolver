@@ -132,7 +132,12 @@ internal class WARCombo : CustomComboJob<WARGauge>
                 BuffsNeed = new ushort[] { ObjectStatus.PrimalRendReady },
             };
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.·¶Î§·ÀÓù, $"{Actions.ShakeItOff.Action.Name}"},
+        {DescType.µ¥Ìå·ÀÓù, $"{Actions.RawIntuition.Action.Name}, {Actions.Vengeance.Action.Name}"},
+        {DescType.ÒÆ¶¯, $"{Actions.PrimalRend.Action.Name}, {Actions.Onslaught.Action.Name}, "},
+    };
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //°ÚÍÑ ¶ÓÓÑÌ×¶Ü
@@ -198,12 +203,10 @@ internal class WARCombo : CustomComboJob<WARGauge>
         return false;
     }
 
-
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (abilityRemain == 1)
         {
-
             //Ô­³õµÄÖ±¾õ£¨¼õÉË10%£©
             if (Actions.RawIntuition.ShouldUseAction(out act)) return true;
 

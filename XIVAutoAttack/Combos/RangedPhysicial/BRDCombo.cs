@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
+using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Combos;
 
@@ -123,7 +124,11 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
                 },
             };
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.范围防御, $"{Actions.Troubadour.Action.Name}"},
+        {DescType.单体治疗, $"{Actions.NaturesMinne.Action.Name}"},
+    };
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //行吟

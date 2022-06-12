@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack;
@@ -132,7 +133,13 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         //盾牌猛击
         //ShieldBash = new BaseAction(16),
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.单体治疗, $"{Actions.Clemency.Action.Name}"},
+        {DescType.范围防御, $"{Actions.DivineVeil.Action.Name}, {Actions.PassageofArms.Action.Name}"},
+        {DescType.单体防御, $"{Actions.Sentinel.Action.Name}, {Actions.Sheltron.Action.Name}"},
+        {DescType.移动, $"{Actions.Intervene.Action.Name}"},
+    };
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //三个大招

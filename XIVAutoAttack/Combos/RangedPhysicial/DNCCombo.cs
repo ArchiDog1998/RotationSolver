@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
+using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Combos;
 
@@ -222,6 +223,13 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             };
     }
 
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.∑∂Œß∑¿”˘, $"{Actions.ShieldSamba.Action.Name}"},
+        {DescType.∑∂Œß÷Œ¡∆, $"{Actions.CuringWaltz.Action.Name}, {Actions.Improvisation.Action.Name}"},
+        {DescType.“∆∂Ø, $"{Actions.EnAvant.Action.Name}"},
+    };
+
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1))
@@ -263,14 +271,12 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-
         if (Actions.EnAvant.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
-
         if (Actions.CuringWaltz.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         if (Actions.Improvisation.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
@@ -278,7 +284,6 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-
         if (Actions.ShieldSamba.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
@@ -373,24 +378,4 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
 
         return false;
     }
-
-    //public static class Buffs
-    //{
-    //    public const ushort FlourishingSymmetry = 2693;
-
-    //    public const ushort FlourishingFlow = 2694;
-
-    //    public const ushort FlourishingFinish = 2698;
-
-    //    public const ushort FlourishingStarfall = 2700;
-
-    //    public const ushort StandardStep = 1818;
-
-    //    public const ushort TechnicalStep = 1819;
-
-    //    public const ushort ThreefoldFanDance = 1820;
-
-    //    public const ushort FourfoldFanDance = 2699;
-    //}
-
 }

@@ -12,10 +12,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
     internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Grit);
     private protected override BaseAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
-    {
-        { DescType.单体治疗, "黑盾，选择被打的小可怜。 " }
-    };
+
     internal struct Actions
     {
         public static readonly BaseAction
@@ -115,7 +112,13 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
                 BuffsNeed = new ushort[] { ObjectStatus.SaltedEarth },
             };
     }
-
+    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    {
+        {DescType.单体治疗, $"{Actions.TheBlackestNight.Action.Name}，目标为被打的小可怜"},
+        {DescType.范围防御, $"{Actions.DarkMissionary.Action.Name}"},
+        {DescType.单体防御, $"{Actions.Oblation.Action.Name}, {Actions.ShadowWall.Action.Name}, {Actions.DarkMind.Action.Name}"},
+        {DescType.移动, $"{Actions.Plunge.Action.Name}"},
+    };
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.TheBlackestNight.ShouldUseAction(out act)) return true;

@@ -23,6 +23,9 @@
     <Reference Include="ImGui.NET">
       <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\6.3.0.12\ImGui.NET.dll</HintPath>
     </Reference>
+    <Reference Include="ImGuiScene">
+      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\6.3.0.12\ImGuiScene.dll</HintPath>
+    </Reference>
     <Reference Include="Lumina">
       <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\6.3.0.12\Lumina.dll</HintPath>
     </Reference>

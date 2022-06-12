@@ -11,6 +11,7 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using ImGuiScene;
 using XIVAutoAttack;
 using XIVAutoAttack.Configuration;
 
@@ -24,6 +25,7 @@ public abstract class CustomCombo
         单体治疗,
         范围防御,
         单体防御,
+        移动,
     }
     //private SpeechSynthesizer ssh = new SpeechSynthesizer() { Rate = 0 };
     private uint _lastGCDAction;
@@ -59,7 +61,7 @@ public abstract class CustomCombo
     #region Job
     internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
     internal abstract uint JobID { get; }
-    internal Role RoleName => (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
+    internal Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
 
     internal string JobName => XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Name;
 
@@ -68,7 +70,7 @@ public abstract class CustomCombo
     internal struct GeneralActions
     {
         internal static readonly BaseAction
-            //混乱
+            //昏乱
             Addle = new BaseAction(7560u)
             {
                 TargetStatus = new ushort[] { 1203 },
@@ -253,9 +255,10 @@ public abstract class CustomCombo
     protected virtual bool ShouldSayout => false;
     private protected virtual BaseAction Raise => null;
     private protected virtual BaseAction Shield => null;
-
+    internal TextureWrap Texture;
     private protected CustomCombo()
     {
+        Texture = Service.DataManager.GetImGuiTextureIcon(IconSet.GetJobIcon(this));
     }
 
     internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out IAction newAction)
@@ -408,18 +411,15 @@ public abstract class CustomCombo
         }
 
         //有人死了，看看能不能救。
+        if (Service.ClientState.LocalPlayer.ClassJob.Id == 35 && TargetHelper.DeathPeopleAll.Length > 0)
+        {
+            if (HaveSwift && Raise.ShouldUseAction(out act)) return true;
+        }
         if (TargetHelper.DeathPeopleParty.Length > 0)
         {
-            if (Service.ClientState.LocalPlayer.ClassJob.Id == 35)
+            if (IconReplacer.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0)
             {
-                if (HaveSwift && Raise.ShouldUseAction(out act)) return true;
-            }
-            else
-            {
-                if (IconReplacer.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0)
-                {
-                    if (Raise.ShouldUseAction(out act)) return true;
-                }
+                if (Raise.ShouldUseAction(out act)) return true;
             }
         }
 

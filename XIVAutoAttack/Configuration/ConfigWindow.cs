@@ -32,18 +32,24 @@ internal class ConfigWindow : Window
         SizeCondition = (ImGuiCond)4;
         Size = new Vector2(740f, 490f);
     }
-
+    private static readonly Dictionary<Role, string> _roleDescriptionValue = new Dictionary<Role, string>()
+    {
+        {Role.防护, $"{CustomCombo.DescType.单体防御} → {CustomCombo.GeneralActions.Rampart.Action.Name}, {CustomCombo.GeneralActions.Reprisal.Action.Name}" },
+        {Role.近战, $"{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Feint.Action.Name}" },
+        {Role.远程, $"法系{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Addle.Action.Name}" },
+    };
     public override unsafe void Draw()
     {
         if (ImGui.BeginTabBar("##tabbar"))
         {
             if (ImGui.BeginTabItem("攻击设定"))
             {
-                ImGui.Text("在这个窗口，你可以设定自己喜欢的自动攻击设定。");
+                ImGui.Text("你可以选择开启想要的职业的连续GCD战技、技能。");
 
                 ImGui.BeginChild("攻击", new Vector2(0f, -1f), true);
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
                 int num = 1;
+
 
                 foreach (Role key in IconReplacer.CustomCombosDict.Keys)
                 {
@@ -52,28 +58,38 @@ internal class ConfigWindow : Window
 
                     if (ImGui.CollapsingHeader(key.ToString()))
                     {
+                        if (ImGui.IsItemHovered() && _roleDescriptionValue.TryGetValue(key, out string roleDesc))
+                        {
+                            ImGui.SetTooltip(roleDesc);
+                        }
                         for (int i = 0; i < combos.Length; i++)
                         {
                             if (i > 0) ImGui.Separator();
-
                             var combo = combos[i];
 
+
+                            ImGui.Columns(2, i.ToString(), false);
+                            int size = Math.Min(combo.Texture.Width, 45);
+                            ImGui.SetColumnWidth(0, size + 5);
+
+                            ImGui.Image(combo.Texture.ImGuiHandle, new Vector2(size, size));
+
+                            ImGui.NextColumn();
+
                             bool enable = combo.IsEnabled;
-                            ImGui.PushItemWidth(200f);
                             if (ImGui.Checkbox(combo.JobName, ref enable))
                             {
                                 combo.IsEnabled = enable;
                                 Service.Configuration.Save();
                             }
-                            ImGui.PopItemWidth();
-                            string text = $"#{num}: 替换{CustomCombo.ActionID.Action.Name}为{combo.JobName}的连续GCD战技、技能。";
-                            foreach (var pair in combo.Description)
+                            if (ImGui.IsItemHovered())
                             {
-                                text += '\n' + pair.Key.ToString() + " -> " + pair.Value;
+                                var str = string.Join('\n', combo.Description.Select(pair => pair.Key.ToString() + " → " + pair.Value));
+                                if(!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
                             }
-
+                            string text = $"#{num}: 替换 {CustomCombo.ActionID.Action.Name} 为 {combo.JobName} 的连续GCD战技、技能。";
                             ImGui.TextColored(shadedColor, text);
-
+                            ImGui.Columns(1);
 
                             if (enable)
                             {
@@ -124,6 +140,10 @@ internal class ConfigWindow : Window
                     }
                     else
                     {
+                        if (ImGui.IsItemHovered() && _roleDescriptionValue.TryGetValue(key, out string roleDesc))
+                        {
+                            ImGui.SetTooltip(roleDesc);
+                        }
                         num += combos.Length;
                     }
                 }
