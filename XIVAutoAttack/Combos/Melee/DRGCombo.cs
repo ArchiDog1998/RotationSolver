@@ -168,8 +168,8 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
             }
             if (Actions.MirageDive.ShouldUseAction(out act) && Vector3.Distance(LocalPlayer.Position, Actions.MirageDive.Target.Position) - Actions.MirageDive.Target.HitboxRadius < 2) return true;
 
-            if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true) && BaseAction.DistanceToPlayer(Actions.DragonfireDive.Target, true) < 2) return true;
-            if (Actions.SpineshatterDive.ShouldUseAction(out act, emptyOrSkipCombo: true) && BaseAction.DistanceToPlayer(Actions.SpineshatterDive.Target, true) < 2) return true;
+            if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true) && BaseAction.DistanceToPlayer(Actions.DragonfireDive.Target) < 2) return true;
+            if (Actions.SpineshatterDive.ShouldUseAction(out act, emptyOrSkipCombo: true) && BaseAction.DistanceToPlayer(Actions.SpineshatterDive.Target) < 2) return true;
         }
 
 

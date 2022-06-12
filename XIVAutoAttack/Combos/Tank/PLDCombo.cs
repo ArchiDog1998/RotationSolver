@@ -226,7 +226,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.Intervene.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.Intervene.Target, true) < 1)
+            if (BaseAction.DistanceToPlayer(Actions.Intervene.Target) < 1)
             {
                 return true;
             }

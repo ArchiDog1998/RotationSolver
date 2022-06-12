@@ -29,6 +29,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseToast { get; set; } = true;
     //public bool UsePowerfulHookset { get; set; } = true;
     public bool UseItem { get; set; } = true;
+    public float ObjectMinRadius { get; set; } = 0.5f;
     public float HealthDifference { get; set; } = 0.25f;
     public float HealthAreaAbility { get; set; } = 0.75f;
     public float HealthAreafSpell { get; set; } = 0.65f;

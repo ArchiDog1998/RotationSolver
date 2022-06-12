@@ -167,6 +167,7 @@ internal class ConfigWindow : Window
                         ImGui.Text(item.GameData.Name + item.StatusId);
                     }
                 }
+                //ImGui.Text(Service.ClientState.LocalPlayer.HitboxRadius.ToString());
 
                 //foreach (var item in Service.ObjectTable)
                 //{
@@ -215,6 +216,13 @@ internal class ConfigWindow : Window
                     if (ImGui.Checkbox("喊出战技身位", ref sayingLocation))
                     {
                         Service.Configuration.SayingLocation = sayingLocation;
+                        Service.Configuration.Save();
+                    }
+
+                    float minradius = Service.Configuration.ObjectMinRadius;
+                    if (ImGui.DragFloat("攻击对象最小底圈大小", ref minradius, 0.02f, 0, 10))
+                    {
+                        Service.Configuration.ObjectMinRadius = minradius;
                         Service.Configuration.Save();
                     }
 

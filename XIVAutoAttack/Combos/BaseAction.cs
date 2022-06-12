@@ -375,15 +375,15 @@ namespace XIVAutoAttack.Combos
             //返回在打队友的讨厌鬼！
             return targets.ToArray();
         }
-        internal static float DistanceToPlayer(GameObject obj, bool minusTargetHitbox = false)
+        internal static float DistanceToPlayer(GameObject obj)
         {
             var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
-            if (minusTargetHitbox) distance -= obj.HitboxRadius;
+            distance -= Math.Max( obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
             return distance;
         }
         internal static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
         {
-            return objects.Where(o => DistanceToPlayer(o) <= radius + o.HitboxRadius).ToArray();
+            return objects.Where(o => DistanceToPlayer(o) <= radius).ToArray();
         }
 
         private static T[] GetMostObject<T>(T[] canAttack, float radius, float range, Func<T, T[], float, byte> HowMany, bool isfriend, bool mustUse) where T : BattleChara
