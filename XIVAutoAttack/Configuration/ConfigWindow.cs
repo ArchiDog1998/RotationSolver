@@ -94,7 +94,7 @@ internal class ConfigWindow : Window
                             if (enable)
                             {
                                 ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(2f, 2f));
-                                var actions = combo.config;
+                                var actions = combo.Config;
                                 foreach (var boolean in actions.bools)
                                 {
                                     bool val = boolean.value;
@@ -159,29 +159,29 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
-
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
-                //ImGui.Text(Service.ClientState.LocalPlayer.HitboxRadius.ToString());
-
-                //foreach (var item in Service.ObjectTable)
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
                 //{
-                //    if(item is BattleChara battle && item != Service.ClientState.LocalPlayer)
+
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
                 //    {
-                //        foreach (var status in battle.StatusList)
-                //        {
-                //            if(status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //            {
-                //                ImGui.Text(status.GameData.Name + status.StatusId);
-                //            }
-                //        }
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
                 //    }
                 //}
+                //ImGui.Text(Service.ClientState.LocalPlayer.HitboxRadius.ToString());
+
+                foreach (var item in Service.ObjectTable)
+                {
+                    if (item is BattleChara battle && item != Service.ClientState.LocalPlayer)
+                    {
+                        foreach (var status in battle.StatusList)
+                        {
+                            if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                            {
+                                ImGui.Text(status.GameData.Name + status.StatusId);
+                            }
+                        }
+                    }
+                }
 
 #endif
                 ImGui.Text("在这个窗口，你可以设定释放技能所需的参数。");
@@ -190,12 +190,22 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
+                    bool usecheckCasting = Service.Configuration.CheckForCasting;
+                    if (ImGui.Checkbox("使用咏唱是否结束提示", ref usecheckCasting))
+                    {
+                        Service.Configuration.CheckForCasting = usecheckCasting;
+                        Service.Configuration.Save();
+                    }
 
                     bool useItem = Service.Configuration.UseItem;
                     if (ImGui.Checkbox("使用道具", ref useItem))
                     {
                         Service.Configuration.UseItem = useItem;
                         Service.Configuration.Save();
+                    }
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip("使用高级强心剂、强心剂，爆发药仅有黑魔");
                     }
 
                     int voiceVolume = Service.Configuration.VoiceVolume;

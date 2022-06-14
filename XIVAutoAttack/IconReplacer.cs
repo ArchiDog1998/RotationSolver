@@ -11,6 +11,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using Lumina.Excel.GeneratedSheets;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.Disciplines;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -308,8 +309,8 @@ internal sealed class IconReplacer : IDisposable
 #if DEBUG
     private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
     {
-        var a = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
-        //Service.ChatGui.Print((a == null ? "" : a.Name + ", ") + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
+        var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
+        //Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
         return getActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
     }
 #endif
@@ -379,10 +380,15 @@ internal sealed class IconReplacer : IDisposable
 
 #if DEBUG
             //Service.ChatGui.Print(newiAction.ID.ToString());
-            //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + newAction.Action.Name + TargetHelper.AbilityRemainCount.ToString());
+            //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + newiAction.Action.Name + TargetHelper.AbilityRemainCount.ToString());
 #endif
             if (newiAction.Use() && newiAction is BaseAction act)
             {
+#if DEBUG
+                //Service.ChatGui.Print(newiAction.ID.ToString());
+                Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + act.Action.Name + TargetHelper.AbilityRemainCount.ToString());
+#endif
+
                 if (TargetHelper.CanAttack(act.Target))
                 {
                     Service.TargetManager.SetTarget(act.Target);
@@ -423,10 +429,10 @@ internal sealed class IconReplacer : IDisposable
             {
                 if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
 
-                if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction)
-                    && newAction is BaseAction action)
+                if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction))
                 {
-                    return OriginalHook(newAction.ID);
+                    if (newAction is BaseAction) return OriginalHook(newAction.ID);
+                    //else return 7546;
                 }
             }
 

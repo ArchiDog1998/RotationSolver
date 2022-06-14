@@ -459,6 +459,9 @@ namespace XIVAutoAttack.Combos
             Snagging = 761,
 
             //撒饵
-            Chum = 763;
+            Chum = 763,
+
+            //战斗连祷
+            BattleLitany = 786;
     }
 }

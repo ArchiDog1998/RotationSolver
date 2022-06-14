@@ -126,16 +126,13 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
-
         //如果接下来要搞三大金刚了，整备吧！
-        if (nextGCD.ID == Actions.HotShow.ID || nextGCD.ID == Actions.Drill.ID || nextGCD.ID == Actions.ChainSaw.ID)
+        if (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID || nextGCD.ID == Actions.ChainSaw.ID)
         {
-            if (Actions.Reassemble.ShouldUseAction(out act, mustUse: true)) return true;
+            if (abilityRemain == 1 && Actions.Reassemble.ShouldUseAction(out act, mustUse:true)) return true;
         }
 
-        act = null;
-        return false;
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
@@ -163,8 +160,10 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
             if (Actions.BarrelStabilizer.ShouldUseAction(out act)) return true;
         }
 
+        if (!Actions.Ricochet.IsCoolDown && Actions.Ricochet.ShouldUseAction(out act, mustUse: true)) return true;
+        if (!Actions.GaussRound.IsCoolDown && Actions.GaussRound.ShouldUseAction(out act, mustUse: true)) return true;
 
-        if (!Actions.Ricochet.IsCoolDown || Actions.GaussRound.RecastTimeRemain > Actions.Ricochet.RecastTimeRemain)
+        if (Actions.GaussRound.RecastTimeRemain > Actions.Ricochet.RecastTimeRemain)
         {
             //弹射
             if (Actions.Ricochet.ShouldUseAction(out act, mustUse: true)) return true;

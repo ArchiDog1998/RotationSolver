@@ -29,7 +29,7 @@ public abstract class CustomCombo
     }
     //private SpeechSynthesizer ssh = new SpeechSynthesizer() { Rate = 0 };
     private uint _lastGCDAction;
-    internal ActionConfiguration config 
+    internal ActionConfiguration Config 
     {
         get
         {
@@ -505,7 +505,7 @@ public abstract class CustomCombo
         if (IconReplacer.Move && MoveAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
-        if (TargetHelper.HPNotFull)
+        if (TargetHelper.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
         {
             if ((IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act)) return true;
             if ((IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act)) return true;

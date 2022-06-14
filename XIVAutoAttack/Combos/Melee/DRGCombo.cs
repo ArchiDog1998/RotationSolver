@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos.Healer;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Melee;
 
@@ -107,10 +108,17 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
 
                     return null;
                 },
+
+                BuffsNeed = new ushort[] {ObjectStatus.BattleLitany},
             },
 
             //战斗连祷
             BattleLitany = new BaseAction(3557);
+    }
+
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetBool("ShouldDelay", true, "延后红龙血");
     }
 
     internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
@@ -140,15 +148,17 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
-        //3 BUff
-        if (Actions.LanceCharge.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.DragonSight.ShouldUseAction(out act, mustUse: true)) return true;
+        //战斗连祷
         if (Actions.BattleLitany.ShouldUseAction(out act, mustUse: true)) return true;
         return false;
     }
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
+        // 2 Buffs
+        if (Actions.LanceCharge.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.DragonSight.ShouldUseAction(out act, mustUse: true)) return true;
+
         if (JobGauge.IsLOTDActive && Actions.Nastrond.ShouldUseAction(out act, mustUse: true)) return true;
 
         //尝试进入红龙血
@@ -188,8 +198,16 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
         #endregion
 
         #region 单体
-        if (Actions.WheelingThrust.ShouldUseAction(out act)) return true;
-        if (Actions.FangandClaw.ShouldUseAction(out act)) return true;
+        if (Config.GetBoolByName("ShouldDelay"))
+        {
+            if (Actions.WheelingThrust.ShouldUseAction(out act)) return true;
+            if (Actions.FangandClaw.ShouldUseAction(out act)) return true;
+        }
+        else
+        {
+            if (Actions.FangandClaw.ShouldUseAction(out act)) return true;
+            if (Actions.WheelingThrust.ShouldUseAction(out act)) return true;
+        }
 
         //看看是否需要续Buff
         var time = BaseAction.FindStatusSelfFromSelf(ObjectStatus.PowerSurge);

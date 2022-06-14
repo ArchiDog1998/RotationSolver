@@ -53,6 +53,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //รอนฅ
             Onslaught = new BaseAction(7386)
             {
+                ChoiceHostile = BaseAction.FindMoveTarget,
                 OtherCheck = b => BaseAction.DistanceToPlayer(Service.TargetManager.Target) > 5,
             },
 

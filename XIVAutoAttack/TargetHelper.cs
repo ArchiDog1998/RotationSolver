@@ -6,6 +6,7 @@ using Dalamud.Game.ClientState.Statuses;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Hooking;
+using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
@@ -19,6 +20,7 @@ using System.Text;
 using System.Threading;
 using XIVAutoAttack.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
+using Vector3 = System.Numerics.Vector3;
 
 namespace XIVAutoAttack
 {
@@ -118,7 +120,7 @@ namespace XIVAutoAttack
 
         internal unsafe static void Framework_Update(Framework framework)
         {
-
+            UpdateCastBar();
 #if DEBUG
             //Get changed condition.
             string[] enumNames = Enum.GetNames(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));
@@ -131,7 +133,7 @@ namespace XIVAutoAttack
                     bool newValue = Service.Conditions[(Dalamud.Game.ClientState.Conditions.ConditionFlag)indexs[i]];
                     if (_valus.ContainsKey(i) && _valus[i] != newValue && indexs[i] != 48)
                     {
-                        //Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
+                        Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
                     }
                     _valus[i] = newValue;
                 }
@@ -174,9 +176,11 @@ namespace XIVAutoAttack
             }
 
             if (Service.ClientState.LocalPlayer == null) return;
+
             if (Service.ClientState.LocalPlayer.CurrentHp == 0
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]) IconReplacer.AutoAttack = false;
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying]) IconReplacer.AutoAttack = false;
 
             InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
@@ -191,6 +195,10 @@ namespace XIVAutoAttack
             var weaponelapsed = instance->GetRecastTimeElapsed(spell, 11);
 
             WeaponRemain = WeaponTotal - weaponelapsed;
+            if (Service.ClientState.LocalPlayer.IsCasting)
+            {
+                WeaponRemain = Math.Max(WeaponRemain, Service.ClientState.LocalPlayer.TotalCastTime - Service.ClientState.LocalPlayer.CurrentCastTime);
+            }
             var min = Math.Max(WeaponTotal - Service.Configuration.WeaponInterval, 0);
             AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
 
@@ -227,14 +235,47 @@ namespace XIVAutoAttack
             }
             #endregion
         }
+        private static unsafe void UpdateCastBar()
+        {
+            ByteColor redColor = new ByteColor() { A = 255, R = 120, G = 0, B = 60 };
+            ByteColor greenColor = new ByteColor() { A = 255, R = 60, G = 120, B = 30 };
+
+
+            AtkUnitBase* castBar = (AtkUnitBase*)Service.GameGui.GetAddonByName("_CastBar", 1);
+            AtkResNode* progressBar = castBar->UldManager.NodeList[5];
+
+            bool realCasting = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
+            ByteColor c = redColor;
+            if (Service.Configuration.CheckForCasting && !realCasting) c = greenColor;
+
+            progressBar->AddRed = c.R;
+            progressBar->AddGreen = c.G;
+            progressBar->AddBlue = c.B;
+        }
+
+        //private unsafe static void Hide(AtkResNode* node)
+        //{
+        //    node->Flags &= -17;
+        //    node->Flags_2 |= 1u;
+        //}
+
+        //public unsafe static void Show(AtkResNode* node)
+        //{
+        //    node->Flags |= 16;
+        //    node->Flags_2 |= 1u;
+        //}
 
         private static void DoAction(float weaponelapsed)
         {
-            if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]) return;
-            if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied33]) return;
-            if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInQuestEvent]) return;
-            if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted]) return;
-            if (Service.ClientState.LocalPlayer.CurrentHp == 0) return;
+            if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInQuestEvent]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied33]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied38]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Jumping61]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted] 
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction2]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InFlight]) return;
 
             if (WeaponRemain <= Service.Configuration.WeaponFaster)
             {

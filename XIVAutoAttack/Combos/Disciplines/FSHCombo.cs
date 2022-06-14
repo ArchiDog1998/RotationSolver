@@ -124,7 +124,7 @@ namespace XIVAutoAttack.Combos.Disciplines
             var gp = Service.ClientState.LocalPlayer.CurrentGp;
             bool fishing = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Fishing];
 
-            if (fishing && TargetHelper.Fish != FishType.None && TargetHelper._fisherTimer.ElapsedMilliseconds > config.GetDoubleByName("CastTime") * 1000)
+            if (fishing && TargetHelper.Fish != FishType.None && TargetHelper._fisherTimer.ElapsedMilliseconds > Config.GetDoubleByName("CastTime") * 1000)
             {
                 if(BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Patience) && gp >= 50)
                 {
@@ -137,7 +137,7 @@ namespace XIVAutoAttack.Combos.Disciplines
                             if (Actions.PowerfulHookset.ShouldUseAction(out act)) return true;
                             break;
                         case FishType.Large:
-                            if (config.GetBoolByName("UsePowerfulHookset") && Actions.PowerfulHookset.ShouldUseAction(out act)) return true;
+                            if (Config.GetBoolByName("UsePowerfulHookset") && Actions.PowerfulHookset.ShouldUseAction(out act)) return true;
                             if (Actions.PrecisionHookset.ShouldUseAction(out act)) return true;
                             break;
                     }

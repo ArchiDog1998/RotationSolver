@@ -15,22 +15,22 @@
   </Target>
   <ItemGroup>
     <Reference Include="Dalamud">
-      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\6.3.0.12\Dalamud.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\Dalamud.dll</HintPath>
     </Reference>
     <Reference Include="FFXIVClientStructs">
-      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\6.3.0.12\FFXIVClientStructs.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>
     </Reference>
     <Reference Include="ImGui.NET">
-      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\6.3.0.12\ImGui.NET.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\ImGui.NET.dll</HintPath>
     </Reference>
     <Reference Include="ImGuiScene">
-      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\6.3.0.12\ImGuiScene.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\ImGuiScene.dll</HintPath>
     </Reference>
     <Reference Include="Lumina">
-      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\6.3.0.12\Lumina.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\Lumina.dll</HintPath>
     </Reference>
     <Reference Include="Lumina.Excel">
-      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\6.3.0.12\Lumina.Excel.dll</HintPath>
+      <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\Lumina.Excel.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

@@ -189,7 +189,7 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
 
             if (JobGauge.IsIfritReady && JobGauge.IsGarudaReady && JobGauge.IsTitanReady ? JobGauge.SummonTimerRemaining == 0 : true)
             {
-                switch (config.GetComboByName("SummonOrder"))
+                switch (Config.GetComboByName("SummonOrder"))
                 {
                     default:
                         //ºì »ð
@@ -299,5 +299,10 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         return false;
     }
 
-
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    {
+        //»ìÂÒ
+        if (GeneralActions.Addle.ShouldUseAction(out act)) return true;
+        return false;
+    }
 }

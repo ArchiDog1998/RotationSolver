@@ -512,6 +512,7 @@ namespace XIVAutoAttack.Combos
 
         private static float GetRange(Action act)
         {
+            return ActionManager.GetActionRange(act.RowId);
             sbyte range = act.Range;
             if (range < 0 && CustomCombo.RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.GameData.RowId))
             {
