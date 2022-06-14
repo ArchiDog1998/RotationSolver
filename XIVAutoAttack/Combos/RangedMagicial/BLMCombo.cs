@@ -253,7 +253,7 @@ namespace XIVAutoAttack.Combos
                     if (Actions.Transpose.ShouldUseAction(out act)) return true;
                 }
                 if (Actions.Triplecast.ShouldUseAction(out act, mustUse: true)) return true;
-                if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
+                //if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
             }
 
             if (JobGauge.InUmbralIce)
@@ -276,7 +276,7 @@ namespace XIVAutoAttack.Combos
             if (JobGauge.InAstralFire)
             {
                 //三连
-                if (Actions.Triplecast.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+                if (Actions.Triplecast.ShouldUseAction(out act)) return true;
             }
 
             //加个通晓
@@ -307,7 +307,7 @@ namespace XIVAutoAttack.Combos
             {
                 if (AddPolyglotAttach(out act)) return true;
                 if (Actions.Triplecast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-                if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
+                //if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
             }
 
             //冰状态
