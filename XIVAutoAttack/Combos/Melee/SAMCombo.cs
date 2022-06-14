@@ -121,6 +121,20 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
     };
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        //¸Ï½ô»Ø·µ£¡
+        if (Service.IconReplacer.OriginalHook(Actions.OgiNamikiri.ID) == Actions.KaeshiNamikiri.ID)
+        {
+            if (Actions.KaeshiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiGoken.ID)
+        {
+            if (Actions.KaeshiGoken.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiSetsugekka.ID)
+        {
+            if (Actions.KaeshiSetsugekka.ShouldUseAction(out act, mustUse: true)) return true;
+        }
+
         if (Actions.OgiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.TenkaGoken.ShouldUseAction(out act))
         {
@@ -200,19 +214,7 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        //¸Ï½ô»Ø·µ£¡
-        if (Service.IconReplacer.OriginalHook(Actions.OgiNamikiri.ID) == Actions.KaeshiNamikiri.ID)
-        {
-            if (Actions.KaeshiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;
-        }
-        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiGoken.ID)
-        {
-            if (Actions.KaeshiGoken.ShouldUseAction(out act, mustUse: true)) return true;
-        }
-        if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiSetsugekka.ID)
-        {
-            if (Actions.KaeshiSetsugekka.ShouldUseAction(out act, mustUse: true)) return true;
-        }
+
 
 
         if (HaveTargetAngle && Actions.MeikyoShisui.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
