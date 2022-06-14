@@ -233,6 +233,11 @@ namespace XIVAutoAttack.Combos
             {
                 if (Actions.Transpose.ShouldUseAction(out act)) return true;
             }
+            //有火苗转火
+            if(nextGCD.ID == Actions.Fire3.ID && HasFire && JobGauge.InUmbralIce)
+            {
+                if (Actions.Transpose.ShouldUseAction(out act)) return true;
+            }
             act = null;
             return false;
         }
