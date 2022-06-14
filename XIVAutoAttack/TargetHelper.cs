@@ -246,7 +246,8 @@ namespace XIVAutoAttack
 
             bool realCasting = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
             ByteColor c = redColor;
-            if (Service.Configuration.CheckForCasting && !realCasting) c = greenColor;
+            if (!Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
+                && Service.Configuration.CheckForCasting && !realCasting) c = greenColor;
 
             progressBar->AddRed = c.R;
             progressBar->AddGreen = c.G;

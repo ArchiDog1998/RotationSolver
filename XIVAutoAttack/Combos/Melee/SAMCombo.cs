@@ -154,6 +154,18 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
         {
             if (Actions.Yukikaze.ShouldUseAction(out act, lastComboActionID)) return true;
         }
+        if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Moon))
+        {
+            if (Actions.Mangetsu.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Gekko.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Jinpu.ShouldUseAction(out act, lastComboActionID)) return true;
+        }
+        if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Flower))
+        {
+            if (Actions.Oka.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Kasha.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Shifu.ShouldUseAction(out act, lastComboActionID)) return true;
+        }
         if (!JobGauge.HasGetsu)
         {
             if (Actions.Mangetsu.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;

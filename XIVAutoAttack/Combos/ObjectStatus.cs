@@ -462,6 +462,10 @@ namespace XIVAutoAttack.Combos
             Chum = 763,
 
             //战斗连祷
-            BattleLitany = 786;
+            BattleLitany = 786,
+            //风月
+            Moon = 1298,
+            //风花
+            Flower = 1299;
     }
 }
