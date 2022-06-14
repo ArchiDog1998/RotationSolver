@@ -9,14 +9,14 @@
     "Description": "让自动攻击成为可能，请合理使用！目前为测试阶段较为不稳定，且非常刺激！未来有望加入爆发药。\n由于目前作者很多职业没有满级，如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！\n输入/pattack以设置帮助菜单。",
     "Changelog": "",
     "Tags": [
-      "Attacks"
+      "Attack"
     ],
     "CategoryTags": [
       "jobs"
     ],
     "IsHide": false,
     "InternalName": "XIVAutoAttack",
-    "AssemblyVersion": "0.9.5.1",
+    "AssemblyVersion": "0.9.6.0",
     "IsTestingExclusive": false,
     "RepoUrl": "https://github.com/ArchiDog1998/XIVAutoAttack",
     "ApplicableVersion": "any",
