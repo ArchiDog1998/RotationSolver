@@ -37,7 +37,7 @@ namespace XIVAutoAttack.Combos
 
                 if (Service.TargetManager.Target is BattleChara b)
                 {
-                    var thunder = b.StatusList.Where(t => new uint[]
+                    var thunder = b.StatusList.Where(t => t.SourceID == Service.ClientState.LocalPlayer.ObjectId && new uint[]
                     {
                         ObjectStatus.Thunder,
                         ObjectStatus.Thunder3,
@@ -45,7 +45,7 @@ namespace XIVAutoAttack.Combos
 
                     if (thunder != null && thunder.Count() > 0 && thunder.Select(t => t.RemainingTime).Max() > 20) return true;
 
-                    thunder = b.StatusList.Where(t => new uint[]
+                    thunder = b.StatusList.Where(t => t.SourceID == Service.ClientState.LocalPlayer.ObjectId && new uint[]
                     {
                         ObjectStatus.Thunder2,
                         ObjectStatus.Thunder4,
