@@ -411,18 +411,17 @@ public abstract class CustomCombo
         }
 
         //有人死了，看看能不能救。
-        if (Service.ClientState.LocalPlayer.ClassJob.Id == 35 && TargetHelper.DeathPeopleAll.Length > 0)
+        if(Service.Configuration.RaiseAll ? TargetHelper.DeathPeopleAll.Length > 0 : TargetHelper.DeathPeopleParty.Length > 0)
         {
-            if (HaveSwift && Raise.ShouldUseAction(out act)) return true;
-        }
-        if (TargetHelper.DeathPeopleParty.Length > 0)
-        {
-            if (IconReplacer.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0)
+            if (Service.ClientState.LocalPlayer.ClassJob.Id == 35)
+            {
+                if (HaveSwift && Raise.ShouldUseAction(out act)) return true;
+            }
+            else  if (IconReplacer.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0)
             {
                 if (Raise.ShouldUseAction(out act)) return true;
             }
         }
-
         act = null;
         return false;
     }

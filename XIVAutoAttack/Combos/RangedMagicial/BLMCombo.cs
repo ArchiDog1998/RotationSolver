@@ -2,6 +2,8 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
 using System.Linq;
+using XIVAutoAttack.Configuration;
+
 namespace XIVAutoAttack.Combos
 {
     internal class BLMCombo : CustomComboJob<BLMGauge>
@@ -27,7 +29,8 @@ namespace XIVAutoAttack.Combos
         }
         private bool HasFire => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Firestarter);
         private bool HasThunder => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Thundercloud);
-        private bool InTranspose = false;
+        internal static bool InTranspose = false;
+        internal static bool UseThunderIn = false;
         protected override bool CanHealSingleAbility => false;
         private bool CanGoFire
         {
@@ -71,24 +74,32 @@ namespace XIVAutoAttack.Combos
                     //    ObjectStatus.Thunder3,
                     //    ObjectStatus.Thunder4,
                     //},
-                    OtherIDsNot = new uint[] { 153u, 144u, 7420u, 7447u } //雷1,3 ID
+                    OtherIDsNot = new uint[] { 153u, 144u, 7420u, 7447u }, //雷1,3 ID
+                    AfterUse = () => UseThunderIn = true,
                 },
 
                 //雷2
                 Thunder2 = new BaseAction(7447u)
                 {
                     TargetStatus = Thunder.TargetStatus,
-                    OtherIDsNot = new uint[] { 153u, 144u, 7420u, 7447u } //雷2,4 ID
+                    OtherIDsNot = new uint[] { 153u, 144u, 7420u, 7447u }, //雷2,4 ID
+                    AfterUse = () => UseThunderIn = true,
                 },
 
                 //火1
                 Fire = new BLMAction(141u, true),
 
                 //火2
-                Fire2 = new BLMAction(147u, true),
+                Fire2 = new BLMAction(147u, true)
+                {
+                    AfterUse = () => InTranspose = false,
+                },
 
                 //火3
-                Fire3 = new BLMAction(152u, true),
+                Fire3 = new BLMAction(152u, true)
+                {
+                    AfterUse = ()=> InTranspose = false,
+                },
 
                 //火4
                 Fire4 = new BLMAction(3577u, true) { OtherCheck = b => JobGauge.InAstralFire && JobGauge.ElementTimeRemaining > 5000 },
@@ -172,7 +183,14 @@ namespace XIVAutoAttack.Combos
         {
             { DescType.单体治疗, $"{Actions.BetweenTheLines.Action.Name}, {Actions.Leylines.Action.Name}, 这个很特殊！" },
             { DescType.单体防御, $"{Actions.Manaward.Action.Name}" },
+            { DescType.移动, $"{Actions.AetherialManipulation.Action.Name}，目标为面向夹角小于30°内最远目标。" },
         };
+
+        private protected override ActionConfiguration CreateConfiguration()
+        {
+            return base.CreateConfiguration().SetBool("AutoLeylines", true, "自动上黑魔纹").SetBool("StartFire", false, "火起手")
+                .SetFloat("TimeToAdd", 5, 3, 8, "火阶段还剩几秒时补时间", 0.01f);
+        }
 
         private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
         {
@@ -217,19 +235,29 @@ namespace XIVAutoAttack.Combos
         }
         private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
         {
+            act = null;
+            //刚刚魔泉，别给我转冰了。
+            if (IconReplacer.LastAction == Actions.Manafont.ID) return false;
+
             //双星灵转冰
             if (Service.ClientState.LocalPlayer.Level >= 90 && JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp == 0
-                && JobGauge.PolyglotStacks > 0)
+                && (JobGauge.PolyglotStacks > 0 || JobGauge.EnochianTimer < 3000)
+                && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5))
             {
-                Actions.Transpose.AfterUse = () => InTranspose = true;
-                if ( Actions.Transpose.ShouldUseAction(out act)) return true;
+                Actions.Transpose.AfterUse = () =>
+                {
+                    InTranspose = true;
+                    UseThunderIn = false;
+                };
+                if (Actions.Transpose.ShouldUseAction(out act)) return true;
             }
             else
             {
                 Actions.Transpose.AfterUse = () => InTranspose = false;
             }
             //双星灵转火
-            if (abilityRemain == 1 && InTranspose && ((JobGauge.PolyglotStacks == 0 && !HasThunder) || JobGauge.InUmbralIce && LocalPlayer.CurrentMp > 9000))
+            if (JobGauge.InUmbralIce && InTranspose && (HasFire || HaveSwift) && 
+                (nextGCD.ID == Actions.Fire3.ID || nextGCD.ID == Actions.Fire2.ID || Service.ClientState.LocalPlayer.CurrentMp >= 8000) )
             {
                 if (Actions.Transpose.ShouldUseAction(out act)) return true;
             }
@@ -237,6 +265,12 @@ namespace XIVAutoAttack.Combos
             if(nextGCD.ID == Actions.Fire3.ID && HasFire && JobGauge.InUmbralIce)
             {
                 if (Actions.Transpose.ShouldUseAction(out act)) return true;
+            }
+
+            if(nextGCD.ID == Actions.Thunder.ID || nextGCD.ID == Actions.Thunder2.ID || nextGCD.ID == Actions.Blizzard4.ID || nextGCD.ID == Actions.Blizzard3.ID)
+            {
+                //加个激情
+                if (Actions.Sharpcast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
             }
             act = null;
             return false;
@@ -250,6 +284,9 @@ namespace XIVAutoAttack.Combos
 
         private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
         {
+            act = null;
+            //刚刚魔泉，别给我转冰了。
+            if (IconReplacer.LastAction == Actions.Manafont.ID) return false;
 
             if (IsMoving)
             {
@@ -257,7 +294,7 @@ namespace XIVAutoAttack.Combos
                 {
                     if (Actions.Transpose.ShouldUseAction(out act)) return true;
                 }
-                if (Actions.Triplecast.ShouldUseAction(out act, mustUse: true)) return true;
+                if (!InTranspose && Actions.Triplecast.ShouldUseAction(out act, mustUse: true)) return true;
                 //if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
             }
 
@@ -271,35 +308,22 @@ namespace XIVAutoAttack.Combos
                     //加个即刻
                     if (!HasFire && GeneralActions.Swiftcast.ShouldUseAction(out act)) return true;
                 }
-                else
-                {
-                    //加个激情
-                    if (Actions.Sharpcast.ShouldUseAction(out act, emptyOrSkipCombo: !CanGoFire)) return true;
-                }
             }
 
             if (JobGauge.InAstralFire)
             {
                 //三连
                 if (Actions.Triplecast.ShouldUseAction(out act)) return true;
+
+                //爆发药！
+                if (UseBreakItem(out act)) return true;
+
+                //自动黑魔纹
+                if(Config.GetBoolByName("AutoLeylines") && Actions.Leylines.ShouldUseAction(out act, mustUse: true)) return true;
             }
 
             //加个通晓
             if (Actions.Amplifier.ShouldUseAction(out act)) return true;
-
-            //不搞双星灵
-            if (!((JobGauge.PolyglotStacks == 1 || (JobGauge.PolyglotStacks == 0 && JobGauge.EnochianTimer < 3000)) && Service.ClientState.LocalPlayer.Level >= 90))
-            {
-                //加个魔泉
-                if (JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp <= 7000 && JobGauge.UmbralHearts == 0 && Actions.Manafont.ShouldUseAction(out act)) return true;
-            }
-            return false;
-        }
-
-        private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-        {
-            //爆发药！
-            if (UseBreakItem(out act)) return true;
 
             return false;
         }
@@ -307,44 +331,42 @@ namespace XIVAutoAttack.Combos
         private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
         {
 
-            //移动
-            if (IsMoving && HaveTargetAngle)
-            {
-                if (AddPolyglotAttach(out act)) return true;
-                if (Actions.Triplecast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-                //if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
-            }
-
             //冰状态
             if (JobGauge.InUmbralIce)
             {
-                //常规转火状态
-                if (CanGoFire)
-                {
-                    //进入火状态
-                    //试试看火2,3
-                    if (Actions.Fire2.ShouldUseAction(out act)) return true;
 
-                    //把冰悖论放掉
-                    if (JobGauge.IsParadoxActive && Actions.Fire.ShouldUseAction(out act)) return true;
-
-                    if (Actions.Fire3.ShouldUseAction(out act)) return true;
-                }
 
                 //双星灵
                 if (InTranspose)
                 {
                     if (!Actions.Fire2.ShouldUseAction(out _) && JobGauge.IsParadoxActive && Actions.Fire.ShouldUseAction(out act)) return true;
 
-                    //补雷
-                    if (HasThunder && AddThunder(lastComboActionID, out act)) return true;
+                    if(HasFire || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 1.5)
+                    {
+                        //补雷
+                        if (!UseThunderIn && HasThunder && AddThunder(lastComboActionID, out act)) return true;
 
-                    if (AddPolyglotAttach(out act)) return true;
+                        if (AddPolyglotAttach(out act)) return true;
+                    }
 
+                    if (Actions.Fire2.ShouldUseAction(out act)) return true;
+                    if (Actions.Fire3.ShouldUseAction(out act)) return true;
                 }
-                //常规攻击
                 else
                 {
+                    //常规转火状态
+                    if (CanGoFire)
+                    {
+                        //进入火状态
+                        //试试看火2,3
+                        if (Actions.Fire2.ShouldUseAction(out act)) return true;
+
+                        //把冰悖论放掉
+                        if (JobGauge.IsParadoxActive && Actions.Fire.ShouldUseAction(out act)) return true;
+
+                        if (Actions.Fire3.ShouldUseAction(out act)) return true;
+                    }
+
                     //如果通晓满了，就放掉。
                     if (IsPolyglotStacksMaxed && JobGauge.EnochianTimer < 8000)
                     {
@@ -370,9 +392,17 @@ namespace XIVAutoAttack.Combos
             else if (JobGauge.InAstralFire)
             {
                 //如果需要续时间,提高档数
-                if ((JobGauge.ElementTimeRemaining < 4800 && Service.ClientState.LocalPlayer.CurrentMp >= 4000) || JobGauge.AstralFireStacks == 2)
+                if (JobGauge.ElementTimeRemaining < Config.GetDoubleByName("TimeToAdd") * 1000)
                 {
-                    if (Actions.Fire.ShouldUseAction(out act)) return true;
+                    if(Service.ClientState.LocalPlayer.CurrentMp >= 4000 || JobGauge.AstralFireStacks == 2)
+                    {
+                        if (Actions.Fire.ShouldUseAction(out act)) return true;
+                    }
+                    else
+                    {
+                        if (Actions.Flare.ShouldUseAction(out act)) return true;
+                        if (Actions.Despair.ShouldUseAction(out act)) return true;
+                    }
                 }
                 if (JobGauge.AstralFireStacks == 1)
                 {
@@ -381,6 +411,19 @@ namespace XIVAutoAttack.Combos
                     if (Actions.Fire.ShouldUseAction(out act)) return true;
                 }
 
+                //火起手上雷
+                if(Config.GetBoolByName("StartFire") && !InTranspose)
+                {
+                    //上雷
+                    if (Service.ClientState.LocalPlayer.CurrentMp == 8000 && AddThunder(lastComboActionID, out act)) return true;
+                    //强插三连
+                    if (Service.ClientState.LocalPlayer.CurrentMp == 6000 && Actions.Triplecast.ShouldUseAction(out act)) return true;
+                }
+
+                //三连
+                if (Service.ClientState.LocalPlayer.CurrentMp >= 4000 && Actions.Triplecast.ShouldUseAction(out act)) return true;
+
+
                 //如果通晓满了，就放掉。
                 if (IsPolyglotStacksMaxed && JobGauge.EnochianTimer < 8000)
                 {
@@ -388,7 +431,7 @@ namespace XIVAutoAttack.Combos
                 }
 
                 //冰针不够，马上核爆
-                if (JobGauge.UmbralHearts == 1 || Service.ClientState.LocalPlayer.CurrentMp < 3000)
+                if (JobGauge.UmbralHearts == 1 || Service.ClientState.LocalPlayer.CurrentMp < 3800)
                 {
                     if (Actions.Flare.ShouldUseAction(out act)) return true;
                 }
@@ -409,18 +452,43 @@ namespace XIVAutoAttack.Combos
                     return true;
                 }
 
+                //加个魔泉
+                if (Actions.Manafont.ShouldUseAction(out act)) return true;
+
+                //刚刚魔泉，别给我转冰了。
+                if (IconReplacer.LastAction == Actions.Manafont.ID) return false;
+
                 //否则，转入冰状态。
                 if (JobGauge.PolyglotStacks == 2 || (JobGauge.PolyglotStacks == 1 && JobGauge.EnochianTimer < 3000))
                 {
-                    if(Service.ClientState.LocalPlayer.Level >= 90 && AddPolyglotAttach(out act)) return true;
+                    if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5)
+                       && Service.ClientState.LocalPlayer.Level >= 90 && AddPolyglotAttach(out act)) return true;
                 }
+            }
+
+            //赶在前面弄个激情
+            if (!TargetHelper.InBattle && Actions.Sharpcast.ShouldUseAction(out act)) return true;
+
+            if (Config.GetBoolByName("StartFire") && !JobGauge.InAstralFire)
+            {
+                if (Actions.Fire2.ShouldUseAction(out act)) return true;
+                if (Actions.Fire3.ShouldUseAction(out act)) return true;
             }
 
             //进入冰状态
             //试试看冰2,3,1给个冰状态
-            if (Actions.Blizzard2.ShouldUseAction(out act)) return true;
-            if (Actions.Blizzard3.ShouldUseAction(out act)) return true;
-            if (Actions.Transpose.ShouldUseAction(out act)) return true;
+            if (Actions.Blizzard2.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Blizzard3.ShouldUseAction(out act, lastComboActionID)) return true;
+
+            if (Service.ClientState.LocalPlayer.Level < Actions.Blizzard3.Level && Actions.Transpose.ShouldUseAction(out act)) return true;
+
+            //移动
+            if (IsMoving && HaveTargetAngle)
+            {
+                if (AddPolyglotAttach(out act)) return true;
+                if (Actions.Triplecast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+                //if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
+            }
 
             return false;
         }

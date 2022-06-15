@@ -67,14 +67,23 @@ internal class ConfigWindow : Window
                             if (i > 0) ImGui.Separator();
                             var combo = combos[i];
 
+                            ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
                             ImGui.Columns(2, i.ToString(), false);
                             int size = Math.Min(combo.Texture.Width, 45);
                             ImGui.SetColumnWidth(0, size + 5);
 
+                            var str = string.Join('\n', combo.Description.Select(pair => pair.Key.ToString() + " → " + pair.Value));
+
                             ImGui.Image(combo.Texture.ImGuiHandle, new Vector2(size, size));
+                            if (ImGui.IsItemHovered())
+                            {
+                                if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
+                            }
 
                             ImGui.NextColumn();
+
+                            //ImGui.Spacing();
 
                             bool enable = combo.IsEnabled;
                             if (ImGui.Checkbox(combo.JobName, ref enable))
@@ -84,19 +93,20 @@ internal class ConfigWindow : Window
                             }
                             if (ImGui.IsItemHovered())
                             {
-                                var str = string.Join('\n', combo.Description.Select(pair => pair.Key.ToString() + " → " + pair.Value));
                                 if(!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
                             }
-                            string text = $"#{num}: 替换-{CustomCombo.ActionID.Action.Name}-为{combo.JobName}的连续GCD战技、技能。";
+                            string text = $"#{num}: 为{combo.JobName}的连续GCD战技、技能。";
                             ImGui.TextColored(shadedColor, text);
-                            ImGui.Columns(1);
 
                             if (enable)
                             {
-                                ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(2f, 2f));
+                                ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(1f, 1f));
+                                string spacing = "    ";
                                 var actions = combo.Config;
                                 foreach (var boolean in actions.bools)
                                 {
+                                    ImGui.Text(spacing);
+                                    ImGui.SameLine();
                                     bool val = boolean.value;
                                     if (ImGui.Checkbox(boolean.description, ref val))
                                     {
@@ -106,6 +116,8 @@ internal class ConfigWindow : Window
                                 }
                                 foreach (var doubles in actions.doubles)
                                 {
+                                    ImGui.Text(spacing);
+                                    ImGui.SameLine();
                                     float val = doubles.value;
                                     if (ImGui.DragFloat(doubles.description, ref val, doubles.speed, doubles.min, doubles.max))
                                     {
@@ -115,6 +127,8 @@ internal class ConfigWindow : Window
                                 }
                                 foreach (var textItem in actions.texts)
                                 {
+                                    ImGui.Text(spacing);
+                                    ImGui.SameLine();
                                     string val = textItem.value;
                                     if (ImGui.InputText(textItem.description, ref val, 15))
                                     {
@@ -124,6 +138,8 @@ internal class ConfigWindow : Window
                                 }
                                 foreach (var comboItem in actions.combos)
                                 {
+                                    ImGui.Text(spacing);
+                                    ImGui.SameLine();
                                     int val = comboItem.value;
                                     if (ImGui.Combo(comboItem.description, ref val, comboItem.items, comboItem.items.Length))
                                     {
@@ -134,6 +150,7 @@ internal class ConfigWindow : Window
                                 ImGui.PopStyleVar();
 
                             }
+                            ImGui.Columns(1);
 
                             num++;
                         }
@@ -159,15 +176,15 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
 
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
-                //ImGui.Text(Service.ClientState.LocalPlayer.HitboxRadius.ToString());
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
+                ImGui.Text(BLMCombo.InTranspose.ToString());
 
                 //foreach (var item in Service.ObjectTable)
                 //{
@@ -190,22 +207,18 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
+                    bool neverReplaceIcon = Service.Configuration.NeverReplaceIcon;
+                    if (ImGui.Checkbox("不替换图标", ref neverReplaceIcon))
+                    {
+                        Service.Configuration.NeverReplaceIcon = neverReplaceIcon;
+                        Service.Configuration.Save();
+                    }
+
                     bool usecheckCasting = Service.Configuration.CheckForCasting;
                     if (ImGui.Checkbox("使用咏唱是否结束提示", ref usecheckCasting))
                     {
                         Service.Configuration.CheckForCasting = usecheckCasting;
                         Service.Configuration.Save();
-                    }
-
-                    bool useItem = Service.Configuration.UseItem;
-                    if (ImGui.Checkbox("使用道具", ref useItem))
-                    {
-                        Service.Configuration.UseItem = useItem;
-                        Service.Configuration.Save();
-                    }
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip("使用高级强心剂、强心剂，爆发药仅有黑魔");
                     }
 
                     int voiceVolume = Service.Configuration.VoiceVolume;
@@ -229,12 +242,6 @@ internal class ConfigWindow : Window
                         Service.Configuration.Save();
                     }
 
-                    float minradius = Service.Configuration.ObjectMinRadius;
-                    if (ImGui.DragFloat("攻击对象最小底圈大小", ref minradius, 0.02f, 0, 10))
-                    {
-                        Service.Configuration.ObjectMinRadius = minradius;
-                        Service.Configuration.Save();
-                    }
 
                     bool autoSayingOut = Service.Configuration.AutoSayingOut;
                     if (ImGui.Checkbox("状态变化时喊出", ref autoSayingOut))
@@ -266,12 +273,17 @@ internal class ConfigWindow : Window
                         Service.Configuration.Save();
                     }
 
-                    bool neverReplaceIcon = Service.Configuration.NeverReplaceIcon;
-                    if (ImGui.Checkbox("不替换图标", ref neverReplaceIcon))
+                    bool useItem = Service.Configuration.UseItem;
+                    if (ImGui.Checkbox("使用道具", ref useItem))
                     {
-                        Service.Configuration.NeverReplaceIcon = neverReplaceIcon;
+                        Service.Configuration.UseItem = useItem;
                         Service.Configuration.Save();
                     }
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip("使用高级强心剂、强心剂，爆发药仅有黑魔");
+                    }
+
 
                     bool isAllTargetAsHostile = Service.Configuration.AllTargeAsHostile;
                     if (ImGui.Checkbox("所有可以攻击的目标均为敌对目标", ref isAllTargetAsHostile))
@@ -291,6 +303,13 @@ internal class ConfigWindow : Window
                     if (ImGui.Checkbox("自动进行爆发", ref autoBreak))
                     {
                         Service.Configuration.AutoBreak = autoBreak;
+                        Service.Configuration.Save();
+                    }
+
+                    bool raiseAll = Service.Configuration.RaiseAll;
+                    if (ImGui.Checkbox("复活所有能复活的人，而非小队", ref raiseAll))
+                    {
+                        Service.Configuration.RaiseAll = raiseAll;
                         Service.Configuration.Save();
                     }
 
@@ -339,6 +358,14 @@ internal class ConfigWindow : Window
                         Service.Configuration.PartyCount = partyCount;
                         Service.Configuration.Save();
                     }
+
+                    float minradius = Service.Configuration.ObjectMinRadius;
+                    if (ImGui.DragFloat("攻击对象最小底圈大小", ref minradius, 0.02f, 0, 10))
+                    {
+                        Service.Configuration.ObjectMinRadius = minradius;
+                        Service.Configuration.Save();
+                    }
+
                     ImGui.Separator();
 
                     float speed = 0.005f;
@@ -363,8 +390,6 @@ internal class ConfigWindow : Window
                         Service.Configuration.HealthAreafSpell = healthAreaS;
                         Service.Configuration.Save();
                     }
-
-                    ImGui.Separator();
 
                     float healthSingleA = Service.Configuration.HealthSingleAbility;
                     if (ImGui.DragFloat("多少的HP，可以用能力技单奶", ref healthSingleA, speed, 0, 1))

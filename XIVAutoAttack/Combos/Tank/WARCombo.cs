@@ -137,7 +137,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
     {
         {DescType.范围防御, $"{Actions.ShakeItOff.Action.Name}"},
         {DescType.单体防御, $"{Actions.RawIntuition.Action.Name}, {Actions.Vengeance.Action.Name}"},
-        {DescType.移动, $"GCD: {Actions.PrimalRend.Action.Name}\n                     能力: {Actions.Onslaught.Action.Name}, "},
+        {DescType.移动, $"GCD: {Actions.PrimalRend.Action.Name}，目标为面向夹角小于30°内最远目标。\n                     能力: {Actions.Onslaught.Action.Name}, "},
     };
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {

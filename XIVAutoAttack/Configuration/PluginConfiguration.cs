@@ -27,8 +27,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool SayingLocation { get; set; } = true;
     public bool TextLocation { get; set; } = true;
     public bool UseToast { get; set; } = true;
+    public bool RaiseAll { get; set; } = false;
     public bool CheckForCasting { get; set; } = true;
-    //public bool UsePowerfulHookset { get; set; } = true;
     public bool UseItem { get; set; } = true;
     public float ObjectMinRadius { get; set; } = 0f;
     public float HealthDifference { get; set; } = 0.25f;

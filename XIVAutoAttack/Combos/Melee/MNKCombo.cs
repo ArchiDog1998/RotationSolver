@@ -117,7 +117,7 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
     {
         {DescType.范围治疗, $"{Actions.Mantra.Action.Name}"},
         {DescType.单体防御, $"{Actions.RiddleofEarth.Action.Name}"},
-        {DescType.移动, $"{Actions.Thunderclap.Action.Name}"},
+        {DescType.移动, $"{Actions.Thunderclap.Action.Name}，目标为面向夹角小于30°内最远目标。"},
     };
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)

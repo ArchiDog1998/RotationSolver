@@ -141,7 +141,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         {DescType.单体治疗, $"GCD: {Actions.Diagnosis.Action.Name}\n                     能力: {Actions.Druochole.Action.Name}"},
         {DescType.范围防御, $"{Actions.Panhaima.Action.Name}, {Actions.Kerachole.Action.Name}, {Actions.Prognosis.Action.Name}"},
         {DescType.单体防御, $"GCD: {Actions.Diagnosis.Action.Name}\n                     能力: {Actions.Haima.Action.Name}, {Actions.Taurochole.Action.Name}"},
-        {DescType.移动, $"{Actions.Icarus.Action.Name}"},
+        {DescType.移动, $"{Actions.Icarus.Action.Name}，目标为面向夹角小于30°内最远目标。"},
     };
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {

@@ -231,7 +231,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
     internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
     {
         {DescType.单体防御, $"{Actions.ShadeShift.Action.Name}"},
-        {DescType.移动, $"{Actions.Shukuchi.Action.Name}"},
+        {DescType.移动, $"{Actions.Shukuchi.Action.Name}，目标为面向夹角小于30°内最远目标。"},
     };
     private static void ChoiceNinjutsus()
     {
