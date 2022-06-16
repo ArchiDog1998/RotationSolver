@@ -643,5 +643,12 @@ namespace XIVAutoAttack.Combos
 
             return obj.StatusList.Where(status => status.SourceID == Service.ClientState.LocalPlayer.ObjectId).ToArray();
         }
+
+        internal static float FindStatusTimeFromSelf(BattleChara obj, params ushort[] effectIDs)
+        {
+            var times = FindStatusFromSelf(obj, effectIDs);
+            if (times == null || times.Length == 0) return 0;
+            return times.Max();
+        }
     }
 }

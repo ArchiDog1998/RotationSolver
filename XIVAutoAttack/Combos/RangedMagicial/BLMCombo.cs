@@ -40,21 +40,8 @@ namespace XIVAutoAttack.Combos
 
                 if (Service.TargetManager.Target is BattleChara b)
                 {
-                    var thunder = b.StatusList.Where(t => t.SourceID == Service.ClientState.LocalPlayer.ObjectId && new uint[]
-                    {
-                        ObjectStatus.Thunder,
-                        ObjectStatus.Thunder3,
-                    }.Contains(t.StatusId));
-
-                    if (thunder != null && thunder.Count() > 0 && thunder.Select(t => t.RemainingTime).Max() > 20) return true;
-
-                    thunder = b.StatusList.Where(t => t.SourceID == Service.ClientState.LocalPlayer.ObjectId && new uint[]
-                    {
-                        ObjectStatus.Thunder2,
-                        ObjectStatus.Thunder4,
-                    }.Contains(t.StatusId));
-
-                    if (thunder != null && thunder.Count() > 0 && thunder.Select(t => t.RemainingTime).Max() > 10) return true;
+                    if (BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 20) return true;
+                    if (BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder2, ObjectStatus.Thunder4) > 10) return true;
                 }
                 return false;
             }
@@ -189,7 +176,7 @@ namespace XIVAutoAttack.Combos
         private protected override ActionConfiguration CreateConfiguration()
         {
             return base.CreateConfiguration().SetBool("AutoLeylines", true, "自动上黑魔纹").SetBool("StartFire", false, "火起手")
-                .SetFloat("TimeToAdd", 5, 3, 8, "火阶段还剩几秒时补时间", 0.01f);
+                .SetFloat("TimeToAdd", 5.2f, 3, 8, "火阶段还剩几秒时补时间", 0.01f);
         }
 
         private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
@@ -242,7 +229,10 @@ namespace XIVAutoAttack.Combos
             //双星灵转冰
             if (Service.ClientState.LocalPlayer.Level >= 90 && JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp == 0
                 && (JobGauge.PolyglotStacks > 0 || JobGauge.EnochianTimer < 3000)
-                && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5))
+                && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5 
+                ||　(Service.TargetManager.Target is BattleChara b  && 
+                BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10)
+                ))
             {
                 Actions.Transpose.AfterUse = () =>
                 {
@@ -344,7 +334,7 @@ namespace XIVAutoAttack.Combos
                     if(HasFire || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 1.5)
                     {
                         //补雷
-                        if (!UseThunderIn && HasThunder && AddThunder(lastComboActionID, out act)) return true;
+                        if ( !UseThunderIn && HasThunder && AddThunder(lastComboActionID, out act)) return true;
 
                         if (AddPolyglotAttach(out act)) return true;
                     }
@@ -420,15 +410,14 @@ namespace XIVAutoAttack.Combos
                     if (Service.ClientState.LocalPlayer.CurrentMp == 6000 && Actions.Triplecast.ShouldUseAction(out act)) return true;
                 }
 
-                //三连
-                if (Service.ClientState.LocalPlayer.CurrentMp >= 4000 && Actions.Triplecast.ShouldUseAction(out act)) return true;
-
-
                 //如果通晓满了，就放掉。
                 if (IsPolyglotStacksMaxed && JobGauge.EnochianTimer < 8000)
                 {
                     if (AddPolyglotAttach(out act)) return true;
                 }
+
+                //三连
+                if (Service.ClientState.LocalPlayer.CurrentMp >= 4000 && Actions.Triplecast.ShouldUseAction(out act)) return true;
 
                 //冰针不够，马上核爆
                 if (JobGauge.UmbralHearts == 1 || Service.ClientState.LocalPlayer.CurrentMp < 3800)
@@ -461,7 +450,9 @@ namespace XIVAutoAttack.Combos
                 //否则，转入冰状态。
                 if (JobGauge.PolyglotStacks == 2 || (JobGauge.PolyglotStacks == 1 && JobGauge.EnochianTimer < 3000))
                 {
-                    if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5)
+                    if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5
+                        || (Service.TargetManager.Target is BattleChara b &&
+                        BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10))
                        && Service.ClientState.LocalPlayer.Level >= 90 && AddPolyglotAttach(out act)) return true;
                 }
             }
@@ -469,7 +460,7 @@ namespace XIVAutoAttack.Combos
             //赶在前面弄个激情
             if (!TargetHelper.InBattle && Actions.Sharpcast.ShouldUseAction(out act)) return true;
 
-            if (Config.GetBoolByName("StartFire") && !JobGauge.InAstralFire)
+            if (Config.GetBoolByName("StartFire") && !JobGauge.InAstralFire && !JobGauge.InUmbralIce)
             {
                 if (Actions.Fire2.ShouldUseAction(out act)) return true;
                 if (Actions.Fire3.ShouldUseAction(out act)) return true;
@@ -521,9 +512,11 @@ namespace XIVAutoAttack.Combos
         {
             //试试看雷2
             if (Actions.Thunder2.ShouldUseAction(out act, lastAct)) return true;
-
+            
             //试试看雷1
-            if (Actions.Thunder.ShouldUseAction(out act, lastAct)) return true;
+            if (Service.TargetManager.Target is BattleChara b &&
+                            BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) < 9
+                            && Actions.Thunder.ShouldUseAction(out act, lastAct)) return true;
 
             return false;
         }
