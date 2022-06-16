@@ -15,6 +15,7 @@ using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.Disciplines;
+using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Combos.Tank;
 
@@ -176,15 +177,15 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                //{
+                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                {
 
-                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //    {
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //    }
-                //}
-                ImGui.Text(BLMCombo.InTranspose.ToString());
+                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    {
+                        ImGui.Text(item.GameData.Name + item.StatusId);
+                    }
+                }
+                if(NINCombo._ninactionAim != null) ImGui.Text("要使用"+NINCombo._ninactionAim.Action.Name.ToString());
 
                 //foreach (var item in Service.ObjectTable)
                 //{

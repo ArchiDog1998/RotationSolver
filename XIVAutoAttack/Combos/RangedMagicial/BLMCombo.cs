@@ -512,8 +512,10 @@ namespace XIVAutoAttack.Combos
         {
             //试试看雷2
             if (Actions.Thunder2.ShouldUseAction(out act, lastAct)) return true;
-            
+
             //试试看雷1
+            if (!InTranspose && Actions.Thunder.ShouldUseAction(out act, lastAct)) return true;
+
             if (Service.TargetManager.Target is BattleChara b &&
                             BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) < 9
                             && Actions.Thunder.ShouldUseAction(out act, lastAct)) return true;

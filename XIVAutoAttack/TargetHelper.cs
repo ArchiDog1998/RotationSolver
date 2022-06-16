@@ -402,6 +402,7 @@ namespace XIVAutoAttack
                 foreach (var status in p.StatusList)
                 {
                     if (dangeriousStatus.Contains(status.StatusId)) return true;
+                    if (status.StackCount > 2) return true;
                 }
                 return false;
             }).ToArray();

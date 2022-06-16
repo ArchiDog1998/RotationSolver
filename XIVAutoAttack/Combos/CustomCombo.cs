@@ -208,7 +208,10 @@ public abstract class CustomCombo
             HeadGraze = new BaseAction(7551),
 
             //≥¡Œ»”Ω≥™
-            Surecast = new BaseAction(7559, shouldEndSpecial: true);
+            Surecast = new BaseAction(7559, shouldEndSpecial: true),
+
+            //’Ê±±
+            TrueNorth = new BaseAction(7546);
 
     }
     #endregion

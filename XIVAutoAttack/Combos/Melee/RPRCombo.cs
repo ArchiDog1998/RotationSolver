@@ -80,11 +80,13 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
             //播魂种
             Soulsow = new BaseAction(24387)
             {
-                OtherCheck = b =>
-                {
-                    if (!HaveTargetAngle) return true;
-                    return false;
-                },
+                BuffsProvide = new ushort[] {ObjectStatus.Soulsow},
+            },
+
+            //收获月
+            HarvestMoon = new BaseAction(24388)
+            {
+                BuffsNeed = new ushort[] { ObjectStatus.Soulsow },
             },
 
             //地狱入境
@@ -100,6 +102,8 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
     };
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        if(!TargetHelper.InBattle && Actions.Soulsow.ShouldUseAction(out act)) return true;
+
         //上Debuff
         if (Actions.WhorlofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.ShadowofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -163,7 +167,9 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
 
         //够不着了
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
-        if (Actions.Harpe.ShouldUseAction(out act, lastComboActionID)) return true;
+
+        if (Actions.HarvestMoon.ShouldUseAction(out act, mustUse:true)) return true;
+        if (Actions.Harpe.ShouldUseAction(out act)) return true;
 
         return false;
     }
