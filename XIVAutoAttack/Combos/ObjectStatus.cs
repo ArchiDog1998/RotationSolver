@@ -317,7 +317,7 @@ namespace XIVAutoAttack.Combos
             BladeofValor = 2721,
 
             //赎罪剑
-            SwordOath = 190,
+            SwordOath = 1902,
 
             //安魂祈祷
             Requiescat = 1368,

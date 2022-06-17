@@ -173,5 +173,4 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
 
         return false;
     }
-
 }

@@ -85,7 +85,7 @@ namespace XIVAutoAttack.Combos
                 //火3
                 Fire3 = new BLMAction(152u, true)
                 {
-                    AfterUse = ()=> InTranspose = false,
+                    AfterUse = () => InTranspose = false,
                 },
 
                 //火4
@@ -93,13 +93,22 @@ namespace XIVAutoAttack.Combos
 
 
                 //冰1
-                Blizzard = new BLMAction(142u, false),
+                Blizzard = new BLMAction(142u, false)
+                {
+                    AfterUse = () => UseThunderIn = false,
+                },
 
                 //冰2
-                Blizzard2 = new BLMAction(25793u, false),
+                Blizzard2 = new BLMAction(25793u, false)
+                {
+                    AfterUse = () => UseThunderIn = false,
+                },
 
                 //冰3
-                Blizzard3 = new BLMAction(154u, false),
+                Blizzard3 = new BLMAction(154u, false)
+                {
+                    AfterUse = () => UseThunderIn = false,
+                },
 
                 //冰4
                 Blizzard4 = new BLMAction(3576u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
@@ -226,13 +235,12 @@ namespace XIVAutoAttack.Combos
             //刚刚魔泉，别给我转冰了。
             if (IconReplacer.LastAction == Actions.Manafont.ID) return false;
 
-            //双星灵转冰
+            //星灵转冰
             if (Service.ClientState.LocalPlayer.Level >= 90 && JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp == 0
                 && (JobGauge.PolyglotStacks > 0 || JobGauge.EnochianTimer < 3000)
                 && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5 
                 ||　(Service.TargetManager.Target is BattleChara b  && 
-                BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10)
-                ))
+                BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10)))
             {
                 Actions.Transpose.AfterUse = () =>
                 {
@@ -245,9 +253,10 @@ namespace XIVAutoAttack.Combos
             {
                 Actions.Transpose.AfterUse = () => InTranspose = false;
             }
-            //双星灵转火
+            //星灵转火
             if (JobGauge.InUmbralIce && InTranspose && (HasFire || HaveSwift) && 
-                (nextGCD.ID == Actions.Fire3.ID || nextGCD.ID == Actions.Fire2.ID || Service.ClientState.LocalPlayer.CurrentMp >= 8000) )
+                (nextGCD.ID == Actions.Fire3.ID || nextGCD.ID == Actions.Fire2.ID || Service.ClientState.LocalPlayer.CurrentMp >= 8000
+                || (HasFire && Service.ClientState.LocalPlayer.CurrentMp >= 5600)) )
             {
                 if (Actions.Transpose.ShouldUseAction(out act)) return true;
             }
@@ -324,8 +333,6 @@ namespace XIVAutoAttack.Combos
             //冰状态
             if (JobGauge.InUmbralIce)
             {
-
-
                 //双星灵
                 if (InTranspose)
                 {
@@ -334,7 +341,7 @@ namespace XIVAutoAttack.Combos
                     if(HasFire || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 1.5)
                     {
                         //补雷
-                        if ( !UseThunderIn && HasThunder && AddThunder(lastComboActionID, out act)) return true;
+                        if (!UseThunderIn && HasThunder && AddThunder(lastComboActionID, out act)) return true;
 
                         if (AddPolyglotAttach(out act)) return true;
                     }
@@ -363,7 +370,7 @@ namespace XIVAutoAttack.Combos
                         if (AddPolyglotAttach(out act)) return true;
                     }
                     //上雷
-                    if (AddThunder(lastComboActionID, out act)) return true;
+                    if (!UseThunderIn && AddThunder(lastComboActionID, out act)) return true;
 
                     //加冰心
                     if (AddUmbralHearts(out act)) return true;

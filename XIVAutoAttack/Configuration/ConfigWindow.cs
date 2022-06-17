@@ -15,6 +15,7 @@ using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.Disciplines;
+using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Combos.Tank;
@@ -185,7 +186,8 @@ internal class ConfigWindow : Window
                         ImGui.Text(item.GameData.Name + item.StatusId);
                     }
                 }
-                if(NINCombo._ninactionAim != null) ImGui.Text("ÒªÊ¹ÓÃ"+NINCombo._ninactionAim.Action.Name.ToString());
+                 ImGui.Text(SGECombo.Actions.Phlegma.RecastTime.ToString());
+                 ImGui.Text(SGECombo.Actions.Phlegma.RecastTimeRemain.ToString());
 
                 //foreach (var item in Service.ObjectTable)
                 //{

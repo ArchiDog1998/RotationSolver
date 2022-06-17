@@ -21,6 +21,10 @@ internal class SGECombo : CustomComboJob<SGEGauge>
 
             //·¢Ñ×
             Phlegma = new BaseAction(24289),
+            //·¢Ñ×2
+            Phlegma2 = new BaseAction(24307),
+            //·¢Ñ×3
+            Phlegma3 = new BaseAction(24313),
 
             //Õï¶Ï
             Diagnosis = new BaseAction(24284, true),
@@ -281,9 +285,11 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             //¼ý¶¾
             if (Actions.Toxikon.ShouldUseAction(out act, mustUse: true)) return true;
         }
-
+        var level = Service.ClientState.LocalPlayer.Level;
         //·¢Ñ×
-        if (Actions.Phlegma.ShouldUseAction(out act)) return true;
+        if (Actions.Phlegma3.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (level < Actions.Phlegma3.Level && Actions.Phlegma2.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (level < Actions.Phlegma2.Level && Actions.Phlegma.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         //Ê§ºâ
         if (Actions.Dyskrasia.ShouldUseAction(out act)) return true;

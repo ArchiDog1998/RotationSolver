@@ -410,6 +410,14 @@ internal class NINCombo : CustomComboJob<NINGauge>
         //没开始，释放第一个
         if (id == 2260)
         {
+            //重置
+            if(!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu) 
+                && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TenChiJin)
+                && !Actions.Ten.ShouldUseAction(out _, mustUse: true))
+            {
+                //_ninactionAim = null;
+                return false;
+            }
             act = _ninactionAim.Ninjutsus[0];
             return true;
         }
@@ -468,7 +476,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
         //用隐匿恢复忍术数量
         if (!TargetHelper.InBattle && _ninactionAim == null && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
 
-        if (Service.IconReplacer.OriginalHook(2260) == 2260)
+        if (Service.IconReplacer.OriginalHook(2260) != _ninactionAim.ID)
         {
             //大招
             if (Actions.FleetingRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -508,7 +516,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         act = null;
-        if (!TargetHelper.InBattle) return false;
+        if (!TargetHelper.InBattle || Service.IconReplacer.OriginalHook(2260) != 2260) return false;
 
         if (Actions.TrickAttack.RecastTimeElapsed <= 20 && Actions.TrickAttack.IsCoolDown)
         {

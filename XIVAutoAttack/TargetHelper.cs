@@ -427,11 +427,23 @@ namespace XIVAutoAttack
             }
             PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Length);
 
+            if(PartyMembers.Length >= Service.Configuration.PartyCount)
+            {
+                CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
+                CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
+            }
+            else
+            {
+                CanHealAreaAbility = CanHealAreaSpell = false;
+            }
+            var abilityCount = PartyMembersHP.Count(p => p < Service.Configuration.HealthSingleAbility);
+            CanHealSingleAbility = abilityCount > 0;
+            if (abilityCount >= Service.Configuration.PartyCount) CanHealAreaAbility = true;
 
-            CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
-            CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
-            CanHealSingleAbility = PartyMembersHP.Min() < Service.Configuration.HealthSingleAbility;
-            CanHealSingleSpell = PartyMembersHP.Min() < Service.Configuration.HealthSingleSpell;
+            var gcdCount = PartyMembersHP.Count(p => p < Service.Configuration.HealthSingleSpell);
+            CanHealSingleSpell = gcdCount > 0;
+            if (gcdCount >= Service.Configuration.PartyCount) CanHealAreaSpell = true;
+
             HPNotFull = PartyMembersHP.Min() < 1;
             #endregion
 

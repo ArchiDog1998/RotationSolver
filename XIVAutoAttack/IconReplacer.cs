@@ -449,16 +449,4 @@ internal sealed class IconReplacer : IDisposable
     {
         return 1uL;
     }
-
-    internal static void SetEnable(string comboName, bool enable)
-    {
-        foreach (var combo in CustomCombos)
-        {
-            if (combo.JobName == comboName)
-            {
-                combo.IsEnabled = enable;
-                return;
-            }
-        }
-    }
 }
