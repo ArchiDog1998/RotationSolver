@@ -143,23 +143,28 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //使用晶囊
-        if (JobGauge.Ammo > (Service.ClientState.LocalPlayer.Level > Actions.DoubleDown.Level ? 1 : 0))
-        {
-            if (Actions.DoubleDown.ShouldUseAction(out act)) return true;
-            if (Actions.GnashingFang.ShouldUseAction(out act)) return true;
-            if (Actions.FatedCircle.ShouldUseAction(out act)) return true;
-            if (Actions.BurstStrike.ShouldUseAction(out act)) return true;
-        }
+        bool useAmmo = JobGauge.Ammo > (Service.ClientState.LocalPlayer.Level > Actions.DoubleDown.Level ? 1 : 0);
+
 
         uint remap = Service.IconReplacer.OriginalHook(Actions.GnashingFang.ID);
         if (remap == Actions.WickedTalon.ID && Actions.WickedTalon.ShouldUseAction(out act)) return true;
         if (remap == Actions.SavageClaw.ID && Actions.SavageClaw.ShouldUseAction(out act)) return true;
 
         //AOE
-        if ( Actions.DemonSlaughter.ShouldUseAction(out act)) return true;
-        if ( Actions.DemonSlice.ShouldUseAction(out act)) return true;
+        if (useAmmo)
+        {
+            if (Actions.DoubleDown.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.FatedCircle.ShouldUseAction(out act)) return true;
+        }
+        if ( Actions.DemonSlaughter.ShouldUseAction(out act, lastComboActionID)) return true;
+        if ( Actions.DemonSlice.ShouldUseAction(out act, lastComboActionID)) return true;
 
-
+        //单体
+        if (useAmmo)
+        {
+            if (Actions.GnashingFang.ShouldUseAction(out act)) return true;
+            if (Actions.BurstStrike.ShouldUseAction(out act)) return true;
+        }
         if (Actions.SonicBreak.ShouldUseAction(out act)) return true;
 
         //单体三连

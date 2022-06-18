@@ -471,7 +471,7 @@ public abstract class CustomCombo
 
             var defenses = new uint[] { ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill, ObjectStatus.Defiance };
             //Alive Tanks with shield.
-            var defensesTanks = TargetHelper.PartyTanks.Where(t => t.CurrentHp != 0 && t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
+            var defensesTanks = TargetHelper.AllianceTanks.Where(t => t.CurrentHp != 0 && t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
             if (defensesTanks == null || defensesTanks.Count() == 0)
             {
                 if (!HaveShield && Shield.ShouldUseAction(out act)) return true;
@@ -575,7 +575,7 @@ public abstract class CustomCombo
     /// <returns></returns>
     private protected virtual bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD is BaseAction action && action.Cast100 > 70 && GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
+        if (nextGCD is BaseAction action && action.Cast100 >= 50 && GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
         act = null; return false;
     }
     /// <summary>

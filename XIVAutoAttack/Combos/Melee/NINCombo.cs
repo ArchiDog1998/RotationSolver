@@ -476,7 +476,9 @@ internal class NINCombo : CustomComboJob<NINGauge>
         //用隐匿恢复忍术数量
         if (!TargetHelper.InBattle && _ninactionAim == null && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
 
-        if (Service.IconReplacer.OriginalHook(2260) != _ninactionAim.ID)
+        var replace = Service.IconReplacer.OriginalHook(2260);
+        //无忍术或者忍术中途停了
+        if (_ninactionAim == null || (replace != 2260 && replace != _ninactionAim.ID))
         {
             //大招
             if (Actions.FleetingRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -496,10 +498,6 @@ internal class NINCombo : CustomComboJob<NINGauge>
             //飞刀
             if (IconReplacer.Move && MoveAbility(1, out act)) return true;
             if (Actions.ThrowingDagger.ShouldUseAction(out act)) return true;
-        }
-        else
-        {
-            ClearNinjutsus();
         }
 
         act = null;

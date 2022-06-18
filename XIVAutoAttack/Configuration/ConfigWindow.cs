@@ -11,6 +11,7 @@ using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using XIVAutoAttack.Combos;
@@ -186,7 +187,9 @@ internal class ConfigWindow : Window
                         ImGui.Text(item.GameData.Name + item.StatusId);
                     }
                 }
-                 ImGui.Text(SGECombo.Actions.Phlegma.RecastTime.ToString());
+
+                
+                 ImGui.Text(SGECombo.Actions.Egeiro.Cast100.ToString());
                  ImGui.Text(SGECombo.Actions.Phlegma.RecastTimeRemain.ToString());
 
                 //foreach (var item in Service.ObjectTable)

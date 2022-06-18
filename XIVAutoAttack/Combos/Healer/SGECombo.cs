@@ -9,7 +9,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
     internal override uint JobID => 40;
 
     private protected override BaseAction Raise => Actions.Egeiro;
-
+    protected override bool CanHealSingleSpell => false;
     internal struct Actions
     {
         public static readonly BaseAction
@@ -155,6 +155,8 @@ internal class SGECombo : CustomComboJob<SGEGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
+        if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
+
         if (nextGCD.ID == Actions.Diagnosis.ID ||
             nextGCD.ID == Actions.Prognosis.ID)
         {
@@ -234,14 +236,21 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             //均衡
             if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
 
-            act = Actions.Prognosis;
-            return true;
+            //act = Actions.Prognosis;
+            //return true;
         }
 
         act = null;
         return false;
     }
 
+
+    private protected override bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
+    {
+        //预后
+        if (Actions.Prognosis.ShouldUseAction(out act) && JobGauge.Eukrasia) return true;
+        return false;
+    }
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
 
@@ -299,11 +308,16 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             new ushort[] { ObjectStatus.EukrasianDosis, ObjectStatus.EukrasianDosis2, ObjectStatus.EukrasianDosis3 });
         if (times.Length == 0 || times.Max() < 3)
         {
-            //发炎
+            //补上Dot
             if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
         }
         //注药
         if (Actions.Dosis.ShouldUseAction(out act)) return true;
+
+        //发炎
+        if (Actions.Phlegma3.ShouldUseAction(out act, mustUse: true)) return true;
+        if (level < Actions.Phlegma3.Level && Actions.Phlegma2.ShouldUseAction(out act, mustUse: true)) return true;
+        if (level < Actions.Phlegma2.Level && Actions.Phlegma.ShouldUseAction(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -333,7 +347,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         //自生2
         if (Actions.Physis2.ShouldUseAction(out act)) return true;
         //自生
-        if (Actions.Physis.ShouldUseAction(out act)) return true;
+        if (Service.ClientState.LocalPlayer.Level < Actions.Physis2.Level && Actions.Physis.ShouldUseAction(out act)) return true;
         return false;
     }
 }
