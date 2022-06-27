@@ -165,13 +165,6 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         {DescType.范围防御, $"{Actions.CollectiveUnconscious.Action.Name}"},
         {DescType.单体防御, $"{Actions.Exaltation.Action.Name}，给被挨打的T"},
     };
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
-    {
-        //来个命运之轮
-        if (Actions.CollectiveUnconscious.ShouldUseAction(out act)) return true;
-
-        return false;
-    }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
@@ -182,6 +175,9 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        //来个命运之轮
+        if (IconReplacer.DefenseArea && Actions.CollectiveUnconscious.ShouldUseAction(out act)) return true;
+
         //大宇宙
         if (Actions.Macrocosmos.ShouldUseAction(out act, mustUse: true)) return true;
         //群体输出
@@ -210,6 +206,9 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
+        //来个命运之轮
+        if (IconReplacer.DefenseArea && Actions.CollectiveUnconscious.ShouldUseAction(out act)) return true;
+
         if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //如果要群奶了，先上个天宫图！

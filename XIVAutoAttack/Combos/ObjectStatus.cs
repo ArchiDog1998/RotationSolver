@@ -364,7 +364,7 @@ namespace XIVAutoAttack.Combos
             RaijuReady = 2690,
 
             //士气高扬之策
-            Succor = 166,
+            Succor = 297,
 
             //忍术
             Ninjutsu = 496,

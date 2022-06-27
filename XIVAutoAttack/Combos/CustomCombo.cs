@@ -407,7 +407,7 @@ public abstract class CustomCombo
             return false;
         }
         //有某些非常危险的状态。
-        if (IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0 || TargetHelper.DyingPeople.Length > 0)
+        if ((IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0) || TargetHelper.DyingPeople.Length > 0)
         {
             if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗
                 && GeneralActions.Esuna.ShouldUseAction(out act, mustUse: true)) return true;

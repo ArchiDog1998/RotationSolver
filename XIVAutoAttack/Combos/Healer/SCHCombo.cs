@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using XIVAutoAttack;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.RangedMagicial;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Healer;
 
@@ -10,6 +11,8 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 {
     internal override uint JobID => 28;
     private protected override BaseAction Raise => SMNCombo.Actions.Resurrection;
+    protected override bool CanHealSingleSpell => Config.GetBoolByName("GCDHeal");
+    protected override bool CanHealAreaSpell => Config.GetBoolByName("GCDHeal");
     internal struct Actions
     {
         public static readonly BaseAction
@@ -58,13 +61,24 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             },
 
             //仙光的低语
-            WhisperingDawn = new BaseAction(16537),
+            WhisperingDawn = new BaseAction(16537)
+            {
+                //OtherCheck = b => JobGauge.SeraphTimer == 0,
+            },
+
 
             //异想的幻光
-            FeyIllumination = new BaseAction(16538),
+            FeyIllumination = new BaseAction(16538)
+            {
+                //OtherCheck = b => JobGauge.SeraphTimer == 0,
+            },
+
 
             //异想的祥光
-            FeyBlessing = new BaseAction(16543),
+            FeyBlessing = new BaseAction(16543)
+            {
+                OtherCheck = b => JobGauge.SeraphTimer == 0,
+            },
 
             //以太超流
             Aetherflow = new BaseAction(166)
@@ -90,7 +104,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             //以太契约
             Aetherpact = new BaseAction(7437, true)
             {
-                OtherCheck = b => JobGauge.FairyGauge >= 10,
+                OtherCheck = b => JobGauge.FairyGauge >= 10 && JobGauge.SeraphTimer == 0,
             },
 
             //秘策
@@ -117,13 +131,21 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             SummonSeraph = new BaseAction(16545),
 
             //慰藉
-            Consolation = new BaseAction(16546),
+            Consolation = new BaseAction(16546)
+            {
+                OtherCheck = b => JobGauge.SeraphTimer > 0,
+            },
 
             //生命回生法
             Protraction = new BaseAction(25867),
 
             //疾风怒涛之计
             Expedient = new BaseAction(25868);
+    }
+
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
     }
     internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
     {
@@ -149,6 +171,11 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
+        if (JobGauge.Aetherflow > 0 && !IsMoving && (IconReplacer.HealArea || CanHealAreaAbility))
+        {
+            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+        }
+
         if (nextGCD.ID == Actions.Adloquium.ID ||
             nextGCD.ID == Actions.Succor.ID ||
             nextGCD.ID == Actions.Indomitability.ID ||
@@ -156,11 +183,31 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         {
             if (Actions.Recitation.ShouldUseAction(out act)) return true;
         }
+
+        foreach (var item in TargetHelper.PartyMembers)
+        {
+            if ((float)item.CurrentHp / item.MaxHp < 0.95) continue;
+            foreach (var status in item.StatusList)
+            {
+                if(status.StatusId == 1223 && status.SourceObject != null 
+                    && status.SourceObject.OwnerId == Service.ClientState.LocalPlayer.ObjectId)
+                {
+                    act = Actions.Aetherpact;
+                    return true;
+                }
+            }
+        }
+
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        if (JobGauge.Aetherflow > 0 && !IsMoving && (IconReplacer.HealArea || CanHealAreaAbility))
+        {
+            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+        }
+
         //召唤小仙女
         if (Actions.SummonEos.ShouldUseAction(out act)) return true;
 
@@ -226,10 +273,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
     {
         if (abilityRemain == 1)
         {
-            if (JobGauge.Aetherflow > 0 && !IsMoving)
-            {
-                if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
-            }
+            if (Actions.Consolation.ShouldUseAction(out act)) return true;
             if (Actions.SummonSeraph.ShouldUseAction(out act)) return true;
             if (Actions.WhisperingDawn.ShouldUseAction(out act)) return true;
             if (Actions.FeyBlessing.ShouldUseAction(out act)) return true;

@@ -75,6 +75,7 @@ namespace XIVAutoAttack
 
         internal static float WeaponRemain { get; private set; } = 0;
         internal static float WeaponTotal { get; private set; } = 0;
+        internal static float Weaponelapsed { get; private set; } = 0;
 
         internal static byte AbilityRemainCount { get; private set; } = 0;
 
@@ -132,7 +133,7 @@ namespace XIVAutoAttack
                 {
                     string key = enumNames[i];
                     bool newValue = Service.Conditions[(Dalamud.Game.ClientState.Conditions.ConditionFlag)indexs[i]];
-                    if (_valus.ContainsKey(i) && _valus[i] != newValue && indexs[i] != 48)
+                    if (_valus.ContainsKey(i) && _valus[i] != newValue && indexs[i] != 48 && indexs[i] != 27)
                     {
                         Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
                     }
@@ -193,18 +194,16 @@ namespace XIVAutoAttack
             var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
 
             WeaponTotal = instance->GetRecastTime(spell, 11);
-            var weaponelapsed = instance->GetRecastTimeElapsed(spell, 11);
+            Weaponelapsed = instance->GetRecastTimeElapsed(spell, 11);
 
-            WeaponRemain = WeaponTotal - weaponelapsed;
-            if (Service.ClientState.LocalPlayer.IsCasting)
-            {
-                WeaponRemain = Math.Max(WeaponRemain, Service.ClientState.LocalPlayer.TotalCastTime - Service.ClientState.LocalPlayer.CurrentCastTime);
-            }
+            WeaponRemain = Math.Max(WeaponTotal - Weaponelapsed, 
+                Service.ClientState.LocalPlayer.TotalCastTime - Service.ClientState.LocalPlayer.CurrentCastTime);
+
             var min = Math.Max(WeaponTotal - Service.Configuration.WeaponInterval, 0);
             AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
 
             UpdateTargets();
-            DoAction(weaponelapsed);
+            DoAction(Weaponelapsed);
 
             #region 宏
             //如果没有有正在运行的宏，弄一个出来
@@ -325,7 +324,19 @@ namespace XIVAutoAttack
 
             #region Hostile
 
-            AllTargets = BaseAction.GetObjectInRadius(Service.ObjectTable.ToArray(), 30).Where(obj => obj is BattleChara c && c.CurrentHp != 0 && CanAttack(obj)).Select(obj => (BattleChara)obj).ToArray();
+            AllTargets = BaseAction.GetObjectInRadius(Service.ObjectTable.ToArray(), 30).Where(obj =>
+            {
+                if(obj is BattleChara c && c.CurrentHp != 0)
+                {
+                    foreach (var status in c.StatusList)
+                    {
+                        if (Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>()
+                        .GetRow(status.StatusId).Icon == 15024) return false;
+                    }
+                    if (CanAttack(obj)) return true;
+                }
+                return false;
+            }).Select(obj => (BattleChara)obj).ToArray();
             uint[] ids = GetEnemies() ?? new uint[0];
             //InBattle = ids.Length > 0;
             if (AllTargets != null && AllTargets.Length > 0)
@@ -404,7 +415,7 @@ namespace XIVAutoAttack
                 foreach (var status in p.StatusList)
                 {
                     if (dangeriousStatus.Contains(status.StatusId)) return true;
-                    if (status.StackCount > 2) return true;
+                    //if (status.StackCount > 2) return true;
                 }
                 return false;
             }).ToArray();

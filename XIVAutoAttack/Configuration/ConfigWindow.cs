@@ -188,9 +188,13 @@ internal class ConfigWindow : Window
                     }
                 }
 
-                
-                 ImGui.Text(SGECombo.Actions.Egeiro.Cast100.ToString());
-                 ImGui.Text(SGECombo.Actions.Phlegma.RecastTimeRemain.ToString());
+                ImGui.Text(Service.ClientState.LocalPlayer.CurrentCastTime.ToString());
+
+                //if (Service.TargetManager.Target is BattleChara b)
+                //foreach (var item in b.StatusList)
+                //{
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //}
 
                 //foreach (var item in Service.ObjectTable)
                 //{

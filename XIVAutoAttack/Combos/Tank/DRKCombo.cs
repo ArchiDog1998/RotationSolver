@@ -157,6 +157,8 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
     }
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
+        if (Actions.LivingDead.ShouldUseAction(out act)) return true;
+
         //续Buff
         if (JobGauge.DarksideTimeRemaining < 30000 && Service.ClientState.LocalPlayer.CurrentMp >= 6000)
         {
@@ -186,12 +188,6 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
             }
         }
 
-        return false;
-    }
-
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
-    {
-        if (Actions.LivingDead.ShouldUseAction(out act)) return true;
         return false;
     }
 

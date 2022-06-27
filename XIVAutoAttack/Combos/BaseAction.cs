@@ -551,8 +551,15 @@ namespace XIVAutoAttack.Combos
             //如果是能力技能，而且没法释放。
             if (!IsGeneralGCD && IsCoolDown)
             {
-                //冷却时间没超过一成
-                if (RecastTimeElapsed < RecastTime / MaxCharges) return false;
+                if (IsRealGCD)
+                {
+                    if (RecastTimeRemain >= TargetHelper.WeaponRemain) return false;
+                }
+                else
+                {
+                    //冷却时间没超过一成
+                    if (RecastTimeElapsed < RecastTime / MaxCharges) return false;
+                }
             }
 
             //看看有没有目标，如果没有，就说明不符合条件。

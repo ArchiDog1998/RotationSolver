@@ -244,6 +244,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
     {
         act = null;
         if (Service.IconReplacer.OriginalHook(2260) != 2260) return false;
+        if (TargetHelper.Weaponelapsed < 0.2) return false;
         //有生杀予夺
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu))
         {

@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using System.Linq;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Healer;
 
@@ -9,7 +10,8 @@ internal class SGECombo : CustomComboJob<SGEGauge>
     internal override uint JobID => 40;
 
     private protected override BaseAction Raise => Actions.Egeiro;
-    protected override bool CanHealSingleSpell => false;
+    protected override bool CanHealSingleSpell => Config.GetBoolByName("GCDHeal");
+    protected override bool CanHealAreaSpell => Config.GetBoolByName("GCDHeal");
     internal struct Actions
     {
         public static readonly BaseAction
@@ -32,11 +34,8 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             //心关
             Kardia = new BaseAction(24285, true)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.Kardia },
                 ChoiceFriend = Targets =>
                 {
-                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
-
                     var targets = TargetHelper.GetJobCategory(Targets, Role.防护);
                     targets = targets.Length == 0 ? Targets : targets;
 
@@ -50,9 +49,20 @@ internal class SGECombo : CustomComboJob<SGEGauge>
                         }
                     }
 
-                    return ASTCombo.RandomObject(targets);
+                    return targets[0];
                 },
-                OtherCheck = b => BaseAction.FindStatusFromSelf(b, ObjectStatus.Kardion).Length == 0,
+                OtherCheck = b =>
+                {
+                    foreach (var status in b.StatusList)
+                    {
+                        if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId
+                            && status.StatusId == ObjectStatus.Kardion)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                },
             },
 
             //预后
@@ -139,6 +149,12 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             //魂灵风息
             Pneuma = new BaseAction(24318);
     }
+
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
+    }
+
     internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
     {
         {DescType.范围治疗, $"GCD: {Actions.Prognosis.Action.Name}\n                     能力: {Actions.Holos.Action.Name}, {Actions.Ixochole.Action.Name}, {Actions.Physis2.Action.Name}, {Actions.Physis.Action.Name}"},
@@ -275,6 +291,8 @@ internal class SGECombo : CustomComboJob<SGEGauge>
     {
         //心关
         if (Actions.Kardia.ShouldUseAction(out act)) return true;
+
+
 
         //根素
         if (JobGauge.Addersgall < 2 && Actions.Rhizomata.ShouldUseAction(out act)) return true;
