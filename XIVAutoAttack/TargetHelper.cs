@@ -105,12 +105,13 @@ namespace XIVAutoAttack
         internal static bool CanHealSingleSpell { get; private set; } = false;
         internal static bool HavePet { get; private set; } = false;
         internal static bool HPNotFull { get; private set; } = false;
+        internal static bool ShouldUseArea { get; private set; } = false;
         internal static bool InBattle { get; private set; } = false;
 
 
         internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
         internal static MacroItem DoingMacro;
-        private static bool _lastCasting = false;
+        private static float _lastCastingTotal = 0;
 #if DEBUG
         private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
 #endif
@@ -300,21 +301,25 @@ namespace XIVAutoAttack
                 else return;
             }
 
-
-            //要超出GCD了，那就不放技能了。
-            if (WeaponRemain < Service.Configuration.WeaponInterval) return;
-            //IsCasting.
-            if (Service.ClientState.LocalPlayer.IsCasting)
+            if (weaponelapsed < 0.3)
             {
-                _lastCasting = true;
-                return;
+                //能力技就不用提前了。
+                _lastCastingTotal = Service.ClientState.LocalPlayer.TotalCastTime;
+
+                //补上读条税
+                if (_lastCastingTotal > 0) _lastCastingTotal += 0.1f;
             }
 
-            if ((weaponelapsed % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster || _lastCasting)
-                && WeaponTotal - WeaponRemain > Service.Configuration.WeaponInterval)
+            //要超出GCD了，那就不放技能了。
+            if (WeaponRemain < Service.Configuration.WeaponInterval
+                || weaponelapsed < Service.Configuration.WeaponInterval) return;
+
+            //还在咏唱，就不放技能了。
+            if (weaponelapsed <= _lastCastingTotal) return;
+
+            if ((weaponelapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
             {
                 Service.IconReplacer.DoAnAction(false);
-                _lastCasting = false;
                 return;
             }
 
@@ -420,6 +425,7 @@ namespace XIVAutoAttack
                 return false;
             }).ToArray();
             #endregion
+
             #region Health
             var members = PartyMembers;
 
@@ -458,6 +464,8 @@ namespace XIVAutoAttack
             if (gcdCount >= Service.Configuration.PartyCount) CanHealAreaSpell = true;
 
             HPNotFull = PartyMembersHP.Min() < 1;
+
+            ShouldUseArea = PartyMembersHP.Count(t => t < 1) > Service.Configuration.PartyCount;
             #endregion
 
         }

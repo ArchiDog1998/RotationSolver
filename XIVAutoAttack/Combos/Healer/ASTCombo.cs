@@ -173,11 +173,16 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //来个命运之轮
-        if (IconReplacer.DefenseArea && Actions.CollectiveUnconscious.ShouldUseAction(out act)) return true;
+        if (Actions.CollectiveUnconscious.ShouldUseAction(out act)) return true;
 
+        return base.DefenceAreaAbility(abilityRemain, out act);
+    }
+
+    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    {
         //大宇宙
         if (Actions.Macrocosmos.ShouldUseAction(out act, mustUse: true)) return true;
         //群体输出
@@ -206,8 +211,6 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        //来个命运之轮
-        if (IconReplacer.DefenseArea && Actions.CollectiveUnconscious.ShouldUseAction(out act)) return true;
 
         if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 

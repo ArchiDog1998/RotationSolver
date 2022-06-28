@@ -10,6 +10,8 @@ namespace XIVAutoAttack.Combos.Healer;
 internal class SCHCombo : CustomComboJob<SCHGauge>
 {
     internal override uint JobID => 28;
+
+    private static bool _useDeploymentTactics = false;
     private protected override BaseAction Raise => SMNCombo.Actions.Resurrection;
     protected override bool CanHealSingleSpell => Config.GetBoolByName("GCDHeal");
     protected override bool CanHealAreaSpell => Config.GetBoolByName("GCDHeal");
@@ -57,7 +59,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             //士气高扬之策
             Succor = new BaseAction(186, true)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.Succor },
+                BuffsProvide = new ushort[] { ObjectStatus.Galvanize },
             },
 
             //仙光的低语
@@ -114,7 +116,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             ChainStratagem = new BaseAction(7436),
 
             //展开战术
-            DeploymentTactics = new BaseAction(3585)
+            DeploymentTactics = new BaseAction(3585, true)
             {
                 ChoiceFriend = friends =>
                 {
@@ -125,6 +127,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
                     }
                     return null;
                 },
+                AfterUse = () => _useDeploymentTactics = false,
             },
 
             //炽天召唤
@@ -171,11 +174,6 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (JobGauge.Aetherflow > 0 && !IsMoving && (IconReplacer.HealArea || CanHealAreaAbility))
-        {
-            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
-        }
-
         if (nextGCD.ID == Actions.Adloquium.ID ||
             nextGCD.ID == Actions.Succor.ID ||
             nextGCD.ID == Actions.Indomitability.ID ||
@@ -186,7 +184,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
         foreach (var item in TargetHelper.PartyMembers)
         {
-            if ((float)item.CurrentHp / item.MaxHp < 0.95) continue;
+            if ((float)item.CurrentHp / item.MaxHp < 0.9) continue;
             foreach (var status in item.StatusList)
             {
                 if(status.StatusId == 1223 && status.SourceObject != null 
@@ -203,13 +201,10 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (JobGauge.Aetherflow > 0 && !IsMoving && (IconReplacer.HealArea || CanHealAreaAbility))
-        {
-            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
-        }
-
         //召唤小仙女
         if (Actions.SummonEos.ShouldUseAction(out act)) return true;
+
+        if (_useDeploymentTactics && Actions.DeploymentTactics.ShouldUseAction(out act)) return true;
 
         //AOE
         if (Actions.ArtofWar.ShouldUseAction(out act)) return true;
@@ -236,18 +231,6 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
         return false;
     }
 
-    private protected override bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
-    {
-        if (Actions.Succor.ShouldUseAction(out act)) return true;
-        if (JobGauge.Aetherflow > 0)
-        {
-            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
-        }
-
-
-        return false;
-    }
-
     private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
         if (Actions.Succor.ShouldUseAction(out act)) return true;
@@ -255,13 +238,25 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
     {
+        if (JobGauge.Aetherflow > 0 && !IsMoving)
+        {
+            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+        }
         if (!Actions.DeploymentTactics.IsCoolDown)
         {
-            if (Actions.DeploymentTactics.ShouldUseAction(out act)) return true;
+            _useDeploymentTactics = true;
             if (Actions.Adloquium.ShouldUseAction(out act)) return true;
         }
+
+        act = null;
+        return false;
+    }
+
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    {
+
         if (Actions.SummonSeraph.ShouldUseAction(out act)) return true;
         if (Actions.FeyIllumination.ShouldUseAction(out act)) return true;
 
@@ -271,6 +266,11 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
+        if (JobGauge.Aetherflow > 0 && !IsMoving)
+        {
+            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+        }
+
         if (abilityRemain == 1)
         {
             if (Actions.Consolation.ShouldUseAction(out act)) return true;
@@ -290,7 +290,7 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Aetherpact.ShouldUseAction(out act) && JobGauge.FairyGauge >= 90) return true;
+        if (Actions.Aetherpact.ShouldUseAction(out act) && JobGauge.FairyGauge >= 70) return true;
 
         if (Actions.Protraction.ShouldUseAction(out act)) return true;
 

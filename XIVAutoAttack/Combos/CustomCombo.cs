@@ -13,6 +13,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using ImGuiScene;
 using XIVAutoAttack;
+using XIVAutoAttack.Combos.RangedPhysicial;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos;
@@ -386,7 +387,7 @@ public abstract class CustomCombo
     {
         if (EmergercyGCD(lastComboActionID, out IAction act)) return act;
 
-        if (EsunaRaise(out act, abilityRemain)) return act;
+        if (EsunaRaise(out act, abilityRemain, false)) return act;
         if (IconReplacer.Move && MoveGCD(lastComboActionID, out act)) return act;
         if (TargetHelper.HPNotFull)
         {
@@ -397,9 +398,19 @@ public abstract class CustomCombo
         if (IconReplacer.DefenseSingle && DefenseSingleGCD(abilityRemain, out act)) return act;
 
         if (GeneralGCD(lastComboActionID, out var action)) return action;
+
+        //硬拉或者开始奶人
+        if ((HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) && EsunaRaise(out act, abilityRemain, true)) return act;
+        if (TargetHelper.HPNotFull)
+        {
+            if (TargetHelper.ShouldUseArea && HealAreaGCD(lastComboActionID, out act)) return act;
+            if (HealSingleGCD(lastComboActionID, out act)) return act;
+        }
+        if(EsunaRaise(out act, abilityRemain, true)) return act;
+
         return null;
     }
-    private bool EsunaRaise(out IAction act, byte actabilityRemain)
+    private bool EsunaRaise(out IAction act, byte actabilityRemain, bool mustUse)
     {
         if (Raise == null)
         {
@@ -411,6 +422,7 @@ public abstract class CustomCombo
         {
             if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗
                 && GeneralActions.Esuna.ShouldUseAction(out act, mustUse: true)) return true;
+
         }
 
         //有人死了，看看能不能救。
@@ -420,9 +432,14 @@ public abstract class CustomCombo
             {
                 if (HaveSwift && Raise.ShouldUseAction(out act)) return true;
             }
-            else  if (IconReplacer.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0)
+            else  if (IconReplacer.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0 || mustUse)
             {
-                if (Raise.ShouldUseAction(out act)) return true;
+                if (Raise.ShouldUseAction(out _))
+                {
+                    if (mustUse && GeneralActions.Swiftcast.ShouldUseAction(out act)) return true;
+                    act = Raise;
+                    return true;
+                }
             }
         }
         act = null;
@@ -435,6 +452,16 @@ public abstract class CustomCombo
             act = null;
             return false;
         }
+
+        //有某些非常危险的状态。
+        if (JobID == 23)
+        {
+            if ((IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0) || TargetHelper.DyingPeople.Length > 0)
+            {
+                if (BRDCombo.Actions.WardensPaean.ShouldUseAction(out act, mustUse: true)) return true;
+            }
+        }
+
 
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
         Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;

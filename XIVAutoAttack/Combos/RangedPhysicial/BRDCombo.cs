@@ -90,10 +90,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
             },
 
             //光阴神的礼赞凯歌
-            WardensPaean = new BaseAction(3561)
-            {
-                OtherCheck = b => TargetHelper.WeakenPeople.Length > 0,
-            },
+            WardensPaean = new BaseAction(3561),
 
             //战斗之声
             BattleVoice = new BaseAction(118, true),
@@ -250,9 +247,6 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
             //失血箭
             if (Actions.Bloodletter.ShouldUseAction(out act, emptyOrSkipCombo: empty)) return true;
         }
-
-        //光阴神的礼赞凯歌 减少Debuff
-        if (Actions.WardensPaean.ShouldUseAction(out act)) return true;
 
         return false;
     }

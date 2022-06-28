@@ -363,9 +363,6 @@ namespace XIVAutoAttack.Combos
             //月影雷兽预备
             RaijuReady = 2690,
 
-            //士气高扬之策
-            Succor = 297,
-
             //忍术
             Ninjutsu = 496,
 

@@ -66,7 +66,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             },
 
             //预后
-            Prognosis = new BaseAction(24286, true),
+            Prognosis = new BaseAction(24286, true, shouldEndSpecial: true),
 
             //自生
             Physis = new BaseAction(24288, true),
@@ -252,8 +252,6 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             //均衡
             if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
 
-            //act = Actions.Prognosis;
-            //return true;
         }
 
         act = null;

@@ -188,7 +188,8 @@ internal class ConfigWindow : Window
                     }
                 }
 
-                ImGui.Text(Service.ClientState.LocalPlayer.CurrentCastTime.ToString());
+                //ImGui.Text(TargetHelper.PartyMembers.Length.ToString());
+                ImGui.Text(TargetHelper.WeaponRemain.ToString());
 
                 //if (Service.TargetManager.Target is BattleChara b)
                 //foreach (var item in b.StatusList)

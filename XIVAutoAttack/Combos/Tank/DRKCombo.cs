@@ -68,7 +68,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
             SaltedEarth = new BaseAction(3639),
 
             //跳斩
-            Plunge = new BaseAction(3640),
+            Plunge = new BaseAction(3640, shouldEndSpecial:true),
 
             //吸血深渊
             AbyssalDrain = new BaseAction(3641),

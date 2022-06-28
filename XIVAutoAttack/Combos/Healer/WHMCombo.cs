@@ -148,9 +148,6 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        //庇护所
-        if (!IsMoving && (IconReplacer.HealArea || CanHealAreaAbility) && Actions.Asylum.ShouldUseAction(out act)) return true;
-
         //加个无中生有
         if (nextGCD is BaseAction action && action.MPNeed > 500 && Actions.ThinAir.ShouldUseAction(out act)) return true;
 
@@ -172,6 +169,8 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
+        //庇护所
+        if (!IsMoving && Actions.Asylum.ShouldUseAction(out act)) return true;
 
         //加个法令
         if (Actions.Assize.ShouldUseAction(out act)) return true;
@@ -206,9 +205,6 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        //庇护所
-        if (!IsMoving && (IconReplacer.HealArea || CanHealAreaAbility) && Actions.Asylum.ShouldUseAction(out act)) return true;
-
         //苦难之心
         if (Actions.AfflatusMisery.ShouldUseAction(out act, mustUse: true)) return true;
 

@@ -260,13 +260,15 @@ namespace XIVAutoAttack.Combos
 
                 //找到没死的队友们。
                 BattleChara[] availableCharas = TargetHelper.PartyMembers.Where(player => player.CurrentHp != 0).ToArray();
+
                 if (!Action.CanTargetSelf)
                 {
                     availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
                 }
+                if (availableCharas.Length == 0) return false;
 
                 //判断是否是范围。
-                if (Action.CastType > 1)
+                if (Action.CastType > 1 && ID != SCHCombo.Actions.DeploymentTactics.ID)
                 {
                     //找到能覆盖最多的位置，并且选血最少的来。
                     var tar = GetMostObjectInRadius(availableCharas, range, Action.EffectRange, true, mustUse).OrderBy(p => (float)p.CurrentHp / p.MaxHp).First();
@@ -276,6 +278,7 @@ namespace XIVAutoAttack.Combos
                 }
                 else
                 {
+
                     availableCharas = GetObjectInRadius(availableCharas, range);
                     //特殊选队友的方法。
                     var tar = ChoiceFriend(availableCharas);
