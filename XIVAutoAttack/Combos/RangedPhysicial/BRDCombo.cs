@@ -165,7 +165,6 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         //强力射击
         if (Actions.HeavyShoot.ShouldUseAction(out act)) return true;
 
-
         return false;
     }
 
@@ -221,6 +220,11 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
         //完美音调
         if (Actions.PitchPerfect.ShouldUseAction(out act)) return true;
 
+        //九天连箭
+        if (JobGauge.Song != Dalamud.Game.ClientState.JobGauge.Enums.Song.NONE &&
+            Actions.EmpyrealArrow.ShouldUseAction(out act)) return true;
+
+
         //贤者的叙事谣
         if (JobGauge.SongTimer < 3000 && Actions.MagesBallad.ShouldUseAction(out act)) return true;
 
@@ -229,24 +233,17 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
             || JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.NONE) && Actions.ArmysPaeon.ShouldUseAction(out act)) return true;
 
 
-        //九天连箭
-        if (Actions.EmpyrealArrow.ShouldUseAction(out act)) return true;
 
         //测风诱导箭
         if (Actions.Sidewinder.ShouldUseAction(out act)) return true;
 
-        byte level = Service.ClientState.LocalPlayer.Level;
+        //看看现在有没有开猛者强击
+        bool empty = BaseAction.HaveStatusSelfFromSelf(125) || JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.MAGE;
+        //死亡剑雨
+        if (Actions.RainofDeath.ShouldUseAction(out act, emptyOrSkipCombo: empty)) return true;
 
-        if (abilityRemain == 2)
-        {
-            //看看现在有没有开猛者强击
-            bool empty = BaseAction.HaveStatusSelfFromSelf(125) || JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.MAGE;
-            //死亡剑雨
-            if (Actions.RainofDeath.ShouldUseAction(out act, emptyOrSkipCombo: empty)) return true;
-
-            //失血箭
-            if (Actions.Bloodletter.ShouldUseAction(out act, emptyOrSkipCombo: empty)) return true;
-        }
+        //失血箭
+        if (Actions.Bloodletter.ShouldUseAction(out act, emptyOrSkipCombo: empty)) return true;
 
         return false;
     }

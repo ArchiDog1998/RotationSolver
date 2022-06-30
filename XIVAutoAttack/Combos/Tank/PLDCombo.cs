@@ -90,7 +90,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             },
 
             //µ÷Í£
-            Intervene = new BaseAction(16461),
+            Intervene = new BaseAction(16461, shouldEndSpecial:true),
 
             //Êê×ï½£
             Atonement = new BaseAction(16460)

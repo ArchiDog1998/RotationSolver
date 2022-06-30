@@ -551,12 +551,13 @@ namespace XIVAutoAttack.Combos
             }
 
 
-            //如果是能力技能，而且没法释放。
+            //如果首个CoolDown不是GCD能，而且没法释放。
             if (!IsGeneralGCD && IsCoolDown)
             {
-                if (IsRealGCD)
+                //会让GCD转的，充能一层的，看看来不来得及下个GCD
+                if (IsRealGCD )
                 {
-                    if (RecastTimeRemain >= TargetHelper.WeaponRemain) return false;
+                    if (MaxCharges == 1 && RecastTimeRemain >= TargetHelper.WeaponRemain) return false;
                 }
                 else
                 {

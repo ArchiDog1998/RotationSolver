@@ -76,6 +76,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
             TenChiJin = new BaseAction(7403)
             {
                 BuffsProvide = new ushort[] { ObjectStatus.Kassatsu, ObjectStatus.TenChiJin },
+                OtherCheck = b => JobGauge.HutonTimer > 0,
             },
 
             //缩地
@@ -317,30 +318,25 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
     private bool GeneralNinjutsus(bool empty, bool haveDoton)
     {
-        //背刺
-        bool useKaton = Actions.Katon.ShouldUseAction(out _);
-        if (empty && Actions.TrickAttack.RecastTimeRemain < 2 && _break)
+        //清空忍术
+        if (empty)
         {
-            if (useKaton && !IsMoving)
+            if (Actions.Katon.ShouldUseAction(out _))
             {
-                _ninactionAim = Actions.Doton;
+                if(!haveDoton && !IsMoving) _ninactionAim = Actions.Doton;
+                else _ninactionAim = Actions.Katon;
                 return true;
             }
-            if (Actions.Suiton.ShouldUseAction(out _))
+            //背刺
+            if (Actions.Suiton.ShouldUseAction(out _) && Actions.TrickAttack.RecastTimeRemain < 2 && _break)
             {
                 _ninactionAim = Actions.Suiton;
                 return true;
             }
         }
-        //常规忍术
+        //常规单体忍术
         if (Actions.Ten.ShouldUseAction(out _))
         {
-            if (useKaton)
-            {
-                _ninactionAim = Actions.Katon;
-                return true;
-            }
-
             if (Actions.Raiton.ShouldUseAction(out _))
             {
                 _ninactionAim = Actions.Raiton;
@@ -486,6 +482,8 @@ internal class NINCombo : CustomComboJob<NINGauge>
             if (Actions.ForkedRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
             if (Actions.PhantomKamaitachi.ShouldUseAction(out act, lastComboActionID)) return true;
 
+            if (Actions.Huraijin.ShouldUseAction(out act)) return true;
+
             //AOE
             if (Actions.HakkeMujinsatsu.ShouldUseAction(out act, lastComboActionID)) return true;
             if (Actions.DeathBlossom.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -517,7 +515,8 @@ internal class NINCombo : CustomComboJob<NINGauge>
         act = null;
         if (!TargetHelper.InBattle || Service.IconReplacer.OriginalHook(2260) != 2260) return false;
 
-        if (Actions.TrickAttack.RecastTimeElapsed <= 20 && Actions.TrickAttack.IsCoolDown)
+        if ((Actions.TrickAttack.RecastTimeElapsed <= 20 && Actions.TrickAttack.IsCoolDown)
+            || Actions.Katon.ShouldUseAction(out _))
         {
             if (!TargetHelper.IsMoving && Actions.TenChiJin.ShouldUseAction(out act)) return true;
             if (Actions.Kassatsu.ShouldUseAction(out act)) return true;

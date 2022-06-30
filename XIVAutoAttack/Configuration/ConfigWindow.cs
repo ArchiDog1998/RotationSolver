@@ -179,17 +179,20 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
 
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
 
                 //ImGui.Text(TargetHelper.PartyMembers.Length.ToString());
-                ImGui.Text(TargetHelper.WeaponRemain.ToString());
+                ImGui.Text(NINCombo.Actions.Ten.ShouldUseAction(out _ ,mustUse:true).ToString());
+                ImGui.Text(NINCombo.Actions.Ten.ShouldUseAction(out _ ,mustUse:false).ToString());
+                ImGui.Text(NINCombo.Actions.Ten.RecastTimeRemain.ToString());
+                if(NINCombo._ninactionAim != null) ImGui.Text(NINCombo._ninactionAim.Action.Name.ToString());
 
                 //if (Service.TargetManager.Target is BattleChara b)
                 //foreach (var item in b.StatusList)

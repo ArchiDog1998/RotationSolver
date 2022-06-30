@@ -42,14 +42,21 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             //彼岸花
             Higanbana = new BaseAction(7489)
             {
+                OtherCheck = b => !TargetHelper.IsMoving,
                 TargetStatus = new ushort[] { ObjectStatus.Higanbana },
             },
 
             //天下五剑
-            TenkaGoken = new BaseAction(7488),
+            TenkaGoken = new BaseAction(7488)
+            {
+                OtherCheck = b => !TargetHelper.IsMoving,
+            },
 
             //纷乱雪月花
-            MidareSetsugekka = new BaseAction(7487),
+            MidareSetsugekka = new BaseAction(7487)
+            {
+                OtherCheck = b => !TargetHelper.IsMoving,
+            },
 
             //满月
             Mangetsu = new BaseAction(7484),
@@ -226,9 +233,6 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-
-
-
         if (HaveTargetAngle && Actions.MeikyoShisui.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         if (nextGCD.ID == Actions.TenkaGoken.ID || nextGCD.ID == Actions.Higanbana.ID || nextGCD.ID == Actions.MidareSetsugekka.ID || nextGCD.ID == Actions.OgiNamikiri.ID)

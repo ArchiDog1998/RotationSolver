@@ -565,19 +565,21 @@ public abstract class CustomCombo
         if (GeneralAbility(abilityRemain, out act)) return true;
         if (HaveTargetAngle)
         {
-            if (role == Role.∑¿ª§ && HaveShield)
+            if (role == Role.∑¿ª§)
             {
                 var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets, out bool haveTargetOnme);
-                if (!IsMoving && haveTargetOnme && Service.Configuration.AutoDefenseForTank)
+                if (haveTargets != TargetHelper.HostileTargets || IconReplacer.BreakorProvoke)
+                {
+                    //ø™∂‹ÃÙ–∆
+                    if (!HaveShield && Shield.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.Provoke.ShouldUseAction(out act, mustUse: true)) return true;
+                }
+                if (!IsMoving && haveTargetOnme && Service.Configuration.AutoDefenseForTank && HaveShield)
                 {
                     //∑¿Œ¿
                     if (DefenceSingleAbility(abilityRemain, out act)) return true;
                 }
-                if (HaveShield && (haveTargets != TargetHelper.HostileTargets || IconReplacer.BreakorProvoke))
-                {
-                    //ÃÙ–∆
-                    if (GeneralActions.Provoke.ShouldUseAction(out act, mustUse: true)) return true;
-                }
+
             }
             if (ForAttachAbility(abilityRemain, out act)) return true;
         }

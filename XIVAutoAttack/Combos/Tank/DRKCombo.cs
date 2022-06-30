@@ -160,7 +160,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         if (Actions.LivingDead.ShouldUseAction(out act)) return true;
 
         //续Buff
-        if (JobGauge.DarksideTimeRemaining < 30000 && Service.ClientState.LocalPlayer.CurrentMp >= 6000)
+        if (Service.ClientState.LocalPlayer.CurrentMp >= 6000)
         {
             if (Actions.FloodofDarkness.ShouldUseAction(out act)) return true;
             if (Actions.EdgeofDarkness.ShouldUseAction(out act)) return true;
