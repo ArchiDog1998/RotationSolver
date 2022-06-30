@@ -557,7 +557,7 @@ namespace XIVAutoAttack.Combos
                 //会让GCD转的，充能一层的，看看来不来得及下个GCD
                 if (IsRealGCD )
                 {
-                    if (MaxCharges == 1 && RecastTimeRemain >= TargetHelper.WeaponRemain) return false;
+                    if (RecastTimeElapsed + TargetHelper.WeaponRemain < RecastTime / MaxCharges) return false;
                 }
                 else
                 {
