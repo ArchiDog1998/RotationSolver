@@ -107,8 +107,8 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
         //四个牛逼的技能。
         if (Actions.Bioblaster.ShouldUseAction(out act)) return true;
         if (Actions.Drill.ShouldUseAction(out act)) return true;
-        if (Actions.AirAnchor.ShouldUseAction(out act) ||
-            Service.ClientState.LocalPlayer.Level < Actions.AirAnchor.Level && Actions.HotShow.ShouldUseAction(out _)) return true;
+        if (Actions.AirAnchor.ShouldUseAction(out act)) return true;
+        else if(Service.ClientState.LocalPlayer.Level < Actions.AirAnchor.Level && Actions.HotShow.ShouldUseAction(out act)) return true;
         if (Actions.ChainSaw.ShouldUseAction(out act, mustUse: true)) return true;
 
         //群体常规GCD
