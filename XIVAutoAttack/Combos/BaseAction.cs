@@ -535,6 +535,12 @@ namespace XIVAutoAttack.Combos
             //MP不够
             if (Service.ClientState.LocalPlayer.CurrentMp < MPNeed) return false;
 
+            //GP不够
+            if(Action.PrimaryCostType == 7)
+            {
+                if (Service.ClientState.LocalPlayer.CurrentGp < Action.PrimaryCostValue) return false;
+            }
+
             //没有前置Buff
             if (BuffsNeed != null)
             {

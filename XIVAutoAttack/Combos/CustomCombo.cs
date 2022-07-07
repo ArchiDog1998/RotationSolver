@@ -403,10 +403,10 @@ public abstract class CustomCombo
         if ((HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) && EsunaRaise(out act, abilityRemain, true)) return act;
         if (TargetHelper.HPNotFull)
         {
-            if (TargetHelper.ShouldUseArea && HealAreaGCD(lastComboActionID, out act)) return act;
-            if (HealSingleGCD(lastComboActionID, out act)) return act;
+            if (TargetHelper.CanHealAreaSpell && HealAreaGCD(lastComboActionID, out act)) return act;
+            if (TargetHelper.CanHealSingleSpell && HealSingleGCD(lastComboActionID, out act)) return act;
         }
-        if(EsunaRaise(out act, abilityRemain, true)) return act;
+        if (EsunaRaise(out act, abilityRemain, true)) return act;
 
         return null;
     }

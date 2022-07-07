@@ -124,6 +124,8 @@ namespace XIVAutoAttack
         internal unsafe static void Framework_Update(Framework framework)
         {
             UpdateCastBar();
+
+
 #if DEBUG
             //Get changed condition.
             string[] enumNames = Enum.GetNames(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));
@@ -159,6 +161,10 @@ namespace XIVAutoAttack
                 _unfishingTimer.Restart();
             }
             _isLastFishing = fishing;
+            if (Fish != FishType.None && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Gathering])
+            {
+                Fish = FishType.None;
+            }
 
             //Update State.
             if (Service.Configuration.UseDtr && IconReplacer.StateString != null)

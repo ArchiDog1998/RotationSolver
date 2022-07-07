@@ -74,7 +74,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             //自生2
             Physis2 = new BaseAction(24302, true),
 
-            //均衡
+            ////均衡
             Eukrasia = new BaseAction(24290)
             {
                 OtherCheck = b => !JobGauge.Eukrasia,
@@ -320,13 +320,17 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         if (Actions.Dyskrasia.ShouldUseAction(out act)) return true;
 
         Actions.Dosis.ShouldUseAction(out _);
-        var times = BaseAction.FindStatusFromSelf(Actions.Dosis.Target,
-            new ushort[] { ObjectStatus.EukrasianDosis, ObjectStatus.EukrasianDosis2, ObjectStatus.EukrasianDosis3 });
-        if (times.Length == 0 || times.Max() < 3)
+        if(Actions.Dosis.Target != null)
         {
-            //补上Dot
-            if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
+            var times = BaseAction.FindStatusFromSelf(Actions.Dosis.Target,
+                new ushort[] { ObjectStatus.EukrasianDosis, ObjectStatus.EukrasianDosis2, ObjectStatus.EukrasianDosis3 });
+            if (times.Length == 0 || times.Max() < 3)
+            {
+                //补上Dot
+                if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
+            }
         }
+
         //注药
         if (Actions.Dosis.ShouldUseAction(out act)) return true;
 

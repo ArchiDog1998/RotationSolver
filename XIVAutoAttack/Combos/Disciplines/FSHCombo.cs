@@ -71,7 +71,14 @@ namespace XIVAutoAttack.Combos.Disciplines
                 //耐心
                 Patience = new BaseAction(4102)
                 {
-                    BuffsProvide = new ushort[] { ObjectStatus.Patience },
+                    OtherCheck = b =>
+                    {
+                        foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                        {
+                            if (item.StatusId == ObjectStatus.Patience) return false;
+                        }
+                        return true;
+                    },
                 },
 
                 //钓组
@@ -126,7 +133,7 @@ namespace XIVAutoAttack.Combos.Disciplines
 
             if (fishing && TargetHelper.Fish != FishType.None && TargetHelper._fisherTimer.ElapsedMilliseconds > Config.GetDoubleByName("CastTime") * 1000)
             {
-                if(BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Patience) && gp >= 50)
+                if(BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Patience))
                 {
                     switch (TargetHelper.Fish)
                     {
