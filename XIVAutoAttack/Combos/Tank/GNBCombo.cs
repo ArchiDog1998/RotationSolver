@@ -143,7 +143,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //Ê¹ÓÃ¾§ÄÒ
-        bool useAmmo = JobGauge.Ammo > (Service.ClientState.LocalPlayer.Level > Actions.DoubleDown.Level ? 1 : 0);
+        bool useAmmo = JobGauge.Ammo > (Service.ClientState.LocalPlayer.Level > Actions.DoubleDown.Level ? 2 : 0);
 
 
         uint remap = Service.IconReplacer.OriginalHook(Actions.GnashingFang.ID);
