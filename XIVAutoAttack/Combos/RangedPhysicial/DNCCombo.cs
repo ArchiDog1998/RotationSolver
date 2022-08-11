@@ -206,8 +206,6 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
                 BuffsNeed = new ushort[] { ObjectStatus.StandardFinish },
                 BuffsProvide = new ushort[]
                 {
-                    ObjectStatus.SilkenSymmetry,
-                    ObjectStatus.SilkenFlow,
                     ObjectStatus.ThreefoldFanDance,
                     ObjectStatus.FourfoldFanDance,
                 }

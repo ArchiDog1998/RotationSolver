@@ -233,7 +233,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
     private protected override ActionConfiguration CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("UseDoton", false, "开场上土遁").SetBool("StateFirst", false, "先保证开场风遁和土遁");
+        return base.CreateConfiguration().SetBool("StateFirst", false, "先保证开场风遁和土遁");
     }
 
     internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
@@ -297,19 +297,19 @@ internal class NINCombo : CustomComboJob<NINGauge>
             }
 
 
-            //加土
-            if (haveDoton && _ninactionAim?.ID == Actions.Doton.ID)
-            {
-                _ninactionAim = null;
-                return false;
-            }
+            ////加土
+            //if (haveDoton && _ninactionAim?.ID == Actions.Doton.ID)
+            //{
+            //    _ninactionAim = null;
+            //    return false;
+            //}
 
-            if (!TargetHelper.InBattle && !Actions.Hide.IsCoolDown && empty && Config.GetBoolByName("UseDoton") && !haveDoton)
-            {
-                Actions.Doton.ShouldUseAction(out _);
-                _ninactionAim = Actions.Doton;
-                return false;
-            }
+            //if (!TargetHelper.InBattle && !Actions.Hide.IsCoolDown && empty && Config.GetBoolByName("UseDoton") && !haveDoton)
+            //{
+            //    Actions.Doton.ShouldUseAction(out _);
+            //    _ninactionAim = Actions.Doton;
+            //    return false;
+            //}
 
             if (first && GeneralNinjutsus(empty, haveDoton)) return false;
         }

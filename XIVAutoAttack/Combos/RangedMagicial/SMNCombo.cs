@@ -34,8 +34,8 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
             //灼热之光 团辅
             SearingLight = new BaseAction(25801)
             {
-                OtherCheck = b => TargetHelper.InBattle && !InBahamut && !InPhoenix &&
-                JobGauge.ReturnSummon == Dalamud.Game.ClientState.JobGauge.Enums.SummonPet.NONE,
+                OtherCheck = b => TargetHelper.InBattle && !InBahamut && !InPhoenix
+                //&& JobGauge.ReturnSummon == Dalamud.Game.ClientState.JobGauge.Enums.SummonPet.NONE,
             },
 
             //守护之光 给自己戴套

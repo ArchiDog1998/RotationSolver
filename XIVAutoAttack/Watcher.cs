@@ -58,19 +58,19 @@ namespace XIVAutoAttack
         {
             if (PlaySpecificSoundHook == null && Service.SigScanner.TryScanText("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 33 F6 8B DA 48 8B F9 0F BA E2 0F", out var playPtr))
             {
-                PlaySpecificSoundHook = new Hook<PlaySpecificSoundDelegate>(playPtr, PlaySpecificSoundDetour);
+                PlaySpecificSoundHook = Hook<PlaySpecificSoundDelegate>.FromAddress(playPtr, PlaySpecificSoundDetour);
             }
             if (GetResourceSyncHook == null && Service.SigScanner.TryScanText("E8 ?? ?? ?? ?? 48 8D 8F ?? ?? ?? ?? 48 89 87 ?? ?? ?? ?? 48 8D 54 24", out var syncPtr))
             {
-                GetResourceSyncHook = new Hook<GetResourceSyncPrototype>(syncPtr, GetResourceSyncDetour);
+                GetResourceSyncHook = Hook<GetResourceSyncPrototype>.FromAddress(syncPtr, GetResourceSyncDetour);
             }
             if (GetResourceAsyncHook == null && Service.SigScanner.TryScanText("E8 ?? ?? ?? ?? 48 8B D8 EB 07 F0 FF 83", out var asyncPtr))
             {
-                GetResourceAsyncHook = new Hook<GetResourceAsyncPrototype>(asyncPtr, GetResourceAsyncDetour);
+                GetResourceAsyncHook = Hook<GetResourceAsyncPrototype>.FromAddress(asyncPtr, GetResourceAsyncDetour);
             }
             if (LoadSoundFileHook == null && Service.SigScanner.TryScanText("E8 ?? ?? ?? ?? 48 85 C0 75 04 B0 F6", out var soundPtr))
             {
-                LoadSoundFileHook = new Hook<LoadSoundFileDelegate>(soundPtr, LoadSoundFileDetour);
+                LoadSoundFileHook = Hook<LoadSoundFileDelegate>.FromAddress(soundPtr, LoadSoundFileDetour);
             }
             PlaySpecificSoundHook?.Enable();
             LoadSoundFileHook?.Enable();
@@ -177,7 +177,7 @@ namespace XIVAutoAttack
                 }
                 return ret;
             }
-            catch (Exception ex)
+            catch
             {
                 return ret;
             }

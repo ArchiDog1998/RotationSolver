@@ -294,14 +294,14 @@ internal sealed class IconReplacer : IDisposable
     {
         unsafe
         {
-            getIconHook = new((IntPtr)ActionManager.fpGetAdjustedActionId, GetIconDetour);
+            getIconHook = Hook<GetIconDelegate>.FromAddress((IntPtr)ActionManager.fpGetAdjustedActionId, GetIconDetour);
 
 #if DEBUG
             getActionHook = new((IntPtr)ActionManager.fpUseAction, UseAction);
             getActionHook.Enable();
 #endif
         }
-        isIconReplaceableHook = new Hook<IsIconReplaceableDelegate>(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);
+        isIconReplaceableHook = Hook<IsIconReplaceableDelegate>.FromAddress(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);
         getIconHook.Enable();
         isIconReplaceableHook.Enable();
     }

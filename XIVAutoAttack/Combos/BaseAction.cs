@@ -516,12 +516,12 @@ namespace XIVAutoAttack.Combos
         private static float GetRange(Action act)
         {
             return ActionManager.GetActionRange(act.RowId);
-            sbyte range = act.Range;
-            if (range < 0 && CustomCombo.RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.GameData.RowId))
-            {
-                range = 25;
-            }
-            return Math.Max(range, 3f);
+            //sbyte range = act.Range;
+            //if (range < 0 && CustomCombo.RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.GameData.RowId))
+            //{
+            //    range = 25;
+            //}
+            //return Math.Max(range, 3f);
         }
 
         public bool ShouldUseAction(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)

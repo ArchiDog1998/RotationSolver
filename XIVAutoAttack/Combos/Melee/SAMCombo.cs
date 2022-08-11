@@ -79,8 +79,8 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             //雪风
             Yukikaze = new BaseAction(7480),
 
-            //必杀剑·回天
-            HissatsuKaiten = new BaseAction(7494),
+            ////必杀剑·回天
+            //HissatsuKaiten = new BaseAction(7494),
 
             //必杀剑·晓天
             HissatsuGyoten = new BaseAction(7492),
@@ -195,7 +195,7 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
 
 
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
-        if (!haveMeikyoShisui && Actions.Enpi.ShouldUseAction(out act)) return true;
+        if (Actions.Enpi.ShouldUseAction(out act)) return true;
 
         return false;
     }
@@ -215,7 +215,7 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             if (Actions.Shoha.ShouldUseAction(out act)) return true;
         }
 
-        if (JobGauge.Kenki >= 45)
+        if (JobGauge.Kenki >= 25)
         {
             if (Actions.HissatsuGuren.ShouldUseAction(out act)) return true;
             if (Actions.HissatsuKyuten.ShouldUseAction(out act)) return true;
@@ -223,10 +223,9 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
             if (Actions.HissatsuSenei.ShouldUseAction(out act)) return true;
             if (Actions.HissatsuShinten.ShouldUseAction(out act)) return true;
         }
-        else
-        {
-            if (TargetHelper.InBattle && Actions.Ikishoten.ShouldUseAction(out act)) return true;
-        }
+
+        if (TargetHelper.InBattle && Actions.Ikishoten.ShouldUseAction(out act)) return true;
+
         act = null;
         return false;
     }
@@ -235,10 +234,10 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
     {
         if (HaveTargetAngle && Actions.MeikyoShisui.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
-        if (nextGCD.ID == Actions.TenkaGoken.ID || nextGCD.ID == Actions.Higanbana.ID || nextGCD.ID == Actions.MidareSetsugekka.ID || nextGCD.ID == Actions.OgiNamikiri.ID)
-        {
-            if (JobGauge.Kenki >= 20 && !IsMoving && Actions.HissatsuKaiten.ShouldUseAction(out act)) return true;
-        }
+        //if (nextGCD.ID == Actions.TenkaGoken.ID || nextGCD.ID == Actions.Higanbana.ID || nextGCD.ID == Actions.MidareSetsugekka.ID || nextGCD.ID == Actions.OgiNamikiri.ID)
+        //{
+        //    if (JobGauge.Kenki >= 20 && !IsMoving && Actions.HissatsuKaiten.ShouldUseAction(out act)) return true;
+        //}
 
         act = null;
         return false;
