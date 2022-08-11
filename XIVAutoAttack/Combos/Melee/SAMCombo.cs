@@ -6,9 +6,7 @@ namespace XIVAutoAttack.Combos.Melee;
 internal class SAMCombo : CustomComboJob<SAMGauge>
 {
     internal override uint JobID => 34;
-    //private static bool _shouldUseGoken = false;
-    //private static bool _shouldUseSetsugekka = false;
-    //private static bool _shouldUseOgiNamikiri = false;
+
     protected override bool ShouldSayout => true;
 
     private static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));

@@ -20,9 +20,9 @@ internal class PluginAddressResolver : BaseAddressResolver
 
     protected override void Setup64Bit(SigScanner scanner)
     {
-        ComboTimer = scanner.GetStaticAddressFromSig("48 89 2D ?? ?? ?? ?? 85 C0 74 0F", 0);
+        this.ComboTimer = scanner.GetStaticAddressFromSig("F3 0F 11 05 ?? ?? ?? ?? F3 0F 10 45 ?? E8");
         //GetAdjustedActionId = scanner.ScanText("E8 ?? ?? ?? ?? 8B F8 3B DF");
-        IsActionIdReplaceable = scanner.ScanText("81 F9 ?? ?? ?? ?? 7F 35");
+        this.IsActionIdReplaceable = scanner.ScanText("81 F9 ?? ?? ?? ?? 7F 35");
         //GetActionCooldown = scanner.ScanText("E8 ?? ?? ?? ?? 0F 57 FF 48 85 C0");
         PluginLog.Verbose("===== X I V C O M B O =====", Array.Empty<object>());
         //PluginLog.Verbose($"GetAdjustedActionId   0x{GetAdjustedActionId:X}", Array.Empty<object>());

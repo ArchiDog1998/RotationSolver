@@ -16,21 +16,27 @@
   <ItemGroup>
     <Reference Include="Dalamud">
       <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\Dalamud.dll</HintPath>
+	  <Private>false</Private>
     </Reference>
     <Reference Include="FFXIVClientStructs">
       <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>
+	<Private>false</Private>
     </Reference>
     <Reference Include="ImGui.NET">
       <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\ImGui.NET.dll</HintPath>
+	<Private>false</Private>
     </Reference>
     <Reference Include="ImGuiScene">
       <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\ImGuiScene.dll</HintPath>
+	<Private>false</Private>
     </Reference>
     <Reference Include="Lumina">
       <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\Lumina.dll</HintPath>
+	<Private>false</Private>
     </Reference>
     <Reference Include="Lumina.Excel">
       <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\Lumina.Excel.dll</HintPath>
+	<Private>false</Private>
     </Reference>
   </ItemGroup>
 </Project>

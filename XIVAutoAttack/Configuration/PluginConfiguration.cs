@@ -9,7 +9,7 @@ namespace XIVAutoAttack.Configuration;
 [Serializable]
 public class PluginConfiguration : IPluginConfiguration
 {
-    public int Version { get; set; } = 5;
+    public int Version { get; set; } = 6;
 
     public int HostileCount { get; set; } = 3;
     public int PartyCount { get; set; } = 2;

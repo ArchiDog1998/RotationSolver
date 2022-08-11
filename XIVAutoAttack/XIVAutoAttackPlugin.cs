@@ -43,7 +43,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     internal static Watcher watcher;
 
-    public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, Framework framework, CommandManager commandManager, SigScanner sigScanner)
+    public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, CommandManager commandManager)
     {
         commandManager.AddHandler(_command, new CommandInfo(OnCommand)
         {
@@ -68,7 +68,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
 
-        TargetHelper.Init(sigScanner);
+        TargetHelper.Init(Service.SigScanner);
 
 
         Service.Framework.Update += TargetHelper.Framework_Update;
