@@ -466,7 +466,6 @@ namespace XIVAutoAttack.Combos
             Flower = 1299,
 
             //真理之剑预备状态
-            ReadyForBladeofFaith = 3019,
-            ReadyForBladeofFaith2 = 3250;
+            ReadyForBladeofFaith = 3019;
     }
 }

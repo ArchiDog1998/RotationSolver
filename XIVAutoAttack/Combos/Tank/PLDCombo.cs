@@ -107,11 +107,10 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             //真理之剑
             BladeofTruth = new BaseAction(25749),
 
-
             //信念之剑
             BladeofFaith = new BaseAction(25748)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.ReadyForBladeofFaith, ObjectStatus.ReadyForBladeofFaith2 },
+                BuffsNeed = new ushort[] { ObjectStatus.ReadyForBladeofFaith },
             },
 
             //安魂祈祷
@@ -148,8 +147,8 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
     {
         //三个大招
         if (Actions.BladeofValor.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
-        if (Actions.BladeofFaith.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
-        if (Actions.BladeofTruth.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.BladeofFaith.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.BladeofTruth.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
 
         //魔法三种姿势
         var status = BaseAction.FindStatusFromSelf(Service.ClientState.LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
