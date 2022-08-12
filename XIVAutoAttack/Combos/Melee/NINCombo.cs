@@ -89,7 +89,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
             Meisui = new BaseAction(16489)
             {
                 BuffsNeed = new ushort[] { ObjectStatus.Suiton },
-                OtherCheck = b => JobGauge.Ninki < 50
+                OtherCheck = b => JobGauge.Ninki <= 50
             },
 
             //生杀予夺
@@ -233,7 +233,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
     private protected override ActionConfiguration CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("StateFirst", false, "先保证开场风遁和土遁");
+        return base.CreateConfiguration();
     }
 
     internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
@@ -277,12 +277,8 @@ internal class NINCombo : CustomComboJob<NINGauge>
             bool empty = Actions.Ten.ShouldUseAction(out _, mustUse: true);
             bool haveDoton = BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Doton);
 
-            bool first = Config.GetBoolByName("StateFirst");
-
-            if (!first && GeneralNinjutsus(empty, haveDoton)) return false;
-
             //加状态
-            if (!first && Actions.Huraijin.ShouldUseAction(out act)) return true;
+            if (Actions.Huraijin.ShouldUseAction(out act)) return true;
 
             if (JobGauge.HutonTimer > 0 && _ninactionAim?.ID == Actions.Huton.ID)
             {
@@ -290,28 +286,13 @@ internal class NINCombo : CustomComboJob<NINGauge>
                 return false;
             }
 
-            if (empty && Actions.Huton.ShouldUseAction(out _) && (!TargetHelper.InBattle || Service.ClientState.LocalPlayer.Level < Actions.Huraijin.Level))
+            if (empty && (!TargetHelper.InBattle || Service.ClientState.LocalPlayer.Level < Actions.Huraijin.Level) && Actions.Huton.ShouldUseAction(out _))
             {
                 _ninactionAim = Actions.Huton;
                 return false;
             }
 
-
-            ////加土
-            //if (haveDoton && _ninactionAim?.ID == Actions.Doton.ID)
-            //{
-            //    _ninactionAim = null;
-            //    return false;
-            //}
-
-            //if (!TargetHelper.InBattle && !Actions.Hide.IsCoolDown && empty && Config.GetBoolByName("UseDoton") && !haveDoton)
-            //{
-            //    Actions.Doton.ShouldUseAction(out _);
-            //    _ninactionAim = Actions.Doton;
-            //    return false;
-            //}
-
-            if (first && GeneralNinjutsus(empty, haveDoton)) return false;
+            if (GeneralNinjutsus(empty, haveDoton)) return false;
         }
         return false;
     }
@@ -531,7 +512,9 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
         if (Actions.Mug.ShouldUseAction(out act)) return true;
 
+        //解决Buff
         if (Actions.TrickAttack.ShouldUseAction(out act)) return true;
+        if (Actions.Meisui.ShouldUseAction(out act)) return true;
 
         //if ((Actions.TrickAttack.RecastTimeElapsed <= 20 && Actions.TrickAttack.IsCoolDown)
         //    || Actions.Katon.ShouldUseAction(out _))
@@ -547,8 +530,6 @@ internal class NINCombo : CustomComboJob<NINGauge>
             if (Actions.HellfrogMedium.ShouldUseAction(out act)) return true;
             if (Actions.Bhavacakra.ShouldUseAction(out act)) return true;
         }
-
-        if (Actions.Meisui.ShouldUseAction(out act)) return true;
 
         if (Service.ClientState.LocalPlayer.Level < Actions.DreamWithinaDream.Level)
         {
