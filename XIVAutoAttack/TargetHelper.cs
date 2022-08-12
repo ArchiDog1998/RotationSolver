@@ -118,7 +118,6 @@ namespace XIVAutoAttack
         internal static unsafe void Init(SigScanner sigScanner)
         {
             _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
-
         }
 
         internal unsafe static void Framework_Update(Framework framework)
@@ -332,7 +331,6 @@ namespace XIVAutoAttack
         }
         private static void UpdateTargets()
         {
-
             #region Hostile
 
             AllTargets = BaseAction.GetObjectInRadius(Service.ObjectTable.ToArray(), 30).Where(obj =>
@@ -349,7 +347,7 @@ namespace XIVAutoAttack
                 return false;
             }).Select(obj => (BattleChara)obj).ToArray();
             uint[] ids = GetEnemies() ?? new uint[0];
-            //InBattle = ids.Length > 0;
+            
             if (AllTargets != null && AllTargets.Length > 0)
             {
                 var hosts = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
@@ -482,7 +480,6 @@ namespace XIVAutoAttack
             return ((delegate*<long, IntPtr, long>)_func)(142L, actor.Address) == 1;
         }
 
-
         internal static BattleChara[] GetJobCategory(BattleChara[] objects, Role role)
         {
             List<BattleChara> result = new(objects.Length);
@@ -495,6 +492,7 @@ namespace XIVAutoAttack
             }
             return result.ToArray();
         }
+
         private static bool GetJobCategory(BattleChara obj, Role role)
         {
 

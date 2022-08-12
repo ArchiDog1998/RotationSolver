@@ -157,7 +157,7 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //×ÆÈÈÖ®¹â
-        if (Actions.SearingLight.ShouldUseAction(out act)) return true;
+        if (Actions.SearingLight.ShouldUseAction(out act, mustUse: true)) return true;
 
         return false;
     }
