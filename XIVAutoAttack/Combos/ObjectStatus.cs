@@ -463,6 +463,10 @@ namespace XIVAutoAttack.Combos
             //风月
             Moon = 1298,
             //风花
-            Flower = 1299;
+            Flower = 1299,
+
+            //真理之剑预备状态
+            ReadyForBladeofFaith = 3019,
+            ReadyForBladeofFaith2 = 3250;
     }
 }
