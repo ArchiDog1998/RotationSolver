@@ -143,8 +143,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //Ê¹ÓÃ¾§ÄÒ
-        bool useAmmo = JobGauge.Ammo > (Service.ClientState.LocalPlayer.Level > Actions.DoubleDown.Level ? 2 : 0);
-
+        bool useAmmo = JobGauge.Ammo > (Service.ClientState.LocalPlayer.Level >= Actions.DoubleDown.Level ? 2 : 0);
 
         uint remap = Service.IconReplacer.OriginalHook(Actions.GnashingFang.ID);
         if (remap == Actions.WickedTalon.ID && Actions.WickedTalon.ShouldUseAction(out act)) return true;
@@ -201,7 +200,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.RoughDivide.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.RoughDivide.Target) < 1)
+            if (BaseAction.DistanceToPlayer(Actions.RoughDivide.Target) < 2)
             {
                 return true;
             }

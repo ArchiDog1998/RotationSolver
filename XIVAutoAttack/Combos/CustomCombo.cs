@@ -568,7 +568,8 @@ public abstract class CustomCombo
             if (role == Role.·À»¤)
             {
                 var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets, out bool haveTargetOnme);
-                if (haveTargets != TargetHelper.HostileTargets || IconReplacer.BreakorProvoke)
+                if ((Service.Configuration.AutoProvokeForTank && haveTargets != TargetHelper.HostileTargets)|| IconReplacer.BreakorProvoke)
+
                 {
                     //¿ª¶ÜÌôÐÆ
                     if (!HaveShield && Shield.ShouldUseAction(out act)) return true;

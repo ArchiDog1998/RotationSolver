@@ -255,7 +255,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.Onslaught.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.Onslaught.Target) < 1)
+            if (BaseAction.DistanceToPlayer(Actions.Onslaught.Target) < 2)
             {
                 return true;
             }

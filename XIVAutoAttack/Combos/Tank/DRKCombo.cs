@@ -182,7 +182,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         //搞搞攻击
         if (Actions.Plunge.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.Plunge.Target) < 1)
+            if (BaseAction.DistanceToPlayer(Actions.Plunge.Target) < 2)
             {
                 return true;
             }

@@ -76,8 +76,10 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
             Medica2 = new BaseAction(133, true) { BuffsProvide = new ushort[] { ObjectStatus.Medica2, ObjectStatus.TrueMedica2 } },
             //庇护所
             Asylum = new BaseAction(3569, true),
+
             //法令
             Assize = new BaseAction(3571, true),
+
             //狂喜之心 400
             AfflatusRapture = new BaseAction(16534, true)
             {
@@ -142,6 +144,9 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
     {
         //加个神速咏唱
         if (Actions.PresenseOfMind.ShouldUseAction(out act)) return true;
+
+        //加个法令
+        if (Actions.Assize.ShouldUseAction(out act)) return true;
 
         return false;
     }

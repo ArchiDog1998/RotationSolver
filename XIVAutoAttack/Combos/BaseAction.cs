@@ -381,7 +381,7 @@ namespace XIVAutoAttack.Combos
         internal static float DistanceToPlayer(GameObject obj)
         {
             var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
-            distance -= Math.Max( obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
+            distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
             return distance;
         }
         internal static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
@@ -515,7 +515,7 @@ namespace XIVAutoAttack.Combos
 
         private static float GetRange(Action act)
         {
-            return ActionManager.GetActionRange(act.RowId);
+            return ActionManager.GetActionRange(act.RowId) + 0.5f;
             //sbyte range = act.Range;
             //if (range < 0 && CustomCombo.RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.GameData.RowId))
             //{

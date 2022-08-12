@@ -22,6 +22,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool OnlyGCD { get; set; } = false;
     public bool NeverReplaceIcon { get; set; } = false;
     public bool AutoDefenseForTank { get; set; } = true;
+    public bool AutoProvokeForTank { get; set; } = true;
     public bool AutoSayingOut { get; set; } = false;
     public bool UseDtr { get; set; } = true;
     public bool SayingLocation { get; set; } = true;

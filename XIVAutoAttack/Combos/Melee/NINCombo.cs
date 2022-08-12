@@ -335,7 +335,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
             }
         }
         //常规单体忍术
-        if (Actions.Ten.ShouldUseAction(out _))
+        if (Actions.Ten.ShouldUseAction(out _) && (Service.ClientState.LocalPlayer.Level < Actions.TenChiJin.Level || Actions.TenChiJin.IsCoolDown))
         {
             if (Actions.Raiton.ShouldUseAction(out _))
             {
@@ -470,6 +470,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
         //用真北取消隐匿
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Hidden) && GeneralActions.TrueNorth.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+
         //用隐匿恢复忍术数量
         if (!TargetHelper.InBattle && _ninactionAim == null && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
 
@@ -479,7 +480,14 @@ internal class NINCombo : CustomComboJob<NINGauge>
         {
             //大招
             if (Actions.FleetingRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
-            if (Actions.ForkedRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.ForkedRaiju.ShouldUseAction(out act, lastComboActionID))
+            {
+                if (BaseAction.DistanceToPlayer(Actions.ForkedRaiju.Target) < 2)
+                {
+                    return true;
+                }
+            }
+
             if (Actions.PhantomKamaitachi.ShouldUseAction(out act, lastComboActionID)) return true;
 
             if (Actions.Huraijin.ShouldUseAction(out act)) return true;
@@ -503,6 +511,12 @@ internal class NINCombo : CustomComboJob<NINGauge>
         return false;
     }
 
+    private protected override bool MoveGCD(uint lastComboActionID, out IAction act)
+    {
+        if (Actions.ForkedRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
+        return base.MoveGCD(lastComboActionID, out act);
+    }
+
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.ShadeShift.ShouldUseAction(out act)) return true;
@@ -515,7 +529,9 @@ internal class NINCombo : CustomComboJob<NINGauge>
         act = null;
         if (!TargetHelper.InBattle || Service.IconReplacer.OriginalHook(2260) != 2260) return false;
 
-        if ((Actions.TrickAttack.RecastTimeElapsed <= 20 && Actions.TrickAttack.IsCoolDown)
+        if (Actions.Mug.ShouldUseAction(out act)) return true;
+
+        if ((Actions.TrickAttack.RecastTimeElapsed <= 30 && Actions.TrickAttack.IsCoolDown)
             || Actions.Katon.ShouldUseAction(out _))
         {
             if (!TargetHelper.IsMoving && Actions.TenChiJin.ShouldUseAction(out act)) return true;
@@ -531,10 +547,6 @@ internal class NINCombo : CustomComboJob<NINGauge>
             if (Actions.Bhavacakra.ShouldUseAction(out act)) return true;
         }
         if (Actions.Meisui.ShouldUseAction(out act)) return true;
-
-
-        if (Actions.Mug.ShouldUseAction(out act)) return true;
-
 
         if (Service.ClientState.LocalPlayer.Level < Actions.DreamWithinaDream.Level)
         {

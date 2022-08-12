@@ -283,6 +283,13 @@ internal class ConfigWindow : Window
                         Service.Configuration.Save();
                     }
 
+                    bool autoProvokeforTank = Service.Configuration.AutoProvokeForTank;
+                    if (ImGui.Checkbox("T自动挑衅", ref autoProvokeforTank))
+                    {
+                        Service.Configuration.AutoProvokeForTank = autoProvokeforTank;
+                        Service.Configuration.Save();
+                    }
+
                     bool useItem = Service.Configuration.UseItem;
                     if (ImGui.Checkbox("使用道具", ref useItem))
                     {

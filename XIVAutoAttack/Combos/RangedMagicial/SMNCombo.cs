@@ -162,6 +162,12 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         return false;
     }
 
+    private protected override bool MoveGCD(uint lastComboActionID, out IAction act)
+    {
+        if (Actions.CrimsonCyclone.ShouldUseAction(out act, mustUse: true)) return true;
+        return base.MoveGCD(lastComboActionID, out act);
+    }
+
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //±¶ Ø ﬁ’ŸªΩ
@@ -172,7 +178,13 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
         {
             if (Actions.RuinIV.ShouldUseAction(out act, mustUse: true)) return true;
             if (Actions.CrimsonStrike.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
-            if (Actions.CrimsonCyclone.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.CrimsonCyclone.ShouldUseAction(out act, mustUse: true))
+            {
+                if (BaseAction.DistanceToPlayer(Actions.CrimsonCyclone.Target) < 2)
+                {
+                    return true;
+                }
+            }
             if (Actions.Slipstream.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
