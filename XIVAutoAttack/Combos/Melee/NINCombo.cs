@@ -93,9 +93,9 @@ internal class NINCombo : CustomComboJob<NINGauge>
             },
 
             //生杀予夺
-            Kassatsu = new BaseAction(2264)
+            Kassatsu = new BaseAction(2264, isFriendly: true)
             {
-                OtherCheck = b => Ten.IsCoolDown,
+                //OtherCheck = b => Ten.IsCoolDown,
                 BuffsProvide = new ushort[] { ObjectStatus.Kassatsu, ObjectStatus.TenChiJin },
             },
 
@@ -531,7 +531,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
         if (Actions.Mug.ShouldUseAction(out act)) return true;
 
-        if ((Actions.TrickAttack.RecastTimeElapsed <= 30 && Actions.TrickAttack.IsCoolDown)
+        if ((Actions.TrickAttack.RecastTimeElapsed <= 20 && Actions.TrickAttack.IsCoolDown)
             || Actions.Katon.ShouldUseAction(out _))
         {
             if (!TargetHelper.IsMoving && Actions.TenChiJin.ShouldUseAction(out act)) return true;
@@ -546,6 +546,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
             if (Actions.HellfrogMedium.ShouldUseAction(out act)) return true;
             if (Actions.Bhavacakra.ShouldUseAction(out act)) return true;
         }
+
         if (Actions.Meisui.ShouldUseAction(out act)) return true;
 
         if (Service.ClientState.LocalPlayer.Level < Actions.DreamWithinaDream.Level)

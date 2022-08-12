@@ -195,7 +195,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
     }
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        //死斗 如果谢不够了。
+        //死斗 如果血不够了。
         if (Actions.Holmgang.ShouldUseAction(out act)) return true;
         return false;
     }
