@@ -179,16 +179,16 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
 
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
 
-                //ImGui.Text(TargetHelper.PartyMembers.Length.ToString());
+                ImGui.Text(TargetHelper.AllianceTanks.Length.ToString());
 
                 //if (Service.TargetManager.Target is BattleChara b)
                 //foreach (var item in b.StatusList)

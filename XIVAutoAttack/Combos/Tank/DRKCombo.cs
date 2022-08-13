@@ -135,7 +135,6 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (JobGauge.Blood >= 50 && Actions.LivingShadow.ShouldUseAction(out act)) return true;
         if (JobGauge.Blood >= 80 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Delirium))
         {
             if (Actions.Quietus.ShouldUseAction(out act)) return true;
@@ -143,7 +142,8 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         }
 
         //AOE
-        if (Actions.Unleash.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.StalwartSoul.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.Unleash.ShouldUseAction(out act)) return true;
 
         //单体
         if (Actions.Souleater.ShouldUseAction(out act, lastComboActionID)) return true;
@@ -157,6 +157,8 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
     }
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
+        if (JobGauge.Blood >= 50 && Actions.LivingShadow.ShouldUseAction(out act)) return true;
+
         if (Actions.LivingDead.ShouldUseAction(out act)) return true;
 
         //续Buff
@@ -182,7 +184,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         //搞搞攻击
         if (Actions.Plunge.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.Plunge.Target) < 2)
+            if (BaseAction.DistanceToPlayer(Actions.Plunge.Target) < 1)
             {
                 return true;
             }
@@ -195,7 +197,6 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
     {
         if (abilityRemain == 1)
         {
-
             //减伤10%
             if (Actions.Oblation.ShouldUseAction(out act)) return true;
 
@@ -205,11 +206,10 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
             //减伤20%
             if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
             if (Actions.DarkMind.ShouldUseAction(out act)) return true;
-
-            //降低攻击
-            //雪仇
-            if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
         }
+        //降低攻击
+        //雪仇
+        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
 
         act = null;
         return false;

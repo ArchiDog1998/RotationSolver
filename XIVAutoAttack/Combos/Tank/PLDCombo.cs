@@ -229,7 +229,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.Intervene.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.Intervene.Target) < 2)
+            if (BaseAction.DistanceToPlayer(Actions.Intervene.Target) < 1)
             {
                 return true;
             }
@@ -259,11 +259,10 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
                 //¶ÜÕó
                 if (Actions.Sheltron.ShouldUseAction(out act)) return true;
             }
-
-            //½µµÍ¹¥»÷
-            //Ñ©³ð
-            if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
         }
+        //½µµÍ¹¥»÷
+        //Ñ©³ð
+        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
 
         //¸ÉÔ¤£¨¼õÉË10%£©
         if (!HaveShield && Actions.Intervention.ShouldUseAction(out act)) return true;

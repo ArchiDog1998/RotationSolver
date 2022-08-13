@@ -89,6 +89,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
             HeartofStone = new BaseAction(16161, true)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+                ChoiceFriend = BaseAction.FindAttackedTarget,
             },
 
             //ÃüÔËÖ®»·
@@ -200,7 +201,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.RoughDivide.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.RoughDivide.Target) < 2)
+            if (BaseAction.DistanceToPlayer(Actions.RoughDivide.Target) < 1)
             {
                 return true;
             }
@@ -236,11 +237,11 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
 
             //Î±×°£¨¼õÉË10%£©
             if (Actions.Camouflage.ShouldUseAction(out act)) return true;
-
-            //½µµÍ¹¥»÷
-            //Ñ©³ð
-            if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
         }
+        //½µµÍ¹¥»÷
+        //Ñ©³ð
+        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
+
 
         act = null;
         return false;

@@ -245,7 +245,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
     {
         act = null;
         if (Service.IconReplacer.OriginalHook(2260) != 2260) return false;
-        if (TargetHelper.Weaponelapsed < 0.2) return false;
+        if (TargetHelper.Weaponelapsed < 0.2 && TargetHelper.Weaponelapsed > 0) return false;
         //有生杀予夺
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu))
         {
@@ -304,7 +304,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
         {
             if (Actions.Katon.ShouldUseAction(out _))
             {
-                if(!haveDoton && !IsMoving) _ninactionAim = Actions.Doton;
+                if(!haveDoton && !IsMoving && Actions.TenChiJin.RecastTimeRemain < 2) _ninactionAim = Actions.Doton;
                 else _ninactionAim = Actions.Katon;
                 return true;
             }
@@ -402,8 +402,8 @@ internal class NINCombo : CustomComboJob<NINGauge>
         //失败了
         else if (id == Actions.RabbitMedium.ID)
         {
-            act = Actions.RabbitMedium;
-            return true;
+            act = null;
+            return false;
         }
         //结束了
         else if (id == _ninactionAim.ID)
@@ -447,6 +447,11 @@ internal class NINCombo : CustomComboJob<NINGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         if (ChoiceNinjutsus(out act)) return true;
+        //if (Actions.Ten.ShouldUseAction(out _, mustUse: true)&& Actions.Huton.ShouldUseAction(out _)
+        //    && (!TargetHelper.InBattle || Service.ClientState.LocalPlayer.Level < Actions.Huraijin.Level) )
+        //{
+        //    _ninactionAim = Actions.Huton;
+        //}
         if (DoNinjutsus(out act)) return true;
 
         //用真北取消隐匿
@@ -459,6 +464,8 @@ internal class NINCombo : CustomComboJob<NINGauge>
         //无忍术或者忍术中途停了
         if (_ninactionAim == null || (replace != 2260 && replace != _ninactionAim.ID))
         {
+            _ninactionAim = null;
+
             //大招
             if (Actions.FleetingRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
             if (Actions.ForkedRaiju.ShouldUseAction(out act, lastComboActionID))

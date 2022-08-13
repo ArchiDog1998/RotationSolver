@@ -162,7 +162,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.PrimalRend.ShouldUseAction(out act, mustUse: true) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.PrimalRend.Target) < 2)
+            if (BaseAction.DistanceToPlayer(Actions.PrimalRend.Target) < 1)
             {
                 return true;
             }
@@ -213,10 +213,10 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //Ìú±Ú£¨¼õÉË20%£©
             if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
 
-            //½µµÍ¹¥»÷
-            //Ñ©³ð
-            if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
         }
+        //½µµÍ¹¥»÷
+        //Ñ©³ð
+        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
 
         act = null;
         return false;
