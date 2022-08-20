@@ -17,124 +17,124 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
     {
         public static readonly BaseAction
             //Õı “«◊Œ¿
-            RoyalGuard = new BaseAction(16142, shouldEndSpecial: true),
+            RoyalGuard = new (16142, shouldEndSpecial: true),
 
             //¿˚»–’∂
-            KeenEdge = new BaseAction(16137),
+            KeenEdge = new (16137),
 
             //Œﬁ«È
-            NoMercy = new BaseAction(16138),
+            NoMercy = new (16138),
 
             //≤–±©µØ
-            BrutalShell = new BaseAction(16139),
+            BrutalShell = new (16139),
 
             //Œ±◊∞
-            Camouflage = new BaseAction(16140)
+            Camouflage = new (16140)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
             },
 
             //∂Òƒß«–
-            DemonSlice = new BaseAction(16141),
+            DemonSlice = new (16141),
 
             //…¡¿◊µØ
-            LightningShot = new BaseAction(16143),
+            LightningShot = new (16143),
 
             //Œ£œ’¡Ï”Ú
-            DangerZone = new BaseAction(16144),
+            DangerZone = new (16144),
 
             //—∏¡¨’∂
-            SolidBarrel = new BaseAction(16145),
+            SolidBarrel = new (16145),
 
             //±¨∑¢ª˜
-            BurstStrike = new BaseAction(16162),
+            BurstStrike = new (16162),
 
             //–«‘∆
-            Nebula = new BaseAction(16148)
+            Nebula = new (16148)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
             },
 
             //∂Òƒß…±
-            DemonSlaughter = new BaseAction(16149),
+            DemonSlaughter = new (16149),
 
             //º´π‚
             Aurora = new BaseAction(16151, true)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.Aurora },
+                BuffsProvide = new [] { ObjectStatus.Aurora },
             },
 
             //≥¨ª¡˜–«
-            Superbolide = new BaseAction(16152)
+            Superbolide = new (16152)
             {
                 OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
             },
 
             //“ÙÀŸ∆∆
-            SonicBreak = new BaseAction(16153),
+            SonicBreak = new (16153),
 
             //¥÷∑÷’∂
-            RoughDivide = new BaseAction(16154, shouldEndSpecial: true),
+            RoughDivide = new (16154, shouldEndSpecial: true),
 
             //¡“—¿
-            GnashingFang = new BaseAction(16146),
+            GnashingFang = new (16146),
 
             //π≠–Œ≥Â≤®
-            BowShock = new BaseAction(16159),
+            BowShock = new (16159),
 
             //π‚÷Æ–ƒ
-            HeartofLight = new BaseAction(16160, true),
+            HeartofLight = new (16160, true),
 
             // Ø÷Æ–ƒ
-            HeartofStone = new BaseAction(16161, true)
+            HeartofStone = new (16161, true)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
                 ChoiceFriend = BaseAction.FindAttackedTarget,
             },
 
             //√¸‘À÷Æª∑
-            FatedCircle = new BaseAction(16163),
+            FatedCircle = new (16163),
 
             //—™»¿
-            Bloodfest = new BaseAction(16164)
+            Bloodfest = new (16164)
             {
                 OtherCheck = b => JobGauge.Ammo == 0,
             },
 
             //±∂π•
-            DoubleDown = new BaseAction(25760),
+            DoubleDown = new (25760),
 
             //√Õ ﬁ◊¶
-            SavageClaw = new BaseAction(16147),
+            SavageClaw = new (16147),
 
             //–◊«›◊¶
-            WickedTalon = new BaseAction(16150),
+            WickedTalon = new (16150),
 
             //À∫∫Ì
-            JugularRip = new BaseAction(16156)
+            JugularRip = new (16156)
             {
                 OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == JugularRip.ID,
             },
 
             //¡—Ã≈
-            AbdomenTear = new BaseAction(16157)
+            AbdomenTear = new (16157)
             {
                 OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == AbdomenTear.ID,
             },
 
             //¥©ƒø
-            EyeGouge = new BaseAction(16158)
+            EyeGouge = new (16158)
             {
                 OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == EyeGouge.ID,
             },
 
             //≥¨∏ﬂÀŸ
-            Hypervelocity = new BaseAction(25759)
+            Hypervelocity = new (25759)
             {
                 OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ID,
             };
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.µ•ÃÂ÷Œ¡∆, $"{Actions.Aurora.Action.Name}"},
         {DescType.∑∂Œß∑¿”˘, $"{Actions.HeartofLight.Action.Name}"},

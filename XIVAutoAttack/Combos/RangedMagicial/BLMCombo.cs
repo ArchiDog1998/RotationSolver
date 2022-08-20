@@ -52,7 +52,7 @@ namespace XIVAutoAttack.Combos
 
             public static readonly BaseAction
                 //雷1
-                Thunder = new BaseAction(144u)
+                Thunder = new(144u)
                 {
                     //    TargetStatus = new ushort[]
                     //{
@@ -66,116 +66,120 @@ namespace XIVAutoAttack.Combos
                 },
 
                 //雷2
-                Thunder2 = new BaseAction(7447u)
+                Thunder2 = new(7447u)
                 {
                     TargetStatus = Thunder.TargetStatus,
-                    OtherIDsNot = new uint[] { 153u, 144u, 7420u, 7447u }, //雷2,4 ID
+                    OtherIDsNot = new[] { 153u, 144u, 7420u, 7447u }, //雷2,4 ID
                     AfterUse = () => UseThunderIn = true,
                 },
 
-                //火1
-                Fire = new BLMAction(141u, true),
-
-                //火2
-                Fire2 = new BLMAction(147u, true)
-                {
-                    AfterUse = () => InTranspose = false,
-                },
-
-                //火3
-                Fire3 = new BLMAction(152u, true)
-                {
-                    AfterUse = () => InTranspose = false,
-                },
-
-                //火4
-                Fire4 = new BLMAction(3577u, true) { OtherCheck = b => JobGauge.InAstralFire && JobGauge.ElementTimeRemaining > 5000 },
-
-
-                //冰1
-                Blizzard = new BLMAction(142u, false)
-                {
-                    AfterUse = () => UseThunderIn = false,
-                },
-
-                //冰2
-                Blizzard2 = new BLMAction(25793u, false)
-                {
-                    AfterUse = () => UseThunderIn = false,
-                },
-
-                //冰3
-                Blizzard3 = new BLMAction(154u, false)
-                {
-                    AfterUse = () => UseThunderIn = false,
-                },
-
-                //冰4
-                Blizzard4 = new BLMAction(3576u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
-
-                //冻结
-                Freeze = new BLMAction(159u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2800 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
-
                 //星灵移位
-                Transpose = new BaseAction(149u) { OtherCheck = b => JobGauge.InUmbralIce || JobGauge.InAstralFire },
+                Transpose = new (149u) { OtherCheck = b => JobGauge.InUmbralIce || JobGauge.InAstralFire },
 
                 //灵极魂
-                UmbralSoul = new BaseAction(16506u) { OtherCheck = b => JobGauge.InUmbralIce },
+                UmbralSoul = new (16506u) { OtherCheck = b => JobGauge.InUmbralIce },
 
                 //魔罩
-                Manaward = new BaseAction(157u),
+                Manaward = new (157u),
 
                 //魔泉
-                Manafont = new BaseAction(158u),
+                Manafont = new (158u),
 
                 //激情咏唱
-                Sharpcast = new BaseAction(3574u)
+                Sharpcast = new (3574u)
                 {
-                    BuffsProvide = new ushort[] { ObjectStatus.Sharpcast }
+                    BuffsProvide = new [] { ObjectStatus.Sharpcast }
                 },
 
                 //三连咏唱
-                Triplecast = new BaseAction(7421u)
+                Triplecast = new (7421u)
                 {
                     BuffsProvide = GeneralActions.Swiftcast.BuffsProvide,
                     //OtherCheck = () => JobGauge.InAstralFire && JobGauge.UmbralHearts < 2 && JobGauge.ElementTimeRemaining > 10000,
                 },
 
                 //黑魔纹
-                Leylines = new BaseAction(3573u, shouldEndSpecial: true)
+                Leylines = new (3573u, shouldEndSpecial: true)
                 {
-                    BuffsProvide = new ushort[] { ObjectStatus.LeyLines, },
+                    BuffsProvide = new [] { ObjectStatus.LeyLines, },
                 },
 
                 //魔纹步
-                BetweenTheLines = new BaseAction(7419u, shouldEndSpecial: true)
+                BetweenTheLines = new (7419u, shouldEndSpecial: true)
                 {
-                    BuffsNeed = new ushort[] { ObjectStatus.LeyLines },
+                    BuffsNeed = new [] { ObjectStatus.LeyLines },
                 },
 
                 //以太步
-                AetherialManipulation = new BaseAction(155)
+                AetherialManipulation = new (155)
                 {
                     ChoiceFriend = BaseAction.FindMoveTarget,
                 },
 
                 //详述
-                Amplifier = new BaseAction(25796u) { OtherCheck = b => !IsPolyglotStacksMaxed && JobGauge.EnochianTimer > 10000 },
+                Amplifier = new (25796u) { OtherCheck = b => !IsPolyglotStacksMaxed && JobGauge.EnochianTimer > 10000 },
 
                 //核爆
-                Flare = new BaseAction(162u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
+                Flare = new (162u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
 
                 //绝望
-                Despair = new BaseAction(16505u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 3000 },
+                Despair = new (16505u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 3000 },
 
                 //秽浊
-                Foul = new BaseAction(7422u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 },
+                Foul = new (7422u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 },
 
                 //异言
-                Xenoglossy = new BaseAction(16507u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 };
+                Xenoglossy = new (16507u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 };
+
+
+
+            public static readonly BLMAction
+
+                //火1
+                Fire = new (141u, true),
+
+                //火2
+                Fire2 = new (147u, true)
+                {
+                    AfterUse = () => InTranspose = false,
+                },
+
+                //火3
+                Fire3 = new (152u, true)
+                {
+                    AfterUse = () => InTranspose = false,
+                },
+
+                //火4
+                Fire4 = new (3577u, true) { OtherCheck = b => JobGauge.InAstralFire && JobGauge.ElementTimeRemaining > 5000 },
+
+
+                //冰1
+                Blizzard = new (142u, false)
+                {
+                    AfterUse = () => UseThunderIn = false,
+                },
+
+                //冰2
+                Blizzard2 = new (25793u, false)
+                {
+                    AfterUse = () => UseThunderIn = false,
+                },
+
+                //冰3
+                Blizzard3 = new (154u, false)
+                {
+                    AfterUse = () => UseThunderIn = false,
+                },
+
+                //冰4
+                Blizzard4 = new (3576u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
+
+                //冻结
+                Freeze = new (159u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2800 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) };
         }
 
-        internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+        internal override SortedList<DescType, string> Description => new ()
         {
             { DescType.单体治疗, $"{Actions.BetweenTheLines.Action.Name}, {Actions.Leylines.Action.Name}, 这个很特殊！" },
             { DescType.单体防御, $"{Actions.Manaward.Action.Name}" },

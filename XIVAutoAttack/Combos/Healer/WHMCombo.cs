@@ -14,13 +14,13 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
     {
         public static readonly BaseAction
             //复活
-            Raise = new BaseAction(125, true),
+            Raise = new (125, true),
 
             //飞石 平A
-            Stone = new BaseAction(119),
+            Stone = new (119),
 
             //疾风 Dot
-            Aero = new BaseAction(121)
+            Aero = new (121)
             {
                 TargetStatus = new ushort[]
                 {
@@ -30,28 +30,28 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
                 }
             },
             //苦难之心
-            AfflatusMisery = new BaseAction(16535)
+            AfflatusMisery = new (16535)
             {
                 OtherCheck = b => JobGauge.BloodLily == 3,
             },
             //神圣
-            Holy = new BaseAction(139),
+            Holy = new (139),
 
             //治疗
-            Cure = new BaseAction(120, true),
+            Cure = new (120, true),
             //救疗
-            Cure2 = new BaseAction(135, true) { OtherIDsNot = new uint[] { 135 } },
+            Cure2 = new (135, true) { OtherIDsNot = new [] { 135u } },
             //神名
-            Tetragrammaton = new BaseAction(3570, true),
+            Tetragrammaton = new (3570, true),
             //安慰之心 800
-            AfflatusSolace = new BaseAction(16531, true)
+            AfflatusSolace = new (16531, true)
             {
                 OtherCheck = b => JobGauge.Lily > 0,
             },
             //再生
-            Regen = new BaseAction(137, true)
+            Regen = new (137, true)
             {
-                TargetStatus = new ushort[]
+                TargetStatus = new []
                 {
                     ObjectStatus.Regen1,
                     ObjectStatus.Regen2,
@@ -59,46 +59,46 @@ internal class WHMCombo : CustomComboJob<WHMGauge>
                 }
             },
             //水流幕
-            Aquaveil = new BaseAction(25861, true),
+            Aquaveil = new (25861, true),
             //神祝祷
-            DivineBenison = new BaseAction(7432, true),
+            DivineBenison = new (7432, true),
             //天赐
-            Benediction = new BaseAction(140, true)
+            Benediction = new (140, true)
             {
                 OtherCheck = b => TargetHelper.PartyMembersHP.Min() < 0.15,
             },
 
             //医治 群奶最基础的。300
-            Medica = new BaseAction(124, true),
+            Medica = new (124, true),
             //愈疗 600
-            Cure3 = new BaseAction(131, true),
+            Cure3 = new (131, true),
             //医济 群奶加Hot。
-            Medica2 = new BaseAction(133, true) { BuffsProvide = new ushort[] { ObjectStatus.Medica2, ObjectStatus.TrueMedica2 } },
+            Medica2 = new (133, true) { BuffsProvide = new [] { ObjectStatus.Medica2, ObjectStatus.TrueMedica2 } },
             //庇护所
-            Asylum = new BaseAction(3569, true),
+            Asylum = new (3569, true),
 
             //法令
-            Assize = new BaseAction(3571, true),
+            Assize = new (3571, true),
 
             //狂喜之心 400
-            AfflatusRapture = new BaseAction(16534, true)
+            AfflatusRapture = new (16534, true)
             {
                 OtherCheck = b => JobGauge.Lily > 0,
             },
             //礼仪之铃
-            LiturgyoftheBell = new BaseAction(25862, true),
+            LiturgyoftheBell = new (25862, true),
 
             //神速咏唱
-            PresenseOfMind = new BaseAction(136, true),
+            PresenseOfMind = new (136, true),
             //无中生有
-            ThinAir = new BaseAction(7430, true),
+            ThinAir = new (7430, true),
 
             //全大赦
-            PlenaryIndulgence = new BaseAction(7433, true),
+            PlenaryIndulgence = new (7433, true),
             //节制
-            Temperance = new BaseAction(16536, true);
+            Temperance = new (16536, true);
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围治疗, $"GCD: {Actions.AfflatusRapture.Action.Name}, {Actions.Medica2.Action.Name}, {Actions.Cure3.Action.Name}, {Actions.Medica.Action.Name}\n                     能力: {Actions.Asylum.Action.Name}, {Actions.Assize.Action.Name}"},
         {DescType.单体治疗, $"GCD: {Actions.AfflatusSolace.Action.Name}, {Actions.Regen.Action.Name}, {Actions.Cure2.Action.Name}, {Actions.Cure.Action.Name}\n                     能力: {Actions.Tetragrammaton.Action.Name}"},

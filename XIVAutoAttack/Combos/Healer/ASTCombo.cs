@@ -18,13 +18,13 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
     {
         public static readonly BaseAction
             //生辰
-            Ascend = new BaseAction(3603, true),
+            Ascend = new (3603, true),
 
             //凶星
-            Malefic = new BaseAction(3596),
+            Malefic = new (3596),
 
             //烧灼
-            Combust = new BaseAction(3599)
+            Combust = new (3599)
             {
                 TargetStatus = new ushort[]
                 {
@@ -36,65 +36,65 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             },
 
             //重力    
-            Gravity = new BaseAction(3615),
+            Gravity = new (3615),
 
             //吉星
-            Benefic = new BaseAction(3594, true),
+            Benefic = new (3594, true),
 
             //福星
-            Benefic2 = new BaseAction(3610, true),
+            Benefic2 = new (3610, true),
 
             //吉星相位
-            AspectedBenefic = new BaseAction(3595, true)
+            AspectedBenefic = new (3595, true)
             {
                 TargetStatus = new ushort[] { ObjectStatus.AspectedBenefic },
             },
 
             //先天禀赋
-            EssentialDignity = new BaseAction(3614, true),
+            EssentialDignity = new (3614, true),
 
 
             //星位合图
-            Synastry = new BaseAction(3612, true),
+            Synastry = new (3612, true),
 
             //天星交错
-            CelestialIntersection = new BaseAction(16556, true),
+            CelestialIntersection = new (16556, true),
 
             //擢升
-            Exaltation = new BaseAction(25873, true),
+            Exaltation = new (25873, true),
 
             //阳星
-            Helios = new BaseAction(3600, true),
+            Helios = new (3600, true),
 
             //阳星相位
-            AspectedHelios = new BaseAction(3601, true)
+            AspectedHelios = new (3601, true)
             {
                 BuffsProvide = new ushort[] { ObjectStatus.AspectedHelios },
             },
 
             //天星冲日
-            CelestialOpposition = new BaseAction(16553, true),
+            CelestialOpposition = new (16553, true),
 
             //地星
-            EarthlyStar = new BaseAction(7439, true),
+            EarthlyStar = new (7439, true),
 
             //命运之轮 减伤，手动放。
-            CollectiveUnconscious = new BaseAction(3613, true),
+            CollectiveUnconscious = new (3613, true),
 
             //天宫图
-            Horoscope = new BaseAction(16557, true),
+            Horoscope = new (16557, true),
 
             //光速
-            Lightspeed = new BaseAction(3606),
+            Lightspeed = new (3606),
 
             //中间学派
-            NeutralSect = new BaseAction(16559),
+            NeutralSect = new (16559),
 
             //大宇宙
-            Macrocosmos = new BaseAction(25874),
+            Macrocosmos = new (25874),
 
             //星力
-            Astrodyne = new BaseAction(25870)
+            Astrodyne = new (25870)
             {
                 OtherCheck = b =>
                 {
@@ -105,60 +105,60 @@ internal class ASTCombo : CustomComboJob<ASTGauge>
             },
 
             //占卜
-            Divination = new BaseAction(16552, true),
+            Divination = new (16552, true),
 
             //抽卡
-            Draw = new BaseAction(3590),
+            Draw = new (3590),
 
             //重抽
-            Redraw = new BaseAction(3593)
+            Redraw = new (3593)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.ClarifyingDraw },
+                BuffsNeed = new [] { ObjectStatus.ClarifyingDraw },
             },
 
             //小奥秘卡
-            MinorArcana = new BaseAction(7443),
+            MinorArcana = new (7443),
 
             //出王冠卡
-            CrownPlay = new BaseAction(25869),
+            CrownPlay = new (25869),
 
             //太阳神之衡
-            Balance = new BaseAction(4401)
+            Balance = new (4401)
             {
                 ChoiceFriend = ASTMeleeTarget,
             },
 
             //放浪神之箭
-            Arrow = new BaseAction(4402)
+            Arrow = new (4402)
             {
                 ChoiceFriend = ASTMeleeTarget,
             },
 
             //战争神之枪
-            Spear = new BaseAction(4403)
+            Spear = new (4403)
             {
                 ChoiceFriend = ASTMeleeTarget,
             },
 
             //世界树之干
-            Bole = new BaseAction(4404)
+            Bole = new (4404)
             {
                 ChoiceFriend = ASTRangeTarget,
             },
 
             //河流神之瓶
-            Ewer = new BaseAction(4405)
+            Ewer = new (4405)
             {
                 ChoiceFriend = ASTRangeTarget,
             },
 
             //建筑神之塔
-            Spire = new BaseAction(4406)
+            Spire = new (4406)
             {
                 ChoiceFriend = ASTRangeTarget,
             };
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围治疗, $"GCD: {Actions.AspectedHelios.Action.Name}, {Actions.Helios.Action.Name}\n                     能力: {Actions.EarthlyStar.Action.Name}, {Actions.CrownPlay.Action.Name}, {Actions.CelestialOpposition.Action.Name}"},
         {DescType.单体治疗, $"GCD: {Actions.AspectedBenefic.Action.Name}, {Actions.Benefic2.Action.Name}, {Actions.Benefic.Action.Name}\n                     能力: {Actions.CelestialIntersection.Action.Name}, {Actions.EssentialDignity.Action.Name}"},

@@ -13,75 +13,75 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
     {
         public static readonly BaseAction
             //分裂弹
-            SplitShot = new BaseAction(2866),
+            SplitShot = new (2866),
 
             //独头弹
-            SlugShot = new BaseAction(2868)
+            SlugShot = new (2868)
             {
-                OtherIDsCombo = new uint[] { 7411 },
+                OtherIDsCombo = new [] { 7411u },
             },
 
             //狙击弹
-            CleanShot = new BaseAction(2873)
+            CleanShot = new (2873)
             {
-                OtherIDsCombo = new uint[] { 7412 },
+                OtherIDsCombo = new [] { 7412u },
             },
 
             //热冲击
-            HeatBlast = new BaseAction(7410),
+            HeatBlast = new (7410),
 
             //散射
-            SpreadShot = new BaseAction(2870),
+            SpreadShot = new (2870),
 
             //自动弩
-            AutoCrossbow = new BaseAction(16497),
+            AutoCrossbow = new (16497),
 
             //热弹
-            HotShow = new BaseAction(2872),
+            HotShow = new (2872),
 
             //空气锚
-            AirAnchor = new BaseAction(16500),
+            AirAnchor = new (16500),
 
             //钻头
-            Drill = new BaseAction(16498),
+            Drill = new (16498),
 
             //回转飞锯
-            ChainSaw = new BaseAction(25788),
+            ChainSaw = new (25788),
 
             //毒菌冲击
-            Bioblaster = new BaseAction(16499),
+            Bioblaster = new (16499),
 
             //整备
-            Reassemble = new BaseAction(2876),
+            Reassemble = new (2876),
 
             //超荷
-            Hypercharge = new BaseAction(17209)
+            Hypercharge = new (17209)
             {
                 OtherCheck = b => JobGauge.Heat >= 50,
             },
 
             //野火
-            Wildfire = new BaseAction(2878),
+            Wildfire = new (2878),
 
             //虹吸弹
-            GaussRound = new BaseAction(2874),
+            GaussRound = new (2874),
 
             //弹射
-            Ricochet = new BaseAction(2890),
+            Ricochet = new (2890),
 
             //枪管加热
-            BarrelStabilizer = new BaseAction(7414),
+            BarrelStabilizer = new (7414),
 
             //车式浮空炮塔
-            RookAutoturret = new BaseAction(2864)
+            RookAutoturret = new (2864)
             {
                 OtherCheck = b => JobGauge.Battery >= 50,
             },
 
             //策动
-            Tactician = new BaseAction(16889, true)
+            Tactician = new (16889, true)
             {
-                BuffsProvide = new ushort[]
+                BuffsProvide = new []
                 {
                     ObjectStatus.Troubadour,
                     ObjectStatus.Tactician1,
@@ -90,7 +90,7 @@ internal class MCHCombo : CustomComboJob<MCHGauge>
                 },
             };
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围防御, $"{Actions.Tactician.Action.Name}"},
     };

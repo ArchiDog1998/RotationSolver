@@ -27,71 +27,71 @@ internal class WARCombo : CustomComboJob<WARGauge>
     {
         public static readonly BaseAction
             //ÊØ»¤
-            Defiance = new BaseAction(48, shouldEndSpecial: true),
+            Defiance = new (48, shouldEndSpecial: true),
 
             //ÖØÅü
-            HeavySwing = new BaseAction(31),
+            HeavySwing = new (31),
 
             //Ð×²ÐÁÑ
-            Maim = new BaseAction(37),
+            Maim = new (37),
 
             //±©·çÕ¶ ÂÌ¸«
-            StormsPath = new BaseAction(42),
+            StormsPath = new (42),
 
             //±©·çËé ºì¸«
-            StormsEye = new BaseAction(45)
+            StormsEye = new (45)
             {
                 OtherCheck = b => BuffTime < 10,
             },
 
             //·É¸«
-            Tomahawk = new BaseAction(46)
+            Tomahawk = new (46)
             {
                 FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
             },
 
             //ÃÍ¹¥
-            Onslaught = new BaseAction(7386, shouldEndSpecial: true),
+            Onslaught = new (7386, shouldEndSpecial: true),
 
             //¶¯ÂÒ    
-            Upheaval = new BaseAction(7387),
+            Upheaval = new (7387),
 
             //³¬Ñ¹¸«
-            Overpower = new BaseAction(41),
+            Overpower = new (41),
 
             //ÃØÒø±©·ç
-            MythrilTempest = new BaseAction(16462),
+            MythrilTempest = new (16462),
 
             //ÈºÉ½Â¡Æð
-            Orogeny = new BaseAction(25752),
+            Orogeny = new (25752),
 
             //Ô­³õÖ®»ê
-            InnerBeast = new BaseAction(49),
+            InnerBeast = new (49),
 
             //¸ÖÌúÐý·ç
-            SteelCyclone = new BaseAction(51),
+            SteelCyclone = new (51),
 
             //Õ½º¿
-            Infuriate = new BaseAction(52)
+            Infuriate = new (52)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.InnerRelease },
+                BuffsProvide = new [] { ObjectStatus.InnerRelease },
                 OtherCheck = b => BaseAction.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge <= 50,
             },
 
             //¿ñ±©
-            Berserk = new BaseAction(38)
+            Berserk = new (38)
             {
                 OtherCheck = b => BaseAction.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0,
             },
 
             //Õ½Àõ
-            ThrillofBattle = new BaseAction(40),
+            ThrillofBattle = new (40),
 
             //Ì©È»×ÔÈô
-            Equilibrium = new BaseAction(3552),
+            Equilibrium = new (3552),
 
             //Ô­³õµÄÓÂÃÍ
-            NascentFlash = new BaseAction(16464)
+            NascentFlash = new (16464)
             {
                 ChoiceFriend = BaseAction.FindAttackedTarget,
             },
@@ -100,22 +100,22 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //Bloodwhetting = new BaseAction(25751),
 
             //¸´³ð
-            Vengeance = new BaseAction(44)
+            Vengeance = new (44)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
             },
 
             //Ô­³õµÄÖ±¾õ
-            RawIntuition = new BaseAction(3551)
+            RawIntuition = new (3551)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
             },
 
             //°ÚÍÑ
-            ShakeItOff = new BaseAction(7388),
+            ShakeItOff = new (7388),
 
             //ËÀ¶·
-            Holmgang = new BaseAction(43)
+            Holmgang = new (43)
             {
                 OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
             },
@@ -124,12 +124,12 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //InnerRelease = new BaseAction(7389),
 
             //Âù»Ä±ÀÁÑ
-            PrimalRend = new BaseAction(25753)
+            PrimalRend = new (25753)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.PrimalRendReady },
+                BuffsNeed = new [] { ObjectStatus.PrimalRendReady },
             };
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.·¶Î§·ÀÓù, $"{Actions.ShakeItOff.Action.Name}"},
         {DescType.µ¥Ìå·ÀÓù, $"{Actions.RawIntuition.Action.Name}, {Actions.Vengeance.Action.Name}"},

@@ -14,10 +14,10 @@ namespace XIVAutoAttack.Combos.Disciplines
         {
             public static readonly BaseAction
                 //抛竿
-                Cast = new BaseAction(289),
+                Cast = new (289),
 
                 //提钩
-                Hook = new BaseAction(296)
+                Hook = new (296)
                 {
                     AfterUse = () =>
                     {
@@ -34,7 +34,7 @@ namespace XIVAutoAttack.Combos.Disciplines
                 },
 
                 //精准提钩
-                PrecisionHookset = new BaseAction(4179)
+                PrecisionHookset = new (4179)
                 {
                     AfterUse = () =>
                     {
@@ -49,7 +49,7 @@ namespace XIVAutoAttack.Combos.Disciplines
                     },
                 },
                 //强力提钩
-                PowerfulHookset = new BaseAction(4103)
+                PowerfulHookset = new (4103)
                 {
                     AfterUse = () =>
                     {
@@ -66,10 +66,10 @@ namespace XIVAutoAttack.Combos.Disciplines
                 },
 
                 //沙利亚克的恩宠
-                ThaliaksFavor = new BaseAction(26804),
+                ThaliaksFavor = new (26804),
 
                 //耐心
-                Patience = new BaseAction(4102)
+                Patience = new (4102)
                 {
                     OtherCheck = b =>
                     {
@@ -82,13 +82,13 @@ namespace XIVAutoAttack.Combos.Disciplines
                 },
 
                 //钓组
-                Snagging = new BaseAction(4100)
+                Snagging = new (4100)
                 {
                     BuffsProvide = new ushort[] { ObjectStatus.Snagging },
                 },
 
                 //以小钓大
-                Mooch = new BaseAction(297)
+                Mooch = new (297)
                 {
                     OtherCheck = b => TargetHelper.Fish == FishType.Mooch,
                     AfterUse = () =>
@@ -103,7 +103,7 @@ namespace XIVAutoAttack.Combos.Disciplines
                 },
 
                 //撒饵
-                Chum = new BaseAction(4104)
+                Chum = new (4104)
                 {
                     OtherCheck = b => TargetHelper.Fish != FishType.Mooch,
                     AfterUse = () =>
@@ -115,9 +115,9 @@ namespace XIVAutoAttack.Combos.Disciplines
 
             public static readonly BaseItem
                 //强心剂
-                Strong = new BaseItem(6141, 65535),
+                Strong = new (6141, 65535),
                 //高级强心剂
-                HighStrong = new BaseItem(12669, 65535);
+                HighStrong = new (12669, 65535);
         }
         private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
         {

@@ -24,136 +24,140 @@ internal class SMNCombo : CustomComboJob<SMNGauge>
     private static bool InBreak => InBahamut || InPhoenix || Service.ClientState.LocalPlayer.Level < Actions.SummonBahamut.Level;
     internal struct Actions
     {
+        public static readonly SMNAction
+            //宝石耀
+            Gemshine = new (25883)
+            {
+                OtherCheck = b => JobGauge.Attunement > 0,
+            },
+
+            //宝石辉
+            PreciousBrilliance = new (25884)
+            {
+                OtherCheck = b => JobGauge.Attunement > 0,
+            },
+
+            //毁灭 单体攻击
+            Ruin = new (163),
+
+            //迸裂 范围伤害
+            Outburst = new (16511);
+
         public static readonly BaseAction
             //宝石兽召唤
-            SummonCarbuncle = new BaseAction(25798)
+            SummonCarbuncle = new (25798)
             {
                 OtherCheck = b => !TargetHelper.HavePet,
             },
 
             //灼热之光 团辅
-            SearingLight = new BaseAction(25801)
+            SearingLight = new (25801)
             {
                 OtherCheck = b => TargetHelper.InBattle && !InBahamut && !InPhoenix
                 //&& JobGauge.ReturnSummon == Dalamud.Game.ClientState.JobGauge.Enums.SummonPet.NONE,
             },
 
             //守护之光 给自己戴套
-            RadiantAegis = new BaseAction(25799),
+            RadiantAegis = new (25799),
 
             //医术
-            Physick = new BaseAction(16230, true),
+            Physick = new (16230, true),
 
             //以太蓄能 
-            Aethercharge = new BaseAction(25800)
+            Aethercharge = new (25800)
             {
                 OtherCheck = b => TargetHelper.InBattle,
             },
 
             //龙神召唤
-            SummonBahamut = new BaseAction(7427),
+            SummonBahamut = new (7427),
 
             //红宝石召唤
-            SummonRuby = new BaseAction(25802)
+            SummonRuby = new (25802)
             {
                 OtherCheck = b => JobGauge.IsIfritReady && !TargetHelper.IsMoving,
             },
 
             //黄宝石召唤
-            SummonTopaz = new BaseAction(25803)
+            SummonTopaz = new (25803)
             {
                 OtherCheck = b => JobGauge.IsTitanReady,
             },
 
             //绿宝石召唤
-            SummonEmerald = new BaseAction(25804)
+            SummonEmerald = new (25804)
             {
                 OtherCheck = b => JobGauge.IsGarudaReady,
             },
 
-            //宝石耀
-            Gemshine = new SMNAction(25883)
-            {
-                OtherCheck = b => JobGauge.Attunement > 0,
-            },
-
-            //宝石辉
-            PreciousBrilliance = new SMNAction(25884)
-            {
-                OtherCheck = b => JobGauge.Attunement > 0,
-            },
-
-            //毁灭 单体攻击
-            Ruin = new SMNAction(163),
-
-            //迸裂 范围伤害
-            Outburst = new SMNAction(16511),
 
             //复生
-            Resurrection = new BaseAction(173, true),
+            Resurrection = new (173, true),
 
             //能量吸收
-            EnergyDrain = new BaseAction(16508),
+            EnergyDrain = new (16508),
 
             //能量抽取
-            EnergySiphon = new BaseAction(16510),
+            EnergySiphon = new (16510),
 
             //溃烂爆发
-            Fester = new BaseAction(181),
+            Fester = new (181),
 
             //痛苦核爆
-            Painflare = new BaseAction(3578),
+            Painflare = new (3578),
 
             //毁绝
-            RuinIV = new BaseAction(7426)
+            RuinIV = new (7426)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.FurtherRuin },
+                BuffsNeed = new [] { ObjectStatus.FurtherRuin },
             },
 
             //龙神迸发
-            EnkindleBahamut = new BaseAction(7429)
+            EnkindleBahamut = new (7429)
             {
                 OtherCheck = b => InBahamut || InPhoenix,
             },
 
             //死星核爆
-            Deathflare = new BaseAction(3582)
+            Deathflare = new (3582)
             {
                 OtherCheck = b => InBahamut,
             },
 
             //苏生之炎
-            Rekindle = new BaseAction(25830, true)
+            Rekindle = new (25830, true)
             {
                 OtherCheck = b => InPhoenix,
             },
 
             //深红旋风
-            CrimsonCyclone = new BaseAction(25835)
+            CrimsonCyclone = new (25835)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.IfritsFavor },
+                BuffsNeed = new [] { ObjectStatus.IfritsFavor },
             },
 
             //深红强袭
-            CrimsonStrike = new BaseAction(25885),
+            CrimsonStrike = new (25885),
 
             //山崩
-            MountainBuster = new BaseAction(25836)
+            MountainBuster = new (25836)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.TitansFavor },
+                BuffsNeed = new [] { ObjectStatus.TitansFavor },
             },
 
             //螺旋气流
-            Slipstream = new BaseAction(25837)
+            Slipstream = new (25837)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.GarudasFavor },
+                BuffsNeed = new [] { ObjectStatus.GarudasFavor },
             };
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体防御, $"{Actions.RadiantAegis.Action.Name}"},
         {DescType.单体治疗, $"{Actions.Physick.Action.Name}"},
     };
+
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //灼热之光

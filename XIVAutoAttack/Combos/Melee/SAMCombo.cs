@@ -14,112 +14,112 @@ internal class SAMCombo : CustomComboJob<SAMGauge>
     {
         public static readonly BaseAction
             //刃风
-            Hakaze = new BaseAction(7477),
+            Hakaze = new (7477),
 
             //阵风
-            Jinpu = new BaseAction(7478),
+            Jinpu = new (7478),
 
             //心眼
-            ThirdEye = new BaseAction(7498),
+            ThirdEye = new (7498),
 
             //燕飞
-            Enpi = new BaseAction(7486),
+            Enpi = new (7486),
 
             //士风
-            Shifu = new BaseAction(7479),
+            Shifu = new (7479),
 
             //风雅
-            Fuga = new BaseAction(7483),
+            Fuga = new (7483),
 
             //月光
-            Gekko = new BaseAction(7481)
+            Gekko = new (7481)
             {
                 EnermyLocation = EnemyLocation.Back,
             },
 
             //彼岸花
-            Higanbana = new BaseAction(7489)
+            Higanbana = new (7489)
             {
                 OtherCheck = b => !TargetHelper.IsMoving,
-                TargetStatus = new ushort[] { ObjectStatus.Higanbana },
+                TargetStatus = new [] { ObjectStatus.Higanbana },
             },
 
             //天下五剑
-            TenkaGoken = new BaseAction(7488)
+            TenkaGoken = new (7488)
             {
                 OtherCheck = b => !TargetHelper.IsMoving,
             },
 
             //纷乱雪月花
-            MidareSetsugekka = new BaseAction(7487)
+            MidareSetsugekka = new (7487)
             {
                 OtherCheck = b => !TargetHelper.IsMoving,
             },
 
             //满月
-            Mangetsu = new BaseAction(7484),
+            Mangetsu = new (7484),
 
             //花车
-            Kasha = new BaseAction(7482)
+            Kasha = new (7482)
             {
                 EnermyLocation = EnemyLocation.Side,
             },
 
             //樱花
-            Oka = new BaseAction(7485),
+            Oka = new (7485),
 
             //明镜止水
-            MeikyoShisui = new BaseAction(7499)
+            MeikyoShisui = new (7499)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.MeikyoShisui },
+                BuffsProvide = new [] { ObjectStatus.MeikyoShisui },
             },
 
             //雪风
-            Yukikaze = new BaseAction(7480),
+            Yukikaze = new (7480),
 
             ////必杀剑·回天
             //HissatsuKaiten = new BaseAction(7494),
 
             //必杀剑·晓天
-            HissatsuGyoten = new BaseAction(7492),
+            HissatsuGyoten = new (7492),
 
             //必杀剑·震天
-            HissatsuShinten = new BaseAction(7490),
+            HissatsuShinten = new (7490),
 
             //必杀剑·九天
-            HissatsuKyuten = new BaseAction(7491),
+            HissatsuKyuten = new (7491),
 
             //意气冲天
-            Ikishoten = new BaseAction(16482),
+            Ikishoten = new (16482),
 
             //必杀剑·红莲
-            HissatsuGuren = new BaseAction(7496),
+            HissatsuGuren = new (7496),
 
             //必杀剑·闪影
-            HissatsuSenei = new BaseAction(16481),
+            HissatsuSenei = new (16481),
 
             //回返五剑
-            KaeshiGoken = new BaseAction(16485),
+            KaeshiGoken = new (16485),
 
             //回返雪月花
-            KaeshiSetsugekka = new BaseAction(16486),
+            KaeshiSetsugekka = new (16486),
 
             //照破
-            Shoha = new BaseAction(16487),
+            Shoha = new (16487),
 
             //无明照破
-            Shoha2 = new BaseAction(25779),
+            Shoha2 = new (25779),
 
             //奥义斩浪
-            OgiNamikiri = new BaseAction(25781)
+            OgiNamikiri = new (25781)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.OgiNamikiriReady },
+                BuffsNeed = new [] { ObjectStatus.OgiNamikiriReady },
             },
 
             //回返斩浪
-            KaeshiNamikiri = new BaseAction(25782);
+            KaeshiNamikiri = new (25782);
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体防御, $"{Actions.ThirdEye.Action.Name}"},
         {DescType.移动, $"{Actions.HissatsuGyoten.Action.Name}"},

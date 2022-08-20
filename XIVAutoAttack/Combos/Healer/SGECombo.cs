@@ -16,23 +16,23 @@ internal class SGECombo : CustomComboJob<SGEGauge>
     {
         public static readonly BaseAction
             //复苏
-            Egeiro = new BaseAction(24287),
+            Egeiro = new (24287),
 
             //注药
-            Dosis = new BaseAction(24283),
+            Dosis = new (24283),
 
             //发炎
-            Phlegma = new BaseAction(24289),
+            Phlegma = new (24289),
             //发炎2
-            Phlegma2 = new BaseAction(24307),
+            Phlegma2 = new (24307),
             //发炎3
-            Phlegma3 = new BaseAction(24313),
+            Phlegma3 = new (24313),
 
             //诊断
-            Diagnosis = new BaseAction(24284, true),
+            Diagnosis = new (24284, true),
 
             //心关
-            Kardia = new BaseAction(24285, true)
+            Kardia = new (24285, true)
             {
                 ChoiceFriend = Targets =>
                 {
@@ -66,22 +66,22 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             },
 
             //预后
-            Prognosis = new BaseAction(24286, true, shouldEndSpecial: true),
+            Prognosis = new (24286, true, shouldEndSpecial: true),
 
             //自生
-            Physis = new BaseAction(24288, true),
+            Physis = new (24288, true),
 
             //自生2
-            Physis2 = new BaseAction(24302, true),
+            Physis2 = new (24302, true),
 
             ////均衡
-            Eukrasia = new BaseAction(24290)
+            Eukrasia = new (24290)
             {
                 OtherCheck = b => !JobGauge.Eukrasia,
             },
 
             //拯救
-            Soteria = new BaseAction(24294, true)
+            Soteria = new (24294, true)
             {
                 ChoiceFriend = Targets =>
                 {
@@ -99,55 +99,67 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             },
 
             //神翼
-            Icarus = new BaseAction(24295, shouldEndSpecial: true)
+            Icarus = new (24295, shouldEndSpecial: true)
             {
                 ChoiceFriend = BaseAction.FindMoveTarget,
             },
 
             //灵橡清汁
-            Druochole = new BaseAction(24296, true),
+            Druochole = new (24296, true),
 
             //失衡
-            Dyskrasia = new BaseAction(24297),
+            Dyskrasia = new (24297),
 
             //坚角清汁
-            Kerachole = new BaseAction(24298, true),
+            Kerachole = new (24298, true),
 
             //寄生清汁
-            Ixochole = new BaseAction(24299, true),
+            Ixochole = new (24299, true),
 
             //活化
-            Zoe = new BaseAction(24300),
+            Zoe = new (24300),
 
             //白牛清汁
-            Taurochole = new BaseAction(24303, true)
+            Taurochole = new (24303, true)
             {
                 ChoiceFriend = BaseAction.FindBeAttacked,
             },
 
             //箭毒
-            Toxikon = new BaseAction(24304),
+            Toxikon = new (24304),
 
             //输血
-            Haima = new BaseAction(24305, true)
+            Haima = new (24305, true)
+            {
+                ChoiceFriend = BaseAction.FindBeAttacked,
+            },
+
+            //均衡诊断
+            EukrasianDiagnosis = new (24291, true) 
+            {
+                ChoiceFriend = BaseAction.FindBeAttacked,
+            },
+
+            //均衡诊断
+            EukrasianPrognosis = new (24292, true)
             {
                 ChoiceFriend = BaseAction.FindBeAttacked,
             },
 
             //根素
-            Rhizomata = new BaseAction(24309),
+            Rhizomata = new (24309),
 
             //整体论
-            Holos = new BaseAction(24310, true),
+            Holos = new (24310, true),
 
             //泛输血
-            Panhaima = new BaseAction(24311, true),
+            Panhaima = new (24311, true),
 
             //混合
-            Krasis = new BaseAction(24317, true),
+            Krasis = new (24317, true),
 
             //魂灵风息
-            Pneuma = new BaseAction(24318);
+            Pneuma = new (24318);
     }
 
     private protected override ActionConfiguration CreateConfiguration()
@@ -155,7 +167,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
     }
 
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围治疗, $"GCD: {Actions.Prognosis.Action.Name}\n                     能力: {Actions.Holos.Action.Name}, {Actions.Ixochole.Action.Name}, {Actions.Physis2.Action.Name}, {Actions.Physis.Action.Name}"},
         {DescType.单体治疗, $"GCD: {Actions.Diagnosis.Action.Name}\n                     能力: {Actions.Druochole.Action.Name}"},
@@ -208,9 +220,9 @@ internal class SGECombo : CustomComboJob<SGEGauge>
     private protected override bool DefenseSingleGCD(uint lastComboActionID, out IAction act)
     {
         //诊断
-        if (Actions.Diagnosis.ShouldUseAction(out act))
+        if (Actions.EukrasianDiagnosis.ShouldUseAction(out act))
         {
-            if (Actions.Diagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
+            if (Actions.EukrasianDiagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
             {
                 ObjectStatus.EukrasianDiagnosis,
                 ObjectStatus.EukrasianPrognosis,
@@ -220,7 +232,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             //均衡
             if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
 
-            act = Actions.Diagnosis;
+            act = Actions.EukrasianDiagnosis;
             return true;
         }
 
@@ -240,9 +252,9 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         }
 
         //预后
-        if (Actions.Prognosis.ShouldUseAction(out act))
+        if (Actions.EukrasianPrognosis.ShouldUseAction(out act))
         {
-            if (Actions.Diagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
+            if (Actions.EukrasianPrognosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
             {
                 ObjectStatus.EukrasianDiagnosis,
                 ObjectStatus.EukrasianPrognosis,
@@ -250,7 +262,7 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             }).Count() > 0) return false;
 
             //均衡
-            if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
+            if (Actions.EukrasianPrognosis.ShouldUseAction(out act)) return true;
 
         }
 

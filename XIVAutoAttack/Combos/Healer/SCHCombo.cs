@@ -19,34 +19,34 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
     {
         public static readonly BaseAction
             //毁灭
-            Ruin = new BaseAction(17869),
+            Ruin = new (17869),
 
             //毁坏
-            Ruin2 = new BaseAction(17870),
+            Ruin2 = new (17870),
 
             //毁坏
-            Broil = new BaseAction(3584),
+            Broil = new (3584),
 
             //朝日召唤
-            SummonEos = new BaseAction(17215)
+            SummonEos = new (17215)
             {
                 OtherCheck = b => !TargetHelper.HavePet,
             },
 
             //毒菌
-            Bio = new BaseAction(17864, true)
+            Bio = new (17864, true)
             {
                 TargetStatus = new ushort[] { ObjectStatus.Bio, ObjectStatus.Bio2, ObjectStatus.Biolysis },
             },
 
             //医术
-            Physick = new BaseAction(190, true),
+            Physick = new (190, true),
 
             //破阵法
-            ArtofWar = new BaseAction(16539),
+            ArtofWar = new (16539),
 
             //鼓舞激励之策
-            Adloquium = new BaseAction(185, true)
+            Adloquium = new (185, true)
             {
                 TargetStatus = new ushort[]
                 {
@@ -57,66 +57,66 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             },
 
             //士气高扬之策
-            Succor = new BaseAction(186, true)
+            Succor = new (186, true)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.Galvanize },
+                BuffsProvide = new [] { ObjectStatus.Galvanize },
             },
 
             //仙光的低语
-            WhisperingDawn = new BaseAction(16537)
+            WhisperingDawn = new (16537)
             {
                 //OtherCheck = b => JobGauge.SeraphTimer == 0,
             },
 
 
             //异想的幻光
-            FeyIllumination = new BaseAction(16538)
+            FeyIllumination = new (16538)
             {
                 //OtherCheck = b => JobGauge.SeraphTimer == 0,
             },
 
 
             //异想的祥光
-            FeyBlessing = new BaseAction(16543)
+            FeyBlessing = new (16543)
             {
                 OtherCheck = b => JobGauge.SeraphTimer == 0,
             },
 
             //以太超流
-            Aetherflow = new BaseAction(166)
+            Aetherflow = new (166)
             {
                 OtherCheck = b => TargetHelper.InBattle,
             },
 
             //能量吸收
-            EnergyDrain = new BaseAction(167),
+            EnergyDrain = new (167),
 
             //生命活性法
-            Lustrate = new BaseAction(189, true),
+            Lustrate = new (189, true),
 
             //深谋远虑之策
-            Excogitation = new BaseAction(7434, true),
+            Excogitation = new (7434, true),
 
             //不屈不挠之策
-            Indomitability = new BaseAction(3583, true),
+            Indomitability = new (3583, true),
 
             //野战治疗阵
-            SacredSoil = new BaseAction(188, true),
+            SacredSoil = new (188, true),
 
             //以太契约
-            Aetherpact = new BaseAction(7437, true)
+            Aetherpact = new (7437, true)
             {
                 OtherCheck = b => JobGauge.FairyGauge >= 10 && JobGauge.SeraphTimer == 0,
             },
 
             //秘策
-            Recitation = new BaseAction(16542),
+            Recitation = new (16542),
 
             //连环计
-            ChainStratagem = new BaseAction(7436),
+            ChainStratagem = new (7436),
 
             //展开战术
-            DeploymentTactics = new BaseAction(3585, true)
+            DeploymentTactics = new (3585, true)
             {
                 ChoiceFriend = friends =>
                 {
@@ -131,26 +131,26 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
             },
 
             //炽天召唤
-            SummonSeraph = new BaseAction(16545),
+            SummonSeraph = new (16545),
 
             //慰藉
-            Consolation = new BaseAction(16546)
+            Consolation = new (16546)
             {
                 OtherCheck = b => JobGauge.SeraphTimer > 0,
             },
 
             //生命回生法
-            Protraction = new BaseAction(25867),
+            Protraction = new (25867),
 
             //疾风怒涛之计
-            Expedient = new BaseAction(25868);
+            Expedient = new (25868);
     }
 
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围治疗, $"GCD: {Actions.Succor.Action.Name}\n                     能力: {Actions.SacredSoil.Action.Name}, {Actions.SummonSeraph.Action.Name}, {Actions.WhisperingDawn.Action.Name}, {Actions.FeyBlessing.Action.Name}, {Actions.Indomitability.Action.Name}"},
         {DescType.单体治疗, $"GCD: {Actions.Adloquium.Action.Name}, {Actions.Physick.Action.Name}\n                     能力: {Actions.Aetherpact.Action.Name}, {Actions.Protraction.Action.Name}, {Actions.Excogitation.Action.Name}, {Actions.Lustrate.Action.Name}"},

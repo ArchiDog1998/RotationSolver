@@ -15,122 +15,122 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
         public static readonly BaseAction
 
             //∆Ÿ–∫
-            Cascade = new BaseAction(15989)
+            Cascade = new (15989)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.SilkenSymmetry }
+                BuffsProvide = new [] { ObjectStatus.SilkenSymmetry }
             },
 
             //≈Á»™
-            Fountain = new BaseAction(15990)
+            Fountain = new (15990)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.SilkenFlow }
+                BuffsProvide = new [] { ObjectStatus.SilkenFlow }
             },
 
             //ƒÊ∆Ÿ–∫
-            ReverseCascade = new BaseAction(15991)
+            ReverseCascade = new (15991)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.SilkenSymmetry },
+                BuffsNeed = new [] { ObjectStatus.SilkenSymmetry },
             },
 
             //◊π≈Á»™
-            Fountainfall = new BaseAction(15992)
+            Fountainfall = new (15992)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.SilkenFlow }
+                BuffsNeed = new [] { ObjectStatus.SilkenFlow }
             },
 
             //…»ŒË°§–Ú
-            FanDance = new BaseAction(16007)
+            FanDance = new (16007)
             {
                 OtherCheck = b => JobGauge.Feathers > 0,
-                BuffsProvide = new ushort[] { ObjectStatus.ThreefoldFanDance },
+                BuffsProvide = new [] { ObjectStatus.ThreefoldFanDance },
             },
 
             //∑Á≥µ
-            Windmill = new BaseAction(15993)
+            Windmill = new (15993)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.SilkenSymmetry }
+                BuffsProvide = new [] { ObjectStatus.SilkenSymmetry }
             },
 
             //¬‰»–”Í
-            Bladeshower = new BaseAction(15994)
+            Bladeshower = new (15994)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.SilkenFlow }
+                BuffsProvide = new [] { ObjectStatus.SilkenFlow }
             },
 
             //…˝∑Á≥µ
-            RisingWindmill = new BaseAction(15995)
+            RisingWindmill = new (15995)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.SilkenSymmetry },
+                BuffsNeed = new [] { ObjectStatus.SilkenSymmetry },
             },
 
             //¬‰—™”Í
-            Bloodshower = new BaseAction(15996)
+            Bloodshower = new (15996)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.SilkenFlow }
+                BuffsNeed = new [] { ObjectStatus.SilkenFlow }
             },
 
             //…»ŒË°§∆∆
-            FanDance2 = new BaseAction(16008)
+            FanDance2 = new (16008)
             {
                 OtherCheck = b => JobGauge.Feathers > 0,
-                BuffsProvide = new ushort[] { ObjectStatus.ThreefoldFanDance },
+                BuffsProvide = new [] { ObjectStatus.ThreefoldFanDance },
             },
 
             //…»ŒË°§º±
-            FanDance3 = new BaseAction(16009)
+            FanDance3 = new (16009)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.ThreefoldFanDance },
+                BuffsNeed = new [] { ObjectStatus.ThreefoldFanDance },
             },
 
             //…»ŒË°§÷’
-            FanDance4 = new BaseAction(25791)
+            FanDance4 = new (25791)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.FourfoldFanDance },
+                BuffsNeed = new [] { ObjectStatus.FourfoldFanDance },
             },
 
             //Ω£ŒË
-            SaberDance = new BaseAction(16005)
+            SaberDance = new (16005)
             {
                 OtherCheck = b => JobGauge.Esprit >= 50,
             },
 
             //¡˜–«ŒË
-            StarfallDance = new BaseAction(25792)
+            StarfallDance = new (25792)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.FlourishingStarfall },
+                BuffsNeed = new [] { ObjectStatus.FlourishingStarfall },
             },
 
             //«∞≥Â≤Ω
-            EnAvant = new BaseAction(16010, shouldEndSpecial: true),
+            EnAvant = new (16010, shouldEndSpecial: true),
 
             //«æﬁ±«˙Ω≈≤Ω
-            Emboite = new BaseAction(15999)
+            Emboite = new (15999)
             {
                 OtherCheck = b => JobGauge.NextStep == 15999,
             },
 
             //–°ƒÒΩªµ˛Ã¯
-            Entrechat = new BaseAction(16000)
+            Entrechat = new (16000)
             {
                 OtherCheck = b => JobGauge.NextStep == 16000,
             },
 
             //¬Ã“∂–°ÃﬂÕ»
-            Jete = new BaseAction(16001)
+            Jete = new (16001)
             {
                 OtherCheck = b => JobGauge.NextStep == 16001,
             },
 
             //Ωπ⁄÷∫º‚◊™
-            Pirouette = new BaseAction(16002)
+            Pirouette = new (16002)
             {
                 OtherCheck = b => JobGauge.NextStep == 16002,
             },
 
             //±Í◊ºŒË≤Ω
-            StandardStep = new BaseAction(15997)
+            StandardStep = new (15997)
             {
-                BuffsProvide = new ushort[]
+                BuffsProvide = new []
                 {
                     ObjectStatus.StandardStep,
                     ObjectStatus.TechnicalStep,
@@ -138,13 +138,13 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             },
 
             //ºº«…ŒË≤Ω
-            TechnicalStep = new BaseAction(15998)
+            TechnicalStep = new (15998)
             {
-                BuffsNeed = new ushort[]
+                BuffsNeed = new []
                 {
                     ObjectStatus.StandardFinish,
                 },
-                BuffsProvide = new ushort[]
+                BuffsProvide = new []
                 {
                     ObjectStatus.StandardStep,
                     ObjectStatus.TechnicalStep,
@@ -152,9 +152,9 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             },
 
             //∑¿ ÿ÷Æ…£∞Õ
-            ShieldSamba = new BaseAction(16012, true)
+            ShieldSamba = new (16012, true)
             {
-                BuffsProvide = new ushort[]
+                BuffsProvide = new []
                 {
                     ObjectStatus.Troubadour,
                     ObjectStatus.Tactician1,
@@ -164,10 +164,10 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             },
 
             //÷Œ¡∆÷Æª™∂˚◊»
-            CuringWaltz = new BaseAction(16015, true),
+            CuringWaltz = new (16015, true),
 
             //±’ ΩŒË◊À
-            ClosedPosition = new BaseAction(16006, true)
+            ClosedPosition = new (16006, true)
             {
                 ChoiceFriend = Targets =>
                 {
@@ -198,13 +198,13 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             },
 
             //Ω¯π•÷ÆÃΩ∏Í
-            Devilment = new BaseAction(16011, true),
+            Devilment = new (16011, true),
 
             //∞Ÿª®’˘—ﬁ
-            Flourish = new BaseAction(16013)
+            Flourish = new (16013)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.StandardFinish },
-                BuffsProvide = new ushort[]
+                BuffsNeed = new [] { ObjectStatus.StandardFinish },
+                BuffsProvide = new []
                 {
                     ObjectStatus.ThreefoldFanDance,
                     ObjectStatus.FourfoldFanDance,
@@ -212,16 +212,16 @@ internal class DNCCombo : CustomComboJob<DNCGauge>
             },
 
             //º¥–À±Ì—›
-            Improvisation = new BaseAction(16014, true),
+            Improvisation = new (16014, true),
 
             //Ã·¿≠ƒ…
-            Tillana = new BaseAction(25790)
+            Tillana = new (25790)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.FlourishingFinish },
+                BuffsNeed = new [] { ObjectStatus.FlourishingFinish },
             };
     }
 
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.∑∂Œß∑¿”˘, $"{Actions.ShieldSamba.Action.Name}"},
         {DescType.∑∂Œß÷Œ¡∆, $"{Actions.CuringWaltz.Action.Name}, {Actions.Improvisation.Action.Name}"},

@@ -17,102 +17,102 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
     {
         public static readonly BaseAction
             //重斩
-            HardSlash = new BaseAction(3617),
+            HardSlash = new (3617),
 
             //吸收斩
-            SyphonStrike = new BaseAction(3623),
+            SyphonStrike = new (3623),
 
             //释放
-            Unleash = new BaseAction(3621),
+            Unleash = new (3621),
 
             //深恶痛绝
-            Grit = new BaseAction(3629, shouldEndSpecial: true),
+            Grit = new (3629, shouldEndSpecial: true),
 
             //伤残
-            Unmend = new BaseAction(3624)
+            Unmend = new (3624)
             {
                 FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
             },
 
             //噬魂斩
-            Souleater = new BaseAction(3632),
+            Souleater = new (3632),
 
             //暗黑波动
-            FloodofDarkness = new BaseAction(16466),
+            FloodofDarkness = new (16466),
 
             //嗜血
-            BloodWeapon = new BaseAction(3625)
+            BloodWeapon = new (3625)
             {
                 OtherCheck = b => JobGauge.Blood <= 70 && Service.ClientState.LocalPlayer.CurrentMp <= 7000,
             },
 
             //暗影墙
-            ShadowWall = new BaseAction(3636)
+            ShadowWall = new (3636)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.ShadowWall },
+                BuffsProvide = new [] { ObjectStatus.ShadowWall },
             },
 
             //暗黑锋
-            EdgeofDarkness = new BaseAction(16467, true),
+            EdgeofDarkness = new (16467, true),
 
             //弃明投暗
-            DarkMind = new BaseAction(3634),
+            DarkMind = new (3634),
 
             //行尸走肉
-            LivingDead = new BaseAction(3638)
+            LivingDead = new (3638)
             {
                 OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
             },
 
             //腐秽大地
-            SaltedEarth = new BaseAction(3639),
+            SaltedEarth = new (3639),
 
             //跳斩
-            Plunge = new BaseAction(3640, shouldEndSpecial:true),
+            Plunge = new (3640, shouldEndSpecial:true),
 
             //吸血深渊
-            AbyssalDrain = new BaseAction(3641),
+            AbyssalDrain = new (3641),
 
             //精雕怒斩
-            CarveandSpit = new BaseAction(3643),
+            CarveandSpit = new (3643),
 
             //血溅
-            Bloodspiller = new BaseAction(7392),
+            Bloodspiller = new (7392),
 
             //寂灭
-            Quietus = new BaseAction(7391),
+            Quietus = new (7391),
 
             //血乱
-            Delirium = new BaseAction(7390),
+            Delirium = new (7390),
 
             //至黑之夜
-            TheBlackestNight = new BaseAction(7393)
+            TheBlackestNight = new (7393)
             {
                 ChoiceFriend = BaseAction.FindAttackedTarget,
             },
 
             //刚魂
-            StalwartSoul = new BaseAction(16468),
+            StalwartSoul = new (16468),
 
             //暗黑布道
-            DarkMissionary = new BaseAction(16471, true),
+            DarkMissionary = new (16471, true),
 
             //掠影示现
-            LivingShadow = new BaseAction(16472),
+            LivingShadow = new (16472),
 
             //献奉
-            Oblation = new BaseAction(25754, true),
+            Oblation = new (25754, true),
 
             //暗影使者
-            Shadowbringer = new BaseAction(25757),
+            Shadowbringer = new (25757),
 
             //腐秽黑暗
-            SaltandDarkness = new BaseAction(25755)
+            SaltandDarkness = new (25755)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.SaltedEarth },
+                BuffsNeed = new [] { ObjectStatus.SaltedEarth },
             };
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体治疗, $"{Actions.TheBlackestNight.Action.Name}，目标为被打的小可怜"},
         {DescType.范围防御, $"{Actions.DarkMissionary.Action.Name}"},

@@ -12,90 +12,90 @@ internal class RPRCombo : CustomComboJob<RPRGauge>
     {
         public static readonly BaseAction
             //À¿Õˆ÷Æ”∞
-            ShadowofDeath = new BaseAction(24378)
+            ShadowofDeath = new (24378)
             {
-                TargetStatus = new ushort[] { ObjectStatus.DeathsDesign },
+                TargetStatus = new [] { ObjectStatus.DeathsDesign },
             },
 
             //«–∏Ó
-            Slice = new BaseAction(24373),
+            Slice = new (24373),
 
             //‘ˆ”Ø«–∏Ó
-            WaxingSlice = new BaseAction(24374),
+            WaxingSlice = new (24374),
 
             //µÿ”¸«–∏Ó
-            InfernalSlice = new BaseAction(24375),
+            InfernalSlice = new (24375),
 
             //“˛ƒ‰ª”∏Ó
-            BloodStalk = new BaseAction(24389),
+            BloodStalk = new (24389),
 
             //π¥»–
-            Harpe = new BaseAction(24386) { BuffsProvide = new ushort[] { ObjectStatus.SoulReaver } },
+            Harpe = new (24386) { BuffsProvide = new [] { ObjectStatus.SoulReaver } },
 
             //Ω æˆ
-            Gibbet = new BaseAction(24382) { EnermyLocation = EnemyLocation.Side },
+            Gibbet = new (24382) { EnermyLocation = EnemyLocation.Side },
 
             //ÁÀ…±
-            Gallows = new BaseAction(24383) { EnermyLocation = EnemyLocation.Back },
+            Gallows = new (24383) { EnermyLocation = EnemyLocation.Back },
 
             //¡ÈªÍ«–∏Ó
-            SoulSlice = new BaseAction(24380),
+            SoulSlice = new (24380),
 
             //À¿Õˆ÷ÆŒ–
-            WhorlofDeath = new BaseAction(24379)
+            WhorlofDeath = new (24379)
             {
-                TargetStatus = new ushort[] { ObjectStatus.DeathsDesign },
+                TargetStatus = new [] { ObjectStatus.DeathsDesign },
             },
 
             //–˝◊™ÓÃ∏Ó
-            SpinningScythe = new BaseAction(24376),
+            SpinningScythe = new (24376),
 
             //ÿ¨√ŒÓÃ∏Ó
-            NightmareScythe = new BaseAction(24377),
+            NightmareScythe = new (24377),
 
             // ¯∏øª”∏Ó
-            GrimSwathe = new BaseAction(24392),
+            GrimSwathe = new (24392),
 
             //±© ≥
-            Gluttony = new BaseAction(24393),
+            Gluttony = new (24393),
 
             //∂œ ◊
-            Guillotine = new BaseAction(24384),
+            Guillotine = new (24384),
 
             //¡ÈªÍÓÃ∏Ó
-            SoulScythe = new BaseAction(24381),
+            SoulScythe = new (24381),
 
             //“π”ŒªÍ“¬ ±‰…Ì£°
-            Enshroud = new BaseAction(24394),
+            Enshroud = new (24394),
 
             //Õ≈∆ı
-            Communio = new BaseAction(24398),
+            Communio = new (24398),
 
             //…Ò√ÿŒ∆ º”∂‹
-            ArcaneCrest = new BaseAction(24404, true),
+            ArcaneCrest = new (24404, true),
 
             //…Ò√ÿª∑ º”Buff
-            ArcaneCircle = new BaseAction(24405, true),
+            ArcaneCircle = new (24405, true),
 
             //≤•ªÍ÷÷
-            Soulsow = new BaseAction(24387)
+            Soulsow = new (24387)
             {
-                BuffsProvide = new ushort[] {ObjectStatus.Soulsow},
+                BuffsProvide = new [] {ObjectStatus.Soulsow},
             },
 
             // ’ªÒ‘¬
-            HarvestMoon = new BaseAction(24388)
+            HarvestMoon = new (24388)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.Soulsow },
+                BuffsNeed = new [] { ObjectStatus.Soulsow },
             },
 
             //µÿ”¸»Îæ≥
-            HellsIngress = new BaseAction(24401),
+            HellsIngress = new (24401),
 
             //¥Û∑· ’
-            PlentifulHarvest = new BaseAction(24385);
+            PlentifulHarvest = new (24385);
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.µ•ÃÂ∑¿”˘, $"{Actions.ArcaneCrest.Action.Name}"},
         {DescType.“∆∂Ø, $"{Actions.HellsIngress.Action.Name}"},

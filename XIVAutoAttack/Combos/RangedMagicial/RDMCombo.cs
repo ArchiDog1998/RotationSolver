@@ -16,30 +16,30 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
     {
         public static readonly BaseAction
             //≥‡∏¥ªÓ
-            Verraise = new BaseAction(7523, true),
+            Verraise = new (7523, true),
 
             //’µ¥
-            Jolt = new BaseAction(7503)
+            Jolt = new (7503)
             {
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new ushort[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //ªÿ¥Ã
-            Riposte = new BaseAction(7504)
+            Riposte = new (7504)
             {
                 OtherCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
             },
 
             //≥‡…¡¿◊
-            Verthunder = new BaseAction(7505)
+            Verthunder = new (7505)
             {
-                BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new ushort[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //∂Ã±¯œ‡Ω”
-            CorpsAcorps = new BaseAction(7506)
+            CorpsAcorps = new (7506)
             {
-                BuffsProvide = new ushort[]
+                BuffsProvide = new []
                 {
                     ObjectStatus.Bind1,
                     ObjectStatus.Bind2,
@@ -47,108 +47,108 @@ internal class RDMCombo : CustomComboJob<RDMGauge>
             },
 
             //≥‡º≤∑Á
-            Veraero = new BaseAction(7507)
+            Veraero = new (7507)
             {
-                BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new ushort[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //…¢ÀÈ
-            Scatter = new BaseAction(7509)
+            Scatter = new (7509)
             {
-                BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new ushort[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //≥‡’¿◊
-            Verthunder2 = new BaseAction(16524u)
+            Verthunder2 = new (16524u)
             {
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new ushort[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //≥‡¡“∑Á
-            Veraero2 = new BaseAction(16525u)
+            Veraero2 = new (16525u)
             {
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new ushort[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //≥‡ª—◊
-            Verfire = new BaseAction(7510)
+            Verfire = new (7510)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.VerfireReady },
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new ushort[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsNeed = new [] { ObjectStatus.VerfireReady },
+                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //≥‡∑… Ø
-            Verstone = new BaseAction(7511)
+            Verstone = new (7511)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.VerstoneReady },
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new ushort[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsNeed = new [] { ObjectStatus.VerstoneReady },
+                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //Ωªª˜’∂
-            Zwerchhau = new BaseAction(7512)
+            Zwerchhau = new (7512)
             {
                 OtherCheck = b => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
             },
 
             //ΩªΩ£
-            Engagement = new BaseAction(16527),
+            Engagement = new (16527),
 
             //∑…Ω£
-            Fleche = new BaseAction(7517),
+            Fleche = new (7517),
 
             //¡¨π•
-            Redoublement = new BaseAction(7516)
+            Redoublement = new (7516)
             {
                 OtherCheck = b => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
             },
 
 
             //¥ŸΩ¯
-            Acceleration = new BaseAction(7518)
+            Acceleration = new (7518)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.Acceleration },
+                BuffsProvide = new [] { ObjectStatus.Acceleration },
             },
 
             //ªÆ‘≤’∂
-            Moulinet = new BaseAction(7513),
+            Moulinet = new (7513),
 
             //≥‡÷Œ¡∆
-            Vercure = new BaseAction(7514, true)
+            Vercure = new (7514, true)
             {
                 BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(Acceleration.BuffsProvide).ToArray(),
             },
 
             //¡˘∑÷∑¥ª˜
-            ContreSixte = new BaseAction(7519u),
+            ContreSixte = new (7519u),
 
             //πƒ¿¯
-            Embolden = new BaseAction(7520, true),
+            Embolden = new (7520, true),
 
             //±∂‘ˆ
-            Manafication = new BaseAction(7521)
+            Manafication = new (7521)
             {
                 OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50,
             },
 
             //–¯’∂
-            Reprise = new BaseAction(16529),
+            Reprise = new (16529),
 
             //øπÀ¿
-            MagickBarrier = new BaseAction(25857),
+            MagickBarrier = new (25857),
 
             //≥‡∫À±¨
-            Verflare = new BaseAction(7525),
+            Verflare = new (7525),
 
             //≥‡…Ò •
-            Verholy = new BaseAction(7526),
+            Verholy = new (7526),
 
             //Ωπ»»
-            Scorch = new BaseAction(16530),
+            Scorch = new (16530),
 
             //æˆ∂œ
-            Resolution = new BaseAction(25858);
+            Resolution = new (25858);
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.µ•ÃÂ÷Œ¡∆, $"{Actions.Vercure.Action.Name}"},
         {DescType.∑∂Œß∑¿”˘, $"{Actions.MagickBarrier.Action.Name}"},

@@ -27,188 +27,189 @@ internal class NINCombo : CustomComboJob<NINGauge>
         public static readonly BaseAction
 
             //隐遁
-            Hide = new BaseAction(2245),
+            Hide = new (2245),
 
             //双刃旋
-            SpinningEdge = new BaseAction(2240),
+            SpinningEdge = new (2240),
 
             //残影
-            ShadeShift = new BaseAction(2241),
+            ShadeShift = new (2241),
 
             //绝风
-            GustSlash = new BaseAction(2242),
+            GustSlash = new (2242),
 
             //飞刀
-            ThrowingDagger = new BaseAction(2247),
+            ThrowingDagger = new (2247),
 
             //夺取
-            Mug = new BaseAction(2248)
+            Mug = new (2248)
             {
                 OtherCheck = b => JobGauge.Ninki <= 50,
             },
 
             //攻其不备
-            TrickAttack = new BaseAction(2258)
+            TrickAttack = new (2258)
             {
                 BuffsNeed = new ushort[] { ObjectStatus.Suiton, ObjectStatus.Hidden },
                 EnermyLocation = EnemyLocation.Back,
             },
 
             //旋风刃
-            AeolianEdge = new BaseAction(2255)
+            AeolianEdge = new (2255)
             {
                 EnermyLocation = EnemyLocation.Back,
             },
 
             //血雨飞花
-            DeathBlossom = new BaseAction(2254),
+            DeathBlossom = new (2254),
 
             //天之印
-            Ten = new BaseAction(2259),
+            Ten = new (2259),
 
             //地之印
-            Chi = new BaseAction(2261),
+            Chi = new (2261),
 
             //人之印
-            Jin = new BaseAction(2263),
+            Jin = new (2263),
 
             //天地人
-            TenChiJin = new BaseAction(7403)
+            TenChiJin = new (7403)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.Kassatsu, ObjectStatus.TenChiJin },
+                BuffsProvide = new [] { ObjectStatus.Kassatsu, ObjectStatus.TenChiJin },
                 OtherCheck = b => JobGauge.HutonTimer > 0,
             },
 
             //缩地
-            Shukuchi = new BaseAction(2262, true),
+            Shukuchi = new (2262, true),
 
             //断绝
-            Assassinate = new BaseAction(2246),
+            Assassinate = new (2246),
 
             //命水
-            Meisui = new BaseAction(16489)
+            Meisui = new (16489)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.Suiton },
+                BuffsNeed = new [] { ObjectStatus.Suiton },
                 OtherCheck = b => JobGauge.Ninki <= 50
             },
 
             //生杀予夺
-            Kassatsu = new BaseAction(2264, isFriendly: true)
+            Kassatsu = new (2264, isFriendly: true)
             {
                 //OtherCheck = b => Ten.IsCoolDown,
-                BuffsProvide = new ushort[] { ObjectStatus.Kassatsu, ObjectStatus.TenChiJin },
+                BuffsProvide = new [] { ObjectStatus.Kassatsu, ObjectStatus.TenChiJin },
             },
 
             //八卦无刃杀
-            HakkeMujinsatsu = new BaseAction(16488),
+            HakkeMujinsatsu = new (16488),
 
             //强甲破点突
-            ArmorCrush = new BaseAction(3563)
+            ArmorCrush = new (3563)
             {
                 EnermyLocation = EnemyLocation.Side,
                 OtherCheck = b => JobGauge.HutonTimer < 30000 && JobGauge.HutonTimer > 0,
             },
 
             //通灵之术·大虾蟆
-            HellfrogMedium = new BaseAction(7401),
+            HellfrogMedium = new (7401),
 
             //六道轮回
-            Bhavacakra = new BaseAction(7402),
+            Bhavacakra = new (7402),
 
             //分身之术
-            Bunshin = new BaseAction(16493),
+            Bunshin = new (16493),
 
             //残影镰鼬
-            PhantomKamaitachi = new BaseAction(25774)
+            PhantomKamaitachi = new (25774)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.PhantomKamaitachiReady },
+                BuffsNeed = new [] { ObjectStatus.PhantomKamaitachiReady },
             },
 
             //月影雷兽牙
-            FleetingRaiju = new BaseAction(25778)
+            FleetingRaiju = new (25778)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.RaijuReady },
+                BuffsNeed = new [] { ObjectStatus.RaijuReady },
             },
 
             //月影雷兽爪
-            ForkedRaiju = new BaseAction(25777)
+            ForkedRaiju = new (25777)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.RaijuReady },
+                BuffsNeed = new [] { ObjectStatus.RaijuReady },
             },
 
             //风来刃
-            Huraijin = new BaseAction(25876)
+            Huraijin = new (25876)
             {
                 OtherCheck = b => JobGauge.HutonTimer == 0,
             },
 
             //梦幻三段
-            DreamWithinaDream = new BaseAction(3566),
+            DreamWithinaDream = new (3566),
 
             //风魔手里剑天
-            FumaShurikenTen = new BaseAction(18873),
+            FumaShurikenTen = new (18873),
 
             //风魔手里剑人
-            FumaShurikenJin = new BaseAction(18875),
+            FumaShurikenJin = new (18875),
 
             //火遁之术天
-            KatonTen = new BaseAction(18876),
+            KatonTen = new (18876),
 
             //雷遁之术地
-            RaitonChi = new BaseAction(18877),
+            RaitonChi = new (18877),
 
             //土遁之术地
-            DotonChi = new BaseAction(18880),
+            DotonChi = new (18880),
 
             //水遁之术人
-            SuitonJin = new BaseAction(18881);
+            SuitonJin = new (18881);
+
         public static readonly NinAction
 
             //通灵之术
-            RabbitMedium = new NinAction(2272),
+            RabbitMedium = new (2272),
 
 
             //风魔手里剑
-            FumaShuriken = new NinAction(2265, Ten)
+            FumaShuriken = new (2265, Ten)
             {
                 AfterUse = ClearNinjutsus,
             },
 
             //火遁之术
-            Katon = new NinAction(2266, Chi, Ten)
+            Katon = new (2266, Chi, Ten)
             {
                 AfterUse = ClearNinjutsus,
             },
 
             //雷遁之术
-            Raiton = new NinAction(2267, Ten, Chi)
+            Raiton = new (2267, Ten, Chi)
             {
                 AfterUse = ClearNinjutsus,
             },
 
 
             //冰遁之术
-            Hyoton = new NinAction(2268, Ten, Jin),
+            Hyoton = new (2268, Ten, Jin),
 
             //风遁之术
-            Huton = new NinAction(2269, Jin, Chi, Ten)
+            Huton = new (2269, Jin, Chi, Ten)
             {
                 OtherCheck = b => JobGauge.HutonTimer == 0,
                 AfterUse = ClearNinjutsus,
             },
 
             //土遁之术
-            Doton = new NinAction(2270, Jin, Ten, Chi)
+            Doton = new (2270, Jin, Ten, Chi)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.Doton },
+                BuffsProvide = new [] { ObjectStatus.Doton },
                 AfterUse = ClearNinjutsus,
             },
 
             //水遁之术
-            Suiton = new NinAction(2271, Ten, Chi, Jin)
+            Suiton = new (2271, Ten, Chi, Jin)
             {
                 EnermyLocation = EnemyLocation.Back,
-                BuffsProvide = new ushort[] { ObjectStatus.Suiton },
+                BuffsProvide = new [] { ObjectStatus.Suiton },
                 AfterUse = () =>
                 {
                     ClearNinjutsus();
@@ -218,14 +219,14 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
 
             //劫火灭却之术
-            GokaMekkyaku = new NinAction(16491, Chi, Ten)
+            GokaMekkyaku = new (16491, Chi, Ten)
             {
                 AfterUse = ClearNinjutsus,
             },
 
 
             //冰晶乱流之术
-            HyoshoRanryu = new NinAction(16492, Ten, Jin)
+            HyoshoRanryu = new (16492, Ten, Jin)
             {
                 AfterUse = ClearNinjutsus,
             };
@@ -236,7 +237,7 @@ internal class NINCombo : CustomComboJob<NINGauge>
         return base.CreateConfiguration();
     }
 
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体防御, $"{Actions.ShadeShift.Action.Name}"},
         {DescType.移动, $"{Actions.Shukuchi.Action.Name}，目标为面向夹角小于30°内最远目标。"},
@@ -446,13 +447,11 @@ internal class NINCombo : CustomComboJob<NINGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (ChoiceNinjutsus(out act)) return true;
-        //if (Actions.Ten.ShouldUseAction(out _, mustUse: true)&& Actions.Huton.ShouldUseAction(out _)
-        //    && (!TargetHelper.InBattle || Service.ClientState.LocalPlayer.Level < Actions.Huraijin.Level) )
-        //{
-        //    _ninactionAim = Actions.Huton;
-        //}
-        if (DoNinjutsus(out act)) return true;
+        if(Service.ClientState.LocalPlayer.Level >= Actions.Ten.Level)
+        {
+            if (ChoiceNinjutsus(out act)) return true;
+            if (DoNinjutsus(out act)) return true;
+        }
 
         //用真北取消隐匿
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Hidden) && GeneralActions.TrueNorth.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;

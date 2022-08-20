@@ -16,104 +16,104 @@ internal class MNKCombo : CustomComboJob<MNKGauge>
     {
         public static readonly BaseAction
             //双龙脚
-            DragonKick = new BaseAction(74)
+            DragonKick = new (74)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.LeadenFist },
+                BuffsProvide = new [] { ObjectStatus.LeadenFist },
             },
 
             //连击
-            Bootshine = new BaseAction(53),
+            Bootshine = new (53),
 
             //破坏神冲 aoe
-            ArmoftheDestroyer = new BaseAction(62),
+            ArmoftheDestroyer = new (62),
 
             //双掌打 伤害提高
-            TwinSnakes = new BaseAction(61),
+            TwinSnakes = new (61),
 
             //正拳
-            TrueStrike = new BaseAction(54),
+            TrueStrike = new (54),
 
             //四面脚 aoe
-            FourpointFury = new BaseAction(16473),
+            FourpointFury = new (16473),
 
             //破碎拳
-            Demolish = new BaseAction(66)
+            Demolish = new (66)
             {
                 EnermyLocation = EnemyLocation.Back,
             },
 
             //崩拳
-            SnapPunch = new BaseAction(56)
+            SnapPunch = new (56)
             {
                 EnermyLocation = EnemyLocation.Side,
             },
 
             //地烈劲 aoe
-            Rockbreaker = new BaseAction(70),
+            Rockbreaker = new (70),
 
             //斗气
-            Meditation = new BaseAction(3546),
+            Meditation = new (3546),
 
             //铁山靠
-            SteelPeak = new BaseAction(25761)
+            SteelPeak = new (25761)
             {
                 OtherCheck = b => TargetHelper.InBattle,
             },
 
             //空鸣拳
-            HowlingFist = new BaseAction(25763)
+            HowlingFist = new (25763)
             {
                 OtherCheck = b => TargetHelper.InBattle,
             },
 
             //义结金兰
-            Brotherhood = new BaseAction(7396, true),
+            Brotherhood = new (7396, true),
 
             //红莲极意 提高dps
-            RiddleofFire = new BaseAction(7395),
+            RiddleofFire = new (7395),
 
             //突进技能
-            Thunderclap = new BaseAction(25762, shouldEndSpecial: true)
+            Thunderclap = new (25762, shouldEndSpecial: true)
             {
                 ChoiceFriend = BaseAction.FindMoveTarget,
             },
 
             //真言
-            Mantra = new BaseAction(65, true),
+            Mantra = new (65, true),
 
             //震脚
-            PerfectBalance = new BaseAction(69)
+            PerfectBalance = new (69)
             {
                 OtherCheck = b => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RaptorForm) && TargetHelper.InBattle,
             },
 
             //苍气炮 阴
-            ElixirField = new BaseAction(3545),
+            ElixirField = new (3545),
 
             //爆裂脚 阳
-            FlintStrike = new BaseAction(25882),
+            FlintStrike = new (25882),
             //凤凰舞
-            RisingPhoenix = new BaseAction(25768),
+            RisingPhoenix = new (25768),
 
 
             //斗魂旋风脚 阴阳
-            TornadoKick = new BaseAction(3543),
-            PhantomRush = new BaseAction(25769),
+            TornadoKick = new (3543),
+            PhantomRush = new (25769),
 
             //演武
-            FormShift = new BaseAction(4262)
+            FormShift = new (4262)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.FormlessFist, ObjectStatus.PerfectBalance },
+                BuffsProvide = new [] { ObjectStatus.FormlessFist, ObjectStatus.PerfectBalance },
             },
 
             //金刚极意 盾
-            RiddleofEarth = new BaseAction(7394, shouldEndSpecial: true),
+            RiddleofEarth = new (7394, shouldEndSpecial: true),
 
             //疾风极意
-            RiddleofWind = new BaseAction(25766);
+            RiddleofWind = new (25766);
     }
 
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围治疗, $"{Actions.Mantra.Action.Name}"},
         {DescType.单体防御, $"{Actions.RiddleofEarth.Action.Name}"},

@@ -22,22 +22,22 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
 
         public static readonly BaseAction
             //强力射击
-            HeavyShoot = new BaseAction(97u) { BuffsProvide = new ushort[] { ObjectStatus.StraightShotReady } },
+            HeavyShoot = new (97) { BuffsProvide = new [] { ObjectStatus.StraightShotReady } },
 
             //直线射击
-            StraitShoot = new BaseAction(98u) { BuffsNeed = new ushort[] { ObjectStatus.StraightShotReady } },
+            StraitShoot = new (98) { BuffsNeed = new [] { ObjectStatus.StraightShotReady } },
 
             //猛者强击
-            RagingStrikes = new BaseAction(101),
+            RagingStrikes = new (101),
 
             //毒药箭
-            VenomousBite = new BaseAction(100) { TargetStatus = new ushort[] { ObjectStatus.VenomousBite, ObjectStatus.CausticBite } },
+            VenomousBite = new (100) { TargetStatus = new [] { ObjectStatus.VenomousBite, ObjectStatus.CausticBite } },
 
             //风蚀箭
-            Windbite = new BaseAction(113) { TargetStatus = new ushort[] { ObjectStatus.Windbite, ObjectStatus.Stormbite } },
+            Windbite = new (113) { TargetStatus = new [] { ObjectStatus.Windbite, ObjectStatus.Stormbite } },
 
             //伶牙俐齿
-            IronJaws = new BaseAction(3560)
+            IronJaws = new (3560)
             {
                 OtherCheck = b =>
                 {
@@ -48,37 +48,37 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
             },
 
             //纷乱箭
-            Barrage = new BaseAction(107)
+            Barrage = new (107)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.StraightShotReady },
+                BuffsProvide = new [] { ObjectStatus.StraightShotReady },
             },
 
             //九天连箭
-            EmpyrealArrow = new BaseAction(3558),
+            EmpyrealArrow = new (3558),
 
             //失血箭
-            Bloodletter = new BaseAction(110),
+            Bloodletter = new (110),
 
             //死亡箭雨
-            RainofDeath = new BaseAction(117),
+            RainofDeath = new (117),
 
             //连珠箭
-            QuickNock = new BaseAction(106) { BuffsProvide = new ushort[] { ObjectStatus.ShadowbiteReady } },
+            QuickNock = new (106) { BuffsProvide = new [] { ObjectStatus.ShadowbiteReady } },
 
             //影噬箭
-            Shadowbite = new BaseAction(16494) { BuffsNeed = new ushort[] { ObjectStatus.ShadowbiteReady } },
+            Shadowbite = new (16494) { BuffsNeed = new [] { ObjectStatus.ShadowbiteReady } },
 
             //贤者的叙事谣
-            MagesBallad = new BaseAction(114),
+            MagesBallad = new (114),
 
             //军神的赞美歌
-            ArmysPaeon = new BaseAction(116),
+            ArmysPaeon = new (116),
 
             //放浪神的小步舞曲
-            WanderersMinuet = new BaseAction(3559),
+            WanderersMinuet = new (3559),
 
             //完美音调
-            PitchPerfect = new BaseAction(7404)
+            PitchPerfect = new (7404)
             {
                 OtherCheck = b =>
             {
@@ -90,29 +90,27 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
             },
 
             //光阴神的礼赞凯歌
-            WardensPaean = new BaseAction(3561),
+            WardensPaean = new (3561),
 
             //战斗之声
-            BattleVoice = new BaseAction(118, true),
+            BattleVoice = new (118, true),
 
             //大地神的抒情恋歌
-            NaturesMinne = new BaseAction(7408),
+            NaturesMinne = new (7408),
 
             //侧风诱导箭
-            Sidewinder = new BaseAction(3562),
+            Sidewinder = new (3562),
 
             //绝峰箭
-            ApexArrow = new BaseAction(16496),
-
-
+            ApexArrow = new (16496),
 
             //光明神的最终乐章
-            RadiantFinale = new BaseAction(25785, true),
+            RadiantFinale = new (25785, true),
 
             //行吟
-            Troubadour = new BaseAction(7405, true)
+            Troubadour = new (7405, true)
             {
-                BuffsProvide = new ushort[]
+                BuffsProvide = new []
                 {
                     ObjectStatus.Troubadour,
                     ObjectStatus.Tactician1,
@@ -121,7 +119,7 @@ internal class BRDCombo : CustomComboJob<BRDGauge>
                 },
             };
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围防御, $"{Actions.Troubadour.Action.Name}"},
         {DescType.单体治疗, $"{Actions.NaturesMinne.Action.Name}"},

@@ -23,18 +23,18 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
     {
         public static readonly BaseAction
             //钢铁信念
-            IronWill = new BaseAction(28, shouldEndSpecial: true),
+            IronWill = new (28, shouldEndSpecial: true),
 
             //先锋剑
-            FastBlade = new BaseAction(9),
+            FastBlade = new (9),
 
             //暴乱剑
-            RiotBlade = new BaseAction(15),
+            RiotBlade = new (15),
 
             //沥血剑
-            GoringBlade = new BaseAction(3538)
+            GoringBlade = new (3538)
             {
-                TargetStatus = new ushort[]
+                TargetStatus = new []
                 {
                     ObjectStatus.GoringBlade,
                     ObjectStatus.BladeofValor,
@@ -42,101 +42,101 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             },
 
             //战女神之怒
-            RageofHalone = new BaseAction(21),
+            RageofHalone = new (21),
 
             //投盾
-            ShieldLob = new BaseAction(24)
+            ShieldLob = new (24)
             {
                 FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
             },
 
             //战逃反应
-            FightorFlight = new BaseAction(20),
+            FightorFlight = new (20),
 
             //全蚀斩
-            TotalEclipse = new BaseAction(7381),
+            TotalEclipse = new (7381),
 
             //日珥斩
-            Prominence = new BaseAction(16457),
+            Prominence = new (16457),
 
             //预警
-            Sentinel = new BaseAction(17)
+            Sentinel = new (17)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
             },
 
             //厄运流转
-            CircleofScorn = new BaseAction(23),
+            CircleofScorn = new (23),
 
             //深奥之灵
-            SpiritsWithin = new BaseAction(29),
+            SpiritsWithin = new (29),
 
             //神圣领域
-            HallowedGround = new BaseAction(30)
+            HallowedGround = new (30)
             {
                 OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
             },
 
             //圣光幕帘
-            DivineVeil = new BaseAction(3540),
+            DivineVeil = new (3540),
 
             //深仁厚泽
-            Clemency = new BaseAction(3541, true, true),
+            Clemency = new (3541, true, true),
 
             //干预
-            Intervention = new BaseAction(7382, true)
+            Intervention = new (7382, true)
             {
                 ChoiceFriend = BaseAction.FindAttackedTarget,
             },
 
             //调停
-            Intervene = new BaseAction(16461, shouldEndSpecial:true),
+            Intervene = new (16461, shouldEndSpecial:true),
 
             //赎罪剑
-            Atonement = new BaseAction(16460)
+            Atonement = new (16460)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.SwordOath },
+                BuffsNeed = new [] { ObjectStatus.SwordOath },
             },
 
             //偿赎剑
-            Expiacion = new BaseAction(25747),
+            Expiacion = new (25747),
 
             //英勇之剑
-            BladeofValor = new BaseAction(25750),
+            BladeofValor = new (25750),
 
             //真理之剑
-            BladeofTruth = new BaseAction(25749),
+            BladeofTruth = new (25749),
 
             //信念之剑
-            BladeofFaith = new BaseAction(25748)
+            BladeofFaith = new (25748)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.ReadyForBladeofFaith },
+                BuffsNeed = new [] { ObjectStatus.ReadyForBladeofFaith },
             },
 
             //安魂祈祷
-            Requiescat = new BaseAction(7383),
+            Requiescat = new (7383),
 
             //悔罪
-            Confiteor = new BaseAction(16459),
+            Confiteor = new (16459),
 
             //圣环
-            HolyCircle = new BaseAction(16458),
+            HolyCircle = new (16458),
 
             //圣灵
-            HolySpirit = new BaseAction(7384),
+            HolySpirit = new (7384),
 
             //武装戍卫
-            PassageofArms = new BaseAction(7385),
+            PassageofArms = new (7385),
 
             //保护
             //Cover = new BaseAction(27, true),
 
             //盾阵
-            Sheltron = new BaseAction(3542);
+            Sheltron = new (3542);
         //盾牌猛击
         //ShieldBash = new BaseAction(16),
     }
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体治疗, $"{Actions.Clemency.Action.Name}"},
         {DescType.范围防御, $"{Actions.DivineVeil.Action.Name}, {Actions.PassageofArms.Action.Name}"},

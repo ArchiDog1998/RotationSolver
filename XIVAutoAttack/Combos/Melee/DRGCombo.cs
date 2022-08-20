@@ -16,81 +16,81 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
     {
         public static readonly BaseAction
             //¾«×¼´Ì
-            TrueThrust = new BaseAction(75),
+            TrueThrust = new (75),
 
             //¹áÍ¨´Ì
-            VorpalThrust = new BaseAction(78) { OtherIDsCombo = new uint[] { 16479 } },
+            VorpalThrust = new (78) { OtherIDsCombo = new [] { 16479u } },
 
             //Ö±´Ì
-            FullThrust = new BaseAction(84),
+            FullThrust = new (84),
 
             //¿ªÌÅÇ¹
-            Disembowel = new BaseAction(87) { OtherIDsCombo = new uint[] { 16479 } },
+            Disembowel = new (87) { OtherIDsCombo = new [] { 16479u } },
 
             //Ó£»¨Å­·Å
-            ChaosThrust = new BaseAction(88),
+            ChaosThrust = new (88),
 
             //ÁúÑÀÁú×¦
-            FangandClaw = new BaseAction(3554)
+            FangandClaw = new (3554)
             {
                 EnermyLocation = EnemyLocation.Side,
                 BuffsNeed = new ushort[] { ObjectStatus.SharperFangandClaw },
             },
 
             //ÁúÎ²´ó»ØÐý
-            WheelingThrust = new BaseAction(3556)
+            WheelingThrust = new (3556)
             {
                 EnermyLocation = EnemyLocation.Back,
                 BuffsNeed = new ushort[] { ObjectStatus.EnhancedWheelingThrust },
             },
 
             //¹á´©¼â
-            PiercingTalon = new BaseAction(90),
+            PiercingTalon = new (90),
 
             //ËÀÌìÇ¹
-            DoomSpike = new BaseAction(86),
+            DoomSpike = new (86),
 
             //ÒôËÙ´Ì
-            SonicThrust = new BaseAction(7397) { OtherIDsCombo = new uint[] { 25770 } },
+            SonicThrust = new (7397) { OtherIDsCombo = new [] { 25770u } },
 
             //É½¾³¿áÐÌ
-            CoerthanTorment = new BaseAction(16477),
+            CoerthanTorment = new (16477),
 
             //ÆÆËé³å
-            SpineshatterDive = new BaseAction(95),
+            SpineshatterDive = new (95),
 
             //ÁúÑ×³å
-            DragonfireDive = new BaseAction(96),
+            DragonfireDive = new (96),
 
             //ÌøÔ¾
-            Jump = new BaseAction(92),
-            HighJump = new BaseAction(16478),
+            Jump = new (92),
+            HighJump = new (16478),
             //»ÃÏó³å
-            MirageDive = new BaseAction(7399)
+            MirageDive = new (7399)
             {
-                BuffsNeed = new ushort[] { ObjectStatus.DiveReady },
+                BuffsNeed = new [] { ObjectStatus.DiveReady },
             },
 
             //ÎäÉñÇ¹
-            Geirskogul = new BaseAction(3555),
+            Geirskogul = new (3555),
 
             //ËÀÕßÖ®°¶
-            Nastrond = new BaseAction(7400),
+            Nastrond = new (7400),
 
             //×¹ÐÇ³å
-            Stardiver = new BaseAction(16480),
+            Stardiver = new (16480),
 
             //ÌìÁúµã¾¦
-            WyrmwindThrust = new BaseAction(25773),
+            WyrmwindThrust = new (25773),
 
             //Áú½£
-            LifeSurge = new BaseAction(83) { BuffsProvide = new ushort[] { ObjectStatus.LifeSurge } },
+            LifeSurge = new (83) { BuffsProvide = new [] { ObjectStatus.LifeSurge } },
 
             //ÃÍÇ¹
-            LanceCharge = new BaseAction(85),
+            LanceCharge = new (85),
 
             //¾ÞÁúÊÓÏß
-            DragonSight = new BaseAction(7398)
+            DragonSight = new (7398)
             {
                 ChoiceFriend = Targets =>
                 {
@@ -109,11 +109,11 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
                     return null;
                 },
 
-                BuffsNeed = new ushort[] {ObjectStatus.BattleLitany},
+                BuffsNeed = new [] {ObjectStatus.BattleLitany},
             },
 
             //Õ½¶·Á¬µ»
-            BattleLitany = new BaseAction(3557);
+            BattleLitany = new (3557);
     }
 
     private protected override ActionConfiguration CreateConfiguration()
@@ -164,7 +164,7 @@ internal class DRGCombo : CustomComboJob<DRGGauge>
         //³¢ÊÔ½øÈëºìÁúÑª
         if (Actions.Geirskogul.ShouldUseAction(out act, mustUse: true)) return true;
 
-        if (abilityRemain > 1 && !IsMoving)
+        if (!IsMoving)
         {
             if (JobGauge.IsLOTDActive && JobGauge.LOTDTimer < 25000 && Actions.Stardiver.ShouldUseAction(out act, mustUse: true)) return true;
 
