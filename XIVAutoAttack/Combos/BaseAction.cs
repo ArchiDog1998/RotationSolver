@@ -203,6 +203,12 @@ namespace XIVAutoAttack.Combos
             return ASTCombo.RandomObject(charas.Where(t => t.TargetObject?.TargetObject?.ObjectId == t.ObjectId).ToArray());
         }
 
+        internal static bool TankBreakOtherCheck(BattleChara chara)
+        {
+            return (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank 
+                && TargetHelper.PartyMembersAverHP >= Service.Configuration.HealthForDyingTank;
+        }
+
         public bool FindTarget(bool mustUse)
         {
             _position = Service.ClientState.LocalPlayer.Position;
@@ -617,7 +623,7 @@ namespace XIVAutoAttack.Combos
             else
             {
                 //如果是能力技能，还没填满。
-                if (!(mustUse || emptyOrSkipCombo) && RecastTimeRemain > 5) return false;
+                if (!(mustUse || emptyOrSkipCombo) && RecastTimeRemain > 4) return false;
             }
 
             //用于自定义的要求没达到

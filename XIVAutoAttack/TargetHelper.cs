@@ -89,6 +89,8 @@ namespace XIVAutoAttack
         /// </summary>
         internal static BattleChara[] AllianceMembers { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] PartyTanks { get; private set; } = new PlayerCharacter[0];
+        internal static BattleChara[] PartyHealers { get; private set; } = new PlayerCharacter[0];
+
         internal static BattleChara[] AllianceTanks { get; private set; } = new PlayerCharacter[0];
         //internal static BattleChara[] PartyTanksAttached { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
@@ -381,6 +383,7 @@ namespace XIVAutoAttack
             AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
 
             PartyTanks = GetJobCategory(PartyMembers, Role.防护);
+            PartyHealers = GetJobCategory(BaseAction.GetObjectInRadius(PartyMembers, 30), Role.治疗);
             AllianceTanks = GetJobCategory(BaseAction.GetObjectInRadius(AllianceMembers, 30), Role.防护);
 
             DeathPeopleAll = BaseAction.GetObjectInRadius(GetDeath(AllianceMembers), 30);

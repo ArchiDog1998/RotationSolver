@@ -10,8 +10,8 @@ internal class SGECombo : CustomComboJob<SGEGauge>
     internal override uint JobID => 40;
 
     private protected override BaseAction Raise => Actions.Egeiro;
-    protected override bool CanHealSingleSpell => Config.GetBoolByName("GCDHeal");
-    protected override bool CanHealAreaSpell => Config.GetBoolByName("GCDHeal");
+    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
+    protected override bool CanHealAreaSpell => base .CanHealAreaSpell && ( Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
     internal struct Actions
     {
         public static readonly BaseAction
@@ -262,19 +262,36 @@ internal class SGECombo : CustomComboJob<SGEGauge>
             }).Count() > 0) return false;
 
             //¾ùºâ
-            if (Actions.EukrasianPrognosis.ShouldUseAction(out act)) return true;
+            if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
 
+            act = Actions.EukrasianPrognosis;
+            return true;
         }
 
         act = null;
         return false;
     }
 
-
     private protected override bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
     {
         //Ô¤ºó
-        if (Actions.Prognosis.ShouldUseAction(out act) && JobGauge.Eukrasia) return true;
+        if (Actions.EukrasianPrognosis.ShouldUseAction(out act))
+        {
+            if (Actions.EukrasianPrognosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
+            {
+                ObjectStatus.EukrasianDiagnosis,
+                ObjectStatus.EukrasianPrognosis,
+                ObjectStatus.Galvanize,
+            }).Count() > 0) return false;
+
+            //¾ùºâ
+            if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
+
+            act = Actions.EukrasianPrognosis;
+            return true;
+        }
+
+        act = null;
         return false;
     }
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
@@ -317,34 +334,41 @@ internal class SGECombo : CustomComboJob<SGEGauge>
         //»êÁé·çÏ¢
         if (Actions.Pneuma.ShouldUseAction(out act, mustUse: true)) return true;
 
-        if (JobGauge.Addersting > 0)
-        {
-            //¼ý¶¾
-            if (Actions.Toxikon.ShouldUseAction(out act, mustUse: true)) return true;
-        }
+        //¼ý¶¾
+        if (JobGauge.Addersting == 3 && Actions.Toxikon.ShouldUseAction(out act, mustUse: true)) return true;
+
         var level = Service.ClientState.LocalPlayer.Level;
         //·¢Ñ×
-        if (Actions.Phlegma3.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-        if (level < Actions.Phlegma3.Level && Actions.Phlegma2.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-        if (level < Actions.Phlegma2.Level && Actions.Phlegma.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.Phlegma3.ShouldUseAction(out act, mustUse : Actions.Phlegma3.RecastTimeRemain < 4, emptyOrSkipCombo: true)) return true;
+        if (level < Actions.Phlegma3.Level && Actions.Phlegma2.ShouldUseAction(out act, mustUse: Actions.Phlegma2.RecastTimeRemain < 4, emptyOrSkipCombo: true)) return true;
+        if (level < Actions.Phlegma2.Level && Actions.Phlegma.ShouldUseAction(out act, mustUse: Actions.Phlegma.RecastTimeRemain < 4, emptyOrSkipCombo: true)) return true;
 
         //Ê§ºâ
         if (Actions.Dyskrasia.ShouldUseAction(out act)) return true;
 
         Actions.Dosis.ShouldUseAction(out _);
-        if(Actions.Dosis.Target != null)
+        var times = BaseAction.FindStatusFromSelf(Actions.Dosis.Target,
+            new ushort[] { ObjectStatus.EukrasianDosis, ObjectStatus.EukrasianDosis2, ObjectStatus.EukrasianDosis3 });
+        if (times.Length == 0 || times.Max() < 3)
         {
-            var times = BaseAction.FindStatusFromSelf(Actions.Dosis.Target,
-                new ushort[] { ObjectStatus.EukrasianDosis, ObjectStatus.EukrasianDosis2, ObjectStatus.EukrasianDosis3 });
-            if (times.Length == 0 || times.Max() < 3)
+            if (Actions.Dosis.Target != null)
             {
                 //²¹ÉÏDot
                 if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
             }
         }
+        else if (JobGauge.Eukrasia)
+        {
+            if (DefenseAreaGCD(lastComboActionID, out act)) return true;
+            if (DefenseSingleGCD(lastComboActionID, out act)) return true;
+        }
+
 
         //×¢Ò©
         if (Actions.Dosis.ShouldUseAction(out act)) return true;
+
+        //¼ý¶¾
+        if (JobGauge.Addersting > 0 && Actions.Toxikon.ShouldUseAction(out act, mustUse: true)) return true;
 
         //·¢Ñ×
         if (Actions.Phlegma3.ShouldUseAction(out act, mustUse: true)) return true;

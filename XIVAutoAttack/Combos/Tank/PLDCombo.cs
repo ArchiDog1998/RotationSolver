@@ -74,7 +74,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             //ÉñÊ¥ÁìÓò
             HallowedGround = new (30)
             {
-                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
+                OtherCheck = BaseAction.TankBreakOtherCheck,
             },
 
             //Ê¥¹âÄ»Á±
@@ -262,7 +262,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
-        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
 
         //¸ÉÔ¤£¨¼õÉË10%£©
         if (!HaveShield && Actions.Intervention.ShouldUseAction(out act)) return true;

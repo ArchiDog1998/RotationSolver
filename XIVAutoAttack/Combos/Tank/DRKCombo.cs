@@ -61,7 +61,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
             //行尸走肉
             LivingDead = new (3638)
             {
-                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
+                OtherCheck = BaseAction.TankBreakOtherCheck,
             },
 
             //腐秽大地
@@ -162,7 +162,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         if (Actions.LivingDead.ShouldUseAction(out act)) return true;
 
         //续Buff
-        if (Service.ClientState.LocalPlayer.CurrentMp >= 6000)
+        if (Service.ClientState.LocalPlayer.CurrentMp >= 6000 || JobGauge.HasDarkArts)
         {
             if (Actions.FloodofDarkness.ShouldUseAction(out act)) return true;
             if (Actions.EdgeofDarkness.ShouldUseAction(out act)) return true;
@@ -209,7 +209,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         }
         //降低攻击
         //雪仇
-        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
 
         act = null;
         return false;

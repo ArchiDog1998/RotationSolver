@@ -13,8 +13,8 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     private static bool _useDeploymentTactics = false;
     private protected override BaseAction Raise => SMNCombo.Actions.Resurrection;
-    protected override bool CanHealSingleSpell => Config.GetBoolByName("GCDHeal");
-    protected override bool CanHealAreaSpell => Config.GetBoolByName("GCDHeal");
+    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
+    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
     internal struct Actions
     {
         public static readonly BaseAction
@@ -240,15 +240,13 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     private protected override bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
     {
-        if (JobGauge.Aetherflow > 0 && !IsMoving)
-        {
-            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
-        }
-        if (!Actions.DeploymentTactics.IsCoolDown)
+
+        if (!Actions.DeploymentTactics.IsCoolDown && Service.ClientState.LocalPlayer.Level >= Actions.DeploymentTactics.Level)
         {
             _useDeploymentTactics = true;
             if (Actions.Adloquium.ShouldUseAction(out act)) return true;
         }
+        if (Actions.Succor.ShouldUseAction(out act)) return true;
 
         act = null;
         return false;
@@ -256,7 +254,10 @@ internal class SCHCombo : CustomComboJob<SCHGauge>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-
+        if (JobGauge.Aetherflow > 0 && !IsMoving)
+        {
+            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+        }
         if (Actions.SummonSeraph.ShouldUseAction(out act)) return true;
         if (Actions.FeyIllumination.ShouldUseAction(out act)) return true;
 

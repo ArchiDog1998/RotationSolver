@@ -67,7 +67,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
             //超火流星
             Superbolide = new (16152)
             {
-                OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank,
+                OtherCheck = BaseAction.TankBreakOtherCheck,
             },
 
             //音速破
@@ -144,27 +144,25 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //使用晶囊
-        bool useAmmo = JobGauge.Ammo > (Service.ClientState.LocalPlayer.Level >= Actions.DoubleDown.Level ? 2 : 0);
+        bool useAmmo = JobGauge.Ammo > (Service.ClientState.LocalPlayer.Level >= Actions.DoubleDown.Level ? 2 : 1);
+        bool breakUseAmmo = JobGauge.Ammo >= (Service.ClientState.LocalPlayer.Level >= Actions.DoubleDown.Level ? 2 : 1);
+
+        //AOE
+        if (breakUseAmmo && Actions.DoubleDown.ShouldUseAction(out act, mustUse: true)) return true;
+        if (useAmmo && Actions.FatedCircle.ShouldUseAction(out act)) return true;
+
+        if ( Actions.DemonSlaughter.ShouldUseAction(out act, lastComboActionID)) return true;
+        if ( Actions.DemonSlice.ShouldUseAction(out act, lastComboActionID)) return true;
 
         uint remap = Service.IconReplacer.OriginalHook(Actions.GnashingFang.ID);
         if (remap == Actions.WickedTalon.ID && Actions.WickedTalon.ShouldUseAction(out act)) return true;
         if (remap == Actions.SavageClaw.ID && Actions.SavageClaw.ShouldUseAction(out act)) return true;
 
-        //AOE
-        if (useAmmo)
-        {
-            if (Actions.DoubleDown.ShouldUseAction(out act, mustUse: true)) return true;
-            if (Actions.FatedCircle.ShouldUseAction(out act)) return true;
-        }
-        if ( Actions.DemonSlaughter.ShouldUseAction(out act, lastComboActionID)) return true;
-        if ( Actions.DemonSlice.ShouldUseAction(out act, lastComboActionID)) return true;
 
         //单体
-        if (useAmmo)
-        {
-            if (Actions.GnashingFang.ShouldUseAction(out act)) return true;
-            if (Actions.BurstStrike.ShouldUseAction(out act)) return true;
-        }
+        if (breakUseAmmo && Actions.GnashingFang.ShouldUseAction(out act)) return true;
+        if (useAmmo && Actions.BurstStrike.ShouldUseAction(out act)) return true;
+
         if (Actions.SonicBreak.ShouldUseAction(out act)) return true;
 
         //单体三连
@@ -240,7 +238,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         }
         //降低攻击
         //雪仇
-        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse:true)) return true;
 
 
         act = null;
