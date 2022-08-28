@@ -8,7 +8,7 @@ using XIVAutoAttack.Combos;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal class PLDCombo : CustomComboJob<PLDGauge>
+internal class PLDCombo : JobGaugeCombo<PLDGauge>
 {
     internal override uint JobID => 19;
 
@@ -47,7 +47,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
             //Õ∂∂‹
             ShieldLob = new (24)
             {
-                FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
+                FilterForHostile = b => BaseAction.ProvokeTarget(b),
             },
 
             //’ΩÃ”∑¥”¶
@@ -204,6 +204,9 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
 
         //Œ‰◊∞ ˘Œ¿
         if (Actions.PassageofArms.ShouldUseAction(out act)) return true;
+
+        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
+
         return false;
     }
 
@@ -245,7 +248,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
     }
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (abilityRemain == 1)
+        if (abilityRemain == 2)
         {
 
             //‘§æØ£®ºı…À30%£©
@@ -262,7 +265,7 @@ internal class PLDCombo : CustomComboJob<PLDGauge>
         }
         //ΩµµÕπ•ª˜
         //—©≥
-        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
+        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
 
         //∏…‘§£®ºı…À10%£©
         if (!HaveShield && Actions.Intervention.ShouldUseAction(out act)) return true;

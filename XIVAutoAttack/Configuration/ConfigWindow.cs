@@ -188,7 +188,7 @@ internal class ConfigWindow : Window
                 //    }
                 //}
 
-                ImGui.Text(TargetHelper.AllianceTanks.Length.ToString());
+                ImGui.Text(Service.ClientState.LocalPlayer.ClassJob.Id.ToString());
 
                 //if (Service.TargetManager.Target is BattleChara b)
                 //foreach (var item in b.StatusList)
@@ -506,7 +506,7 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
                     ImGui.Text("/aauto DefenseSingle 表示开启一段单体防御的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto EsunaShield 表示开启一段康复或者盾姿的窗口期。");
+                    ImGui.Text("/aauto EsunaShield 表示开启一段康复或者盾姿或者真北的窗口期。");
                     ImGui.Separator();
                     ImGui.Text("/aauto RaiseShirk 表示开启强制救人或退避的窗口期。");
                     ImGui.Separator();

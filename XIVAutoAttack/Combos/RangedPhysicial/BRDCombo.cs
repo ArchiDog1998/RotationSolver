@@ -6,7 +6,7 @@ using XIVAutoAttack.Combos;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
-internal class BRDCombo : CustomComboJob<BRDGauge>
+internal class BRDCombo : JobGaugeCombo<BRDGauge>
 {
 
     internal override uint JobID => 23;

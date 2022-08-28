@@ -8,7 +8,7 @@ using Dalamud.Game.ClientState.Statuses;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal class ASTCombo : CustomComboJob<ASTGauge>
+internal class ASTCombo : JobGaugeCombo<ASTGauge>
 {
     internal override uint JobID => 33;
 

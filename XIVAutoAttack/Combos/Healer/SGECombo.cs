@@ -5,7 +5,7 @@ using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal class SGECombo : CustomComboJob<SGEGauge>
+internal class SGECombo : JobGaugeCombo<SGEGauge>
 {
     internal override uint JobID => 40;
 

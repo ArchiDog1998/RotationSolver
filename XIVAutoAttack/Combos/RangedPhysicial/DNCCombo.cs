@@ -6,7 +6,7 @@ using XIVAutoAttack.Combos;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
-internal class DNCCombo : CustomComboJob<DNCGauge>
+internal class DNCCombo : JobGaugeCombo<DNCGauge>
 {
     internal override uint JobID => 38;
 

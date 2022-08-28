@@ -7,7 +7,7 @@ using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal class DRGCombo : CustomComboJob<DRGGauge>
+internal class DRGCombo : JobGaugeCombo<DRGGauge>
 {
     internal override uint JobID => 22;
 

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal class WHMCombo : CustomComboJob<WHMGauge>
+internal class WHMCombo : JobGaugeCombo<WHMGauge>
 {
     internal override uint JobID => 24;
     private protected override BaseAction Raise => Actions.Raise;

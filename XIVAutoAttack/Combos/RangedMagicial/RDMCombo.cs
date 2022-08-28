@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
-internal class RDMCombo : CustomComboJob<RDMGauge>
+internal class RDMCombo : JobGaugeCombo<RDMGauge>
 {
     internal override uint JobID => 35;
     protected override bool CanHealSingleSpell => false;

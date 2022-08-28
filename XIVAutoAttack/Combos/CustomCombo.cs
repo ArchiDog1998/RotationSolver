@@ -167,7 +167,7 @@ public abstract class CustomCombo
             //挑衅
             Provoke = new BaseAction(7533)
             {
-                FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
+                FilterForHostile = b => BaseAction.ProvokeTarget(b),
             },
 
             //雪仇
@@ -528,10 +528,13 @@ public abstract class CustomCombo
                     break;
             }
         }
+        if(IconReplacer.EsunaOrShield &&　role == Role.近战)
+        {
+            if (GeneralActions.TrueNorth.ShouldUseAction(out act)) return true;
+        }
 
 
         if (HaveTargetAngle && SettingBreak && BreakAbility(abilityRemain, out act)) return true;
-        if (IconReplacer.Move && MoveAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         if (TargetHelper.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
@@ -539,6 +542,7 @@ public abstract class CustomCombo
             if ((IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act)) return true;
             if ((IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act)) return true;
         }
+        if (IconReplacer.Move && MoveAbility(abilityRemain, out act)) return true;
 
         //回血
         if (role == Role.近战)
@@ -567,7 +571,7 @@ public abstract class CustomCombo
         {
             if (role == Role.防护)
             {
-                var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets, out bool haveTargetOnme);
+                var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets);
                 if (((Service.Configuration.AutoProvokeForTank || TargetHelper.AllianceTanks.Length < 2)&& haveTargets != TargetHelper.HostileTargets)
                     || IconReplacer.BreakorProvoke)
 
@@ -576,7 +580,22 @@ public abstract class CustomCombo
                     if (!HaveShield && Shield.ShouldUseAction(out act)) return true;
                     if (GeneralActions.Provoke.ShouldUseAction(out act, mustUse: true)) return true;
                 }
-                if (!IsMoving && haveTargetOnme && Service.Configuration.AutoDefenseForTank && HaveShield)
+
+                //被群殴呢
+                bool shouldDefense = TargetHelper.TarOnMeTargets.Length > 1;
+                if (shouldDefense && GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
+
+                //就一个打我，需要正在对我搞事情。
+                if (TargetHelper.TarOnMeTargets.Length == 1)
+                {
+                    var tar = TargetHelper.TarOnMeTargets[0];
+                    if(tar.IsCasting && tar.CastActionType != 2 && tar.CastActionType != 3 && tar.CastActionType != 4
+                        && tar.CastTargetObjectId == Service.ClientState.LocalPlayer.ObjectId && tar.TotalCastTime - tar.CurrentCastTime < 6)
+                    {
+                        shouldDefense = true;
+                    }
+                }
+                if (!IsMoving && shouldDefense && Service.Configuration.AutoDefenseForTank && HaveShield)
                 {
                     //防卫
                     if (DefenceSingleAbility(abilityRemain, out act)) return true;

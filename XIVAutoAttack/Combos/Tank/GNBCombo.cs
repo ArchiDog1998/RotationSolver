@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal class GNBCombo : CustomComboJob<GNBGauge>
+internal class GNBCombo : JobGaugeCombo<GNBGauge>
 {
     internal override uint JobID => 37;
     internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RoyalGuard);
@@ -210,6 +210,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.HeartofLight.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
         return false;
     }
 
@@ -221,7 +222,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
     }
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (abilityRemain == 1)
+        if (abilityRemain == 2)
         {
 
             //¼õÉË10%£©
@@ -238,7 +239,7 @@ internal class GNBCombo : CustomComboJob<GNBGauge>
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
-        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse:true)) return true;
+        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
 
 
         act = null;

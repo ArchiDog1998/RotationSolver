@@ -6,6 +6,7 @@ using Dalamud.Game.ClientState.Statuses;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Hooking;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -69,6 +70,7 @@ namespace XIVAutoAttack
         internal static BattleChara[] AllTargets { get; private set; } = new BattleChara[0];
 
         internal static BattleChara[] HostileTargets { get; private set; } = new BattleChara[0];
+        internal static BattleChara[] TarOnMeTargets { get; private set; } = new BattleChara[0];
         internal static BattleChara[] CanInterruptTargets { get; private set; } = new BattleChara[0];
 
         internal static bool HaveTargetAngle { get; private set; } = false;
@@ -110,6 +112,7 @@ namespace XIVAutoAttack
         internal static bool ShouldUseArea { get; private set; } = false;
         internal static bool InBattle { get; private set; } = false;
 
+        internal static  uint[] BLUActions { get;} = new uint[24];
 
         internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
         internal static MacroItem DoingMacro;
@@ -198,8 +201,8 @@ namespace XIVAutoAttack
             IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
             _lastPosition = thisPosition;
 
-            var instance = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
-            var spell = FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell;
+            var instance =ActionManager.Instance();
+            var spell = ActionType.Spell;
 
             WeaponTotal = instance->GetRecastTime(spell, 11);
             Weaponelapsed = instance->GetRecastTimeElapsed(spell, 11);
@@ -211,6 +214,14 @@ namespace XIVAutoAttack
             AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
 
             UpdateTargets();
+            if(Service.ClientState.LocalPlayer.ClassJob.Id == 36)
+            {
+                for (int i = 0; i < 24; i++)
+                {
+                    BLUActions[i] = instance->GetActiveBlueMageActionInSlot(i);
+                }
+            }
+
             DoAction(Weaponelapsed);
 
             #region 宏
@@ -356,6 +367,7 @@ namespace XIVAutoAttack
                 HostileTargets = Service.Configuration.AllTargeAsHostile || hosts.Length == 0 ? AllTargets : hosts;
 
                 CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2).ToArray();
+                TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId).ToArray();
 
                 float radius = 25;
                 switch (XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role)

@@ -8,7 +8,7 @@ using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos
 {
-    internal abstract class CustomComboJob<T> : CustomCombo where T : JobGaugeBase
+    internal abstract class JobGaugeCombo<T> : CustomCombo where T : JobGaugeBase
     {
         private static T _gauge;
 

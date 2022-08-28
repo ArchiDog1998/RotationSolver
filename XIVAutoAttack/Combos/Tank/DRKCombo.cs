@@ -6,7 +6,7 @@ using System.Numerics;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal class DRKCombo : CustomComboJob<DRKGauge>
+internal class DRKCombo : JobGaugeCombo<DRKGauge>
 {
     internal override uint JobID => 32;
     internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Grit);
@@ -31,7 +31,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
             //伤残
             Unmend = new (3624)
             {
-                FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
+                FilterForHostile = b => BaseAction.ProvokeTarget(b),
             },
 
             //噬魂斩
@@ -129,6 +129,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.DarkMissionary.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -195,7 +196,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (abilityRemain == 1)
+        if (abilityRemain == 2)
         {
             //减伤10%
             if (Actions.Oblation.ShouldUseAction(out act)) return true;
@@ -209,7 +210,7 @@ internal class DRKCombo : CustomComboJob<DRKGauge>
         }
         //降低攻击
         //雪仇
-        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
+        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
 
         act = null;
         return false;

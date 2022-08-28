@@ -7,7 +7,7 @@ using XIVAutoAttack.Combos;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal class MNKCombo : CustomComboJob<MNKGauge>
+internal class MNKCombo : JobGaugeCombo<MNKGauge>
 {
     internal override uint JobID => 20;
     protected override bool ShouldSayout => true;

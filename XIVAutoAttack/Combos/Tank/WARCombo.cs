@@ -8,7 +8,7 @@ using XIVAutoAttack.Combos;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal class WARCombo : CustomComboJob<WARGauge>
+internal class WARCombo : JobGaugeCombo<WARGauge>
 {
     internal override uint JobID => 21;
     internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
@@ -47,7 +47,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
             //·É¸«
             Tomahawk = new (46)
             {
-                FilterForHostile = b => BaseAction.ProvokeTarget(b, out _),
+                FilterForHostile = b => BaseAction.ProvokeTarget(b),
             },
 
             //ÃÍ¹¥
@@ -139,6 +139,9 @@ internal class WARCombo : CustomComboJob<WARGauge>
     {
         //°ÚÍÑ ¶ÓÓÑÌ×¶Ü
         if (Actions.ShakeItOff.ShouldUseAction(out act)) return true;
+
+        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
+
         return false;
     }
 
@@ -202,7 +205,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (abilityRemain == 1)
+        if (abilityRemain == 2)
         {
             //Ô­³õµÄÖ±¾õ£¨¼õÉË10%£©
             if (Actions.RawIntuition.ShouldUseAction(out act)) return true;
@@ -216,7 +219,7 @@ internal class WARCombo : CustomComboJob<WARGauge>
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
-        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
+        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
 
         act = null;
         return false;

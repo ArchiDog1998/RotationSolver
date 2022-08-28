@@ -7,7 +7,7 @@ using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Disciplines
 {
-    internal class FSHCombo : DisciplinesCombo
+    internal class FSHCombo : OtherCombo
     {
         internal override uint JobID => 18;
         internal struct Actions

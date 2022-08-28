@@ -4,7 +4,7 @@ using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
-internal class SMNCombo : CustomComboJob<SMNGauge>
+internal class SMNCombo : JobGaugeCombo<SMNGauge>
 {
     public class SMNAction : BaseAction
     {

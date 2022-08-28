@@ -4,7 +4,7 @@ using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal class NINCombo : CustomComboJob<NINGauge>
+internal class NINCombo : JobGaugeCombo<NINGauge>
 {
     internal override uint JobID => 30;
     protected override bool ShouldSayout => true;

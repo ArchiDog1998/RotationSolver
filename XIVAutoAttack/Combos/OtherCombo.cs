@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XIVAutoAttack.Combos.Disciplines
+namespace XIVAutoAttack.Combos
 {
-    internal abstract class DisciplinesCombo : CustomCombo
+    internal abstract class OtherCombo : CustomCombo
     {
     }
 }

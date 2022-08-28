@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal class RPRCombo : CustomComboJob<RPRGauge>
+internal class RPRCombo : JobGaugeCombo<RPRGauge>
 {
     internal override uint JobID => 39;
     protected override bool ShouldSayout => !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);

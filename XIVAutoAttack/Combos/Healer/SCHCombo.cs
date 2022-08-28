@@ -7,7 +7,7 @@ using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal class SCHCombo : CustomComboJob<SCHGauge>
+internal class SCHCombo : JobGaugeCombo<SCHGauge>
 {
     internal override uint JobID => 28;
 

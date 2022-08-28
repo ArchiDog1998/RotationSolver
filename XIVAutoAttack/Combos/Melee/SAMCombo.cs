@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal class SAMCombo : CustomComboJob<SAMGauge>
+internal class SAMCombo : JobGaugeCombo<SAMGauge>
 {
     internal override uint JobID => 34;
 

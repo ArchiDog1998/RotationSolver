@@ -5,7 +5,7 @@ using XIVAutoAttack.Combos;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
-internal class MCHCombo : CustomComboJob<MCHGauge>
+internal class MCHCombo : JobGaugeCombo<MCHGauge>
 {
     internal override uint JobID => 31;
 

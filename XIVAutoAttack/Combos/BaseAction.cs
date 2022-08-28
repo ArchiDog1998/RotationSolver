@@ -354,13 +354,12 @@ namespace XIVAutoAttack.Combos
             return true;
         }
 
-        internal static BattleChara[] ProvokeTarget(BattleChara[] inputCharas, out bool haveTargetOnme, bool needDistance = false)
+        internal static BattleChara[] ProvokeTarget(BattleChara[] inputCharas, bool needDistance = false)
         {
             var tankIDS = TargetHelper.GetJobCategory(TargetHelper.AllianceMembers, Role.防护).Select(member => member.ObjectId);
             var loc = Service.ClientState.LocalPlayer.Position;
             var id = Service.ClientState.LocalPlayer.ObjectId;
 
-            haveTargetOnme = false;
             List<BattleChara> targets = new List<BattleChara>();
             foreach (var target in inputCharas)
             {
@@ -371,11 +370,6 @@ namespace XIVAutoAttack.Combos
                     if (!tankIDS.Contains(target.TargetObjectId) && (!needDistance || Vector3.Distance(target.Position, loc) > 5))
                     {
                         targets.Add(target);
-                    }
-
-                    if (!haveTargetOnme && target.TargetObjectId == id)
-                    {
-                        haveTargetOnme = true;
                     }
                 }
             }
@@ -530,7 +524,7 @@ namespace XIVAutoAttack.Combos
             //return Math.Max(range, 3f);
         }
 
-        public bool ShouldUseAction(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
+        public virtual bool ShouldUseAction(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
             byte level = Service.ClientState.LocalPlayer.Level;
