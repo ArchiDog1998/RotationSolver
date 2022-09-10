@@ -91,14 +91,15 @@ namespace XIVAutoAttack.Combos
         private bool HasFire => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Firestarter);
         private bool HasThunder => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Thundercloud);
         internal static bool InTranspose = false;
-        internal static bool UseThunderIn = false;
+        internal static bool UseThunderIn { get; set; } = false;
         protected override bool CanHealSingleAbility => false;
         private bool CanGoFire
         {
             get
             {
-                if (!(JobGauge.InUmbralIce && LocalPlayer.CurrentMp > 9000 && (JobGauge.UmbralHearts == 3 || Service.ClientState.LocalPlayer.Level < 58))) return false; 
+                if (!(JobGauge.InUmbralIce && LocalPlayer.CurrentMp > 9000 && (JobGauge.UmbralHearts == 3 || Service.ClientState.LocalPlayer.Level < 58))) return false;
 
+                if (UseThunderIn) return true;
                 if (Service.TargetManager.Target is BattleChara b)
                 {
                     if (BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 20) return true;
@@ -147,9 +148,9 @@ namespace XIVAutoAttack.Combos
                 Manafont = new (158u),
 
                 //激情咏唱
-                Sharpcast = new (3574u)
+                Sharpcast = new(3574u)
                 {
-                    BuffsProvide = new [] { ObjectStatus.Sharpcast }
+                    BuffsProvide = new[] { ObjectStatus.Sharpcast }
                 },
 
                 //三连咏唱
@@ -250,7 +251,7 @@ namespace XIVAutoAttack.Combos
         private protected override ActionConfiguration CreateConfiguration()
         {
             return base.CreateConfiguration().SetBool("AutoLeylines", true, "自动上黑魔纹").SetBool("StartFire", false, "火起手")
-                .SetFloat("TimeToAdd", 5.2f, 3, 8, "火阶段还剩几秒时补时间", 0.01f);
+                .SetFloat("TimeToAdd", 5.4f, 3, 8, "火阶段还剩几秒时补时间", 0.01f);
         }
 
         private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
@@ -331,11 +332,17 @@ namespace XIVAutoAttack.Combos
                 if (Actions.Transpose.ShouldUseAction(out act)) return true;
             }
 
-            if(nextGCD.ID == Actions.Thunder.ID || nextGCD.ID == Actions.Thunder2.ID || nextGCD.ID == Actions.Blizzard4.ID || nextGCD.ID == Actions.Blizzard3.ID)
+            //if(nextGCD.ID == Actions.Thunder.ID || nextGCD.ID == Actions.Thunder2.ID || nextGCD.ID == Actions.Blizzard4.ID || nextGCD.ID == Actions.Blizzard3.ID
+            //    || nextGCD.ID == Actions.Fire.ID || nextGCD.ID == Actions.Fire3.ID)
             {
                 //加个激情
                 if (Actions.Sharpcast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
             }
+            //else if (nextGCD.ID == Actions.Fire.ID || nextGCD.ID == Actions.Fire3.ID)
+            //{
+            //    //加个激情
+            //    if (Actions.Sharpcast.ShouldUseAction(out act)) return true;
+            //}
             act = null;
             return false;
         }
@@ -403,6 +410,7 @@ namespace XIVAutoAttack.Combos
                 {
                     if (!Actions.Fire2.ShouldUseAction(out _) && JobGauge.IsParadoxActive && Actions.Fire.ShouldUseAction(out act)) return true;
 
+                    //如果可以不硬读条转火
                     if(HasFire || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 1.5)
                     {
                         //补雷
@@ -430,7 +438,7 @@ namespace XIVAutoAttack.Combos
                     }
 
                     //如果通晓满了，就放掉。
-                    if (IsPolyglotStacksMaxed && JobGauge.EnochianTimer < 8000)
+                    if (IsPolyglotStacksMaxed && JobGauge.EnochianTimer < 7000)
                     {
                         if (AddPolyglotAttach(out act)) return true;
                     }
@@ -483,7 +491,7 @@ namespace XIVAutoAttack.Combos
                 }
 
                 //如果通晓满了，就放掉。
-                if (IsPolyglotStacksMaxed && JobGauge.EnochianTimer < 8000)
+                if (IsPolyglotStacksMaxed && JobGauge.EnochianTimer <7000)
                 {
                     if (AddPolyglotAttach(out act)) return true;
                 }
@@ -552,6 +560,8 @@ namespace XIVAutoAttack.Combos
                 if (Actions.Triplecast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
                 //if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
             }
+
+            if (!HaveTargetAngle && Maintence(out act)) return true;
 
             return false;
         }

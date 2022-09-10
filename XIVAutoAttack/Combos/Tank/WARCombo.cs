@@ -266,5 +266,4 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
 
         return false;
     }
-
 }

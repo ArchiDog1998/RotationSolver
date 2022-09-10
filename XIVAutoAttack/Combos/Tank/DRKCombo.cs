@@ -196,6 +196,9 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
+        //上黑盾
+        if (Actions.TheBlackestNight.ShouldUseAction(out act)) return true;
+
         if (abilityRemain == 2)
         {
             //减伤10%

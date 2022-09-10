@@ -122,7 +122,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //°×Å£ÇåÖ­
             Taurochole = new (24303, true)
             {
-                ChoiceFriend = BaseAction.FindBeAttacked,
+                ChoiceFriend = BaseAction.FindAttackedTarget,
             },
 
             //¼ý¶¾
@@ -131,19 +131,19 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //ÊäÑª
             Haima = new (24305, true)
             {
-                ChoiceFriend = BaseAction.FindBeAttacked,
+                ChoiceFriend = BaseAction.FindAttackedTarget,
             },
 
             //¾ùºâÕï¶Ï
             EukrasianDiagnosis = new (24291, true) 
             {
-                ChoiceFriend = BaseAction.FindBeAttacked,
+                ChoiceFriend = BaseAction.FindAttackedTarget,
             },
 
             //¾ùºâÕï¶Ï
             EukrasianPrognosis = new (24292, true)
             {
-                ChoiceFriend = BaseAction.FindBeAttacked,
+                ChoiceFriend = BaseAction.FindAttackedTarget,
             },
 
             //¸ùËØ

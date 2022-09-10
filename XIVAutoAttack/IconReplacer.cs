@@ -379,7 +379,7 @@ internal sealed class IconReplacer : IDisposable
             if (!isGCD && newiAction is BaseAction act1 && act1.IsRealGCD) return;
 
 #if DEBUG
-            if (newiAction is BaseAction a) Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + a.Action.Name);
+            //if (newiAction is BaseAction a) Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + a.Action.Name);
 #endif
             if (newiAction.Use() && newiAction is BaseAction act)
             {

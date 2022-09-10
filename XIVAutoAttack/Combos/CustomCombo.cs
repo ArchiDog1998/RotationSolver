@@ -581,32 +581,53 @@ public abstract class CustomCombo
                     if (GeneralActions.Provoke.ShouldUseAction(out act, mustUse: true)) return true;
                 }
 
-                //被群殴呢
-                bool shouldDefense = TargetHelper.TarOnMeTargets.Length > 1;
-                if (shouldDefense && GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
-
-                //就一个打我，需要正在对我搞事情。
-                if (TargetHelper.TarOnMeTargets.Length == 1)
+                if (!IsMoving && Service.Configuration.AutoDefenseForTank && HaveShield)
                 {
-                    var tar = TargetHelper.TarOnMeTargets[0];
-                    if(tar.IsCasting && tar.CastActionType != 2 && tar.CastActionType != 3 && tar.CastActionType != 4
-                        && tar.CastTargetObjectId == Service.ClientState.LocalPlayer.ObjectId && tar.TotalCastTime - tar.CurrentCastTime < 6)
+                    //被群殴呢
+                    bool shouldDefense = TargetHelper.TarOnMeTargets.Length > 1;
+                    if (shouldDefense && GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
+
+                    //就一个打我，需要正在对我搞事情。
+                    if (TargetHelper.TarOnMeTargets.Length == 1)
                     {
-                        shouldDefense = true;
+                        var tar = TargetHelper.TarOnMeTargets[0];
+                        shouldDefense = IsHostileCastingTank(tar);
+                    }
+                    if (shouldDefense)
+                    {
+                        //防卫
+                        if (DefenceSingleAbility(abilityRemain, out act)) return true;
                     }
                 }
-                if (!IsMoving && shouldDefense && Service.Configuration.AutoDefenseForTank && HaveShield)
+            }
+
+            //是个骑士或者奶妈
+            if (role == Role.治疗 || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
+            {
+                if(TargetHelper.PartyTanks.Any((tank) =>
+                {
+                    var attackingTankObj = TargetHelper.HostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
+
+                    if (attackingTankObj.Count() != 1) return false;
+
+                    return IsHostileCastingTank(tank);
+                }))
                 {
                     //防卫
                     if (DefenceSingleAbility(abilityRemain, out act)) return true;
                 }
-
             }
             if (ForAttachAbility(abilityRemain, out act)) return true;
         }
-
         return false;
     }
+
+    private static bool IsHostileCastingTank(BattleChara h)
+    {
+        return h.IsCasting && h.CastActionType != 4
+            && h.CastTargetObjectId == h.TargetObjectId && h.TotalCastTime - h.CurrentCastTime < 3;
+    }
+
     /// <summary>
     /// 覆盖写一些用于攻击的能力技，只有附近有敌人的时候才会有效。
     /// </summary>

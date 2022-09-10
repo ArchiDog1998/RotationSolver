@@ -36,12 +36,14 @@ namespace XIVAutoAttack.Combos.RangedMagicial
 
         private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
         {
-            throw new NotImplementedException();
+            act = null;
+            return false;
         }
 
         private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
         {
-            throw new NotImplementedException();
+            act = null;
+            return false;
         }
     }
 }

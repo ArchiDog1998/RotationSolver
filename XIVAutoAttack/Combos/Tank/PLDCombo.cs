@@ -129,7 +129,10 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             PassageofArms = new (7385),
 
             //±£»¤
-            //Cover = new BaseAction(27, true),
+            Cover = new BaseAction(27, true)
+            {
+                ChoiceFriend = BaseAction.FindAttackedTarget,
+            },
 
             //¶ÜÕó
             Sheltron = new (3542);
@@ -238,6 +241,9 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             }
         }
 
+        //Special Defense.
+        if (JobGauge.OathGauge == 100 && Defense(out act)) return true;
+
         return false;
     }
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
@@ -248,20 +254,16 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     }
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
+        if (Defense(out act)) return true;
+
         if (abilityRemain == 2)
         {
-
             //Ô¤¾¯£¨¼õÉË30%£©
             if (Actions.Sentinel.ShouldUseAction(out act)) return true;
 
             //Ìú±Ú£¨¼õÉË20%£©
             if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
 
-            if (JobGauge.OathGauge >= 50)
-            {
-                //¶ÜÕó
-                if (Actions.Sheltron.ShouldUseAction(out act)) return true;
-            }
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
@@ -271,6 +273,24 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         if (!HaveShield && Actions.Intervention.ShouldUseAction(out act)) return true;
 
         act = null;
+        return false;
+    }
+
+    private bool Defense(out IAction act)
+    {
+        act = null;
+        if (JobGauge.OathGauge < 50) return false;
+
+        if (HaveShield)
+        {
+            //¶ÜÕó
+            if (Actions.Sheltron.ShouldUseAction(out act)) return true;
+        }
+        else
+        {
+            if(Actions.Cover.ShouldUseAction(out act)) return true;
+        }
+
         return false;
     }
 }

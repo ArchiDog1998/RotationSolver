@@ -34,6 +34,7 @@ namespace XIVAutoAttack
         public static bool IsMoving { get; private set; }
 
         private static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
+        private static readonly Stopwatch _weaponAbilityStopwatch = new Stopwatch();
 
         internal static readonly Stopwatch _fisherTimer = new Stopwatch();
         internal static readonly Stopwatch _unfishingTimer = new Stopwatch();
@@ -319,18 +320,22 @@ namespace XIVAutoAttack
                 else return;
             }
 
+            //确定读条时间。
             if (weaponelapsed < 0.3)
             {
                 //能力技就不用提前了。
                 _lastCastingTotal = Service.ClientState.LocalPlayer.TotalCastTime;
 
                 //补上读条税
-                if (_lastCastingTotal > 0) _lastCastingTotal += 0.1f;
+                if (_lastCastingTotal > 0) _lastCastingTotal += 0.1f + Service.Configuration.WeaponFaster;
             }
 
             //要超出GCD了，那就不放技能了。
             if (WeaponRemain < Service.Configuration.WeaponInterval
-                || weaponelapsed < Service.Configuration.WeaponInterval) return;
+                || weaponelapsed < Service.Configuration.WeaponInterval)
+            {
+                return;
+            }
 
             //还在咏唱，就不放技能了。
             if (weaponelapsed <= _lastCastingTotal) return;
@@ -340,12 +345,12 @@ namespace XIVAutoAttack
                 Service.IconReplacer.DoAnAction(false);
                 return;
             }
-
         }
+
         private static void UpdateTargets()
         {
             #region Hostile
-
+            //能打的目标
             AllTargets = BaseAction.GetObjectInRadius(Service.ObjectTable.ToArray(), 30).Where(obj =>
             {
                 if(obj is BattleChara c && c.CurrentHp != 0)

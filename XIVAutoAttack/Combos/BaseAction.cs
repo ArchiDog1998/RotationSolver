@@ -198,11 +198,6 @@ namespace XIVAutoAttack.Combos
             return (attachedT.Count > 0 ? attachedT.ToArray() : charas).OrderBy(f => (float)f.CurrentHp / f.MaxHp).First();
         }
 
-        internal static BattleChara FindBeAttacked(BattleChara[] charas)
-        {
-            return ASTCombo.RandomObject(charas.Where(t => t.TargetObject?.TargetObject?.ObjectId == t.ObjectId).ToArray());
-        }
-
         internal static bool TankBreakOtherCheck(BattleChara chara)
         {
             return (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank 
@@ -284,7 +279,6 @@ namespace XIVAutoAttack.Combos
                 }
                 else
                 {
-
                     availableCharas = GetObjectInRadius(availableCharas, range);
                     //特殊选队友的方法。
                     var tar = ChoiceFriend(availableCharas);
