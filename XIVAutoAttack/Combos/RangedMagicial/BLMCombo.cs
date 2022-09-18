@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Configuration;
@@ -91,6 +92,10 @@ namespace XIVAutoAttack.Combos
         private bool HasFire => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Firestarter);
         private bool HasThunder => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Thundercloud);
         internal static bool InTranspose = false;
+        private bool HasSwift => BaseAction.FindStatusFromSelf(Target, ObjectStatus.Thunder,
+                        ObjectStatus.Thunder2,
+                        ObjectStatus.Thunder3,
+                        ObjectStatus.Thunder4).Length > 0;
         internal static bool UseThunderIn { get; set; } = false;
         protected override bool CanHealSingleAbility => false;
         private bool CanGoFire
@@ -305,8 +310,9 @@ namespace XIVAutoAttack.Combos
             if (Service.ClientState.LocalPlayer.Level >= 90 && JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp == 0
                 && (JobGauge.PolyglotStacks > 0 || JobGauge.EnochianTimer < 3000)
                 && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5 
+                || !Actions.Triplecast.IsCoolDown || Actions.Triplecast.RecastTimeRemain < 15
                 ||　(Service.TargetManager.Target is BattleChara b  && 
-                BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10)))
+                BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 15)))
             {
                 Actions.Transpose.AfterUse = () =>
                 {
@@ -332,17 +338,6 @@ namespace XIVAutoAttack.Combos
                 if (Actions.Transpose.ShouldUseAction(out act)) return true;
             }
 
-            //if(nextGCD.ID == Actions.Thunder.ID || nextGCD.ID == Actions.Thunder2.ID || nextGCD.ID == Actions.Blizzard4.ID || nextGCD.ID == Actions.Blizzard3.ID
-            //    || nextGCD.ID == Actions.Fire.ID || nextGCD.ID == Actions.Fire3.ID)
-            {
-                //加个激情
-                if (Actions.Sharpcast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-            }
-            //else if (nextGCD.ID == Actions.Fire.ID || nextGCD.ID == Actions.Fire3.ID)
-            //{
-            //    //加个激情
-            //    if (Actions.Sharpcast.ShouldUseAction(out act)) return true;
-            //}
             act = null;
             return false;
         }
@@ -350,6 +345,8 @@ namespace XIVAutoAttack.Combos
         private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
         {
             if (!HaveTargetAngle && Maintence(out act)) return true;
+
+
             return base.GeneralAbility(abilityRemain, out act);
         }
 
@@ -369,6 +366,13 @@ namespace XIVAutoAttack.Combos
                 //if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
             }
 
+            if ((JobGauge.InUmbralIce && !HasSwift) || (JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp <= 4400)
+                || GeneralActions.Swiftcast.RecastTimeRemain > 20)
+            {
+                //加个激情
+                if (Actions.Sharpcast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            }
+
             if (JobGauge.InUmbralIce)
             {
                 if (InTranspose)
@@ -377,7 +381,9 @@ namespace XIVAutoAttack.Combos
                     if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
 
                     //加个即刻
-                    if (!HasFire && GeneralActions.Swiftcast.ShouldUseAction(out act)) return true;
+                    if (!HasFire && (UseThunderIn || HasThunder) && GeneralActions.Swiftcast.ShouldUseAction(out act)) return true;
+                    if (!HasFire && GeneralActions.Swiftcast.RecastTimeRemain >= 5 && Actions.Triplecast.RecastTimeRemain < 15 && 
+                        Actions.Triplecast.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
                 }
             }
 
@@ -392,6 +398,13 @@ namespace XIVAutoAttack.Combos
                 //自动黑魔纹
                 if(Config.GetBoolByName("AutoLeylines") && Actions.Leylines.ShouldUseAction(out act, mustUse: true)) return true;
             }
+
+
+            //else if (nextGCD.ID == Actions.Fire.ID || nextGCD.ID == Actions.Fire3.ID)
+            //{
+            //    //加个激情
+            //    if (Actions.Sharpcast.ShouldUseAction(out act)) return true;
+            //}
 
             //加个通晓
             if (Actions.Amplifier.ShouldUseAction(out act)) return true;
@@ -415,6 +428,9 @@ namespace XIVAutoAttack.Combos
                     {
                         //补雷
                         if (!UseThunderIn && HasThunder && AddThunder(lastComboActionID, out act)) return true;
+
+                        //硬读条补雷
+                        if (!UseThunderIn && HasSwift && AddThunder(lastComboActionID, out act)) return true;
 
                         if (AddPolyglotAttach(out act)) return true;
                     }
@@ -442,14 +458,24 @@ namespace XIVAutoAttack.Combos
                     {
                         if (AddPolyglotAttach(out act)) return true;
                     }
+
                     //上雷
-                    if (!UseThunderIn && AddThunder(lastComboActionID, out act)) return true;
+                    if (!UseThunderIn && AddThunder(lastComboActionID, out act))
+                    {
+                        //加个激情
+                        var relayAct = act;
+                        if (Actions.Sharpcast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+
+                        act = relayAct;
+                        return true;
+                    }
 
                     //加冰心
                     if (AddUmbralHearts(out act)) return true;
 
                     //把冰悖论放掉
                     if (!Actions.Fire2.ShouldUseAction(out _) && JobGauge.IsParadoxActive && Actions.Fire.ShouldUseAction(out act)) return true;
+
 
                     //试试看冰2,3
                     if (Actions.Blizzard2.ShouldUseAction(out act)) return true;

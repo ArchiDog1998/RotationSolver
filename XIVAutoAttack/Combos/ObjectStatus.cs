@@ -475,6 +475,9 @@ namespace XIVAutoAttack.Combos
             Sheltron = 728,
 
             //圣盾阵
-            HolySheltron = 2674;
+            HolySheltron = 2674,
+
+            //野火
+            Wildfire = 1946;
     }
 }

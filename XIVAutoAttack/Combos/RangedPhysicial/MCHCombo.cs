@@ -137,8 +137,12 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        float time = 10;
+        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Wildfire))
+        {
+            if (Actions.Hypercharge.ShouldUseAction(out act)) return true;
+        }
 
+        float time = 10;
         byte level = Service.ClientState.LocalPlayer.Level;
 
         if (JobGauge.Heat >= 50 && (level < Actions.HotShow.Level || Actions.HotShow.RecastTimeRemain > time
@@ -151,8 +155,9 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             if (Actions.Hypercharge.ShouldUseAction(out act)) return true;
         }
 
+
         //两个能力技都还在冷却
-        if (Actions.GaussRound.IsCoolDown && Actions.Ricochet.IsCoolDown)
+        if (Actions.GaussRound.RecastTimeRemain > 0 && Actions.Ricochet.RecastTimeRemain > 0)
         {
             //车式浮空炮塔
             if (Actions.RookAutoturret.ShouldUseAction(out act, mustUse: true)) return true;
@@ -161,8 +166,8 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             if (Actions.BarrelStabilizer.ShouldUseAction(out act)) return true;
         }
 
-        if (!Actions.Ricochet.IsCoolDown && Actions.Ricochet.ShouldUseAction(out act, mustUse: true)) return true;
-        if (!Actions.GaussRound.IsCoolDown && Actions.GaussRound.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.Ricochet.RecastTimeRemain == 0 && Actions.Ricochet.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.GaussRound.RecastTimeRemain == 0 && Actions.GaussRound.ShouldUseAction(out act, mustUse: true)) return true;
 
         if (Actions.GaussRound.RecastTimeRemain > Actions.Ricochet.RecastTimeRemain)
         {
@@ -172,6 +177,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         //虹吸弹
         if (Actions.GaussRound.ShouldUseAction(out act, mustUse: true)) return true;
 
+        act = null;
         return false;
     }
 }

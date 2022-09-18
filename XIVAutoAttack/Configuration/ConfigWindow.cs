@@ -19,6 +19,7 @@ using XIVAutoAttack.Combos.Disciplines;
 using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Combos.RangedMagicial;
+using XIVAutoAttack.Combos.RangedPhysicial;
 using XIVAutoAttack.Combos.Tank;
 
 namespace XIVAutoAttack.Configuration;
@@ -179,16 +180,15 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                //{
+                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                {
 
-                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //    {
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //    }
-                //}
+                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    {
+                        ImGui.Text(item.GameData.Name + item.StatusId);
+                    }
+                }
 
-                ImGui.Text(Service.ClientState.LocalPlayer.ClassJob.Id.ToString());
 
                 //if (Service.TargetManager.Target is BattleChara b)
                 //foreach (var item in b.StatusList)
