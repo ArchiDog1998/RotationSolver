@@ -101,7 +101,10 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             LivingShadow = new (16472),
 
             //献奉
-            Oblation = new (25754, true),
+            Oblation = new (25754, true)
+            {
+                ChoiceFriend = BaseAction.FindAttackedTarget,
+            },
 
             //暗影使者
             Shadowbringer = new (25757),

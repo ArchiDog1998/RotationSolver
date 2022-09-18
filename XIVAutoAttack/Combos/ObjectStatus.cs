@@ -80,6 +80,9 @@ namespace XIVAutoAttack.Combos
             //死斗
             Holmgang = 409,
 
+            //行尸走肉
+            WillDead = 810,
+
             //死而不僵
             WalkingDead = 811,
 
@@ -466,6 +469,12 @@ namespace XIVAutoAttack.Combos
             Flower = 1299,
 
             //真理之剑预备状态
-            ReadyForBladeofFaith = 3019;
+            ReadyForBladeofFaith = 3019,
+
+            //盾阵
+            Sheltron = 728,
+
+            //圣盾阵
+            HolySheltron = 2674;
     }
 }

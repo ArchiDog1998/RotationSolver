@@ -144,10 +144,11 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (JobGauge.Heat >= 50 && (level < Actions.HotShow.Level || Actions.HotShow.RecastTimeRemain > time
             || Actions.AirAnchor.RecastTimeRemain > time) &&
             (level < Actions.Drill.Level || Actions.Drill.RecastTimeRemain > time) &&
-            (level < Actions.ChainSaw.Level || Actions.ChainSaw.RecastTimeRemain > time))
+            (level < Actions.ChainSaw.Level || Actions.ChainSaw.RecastTimeRemain > time)
+            && abilityRemain == 1)
         {
-            if (abilityRemain == 1 && Actions.Hypercharge.ShouldUseAction(out act)) return true;
-            if (abilityRemain > 1 && Actions.Wildfire.ShouldUseAction(out act)) return true;
+            if (Actions.Wildfire.ShouldUseAction(out act)) return true;
+            if (Actions.Hypercharge.ShouldUseAction(out act)) return true;
         }
 
         //两个能力技都还在冷却

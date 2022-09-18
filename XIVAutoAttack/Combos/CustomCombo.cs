@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace XIVAutoAttack.Combos;
 
 public abstract class CustomCombo
 {
+    //private static readonly uint[] AOEIds = new uint[] { };
+
     public enum DescType : byte
     {
         范围治疗,
@@ -149,7 +152,7 @@ public abstract class CustomCombo
             {
                 BuffsProvide = new ushort[]
                 {
-                    ObjectStatus.Holmgang, ObjectStatus.WalkingDead, ObjectStatus.Superbolide, ObjectStatus.HallowedGround,
+                    ObjectStatus.Holmgang, ObjectStatus.WillDead, ObjectStatus.WalkingDead, ObjectStatus.Superbolide, ObjectStatus.HallowedGround,
                     ObjectStatus.Rampart1, ObjectStatus.Rampart2, ObjectStatus.Rampart3,
                     //原初的直觉和血气
                     ObjectStatus.RawIntuition, ObjectStatus.Bloodwhetting,
@@ -348,9 +351,27 @@ public abstract class CustomCombo
 
     private IAction Invoke(uint actionID, uint lastComboActionID, float comboTime)
     {
-
         byte abilityRemain = TargetHelper.AbilityRemainCount;
-        IAction act = GCD(lastComboActionID, abilityRemain);
+
+        //防AOE
+        var helpDefenseAOE = Service.TargetManager.Target is BattleChara b && IsHostileCastingArea(b);
+
+        //防单体
+        bool helpDefenseSingle = false;
+        //是个骑士或者奶妈
+        if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗 || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
+        {
+            if (Service.Configuration.AutoDefenseForTank && TargetHelper.PartyTanks.Any((tank) =>
+            {
+                var attackingTankObj = TargetHelper.HostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
+
+                if (attackingTankObj.Count() != 1) return false;
+
+                return IsHostileCastingTank(tank);
+            })) helpDefenseSingle = true;
+        }
+
+        IAction act = GCD(lastComboActionID, abilityRemain, helpDefenseAOE, helpDefenseSingle);
         //Sayout!
         if (act != null && act is BaseAction GCDaction)
         {
@@ -370,20 +391,20 @@ public abstract class CustomCombo
                 case 0:
                     return GCDaction;
                 default:
-                    if (Ability(abilityRemain, GCDaction, out IAction ability)) return ability;
+                    if (Ability(abilityRemain, GCDaction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
                     return GCDaction;
             }
 
         }
         else if(act == null)
         {
-            if (Ability(abilityRemain, GeneralActions.Addle, out IAction ability)) return ability;
+            if (Ability(abilityRemain, GeneralActions.Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
             return null;
         }
         return act;
     }
 
-    private IAction GCD(uint lastComboActionID, byte abilityRemain)
+    private IAction GCD(uint lastComboActionID, byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         if (EmergercyGCD(lastComboActionID, out IAction act)) return act;
 
@@ -397,11 +418,15 @@ public abstract class CustomCombo
         if (IconReplacer.DefenseArea && DefenseAreaGCD(abilityRemain, out act)) return act;
         if (IconReplacer.DefenseSingle && DefenseSingleGCD(abilityRemain, out act)) return act;
 
+        //自动防御
+        if (helpDefenseAOE && DefenseAreaGCD(abilityRemain, out act)) return act;
+        if (helpDefenseSingle && DefenseSingleGCD(abilityRemain, out act)) return act;
+
         if (GeneralGCD(lastComboActionID, out var action)) return action;
 
         //硬拉或者开始奶人
         if ((HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) && EsunaRaise(out act, abilityRemain, true)) return act;
-        if (TargetHelper.HPNotFull)
+        if (TargetHelper.HPNotFull && HaveTargetAngle)
         {
             if (TargetHelper.CanHealAreaSpell && HealAreaGCD(lastComboActionID, out act)) return act;
             if (TargetHelper.CanHealSingleSpell && HealSingleGCD(lastComboActionID, out act)) return act;
@@ -445,7 +470,7 @@ public abstract class CustomCombo
         act = null;
         return false;
     }
-    private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act)
+    private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         if (Service.Configuration.OnlyGCD)
         {
@@ -544,7 +569,61 @@ public abstract class CustomCombo
         }
         if (IconReplacer.Move && MoveAbility(abilityRemain, out act)) return true;
 
-        //回血
+        //防御
+        if (HaveTargetAngle)
+        {
+            //防AOE
+            if (helpDefenseAOE)
+            {
+                if(DefenceAreaAbility(abilityRemain, out act)) return true;
+                if(role == Role.近战 || role == Role.远程)
+                {
+                    //防卫
+                    if (DefenceSingleAbility(abilityRemain, out act)) return true;
+                }
+            }
+
+            //防单体
+            if (role == Role.防护)
+            {
+                var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets);
+                if (((Service.Configuration.AutoProvokeForTank || TargetHelper.AllianceTanks.Length < 2) && haveTargets != TargetHelper.HostileTargets)
+                    || IconReplacer.BreakorProvoke)
+
+                {
+                    //开盾挑衅
+                    if (!HaveShield && Shield.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.Provoke.ShouldUseAction(out act, mustUse: true)) return true;
+                }
+
+                if (Service.Configuration.AutoDefenseForTank && HaveShield)
+                {
+                    //被群殴呢
+                    if (TargetHelper.TarOnMeTargets.Length > 1 && !IsMoving)
+                    {
+                        if(GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
+                        if (DefenceSingleAbility(abilityRemain, out act)) return true;
+                    }
+
+                    //就一个打我，需要正在对我搞事情。
+                    if (TargetHelper.TarOnMeTargets.Length == 1)
+                    {
+                        var tar = TargetHelper.TarOnMeTargets[0];
+                        if (IsHostileCastingTank(tar))
+                        {
+                            //防卫
+                            if (DefenceSingleAbility(abilityRemain, out act)) return true;
+                        }
+                    }
+
+                }
+            }
+
+            //辅助防卫
+            if (helpDefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
+        }
+
+        //恢复
         if (role == Role.近战)
         {
             if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
@@ -567,66 +646,41 @@ public abstract class CustomCombo
         }
 
         if (GeneralAbility(abilityRemain, out act)) return true;
-        if (HaveTargetAngle)
-        {
-            if (role == Role.防护)
-            {
-                var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets);
-                if (((Service.Configuration.AutoProvokeForTank || TargetHelper.AllianceTanks.Length < 2)&& haveTargets != TargetHelper.HostileTargets)
-                    || IconReplacer.BreakorProvoke)
-
-                {
-                    //开盾挑衅
-                    if (!HaveShield && Shield.ShouldUseAction(out act)) return true;
-                    if (GeneralActions.Provoke.ShouldUseAction(out act, mustUse: true)) return true;
-                }
-
-                if (!IsMoving && Service.Configuration.AutoDefenseForTank && HaveShield)
-                {
-                    //被群殴呢
-                    bool shouldDefense = TargetHelper.TarOnMeTargets.Length > 1;
-                    if (shouldDefense && GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
-
-                    //就一个打我，需要正在对我搞事情。
-                    if (TargetHelper.TarOnMeTargets.Length == 1)
-                    {
-                        var tar = TargetHelper.TarOnMeTargets[0];
-                        shouldDefense = IsHostileCastingTank(tar);
-                    }
-                    if (shouldDefense)
-                    {
-                        //防卫
-                        if (DefenceSingleAbility(abilityRemain, out act)) return true;
-                    }
-                }
-            }
-
-            //是个骑士或者奶妈
-            if (role == Role.治疗 || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
-            {
-                if(TargetHelper.PartyTanks.Any((tank) =>
-                {
-                    var attackingTankObj = TargetHelper.HostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
-
-                    if (attackingTankObj.Count() != 1) return false;
-
-                    return IsHostileCastingTank(tank);
-                }))
-                {
-                    //防卫
-                    if (DefenceSingleAbility(abilityRemain, out act)) return true;
-                }
-            }
-            if (ForAttachAbility(abilityRemain, out act)) return true;
-        }
+        if (HaveTargetAngle && ForAttachAbility(abilityRemain, out act)) return true;
         return false;
     }
 
-    private static bool IsHostileCastingTank(BattleChara h)
+    internal static bool IsHostileCastingTank(BattleChara h)
     {
-        return h.IsCasting && h.CastActionType != 4
-            && h.CastTargetObjectId == h.TargetObjectId && h.TotalCastTime - h.CurrentCastTime < 3;
+        return IsHostileCastingBase(h, (act) =>
+        {
+            return h.CastTargetObjectId == h.TargetObjectId;
+        });
     }
+
+    internal static bool IsHostileCastingArea(BattleChara h)
+    {
+        return IsHostileCastingBase(h, (act) =>
+        {
+            if (h.CastTargetObjectId == h.TargetObjectId) return false;
+            if((act.CastType == 1 || act.CastType == 2) && 
+                act.Range == 0 && 
+                (act.EffectRange >= 40))
+                return true;
+            return false;
+        });
+    }
+
+    private static bool IsHostileCastingBase(BattleChara h, Func<Lumina.Excel.GeneratedSheets.Action, bool> check)
+    {
+        if (!h.IsCasting || h.IsCastInterruptible) return false;
+        var last = h.TotalCastTime - h.CurrentCastTime;
+        var act = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(h.CastActionId);
+
+        return check?.Invoke(act) ?? false && h.TotalCastTime > 2
+            && last < 6 && last > 0.5;
+    }
+
 
     /// <summary>
     /// 覆盖写一些用于攻击的能力技，只有附近有敌人的时候才会有效。
