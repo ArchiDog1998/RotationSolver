@@ -74,7 +74,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //自生2
             Physis2 = new (24302, true),
 
-            ////均衡
+            //均衡
             Eukrasia = new (24290)
             {
                 OtherCheck = b => !JobGauge.Eukrasia,

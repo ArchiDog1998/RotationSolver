@@ -354,7 +354,7 @@ public abstract class CustomCombo
         byte abilityRemain = TargetHelper.AbilityRemainCount;
 
         //·ÀAOE
-        var helpDefenseAOE = Service.TargetManager.Target is BattleChara b && IsHostileCastingArea(b);
+        var helpDefenseAOE = TargetHelper.HostileTargets.Length == 1 && Service.TargetManager.Target is BattleChara b && IsHostileCastingArea(b);
 
         //·Àµ¥Ìå
         bool helpDefenseSingle = false;

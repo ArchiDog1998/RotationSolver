@@ -188,6 +188,9 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
         //神名
         if (Actions.Tetragrammaton.ShouldUseAction(out act)) return true;
 
+        //庇护所
+        if (!IsMoving && Actions.Asylum.ShouldUseAction(out act)) return true;
+
         return false;
     }
 

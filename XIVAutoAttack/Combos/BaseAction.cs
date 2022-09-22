@@ -43,7 +43,7 @@ namespace XIVAutoAttack.Combos
         /// <summary>
         /// 咏唱时间
         /// </summary>
-        internal virtual int Cast100 => Action.Cast100ms - (HaveStatusSelfFromSelf(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) || SGECombo.JobGauge.Eukrasia ? 25 : 0);
+        internal virtual int Cast100 => Action.Cast100ms - (HaveStatusSelfFromSelf(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) ? 25 : 0);
         internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
         internal unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Spell, ID);
         internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ID, Service.ClientState.LocalPlayer.Level), (ushort)1);
