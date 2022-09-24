@@ -277,7 +277,7 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
 
                     bool autoDefenseforTank = Service.Configuration.AutoDefenseForTank;
-                    if (ImGui.Checkbox("T自动上减伤", ref autoDefenseforTank))
+                    if (ImGui.Checkbox("自动上减伤(不太准)", ref autoDefenseforTank))
                     {
                         Service.Configuration.AutoDefenseForTank = autoDefenseforTank;
                         Service.Configuration.Save();

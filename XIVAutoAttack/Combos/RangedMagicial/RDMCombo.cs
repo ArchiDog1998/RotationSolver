@@ -127,7 +127,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             //±¶Ôö
             Manafication = new (7521)
             {
-                OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50,
+                OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && TargetHelper.InBattle,
             },
 
             //ÐøÕ¶

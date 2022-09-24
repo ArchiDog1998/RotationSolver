@@ -110,7 +110,7 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
         //狂喜之心
         if (Actions.AfflatusRapture.ShouldUseAction(out act)) return true;
         //加Hot
-        if (Actions.Medica2.ShouldUseAction(out act)) return true;
+        if (Actions.Medica2.ShouldUseAction(out act, lastComboActionID)) return true;
 
         float cure3 = TargetHelper.GetBestHeal(Actions.Cure3.Action, 600);
         float medica = TargetHelper.GetBestHeal(Actions.Medica.Action, 300);

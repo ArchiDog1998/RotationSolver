@@ -207,6 +207,12 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     {
         if (abilityRemain == 2)
         {
+            if(TargetHelper.HostileTargets.Length == 1)
+            {
+                //¸´³ð£¨¼õÉË30%£©
+                if (Actions.Vengeance.ShouldUseAction(out act)) return true;
+            }
+
             //Ô­³õµÄÖ±¾õ£¨¼õÉË10%£©
             if (Actions.RawIntuition.ShouldUseAction(out act)) return true;
 
@@ -215,7 +221,6 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
 
             //Ìú±Ú£¨¼õÉË20%£©
             if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
-
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
