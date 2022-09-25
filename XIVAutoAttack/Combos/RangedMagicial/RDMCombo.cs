@@ -12,6 +12,19 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
     //看看现在有没有促进
 
     private protected override BaseAction Raise => Actions.Verraise;
+    public class RDMAction : BaseAction
+    {
+        internal override int Cast100 => TargetHelper.InBattle ? 0 : base.Cast100;
+        internal override ushort[] BuffsNeed 
+        {
+            get => TargetHelper.InBattle ? base.BuffsNeed : null;
+            set => base.BuffsNeed = value; 
+        }
+        internal RDMAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) : base(actionID, isFriendly, shouldEndSpecial)
+        {
+            BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray();
+        }
+    }
     internal struct Actions
     {
         public static readonly BaseAction
@@ -31,10 +44,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             },
 
             //赤闪雷
-            Verthunder = new (7505)
-            {
-                BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
-            },
+            Verthunder = new RDMAction(7505),
 
             //短兵相接
             CorpsAcorps = new (7506)
@@ -47,16 +57,10 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             },
 
             //赤疾风
-            Veraero = new (7507)
-            {
-                BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
-            },
+            Veraero = new RDMAction(7507),
 
             //散碎
-            Scatter = new (7509)
-            {
-                BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
-            },
+            Scatter = new RDMAction(7509),
 
             //赤震雷
             Verthunder2 = new (16524u)
@@ -124,10 +128,11 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             //鼓励
             Embolden = new (7520, true),
 
-            //倍增
+            //魔元化
             Manafication = new (7521)
             {
                 OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && TargetHelper.InBattle,
+                OtherIDsNot = new uint[] { Riposte.ID, Zwerchhau.ID},
             },
 
             //续斩
@@ -184,26 +189,29 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.ManaStacks == 0)
+        if (JobGauge.ManaStacks == 0 && (JobGauge.BlackMana < 50 || JobGauge.WhiteMana < 50))
         {
+            //促进满了就用。 
+            if (abilityRemain == 2 && Actions.Acceleration.ShouldUseAction(out act, mustUse: true)) return true;
+
             //即刻咏唱
             if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
-
-            //促进满了就用。 
-            if (abilityRemain == 1 && Actions.Acceleration.ShouldUseAction(out act, mustUse: true)) return true;
         }
 
         //攻击四个能力技。
         if (Actions.ContreSixte.ShouldUseAction(out act, mustUse: true)) return true;
         if (Actions.Fleche.ShouldUseAction(out act)) return true;
         //Empty: BaseAction.HaveStatusSelfFromSelf(1239)
-        if (Actions.Engagement.ShouldUseAction(out act)) return true;
+        if (Actions.Engagement.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
-        var target = Service.TargetManager.Target;
-        if (Vector3.Distance(Service.ClientState.LocalPlayer.Position, target.Position) - target.HitboxRadius < 1)
+        if (Actions.CorpsAcorps.ShouldUseAction(out act))
         {
-            if (Actions.CorpsAcorps.ShouldUseAction(out act)) return true;
+            if (BaseAction.DistanceToPlayer(Actions.CorpsAcorps.Target) < 1)
+            {
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -213,8 +221,11 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
         if (JobGauge.ManaStacks == 3) return false;
 
         #region 常规输出
-        if (Actions.Verfire.ShouldUseAction(out act)) return true;
-        if (Actions.Verstone.ShouldUseAction(out act)) return true;
+        if (!Actions.Verthunder2.ShouldUseAction(out _))
+        {
+            if (Actions.Verfire.ShouldUseAction(out act)) return true;
+            if (Actions.Verstone.ShouldUseAction(out act)) return true;
+        }
 
         //试试看散碎
         if (Actions.Scatter.ShouldUseAction(out act)) return true;
@@ -252,13 +263,13 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
     {
         //混乱
         if (GeneralActions.Addle.ShouldUseAction(out act)) return true;
-        if (Actions.MagickBarrier.ShouldUseAction(out act)) return true;
+        if (Actions.MagickBarrier.ShouldUseAction(out act, mustUse:true)) return true;
         return false;
     }
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Manafication.ShouldUseAction(out act)) return true;
+        if (Actions.Manafication.ShouldUseAction(out act, Service.Address.LastComboAction)) return true;
         if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
         return false;
     }
@@ -354,8 +365,6 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             if (JobGauge.BlackMana >= 50 && JobGauge.WhiteMana >= 50 && Actions.Riposte.ShouldUseAction(out act)) return true;
         }
         #endregion
-
-
 
         return false;
     }
