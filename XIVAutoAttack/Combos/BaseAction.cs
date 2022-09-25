@@ -72,7 +72,7 @@ namespace XIVAutoAttack.Combos
         /// <summary>
         /// 使用这个技能需要的前置Buff，有任何一个就好。
         /// </summary>
-        internal ushort[] BuffsNeed { get; set; } = null;
+        internal virtual ushort[] BuffsNeed { get; set; } = null;
         internal System.Action AfterUse { get; set; } = null;
 
         /// <summary>
@@ -566,20 +566,20 @@ namespace XIVAutoAttack.Combos
                 }
             }
 
+            //如果有输入上次的数据，那么上次不能是上述的ID。
+            if (OtherIDsNot != null)
+            {
+                foreach (var id in OtherIDsNot)
+                {
+                    if (lastAct == id) return false;
+                }
+            }
+
             //看看有没有目标，如果没有，就说明不符合条件。
             if (!FindTarget(mustUse)) return false;
 
             if (IsGeneralGCD)
             {
-                //如果有输入上次的数据，那么上次不能是上述的ID。
-                if (OtherIDsNot != null)
-                {
-                    foreach (var id in OtherIDsNot)
-                    {
-                        if (lastAct == id) return false;
-                    }
-                }
-
                 //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
                 uint[] comboActions = Action.ActionCombo.Row == 0 ? new uint[0] : new uint[] { Action.ActionCombo.Row };
                 if (OtherIDsCombo != null) comboActions = comboActions.Union(OtherIDsCombo).ToArray();

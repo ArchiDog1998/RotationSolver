@@ -180,14 +180,15 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
 
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
+                ImGui.Text(Service.Address.LastComboAction.ToString());
 
 
                 //if (Service.TargetManager.Target is BattleChara b)
