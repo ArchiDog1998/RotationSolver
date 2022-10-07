@@ -21,8 +21,12 @@ namespace XIVAutoAttack.Combos;
 
 public abstract class CustomCombo
 {
-    //private static readonly uint[] AOEIds = new uint[] { };
+    public static uint LastAction => IconReplacer.LastAction;
+    public static uint LastWeaponskill => IconReplacer.LastWeaponskill;
+    public static uint LastAbility => IconReplacer.LastAbility;
+    public static uint LastSpell => IconReplacer.LastSpell;
 
+    public static TimeSpan TimeSinceLastAction => IconReplacer.TimeSinceLastAction;
     public enum DescType : byte
     {
         ·¶Î§ÖÎÁÆ,
@@ -167,7 +171,7 @@ public abstract class CustomCombo
                 },
             },
 
-            //ÌôÐÆ
+            ////ÌôÐÆ
             Provoke = new BaseAction(7533)
             {
                 FilterForHostile = b => BaseAction.ProvokeTarget(b),
@@ -354,7 +358,8 @@ public abstract class CustomCombo
         byte abilityRemain = TargetHelper.AbilityRemainCount;
 
         //·ÀAOE
-        var helpDefenseAOE = TargetHelper.HostileTargets.Length == 1 && Service.TargetManager.Target is BattleChara b && IsHostileCastingArea(b);
+        var helpDefenseAOE =  Service.Configuration.AutoDefenseForTank && TargetHelper.HostileTargets.Length == 1 
+            && Service.TargetManager.Target is BattleChara b && IsHostileCastingArea(b);
 
         //·Àµ¥Ìå
         bool helpDefenseSingle = false;

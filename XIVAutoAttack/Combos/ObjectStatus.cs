@@ -252,9 +252,11 @@ namespace XIVAutoAttack.Combos
 
             //对称投掷
             SilkenSymmetry = 2693,
+            SilkenSymmetry2 = 3017,
 
             //非对称投掷
             SilkenFlow = 2694,
+            SilkenFlow2 = 3018,
 
             //扇舞·急
             ThreefoldFanDance = 1820,

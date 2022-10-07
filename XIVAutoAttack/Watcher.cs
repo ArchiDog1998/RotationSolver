@@ -10,8 +10,10 @@ using Dalamud.Game;
 using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Hooking;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.System.Resource;
 using FFXIVClientStructs.FFXIV.Client.System.Resource.Handle;
+using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.Disciplines;
 
 namespace XIVAutoAttack
@@ -38,6 +40,8 @@ namespace XIVAutoAttack
 
         private unsafe delegate void* GetResourceAsyncPrototype(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown, bool isUnknown);
 
+        private delegate void ReceiveActionEffectDelegate(int sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail);
+
         private delegate IntPtr LoadSoundFileDelegate(IntPtr resourceHandle, uint a2);
 
         private const int ResourceDataPointerOffset = 176;
@@ -50,9 +54,11 @@ namespace XIVAutoAttack
 
         private Hook<GetResourceAsyncPrototype> GetResourceAsyncHook { get; set; }
 
-        private Hook<LoadSoundFileDelegate> LoadSoundFileHook { get; set; }
-        internal ConcurrentDictionary<IntPtr, FishType> Scds { get; } = new ConcurrentDictionary<IntPtr, FishType>();
 
+        private Hook<LoadSoundFileDelegate> LoadSoundFileHook { get; set; }
+        private Hook<ReceiveActionEffectDelegate> ReceiveActionEffectHook { get; set; }
+
+        internal ConcurrentDictionary<IntPtr, FishType> Scds { get; } = new ConcurrentDictionary<IntPtr, FishType>();
 
         internal unsafe void Enable()
         {
@@ -72,11 +78,61 @@ namespace XIVAutoAttack
             {
                 LoadSoundFileHook = Hook<LoadSoundFileDelegate>.FromAddress(soundPtr, LoadSoundFileDetour);
             }
+            if(ReceiveActionEffectHook == null && Service.SigScanner.TryScanText("E8 ?? ?? ?? ?? 48 8B 8D F0 03 00 00", out var effectptr))
+            {
+                ReceiveActionEffectHook = Hook<ReceiveActionEffectDelegate>.FromAddress(effectptr, ReceiveActionEffectDetour);
+            }
+
             PlaySpecificSoundHook?.Enable();
             LoadSoundFileHook?.Enable();
             GetResourceSyncHook?.Enable();
             GetResourceAsyncHook?.Enable();
             Service.ChatGui.ChatMessage += ChatGui_ChatMessage;
+        }
+
+        private void ReceiveActionEffectDetour(int sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail)
+        {
+            ReceiveActionEffectHook?.Original(sourceObjectId, sourceActor, position, effectHeader, effectArray, effectTrail);
+            //TimeLastActionUsed = DateTime.Now;
+
+            ActionEffectHeader header = Marshal.PtrToStructure<ActionEffectHeader>(effectHeader);
+
+            //if (header.ActionId is not 8 or 7&&
+            //    sourceObjectId == Service.ClientState.LocalPlayer.ObjectId)
+            //{
+            //    LastActionUseCount++;
+            //    if (header.ActionId != LastAction)
+            //    {
+            //        LastActionUseCount = 1;
+            //    }
+
+            //    LastAction = header.ActionId;
+
+            //    var cate = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(header.ActionId).ActionCategory.Value;
+
+            //    if (cate != null)
+            //    {
+            //        switch (cate.Name)
+            //        {
+            //            case "魔法":
+            //                Service.ChatGui.Print("魔法" + cate.RowId);
+            //                LastSpell = header.ActionId;
+            //                break;
+            //            case "战技":
+            //                Service.ChatGui.Print("战技" + cate.RowId);
+
+            //                LastWeaponskill = header.ActionId;
+            //                break;
+            //            case "能力":
+            //                Service.ChatGui.Print("能力" + cate.RowId);
+
+            //                LastAbility = header.ActionId;
+            //                break;
+            //        }
+            //    }
+
+            //    CombatActions.Add(header.ActionId);
+            //}
         }
 
         private void ChatGui_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled)
@@ -205,5 +261,15 @@ namespace XIVAutoAttack
         Medium,
         Large,
         Mooch,
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct ActionEffectHeader
+    {
+        [FieldOffset(0x0)] public long TargetObjectId;
+        [FieldOffset(0x8)] public uint ActionId;
+        [FieldOffset(0x14)] public uint UnkObjectId;
+        [FieldOffset(0x18)] public ushort Sequence;
+        [FieldOffset(0x1A)] public ushort Unk_1A;
     }
 }
