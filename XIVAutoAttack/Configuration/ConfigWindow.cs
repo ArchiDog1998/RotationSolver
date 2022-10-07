@@ -188,7 +188,7 @@ internal class ConfigWindow : Window
                 //        ImGui.Text(item.GameData.Name + item.StatusId);
                 //    }
                 //}
-                ImGui.Text(Service.Address.LastComboAction.ToString());
+                ImGui.Text(new BaseAction( Service.Address.LastComboAction).Action.Name);
 
 
                 //if (Service.TargetManager.Target is BattleChara b)

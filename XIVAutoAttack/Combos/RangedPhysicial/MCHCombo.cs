@@ -8,7 +8,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial;
 internal class MCHCombo : JobGaugeCombo<MCHGauge>
 {
     internal override uint JobID => 31;
-
+    private static bool initFinished = false;
     internal struct Actions
     {
         public static readonly BaseAction
@@ -46,13 +46,19 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             Drill = new (16498),
 
             //回转飞锯
-            ChainSaw = new (25788),
+            ChainSaw = new(25788)
+            {
+                OtherCheck = b => initFinished,
+            },
 
             //毒菌冲击
             Bioblaster = new (16499),
 
             //整备
-            Reassemble = new (2876),
+            Reassemble = new(2876)
+            {
+                BuffsProvide= new ushort[] {ObjectStatus.Reassemble},
+            },
 
             //超荷
             Hypercharge = new (17209)
@@ -61,7 +67,18 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             },
 
             //野火
-            Wildfire = new (2878),
+            Wildfire = new(2878)
+            {
+                OtherCheck = b =>
+                {
+                    if (!initFinished) return false;
+                    if(JobGauge.Heat < 50) return false;
+
+                    if (JobGauge.IsOverheated) return true;
+
+                    return TargetHelper.AbilityRemainCount > 1;
+                },
+            },
 
             //虹吸弹
             GaussRound = new (2874),
@@ -70,12 +87,35 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             Ricochet = new (2890),
 
             //枪管加热
-            BarrelStabilizer = new (7414),
+            BarrelStabilizer = new(7414)
+            {
+                OtherCheck = b =>
+                {
+                    if (JobGauge.Heat >= 50) return false;
+                    var wildfireCDTime = Wildfire.RecastTimeRemain;
+
+                    if (wildfireCDTime <= 9) return true;
+                    if (JobGauge.IsOverheated && wildfireCDTime >= 110) return true;
+
+                    return false;
+                },
+            },
 
             //车式浮空炮塔
             RookAutoturret = new (2864)
             {
-                OtherCheck = b => JobGauge.Battery >= 50,
+                OtherCheck = b =>
+                {
+                    if (JobGauge.Battery < 50 || JobGauge.IsRobotActive || !initFinished) return false;
+
+                    if (JobGauge.Battery == 100) return true;
+
+
+                    if (TargetHelper.CombatEngageDuration.Seconds is >= 55 or <= 05) return true;
+                    if (JobGauge.Battery >= 80 && TargetHelper.CombatEngageDuration.Seconds is >= 50 or <= 05) return true;
+
+                    return false;
+                },
             },
 
             //策动
@@ -104,6 +144,17 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        if (lastComboActionID == Actions.CleanShot.ID)
+        {
+            initFinished = true;
+        }
+
+        if (!TargetHelper.InBattle)
+        {
+            if (Actions.Reassemble.ShouldUseAction(out act, mustUse: true)) return true;
+            initFinished = false;
+        }
+
         //四个牛逼的技能。
         if (Actions.Bioblaster.ShouldUseAction(out act)) return true;
         if (Actions.Drill.ShouldUseAction(out act)) return true;
@@ -137,13 +188,24 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
+
+        //起手虹吸弹、弹射
+        if (Actions.Ricochet.RecastTimeRemain == 0 && Actions.Ricochet.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.GaussRound.RecastTimeRemain == 0 && Actions.GaussRound.ShouldUseAction(out act, mustUse: true)) return true;
+
+        //枪管加热
+        if (Actions.BarrelStabilizer.ShouldUseAction(out act)) return true;
+
+
         if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Wildfire))
         {
             if (Actions.Hypercharge.ShouldUseAction(out act)) return true;
         }
 
-        float time = 10;
+        float time = 8;
         byte level = Service.ClientState.LocalPlayer.Level;
+
+        if (Actions.Wildfire.ShouldUseAction(out act)) return true;
 
         if (JobGauge.Heat >= 50 && (level < Actions.HotShow.Level || Actions.HotShow.RecastTimeRemain > time
             || Actions.AirAnchor.RecastTimeRemain > time) &&
@@ -151,23 +213,13 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             (level < Actions.ChainSaw.Level || Actions.ChainSaw.RecastTimeRemain > time)
             && abilityRemain == 1)
         {
-            if (Actions.Wildfire.ShouldUseAction(out act)) return true;
+
             if (Actions.Hypercharge.ShouldUseAction(out act)) return true;
         }
 
+        //车式浮空炮塔
+        if (Actions.RookAutoturret.ShouldUseAction(out act, mustUse: true)) return true;
 
-        //两个能力技都还在冷却
-        if (Actions.GaussRound.RecastTimeRemain > 0 && Actions.Ricochet.RecastTimeRemain > 0)
-        {
-            //车式浮空炮塔
-            if (Actions.RookAutoturret.ShouldUseAction(out act, mustUse: true)) return true;
-
-            //枪管加热
-            if (Actions.BarrelStabilizer.ShouldUseAction(out act)) return true;
-        }
-
-        if (Actions.Ricochet.RecastTimeRemain == 0 && Actions.Ricochet.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.GaussRound.RecastTimeRemain == 0 && Actions.GaussRound.ShouldUseAction(out act, mustUse: true)) return true;
 
         if (Actions.GaussRound.RecastTimeRemain > Actions.Ricochet.RecastTimeRemain)
         {

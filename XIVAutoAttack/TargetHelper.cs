@@ -2,23 +2,16 @@
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
-using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading;
 using XIVAutoAttack.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using Vector3 = System.Numerics.Vector3;
@@ -125,12 +118,37 @@ namespace XIVAutoAttack
         {
             _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
         }
+        private static bool restartCombatTimer = true;
+        private static TimeSpan combatDuration = new();
+        private static DateTime combatStart;
+        private static DateTime combatEnd;
+        public static TimeSpan CombatEngageDuration => combatDuration;
+        private static void UpdateCombatTime()
+        {
+            if (InBattle)
+            {
+                if (restartCombatTimer)
+                {
+                    restartCombatTimer = false;
+                    combatStart = DateTime.Now;
+                }
+
+                combatEnd = DateTime.Now;
+            }
+            else
+            {
+                restartCombatTimer = true;
+                combatDuration = TimeSpan.Zero;
+            }
+
+            combatDuration = combatEnd - combatStart;
+
+        }
 
         internal unsafe static void Framework_Update(Framework framework)
         {
             UpdateCastBar();
-
-
+            UpdateCombatTime();
 #if DEBUG
             //Get changed condition.
             string[] enumNames = Enum.GetNames(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));

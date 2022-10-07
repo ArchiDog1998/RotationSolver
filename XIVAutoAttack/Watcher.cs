@@ -90,16 +90,6 @@ namespace XIVAutoAttack
             }
         }
 
-        internal void Disable()
-        {
-            PlaySpecificSoundHook?.Disable();
-            LoadSoundFileHook?.Disable();
-            GetResourceSyncHook?.Disable();
-            GetResourceAsyncHook?.Disable();
-            Service.ChatGui.ChatMessage -= ChatGui_ChatMessage;
-
-        }
-
         public void Dispose()
         {
             PlaySpecificSoundHook?.Dispose();
@@ -107,7 +97,6 @@ namespace XIVAutoAttack
             GetResourceSyncHook?.Dispose();
             GetResourceAsyncHook?.Dispose();
             Service.ChatGui.ChatMessage -= ChatGui_ChatMessage;
-
         }
 
         private unsafe void* PlaySpecificSoundDetour(long a1, int idx)

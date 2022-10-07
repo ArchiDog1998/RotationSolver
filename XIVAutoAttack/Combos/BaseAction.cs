@@ -201,7 +201,7 @@ namespace XIVAutoAttack.Combos
         internal static bool TankBreakOtherCheck(BattleChara chara)
         {
             return (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank 
-                && TargetHelper.PartyMembersAverHP >= Service.Configuration.HealthForDyingTank;
+                && TargetHelper.PartyMembersAverHP > Service.Configuration.HealthForDyingTank + 0.1f;
         }
 
         public bool FindTarget(bool mustUse)

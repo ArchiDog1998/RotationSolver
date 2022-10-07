@@ -478,6 +478,9 @@ namespace XIVAutoAttack.Combos
             HolySheltron = 2674,
 
             //野火
-            Wildfire = 1946;
+            Wildfire = 1946,
+
+            //整备
+            Reassemble = 851;
     }
 }

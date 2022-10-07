@@ -29,16 +29,16 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
     {
         public static readonly BaseAction
             //赤复活
-            Verraise = new (7523, true),
+            Verraise = new(7523, true),
 
             //震荡
-            Jolt = new (7503)
+            Jolt = new(7503)
             {
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //回刺
-            Riposte = new (7504)
+            Riposte = new(7504)
             {
                 OtherCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
             },
@@ -47,9 +47,9 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             Verthunder = new RDMAction(7505),
 
             //短兵相接
-            CorpsAcorps = new (7506)
+            CorpsAcorps = new(7506, shouldEndSpecial: true)
             {
-                BuffsProvide = new []
+                BuffsProvide = new[]
                 {
                     ObjectStatus.Bind1,
                     ObjectStatus.Bind2,
@@ -63,95 +63,96 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             Scatter = new RDMAction(7509),
 
             //赤震雷
-            Verthunder2 = new (16524u)
+            Verthunder2 = new(16524u)
             {
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //赤烈风
-            Veraero2 = new (16525u)
+            Veraero2 = new(16525u)
             {
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //赤火炎
-            Verfire = new (7510)
+            Verfire = new(7510)
             {
-                BuffsNeed = new [] { ObjectStatus.VerfireReady },
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsNeed = new[] { ObjectStatus.VerfireReady },
+                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //赤飞石
-            Verstone = new (7511)
+            Verstone = new(7511)
             {
-                BuffsNeed = new [] { ObjectStatus.VerstoneReady },
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new [] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsNeed = new[] { ObjectStatus.VerstoneReady },
+                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
             },
 
             //交击斩
-            Zwerchhau = new (7512)
+            Zwerchhau = new(7512)
             {
                 OtherCheck = b => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
             },
 
             //交剑
-            Engagement = new (16527),
+            Engagement = new(16527),
 
             //飞剑
-            Fleche = new (7517),
+            Fleche = new(7517),
 
             //连攻
-            Redoublement = new (7516)
+            Redoublement = new(7516)
             {
                 OtherCheck = b => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
             },
 
 
             //促进
-            Acceleration = new (7518)
+            Acceleration = new(7518)
             {
-                BuffsProvide = new [] { ObjectStatus.Acceleration },
+                BuffsProvide = new[] { ObjectStatus.Acceleration },
             },
 
             //划圆斩
-            Moulinet = new (7513),
+            Moulinet = new(7513),
 
             //赤治疗
-            Vercure = new (7514, true)
+            Vercure = new(7514, true)
             {
                 BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(Acceleration.BuffsProvide).ToArray(),
             },
 
             //六分反击
-            ContreSixte = new (7519u),
+            ContreSixte = new(7519u),
 
             //鼓励
-            Embolden = new (7520, true),
-
-            //魔元化
-            Manafication = new (7521)
-            {
-                OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && TargetHelper.InBattle,
-                OtherIDsNot = new uint[] { Riposte.ID, Zwerchhau.ID},
-            },
+            Embolden = new(7520, true),
 
             //续斩
-            Reprise = new (16529),
+            Reprise = new(16529),
 
             //抗死
-            MagickBarrier = new (25857),
+            MagickBarrier = new(25857),
 
             //赤核爆
-            Verflare = new (7525),
+            Verflare = new(7525),
 
             //赤神圣
-            Verholy = new (7526),
+            Verholy = new(7526),
 
             //焦热
-            Scorch = new (16530),
+            Scorch = new(16530),
 
             //决断
-            Resolution = new (25858);
+            Resolution = new(25858),
+
+            //魔元化
+            Manafication = new(7521)
+            {
+                OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && TargetHelper.InBattle && JobGauge.ManaStacks == 0,
+                OtherIDsNot = new uint[] { Riposte.ID, Zwerchhau.ID, Scorch.ID, Verflare.ID, Verholy.ID },
+            };
+
     }
     internal override SortedList<DescType, string> Description => new ()
     {
@@ -169,13 +170,13 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
         //开场爆发的时候释放。
         if (Service.Configuration.AutoBreak && GetRightValue(JobGauge.WhiteMana) && GetRightValue(JobGauge.BlackMana))
         {
-            if (Actions.Manafication.ShouldUseAction(out act)) return true;
+            if (Actions.Manafication.ShouldUseAction(out act, Service.Address.LastComboAction)) return true;
             if (Actions.Embolden.ShouldUseAction(out act, mustUse: true)) return true;
         }
         //倍增要放到魔连攻击之后
         if (JobGauge.ManaStacks == 3 || Service.ClientState.LocalPlayer.Level < 68 && nextGCD.ID != Actions.Zwerchhau.ID && nextGCD.ID != Actions.Riposte.ID)
         {
-            if (Actions.Manafication.ShouldUseAction(out act)) return true;
+            if (Actions.Manafication.ShouldUseAction(out act, Service.Address.LastComboAction)) return true;
         }
 
         act = null;
@@ -189,10 +190,10 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.ManaStacks == 0 && (JobGauge.BlackMana < 50 || JobGauge.WhiteMana < 50))
+        if (JobGauge.ManaStacks == 0 && (JobGauge.BlackMana < 50 || JobGauge.WhiteMana < 50) && Actions.Manafication.RecastTimeRemain > 4)
         {
             //促进满了就用。 
-            if (abilityRemain == 2 && Actions.Acceleration.ShouldUseAction(out act, mustUse: true)) return true;
+            if (abilityRemain == 2 && Actions.Acceleration.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
             //即刻咏唱
             if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
@@ -354,7 +355,6 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
         #endregion
 
         #region 开启爆发
-
         //要来可以使用近战三连了。
         if (Actions.Moulinet.ShouldUseAction(out act))
         {
