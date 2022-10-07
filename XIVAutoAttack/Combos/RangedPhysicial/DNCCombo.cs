@@ -17,7 +17,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
             //ÆÙÐº
             Cascade = new (15989)
             {
-                BuffsProvide = new [] { ObjectStatus.SilkenSymmetry }
+                BuffsProvide = new [] { ObjectStatus.SilkenSymmetry}
             },
 
             //ÅçÈª
@@ -29,13 +29,13 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
             //ÄæÆÙÐº
             ReverseCascade = new (15991)
             {
-                BuffsNeed = new [] { ObjectStatus.SilkenSymmetry },
+                BuffsNeed = new [] { ObjectStatus.SilkenSymmetry, ObjectStatus.SilkenSymmetry2 },
             },
 
             //×¹ÅçÈª
             Fountainfall = new (15992)
             {
-                BuffsNeed = new [] { ObjectStatus.SilkenFlow }
+                BuffsNeed = new [] { ObjectStatus.SilkenFlow, ObjectStatus.SilkenFlow2 }
             },
 
             //ÉÈÎè¡¤Ðò
@@ -60,13 +60,13 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
             //Éý·ç³µ
             RisingWindmill = new (15995)
             {
-                BuffsNeed = new [] { ObjectStatus.SilkenSymmetry },
+                BuffsNeed = new [] { ObjectStatus.SilkenSymmetry, ObjectStatus.SilkenSymmetry2 },
             },
 
             //ÂäÑªÓê
             Bloodshower = new (15996)
             {
-                BuffsNeed = new [] { ObjectStatus.SilkenFlow }
+                BuffsNeed = new [] { ObjectStatus.SilkenFlow, ObjectStatus.SilkenFlow2 }
             },
 
             //ÉÈÎè¡¤ÆÆ

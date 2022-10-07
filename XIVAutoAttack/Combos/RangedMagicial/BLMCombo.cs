@@ -304,7 +304,7 @@ namespace XIVAutoAttack.Combos
         {
             act = null;
             //刚刚魔泉，别给我转冰了。
-            if (IconReplacer.LastAction == Actions.Manafont.ID) return false;
+            if (LastAbility == Actions.Manafont.ID) return false;
 
             //星灵转冰
             if (Service.ClientState.LocalPlayer.Level >= 90 && JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp == 0
@@ -354,7 +354,7 @@ namespace XIVAutoAttack.Combos
         {
             act = null;
             //刚刚魔泉，别给我转冰了。
-            if (IconReplacer.LastAction == Actions.Manafont.ID) return false;
+            if (LastAbility == Actions.Manafont.ID) return false;
 
             if (IsMoving)
             {
@@ -551,7 +551,7 @@ namespace XIVAutoAttack.Combos
                 if (Actions.Manafont.ShouldUseAction(out act)) return true;
 
                 //刚刚魔泉，别给我转冰了。
-                if (IconReplacer.LastAction == Actions.Manafont.ID) return false;
+                if (LastAbility == Actions.Manafont.ID) return false;
 
                 //否则，转入冰状态。
                 if (JobGauge.PolyglotStacks == 2 || (JobGauge.PolyglotStacks == 1 && JobGauge.EnochianTimer < 3000))

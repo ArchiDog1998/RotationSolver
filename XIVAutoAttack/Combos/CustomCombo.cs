@@ -21,8 +21,12 @@ namespace XIVAutoAttack.Combos;
 
 public abstract class CustomCombo
 {
-    //private static readonly uint[] AOEIds = new uint[] { };
+    public static uint LastAction => IconReplacer.LastAction;
+    public static uint LastWeaponskill => IconReplacer.LastWeaponskill;
+    public static uint LastAbility => IconReplacer.LastAbility;
+    public static uint LastSpell => IconReplacer.LastSpell;
 
+    public static TimeSpan TimeSinceLastAction => IconReplacer.TimeSinceLastAction;
     public enum DescType : byte
     {
         ∑∂Œß÷Œ¡∆,
