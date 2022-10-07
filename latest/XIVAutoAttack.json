@@ -5,7 +5,7 @@
   "Author": "ArchiTed",
   "Name": "XIV Auto Attack",
   "Punchline": "Auto attack!",
-  "Description": "让自动攻击成为可能，请合理使用！此插件非常刺激！\n由于目前作者很多职业没有满级，如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！\n输入/pattack以设置帮助菜单。",
+  "Description": "让自动攻击成为可能，请合理使用！此插件非常刺激！\n由于目前作者很多职业没有满级，如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！\nQQ群：913297282\n输入/pattack以设置帮助菜单。",
   "Changelog": "",
   "Tags": [
     "Attack"
@@ -15,7 +15,7 @@
   ],
   "IsHide": false,
   "InternalName": "XIVAutoAttack",
-  "AssemblyVersion": "0.9.7.8",
+  "AssemblyVersion": "0.9.7.9",
   "IsTestingExclusive": false,
   "RepoUrl": "https://github.com/ArchiDog1998/XIVAutoAttack",
   "ApplicableVersion": "any",
