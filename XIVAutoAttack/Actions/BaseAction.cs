@@ -114,7 +114,7 @@ namespace XIVAutoAttack.Actions
                 && TargetHelper.PartyMembersAverHP > Service.Configuration.HealthForDyingTank + 0.1f;
         }
 
-        public bool FindTarget(bool mustUse)
+        private bool FindTarget(bool mustUse)
         {
             _position = Service.ClientState.LocalPlayer.Position;
             float range = GetRange(Action);
@@ -308,6 +308,9 @@ namespace XIVAutoAttack.Actions
                 {
                     //冷却时间没超过一成
                     if (RecastTimeElapsed < RecastTime / MaxCharges) return false;
+
+                    //不能连续两个相同的能力技
+                    if (ID == Watcher.LastAbility) return false;
                 }
             }
 

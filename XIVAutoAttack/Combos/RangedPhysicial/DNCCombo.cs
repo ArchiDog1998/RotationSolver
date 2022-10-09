@@ -188,13 +188,6 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
 
                     return null;
                 },
-
-                //OtherCheck = b => !JobGauge.IsDancing,
-                //BuffsProvide = new ushort[]
-                //{
-                //    ObjectStatus.ClosedPosition1,
-                //    ObjectStatus.ClosedPosition2,
-                //},
             },
 
             //½ø¹¥Ö®Ì½¸ê

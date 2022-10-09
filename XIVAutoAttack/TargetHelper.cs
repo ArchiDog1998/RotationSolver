@@ -398,10 +398,15 @@ namespace XIVAutoAttack
                 IsHostileAOE = IsHostileCastingArea(tar);
             }
             #endregion
+
             #region Friend
             var party = Service.PartyList;
             PartyMembers = party.Length == 0 ? Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer } :
                 party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara).ToArray();
+
+            //添加亲信
+            PartyMembers = PartyMembers.Union(Service.ObjectTable.Where(obj => obj.SubKind == 9 && obj is BattleChara).Cast<BattleChara>()).ToArray();
+
             HavePet = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc && npc.BattleNpcKind == BattleNpcSubKind.Pet && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
 
             AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
@@ -537,13 +542,16 @@ namespace XIVAutoAttack
             return false;
         }
 
-        public unsafe static bool CanAttack(GameObject actor)
+        public static bool CanAttack(GameObject actor)
         {
-            if (actor == null) return false;
-            return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address) == 1;
+            return OjbectType(actor) == 1;
         }
 
-
+        private unsafe static long OjbectType(GameObject actor)
+        {
+            if (actor == null) return long.MinValue;
+            return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address);
+        }
         internal static unsafe uint[] GetEnemies()
         {
             var addonByName = Service.GameGui.GetAddonByName("_EnemyList", 1);

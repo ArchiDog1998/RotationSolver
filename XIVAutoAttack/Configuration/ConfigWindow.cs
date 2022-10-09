@@ -188,8 +188,17 @@ internal class ConfigWindow : Window
                 //        ImGui.Text(item.GameData.Name + item.StatusId);
                 //    }
                 //}
-                ImGui.Text(new BaseAction( Service.Address.LastComboAction).Action.Name);
 
+                //foreach (var item in Service.ObjectTable)
+                //{
+                //    ImGui.Text($"{item.Name}, {item.SubKind}");
+
+                //}
+
+                foreach (var item in TargetHelper.PartyMembers)
+                {
+                    ImGui.Text(item.Name.ToString());
+                }
 
                 //if (Service.TargetManager.Target is BattleChara b)
                 //foreach (var item in b.StatusList)

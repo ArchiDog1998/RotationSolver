@@ -76,7 +76,7 @@ namespace XIVAutoAttack
         private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
         {
 #if DEBUG
-        var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
+        //var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
         //Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
 
 #endif

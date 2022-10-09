@@ -143,12 +143,6 @@ public abstract class CustomCombo
                 OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.2,
             },
 
-            ////伤足
-            //FootGraze = new BaseAction(7553)
-            //{
-            //    OtherCheck = b => TargetHelper.InBattle,
-            //},
-
             //亲疏自行
             ArmsLength = new BaseAction(7548, shouldEndSpecial: true),
 
@@ -293,14 +287,6 @@ public abstract class CustomCombo
 
         //和之前一样
         if (actionID == newAction.ID) return false;
-        //else if (actNew == null)
-        //{
-        //    //SortedSet<byte> validJobs = new SortedSet<byte>(ClassJob.AllJobs.Where(job => job.Type == JobType.MagicalRanged || job.Type == JobType.Healer).Select(job => job.Index));
-
-        //    //newActionID = TargetHelper.GetJobCategory(Service.ClientState.LocalPlayer, validJobs) ? GeneralActions.SecondWind.ActionID : GeneralActions.LucidDreaming.ActionID;
-        //    return true;
-        //}
-
 
         return true;
     }
@@ -399,7 +385,6 @@ public abstract class CustomCombo
                     if (Ability(abilityRemain, GCDaction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
                     return GCDaction;
             }
-
         }
         else if(act == null)
         {
@@ -655,11 +640,6 @@ public abstract class CustomCombo
         if (HaveTargetAngle && ForAttachAbility(abilityRemain, out act)) return true;
         return false;
     }
-
-
-
-
-
 
     /// <summary>
     /// 覆盖写一些用于攻击的能力技，只有附近有敌人的时候才会有效。
