@@ -96,7 +96,6 @@ namespace XIVAutoAttack.Combos.Disciplines
                     {
                         TargetHelper.Fish = FishType.None;
 #if DEBUG
-
                         Service.ChatGui.Print("成功了！");
 #endif
                     }

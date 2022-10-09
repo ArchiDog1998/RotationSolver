@@ -180,7 +180,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         //如果接下来要搞三大金刚了，整备吧！
         if (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID || nextGCD.ID == Actions.ChainSaw.ID)
         {
-            if (abilityRemain == 1 && Actions.Reassemble.ShouldUseAction(out act, mustUse:true)) return true;
+            if (abilityRemain == 1 && Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
         }
 
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
