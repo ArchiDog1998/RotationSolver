@@ -61,14 +61,13 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
         Service.Address = new PluginAddressResolver();
         Service.Address.Setup();
+
         Service.IconReplacer = new IconReplacer();
         configWindow = new ConfigWindow();
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(configWindow);
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
-
-        TargetHelper.Init(Service.SigScanner);
 
 
         Service.Framework.Update += TargetHelper.Framework_Update;

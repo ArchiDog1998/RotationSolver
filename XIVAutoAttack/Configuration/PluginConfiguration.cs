@@ -15,7 +15,7 @@ public class PluginConfiguration : IPluginConfiguration
     public int PartyCount { get; set; } = 2;
     public int VoiceVolume { get; set; } = 80;
     public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
-    public List<ActionEvents> Events { get; private set; } = new List<ActionEvents>();
+    public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
     public Dictionary<string, ActionConfiguration> ActionsConfigurations { get; private set; } = new Dictionary<string, ActionConfiguration>();
     public bool AllTargeAsHostile { get; set; } = false;
     public bool AutoBreak { get; set; } = true;

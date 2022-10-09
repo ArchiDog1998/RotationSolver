@@ -1,7 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using XIVAutoAttack;
-using XIVAutoAttack.Combos;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
@@ -197,7 +197,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (Actions.BarrelStabilizer.ShouldUseAction(out act)) return true;
 
 
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Wildfire))
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Wildfire))
         {
             if (Actions.Hypercharge.ShouldUseAction(out act)) return true;
         }

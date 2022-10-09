@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.Melee;
 
@@ -153,19 +154,19 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
 
 
         //123
-        bool haveMeikyoShisui = BaseAction.HaveStatusSelfFromSelf(ObjectStatus.MeikyoShisui);
+        bool haveMeikyoShisui = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.MeikyoShisui);
         //如果是单体，且明镜止水的冷却时间小于3秒。
         if (!JobGauge.HasSetsu && !Actions.Fuga.ShouldUseAction(out _) && Actions.MeikyoShisui.RecastTimeRemain < 3)
         {
             if (Actions.Yukikaze.ShouldUseAction(out act, lastComboActionID)) return true;
         }
-        if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Moon))
+        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Moon))
         {
             if (Actions.Mangetsu.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
             if (Actions.Gekko.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
             if (Actions.Jinpu.ShouldUseAction(out act, lastComboActionID)) return true;
         }
-        if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Flower))
+        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Flower))
         {
             if (Actions.Oka.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
             if (Actions.Kasha.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
@@ -231,11 +232,6 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (HaveTargetAngle && Actions.MeikyoShisui.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-
-        //if (nextGCD.ID == Actions.TenkaGoken.ID || nextGCD.ID == Actions.Higanbana.ID || nextGCD.ID == Actions.MidareSetsugekka.ID || nextGCD.ID == Actions.OgiNamikiri.ID)
-        //{
-        //    if (JobGauge.Kenki >= 20 && !IsMoving && Actions.HissatsuKaiten.ShouldUseAction(out act)) return true;
-        //}
 
         act = null;
         return false;

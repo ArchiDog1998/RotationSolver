@@ -5,6 +5,7 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.Healer;
 
@@ -278,8 +279,8 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             if (Actions.Divination.ShouldUseAction(out act)) return true;
 
             //如果没有地星也没有巨星，那就试试看能不能放个。
-            if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.EarthlyDominance)
-                && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
+            if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EarthlyDominance)
+                && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
             {
                 if (Actions.EarthlyStar.ShouldUseAction(out act, mustUse: true)) return true;
             }
@@ -337,7 +338,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //如果有巨星主宰
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
         {
             //需要回血的时候炸了。
             act = Actions.EarthlyStar;
@@ -376,10 +377,10 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
 
 
-        var targets = GetASTTargets(TargetHelper.GetJobCategory(ASTTargets, Role.远程));
+        var targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.远程));
         if (targets.Length > 0) return RandomObject(targets);
 
-        targets = GetASTTargets(TargetHelper.GetJobCategory(ASTTargets, Role.近战));
+        targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.近战));
         if (targets.Length > 0) return RandomObject(targets);
 
         targets = GetASTTargets(ASTTargets);
@@ -392,10 +393,10 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
     {
         ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
 
-        var targets = GetASTTargets(TargetHelper.GetJobCategory(ASTTargets, Role.近战));
+        var targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.近战));
         if (targets.Length > 0) return RandomObject(targets);
 
-        targets = GetASTTargets(TargetHelper.GetJobCategory(ASTTargets, Role.远程));
+        targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.远程));
         if (targets.Length > 0) return RandomObject(targets);
 
         targets = GetASTTargets(ASTTargets);

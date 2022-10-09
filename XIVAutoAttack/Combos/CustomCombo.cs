@@ -14,6 +14,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using ImGuiScene;
 using XIVAutoAttack;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.RangedPhysicial;
 using XIVAutoAttack.Configuration;
 
@@ -21,12 +22,12 @@ namespace XIVAutoAttack.Combos;
 
 public abstract class CustomCombo
 {
-    public static uint LastAction => IconReplacer.LastAction;
-    public static uint LastWeaponskill => IconReplacer.LastWeaponskill;
-    public static uint LastAbility => IconReplacer.LastAbility;
-    public static uint LastSpell => IconReplacer.LastSpell;
+    public static uint LastAction => Watcher.LastAction;
+    public static uint LastWeaponskill => Watcher.LastWeaponskill;
+    public static uint LastAbility => Watcher.LastAbility;
+    public static uint LastSpell => Watcher.LastSpell;
 
-    public static TimeSpan TimeSinceLastAction => IconReplacer.TimeSinceLastAction;
+    public static TimeSpan TimeSinceLastAction => Watcher.TimeSinceLastAction;
     public enum DescType : byte
     {
         ·¶Î§ÖÎÁÆ,
@@ -104,11 +105,11 @@ public abstract class CustomCombo
                 {
                     if (TargetHelper.DyingPeople.Length > 0)
                     {
-                        return TargetHelper.DyingPeople.OrderBy(b => BaseAction.DistanceToPlayer(b)).First();
+                        return TargetHelper.DyingPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
                     }
                     else if (TargetHelper.WeakenPeople.Length > 0)
                     {
-                        return TargetHelper.WeakenPeople.OrderBy(b => BaseAction.DistanceToPlayer(b)).First();
+                        return TargetHelper.WeakenPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
                     }
                     return null;
                 },
@@ -171,10 +172,10 @@ public abstract class CustomCombo
                 },
             },
 
-            ////ÌôÐÆ
+            //ÌôÐÆ
             Provoke = new BaseAction(7533)
             {
-                FilterForHostile = b => BaseAction.ProvokeTarget(b),
+                FilterForHostile = b => TargetFilter.ProvokeTarget(b),
             },
 
             //Ñ©³ð
@@ -185,7 +186,7 @@ public abstract class CustomCombo
             {
                 ChoiceFriend = friends =>
                 {
-                    var tanks = TargetHelper.GetJobCategory(friends, Role.·À»¤);
+                    var tanks = TargetFilter.GetJobCategory(friends, Role.·À»¤);
                     if (tanks == null || tanks.Length == 0) return null;
                     return tanks[0];
                 },
@@ -358,8 +359,7 @@ public abstract class CustomCombo
         byte abilityRemain = TargetHelper.AbilityRemainCount;
 
         //·ÀAOE
-        var helpDefenseAOE =  Service.Configuration.AutoDefenseForTank && TargetHelper.HostileTargets.Length == 1 
-            && Service.TargetManager.Target is BattleChara b && IsHostileCastingArea(b);
+        var helpDefenseAOE =  Service.Configuration.AutoDefenseForTank && TargetHelper.IsHostileAOE;
 
         //·Àµ¥Ìå
         bool helpDefenseSingle = false;
@@ -372,7 +372,7 @@ public abstract class CustomCombo
 
                 if (attackingTankObj.Count() != 1) return false;
 
-                return IsHostileCastingTank(tank);
+                return TargetHelper.IsHostileTank;
             })) helpDefenseSingle = true;
         }
 
@@ -593,7 +593,7 @@ public abstract class CustomCombo
             //·Àµ¥Ìå
             if (role == Role.·À»¤)
             {
-                var haveTargets = BaseAction.ProvokeTarget(TargetHelper.HostileTargets);
+                var haveTargets = TargetFilter.ProvokeTarget(TargetHelper.HostileTargets);
                 if (((Service.Configuration.AutoProvokeForTank || TargetHelper.AllianceTanks.Length < 2) && haveTargets != TargetHelper.HostileTargets)
                     || IconReplacer.BreakorProvoke)
 
@@ -616,13 +616,12 @@ public abstract class CustomCombo
                     if (TargetHelper.TarOnMeTargets.Length == 1)
                     {
                         var tar = TargetHelper.TarOnMeTargets[0];
-                        if (IsHostileCastingTank(tar))
+                        if (TargetHelper.IsHostileTank)
                         {
                             //·ÀÎÀ
                             if (DefenceSingleAbility(abilityRemain, out act)) return true;
                         }
                     }
-
                 }
             }
 
@@ -657,36 +656,9 @@ public abstract class CustomCombo
         return false;
     }
 
-    internal static bool IsHostileCastingTank(BattleChara h)
-    {
-        return IsHostileCastingBase(h, (act) =>
-        {
-            return h.CastTargetObjectId == h.TargetObjectId;
-        });
-    }
 
-    internal static bool IsHostileCastingArea(BattleChara h)
-    {
-        return IsHostileCastingBase(h, (act) =>
-        {
-            if (h.CastTargetObjectId == h.TargetObjectId) return false;
-            if((act.CastType == 1 || act.CastType == 2) && 
-                act.Range == 0 && 
-                (act.EffectRange >= 40))
-                return true;
-            return false;
-        });
-    }
 
-    private static bool IsHostileCastingBase(BattleChara h, Func<Lumina.Excel.GeneratedSheets.Action, bool> check)
-    {
-        if (!h.IsCasting || h.IsCastInterruptible) return false;
-        var last = h.TotalCastTime - h.CurrentCastTime;
-        var act = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(h.CastActionId);
 
-        return check?.Invoke(act) ?? false && h.TotalCastTime > 2
-            && last < 6 && last > 0.5;
-    }
 
 
     /// <summary>

@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using System.Linq;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Healer;
@@ -36,7 +37,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             {
                 ChoiceFriend = Targets =>
                 {
-                    var targets = TargetHelper.GetJobCategory(Targets, Role.·À»¤);
+                    var targets = TargetFilter.GetJobCategory(Targets, Role.·À»¤);
                     targets = targets.Length == 0 ? Targets : targets;
 
                     if (targets.Length == 0) return null;
@@ -101,7 +102,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //ÉñÒí
             Icarus = new (24295, shouldEndSpecial: true)
             {
-                ChoiceFriend = BaseAction.FindMoveTarget,
+                ChoiceFriend = TargetFilter.FindMoveTarget,
             },
 
             //ÁéÏðÇåÖ­
@@ -122,7 +123,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //°×Å£ÇåÖ­
             Taurochole = new (24303, true)
             {
-                ChoiceFriend = BaseAction.FindAttackedTarget,
+                ChoiceFriend = TargetFilter.FindAttackedTarget,
             },
 
             //¼ý¶¾
@@ -131,19 +132,19 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //ÊäÑª
             Haima = new (24305, true)
             {
-                ChoiceFriend = BaseAction.FindAttackedTarget,
+                ChoiceFriend = TargetFilter.FindAttackedTarget,
             },
 
             //¾ùºâÕï¶Ï
             EukrasianDiagnosis = new (24291, true) 
             {
-                ChoiceFriend = BaseAction.FindAttackedTarget,
+                ChoiceFriend = TargetFilter.FindAttackedTarget,
             },
 
             //¾ùºâÕï¶Ï
             EukrasianPrognosis = new (24292, true)
             {
-                ChoiceFriend = BaseAction.FindAttackedTarget,
+                ChoiceFriend = TargetFilter.FindAttackedTarget,
             },
 
             //¸ùËØ
@@ -347,7 +348,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         if (Actions.Dyskrasia.ShouldUseAction(out act)) return true;
 
         Actions.Dosis.ShouldUseAction(out _);
-        var times = BaseAction.FindStatusFromSelf(Actions.Dosis.Target,
+        var times = StatusHelper.FindStatusFromSelf(Actions.Dosis.Target,
             new ushort[] { ObjectStatus.EukrasianDosis, ObjectStatus.EukrasianDosis2, ObjectStatus.EukrasianDosis3 });
         if (times.Length == 0 || times.Max() < 3)
         {

@@ -7,40 +7,29 @@ using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using Dalamud.Game;
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.System.Resource;
 using FFXIVClientStructs.FFXIV.Client.System.Resource.Handle;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.Disciplines;
+using Action = Lumina.Excel.GeneratedSheets.Action;
+
 
 namespace XIVAutoAttack
 {
     internal class Watcher : IDisposable
     {
-
-        private static class Signatures
-        {
-            internal const string PlaySpecificSound = "48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 33 F6 8B DA 48 8B F9 0F BA E2 0F";
-
-            internal const string GetResourceSync = "E8 ?? ?? ?? ?? 48 8D 8F ?? ?? ?? ?? 48 89 87 ?? ?? ?? ?? 48 8D 54 24";
-
-            internal const string GetResourceAsync = "E8 ?? ?? ?? ?? 48 8B D8 EB 07 F0 FF 83";
-
-            internal const string LoadSoundFile = "E8 ?? ?? ?? ?? 48 85 C0 75 04 B0 F6";
-
-            internal const string MusicManagerOffset = "48 8B 8E ?? ?? ?? ?? 39 78 20 0F 94 C2 45 33 C0";
-        }
-
         private unsafe delegate void* PlaySpecificSoundDelegate(long a1, int idx);
 
         private unsafe delegate void* GetResourceSyncPrototype(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown);
 
         private unsafe delegate void* GetResourceAsyncPrototype(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown, bool isUnknown);
-
-        private delegate void ReceiveActionEffectDelegate(int sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail);
+        private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint a4, uint a5, uint a6, void* a7);
 
         private delegate IntPtr LoadSoundFileDelegate(IntPtr resourceHandle, uint a2);
 
@@ -54,86 +43,74 @@ namespace XIVAutoAttack
 
         private Hook<GetResourceAsyncPrototype> GetResourceAsyncHook { get; set; }
 
-
         private Hook<LoadSoundFileDelegate> LoadSoundFileHook { get; set; }
-        private Hook<ReceiveActionEffectDelegate> ReceiveActionEffectHook { get; set; }
+        private Hook<UseActionDelegate> GetActionHook { get; set; }
 
         internal ConcurrentDictionary<IntPtr, FishType> Scds { get; } = new ConcurrentDictionary<IntPtr, FishType>();
 
+        public static uint LastAction { get; set; } = 0;
+        public static uint LastWeaponskill { get; set; } = 0;
+        public static uint LastAbility { get; set; } = 0;
+        public static uint LastSpell { get; set; } = 0;
+
+        public static TimeSpan TimeSinceLastAction => DateTime.Now - TimeLastActionUsed;
+
+        private static DateTime TimeLastActionUsed = DateTime.Now;
+
         internal unsafe void Enable()
         {
-            if (PlaySpecificSoundHook == null && Service.SigScanner.TryScanText("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 33 F6 8B DA 48 8B F9 0F BA E2 0F", out var playPtr))
-            {
-                PlaySpecificSoundHook = Hook<PlaySpecificSoundDelegate>.FromAddress(playPtr, PlaySpecificSoundDetour);
-            }
-            if (GetResourceSyncHook == null && Service.SigScanner.TryScanText("E8 ?? ?? ?? ?? 48 8D 8F ?? ?? ?? ?? 48 89 87 ?? ?? ?? ?? 48 8D 54 24", out var syncPtr))
-            {
-                GetResourceSyncHook = Hook<GetResourceSyncPrototype>.FromAddress(syncPtr, GetResourceSyncDetour);
-            }
-            if (GetResourceAsyncHook == null && Service.SigScanner.TryScanText("E8 ?? ?? ?? ?? 48 8B D8 EB 07 F0 FF 83", out var asyncPtr))
-            {
-                GetResourceAsyncHook = Hook<GetResourceAsyncPrototype>.FromAddress(asyncPtr, GetResourceAsyncDetour);
-            }
-            if (LoadSoundFileHook == null && Service.SigScanner.TryScanText("E8 ?? ?? ?? ?? 48 85 C0 75 04 B0 F6", out var soundPtr))
-            {
-                LoadSoundFileHook = Hook<LoadSoundFileDelegate>.FromAddress(soundPtr, LoadSoundFileDetour);
-            }
-            if(ReceiveActionEffectHook == null && Service.SigScanner.TryScanText("E8 ?? ?? ?? ?? 48 8B 8D F0 03 00 00", out var effectptr))
-            {
-                ReceiveActionEffectHook = Hook<ReceiveActionEffectDelegate>.FromAddress(effectptr, ReceiveActionEffectDetour);
-            }
+            PlaySpecificSoundHook = Hook<PlaySpecificSoundDelegate>.FromAddress(Service.Address.PlaySpecificSound, PlaySpecificSoundDetour);
+            GetResourceSyncHook = Hook<GetResourceSyncPrototype>.FromAddress(Service.Address.GetResourceSync, GetResourceSyncDetour);
+            GetResourceAsyncHook = Hook<GetResourceAsyncPrototype>.FromAddress(Service.Address.GetResourceAsync, GetResourceAsyncDetour);
+            LoadSoundFileHook = Hook<LoadSoundFileDelegate>.FromAddress(Service.Address.LoadSoundFile, LoadSoundFileDetour);
+            GetActionHook = Hook<UseActionDelegate>.FromAddress((IntPtr)ActionManager.fpUseAction, UseAction);
 
             PlaySpecificSoundHook?.Enable();
             LoadSoundFileHook?.Enable();
             GetResourceSyncHook?.Enable();
             GetResourceAsyncHook?.Enable();
+            GetActionHook?.Enable();
             Service.ChatGui.ChatMessage += ChatGui_ChatMessage;
         }
 
-        private void ReceiveActionEffectDetour(int sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail)
+        private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
         {
-            ReceiveActionEffectHook?.Original(sourceObjectId, sourceActor, position, effectHeader, effectArray, effectTrail);
-            //TimeLastActionUsed = DateTime.Now;
+#if DEBUG
+        var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
+        //Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
 
-            ActionEffectHeader header = Marshal.PtrToStructure<ActionEffectHeader>(effectHeader);
+#endif
 
-            //if (header.ActionId is not 8 or 7&&
-            //    sourceObjectId == Service.ClientState.LocalPlayer.ObjectId)
-            //{
-            //    LastActionUseCount++;
-            //    if (header.ActionId != LastAction)
-            //    {
-            //        LastActionUseCount = 1;
-            //    }
+            if (actionType == ActionType.Spell)
+            {
+                var action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
+                var cate = action.ActionCategory.Value;
 
-            //    LastAction = header.ActionId;
+                TimeLastActionUsed = DateTime.Now;
+                LastAction = actionID;
 
-            //    var cate = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(header.ActionId).ActionCategory.Value;
 
-            //    if (cate != null)
-            //    {
-            //        switch (cate.Name)
-            //        {
-            //            case "魔法":
-            //                Service.ChatGui.Print("魔法" + cate.RowId);
-            //                LastSpell = header.ActionId;
-            //                break;
-            //            case "战技":
-            //                Service.ChatGui.Print("战技" + cate.RowId);
+                if (cate != null)
+                {
+                    switch (cate.RowId)
+                    {
+                        case 2: //魔法
+                            LastSpell = actionID;
+                            break;
+                        case 3: //战技
+                            LastWeaponskill = actionID;
+                            break;
+                        case 4: //能力
+                            LastAbility = actionID;
+                            break;
+                    }
+                }
+            }
 
-            //                LastWeaponskill = header.ActionId;
-            //                break;
-            //            case "能力":
-            //                Service.ChatGui.Print("能力" + cate.RowId);
 
-            //                LastAbility = header.ActionId;
-            //                break;
-            //        }
-            //    }
-
-            //    CombatActions.Add(header.ActionId);
-            //}
+            return GetActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
         }
+
 
         private void ChatGui_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled)
         {
@@ -152,6 +129,7 @@ namespace XIVAutoAttack
             LoadSoundFileHook?.Dispose();
             GetResourceSyncHook?.Dispose();
             GetResourceAsyncHook?.Dispose();
+            GetActionHook?.Dispose();
             Service.ChatGui.ChatMessage -= ChatGui_ChatMessage;
         }
 

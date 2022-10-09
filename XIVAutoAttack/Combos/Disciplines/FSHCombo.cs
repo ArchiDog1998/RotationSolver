@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Disciplines
@@ -131,17 +132,37 @@ namespace XIVAutoAttack.Combos.Disciplines
             var gp = Service.ClientState.LocalPlayer.CurrentGp;
             bool fishing = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Fishing];
 
+            //钓鱼
             if (fishing && TargetHelper.Fish != FishType.None && TargetHelper._fisherTimer.ElapsedMilliseconds > Config.GetDoubleByName("CastTime") * 1000)
             {
-                if(BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Patience))
+                if(StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Patience))
                 {
                     switch (TargetHelper.Fish)
                     {
                         case FishType.Small:
-                            if (Actions.PrecisionHookset.ShouldUseAction(out act)) return true;
+
+                            if (Config.GetBoolByName("OnlyLargeFish"))
+                            {
+                                TargetHelper.Fish = FishType.None;
+                                act = null;
+                                return false;
+                            }
+                            else
+                            {
+                                if (Actions.PrecisionHookset.ShouldUseAction(out act)) return true;
+                            }
                             break;
                         case FishType.Medium:
-                            if (Actions.PowerfulHookset.ShouldUseAction(out act)) return true;
+                            if (Config.GetBoolByName("OnlyLargeFish"))
+                            {
+                                TargetHelper.Fish = FishType.None;
+                                act = null;
+                                return false;
+                            }
+                            else
+                            {
+                                if (Actions.PowerfulHookset.ShouldUseAction(out act)) return true;
+                            }
                             break;
                         case FishType.Large:
                             if (Config.GetBoolByName("UsePowerfulHookset") && Actions.PowerfulHookset.ShouldUseAction(out act)) return true;
@@ -152,8 +173,12 @@ namespace XIVAutoAttack.Combos.Disciplines
                 else if (Actions.Hook.ShouldUseAction(out act)) return true;
             }
 
+            //非钓鱼
             if (!fishing)
             {
+                //以小掉大
+                if (Actions.Mooch.ShouldUseAction(out act)) return true;
+
                 var status = Service.ClientState.LocalPlayer.StatusList.Where(s => s.StatusId == ObjectStatus.AnglersArt);
                 byte stack = 0;
                 if (status != null && status.Count() > 0)
@@ -161,7 +186,7 @@ namespace XIVAutoAttack.Combos.Disciplines
                     stack = status.First().StackCount;
                 }
 
-                if (Actions.Snagging.ShouldUseAction(out act)) return true;
+                if (Config.GetBoolByName("UseSnagging") && Actions.Snagging.ShouldUseAction(out act)) return true;
 
                 //补充GP
                 if (stack > 2 && maxgp - gp >= 150)
@@ -181,7 +206,6 @@ namespace XIVAutoAttack.Combos.Disciplines
                     if (Actions.Patience.ShouldUseAction(out act)) return true;
                 }
 
-                if (Actions.Mooch.ShouldUseAction(out act)) return true;
                 if (gp >= 350 && Actions.Chum.ShouldUseAction(out act)) return true;
                 if (TargetHelper._unfishingTimer.ElapsedMilliseconds > 300 && Actions.Cast.ShouldUseAction(out act)) return true;
             }
@@ -192,8 +216,11 @@ namespace XIVAutoAttack.Combos.Disciplines
 
         private protected override ActionConfiguration CreateConfiguration()
         {
-            return base.CreateConfiguration().SetBool("UsePowerfulHookset", true, "三个感叹号用强力提钩")
-                .SetFloat("CastTime", 0.6f, des:"反应提钩的速度");
+            return base.CreateConfiguration()
+                .SetBool("UsePowerfulHookset", true, "三个感叹号用强力提钩")
+                .SetFloat("CastTime", 0.6f, des:"反应提钩的速度")
+                .SetBool("UseSnagging", true, "使用钓组")
+                .SetBool("OnlyLargeFish", false, "只钓三个感叹号的鱼");
         }
     }
 }

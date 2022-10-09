@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
@@ -185,7 +186,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
             if (Actions.CrimsonStrike.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
             if (Actions.CrimsonCyclone.ShouldUseAction(out act, mustUse: true))
             {
-                if (BaseAction.DistanceToPlayer(Actions.CrimsonCyclone.Target) < 2)
+                if (TargetFilter.DistanceToPlayer(Actions.CrimsonCyclone.Target) < 2)
                 {
                     return true;
                 }

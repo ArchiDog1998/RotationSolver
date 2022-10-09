@@ -1,13 +1,14 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using System.Numerics;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.Tank;
 
 internal class GNBCombo : JobGaugeCombo<GNBGauge>
 {
     internal override uint JobID => 37;
-    internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RoyalGuard);
+    internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.RoyalGuard);
     private protected override BaseAction Shield => Actions.RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;
@@ -89,7 +90,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             HeartofStone = new (16161, true)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                ChoiceFriend = BaseAction.FindAttackedTarget,
+                ChoiceFriend = TargetFilter.FindAttackedTarget,
             },
 
             //ÃüÔËÖ®»·
@@ -199,7 +200,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.RoughDivide.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.RoughDivide.Target) < 1)
+            if (TargetFilter.DistanceToPlayer(Actions.RoughDivide.Target) < 1)
             {
                 return true;
             }

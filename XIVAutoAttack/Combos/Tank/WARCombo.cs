@@ -4,20 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack;
-using XIVAutoAttack.Combos;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.Tank;
 
 internal class WARCombo : JobGaugeCombo<WARGauge>
 {
     internal override uint JobID => 21;
-    internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
+    internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
     private protected override BaseAction Shield => Actions.Defiance;
     internal static float BuffTime
     {
         get
         {
-            var time = BaseAction.FindStatusSelfFromSelf(ObjectStatus.SurgingTempest);
+            var time = StatusHelper.FindStatusSelfFromSelf(ObjectStatus.SurgingTempest);
             if (time.Length == 0) return 0;
             return time[0];
         }
@@ -47,7 +47,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //·É¸«
             Tomahawk = new (46)
             {
-                FilterForHostile = b => BaseAction.ProvokeTarget(b),
+                FilterForHostile = b => TargetFilter.ProvokeTarget(b),
             },
 
             //ÃÍ¹¥
@@ -75,13 +75,13 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             Infuriate = new (52)
             {
                 BuffsProvide = new [] { ObjectStatus.InnerRelease },
-                OtherCheck = b => BaseAction.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge <= 50,
+                OtherCheck = b => TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge <= 50,
             },
 
             //¿ñ±©
             Berserk = new (38)
             {
-                OtherCheck = b => BaseAction.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0,
+                OtherCheck = b => TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0,
             },
 
             //Õ½Àõ
@@ -93,7 +93,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //Ô­³õµÄÓÂÃÍ
             NascentFlash = new (16464)
             {
-                ChoiceFriend = BaseAction.FindAttackedTarget,
+                ChoiceFriend = TargetFilter.FindAttackedTarget,
             },
 
             ////Ô­³õµÄÑªÆø
@@ -165,14 +165,14 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.PrimalRend.ShouldUseAction(out act, mustUse: true) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.PrimalRend.Target) < 1)
+            if (TargetFilter.DistanceToPlayer(Actions.PrimalRend.Target) < 1)
             {
                 return true;
             }
         }
 
         //ÊÞ»êÊä³ö
-        if (JobGauge.BeastGauge >= 50 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease))
+        if (JobGauge.BeastGauge >= 50 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease))
         {
             //¸ÖÌúÐý·ç
             if (Actions.SteelCyclone.ShouldUseAction(out act)) return true;
@@ -263,7 +263,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
         //¸ã¸ã¹¥»÷
         if (Actions.Onslaught.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.Onslaught.Target) < 2)
+            if (TargetFilter.DistanceToPlayer(Actions.Onslaught.Target) < 2)
             {
                 return true;
             }

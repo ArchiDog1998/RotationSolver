@@ -1,7 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using XIVAutoAttack;
-using XIVAutoAttack.Combos;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Configuration;
 
@@ -122,7 +122,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
                 {
                     foreach (var friend in friends)
                     {
-                        var times = BaseAction.FindStatusFromSelf(friend, ObjectStatus.Galvanize);
+                        var times = StatusHelper.FindStatusFromSelf(friend, ObjectStatus.Galvanize);
                         if (times != null && times.Length > 0) return friend;
                     }
                     return null;

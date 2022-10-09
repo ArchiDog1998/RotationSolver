@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace XIVAutoAttack.Configuration
 {
-    public class ActionEvents
+    public class ActionEventInfo
     {
         public string Name { get; set; }
         public int MacroIndex { get; set; }
         public bool IsShared { get; set; }
 
-        public ActionEvents()
+        public ActionEventInfo()
         {
             Name = "";
             MacroIndex = -1;

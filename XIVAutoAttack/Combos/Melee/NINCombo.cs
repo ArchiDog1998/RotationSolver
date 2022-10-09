@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Melee;
@@ -248,7 +249,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         if (Service.IconReplacer.OriginalHook(2260) != 2260) return false;
         if (TargetHelper.Weaponelapsed < 0.2 && TargetHelper.Weaponelapsed > 0) return false;
         //有生杀予夺
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu))
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu))
         {
             if (Actions.GokaMekkyaku.ShouldUseAction(out _))
             {
@@ -276,7 +277,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         else
         {
             bool empty = Actions.Ten.ShouldUseAction(out _, mustUse: true);
-            bool haveDoton = BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Doton);
+            bool haveDoton = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Doton);
 
             //加状态
             if (Actions.Huraijin.ShouldUseAction(out act)) return true;
@@ -344,7 +345,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         act = null;
 
         //有天地人
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TenChiJin))
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TenChiJin))
         {
             uint tenId = Service.IconReplacer.OriginalHook(Actions.Ten.ID);
             uint chiId = Service.IconReplacer.OriginalHook(Actions.Chi.ID);
@@ -390,8 +391,8 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         if (id == 2260)
         {
             //重置
-            if(!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu) 
-                && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.TenChiJin)
+            if(!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu) 
+                && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TenChiJin)
                 && !Actions.Ten.ShouldUseAction(out _, mustUse: true))
             {
                 //_ninactionAim = null;
@@ -454,7 +455,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         }
 
         //用真北取消隐匿
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Hidden) && GeneralActions.TrueNorth.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Hidden) && GeneralActions.TrueNorth.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         //用隐匿恢复忍术数量
         if (!TargetHelper.InBattle && _ninactionAim == null && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
@@ -469,7 +470,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             if (Actions.FleetingRaiju.ShouldUseAction(out act, lastComboActionID)) return true;
             if (Actions.ForkedRaiju.ShouldUseAction(out act, lastComboActionID))
             {
-                if (BaseAction.DistanceToPlayer(Actions.ForkedRaiju.Target) < 2)
+                if (TargetFilter.DistanceToPlayer(Actions.ForkedRaiju.Target) < 2)
                 {
                     return true;
                 }

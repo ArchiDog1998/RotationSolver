@@ -3,13 +3,14 @@ using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.Tank;
 
 internal class DRKCombo : JobGaugeCombo<DRKGauge>
 {
     internal override uint JobID => 32;
-    internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Grit);
+    internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Grit);
     private protected override BaseAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
 
@@ -31,7 +32,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //伤残
             Unmend = new (3624)
             {
-                FilterForHostile = b => BaseAction.ProvokeTarget(b),
+                FilterForHostile = b => TargetFilter.ProvokeTarget(b),
             },
 
             //噬魂斩
@@ -88,7 +89,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //至黑之夜
             TheBlackestNight = new (7393)
             {
-                ChoiceFriend = BaseAction.FindAttackedTarget,
+                ChoiceFriend = TargetFilter.FindAttackedTarget,
             },
 
             //刚魂
@@ -103,7 +104,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //献奉
             Oblation = new (25754, true)
             {
-                ChoiceFriend = BaseAction.FindAttackedTarget,
+                ChoiceFriend = TargetFilter.FindAttackedTarget,
             },
 
             //暗影使者
@@ -139,7 +140,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (JobGauge.Blood >= 80 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Delirium))
+        if (JobGauge.Blood >= 80 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium))
         {
             if (Actions.Quietus.ShouldUseAction(out act)) return true;
             if (Actions.Bloodspiller.ShouldUseAction(out act)) return true;
@@ -188,7 +189,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         //搞搞攻击
         if (Actions.Plunge.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.Plunge.Target) < 1)
+            if (TargetFilter.DistanceToPlayer(Actions.Plunge.Target) < 1)
             {
                 return true;
             }

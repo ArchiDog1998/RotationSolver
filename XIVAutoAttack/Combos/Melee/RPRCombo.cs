@@ -1,13 +1,14 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using System.Linq;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.Melee;
 
 internal class RPRCombo : JobGaugeCombo<RPRGauge>
 {
     internal override uint JobID => 39;
-    protected override bool ShouldSayout => !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);
+    protected override bool ShouldSayout => !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);
     internal struct Actions
     {
         public static readonly BaseAction
@@ -105,7 +106,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         if(!TargetHelper.InBattle && Actions.Soulsow.ShouldUseAction(out act)) return true;
 
         //处于变身状态。
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
         {
             if (JobGauge.LemureShroud == 1)
             {
@@ -114,7 +115,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
 
             if (Actions.Guillotine.ShouldUseAction(out act)) return true;
 
-            if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping))
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping))
             {
                 if (Actions.Gibbet.ShouldUseAction(out act)) return true;
             }
@@ -124,11 +125,11 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             }
         }
         //处于补蓝状态，赶紧补蓝条。
-        else if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
+        else if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
         {
             if (Actions.Guillotine.ShouldUseAction(out act)) return true;
 
-            if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGibbet))
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGibbet))
             {
                 if (Actions.Gibbet.ShouldUseAction(out act)) return true;
             }
@@ -143,8 +144,8 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         if (Actions.ShadowofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
 
 
-        if (JobGauge.Shroud <= 50 && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.CircleofSacrifice)
-            && BaseAction.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) &&
+        if (JobGauge.Shroud <= 50 && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.CircleofSacrifice)
+            && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) &&
              Actions.PlentifulHarvest.ShouldUseAction(out act, mustUse: true)) return true;
 
 
@@ -178,7 +179,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //变身用能力
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
         {
             if (JobGauge.VoidShroud > 1)
             {
@@ -187,7 +188,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             }
         }
 
-        if (!BaseAction.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
+        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
         {
             //蓝条够了，变身！
             if (JobGauge.Shroud >= 50 && Actions.Enshroud.ShouldUseAction(out act)) return true;
@@ -222,7 +223,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //地狱入境
-        if (Actions.HellsIngress.ShouldUseAction(out act) && !BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Threshold)) return true;
+        if (Actions.HellsIngress.ShouldUseAction(out act) && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Threshold)) return true;
         return false;
     }
 

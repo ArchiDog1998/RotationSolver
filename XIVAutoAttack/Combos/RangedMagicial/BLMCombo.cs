@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using System.Linq;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos
@@ -89,10 +90,10 @@ namespace XIVAutoAttack.Combos
                 }
             }
         }
-        private bool HasFire => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Firestarter);
-        private bool HasThunder => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.Thundercloud);
+        private bool HasFire => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Firestarter);
+        private bool HasThunder => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Thundercloud);
         internal static bool InTranspose = false;
-        private bool HasSwift => BaseAction.FindStatusFromSelf(Target, ObjectStatus.Thunder,
+        private bool HasSwift => StatusHelper.FindStatusFromSelf(Target, ObjectStatus.Thunder,
                         ObjectStatus.Thunder2,
                         ObjectStatus.Thunder3,
                         ObjectStatus.Thunder4).Length > 0;
@@ -107,8 +108,8 @@ namespace XIVAutoAttack.Combos
                 if (UseThunderIn) return true;
                 if (Service.TargetManager.Target is BattleChara b)
                 {
-                    if (BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 20) return true;
-                    if (BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder2, ObjectStatus.Thunder4) > 10) return true;
+                    if (StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 20) return true;
+                    if (StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder2, ObjectStatus.Thunder4) > 10) return true;
                 }
                 return false;
             }
@@ -180,7 +181,7 @@ namespace XIVAutoAttack.Combos
                 //以太步
                 AetherialManipulation = new (155)
                 {
-                    ChoiceFriend = BaseAction.FindMoveTarget,
+                    ChoiceFriend = TargetFilter.FindMoveTarget,
                 },
 
                 //详述
@@ -311,8 +312,8 @@ namespace XIVAutoAttack.Combos
                 && (JobGauge.PolyglotStacks > 0 || JobGauge.EnochianTimer < 3000)
                 && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5 
                 || !Actions.Triplecast.IsCoolDown || Actions.Triplecast.RecastTimeRemain < 15
-                ||　(Service.TargetManager.Target is BattleChara b  && 
-                BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 15)))
+                ||　(Service.TargetManager.Target is BattleChara b  &&
+                StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 15)))
             {
                 Actions.Transpose.AfterUse = () =>
                 {
@@ -558,7 +559,7 @@ namespace XIVAutoAttack.Combos
                 {
                     if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5
                         || (Service.TargetManager.Target is BattleChara b &&
-                        BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10))
+                        StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10))
                        && Service.ClientState.LocalPlayer.Level >= 90 && AddPolyglotAttach(out act)) return true;
                 }
             }
@@ -625,7 +626,7 @@ namespace XIVAutoAttack.Combos
             if (!InTranspose && Actions.Thunder.ShouldUseAction(out act, lastAct)) return true;
 
             if (Service.TargetManager.Target is BattleChara b &&
-                            BaseAction.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) < 9
+                            StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) < 9
                             && Actions.Thunder.ShouldUseAction(out act, lastAct)) return true;
 
             return false;

@@ -447,7 +447,7 @@ internal class ConfigWindow : Window
 
                 if (ImGui.Button("添加"))
                 {
-                    Service.Configuration.Events.Add(new ActionEvents());
+                    Service.Configuration.Events.Add(new ActionEventInfo());
                 }
 
                 if (ImGui.BeginChild("事件", new Vector2(0f, -1f), true))
@@ -515,9 +515,9 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
                     ImGui.Text("/aauto BreakProvoke 表示开启一段爆发或挑衅的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto AttackBig 开始进攻，进攻对象为HitBox最大的。");
+                    ImGui.Text("/aauto AttackBig 开始进攻，进攻对象为脚下圈圈最大的。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto AttackSmall 开始进攻，进攻对象为HitBox最小的。");
+                    ImGui.Text("/aauto AttackSmall 开始进攻，进攻对象为脚下圈圈最小的。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AttackManual 开始进攻，进攻对象为手动选择。");
                     ImGui.Separator();

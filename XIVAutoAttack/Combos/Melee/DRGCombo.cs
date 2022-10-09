@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Configuration;
 
@@ -97,10 +98,10 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
                     Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
                     b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
 
-                    var targets = TargetHelper.GetJobCategory(Targets, Role.近战);
+                    var targets = TargetFilter.GetJobCategory(Targets, Role.近战);
                     if (targets.Length > 0) return ASTCombo.RandomObject(targets);
 
-                    targets = TargetHelper.GetJobCategory(Targets, Role.远程);
+                    targets = TargetFilter.GetJobCategory(Targets, Role.远程);
                     if (targets.Length > 0) return ASTCombo.RandomObject(targets);
 
                     targets = Targets;
@@ -138,7 +139,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
     }
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.ID == Actions.FullThrust.ID || nextGCD.ID == Actions.CoerthanTorment.ID || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.WheelingThrust)
+        if (nextGCD.ID == Actions.FullThrust.ID || nextGCD.ID == Actions.CoerthanTorment.ID || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.WheelingThrust)
         {
             if (abilityRemain == 1 && Actions.LifeSurge.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }
@@ -178,8 +179,8 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             }
             if (Actions.MirageDive.ShouldUseAction(out act) && Vector3.Distance(LocalPlayer.Position, Actions.MirageDive.Target.Position) - Actions.MirageDive.Target.HitboxRadius < 2) return true;
 
-            if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true) && BaseAction.DistanceToPlayer(Actions.DragonfireDive.Target) < 2) return true;
-            if (Actions.SpineshatterDive.ShouldUseAction(out act, emptyOrSkipCombo: true) && BaseAction.DistanceToPlayer(Actions.SpineshatterDive.Target) < 2) return true;
+            if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true) && TargetFilter.DistanceToPlayer(Actions.DragonfireDive.Target) < 2) return true;
+            if (Actions.SpineshatterDive.ShouldUseAction(out act, emptyOrSkipCombo: true) && TargetFilter.DistanceToPlayer(Actions.SpineshatterDive.Target) < 2) return true;
         }
 
 
@@ -210,7 +211,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
         }
 
         //看看是否需要续Buff
-        var time = BaseAction.FindStatusSelfFromSelf(ObjectStatus.PowerSurge);
+        var time = StatusHelper.FindStatusSelfFromSelf(ObjectStatus.PowerSurge);
         if (time.Length > 0 && time[0] > 13)
         {
             if (Actions.FullThrust.ShouldUseAction(out act, lastComboActionID)) return true;

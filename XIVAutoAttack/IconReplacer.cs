@@ -1,19 +1,15 @@
+using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Hooking;
+using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Hooking;
-using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using Lumina.Excel.GeneratedSheets;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
-using XIVAutoAttack.Combos.Disciplines;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack;
@@ -29,22 +25,13 @@ internal sealed class IconReplacer : IDisposable
     internal static string StateString => _stateString + (string.IsNullOrEmpty(_specialString) ? string.Empty : " - " + _specialString);
 
 
-    private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint a4, uint a5, uint a6, void* a7);
-    private readonly Hook<UseActionDelegate> getActionHook;
 
 
     private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
 
     private static Stopwatch _fastClickStopwatch = new Stopwatch();
     private static Stopwatch _specialStateStopwatch = new Stopwatch();
-    public static uint LastAction { get; set; } = 0;
-    public static uint LastWeaponskill { get; set; } = 0;
-    public static uint LastAbility { get; set; } = 0;
-    public static uint LastSpell { get; set; } = 0;
 
-    public static TimeSpan TimeSinceLastAction => DateTime.Now - TimeLastActionUsed;
-
-    private static DateTime TimeLastActionUsed = DateTime.Now;
 
 
     private static bool _autoAttack = false;
@@ -303,53 +290,15 @@ internal sealed class IconReplacer : IDisposable
         unsafe
         {
             getIconHook = Hook<GetIconDelegate>.FromAddress((IntPtr)ActionManager.fpGetAdjustedActionId, GetIconDetour);
-            getActionHook = Hook<UseActionDelegate>.FromAddress((IntPtr)ActionManager.fpUseAction, UseAction);
         }
         isIconReplaceableHook = Hook<IsIconReplaceableDelegate>.FromAddress(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);
 
-        getActionHook.Enable();
         getIconHook.Enable();
         isIconReplaceableHook.Enable();
     }
 
 
-    private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
-    {
-#if DEBUG
-        var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
-        //Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
 
-#endif
-
-        if(actionType == ActionType.Spell)
-        {
-            var action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
-            var cate = action.ActionCategory.Value;
-
-            TimeLastActionUsed = DateTime.Now;
-            LastAction = actionID;
-
-
-            if (cate != null)
-            {
-                switch (cate.RowId)
-                {
-                    case 2: //魔法
-                        LastSpell = actionID;
-                        break;
-                    case 3: //战技
-                        LastWeaponskill = actionID;
-                        break;
-                    case 4: //能力
-                        LastAbility = actionID;
-                        break;
-                }
-            }
-        }
-
-
-        return getActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
-    }
     private static void SetStaticValues()
     {
         _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo)).GetTypes()
@@ -366,8 +315,6 @@ internal sealed class IconReplacer : IDisposable
         isIconReplaceableHook.Dispose();
         _fastClickStopwatch.Stop();
         _specialStateStopwatch.Stop();
-
-        getActionHook.Dispose();
     }
 
     internal uint OriginalHook(uint actionID)
@@ -426,7 +373,7 @@ internal sealed class IconReplacer : IDisposable
                 {
                     Service.TargetManager.SetTarget(act.Target);
                 }
-                if (act.ID != LastAction)
+                if (act.ID != Watcher.LastAction)
                 {
                     //LastAction = newiAction.ID;
                     foreach (var item in Service.Configuration.Events)

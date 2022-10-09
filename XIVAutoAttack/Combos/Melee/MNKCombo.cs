@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack;
-using XIVAutoAttack.Combos;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.Melee;
 
@@ -75,7 +75,7 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             //突进技能
             Thunderclap = new (25762, shouldEndSpecial: true)
             {
-                ChoiceFriend = BaseAction.FindMoveTarget,
+                ChoiceFriend = TargetFilter.FindMoveTarget,
             },
 
             //真言
@@ -84,7 +84,8 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             //震脚
             PerfectBalance = new (69)
             {
-                OtherCheck = b => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RaptorForm) && TargetHelper.InBattle,
+                BuffsNeed = new ushort[] { ObjectStatus.RaptorForm },
+                OtherCheck = b => TargetHelper.InBattle,
             },
 
             //苍气炮 阴
@@ -167,7 +168,7 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
         if (Actions.FourpointFury.ShouldUseAction(out act)) return true;
 
         //确认Buff大于6s
-        var times = BaseAction.FindStatusSelfFromSelf(ObjectStatus.DisciplinedFist);
+        var times = StatusHelper.FindStatusSelfFromSelf(ObjectStatus.DisciplinedFist);
         if ((times.Length == 0 || times[0] < 4 + WeaponRemain) && Actions.TwinSnakes.ShouldUseAction(out act)) return true;
 
         if (Actions.TrueStrike.ShouldUseAction(out act)) return true;
@@ -179,7 +180,7 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
         if (Actions.Rockbreaker.ShouldUseAction(out act)) return true;
         if (Actions.Demolish.ShouldUseAction(out act))
         {
-            var times = BaseAction.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
+            var times = StatusHelper.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
             if (times.Length == 0 || times[0] < 4 + WeaponRemain || Math.Abs(times[0] - 4 + WeaponRemain) < 0.1) return true;
         }
         if (Actions.SnapPunch.ShouldUseAction(out act)) return true;
@@ -234,17 +235,17 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             }
         }
         //有震脚就阴阳
-        else if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.PerfectBalance))
+        else if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.PerfectBalance))
         {
             if (havesolar && LunarNadi(out act)) return true;
             if (SolarNadi(out act)) return true;
         }
 
-        if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.CoerlForm))
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.CoerlForm))
         {
             if (CoerlForm(out act)) return true;
         }
-        else if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RaptorForm))
+        else if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.RaptorForm))
         {
             if (RaptorForm(out act)) return true;
         }
@@ -269,9 +270,9 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             if ((JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.SOLAR) != 0)
             {
                 //两种Buff都在6s以上
-                var dis = BaseAction.FindStatusSelfFromSelf(ObjectStatus.DisciplinedFist);
+                var dis = StatusHelper.FindStatusSelfFromSelf(ObjectStatus.DisciplinedFist);
                 Actions.Demolish.ShouldUseAction(out _);
-                var demo = BaseAction.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
+                var demo = StatusHelper.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
                 if (dis.Length != 0 && dis[0] > 6 && (demo.Length != 0 && demo[0] > 6 || !Actions.PerfectBalance.IsCoolDown))
                 {
                     if (Actions.PerfectBalance.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;

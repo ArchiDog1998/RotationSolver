@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
@@ -207,7 +208,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
 
         if (Actions.CorpsAcorps.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.CorpsAcorps.Target) < 1)
+            if (TargetFilter.DistanceToPlayer(Actions.CorpsAcorps.Target) < 1)
             {
                 return true;
             }
@@ -313,7 +314,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
         if (Actions.Redoublement.ShouldUseAction(out act, lastComboActionID)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
-        bool mustStart = BaseAction.HaveStatusSelfFromSelf(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;
+        bool mustStart = StatusHelper.HaveStatusSelfFromSelf(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
         if (!mustStart)
@@ -323,14 +324,14 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             //要求较小的魔元不带触发，也可以强制要求跳过判断。
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
-                if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.VerstoneReady))
+                if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.VerstoneReady))
                 {
                     return false;
                 }
             }
             if (JobGauge.WhiteMana > JobGauge.BlackMana)
             {
-                if (BaseAction.HaveStatusSelfFromSelf(ObjectStatus.VerfireReady))
+                if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.VerfireReady))
                 {
                     return false;
                 }
@@ -339,7 +340,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             //看看有没有即刻相关的技能。
             foreach (var buff in Actions.Vercure.BuffsProvide)
             {
-                if (BaseAction.HaveStatusSelfFromSelf(buff))
+                if (StatusHelper.HaveStatusSelfFromSelf(buff))
                 {
                     return false;
                 }

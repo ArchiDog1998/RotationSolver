@@ -8,10 +8,12 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using Vector3 = System.Numerics.Vector3;
@@ -20,9 +22,6 @@ namespace XIVAutoAttack
 {
     internal class TargetHelper
     {
-
-        private static IntPtr _func;
-
         private static Vector3 _lastPosition;
         public static bool IsMoving { get; private set; }
 
@@ -72,14 +71,10 @@ namespace XIVAutoAttack
         internal static float WeaponRemain { get; private set; } = 0;
         internal static float WeaponTotal { get; private set; } = 0;
         internal static float Weaponelapsed { get; private set; } = 0;
-
+        internal static bool InBattle { get; private set; } = false;
         internal static byte AbilityRemainCount { get; private set; } = 0;
 
-        //  public static PlayerCharacter[] PartyMembers =>
-        //AllianceMembers.Where(fri => (fri.StatusFlags & StatusFlags.AllianceMember) != 0).ToArray();
         public static BattleChara[] PartyMembers { get; private set; } = new PlayerCharacter[0];
-
-
         /// <summary>
         /// 玩家们
         /// </summary>
@@ -88,7 +83,6 @@ namespace XIVAutoAttack
         internal static BattleChara[] PartyHealers { get; private set; } = new PlayerCharacter[0];
 
         internal static BattleChara[] AllianceTanks { get; private set; } = new PlayerCharacter[0];
-        //internal static BattleChara[] PartyTanksAttached { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] DeathPeopleParty { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] WeakenPeople { get; private set; } = new PlayerCharacter[0];
@@ -104,8 +98,10 @@ namespace XIVAutoAttack
         internal static bool HavePet { get; private set; } = false;
         internal static bool HPNotFull { get; private set; } = false;
         internal static bool ShouldUseArea { get; private set; } = false;
-        internal static bool InBattle { get; private set; } = false;
 
+
+        public static bool IsHostileAOE { get; private set; } = false;
+        public static bool IsHostileTank { get; private set; } = false;
         internal static  uint[] BLUActions { get;} = new uint[24];
 
         internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
@@ -114,10 +110,6 @@ namespace XIVAutoAttack
 #if DEBUG
         private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
 #endif
-        internal static unsafe void Init(SigScanner sigScanner)
-        {
-            _func = sigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
-        }
         private static bool restartCombatTimer = true;
         private static TimeSpan combatDuration = new();
         private static DateTime combatStart;
@@ -212,7 +204,8 @@ namespace XIVAutoAttack
             if (Service.ClientState.LocalPlayer.CurrentHp == 0
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying]) IconReplacer.AutoAttack = false;
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying]) 
+                IconReplacer.AutoAttack = false;
 
             InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
@@ -231,6 +224,7 @@ namespace XIVAutoAttack
 
             var min = Math.Max(WeaponTotal - Service.Configuration.WeaponInterval, 0);
             AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
+
 
             UpdateTargets();
             if(Service.ClientState.LocalPlayer.ClassJob.Id == 36)
@@ -291,18 +285,6 @@ namespace XIVAutoAttack
             progressBar->AddGreen = c.G;
             progressBar->AddBlue = c.B;
         }
-
-        //private unsafe static void Hide(AtkResNode* node)
-        //{
-        //    node->Flags &= -17;
-        //    node->Flags_2 |= 1u;
-        //}
-
-        //public unsafe static void Show(AtkResNode* node)
-        //{
-        //    node->Flags |= 16;
-        //    node->Flags_2 |= 1u;
-        //}
 
         private static void DoAction(float weaponelapsed)
         {
@@ -369,7 +351,7 @@ namespace XIVAutoAttack
         {
             #region Hostile
             //能打的目标
-            AllTargets = BaseAction.GetObjectInRadius(Service.ObjectTable.ToArray(), 30).Where(obj =>
+            AllTargets = TargetFilter.GetObjectInRadius(Service.ObjectTable.ToArray(), 30).Where(obj =>
             {
                 if(obj is BattleChara c && c.CurrentHp != 0)
                 {
@@ -400,7 +382,7 @@ namespace XIVAutoAttack
                         radius = 3;
                         break;
                 }
-                HaveTargetAngle = BaseAction.GetObjectInRadius(HostileTargets, radius).Length > 0;
+                HaveTargetAngle = TargetFilter.GetObjectInRadius(HostileTargets, radius).Length > 0;
             }
             else
             {
@@ -408,6 +390,13 @@ namespace XIVAutoAttack
                 HaveTargetAngle = false;
             }
 
+            if (HostileTargets.Length == 1)
+            {
+                var tar = HostileTargets[0];
+
+                IsHostileTank = IsHostileCastingTank(tar);
+                IsHostileAOE = IsHostileCastingArea(tar);
+            }
             #endregion
             #region Friend
             var party = Service.PartyList;
@@ -417,14 +406,14 @@ namespace XIVAutoAttack
 
             AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
 
-            PartyTanks = GetJobCategory(PartyMembers, Role.防护);
-            PartyHealers = GetJobCategory(BaseAction.GetObjectInRadius(PartyMembers, 30), Role.治疗);
-            AllianceTanks = GetJobCategory(BaseAction.GetObjectInRadius(AllianceMembers, 30), Role.防护);
+            PartyTanks = TargetFilter.GetJobCategory(PartyMembers, Role.防护);
+            PartyHealers = TargetFilter.GetJobCategory(TargetFilter.GetObjectInRadius(PartyMembers, 30), Role.治疗);
+            AllianceTanks = TargetFilter.GetJobCategory(TargetFilter.GetObjectInRadius(AllianceMembers, 30), Role.防护);
 
-            DeathPeopleAll = BaseAction.GetObjectInRadius(GetDeath(AllianceMembers), 30);
-            DeathPeopleParty = BaseAction.GetObjectInRadius(GetDeath(PartyMembers), 30);
+            DeathPeopleAll = TargetFilter.GetObjectInRadius(TargetFilter.GetDeath(AllianceMembers), 30);
+            DeathPeopleParty = TargetFilter.GetObjectInRadius(TargetFilter.GetDeath(PartyMembers), 30);
 
-            WeakenPeople = BaseAction.GetObjectInRadius(PartyMembers, 30).Where(p =>
+            WeakenPeople = TargetFilter.GetObjectInRadius(PartyMembers, 30).Where(p =>
             {
                 foreach (var status in p.StatusList)
                 {
@@ -471,7 +460,7 @@ namespace XIVAutoAttack
             #region Health
             var members = PartyMembers;
 
-            PartyMembersHP = BaseAction.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
+            PartyMembersHP = TargetFilter.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
 
             float averHP = 0;
             foreach (var hp in PartyMembersHP)
@@ -512,134 +501,48 @@ namespace XIVAutoAttack
 
         }
 
+        internal static bool IsHostileCastingTank(BattleChara h)
+        {
+            return IsHostileCastingBase(h, (act) =>
+            {
+                return h.CastTargetObjectId == h.TargetObjectId;
+            });
+        }
+
+        internal static bool IsHostileCastingArea(BattleChara h)
+        {
+            return IsHostileCastingBase(h, (act) =>
+            {
+                if (h.CastTargetObjectId == h.TargetObjectId) return false;
+                if ((act.CastType == 1 || act.CastType == 2) &&
+                    act.Range == 0 &&
+                    (act.EffectRange >= 40))
+                    return true;
+                return false;
+            });
+        }
+
+        private static bool IsHostileCastingBase(BattleChara h, Func<Action, bool> check)
+        {
+            if (h.IsCasting)
+            {
+                if (h.IsCastInterruptible) return false;
+                var last = h.TotalCastTime - h.CurrentCastTime;
+
+                if (!(h.TotalCastTime > 2 && last < 6 && last > 0.5)) return false;
+
+                var action = Service.DataManager.GetExcelSheet<Action>().GetRow(h.CastActionId);
+                return check?.Invoke(action) ?? false;
+            }
+            return false;
+        }
+
         public unsafe static bool CanAttack(GameObject actor)
         {
             if (actor == null) return false;
-            return ((delegate*<long, IntPtr, long>)_func)(142L, actor.Address) == 1;
+            return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address) == 1;
         }
 
-        internal static BattleChara[] GetJobCategory(BattleChara[] objects, Role role)
-        {
-            List<BattleChara> result = new(objects.Length);
-
-            SortedSet<byte> validJobs = new(XIVAutoAttackPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
-
-            foreach (var obj in objects)
-            {
-                if (GetJobCategory(obj, validJobs)) result.Add(obj);
-            }
-            return result.ToArray();
-        }
-
-        private static bool GetJobCategory(BattleChara obj, Role role)
-        {
-
-            SortedSet<byte> validJobs = new SortedSet<byte>(XIVAutoAttackPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
-            return GetJobCategory(obj, validJobs);
-        }
-
-        internal static bool GetJobCategory(BattleChara obj, SortedSet<byte> validJobs)
-        {
-            return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
-        }
-
-        internal static Action GetActionsByName(string name)
-        {
-            var enumerator = Service.DataManager.GetExcelSheet<Action>().GetEnumerator();
-
-            while (enumerator.MoveNext())
-            {
-                var action = enumerator.Current;
-                if (action.Name == name && action.ClassJobLevel != 0 && !action.IsPvP)
-                {
-                    return action;
-                }
-            }
-            return null;
-        }
-
-        internal static BattleChara GetDeathPeople()
-        {
-            var deathAll = DeathPeopleAll;
-            var deathParty = DeathPeopleParty;
-
-
-            if (deathParty.Length != 0)
-            {
-                //确认一下死了的T有哪些。
-
-                var deathT = GetJobCategory(deathParty, Role.防护);
-                int TCount = PartyTanks.Length;
-
-                //如果全死了，赶紧复活啊。
-                if (TCount > 0 && deathT.Length == TCount)
-                {
-                    return deathT[0];
-                }
-
-                //确认一下死了的H有哪些。
-                var deathH = GetJobCategory(deathParty, Role.治疗);
-
-                //如果H死了，就先救他。
-                if (deathH.Length != 0) return deathH[0];
-
-                //如果T死了，就再救他。
-                if (deathT.Length != 0) return deathT[0];
-
-                //T和H都还活着，那就随便救一个。
-                return deathParty[0];
-            }
-
-            //如果一个都没死，那为啥还要救呢？
-            if (deathAll.Length == 0) return null;
-
-            //确认一下死了的H有哪些。
-            var deathAllH = GetJobCategory(deathAll, Role.治疗);
-            if (deathAllH.Length != 0) return deathAllH[0];
-
-            //确认一下死了的T有哪些。
-            var deathAllT = GetJobCategory(deathAll, Role.防护);
-            if (deathAllT.Length != 0) return deathAllT[0];
-
-            return deathAll[0];
-        }
-
-        private static BattleChara[] GetDeath(BattleChara[] charas)
-        {
-            List<BattleChara> list = new List<BattleChara>(charas.Length);
-            foreach (var item in charas)
-            {
-                //如果还有血，就算了。
-                if (item.CurrentHp != 0) continue;
-
-                //如果已经有复活的Buff了，那就算了。
-                bool haveRase = false;
-                foreach (var status in item.StatusList)
-                {
-                    if (status.StatusId == ObjectStatus.Raise)
-                    {
-                        haveRase = true;
-                        break;
-                    }
-                }
-                if (haveRase) continue;
-
-                //如果有人在对着他咏唱，那就算了。
-                bool isCasting = false;
-                foreach (var character in AllianceMembers)
-                {
-                    if (character.CastTargetObjectId == item.ObjectId)
-                    {
-                        isCasting = true;
-                        break;
-                    }
-                }
-                if (isCasting) continue;
-
-                list.Add(item);
-            }
-            return list.ToArray();
-        }
 
         internal static unsafe uint[] GetEnemies()
         {
@@ -658,40 +561,6 @@ namespace XIVAutoAttack
                 return list.ToArray();
             }
             return new uint[0];
-        }
-
-        /// <summary>
-        /// 返回总共能大约回复的血量，非常大概。
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="strength"></param>
-        /// <returns></returns>
-        internal static float GetBestHeal(Action action, uint strength)
-        {
-            float healRange = strength * 0.000352f;
-
-            //能够放到技能的队员。
-            var canGet = BaseAction.GetObjectInRadius(PartyMembers, Math.Max(action.Range, 0.1f));
-
-            float bestHeal = 0;
-            foreach (var member in canGet)
-            {
-                float thisHeal = 0;
-                Vector3 centerPt = member.Position;
-                foreach (var ran in PartyMembers)
-                {
-                    //如果不在范围内，那算了。
-                    if (Vector3.Distance(centerPt, ran.Position) > action.EffectRange)
-                    {
-                        continue;
-                    }
-
-                    thisHeal += Math.Min(1 - ran.CurrentHp / ran.MaxHp, healRange);
-                }
-
-                bestHeal = Math.Max(thisHeal, healRange);
-            }
-            return bestHeal;
         }
 
         public static void Dispose()

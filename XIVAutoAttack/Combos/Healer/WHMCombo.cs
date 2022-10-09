@@ -1,8 +1,13 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using XIVAutoAttack.Actions;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Combos.Healer;
 
@@ -112,14 +117,49 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
         //加Hot
         if (Actions.Medica2.ShouldUseAction(out act, lastComboActionID)) return true;
 
-        float cure3 = TargetHelper.GetBestHeal(Actions.Cure3.Action, 600);
-        float medica = TargetHelper.GetBestHeal(Actions.Medica.Action, 300);
+        float cure3 = GetBestHeal(Actions.Cure3.Action, 600);
+        float medica = GetBestHeal(Actions.Medica.Action, 300);
 
         //愈疗
         if (cure3 > medica && Actions.Cure3.ShouldUseAction(out act)) return true;
         if (Actions.Medica.ShouldUseAction(out act)) return true;
 
         return false;
+    }
+
+
+    /// <summary>
+    /// 返回总共能大约回复的血量，非常大概。
+    /// </summary>
+    /// <param name="action"></param>
+    /// <param name="strength"></param>
+    /// <returns></returns>
+    internal static float GetBestHeal(Action action, uint strength)
+    {
+        float healRange = strength * 0.000352f;
+
+        //能够放到技能的队员。
+        var canGet = TargetFilter.GetObjectInRadius(TargetHelper.PartyMembers, Math.Max(action.Range, 0.1f));
+
+        float bestHeal = 0;
+        foreach (var member in canGet)
+        {
+            float thisHeal = 0;
+            Vector3 centerPt = member.Position;
+            foreach (var ran in TargetHelper.PartyMembers)
+            {
+                //如果不在范围内，那算了。
+                if (Vector3.Distance(centerPt, ran.Position) > action.EffectRange)
+                {
+                    continue;
+                }
+
+                thisHeal += Math.Min(1 - ran.CurrentHp / ran.MaxHp, healRange);
+            }
+
+            bestHeal = Math.Max(thisHeal, healRange);
+        }
+        return bestHeal;
     }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)

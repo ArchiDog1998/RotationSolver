@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack;
-using XIVAutoAttack.Combos;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.Tank;
 
@@ -12,7 +12,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 {
     internal override uint JobID => 19;
 
-    internal override bool HaveShield => BaseAction.HaveStatusSelfFromSelf(ObjectStatus.IronWill);
+    internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.IronWill);
 
     private protected override BaseAction Shield => Actions.IronWill;
 
@@ -47,7 +47,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             //投盾
             ShieldLob = new (24)
             {
-                FilterForHostile = b => BaseAction.ProvokeTarget(b),
+                FilterForHostile = b => TargetFilter.ProvokeTarget(b),
             },
 
             //战逃反应
@@ -86,7 +86,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             //干预
             Intervention = new (7382, true)
             {
-                ChoiceFriend = BaseAction.FindAttackedTarget,
+                ChoiceFriend = TargetFilter.FindAttackedTarget,
             },
 
             //调停
@@ -131,7 +131,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             //保护
             Cover = new BaseAction(27, true)
             {
-                ChoiceFriend = BaseAction.FindAttackedTarget,
+                ChoiceFriend = TargetFilter.FindAttackedTarget,
             },
 
             //盾阵
@@ -154,7 +154,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         if (Actions.BladeofTruth.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
 
         //魔法三种姿势
-        var status = BaseAction.FindStatusFromSelf(Service.ClientState.LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
+        var status = StatusHelper.FindStatusFromSelf(Service.ClientState.LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
         if (status != null && status.Count() > 0)
         {
             var s = status.First();
@@ -225,7 +225,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         if (Actions.Expiacion.ShouldUseAction(out act, mustUse: true)) return true;
 
         //安魂祈祷
-        if (Service.TargetManager.Target is BattleChara b && BaseAction.FindStatusFromSelf(b, ObjectStatus.GoringBlade, ObjectStatus.BladeofValor) is float[] times &&
+        if (Service.TargetManager.Target is BattleChara b && StatusHelper.FindStatusFromSelf(b, ObjectStatus.GoringBlade, ObjectStatus.BladeofValor) is float[] times &&
             times != null && times.Length > 0 && times.Max() > 10 &&
             Actions.Requiescat.ShouldUseAction(out act, mustUse: true)) return true;
 
@@ -235,7 +235,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         //搞搞攻击
         if (Actions.Intervene.ShouldUseAction(out act) && !IsMoving)
         {
-            if (BaseAction.DistanceToPlayer(Actions.Intervene.Target) < 1)
+            if (TargetFilter.DistanceToPlayer(Actions.Intervene.Target) < 1)
             {
                 return true;
             }

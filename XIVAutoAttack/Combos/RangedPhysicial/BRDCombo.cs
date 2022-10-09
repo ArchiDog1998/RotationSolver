@@ -2,7 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Combos;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
@@ -15,7 +15,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
     {
         private static bool AddOnDot(BattleChara b, ushort status1, ushort status2)
         {
-            var results = BaseAction.FindStatusFromSelf(b, status1, status2);
+            var results = StatusHelper.FindStatusFromSelf(b, status1, status2);
             if (results.Length != 2) return false;
             return results.Min() < 6f;
         }
@@ -143,7 +143,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //放大招！
-        if (JobGauge.SoulVoice == 100 || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady))
+        if (JobGauge.SoulVoice == 100 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady))
         {
             if (Actions.ApexArrow.ShouldUseAction(out act, mustUse: true)) return true;
         }
@@ -176,8 +176,8 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             return base.EmergercyAbility(abilityRemain, nextGCD, out act);
         }
         else if (abilityRemain != 0 &&
-            (Service.ClientState.LocalPlayer.Level < Actions.RagingStrikes.Level || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.RagingStrikes)) &&
-            (Service.ClientState.LocalPlayer.Level < Actions.BattleVoice.Level || BaseAction.HaveStatusSelfFromSelf(ObjectStatus.BattleVoice)))
+            (Service.ClientState.LocalPlayer.Level < Actions.RagingStrikes.Level || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.RagingStrikes)) &&
+            (Service.ClientState.LocalPlayer.Level < Actions.BattleVoice.Level || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.BattleVoice)))
         {
             //纷乱箭
             if (Actions.Barrage.ShouldUseAction(out act)) return true;
@@ -236,7 +236,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
         if (Actions.Sidewinder.ShouldUseAction(out act)) return true;
 
         //看看现在有没有开猛者强击
-        bool empty = BaseAction.HaveStatusSelfFromSelf(125) || JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.MAGE;
+        bool empty = StatusHelper.HaveStatusSelfFromSelf(125) || JobGauge.Song == Dalamud.Game.ClientState.JobGauge.Enums.Song.MAGE;
         //死亡剑雨
         if (Actions.RainofDeath.ShouldUseAction(out act, emptyOrSkipCombo: empty)) return true;
 
