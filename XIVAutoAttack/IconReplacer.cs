@@ -368,26 +368,10 @@ internal sealed class IconReplacer : IDisposable
 #if DEBUG
                 Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + act.Action.Name + TargetHelper.AbilityRemainCount.ToString());
 #endif
-
+                //Change Target
                 if (TargetHelper.CanAttack(act.Target))
                 {
                     Service.TargetManager.SetTarget(act.Target);
-                }
-                if (act.ID != Watcher.LastAction)
-                {
-                    //LastAction = newiAction.ID;
-                    foreach (var item in Service.Configuration.Events)
-                    {
-                        if (item.Name == act.Action.Name)
-                        {
-                            if (item.MacroIndex < 0 || item.MacroIndex > 99) return;
-
-                            TargetHelper.Macros.Enqueue(new MacroItem(act.Target, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
-                                RaptureMacroModule.Instance->Individual[item.MacroIndex]));
-
-                            return;
-                        }
-                    }
                 }
             }
             return;

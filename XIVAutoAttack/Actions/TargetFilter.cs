@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.Gui;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +75,18 @@ namespace XIVAutoAttack.Actions
 
         internal static BattleChara FindMoveTarget(BattleChara[] charas)
         {
+            if (Service.Configuration.MoveTowardsScreen)
+            {
+                return FindMoveTargetScreenCenter(charas);
+            }
+            else
+            {
+                return FindMoveTargetFaceDirection(charas);
+            }
+        }
+
+        private static BattleChara FindMoveTargetFaceDirection(BattleChara[] charas)
+        {
             Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
             float rotation = Service.ClientState.LocalPlayer.Rotation;
             Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
@@ -84,6 +97,27 @@ namespace XIVAutoAttack.Actions
                 Vector2 dirVec = new Vector2(dir.Z, dir.X);
                 double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
                 return angle <= Math.PI / 6;
+            }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
+
+            if (DistanceToPlayer(tar) < 5) return null;
+
+            return tar;
+        }
+
+        private  static BattleChara FindMoveTargetScreenCenter(BattleChara[] charas)
+        {
+            var pPosition = Service.ClientState.LocalPlayer.Position;
+            if (!Service.GameGui.WorldToScreen(pPosition, out var playerScrPos)) return null;
+
+            var tar = charas.Where(t =>
+            {
+                if(!Service.GameGui.WorldToScreen(t.Position, out var scrPos)) return false;
+
+                var dir = scrPos - playerScrPos;
+
+                if (dir.Y > 0) return false;
+
+                return Math.Abs(dir.X / dir.Y) < Math.Tan(Math.PI / 6);
             }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
 
             if (DistanceToPlayer(tar) < 5) return null;

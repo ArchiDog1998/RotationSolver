@@ -107,63 +107,66 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         configWindow.IsOpen = true;
     }
 
-    internal unsafe void TargetObject(string command, string arguments)
+    internal void TargetObject(string command, string arguments)
     {
-
         string[] array = arguments.Split();
-
 
         if (array.Length > 0)
         {
-            switch (array[0])
-            {
-                case "HealArea":
-                    IconReplacer.StartHealArea();
-                    break;
-                case "HealSingle":
-                    IconReplacer.StartHealSingle();
-                    break;
-                case "DefenseArea":
-                    IconReplacer.StartDefenseArea();
-                    break;
-                case "DefenseSingle":
-                    IconReplacer.StartDefenseSingle();
-                    break;
-                case "EsunaShield":
-                    IconReplacer.StartEsunaOrShield();
-                    break;
-                case "RaiseShirk":
-                    IconReplacer.StartRaiseOrShirk();
-                    break;
-                case "Move":
-                    IconReplacer.StartMove();
-                    break;
-                case "AntiRepulsion":
-                    IconReplacer.StartAntiRepulsion();
-                    break;
-                case "BreakProvoke":
-                    IconReplacer.StartBreakOrProvoke();
-                    break;
-                //case "LimitBreak":
-                //    IconReplacer.StartLimitBreak();
-                //    break;
-                case "AttackBig":
-                    IconReplacer.AttackBig = true;
-                    break;
-                case "AttackSmall":
-                    IconReplacer.AttackBig = false;
-                    break;
-                case "AttackManual":
-                    IconReplacer.AutoTarget = false;
-                    IconReplacer.AutoAttack = true;
-                    break;
-                case "AttackCancel":
-                    IconReplacer.AutoAttack = false;
-                    break;
-                default:
-                    Service.ChatGui.PrintError("无法识别 " + array[0]);
-                    break;
-            }
+            DoAutoAttack(array[0]);
+        }
+    }
+
+    internal static void DoAutoAttack(string str)
+    {
+        switch (str)
+        {
+            case "HealArea":
+                IconReplacer.StartHealArea();
+                break;
+            case "HealSingle":
+                IconReplacer.StartHealSingle();
+                break;
+            case "DefenseArea":
+                IconReplacer.StartDefenseArea();
+                break;
+            case "DefenseSingle":
+                IconReplacer.StartDefenseSingle();
+                break;
+            case "EsunaShield":
+                IconReplacer.StartEsunaOrShield();
+                break;
+            case "RaiseShirk":
+                IconReplacer.StartRaiseOrShirk();
+                break;
+            case "Move":
+                IconReplacer.StartMove();
+                break;
+            case "AntiRepulsion":
+                IconReplacer.StartAntiRepulsion();
+                break;
+            case "BreakProvoke":
+                IconReplacer.StartBreakOrProvoke();
+                break;
+            //case "LimitBreak":
+            //    IconReplacer.StartLimitBreak();
+            //    break;
+            case "AttackBig":
+                IconReplacer.AttackBig = true;
+                break;
+            case "AttackSmall":
+                IconReplacer.AttackBig = false;
+                break;
+            case "AttackManual":
+                IconReplacer.AutoTarget = false;
+                IconReplacer.AutoAttack = true;
+                break;
+            case "AttackCancel":
+                IconReplacer.AutoAttack = false;
+                break;
+            default:
+                Service.ChatGui.PrintError("无法识别：" + str);
+                break;
         }
     }
 

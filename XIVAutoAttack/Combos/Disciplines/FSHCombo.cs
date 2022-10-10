@@ -11,6 +11,18 @@ namespace XIVAutoAttack.Combos.Disciplines
     internal class FSHCombo : OtherCombo
     {
         internal override uint JobID => 18;
+        public DateTime LastChangeFishingTime { get; private set; } = DateTime.MinValue;
+        private bool _isFishing = false;
+        public bool IsFishing 
+        { 
+            get => _isFishing;
+            set
+            {
+                if (_isFishing == value) return;
+                _isFishing = value;
+                LastChangeFishingTime = DateTime.Now;
+            }
+        }
         internal struct Actions
         {
             public static readonly BaseAction
@@ -95,11 +107,15 @@ namespace XIVAutoAttack.Combos.Disciplines
                     AfterUse = () =>
                     {
                         TargetHelper.Fish = FishType.None;
-#if DEBUG
-                        Service.ChatGui.Print("成功了！");
-#endif
                     }
-
+                },
+                Mooch2 = new(268)
+                {
+                    OtherCheck = b => TargetHelper.Fish == FishType.Mooch,
+                    AfterUse = () =>
+                    {
+                        TargetHelper.Fish = FishType.None;
+                    }
                 },
 
                 //撒饵
@@ -129,10 +145,10 @@ namespace XIVAutoAttack.Combos.Disciplines
         {
             var maxgp = Service.ClientState.LocalPlayer.MaxGp;
             var gp = Service.ClientState.LocalPlayer.CurrentGp;
-            bool fishing = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Fishing];
+            IsFishing = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Fishing];
 
             //钓鱼
-            if (fishing && TargetHelper.Fish != FishType.None && TargetHelper._fisherTimer.ElapsedMilliseconds > Config.GetDoubleByName("CastTime") * 1000)
+            if (IsFishing && TargetHelper.Fish != FishType.None && TargetHelper._fisherTimer.ElapsedMilliseconds > Config.GetFloatByName("CastTime") * 1000)
             {
                 if(StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Patience))
                 {
@@ -173,9 +189,10 @@ namespace XIVAutoAttack.Combos.Disciplines
             }
 
             //非钓鱼
-            if (!fishing)
+            if (!IsFishing && DateTime.Now - LastChangeFishingTime > new TimeSpan(0,0,0,0,(int)(Config.GetFloatByName("WaitingTime") * 1000)))
             {
-                //以小掉大
+                //以小钓大
+                //if (Actions.Mooch2.ShouldUseAction(out act)) return true;
                 if (Actions.Mooch.ShouldUseAction(out act)) return true;
 
                 var status = Service.ClientState.LocalPlayer.StatusList.Where(s => s.StatusId == ObjectStatus.AnglersArt);
@@ -218,6 +235,7 @@ namespace XIVAutoAttack.Combos.Disciplines
             return base.CreateConfiguration()
                 .SetBool("UsePowerfulHookset", true, "三个感叹号用强力提钩")
                 .SetFloat("CastTime", 0.6f, des:"反应提钩的速度")
+                .SetFloat("WaitingTime", 0.2f, des:"上钩后等待多久下一杆")
                 .SetBool("UseSnagging", true, "使用钓组")
                 .SetBool("OnlyLargeFish", false, "只钓三个感叹号的鱼");
         }

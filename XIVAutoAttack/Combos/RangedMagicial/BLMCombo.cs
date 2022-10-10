@@ -489,7 +489,7 @@ namespace XIVAutoAttack.Combos
             else if (JobGauge.InAstralFire)
             {
                 //如果需要续时间,提高档数
-                if (JobGauge.ElementTimeRemaining < Config.GetDoubleByName("TimeToAdd") * 1000)
+                if (JobGauge.ElementTimeRemaining < Config.GetFloatByName("TimeToAdd") * 1000)
                 {
                     if(Service.ClientState.LocalPlayer.CurrentMp >= 4000 || JobGauge.AstralFireStacks == 2)
                     {

@@ -23,6 +23,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool NeverReplaceIcon { get; set; } = false;
     public bool AutoDefenseForTank { get; set; } = true;
     public bool AutoProvokeForTank { get; set; } = true;
+    public bool MoveTowardsScreen { get; set; } = true;
     public bool AutoSayingOut { get; set; } = false;
     public bool UseDtr { get; set; } = true;
     public bool SayingLocation { get; set; } = true;
@@ -30,7 +31,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseToast { get; set; } = true;
     public bool RaiseAll { get; set; } = false;
     public bool CheckForCasting { get; set; } = true;
-    public bool UseItem { get; set; } = true;
+    public bool UseItem { get; set; } = false;
     public float ObjectMinRadius { get; set; } = 0f;
     public float HealthDifference { get; set; } = 0.25f;
     public float HealthAreaAbility { get; set; } = 0.75f;

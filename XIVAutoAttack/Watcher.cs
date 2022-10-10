@@ -14,6 +14,8 @@ using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.System.Resource;
 using FFXIVClientStructs.FFXIV.Client.System.Resource.Handle;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using Lumina.Excel.GeneratedSheets;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.Disciplines;
@@ -76,19 +78,33 @@ namespace XIVAutoAttack
         private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
         {
 #if DEBUG
-        //var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
-        //Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
+        var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
+        Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
 
 #endif
-
             if (actionType == ActionType.Spell)
             {
                 var action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
                 var cate = action.ActionCategory.Value;
+                var tar = Service.ObjectTable.SearchById(targetID);
+
+                //Macro
+                if (actionID != LastAction)
+                {
+                    foreach (var item in Service.Configuration.Events)
+                    {
+                        if (item.Name == action.Name)
+                        {
+                            if (item.MacroIndex < 0 || item.MacroIndex > 99) break;
+
+                            TargetHelper.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
+                                RaptureMacroModule.Instance->Individual[item.MacroIndex]));
+                        }
+                    }
+                }
 
                 TimeLastActionUsed = DateTime.Now;
                 LastAction = actionID;
-
 
                 if (cate != null)
                 {
@@ -121,6 +137,8 @@ namespace XIVAutoAttack
 #endif
                 TargetHelper.Fish = FishType.Mooch;
             }
+
+            //XIVAutoAttackPlugin.DoAutoAttack(message.ToString());
         }
 
         public void Dispose()

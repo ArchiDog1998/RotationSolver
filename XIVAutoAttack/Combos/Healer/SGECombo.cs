@@ -33,8 +33,9 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             Diagnosis = new (24284, true),
 
             //ÐÄ¹Ø
-            Kardia = new (24285, true)
+            Kardia = new(24285, true)
             {
+                BuffsProvide = new ushort[] {ObjectStatus.Kardia},
                 ChoiceFriend = Targets =>
                 {
                     var targets = TargetFilter.GetJobCategory(Targets, Role.·À»¤);

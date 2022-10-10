@@ -300,6 +300,17 @@ internal class ConfigWindow : Window
                         Service.Configuration.Save();
                     }
 
+                    bool moveToScreen = Service.Configuration.MoveTowardsScreen;
+                    if (ImGui.Checkbox("移动向屏幕中心的对象", ref moveToScreen))
+                    {
+                        Service.Configuration.MoveTowardsScreen = moveToScreen;
+                        Service.Configuration.Save();
+                    }
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip("设为是时移动的对象为屏幕中心的那个，否为游戏角色面朝的对象。");
+                    }
+
                     bool useItem = Service.Configuration.UseItem;
                     if (ImGui.Checkbox("使用道具", ref useItem))
                     {

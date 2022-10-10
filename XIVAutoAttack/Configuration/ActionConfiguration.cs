@@ -33,7 +33,7 @@ namespace XIVAutoAttack.Configuration
             });
             return this;
         }
-        public float GetDoubleByName(string name)
+        public float GetFloatByName(string name)
         {
             foreach (var item in doubles)
             {
