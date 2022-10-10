@@ -116,6 +116,9 @@ namespace XIVAutoAttack.Combos
             //战斗之声
             BattleVoice = 141,
 
+            //光明神的最终乐章
+            RadiantFinale = 2722,
+
             //铁壁
             Rampart1 = 71,
             Rampart2 = 1191,

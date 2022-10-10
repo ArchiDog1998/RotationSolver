@@ -198,7 +198,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (!TargetHelper.InBattle)
         {
             //开场前整备,空气锚和钻头必须冷却好
-            if ((Actions.AirAnchor.IsCoolDown || Actions.Drill.IsCoolDown) && Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+            if ((!Actions.AirAnchor.IsCoolDown || !Actions.Drill.IsCoolDown) && Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
             initFinished = false;
         }
 
@@ -225,6 +225,16 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
+        //等级小于钻头时,绑定狙击弹
+        if (level < Actions.Drill.Level && nextGCD.ID == Actions.CleanShot.ID)
+        {
+            if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        }
+        //等级小于90时,整备不再留层数,直接全部给空气锚或者钻头
+        if (level < Actions.ChainSaw.Level && (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID))
+        {
+            if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        }
         //整备优先链锯
         if (nextGCD.ID == Actions.ChainSaw.ID)
         {
@@ -235,18 +245,6 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         {
             if (Actions.Reassemble.ShouldUseAction(out act)) return true;
         }
-        //等级小于90时,整备不再留层数,直接全部给空气锚或者钻头
-        if (level < Actions.ChainSaw.Level && (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID))
-        {
-            if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-        }
-        //等级小于钻头时,绑定狙击弹
-        if (level < Actions.Drill.Level && nextGCD.ID == Actions.CleanShot.ID)
-        {
-            if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-        }
-
-
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
@@ -292,7 +290,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         // 我真的不记得为什么我把 > 70 放在这里，我担心如果我把它拿掉它会打破它哈哈
         if (TargetHelper.CombatEngageDuration.Minutes == 0 && (gauge.Heat > 70 || TargetHelper.CombatEngageDuration.Seconds <= 30) && LastWeaponskill != Service.IconReplacer.OriginalHook(Actions.CleanShot.ID)) return true;
 
-        if (TargetHelper.CombatEngageDuration.Minutes > 0 && (wildfireCDTime >= wfTimer || LastAbility == Actions.Wildfire.ID) || LastWeaponskill == Actions.ChainSaw.ID && (Actions.Wildfire.IsCoolDown || wildfireCDTime < 1))
+        if (TargetHelper.CombatEngageDuration.Minutes > 0 && (wildfireCDTime >= wfTimer || LastAbility == Actions.Wildfire.ID) || LastWeaponskill == Actions.ChainSaw.ID && (!Actions.Wildfire.IsCoolDown || wildfireCDTime < 1))
         {
             if (TargetHelper.CombatEngageDuration.Minutes % 2 == 1 && gauge.Heat >= 90) return true;
 

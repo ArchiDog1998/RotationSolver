@@ -19,6 +19,11 @@ namespace XIVAutoAttack.Actions
             return FindStatusFromSelf(Service.ClientState.LocalPlayer, effectIDs);
         }
 
+        internal static float FindStatusTimeSelfFromSelf(params ushort[] effectIDs)
+        {
+            return FindStatusTimeFromSelf(Service.ClientState.LocalPlayer, effectIDs);
+        }
+
         internal static float[] FindStatusFromSelf(BattleChara obj, params ushort[] effectIDs)
         {
             uint[] newEffects = effectIDs.Select(a => (uint)a).ToArray();
