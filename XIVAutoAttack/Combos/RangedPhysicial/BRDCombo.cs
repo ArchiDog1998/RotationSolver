@@ -27,10 +27,10 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
 
         public static readonly BaseAction
             //强力射击
-            HeavyShoot = new (97) { BuffsProvide = new [] { ObjectStatus.StraightShotReady } },
+            HeavyShoot = new(97) { BuffsProvide = new[] { ObjectStatus.StraightShotReady } },
 
             //直线射击
-            StraitShoot = new (98) { BuffsNeed = new [] { ObjectStatus.StraightShotReady } },
+            StraitShoot = new(98) { BuffsNeed = new[] { ObjectStatus.StraightShotReady } },
 
             //毒药箭
             VenomousBite = new(100) { TargetStatus = new[] { ObjectStatus.VenomousBite, ObjectStatus.CausticBite } },
@@ -62,11 +62,11 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             ArmysPaeon = new(116),
 
             //放浪神的小步舞曲
-            WanderersMinuet = new(3559),            
+            WanderersMinuet = new(3559),
 
             //战斗之声
             BattleVoice = new(118, true)
-            {         
+            {
                 OtherCheck = b =>
                 {
                     if (StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.RagingStrikes) <= 16.5 || initFinished) return true;
@@ -76,13 +76,11 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             },
 
             //猛者强击
-            RagingStrikes = new (101)
+            RagingStrikes = new(101)
             {
                 OtherCheck = b =>
                 {
-                    if (JobGauge.Song != Song.WANDERER) return false;
-
-                    if (BattleVoice.RecastTimeRemain <= 5.38 || level < BattleVoice.Level) return true;
+                    if (JobGauge.Song == Song.WANDERER || level < WanderersMinuet.Level && BattleVoice.RecastTimeRemain <= 5.38 || level < BattleVoice.Level) return true;
 
                     return false;
                 },
@@ -106,18 +104,18 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             },
 
             //纷乱箭
-            Barrage = new (107)
+            Barrage = new(107)
             {
-                BuffsProvide = new [] { ObjectStatus.StraightShotReady },
+                BuffsProvide = new[] { ObjectStatus.StraightShotReady },
             },
 
             //九天连箭
-            EmpyrealArrow = new (3558)
+            EmpyrealArrow = new(3558)
             {
                 OtherCheck = b =>
                 {
                     if (!initFinished || (initFinished && BattleVoice.RecastTimeRemain >= 3.5)) return true;
-                    
+
                     return false;
                 },
             },
@@ -138,26 +136,26 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             },
 
             //失血箭
-            Bloodletter = new (110),
+            Bloodletter = new(110),
 
             //死亡箭雨
-            RainofDeath = new (117),
+            RainofDeath = new(117),
 
             //连珠箭
-            QuickNock = new (106) { BuffsProvide = new [] { ObjectStatus.ShadowbiteReady } },
+            QuickNock = new(106) { BuffsProvide = new[] { ObjectStatus.ShadowbiteReady } },
 
             //影噬箭
-            Shadowbite = new (16494) { BuffsNeed = new [] { ObjectStatus.ShadowbiteReady } },
+            Shadowbite = new(16494) { BuffsNeed = new[] { ObjectStatus.ShadowbiteReady } },
 
             //光阴神的礼赞凯歌
-            WardensPaean = new (3561),
+            WardensPaean = new(3561),
 
 
             //大地神的抒情恋歌
-            NaturesMinne = new (7408),
+            NaturesMinne = new(7408),
 
             //侧风诱导箭
-            Sidewinder = new (3562)
+            Sidewinder = new(3562)
             {
                 OtherCheck = b =>
                 {
@@ -173,13 +171,11 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             },
 
             //绝峰箭
-            ApexArrow = new (16496)
+            ApexArrow = new(16496)
             {
                 OtherCheck = b =>
                 {
                     if (JobGauge.SoulVoice == 100 && BattleVoice.RecastTimeRemain <= 25) return false;
-                    //能量之声等于100或者在爆发箭预备状态
-                    if (JobGauge.SoulVoice == 100 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady)) return true;
 
                     if (JobGauge.SoulVoice >= 80 && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.RagingStrikes) < 10) return true;
 
@@ -188,14 +184,17 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
                         && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.BattleVoice)
                         && (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.RadiantFinale) || level < RadiantFinale.Level)) return true;
 
+                    //能量之声等于100或者在爆发箭预备状态
+                    if (JobGauge.SoulVoice == 100 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.BlastArrowReady)) return true;
+
                     return false;
                 },
             },
 
             //行吟
-            Troubadour = new (7405, true)
+            Troubadour = new(7405, true)
             {
-                BuffsProvide = new []
+                BuffsProvide = new[]
                 {
                     ObjectStatus.Troubadour,
                     ObjectStatus.Tactician1,
@@ -204,7 +203,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
                 },
             };
     }
-    internal override SortedList<DescType, string> Description => new ()
+    internal override SortedList<DescType, string> Description => new()
     {
         {DescType.范围防御, $"{Actions.Troubadour.Action.Name}"},
         {DescType.单体治疗, $"{Actions.NaturesMinne.Action.Name}"},
@@ -291,11 +290,8 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
         }
 
         //猛者强击
-        if (TargetHelper.CombatEngageDuration.Minutes == 0 || (TargetHelper.CombatEngageDuration.Minutes > 0 && abilityRemain ==1))
-        {
-            if (Actions.RagingStrikes.ShouldUseAction(out act)) return true;
-        }
-       
+        if (Actions.RagingStrikes.ShouldUseAction(out act)) return true;
+
         //光明神的最终乐章
         if (abilityRemain == 2 && Actions.RadiantFinale.ShouldUseAction(out act, mustUse: true)) return true;
 
@@ -310,11 +306,11 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //放浪神的小步舞曲
-        if (TargetHelper.CombatEngageDuration.Seconds > 10
-            && abilityRemain == 1
-            && JobGauge.SongTimer < 3000
-            && Actions.WanderersMinuet.ShouldUseAction(out act)) return true;
-        if (JobGauge.SongTimer < 3000 && Actions.WanderersMinuet.ShouldUseAction(out act)) return true;
+        if ((TargetHelper.CombatEngageDuration.Minutes == 0 || (TargetHelper.CombatEngageDuration.Minutes > 0 && abilityRemain == 1))
+            && JobGauge.SongTimer < 3000)
+        {
+            if (Actions.WanderersMinuet.ShouldUseAction(out act)) return true;
+        }
 
         //完美音调
         if (Actions.PitchPerfect.ShouldUseAction(out act)) return true;
@@ -333,8 +329,8 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
         //测风诱导箭
         if (Actions.Sidewinder.ShouldUseAction(out act)) return true;
 
-        //看看现在有没有开猛者强击
-        bool empty = StatusHelper.HaveStatusSelfFromSelf(125) || JobGauge.Song == Song.MAGE;
+        //看看现在有没有开猛者强击和战斗之声
+        bool empty = (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.RagingStrikes) && (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.BattleVoice) || level < Actions.BattleVoice.Level)) || JobGauge.Song == Song.MAGE;
         //死亡剑雨
         if (Actions.RainofDeath.ShouldUseAction(out act, emptyOrSkipCombo: empty)) return true;
 

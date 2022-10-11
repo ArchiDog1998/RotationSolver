@@ -79,7 +79,7 @@ namespace XIVAutoAttack
         {
 #if DEBUG
         var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
-        Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + a4.ToString() + ", " + a5.ToString() + ", " + a6.ToString());
+        Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + param.ToString() + ", " + useType.ToString() + ", " + pvp.ToString());
 
 #endif
             if (actionType == ActionType.Spell)
@@ -138,7 +138,12 @@ namespace XIVAutoAttack
                 TargetHelper.Fish = FishType.Mooch;
             }
 
-            //XIVAutoAttackPlugin.DoAutoAttack(message.ToString());
+            var texts = message.TextValue.Split(' ');
+            if(texts.Length == 2 && texts[0].Contains("AutoAttack"))
+            {
+                XIVAutoAttackPlugin.DoAutoAttack(texts[1]);
+
+            }
         }
 
         public void Dispose()

@@ -180,14 +180,14 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                //{
+                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                {
 
-                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //    {
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //    }
-                //}
+                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    {
+                        ImGui.Text(item.GameData.Name + item.StatusId);
+                    }
+                }
 
                 //foreach (var item in Service.ObjectTable)
                 //{
@@ -195,10 +195,10 @@ internal class ConfigWindow : Window
 
                 //}
 
-                foreach (var item in TargetHelper.PartyMembers)
-                {
-                    ImGui.Text(item.Name.ToString());
-                }
+                //foreach (var item in TargetHelper.PartyMembers)
+                //{
+                //    ImGui.Text(item.Name.ToString());
+                //}
 
                 //if (Service.TargetManager.Target is BattleChara b)
                 //foreach (var item in b.StatusList)
@@ -520,10 +520,11 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("帮助文档"))
             {
                 ImGui.Text("在这个窗口，你可以看到一大堆帮助内容。");
+                ImGui.Text("在任何聊天频道，输入\"AutoAttack \"+ 下面空格后面的英文也可以执行相应的操作。");
+
 
                 if (ImGui.BeginChild("帮助", new Vector2(0f, -1f), true))
                 {
-
                     ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
                     ImGui.Text("/aauto HealArea 表示开启一段范围治疗的窗口期。");

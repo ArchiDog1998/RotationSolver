@@ -64,7 +64,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             },
 
             //毒菌冲击
-            Bioblaster = new (16499)
+            Bioblaster = new(16499)
             {
                 //过热不释放技能
                 OtherCheck = b => !JobGauge.IsOverheated,
@@ -73,11 +73,11 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             //整备
             Reassemble = new(2876)
             {
-                BuffsProvide= new ushort[] {ObjectStatus.Reassemble},
+                BuffsProvide = new ushort[] { ObjectStatus.Reassemble },
             },
 
             //超荷
-            Hypercharge = new (17209)
+            Hypercharge = new(17209)
             {
                 OtherCheck = b =>
                 {
@@ -106,7 +106,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                     }
                     else if (level < Drill.Level) return true;
 
-                    return false;  
+                    return false;
                 },
             },
 
@@ -116,22 +116,22 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                 OtherCheck = b =>
                 {
                     // 起手是否完成,AOE期间不打野火
-                    if (!initFinished && SpreadShot.ShouldUseAction(out _)) return false;
-                    
+                    if (!initFinished || SpreadShot.ShouldUseAction(out _)) return false;
+
                     if (JobGauge.Heat < 50 && LastAbility != Hypercharge.ID) return false;
-                    
+
                     if (LastWeaponskill != ChainSaw.ID
                         && (LastWeaponskill == Drill.ID || LastWeaponskill == AirAnchor.ID || LastWeaponskill == HeatBlast.ID)) return false;
 
-                    return false;
+                    return true;
                 },
             },
 
             //虹吸弹
-            GaussRound = new (2874),
+            GaussRound = new(2874),
 
             //弹射
-            Ricochet = new (2890),
+            Ricochet = new(2890),
 
             //枪管加热
             BarrelStabilizer = new(7414)
@@ -148,7 +148,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             },
 
             //车式浮空炮塔
-            RookAutoturret = new (2864)
+            RookAutoturret = new(2864)
             {
                 OtherCheck = b =>
                 {
@@ -156,7 +156,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 
                     //在战斗的不同时间段使用时机不同
                     if (JobGauge.Battery == 100) return true;
-                    else if (TargetHelper.CombatEngageDuration.Seconds is >= 55 or <= 05 || (TargetHelper.CombatEngageDuration.Minutes == 0 && LastWeaponskill != CleanShot.ID)) return true;
+                    else if (JobGauge.Battery >= 50 && (TargetHelper.CombatEngageDuration.Seconds is >= 55 or <= 05 || (TargetHelper.CombatEngageDuration.Minutes == 0 && LastWeaponskill != CleanShot.ID))) return true;
                     else if (JobGauge.Battery >= 80 && TargetHelper.CombatEngageDuration.Seconds is >= 50 or <= 05) return true;
 
                     return false;
@@ -164,9 +164,9 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             },
 
             //策动
-            Tactician = new (16889, true)
+            Tactician = new(16889, true)
             {
-                BuffsProvide = new []
+                BuffsProvide = new[]
                 {
                     ObjectStatus.Troubadour,
                     ObjectStatus.Tactician1,
@@ -175,7 +175,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                 },
             };
     }
-    internal override SortedList<DescType, string> Description => new ()
+    internal override SortedList<DescType, string> Description => new()
     {
         {DescType.范围防御, $"{Actions.Tactician.Action.Name}"},
     };
@@ -199,7 +199,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (!TargetHelper.InBattle)
         {
             //开场前整备,空气锚和钻头必须冷却好
-            if ((!Actions.AirAnchor.IsCoolDown || !Actions.Drill.IsCoolDown) && Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+            if ((!Actions.AirAnchor.IsCoolDown || !Actions.Drill.IsCoolDown) && Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
             initFinished = false;
         }
 
@@ -239,7 +239,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         //整备优先链锯
         if (nextGCD.ID == Actions.ChainSaw.ID)
         {
-            if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+            if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }
         //如果接下来要搞三大金刚了，整备吧！
         if (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID)
@@ -286,7 +286,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private static bool UseHypercharge(MCHGauge gauge, float wildfireCDTime)
     {
         uint wfTimer = 6; //默认计时器
-        if (level < Actions.BarrelStabilizer.Level) wfTimer = 12; 
+        if (level < Actions.BarrelStabilizer.Level) wfTimer = 12;
 
         // 我真的不记得为什么我把 > 70 放在这里，我担心如果我把它拿掉它会打破它哈哈
         if (TargetHelper.CombatEngageDuration.Minutes == 0 && (gauge.Heat > 70 || TargetHelper.CombatEngageDuration.Seconds <= 30) && LastWeaponskill != Service.IconReplacer.OriginalHook(Actions.CleanShot.ID)) return true;

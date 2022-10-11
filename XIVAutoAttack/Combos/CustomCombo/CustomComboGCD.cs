@@ -143,7 +143,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
         }
 
-
         private IAction GCD(uint lastComboActionID, byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
         {
             if (EmergercyGCD(lastComboActionID, out IAction act)) return act;
@@ -170,8 +169,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if ((HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) && EsunaRaise(out act, abilityRemain, true)) return act;
             if (TargetHelper.HPNotFull && HaveTargetAngle)
             {
-                if (TargetHelper.CanHealAreaSpell && HealAreaGCD(lastComboActionID, out act)) return act;
-                if (TargetHelper.CanHealSingleSpell && HealSingleGCD(lastComboActionID, out act)) return act;
+                if (CanHealAreaSpell && HealAreaGCD(lastComboActionID, out act)) return act;
+                if (CanHealSingleSpell && HealSingleGCD(lastComboActionID, out act)) return act;
             }
             if (Service.Configuration.RaisePlayerByCasting && EsunaRaise(out act, abilityRemain, true)) return act;
 

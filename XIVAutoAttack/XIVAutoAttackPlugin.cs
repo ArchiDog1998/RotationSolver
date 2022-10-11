@@ -20,6 +20,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Excel.GeneratedSheets;
 using XIVAutoAttack.Configuration;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 

@@ -295,7 +295,7 @@ namespace XIVAutoAttack.Combos
             //要死了
             Weakness = 43,
             BrinkofDeath = 44,
-            //关心
+            //心关
             Kardia = 2604,
             //关心
             Kardion = 2605,
