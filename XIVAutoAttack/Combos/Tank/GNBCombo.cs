@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using System.Numerics;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
@@ -90,7 +91,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             HeartofStone = new (16161, true)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                ChoiceFriend = TargetFilter.FindAttackedTarget,
+                ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
 
             //√¸‘À÷Æª∑

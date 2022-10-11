@@ -6,6 +6,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
@@ -126,37 +127,37 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             //太阳神之衡
             Balance = new (4401)
             {
-                ChoiceFriend = ASTMeleeTarget,
+                ChoiceTarget = ASTMeleeTarget,
             },
 
             //放浪神之箭
             Arrow = new (4402)
             {
-                ChoiceFriend = ASTMeleeTarget,
+                ChoiceTarget = ASTMeleeTarget,
             },
 
             //战争神之枪
             Spear = new (4403)
             {
-                ChoiceFriend = ASTMeleeTarget,
+                ChoiceTarget = ASTMeleeTarget,
             },
 
             //世界树之干
             Bole = new (4404)
             {
-                ChoiceFriend = ASTRangeTarget,
+                ChoiceTarget = ASTRangeTarget,
             },
 
             //河流神之瓶
             Ewer = new (4405)
             {
-                ChoiceFriend = ASTRangeTarget,
+                ChoiceTarget = ASTRangeTarget,
             },
 
             //建筑神之塔
             Spire = new (4406)
             {
-                ChoiceFriend = ASTRangeTarget,
+                ChoiceTarget = ASTRangeTarget,
             };
     }
     internal override SortedList<DescType, string> Description => new ()

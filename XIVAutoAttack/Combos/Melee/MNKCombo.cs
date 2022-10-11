@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
@@ -75,7 +76,7 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             //突进技能
             Thunderclap = new (25762, shouldEndSpecial: true)
             {
-                ChoiceFriend = TargetFilter.FindMoveTarget,
+                ChoiceTarget = TargetFilter.FindMoveTarget,
             },
 
             //真言

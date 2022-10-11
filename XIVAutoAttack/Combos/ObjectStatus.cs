@@ -486,6 +486,9 @@ namespace XIVAutoAttack.Combos
             Wildfire = 1946,
 
             //整备
-            Reassemble = 851;
+            Reassemble = 851,
+
+            //真北
+            TrueNorth = 1250;
     }
 }

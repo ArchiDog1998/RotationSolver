@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Configuration;
 
-namespace XIVAutoAttack.Combos
+namespace XIVAutoAttack.Combos.CustomCombo
 {
     internal abstract class JobGaugeCombo<T> : CustomCombo where T : JobGaugeBase
     {
@@ -24,6 +24,8 @@ namespace XIVAutoAttack.Combos
                 return _gauge;
             }
         }
+
+
 
         internal struct BreakItems
         {
@@ -66,7 +68,7 @@ namespace XIVAutoAttack.Combos
                     if (BreakItems.TinctureofMind6.ShoudUseItem(out act)) return true;
                     break;
             }
-             return false;
+            return false;
         }
     }
 }

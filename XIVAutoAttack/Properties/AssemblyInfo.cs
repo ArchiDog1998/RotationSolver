@@ -7,7 +7,7 @@ using System.Security.Permissions;
 
 [assembly: AssemblyCompany("-")]
 [assembly: AssemblyConfiguration("Release")]
-[assembly: AssemblyDescription("This plugin condenses combos and mutually exclusive abilities onto a single button.")]
+[assembly: AssemblyDescription("让自动攻击成为可能！")]
 [assembly: AssemblyFileVersion("0.9.8.1")]
 [assembly: AssemblyInformationalVersion("0.9.8.1")]
 [assembly: AssemblyProduct("XIVAutoAttack")]

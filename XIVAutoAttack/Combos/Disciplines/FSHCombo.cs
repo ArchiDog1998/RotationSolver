@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Disciplines

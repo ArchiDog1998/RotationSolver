@@ -14,7 +14,7 @@ using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
-using XIVAutoAttack.Combos;
+using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Disciplines;
 using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Combos.Melee;
@@ -29,7 +29,7 @@ internal class ConfigWindow : Window
     private readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
 
     public ConfigWindow()
-        : base("自动攻击设置", 0, false)
+        : base("自动攻击设置 (开源免费)", 0, false)
     {
         RespectCloseHotkey = true;
 
@@ -311,6 +311,13 @@ internal class ConfigWindow : Window
                         ImGui.SetTooltip("设为是时移动的对象为屏幕中心的那个，否为游戏角色面朝的对象。");
                     }
 
+                    bool raiseCasting = Service.Configuration.RaisePlayerByCasting;
+                    if (ImGui.Checkbox("无目标时硬读条拉人", ref raiseCasting))
+                    {
+                        Service.Configuration.RaisePlayerByCasting = raiseCasting;
+                        Service.Configuration.Save();
+                    }
+
                     bool useItem = Service.Configuration.UseItem;
                     if (ImGui.Checkbox("使用道具", ref useItem))
                     {
@@ -555,26 +562,4 @@ internal class ConfigWindow : Window
         }
         ImGui.End();
     }
-
-    //private static uint GetActionsByName(string name)
-    //{
-    //    var enumerator = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetEnumerator();
-
-    //    while (enumerator.MoveNext())
-    //    {
-    //        var action = enumerator.Current;
-    //        if (action.Name == name && action.ClassJobLevel != 0 && !action.IsPvP)
-    //        {
-    //            return action.RowId;
-    //        }
-    //    }
-    //    return 0;
-    //}
-
-    //private static string GetActionsByName(uint actionID)
-    //{
-    //    var act = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(actionID);
-
-    //    return act == null ? "" : act.Name;
-    //}
 }

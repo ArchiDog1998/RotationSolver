@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Configuration;
 
@@ -93,7 +94,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             //¾ÞÁúÊÓÏß
             DragonSight = new (7398)
             {
-                ChoiceFriend = Targets =>
+                ChoiceTarget = Targets =>
                 {
                     Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
                     b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();

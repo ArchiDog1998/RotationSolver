@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using XIVAutoAttack;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
@@ -47,7 +48,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             //投盾
             ShieldLob = new (24)
             {
-                FilterForHostile = b => TargetFilter.ProvokeTarget(b),
+                FilterForTarget = b => TargetFilter.ProvokeTarget(b),
             },
 
             //战逃反应
@@ -86,7 +87,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             //干预
             Intervention = new (7382, true)
             {
-                ChoiceFriend = TargetFilter.FindAttackedTarget,
+                ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
 
             //调停
@@ -131,7 +132,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             //保护
             Cover = new BaseAction(27, true)
             {
-                ChoiceFriend = TargetFilter.FindAttackedTarget,
+                ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
 
             //盾阵

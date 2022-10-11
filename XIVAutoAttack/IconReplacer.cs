@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos;
+using XIVAutoAttack.Combos.CustomCombo;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack;

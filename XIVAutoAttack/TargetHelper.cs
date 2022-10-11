@@ -503,7 +503,6 @@ namespace XIVAutoAttack
 
             ShouldUseArea = PartyMembersHP.Count(t => t < 1) > Service.Configuration.PartyCount;
             #endregion
-
         }
 
         internal static bool IsHostileCastingTank(BattleChara h)

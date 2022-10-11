@@ -4,6 +4,7 @@ using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos
@@ -181,7 +182,7 @@ namespace XIVAutoAttack.Combos
                 //以太步
                 AetherialManipulation = new (155)
                 {
-                    ChoiceFriend = TargetFilter.FindMoveTarget,
+                    ChoiceTarget = TargetFilter.FindMoveTarget,
                 },
 
                 //详述

@@ -2,11 +2,10 @@
   "Disabled": false,
   "Testing": false,
   "IsThirdParty": false,
-  "Author": "ArchiTed",
+  "Author": "秋水",
   "Name": "XIV Auto Attack",
   "Punchline": "Auto attack!",
-  "Description": "让自动攻击成为可能，请合理使用！此插件非常刺激！\n由于目前作者很多职业没有满级，如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！\nQQ群：913297282 注意看下载量！\n输入/pattack以设置帮助菜单。",
-  "Changelog": "",
+  "Description": "让自动攻击成为可能，请合理使用！此插件非常刺激！目前主要用于刷幻化和日随打本。\n如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！\nQQ群：913297282 注意看下载量！\n输入/pattack以设置帮助菜单。",
   "Tags": [
     "Attack"
   ],
@@ -30,5 +29,6 @@
   "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/latest/XIVAutoAttackIcon.png",
   "AcceptsFeedback": true,
   "FeedbackMessage": null,
-  "FeedbackWebhook": null
+  "FeedbackWebhook": null,
+  "Changelog": "*错误修复*\n - 解决黑骑的暗黑波动和暗黑锋必须要使用3000MP的bug\n*新增功能*\n - 可以选择在没事干的时候硬读条拉人。\n - 如果即将使用的技能的身位和所处身位不同，直接一个真北！"
 }

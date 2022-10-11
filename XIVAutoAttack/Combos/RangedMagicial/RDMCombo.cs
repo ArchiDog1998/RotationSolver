@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 

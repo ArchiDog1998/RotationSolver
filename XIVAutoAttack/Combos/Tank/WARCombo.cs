@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using XIVAutoAttack;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
@@ -47,7 +48,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //飞斧
             Tomahawk = new (46)
             {
-                FilterForHostile = b => TargetFilter.ProvokeTarget(b),
+                FilterForTarget = b => TargetFilter.ProvokeTarget(b),
             },
 
             //猛攻
@@ -93,7 +94,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //原初的勇猛
             NascentFlash = new (16464)
             {
-                ChoiceFriend = TargetFilter.FindAttackedTarget,
+                ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
 
             ////原初的血气

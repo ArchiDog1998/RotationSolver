@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using XIVAutoAttack;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Configuration;
 
@@ -118,7 +119,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
             //展开战术
             DeploymentTactics = new (3585, true)
             {
-                ChoiceFriend = friends =>
+                ChoiceTarget = friends =>
                 {
                     foreach (var friend in friends)
                     {

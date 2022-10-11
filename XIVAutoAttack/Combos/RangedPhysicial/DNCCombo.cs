@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
@@ -169,7 +170,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
             //±ÕÊ½Îè×Ë
             ClosedPosition = new (16006, true)
             {
-                ChoiceFriend = Targets =>
+                ChoiceTarget = Targets =>
                 {
                     Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b.CurrentHp != 0 &&
                     //Remove Weak

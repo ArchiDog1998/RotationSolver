@@ -31,7 +31,7 @@ namespace XIVAutoAttack
         private unsafe delegate void* GetResourceSyncPrototype(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown);
 
         private unsafe delegate void* GetResourceAsyncPrototype(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown, bool isUnknown);
-        private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint a4, uint a5, uint a6, void* a7);
+        private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint param, uint useType, uint pvp, bool* isGroundTarget);
 
         private delegate IntPtr LoadSoundFileDelegate(IntPtr resourceHandle, uint a2);
 
@@ -75,7 +75,7 @@ namespace XIVAutoAttack
             Service.ChatGui.ChatMessage += ChatGui_ChatMessage;
         }
 
-        private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint a4 = 0u, uint a5 = 0u, uint a6 = 0u, void* a7 = null)
+        private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint param = 0u, uint useType = 0u, uint pvp = 0u, bool* a7 = null)
         {
 #if DEBUG
         var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
@@ -124,7 +124,7 @@ namespace XIVAutoAttack
             }
 
 
-            return GetActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, a4, a5, a6, a7);
+            return GetActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, param, useType, pvp, a7);
         }
 
 

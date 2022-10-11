@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace XIVAutoAttack.Combos
 {
-    public enum EnemyLocation
+    public enum EnemyLocation : byte
     {
         None,
         Back,
         Side,
+        Front,
     }
 }

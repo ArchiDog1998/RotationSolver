@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Healer;
@@ -36,7 +37,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             Kardia = new(24285, true)
             {
                 BuffsProvide = new ushort[] {ObjectStatus.Kardia},
-                ChoiceFriend = Targets =>
+                ChoiceTarget = Targets =>
                 {
                     var targets = TargetFilter.GetJobCategory(Targets, Role.·À»¤);
                     targets = targets.Length == 0 ? Targets : targets;
@@ -85,7 +86,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //Õü¾È
             Soteria = new (24294, true)
             {
-                ChoiceFriend = Targets =>
+                ChoiceTarget = Targets =>
                 {
                     foreach (var friend in Targets)
                     {
@@ -103,7 +104,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //ÉñÒí
             Icarus = new (24295, shouldEndSpecial: true)
             {
-                ChoiceFriend = TargetFilter.FindMoveTarget,
+                ChoiceTarget = TargetFilter.FindMoveTarget,
             },
 
             //ÁéÏðÇåÖ­
@@ -124,7 +125,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //°×Å£ÇåÖ­
             Taurochole = new (24303, true)
             {
-                ChoiceFriend = TargetFilter.FindAttackedTarget,
+                ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
 
             //¼ý¶¾
@@ -133,19 +134,19 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //ÊäÑª
             Haima = new (24305, true)
             {
-                ChoiceFriend = TargetFilter.FindAttackedTarget,
+                ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
 
             //¾ùºâÕï¶Ï
             EukrasianDiagnosis = new (24291, true) 
             {
-                ChoiceFriend = TargetFilter.FindAttackedTarget,
+                ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
 
             //¾ùºâÕï¶Ï
             EukrasianPrognosis = new (24292, true)
             {
-                ChoiceFriend = TargetFilter.FindAttackedTarget,
+                ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
 
             //¸ùËØ
