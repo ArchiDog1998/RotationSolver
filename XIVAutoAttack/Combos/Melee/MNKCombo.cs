@@ -38,16 +38,10 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             FourpointFury = new (16473),
 
             //∆∆ÀÈ»≠
-            Demolish = new (66)
-            {
-                EnermyLocation = EnemyLocation.Back,
-            },
+            Demolish = new (66),
 
             //±¿»≠
-            SnapPunch = new (56)
-            {
-                EnermyLocation = EnemyLocation.Side,
-            },
+            SnapPunch = new (56),
 
             //µÿ¡“æ¢ aoe
             Rockbreaker = new (70),

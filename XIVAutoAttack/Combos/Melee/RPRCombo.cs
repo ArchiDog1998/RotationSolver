@@ -35,10 +35,10 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             Harpe = new (24386) { BuffsProvide = new [] { ObjectStatus.SoulReaver } },
 
             //Ω æˆ
-            Gibbet = new (24382) { EnermyLocation = EnemyLocation.Side },
+            Gibbet = new (24382),
 
             //ÁÀ…±
-            Gallows = new (24383) { EnermyLocation = EnemyLocation.Back },
+            Gallows = new (24383),
 
             //¡ÈªÍ«–∏Ó
             SoulSlice = new (24380),

@@ -18,6 +18,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
 {
     public abstract partial class CustomCombo
     {
+        internal static BattleChara EnemyTarget;
+        internal static EnemyLocation ShouldLocation { get; private set; } = EnemyLocation.None;
         internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out IAction newAction)
         {
 
@@ -68,15 +70,24 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //Sayout!
             if (act != null && act is BaseAction GCDaction)
             {
-                if (CheckAction(GCDaction.ID) && GCDaction.EnermyLocation != EnemyLocation.None)
+                if (ShouldSayout && GCDaction.EnermyLocation != EnemyLocation.None)
                 {
-                    string location = GCDaction.EnermyLocation.ToString();
-                    if (Service.Configuration.SayingLocation) Speak(location);
-                    if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    if (CheckAction(GCDaction.ID))
                     {
-                        IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
-                            Service.IconReplacer.OriginalHook(GCDaction.ID)).Icon,
-                    });
+                        string location = GCDaction.EnermyLocation.ToString();
+                        if (Service.Configuration.SayingLocation) Speak(location);
+                        if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                        {
+                            IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
+                                Service.IconReplacer.OriginalHook(GCDaction.ID)).Icon,
+                        });
+                        EnemyTarget = GCDaction.Target;
+                        ShouldLocation = GCDaction.EnermyLocation;
+                    }
+                }
+                else
+                {
+                    ShouldLocation = EnemyLocation.None;
                 }
 
                 switch (abilityRemain)
@@ -90,19 +101,26 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
             else if (act == null)
             {
+                ShouldLocation = EnemyLocation.None;
                 if (Ability(abilityRemain, GeneralActions.Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
                 return null;
+            }
+            else
+            {
+                ShouldLocation = EnemyLocation.None;
             }
             return act;
         }
 
         uint _lastSayingGCDAction;
+        DateTime lastTime;
         private bool CheckAction(uint actionID)
         {
             //return false;
-            if (ShouldSayout && _lastSayingGCDAction != actionID && IconReplacer.AutoAttack)
+            if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0,0,3)) && IconReplacer.AutoAttack)
             {
                 _lastSayingGCDAction = actionID;
+                lastTime = DateTime.Now;
                 return true;
             }
             else return false;
@@ -213,10 +231,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
             return false;
         }
 
+
         /// <summary>
         /// 一些非常紧急的GCD战技，优先级最高
         /// </summary>
-        /// <param name="level"></param>
         /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
@@ -227,32 +245,23 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 常规GCD技能
         /// </summary>
-        /// <param name="level"></param>
         /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
         private protected abstract bool GeneralGCD(uint lastComboActionID, out IAction act);
-        /// <summary>
-        /// 单体治疗GCD
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="lastComboActionID"></param>
-        /// <param name="act"></param>
-        /// <returns></returns>
-        private protected virtual bool HealSingleGCD(uint lastComboActionID, out IAction act)
-        {
-            act = null; return false;
-        }
 
         private protected virtual bool MoveGCD(uint lastComboActionID, out IAction act)
         {
             act = null; return false;
         }
-        private protected virtual bool DefenseSingleGCD(uint lastComboActionID, out IAction act)
-        {
-            act = null; return false;
-        }
-        private protected virtual bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
+
+        /// <summary>
+        /// 单体治疗GCD
+        /// </summary>
+        /// <param name="lastComboActionID"></param>
+        /// <param name="act"></param>
+        /// <returns></returns>
+        private protected virtual bool HealSingleGCD(uint lastComboActionID, out IAction act)
         {
             act = null; return false;
         }
@@ -265,6 +274,15 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="act"></param>
         /// <returns></returns>
         private protected virtual bool HealAreaGCD(uint lastComboActionID, out IAction act)
+        {
+            act = null; return false;
+        }
+
+        private protected virtual bool DefenseSingleGCD(uint lastComboActionID, out IAction act)
+        {
+            act = null; return false;
+        }
+        private protected virtual bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
         {
             act = null; return false;
         }

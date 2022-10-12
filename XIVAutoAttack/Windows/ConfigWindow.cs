@@ -21,8 +21,9 @@ using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Combos.RangedPhysicial;
 using XIVAutoAttack.Combos.Tank;
+using XIVAutoAttack.Configuration;
 
-namespace XIVAutoAttack.Configuration;
+namespace XIVAutoAttack.Windows;
 
 internal class ConfigWindow : Window
 {
@@ -97,7 +98,7 @@ internal class ConfigWindow : Window
                             }
                             if (ImGui.IsItemHovered())
                             {
-                                if(!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
+                                if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
                             }
                             string text = $"#{num}: 为{combo.JobName}的连续GCD战技、技能。";
                             ImGui.TextColored(shadedColor, text);
@@ -542,6 +543,8 @@ internal class ConfigWindow : Window
                     ImGui.Text("/aauto AntiRepulsion 表示开启一段防击退的窗口期。");
                     ImGui.Separator();
                     ImGui.Text("/aauto BreakProvoke 表示开启一段爆发或挑衅的窗口期。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto AutoBreak 更改是否自动爆发。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AttackBig 开始进攻，进攻对象为脚下圈圈最大的。");
                     ImGui.Separator();

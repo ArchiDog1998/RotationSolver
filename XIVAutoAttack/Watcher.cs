@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -15,10 +17,13 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.System.Resource;
 using FFXIVClientStructs.FFXIV.Client.System.Resource.Handle;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
+using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Disciplines;
+using static Lumina.Data.Parsing.Layer.LayerCommon;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 
@@ -27,11 +32,9 @@ namespace XIVAutoAttack
     internal class Watcher : IDisposable
     {
         private unsafe delegate void* PlaySpecificSoundDelegate(long a1, int idx);
-
         private unsafe delegate void* GetResourceSyncPrototype(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown);
-
         private unsafe delegate void* GetResourceAsyncPrototype(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown, bool isUnknown);
-        private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint param, uint useType, uint pvp, bool* isGroundTarget);
+        private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint param, uint useType, int pvp, bool* isGroundTarget);
 
         private delegate IntPtr LoadSoundFileDelegate(IntPtr resourceHandle, uint a2);
 
@@ -75,14 +78,14 @@ namespace XIVAutoAttack
             Service.ChatGui.ChatMessage += ChatGui_ChatMessage;
         }
 
-        private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint param = 0u, uint useType = 0u, uint pvp = 0u, bool* a7 = null)
+        private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint param = 0u, uint useType = 0u, int pvp = 0, bool* a7 = null)
         {
 #if DEBUG
         var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
         Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + param.ToString() + ", " + useType.ToString() + ", " + pvp.ToString());
 
 #endif
-            if (actionType == ActionType.Spell)
+            if (actionType == ActionType.Spell && useType == 0)
             {
                 var action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
                 var cate = action.ActionCategory.Value;
@@ -121,9 +124,16 @@ namespace XIVAutoAttack
                             break;
                     }
                 }
+
+
+                //事后骂人！
+                if (StatusHelper.ActionLocations.TryGetValue(actionID, out var loc)
+                    && loc != CustomCombo.FindEnemyLocation(tar)
+                    && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))
+                {
+                    Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
+                }
             }
-
-
             return GetActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, param, useType, pvp, a7);
         }
 

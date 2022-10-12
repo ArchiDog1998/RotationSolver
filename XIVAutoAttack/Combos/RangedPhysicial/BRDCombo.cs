@@ -339,5 +339,4 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
 
         return false;
     }
-
 }

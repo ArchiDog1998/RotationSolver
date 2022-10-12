@@ -32,7 +32,17 @@ namespace XIVAutoAttack.Actions
         internal bool IsGeneralGCD { get; }
         internal bool IsRealGCD { get; }
 
-        internal EnemyLocation EnermyLocation { get; set; } = EnemyLocation.None;
+        internal EnemyLocation EnermyLocation 
+        {
+            get
+            {
+                if(StatusHelper.ActionLocations.TryGetValue(ID, out var location))
+                {
+                    return location;
+                }
+                return EnemyLocation.None;
+            }
+        }
         internal virtual uint MPNeed { get; }
 
         #region CoolDown
@@ -80,18 +90,36 @@ namespace XIVAutoAttack.Actions
         /// </summary>
         internal Func<BattleChara, bool> OtherCheck { get; set; } = null;
 
-        internal Func<BattleChara[], BattleChara> ChoiceTarget { private get; set; }
-
-        private Func<BattleChara[], BattleChara> ChoiceTargetPrivate
-        {
-            get
+        private Func<BattleChara[], BattleChara> _choiceTarget = null;
+        internal Func<BattleChara[], BattleChara> ChoiceTarget 
+        { 
+            private get
             {
-                if (ChoiceTarget != null) return ChoiceTarget;
+                if (_choiceTarget != null) return _choiceTarget;
                 return this._isFriendly ? TargetFilter.DefaultChooseFriend : TargetFilter.DefaultFindHostile;
             }
+            set => _choiceTarget = value;
         }
 
-        internal Func<BattleChara[], BattleChara[]> FilterForTarget { get; set; } = availableCharas => availableCharas;
+        private Func<BattleChara[], BattleChara[]> _filterForTarget = null;
+
+        internal Func<BattleChara[], BattleChara[]> FilterForTarget
+        {
+            private get
+            {
+                if (_filterForTarget != null) return _filterForTarget;
+                return tars =>
+                {
+                    if (TargetStatus == null) return tars;
+
+                    var ts = tars.Where(t => StatusHelper.FindStatusTimeFromSelf(t, TargetStatus) == 0).ToArray();
+
+                    if(ts.Length == 0) return tars;
+                    return ts;
+                };
+            }
+            set => _filterForTarget = value;
+        }
 
         internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
         {
@@ -159,7 +187,7 @@ namespace XIVAutoAttack.Actions
                 BattleChara[] availableCharas = TargetHelper.PartyMembers.Union(TargetHelper.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
                 availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
                 //特殊选队友的方法。
-                var tar = ChoiceTargetPrivate(availableCharas);
+                var tar = ChoiceTarget(availableCharas);
                 if (tar == null) return false;
                 Target = tar;
                 return true;
@@ -199,7 +227,7 @@ namespace XIVAutoAttack.Actions
                 {
                     availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
                     //特殊选队友的方法。
-                    var tar = ChoiceTargetPrivate(availableCharas);
+                    var tar = ChoiceTarget(availableCharas);
                     if (tar == null) return false;
                     Target = tar;
                     return true;
@@ -228,23 +256,23 @@ namespace XIVAutoAttack.Actions
                     case 1:
                     default:
                         BattleChara[] canReachTars = FilterForTarget(TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, GetRange(Action)));
-                        var tar = ChoiceTargetPrivate(canReachTars);
+                        var tar = ChoiceTarget(canReachTars);
                         if (tar == null) return false;
                         Target = tar;
                         return true;
 
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        tar = ChoiceTargetPrivate(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetHelper.HostileTargets), range, Action.EffectRange, false, mustUse));
+                        tar = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetHelper.HostileTargets), range, Action.EffectRange, false, mustUse));
                         if (tar == null) return false;
                         Target = tar;
                         return true;
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        tar = ChoiceTargetPrivate(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetHelper.HostileTargets), Action.EffectRange, mustUse));
+                        tar = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetHelper.HostileTargets), Action.EffectRange, mustUse));
                         if (tar == null) return false;
                         Target = tar;
                         return true;
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        tar = ChoiceTargetPrivate(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetHelper.HostileTargets), range, mustUse));
+                        tar = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetHelper.HostileTargets), range, mustUse));
                         if (tar == null) return false;
                         Target = tar;
                         return true;
@@ -385,12 +413,6 @@ namespace XIVAutoAttack.Actions
 
             if (_shouldEndSpecial) IconReplacer.ResetSpecial(false);
             if (result && AfterUse != null) AfterUse.Invoke();
-
-            if(EnermyLocation != EnemyLocation.None && EnermyLocation != CustomCombo.FindEnemyLocation(Target) 
-                && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))
-            {
-                CustomCombo.Speak("渣男！这都打错？");
-            }
 
             return result;
         }

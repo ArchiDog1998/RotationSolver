@@ -14,7 +14,7 @@
   ],
   "IsHide": false,
   "InternalName": "XIVAutoAttack",
-  "AssemblyVersion": "0.9.8.2",
+  "AssemblyVersion": "0.9.8.3",
   "IsTestingExclusive": false,
   "RepoUrl": "https://github.com/ArchiDog1998/XIVAutoAttack",
   "ApplicableVersion": "any",
@@ -30,5 +30,5 @@
   "AcceptsFeedback": true,
   "FeedbackMessage": null,
   "FeedbackWebhook": null,
-  "Changelog": "*错误修复*\n - 解决黑骑的暗黑波动和暗黑锋必须要使用3000MP的bug\n - 召唤和赤魔不再在没有Boss的情况下疯狂奶人\n - 解决机工不会野火的问题\n - 调整了部分贤者的问题\n*新增功能*\n - 可以选择在没事干的时候硬读条拉人。\n - 如果即将使用的技能的身位和所处身位不同，直接一个真北！\n - 可通过聊天窗口控制插件状态"
+  "Changelog": "*错误修复*\n - 调整了诗人\n*新增功能*\n - 在上dot的时候优先找到没dot的对象\n - 可以通过命令的方式修改是否自动爆发\n - 显示接下来的GCD所需要去的身位！"
 }

@@ -236,7 +236,7 @@ public abstract partial class CustomCombo
         return false;
     }
 
-    internal static EnemyLocation FindEnemyLocation(BattleChara enemy)
+    internal static EnemyLocation FindEnemyLocation(GameObject enemy)
     {
         Vector3 pPosition = enemy.Position;
         float rotation = enemy.Rotation;

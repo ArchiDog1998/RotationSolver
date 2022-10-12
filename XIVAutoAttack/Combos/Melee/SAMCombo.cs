@@ -34,38 +34,32 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
             Fuga = new (7483),
 
             //月光
-            Gekko = new (7481)
-            {
-                EnermyLocation = EnemyLocation.Back,
-            },
+            Gekko = new (7481),
 
             //彼岸花
             Higanbana = new (7489)
             {
-                OtherCheck = b => !TargetHelper.IsMoving,
+                OtherCheck = b => !IsMoving,
                 TargetStatus = new [] { ObjectStatus.Higanbana },
             },
 
             //天下五剑
             TenkaGoken = new (7488)
             {
-                OtherCheck = b => !TargetHelper.IsMoving,
+                OtherCheck = b => !IsMoving,
             },
 
             //纷乱雪月花
             MidareSetsugekka = new (7487)
             {
-                OtherCheck = b => !TargetHelper.IsMoving,
+                OtherCheck = b => !IsMoving,
             },
 
             //满月
             Mangetsu = new (7484),
 
             //花车
-            Kasha = new (7482)
-            {
-                EnermyLocation = EnemyLocation.Side,
-            },
+            Kasha = new (7482),
 
             //樱花
             Oka = new (7485),
@@ -78,9 +72,6 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
 
             //雪风
             Yukikaze = new (7480),
-
-            ////必杀剑·回天
-            //HissatsuKaiten = new BaseAction(7494),
 
             //必杀剑·晓天
             HissatsuGyoten = new (7492),

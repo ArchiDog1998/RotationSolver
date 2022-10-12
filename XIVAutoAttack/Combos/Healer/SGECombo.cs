@@ -208,11 +208,6 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         {DescType.单体防御, $"GCD: {Actions.Diagnosis.Action.Name}\n                     能力: {Actions.Haima.Action.Name}, {Actions.Taurochole.Action.Name}"},
         {DescType.移动, $"{Actions.Icarus.Action.Name}，目标为面向夹角小于30°内最远目标。"},
     };
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
-    {
-        act = null!;
-        return false;
-    }
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
@@ -253,7 +248,6 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-
         if (JobGauge.Addersgall == 0)
         {
             //输血
@@ -360,8 +354,6 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-
-
         //箭毒
         if (JobGauge.Addersting == 3 && Actions.Toxikon.ShouldUseAction(out act, mustUse: true)) return true;
 
@@ -402,26 +394,6 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         if (Actions.Phlegma3.ShouldUseAction(out act, mustUse: true)) return true;
         if (level < Actions.Phlegma3.Level && Actions.Phlegma2.ShouldUseAction(out act, mustUse: true)) return true;
         if (level < Actions.Phlegma2.Level && Actions.Phlegma.ShouldUseAction(out act, mustUse: true)) return true;
-
-        /*if (!TargetHelper.InBattle)
-        {
-            if (Actions.EukrasianDiagnosis.ShouldUseAction(out act))
-            {
-                if (Actions.Kardia.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
-                {
-                ObjectStatus.EukrasianDiagnosis,
-                ObjectStatus.EukrasianPrognosis,
-                ObjectStatus.Galvanize,
-                }).Count() > 0) return false;
-
-                //均衡
-                if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
-
-                act = Actions.EukrasianDiagnosis;
-                return true;
-            }
-            if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
-        }*/
 
         return false;
     }
@@ -516,6 +488,12 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         //寄生清汁
         if (Actions.Ixochole.ShouldUseAction(out act)) return true;
 
+        return false;
+    }
+
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    {
+        act = null;
         return false;
     }
 }

@@ -14,6 +14,9 @@
     <Exec Command="Copy &quot;$(TargetPath)&quot; &quot;E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\$(ProjectName).dll&quot;&#xD;&#xA;Copy &quot;$(TargetPath)&quot; &quot;D:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\XIVAutoAttack\latest\$(ProjectName).dll&quot;" />
   </Target>
   <ItemGroup>
+    <None Remove="Combos\Melee\xc41fk2z.u0k~" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Dalamud">
       <HintPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\Dalamud.dll</HintPath>
 	  <Private>false</Private>

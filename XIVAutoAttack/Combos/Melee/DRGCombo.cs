@@ -35,14 +35,12 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             //ÁúÑÀÁú×¦
             FangandClaw = new (3554)
             {
-                EnermyLocation = EnemyLocation.Side,
                 BuffsNeed = new ushort[] { ObjectStatus.SharperFangandClaw },
             },
 
             //ÁúÎ²´ó»ØÐý
             WheelingThrust = new (3556)
             {
-                EnermyLocation = EnemyLocation.Back,
                 BuffsNeed = new ushort[] { ObjectStatus.EnhancedWheelingThrust },
             },
 

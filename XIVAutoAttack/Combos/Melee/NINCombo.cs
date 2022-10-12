@@ -53,14 +53,10 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             TrickAttack = new (2258)
             {
                 BuffsNeed = new ushort[] { ObjectStatus.Suiton, ObjectStatus.Hidden },
-                EnermyLocation = EnemyLocation.Back,
             },
 
             //旋风刃
-            AeolianEdge = new (2255)
-            {
-                EnermyLocation = EnemyLocation.Back,
-            },
+            AeolianEdge = new (2255),
 
             //血雨飞花
             DeathBlossom = new (2254),
@@ -107,7 +103,6 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             //强甲破点突
             ArmorCrush = new (3563)
             {
-                EnermyLocation = EnemyLocation.Side,
                 OtherCheck = b => JobGauge.HutonTimer < 30000 && JobGauge.HutonTimer > 0,
             },
 
@@ -210,7 +205,6 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             //水遁之术
             Suiton = new (2271, Ten, Chi, Jin)
             {
-                EnermyLocation = EnemyLocation.Back,
                 BuffsProvide = new [] { ObjectStatus.Suiton },
                 AfterUse = () =>
                 {
