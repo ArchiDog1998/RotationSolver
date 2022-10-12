@@ -1,0 +1,27 @@
+name: XIV Auto Attack
+author: 秋水
+description: |-
+  让自动攻击成为可能，请合理使用！此插件非常刺激！目前主要用于刷幻化和日随打本。
+  如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！
+  QQ群：913297282 注意看下载量！
+  输入/pattack以设置帮助菜单。
+punchline: Auto attack!
+changelog: |-
+  *错误修复*
+  - 调整了诗人
+  *新增功能*
+  - 在上dot的时候优先找到没dot的对象
+  - 可以通过命令的方式修改是否自动爆发
+  - 显示接下来的GCD所需要去的身位！
+repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
+icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/latest/XIVAutoAttackIcon.png
+dalamud_api_level: 6
+tags:
+  - Attack
+category_tags: 
+  - jobs
+download_count: 1024
+download_link_install: https://github.com/ArchiDog1998/XIVAutoAttack/raw/master/latest/latest.zip
+download_link_update: https://github.com/ArchiDog1998/XIVAutoAttack/raw/master/latest/latest.zip
+download_link_testing: https://github.com/ArchiDog1998/XIVAutoAttack/raw/master/latest/latest.zip
+
