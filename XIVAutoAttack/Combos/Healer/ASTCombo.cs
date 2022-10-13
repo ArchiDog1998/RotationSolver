@@ -2,13 +2,9 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
-
-using Dalamud.Game.Gui;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
