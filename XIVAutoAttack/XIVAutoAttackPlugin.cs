@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -91,7 +92,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     private void UiBuilder_Draw()
     {
         const int COUNT = 20;
-        var step = Math.PI / 2 / COUNT;
 
         if (CustomCombo.EnemyTarget == null) return;
         if (CustomCombo.ShouldLocation is Actions.EnemyLocation.None or Actions.EnemyLocation.Front) return;
@@ -118,29 +118,12 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         switch (CustomCombo.ShouldLocation)
         {
             case Actions.EnemyLocation.Side:
-                for (int i = 0; i <= COUNT; i++)
-                {
-                    if (!Service.GameGui.WorldToScreen(ChangePoint(pPosition, radius, Math.PI * 0.25 + rotation + i * step),
-                        out var pt)) continue;
-
-                    pts.Add(pt);
-                }
-                for (int i = 0; i <= COUNT; i++)
-                {
-                    if (!Service.GameGui.WorldToScreen(ChangePoint(pPosition, radius, Math.PI * 1.75 + rotation - i * step),
-                        out var pt)) continue;
-
-                    pts.Add(pt);
-                }
+                SectorPlots(ref pts, pPosition, Math.PI * 0.25 + rotation, radius, COUNT);
+                pts.Add(scrPos);
+                SectorPlots(ref pts, pPosition, Math.PI * 1.25 + rotation, radius, COUNT);
                 break;
             case Actions.EnemyLocation.Back:
-                for (int i = 0; i <= COUNT; i++)
-                {
-                    if (!Service.GameGui.WorldToScreen(ChangePoint(pPosition, radius, Math.PI * 0.75 + rotation + i * step),
-                        out var pt)) continue;
-
-                    pts.Add(pt);
-                }
+                SectorPlots(ref pts, pPosition, Math.PI * 0.75 + rotation, radius, COUNT);
                 break;
             default:
                 return;
@@ -158,6 +141,24 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         ImGui.End();
         ImGui.PopStyleVar();
+    }
+
+    private void SectorPlots(ref List<Vector2> pts, Vector3 centre, double rotation, float radius, int segments)
+    {
+        var step = Math.PI / 2 / segments;
+        var rstep = radius / (segments * 5);
+        for (int i = 0; i <= segments; i++)
+        {
+            for (var tryRadius = radius; tryRadius >= 0; tryRadius -= rstep)
+            {
+                if (Service.GameGui.WorldToScreen(ChangePoint(centre, tryRadius, rotation + i * step),
+                    out var pt))
+                {
+                    pts.Add(pt);
+                    break;
+                }
+            }
+        }
     }
 
     private Vector3 ChangePoint(Vector3 pt, double radius, double rotation)
