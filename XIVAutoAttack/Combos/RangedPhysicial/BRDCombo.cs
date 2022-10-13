@@ -1,10 +1,10 @@
+using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.JobGauge.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
-using System;
 using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;

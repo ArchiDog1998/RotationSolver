@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Configuration
 {
-    public enum IconType : byte
+	public enum IconType : byte
     {
 		Gold,
 		Framed,

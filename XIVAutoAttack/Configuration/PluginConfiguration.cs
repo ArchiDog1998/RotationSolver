@@ -1,8 +1,6 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Dalamud.Configuration;
-using Dalamud.Utility;
+using System;
+using System.Collections.Generic;
 
 namespace XIVAutoAttack.Configuration;
 

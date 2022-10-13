@@ -1,22 +1,12 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Action = Lumina.Excel.GeneratedSheets.Action;
+﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System;
+using System.Linq;
 using System.Numerics;
-using System.Runtime.InteropServices;
-using Dalamud.Utility.Signatures;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVClientStructs.FFXIV.Client.UI.Shell;
-using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Combos.Healer;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Actions
 {

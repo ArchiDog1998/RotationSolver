@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using ImGuiScene;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {

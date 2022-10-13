@@ -2,7 +2,6 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Hooking;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
-using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack;
 

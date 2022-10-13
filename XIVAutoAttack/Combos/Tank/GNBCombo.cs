@@ -1,6 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
-using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 
