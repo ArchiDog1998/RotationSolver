@@ -5,8 +5,10 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
+using Dalamud.Game.Gui;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Healer;
 
@@ -55,15 +57,22 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             //先天禀赋
             EssentialDignity = new (3614, true),
 
-
             //星位合图
             Synastry = new (3612, true),
 
             //天星交错
-            CelestialIntersection = new (16556, true),
+            CelestialIntersection = new (16556, true)
+            {
+                ChoiceTarget = TargetFilter.FindAttackedTarget,
+
+                TargetStatus = new ushort[] { ObjectStatus.Intersection },
+            },
 
             //擢升
-            Exaltation = new (25873, true),
+            Exaltation = new (25873, true)
+            {
+                ChoiceTarget = TargetFilter.FindAttackedTarget,
+            },
 
             //阳星
             Helios = new (3600, true),
@@ -107,7 +116,16 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             },
 
             //占卜
-            Divination = new (16552, true),
+            Divination = new (16552, true)
+            {
+                OtherCheck = b =>
+                {
+                    
+                    //战斗时间小于5秒时不放   
+                    if (TargetHelper.CombatEngageDuration.Seconds < 5) return false;
+                    return true;
+                },
+            },
 
             //抽卡
             Draw = new (3590),
@@ -168,8 +186,28 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         {DescType.单体防御, $"{Actions.Exaltation.Action.Name}，给被挨打的T"},
     };
 
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetBool("AutoDivination", true, "自动使用占卜");
+    }
+
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
+    {
+        if (Config.GetBoolByName("AutoDivination"))
+        {
+            //团队增伤害,占卜
+            if (Actions.Divination.ShouldUseAction(out act)) return true;
+        }
+
+        act = null!;
+        return false;
+    }
+
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
+        //天星交错
+        if (Actions.CelestialIntersection.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+
         //给T减伤，这个很重要。
         if (Actions.Exaltation.ShouldUseAction(out act)) return true;
         return false;
@@ -185,17 +223,20 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        //大宇宙
-        if (Actions.Macrocosmos.ShouldUseAction(out act, mustUse: true)) return true;
         //群体输出
         if (Actions.Gravity.ShouldUseAction(out act)) return true;
 
         //单体输出
         if (Actions.Combust.ShouldUseAction(out act)) return true;
         if (Actions.Malefic.ShouldUseAction(out act)) return true;
-        if (Actions.Combust.ShouldUseAction(out act, mustUse: IsMoving && HaveTargetAngle)) return true;
+        var times = StatusHelper.FindStatusFromSelf(Actions.Combust.Target,
+            new ushort[] { ObjectStatus.Combust, ObjectStatus.Combust2, ObjectStatus.Combust3 });
+        if (times.Length == 0 || times.Max() < 25)
+        {
+            if (Actions.Combust.ShouldUseAction(out act, mustUse: IsMoving && HaveTargetAngle)) return true;
+        }
 
-        act = null;
+        act = null!;
         return false;
     }
 
@@ -207,7 +248,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         //阳星
         if (Actions.Helios.ShouldUseAction(out act)) return true;
 
-        act = null;
+        act = null!;
         return false;
     }
 
@@ -220,6 +261,9 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         if (nextGCD == Actions.AspectedHelios || nextGCD == Actions.Helios)
         {
             if (Actions.Horoscope.ShouldUseAction(out act)) return true;
+
+            //中间学派
+            if (Actions.NeutralSect.ShouldUseAction(out act)) return true;
         }
 
         //如果要单奶了，先上星位合图！
@@ -242,14 +286,15 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         if (!canUse && JobGauge.DrawnCard != CardType.NONE && JobGauge.Seals.Contains(GetCardSeal(JobGauge.DrawnCard))
             && Actions.Redraw.ShouldUseAction(out act)) return true;
 
-        act = null;
+        act = null!;
         return false;
     }
 
     private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //吉星相位
-        if (Actions.AspectedBenefic.ShouldUseAction(out act)) return true;
+        if ((float)Actions.AspectedBenefic.Target.CurrentHp / Actions.AspectedBenefic.Target.MaxHp > 0.4
+            && Actions.AspectedBenefic.ShouldUseAction(out act)) return true;
 
         //福星
         if (Actions.Benefic2.ShouldUseAction(out act)) return true;
@@ -257,7 +302,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         //吉星
         if (Actions.Benefic.ShouldUseAction(out act)) return true;
 
-        act = null;
+        act = null!;
         return false;
     }
 
@@ -271,14 +316,12 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             && Actions.Draw.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         //光速，创造更多的内插能力技的机会。
-        if (Actions.Lightspeed.ShouldUseAction(out act)) return true;
+        if (IsMoving && Actions.Lightspeed.ShouldUseAction(out act)) return true;
 
 
         if (!IsMoving)
         {
-            //团队增伤害
-            if (Actions.Divination.ShouldUseAction(out act)) return true;
-
+            
             //如果没有地星也没有巨星，那就试试看能不能放个。
             if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EarthlyDominance)
                 && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
@@ -326,8 +369,8 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        //带盾奶
-        if (Actions.CelestialIntersection.ShouldUseAction(out act)) return true;
+        if ((float)Actions.EssentialDignity.Target.CurrentHp / Actions.EssentialDignity.Target.MaxHp < 0.4
+            && Actions.EssentialDignity.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         //常规奶
         if (Actions.EssentialDignity.ShouldUseAction(out act)) return true;
         //带盾奶
@@ -338,6 +381,9 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
+        //群Hot
+        if (Actions.CelestialOpposition.ShouldUseAction(out act)) return true;
+
         //如果有巨星主宰
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
         {
@@ -345,10 +391,12 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             act = Actions.EarthlyStar;
             return true;
         }
+
+        //天宫图
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios) && Actions.Horoscope.ShouldUseAction(out act)) return true;
+
         //奶量牌，要看情况。
         if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUseAction(out act)) return true;
-        //群Hot
-        if (Actions.CelestialOpposition.ShouldUseAction(out act)) return true;
 
         return false;
     }

@@ -181,13 +181,16 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (b.StatusList.Select(s => s.StatusId).Intersect(new uint[]
+                    foreach (var chara in TargetHelper.PartyMembers)
+                    {
+                        if (chara.StatusList.Select(s => s.StatusId).Intersect(new uint[]
                         {
                             ObjectStatus.EukrasianDiagnosis,
                             ObjectStatus.EukrasianPrognosis,
-                        }).Count() > 0
-                        && StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis) < 5
-                        && (float)b.CurrentHp / b.MaxHp < 0.9) return true;
+                        }).Any()
+                        && StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis) < 3
+                        && (float)chara.CurrentHp / chara.MaxHp < 0.9) return true;
+                    }
 
                     return false;
                 },
@@ -208,6 +211,11 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         {DescType.单体防御, $"GCD: {Actions.Diagnosis.Action.Name}\n                     能力: {Actions.Haima.Action.Name}, {Actions.Taurochole.Action.Name}"},
         {DescType.移动, $"{Actions.Icarus.Action.Name}，目标为面向夹角小于30°内最远目标。"},
     };
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    {
+        act = null!;
+        return false;
+    }
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
@@ -248,6 +256,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
+
         if (JobGauge.Addersgall == 0)
         {
             //输血
@@ -354,6 +363,8 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+
+
         //箭毒
         if (JobGauge.Addersting == 3 && Actions.Toxikon.ShouldUseAction(out act, mustUse: true)) return true;
 
@@ -394,6 +405,28 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         if (Actions.Phlegma3.ShouldUseAction(out act, mustUse: true)) return true;
         if (level < Actions.Phlegma3.Level && Actions.Phlegma2.ShouldUseAction(out act, mustUse: true)) return true;
         if (level < Actions.Phlegma2.Level && Actions.Phlegma.ShouldUseAction(out act, mustUse: true)) return true;
+
+        //脱战给T刷单盾嫖豆子
+        if (!TargetHelper.InBattle && HaveTargetAngle)
+        {
+            var tank = TargetHelper.PartyTanks;
+            if (tank.Length == 1 && Actions.EukrasianDiagnosis.Target == tank.First() && Actions.EukrasianDiagnosis.ShouldUseAction(out act))
+            {
+                if (tank.First().StatusList.Select(s => s.StatusId).Intersect(new uint[]
+                {
+                ObjectStatus.EukrasianDiagnosis,
+                ObjectStatus.EukrasianPrognosis,
+                ObjectStatus.Galvanize,
+                }).Any()) return false;
+
+                //均衡
+                if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
+
+                act = Actions.EukrasianDiagnosis;
+                return true;
+            }
+            if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
+        }
 
         return false;
     }
@@ -488,12 +521,6 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         //寄生清汁
         if (Actions.Ixochole.ShouldUseAction(out act)) return true;
 
-        return false;
-    }
-
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
-    {
-        act = null;
         return false;
     }
 }

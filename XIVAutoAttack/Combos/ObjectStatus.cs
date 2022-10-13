@@ -160,6 +160,12 @@ namespace XIVAutoAttack.Combos
             //阳星相位
             AspectedHelios = 836,
 
+            //天星交错
+            Intersection = 1889,
+
+            //阳星天宫图
+            HoroscopeHelios = 1891,
+
             //光速
             LightSpeed = 841,
 
