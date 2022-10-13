@@ -229,13 +229,14 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         //单体输出
         if (Actions.Combust.ShouldUseAction(out act)) return true;
         if (Actions.Malefic.ShouldUseAction(out act)) return true;
-        var times = StatusHelper.FindStatusFromSelf(Actions.Combust.Target,
+        if (Actions.Combust.ShouldUseAction(out act, mustUse: IsMoving && HaveTargetAngle)) return true;
+/*        var times = StatusHelper.FindStatusFromSelf(Actions.Combust.Target,
             new ushort[] { ObjectStatus.Combust, ObjectStatus.Combust2, ObjectStatus.Combust3 });
         if (times.Length == 0 || times.Max() < 25)
         {
             if (Actions.Combust.ShouldUseAction(out act, mustUse: IsMoving && HaveTargetAngle)) return true;
         }
-
+*/
         act = null!;
         return false;
     }
@@ -375,6 +376,31 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         if (Actions.EssentialDignity.ShouldUseAction(out act)) return true;
         //带盾奶
         if (Actions.CelestialIntersection.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+
+        //奶量牌，要看情况。
+        if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUseAction(out act)) return true;
+
+        var tank = TargetHelper.PartyTanks;
+        if (Actions.EssentialDignity.IsCoolDown && tank.Length == 1 && (tank.First().CurrentHp / tank.First().MaxHp < 0.5))
+        {
+            //群Hot
+            if (Actions.CelestialOpposition.ShouldUseAction(out act)) return true;
+
+            //如果有巨星主宰
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
+            {
+                //需要回血的时候炸了。
+                act = Actions.EarthlyStar;
+                return true;
+            }
+
+            //天宫图
+            if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios, ObjectStatus.Horoscope) && Actions.Horoscope.ShouldUseAction(out act)) return true;
+            //阳星天宫图
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios) && Actions.Horoscope.ShouldUseAction(out act)) return true;
+            //超紧急情况天宫图
+            if ((tank.First().CurrentHp / tank.First().MaxHp < 0.3) && Actions.Horoscope.ShouldUseAction(out act)) return true;
+        }
 
         return false;
     }

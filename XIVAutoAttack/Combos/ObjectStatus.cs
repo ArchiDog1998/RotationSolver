@@ -163,6 +163,9 @@ namespace XIVAutoAttack.Combos
             //天星交错
             Intersection = 1889,
 
+            //天宫图
+            Horoscope = 1890,
+
             //阳星天宫图
             HoroscopeHelios = 1891,
 

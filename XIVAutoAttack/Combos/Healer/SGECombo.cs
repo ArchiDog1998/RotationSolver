@@ -296,7 +296,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //泛输血
-        if (JobGauge.Addersgall == 0 && TargetHelper.PartyMembersHP.Count(p => p < 0.7f) > 0)
+        if (JobGauge.Addersgall == 0 && TargetHelper.PartyMembersAverHP < 0.7)
         {
             if (Actions.Panhaima.ShouldUseAction(out act)) return true;
         }
@@ -407,7 +407,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         if (level < Actions.Phlegma2.Level && Actions.Phlegma.ShouldUseAction(out act, mustUse: true)) return true;
 
         //脱战给T刷单盾嫖豆子
-        if (!TargetHelper.InBattle && HaveTargetAngle)
+        if (!TargetHelper.InBattle)
         {
             var tank = TargetHelper.PartyTanks;
             if (tank.Length == 1 && Actions.EukrasianDiagnosis.Target == tank.First() && Actions.EukrasianDiagnosis.ShouldUseAction(out act))
@@ -438,6 +438,22 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
 
         //灵橡清汁
         if (Actions.Druochole.ShouldUseAction(out act)) return true;
+
+        //当资源不足时加入范围治疗缓解压力
+        var tank = TargetHelper.PartyTanks;
+        if (JobGauge.Addersgall == 0 && tank.Length == 1 && (tank.First().CurrentHp / tank.First().MaxHp < 0.6))
+        {
+            //整体论
+            if (Actions.Holos.ShouldUseAction(out act)) return true;
+
+            //自生2
+            if (Actions.Physis2.ShouldUseAction(out act)) return true;
+            //自生
+            if (Service.ClientState.LocalPlayer.Level < Actions.Physis2.Level && Actions.Physis.ShouldUseAction(out act)) return true;
+
+            //泛输血
+            if (Actions.Panhaima.ShouldUseAction(out act)) return true;
+        }
 
         act = null!;
         return false;
@@ -516,7 +532,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         if (Service.ClientState.LocalPlayer.Level < Actions.Physis2.Level && Actions.Physis.ShouldUseAction(out act)) return true;
 
         //整体论
-        if (Actions.Holos.ShouldUseAction(out act)) return true;
+        if (Actions.Holos.ShouldUseAction(out act) && TargetHelper.PartyMembersAverHP < 0.65) return true;
 
         //寄生清汁
         if (Actions.Ixochole.ShouldUseAction(out act)) return true;
