@@ -74,7 +74,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 {
                     if (CheckAction(GCDaction.ID))
                     {
-                        string location = GCDaction.EnermyLocation.ToString();
+                        string location = GCDaction.EnermyLocation.ToName();
                         if (Service.Configuration.SayingLocation) Speak(location);
                         if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                         {
