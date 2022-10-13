@@ -209,11 +209,14 @@ namespace XIVAutoAttack.Actions
             return deathAll[0];
         }
 
-        internal static BattleChara[] GetDeath(BattleChara[] charas)
+        internal unsafe static BattleChara[] GetDeath(BattleChara[] charas)
         {
             List<BattleChara> list = new List<BattleChara>(charas.Length);
             foreach (var item in charas)
             {
+                var obj = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)item.Address;
+                if (!obj->GetIsTargetable()) continue;
+
                 //如果还有血，就算了。
                 if (item.CurrentHp != 0) continue;
 
