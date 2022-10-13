@@ -1,8 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
-using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
-using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -121,7 +119,7 @@ namespace XIVAutoAttack.Combos
 
             public static readonly BaseAction
                 //雷1
-                Thunder = new(144u)
+                Thunder = new(144u, isDot: true)
                 {
                     //    TargetStatus = new ushort[]
                     //{
@@ -135,7 +133,7 @@ namespace XIVAutoAttack.Combos
                 },
 
                 //雷2
-                Thunder2 = new(7447u)
+                Thunder2 = new(7447u, isDot: true)
                 {
                     TargetStatus = Thunder.TargetStatus,
                     OtherIDsNot = new[] { 153u, 144u, 7420u, 7447u }, //雷2,4 ID

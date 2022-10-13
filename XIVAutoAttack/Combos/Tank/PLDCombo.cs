@@ -2,8 +2,6 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using XIVAutoAttack;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 
@@ -33,7 +31,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             RiotBlade = new (15),
 
             //Á¤Ñª½£
-            GoringBlade = new (3538)
+            GoringBlade = new (3538, isDot:true)
             {
                 TargetStatus = new []
                 {
@@ -91,7 +89,10 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             },
 
             //µ÷Í£
-            Intervene = new (16461, shouldEndSpecial:true),
+            Intervene = new (16461, shouldEndSpecial: true)
+            {
+                ChoiceTarget = TargetFilter.FindMoveTarget,
+            },
 
             //Êê×ï½£
             Atonement = new (16460)

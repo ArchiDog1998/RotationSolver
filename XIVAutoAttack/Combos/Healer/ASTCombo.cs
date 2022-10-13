@@ -1,11 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
+
 using Dalamud.Game.Gui;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -28,7 +31,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             Malefic = new (3596),
 
             //烧灼
-            Combust = new (3599)
+            Combust = new (3599, isDot:true)
             {
                 TargetStatus = new ushort[]
                 {

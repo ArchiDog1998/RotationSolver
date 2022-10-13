@@ -1,9 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using XIVAutoAttack;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 
@@ -52,7 +48,10 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             },
 
             //ÃÍ¹¥
-            Onslaught = new (7386, shouldEndSpecial: true),
+            Onslaught = new (7386, shouldEndSpecial: true)
+            {
+                ChoiceTarget = TargetFilter.FindMoveTarget,
+            },
 
             //¶¯ÂÒ    
             Upheaval = new (7387),

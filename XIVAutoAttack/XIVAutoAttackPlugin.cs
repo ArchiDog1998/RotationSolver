@@ -1,37 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Numerics;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Dalamud.Game;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.JobGauge;
-using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
-using Dalamud.IoC;
 using Dalamud.Plugin;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Windows;
-using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack;
 
@@ -168,106 +150,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         return new Vector3((float)x, pt.Y, (float)z);
     }
 
-    //private void DrawWindow()
-    //{
-
-    //    var actor = _cs.LocalPlayer;
-    //    if (!_gui.WorldToScreen(
-    //        new Num.Vector3(actor.Position.X, actor.Position.Y, actor.Position.Z),
-    //        out var pos)) return;
-
-    //    ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Num.Vector2(0, 0));
-    //    ImGuiHelpers.ForceNextWindowMainViewport();
-    //    ImGuiHelpers.SetNextWindowPosRelativeMainViewport(new Num.Vector2(0, 0));
-    //    ImGui.Begin("Ring",
-    //        ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
-    //        ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
-    //    ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
-
-    //    if (_enabled)
-    //    {
-    //        ImGui.GetWindowDrawList().AddCircleFilled(
-    //            new Num.Vector2(pos.X, pos.Y),
-    //            2f,
-    //            ImGui.GetColorU32(_col),
-    //            100);
-    //    }
-    //    if (_circle)
-    //    {
-    //        ImGui.GetWindowDrawList().AddCircle(
-    //            new Num.Vector2(pos.X, pos.Y),
-    //            2.2f,
-    //            ImGui.GetColorU32(_col2),
-    //            100);
-    //    }
-
-    //    if (_ring)
-    //    {
-    //        DrawRingWorld(_cs.LocalPlayer, _radius, _segments, _thickness,
-    //            ImGui.GetColorU32(_colRing));
-    //    }
-    //    if (_ring2)
-    //    {
-    //        DrawRingWorld(_cs.LocalPlayer, _radius2, _segments2, _thickness2,
-    //            ImGui.GetColorU32(_colRing2));
-    //    }
-
-    //    if (_north1)
-    //    {
-    //        //Tip of arrow
-    //        _gui.WorldToScreen(new Num.Vector3(
-    //                    actor.Position.X + ((_lineLength + _lineOffset) * (float)Math.Sin(Math.PI)),
-    //                    actor.Position.Y,
-    //                    actor.Position.Z + ((_lineLength + _lineOffset) * (float)Math.Cos(Math.PI))
-    //                ),
-    //                out Num.Vector2 lineTip);
-    //        //Player + offset
-    //        _gui.WorldToScreen(new Num.Vector3(
-    //                actor.Position.X + (_lineOffset * (float)Math.Sin(Math.PI)),
-    //                actor.Position.Y,
-    //                actor.Position.Z + (_lineOffset * (float)Math.Cos(Math.PI))
-    //            ),
-    //            out Num.Vector2 lineOffset);
-    //        //Chev offset1
-    //        _gui.WorldToScreen(new Num.Vector3(
-    //                actor.Position.X + (_chevOffset * (float)Math.Sin(Math.PI / _chevRad) * _chevSin),
-    //                actor.Position.Y,
-    //                actor.Position.Z + (_chevOffset * (float)Math.Cos(Math.PI / _chevRad) * _chevSin)
-    //            ),
-    //            out Num.Vector2 chevOffset1);
-    //        //Chev offset2
-    //        _gui.WorldToScreen(new Num.Vector3(
-    //                actor.Position.X + (_chevOffset * (float)Math.Sin(Math.PI / -_chevRad) * _chevSin),
-    //                actor.Position.Y,
-    //                actor.Position.Z + (_chevOffset * (float)Math.Cos(Math.PI / -_chevRad) * _chevSin)
-    //            ),
-    //            out Num.Vector2 chevOffset2);
-    //        //Chev Tip
-    //        _gui.WorldToScreen(new Num.Vector3(
-    //                actor.Position.X + ((_chevOffset + _chevLength) * (float)Math.Sin(Math.PI)),
-    //                actor.Position.Y,
-    //                actor.Position.Z + ((_chevOffset + _chevLength) * (float)Math.Cos(Math.PI))
-    //            ),
-    //            out Num.Vector2 chevTip);
-    //        if (_north2)
-    //        {
-    //            ImGui.GetWindowDrawList().AddLine(new Num.Vector2(lineTip.X, lineTip.Y), new Num.Vector2(lineOffset.X, lineOffset.Y),
-    //                ImGui.GetColorU32(_lineCol), _lineThicc);
-    //        }
-    //        if (_north3)
-    //        {
-    //            ImGui.GetWindowDrawList().AddLine(new Num.Vector2(chevTip.X, chevTip.Y), new Num.Vector2(chevOffset1.X, chevOffset1.Y),
-    //                ImGui.GetColorU32(_chevCol), _chevThicc);
-    //            ImGui.GetWindowDrawList().AddLine(new Num.Vector2(chevTip.X, chevTip.Y), new Num.Vector2(chevOffset2.X, chevOffset2.Y),
-    //                ImGui.GetColorU32(_chevCol), _chevThicc);
-    //        }
-    //    }
-
-    //    ImGui.End();
-    //    ImGui.PopStyleVar();
-    //}
-
-
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
         IconReplacer.AutoAttack = false;
@@ -286,8 +168,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
 
         dtrEntry?.Dispose();
-
-        watcher.Dispose();
+        watcher?.Dispose();
     }
 
     private void OnOpenConfigUi()

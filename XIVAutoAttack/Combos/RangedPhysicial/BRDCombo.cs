@@ -1,10 +1,10 @@
+using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.JobGauge.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
-using System;
 using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
@@ -33,13 +33,13 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             StraitShoot = new(98) { BuffsNeed = new[] { ObjectStatus.StraightShotReady } },
 
             //¶¾Ò©¼ý
-            VenomousBite = new(100) { TargetStatus = new[] { ObjectStatus.VenomousBite, ObjectStatus.CausticBite } },
+            VenomousBite = new(100, isDot: true) { TargetStatus = new[] { ObjectStatus.VenomousBite, ObjectStatus.CausticBite } },
 
             //·çÊ´¼ý
-            Windbite = new(113) { TargetStatus = new[] { ObjectStatus.Windbite, ObjectStatus.Stormbite } },
+            Windbite = new(113, isDot: true) { TargetStatus = new[] { ObjectStatus.Windbite, ObjectStatus.Stormbite } },
 
             //ÁæÑÀÀþ³Ý
-            IronJaws = new(3560)
+            IronJaws = new(3560, isDot: true)
             {
                 OtherCheck = b =>
                 {

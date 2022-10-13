@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Combos.Melee;
 
 namespace XIVAutoAttack.Actions
@@ -65,6 +63,11 @@ namespace XIVAutoAttack.Actions
             var times = FindStatusFromSelf(obj, effectIDs);
             if (times == null || times.Length == 0) return 0;
             return times.Max();
+        }
+
+        internal static float GetHealthRatio(BattleChara b)
+        {
+            return (float)b.CurrentHp / b.MaxHp;
         }
     }
 }

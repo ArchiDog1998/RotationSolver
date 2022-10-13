@@ -1,8 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 
@@ -79,7 +76,10 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             SaltedEarth = new (3639),
 
             //跳斩
-            Plunge = new (3640, shouldEndSpecial:true),
+            Plunge = new (3640, shouldEndSpecial:true)
+            {
+                ChoiceTarget = TargetFilter.FindMoveTarget
+            },
 
             //吸血深渊
             AbyssalDrain = new (3641),

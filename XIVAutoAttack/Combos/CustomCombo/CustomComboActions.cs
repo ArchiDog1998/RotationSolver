@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using XIVAutoAttack.Actions;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using ImGuiScene;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -67,16 +56,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 {
                     OtherCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000,
                 },
-
-                ////伤腿
-                //LegGraze = new BaseAction(7554)
-                //{
-                //    BuffsProvide = new ushort[]
-                //    {
-                //        13, 564, 1345,
-                //    },
-                //    OtherCheck = b => TargetHelper.InBattle,
-                //},
 
                 //内丹
                 SecondWind = new BaseAction(7541)

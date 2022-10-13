@@ -1,17 +1,9 @@
-﻿using System;
+﻿using ImGuiScene;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Configuration;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using ImGuiScene;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -23,6 +15,14 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         internal string JobName => XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Name;
 
+        internal static bool IsTargetDying
+        {
+            get
+            {
+                if (Target == null) return false;
+                return Target.CurrentHp <= TargetFilter.GetHealthFromMulty(1);
+            }
+        }
         protected static internal BaseAction ActionID => GeneralActions.Repose;
 
         public bool IsEnabled
@@ -60,10 +60,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         internal virtual bool HaveShield => true;
 
-        /// <summary>
-        /// Only one feature can set it to true!
-        /// </summary>
-        protected virtual bool ShouldSayout => false;
 
         internal TextureWrap Texture;
         private protected CustomCombo()

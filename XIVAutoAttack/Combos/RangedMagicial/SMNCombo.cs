@@ -10,7 +10,6 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
 {
     public class SMNAction : BaseAction
     {
-        //internal override int Cast100 => InBahamut || InPhoenix || !JobGauge.IsIfritAttuned ? 0 : base.Cast100;
         internal override int Cast100 => new BaseAction(Service.IconReplacer.OriginalHook(ID)).Cast100;
         public SMNAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)

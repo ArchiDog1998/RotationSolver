@@ -1,26 +1,10 @@
+using Dalamud.Interface.Windowing;
+using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Interface;
-using Dalamud.Interface.Colors;
-using Dalamud.Interface.Windowing;
-using Dalamud.Utility;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Disciplines;
-using XIVAutoAttack.Combos.Healer;
-using XIVAutoAttack.Combos.Melee;
-using XIVAutoAttack.Combos.RangedMagicial;
-using XIVAutoAttack.Combos.RangedPhysicial;
-using XIVAutoAttack.Combos.Tank;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Windows;
@@ -113,7 +97,7 @@ internal class ConfigWindow : Window
                                     ImGui.Text(spacing);
                                     ImGui.SameLine();
                                     bool val = boolean.value;
-                                    if (ImGui.Checkbox(boolean.description, ref val))
+                                    if (ImGui.Checkbox(combo.JobName + ": " + boolean.description, ref val))
                                     {
                                         boolean.value = val;
                                         Service.Configuration.Save();
@@ -124,7 +108,7 @@ internal class ConfigWindow : Window
                                     ImGui.Text(spacing);
                                     ImGui.SameLine();
                                     float val = doubles.value;
-                                    if (ImGui.DragFloat(doubles.description, ref val, doubles.speed, doubles.min, doubles.max))
+                                    if (ImGui.DragFloat(combo.JobName + ": " + doubles.description, ref val, doubles.speed, doubles.min, doubles.max))
                                     {
                                         doubles.value = val;
                                         Service.Configuration.Save();
@@ -135,7 +119,7 @@ internal class ConfigWindow : Window
                                     ImGui.Text(spacing);
                                     ImGui.SameLine();
                                     string val = textItem.value;
-                                    if (ImGui.InputText(textItem.description, ref val, 15))
+                                    if (ImGui.InputText(combo.JobName + ": " + textItem.description, ref val, 15))
                                     {
                                         textItem.value = val;
                                         Service.Configuration.Save();
@@ -146,7 +130,7 @@ internal class ConfigWindow : Window
                                     ImGui.Text(spacing);
                                     ImGui.SameLine();
                                     int val = comboItem.value;
-                                    if (ImGui.Combo(comboItem.description, ref val, comboItem.items, comboItem.items.Length))
+                                    if (ImGui.Combo(combo.JobName + ": " + comboItem.description, ref val, comboItem.items, comboItem.items.Length))
                                     {
                                         comboItem.value = val;
                                         Service.Configuration.Save();
@@ -298,6 +282,13 @@ internal class ConfigWindow : Window
                     if (ImGui.Checkbox("T自动挑衅", ref autoProvokeforTank))
                     {
                         Service.Configuration.AutoProvokeForTank = autoProvokeforTank;
+                        Service.Configuration.Save();
+                    }
+
+                    bool autoUseTrueNorth = Service.Configuration.AutoUseTrueNorth;
+                    if (ImGui.Checkbox("近战自动上真北", ref autoUseTrueNorth))
+                    {
+                        Service.Configuration.AutoUseTrueNorth = autoUseTrueNorth;
                         Service.Configuration.Save();
                     }
 

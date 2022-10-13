@@ -23,6 +23,17 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //×¢Ò©
             Dosis = new(24283),
 
+            //¾ùºâ×¢Ò©
+            EukrasianDosis = new (24293, isDot: true)
+            {
+                TargetStatus = new ushort[] 
+                { 
+                    ObjectStatus.EukrasianDosis, 
+                    ObjectStatus.EukrasianDosis2, 
+                    ObjectStatus.EukrasianDosis3
+                },
+            },
+
             //·¢Ñ×
             Phlegma = new(24289),
             //·¢Ñ×2
@@ -109,7 +120,6 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //ÁéÏðÇåÖ­
             Druochole = new(24296, true)
             {
-
                 OtherCheck = b => JobGauge.Addersgall > 0,
             },
 
@@ -377,16 +387,12 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         //Ê§ºâ
         if (Actions.Dyskrasia.ShouldUseAction(out act)) return true;
 
-        Actions.Dosis.ShouldUseAction(out _);
-        var times = StatusHelper.FindStatusFromSelf(Actions.Dosis.Target,
-            new ushort[] { ObjectStatus.EukrasianDosis, ObjectStatus.EukrasianDosis2, ObjectStatus.EukrasianDosis3 });
-        if (times.Length == 0 || times.Max() < 3)
+        if(Actions.EukrasianDosis.ShouldUseAction(out var enAct))
         {
-            if (Actions.Dosis.Target != null)
-            {
-                //²¹ÉÏDot
-                if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
-            }
+            //²¹ÉÏDot
+            if (Actions.Eukrasia.ShouldUseAction(out act)) return true;
+            act = enAct;
+            return true;
         }
         else if (JobGauge.Eukrasia)
         {

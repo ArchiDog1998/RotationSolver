@@ -9,8 +9,6 @@ namespace XIVAutoAttack.Combos.Melee;
 internal class NINCombo : JobGaugeCombo<NINGauge>
 {
     internal override uint JobID => 30;
-    protected override bool ShouldSayout => true;
-
     public class NinAction : BaseAction
     {
         internal BaseAction[] Ninjutsus { get; }

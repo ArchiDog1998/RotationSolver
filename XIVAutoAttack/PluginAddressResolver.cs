@@ -1,6 +1,6 @@
-using System;
 using Dalamud.Game;
 using Dalamud.Logging;
+using System;
 
 namespace XIVAutoAttack;
 

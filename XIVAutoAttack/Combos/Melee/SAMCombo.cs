@@ -9,9 +9,8 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
 {
     internal override uint JobID => 34;
 
-    protected override bool ShouldSayout => true;
-
     private static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
+    
     internal struct Actions
     {
         public static readonly BaseAction
@@ -37,10 +36,10 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
             Gekko = new (7481),
 
             //彼岸花
-            Higanbana = new (7489)
+            Higanbana = new(7489, isDot:true)
             {
-                OtherCheck = b => !IsMoving,
-                TargetStatus = new [] { ObjectStatus.Higanbana },
+                OtherCheck = b => !IsMoving && SenCount == 1,
+                TargetStatus = new[] { ObjectStatus.Higanbana },
             },
 
             //天下五剑
@@ -68,6 +67,7 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
             MeikyoShisui = new (7499)
             {
                 BuffsProvide = new [] { ObjectStatus.MeikyoShisui },
+                OtherCheck = b => JobGauge.HasSetsu && !JobGauge.HasKa && !JobGauge.HasGetsu,
             },
 
             //雪风
@@ -148,7 +148,7 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
         //123
         bool haveMeikyoShisui = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.MeikyoShisui);
         //如果是单体，且明镜止水的冷却时间小于3秒。
-        if (!JobGauge.HasSetsu && !Actions.Fuga.ShouldUseAction(out _) && Actions.MeikyoShisui.RecastTimeRemain < 3)
+        if (!JobGauge.HasSetsu && !Actions.Fuga.ShouldUseAction(out _))
         {
             if (Actions.Yukikaze.ShouldUseAction(out act, lastComboActionID)) return true;
         }
@@ -223,7 +223,11 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (HaveTargetAngle && Actions.MeikyoShisui.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (HaveTargetAngle && 
+            nextGCD.ID != Actions.Higanbana.ID && 
+            nextGCD.ID != Actions.OgiNamikiri.ID && 
+            nextGCD.ID != Actions.KaeshiNamikiri.ID &&
+            Actions.MeikyoShisui.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         act = null;
         return false;

@@ -1,22 +1,10 @@
+using Dalamud.Game.ClientState.Objects.Types;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using ImGuiScene;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.RangedPhysicial;
-using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.CustomCombo;
 
@@ -223,7 +211,7 @@ public abstract partial class CustomCombo
         {
             if (action.Cast100 >= 50 && GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
 
-            if (abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)
+            if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)
             {
                 if (action.EnermyLocation != FindEnemyLocation(action.Target))
                 {

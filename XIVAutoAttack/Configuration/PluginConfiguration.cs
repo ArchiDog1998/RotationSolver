@@ -1,8 +1,6 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Dalamud.Configuration;
-using Dalamud.Utility;
+using System;
+using System.Collections.Generic;
 
 namespace XIVAutoAttack.Configuration;
 
@@ -23,6 +21,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool NeverReplaceIcon { get; set; } = false;
     public bool AutoDefenseForTank { get; set; } = true;
     public bool AutoProvokeForTank { get; set; } = true;
+    public bool AutoUseTrueNorth { get; set; } = true;
     public bool MoveTowardsScreen { get; set; } = true;
     public bool AutoSayingOut { get; set; } = false;
     public bool UseDtr { get; set; } = true;

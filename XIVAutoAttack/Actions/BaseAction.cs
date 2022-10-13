@@ -1,22 +1,12 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Action = Lumina.Excel.GeneratedSheets.Action;
+﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System;
+using System.Linq;
 using System.Numerics;
-using System.Runtime.InteropServices;
-using Dalamud.Utility.Signatures;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVClientStructs.FFXIV.Client.UI.Shell;
-using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Combos.Healer;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Actions
 {
@@ -26,13 +16,14 @@ namespace XIVAutoAttack.Actions
 
         private bool _isFriendly;
         private bool _shouldEndSpecial;
+        private bool _isDot;
         internal Action Action { get; }
         internal byte Level => Action.ClassJobLevel;
         public uint ID => Action.RowId;
         internal bool IsGeneralGCD { get; }
         internal bool IsRealGCD { get; }
 
-        internal EnemyLocation EnermyLocation 
+        internal virtual EnemyLocation EnermyLocation 
         {
             get
             {
@@ -112,6 +103,13 @@ namespace XIVAutoAttack.Actions
                 {
                     if (TargetStatus == null) return tars;
 
+                    if (_isDot)
+                    {
+                        tars = TargetFilter.GetTargetCanDot(tars);
+                    }
+
+                    if (!TargetHelper.IsMoving) return tars;
+
                     var ts = tars.Where(t => StatusHelper.FindStatusTimeFromSelf(t, TargetStatus) == 0).ToArray();
 
                     if(ts.Length == 0) return tars;
@@ -121,11 +119,12 @@ namespace XIVAutoAttack.Actions
             set => _filterForTarget = value;
         }
 
-        internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
+        internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
         {
             Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
             _shouldEndSpecial = shouldEndSpecial;
             _isFriendly = isFriendly;
+            _isDot = isDot;
             IsGeneralGCD = Action.CooldownGroup == GCDCooldownGroup;
             IsRealGCD = IsGeneralGCD || Action.AdditionalCooldownGroup == GCDCooldownGroup;
 
@@ -141,6 +140,7 @@ namespace XIVAutoAttack.Actions
             {
                 MPNeed = 0;
             }
+            _isDot = isDot;
         }
 
 
@@ -389,7 +389,7 @@ namespace XIVAutoAttack.Actions
                 {
                     var tar = Target == Service.ClientState.LocalPlayer ? TargetHelper.HostileTargets.OrderBy(p => TargetFilter.DistanceToPlayer(p)).First() : Target;
                     var times = StatusHelper.FindStatusFromSelf(tar, TargetStatus);
-                    if (times.Length > 0 && times.Max() > 6) return false;
+                    if (times.Length > 0 && times.Max() > 4 + TargetHelper.WeaponRemain) return false;
                 }
             }
             else
