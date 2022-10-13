@@ -11,7 +11,6 @@ namespace XIVAutoAttack.Combos.Melee;
 internal class MNKCombo : JobGaugeCombo<MNKGauge>
 {
     internal override uint JobID => 20;
-    protected override bool ShouldSayout => true;
 
     internal struct Actions
     {
@@ -38,7 +37,10 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             FourpointFury = new (16473),
 
             //∆∆ÀÈ»≠
-            Demolish = new (66),
+            Demolish = new(66, isDot:true)
+            {
+                TargetStatus = new ushort[] { ObjectStatus.Demolish },
+            },
 
             //±¿»≠
             SnapPunch = new (56),
@@ -173,11 +175,7 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
     private bool CoerlForm(out IAction act)
     {
         if (Actions.Rockbreaker.ShouldUseAction(out act)) return true;
-        if (Actions.Demolish.ShouldUseAction(out act))
-        {
-            var times = StatusHelper.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
-            if (times.Length == 0 || times[0] < 4 + WeaponRemain || Math.Abs(times[0] - 4 + WeaponRemain) < 0.1) return true;
-        }
+        if (Actions.Demolish.ShouldUseAction(out act)) return true;
         if (Actions.SnapPunch.ShouldUseAction(out act)) return true;
         return false;
     }

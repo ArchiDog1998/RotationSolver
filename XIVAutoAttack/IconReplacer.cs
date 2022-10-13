@@ -45,6 +45,7 @@ internal sealed class IconReplacer : IDisposable
                 _autoAttack = value;
                 if (!value)
                 {
+                    CustomCombo.ShouldLocation = EnemyLocation.None;
                     if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Cancel");
                     _stateString = "Off";
                     UpdateToast();

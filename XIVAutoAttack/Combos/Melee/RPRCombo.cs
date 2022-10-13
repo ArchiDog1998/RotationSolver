@@ -8,13 +8,21 @@ namespace XIVAutoAttack.Combos.Melee;
 
 internal class RPRCombo : JobGaugeCombo<RPRGauge>
 {
+    internal class PRPAction : BaseAction
+    {
+        internal override EnemyLocation EnermyLocation => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) 
+            ? EnemyLocation.None : base.EnermyLocation;
+        internal PRPAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
+            : base(actionID, isFriendly, shouldEndSpecial)
+        {
+        }
+    }
     internal override uint JobID => 39;
-    protected override bool ShouldSayout => !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);
     internal struct Actions
     {
         public static readonly BaseAction
             //死亡之影
-            ShadowofDeath = new (24378)
+            ShadowofDeath = new (24378, isDot:true)
             {
                 TargetStatus = new [] { ObjectStatus.DeathsDesign },
             },
@@ -35,16 +43,16 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             Harpe = new (24386) { BuffsProvide = new [] { ObjectStatus.SoulReaver } },
 
             //绞决
-            Gibbet = new (24382),
+            Gibbet = new PRPAction(24382),
 
             //缢杀
-            Gallows = new (24383),
+            Gallows = new PRPAction(24383),
 
             //灵魂切割
             SoulSlice = new (24380),
 
             //死亡之涡
-            WhorlofDeath = new (24379)
+            WhorlofDeath = new (24379, isDot: true)
             {
                 TargetStatus = new [] { ObjectStatus.DeathsDesign },
             },
@@ -177,7 +185,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //变身用能力
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
@@ -188,6 +196,12 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 if (Actions.BloodStalk.ShouldUseAction(out act)) return true;
             }
         }
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+    }
+
+    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    {
+
 
         if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
         {

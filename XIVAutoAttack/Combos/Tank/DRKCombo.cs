@@ -79,7 +79,10 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             SaltedEarth = new (3639),
 
             //跳斩
-            Plunge = new (3640, shouldEndSpecial:true),
+            Plunge = new (3640, shouldEndSpecial:true)
+            {
+                ChoiceTarget = TargetFilter.FindMoveTarget
+            },
 
             //吸血深渊
             AbyssalDrain = new (3641),

@@ -10,7 +10,7 @@ using XIVAutoAttack.Combos;
 
 namespace XIVAutoAttack.Actions
 {
-    internal static  class TargetFilter
+    internal static class TargetFilter
     {
         #region Find one target
         internal static BattleChara DefaultChooseFriend(BattleChara[] availableCharas)
@@ -40,7 +40,7 @@ namespace XIVAutoAttack.Actions
                 else break;
             }
 
-            return availableCharas.OrderBy(player => (float)player.CurrentHp / player.MaxHp).First();
+            return availableCharas.OrderBy(StatusHelper.GetHealthRatio).First();
         }
 
         internal static BattleChara DefaultFindHostile(BattleChara[] availableCharas)
@@ -91,17 +91,19 @@ namespace XIVAutoAttack.Actions
             float rotation = Service.ClientState.LocalPlayer.Rotation;
             Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
 
-            var tar = charas.Where(t =>
+            var tars = charas.Where(t =>
             {
                 Vector3 dir = t.Position - pPosition;
                 Vector2 dirVec = new Vector2(dir.Z, dir.X);
                 double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
                 return angle <= Math.PI / 6;
-            }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
+            }).OrderByDescending(t => Vector3.Distance(t.Position, pPosition));
 
-            if (DistanceToPlayer(tar) < 5) return null;
+            if (tars.Count() == 0) return null;
 
-            return tar;
+            if (DistanceToPlayer(tars.ElementAt(0)) < 5) return null;
+
+            return tars.ElementAt(0);
         }
 
         private  static BattleChara FindMoveTargetScreenCenter(BattleChara[] charas)
@@ -109,7 +111,7 @@ namespace XIVAutoAttack.Actions
             var pPosition = Service.ClientState.LocalPlayer.Position;
             if (!Service.GameGui.WorldToScreen(pPosition, out var playerScrPos)) return null;
 
-            var tar = charas.Where(t =>
+            var tars = charas.Where(t =>
             {
                 if(!Service.GameGui.WorldToScreen(t.Position, out var scrPos)) return false;
 
@@ -118,11 +120,13 @@ namespace XIVAutoAttack.Actions
                 if (dir.Y > 0) return false;
 
                 return Math.Abs(dir.X / dir.Y) < Math.Tan(Math.PI / 6);
-            }).OrderBy(t => Vector3.Distance(t.Position, pPosition)).Last();
+            }).OrderByDescending(t => Vector3.Distance(t.Position, pPosition));
 
-            if (DistanceToPlayer(tar) < 5) return null;
+            if (tars.Count() == 0) return null;
 
-            return tar;
+            if (DistanceToPlayer(tars.ElementAt(0)) < 5) return null;
+
+            return tars.ElementAt(0);
         }
 
         internal static BattleChara FindAttackedTarget(BattleChara[] charas)
@@ -137,7 +141,7 @@ namespace XIVAutoAttack.Actions
                 }
             }
 
-            return (attachedT.Count > 0 ? attachedT.ToArray() : charas).OrderBy(f => (float)f.CurrentHp / f.MaxHp).First();
+            return (attachedT.Count > 0 ? attachedT.ToArray() : charas).OrderBy(StatusHelper.GetHealthRatio).First();
         }
 
         internal static BattleChara[] ProvokeTarget(BattleChara[] inputCharas, bool needDistance = false)
@@ -256,6 +260,26 @@ namespace XIVAutoAttack.Actions
                 if (GetJobCategory(obj, validJobs)) result.Add(obj);
             }
             return result.ToArray();
+        }
+
+        internal static BattleChara[] GetTargetCanDot(BattleChara[] objects)
+        {
+            var health = GetHealthFromMulty(0.8f);
+
+            return objects.Where(b => b.CurrentHp >= health).ToArray();
+        }
+
+        internal static uint GetHealthFromMulty(float mult)
+        {
+            if (Service.ClientState.LocalPlayer == null) return 0;
+
+            var multi = GetJobCategory(new BattleChara[] { Service.ClientState.LocalPlayer }, Role.防护).Length == 0 ? mult : mult * 1.5f;
+            if(TargetHelper.PartyMembers.Length > 4)
+            {
+                multi *= 2;
+            }
+
+            return (uint)(multi * Service.ClientState.LocalPlayer.MaxHp);
         }
 
         private static bool GetJobCategory(BattleChara obj, SortedSet<byte> validJobs)

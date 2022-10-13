@@ -76,7 +76,10 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             SonicBreak = new (16153),
 
             //¥÷∑÷’∂
-            RoughDivide = new (16154, shouldEndSpecial: true),
+            RoughDivide = new (16154, shouldEndSpecial: true)
+            {
+                ChoiceTarget = TargetFilter.FindMoveTarget
+            },
 
             //¡“—¿
             GnashingFang = new (16146),

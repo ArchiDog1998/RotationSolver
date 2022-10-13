@@ -35,7 +35,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
             },
 
             //毒菌
-            Bio = new (17864, true)
+            Bio = new (17864, isDot: true)
             {
                 TargetStatus = new ushort[] { ObjectStatus.Bio, ObjectStatus.Bio2, ObjectStatus.Biolysis },
             },

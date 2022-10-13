@@ -26,7 +26,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             Malefic = new (3596),
 
             //烧灼
-            Combust = new (3599)
+            Combust = new (3599, isDot:true)
             {
                 TargetStatus = new ushort[]
                 {

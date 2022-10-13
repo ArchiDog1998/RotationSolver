@@ -26,13 +26,14 @@ namespace XIVAutoAttack.Actions
 
         private bool _isFriendly;
         private bool _shouldEndSpecial;
+        private bool _isDot;
         internal Action Action { get; }
         internal byte Level => Action.ClassJobLevel;
         public uint ID => Action.RowId;
         internal bool IsGeneralGCD { get; }
         internal bool IsRealGCD { get; }
 
-        internal EnemyLocation EnermyLocation 
+        internal virtual EnemyLocation EnermyLocation 
         {
             get
             {
@@ -112,6 +113,13 @@ namespace XIVAutoAttack.Actions
                 {
                     if (TargetStatus == null) return tars;
 
+                    if (_isDot)
+                    {
+                        tars = TargetFilter.GetTargetCanDot(tars);
+                    }
+
+                    if (!TargetHelper.IsMoving) return tars;
+
                     var ts = tars.Where(t => StatusHelper.FindStatusTimeFromSelf(t, TargetStatus) == 0).ToArray();
 
                     if(ts.Length == 0) return tars;
@@ -121,11 +129,12 @@ namespace XIVAutoAttack.Actions
             set => _filterForTarget = value;
         }
 
-        internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
+        internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
         {
             Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
             _shouldEndSpecial = shouldEndSpecial;
             _isFriendly = isFriendly;
+            _isDot = isDot;
             IsGeneralGCD = Action.CooldownGroup == GCDCooldownGroup;
             IsRealGCD = IsGeneralGCD || Action.AdditionalCooldownGroup == GCDCooldownGroup;
 
@@ -141,6 +150,7 @@ namespace XIVAutoAttack.Actions
             {
                 MPNeed = 0;
             }
+            _isDot = isDot;
         }
 
 
@@ -389,7 +399,7 @@ namespace XIVAutoAttack.Actions
                 {
                     var tar = Target == Service.ClientState.LocalPlayer ? TargetHelper.HostileTargets.OrderBy(p => TargetFilter.DistanceToPlayer(p)).First() : Target;
                     var times = StatusHelper.FindStatusFromSelf(tar, TargetStatus);
-                    if (times.Length > 0 && times.Max() > 6) return false;
+                    if (times.Length > 0 && times.Max() > 4 + TargetHelper.WeaponRemain) return false;
                 }
             }
             else

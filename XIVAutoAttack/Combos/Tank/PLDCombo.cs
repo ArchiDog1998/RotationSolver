@@ -33,7 +33,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             RiotBlade = new (15),
 
             //Á¤Ñª½£
-            GoringBlade = new (3538)
+            GoringBlade = new (3538, isDot:true)
             {
                 TargetStatus = new []
                 {
@@ -91,7 +91,10 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             },
 
             //µ÷Í£
-            Intervene = new (16461, shouldEndSpecial:true),
+            Intervene = new (16461, shouldEndSpecial: true)
+            {
+                ChoiceTarget = TargetFilter.FindMoveTarget,
+            },
 
             //Êê×ï½£
             Atonement = new (16460)

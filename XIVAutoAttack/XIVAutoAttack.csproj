@@ -48,4 +48,7 @@
 		  <Private>False</Private>
 	  </Reference>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="Copy &quot;E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\netcoreapp5.0\XIVAutoAttack\latest.zip&quot; &quot;D:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\XIVAutoAttack\latest\latest.zip&quot;" />
+  </Target>
 </Project>

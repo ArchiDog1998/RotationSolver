@@ -223,7 +223,7 @@ public abstract partial class CustomCombo
         {
             if (action.Cast100 >= 50 && GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
 
-            if (abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)
+            if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)
             {
                 if (action.EnermyLocation != FindEnemyLocation(action.Target))
                 {

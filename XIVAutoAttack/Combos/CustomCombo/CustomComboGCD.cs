@@ -19,7 +19,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
     public abstract partial class CustomCombo
     {
         internal static BattleChara EnemyTarget;
-        internal static EnemyLocation ShouldLocation { get; private set; } = EnemyLocation.None;
+        internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
         internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out IAction newAction)
         {
 
@@ -70,7 +70,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //Sayout!
             if (act != null && act is BaseAction GCDaction)
             {
-                if (ShouldSayout && GCDaction.EnermyLocation != EnemyLocation.None)
+                if (GCDaction.EnermyLocation != EnemyLocation.None)
                 {
                     if (CheckAction(GCDaction.ID))
                     {

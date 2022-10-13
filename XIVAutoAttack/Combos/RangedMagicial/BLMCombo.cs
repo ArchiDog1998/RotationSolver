@@ -121,7 +121,7 @@ namespace XIVAutoAttack.Combos
 
             public static readonly BaseAction
                 //雷1
-                Thunder = new(144u)
+                Thunder = new(144u, isDot: true)
                 {
                     //    TargetStatus = new ushort[]
                     //{
@@ -135,7 +135,7 @@ namespace XIVAutoAttack.Combos
                 },
 
                 //雷2
-                Thunder2 = new(7447u)
+                Thunder2 = new(7447u, isDot: true)
                 {
                     TargetStatus = Thunder.TargetStatus,
                     OtherIDsNot = new[] { 153u, 144u, 7420u, 7447u }, //雷2,4 ID

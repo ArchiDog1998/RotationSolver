@@ -26,7 +26,7 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
             Stone = new (119),
 
             //疾风 Dot
-            Aero = new (121)
+            Aero = new (121, isDot:true)
             {
                 TargetStatus = new ushort[]
                 {

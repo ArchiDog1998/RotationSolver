@@ -52,7 +52,10 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             },
 
             //ÃÍ¹¥
-            Onslaught = new (7386, shouldEndSpecial: true),
+            Onslaught = new (7386, shouldEndSpecial: true)
+            {
+                ChoiceTarget = TargetFilter.FindMoveTarget,
+            },
 
             //¶¯ÂÒ    
             Upheaval = new (7387),
