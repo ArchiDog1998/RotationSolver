@@ -381,7 +381,8 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUseAction(out act)) return true;
 
         var tank = TargetHelper.PartyTanks;
-        if (Actions.EssentialDignity.IsCoolDown && tank.Length == 1 && (tank.First().CurrentHp / tank.First().MaxHp < 0.5))
+        var isBoss = Actions.Malefic.Target.MaxHp / LocalPlayer.MaxHp > 9.75;
+        if (Actions.EssentialDignity.IsCoolDown && tank.Length == 1 && (tank.First().CurrentHp / tank.First().MaxHp < 0.5) && !isBoss)
         {
             //群Hot
             if (Actions.CelestialOpposition.ShouldUseAction(out act)) return true;

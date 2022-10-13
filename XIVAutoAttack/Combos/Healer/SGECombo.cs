@@ -441,7 +441,8 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
 
         //当资源不足时加入范围治疗缓解压力
         var tank = TargetHelper.PartyTanks;
-        if (JobGauge.Addersgall == 0 && tank.Length == 1 && (tank.First().CurrentHp / tank.First().MaxHp < 0.6))
+        var isBoss = Actions.Dosis.Target.MaxHp / LocalPlayer.MaxHp > 9.75;
+        if (JobGauge.Addersgall == 0 && tank.Length == 1 && (tank.First().CurrentHp / tank.First().MaxHp < 0.6) && !isBoss)
         {
             //整体论
             if (Actions.Holos.ShouldUseAction(out act)) return true;
