@@ -1,7 +1,10 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.Gui;
+using System;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
@@ -11,6 +14,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     internal override uint JobID => 31;
     internal static byte level = Service.ClientState.LocalPlayer!.Level;
     private static bool initFinished = false;
+    private static bool isZiHai = false;
     internal struct Actions
     {
         public static readonly BaseAction
@@ -59,7 +63,13 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             ChainSaw = new(25788)
             {
                 //过热不释放技能,打进爆发
-                OtherCheck = b => initFinished && !JobGauge.IsOverheated,
+                OtherCheck = b =>
+                {
+                    if (isZiHai) return true;
+                    if (initFinished && !JobGauge.IsOverheated) return true;
+                    return false;
+                },
+
             },
 
             //毒菌冲击
@@ -80,31 +90,38 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (SpreadShot.ShouldUseAction(out _))
+                    //在过热状态或者热量小于50时不释放超荷
+                    if (JobGauge.IsOverheated || JobGauge.Heat < 50) return false;
+
+                    //在三大金刚还剩8秒冷却好时不释放超荷
+                    if (level >= Drill.Level && Drill.RecastTimeRemain < 8) return false;
+                    if (level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 8) return false;
+                    if (level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 8) return false;
+
+                    if (SpreadShot.ShouldUseAction(out _) || isZiHai || level < Wildfire.Level)
                     {
-                        //AOE期间超荷判断
-                        if (JobGauge.IsOverheated || JobGauge.Heat < 50) return false;
+                        //AOE或者自嗨期间超荷判断
+                        return true;
                     }
                     else
                     {
+                        uint wfTimer = 6; //默认计时器
+                        var wildfireCDTime = Wildfire.RecastTimeRemain;
+                        if (level < BarrelStabilizer.Level) wfTimer = 12;
+
                         //单体期间超荷判断
-                        if (!initFinished || JobGauge.IsOverheated || JobGauge.Heat < 50) return false;
+                        if (!initFinished) return false;
 
-                        //在野火期间释放
-                        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Wildfire) || level < 45) return true;
-                    }
+                        if (TargetHelper.CombatEngageDuration.Minutes == 0 && (JobGauge.Heat > 70 || TargetHelper.CombatEngageDuration.Seconds <= 30) && LastWeaponskill != Service.IconReplacer.OriginalHook(CleanShot.ID)) return true;
 
-                    //这个嵌套怪我编程习惯不好...,回头优化
-                    if (level >= Drill.Level && Drill.RecastTimeRemain >= 8)
-                    {
-                        if (level >= AirAnchor.Level && AirAnchor.RecastTimeRemain >= 8)
+                        if (TargetHelper.CombatEngageDuration.Minutes > 0 && (wildfireCDTime >= wfTimer || LastAbility == Wildfire.ID) || LastWeaponskill == ChainSaw.ID && (!Wildfire.IsCoolDown || wildfireCDTime < 1))
                         {
-                            if (level >= ChainSaw.Level && ChainSaw.RecastTimeRemain >= 8 || level < ChainSaw.Level) return true;
-                        }
-                        else if (level < AirAnchor.Level) return true;
-                    }
-                    else if (level < Drill.Level) return true;
+                            if (TargetHelper.CombatEngageDuration.Minutes % 2 == 1 && JobGauge.Heat >= 90) return true;
 
+                            if (TargetHelper.CombatEngageDuration.Minutes % 2 == 0) return true;
+                        }
+                    }
+                    
                     return false;
                 },
             },
@@ -115,12 +132,24 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                 OtherCheck = b =>
                 {
                     // 起手是否完成,AOE期间不打野火
-                    if (!initFinished || SpreadShot.ShouldUseAction(out _)) return false;
+                    if (SpreadShot.ShouldUseAction(out _)) return false;
 
                     if (JobGauge.Heat < 50 && LastAbility != Hypercharge.ID) return false;
 
-                    if (LastWeaponskill != ChainSaw.ID
+                    //自嗨判断
+                    if (isZiHai)
+                    {
+                        if (level >= Drill.Level && Drill.RecastTimeRemain < 10) return false;
+                        if (level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 10) return false;
+                        if (level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 10) return false;
+                        return true;
+                    }
+                    else
+                    {
+                        if (!initFinished) return false;
+                        if (LastWeaponskill != ChainSaw.ID
                         && (LastWeaponskill == Drill.ID || LastWeaponskill == AirAnchor.ID || LastWeaponskill == HeatBlast.ID)) return false;
+                    }
 
                     return true;
                 },
@@ -137,6 +166,9 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             {
                 OtherCheck = b =>
                 {
+                    //自嗨判断
+                    if (isZiHai && JobGauge.Heat <= 50) return true;
+
                     var wildfireCDTime = Wildfire.RecastTimeRemain;
                     //枪管加热可以允许有5热量的溢出
                     if (JobGauge.Heat <= 55 && LastWeaponskill != ChainSaw.ID &&
@@ -151,7 +183,14 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (JobGauge.Battery < 50 || JobGauge.IsRobotActive || !initFinished) return false;
+                    //基本判断
+                    if (JobGauge.Battery < 50 || JobGauge.IsRobotActive) return false;
+
+                    //自嗨判断
+                    if (isZiHai) return true;
+
+                    //起手判断
+                    if (!initFinished) return false;
 
                     //在战斗的不同时间段使用时机不同
                     if (JobGauge.Battery == 100) return true;
@@ -178,6 +217,13 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     {
         {DescType.范围防御, $"{Actions.Tactician.Action.Name}"},
     };
+
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetBool("ziHai", true, "自嗨循环(没有起手)")
+            .SetBool("zhengbei", true, "优先链锯");
+    }
+
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //策动
@@ -188,6 +234,8 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        isZiHai = Config.GetBoolByName("ziHai");
+
         //当上一个连击是热阻击弹时完成起手
         if (lastComboActionID == Actions.CleanShot.ID)
         {
@@ -230,13 +278,13 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         {
             if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }
-        //等级小于90时,整备不再留层数,直接全部给空气锚或者钻头
-        if (level < Actions.ChainSaw.Level && (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID))
+        //等级小于90时或自嗨时,整备不再留层数
+        if ((level < Actions.ChainSaw.Level || !Config.GetBoolByName("zhengbei")) && (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID || nextGCD.ID == Actions.ChainSaw.ID))
         {
             if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }
         //整备优先链锯
-        if (nextGCD.ID == Actions.ChainSaw.ID)
+        if (Config.GetBoolByName("zhengbei") && nextGCD.ID == Actions.ChainSaw.ID)
         {
             if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }
@@ -250,6 +298,12 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
+        isZiHai = Config.GetBoolByName("ziHai");
+
+        if (isZiHai && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Wildfire))
+        {
+            if (Actions.Hypercharge.ShouldUseAction(out act)) return true;
+        }
 
         //起手虹吸弹、弹射
         if (Actions.Ricochet.RecastTimeRemain == 0 && Actions.Ricochet.ShouldUseAction(out act, mustUse: true)) return true;
@@ -264,9 +318,8 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         //车式浮空炮塔
         if (Actions.RookAutoturret.ShouldUseAction(out act, mustUse: true)) return true;
 
-        var wildfireCDTime = Actions.Wildfire.RecastTimeRemain;
         //超荷
-        if (UseHypercharge(JobGauge, wildfireCDTime) && Actions.Hypercharge.ShouldUseAction(out act)) return true;
+        if (Actions.Hypercharge.ShouldUseAction(out act)) return true;
 
 
         if (Actions.GaussRound.RecastTimeRemain > Actions.Ricochet.RecastTimeRemain)
@@ -278,25 +331,6 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (Actions.GaussRound.ShouldUseAction(out act, mustUse: true)) return true;
 
         act = null!;
-        return false;
-    }
-
-    // 先抄一下sc,回头优化
-    private static bool UseHypercharge(MCHGauge gauge, float wildfireCDTime)
-    {
-        uint wfTimer = 6; //默认计时器
-        if (level < Actions.BarrelStabilizer.Level) wfTimer = 12;
-
-        // 我真的不记得为什么我把 > 70 放在这里，我担心如果我把它拿掉它会打破它哈哈
-        if (TargetHelper.CombatEngageDuration.Minutes == 0 && (gauge.Heat > 70 || TargetHelper.CombatEngageDuration.Seconds <= 30) && LastWeaponskill != Service.IconReplacer.OriginalHook(Actions.CleanShot.ID)) return true;
-
-        if (TargetHelper.CombatEngageDuration.Minutes > 0 && (wildfireCDTime >= wfTimer || LastAbility == Actions.Wildfire.ID) || LastWeaponskill == Actions.ChainSaw.ID && (!Actions.Wildfire.IsCoolDown || wildfireCDTime < 1))
-        {
-            if (TargetHelper.CombatEngageDuration.Minutes % 2 == 1 && gauge.Heat >= 90) return true;
-
-            if (TargetHelper.CombatEngageDuration.Minutes % 2 == 0) return true;
-        }
-
         return false;
     }
 }
