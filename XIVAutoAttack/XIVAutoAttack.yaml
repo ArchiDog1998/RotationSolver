@@ -12,17 +12,18 @@ changelog: |-
   - 调整职业子选项设置窗口
   - 解决黑魔卡住不知道干嘛的BUG
   - 解决贤者注药3无法使用的问题
+  - 增加机工自嗨选项
   *新增功能*
-  - 职业子选项加入设置豪华套餐
+  - 职业子选项加入宏控制或者喊话控制豪华套餐
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
-icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/latest/XIVAutoAttackIcon.png
+icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
 dalamud_api_level: 6
 tags:
   - Attack
 category_tags: 
   - jobs
 download_count: 1024
-download_link_install: https://github.com/ArchiDog1998/XIVAutoAttack/raw/master/latest/latest.zip
-download_link_update: https://github.com/ArchiDog1998/XIVAutoAttack/raw/master/latest/latest.zip
-download_link_testing: https://github.com/ArchiDog1998/XIVAutoAttack/raw/master/latest/latest.zip
+download_link_install: https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest.zip
+download_link_update: https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest.zip
+download_link_testing: https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest.zip
 
