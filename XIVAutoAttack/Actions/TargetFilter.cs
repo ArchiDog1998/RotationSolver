@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,8 +99,6 @@ namespace XIVAutoAttack.Actions
 
             if (tars.Count() == 0) return null;
 
-            if (DistanceToPlayer(tars.ElementAt(0)) < 5) return null;
-
             return tars.ElementAt(0);
         }
 
@@ -120,8 +119,6 @@ namespace XIVAutoAttack.Actions
             }).OrderByDescending(t => Vector3.Distance(t.Position, pPosition));
 
             if (tars.Count() == 0) return null;
-
-            if (DistanceToPlayer(tars.ElementAt(0)) < 5) return null;
 
             return tars.ElementAt(0);
         }
@@ -209,14 +206,18 @@ namespace XIVAutoAttack.Actions
             return deathAll[0];
         }
 
+        internal unsafe static BattleChara[] GetTargetable(BattleChara[] charas)
+        {
+            return charas.Where(item => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)item.Address)->GetIsTargetable()).ToArray();
+        }
+
         internal unsafe static BattleChara[] GetDeath(BattleChara[] charas)
         {
+            charas = GetTargetable(charas);
+
             List<BattleChara> list = new List<BattleChara>(charas.Length);
             foreach (var item in charas)
             {
-                var obj = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)item.Address;
-                if (!obj->GetIsTargetable()) continue;
-
                 //如果还有血，就算了。
                 if (item.CurrentHp != 0) continue;
 
@@ -277,6 +278,10 @@ namespace XIVAutoAttack.Actions
             if(TargetHelper.PartyMembers.Length > 4)
             {
                 multi *= 2;
+            }
+            else if (TargetHelper.PartyMembers.Length == 1)
+            {
+                multi = 0.5f;
             }
 
             return (uint)(multi * Service.ClientState.LocalPlayer.MaxHp);

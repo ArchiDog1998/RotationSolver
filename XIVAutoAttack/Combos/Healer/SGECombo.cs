@@ -24,7 +24,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             Dosis = new(24283),
 
             //均衡注药
-            EukrasianDosis = new (24293, isDot: true)
+            EukrasianDosis = new (24283, isDot: true)
             {
                 TargetStatus = new ushort[] 
                 { 
@@ -231,22 +231,11 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
     {
         if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
-        //下个技能是魂灵风息
-        if (nextGCD.ID == Actions.Pneuma.ID)
-        {
-            //活化
-            if (Actions.Zoe.ShouldUseAction(out act)) return true;
-        }
-
         //下个技能是
-        if (nextGCD.ID == Actions.EukrasianDiagnosis.ID ||
-            nextGCD.ID == Actions.EukrasianPrognosis.ID)
-        {
-            //活化
-            if (Actions.Zoe.ShouldUseAction(out act)) return true;
-        }
-
-        if (nextGCD.ID == Actions.Diagnosis.ID ||
+        if (nextGCD.ID == Actions.Pneuma.ID ||
+            nextGCD.ID == Actions.EukrasianDiagnosis.ID ||
+            nextGCD.ID == Actions.EukrasianPrognosis.ID ||
+            nextGCD.ID == Actions.Diagnosis.ID ||
             nextGCD.ID == Actions.Prognosis.ID)
         {
             //活化
@@ -365,16 +354,12 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         //消化
         if (Actions.Pepsis.ShouldUseAction(out act)) return true;
 
-
-
         act = null!;
         return false;
     }
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-
-
         //箭毒
         if (JobGauge.Addersting == 3 && Actions.Toxikon.ShouldUseAction(out act, mustUse: true)) return true;
 

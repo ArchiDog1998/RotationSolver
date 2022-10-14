@@ -121,7 +121,7 @@ namespace XIVAutoAttack.Combos
                 //雷1
                 Thunder = new(144u, isDot: true)
                 {
-                    //    TargetStatus = new ushort[]
+                    //TargetStatus = new ushort[]
                     //{
                     //    ObjectStatus.Thunder,
                     //    ObjectStatus.Thunder2,
@@ -159,7 +159,7 @@ namespace XIVAutoAttack.Combos
                 },
 
                 //三连咏唱
-                Triplecast = new (7421u)
+                Triplecast = new(7421u)
                 {
                     BuffsProvide = GeneralActions.Swiftcast.BuffsProvide,
                     //OtherCheck = () => JobGauge.InAstralFire && JobGauge.UmbralHearts < 2 && JobGauge.ElementTimeRemaining > 10000,
@@ -304,7 +304,7 @@ namespace XIVAutoAttack.Combos
         {
             act = null;
             //刚刚魔泉，别给我转冰了。
-            if (LastAbility == Actions.Manafont.ID) return false;
+            if (LastAction == Actions.Manafont.ID) return false;
 
             //星灵转冰
             if (Service.ClientState.LocalPlayer.Level >= 90 && JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp == 0
@@ -354,7 +354,7 @@ namespace XIVAutoAttack.Combos
         {
             act = null;
             //刚刚魔泉，别给我转冰了。
-            if (LastAbility == Actions.Manafont.ID) return false;
+            if (LastAction == Actions.Manafont.ID) return false;
 
             if (IsMoving)
             {
@@ -362,7 +362,7 @@ namespace XIVAutoAttack.Combos
                 {
                     if (Actions.Transpose.ShouldUseAction(out act)) return true;
                 }
-                if (!InTranspose && Actions.Triplecast.ShouldUseAction(out act, mustUse: true)) return true;
+                if (!InTranspose && Actions.Triplecast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
                 //if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
             }
 
@@ -551,7 +551,7 @@ namespace XIVAutoAttack.Combos
                 if (Actions.Manafont.ShouldUseAction(out act)) return true;
 
                 //刚刚魔泉，别给我转冰了。
-                if (LastAbility == Actions.Manafont.ID) return false;
+                if (LastAction == Actions.Manafont.ID) return false;
 
                 //否则，转入冰状态。
                 if (JobGauge.PolyglotStacks == 2 || (JobGauge.PolyglotStacks == 1 && JobGauge.EnochianTimer < 3000))

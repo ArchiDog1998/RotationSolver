@@ -158,7 +158,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (EmergercyGCD(lastComboActionID, out IAction act)) return act;
 
             if (EsunaRaise(out act, abilityRemain, false)) return act;
-            if (IconReplacer.Move && MoveGCD(lastComboActionID, out act)) return act;
+            if (IconReplacer.Move && MoveGCD(lastComboActionID, out act))
+            {
+                if(act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
+            }
             if (TargetHelper.HPNotFull)
             {
                 if ((IconReplacer.HealArea || CanHealAreaSpell) && !HealAreaAbility(1, out _)

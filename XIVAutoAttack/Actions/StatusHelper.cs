@@ -26,11 +26,6 @@ namespace XIVAutoAttack.Actions
             {SAMCombo.Actions.Kasha.ID, EnemyLocation.Side },
         };
 
-        internal static uint ToUint(this Color c)
-        {
-            return (uint)(((c.A << 24) | (c.R << 16) | (c.G << 8) | c.B) & 0xffffffffL);
-        }
-
         internal static bool HaveStatusSelfFromSelf(params ushort[] effectIDs)
         {
             return FindStatusSelfFromSelf(effectIDs).Length > 0;

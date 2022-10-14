@@ -97,10 +97,14 @@ internal class ConfigWindow : Window
                                     ImGui.Text(spacing);
                                     ImGui.SameLine();
                                     bool val = boolean.value;
-                                    if (ImGui.Checkbox(combo.JobName + ": " + boolean.description, ref val))
+                                    if (ImGui.Checkbox($"#{num}: {boolean.description}", ref val))
                                     {
                                         boolean.value = val;
                                         Service.Configuration.Save();
+                                    }
+                                    if (ImGui.IsItemHovered())
+                                    {
+                                        ImGui.SetTooltip("¹Ø¼üÃû³ÆÎª£º" + boolean.name);
                                     }
                                 }
                                 foreach (var doubles in actions.doubles)
@@ -108,7 +112,7 @@ internal class ConfigWindow : Window
                                     ImGui.Text(spacing);
                                     ImGui.SameLine();
                                     float val = doubles.value;
-                                    if (ImGui.DragFloat(combo.JobName + ": " + doubles.description, ref val, doubles.speed, doubles.min, doubles.max))
+                                    if (ImGui.DragFloat($"#{num}: {doubles.description}", ref val, doubles.speed, doubles.min, doubles.max))
                                     {
                                         doubles.value = val;
                                         Service.Configuration.Save();
@@ -119,7 +123,7 @@ internal class ConfigWindow : Window
                                     ImGui.Text(spacing);
                                     ImGui.SameLine();
                                     string val = textItem.value;
-                                    if (ImGui.InputText(combo.JobName + ": " + textItem.description, ref val, 15))
+                                    if (ImGui.InputText($"#{num}: {textItem.description}", ref val, 15))
                                     {
                                         textItem.value = val;
                                         Service.Configuration.Save();
@@ -130,7 +134,7 @@ internal class ConfigWindow : Window
                                     ImGui.Text(spacing);
                                     ImGui.SameLine();
                                     int val = comboItem.value;
-                                    if (ImGui.Combo(combo.JobName + ": " + comboItem.description, ref val, comboItem.items, comboItem.items.Length))
+                                    if (ImGui.Combo($"#{num}: {comboItem.description}", ref val, comboItem.items, comboItem.items.Length))
                                     {
                                         comboItem.value = val;
                                         Service.Configuration.Save();

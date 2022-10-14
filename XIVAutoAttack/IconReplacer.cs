@@ -395,7 +395,6 @@ internal sealed class IconReplacer : IDisposable
                 if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction))
                 {
                     if (newAction is BaseAction) return OriginalHook(newAction.ID);
-                    //else return 7546;
                 }
             }
 

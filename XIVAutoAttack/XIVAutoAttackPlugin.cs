@@ -192,51 +192,66 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         {
             case "HealArea":
                 IconReplacer.StartHealArea();
-                break;
+                return;
             case "HealSingle":
                 IconReplacer.StartHealSingle();
-                break;
+                return;
             case "DefenseArea":
                 IconReplacer.StartDefenseArea();
-                break;
+                return;
             case "DefenseSingle":
                 IconReplacer.StartDefenseSingle();
-                break;
+                return;
             case "EsunaShield":
                 IconReplacer.StartEsunaOrShield();
-                break;
+                return;
             case "RaiseShirk":
                 IconReplacer.StartRaiseOrShirk();
-                break;
+                return;
             case "Move":
                 IconReplacer.StartMove();
-                break;
+                return;
             case "AntiRepulsion":
                 IconReplacer.StartAntiRepulsion();
-                break;
+                return;
             case "BreakProvoke":
                 IconReplacer.StartBreakOrProvoke();
-                break;
+                return;
             case "AutoBreak":
                 Service.Configuration.AutoBreak = !Service.Configuration.AutoBreak;
-                break;
+                return;
             case "AttackBig":
                 IconReplacer.AttackBig = true;
-                break;
+                return;
             case "AttackSmall":
                 IconReplacer.AttackBig = false;
-                break;
+                return;
             case "AttackManual":
                 IconReplacer.AutoTarget = false;
                 IconReplacer.AutoAttack = true;
-                break;
+                return;
             case "AttackCancel":
                 IconReplacer.AutoAttack = false;
-                break;
+                return;
 
             default:
+                foreach (CustomCombo customCombo in IconReplacer.CustomCombos)
+                {
+                    if (customCombo.JobID != Service.ClientState.LocalPlayer.ClassJob.Id) continue;
+
+                    foreach (var boolean in customCombo.Config.bools)
+                    {
+                        if(boolean.name == str)
+                        {
+                            boolean.value = !boolean.value;
+                            return;
+                        }
+                    }
+
+                    break;
+                }
                 Service.ChatGui.PrintError("无法识别：" + str);
-                break;
+                return;
         }
     }
 

@@ -258,7 +258,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     {
         if (Defense(out act)) return true;
 
-        if (abilityRemain == 2)
+        if (abilityRemain == 1)
         {
             //‘§æØ£®ºı…À30%£©
             if (Actions.Sentinel.ShouldUseAction(out act)) return true;

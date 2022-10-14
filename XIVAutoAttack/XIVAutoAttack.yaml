@@ -8,18 +8,12 @@ description: |-
 punchline: Auto attack!
 changelog: |-
   *错误修复*
-  - 调整了机工
-  - 武士明镜止水使用条件更改
-  - 武士彼岸花使用条件更改
-  - 身位显示魔幻乱飞的bug
-  - 调整了镰刀夜游魂切割的技能优先级
-  - 修改了自动命名GUI的名称功能，防止重名
-  - 改变了移动技能的选择目标的逻辑。
-  - 调整占星和贤者的治疗
-  - 复活的对象必须可选中
+  - 攻击对象必须可选中
+  - 调整职业子选项设置窗口
+  - 解决黑魔卡住不知道干嘛的BUG
+  - 解决贤者注药3无法使用的问题
   *新增功能*
-  - 判断怪残血量低于一定值的时候不上dot
-  - 在API中添加了一个IsTargetDying属性用来判断是否要倾泻资源（还没用于combo）
+  - 职业子选项加入设置豪华套餐
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/latest/XIVAutoAttackIcon.png
 dalamud_api_level: 6

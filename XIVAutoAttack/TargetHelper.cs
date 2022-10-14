@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -21,8 +22,12 @@ namespace XIVAutoAttack
 {
     internal class TargetHelper
     {
-        private static Vector3 _lastPosition;
-        public static bool IsMoving { get; private set; }
+        //private static Vector3 _lastPosition;
+        public static bool IsMoving 
+        {
+            get => Marshal.ReadByte(Service.Address.IsMoving) == 1;
+            //set => Marshal.WriteInt32(Service.Address.IsMovingSet, value ? 1 : 0);
+        }
 
         private static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
         private static readonly Stopwatch _weaponAbilityStopwatch = new Stopwatch();
@@ -208,9 +213,9 @@ namespace XIVAutoAttack
 
             InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
-            Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
-            IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
-            _lastPosition = thisPosition;
+            //Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
+            //IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
+            //_lastPosition = thisPosition;
 
             var instance =ActionManager.Instance();
             var spell = ActionType.Spell;
@@ -275,10 +280,11 @@ namespace XIVAutoAttack
             AtkUnitBase* castBar = (AtkUnitBase*)Service.GameGui.GetAddonByName("_CastBar", 1);
             AtkResNode* progressBar = castBar->UldManager.NodeList[5];
 
-            bool realCasting = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
-            ByteColor c = redColor;
-            if (!Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
-                && Service.Configuration.CheckForCasting && !realCasting) c = greenColor;
+            bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
+                && Service.Configuration.CheckForCasting && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
+
+            ByteColor c = canMove ? greenColor : redColor;
+            //IsMoving = canMove;
 
             progressBar->AddRed = c.R;
             progressBar->AddGreen = c.G;
@@ -350,9 +356,9 @@ namespace XIVAutoAttack
         {
             #region Hostile
             //能打的目标
-            AllTargets = TargetFilter.GetObjectInRadius(Service.ObjectTable.ToArray(), 30).Where(obj =>
+            AllTargets = TargetFilter.GetTargetable(TargetFilter.GetObjectInRadius(Service.ObjectTable.ToArray(), 30).Where(obj =>
             {
-                if(obj is BattleChara c && c.CurrentHp != 0)
+                if (obj is BattleChara c && c.CurrentHp != 0)
                 {
                     foreach (var status in c.StatusList)
                     {
@@ -362,7 +368,7 @@ namespace XIVAutoAttack
                     if (CanAttack(obj)) return true;
                 }
                 return false;
-            }).Select(obj => (BattleChara)obj).ToArray();
+            }).Select(obj => (BattleChara)obj).ToArray());
             uint[] ids = GetEnemies() ?? new uint[0];
             
             if (AllTargets != null && AllTargets.Length > 0)

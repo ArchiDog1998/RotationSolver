@@ -107,7 +107,10 @@ public abstract partial class CustomCombo
             if ((IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act)) return true;
             if ((IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act)) return true;
         }
-        if (IconReplacer.Move && MoveAbility(abilityRemain, out act)) return true;
+        if (IconReplacer.Move && MoveAbility(abilityRemain, out act))
+        {
+            if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
+        }
 
         //·ÀÓù
         if (HaveTargetAngle)
