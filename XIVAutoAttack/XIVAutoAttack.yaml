@@ -7,14 +7,15 @@ description: |-
   输入/pattack以设置帮助菜单。
 punchline: Auto attack!
 changelog: |-
-  *错误修复*
-  - 攻击对象必须可选中
-  - 调整职业子选项设置窗口
-  - 解决黑魔卡住不知道干嘛的BUG
-  - 解决贤者注药3无法使用的问题
-  - 增加机工自嗨选项
-  *新增功能*
-  - 职业子选项加入宏控制或者喊话控制豪华套餐
+  ## 错误修复
+  - 让赤魔和骑士一个人在外也能照顾好自己（自奶）！
+  - 添加赤魔是否长读条起手选项
+  - 修改了参数选项的UI界面
+  - 将下踢移除打断读条的功能中
+  ## 新增功能
+  - 增加了自动下踢的功能选项
+  ## 删除功能
+  - 移除喊话控制
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
 dalamud_api_level: 6

@@ -37,7 +37,6 @@ public abstract partial class CustomCombo
             {
                 case Role.防护:
                     if (GeneralActions.Interject.ShouldUseAction(out act)) return true;
-                    if (GeneralActions.LowBlow.ShouldUseAction(out act)) return true;
                     break;
 
                 case Role.近战:
@@ -165,26 +164,31 @@ public abstract partial class CustomCombo
             if (helpDefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         }
 
-        //恢复
-        if (role == Role.近战)
+        //恢复/下踢
+        switch (role)
         {
-            if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
-            if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
-        }
-        else if (role == Role.远程)
-        {
-            if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
-            {
+            case Role.防护:
+                if (Service.Configuration.AlwaysLowBlow &&
+                    GeneralActions.LowBlow.ShouldUseAction(out act)) return true;
+                break;
+            case Role.近战:
                 if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
-            }
-            else
-            {
-                if (Service.ClientState.LocalPlayer.ClassJob.Id != 25 && GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
-            }
-        }
-        else if (role == Role.治疗)
-        {
-            if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
+                if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
+                break;
+            case Role.治疗:
+                if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
+                break;
+            case Role.远程:
+                if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+                {
+                    if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+                }
+                else
+                {
+                    if (Service.ClientState.LocalPlayer.ClassJob.Id != 25
+                        && GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
+                }
+                break;
         }
 
         if (GeneralAbility(abilityRemain, out act)) return true;

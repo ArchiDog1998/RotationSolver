@@ -83,6 +83,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             Reassemble = new(2876)
             {
                 BuffsProvide = new ushort[] { ObjectStatus.Reassemble },
+                OtherCheck = b => HaveTargetAngle,
             },
 
             //超荷

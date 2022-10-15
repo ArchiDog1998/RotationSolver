@@ -138,12 +138,11 @@ namespace XIVAutoAttack
                 TargetHelper.Fish = FishType.Mooch;
             }
 
-            var texts = message.TextValue.Split(' ');
-            if(texts.Length == 2 && texts[0].Contains("AutoAttack"))
-            {
-                XIVAutoAttackPlugin.DoAutoAttack(texts[1]);
-
-            }
+            //var texts = message.TextValue.Split(' ');
+            //if(texts.Length == 2 && texts[0].Contains("AutoAttack"))
+            //{
+            //    XIVAutoAttackPlugin.DoAutoAttack(texts[1]);
+            //}
         }
 
         public void Dispose()

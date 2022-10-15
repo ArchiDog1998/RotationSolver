@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -373,8 +374,22 @@ namespace XIVAutoAttack
             
             if (AllTargets != null && AllTargets.Length > 0)
             {
-                var hosts = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
-                HostileTargets = Service.Configuration.AllTargeAsHostile || hosts.Length == 0 ? AllTargets : hosts;
+                HostileTargets = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
+
+                switch (Service.Configuration.TargetToHostileType)
+                {
+                    case 0:
+                        HostileTargets = AllTargets;
+                        break;
+                    default:
+                    case 1:
+                        if (HostileTargets.Length == 0)
+                            HostileTargets = AllTargets;
+                        break;
+
+                    case 2:
+                        break;
+                }
 
                 CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2).ToArray();
                 TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId).ToArray();

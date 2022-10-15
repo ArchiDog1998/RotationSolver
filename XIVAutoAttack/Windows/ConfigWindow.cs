@@ -222,139 +222,10 @@ internal class ConfigWindow : Window
                         Service.Configuration.NeverReplaceIcon = neverReplaceIcon;
                         Service.Configuration.Save();
                     }
-
-                    bool usecheckCasting = Service.Configuration.CheckForCasting;
-                    if (ImGui.Checkbox("使用咏唱是否结束提示", ref usecheckCasting))
-                    {
-                        Service.Configuration.CheckForCasting = usecheckCasting;
-                        Service.Configuration.Save();
-                    }
-
-                    int voiceVolume = Service.Configuration.VoiceVolume;
-                    if (ImGui.DragInt("语音音量", ref voiceVolume, 0.2f, 0, 100))
-                    {
-                        Service.Configuration.VoiceVolume = voiceVolume;
-                        Service.Configuration.Save();
-                    }
-
-                    bool textlocation = Service.Configuration.TextLocation;
-                    if (ImGui.Checkbox("写出战技身位", ref textlocation))
-                    {
-                        Service.Configuration.TextLocation = textlocation;
-                        Service.Configuration.Save();
-                    }
-
-                    bool sayingLocation = Service.Configuration.SayingLocation;
-                    if (ImGui.Checkbox("喊出战技身位", ref sayingLocation))
-                    {
-                        Service.Configuration.SayingLocation = sayingLocation;
-                        Service.Configuration.Save();
-                    }
-
-
-                    bool autoSayingOut = Service.Configuration.AutoSayingOut;
-                    if (ImGui.Checkbox("状态变化时喊出", ref autoSayingOut))
-                    {
-                        Service.Configuration.AutoSayingOut = autoSayingOut;
-                        Service.Configuration.Save();
-                    }
-
-                    bool useDtr = Service.Configuration.UseDtr;
-                    if (ImGui.Checkbox("状态显示在系统信息上", ref useDtr))
-                    {
-                        Service.Configuration.UseDtr = useDtr;
-                        Service.Configuration.Save();
-                    }
-
-                    bool useToast = Service.Configuration.UseToast;
-                    if (ImGui.Checkbox("状态显示在屏幕中央", ref useToast))
-                    {
-                        Service.Configuration.UseToast = useToast;
-                        Service.Configuration.Save();
-                    }
-
-                    ImGui.Separator();
-
-                    bool autoDefenseforTank = Service.Configuration.AutoDefenseForTank;
-                    if (ImGui.Checkbox("自动上减伤(不太准)", ref autoDefenseforTank))
-                    {
-                        Service.Configuration.AutoDefenseForTank = autoDefenseforTank;
-                        Service.Configuration.Save();
-                    }
-
-                    bool autoProvokeforTank = Service.Configuration.AutoProvokeForTank;
-                    if (ImGui.Checkbox("T自动挑衅", ref autoProvokeforTank))
-                    {
-                        Service.Configuration.AutoProvokeForTank = autoProvokeforTank;
-                        Service.Configuration.Save();
-                    }
-
-                    bool autoUseTrueNorth = Service.Configuration.AutoUseTrueNorth;
-                    if (ImGui.Checkbox("近战自动上真北", ref autoUseTrueNorth))
-                    {
-                        Service.Configuration.AutoUseTrueNorth = autoUseTrueNorth;
-                        Service.Configuration.Save();
-                    }
-
-                    bool moveToScreen = Service.Configuration.MoveTowardsScreen;
-                    if (ImGui.Checkbox("移动向屏幕中心的对象", ref moveToScreen))
-                    {
-                        Service.Configuration.MoveTowardsScreen = moveToScreen;
-                        Service.Configuration.Save();
-                    }
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("设为是时移动的对象为屏幕中心的那个，否为游戏角色面朝的对象。");
+                        ImGui.SetTooltip("如果不替换图标，提前判定的所有功能将失效，如提前提示身位");
                     }
-
-                    bool raiseCasting = Service.Configuration.RaisePlayerByCasting;
-                    if (ImGui.Checkbox("无目标时硬读条拉人", ref raiseCasting))
-                    {
-                        Service.Configuration.RaisePlayerByCasting = raiseCasting;
-                        Service.Configuration.Save();
-                    }
-
-                    bool useItem = Service.Configuration.UseItem;
-                    if (ImGui.Checkbox("使用道具", ref useItem))
-                    {
-                        Service.Configuration.UseItem = useItem;
-                        Service.Configuration.Save();
-                    }
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip("使用高级强心剂、强心剂，爆发药仅有黑魔");
-                    }
-
-
-                    bool isAllTargetAsHostile = Service.Configuration.AllTargeAsHostile;
-                    if (ImGui.Checkbox("所有可以攻击的目标均为敌对目标", ref isAllTargetAsHostile))
-                    {
-                        Service.Configuration.AllTargeAsHostile = isAllTargetAsHostile;
-                        Service.Configuration.Save();
-                    }
-
-                    bool isOnlyGCD = Service.Configuration.OnlyGCD;
-                    if (ImGui.Checkbox("只使用GCD循环，除去能力技", ref isOnlyGCD))
-                    {
-                        Service.Configuration.OnlyGCD = isOnlyGCD;
-                        Service.Configuration.Save();
-                    }
-
-                    bool autoBreak = Service.Configuration.AutoBreak;
-                    if (ImGui.Checkbox("自动进行爆发", ref autoBreak))
-                    {
-                        Service.Configuration.AutoBreak = autoBreak;
-                        Service.Configuration.Save();
-                    }
-
-                    bool raiseAll = Service.Configuration.RaiseAll;
-                    if (ImGui.Checkbox("复活所有能复活的人，而非小队", ref raiseAll))
-                    {
-                        Service.Configuration.RaiseAll = raiseAll;
-                        Service.Configuration.Save();
-                    }
-
-                    ImGui.Separator();
 
                     float weaponDelay = Service.Configuration.WeaponDelay;
                     if (ImGui.DragFloat("需要GCD随机手残多少秒", ref weaponDelay, 0.002f, 0, 1))
@@ -386,78 +257,239 @@ internal class ConfigWindow : Window
 
                     ImGui.Separator();
 
-                    int multiCount = Service.Configuration.HostileCount;
-                    if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
+                    if (ImGui.CollapsingHeader("目标选择"))
                     {
-                        Service.Configuration.HostileCount = multiCount;
-                        Service.Configuration.Save();
-                    }
+                        int isAllTargetAsHostile = Service.Configuration.TargetToHostileType;
+                        if (ImGui.Combo("敌对目标条件", ref isAllTargetAsHostile, new string[]
+                        {
+                        "所有能打的目标都是敌对的目标",
+                        "如果处于打人的目标数量为零，所有能打的都是敌对的",
+                        "只有打人的目标才是敌对的目标",
+                        }, 3))
+                        {
+                            Service.Configuration.TargetToHostileType = isAllTargetAsHostile;
+                            Service.Configuration.Save();
+                        }
 
-                    int partyCount = Service.Configuration.PartyCount;
-                    if (ImGui.DragInt("范围治疗最少需要多少人", ref partyCount, 0.02f, 2, 5))
-                    {
-                        Service.Configuration.PartyCount = partyCount;
-                        Service.Configuration.Save();
-                    }
+                        int multiCount = Service.Configuration.HostileCount;
+                        if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
+                        {
+                            Service.Configuration.HostileCount = multiCount;
+                            Service.Configuration.Save();
+                        }
 
-                    float minradius = Service.Configuration.ObjectMinRadius;
-                    if (ImGui.DragFloat("攻击对象最小底圈大小", ref minradius, 0.02f, 0, 10))
-                    {
-                        Service.Configuration.ObjectMinRadius = minradius;
-                        Service.Configuration.Save();
+                        int partyCount = Service.Configuration.PartyCount;
+                        if (ImGui.DragInt("范围治疗最少需要多少人", ref partyCount, 0.02f, 2, 5))
+                        {
+                            Service.Configuration.PartyCount = partyCount;
+                            Service.Configuration.Save();
+                        }
+
+                        float minradius = Service.Configuration.ObjectMinRadius;
+                        if (ImGui.DragFloat("攻击对象最小底圈大小", ref minradius, 0.02f, 0, 10))
+                        {
+                            Service.Configuration.ObjectMinRadius = minradius;
+                            Service.Configuration.Save();
+                        }
+
+                        bool moveToScreen = Service.Configuration.MoveTowardsScreen;
+                        if (ImGui.Checkbox("移动技能选屏幕中心的对象", ref moveToScreen))
+                        {
+                            Service.Configuration.MoveTowardsScreen = moveToScreen;
+                            Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("设为是时移动的对象为屏幕中心的那个，否为游戏角色面朝的对象。");
+                        }
+
+                        bool raiseAll = Service.Configuration.RaiseAll;
+                        if (ImGui.Checkbox("复活所有能复活的人，而非小队", ref raiseAll))
+                        {
+                            Service.Configuration.RaiseAll = raiseAll;
+                            Service.Configuration.Save();
+                        }
                     }
 
                     ImGui.Separator();
 
-                    float speed = 0.005f;
-                    float healthDiff = Service.Configuration.HealthDifference;
-                    if (ImGui.DragFloat("多少的HP标准差以下，可以用群疗", ref healthDiff, speed * 2, 0, 0.5f))
+                    if (ImGui.CollapsingHeader("提示增强"))
                     {
-                        Service.Configuration.HealthDifference = healthDiff;
-                        Service.Configuration.Save();
-                    }
+                        bool usecheckCasting = Service.Configuration.CheckForCasting;
+                        if (ImGui.Checkbox("使用咏唱是否结束提示", ref usecheckCasting))
+                        {
+                            Service.Configuration.CheckForCasting = usecheckCasting;
+                            Service.Configuration.Save();
+                        }
+
+                        int voiceVolume = Service.Configuration.VoiceVolume;
+                        if (ImGui.DragInt("语音音量", ref voiceVolume, 0.2f, 0, 100))
+                        {
+                            Service.Configuration.VoiceVolume = voiceVolume;
+                            Service.Configuration.Save();
+                        }
+
+                        bool textlocation = Service.Configuration.TextLocation;
+                        if (ImGui.Checkbox("写出战技身位", ref textlocation))
+                        {
+                            Service.Configuration.TextLocation = textlocation;
+                            Service.Configuration.Save();
+                        }
+
+                        bool sayingLocation = Service.Configuration.SayingLocation;
+                        if (ImGui.Checkbox("喊出战技身位", ref sayingLocation))
+                        {
+                            Service.Configuration.SayingLocation = sayingLocation;
+                            Service.Configuration.Save();
+                        }
 
 
-                    float healthAreaA = Service.Configuration.HealthAreaAbility;
-                    if (ImGui.DragFloat("多少的HP，可以用能力技群疗", ref healthAreaA, speed, 0, 1))
-                    {
-                        Service.Configuration.HealthAreaAbility = healthAreaA;
-                        Service.Configuration.Save();
+                        bool autoSayingOut = Service.Configuration.AutoSayingOut;
+                        if (ImGui.Checkbox("状态变化时喊出", ref autoSayingOut))
+                        {
+                            Service.Configuration.AutoSayingOut = autoSayingOut;
+                            Service.Configuration.Save();
+                        }
+
+                        bool useDtr = Service.Configuration.UseDtr;
+                        if (ImGui.Checkbox("状态显示在系统信息上", ref useDtr))
+                        {
+                            Service.Configuration.UseDtr = useDtr;
+                            Service.Configuration.Save();
+                        }
+
+                        bool useToast = Service.Configuration.UseToast;
+                        if (ImGui.Checkbox("状态显示在屏幕中央", ref useToast))
+                        {
+                            Service.Configuration.UseToast = useToast;
+                            Service.Configuration.Save();
+                        }
                     }
 
-                    float healthAreaS = Service.Configuration.HealthAreafSpell;
-                    if (ImGui.DragFloat("多少的HP，可以用GCD群疗", ref healthAreaS, speed, 0, 1))
+                    ImGui.Separator();
+
+                    if (ImGui.CollapsingHeader("技能使用"))
                     {
-                        Service.Configuration.HealthAreafSpell = healthAreaS;
-                        Service.Configuration.Save();
+
+                        bool isOnlyGCD = Service.Configuration.OnlyGCD;
+                        if (ImGui.Checkbox("只使用GCD循环，除去能力技", ref isOnlyGCD))
+                        {
+                            Service.Configuration.OnlyGCD = isOnlyGCD;
+                            Service.Configuration.Save();
+                        }
+
+                        bool autoBreak = Service.Configuration.AutoBreak;
+                        if (ImGui.Checkbox("自动进行爆发", ref autoBreak))
+                        {
+                            Service.Configuration.AutoBreak = autoBreak;
+                            Service.Configuration.Save();
+                        }
+
+                        bool autoDefenseforTank = Service.Configuration.AutoDefenseForTank;
+                        if (ImGui.Checkbox("自动上减伤(不太准)", ref autoDefenseforTank))
+                        {
+                            Service.Configuration.AutoDefenseForTank = autoDefenseforTank;
+                            Service.Configuration.Save();
+                        }
+
+                        bool autoProvokeforTank = Service.Configuration.AutoProvokeForTank;
+                        if (ImGui.Checkbox("T自动挑衅", ref autoProvokeforTank))
+                        {
+                            Service.Configuration.AutoProvokeForTank = autoProvokeforTank;
+                            Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("当有怪物在打非T的时候，会自动挑衅。");
+                        }
+
+
+                        bool alwaysLowBlow = Service.Configuration.AlwaysLowBlow;
+                        if (ImGui.Checkbox("T永远下踢", ref alwaysLowBlow))
+                        {
+                            Service.Configuration.AlwaysLowBlow = alwaysLowBlow;
+                            Service.Configuration.Save();
+                        }
+
+                        bool autoUseTrueNorth = Service.Configuration.AutoUseTrueNorth;
+                        if (ImGui.Checkbox("近战自动上真北", ref autoUseTrueNorth))
+                        {
+                            Service.Configuration.AutoUseTrueNorth = autoUseTrueNorth;
+                            Service.Configuration.Save();
+                        }
+
+
+                        bool raiseCasting = Service.Configuration.RaisePlayerByCasting;
+                        if (ImGui.Checkbox("无目标时硬读条拉人", ref raiseCasting))
+                        {
+                            Service.Configuration.RaisePlayerByCasting = raiseCasting;
+                            Service.Configuration.Save();
+                        }
+
+                        bool useItem = Service.Configuration.UseItem;
+                        if (ImGui.Checkbox("使用道具", ref useItem))
+                        {
+                            Service.Configuration.UseItem = useItem;
+                            Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("使用高级强心剂、强心剂，爆发药仅有黑魔");
+                        }
                     }
 
-                    float healthSingleA = Service.Configuration.HealthSingleAbility;
-                    if (ImGui.DragFloat("多少的HP，可以用能力技单奶", ref healthSingleA, speed, 0, 1))
+                    ImGui.Separator();
+
+                    if (ImGui.CollapsingHeader("触发条件"))
                     {
-                        Service.Configuration.HealthSingleAbility = healthSingleA;
-                        Service.Configuration.Save();
+                        float speed = 0.005f;
+                        float healthDiff = Service.Configuration.HealthDifference;
+                        if (ImGui.DragFloat("多少的HP标准差以下，可以用群疗", ref healthDiff, speed * 2, 0, 0.5f))
+                        {
+                            Service.Configuration.HealthDifference = healthDiff;
+                            Service.Configuration.Save();
+                        }
+
+                        float healthAreaA = Service.Configuration.HealthAreaAbility;
+                        if (ImGui.DragFloat("多少的HP，可以用能力技群疗", ref healthAreaA, speed, 0, 1))
+                        {
+                            Service.Configuration.HealthAreaAbility = healthAreaA;
+                            Service.Configuration.Save();
+                        }
+
+                        float healthAreaS = Service.Configuration.HealthAreafSpell;
+                        if (ImGui.DragFloat("多少的HP，可以用GCD群疗", ref healthAreaS, speed, 0, 1))
+                        {
+                            Service.Configuration.HealthAreafSpell = healthAreaS;
+                            Service.Configuration.Save();
+                        }
+
+                        float healthSingleA = Service.Configuration.HealthSingleAbility;
+                        if (ImGui.DragFloat("多少的HP，可以用能力技单奶", ref healthSingleA, speed, 0, 1))
+                        {
+                            Service.Configuration.HealthSingleAbility = healthSingleA;
+                            Service.Configuration.Save();
+                        }
+
+                        float healthSingleS = Service.Configuration.HealthSingleSpell;
+                        if (ImGui.DragFloat("多少的HP，可以用GCD单奶", ref healthSingleS, speed, 0, 1))
+                        {
+                            Service.Configuration.HealthSingleSpell = healthSingleS;
+                            Service.Configuration.Save();
+                        }
+
+                        float healthTank = Service.Configuration.HealthForDyingTank;
+                        if (ImGui.DragFloat("低于多少的HP，坦克要放大招了", ref healthTank, speed, 0, 1))
+                        {
+                            Service.Configuration.HealthForDyingTank = healthTank;
+                            Service.Configuration.Save();
+                        }
                     }
 
-                    float healthSingleS = Service.Configuration.HealthSingleSpell;
-                    if (ImGui.DragFloat("多少的HP，可以用GCD单奶", ref healthSingleS, speed, 0, 1))
-                    {
-                        Service.Configuration.HealthSingleSpell = healthSingleS;
-                        Service.Configuration.Save();
-                    }
-
-                    float healthTank = Service.Configuration.HealthForDyingTank;
-                    if (ImGui.DragFloat("低于多少的HP，坦克要放大招了", ref healthTank, speed, 0, 1))
-                    {
-                        Service.Configuration.HealthForDyingTank = healthTank;
-                        Service.Configuration.Save();
-                    }
                     ImGui.EndChild();
                 }
 
                 ImGui.PopStyleVar();
-
-
                 ImGui.EndTabItem();
 
             }
@@ -516,8 +548,6 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("帮助文档"))
             {
                 ImGui.Text("在这个窗口，你可以看到一大堆帮助内容。");
-                ImGui.Text("在任何聊天频道，输入\"AutoAttack \"+ 下面空格后面的英文也可以执行相应的操作。");
-
 
                 if (ImGui.BeginChild("帮助", new Vector2(0f, -1f), true))
                 {

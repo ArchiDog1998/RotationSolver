@@ -4,24 +4,30 @@ using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
 internal class RDMCombo : JobGaugeCombo<RDMGauge>
 {
     internal override uint JobID => 35;
-    protected override bool CanHealSingleSpell => false;
+    protected override bool CanHealSingleSpell => TargetHelper.PartyHealers.Length == 0 &&  base.CanHealSingleSpell;
     //看看现在有没有促进
 
     private protected override BaseAction Raise => Actions.Verraise;
+
+    protected static bool _startLong = false;
+
     public class RDMAction : BaseAction
     {
-        internal override int Cast100 => TargetHelper.InBattle ? 0 : base.Cast100;
+        internal override int Cast100 => NeedBuffNotCast ? 0 : base.Cast100;
         internal override ushort[] BuffsNeed 
         {
-            get => TargetHelper.InBattle ? base.BuffsNeed : null;
+            get => NeedBuffNotCast ? base.BuffsNeed : null;
             set => base.BuffsNeed = value; 
         }
+        public bool NeedBuffNotCast => !_startLong || TargetHelper.InBattle;
+
         internal RDMAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) : base(actionID, isFriendly, shouldEndSpecial)
         {
             BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray();
@@ -162,6 +168,12 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
         {DescType.范围防御, $"{Actions.MagickBarrier.Action.Name}"},
         {DescType.移动, $"{Actions.CorpsAcorps.Action.Name}"},
     };
+
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetBool("StartLong", false, "长读条起手");
+    }
+
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
@@ -220,6 +232,8 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        _startLong = Config.GetBoolByName("StartLong");
+
         act = null;
         if (JobGauge.ManaStacks == 3) return false;
 
