@@ -144,8 +144,8 @@ namespace XIVAutoAttack
 
         internal unsafe static void Framework_Update(Framework framework)
         {
-            var isMainMenu = !DalamudApi.Condition.Any();
-            if (isMainMenu) return;
+            if (!Service.Conditions.Any()) return;
+
             UpdateCastBar();
             UpdateCombatTime();
 #if DEBUG
