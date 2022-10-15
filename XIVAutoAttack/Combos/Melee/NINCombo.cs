@@ -228,7 +228,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
 
     private protected override ActionConfiguration CreateConfiguration()
     {
-        return base.CreateConfiguration();
+        return base.CreateConfiguration().SetBool("UseHide", true, "脱战隐身恢复忍术");
     }
 
     internal override SortedList<DescType, string> Description => new ()
@@ -451,7 +451,8 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Hidden) && GeneralActions.TrueNorth.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
         //用隐匿恢复忍术数量
-        if (!TargetHelper.InBattle && _ninactionAim == null && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
+        if (!TargetHelper.InBattle && _ninactionAim == null && Config.GetBoolByName("UseHide")
+            && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUseAction(out act)) return true;
 
         var replace = Service.IconReplacer.OriginalHook(2260);
         //无忍术或者忍术中途停了

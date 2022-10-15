@@ -171,7 +171,9 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
 
     private protected override ActionConfiguration CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("StartLong", false, "长读条起手");
+        return base.CreateConfiguration()
+            .SetBool("StartLong", false, "长读条起手")
+            .SetBool("UseVercure", true, "使用赤治疗获得即刻");
     }
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
@@ -259,8 +261,9 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
         }
         if (Actions.Jolt.ShouldUseAction(out act)) return true;
         #endregion
+
         //赤治疗，加即刻。
-        if (Actions.Vercure.ShouldUseAction(out act)) return true;
+        if (Config.GetBoolByName("UseVercure") && Actions.Vercure.ShouldUseAction(out act)) return true;
 
         return false;
     }
