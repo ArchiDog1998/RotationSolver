@@ -101,7 +101,10 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
             Indomitability = new (3583, true),
 
             //野战治疗阵
-            SacredSoil = new (188, true),
+            SacredSoil = new (188, true)
+            {
+                OtherCheck = b => JobGauge.Aetherflow > 0 && !IsMoving,
+            },
 
             //以太契约
             Aetherpact = new (7437, true)
@@ -227,6 +230,8 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
+        if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+
         if (Actions.Adloquium.ShouldUseAction(out act)) return true;
         return false;
     }
@@ -254,10 +259,8 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.Aetherflow > 0 && !IsMoving)
-        {
-            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
-        }
+        if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+
         if (Actions.SummonSeraph.ShouldUseAction(out act)) return true;
         if (Actions.FeyIllumination.ShouldUseAction(out act)) return true;
 
@@ -267,10 +270,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.Aetherflow > 0 && !IsMoving)
-        {
-            if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
-        }
+        if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
 
         if (abilityRemain == 1)
         {
@@ -291,6 +291,8 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
+        if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+
         if (Actions.Aetherpact.ShouldUseAction(out act) && JobGauge.FairyGauge >= 70) return true;
 
         if (Actions.Protraction.ShouldUseAction(out act)) return true;

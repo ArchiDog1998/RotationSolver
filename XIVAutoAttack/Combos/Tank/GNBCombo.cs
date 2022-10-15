@@ -33,6 +33,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             Camouflage = new (16140)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //¶ñÄ§ÇÐ
@@ -54,6 +55,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             Nebula = new (16148)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //¶ñÄ§É±

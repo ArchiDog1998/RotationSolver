@@ -84,6 +84,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     //伪装
                     ObjectStatus.Camouflage, ObjectStatus.Nebula, ObjectStatus.HeartofStone,
                     },
+                    OtherCheck = BaseAction.TankDefenseSelf,
                 },
 
                 //挑衅

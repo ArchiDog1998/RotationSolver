@@ -103,12 +103,14 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             Vengeance = new (44)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //Ô­³õµÄÖ±¾õ
             RawIntuition = new (3551)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //°ÚÍÑ

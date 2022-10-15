@@ -143,7 +143,10 @@ namespace XIVAutoAttack.Actions
             _isDot = isDot;
         }
 
-
+        internal static bool TankDefenseSelf(BattleChara chara)
+        {
+            return TargetHelper.TarOnMeTargets.Length > 0;
+        }
         internal static bool TankBreakOtherCheck(BattleChara chara)
         {
             return (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank

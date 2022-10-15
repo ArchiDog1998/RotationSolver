@@ -12,8 +12,11 @@ changelog: |-
   - 添加赤魔是否长读条起手选项
   - 修改了参数选项的UI界面
   - 将下踢移除打断读条的功能中
+  - 修复了ST在MT死刑时自动上减伤的问题。
+  - 提高了学者罩子的优先级
   ## 新增功能
   - 增加了自动下踢的功能选项
+  - 增加了奶量预判的API尚未装到Combo
   ## 删除功能
   - 移除喊话控制
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack

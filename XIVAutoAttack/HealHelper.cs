@@ -8,9 +8,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using static XIVAutoAttack.Combos.Healer.HealHelper;
+using static XIVAutoAttack.HealHelper;
 
-namespace XIVAutoAttack.Combos.Healer
+namespace XIVAutoAttack
 {
     public record LevelModifier(int Main, int Sub, int Div);
     internal class HealHelper
@@ -46,7 +46,7 @@ namespace XIVAutoAttack.Combos.Healer
                 var weaponItem = Service.DataManager.GetExcelSheet<Item>()?.GetRow(equippedWeapon.ItemID);
                 //获得武器基础伤害性能
                 var weaponBaseDamage = (weaponItem?.DamageMag) ?? 0;
-                Service.ChatGui.Print("+" + weaponBaseDamage);
+
                 //如果是HQ,再做一次计算
                 if (equippedWeapon.Flags.HasFlag(InventoryItem.ItemFlags.HQ))
                 {
@@ -67,7 +67,7 @@ namespace XIVAutoAttack.Combos.Healer
                 PluginLog.Warning(e, "Failed to calculate raw damage");
                 return 0;
             }
-            
+
         }
 
         private static double TraitModifiers(int level)
@@ -80,7 +80,7 @@ namespace XIVAutoAttack.Combos.Healer
             };
         }
 
-        private static readonly Dictionary<int, LevelModifier> LevelTable = new() {
+        private static readonly SortedList<int, LevelModifier> LevelTable = new() {
             { 1, new(Main: 20, Sub: 56, Div: 56) },
             { 2, new(Main: 21, Sub: 57, Div: 57) },
             { 3, new(Main: 22, Sub: 60, Div: 60) },

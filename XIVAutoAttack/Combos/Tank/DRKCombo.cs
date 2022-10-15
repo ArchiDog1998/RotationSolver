@@ -61,10 +61,14 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             ShadowWall = new (3636)
             {
                 BuffsProvide = new [] { ObjectStatus.ShadowWall },
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //弃明投暗
-            DarkMind = new (3634),
+            DarkMind = new(3634)
+            {
+                OtherCheck = BaseAction.TankDefenseSelf,
+            },
 
             //行尸走肉
             LivingDead = new (3638)

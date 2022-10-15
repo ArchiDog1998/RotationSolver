@@ -61,6 +61,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             Sentinel = new (17)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //¶òÔËÁ÷×ª
@@ -264,7 +265,6 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
             //Ìú±Ú£¨¼õÉË20%£©
             if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
-
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
