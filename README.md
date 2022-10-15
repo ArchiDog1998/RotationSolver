@@ -1,6 +1,8 @@
 
 # XIVAutoAttack
 
-Èç¹ûÄãÏ²»¶Õâ¸ö²å¼ş£¬¿ÉÒÔÔÚÕâ¸öÄ¿Â¼ÖĞÏÂÔØËü: `https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/pluginmaster.json`
+å¦‚æœä½ å–œæ¬¢è¿™ä¸ªæ’ä»¶ï¼Œå¯ä»¥åœ¨è¿™ä¸ªç›®å½•ä¸­ä¸‹è½½å®ƒ: `https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/pluginmaster.json`
 
-QQ½»Á÷Èº£º913297282
+[![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/total.svg)]()
+
+QQäº¤æµç¾¤ï¼š913297282
