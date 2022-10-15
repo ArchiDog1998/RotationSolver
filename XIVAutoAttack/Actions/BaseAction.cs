@@ -108,7 +108,7 @@ namespace XIVAutoAttack.Actions
                         tars = TargetFilter.GetTargetCanDot(tars);
                     }
 
-                    if (!TargetHelper.IsMoving) return tars;
+                    if (!XIVAutoAttackPlugin.movingController.IsMoving) return tars;
 
                     var ts = tars.Where(t => StatusHelper.FindStatusTimeFromSelf(t, TargetStatus) == 0).ToArray();
 
@@ -382,9 +382,10 @@ namespace XIVAutoAttack.Actions
                 if (!emptyOrSkipCombo && !findCombo && comboActions.Length > 0) return false;
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
-                if (Cast100 > 0 && TargetHelper.IsMoving)
+                if (Cast100 > 0 && XIVAutoAttackPlugin.movingController.IsMoving)
                 {
-                    if (!StatusHelper.HaveStatusSelfFromSelf(CustomCombo.GeneralActions.Swiftcast.BuffsProvide)) return false;
+                    if (!StatusHelper.HaveStatusSelfFromSelf(CustomCombo.GeneralActions.Swiftcast.BuffsProvide))
+                        XIVAutoAttackPlugin.movingController.IsMoving=false;
                 }
 
                 //目标已有充足的Debuff

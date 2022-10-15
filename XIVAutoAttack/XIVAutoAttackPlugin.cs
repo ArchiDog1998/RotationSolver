@@ -35,6 +35,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     internal static Watcher watcher;
 
+    internal static MovingController movingController;
     public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, CommandManager commandManager)
     {
         commandManager.AddHandler(_command, new CommandInfo(OnCommand)
@@ -69,6 +70,8 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         watcher = new Watcher();
         watcher.Enable();
+
+        movingController = new MovingController();
     }
 
     private void UiBuilder_Draw()
@@ -76,6 +79,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         const int COUNT = 20;
 
         if (CustomCombo.EnemyTarget == null) return;
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))return;
         if (CustomCombo.ShouldLocation is Actions.EnemyLocation.None or Actions.EnemyLocation.Front) return;
 
         float radius = CustomCombo.EnemyTarget.HitboxRadius + 3.5f;
@@ -100,12 +104,12 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         switch (CustomCombo.ShouldLocation)
         {
             case Actions.EnemyLocation.Side:
-                SectorPlots(ref pts, pPosition, Math.PI * 0.25 + rotation, radius, COUNT);
+                SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
                 pts.Add(scrPos);
-                SectorPlots(ref pts, pPosition, Math.PI * 1.25 + rotation, radius, COUNT);
+                SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
                 break;
             case Actions.EnemyLocation.Back:
-                SectorPlots(ref pts, pPosition, Math.PI * 0.75 + rotation, radius, COUNT);
+                SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
                 break;
             default:
                 return;
@@ -125,21 +129,13 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         ImGui.PopStyleVar();
     }
 
-    private void SectorPlots(ref List<Vector2> pts, Vector3 centre, double rotation, float radius, int segments)
+    private void SectorPlots(ref List<Vector2> pts, Vector3 centre, float radius, double rotation, int segments)
     {
         var step = Math.PI / 2 / segments;
-        var rstep = radius / (segments * 5);
         for (int i = 0; i <= segments; i++)
         {
-            for (var tryRadius = radius; tryRadius >= 0; tryRadius -= rstep)
-            {
-                if (Service.GameGui.WorldToScreen(ChangePoint(centre, tryRadius, rotation + i * step),
-                    out var pt))
-                {
-                    pts.Add(pt);
-                    break;
-                }
-            }
+            Service.GameGui.WorldToScreen(ChangePoint(centre, radius, rotation + i * step), out var pt);
+            pts.Add(pt);
         }
     }
 
@@ -169,6 +165,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         dtrEntry?.Dispose();
         watcher?.Dispose();
+        movingController?.Dispose();
     }
 
     private void OnOpenConfigUi()

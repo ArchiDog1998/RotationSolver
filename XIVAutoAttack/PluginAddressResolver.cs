@@ -8,6 +8,7 @@ namespace XIVAutoAttack;
 internal class PluginAddressResolver : BaseAddressResolver
 {
     private IntPtr ComboTimer { get; set; }
+    public IntPtr ActorMove { get; private set; }
     public unsafe float ComboTime => *(float*)ComboTimer;
     private IntPtr LastComboMove => ComboTimer + 4;
     public unsafe uint LastComboAction => *(uint*)LastComboMove;
@@ -54,7 +55,7 @@ internal class PluginAddressResolver : BaseAddressResolver
         this.GetResourceAsync = scanner.ScanText("E8 ?? ?? ?? ?? 48 8B D8 EB 07 F0 FF 83");
         this.LoadSoundFile = scanner.ScanText("E8 ?? ?? ?? ?? 48 85 C0 75 04 B0 F6");
         this.CanAttackFunction = scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
-
+        this.ActorMove = scanner.ScanText("40 53 48 83 EC ?? F3 0F 11 89 ?? ?? ?? ?? 48 8B D9 F3 0F 11 91 ?? ?? ?? ??");
 
         PluginLog.Verbose("===== X I V A U T O A T T C K =====", Array.Empty<object>());
         PluginLog.Verbose($"IsActionIdReplaceable 0x{IsActionIdReplaceable:X}", Array.Empty<object>());
