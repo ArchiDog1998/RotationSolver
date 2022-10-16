@@ -31,6 +31,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseToast { get; set; } = true;
     public bool RaiseAll { get; set; } = false;
     public bool CheckForCasting { get; set; } = true;
+    public bool PoslockCasting { get; set; } = false;
     public bool RaisePlayerByCasting { get; set; } = true;
     public bool UseItem { get; set; } = false;
     public float ObjectMinRadius { get; set; } = 0f;
