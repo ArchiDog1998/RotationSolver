@@ -198,7 +198,9 @@
 
             //绞决效果提高
             EnhancedGibbet = 2588,
+            EnhancedGallows = 2589,
             EnhancedVoidReaping = 2590,
+            EnhancedCrossReaping = 2591,
 
             //夜游魂
             Enshrouded = 2593,
