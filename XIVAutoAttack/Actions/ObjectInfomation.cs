@@ -16,14 +16,14 @@ namespace XIVAutoAttack.Actions
             return Service.DataManager.GetExcelSheet<BNpcBase>().GetRow(ptr->GetNpcID());
         }
 
-        internal static bool IsTargetLine(this GameObject obj)
+        internal static bool HasLocationSide(this GameObject obj)
         {
-            return obj.GetObjectNPC().IsTargetLine;
+            return !obj.GetObjectNPC().Unknown10;
         }
 
         internal static bool IsBoss(this GameObject obj)
         {
-            return obj.GetObjectNPC().Unknown10;
+            return !obj.GetObjectNPC().IsTargetLine;
         }
 
         internal static float GetHealthRatio(this BattleChara b)

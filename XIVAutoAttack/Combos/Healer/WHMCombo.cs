@@ -205,9 +205,7 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
             if (Actions.PlenaryIndulgence.ShouldUseAction(out act)) return true;
         }
 
-
-        act = null;
-        return false;
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)

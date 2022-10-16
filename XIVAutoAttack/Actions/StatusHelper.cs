@@ -14,6 +14,8 @@ namespace XIVAutoAttack.Actions
         {
             {DRGCombo.Actions.FangandClaw.ID, EnemyLocation.Side },
             {DRGCombo.Actions.WheelingThrust.ID, EnemyLocation.Back },
+            {DRGCombo.Actions.ChaosThrust.ID, EnemyLocation.Back },
+            {25772, EnemyLocation.Back },
             {MNKCombo.Actions.Demolish.ID, EnemyLocation.Back },
             {MNKCombo.Actions.SnapPunch.ID, EnemyLocation.Side },
             {NINCombo.Actions.TrickAttack.ID, EnemyLocation.Back },

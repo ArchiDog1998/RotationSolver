@@ -180,7 +180,11 @@ internal class ConfigWindow : Window
                 //}
 
                 if (Service.TargetManager.Target != null)
-                    ImGui.Text(Service.TargetManager.Target.IsBoss().ToString());
+                {
+                    ImGui.Text("Is Boss: " + Service.TargetManager.Target.IsBoss().ToString());
+                    ImGui.Text("Has Side: " + Service.TargetManager.Target.HasLocationSide().ToString());
+
+                }
 
                 //foreach (var item in Service.ObjectTable)
                 //{
@@ -365,10 +369,21 @@ internal class ConfigWindow : Window
                         }
 
                         bool sayoutLocationWrong = Service.Configuration.SayoutLocationWrong;
-                        if (ImGui.Checkbox("喊出身位错误", ref sayoutLocationWrong))
+                        if (ImGui.Checkbox("显示身位错误", ref sayoutLocationWrong))
                         {
                             Service.Configuration.SayoutLocationWrong = sayoutLocationWrong;
                             Service.Configuration.Save();
+                        }
+
+                        var str = Service.Configuration.LocationText;
+                        if (ImGui.InputText($"身位错误提示语", ref str, 15))
+                        {
+                            Service.Configuration.LocationText = str;
+                            Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("如果身位错误，你想怎么被骂");
                         }
 
 

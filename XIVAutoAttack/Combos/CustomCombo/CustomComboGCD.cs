@@ -62,7 +62,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //Sayout!
             if (act != null && act is BaseAction GCDaction)
             {
-                if (GCDaction.EnermyLocation != EnemyLocation.None && GCDaction.Target.IsTargetLine())
+                if (GCDaction.EnermyLocation != EnemyLocation.None && GCDaction.Target.HasLocationSide())
                 {
                     if (CheckAction(GCDaction.ID))
                     {

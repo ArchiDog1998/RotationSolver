@@ -40,7 +40,7 @@ namespace XIVAutoAttack
 
         private Hook<LoadSoundFileDelegate> LoadSoundFileHook { get; set; }
         private Hook<UseActionDelegate> GetActionHook { get; set; }
-        public bool IsActionHookEnable => GetActionHook.IsEnabled;
+        public bool IsActionHookEnable => GetActionHook?.IsEnabled ?? false;
         internal ConcurrentDictionary<IntPtr, FishType> Scds { get; } = new ConcurrentDictionary<IntPtr, FishType>();
 
         public static uint LastAction { get; set; } = 0;
@@ -131,11 +131,15 @@ namespace XIVAutoAttack
                 {
                     if (Service.Configuration.SayoutLocationWrong
                         && StatusHelper.ActionLocations.TryGetValue(actionID, out var loc)
-                        && tar.IsTargetLine()
+                        && tar.HasLocationSide()
                         && loc != CustomCombo.FindEnemyLocation(tar)
                         && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))
                     {
                         Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
+                        if(!string.IsNullOrEmpty(Service.Configuration.LocationText))
+                        {
+                            CustomCombo.Speak(Service.Configuration.LocationText);
+                        }
                     }
                 }
                 //事后骂人！

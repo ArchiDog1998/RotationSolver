@@ -47,6 +47,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float WeaponInterval { get; set; } = 0.6f;
     public float WeaponFaster { get; set; } = 0.05f;
     public float WeaponDelay { get; set; } = 0;
+    public string LocationText { get; set; } = string.Empty;
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);

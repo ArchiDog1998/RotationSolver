@@ -160,10 +160,15 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         if (status != null && status.Count() > 0)
         {
             var s = status.First();
-            if ((s.StackCount == 1 || s.RemainingTime < 2.5) &&
-                Actions.Confiteor.ShouldUseAction(out act, mustUse: true)) return true;
-            if (Actions.HolyCircle.ShouldUseAction(out act)) return true;
-            if (Actions.HolySpirit.ShouldUseAction(out act)) return true;
+            if ((s.StackCount == 1 || (s.RemainingTime < 2.5 && s.RemainingTime > 0)))
+            {
+                if (Actions.Confiteor.ShouldUseAction(out act, mustUse: true)) return true;
+            }
+            else
+            {
+                if (Actions.HolyCircle.ShouldUseAction(out act)) return true;
+                if (Actions.HolySpirit.ShouldUseAction(out act)) return true;
+            }
         }
 
         //AOE ¶þÁ¬
