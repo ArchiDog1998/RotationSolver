@@ -1,4 +1,4 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
+ï»¿using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -20,119 +20,131 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     internal struct Actions
     {
         public static readonly BaseAction
-            //ËÀÍöÖ®Ó°
+            //æ­»äº¡ä¹‹å½±
             ShadowofDeath = new (24378, isDot:true)
             {
                 TargetStatus = new [] { ObjectStatus.DeathsDesign },
             },
 
-            //ÇĞ¸î
+            //åˆ‡å‰²
             Slice = new (24373),
 
-            //ÔöÓ¯ÇĞ¸î
+            //å¢ç›ˆåˆ‡å‰²
             WaxingSlice = new (24374),
 
-            //µØÓüÇĞ¸î
+            //åœ°ç‹±åˆ‡å‰²
             InfernalSlice = new (24375),
 
-            //ÒşÄä»Ó¸î
+            //éšåŒ¿æŒ¥å‰²
             BloodStalk = new (24389),
 
-            //¹´ÈĞ
+            //å‹¾åˆƒ
             Harpe = new (24386) { BuffsProvide = new [] { ObjectStatus.SoulReaver } },
 
-            //½Ê¾ö
+            //ç»å†³
             Gibbet = new PRPAction(24382),
 
-            //çËÉ±
+            //ç¼¢æ€
             Gallows = new PRPAction(24383),
 
-            //Áé»êÇĞ¸î
+            //çµé­‚åˆ‡å‰²
             SoulSlice = new (24380),
 
-            //ËÀÍöÖ®ÎĞ
+            //æ­»äº¡ä¹‹æ¶¡
             WhorlofDeath = new (24379, isDot: true)
             {
                 TargetStatus = new [] { ObjectStatus.DeathsDesign },
             },
 
-            //Ğı×ªîÌ¸î
+            //æ—‹è½¬é’å‰²
             SpinningScythe = new (24376),
 
-            //Ø¬ÃÎîÌ¸î
+            //å™©æ¢¦é’å‰²
             NightmareScythe = new (24377),
 
-            //Êø¸¿»Ó¸î
+            //æŸç¼šæŒ¥å‰²
             GrimSwathe = new (24392),
 
-            //±©Ê³
+            //æš´é£Ÿ
             Gluttony = new (24393),
 
-            //¶ÏÊ×
+            //æ–­é¦–
             Guillotine = new (24384),
 
-            //Áé»êîÌ¸î
+            //çµé­‚é’å‰²
             SoulScythe = new (24381),
 
-            //Ò¹ÓÎ»êÒÂ ±äÉí£¡
+            //å¤œæ¸¸é­‚è¡£ å˜èº«ï¼
             Enshroud = new (24394),
 
-            //ÍÅÆõ
+            //å›¢å¥‘
             Communio = new (24398),
 
-            //ÉñÃØÎÆ ¼Ó¶Ü
+            //ç¥ç§˜çº¹ åŠ ç›¾
             ArcaneCrest = new (24404, true),
 
-            //ÉñÃØ»· ¼ÓBuff
+            //ç¥ç§˜ç¯ åŠ Buff
             ArcaneCircle = new (24405, true),
 
-            //²¥»êÖÖ
+            //æ’­é­‚ç§
             Soulsow = new (24387)
             {
                 BuffsProvide = new [] {ObjectStatus.Soulsow},
             },
 
-            //ÊÕ»ñÔÂ
+            //æ”¶è·æœˆ
             HarvestMoon = new (24388)
             {
                 BuffsNeed = new [] { ObjectStatus.Soulsow },
             },
 
-            //µØÓüÈë¾³
+            //åœ°ç‹±å…¥å¢ƒ
             HellsIngress = new (24401),
 
-            //´ó·áÊÕ
+            //å¤§ä¸°æ”¶
             PlentifulHarvest = new (24385);
     }
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.µ¥Ìå·ÀÓù, $"{Actions.ArcaneCrest.Action.Name}"},
-        {DescType.ÒÆ¶¯, $"{Actions.HellsIngress.Action.Name}"},
+        {DescType.å•ä½“é˜²å¾¡, $"{Actions.ArcaneCrest.Action.Name}"},
+        {DescType.ç§»åŠ¨, $"{Actions.HellsIngress.Action.Name}"},
     };
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         if(!TargetHelper.InBattle && Actions.Soulsow.ShouldUseAction(out act)) return true;
 
-        //´¦ÓÚ±äÉí×´Ì¬¡£
+        //å¤„äºå˜èº«çŠ¶æ€ã€‚
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
         {
-            if (JobGauge.LemureShroud == 1)
+            
+            if (JobGauge.LemureShroud == 1 && JobGauge.VoidShroud == 0)
             {
-                if (Actions.Communio.ShouldUseAction(out act, mustUse: true)) return true;
+                if(!IsMoving && Actions.Communio.ShouldUseAction(out act, mustUse: true)) return true;
+                else
+                {
+                    if (Actions.ShadowofDeath.ShouldUseAction(out act, mustUse: IsMoving)) return true;
+
+                }
             }
 
-            if (Actions.Guillotine.ShouldUseAction(out act)) return true;
+            if (JobGauge.LemureShroud > 1 && Actions.Guillotine.ShouldUseAction(out act)) return true;
 
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping))
+            if (JobGauge.LemureShroud > 1 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping))
             {
                 if (Actions.Gibbet.ShouldUseAction(out act)) return true;
             }
-            else
+            if (JobGauge.LemureShroud >1 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping))
             {
                 if (Actions.Gallows.ShouldUseAction(out act)) return true;
             }
+
+            if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping) &&
+                !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping) &&
+                Actions.Gibbet.ShouldUseAction(out act)) return true;
+
         }
-        //´¦ÓÚ²¹À¶×´Ì¬£¬¸Ï½ô²¹À¶Ìõ¡£
+
+        //å¤„äºè¡¥è“çŠ¶æ€ï¼Œèµ¶ç´§è¡¥è“æ¡ã€‚
         else if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
         {
             if (Actions.Guillotine.ShouldUseAction(out act)) return true;
@@ -147,35 +159,41 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             }
         }
 
-        //ÉÏDebuff
+        //ä¸ŠDebuff
         if (Actions.WhorlofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
         if (Actions.ShadowofDeath.ShouldUseAction(out act, lastComboActionID)) return true;
 
-
+        //å¤§ä¸°æ”¶å–œæ50çµé­‚
         if (JobGauge.Shroud <= 50 && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.CircleofSacrifice)
-            && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) &&
+            && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) 
+            && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) &&
              Actions.PlentifulHarvest.ShouldUseAction(out act, mustUse: true)) return true;
 
 
-        //»ñµÃÁé»ê 50.
-        if (JobGauge.Soul <= 50)
+        //è·å¾—çµé­‚ 50.
+        if (JobGauge.Soul <= 50 && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
         {
             if (Actions.SoulScythe.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
             if (Actions.SoulSlice.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }
 
 
-        //ÈºÌå¶şÁ¬
-        if (Actions.NightmareScythe.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.SpinningScythe.ShouldUseAction(out act, lastComboActionID)) return true;
+        //ç¾¤ä½“äºŒè¿
+        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) && 
+            Actions.NightmareScythe.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) && 
+            Actions.SpinningScythe.ShouldUseAction(out act, lastComboActionID)) return true;
 
 
-        //µ¥ÌåÈıÁ¬
-        if (Actions.InfernalSlice.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.WaxingSlice.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.Slice.ShouldUseAction(out act, lastComboActionID)) return true;
+        //å•ä½“ä¸‰è¿
+        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) &&
+            Actions.InfernalSlice.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) &&
+            Actions.WaxingSlice.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) && 
+            Actions.Slice.ShouldUseAction(out act, lastComboActionID)) return true;
 
-        //¹»²»×ÅÁË
+        //å¤Ÿä¸ç€äº†
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
 
         if (Actions.HarvestMoon.ShouldUseAction(out act, mustUse:true)) return true;
@@ -186,7 +204,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        //±äÉíÓÃÄÜÁ¦
+        //å˜èº«ç”¨èƒ½åŠ›
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
         {
             if (JobGauge.VoidShroud > 1)
@@ -204,10 +222,10 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
 
         if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
         {
-            //À¶Ìõ¹»ÁË£¬±äÉí£¡
+            //è“æ¡å¤Ÿäº†ï¼Œå˜èº«ï¼
             if (JobGauge.Shroud >= 50 && Actions.Enshroud.ShouldUseAction(out act)) return true;
 
-            //Áé»ê¹»ÁË£¬ÄÃÀ¶Ìõ×´Ì¬¡£
+            //çµé­‚å¤Ÿäº†ï¼Œæ‹¿è“æ¡çŠ¶æ€ã€‚
             if (JobGauge.Soul >= 50)
             {
                 if (Actions.Gluttony.ShouldUseAction(out act, mustUse: true)) return true;
@@ -222,28 +240,28 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
-        //¾¿¼«ÍÅ¸¨
+        //ç©¶æå›¢è¾…
         if (Actions.ArcaneCircle.ShouldUseAction(out act)) return true;
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        //Ç£ÖÆ
+        //ç‰µåˆ¶
         if (GeneralActions.Feint.ShouldUseAction(out act)) return true;
         return false;
     }
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        //µØÓüÈë¾³
+        //åœ°ç‹±å…¥å¢ƒ
         if (Actions.HellsIngress.ShouldUseAction(out act) && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Threshold)) return true;
         return false;
     }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        //ÉñÃØÎÆ
+        //ç¥ç§˜çº¹
         if (Actions.ArcaneCrest.ShouldUseAction(out act)) return true;
         return false;
     }
