@@ -1,6 +1,7 @@
 name: XIV Auto Attack
 author: 秋水
 description: |-
+  本插件开源免费！
   让自动攻击成为可能，请合理使用！此插件非常刺激！目前主要用于刷幻化和日随打本。
   如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！
   QQ群：913297282 注意看下载量！
@@ -9,9 +10,12 @@ punchline: Auto attack!
 changelog: |-
   ## 错误修复
   - 解决了目标无身位也会bb的bug
+  - 解决了疯狂弹FlyText导致FF14被射爆崩溃的bug
   ## 新增功能
   - 添加了赤魔是否使用赤治疗获得即刻
   - 添加了忍者是否使用隐匿恢复忍术数量
+  - 增加了可选择身位出警选项
+  - 增加了可选择不监视行为
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

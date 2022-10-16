@@ -40,14 +40,14 @@ namespace XIVAutoAttack
 
         private Hook<LoadSoundFileDelegate> LoadSoundFileHook { get; set; }
         private Hook<UseActionDelegate> GetActionHook { get; set; }
-
+        public bool IsActionHookEnable => GetActionHook.IsEnabled;
         internal ConcurrentDictionary<IntPtr, FishType> Scds { get; } = new ConcurrentDictionary<IntPtr, FishType>();
 
         public static uint LastAction { get; set; } = 0;
         public static uint LastWeaponskill { get; set; } = 0;
         public static uint LastAbility { get; set; } = 0;
         public static uint LastSpell { get; set; } = 0;
-
+        private static object LockChat = new object();
         public static TimeSpan TimeSinceLastAction => DateTime.Now - TimeLastActionUsed;
 
         private static DateTime TimeLastActionUsed = DateTime.Now;
@@ -68,12 +68,24 @@ namespace XIVAutoAttack
             Service.ChatGui.ChatMessage += ChatGui_ChatMessage;
         }
 
+        public void ChangeActionHook()
+        {
+            if (GetActionHook == null) return;
+            if (GetActionHook.IsEnabled)
+            {
+                GetActionHook.Disable();
+            }
+            else
+            {
+                GetActionHook.Enable();
+            }
+        }
+
         private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint param = 0u, uint useType = 0u, int pvp = 0, bool* a7 = null)
         {
 #if DEBUG
         var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
         Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + param.ToString() + ", " + useType.ToString() + ", " + pvp.ToString());
-
 #endif
             if (actionType == ActionType.Spell && useType == 0)
             {
@@ -115,15 +127,19 @@ namespace XIVAutoAttack
                     }
                 }
 
-
-                //事后骂人！
-                if (StatusHelper.ActionLocations.TryGetValue(actionID, out var loc)
-                    && tar.IsTargetLine()
-                    && loc != CustomCombo.FindEnemyLocation(tar)
-                    && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))
+                lock (LockChat)
                 {
-                    Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
+                    if (Service.Configuration.SayoutLocationWrong
+                        && StatusHelper.ActionLocations.TryGetValue(actionID, out var loc)
+                        && tar.IsTargetLine()
+                        && loc != CustomCombo.FindEnemyLocation(tar)
+                        && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))
+                    {
+                        Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
+                    }
                 }
+                //事后骂人！
+
             }
             return GetActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, param, useType, pvp, a7);
         }

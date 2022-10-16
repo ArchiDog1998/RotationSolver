@@ -220,6 +220,16 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
+                    bool actionEnable = XIVAutoAttackPlugin.watcher.IsActionHookEnable;
+                    if (ImGui.Checkbox("是否监视行为", ref actionEnable))
+                    {
+                        XIVAutoAttackPlugin.watcher.ChangeActionHook();
+                    }
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip("如果不监视行为会影响循环以及身位提示，一般用于无法交任务物品时");
+                    }
+
                     bool neverReplaceIcon = Service.Configuration.NeverReplaceIcon;
                     if (ImGui.Checkbox("不替换图标", ref neverReplaceIcon))
                     {
@@ -351,6 +361,13 @@ internal class ConfigWindow : Window
                         if (ImGui.Checkbox("喊出战技身位", ref sayingLocation))
                         {
                             Service.Configuration.SayingLocation = sayingLocation;
+                            Service.Configuration.Save();
+                        }
+
+                        bool sayoutLocationWrong = Service.Configuration.SayoutLocationWrong;
+                        if (ImGui.Checkbox("喊出身位错误", ref sayoutLocationWrong))
+                        {
+                            Service.Configuration.SayoutLocationWrong = sayoutLocationWrong;
                             Service.Configuration.Save();
                         }
 
