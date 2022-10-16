@@ -315,6 +315,13 @@ internal class ConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("提示增强"))
                     {
+                        bool poslockCasting = Service.Configuration.PoslockCasting;
+                        if (ImGui.Checkbox("使用咏唱移动锁", ref poslockCasting))
+                        {
+                            Service.Configuration.PoslockCasting = poslockCasting;
+                            Service.Configuration.Save();
+                        }
+
                         bool usecheckCasting = Service.Configuration.CheckForCasting;
                         if (ImGui.Checkbox("使用咏唱是否结束提示", ref usecheckCasting))
                         {

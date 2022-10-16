@@ -23,7 +23,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
         protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : null;
 
-        protected static bool IsMoving => TargetHelper.IsMoving;
+        protected static bool IsMoving => XIVAutoAttackPlugin.movingController.IsMoving;
         protected static bool HaveTargetAngle => TargetHelper.HaveTargetAngle;
         protected static float WeaponRemain => TargetHelper.WeaponRemain;
 

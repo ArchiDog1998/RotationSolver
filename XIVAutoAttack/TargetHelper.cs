@@ -17,18 +17,12 @@ using System.Runtime.InteropServices;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
-using Vector3 = System.Numerics.Vector3;
 
 namespace XIVAutoAttack
 {
     internal class TargetHelper
     {
         //private static Vector3 _lastPosition;
-        public static bool IsMoving 
-        {
-            get => Marshal.ReadByte(Service.Address.IsMoving) == 1;
-            //set => Marshal.WriteInt32(Service.Address.IsMovingSet, value ? 1 : 0);
-        }
 
         private static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
         private static readonly Stopwatch _weaponAbilityStopwatch = new Stopwatch();
@@ -280,14 +274,15 @@ namespace XIVAutoAttack
             ByteColor greenColor = new ByteColor() { A = 255, R = 60, G = 120, B = 30 };
 
 
-            AtkUnitBase* castBar = (AtkUnitBase*)Service.GameGui.GetAddonByName("_CastBar", 1);
-            AtkResNode* progressBar = castBar->UldManager.NodeList[5];
+            var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);
+            if (castBar == IntPtr.Zero) return;
+            AtkResNode* progressBar = ((AtkUnitBase*)castBar)->UldManager.NodeList[5];
 
             bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
                 && Service.Configuration.CheckForCasting && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
             ByteColor c = canMove ? greenColor : redColor;
-            //IsMoving = canMove;
+            XIVAutoAttackPlugin.movingController.IsMoving = canMove;
 
             progressBar->AddRed = c.R;
             progressBar->AddGreen = c.G;

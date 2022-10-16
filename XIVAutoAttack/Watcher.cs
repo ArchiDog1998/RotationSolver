@@ -15,7 +15,7 @@ using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Disciplines;
 using Action = Lumina.Excel.GeneratedSheets.Action;
-
+using Item = Lumina.Excel.GeneratedSheets.Item;
 
 namespace XIVAutoAttack
 {

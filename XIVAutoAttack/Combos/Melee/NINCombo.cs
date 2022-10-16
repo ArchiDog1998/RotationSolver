@@ -520,7 +520,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         //if ((Actions.TrickAttack.RecastTimeElapsed <= 20 && Actions.TrickAttack.IsCoolDown)
         //    || Actions.Katon.ShouldUseAction(out _))
         {
-            if (!TargetHelper.IsMoving && Actions.TenChiJin.ShouldUseAction(out act)) return true;
+            if (!XIVAutoAttackPlugin.movingController.IsMoving && Actions.TenChiJin.ShouldUseAction(out act)) return true;
             if (Actions.Kassatsu.ShouldUseAction(out act)) return true;
             if (UseBreakItem(out act)) return true;
         }
