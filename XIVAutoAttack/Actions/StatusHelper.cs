@@ -59,10 +59,5 @@ namespace XIVAutoAttack.Actions
             if (times == null || times.Length == 0) return 0;
             return times.Max();
         }
-
-        internal static float GetHealthRatio(BattleChara b)
-        {
-            return (float)b.CurrentHp / b.MaxHp;
-        }
     }
 }

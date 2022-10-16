@@ -365,7 +365,7 @@ internal sealed class IconReplacer : IDisposable
             if (newiAction.Use() && newiAction is BaseAction act)
             {
 #if DEBUG
-                Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + act.Action.Name + TargetHelper.AbilityRemainCount.ToString());
+                //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + act.Action.Name + TargetHelper.AbilityRemainCount.ToString());
 #endif
                 //Change Target
                 if (TargetHelper.CanAttack(act.Target))

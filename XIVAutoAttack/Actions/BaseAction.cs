@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Linq;
 using System.Numerics;
@@ -365,6 +366,10 @@ namespace XIVAutoAttack.Actions
             //看看有没有目标，如果没有，就说明不符合条件。
             if (!FindTarget(mustUse)) return false;
 
+
+            //用于自定义的要求没达到
+            if (OtherCheck != null && !OtherCheck(Target)) return false;
+
             if (IsGeneralGCD)
             {
                 //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
@@ -381,13 +386,6 @@ namespace XIVAutoAttack.Actions
                     }
                 if (!emptyOrSkipCombo && !findCombo && comboActions.Length > 0) return false;
 
-                //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
-                if (Cast100 > 0 && XIVAutoAttackPlugin.movingController.IsMoving)
-                {
-                    if (!StatusHelper.HaveStatusSelfFromSelf(CustomCombo.GeneralActions.Swiftcast.BuffsProvide))
-                        XIVAutoAttackPlugin.movingController.IsMoving=false;
-                }
-
                 //目标已有充足的Debuff
                 if (!mustUse && TargetStatus != null)
                 {
@@ -395,15 +393,20 @@ namespace XIVAutoAttack.Actions
                     var times = StatusHelper.FindStatusFromSelf(tar, TargetStatus);
                     if (times.Length > 0 && times.Max() > 4 + TargetHelper.WeaponRemain) return false;
                 }
+
+                //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
+                if (Cast100 > 0 && XIVAutoAttackPlugin.movingController.IsMoving)
+                {
+                    if (!StatusHelper.HaveStatusSelfFromSelf(CustomCombo.GeneralActions.Swiftcast.BuffsProvide))
+                        if (Service.Configuration.PoslockCasting) XIVAutoAttackPlugin.movingController.IsMoving = false;
+                        else return false;
+                }
             }
             else
             {
                 //如果是能力技能，还没填满。
                 if (!(mustUse || emptyOrSkipCombo) && RecastTimeRemain > 4) return false;
             }
-
-            //用于自定义的要求没达到
-            if (OtherCheck != null && !OtherCheck(Target)) return false;
 
             return true;
         }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 
@@ -169,14 +170,17 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
 
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
+
+                if (Service.TargetManager.Target != null)
+                    ImGui.Text(Service.TargetManager.Target.IsBoss().ToString());
 
                 //foreach (var item in Service.ObjectTable)
                 //{
@@ -315,12 +319,12 @@ internal class ConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("提示增强"))
                     {
-                        bool poslockCasting = Service.Configuration.PoslockCasting;
-                        if (ImGui.Checkbox("使用咏唱移动锁", ref poslockCasting))
-                        {
-                            Service.Configuration.PoslockCasting = poslockCasting;
-                            Service.Configuration.Save();
-                        }
+                        //bool poslockCasting = Service.Configuration.PoslockCasting;
+                        //if (ImGui.Checkbox("使用咏唱移动锁", ref poslockCasting))
+                        //{
+                        //    Service.Configuration.PoslockCasting = poslockCasting;
+                        //    Service.Configuration.Save();
+                        //}
 
                         bool usecheckCasting = Service.Configuration.CheckForCasting;
                         if (ImGui.Checkbox("使用咏唱是否结束提示", ref usecheckCasting))

@@ -118,6 +118,7 @@ namespace XIVAutoAttack
 
                 //事后骂人！
                 if (StatusHelper.ActionLocations.TryGetValue(actionID, out var loc)
+                    && tar.IsTargetLine()
                     && loc != CustomCombo.FindEnemyLocation(tar)
                     && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))
                 {

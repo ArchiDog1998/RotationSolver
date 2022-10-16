@@ -38,6 +38,5 @@ namespace XIVAutoAttack
             get => Marshal.ReadByte(Service.Address.IsMoving) == 1;
             set => PosLocker=!value;
         }
-        
     }
 }

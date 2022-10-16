@@ -38,7 +38,8 @@ namespace XIVAutoAttack.Actions
                 else break;
             }
 
-            return availableCharas.OrderBy(StatusHelper.GetHealthRatio).First();
+            return availableCharas.OrderBy(ObjectInfomation.GetHealthRatio).First();
+
         }
 
         internal static BattleChara DefaultFindHostile(BattleChara[] availableCharas)
@@ -135,7 +136,7 @@ namespace XIVAutoAttack.Actions
                 }
             }
 
-            return (attachedT.Count > 0 ? attachedT.ToArray() : charas).OrderBy(StatusHelper.GetHealthRatio).First();
+            return (attachedT.Count > 0 ? attachedT.ToArray() : charas).OrderBy(ObjectInfomation.GetHealthRatio).First();
         }
 
         internal static BattleChara[] ProvokeTarget(BattleChara[] inputCharas, bool needDistance = false)
