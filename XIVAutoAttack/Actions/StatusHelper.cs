@@ -42,20 +42,20 @@ namespace XIVAutoAttack.Actions
             return FindStatusTimeFromSelf(Service.ClientState.LocalPlayer, effectIDs);
         }
 
-        internal static float[] FindStatusFromSelf(BattleChara obj, params ushort[] effectIDs)
+        internal static float[] FindStatusFromSelf(this BattleChara obj, params ushort[] effectIDs)
         {
             uint[] newEffects = effectIDs.Select(a => (uint)a).ToArray();
             return FindStatusFromSelf(obj).Where(status => newEffects.Contains(status.StatusId)).Select(status => status.RemainingTime).ToArray();
         }
 
-        internal static Status[] FindStatusFromSelf(BattleChara obj)
+        internal static Status[] FindStatusFromSelf(this BattleChara obj)
         {
             if (obj == null) return new Status[0];
 
             return obj.StatusList.Where(status => status.SourceID == Service.ClientState.LocalPlayer.ObjectId).ToArray();
         }
 
-        internal static float FindStatusTimeFromSelf(BattleChara obj, params ushort[] effectIDs)
+        internal static float FindStatusTimeFromSelf(this BattleChara obj, params ushort[] effectIDs)
         {
             var times = FindStatusFromSelf(obj, effectIDs);
             if (times == null || times.Length == 0) return 0;

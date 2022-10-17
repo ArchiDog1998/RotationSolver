@@ -47,10 +47,10 @@ namespace XIVAutoAttack
         public static uint LastWeaponskill { get; set; } = 0;
         public static uint LastAbility { get; set; } = 0;
         public static uint LastSpell { get; set; } = 0;
-        private static object LockChat = new object();
         public static TimeSpan TimeSinceLastAction => DateTime.Now - TimeLastActionUsed;
 
         private static DateTime TimeLastActionUsed = DateTime.Now;
+        private static DateTime TimeLastSpeak = DateTime.Now;
 
         internal unsafe void Enable()
         {
@@ -127,8 +127,10 @@ namespace XIVAutoAttack
                     }
                 }
 
-                lock (LockChat)
+                //事后骂人！
+                if (DateTime.Now - TimeLastSpeak > new TimeSpan(0,0,0,0,200))
                 {
+                    TimeLastSpeak = DateTime.Now;
                     if (Service.Configuration.SayoutLocationWrong
                         && StatusHelper.ActionLocations.TryGetValue(actionID, out var loc)
                         && tar.HasLocationSide()
@@ -142,7 +144,7 @@ namespace XIVAutoAttack
                         }
                     }
                 }
-                //事后骂人！
+
 
             }
             return GetActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, param, useType, pvp, a7);

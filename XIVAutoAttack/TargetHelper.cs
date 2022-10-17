@@ -210,14 +210,10 @@ namespace XIVAutoAttack
 
             InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
-            //Vector3 thisPosition = Service.ClientState.LocalPlayer.Position;
-            //IsMoving = Vector3.Distance(_lastPosition, thisPosition) != 0;
-            //_lastPosition = thisPosition;
-
             var instance =ActionManager.Instance();
             var spell = ActionType.Spell;
 
-            WeaponTotal = instance->GetRecastTime(spell, 11);
+            WeaponTotal = InBattle ? Math.Max(WeaponTotal, instance->GetRecastTime(spell, 11)) : 0;
             Weaponelapsed = instance->GetRecastTimeElapsed(spell, 11);
 
             WeaponRemain = Math.Max(WeaponTotal - Weaponelapsed, 
