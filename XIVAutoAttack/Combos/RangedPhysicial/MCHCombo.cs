@@ -12,7 +12,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial;
 internal class MCHCombo : JobGaugeCombo<MCHGauge>
 {
     internal override uint JobID => 31;
-    internal static byte level = Service.ClientState.LocalPlayer!.Level;
+    private static byte Level => Service.ClientState.LocalPlayer!.Level;
     private static bool initFinished = false;
     private static bool isZiHai = false;
     internal struct Actions
@@ -95,11 +95,11 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                     if (JobGauge.IsOverheated || JobGauge.Heat < 50) return false;
 
                     //在三大金刚还剩8秒冷却好时不释放超荷
-                    if (level >= Drill.Level && Drill.RecastTimeRemain < 8) return false;
-                    if (level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 8) return false;
-                    if (level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 8) return false;
+                    if (Level >= Drill.Level && Drill.RecastTimeRemain < 8) return false;
+                    if (Level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 8) return false;
+                    if (Level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 8) return false;
 
-                    if (SpreadShot.ShouldUseAction(out _) || isZiHai || level < Wildfire.Level)
+                    if (SpreadShot.ShouldUseAction(out _) || isZiHai || Level < Wildfire.Level)
                     {
                         //AOE或者自嗨期间超荷判断
                         return true;
@@ -108,7 +108,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                     {
                         uint wfTimer = 6; //默认计时器
                         var wildfireCDTime = Wildfire.RecastTimeRemain;
-                        if (level < BarrelStabilizer.Level) wfTimer = 12;
+                        if (Level < BarrelStabilizer.Level) wfTimer = 12;
 
                         //单体期间超荷判断
                         if (!initFinished) return false;
@@ -140,9 +140,9 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                     //自嗨判断
                     if (isZiHai)
                     {
-                        if (level >= Drill.Level && Drill.RecastTimeRemain < 10) return false;
-                        if (level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 10) return false;
-                        if (level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 10) return false;
+                        if (Level >= Drill.Level && Drill.RecastTimeRemain < 10) return false;
+                        if (Level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 10) return false;
+                        if (Level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 10) return false;
                         return true;
                     }
                     else
@@ -255,7 +255,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (Actions.Bioblaster.ShouldUseAction(out act)) return true;
         //单体,四个牛逼的技能。先空气锚再钻头
         if (Actions.AirAnchor.ShouldUseAction(out act)) return true;
-        else if (level < Actions.AirAnchor.Level && Actions.HotShow.ShouldUseAction(out act)) return true;
+        else if (Level < Actions.AirAnchor.Level && Actions.HotShow.ShouldUseAction(out act)) return true;
         if (Actions.Drill.ShouldUseAction(out act)) return true;
         if (Actions.ChainSaw.ShouldUseAction(out act, mustUse: true)) return true;
 
@@ -275,12 +275,12 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //等级小于钻头时,绑定狙击弹
-        if (level < Actions.Drill.Level && nextGCD.ID == Actions.CleanShot.ID)
+        if (Level < Actions.Drill.Level && nextGCD.ID == Actions.CleanShot.ID)
         {
             if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }
         //等级小于90时或自嗨时,整备不再留层数
-        if ((level < Actions.ChainSaw.Level || !Config.GetBoolByName("zhengbei")) && (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID || nextGCD.ID == Actions.ChainSaw.ID))
+        if ((Level < Actions.ChainSaw.Level || !Config.GetBoolByName("zhengbei")) && (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID || nextGCD.ID == Actions.ChainSaw.ID))
         {
             if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
         }

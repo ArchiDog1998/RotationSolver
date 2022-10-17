@@ -1,14 +1,12 @@
-﻿using Dalamud.Logging;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using static XIVAutoAttack.HealHelper;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack
 {
@@ -69,6 +67,39 @@ namespace XIVAutoAttack
             }
 
         }
+
+        /// <summary>
+        /// 根据目标血量判断是否要释放技能(单体技能)
+        /// </summary>
+        /// <param name="chara">队友</param>
+        /// <param name="strength">威力</param>
+        /// <param name="isTank">坦克的血量比例</param>
+        /// <param name="notTank">非坦克的血量比例</param>
+        /// <returns></returns>
+        public static bool SingleHeal(BattleChara chara, uint strength, double isTank, double notTank)
+        {
+            var shouldHeal = chara.MaxHp * 0.97 - chara.CurrentHp;
+            var healthRatio = ObjectInfomation.GetHealthRatio(chara);
+
+            if (Service.ClientState.LocalPlayer!.Level == 90 && shouldHeal >= CalcNormalHeal(strength)) return true;
+            if (healthRatio < isTank && TargetFilter.GetJobCategory(new BattleChara[] { chara }, Role.防护).Length == 1) return true;
+            if (healthRatio < notTank) return true;
+
+            return false;
+        }
+
+/*        public static bool AreaHeal(uint strength, double memberHP, double healRatio)
+        {
+
+            var shouldHeal = TargetHelper.PartyMembersAverHP ;
+            var healthRatio = ;
+
+            if (Service.ClientState.LocalPlayer!.Level == 90 && shouldHeal >= CalcNormalHeal(strength)) return true;
+            if (healthRatio < isTank && TargetFilter.GetJobCategory(new BattleChara[] { chara }, Role.防护).Length == 1) return true;
+            if (healthRatio < notTank) return true;
+
+            return false;
+        }*/
 
         private static double TraitModifiers(int level)
         {
