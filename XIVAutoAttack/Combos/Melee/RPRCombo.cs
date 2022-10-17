@@ -17,6 +17,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         }
     }
     internal override uint JobID => 39;
+    internal static byte level => Service.ClientState.LocalPlayer!.Level;
     internal struct Actions
     {
         public static readonly BaseAction
@@ -78,7 +79,20 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             Enshroud = new (24394),
 
             //团契
-            Communio = new (24398),
+            Communio = new(24398)
+            {
+                OtherCheck = b =>
+                {
+                    if (level < Communio.Level) return false;
+                    return true;
+                },               
+            },
+
+            //夜游魂切割
+            LemuresSlice = new (24399),
+
+            //夜游魂钐割
+            LemuresScythe = new (24400),
 
             //神秘纹 加盾
             ArcaneCrest = new (24404, true),
@@ -116,31 +130,39 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         //处于变身状态。
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
         {
-            
-            if (JobGauge.LemureShroud == 1 && JobGauge.VoidShroud == 0)
+            if (JobGauge.LemureShroud == 1 && JobGauge.VoidShroud == 0 && level >= Actions.Communio.Level)
             {
-                if(!IsMoving && Actions.Communio.ShouldUseAction(out act, mustUse: true)) return true;
+                if (!IsMoving && Actions.Communio.ShouldUseAction(out act, mustUse: true)) return true;
+                //跑机制来不及读条？补个buff混一下
                 else
                 {
                     if (Actions.ShadowofDeath.ShouldUseAction(out act, mustUse: IsMoving)) return true;
-
                 }
             }
 
-            if (JobGauge.LemureShroud > 1 && Actions.Guillotine.ShouldUseAction(out act)) return true;
+            if (JobGauge.LemureShroud == 1 && JobGauge.VoidShroud == 0 && level < Actions.Communio.Level)
+            { 
+                if (Actions.Gallows.ShouldUseAction(out act)) return true; 
+            }
+
+            if (JobGauge.VoidShroud >= 2)
+            {
+                if (Actions.LemuresSlice.ShouldUseAction(out act)) return true;
+                if (Actions.LemuresScythe.ShouldUseAction(out act)) return true;
+            }
 
             if (JobGauge.LemureShroud > 1 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping))
             {
                 if (Actions.Gibbet.ShouldUseAction(out act)) return true;
             }
-            if (JobGauge.LemureShroud >1 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping))
+            if (JobGauge.LemureShroud > 1 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping))
             {
                 if (Actions.Gallows.ShouldUseAction(out act)) return true;
             }
 
             if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping) &&
                 !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping) &&
-                Actions.Gibbet.ShouldUseAction(out act)) return true;
+                Actions.Gallows.ShouldUseAction(out act)) return true;
 
         }
 
@@ -204,15 +226,6 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        //变身用能力
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-        {
-            if (JobGauge.VoidShroud > 1)
-            {
-                if (Actions.GrimSwathe.ShouldUseAction(out act)) return true;
-                if (Actions.BloodStalk.ShouldUseAction(out act)) return true;
-            }
-        }
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
