@@ -293,7 +293,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
     private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //吉星相位
-        if ((float)Actions.AspectedBenefic.Target.CurrentHp / Actions.AspectedBenefic.Target.MaxHp > 0.4
+        if (ObjectInfomation.GetHealthRatio(Actions.AspectedBenefic.Target) > 0.4
             && Actions.AspectedBenefic.ShouldUseAction(out act)) return true;
 
         //福星
