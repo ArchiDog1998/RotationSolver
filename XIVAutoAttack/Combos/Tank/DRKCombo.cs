@@ -54,7 +54,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //嗜血
             BloodWeapon = new (3625)
             {
-                OtherCheck = b => JobGauge.Blood <= 70 && Service.ClientState.LocalPlayer.CurrentMp <= 7000,
+                OtherCheck = b => JobGauge.Blood <= 70 && LocalPlayer.CurrentMp <= 7000,
             },
 
             //暗影墙
@@ -139,15 +139,15 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     };
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.TheBlackestNight.ShouldUseAction(out act)) return true;
+        if (Actions.TheBlackestNight.ShouldUse(out act)) return true;
 
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.DarkMissionary.ShouldUseAction(out act)) return true;
-        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.DarkMissionary.ShouldUse(out act)) return true;
+        if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -156,52 +156,52 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     {
         if (JobGauge.Blood >= 80 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium))
         {
-            if (Actions.Quietus.ShouldUseAction(out act)) return true;
-            if (Actions.Bloodspiller.ShouldUseAction(out act)) return true;
+            if (Actions.Quietus.ShouldUse(out act)) return true;
+            if (Actions.Bloodspiller.ShouldUse(out act)) return true;
         }
 
         //AOE
-        if (Actions.StalwartSoul.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.Unleash.ShouldUseAction(out act)) return true;
+        if (Actions.StalwartSoul.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Unleash.ShouldUse(out act)) return true;
 
         //单体
-        if (Actions.Souleater.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.SyphonStrike.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.HardSlash.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.Souleater.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.SyphonStrike.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.HardSlash.ShouldUse(out act, lastComboActionID)) return true;
 
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
-        if (Actions.Unmend.ShouldUseAction(out act)) return true;
+        if (Actions.Unmend.ShouldUse(out act)) return true;
 
         return false;
     }
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.Blood >= 50 && Actions.LivingShadow.ShouldUseAction(out act)) return true;
+        if (JobGauge.Blood >= 50 && Actions.LivingShadow.ShouldUse(out act)) return true;
 
-        if (Actions.LivingDead.ShouldUseAction(out act)) return true;
+        if (Actions.LivingDead.ShouldUse(out act)) return true;
 
         //续Buff
-        if (Service.ClientState.LocalPlayer.CurrentMp >= 6000 || JobGauge.HasDarkArts)
+        if (LocalPlayer.CurrentMp >= 6000 || JobGauge.HasDarkArts)
         {
-            if (Actions.FloodofDarkness.ShouldUseAction(out act)) return true;
-            if (Actions.EdgeofDarkness.ShouldUseAction(out act)) return true;
-            if (Actions.FloodofDarkness.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.FloodofDarkness.ShouldUse(out act)) return true;
+            if (Actions.EdgeofDarkness.ShouldUse(out act)) return true;
+            if (Actions.FloodofDarkness.ShouldUse(out act, mustUse: true)) return true;
         }
-        if (JobGauge.DarksideTimeRemaining > 0 && Actions.Shadowbringer.ShouldUseAction(out act, mustUse:true, emptyOrSkipCombo:true)) return true;
+        if (JobGauge.DarksideTimeRemaining > 0 && Actions.Shadowbringer.ShouldUse(out act, mustUse:true, emptyOrSkipCombo:true)) return true;
 
-        if (Actions.Delirium.ShouldUseAction(out act)) return true;
+        if (Actions.Delirium.ShouldUse(out act)) return true;
 
-        if (Actions.SaltandDarkness.ShouldUseAction(out act)) return true;
-        if (Actions.BloodWeapon.ShouldUseAction(out act)) return true;
-        if (!IsMoving && Actions.SaltedEarth.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.SaltandDarkness.ShouldUse(out act)) return true;
+        if (Actions.BloodWeapon.ShouldUse(out act)) return true;
+        if (!IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
 
-        if (Actions.AbyssalDrain.ShouldUseAction(out act)) return true;
-        if (Actions.CarveandSpit.ShouldUseAction(out act)) return true;
-        if (Actions.AbyssalDrain.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.AbyssalDrain.ShouldUse(out act)) return true;
+        if (Actions.CarveandSpit.ShouldUse(out act)) return true;
+        if (Actions.AbyssalDrain.ShouldUse(out act, mustUse: true)) return true;
 
 
         //搞搞攻击
-        if (Actions.Plunge.ShouldUseAction(out act) && !IsMoving)
+        if (Actions.Plunge.ShouldUse(out act) && !IsMoving)
         {
             if (TargetFilter.DistanceToPlayer(Actions.Plunge.Target) < 1)
             {
@@ -215,23 +215,23 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //上黑盾
-        if (Actions.TheBlackestNight.ShouldUseAction(out act)) return true;
+        if (Actions.TheBlackestNight.ShouldUse(out act)) return true;
 
         if (abilityRemain == 2)
         {
             //减伤10%
-            if (Actions.Oblation.ShouldUseAction(out act)) return true;
+            if (Actions.Oblation.ShouldUse(out act)) return true;
 
             //减伤30%
-            if (Actions.ShadowWall.ShouldUseAction(out act)) return true;
+            if (Actions.ShadowWall.ShouldUse(out act)) return true;
 
             //减伤20%
-            if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
-            if (Actions.DarkMind.ShouldUseAction(out act)) return true;
+            if (GeneralActions.Rampart.ShouldUse(out act)) return true;
+            if (Actions.DarkMind.ShouldUse(out act)) return true;
         }
         //降低攻击
         //雪仇
-        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Reprisal.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -239,7 +239,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Plunge.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.Plunge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         return false;
     }

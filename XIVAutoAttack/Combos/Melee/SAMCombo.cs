@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Lumina.Data.Parsing.Layer;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -122,78 +123,78 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
         //赶紧回返！
         if (Service.IconReplacer.OriginalHook(Actions.OgiNamikiri.ID) == Actions.KaeshiNamikiri.ID)
         {
-            if (Actions.KaeshiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.KaeshiNamikiri.ShouldUse(out act, mustUse: true)) return true;
         }
         if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiGoken.ID)
         {
-            if (Actions.KaeshiGoken.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.KaeshiGoken.ShouldUse(out act, mustUse: true)) return true;
         }
         if (Service.IconReplacer.OriginalHook(16483) == Actions.KaeshiSetsugekka.ID)
         {
-            if (Actions.KaeshiSetsugekka.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.KaeshiSetsugekka.ShouldUse(out act, mustUse: true)) return true;
         }
 
-        if (Actions.OgiNamikiri.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.TenkaGoken.ShouldUseAction(out act))
+        if (Actions.OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.TenkaGoken.ShouldUse(out act))
         {
             if (SenCount > 1) return true;
         }
         else if (SenCount > 0)
         {
-            if (SenCount == 3 && Actions.MidareSetsugekka.ShouldUseAction(out act)) return true;
-            if (Actions.Higanbana.ShouldUseAction(out act)) return true;
+            if (SenCount == 3 && Actions.MidareSetsugekka.ShouldUse(out act)) return true;
+            if (Actions.Higanbana.ShouldUse(out act)) return true;
         }
 
 
         //123
         bool haveMeikyoShisui = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.MeikyoShisui);
         //如果是单体，且明镜止水的冷却时间小于3秒。
-        if (!JobGauge.HasSetsu && !Actions.Fuga.ShouldUseAction(out _))
+        if (!JobGauge.HasSetsu && !Actions.Fuga.ShouldUse(out _))
         {
-            if (Actions.Yukikaze.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID)) return true;
         }
         if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Moon))
         {
-            if (Actions.Mangetsu.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Gekko.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Jinpu.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Mangetsu.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Gekko.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Jinpu.ShouldUse(out act, lastComboActionID)) return true;
         }
         if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Flower))
         {
-            if (Actions.Oka.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Kasha.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Shifu.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Oka.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Kasha.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Shifu.ShouldUse(out act, lastComboActionID)) return true;
         }
         if (!JobGauge.HasGetsu)
         {
-            if (Actions.Mangetsu.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Gekko.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Jinpu.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Mangetsu.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Gekko.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Jinpu.ShouldUse(out act, lastComboActionID)) return true;
         }
         if (!JobGauge.HasKa)
         {
-            if (Actions.Oka.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Kasha.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Shifu.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Oka.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Kasha.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Shifu.ShouldUse(out act, lastComboActionID)) return true;
         }
         if (!JobGauge.HasSetsu)
         {
-            if (Actions.Yukikaze.ShouldUseAction(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+            if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
         }
-        if (Actions.Fuga.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.Hakaze.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.Fuga.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Hakaze.ShouldUse(out act, lastComboActionID)) return true;
 
 
 
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
-        if (Actions.Enpi.ShouldUseAction(out act)) return true;
+        if (Actions.Enpi.ShouldUse(out act)) return true;
 
         return false;
     }
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.Kenki >= 30 && Actions.HissatsuGyoten.ShouldUseAction(out act)) return true;
+        if (JobGauge.Kenki >= 30 && Actions.HissatsuGyoten.ShouldUse(out act)) return true;
         act = null;
         return false;
     }
@@ -202,20 +203,20 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
     {
         if (JobGauge.MeditationStacks == 3)
         {
-            if (Actions.Shoha2.ShouldUseAction(out act)) return true;
-            if (Actions.Shoha.ShouldUseAction(out act)) return true;
+            if (Actions.Shoha2.ShouldUse(out act)) return true;
+            if (Actions.Shoha.ShouldUse(out act)) return true;
         }
 
         if (JobGauge.Kenki >= 25)
         {
-            if (Actions.HissatsuGuren.ShouldUseAction(out act)) return true;
-            if (Actions.HissatsuKyuten.ShouldUseAction(out act)) return true;
+            if (Actions.HissatsuGuren.ShouldUse(out act)) return true;
+            if (Actions.HissatsuKyuten.ShouldUse(out act)) return true;
 
-            if (Actions.HissatsuSenei.ShouldUseAction(out act)) return true;
-            if (Actions.HissatsuShinten.ShouldUseAction(out act)) return true;
+            if (Actions.HissatsuSenei.ShouldUse(out act)) return true;
+            if (Actions.HissatsuShinten.ShouldUse(out act)) return true;
         }
 
-        if (TargetHelper.InBattle && Actions.Ikishoten.ShouldUseAction(out act)) return true;
+        if (TargetHelper.InBattle && Actions.Ikishoten.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -223,26 +224,25 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (HaveTargetAngle && 
-            nextGCD.ID != Actions.Higanbana.ID && 
-            nextGCD.ID != Actions.OgiNamikiri.ID && 
-            nextGCD.ID != Actions.KaeshiNamikiri.ID &&
-            Actions.MeikyoShisui.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (HaveHostileInRange && 
+            nextGCD != Actions.Higanbana && 
+            nextGCD != Actions.OgiNamikiri && 
+            nextGCD != Actions.KaeshiNamikiri &&
+            Actions.MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-        act = null;
-        return false;
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.ThirdEye.ShouldUseAction(out act)) return true;
+        if (Actions.ThirdEye.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if (GeneralActions.Feint.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Feint.ShouldUse(out act)) return true;
         return false;
     }
 }

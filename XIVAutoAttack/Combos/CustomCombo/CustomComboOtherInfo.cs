@@ -23,10 +23,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public static TimeSpan TimeSinceLastAction => Watcher.TimeSinceLastAction;
 
         protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
-        protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : null;
+        protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : LocalPlayer;
 
         protected static bool IsMoving => XIVAutoAttackPlugin.movingController.IsMoving;
-        protected static bool HaveTargetAngle => TargetHelper.HaveTargetAngle;
+        protected static bool HaveHostileInRange => TargetHelper.HaveHostileInRange;
         protected static float WeaponRemain => TargetHelper.WeaponRemain;
 
         protected virtual bool CanHealAreaAbility => TargetHelper.CanHealAreaAbility;
@@ -36,5 +36,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected virtual bool CanHealSingleSpell => TargetHelper.CanHealSingleSpell;
 
         protected bool SettingBreak => IconReplacer.BreakorProvoke || Service.Configuration.AutoBreak;
+
+        protected static byte Level => LocalPlayer?.Level ?? 0;
     }
 }

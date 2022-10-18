@@ -13,8 +13,11 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private static bool _useDeploymentTactics = false;
     private protected override BaseAction Raise => SMNCombo.Actions.Resurrection;
-    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
-    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
+    protected override bool CanHealSingleSpell => base.CanHealSingleAbility && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
+    protected override bool CanHealAreaSpell => base.CanHealAreaAbility  && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
+    protected override bool CanHealSingleAbility => base.CanHealSingleSpell;
+
+    protected override bool CanHealAreaAbility => base.CanHealAreaSpell;
     internal struct Actions
     {
         public static readonly BaseAction
@@ -63,17 +66,11 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
             },
 
             //仙光的低语
-            WhisperingDawn = new (16537)
-            {
-                //OtherCheck = b => JobGauge.SeraphTimer == 0,
-            },
+            WhisperingDawn = new (16537),
 
 
             //异想的幻光
-            FeyIllumination = new (16538)
-            {
-                //OtherCheck = b => JobGauge.SeraphTimer == 0,
-            },
+            FeyIllumination = new (16538),
 
 
             //异想的祥光
@@ -163,31 +160,31 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
     };
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Expedient.ShouldUseAction(out act)) return true;
+        if (Actions.Expedient.ShouldUse(out act)) return true;
 
         return false;
     }
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.ChainStratagem.ShouldUseAction(out act)) return true;
+        if (Actions.ChainStratagem.ShouldUse(out act)) return true;
 
         return false;
     }
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.ID == Actions.Adloquium.ID ||
-            nextGCD.ID == Actions.Succor.ID ||
-            nextGCD.ID == Actions.Indomitability.ID ||
-            nextGCD.ID == Actions.Excogitation.ID)
+        if (nextGCD == Actions.Adloquium ||
+            nextGCD == Actions.Succor ||
+            nextGCD == Actions.Indomitability ||
+            nextGCD == Actions.Excogitation)
         {
-            if (Actions.Recitation.ShouldUseAction(out act)) return true;
+            if (Actions.Recitation.ShouldUse(out act)) return true;
         }
 
         foreach (var item in TargetHelper.PartyMembers)
         {
-            if ((float)item.CurrentHp / item.MaxHp < 0.9) continue;
+            if (item.GetHealthRatio() < 0.9) continue;
             foreach (var status in item.StatusList)
             {
                 if(status.StatusId == 1223 && status.SourceObject != null 
@@ -205,40 +202,40 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //召唤小仙女
-        if (Actions.SummonEos.ShouldUseAction(out act)) return true;
+        if (Actions.SummonEos.ShouldUse(out act)) return true;
 
-        if (_useDeploymentTactics && Actions.DeploymentTactics.ShouldUseAction(out act)) return true;
+        if (_useDeploymentTactics && Actions.DeploymentTactics.ShouldUse(out act)) return true;
 
         //AOE
-        if (Actions.ArtofWar.ShouldUseAction(out act)) return true;
+        if (Actions.ArtofWar.ShouldUse(out act)) return true;
         //单体
-        if (Actions.Bio.ShouldUseAction(out act)) return true;
-        if (Actions.Broil.ShouldUseAction(out act)) return true;
-        if (Actions.Ruin2.ShouldUseAction(out act)) return true;
-        if (Actions.Ruin.ShouldUseAction(out act)) return true;
+        if (Actions.Bio.ShouldUse(out act)) return true;
+        if (Actions.Broil.ShouldUse(out act)) return true;
+        if (Actions.Ruin2.ShouldUse(out act)) return true;
+        if (Actions.Ruin.ShouldUse(out act)) return true;
 
         return false;
     }
 
     private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
-        if (Actions.Adloquium.ShouldUseAction(out act)) return true;
-        if (Service.ClientState.LocalPlayer.Level < Actions.Adloquium.Level && Actions.Physick.ShouldUseAction(out act)) return true;
+        if (Actions.Adloquium.ShouldUse(out act)) return true;
+        if (Level < Actions.Adloquium.Level && Actions.Physick.ShouldUse(out act)) return true;
 
         return false;
     }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+        if (Actions.SacredSoil.ShouldUse(out act)) return true;
 
-        if (Actions.Adloquium.ShouldUseAction(out act)) return true;
+        if (Actions.Adloquium.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
-        if (Actions.Succor.ShouldUseAction(out act)) return true;
+        if (Actions.Succor.ShouldUse(out act)) return true;
         return false;
 
     }
@@ -246,12 +243,12 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
     private protected override bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
     {
 
-        if (!Actions.DeploymentTactics.IsCoolDown && Service.ClientState.LocalPlayer.Level >= Actions.DeploymentTactics.Level)
+        if (!Actions.DeploymentTactics.IsCoolDown && Level >= Actions.DeploymentTactics.Level)
         {
             _useDeploymentTactics = true;
-            if (Actions.Adloquium.ShouldUseAction(out act)) return true;
+            if (Actions.Adloquium.ShouldUse(out act)) return true;
         }
-        if (Actions.Succor.ShouldUseAction(out act)) return true;
+        if (Actions.Succor.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -259,10 +256,10 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+        if (Actions.SacredSoil.ShouldUse(out act)) return true;
 
-        if (Actions.SummonSeraph.ShouldUseAction(out act)) return true;
-        if (Actions.FeyIllumination.ShouldUseAction(out act)) return true;
+        if (Actions.SummonSeraph.ShouldUse(out act)) return true;
+        if (Actions.FeyIllumination.ShouldUse(out act)) return true;
 
 
         return false;
@@ -270,18 +267,18 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+        if (Actions.SacredSoil.ShouldUse(out act)) return true;
 
         if (abilityRemain == 1)
         {
-            if (Actions.Consolation.ShouldUseAction(out act)) return true;
-            if (Actions.SummonSeraph.ShouldUseAction(out act)) return true;
-            if (Actions.WhisperingDawn.ShouldUseAction(out act)) return true;
-            if (Actions.FeyBlessing.ShouldUseAction(out act)) return true;
+            if (Actions.Consolation.ShouldUse(out act)) return true;
+            if (Actions.SummonSeraph.ShouldUse(out act)) return true;
+            if (Actions.WhisperingDawn.ShouldUse(out act)) return true;
+            if (Actions.FeyBlessing.ShouldUse(out act)) return true;
 
             if (JobGauge.Aetherflow > 0)
             {
-                if (Actions.Indomitability.ShouldUseAction(out act)) return true;
+                if (Actions.Indomitability.ShouldUse(out act)) return true;
             }
         }
 
@@ -291,18 +288,18 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.SacredSoil.ShouldUseAction(out act)) return true;
+        if (Actions.SacredSoil.ShouldUse(out act)) return true;
 
-        if (Actions.Aetherpact.ShouldUseAction(out act) && JobGauge.FairyGauge >= 70) return true;
+        if (Actions.Aetherpact.ShouldUse(out act) && JobGauge.FairyGauge >= 70) return true;
 
-        if (Actions.Protraction.ShouldUseAction(out act)) return true;
+        if (Actions.Protraction.ShouldUse(out act)) return true;
 
         if (JobGauge.Aetherflow > 0)
         {
-            if (Actions.Excogitation.ShouldUseAction(out act)) return true;
-            if (Actions.Lustrate.ShouldUseAction(out act)) return true;
+            if (Actions.Excogitation.ShouldUse(out act)) return true;
+            if (Actions.Lustrate.ShouldUse(out act)) return true;
         }
-        if (Actions.Aetherpact.ShouldUseAction(out act)) return true;
+        if (Actions.Aetherpact.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -312,11 +309,11 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
         if (JobGauge.Aetherflow == 0)
         {
-            if (Actions.Aetherflow.ShouldUseAction(out act)) return true;
+            if (Actions.Aetherflow.ShouldUse(out act)) return true;
         }
         else if (Actions.Aetherflow.RecastTimeRemain < 6)
         {
-            if (Actions.EnergyDrain.ShouldUseAction(out act)) return true;
+            if (Actions.EnergyDrain.ShouldUse(out act)) return true;
         }
 
         act = null;

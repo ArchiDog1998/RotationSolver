@@ -62,7 +62,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //Sayout!
             if (act != null && act is BaseAction GCDaction)
             {
-                if (GCDaction.EnermyLocation != EnemyLocation.None && GCDaction.Target.HasLocationSide())
+                if (GCDaction.EnermyLocation != EnemyLocation.None && GCDaction.Target.HasLocationSide()
+                     && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))
                 {
                     if (CheckAction(GCDaction.ID))
                     {
@@ -108,7 +109,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         DateTime lastTime;
         private bool CheckAction(uint actionID)
         {
-            //return false;
             if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0,0,3)) && IconReplacer.AutoAttack)
             {
                 _lastSayingGCDAction = actionID;
@@ -180,7 +180,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
             //硬拉或者开始奶人
             if ((HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) && EsunaRaise(out act, abilityRemain, true)) return act;
-            if (TargetHelper.HPNotFull && HaveTargetAngle)
+            if (TargetHelper.HPNotFull && HaveHostileInRange)
             {
                 if (CanHealAreaSpell && HealAreaGCD(lastComboActionID, out act)) return act;
                 if (CanHealSingleSpell && HealSingleGCD(lastComboActionID, out act)) return act;
@@ -201,7 +201,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0 || TargetHelper.DyingPeople.Length > 0)
             {
                 if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗
-                    && GeneralActions.Esuna.ShouldUseAction(out act, mustUse: true)) return true;
+                    && GeneralActions.Esuna.ShouldUse(out act, mustUse: true)) return true;
 
             }
 
@@ -210,13 +210,13 @@ namespace XIVAutoAttack.Combos.CustomCombo
             {
                 if (Service.ClientState.LocalPlayer.ClassJob.Id == 35)
                 {
-                    if (HaveSwift && Raise.ShouldUseAction(out act)) return true;
+                    if (HaveSwift && Raise.ShouldUse(out act)) return true;
                 }
                 else if (IconReplacer.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0 || mustUse)
                 {
-                    if (Raise.ShouldUseAction(out _))
+                    if (Raise.ShouldUse(out _))
                     {
-                        if (mustUse && GeneralActions.Swiftcast.ShouldUseAction(out act)) return true;
+                        if (mustUse && GeneralActions.Swiftcast.ShouldUse(out act)) return true;
                         act = Raise;
                         return true;
                     }

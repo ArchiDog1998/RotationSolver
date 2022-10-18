@@ -74,7 +74,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
                 OtherCheck = b =>
                 {
 
-                    if (safeMove && TargetFilter.DistanceToPlayer(Target) > 2) return false;
+                    if (safeMove && b.DistanceToPlayer() > 2) return false;
                     if (LastAction == SpineshatterDive.ID) return false;
 
                     if (inOpener && (LastWeaponskill == FangandClaw.ID || LastWeaponskill == HeavensThrust.ID)) return true;
@@ -89,7 +89,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (safeMove && TargetFilter.DistanceToPlayer(Target) > 2) return false;
+                    if (safeMove && b.DistanceToPlayer() > 2) return false;
 
                     if (inOpener && LastWeaponskill == RaidenThrust.ID) return true;
                     if (!inOpener) return true;
@@ -105,7 +105,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
                 {
                     if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.DiveReady)) return false;
 
-                    if (safeMove && Vector3.Distance(LocalPlayer.Position, b.Position) - b.HitboxRadius > 2) return false;
+                    if (safeMove && b.DistanceToPlayer() > 2) return false;
 
                     if (inOpener && LastWeaponskill == ChaoticSpring.ID) return true;
                     if (!inOpener) return true;
@@ -116,17 +116,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             //高跳
             HighJump = new (16478)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.DiveReady)) return false;
-
-                    if (safeMove && Vector3.Distance(LocalPlayer.Position, b.Position) - b.HitboxRadius > 2) return false;
-
-                    if (inOpener && LastWeaponskill == ChaoticSpring.ID) return true;
-                    if (!inOpener) return true;
-
-                    return false;
-                },
+                OtherCheck = Jump.OtherCheck,
             },
             //幻象冲
             MirageDive = new (7399)
@@ -202,13 +192,13 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
                     b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
 
                     var targets = TargetFilter.GetJobCategory(Targets, Role.近战);
-                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+                    if (targets.Length > 0) return TargetFilter.RandomObject(targets);
 
                     targets = TargetFilter.GetJobCategory(Targets, Role.远程);
-                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+                    if (targets.Length > 0) return TargetFilter.RandomObject(targets);
 
                     targets = Targets;
-                    if (targets.Length > 0) return ASTCombo.RandomObject(targets);
+                    if (targets.Length > 0) return TargetFilter.RandomObject(targets);
 
                     return LocalPlayer;
                 },
@@ -257,8 +247,8 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
     {
         if (abilityRemain > 1)
         {
-            if (Actions.SpineshatterDive.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-            if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Actions.DragonfireDive.ShouldUse(out act, mustUse: true)) return true;
         }
 
         act = null;
@@ -266,10 +256,10 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
     }
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.ID == Actions.FullThrust.ID || nextGCD.ID == Actions.CoerthanTorment.ID || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.FangandClaw)
+        if (nextGCD == Actions.FullThrust || nextGCD == Actions.CoerthanTorment|| StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.FangandClaw)
         {
             //龙剑
-            if (abilityRemain ==1 && Actions.LifeSurge.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            if (abilityRemain ==1 && Actions.LifeSurge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
@@ -278,14 +268,14 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //猛枪
-        if (inOpener && abilityRemain == 1 && Actions.LanceCharge.ShouldUseAction(out act, mustUse: true)) return true;
-        if (!inOpener && Actions.LanceCharge.ShouldUseAction(out act, mustUse: true)) return true;
+        if (inOpener && abilityRemain == 1 && Actions.LanceCharge.ShouldUse(out act, mustUse: true)) return true;
+        if (!inOpener && Actions.LanceCharge.ShouldUse(out act, mustUse: true)) return true;
 
         //巨龙视线
-        if (Actions.DragonSight.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.DragonSight.ShouldUse(out act, mustUse: true)) return true;
 
         //战斗连祷
-        if (Actions.BattleLitany.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.BattleLitany.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -293,36 +283,36 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //死者之岸
-        if (Actions.Nastrond.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.Nastrond.ShouldUse(out act, mustUse: true)) return true;
 
         //坠星冲
-        if (Actions.Stardiver.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.Stardiver.ShouldUse(out act, mustUse: true)) return true;
 
         //高跳
-        if (Service.ClientState.LocalPlayer.Level >= Actions.HighJump.Level)
+        if (Level >= Actions.HighJump.Level)
         {
-            if (Actions.HighJump.ShouldUseAction(out act)) return true;
+            if (Actions.HighJump.ShouldUse(out act)) return true;
         }
         else
         {
-            if (Actions.Jump.ShouldUseAction(out act)) return true;
+            if (Actions.Jump.ShouldUse(out act)) return true;
         }
 
         //尝试进入红龙血
-        if (Actions.Geirskogul.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.Geirskogul.ShouldUse(out act, mustUse: true)) return true;
 
         //破碎冲
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.RightEye) && Actions.SpineshatterDive.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-        if (Actions.SpineshatterDive.ShouldUseAction(out act)) return true;
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.RightEye) && Actions.SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.SpineshatterDive.ShouldUse(out act)) return true;
 
         //幻象冲
-        if (Actions.MirageDive.ShouldUseAction(out act)) return true;
+        if (Actions.MirageDive.ShouldUse(out act)) return true;
 
         //龙炎冲
-        if (Actions.DragonfireDive.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.DragonfireDive.ShouldUse(out act, mustUse: true)) return true;
 
         //天龙点睛
-        if (Actions.WyrmwindThrust.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.WyrmwindThrust.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -345,40 +335,40 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             inOpener = false;
         }
         #region 群伤
-        if (Actions.CoerthanTorment.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.SonicThrust.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.DoomSpike.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.CoerthanTorment.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.SonicThrust.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.DoomSpike.ShouldUse(out act, lastComboActionID)) return true;
 
         #endregion
 
         #region 单体
         if (Config.GetBoolByName("ShouldDelay"))
         {
-            if (Actions.WheelingThrust.ShouldUseAction(out act)) return true;
-            if (Actions.FangandClaw.ShouldUseAction(out act)) return true;
+            if (Actions.WheelingThrust.ShouldUse(out act)) return true;
+            if (Actions.FangandClaw.ShouldUse(out act)) return true;
         }
         else
         {
-            if (Actions.FangandClaw.ShouldUseAction(out act)) return true;
-            if (Actions.WheelingThrust.ShouldUseAction(out act)) return true;
+            if (Actions.FangandClaw.ShouldUse(out act)) return true;
+            if (Actions.WheelingThrust.ShouldUse(out act)) return true;
         }
 
         //看看是否需要续Buff
         var time = StatusHelper.FindStatusSelfFromSelf(ObjectStatus.PowerSurge);
         if (time.Length > 0 && time[0] > 13)
         {
-            if (Actions.FullThrust.ShouldUseAction(out act, lastComboActionID)) return true;
-            if (Actions.VorpalThrust.ShouldUseAction(out act, lastComboActionID)) return true;
-            if (Actions.ChaosThrust.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.FullThrust.ShouldUse(out act, lastComboActionID)) return true;
+            if (Actions.VorpalThrust.ShouldUse(out act, lastComboActionID)) return true;
+            if (Actions.ChaosThrust.ShouldUse(out act, lastComboActionID)) return true;
         }
         else
         {
-            if (Actions.Disembowel.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Disembowel.ShouldUse(out act, lastComboActionID)) return true;
         }
-        if (Actions.TrueThrust.ShouldUseAction(out act)) return true;
+        if (Actions.TrueThrust.ShouldUse(out act)) return true;
 
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
-        if (Actions.PiercingTalon.ShouldUseAction(out act)) return true;
+        if (Actions.PiercingTalon.ShouldUse(out act)) return true;
 
         return false;
 
@@ -388,7 +378,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if (GeneralActions.Feint.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Feint.ShouldUse(out act)) return true;
         return false;
     }
 }

@@ -79,7 +79,7 @@ namespace XIVAutoAttack.Combos
         {
             get
             {
-                if (Service.ClientState.LocalPlayer.Level < 80)
+                if (Level < 80)
                 {
                     return JobGauge.PolyglotStacks == 1;
                 }
@@ -92,7 +92,7 @@ namespace XIVAutoAttack.Combos
         private bool HasFire => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Firestarter);
         private bool HasThunder => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Thundercloud);
         internal static bool InTranspose = false;
-        private bool HasSwift => StatusHelper.FindStatusFromSelf(Target, ObjectStatus.Thunder,
+        private bool TargetHasThunder => StatusHelper.FindStatusFromSelf(Target, ObjectStatus.Thunder,
                         ObjectStatus.Thunder2,
                         ObjectStatus.Thunder3,
                         ObjectStatus.Thunder4).Length > 0;
@@ -102,14 +102,12 @@ namespace XIVAutoAttack.Combos
         {
             get
             {
-                if (!(JobGauge.InUmbralIce && LocalPlayer.CurrentMp > 9000 && (JobGauge.UmbralHearts == 3 || Service.ClientState.LocalPlayer.Level < 58))) return false;
+                if (!(JobGauge.InUmbralIce && LocalPlayer.CurrentMp > 9000 && (JobGauge.UmbralHearts == 3 || Level < 58))) return false;
 
                 if (UseThunderIn) return true;
-                if (Service.TargetManager.Target is BattleChara b)
-                {
-                    if (StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 20) return true;
-                    if (StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder2, ObjectStatus.Thunder4) > 10) return true;
-                }
+
+                if (StatusHelper.FindStatusTimeFromSelf(Target, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 20) return true;
+                if (StatusHelper.FindStatusTimeFromSelf(Target, ObjectStatus.Thunder2, ObjectStatus.Thunder4) > 10) return true;
                 return false;
             }
         } 
@@ -162,7 +160,6 @@ namespace XIVAutoAttack.Combos
                 Triplecast = new(7421u)
                 {
                     BuffsProvide = GeneralActions.Swiftcast.BuffsProvide,
-                    //OtherCheck = () => JobGauge.InAstralFire && JobGauge.UmbralHearts < 2 && JobGauge.ElementTimeRemaining > 10000,
                 },
 
                 //黑魔纹
@@ -261,8 +258,8 @@ namespace XIVAutoAttack.Combos
 
         private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
         {
-            if (Actions.BetweenTheLines.ShouldUseAction(out act)) return true;
-            if (Actions.Leylines.ShouldUseAction(out act, mustUse:true)) return true;
+            if (Actions.BetweenTheLines.ShouldUse(out act)) return true;
+            if (Actions.Leylines.ShouldUse(out act, mustUse:true)) return true;
 
             return base.HealSingleAbility(abilityRemain, out act);
         }
@@ -270,33 +267,21 @@ namespace XIVAutoAttack.Combos
         private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
         {
             //加个魔罩
-            if (Actions.Manaward.ShouldUseAction(out act)) return true;
+            if (Actions.Manaward.ShouldUse(out act)) return true;
 
             return base.DefenceSingleAbility(abilityRemain, out act);
         }
 
         private protected override bool MoveAbility(byte abilityRemain, out IAction act)
         {
-            if (Actions.AetherialManipulation.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.AetherialManipulation.ShouldUse(out act, mustUse: true)) return true;
 
             return base.MoveAbility(abilityRemain, out act);
         }
         private bool Maintence( out IAction act)
         {
-            if (Actions.UmbralSoul.ShouldUseAction(out act)) return true;
-            if (Actions.Transpose.ShouldUseAction(out act)) return true;
-
-            //if (Service.ClientState.LocalPlayer.Level >= Actions.UmbralSoul.Level)
-            //{
-            //    if (JobGauge.InAstralFire)
-            //    {
-            //        if (Actions.Transpose.ShouldUseAction(out act)) return true;
-            //    }
-            //}
-            //else
-            //{
-            //    if (Actions.Transpose.ShouldUseAction(out act)) return true;
-            //}
+            if (Actions.UmbralSoul.ShouldUse(out act)) return true;
+            if (Actions.Transpose.ShouldUse(out act)) return true;
 
             return false;
         }
@@ -307,11 +292,11 @@ namespace XIVAutoAttack.Combos
             if (LastAction == Actions.Manafont.ID) return false;
 
             //星灵转冰
-            if (Service.ClientState.LocalPlayer.Level >= 90 && JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp == 0
+            if (Level >= 90 && JobGauge.InAstralFire && LocalPlayer.CurrentMp == 0
                 && (JobGauge.PolyglotStacks > 0 || JobGauge.EnochianTimer < 3000)
                 && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5 
                 || !Actions.Triplecast.IsCoolDown || Actions.Triplecast.RecastTimeRemain < 15
-                ||　(Service.TargetManager.Target is BattleChara b  &&
+                ||　(Target is BattleChara b  &&
                 StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 15)))
             {
                 Actions.Transpose.AfterUse = () =>
@@ -319,7 +304,7 @@ namespace XIVAutoAttack.Combos
                     InTranspose = true;
                     UseThunderIn = false;
                 };
-                if (Actions.Transpose.ShouldUseAction(out act)) return true;
+                if (Actions.Transpose.ShouldUse(out act)) return true;
             }
             else
             {
@@ -327,15 +312,15 @@ namespace XIVAutoAttack.Combos
             }
             //星灵转火
             if (JobGauge.InUmbralIce && InTranspose && (HasFire || HaveSwift) && 
-                (nextGCD.ID == Actions.Fire3.ID || nextGCD.ID == Actions.Fire2.ID || Service.ClientState.LocalPlayer.CurrentMp >= 8000
-                || (HasFire && Service.ClientState.LocalPlayer.CurrentMp >= 5600)) )
+                (nextGCD.ID == Actions.Fire3.ID || nextGCD.ID == Actions.Fire2.ID || LocalPlayer.CurrentMp >= 8000
+                || (HasFire && LocalPlayer.CurrentMp >= 5600)) )
             {
-                if (Actions.Transpose.ShouldUseAction(out act)) return true;
+                if (Actions.Transpose.ShouldUse(out act)) return true;
             }
             //有火苗转火
             if(nextGCD.ID == Actions.Fire3.ID && HasFire && JobGauge.InUmbralIce)
             {
-                if (Actions.Transpose.ShouldUseAction(out act)) return true;
+                if (Actions.Transpose.ShouldUse(out act)) return true;
             }
 
             act = null;
@@ -344,7 +329,7 @@ namespace XIVAutoAttack.Combos
 
         private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
         {
-            if (!HaveTargetAngle && Maintence(out act)) return true;
+            if (!HaveHostileInRange && Maintence(out act)) return true;
 
 
             return base.GeneralAbility(abilityRemain, out act);
@@ -360,17 +345,16 @@ namespace XIVAutoAttack.Combos
             {
                 if (JobGauge.InAstralFire && (LocalPlayer.CurrentMp < 5000 || JobGauge.ElementTimeRemaining < 5000))
                 {
-                    if (Actions.Transpose.ShouldUseAction(out act)) return true;
+                    if (Actions.Transpose.ShouldUse(out act)) return true;
                 }
-                if (!InTranspose && Actions.Triplecast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-                //if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
+                if (!InTranspose && Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             }
 
-            if ((JobGauge.InUmbralIce && !HasSwift) || (JobGauge.InAstralFire && Service.ClientState.LocalPlayer.CurrentMp <= 4400)
+            if ((JobGauge.InUmbralIce && !TargetHasThunder) || (JobGauge.InAstralFire && LocalPlayer.CurrentMp <= 4400)
                 || GeneralActions.Swiftcast.RecastTimeRemain > 20)
             {
                 //加个激情
-                if (Actions.Sharpcast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+                if (Actions.Sharpcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             }
 
             if (JobGauge.InUmbralIce)
@@ -378,36 +362,29 @@ namespace XIVAutoAttack.Combos
                 if (InTranspose)
                 {
                     //加个醒梦
-                    if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.LucidDreaming.ShouldUse(out act)) return true;
 
                     //加个即刻
-                    if (!HasFire && (UseThunderIn || HasThunder) && GeneralActions.Swiftcast.ShouldUseAction(out act)) return true;
+                    if (!HasFire && (UseThunderIn || HasThunder) && GeneralActions.Swiftcast.ShouldUse(out act)) return true;
                     if (!HasFire && GeneralActions.Swiftcast.RecastTimeRemain >= 5 && Actions.Triplecast.RecastTimeRemain < 15 && 
-                        Actions.Triplecast.ShouldUseAction(out act, emptyOrSkipCombo:true)) return true;
+                        Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo:true)) return true;
                 }
             }
 
             if (JobGauge.InAstralFire)
             {
                 //三连
-                if (Actions.Triplecast.ShouldUseAction(out act)) return true;
+                if (Actions.Triplecast.ShouldUse(out act)) return true;
 
                 //爆发药！
                 if (UseBreakItem(out act)) return true;
 
                 //自动黑魔纹
-                if(Config.GetBoolByName("AutoLeylines") && Actions.Leylines.ShouldUseAction(out act, mustUse: true)) return true;
+                if(Config.GetBoolByName("AutoLeylines") && Actions.Leylines.ShouldUse(out act, mustUse: true)) return true;
             }
 
-
-            //else if (nextGCD.ID == Actions.Fire.ID || nextGCD.ID == Actions.Fire3.ID)
-            //{
-            //    //加个激情
-            //    if (Actions.Sharpcast.ShouldUseAction(out act)) return true;
-            //}
-
             //加个通晓
-            if (Actions.Amplifier.ShouldUseAction(out act)) return true;
+            if (Actions.Amplifier.ShouldUse(out act)) return true;
 
             return false;
         }
@@ -421,7 +398,7 @@ namespace XIVAutoAttack.Combos
                 //双星灵
                 if (InTranspose)
                 {
-                    if (!Actions.Fire2.ShouldUseAction(out _) && JobGauge.IsParadoxActive && Actions.Fire.ShouldUseAction(out act)) return true;
+                    if (!Actions.Fire2.ShouldUse(out _) && JobGauge.IsParadoxActive && Actions.Fire.ShouldUse(out act)) return true;
 
                     //如果可以不硬读条转火
                     if(HasFire || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 1.5)
@@ -430,13 +407,13 @@ namespace XIVAutoAttack.Combos
                         if (!UseThunderIn && HasThunder && AddThunder(lastComboActionID, out act)) return true;
 
                         //硬读条补雷
-                        if (!UseThunderIn && HasSwift && AddThunder(lastComboActionID, out act)) return true;
+                        if (!UseThunderIn && TargetHasThunder && AddThunder(lastComboActionID, out act)) return true;
 
                         if (AddPolyglotAttach(out act)) return true;
                     }
 
-                    if (Actions.Fire2.ShouldUseAction(out act)) return true;
-                    if (Actions.Fire3.ShouldUseAction(out act)) return true;
+                    if (Actions.Fire2.ShouldUse(out act)) return true;
+                    if (Actions.Fire3.ShouldUse(out act)) return true;
                 }
                 else
                 {
@@ -445,12 +422,12 @@ namespace XIVAutoAttack.Combos
                     {
                         //进入火状态
                         //试试看火2,3
-                        if (Actions.Fire2.ShouldUseAction(out act)) return true;
+                        if (Actions.Fire2.ShouldUse(out act)) return true;
 
                         //把冰悖论放掉
-                        if (JobGauge.IsParadoxActive && Actions.Fire.ShouldUseAction(out act)) return true;
+                        if (JobGauge.IsParadoxActive && Actions.Fire.ShouldUse(out act)) return true;
 
-                        if (Actions.Fire3.ShouldUseAction(out act)) return true;
+                        if (Actions.Fire3.ShouldUse(out act)) return true;
                     }
 
                     //如果通晓满了，就放掉。
@@ -464,7 +441,7 @@ namespace XIVAutoAttack.Combos
                     {
                         //加个激情
                         var relayAct = act;
-                        if (Actions.Sharpcast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+                        if (Actions.Sharpcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
                         act = relayAct;
                         return true;
@@ -474,14 +451,14 @@ namespace XIVAutoAttack.Combos
                     if (AddUmbralHearts(out act)) return true;
 
                     //把冰悖论放掉
-                    if (!Actions.Fire2.ShouldUseAction(out _) && JobGauge.IsParadoxActive && Actions.Fire.ShouldUseAction(out act)) return true;
+                    if (!Actions.Fire2.ShouldUse(out _) && JobGauge.IsParadoxActive && Actions.Fire.ShouldUse(out act)) return true;
 
 
                     //试试看冰2,3
-                    if (Actions.Blizzard2.ShouldUseAction(out act)) return true;
-                    if (Actions.Blizzard4.ShouldUseAction(out act)) return true;
-                    if (Actions.Blizzard3.ShouldUseAction(out act)) return true;
-                    if (Actions.Blizzard.ShouldUseAction(out act)) return true;
+                    if (Actions.Blizzard2.ShouldUse(out act)) return true;
+                    if (Actions.Blizzard4.ShouldUse(out act)) return true;
+                    if (Actions.Blizzard3.ShouldUse(out act)) return true;
+                    if (Actions.Blizzard.ShouldUse(out act)) return true;
                 }
             }
             //火状态
@@ -490,21 +467,21 @@ namespace XIVAutoAttack.Combos
                 //如果需要续时间,提高档数
                 if (JobGauge.ElementTimeRemaining < Config.GetFloatByName("TimeToAdd") * 1000)
                 {
-                    if(Service.ClientState.LocalPlayer.CurrentMp >= 4000 || JobGauge.AstralFireStacks == 2)
+                    if(LocalPlayer.CurrentMp >= 4000 || JobGauge.AstralFireStacks == 2)
                     {
-                        if (Actions.Fire.ShouldUseAction(out act)) return true;
+                        if (Actions.Fire.ShouldUse(out act)) return true;
                     }
                     else
                     {
-                        if (Actions.Flare.ShouldUseAction(out act)) return true;
-                        if (Actions.Despair.ShouldUseAction(out act)) return true;
+                        if (Actions.Flare.ShouldUse(out act)) return true;
+                        if (Actions.Despair.ShouldUse(out act)) return true;
                     }
                 }
                 if (JobGauge.AstralFireStacks == 1)
                 {
-                    if (Actions.Fire2.ShouldUseAction( out act)) return true;
-                    if (Actions.Fire3.ShouldUseAction( out act)) return true;
-                    if (Actions.Fire.ShouldUseAction(out act)) return true;
+                    if (Actions.Fire2.ShouldUse( out act)) return true;
+                    if (Actions.Fire3.ShouldUse( out act)) return true;
+                    if (Actions.Fire.ShouldUse(out act)) return true;
                 }
 
                 //火起手上雷
@@ -513,7 +490,7 @@ namespace XIVAutoAttack.Combos
                     //上雷
                     if (Service.ClientState.LocalPlayer.CurrentMp == 8000 && AddThunder(lastComboActionID, out act)) return true;
                     //强插三连
-                    if (Service.ClientState.LocalPlayer.CurrentMp == 6000 && Actions.Triplecast.ShouldUseAction(out act)) return true;
+                    if (Service.ClientState.LocalPlayer.CurrentMp == 6000 && Actions.Triplecast.ShouldUse(out act)) return true;
                 }
 
                 //如果通晓满了，就放掉。
@@ -523,24 +500,24 @@ namespace XIVAutoAttack.Combos
                 }
 
                 //三连
-                if (Service.ClientState.LocalPlayer.CurrentMp >= 4000 && Actions.Triplecast.ShouldUseAction(out act)) return true;
+                if (LocalPlayer.CurrentMp >= 4000 && Actions.Triplecast.ShouldUse(out act)) return true;
 
                 //冰针不够，马上核爆
-                if (JobGauge.UmbralHearts == 1 || Service.ClientState.LocalPlayer.CurrentMp < 3800)
+                if (JobGauge.UmbralHearts == 1 || LocalPlayer.CurrentMp < 3800)
                 {
-                    if (Actions.Flare.ShouldUseAction(out act)) return true;
+                    if (Actions.Flare.ShouldUse(out act)) return true;
                 }
                 //蓝不够，马上绝望
-                if (Service.ClientState.LocalPlayer.CurrentMp < Actions.Fire4.MPNeed + Actions.Despair.MPNeed)
+                if (LocalPlayer.CurrentMp < Actions.Fire4.MPNeed + Actions.Despair.MPNeed)
                 {
-                    if (Actions.Despair.ShouldUseAction(out act)) return true;
+                    if (Actions.Despair.ShouldUse(out act)) return true;
                 }
 
                 //试试看火2
-                if (Actions.Fire2.ShouldUseAction(out act)) return true;
+                if (Actions.Fire2.ShouldUse(out act)) return true;
 
                 //如果MP够打一发伤害。
-                if (Service.ClientState.LocalPlayer.CurrentMp >= AttackAstralFire(out act))
+                if (LocalPlayer.CurrentMp >= AttackAstralFire(out act))
                 {
                     //火状态，攻击，强插三连。
                     //if (Actions.Triplecast.ShouldUseAction(out IAction action)) act = action;
@@ -548,7 +525,7 @@ namespace XIVAutoAttack.Combos
                 }
 
                 //加个魔泉
-                if (Actions.Manafont.ShouldUseAction(out act)) return true;
+                if (Actions.Manafont.ShouldUse(out act)) return true;
 
                 //刚刚魔泉，别给我转冰了。
                 if (LastAction == Actions.Manafont.ID) return false;
@@ -557,37 +534,36 @@ namespace XIVAutoAttack.Combos
                 if (JobGauge.PolyglotStacks == 2 || (JobGauge.PolyglotStacks == 1 && JobGauge.EnochianTimer < 3000))
                 {
                     if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5
-                        || (Service.TargetManager.Target is BattleChara b &&
+                        || (Target is BattleChara b &&
                         StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10))
-                       && Service.ClientState.LocalPlayer.Level >= 90 && AddPolyglotAttach(out act)) return true;
+                       && Level >= 90 && AddPolyglotAttach(out act)) return true;
                 }
             }
 
             //赶在前面弄个激情
-            if (!TargetHelper.InBattle && Actions.Sharpcast.ShouldUseAction(out act)) return true;
+            if (!TargetHelper.InBattle && Actions.Sharpcast.ShouldUse(out act)) return true;
 
             if (Config.GetBoolByName("StartFire") && !JobGauge.InAstralFire && !JobGauge.InUmbralIce)
             {
-                if (Actions.Fire2.ShouldUseAction(out act)) return true;
-                if (Actions.Fire3.ShouldUseAction(out act)) return true;
+                if (Actions.Fire2.ShouldUse(out act)) return true;
+                if (Actions.Fire3.ShouldUse(out act)) return true;
             }
 
             //进入冰状态
             //试试看冰2,3,1给个冰状态
-            if (Actions.Blizzard2.ShouldUseAction(out act, lastComboActionID)) return true;
-            if (Actions.Blizzard3.ShouldUseAction(out act, lastComboActionID)) return true;
+            if (Actions.Blizzard2.ShouldUse(out act, lastComboActionID)) return true;
+            if (Actions.Blizzard3.ShouldUse(out act, lastComboActionID)) return true;
 
-            if (Service.ClientState.LocalPlayer.Level < Actions.Blizzard3.Level && Actions.Transpose.ShouldUseAction(out act)) return true;
+            if (Level < Actions.Blizzard3.Level && Actions.Transpose.ShouldUse(out act)) return true;
 
             //移动
-            if (IsMoving && HaveTargetAngle)
+            if (IsMoving && HaveHostileInRange)
             {
                 if (AddPolyglotAttach(out act)) return true;
-                if (Actions.Triplecast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-                //if (GeneralActions.Swiftcast.ShouldUseAction(out act, mustUse: true)) return true;
+                if (Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             }
 
-            if (!HaveTargetAngle && Maintence(out act)) return true;
+            if (!HaveHostileInRange && Maintence(out act)) return true;
 
             return false;
         }
@@ -600,10 +576,9 @@ namespace XIVAutoAttack.Combos
         /// <returns></returns>
         private uint AttackAstralFire( out IAction act)
         {
-            uint addition = Service.ClientState.LocalPlayer.Level < Actions.Despair.Level ? 0u : 800u;
+            uint addition = Level < Actions.Despair.Level ? 0u : 800u;
 
-            if (Actions.Fire4.ShouldUseAction( out act)) return Actions.Fire4.MPNeed + addition;
-            //if (Actions.Paradox.ShouldUseAction(out act)) return Actions.Paradox.MPNeed + addition;
+            if (Actions.Fire4.ShouldUse( out act)) return Actions.Fire4.MPNeed + addition;
 
             //如果有火苗了，那就来火3
             if (HasFire)
@@ -611,7 +586,7 @@ namespace XIVAutoAttack.Combos
                 act = Actions.Fire3;
                 return addition;
             }
-            if (Actions.Fire.ShouldUseAction(out act)) return Actions.Fire.MPNeed + addition;
+            if (Actions.Fire.ShouldUse(out act)) return Actions.Fire.MPNeed + addition;
 
             return uint.MaxValue;
         }
@@ -619,14 +594,14 @@ namespace XIVAutoAttack.Combos
         private bool AddThunder(uint lastAct, out IAction act)
         {
             //试试看雷2
-            if (Actions.Thunder2.ShouldUseAction(out act, lastAct)) return true;
+            if (Actions.Thunder2.ShouldUse(out act, lastAct)) return true;
 
             //试试看雷1
-            if (!InTranspose && Actions.Thunder.ShouldUseAction(out act, lastAct)) return true;
+            if (!InTranspose && Actions.Thunder.ShouldUse(out act, lastAct)) return true;
 
-            if (Service.TargetManager.Target is BattleChara b &&
+            if (Target is BattleChara b &&
                             StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) < 9
-                            && Actions.Thunder.ShouldUseAction(out act, lastAct)) return true;
+                            && Actions.Thunder.ShouldUse(out act, lastAct)) return true;
 
             return false;
         }
@@ -635,13 +610,13 @@ namespace XIVAutoAttack.Combos
         {
             //如果满了，或者等级太低，没有冰心，就别加了。
             act = null;
-            if (JobGauge.UmbralHearts == 3 || Service.ClientState.LocalPlayer.Level < Actions.Blizzard4.Level) return false;
+            if (JobGauge.UmbralHearts == 3 || Level < Actions.Blizzard4.Level) return false;
 
             //冻结
-            if (Actions.Freeze.ShouldUseAction(out act)) return true;
+            if (Actions.Freeze.ShouldUse(out act)) return true;
 
             //冰4
-            if (Actions.Blizzard4.ShouldUseAction(out act)) return true;
+            if (Actions.Blizzard4.ShouldUse(out act)) return true;
 
             return false;
         }
@@ -650,9 +625,9 @@ namespace XIVAutoAttack.Combos
         {
             if (JobGauge.PolyglotStacks > 0)
             {
-                if (Actions.Foul.ShouldUseAction(out act)) return true;
-                if (Actions.Xenoglossy.ShouldUseAction(out act)) return true;
-                if (Actions.Foul.ShouldUseAction(out act, mustUse: true)) return true;
+                if (Actions.Foul.ShouldUse(out act)) return true;
+                if (Actions.Xenoglossy.ShouldUse(out act)) return true;
+                if (Actions.Foul.ShouldUse(out act, mustUse: true)) return true;
             }
             act = null;
             return false;
@@ -661,7 +636,7 @@ namespace XIVAutoAttack.Combos
         private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
         {
             //混乱
-            if (GeneralActions.Addle.ShouldUseAction(out act)) return true;
+            if (GeneralActions.Addle.ShouldUse(out act)) return true;
             return false;
         }
     }

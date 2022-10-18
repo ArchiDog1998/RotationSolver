@@ -65,7 +65,7 @@ namespace XIVAutoAttack
         internal static BattleChara[] TarOnMeTargets { get; private set; } = new BattleChara[0];
         internal static BattleChara[] CanInterruptTargets { get; private set; } = new BattleChara[0];
 
-        internal static bool HaveTargetAngle { get; private set; } = false;
+        internal static bool HaveHostileInRange { get; private set; } = false;
 
         internal static float WeaponRemain { get; private set; } = 0;
         internal static float WeaponTotal { get; private set; } = 0;
@@ -87,6 +87,7 @@ namespace XIVAutoAttack
         internal static BattleChara[] WeakenPeople { get; private set; } = new PlayerCharacter[0];
         internal static BattleChara[] DyingPeople { get; private set; } = new PlayerCharacter[0];
         internal static float[] PartyMembersHP { get; private set; } = new float[0];
+        internal static float PartyMembersMinHP { get; private set; } = 0;
         internal static float PartyMembersAverHP { get; private set; } = 0;
         internal static float PartyMembersDifferHP { get; private set; } = 0;
 
@@ -395,12 +396,12 @@ namespace XIVAutoAttack
                         radius = 3;
                         break;
                 }
-                HaveTargetAngle = TargetFilter.GetObjectInRadius(HostileTargets, radius).Length > 0;
+                HaveHostileInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Length > 0;
             }
             else
             {
                 AllTargets = HostileTargets = CanInterruptTargets = new BattleChara[0];
-                HaveTargetAngle = false;
+                HaveHostileInRange = false;
             }
 
             if (HostileTargets.Length == 1)
@@ -512,7 +513,8 @@ namespace XIVAutoAttack
             CanHealSingleSpell = gcdCount > 0;
             if (gcdCount >= Service.Configuration.PartyCount) CanHealAreaSpell = true;
 
-            HPNotFull = PartyMembersHP.Min() < 1;
+            PartyMembersMinHP = PartyMembersHP.Min();
+            HPNotFull = PartyMembersMinHP < 1;
 
             ShouldUseArea = PartyMembersHP.Count(t => t < 1) > Service.Configuration.PartyCount;
             #endregion

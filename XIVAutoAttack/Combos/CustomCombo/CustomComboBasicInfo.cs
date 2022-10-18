@@ -20,7 +20,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             get
             {
                 if (Target == null) return false;
-                return Target.CurrentHp <= TargetFilter.GetHealthFromMulty(1);
+                return Target.IsDying();
             }
         }
         protected static internal BaseAction ActionID => GeneralActions.Repose;

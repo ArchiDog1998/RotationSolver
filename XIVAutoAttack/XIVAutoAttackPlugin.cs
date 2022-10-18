@@ -116,8 +116,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         }
         pts.Add(scrPos);
 
-        bool wrong = CustomCombo.ShouldLocation != CustomCombo.FindEnemyLocation(CustomCombo.EnemyTarget)
-                    && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth);
+        bool wrong = CustomCombo.ShouldLocation != CustomCombo.FindEnemyLocation(CustomCombo.EnemyTarget);
         var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
 
         pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));

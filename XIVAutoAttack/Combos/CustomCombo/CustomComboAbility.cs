@@ -23,7 +23,7 @@ public abstract partial class CustomCombo
         {
             if (IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0 || TargetHelper.DyingPeople.Length > 0)
             {
-                if (BRDCombo.Actions.WardensPaean.ShouldUseAction(out act, mustUse: true)) return true;
+                if (BRDCombo.Actions.WardensPaean.ShouldUse(out act, mustUse: true)) return true;
             }
         }
 
@@ -36,16 +36,16 @@ public abstract partial class CustomCombo
             switch (role)
             {
                 case Role.防护:
-                    if (GeneralActions.Interject.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.Interject.ShouldUse(out act)) return true;
                     break;
 
                 case Role.近战:
-                    if (GeneralActions.LegSweep.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.LegSweep.ShouldUse(out act)) return true;
                     break;
                 case Role.远程:
                     if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
                     {
-                        if (GeneralActions.HeadGraze.ShouldUseAction(out act)) return true;
+                        if (GeneralActions.HeadGraze.ShouldUse(out act)) return true;
                     }
                     break;
             }
@@ -54,18 +54,18 @@ public abstract partial class CustomCombo
         {
             if (IconReplacer.RaiseOrShirk)
             {
-                if (GeneralActions.Shirk.ShouldUseAction(out act)) return true;
-                if (HaveShield && Shield.ShouldUseAction(out act)) return true;
+                if (GeneralActions.Shirk.ShouldUse(out act)) return true;
+                if (HaveShield && Shield.ShouldUse(out act)) return true;
             }
 
-            if (IconReplacer.EsunaOrShield && Shield.ShouldUseAction(out act)) return true;
+            if (IconReplacer.EsunaOrShield && Shield.ShouldUse(out act)) return true;
 
             var defenses = new uint[] { ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill, ObjectStatus.Defiance };
             //Alive Tanks with shield.
             var defensesTanks = TargetHelper.AllianceTanks.Where(t => t.CurrentHp != 0 && t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
             if (defensesTanks == null || defensesTanks.Count() == 0)
             {
-                if (!HaveShield && Shield.ShouldUseAction(out act)) return true;
+                if (!HaveShield && Shield.ShouldUse(out act)) return true;
             }
         }
 
@@ -75,30 +75,30 @@ public abstract partial class CustomCombo
             {
                 case Role.防护:
                 case Role.近战:
-                    if (GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.ArmsLength.ShouldUse(out act)) return true;
                     break;
                 case Role.治疗:
-                    if (GeneralActions.Surecast.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.Surecast.ShouldUse(out act)) return true;
                     break;
                 case Role.远程:
                     if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
                     {
-                        if (GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
+                        if (GeneralActions.ArmsLength.ShouldUse(out act)) return true;
                     }
                     else
                     {
-                        if (GeneralActions.Surecast.ShouldUseAction(out act)) return true;
+                        if (GeneralActions.Surecast.ShouldUse(out act)) return true;
                     }
                     break;
             }
         }
         if (IconReplacer.EsunaOrShield && role == Role.近战)
         {
-            if (GeneralActions.TrueNorth.ShouldUseAction(out act)) return true;
+            if (GeneralActions.TrueNorth.ShouldUse(out act)) return true;
         }
 
 
-        if (HaveTargetAngle && SettingBreak && BreakAbility(abilityRemain, out act)) return true;
+        if (HaveHostileInRange && SettingBreak && BreakAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         if (TargetHelper.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
@@ -112,7 +112,7 @@ public abstract partial class CustomCombo
         }
 
         //防御
-        if (HaveTargetAngle)
+        if (HaveHostileInRange)
         {
             //防AOE
             if (helpDefenseAOE)
@@ -134,8 +134,8 @@ public abstract partial class CustomCombo
 
                 {
                     //开盾挑衅
-                    if (!HaveShield && Shield.ShouldUseAction(out act)) return true;
-                    if (GeneralActions.Provoke.ShouldUseAction(out act, mustUse: true)) return true;
+                    if (!HaveShield && Shield.ShouldUse(out act)) return true;
+                    if (GeneralActions.Provoke.ShouldUse(out act, mustUse: true)) return true;
                 }
 
                 if (Service.Configuration.AutoDefenseForTank && HaveShield)
@@ -143,7 +143,7 @@ public abstract partial class CustomCombo
                     //被群殴呢
                     if (TargetHelper.TarOnMeTargets.Length > 1 && !IsMoving)
                     {
-                        if (GeneralActions.ArmsLength.ShouldUseAction(out act)) return true;
+                        if (GeneralActions.ArmsLength.ShouldUse(out act)) return true;
                         if (DefenceSingleAbility(abilityRemain, out act)) return true;
                     }
 
@@ -169,30 +169,30 @@ public abstract partial class CustomCombo
         {
             case Role.防护:
                 if (Service.Configuration.AlwaysLowBlow &&
-                    GeneralActions.LowBlow.ShouldUseAction(out act)) return true;
+                    GeneralActions.LowBlow.ShouldUse(out act)) return true;
                 break;
             case Role.近战:
-                if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
-                if (GeneralActions.Bloodbath.ShouldUseAction(out act)) return true;
+                if (GeneralActions.SecondWind.ShouldUse(out act)) return true;
+                if (GeneralActions.Bloodbath.ShouldUse(out act)) return true;
                 break;
             case Role.治疗:
-                if (GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
+                if (GeneralActions.LucidDreaming.ShouldUse(out act)) return true;
                 break;
             case Role.远程:
                 if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
                 {
-                    if (GeneralActions.SecondWind.ShouldUseAction(out act)) return true;
+                    if (GeneralActions.SecondWind.ShouldUse(out act)) return true;
                 }
                 else
                 {
                     if (Service.ClientState.LocalPlayer.ClassJob.Id != 25
-                        && GeneralActions.LucidDreaming.ShouldUseAction(out act)) return true;
+                        && GeneralActions.LucidDreaming.ShouldUse(out act)) return true;
                 }
                 break;
         }
 
         if (GeneralAbility(abilityRemain, out act)) return true;
-        if (HaveTargetAngle && ForAttachAbility(abilityRemain, out act)) return true;
+        if (HaveHostileInRange && ForAttachAbility(abilityRemain, out act)) return true;
         return false;
     }
 
@@ -217,13 +217,13 @@ public abstract partial class CustomCombo
         if (nextGCD is BaseAction action)
         {
             if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role != Role.近战 && 
-            action.Cast100 >= 50 && GeneralActions.Swiftcast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            action.Cast100 >= 50 && GeneralActions.Swiftcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
             if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)
             {
                 if (action.EnermyLocation != FindEnemyLocation(action.Target) && action.Target.HasLocationSide())
                 {
-                    if (GeneralActions.TrueNorth.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+                    if (GeneralActions.TrueNorth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
                 }
             }
         }

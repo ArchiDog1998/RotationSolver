@@ -11,7 +11,6 @@ namespace XIVAutoAttack.Combos.RangedPhysicial;
 internal class MCHCombo : JobGaugeCombo<MCHGauge>
 {
     internal override uint JobID => 31;
-    private static byte Level => Service.ClientState.LocalPlayer!.Level;
     private static bool initFinished = false;
     private static bool MCH_Asocial = false;
     private static bool MCH_Opener = false;
@@ -70,7 +69,6 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                     if (initFinished && !JobGauge.IsOverheated) return true;
                     return false;
                 },
-
             },
 
             //毒菌冲击
@@ -84,7 +82,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             Reassemble = new(2876)
             {
                 BuffsProvide = new ushort[] { ObjectStatus.Reassemble },
-                OtherCheck = b => HaveTargetAngle,
+                OtherCheck = b => HaveHostileInRange,
             },
 
             //超荷
@@ -92,7 +90,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             {
                 OtherCheck = b =>
                 {
-                    var isBoss = Target.MaxHp / LocalPlayer.MaxHp > 9.5;
+                    var isBoss = Target.IsBoss();
 
                     //在过热状态或者热量小于50时不释放超荷
                     if (JobGauge.IsOverheated || JobGauge.Heat < 50) return false;
@@ -107,8 +105,8 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                     if (Level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 8) return false;
 
                     //小怪AOE或者自嗨期间超荷判断
-                    if ((SpreadShot.ShouldUseAction(out _) || !isBoss) && IsMoving) return false;
-                    if (((SpreadShot.ShouldUseAction(out _) || !isBoss) && !IsMoving) || MCH_Asocial || Level < Wildfire.Level) return true;
+                    if ((SpreadShot.ShouldUse(out _) || !isBoss) && IsMoving) return false;
+                    if (((SpreadShot.ShouldUse(out _) || !isBoss) && !IsMoving) || MCH_Asocial || Level < Wildfire.Level) return true;
 
                     uint wfTimer = 6;
                     var wildfireCDTime = Wildfire.RecastTimeRemain;
@@ -141,8 +139,8 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                 {
                     var isBoss = Target.MaxHp / LocalPlayer.MaxHp > 9.5;
                     //小怪AOE期间不打野火
-                    if (SpreadShot.ShouldUseAction(out _) || !isBoss) return false;
-                    if (!isBoss && IsTargetDying) return false;
+                    if (SpreadShot.ShouldUse(out _) || !isBoss) return false;
+                    if (!isBoss && b.IsDying()) return false;
 
                     //热量低于50且上一个能力技不是超荷时不释放
                     if (JobGauge.Heat < 50 && LastAbility != Hypercharge.ID) return false;
@@ -194,14 +192,14 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 
                     //电量等于100,强制释放
                     if (JobGauge.Battery == 100) return true;
-                    if (!isBoss && IsTargetDying) return false;
+                    if (!isBoss && b.IsDying()) return false;
 
                     //基本判断
                     if (JobGauge.Battery < 50 || JobGauge.IsRobotActive) return false;
 
                     //自嗨与小怪AOE判断
                     if (MCH_Asocial || !MCH_Automaton || (!isBoss && !IsMoving) || Level < Wildfire.ID) return true;
-                    if ((SpreadShot.ShouldUseAction(out _) || !isBoss) && IsMoving) return false;
+                    if ((SpreadShot.ShouldUse(out _) || !isBoss) && IsMoving) return false;
 
                     //起手判断
                     if (!initFinished && MCH_Opener) return false;
@@ -245,7 +243,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //策动
-        if (Actions.Tactician.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.Tactician.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -253,7 +251,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //野火
-        if (Actions.Wildfire.ShouldUseAction(out act)) return true;
+        if (Actions.Wildfire.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -266,7 +264,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         MCH_Asocial = Config.GetBoolByName("MCH_Asocial");
 
         //当上一个连击是热阻击弹时完成起手
-        if (TargetHelper.InBattle && (lastComboActionID == Actions.CleanShot.ID || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUseAction(out _)))
+        if (TargetHelper.InBattle && (lastComboActionID == Actions.CleanShot.ID || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
         {
             initFinished = true;
         }
@@ -275,29 +273,29 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (!TargetHelper.InBattle)
         {
             //开场前整备,空气锚和钻头必须冷却好
-            if ((!Actions.AirAnchor.IsCoolDown || !Actions.Drill.IsCoolDown) && Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            if ((!Actions.AirAnchor.IsCoolDown || !Actions.Drill.IsCoolDown) && Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             initFinished = false;
         }
 
         if (!Config.GetBoolByName("MCH_Opener")) initFinished = true;
 
         //AOE,毒菌冲击
-        if (Actions.Bioblaster.ShouldUseAction(out act)) return true;
+        if (Actions.Bioblaster.ShouldUse(out act)) return true;
         //单体,四个牛逼的技能。先空气锚再钻头
-        if (Actions.AirAnchor.ShouldUseAction(out act)) return true;
-        else if (Level < Actions.AirAnchor.Level && Actions.HotShow.ShouldUseAction(out act)) return true;
-        if (Actions.Drill.ShouldUseAction(out act)) return true;
-        if (Actions.ChainSaw.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.AirAnchor.ShouldUse(out act)) return true;
+        else if (Level < Actions.AirAnchor.Level && Actions.HotShow.ShouldUse(out act)) return true;
+        if (Actions.Drill.ShouldUse(out act)) return true;
+        if (Actions.ChainSaw.ShouldUse(out act, mustUse: true)) return true;
 
         //群体常规GCD
-        if (JobGauge.IsOverheated && Actions.AutoCrossbow.ShouldUseAction(out act)) return true;
-        if (Actions.SpreadShot.ShouldUseAction(out act)) return true;
+        if (JobGauge.IsOverheated && Actions.AutoCrossbow.ShouldUse(out act)) return true;
+        if (Actions.SpreadShot.ShouldUse(out act)) return true;
 
         //单体常规GCD
-        if (JobGauge.IsOverheated && Actions.HeatBlast.ShouldUseAction(out act)) return true;
-        if (Actions.CleanShot.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.SlugShot.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.SplitShot.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (JobGauge.IsOverheated && Actions.HeatBlast.ShouldUse(out act)) return true;
+        if (Actions.CleanShot.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.SlugShot.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.SplitShot.ShouldUse(out act, lastComboActionID)) return true;
 
         return false;
     }
@@ -305,24 +303,25 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //等级小于钻头时,绑定狙击弹
-        if (Level < Actions.Drill.Level && nextGCD.ID == Actions.CleanShot.ID)
+        if (Level < Actions.Drill.Level && nextGCD == Actions.CleanShot)
         {
-            if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            if (Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //等级小于90时或自嗨时,整备不再留层数
-        if ((Level < Actions.ChainSaw.Level || !Config.GetBoolByName("MCH_Reassemble")) && (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID || nextGCD.ID == Actions.ChainSaw.ID))
+        if ((Level < Actions.ChainSaw.Level || !Config.GetBoolByName("MCH_Reassemble")) 
+            && (nextGCD == Actions.AirAnchor || nextGCD == Actions.Drill || nextGCD == Actions.ChainSaw))
         {
-            if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            if (Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //整备优先链锯
-        if (Config.GetBoolByName("MCH_Reassemble") && nextGCD.ID == Actions.ChainSaw.ID)
+        if (Config.GetBoolByName("MCH_Reassemble") && nextGCD == Actions.ChainSaw)
         {
-            if (Actions.Reassemble.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            if (Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //如果接下来要搞三大金刚了，整备吧！
-        if (nextGCD.ID == Actions.AirAnchor.ID || nextGCD.ID == Actions.Drill.ID)
+        if (nextGCD == Actions.AirAnchor || nextGCD == Actions.Drill)
         {
-            if (Actions.Reassemble.ShouldUseAction(out act)) return true;
+            if (Actions.Reassemble.ShouldUse(out act)) return true;
         }
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
@@ -330,25 +329,25 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //起手虹吸弹、弹射
-        if (Actions.Ricochet.RecastTimeRemain == 0 && Actions.Ricochet.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.GaussRound.RecastTimeRemain == 0 && Actions.GaussRound.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.Ricochet.RecastTimeRemain == 0 && Actions.Ricochet.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.GaussRound.RecastTimeRemain == 0 && Actions.GaussRound.ShouldUse(out act, mustUse: true)) return true;
 
         //枪管加热
-        if (Actions.BarrelStabilizer.ShouldUseAction(out act)) return true;
+        if (Actions.BarrelStabilizer.ShouldUse(out act)) return true;
 
         //车式浮空炮塔
-        if (Actions.RookAutoturret.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.RookAutoturret.ShouldUse(out act, mustUse: true)) return true;
 
         //超荷
-        if (Actions.Hypercharge.ShouldUseAction(out act)) return true;
+        if (Actions.Hypercharge.ShouldUse(out act)) return true;
 
         if (Actions.GaussRound.RecastTimeRemain > Actions.Ricochet.RecastTimeRemain)
         {
             //弹射
-            if (Actions.Ricochet.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.Ricochet.ShouldUse(out act, mustUse: true)) return true;
         }
         //虹吸弹
-        if (Actions.GaussRound.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.GaussRound.ShouldUse(out act, mustUse: true)) return true;
 
         act = null!;
         return false;

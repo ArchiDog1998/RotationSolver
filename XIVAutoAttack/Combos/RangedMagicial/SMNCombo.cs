@@ -56,7 +56,6 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
             SearingLight = new (25801)
             {
                 OtherCheck = b => TargetHelper.InBattle && !InBahamut && !InPhoenix
-                //&& JobGauge.ReturnSummon == Dalamud.Game.ClientState.JobGauge.Enums.SummonPet.NONE,
             },
 
             //守护之光 给自己戴套
@@ -163,47 +162,47 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //灼热之光
-        if (Actions.SearingLight.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.SearingLight.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
 
     private protected override bool MoveGCD(uint lastComboActionID, out IAction act)
     {
-        if (Actions.CrimsonCyclone.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
         return base.MoveGCD(lastComboActionID, out act);
     }
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //宝石兽召唤
-        if (Actions.SummonCarbuncle.ShouldUseAction(out act)) return true;
+        if (Actions.SummonCarbuncle.ShouldUse(out act)) return true;
 
         //大招
         if (!InBahamut && !InPhoenix)
         {
-            if (Actions.RuinIV.ShouldUseAction(out act, mustUse: true)) return true;
-            if (Actions.CrimsonStrike.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
-            if (Actions.CrimsonCyclone.ShouldUseAction(out act, mustUse: true))
+            if (Actions.RuinIV.ShouldUse(out act, mustUse: true)) return true;
+            if (Actions.CrimsonStrike.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
+            if (Actions.CrimsonCyclone.ShouldUse(out act, mustUse: true))
             {
-                if (TargetFilter.DistanceToPlayer(Actions.CrimsonCyclone.Target) < 2)
+                if (Actions.CrimsonCyclone.Target.DistanceToPlayer() < 2)
                 {
                     return true;
                 }
             }
-            if (Actions.Slipstream.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.Slipstream.ShouldUse(out act, mustUse: true)) return true;
         }
 
 
         //召唤
         if (JobGauge.Attunement == 0)
         {
-            if (Actions.SummonBahamut.ShouldUseAction(out act))
+            if (Actions.SummonBahamut.ShouldUse(out act))
             {
-                if (Actions.SearingLight.IsCoolDown || Service.ClientState.LocalPlayer.Level < Actions.SearingLight.Level)
+                if (Actions.SearingLight.IsCoolDown || Level < Actions.SearingLight.Level)
                     return true;
             }
-            else if (Actions.Aethercharge.ShouldUseAction(out act)) return true;
+            else if (Actions.Aethercharge.ShouldUse(out act)) return true;
 
             if (JobGauge.IsIfritReady && JobGauge.IsGarudaReady && JobGauge.IsTitanReady ? JobGauge.SummonTimerRemaining == 0 : true)
             {
@@ -211,63 +210,63 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
                 {
                     default:
                         //红 火
-                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonRuby.ShouldUse(out act)) return true;
                         //黄 土
-                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonTopaz.ShouldUse(out act)) return true;
                         //绿 风
-                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonEmerald.ShouldUse(out act)) return true;
                         break;
                     case 1:
                         //红 火
-                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonRuby.ShouldUse(out act)) return true;
                         //绿 风
-                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonEmerald.ShouldUse(out act)) return true;
                         //黄 土
-                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonTopaz.ShouldUse(out act)) return true;
                         break;
                     case 2:
                         //黄 土
-                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonTopaz.ShouldUse(out act)) return true;
                         //绿 风
-                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonEmerald.ShouldUse(out act)) return true;
                         //红 火
-                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonRuby.ShouldUse(out act)) return true;
                         break;
                     case 3:
                         //黄 土
-                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonTopaz.ShouldUse(out act)) return true;
                         //红 火
-                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonRuby.ShouldUse(out act)) return true;
                         //绿 风
-                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonEmerald.ShouldUse(out act)) return true;
                         break;
                     case 4:
                         //绿 风
-                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonEmerald.ShouldUse(out act)) return true;
                         //红 火
-                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonRuby.ShouldUse(out act)) return true;
                         //黄 土
-                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonTopaz.ShouldUse(out act)) return true;
                         break;
                     case 5:
                         //绿 风
-                        if (Actions.SummonEmerald.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonEmerald.ShouldUse(out act)) return true;
                         //黄 土
-                        if (Actions.SummonTopaz.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonTopaz.ShouldUse(out act)) return true;
                         //红 火
-                        if (Actions.SummonRuby.ShouldUseAction(out act)) return true;
+                        if (Actions.SummonRuby.ShouldUse(out act)) return true;
                         break;
                 }
             }
         }
 
         //AOE
-        if (Actions.PreciousBrilliance.ShouldUseAction(out act)) return true;
-        if (Actions.Outburst.ShouldUseAction(out act)) return true;
+        if (Actions.PreciousBrilliance.ShouldUse(out act)) return true;
+        if (Actions.Outburst.ShouldUse(out act)) return true;
 
         //单体
-        if (Actions.Gemshine.ShouldUseAction(out act)) return true;
-        if (Actions.Ruin.ShouldUseAction(out act)) return true;
+        if (Actions.Gemshine.ShouldUse(out act)) return true;
+        if (Actions.Ruin.ShouldUse(out act)) return true;
         return false;
     }
     private protected override ActionConfiguration CreateConfiguration()
@@ -280,22 +279,22 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
     }
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.EnkindleBahamut.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.Deathflare.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.Rekindle.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.MountainBuster.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.Deathflare.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.Rekindle.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.MountainBuster.ShouldUse(out act, mustUse: true)) return true;
 
 
         //能量吸收
         if (JobGauge.HasAetherflowStacks && InBreak)
         {
-            if (Actions.Painflare.ShouldUseAction(out act)) return true;
-            if (Actions.Fester.ShouldUseAction(out act)) return true;
+            if (Actions.Painflare.ShouldUse(out act)) return true;
+            if (Actions.Fester.ShouldUse(out act)) return true;
         }
         else
         {
-            if (Actions.EnergySiphon.ShouldUseAction(out act)) return true;
-            if (Actions.EnergyDrain.ShouldUseAction(out act)) return true;
+            if (Actions.EnergySiphon.ShouldUse(out act)) return true;
+            if (Actions.EnergyDrain.ShouldUse(out act)) return true;
         }
 
         return false;
@@ -304,7 +303,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //守护之光
-        if (Actions.RadiantAegis.ShouldUseAction(out act)) return true;
+        if (Actions.RadiantAegis.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -312,7 +311,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
     private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //医术
-        if (Actions.Physick.ShouldUseAction(out act)) return true;
+        if (Actions.Physick.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -320,7 +319,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //混乱
-        if (GeneralActions.Addle.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Addle.ShouldUse(out act)) return true;
         return false;
     }
 }

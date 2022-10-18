@@ -144,37 +144,37 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             //太阳神之衡
             Balance = new (4401)
             {
-                ChoiceTarget = ASTMeleeTarget,
+                ChoiceTarget = TargetFilter.ASTMeleeTarget,
             },
 
             //放浪神之箭
             Arrow = new (4402)
             {
-                ChoiceTarget = ASTMeleeTarget,
+                ChoiceTarget = TargetFilter.ASTMeleeTarget,
             },
 
             //战争神之枪
             Spear = new (4403)
             {
-                ChoiceTarget = ASTMeleeTarget,
+                ChoiceTarget = TargetFilter.ASTMeleeTarget,
             },
 
             //世界树之干
             Bole = new (4404)
             {
-                ChoiceTarget = ASTRangeTarget,
+                ChoiceTarget = TargetFilter.ASTRangeTarget,
             },
 
             //河流神之瓶
             Ewer = new (4405)
             {
-                ChoiceTarget = ASTRangeTarget,
+                ChoiceTarget = TargetFilter.ASTRangeTarget,
             },
 
             //建筑神之塔
             Spire = new (4406)
             {
-                ChoiceTarget = ASTRangeTarget,
+                ChoiceTarget = TargetFilter.ASTRangeTarget,
             };
     }
     internal override SortedList<DescType, string> Description => new ()
@@ -195,7 +195,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         if (Config.GetBoolByName("AutoDivination"))
         {
             //团队增伤害,占卜
-            if (Actions.Divination.ShouldUseAction(out act)) return true;
+            if (Actions.Divination.ShouldUse(out act)) return true;
         }
 
         act = null!;
@@ -205,17 +205,17 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //天星交错
-        if (Actions.CelestialIntersection.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.CelestialIntersection.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //给T减伤，这个很重要。
-        if (Actions.Exaltation.ShouldUseAction(out act)) return true;
+        if (Actions.Exaltation.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //来个命运之轮
-        if (Actions.CollectiveUnconscious.ShouldUseAction(out act)) return true;
+        if (Actions.CollectiveUnconscious.ShouldUse(out act)) return true;
 
         return base.DefenceAreaAbility(abilityRemain, out act);
     }
@@ -223,12 +223,12 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //群体输出
-        if (Actions.Gravity.ShouldUseAction(out act)) return true;
+        if (Actions.Gravity.ShouldUse(out act)) return true;
 
         //单体输出
-        if (Actions.Combust.ShouldUseAction(out act)) return true;
-        if (Actions.Malefic.ShouldUseAction(out act)) return true;
-        if (Actions.Combust.ShouldUseAction(out act, mustUse: IsMoving && HaveTargetAngle)) return true;
+        if (Actions.Combust.ShouldUse(out act)) return true;
+        if (Actions.Malefic.ShouldUse(out act)) return true;
+        if (Actions.Combust.ShouldUse(out act, mustUse: IsMoving && HaveHostileInRange)) return true;
 /*        var times = StatusHelper.FindStatusFromSelf(Actions.Combust.Target,
             new ushort[] { ObjectStatus.Combust, ObjectStatus.Combust2, ObjectStatus.Combust3 });
         if (times.Length == 0 || times.Max() < 25)
@@ -243,10 +243,10 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
     private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
         //阳星相位
-        if (Actions.AspectedHelios.ShouldUseAction(out act)) return true;
+        if (Actions.AspectedHelios.ShouldUse(out act)) return true;
 
         //阳星
-        if (Actions.Helios.ShouldUseAction(out act)) return true;
+        if (Actions.Helios.ShouldUse(out act)) return true;
 
         act = null!;
         return false;
@@ -254,22 +254,21 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-
         if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //如果要群奶了，先上个天宫图！
         if (nextGCD == Actions.AspectedHelios || nextGCD == Actions.Helios)
         {
-            if (Actions.Horoscope.ShouldUseAction(out act)) return true;
+            if (Actions.Horoscope.ShouldUse(out act)) return true;
 
             //中间学派
-            if (Actions.NeutralSect.ShouldUseAction(out act)) return true;
+            if (Actions.NeutralSect.ShouldUse(out act)) return true;
         }
 
         //如果要单奶了，先上星位合图！
         if (nextGCD == Actions.Benefic || nextGCD == Actions.Benefic2 || nextGCD == Actions.AspectedBenefic)
         {
-            if (Actions.Synastry.ShouldUseAction(out act)) return true;
+            if (Actions.Synastry.ShouldUse(out act)) return true;
         }
         return false;
     }
@@ -278,13 +277,13 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
     {
         //如果当前还没有卡牌，那就抽一张
         if (JobGauge.DrawnCard == CardType.NONE
-            && Actions.Draw.ShouldUseAction(out act)) return true;
+            && Actions.Draw.ShouldUse(out act)) return true;
 
         bool canUse = Actions.Astrodyne.OtherCheck(Service.ClientState.LocalPlayer);
 
         //如果当前卡牌已经拥有了，就重抽
         if (!canUse && JobGauge.DrawnCard != CardType.NONE && JobGauge.Seals.Contains(GetCardSeal(JobGauge.DrawnCard))
-            && Actions.Redraw.ShouldUseAction(out act)) return true;
+            && Actions.Redraw.ShouldUse(out act)) return true;
 
         act = null!;
         return false;
@@ -293,14 +292,14 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
     private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //吉星相位
-        if (ObjectInfomation.GetHealthRatio(Actions.AspectedBenefic.Target) > 0.4
-            && Actions.AspectedBenefic.ShouldUseAction(out act)) return true;
+        if (Actions.AspectedBenefic.Target.GetHealthRatio() > 0.4
+            && Actions.AspectedBenefic.ShouldUse(out act)) return true;
 
         //福星
-        if (Actions.Benefic2.ShouldUseAction(out act)) return true;
+        if (Actions.Benefic2.ShouldUse(out act)) return true;
 
         //吉星
-        if (Actions.Benefic.ShouldUseAction(out act)) return true;
+        if (Actions.Benefic.ShouldUse(out act)) return true;
 
         act = null!;
         return false;
@@ -309,33 +308,32 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //如果当前还没有皇冠卡牌，那就抽一张
-        if (Actions.MinorArcana.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.MinorArcana.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //如果当前还没有卡牌，那就抽一张
         if (JobGauge.DrawnCard == CardType.NONE
-            && Actions.Draw.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            && Actions.Draw.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //光速，创造更多的内插能力技的机会。
-        if (IsMoving && Actions.Lightspeed.ShouldUseAction(out act)) return true;
+        if (IsMoving && Actions.Lightspeed.ShouldUse(out act)) return true;
 
 
         if (!IsMoving)
         {
-            
             //如果没有地星也没有巨星，那就试试看能不能放个。
             if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EarthlyDominance)
                 && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
             {
-                if (Actions.EarthlyStar.ShouldUseAction(out act, mustUse: true)) return true;
+                if (Actions.EarthlyStar.ShouldUse(out act, mustUse: true)) return true;
             }
             //加星星的进攻Buff
-            if (Actions.Astrodyne.ShouldUseAction(out act)) return true;
+            if (Actions.Astrodyne.ShouldUse(out act)) return true;
         }
 
         if (JobGauge.DrawnCrownCard == CardType.LORD || Actions.MinorArcana.RecastTimeRemain < 3)
         {
             //进攻牌，随便发。或者CD要转好了，赶紧发掉。
-            if (Actions.CrownPlay.ShouldUseAction(out act)) return true;
+            if (Actions.CrownPlay.ShouldUse(out act)) return true;
         }
 
         //发牌
@@ -344,22 +342,22 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             switch (JobGauge.DrawnCard)
             {
                 case CardType.BALANCE:
-                    if (Actions.Balance.ShouldUseAction(out act)) return true;
+                    if (Actions.Balance.ShouldUse(out act)) return true;
                     break;
                 case CardType.ARROW:
-                    if (Actions.Arrow.ShouldUseAction(out act)) return true;
+                    if (Actions.Arrow.ShouldUse(out act)) return true;
                     break;
                 case CardType.SPEAR:
-                    if (Actions.Spear.ShouldUseAction(out act)) return true;
+                    if (Actions.Spear.ShouldUse(out act)) return true;
                     break;
                 case CardType.BOLE:
-                    if (Actions.Bole.ShouldUseAction(out act)) return true;
+                    if (Actions.Bole.ShouldUse(out act)) return true;
                     break;
                 case CardType.EWER:
-                    if (Actions.Ewer.ShouldUseAction(out act)) return true;
+                    if (Actions.Ewer.ShouldUse(out act)) return true;
                     break;
                 case CardType.SPIRE:
-                    if (Actions.Spire.ShouldUseAction(out act)) return true;
+                    if (Actions.Spire.ShouldUse(out act)) return true;
                     break;
             }
         }
@@ -369,22 +367,22 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        if ((float)Actions.EssentialDignity.Target.CurrentHp / Actions.EssentialDignity.Target.MaxHp < 0.4
-            && Actions.EssentialDignity.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.EssentialDignity.Target.GetHealthRatio() < 0.4
+            && Actions.EssentialDignity.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         //常规奶
-        if (Actions.EssentialDignity.ShouldUseAction(out act)) return true;
+        if (Actions.EssentialDignity.ShouldUse(out act)) return true;
         //带盾奶
-        if (Actions.CelestialIntersection.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.CelestialIntersection.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //奶量牌，要看情况。
-        if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUseAction(out act)) return true;
+        if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUse(out act)) return true;
 
         var tank = TargetHelper.PartyTanks;
-        var isBoss = Actions.Malefic.Target.MaxHp / LocalPlayer.MaxHp > 9.75;
-        if (Actions.EssentialDignity.IsCoolDown && tank.Length == 1 && (tank.First().CurrentHp / tank.First().MaxHp < 0.5) && !isBoss)
+        var isBoss = Actions.Malefic.IsTargetBoss;
+        if (Actions.EssentialDignity.IsCoolDown && tank.Length == 1 && tank.Any(t => t.GetHealthRatio() < 0.5) && !isBoss)
         {
             //群Hot
-            if (Actions.CelestialOpposition.ShouldUseAction(out act)) return true;
+            if (Actions.CelestialOpposition.ShouldUse(out act)) return true;
 
             //如果有巨星主宰
             if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
@@ -395,11 +393,11 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             }
 
             //天宫图
-            if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios, ObjectStatus.Horoscope) && Actions.Horoscope.ShouldUseAction(out act)) return true;
+            if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios, ObjectStatus.Horoscope) && Actions.Horoscope.ShouldUse(out act)) return true;
             //阳星天宫图
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios) && Actions.Horoscope.ShouldUseAction(out act)) return true;
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios) && Actions.Horoscope.ShouldUse(out act)) return true;
             //超紧急情况天宫图
-            if ((tank.First().CurrentHp / tank.First().MaxHp < 0.3) && Actions.Horoscope.ShouldUseAction(out act)) return true;
+            if (tank.Any(t => t.GetHealthRatio() < 0.3) && Actions.Horoscope.ShouldUse(out act)) return true;
         }
 
         return false;
@@ -408,7 +406,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //群Hot
-        if (Actions.CelestialOpposition.ShouldUseAction(out act)) return true;
+        if (Actions.CelestialOpposition.ShouldUse(out act)) return true;
 
         //如果有巨星主宰
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
@@ -419,10 +417,10 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         }
 
         //天宫图
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios) && Actions.Horoscope.ShouldUseAction(out act)) return true;
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios) && Actions.Horoscope.ShouldUse(out act)) return true;
 
         //奶量牌，要看情况。
-        if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUseAction(out act)) return true;
+        if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -445,68 +443,5 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             case CardType.SPIRE:
                 return SealType.CELESTIAL;
         }
-    }
-
-    private static BattleChara ASTRangeTarget(BattleChara[] ASTTargets)
-    {
-        ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
-
-
-        var targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.远程));
-        if (targets.Length > 0) return RandomObject(targets);
-
-        targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.近战));
-        if (targets.Length > 0) return RandomObject(targets);
-
-        targets = GetASTTargets(ASTTargets);
-        if (targets.Length > 0) return RandomObject(targets);
-
-        return null;
-    }
-
-    private static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
-    {
-        ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
-
-        var targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.近战));
-        if (targets.Length > 0) return RandomObject(targets);
-
-        targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.远程));
-        if (targets.Length > 0) return RandomObject(targets);
-
-        targets = GetASTTargets(ASTTargets);
-        if (targets.Length > 0) return RandomObject(targets);
-
-        return null;
-    }
-
-    private static BattleChara[] GetASTTargets(BattleChara[] sources)
-    {
-        var allStatus = new uint[]
-        {
-            ObjectStatus.TheArrow,
-            ObjectStatus.TheBalance,
-            ObjectStatus.TheBole,
-            ObjectStatus.TheEwer,
-            ObjectStatus.TheSpear,
-            ObjectStatus.TheSpire,
-        };
-        return sources.Where((t) =>
-        {
-            foreach (Status status in t.StatusList)
-            {
-                if (allStatus.Contains(status.StatusId) && status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }).ToArray();
-    }
-
-    internal static BattleChara RandomObject(BattleChara[] objs)
-    {
-        Random ran = new Random(DateTime.Now.Millisecond);
-        return objs[ran.Next(objs.Length)];
     }
 }

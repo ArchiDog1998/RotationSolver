@@ -151,42 +151,42 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //三个大招
-        if (Actions.BladeofValor.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
-        if (Actions.BladeofFaith.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.BladeofTruth.ShouldUseAction(out act, lastComboActionID, mustUse: true)) return true;
+        if (Actions.BladeofValor.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
+        if (Actions.BladeofFaith.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.BladeofTruth.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
 
         //魔法三种姿势
-        var status = StatusHelper.FindStatusFromSelf(Service.ClientState.LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
+        var status = StatusHelper.FindStatusFromSelf(LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
         if (status != null && status.Count() > 0)
         {
             var s = status.First();
             if ((s.StackCount == 1 || (s.RemainingTime < 2.5 && s.RemainingTime > 0)))
             {
-                if (Actions.Confiteor.ShouldUseAction(out act, mustUse: true)) return true;
+                if (Actions.Confiteor.ShouldUse(out act, mustUse: true)) return true;
             }
             else
             {
-                if (Actions.HolyCircle.ShouldUseAction(out act)) return true;
-                if (Actions.HolySpirit.ShouldUseAction(out act)) return true;
+                if (Actions.HolyCircle.ShouldUse(out act)) return true;
+                if (Actions.HolySpirit.ShouldUse(out act)) return true;
             }
         }
 
         //AOE 二连
-        if (Actions.Prominence.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.TotalEclipse.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.Prominence.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.TotalEclipse.ShouldUse(out act, lastComboActionID)) return true;
 
         //赎罪剑
-        if (Actions.Atonement.ShouldUseAction(out act)) return true;
+        if (Actions.Atonement.ShouldUse(out act)) return true;
 
         //单体三连
-        if (Actions.GoringBlade.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.RageofHalone.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.RiotBlade.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.FastBlade.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.GoringBlade.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.RageofHalone.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.RiotBlade.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.FastBlade.ShouldUse(out act, lastComboActionID)) return true;
 
         //投盾
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
-        if (Actions.ShieldLob.ShouldUseAction(out act)) return true;
+        if (Actions.ShieldLob.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -194,7 +194,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //调停
-        if (Actions.Intervene.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         return false;
     }
@@ -202,7 +202,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //深仁厚泽
-        if (Actions.Clemency.ShouldUseAction(out act)) return true;
+        if (Actions.Clemency.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -210,12 +210,12 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //圣光幕帘
-        if (Actions.DivineVeil.ShouldUseAction(out act)) return true;
+        if (Actions.DivineVeil.ShouldUse(out act)) return true;
 
         //武装戍卫
-        if (Actions.PassageofArms.ShouldUseAction(out act)) return true;
+        if (Actions.PassageofArms.ShouldUse(out act)) return true;
 
-        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
+        if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -223,26 +223,26 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //战逃反应 加Buff
-        if (Actions.FightorFlight.ShouldUseAction(out act)) return true;
+        if (Actions.FightorFlight.ShouldUse(out act)) return true;
 
         //厄运流转
-        if (Actions.CircleofScorn.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true)) return true;
 
         //偿赎剑
-        if (Actions.Expiacion.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.Expiacion.ShouldUse(out act, mustUse: true)) return true;
 
         //安魂祈祷
-        if (Service.TargetManager.Target is BattleChara b && StatusHelper.FindStatusFromSelf(b, ObjectStatus.GoringBlade, ObjectStatus.BladeofValor) is float[] times &&
+        if (Target is BattleChara b && StatusHelper.FindStatusFromSelf(b, ObjectStatus.GoringBlade, ObjectStatus.BladeofValor) is float[] times &&
             times != null && times.Length > 0 && times.Max() > 10 &&
-            Actions.Requiescat.ShouldUseAction(out act, mustUse: true)) return true;
+            Actions.Requiescat.ShouldUse(out act, mustUse: true)) return true;
 
         //深奥之灵
-        if (Actions.SpiritsWithin.ShouldUseAction(out act)) return true;
+        if (Actions.SpiritsWithin.ShouldUse(out act)) return true;
 
         //搞搞攻击
-        if (Actions.Intervene.ShouldUseAction(out act) && !IsMoving)
+        if (Actions.Intervene.ShouldUse(out act) && !IsMoving)
         {
-            if (TargetFilter.DistanceToPlayer(Actions.Intervene.Target) < 1)
+            if (Actions.Intervene.Target.DistanceToPlayer() < 1)
             {
                 return true;
             }
@@ -256,7 +256,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //神圣领域 如果谢不够了。
-        if (Actions.HallowedGround.ShouldUseAction(out act)) return true;
+        if (Actions.HallowedGround.ShouldUse(out act)) return true;
         return false;
     }
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
@@ -266,17 +266,17 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         if (abilityRemain == 1)
         {
             //预警（减伤30%）
-            if (Actions.Sentinel.ShouldUseAction(out act)) return true;
+            if (Actions.Sentinel.ShouldUse(out act)) return true;
 
             //铁壁（减伤20%）
-            if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
+            if (GeneralActions.Rampart.ShouldUse(out act)) return true;
         }
         //降低攻击
         //雪仇
-        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Reprisal.ShouldUse(out act)) return true;
 
         //干预（减伤10%）
-        if (!HaveShield && Actions.Intervention.ShouldUseAction(out act)) return true;
+        if (!HaveShield && Actions.Intervention.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -290,11 +290,11 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         if (HaveShield)
         {
             //盾阵
-            if (Actions.Sheltron.ShouldUseAction(out act)) return true;
+            if (Actions.Sheltron.ShouldUse(out act)) return true;
         }
         else
         {
-            if(Actions.Cover.ShouldUseAction(out act)) return true;
+            if(Actions.Cover.ShouldUse(out act)) return true;
         }
 
         return false;

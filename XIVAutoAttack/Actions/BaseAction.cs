@@ -50,6 +50,22 @@ namespace XIVAutoAttack.Actions
         internal unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Spell, ID);
         internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ID, Service.ClientState.LocalPlayer.Level), (ushort)1);
         internal unsafe bool IsCoolDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Spell, ID);
+        internal bool IsTargetDying
+        {
+            get
+            {
+                if (Target == null) return false;
+                return Target.IsDying();
+            }
+        }
+        internal bool IsTargetBoss
+        {
+            get
+            {
+                if (Target == null) return false;
+                return Target.IsBoss();
+            }
+        }
         #endregion
         internal BattleChara Target { get; set; } = Service.ClientState.LocalPlayer;
         private Vector3 _position = default;
@@ -303,7 +319,7 @@ namespace XIVAutoAttack.Actions
             return ActionManager.GetActionRange(act.RowId);
         }
 
-        public virtual bool ShouldUseAction(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
+        public virtual bool ShouldUse(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
             byte level = Service.ClientState.LocalPlayer.Level;
@@ -422,6 +438,17 @@ namespace XIVAutoAttack.Actions
             if (result && AfterUse != null) AfterUse.Invoke();
 
             return result;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not BaseAction act) return false;
+            return this.ID == act.ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

@@ -292,6 +292,70 @@ namespace XIVAutoAttack.Actions
         {
             return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
         }
+
+        internal static BattleChara ASTRangeTarget(BattleChara[] ASTTargets)
+        {
+            ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+
+
+            var targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.远程));
+            if (targets.Length > 0) return RandomObject(targets);
+
+            targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.近战));
+            if (targets.Length > 0) return RandomObject(targets);
+
+            targets = GetASTTargets(ASTTargets);
+            if (targets.Length > 0) return RandomObject(targets);
+
+            return null;
+        }
+
+        internal static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
+        {
+            ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+
+            var targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.近战));
+            if (targets.Length > 0) return RandomObject(targets);
+
+            targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.远程));
+            if (targets.Length > 0) return RandomObject(targets);
+
+            targets = GetASTTargets(ASTTargets);
+            if (targets.Length > 0) return RandomObject(targets);
+
+            return null;
+        }
+
+        internal static BattleChara[] GetASTTargets(BattleChara[] sources)
+        {
+            var allStatus = new uint[]
+            {
+            ObjectStatus.TheArrow,
+            ObjectStatus.TheBalance,
+            ObjectStatus.TheBole,
+            ObjectStatus.TheEwer,
+            ObjectStatus.TheSpear,
+            ObjectStatus.TheSpire,
+            };
+            return sources.Where((t) =>
+            {
+                foreach (Dalamud.Game.ClientState.Statuses.Status status in t.StatusList)
+                {
+                    if (allStatus.Contains(status.StatusId) && status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }).ToArray();
+        }
+
+        internal static BattleChara RandomObject(BattleChara[] objs)
+        {
+            Random ran = new Random(DateTime.Now.Millisecond);
+            return objs[ran.Next(objs.Length)];
+        }
+
         #endregion
 
         #region Find many targets
@@ -425,7 +489,7 @@ namespace XIVAutoAttack.Actions
         }
         #endregion
 
-        internal static float DistanceToPlayer(GameObject obj)
+        internal static float DistanceToPlayer(this GameObject obj)
         {
             var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
             distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);

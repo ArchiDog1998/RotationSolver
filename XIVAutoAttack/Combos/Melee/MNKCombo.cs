@@ -119,63 +119,63 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.RiddleofFire.ShouldUseAction(out act)) return true;
-        if (Actions.Brotherhood.ShouldUseAction(out act)) return true;
+        if (Actions.RiddleofFire.ShouldUse(out act)) return true;
+        if (Actions.Brotherhood.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Mantra.ShouldUseAction(out act)) return true;
+        if (Actions.Mantra.ShouldUse(out act)) return true;
         return false;
     }
 
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.RiddleofEarth.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.RiddleofEarth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (GeneralActions.Feint.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Feint.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Thunderclap.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.Thunderclap.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
 
     private bool OpoOpoForm(out IAction act)
     {
-        if (Actions.ArmoftheDestroyer.ShouldUseAction(out act)) return true;
-        if (Actions.DragonKick.ShouldUseAction(out act)) return true;
-        if (Actions.Bootshine.ShouldUseAction(out act)) return true;
+        if (Actions.ArmoftheDestroyer.ShouldUse(out act)) return true;
+        if (Actions.DragonKick.ShouldUse(out act)) return true;
+        if (Actions.Bootshine.ShouldUse(out act)) return true;
         return false;
     }
 
 
     private bool RaptorForm(out IAction act)
     {
-        if (Actions.FourpointFury.ShouldUseAction(out act)) return true;
+        if (Actions.FourpointFury.ShouldUse(out act)) return true;
 
         //确认Buff大于6s
         var times = StatusHelper.FindStatusSelfFromSelf(ObjectStatus.DisciplinedFist);
-        if ((times.Length == 0 || times[0] < 4 + WeaponRemain) && Actions.TwinSnakes.ShouldUseAction(out act)) return true;
+        if ((times.Length == 0 || times[0] < 4 + WeaponRemain) && Actions.TwinSnakes.ShouldUse(out act)) return true;
 
-        if (Actions.TrueStrike.ShouldUseAction(out act)) return true;
+        if (Actions.TrueStrike.ShouldUse(out act)) return true;
         return false;
     }
 
     private bool CoerlForm(out IAction act)
     {
-        if (Actions.Rockbreaker.ShouldUseAction(out act)) return true;
-        if (Actions.Demolish.ShouldUseAction(out act)) return true;
-        if (Actions.SnapPunch.ShouldUseAction(out act)) return true;
+        if (Actions.Rockbreaker.ShouldUse(out act)) return true;
+        if (Actions.Demolish.ShouldUse(out act)) return true;
+        if (Actions.SnapPunch.ShouldUse(out act)) return true;
         return false;
     }
 
@@ -213,17 +213,17 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
         {
             if (havesolar && havelunar)
             {
-                if (Actions.PhantomRush.ShouldUseAction(out act, mustUse: true)) return true;
-                if (Actions.TornadoKick.ShouldUseAction(out act, mustUse: true)) return true;
+                if (Actions.PhantomRush.ShouldUse(out act, mustUse: true)) return true;
+                if (Actions.TornadoKick.ShouldUse(out act, mustUse: true)) return true;
             }
             if (JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.RAPTOR))
             {
-                if (Actions.RisingPhoenix.ShouldUseAction(out act, mustUse: true)) return true;
-                if (Actions.FlintStrike.ShouldUseAction(out act, mustUse: true)) return true;
+                if (Actions.RisingPhoenix.ShouldUse(out act, mustUse: true)) return true;
+                if (Actions.FlintStrike.ShouldUse(out act, mustUse: true)) return true;
             }
             else
             {
-                if (Actions.ElixirField.ShouldUseAction(out act, mustUse: true)) return true;
+                if (Actions.ElixirField.ShouldUse(out act, mustUse: true)) return true;
             }
         }
         //有震脚就阴阳
@@ -247,8 +247,8 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
         }
 
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
-        if (JobGauge.Chakra < 5 && Actions.Meditation.ShouldUseAction(out act)) return true;
-        if (Actions.FormShift.ShouldUseAction(out act)) return true;
+        if (JobGauge.Chakra < 5 && Actions.Meditation.ShouldUse(out act)) return true;
+        if (Actions.FormShift.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -263,31 +263,29 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             {
                 //两种Buff都在6s以上
                 var dis = StatusHelper.FindStatusSelfFromSelf(ObjectStatus.DisciplinedFist);
-                Actions.Demolish.ShouldUseAction(out _);
+                Actions.Demolish.ShouldUse(out _);
                 var demo = StatusHelper.FindStatusFromSelf(Actions.Demolish.Target, ObjectStatus.Demolish);
                 if (dis.Length != 0 && dis[0] > 6 && (demo.Length != 0 && demo[0] > 6 || !Actions.PerfectBalance.IsCoolDown))
                 {
-                    if (Actions.PerfectBalance.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+                    if (Actions.PerfectBalance.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
                 }
             }
             else
             {
-                if (Actions.PerfectBalance.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+                if (Actions.PerfectBalance.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             }
 
         }
 
-        if (Actions.RiddleofWind.ShouldUseAction(out act)) return true;
+        if (Actions.RiddleofWind.ShouldUse(out act)) return true;
 
         if (JobGauge.Chakra == 5)
         {
-            if (Actions.HowlingFist.ShouldUseAction(out act)) return true;
-            if (Actions.SteelPeak.ShouldUseAction(out act)) return true;
-            if (Actions.HowlingFist.ShouldUseAction(out act, mustUse: true)) return true;
+            if (Actions.HowlingFist.ShouldUse(out act)) return true;
+            if (Actions.SteelPeak.ShouldUse(out act)) return true;
+            if (Actions.HowlingFist.ShouldUse(out act, mustUse: true)) return true;
         }
 
         return false;
     }
-
-
 }

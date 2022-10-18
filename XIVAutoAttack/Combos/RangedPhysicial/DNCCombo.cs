@@ -171,11 +171,11 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
             {
                 ChoiceTarget = Targets =>
                 {
-                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b.CurrentHp != 0 &&
+                    Targets = Targets.Where(b => b.ObjectId != LocalPlayer.ObjectId && b.CurrentHp != 0 &&
                     //Remove Weak
                     b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0 &&
                     //Remove other partner.
-                    b.StatusList.Where(s => s.StatusId == ObjectStatus.ClosedPosition2 && s.SourceID != Service.ClientState.LocalPlayer.ObjectId).Count() == 0).ToArray();
+                    b.StatusList.Where(s => s.StatusId == ObjectStatus.ClosedPosition2 && s.SourceID != LocalPlayer.ObjectId).Count() == 0).ToArray();
 
                     var targets = TargetFilter.GetJobCategory(Targets, Role.近战);
                     if (targets.Length > 0) return targets[0];
@@ -224,13 +224,14 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
+        //应急换舞伴
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1))
         {
             foreach (var friend in TargetHelper.PartyMembers)
             {
                 if (StatusHelper.FindStatusFromSelf(friend, ObjectStatus.ClosedPosition2)?.Length > 0)
                 {
-                    if (Actions.ClosedPosition.ShouldUseAction(out act) && Actions.ClosedPosition.Target != friend)
+                    if (Actions.ClosedPosition.ShouldUse(out act) && Actions.ClosedPosition.Target != friend)
                     {
                         return true;
                     }
@@ -238,24 +239,24 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
                 }
             }
         }
-        else if (Actions.ClosedPosition.ShouldUseAction(out act)) return true;
+        else if (Actions.ClosedPosition.ShouldUse(out act)) return true;
 
         //尝试爆发
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TechnicalFinish)
-        && Actions.Devilment.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        && Actions.Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //百花
-        if (Actions.Flourish.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.Flourish.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //扇舞·急
-        if (Actions.FanDance4.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.FanDance3.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.FanDance4.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.FanDance3.ShouldUse(out act, mustUse: true)) return true;
 
         //扇舞
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Devilment) || JobGauge.Feathers > 3 || Service.ClientState.LocalPlayer.Level < 70)
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Devilment) || JobGauge.Feathers > 3 || Level < 70)
         {
-            if (Actions.FanDance2.ShouldUseAction(out act)) return true;
-            if (Actions.FanDance.ShouldUseAction(out act)) return true;
+            if (Actions.FanDance2.ShouldUse(out act)) return true;
+            if (Actions.FanDance.ShouldUse(out act)) return true;
         }
 
         return false;
@@ -263,30 +264,31 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.EnAvant.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.EnAvant.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.CuringWaltz.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-        if (Actions.Improvisation.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.CuringWaltz.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.Improvisation.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.ShieldSamba.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.ShieldSamba.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (!TargetHelper.InBattle && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1) && Actions.ClosedPosition.ShouldUseAction(out act)) return true;
+        if (!TargetHelper.InBattle && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1) 
+            && Actions.ClosedPosition.ShouldUse(out act)) return true;
 
         if (SettingBreak)
         {
-            if (Actions.TechnicalStep.ShouldUseAction(out act)) return true;
+            if (Actions.TechnicalStep.ShouldUse(out act)) return true;
         }
 
         if (StepGCD(out act)) return true;
@@ -296,8 +298,8 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
     }
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
-        if (Service.ClientState.LocalPlayer.Level < Actions.TechnicalStep.Level
-            && Actions.Devilment.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Level < Actions.TechnicalStep.Level
+            && Actions.Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         return base.BreakAbility(abilityRemain, out act);
     }
@@ -319,10 +321,10 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
         }
         else
         {
-            if (Actions.Emboite.ShouldUseAction(out act)) return true;
-            if (Actions.Entrechat.ShouldUseAction(out act)) return true;
-            if (Actions.Jete.ShouldUseAction(out act)) return true;
-            if (Actions.Pirouette.ShouldUseAction(out act)) return true;
+            if (Actions.Emboite.ShouldUse(out act)) return true;
+            if (Actions.Entrechat.ShouldUse(out act)) return true;
+            if (Actions.Jete.ShouldUse(out act)) return true;
+            if (Actions.Pirouette.ShouldUse(out act)) return true;
         }
 
         return false;
@@ -332,11 +334,11 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
     {
         //剑舞
         if ((breaking || JobGauge.Esprit >= 75) &&
-            Actions.SaberDance.ShouldUseAction(out act, mustUse: true)) return true;
+            Actions.SaberDance.ShouldUse(out act, mustUse: true)) return true;
 
         //提纳拉
-        if (Actions.Tillana.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.StarfallDance.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.Tillana.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.StarfallDance.ShouldUse(out act, mustUse: true)) return true;
 
         if (JobGauge.IsDancing) return false;
 
@@ -345,28 +347,28 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
         if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TechnicalFinish))
         {
             //标准舞步
-            if (canstandard && Actions.StandardStep.ShouldUseAction(out act)) return true;
+            if (canstandard && Actions.StandardStep.ShouldUse(out act)) return true;
         }
 
         //用掉Buff
-        if (Actions.Bloodshower.ShouldUseAction(out act)) return true;
-        if (Actions.Fountainfall.ShouldUseAction(out act)) return true;
+        if (Actions.Bloodshower.ShouldUse(out act)) return true;
+        if (Actions.Fountainfall.ShouldUse(out act)) return true;
 
-        if (Actions.RisingWindmill.ShouldUseAction(out act)) return true;
-        if (Actions.ReverseCascade.ShouldUseAction(out act)) return true;
+        if (Actions.RisingWindmill.ShouldUse(out act)) return true;
+        if (Actions.ReverseCascade.ShouldUse(out act)) return true;
 
 
         //标准舞步
-        if (canstandard && Actions.StandardStep.ShouldUseAction(out act)) return true;
+        if (canstandard && Actions.StandardStep.ShouldUse(out act)) return true;
 
 
         //aoe
-        if (Actions.Bladeshower.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.Windmill.ShouldUseAction(out act)) return true;
+        if (Actions.Bladeshower.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Windmill.ShouldUse(out act)) return true;
 
         //single
-        if (Actions.Fountain.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.Cascade.ShouldUseAction(out act)) return true;
+        if (Actions.Fountain.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Cascade.ShouldUse(out act)) return true;
 
         return false;
     }

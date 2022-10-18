@@ -14,14 +14,14 @@ namespace XIVAutoAttack.Combos.RangedMagicial
             {
             }
 
-            public sealed override bool ShouldUseAction(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
+            public sealed override bool ShouldUse(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
             {
                 if (!TargetHelper.BLUActions.Contains(this.ID))
                 {
                     act = null;
                     return false;
                 }
-                return base.ShouldUseAction(out act, lastAct, mustUse, emptyOrSkipCombo);
+                return base.ShouldUse(out act, lastAct, mustUse, emptyOrSkipCombo);
             }
         }
         internal override uint JobID => 36;

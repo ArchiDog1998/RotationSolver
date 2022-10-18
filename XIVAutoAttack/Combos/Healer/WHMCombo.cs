@@ -68,7 +68,7 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
             //天赐
             Benediction = new (140, true)
             {
-                OtherCheck = b => TargetHelper.PartyMembersHP.Min() < 0.15,
+                OtherCheck = b => TargetHelper.PartyMembersMinHP < 0.15f,
             },
 
             //医治 群奶最基础的。300
@@ -111,21 +111,21 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
     private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
         //狂喜之心
-        if (Actions.AfflatusRapture.ShouldUseAction(out act)) return true;
+        if (Actions.AfflatusRapture.ShouldUse(out act)) return true;
         //加Hot
-        if (Actions.Medica2.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.Medica2.ShouldUse(out act, lastComboActionID)) return true;
 
         float cure3 = GetBestHeal(Actions.Cure3.Action, 600);
         float medica = GetBestHeal(Actions.Medica.Action, 300);
 
         //愈疗
-        if (cure3 > medica && Actions.Cure3.ShouldUseAction(out act)) return true;
-        if (Actions.Medica.ShouldUseAction(out act)) return true;
+        if (cure3 > medica && Actions.Cure3.ShouldUse(out act)) return true;
+        if (Actions.Medica.ShouldUse(out act)) return true;
 
         return false;
     }
 
-
+    [Obsolete]
     /// <summary>
     /// 返回总共能大约回复的血量，非常大概。
     /// </summary>
@@ -163,28 +163,28 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //加个神祝祷
-        if (Actions.DivineBenison.ShouldUseAction(out act)) return true;
+        if (Actions.DivineBenison.ShouldUse(out act)) return true;
         //水流幕
-        if (Actions.Aquaveil.ShouldUseAction(out act)) return true;
+        if (Actions.Aquaveil.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //节制
-        if (Actions.Temperance.ShouldUseAction(out act)) return true;
+        if (Actions.Temperance.ShouldUse(out act)) return true;
         //礼仪之铃
-        if (Actions.LiturgyoftheBell.ShouldUseAction(out act)) return true;
+        if (Actions.LiturgyoftheBell.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //加个神速咏唱
-        if (Actions.PresenseOfMind.ShouldUseAction(out act)) return true;
+        if (Actions.PresenseOfMind.ShouldUse(out act)) return true;
 
         //加个法令
-        if (Actions.Assize.ShouldUseAction(out act)) return true;
+        if (Actions.Assize.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -192,17 +192,17 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //加个无中生有
-        if (nextGCD is BaseAction action && action.MPNeed > 500 && Actions.ThinAir.ShouldUseAction(out act)) return true;
+        if (nextGCD is BaseAction action && action.MPNeed > 500 && Actions.ThinAir.ShouldUse(out act)) return true;
 
 
         //天赐救人啊！
-        if (Actions.Benediction.ShouldUseAction(out act)) return true;
+        if (Actions.Benediction.ShouldUse(out act)) return true;
 
-        if (nextGCD.ID == Actions.Medica.ID || nextGCD.ID == Actions.Medica2.ID ||
-            nextGCD.ID == Actions.Cure3.ID || nextGCD.ID == Actions.AfflatusRapture.ID)
+        if (nextGCD == Actions.Medica || nextGCD == Actions.Medica2 ||
+            nextGCD == Actions.Cure3 || nextGCD == Actions.AfflatusRapture)
         {
             //加个全大赦
-            if (Actions.PlenaryIndulgence.ShouldUseAction(out act)) return true;
+            if (Actions.PlenaryIndulgence.ShouldUse(out act)) return true;
         }
 
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
@@ -211,10 +211,10 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //庇护所
-        if (!IsMoving && Actions.Asylum.ShouldUseAction(out act)) return true;
+        if (!IsMoving && Actions.Asylum.ShouldUse(out act)) return true;
 
         //加个法令
-        if (Actions.Assize.ShouldUseAction(out act)) return true;
+        if (Actions.Assize.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -222,10 +222,10 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //神名
-        if (Actions.Tetragrammaton.ShouldUseAction(out act)) return true;
+        if (Actions.Tetragrammaton.ShouldUse(out act)) return true;
 
         //庇护所
-        if (!IsMoving && Actions.Asylum.ShouldUseAction(out act)) return true;
+        if (!IsMoving && Actions.Asylum.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -233,16 +233,16 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
     private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         //安慰之心
-        if (Actions.AfflatusSolace.ShouldUseAction(out act)) return true;
+        if (Actions.AfflatusSolace.ShouldUse(out act)) return true;
 
         //再生
-        if (Actions.Regen.ShouldUseAction(out act)) return true;
+        if (Actions.Regen.ShouldUse(out act)) return true;
 
         //救疗
-        if (Actions.Cure2.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.Cure2.ShouldUse(out act, lastComboActionID)) return true;
 
         //治疗
-        if (Actions.Cure.ShouldUseAction(out act)) return true;
+        if (Actions.Cure.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -250,14 +250,14 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //苦难之心
-        if (Actions.AfflatusMisery.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.AfflatusMisery.ShouldUse(out act, mustUse: true)) return true;
 
         //群体输出
-        if (Actions.Holy.ShouldUseAction(out act)) return true;
+        if (Actions.Holy.ShouldUse(out act)) return true;
 
         //单体输出
-        if (Actions.Aero.ShouldUseAction(out act, mustUse: IsMoving && HaveTargetAngle)) return true;
-        if (Actions.Stone.ShouldUseAction(out act)) return true;
+        if (Actions.Aero.ShouldUse(out act, mustUse: IsMoving && HaveHostileInRange)) return true;
+        if (Actions.Stone.ShouldUse(out act)) return true;
 
         act = null;
         return false;

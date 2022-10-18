@@ -162,7 +162,7 @@ namespace XIVAutoAttack.Combos.Disciplines
                             }
                             else
                             {
-                                if (Actions.PrecisionHookset.ShouldUseAction(out act)) return true;
+                                if (Actions.PrecisionHookset.ShouldUse(out act)) return true;
                             }
                             break;
                         case FishType.Medium:
@@ -174,16 +174,16 @@ namespace XIVAutoAttack.Combos.Disciplines
                             }
                             else
                             {
-                                if (Actions.PowerfulHookset.ShouldUseAction(out act)) return true;
+                                if (Actions.PowerfulHookset.ShouldUse(out act)) return true;
                             }
                             break;
                         case FishType.Large:
-                            if (Config.GetBoolByName("UsePowerfulHookset") && Actions.PowerfulHookset.ShouldUseAction(out act)) return true;
-                            if (Actions.PrecisionHookset.ShouldUseAction(out act)) return true;
+                            if (Config.GetBoolByName("UsePowerfulHookset") && Actions.PowerfulHookset.ShouldUse(out act)) return true;
+                            if (Actions.PrecisionHookset.ShouldUse(out act)) return true;
                             break;
                     }
                 }
-                else if (Actions.Hook.ShouldUseAction(out act)) return true;
+                else if (Actions.Hook.ShouldUse(out act)) return true;
             }
 
             //非钓鱼
@@ -191,7 +191,7 @@ namespace XIVAutoAttack.Combos.Disciplines
             {
                 //以小钓大
                 //if (Actions.Mooch2.ShouldUseAction(out act)) return true;
-                if (Actions.Mooch.ShouldUseAction(out act)) return true;
+                if (Actions.Mooch.ShouldUse(out act)) return true;
 
                 var status = Service.ClientState.LocalPlayer.StatusList.Where(s => s.StatusId == ObjectStatus.AnglersArt);
                 byte stack = 0;
@@ -200,12 +200,12 @@ namespace XIVAutoAttack.Combos.Disciplines
                     stack = status.First().StackCount;
                 }
 
-                if (Config.GetBoolByName("UseSnagging") && Actions.Snagging.ShouldUseAction(out act)) return true;
+                if (Config.GetBoolByName("UseSnagging") && Actions.Snagging.ShouldUse(out act)) return true;
 
                 //补充GP
                 if (stack > 2 && maxgp - gp >= 150)
                 {
-                    if (Actions.ThaliaksFavor.ShouldUseAction(out act)) return true;
+                    if (Actions.ThaliaksFavor.ShouldUse(out act)) return true;
                 }
                 if (maxgp - gp >= 400)
                 {
@@ -217,11 +217,11 @@ namespace XIVAutoAttack.Combos.Disciplines
                 }
                 if (gp >= 300)
                 {
-                    if (Actions.Patience.ShouldUseAction(out act)) return true;
+                    if (Actions.Patience.ShouldUse(out act)) return true;
                 }
 
-                if (gp >= 350 && Actions.Chum.ShouldUseAction(out act)) return true;
-                if (TargetHelper._unfishingTimer.ElapsedMilliseconds > 300 && Actions.Cast.ShouldUseAction(out act)) return true;
+                if (gp >= 350 && Actions.Chum.ShouldUse(out act)) return true;
+                if (TargetHelper._unfishingTimer.ElapsedMilliseconds > 300 && Actions.Cast.ShouldUse(out act)) return true;
             }
 
             act = null;

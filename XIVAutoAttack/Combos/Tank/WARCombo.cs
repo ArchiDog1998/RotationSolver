@@ -140,9 +140,9 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //°ÚÍÑ ¶ÓÓÑÌ×¶Ü
-        if (Actions.ShakeItOff.ShouldUseAction(out act)) return true;
+        if (Actions.ShakeItOff.ShouldUse(out act)) return true;
 
-        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
+        if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -150,14 +150,14 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     private protected override bool MoveGCD(uint lastComboActionID, out IAction act)
     {
         //·Å¸ö´ó Âù»Ä±ÀÁÑ »áÍùÇ°·É
-        if (Actions.PrimalRend.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.PrimalRend.ShouldUse(out act, mustUse: true)) return true;
         return false;
     }
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //Í»½ø
-        if (Actions.Onslaught.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.Onslaught.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
 
     }
@@ -165,9 +165,9 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //¸ã¸ã¹¥»÷
-        if (Actions.PrimalRend.ShouldUseAction(out act, mustUse: true) && !IsMoving)
+        if (Actions.PrimalRend.ShouldUse(out act, mustUse: true) && !IsMoving)
         {
-            if (TargetFilter.DistanceToPlayer(Actions.PrimalRend.Target) < 1)
+            if (Actions.PrimalRend.Target.DistanceToPlayer() < 1)
             {
                 return true;
             }
@@ -177,31 +177,31 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
         if (JobGauge.BeastGauge >= 50 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease))
         {
             //¸ÖÌúÐý·ç
-            if (Actions.SteelCyclone.ShouldUseAction(out act)) return true;
+            if (Actions.SteelCyclone.ShouldUse(out act)) return true;
             //Ô­³õÖ®»ê
-            if (Actions.InnerBeast.ShouldUseAction(out act)) return true;
+            if (Actions.InnerBeast.ShouldUse(out act)) return true;
         }
 
         //ÈºÌå
-        if (Actions.MythrilTempest.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.Overpower.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.MythrilTempest.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Overpower.ShouldUse(out act, lastComboActionID)) return true;
 
         //µ¥Ìå
-        if (Actions.StormsEye.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.StormsPath.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.Maim.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.HeavySwing.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.StormsEye.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.StormsPath.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Maim.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.HeavySwing.ShouldUse(out act, lastComboActionID)) return true;
 
         //¹»²»×Å£¬Ëæ±ã´òÒ»¸ö°É¡£
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
-        if (Actions.Tomahawk.ShouldUseAction(out act)) return true;
+        if (Actions.Tomahawk.ShouldUse(out act)) return true;
 
         return false;
     }
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //ËÀ¶· Èç¹ûÑª²»¹»ÁË¡£
-        if (Actions.Holmgang.ShouldUseAction(out act)) return true;
+        if (Actions.Holmgang.ShouldUse(out act)) return true;
         return false;
     }
 
@@ -212,21 +212,21 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             if(TargetHelper.HostileTargets.Length == 1)
             {
                 //¸´³ð£¨¼õÉË30%£©
-                if (Actions.Vengeance.ShouldUseAction(out act)) return true;
+                if (Actions.Vengeance.ShouldUse(out act)) return true;
             }
 
             //Ô­³õµÄÖ±¾õ£¨¼õÉË10%£©
-            if (Actions.RawIntuition.ShouldUseAction(out act)) return true;
+            if (Actions.RawIntuition.ShouldUse(out act)) return true;
 
             //¸´³ð£¨¼õÉË30%£©
-            if (Actions.Vengeance.ShouldUseAction(out act)) return true;
+            if (Actions.Vengeance.ShouldUse(out act)) return true;
 
             //Ìú±Ú£¨¼õÉË20%£©
-            if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
+            if (GeneralActions.Rampart.ShouldUse(out act)) return true;
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
-        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
+        if (GeneralActions.Reprisal.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -235,37 +235,37 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //±¬·¢
-        if (BuffTime > 3 || Service.ClientState.LocalPlayer.Level < Actions.MythrilTempest.Level)
+        if (BuffTime > 3 || Level < Actions.MythrilTempest.Level)
         {
             //Õ½º¿
-            if (Actions.Infuriate.ShouldUseAction(out act)) return true;
+            if (Actions.Infuriate.ShouldUse(out act)) return true;
             //¿ñ±©
-            if (!new BaseAction(7389).IsCoolDown && Actions.Berserk.ShouldUseAction(out act)) return true;
+            if (!new BaseAction(7389).IsCoolDown && Actions.Berserk.ShouldUse(out act)) return true;
             //Õ½º¿
-            if (Actions.Infuriate.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            if (Actions.Infuriate.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
-        if ((float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.6)
+        if (LocalPlayer.GetHealthRatio() < 0.6f)
         {
             //Õ½Àõ
-            if (Actions.ThrillofBattle.ShouldUseAction(out act)) return true;
+            if (Actions.ThrillofBattle.ShouldUse(out act)) return true;
             //Ì©È»×ÔÈô ×ÔÄÌ°¡£¡
-            if (Actions.Equilibrium.ShouldUseAction(out act)) return true;
+            if (Actions.Equilibrium.ShouldUse(out act)) return true;
         }
 
         //ÄÌ¸ö¶ÓÓÑ°¡¡£
-        if (!HaveShield && Actions.NascentFlash.ShouldUseAction(out act)) return true;
+        if (!HaveShield && Actions.NascentFlash.ShouldUse(out act)) return true;
 
         //ÆÕÍ¨¹¥»÷
         //ÈºÉ½Â¡Æð
-        if (Actions.Orogeny.ShouldUseAction(out act)) return true;
+        if (Actions.Orogeny.ShouldUse(out act)) return true;
         //¶¯ÂÒ 
-        if (Actions.Upheaval.ShouldUseAction(out act)) return true;
+        if (Actions.Upheaval.ShouldUse(out act)) return true;
 
         //¸ã¸ã¹¥»÷
-        if (Actions.Onslaught.ShouldUseAction(out act) && !IsMoving)
+        if (Actions.Onslaught.ShouldUse(out act) && !IsMoving)
         {
-            if (TargetFilter.DistanceToPlayer(Actions.Onslaught.Target) < 2)
+            if (Actions.Onslaught.Target.DistanceToPlayer() < 1)
             {
                 return true;
             }

@@ -150,34 +150,34 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //Ê¹ÓÃ¾§ÄÒ
-        bool useAmmo = JobGauge.Ammo > (Service.ClientState.LocalPlayer.Level >= Actions.DoubleDown.Level ? 2 : 1);
-        bool breakUseAmmo = JobGauge.Ammo >= (Service.ClientState.LocalPlayer.Level >= Actions.DoubleDown.Level ? 2 : 1);
+        bool useAmmo = JobGauge.Ammo > (Level >= Actions.DoubleDown.Level ? 2 : 1);
+        bool breakUseAmmo = JobGauge.Ammo >= (Level >= Actions.DoubleDown.Level ? 2 : 1);
 
         //AOE
-        if (breakUseAmmo && Actions.DoubleDown.ShouldUseAction(out act, mustUse: true)) return true;
-        if (useAmmo && Actions.FatedCircle.ShouldUseAction(out act)) return true;
+        if (breakUseAmmo && Actions.DoubleDown.ShouldUse(out act, mustUse: true)) return true;
+        if (useAmmo && Actions.FatedCircle.ShouldUse(out act)) return true;
 
-        if ( Actions.DemonSlaughter.ShouldUseAction(out act, lastComboActionID)) return true;
-        if ( Actions.DemonSlice.ShouldUseAction(out act, lastComboActionID)) return true;
+        if ( Actions.DemonSlaughter.ShouldUse(out act, lastComboActionID)) return true;
+        if ( Actions.DemonSlice.ShouldUse(out act, lastComboActionID)) return true;
 
         uint remap = Service.IconReplacer.OriginalHook(Actions.GnashingFang.ID);
-        if (remap == Actions.WickedTalon.ID && Actions.WickedTalon.ShouldUseAction(out act)) return true;
-        if (remap == Actions.SavageClaw.ID && Actions.SavageClaw.ShouldUseAction(out act)) return true;
+        if (remap == Actions.WickedTalon.ID && Actions.WickedTalon.ShouldUse(out act)) return true;
+        if (remap == Actions.SavageClaw.ID && Actions.SavageClaw.ShouldUse(out act)) return true;
 
 
         //µ¥Ìå
-        if (breakUseAmmo && Actions.GnashingFang.ShouldUseAction(out act)) return true;
-        if (useAmmo && Actions.BurstStrike.ShouldUseAction(out act)) return true;
+        if (breakUseAmmo && Actions.GnashingFang.ShouldUse(out act)) return true;
+        if (useAmmo && Actions.BurstStrike.ShouldUse(out act)) return true;
 
-        if (Actions.SonicBreak.ShouldUseAction(out act)) return true;
+        if (Actions.SonicBreak.ShouldUse(out act)) return true;
 
         //µ¥ÌåÈýÁ¬
-        if (Actions.SolidBarrel.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.BrutalShell.ShouldUseAction(out act, lastComboActionID)) return true;
-        if (Actions.KeenEdge.ShouldUseAction(out act, lastComboActionID)) return true;
+        if (Actions.SolidBarrel.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.BrutalShell.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.KeenEdge.ShouldUse(out act, lastComboActionID)) return true;
 
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
-        if (Actions.LightningShot.ShouldUseAction(out act)) return true;
+        if (Actions.LightningShot.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -185,27 +185,27 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //ÉñÊ¥ÁìÓò Èç¹ûÐ»²»¹»ÁË¡£
-        if (Actions.Superbolide.ShouldUseAction(out act)) return true;
+        if (Actions.Superbolide.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.JugularRip.ShouldUseAction(out act)) return true;
-        if (Actions.AbdomenTear.ShouldUseAction(out act)) return true;
-        if (Actions.EyeGouge.ShouldUseAction(out act)) return true;
-        if (Actions.Hypervelocity.ShouldUseAction(out act)) return true;
+        if (Actions.JugularRip.ShouldUse(out act)) return true;
+        if (Actions.AbdomenTear.ShouldUse(out act)) return true;
+        if (Actions.EyeGouge.ShouldUse(out act)) return true;
+        if (Actions.Hypervelocity.ShouldUse(out act)) return true;
 
 
-        if (Actions.NoMercy.ShouldUseAction(out act)) return true;
-        if (Actions.Bloodfest.ShouldUseAction(out act)) return true;
-        if (Actions.BowShock.ShouldUseAction(out act, mustUse: true)) return true;
-        if (Actions.DangerZone.ShouldUseAction(out act)) return true;
+        if (Actions.NoMercy.ShouldUse(out act)) return true;
+        if (Actions.Bloodfest.ShouldUse(out act)) return true;
+        if (Actions.BowShock.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.DangerZone.ShouldUse(out act)) return true;
 
         //¸ã¸ã¹¥»÷
-        if (Actions.RoughDivide.ShouldUseAction(out act) && !IsMoving)
+        if (Actions.RoughDivide.ShouldUse(out act) && !IsMoving)
         {
-            if (TargetFilter.DistanceToPlayer(Actions.RoughDivide.Target) < 1)
+            if (Actions.RoughDivide.Target.DistanceToPlayer() < 1)
             {
                 return true;
             }
@@ -215,15 +215,15 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.HeartofLight.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
-        if (GeneralActions.Reprisal.ShouldUseAction(out act, mustUse: true)) return true;
+        if (Actions.HeartofLight.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
         return false;
     }
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //Í»½ø
-        if (Actions.RoughDivide.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+        if (Actions.RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
@@ -232,21 +232,20 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         {
 
             //¼õÉË10%£©
-            if (Actions.HeartofStone.ShouldUseAction(out act)) return true;
+            if (Actions.HeartofStone.ShouldUse(out act)) return true;
 
             //ÐÇÔÆ£¨¼õÉË30%£©
-            if (Actions.Nebula.ShouldUseAction(out act)) return true;
+            if (Actions.Nebula.ShouldUse(out act)) return true;
 
             //Ìú±Ú£¨¼õÉË20%£©
-            if (GeneralActions.Rampart.ShouldUseAction(out act)) return true;
+            if (GeneralActions.Rampart.ShouldUse(out act)) return true;
 
             //Î±×°£¨¼õÉË10%£©
-            if (Actions.Camouflage.ShouldUseAction(out act)) return true;
+            if (Actions.Camouflage.ShouldUse(out act)) return true;
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
-        if (GeneralActions.Reprisal.ShouldUseAction(out act)) return true;
-
+        if (GeneralActions.Reprisal.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -254,7 +253,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Aurora.ShouldUseAction(out act, emptyOrSkipCombo: true) && abilityRemain == 1) return true;
+        if (Actions.Aurora.ShouldUse(out act, emptyOrSkipCombo: true) && abilityRemain == 1) return true;
 
         return false;
     }
