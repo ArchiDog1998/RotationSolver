@@ -80,7 +80,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         if (CustomCombo.EnemyTarget == null) return;
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))return;
-        if (CustomCombo.ShouldLocation is Actions.EnemyLocation.None or Actions.EnemyLocation.Front) return;
+        if (CustomCombo.ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
 
         float radius = CustomCombo.EnemyTarget.HitboxRadius + 3.5f;
         float rotation = CustomCombo.EnemyTarget.Rotation;
@@ -103,12 +103,12 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         pts.Add(scrPos);
         switch (CustomCombo.ShouldLocation)
         {
-            case Actions.EnemyLocation.Side:
+            case EnemyLocation.Side:
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
                 pts.Add(scrPos);
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
                 break;
-            case Actions.EnemyLocation.Back:
+            case EnemyLocation.Back:
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
                 break;
             default:

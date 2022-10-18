@@ -113,6 +113,7 @@ namespace XIVAutoAttack
         private static TimeSpan combatDuration = new();
         private static DateTime combatStart;
         private static DateTime combatEnd;
+        [Obsolete]
         public static TimeSpan CombatEngageDuration => combatDuration;
         private static void UpdateCombatTime()
         {
@@ -213,15 +214,14 @@ namespace XIVAutoAttack
             var instance =ActionManager.Instance();
             var spell = ActionType.Spell;
 
-            WeaponTotal = InBattle ? Math.Max(WeaponTotal, instance->GetRecastTime(spell, 11)) : 0;
+            var weapontotal = instance->GetRecastTime(spell, 11);
             Weaponelapsed = instance->GetRecastTimeElapsed(spell, 11);
-
-            WeaponRemain = Math.Max(WeaponTotal - Weaponelapsed, 
+            WeaponRemain = Math.Max(weapontotal - Weaponelapsed, 
                 Service.ClientState.LocalPlayer.TotalCastTime - Service.ClientState.LocalPlayer.CurrentCastTime);
 
-            var min = Math.Max(WeaponTotal - Service.Configuration.WeaponInterval, 0);
+            var min = Math.Max(weapontotal - Service.Configuration.WeaponInterval, 0);
             AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
-
+            WeaponTotal = InBattle ? Math.Max(WeaponTotal, weapontotal) : 0;
 
             UpdateTargets();
             if(Service.ClientState.LocalPlayer.ClassJob.Id == 36)

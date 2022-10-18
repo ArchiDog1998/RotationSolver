@@ -216,7 +216,8 @@ public abstract partial class CustomCombo
     {
         if (nextGCD is BaseAction action)
         {
-            if (action.Cast100 >= 50 && GeneralActions.Swiftcast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
+            if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role != Role.½üÕ½ && 
+            action.Cast100 >= 50 && GeneralActions.Swiftcast.ShouldUseAction(out act, emptyOrSkipCombo: true)) return true;
 
             if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)
             {
