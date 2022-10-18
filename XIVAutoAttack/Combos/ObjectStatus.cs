@@ -209,12 +209,17 @@
             CircleofSacrifice = 2972,
             //死亡祭品
             ImmortalSacrifice = 2592,
+            //神秘环
+            ArcaneCircle = 2599,
 
             //播魂种
             Soulsow = 2594,
 
             //回退准备
             Threshold = 2595,
+
+            //勾刃效果提高
+            EnhancedHarpe = 2845,
 
             //龙牙龙爪预备状态
             SharperFangandClaw = 802,
