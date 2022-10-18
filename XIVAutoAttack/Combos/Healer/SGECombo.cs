@@ -386,17 +386,16 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             if (DefenseSingleGCD(lastComboActionID, out act)) return true;
         }
 
-
         //×¢Ò©
         if (Actions.Dosis.ShouldUseAction(out act)) return true;
-
-        //¼ý¶¾
-        if (JobGauge.Addersting > 0 && Actions.Toxikon.ShouldUseAction(out act, mustUse: true)) return true;
 
         //·¢Ñ×
         if (Actions.Phlegma3.ShouldUseAction(out act, mustUse: true)) return true;
         if (level < Actions.Phlegma3.Level && Actions.Phlegma2.ShouldUseAction(out act, mustUse: true)) return true;
         if (level < Actions.Phlegma2.Level && Actions.Phlegma.ShouldUseAction(out act, mustUse: true)) return true;
+
+        //¼ý¶¾
+        if (JobGauge.Addersting > 0 && Actions.Toxikon.ShouldUseAction(out act, mustUse: true)) return true;
 
         //ÍÑÕ½¸øTË¢µ¥¶ÜæÎ¶¹×Ó
         if (!TargetHelper.InBattle)
