@@ -12,7 +12,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
 
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
 
             //ÆÙÐº
             Cascade = new (15989)

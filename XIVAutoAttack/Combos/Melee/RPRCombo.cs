@@ -7,7 +7,7 @@ namespace XIVAutoAttack.Combos.Melee;
 
 internal class RPRCombo : JobGaugeCombo<RPRGauge>
 {
-    internal class PRPAction : BaseAction
+    internal class PRPAction : PVEAction
     {
         internal override EnemyLocation EnermyLocation => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) 
             ? EnemyLocation.None : base.EnermyLocation;
@@ -19,7 +19,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     internal override uint JobID => 39;
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
             //死亡之影
             ShadowofDeath = new (24378, isDot:true)
             {

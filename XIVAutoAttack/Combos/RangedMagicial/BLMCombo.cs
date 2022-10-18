@@ -9,7 +9,7 @@ namespace XIVAutoAttack.Combos
 {
     internal class BLMCombo : JobGaugeCombo<BLMGauge>
     {
-        internal class BLMAction : BaseAction
+        internal class BLMAction : PVEAction
         {
             private static BLMGauge JobGauge => BLMCombo.JobGauge;
 
@@ -115,7 +115,7 @@ namespace XIVAutoAttack.Combos
         internal struct Actions
         {
 
-            public static readonly BaseAction
+            public static readonly PVEAction
                 //雷1
                 Thunder = new(144u, isDot: true)
                 {

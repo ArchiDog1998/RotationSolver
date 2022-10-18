@@ -7,7 +7,7 @@ namespace XIVAutoAttack.Combos.Tank;
 
 internal class DRKCombo : JobGaugeCombo<DRKGauge>
 {
-    public class DRKAction : BaseAction
+    public class DRKAction : PVEAction
     {
         internal override uint MPNeed => JobGauge.HasDarkArts ? 0 : base.MPNeed;
         internal DRKAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
@@ -18,12 +18,12 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
 
     internal override uint JobID => 32;
     internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Grit);
-    private protected override BaseAction Shield => Actions.Grit;
+    private protected override PVEAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
 
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
             //重斩
             HardSlash = new (3617),
 
@@ -61,19 +61,19 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             ShadowWall = new (3636)
             {
                 BuffsProvide = new [] { ObjectStatus.ShadowWall },
-                OtherCheck = BaseAction.TankDefenseSelf,
+                OtherCheck = PVEAction.TankDefenseSelf,
             },
 
             //弃明投暗
             DarkMind = new(3634)
             {
-                OtherCheck = BaseAction.TankDefenseSelf,
+                OtherCheck = PVEAction.TankDefenseSelf,
             },
 
             //行尸走肉
             LivingDead = new (3638)
             {
-                OtherCheck = BaseAction.TankBreakOtherCheck,
+                OtherCheck = PVEAction.TankBreakOtherCheck,
             },
 
             //腐秽大地

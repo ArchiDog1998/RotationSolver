@@ -9,14 +9,14 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
 {
     internal override uint JobID => 37;
     internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.RoyalGuard);
-    private protected override BaseAction Shield => Actions.RoyalGuard;
+    private protected override PVEAction Shield => Actions.RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
 
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
             //ÍõÊÒÇ×ÎÀ
             RoyalGuard = new (16142, shouldEndSpecial: true),
 
@@ -33,7 +33,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             Camouflage = new (16140)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = BaseAction.TankDefenseSelf,
+                OtherCheck = PVEAction.TankDefenseSelf,
             },
 
             //¶ñÄ§ÇÐ
@@ -55,14 +55,14 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             Nebula = new (16148)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = BaseAction.TankDefenseSelf,
+                OtherCheck = PVEAction.TankDefenseSelf,
             },
 
             //¶ñÄ§É±
             DemonSlaughter = new (16149),
 
             //¼«¹â
-            Aurora = new BaseAction(16151, true)
+            Aurora = new PVEAction(16151, true)
             {
                 BuffsProvide = new [] { ObjectStatus.Aurora },
             },
@@ -70,7 +70,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             //³¬»ðÁ÷ÐÇ
             Superbolide = new (16152)
             {
-                OtherCheck = BaseAction.TankBreakOtherCheck,
+                OtherCheck = PVEAction.TankBreakOtherCheck,
             },
 
             //ÒôËÙÆÆ

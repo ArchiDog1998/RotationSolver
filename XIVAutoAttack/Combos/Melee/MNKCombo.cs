@@ -13,7 +13,7 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
 
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
             //Л«БъЅЕ
             DragonKick = new (74)
             {

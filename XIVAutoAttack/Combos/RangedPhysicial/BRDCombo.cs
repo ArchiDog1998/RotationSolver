@@ -24,7 +24,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             return results.Min() < duration;
         }
 
-        public static readonly BaseAction
+        public static readonly PVEAction
             //Ç¿Á¦Éä»÷
             HeavyShoot = new(97) { BuffsProvide = new[] { ObjectStatus.StraightShotReady } },
 

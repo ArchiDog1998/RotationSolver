@@ -9,10 +9,10 @@ namespace XIVAutoAttack.Combos.Melee;
 internal class NINCombo : JobGaugeCombo<NINGauge>
 {
     internal override uint JobID => 30;
-    public class NinAction : BaseAction
+    public class NinAction : PVEAction
     {
-        internal BaseAction[] Ninjutsus { get; }
-        public NinAction(uint actionID, params BaseAction[] ninjutsus)
+        internal PVEAction[] Ninjutsus { get; }
+        public NinAction(uint actionID, params PVEAction[] ninjutsus)
             : base(actionID, false, false)
         {
             Ninjutsus = ninjutsus;
@@ -24,7 +24,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
 
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
 
             //隐遁
             Hide = new (2245),

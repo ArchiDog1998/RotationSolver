@@ -13,13 +13,13 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
     internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.IronWill);
 
-    private protected override BaseAction Shield => Actions.IronWill;
+    private protected override PVEAction Shield => Actions.IronWill;
 
     protected override bool CanHealSingleSpell => TargetHelper.PartyHealers.Length == 0 && base.CanHealSingleSpell;
 
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
             //钢铁信念
             IronWill = new (28, shouldEndSpecial: true),
 
@@ -61,7 +61,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             Sentinel = new (17)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = BaseAction.TankDefenseSelf,
+                OtherCheck = PVEAction.TankDefenseSelf,
             },
 
             //厄运流转
@@ -73,7 +73,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             //神圣领域
             HallowedGround = new (30)
             {
-                OtherCheck = BaseAction.TankBreakOtherCheck,
+                OtherCheck = PVEAction.TankBreakOtherCheck,
             },
 
             //圣光幕帘
@@ -131,7 +131,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             PassageofArms = new (7385),
 
             //保护
-            Cover = new BaseAction(27, true)
+            Cover = new PVEAction(27, true)
             {
                 ChoiceTarget = TargetFilter.FindAttackedTarget,
             },

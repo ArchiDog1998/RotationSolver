@@ -15,11 +15,11 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
 {
     internal override uint JobID => 33;
 
-    private protected override BaseAction Raise => Actions.Ascend;
+    private protected override PVEAction Raise => Actions.Ascend;
 
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
             //生辰
             Ascend = new (3603, true),
 

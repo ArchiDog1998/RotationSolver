@@ -357,12 +357,12 @@ internal sealed class IconReplacer : IDisposable
                 return;
             }
 
-            if (!isGCD && newiAction is BaseAction act1 && act1.IsRealGCD) return;
+            if (!isGCD && newiAction is PVEAction act1 && act1.IsRealGCD) return;
 
 #if DEBUG
             //if (newiAction is BaseAction a) Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + a.Action.Name);
 #endif
-            if (newiAction.Use() && newiAction is BaseAction act)
+            if (newiAction.Use() && newiAction is PVEAction act)
             {
 #if DEBUG
                 //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + act.Action.Name + TargetHelper.AbilityRemainCount.ToString());
@@ -394,7 +394,7 @@ internal sealed class IconReplacer : IDisposable
 
                 if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction))
                 {
-                    if (newAction is BaseAction) return OriginalHook(newAction.ID);
+                    if (newAction is PVEAction) return OriginalHook(newAction.ID);
                 }
             }
 

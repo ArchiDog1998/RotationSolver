@@ -19,7 +19,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
 
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
             //¾«×¼´Ì
             TrueThrust = new (75),
 

@@ -17,7 +17,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private static bool MCH_Automaton = false;
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
             //分裂弹
             SplitShot = new(2866),
 

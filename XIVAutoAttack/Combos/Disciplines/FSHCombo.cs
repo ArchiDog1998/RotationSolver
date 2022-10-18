@@ -23,7 +23,7 @@ namespace XIVAutoAttack.Combos.Disciplines
         }
         internal struct Actions
         {
-            public static readonly BaseAction
+            public static readonly PVEAction
                 //抛竿
                 Cast = new (289),
 

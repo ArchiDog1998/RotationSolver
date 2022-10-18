@@ -108,7 +108,7 @@ public abstract partial class CustomCombo
         }
         if (IconReplacer.Move && MoveAbility(abilityRemain, out act))
         {
-            if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
+            if (act is PVEAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
         }
 
         //·ÀÓù
@@ -214,7 +214,7 @@ public abstract partial class CustomCombo
     /// <returns></returns>
     private protected virtual bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD is BaseAction action)
+        if (nextGCD is PVEAction action)
         {
             if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role != Role.½üÕ½ && 
             action.Cast100 >= 50 && GeneralActions.Swiftcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;

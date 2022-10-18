@@ -9,7 +9,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
 {
     internal override uint JobID => 21;
     internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
-    private protected override BaseAction Shield => Actions.Defiance;
+    private protected override PVEAction Shield => Actions.Defiance;
     internal static float BuffTime
     {
         get
@@ -22,7 +22,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
 
     internal struct Actions
     {
-        public static readonly BaseAction
+        public static readonly PVEAction
             //守护
             Defiance = new (48, shouldEndSpecial: true),
 
@@ -103,14 +103,14 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             Vengeance = new (44)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = BaseAction.TankDefenseSelf,
+                OtherCheck = PVEAction.TankDefenseSelf,
             },
 
             //原初的直觉
             RawIntuition = new (3551)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = BaseAction.TankDefenseSelf,
+                OtherCheck = PVEAction.TankDefenseSelf,
             },
 
             //摆脱
@@ -119,7 +119,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //死斗
             Holmgang = new (43)
             {
-                OtherCheck = BaseAction.TankBreakOtherCheck,
+                OtherCheck = PVEAction.TankBreakOtherCheck,
             },
 
             ////原初的解放
@@ -240,7 +240,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //战嚎
             if (Actions.Infuriate.ShouldUse(out act)) return true;
             //狂暴
-            if (!new BaseAction(7389).IsCoolDown && Actions.Berserk.ShouldUse(out act)) return true;
+            if (!new PVEAction(7389).IsCoolDown && Actions.Berserk.ShouldUse(out act)) return true;
             //战嚎
             if (Actions.Infuriate.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }

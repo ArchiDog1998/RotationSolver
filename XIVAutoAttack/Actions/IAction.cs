@@ -2,7 +2,7 @@
 {
     public interface IAction
     {
-        bool Use();
-        uint ID { get; }
+       bool Use();
+       uint ID { get; }
     }
 }

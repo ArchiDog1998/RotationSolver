@@ -8,9 +8,9 @@ namespace XIVAutoAttack.Combos.RangedMagicial;
 
 internal class SMNCombo : JobGaugeCombo<SMNGauge>
 {
-    public class SMNAction : BaseAction
+    public class SMNAction : PVEAction
     {
-        internal override int Cast100 => new BaseAction(Service.IconReplacer.OriginalHook(ID)).Cast100;
+        internal override int Cast100 => new PVEAction(Service.IconReplacer.OriginalHook(ID)).Cast100;
         public SMNAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
         {
@@ -19,7 +19,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
     }
     internal override uint JobID => 27;
     protected override bool CanHealSingleSpell => false;
-    private protected override BaseAction Raise => Actions.Resurrection;
+    private protected override PVEAction Raise => Actions.Resurrection;
 
     private static bool InBahamut => Service.IconReplacer.OriginalHook(25822) == Actions.Deathflare.ID;
     private static bool InPhoenix => Service.IconReplacer.OriginalHook(25822) == Actions.Rekindle.ID;
@@ -45,7 +45,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
             //±≈¡— ∑∂Œß…À∫¶
             Outburst = new (16511);
 
-        public static readonly BaseAction
+        public static readonly PVEAction
             //±¶ Ø ﬁ’ŸªΩ
             SummonCarbuncle = new (25798)
             {

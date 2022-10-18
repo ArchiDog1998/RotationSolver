@@ -7,7 +7,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial
 {
     internal class BLUCombo : OtherCombo
     {
-        internal class BLUAction : BaseAction
+        internal class BLUAction : PVEAction
         {
             internal BLUAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
                 : base(actionID, isFriendly, shouldEndSpecial)

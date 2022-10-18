@@ -23,7 +23,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 return Target.IsDying();
             }
         }
-        protected static internal BaseAction ActionID => GeneralActions.Repose;
+        protected static internal PVEAction ActionID => GeneralActions.Repose;
 
         public bool IsEnabled
         {
