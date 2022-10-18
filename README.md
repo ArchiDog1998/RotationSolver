@@ -7,4 +7,4 @@
 
 如果你喜欢这个插件，可以在这个目录中下载它: `https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/pluginmaster.json`
 
-QQ交流群：913297282，注意下载量并非上方标签的下载量，请看Dalamud中显示的数值
+QQ交流群：913297282，注意，入群问题中的下载量并非上方标签的下载量，请看Dalamud中显示的数值

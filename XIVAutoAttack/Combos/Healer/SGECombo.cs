@@ -1,4 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
@@ -10,6 +12,7 @@ namespace XIVAutoAttack.Combos.Healer;
 internal class SGECombo : JobGaugeCombo<SGEGauge>
 {
     internal override uint JobID => 40;
+    internal static byte level => Service.ClientState.LocalPlayer!.Level;
 
     private protected override BaseAction Raise => Actions.Egeiro;
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
@@ -120,7 +123,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //ÁéÏðÇåÖ­
             Druochole = new(24296, true)
             {
-                OtherCheck = b => JobGauge.Addersgall > 0,
+                OtherCheck = b => JobGauge.Addersgall > 0 && HealHelper.SingleHeal(b, 600, 0.9, 0.85),
             },
 
             //Ê§ºâ
@@ -129,14 +132,12 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //¼á½ÇÇåÖ­
             Kerachole = new(24298, true)
             {
-
                 OtherCheck = b => JobGauge.Addersgall > 0,
             },
 
             //¼ÄÉúÇåÖ­
             Ixochole = new(24299, true)
             {
-
                 OtherCheck = b => JobGauge.Addersgall > 0,
             },
 

@@ -239,6 +239,9 @@
             //幻象冲预备状态
             DiveReady = 1243,
 
+            //巨龙右眼
+            RightEye = 1910,
+
             //魔猿形
             OpoOpoForm = 107,
 
