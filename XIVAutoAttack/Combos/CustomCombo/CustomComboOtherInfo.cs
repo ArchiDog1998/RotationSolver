@@ -8,6 +8,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
     {
         public enum DescType : byte
         {
+            循环说明,
+            爆发技能,
             范围治疗,
             单体治疗,
             范围防御,
