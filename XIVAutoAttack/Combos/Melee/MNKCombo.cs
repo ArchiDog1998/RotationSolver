@@ -53,13 +53,13 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             //铁山靠
             SteelPeak = new (25761)
             {
-                OtherCheck = b => TargetHelper.InBattle,
+                OtherCheck = b => InBattle,
             },
 
             //空鸣拳
             HowlingFist = new (25763)
             {
-                OtherCheck = b => TargetHelper.InBattle,
+                OtherCheck = b => InBattle,
             },
 
             //义结金兰
@@ -81,7 +81,7 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             PerfectBalance = new (69)
             {
                 BuffsNeed = new ushort[] { ObjectStatus.RaptorForm },
-                OtherCheck = b => TargetHelper.InBattle,
+                OtherCheck = b => InBattle,
             },
 
             //苍气炮 阴

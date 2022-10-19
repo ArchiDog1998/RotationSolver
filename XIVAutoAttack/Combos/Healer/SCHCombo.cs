@@ -82,7 +82,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
             //以太超流
             Aetherflow = new (166)
             {
-                OtherCheck = b => TargetHelper.InBattle,
+                OtherCheck = b => InBattle,
             },
 
             //能量吸收

@@ -9,14 +9,9 @@ description: |-
 punchline: Auto attack!
 changelog: |-
   ## 错误修复
-  - 调整了真北在身位提示上的作用
-  - 学者能力技和GCD技能的优先级互换
-  - 修复武士不会真北的bug
+  - 调整了镰刀的循环
   ## API
-  - 添加BaseAction的Eaquals方法
-  - 添加BaseAction的IsTargetDyling,IsTargetBoss属性
-  - 添加CustomCombo中的Level和LocalPlayer
-  - TargetHelper添加PartyMembersMinHP属性
+  - 在CustonCombo中添加Inbattle属性
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack

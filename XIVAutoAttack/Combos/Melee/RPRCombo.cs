@@ -152,7 +152,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (TargetHelper.InBattle && JobGauge.VoidShroud < 2 &&
+                    if (InBattle && JobGauge.VoidShroud < 2 &&
                     Target.FindStatusTimeFromSelf(ObjectStatus.DeathsDesign) > 0) return true;
                     return false;
                 },
@@ -164,7 +164,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 BuffsProvide = new [] { ObjectStatus.Soulsow },
                 OtherCheck = b =>
                 {
-                    if (!TargetHelper.InBattle) return true;
+                    if (!InBattle) return true;
                     return false;
                 }
             },
@@ -175,7 +175,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 BuffsNeed = new [] { ObjectStatus.Soulsow },
                 OtherCheck = b =>
                 {
-                    if (TargetHelper.InBattle) return true;
+                    if (InBattle) return true;
                     return false;
                 }
             },

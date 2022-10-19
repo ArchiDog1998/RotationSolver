@@ -264,13 +264,13 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         MCH_Asocial = Config.GetBoolByName("MCH_Asocial");
 
         //当上一个连击是热阻击弹时完成起手
-        if (TargetHelper.InBattle && (lastComboActionID == Actions.CleanShot.ID || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
+        if (InBattle && (lastComboActionID == Actions.CleanShot.ID || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
         {
             initFinished = true;
         }
 
         //不在战斗中时重置起手
-        if (!TargetHelper.InBattle)
+        if (!InBattle)
         {
             //开场前整备,空气锚和钻头必须冷却好
             if ((!Actions.AirAnchor.IsCoolDown || !Actions.Drill.IsCoolDown) && Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
