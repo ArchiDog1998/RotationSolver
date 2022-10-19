@@ -27,9 +27,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 OtherCheck = b =>
                 {
                     if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver)) return false;
-                    if ((StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) && ArcaneCircle.RecastTimeRemain < 9 &&
-                       ((JobGauge.LemureShroud == 4 && StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.DeathsDesign) < 30) || 
-                       (JobGauge.LemureShroud == 3 && StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.DeathsDesign) < 50))) ||
+                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) && ArcaneCircle.RecastTimeRemain < 9 ||
                         ArcaneCircle.IsCoolDown || !ArcaneCircle.IsCoolDown) return true;
                     return false;
                 }
@@ -128,7 +126,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                     {
                         if ((StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ArcaneCircle) && JobGauge.Shroud >= 50)) return true;
                         if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ArcaneCircle) && JobGauge.Shroud >= 90) return true;
-                        if (ArcaneCircle.RecastTimeRemain < 5 && JobGauge.Shroud >= 50) return true;
+                        if (ArcaneCircle.RecastTimeRemain < 8 && JobGauge.Shroud >= 50) return true;
                     }
                     return false;
                 },
@@ -155,7 +153,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 OtherCheck = b =>
                 {
                     if (TargetHelper.InBattle && JobGauge.VoidShroud < 2 &&
-                    b.FindStatusTimeFromSelf(ObjectStatus.DeathsDesign) > 0) return true;
+                    Target.FindStatusTimeFromSelf(ObjectStatus.DeathsDesign) > 0) return true;
                     return false;
                 },
             },
@@ -249,11 +247,11 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 if (Actions.LemuresScythe.ShouldUse(out act)) return true;
             }
 
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping))
+            if (JobGauge.LemureShroud > 1 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping))
             {
                 if (Actions.Gibbet.ShouldUse(out act)) return true;
             }
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping))
+            if (JobGauge.LemureShroud > 1 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping))
             {
                 if (Actions.Gallows.ShouldUse(out act)) return true;
             }
