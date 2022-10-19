@@ -54,7 +54,10 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             },
 
             //¶¯ÂÒ    
-            Upheaval = new (7387),
+            Upheaval = new(7387)
+            {
+                BuffsNeed = new ushort[] { ObjectStatus.SurgingTempest },
+            },
 
             //³¬Ñ¹¸«
             Overpower = new (41),

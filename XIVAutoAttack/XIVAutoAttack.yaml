@@ -10,8 +10,12 @@ punchline: Auto attack!
 changelog: |-
   ## 错误修复
   - 调整了镰刀的循环
+  - 改了战士的动乱的触发条件
+  - 在不显示身位的时候也不显示脚下的范围提示
+  - 调整最后一个能力技的释放时间尽可能靠后
   ## API
   - 在CustonCombo中添加Inbattle属性
+  - 记录的技能事件用的真实的id
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack

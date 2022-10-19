@@ -298,6 +298,7 @@ namespace XIVAutoAttack
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction2]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InFlight]) return;
 
+            //GCD
             if (WeaponRemain <= Service.Configuration.WeaponFaster)
             {
                 if (!_weaponDelayStopwatch.IsRunning)
@@ -317,7 +318,8 @@ namespace XIVAutoAttack
 
                     return;
                 }
-                else return;
+
+                return;
             }
 
             //确定读条时间。
@@ -340,7 +342,15 @@ namespace XIVAutoAttack
             //还在咏唱，就不放技能了。
             if (weaponelapsed <= _lastCastingTotal) return;
 
-            if ((weaponelapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
+            //只剩下最后一个能力技了，然后卡最后！
+            if (AbilityRemainCount == 1)
+            {
+                if(WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponFaster) return;
+                Service.IconReplacer.DoAnAction(false);
+                return;
+            }
+
+            else if ((weaponelapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
             {
                 Service.IconReplacer.DoAnAction(false);
                 return;

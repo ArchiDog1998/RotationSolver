@@ -137,7 +137,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             {
                 OtherCheck = b =>
                 {
-                    var isBoss = Target.MaxHp / LocalPlayer.MaxHp > 9.5;
+                    var isBoss = b.IsBoss();
                     //小怪AOE期间不打野火
                     if (SpreadShot.ShouldUse(out _) || !isBoss) return false;
                     if (!isBoss && b.IsDying()) return false;
