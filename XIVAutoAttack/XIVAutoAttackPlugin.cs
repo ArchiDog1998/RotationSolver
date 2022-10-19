@@ -78,7 +78,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     {
         const int COUNT = 20;
 
-        if (CustomCombo.EnemyTarget == null) return;
+        if (CustomCombo.EnemyTarget == null || !Service.Configuration.SayoutLocationWrong) return;
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))return;
         if (CustomCombo.ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
 

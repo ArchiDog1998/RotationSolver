@@ -83,18 +83,21 @@ namespace XIVAutoAttack
 
         private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint param = 0u, uint useType = 0u, int pvp = 0, bool* a7 = null)
         {
-#if DEBUG
-        var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(actionID)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
-        Service.ChatGui.Print(a + ", " + actionType.ToString() + ", " + actionID.ToString() + ", " + param.ToString() + ", " + useType.ToString() + ", " + pvp.ToString());
-#endif
             if (actionType == ActionType.Spell && useType == 0)
             {
-                var action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
+                var id = ActionManager.Instance()->GetAdjustedActionId(actionID);
+
+#if DEBUG
+                var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(id)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
+                Service.ChatGui.Print($"{a} , {actionType} , {id} , {param} , {useType} , {pvp} , {TargetHelper.WeaponRemain}");
+#endif
+
+                var action = Service.DataManager.GetExcelSheet<Action>().GetRow(id);
                 var cate = action.ActionCategory.Value;
                 var tar = Service.ObjectTable.SearchById(targetID);
 
                 //Macro
-                if (actionID != LastAction)
+                if (id != LastAction)
                 {
                     foreach (var item in Service.Configuration.Events)
                     {
@@ -109,20 +112,20 @@ namespace XIVAutoAttack
                 }
 
                 TimeLastActionUsed = DateTime.Now;
-                LastAction = actionID;
+                LastAction = id;
 
                 if (cate != null)
                 {
                     switch (cate.RowId)
                     {
                         case 2: //魔法
-                            LastSpell = actionID;
+                            LastSpell = id;
                             break;
                         case 3: //战技
-                            LastWeaponskill = actionID;
+                            LastWeaponskill = id;
                             break;
                         case 4: //能力
-                            LastAbility = actionID;
+                            LastAbility = id;
                             break;
                     }
                 }
@@ -132,7 +135,7 @@ namespace XIVAutoAttack
                 {
                     TimeLastSpeak = DateTime.Now;
                     if (Service.Configuration.SayoutLocationWrong
-                        && StatusHelper.ActionLocations.TryGetValue(actionID, out var loc)
+                        && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
                         && tar.HasLocationSide()
                         && loc != CustomCombo.FindEnemyLocation(tar)
                         && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))

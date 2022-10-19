@@ -55,7 +55,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
             //灼热之光 团辅
             SearingLight = new (25801)
             {
-                OtherCheck = b => TargetHelper.InBattle && !InBahamut && !InPhoenix
+                OtherCheck = b => InBattle && !InBahamut && !InPhoenix
             },
 
             //守护之光 给自己戴套
@@ -67,7 +67,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
             //以太蓄能 
             Aethercharge = new (25800)
             {
-                OtherCheck = b => TargetHelper.InBattle,
+                OtherCheck = b => InBattle,
             },
 
             //龙神召唤

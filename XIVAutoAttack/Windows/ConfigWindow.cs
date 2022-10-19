@@ -1,3 +1,4 @@
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using System;
@@ -179,12 +180,12 @@ internal class ConfigWindow : Window
                 //    }
                 //}
 
-                if (Service.TargetManager.Target != null)
+                if (Service.TargetManager.Target is BattleChara b)
                 {
-                    ImGui.Text("Is Boss: " + Service.TargetManager.Target.IsBoss().ToString());
-                    ImGui.Text("Has Side: " + Service.TargetManager.Target.HasLocationSide().ToString());
-
+                    ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+                    ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
                 }
+                //ImGui.Text(TargetHelper.WeaponRemain.ToString());
 
                 //foreach (var item in Service.ObjectTable)
                 //{

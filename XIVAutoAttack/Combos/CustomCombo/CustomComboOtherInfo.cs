@@ -38,5 +38,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected bool SettingBreak => IconReplacer.BreakorProvoke || Service.Configuration.AutoBreak;
 
         protected static byte Level => LocalPlayer?.Level ?? 0;
+
+        protected static bool InBattle => TargetHelper.InBattle;
     }
 }

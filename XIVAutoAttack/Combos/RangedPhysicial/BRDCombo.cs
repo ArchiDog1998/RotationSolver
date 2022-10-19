@@ -252,7 +252,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (!TargetHelper.InBattle)
+        if (!InBattle)
         {
             //if (UseBreakItem(out act)) return true;
             initFinished = false;

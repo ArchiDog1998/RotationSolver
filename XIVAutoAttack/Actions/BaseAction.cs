@@ -21,5 +21,16 @@ namespace XIVAutoAttack.Actions
         {
             return (int)ID;
         }
+
+        public static bool operator ==(BaseAction a, BaseAction b)
+        {
+            if(a == null || b == null) return false;
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(BaseAction a, BaseAction b)
+        {
+            return !(a == b);
+        }
     }
 }
