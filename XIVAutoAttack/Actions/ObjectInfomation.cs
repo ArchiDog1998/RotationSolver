@@ -12,23 +12,27 @@ namespace XIVAutoAttack.Actions
     {
         private unsafe static BNpcBase GetObjectNPC(this GameObject obj)
         {
+            if (obj == null) return null;
             var ptr = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
             return Service.DataManager.GetExcelSheet<BNpcBase>().GetRow(ptr->GetNpcID());
         }
 
         internal static bool HasLocationSide(this GameObject obj)
         {
-            return !obj.GetObjectNPC().Unknown10;
+            if (obj == null) return false;
+            return !(obj.GetObjectNPC()?.Unknown10 ?? false);
         }
 
         internal static bool IsBoss(this BattleChara obj)
         {
+            if (obj == null) return false;
             return obj.MaxHp >= TargetFilter.GetHealthFromMulty(6.5f);
             //return !obj.GetObjectNPC().IsTargetLine;
         }
 
         internal static float GetHealthRatio(this BattleChara b)
         {
+            if (b == null) return 0;
             return (float)b.CurrentHp / b.MaxHp;
         }
 
@@ -39,6 +43,7 @@ namespace XIVAutoAttack.Actions
         /// <returns></returns>
         internal static bool IsDying(this BattleChara b)
         {
+            if (b == null) return false;
             return b.CurrentHp <= TargetFilter.GetHealthFromMulty(1);
         }
     }

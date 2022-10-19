@@ -153,7 +153,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 OtherCheck = b =>
                 {
                     if (TargetHelper.InBattle && JobGauge.VoidShroud < 2 &&
-                    StatusHelper.FindStatusTimeFromSelf(Target, ObjectStatus.DeathsDesign) > 0) return true;
+                    Target.FindStatusTimeFromSelf(ObjectStatus.DeathsDesign) > 0) return true;
                     return false;
                 },
             },
@@ -312,11 +312,6 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         if (Actions.Harpe.ShouldUse(out act)) return true;
 
         return false;
-    }
-
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
-    {
-        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
