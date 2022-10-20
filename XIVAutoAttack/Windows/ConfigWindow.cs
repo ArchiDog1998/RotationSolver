@@ -1,10 +1,14 @@
+using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface.Windowing;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using ImGuiNET;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -180,12 +184,19 @@ internal class ConfigWindow : Window
                 //    }
                 //}
 
+
+
                 if (Service.TargetManager.Target is BattleChara b)
                 {
                     ImGui.Text("Is Boss: " + b.IsBoss().ToString());
                     ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
+
+
+                    ImGui.Text($"Target: {b.StatusFlags}");
                 }
                 ImGui.Text(FateManager.Instance()->FateJoined.ToString());
+                ImGui.Text(TargetHelper.AllTargets.Length.ToString());
+
 
                 //foreach (var item in Service.ObjectTable)
                 //{
@@ -311,12 +322,12 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
-                        bool changeTargetForFate = Service.Configuration.ChangeTargetForFate;
-                        if (ImGui.Checkbox("在Fate中只选择Fate怪", ref changeTargetForFate))
-                        {
-                            Service.Configuration.ChangeTargetForFate = changeTargetForFate;
-                            Service.Configuration.Save();
-                        }
+                        //bool changeTargetForFate = Service.Configuration.ChangeTargetForFate;
+                        //if (ImGui.Checkbox("在Fate中只选择Fate怪", ref changeTargetForFate))
+                        //{
+                        //    Service.Configuration.ChangeTargetForFate = changeTargetForFate;
+                        //    Service.Configuration.Save();
+                        //}
 
                         bool moveToScreen = Service.Configuration.MoveTowardsScreen;
                         if (ImGui.Checkbox("移动技能选屏幕中心的对象", ref moveToScreen))
@@ -428,10 +439,10 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
-                        bool noHealOrDefenceAbility = Service.Configuration.NoHealOrDefenceAbility;
-                        if (ImGui.Checkbox("不使用治疗或者防御能力技", ref noHealOrDefenceAbility))
+                        bool noHealOrDefenceAbility = Service.Configuration.NoDefenceAbility;
+                        if (ImGui.Checkbox("不使用防御能力技", ref noHealOrDefenceAbility))
                         {
-                            Service.Configuration.NoHealOrDefenceAbility = noHealOrDefenceAbility;
+                            Service.Configuration.NoDefenceAbility = noHealOrDefenceAbility;
                             Service.Configuration.Save();
                         }
                         if (ImGui.IsItemHovered())

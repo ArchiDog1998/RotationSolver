@@ -377,18 +377,18 @@ namespace XIVAutoAttack
             }).Select(obj => (BattleChara)obj).ToArray());
 
             //Filter the fate objects.
-            if (Service.Configuration.ChangeTargetForFate && FateManager.Instance()->FateJoined > 0)
-            {
-                //Get fate objects.
-                var vector = FateManager.Instance()->Unk_Vector;
-                uint[] fateIds = new uint[vector.Size()];
-                for (ulong i = 0; i < vector.Size(); i++)
-                {
-                    fateIds[i] = vector.Get(i).ObjectID;
-                }
+            //if (Service.Configuration.ChangeTargetForFate && FateManager.Instance()->FateJoined > 0)
+            //{
+            //    //Get fate objects.
+            //    var vector = FateManager.Instance()->Unk_Vector;
+            //    uint[] fateIds = new uint[vector.Size()];
+            //    for (ulong i = 0; i < vector.Size(); i++)
+            //    {
+            //        fateIds[i] = vector.Get(i).ObjectID;
+            //    }
 
-                AllTargets = AllTargets.Where(t => fateIds.Contains(t.ObjectId)).ToArray();
-            }
+            //    AllTargets = AllTargets.Where(t => fateIds.Contains(t.ObjectId)).ToArray();
+            //}
 
             uint[] ids = GetEnemies() ?? new uint[0];
             

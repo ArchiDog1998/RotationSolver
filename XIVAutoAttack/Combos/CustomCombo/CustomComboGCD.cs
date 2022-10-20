@@ -164,9 +164,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
             if (TargetHelper.HPNotFull)
             {
-                if ((IconReplacer.HealArea || CanHealAreaSpell) && !HealAreaAbility(1, out _)
+                if ((IconReplacer.HealArea || CanHealAreaSpell) && !ShouldUseHealAreaAbility(1, out _)
                     && HealAreaGCD(lastComboActionID, out act)) return act;
-                if ((IconReplacer.HealSingle || CanHealSingleSpell) && !HealSingleAbility(1, out _)
+                if ((IconReplacer.HealSingle || CanHealSingleSpell) && !ShouldUseHealSingleAbility(1, out _)
                     && HealSingleGCD(lastComboActionID, out act)) return act;
             }
             if (IconReplacer.DefenseArea && DefenseAreaGCD(abilityRemain, out act)) return act;

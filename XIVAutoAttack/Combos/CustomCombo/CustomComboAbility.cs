@@ -98,24 +98,19 @@ public abstract partial class CustomCombo
         }
 
 
-        if (!Service.Configuration.NoHealOrDefenceAbility)
+        if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
+        if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
+        if (TargetHelper.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
         {
-            if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
-            if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
-            if (TargetHelper.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
-            {
-                if ((IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act)) return true;
-                if ((IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act)) return true;
-            }
+            if (ShouldUseHealAreaAbility(abilityRemain, out act)) return true;
+            if (ShouldUseHealSingleAbility(abilityRemain, out act)) return true;
         }
-
-
 
         //防御
         if (HaveHostileInRange)
         {
             //防AOE
-            if (helpDefenseAOE && !Service.Configuration.NoHealOrDefenceAbility)
+            if (helpDefenseAOE && !Service.Configuration.NoDefenceAbility)
             {
                 if (DefenceAreaAbility(abilityRemain, out act)) return true;
                 if (role == Role.近战 || role == Role.远程)
@@ -140,7 +135,7 @@ public abstract partial class CustomCombo
                 }
 
                 if (Service.Configuration.AutoDefenseForTank && HaveShield
-                    && !Service.Configuration.NoHealOrDefenceAbility)
+                    && !Service.Configuration.NoDefenceAbility)
                 {
                     //被群殴呢
                     if (TargetHelper.TarOnMeTargets.Length > 1 && !IsMoving)
@@ -203,6 +198,18 @@ public abstract partial class CustomCombo
         if (GeneralAbility(abilityRemain, out act)) return true;
         if (HaveHostileInRange && ForAttachAbility(abilityRemain, out act)) return true;
         return false;
+    }
+
+    private bool ShouldUseHealAreaAbility(byte abilityRemain, out IAction act)
+    {
+        act = null;
+        return (IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act);
+    }
+
+    private bool ShouldUseHealSingleAbility(byte abilityRemain, out IAction act)
+    {
+        act = null;
+        return (IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act);
     }
 
     /// <summary>

@@ -18,7 +18,7 @@ public class PluginConfiguration : IPluginConfiguration
     public int TargetToHostileType { get; set; } = 1;
     public bool AutoBreak { get; set; } = true;
     public bool OnlyGCD { get; set; } = false;
-    public bool NoHealOrDefenceAbility { get; set; } = false;
+    public bool NoDefenceAbility { get; set; } = false;
     public bool NeverReplaceIcon { get; set; } = false;
     public bool AlwaysLowBlow { get; set; } = true;
     public bool AutoDefenseForTank { get; set; } = true;
