@@ -140,7 +140,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                     var isBoss = b.IsBoss();
                     //小怪AOE期间不打野火
                     if (SpreadShot.ShouldUse(out _) || !isBoss) return false;
-                    if (!isBoss && b.IsDying()) return false;
+                    if (!isBoss && IsTargetDying) return false;
 
                     //热量低于50且上一个能力技不是超荷时不释放
                     if (JobGauge.Heat < 50 && LastAbility != Hypercharge.ID) return false;
@@ -151,7 +151,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                         if (Level >= Drill.Level && Drill.RecastTimeRemain < 10) return false;
                         if (Level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 10) return false;
                         if (Level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 10) return false;
-
+                        if (JobGauge.IsOverheated) return true;
                         return true;
                     }
 
@@ -192,7 +192,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 
                     //电量等于100,强制释放
                     if (JobGauge.Battery == 100) return true;
-                    if (!isBoss && b.IsDying()) return false;
+                    if (!isBoss && IsTargetDying) return false;
 
                     //基本判断
                     if (JobGauge.Battery < 50 || JobGauge.IsRobotActive) return false;
@@ -264,7 +264,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         MCH_Asocial = Config.GetBoolByName("MCH_Asocial");
 
         //当上一个连击是热阻击弹时完成起手
-        if (InBattle && (lastComboActionID == Actions.CleanShot.ID || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
+        if (InBattle && (LastWeaponskill == Actions.CleanShot.ID || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
         {
             initFinished = true;
         }

@@ -113,6 +113,9 @@
             //光明神的最终乐章
             RadiantFinale = 2722,
 
+            //军神的契约
+            ArmyEthos = 1933,
+
             //铁壁
             Rampart1 = 71,
             Rampart2 = 1191,
@@ -343,6 +346,9 @@
             //安魂祈祷
             Requiescat = 1368,
 
+            //战逃反应
+            FightOrFlight = 76,
+
             //深恶痛绝
             Grit = 743,
 
@@ -411,6 +417,9 @@
 
             //石之心
             HeartofStone = 1840,
+
+            //无情
+            NoMercy = 1831,
 
             //撕喉预备
             ReadyToRip = 1842,
