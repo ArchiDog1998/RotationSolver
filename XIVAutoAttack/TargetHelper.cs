@@ -5,6 +5,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -357,7 +358,7 @@ namespace XIVAutoAttack
             }
         }
 
-        private static void UpdateTargets()
+        private unsafe static void UpdateTargets()
         {
             #region Hostile
             //能打的目标
@@ -374,6 +375,21 @@ namespace XIVAutoAttack
                 }
                 return false;
             }).Select(obj => (BattleChara)obj).ToArray());
+
+            //Filter the fate objects.
+            if (Service.Configuration.ChangeTargetForFate && FateManager.Instance()->FateJoined > 0)
+            {
+                //Get fate objects.
+                var vector = FateManager.Instance()->Unk_Vector;
+                uint[] fateIds = new uint[vector.Size()];
+                for (ulong i = 0; i < vector.Size(); i++)
+                {
+                    fateIds[i] = vector.Get(i).ObjectID;
+                }
+
+                AllTargets = AllTargets.Where(t => fateIds.Contains(t.ObjectId)).ToArray();
+            }
+
             uint[] ids = GetEnemies() ?? new uint[0];
             
             if (AllTargets != null && AllTargets.Length > 0)

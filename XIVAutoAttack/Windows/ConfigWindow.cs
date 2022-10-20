@@ -185,7 +185,7 @@ internal class ConfigWindow : Window
                     ImGui.Text("Is Boss: " + b.IsBoss().ToString());
                     ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
                 }
-                //ImGui.Text(TargetHelper.WeaponRemain.ToString());
+                ImGui.Text(FateManager.Instance()->FateJoined.ToString());
 
                 //foreach (var item in Service.ObjectTable)
                 //{
@@ -311,6 +311,13 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        bool changeTargetForFate = Service.Configuration.ChangeTargetForFate;
+                        if (ImGui.Checkbox("在Fate中只选择Fate怪", ref changeTargetForFate))
+                        {
+                            Service.Configuration.ChangeTargetForFate = changeTargetForFate;
+                            Service.Configuration.Save();
+                        }
+
                         bool moveToScreen = Service.Configuration.MoveTowardsScreen;
                         if (ImGui.Checkbox("移动技能选屏幕中心的对象", ref moveToScreen))
                         {
@@ -414,12 +421,22 @@ internal class ConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("技能使用"))
                     {
-
                         bool isOnlyGCD = Service.Configuration.OnlyGCD;
                         if (ImGui.Checkbox("只使用GCD循环，除去能力技", ref isOnlyGCD))
                         {
                             Service.Configuration.OnlyGCD = isOnlyGCD;
                             Service.Configuration.Save();
+                        }
+
+                        bool noHealOrDefenceAbility = Service.Configuration.NoHealOrDefenceAbility;
+                        if (ImGui.Checkbox("不使用治疗或者防御能力技", ref noHealOrDefenceAbility))
+                        {
+                            Service.Configuration.NoHealOrDefenceAbility = noHealOrDefenceAbility;
+                            Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("如果要打高难，建议勾上这个，自己安排治疗和奶轴。");
                         }
 
                         bool autoBreak = Service.Configuration.AutoBreak;

@@ -10,7 +10,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 {
     public abstract partial class CustomCombo
     {
-        internal static BattleChara EnemyTarget;
+        internal static BattleChara EnemyLocationTarget;
         internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
         internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out IAction newAction)
         {
@@ -74,7 +74,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                             IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
                                 Service.IconReplacer.OriginalHook(GCDaction.ID)).Icon,
                         });
-                        EnemyTarget = GCDaction.Target;
+                        EnemyLocationTarget = GCDaction.Target;
                         ShouldLocation = GCDaction.EnermyLocation;
                     }
                 }

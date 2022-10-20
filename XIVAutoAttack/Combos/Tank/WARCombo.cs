@@ -117,7 +117,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             },
 
             //°ÚÍÑ
-            ShakeItOff = new (7388),
+            ShakeItOff = new (7388, true),
 
             //ËÀ¶·
             Holmgang = new (43)
@@ -143,7 +143,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //°ÚÍÑ ¶ÓÓÑÌ×¶Ü
-        if (Actions.ShakeItOff.ShouldUse(out act)) return true;
+        if (Actions.ShakeItOff.ShouldUse(out act, mustUse:true)) return true;
 
         if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
@@ -238,14 +238,10 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //±¬·¢
-        if (BuffTime > 3 || Level < Actions.MythrilTempest.Level)
+        if (BuffTime > 3 * TargetHelper.WeaponTotal + TargetHelper.WeaponRemain || Level < Actions.MythrilTempest.Level)
         {
-            //Õ½º¿
-            if (Actions.Infuriate.ShouldUse(out act)) return true;
             //¿ñ±©
             if (!new PVEAction(7389).IsCoolDown && Actions.Berserk.ShouldUse(out act)) return true;
-            //Õ½º¿
-            if (Actions.Infuriate.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         if (LocalPlayer.GetHealthRatio() < 0.6f)
@@ -258,6 +254,9 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
 
         //ÄÌ¸ö¶ÓÓÑ°¡¡£
         if (!HaveShield && Actions.NascentFlash.ShouldUse(out act)) return true;
+
+        //Õ½º¿
+        if (Actions.Infuriate.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //ÆÕÍ¨¹¥»÷
         //ÈºÉ½Â¡Æð
