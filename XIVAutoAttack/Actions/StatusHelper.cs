@@ -32,6 +32,12 @@ namespace XIVAutoAttack.Actions
         {
             return FindStatusSelfFromSelf(effectIDs).Length > 0;
         }
+
+        internal static bool HaveStatusFromSelf(this BattleChara obj, params ushort[] effectIDs)
+        {
+            return FindStatusFromSelf(obj, effectIDs).Length > 0;
+        }
+
         internal static float[] FindStatusSelfFromSelf(params ushort[] effectIDs)
         {
             return FindStatusFromSelf(Service.ClientState.LocalPlayer, effectIDs);

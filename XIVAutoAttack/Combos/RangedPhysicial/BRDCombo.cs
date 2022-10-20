@@ -129,7 +129,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (!initFinished || (initFinished && BattleVoice.RecastTimeRemain >= 3.5f)) return true;
+                    if (!initFinished || (initFinished && BattleVoice.RecastTimeRemain >= TargetHelper.WeaponTotal)) return true;
 
                     return false;
                 },
@@ -287,7 +287,6 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-
         //如果接下来要上毒或者要直线射击，那算了。
         if (nextGCD == Actions.StraitShoot || nextGCD == Actions.VenomousBite ||
             nextGCD == Actions.Windbite || nextGCD == Actions.IronJaws)
@@ -330,6 +329,11 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
+        if (Actions.RadiantFinale.IsCoolDown && Actions.RadiantFinale.RecastTimeElapsed < 2)
+        {
+            act = null;
+            return false;
+        }
         //放浪神的小步舞曲
         if ((JobGauge.Song == Song.NONE || ((JobGauge.Song != Song.NONE || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ArmyEthos)) && abilityRemain == 1))
             && JobGauge.SongTimer < 3000)

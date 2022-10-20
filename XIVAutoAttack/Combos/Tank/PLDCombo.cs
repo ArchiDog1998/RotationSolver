@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
@@ -16,6 +17,9 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     private protected override PVEAction Shield => Actions.IronWill;
 
     protected override bool CanHealSingleSpell => TargetHelper.PartyHealers.Length == 0 && base.CanHealSingleSpell;
+
+    private static bool inOpener = false;
+    private static bool openerFinished = false;
 
     internal struct Actions
     {
@@ -42,6 +46,9 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             //战女神之怒
             RageofHalone = new (21),
 
+            //王权剑
+            RoyalAuthority = new (3539),
+
             //投盾
             ShieldLob = new (24)
             {
@@ -49,7 +56,13 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             },
 
             //战逃反应
-            FightorFlight = new (20),
+            FightorFlight = new (20)
+            {
+                OtherCheck = b =>
+                {
+                    return true;
+                }
+            },
 
             //全蚀斩
             TotalEclipse = new (7381),
@@ -65,10 +78,30 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             },
 
             //厄运流转
-            CircleofScorn = new (23),
+            CircleofScorn = new (23)
+            {
+                OtherCheck = b =>
+                {
+                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight)) return true;
+
+                    if (FightorFlight.IsCoolDown) return true;
+
+                    return false;
+                }
+            },
 
             //深奥之灵
-            SpiritsWithin = new (29),
+            SpiritsWithin = new (29)
+            {
+                OtherCheck = b =>
+                {
+                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight)) return true;
+
+                    if (FightorFlight.IsCoolDown) return true;
+
+                    return false;
+                }
+            },
 
             //神圣领域
             HallowedGround = new (30)
@@ -98,6 +131,21 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             Atonement = new (16460)
             {
                 BuffsNeed = new [] { ObjectStatus.SwordOath },
+                OtherCheck = b =>
+                {
+                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) 
+                    && (LastWeaponskill == Atonement.ID || LastWeaponskill == RoyalAuthority.ID)
+                    && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) >= TargetHelper.WeaponTotal * 2.8) return true;
+
+                    var status = StatusHelper.FindStatusFromSelf(LocalPlayer).Where(status => status.StatusId == ObjectStatus.SwordOath);
+                    if (status != null && status.Any())
+                    {
+                        var s = status.First();
+                        if (s.StackCount > 1) return true;
+                    }
+                    
+                    return false;
+                }
             },
 
             //偿赎剑
@@ -148,32 +196,66 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         {DescType.单体防御, $"{Actions.Sentinel.Action.Name}, {Actions.Sheltron.Action.Name}"},
         {DescType.移动, $"{Actions.Intervene.Action.Name}"},
     };
+
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
+    {
+        //战逃反应 加Buff
+        if (abilityRemain == 1 && Actions.FightorFlight.ShouldUse(out act))
+        {
+            return true;
+        }
+
+        //安魂祈祷
+        if (!inOpener && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight)
+                   && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) < 17)
+        {
+            if (abilityRemain == 1 && Actions.Requiescat.ShouldUse(out act, mustUse: true)) return true;
+        }     
+
+        act = null;
+        return false;
+    }
+
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        if (!TargetHelper.InBattle)
+        {
+            inOpener = false;
+            openerFinished = false;
+        }
+        else if (Level > Actions.Requiescat.Level && !openerFinished && !inOpener)
+        {
+            inOpener = true;
+        }
+
         //三个大招
         if (Actions.BladeofValor.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
         if (Actions.BladeofFaith.ShouldUse(out act, mustUse: true)) return true;
         if (Actions.BladeofTruth.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
 
         //魔法三种姿势
-        var status = StatusHelper.FindStatusFromSelf(LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
-        if (status != null && status.Count() > 0)
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Requiescat) && (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight)) && LocalPlayer.CurrentMp >= 1000)
         {
-            var s = status.First();
-            if ((s.StackCount == 1 || (s.RemainingTime < 2.5 && s.RemainingTime > 0)))
+            var status = StatusHelper.FindStatusFromSelf(LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
+            if (status != null && status.Any())
             {
-                if (Actions.Confiteor.ShouldUse(out act, mustUse: true)) return true;
-            }
-            else
-            {
-                if (Actions.HolyCircle.ShouldUse(out act)) return true;
-                if (Actions.HolySpirit.ShouldUse(out act)) return true;
+                var s = status.First();
+                if (s.StackCount == 1 || (s.RemainingTime < 3 && s.RemainingTime > 0) || LocalPlayer.CurrentMp <= 2000)
+                {
+                    if (Actions.Confiteor.ShouldUse(out act, mustUse: true)) return true;
+                }
+                else
+                {
+                    if (Actions.HolyCircle.ShouldUse(out act)) return true;
+                    if (Actions.HolySpirit.ShouldUse(out act)) return true;
+                }
             }
         }
 
         //AOE 二连
         if (Actions.Prominence.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.TotalEclipse.ShouldUse(out act, lastComboActionID)) return true;
+
 
         //赎罪剑
         if (Actions.Atonement.ShouldUse(out act)) return true;
@@ -222,35 +304,58 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        //战逃反应 加Buff
-        if (Actions.FightorFlight.ShouldUse(out act)) return true;
 
-        //厄运流转
-        if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true)) return true;
-
-        //偿赎剑
-        if (Actions.Expiacion.ShouldUse(out act, mustUse: true)) return true;
-
-        //安魂祈祷
-        if (Target is BattleChara b && StatusHelper.FindStatusFromSelf(b, ObjectStatus.GoringBlade, ObjectStatus.BladeofValor) is float[] times &&
-            times != null && times.Length > 0 && times.Max() > 10 &&
-            Actions.Requiescat.ShouldUse(out act, mustUse: true)) return true;
-
-        //深奥之灵
-        if (Actions.SpiritsWithin.ShouldUse(out act)) return true;
-
-        //搞搞攻击
-        if (Actions.Intervene.ShouldUse(out act) && !IsMoving)
+        if (inOpener)
         {
-            if (Actions.Intervene.Target.DistanceToPlayer() < 1)
+            if (LastWeaponskill == Actions.Confiteor.ID || (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.RecastTimeRemain <= 59))
             {
-                return true;
+                inOpener = false;
+                openerFinished = true;
+            }
+
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) <= 19)
+            {
+                if (LastWeaponskill != Actions.FastBlade.ID && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade))
+                {
+                    //厄运流转
+                    if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true)) return true;
+                    //调停
+                    if (Actions.Intervene.ShouldUse(out act) && Actions.Intervene.RecastTimeRemain == 0) return true;
+                    //安魂祈祷
+                    if (abilityRemain == 1 && Actions.Requiescat.ShouldUse(out act, mustUse: true)) return true;
+                    //深奥之灵
+                    if (Actions.SpiritsWithin.ShouldUse(out act)) return true;
+                    //调停
+                    if (Actions.Intervene.ShouldUse(out act,emptyOrSkipCombo: true)) return true;
+                }
+            }
+        }
+        else
+        {
+            //深奥之灵
+            if (Actions.SpiritsWithin.ShouldUse(out act)) return true;
+
+            //厄运流转
+            if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true)) return true;
+
+            //偿赎剑
+            //if (Actions.Expiacion.ShouldUse(out act, mustUse: true)) return true;
+
+            //搞搞攻击
+            if (Actions.Intervene.ShouldUse(out act) && !IsMoving)
+            {
+                if (Actions.Intervene.Target.DistanceToPlayer() < 1)
+                {
+                    return true;
+                }
             }
         }
 
-        //Special Defense.
-        if (JobGauge.OathGauge == 100 && Defense(out act)) return true;
 
+        //Special Defense.
+        if (JobGauge.OathGauge == 100 && Defense(out act) && LocalPlayer.CurrentHp < LocalPlayer.MaxHp) return true;
+
+        act = null;
         return false;
     }
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)

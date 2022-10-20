@@ -264,7 +264,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         MCH_Asocial = Config.GetBoolByName("MCH_Asocial");
 
         //当上一个连击是热阻击弹时完成起手
-        if (InBattle && (lastComboActionID == Actions.CleanShot.ID || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
+        if (InBattle && (LastWeaponskill == Actions.CleanShot.ID || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
         {
             initFinished = true;
         }
