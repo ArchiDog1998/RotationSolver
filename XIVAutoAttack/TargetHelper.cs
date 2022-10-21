@@ -374,7 +374,7 @@ namespace XIVAutoAttack
                     if (CanAttack(obj)) return true;
                 }
                 return false;
-            }).Select(obj => (BattleChara)obj).ToArray());
+            }).Cast<BattleChara>().ToArray());
 
             //Filter the fate objects.
             //if (Service.Configuration.ChangeTargetForFate && FateManager.Instance()->FateJoined > 0)

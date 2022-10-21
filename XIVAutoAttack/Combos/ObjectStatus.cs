@@ -511,6 +511,9 @@
             Reassemble = 851,
 
             //真北
-            TrueNorth = 1250;
+            TrueNorth = 1250,
+
+            //金刚极意
+            RiddleofEarth = 0;
     }
 }
