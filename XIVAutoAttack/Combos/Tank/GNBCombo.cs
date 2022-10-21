@@ -1,7 +1,9 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Tank;
 
@@ -18,38 +20,41 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
     {
         public static readonly PVEAction
             //王室亲卫
-            RoyalGuard = new (16142, shouldEndSpecial: true),
+            RoyalGuard = new(16142, shouldEndSpecial: true),
 
             //利刃斩
-            KeenEdge = new (16137),
+            KeenEdge = new(16137),
 
             //无情
-            NoMercy = new (16138),
+            NoMercy = new(16138),
 
             //残暴弹
-            BrutalShell = new (16139),
+            BrutalShell = new(16139),
 
             //伪装
-            Camouflage = new (16140)
+            Camouflage = new(16140)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
                 OtherCheck = PVEAction.TankDefenseSelf,
             },
 
             //恶魔切
-            DemonSlice = new (16141),
+            DemonSlice = new(16141),
 
             //闪雷弹
-            LightningShot = new (16143),
+            LightningShot = new(16143),
 
             //危险领域
-            DangerZone = new (16144),
+            DangerZone = new(16144),
 
             //迅连斩
-            SolidBarrel = new (16145),
+            SolidBarrel = new(16145),
 
             //爆发击
-            BurstStrike = new (16162),
+            BurstStrike = new(16162)
+            {
+                OtherCheck = b => JobGauge.Ammo > 0,
+            },
 
             //星云
             Nebula = new (16148)
@@ -83,7 +88,10 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             },
 
             //烈牙
-            GnashingFang = new (16146),
+            GnashingFang = new (16146)
+            {
+                OtherCheck = b => JobGauge.AmmoComboStep == 0 && JobGauge.Ammo > 0,
+            },
 
             //弓形冲波
             BowShock = new (16159),
@@ -99,7 +107,10 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             },
 
             //命运之环
-            FatedCircle = new (16163),
+            FatedCircle = new (16163)
+            {
+                OtherCheck = b => JobGauge.Ammo > (Level >= 88 ? 2 : 1),
+            },
 
             //血壤
             Bloodfest = new (16164)
@@ -108,13 +119,22 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             },
 
             //倍攻
-            DoubleDown = new (25760),
+            DoubleDown = new (25760)
+            {
+                OtherCheck = b => JobGauge.Ammo >= 2,
+            },
 
             //猛兽爪
-            SavageClaw = new (16147),
+            SavageClaw = new (16147)
+            {
+                OtherCheck = b => Service.IconReplacer.OriginalHook(GnashingFang.ID) == SavageClaw.ID,
+            },
 
             //凶禽爪
-            WickedTalon = new (16150),
+            WickedTalon = new (16150)
+            {
+                OtherCheck = b => Service.IconReplacer.OriginalHook(GnashingFang.ID) == WickedTalon.ID,
+            },
 
             //撕喉
             JugularRip = new (16156)
@@ -147,31 +167,114 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         {DescType.单体防御, $"{Actions.HeartofStone.Action.Name}, {Actions.Nebula.Action.Name}, {Actions.Camouflage.Action.Name}"},
         {DescType.移动, $"{Actions.RoughDivide.Action.Name}"},
     };
+
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetCombo("GNB_Opener", 0, new string[]
+        {
+            "4GCD起手",
+
+        }, "起手选择");
+    }
+
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
+    {
+        //无情,目前只有4GCD起手的判断
+        if (Level >= Actions.BurstStrike.Level && abilityRemain == 1 && Actions.NoMercy.ShouldUse(out act))
+        {
+            //4GCD起手判断
+            if (LastWeaponskill == Actions.KeenEdge.ID && JobGauge.Ammo == 1 && Actions.GnashingFang.RecastTimeRemain == 0 && !Actions.Bloodfest.IsCoolDown) return true;
+
+            //3弹进无情
+            else if (JobGauge.Ammo == (Level >= 88 ? 3 : 2)) return true;
+
+            //2弹进无情
+            else if (JobGauge.Ammo == 2 && Actions.GnashingFang.RecastTimeRemain > 0) return true;
+
+        }
+        //等级低于爆发击是判断
+        if (Level < Actions.BurstStrike.Level && abilityRemain == 1 && Actions.NoMercy.ShouldUse(out act)) return true;
+
+        act = null;
+        return false;
+    }
+
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        //使用晶囊
-        bool useAmmo = JobGauge.Ammo > (Level >= Actions.DoubleDown.Level ? 2 : 1);
-        bool breakUseAmmo = JobGauge.Ammo >= (Level >= Actions.DoubleDown.Level ? 2 : 1);
+        //烈牙
+        if (Actions.GnashingFang.ShouldUse(out act))
+        {
+            //无情中3弹烈牙
+            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) || Actions.NoMercy.RecastTimeRemain > 55)) return true;
+
+            //无情外烈牙
+            if (JobGauge.Ammo > 0 && Actions.NoMercy.RecastTimeRemain > 17 && Actions.NoMercy.RecastTimeRemain < 35) return true;
+
+            //3弹且将会溢出子弹的情况,提前在无情前进烈牙
+            if (JobGauge.Ammo == 3 && LastWeaponskill == Actions.BrutalShell.ID && Actions.NoMercy.RecastTimeRemain < 3) return true;
+
+            //1弹且血壤快冷却好了
+            if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && Actions.Bloodfest.RecastTimeRemain < 5) return true;
+
+            //4GCD起手烈牙判断
+            if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && ((!Actions.Bloodfest.IsCoolDown && Level >= Actions.Bloodfest.Level) || Level < Actions.Bloodfest.Level)) return true;
+        }          
+
+        //音速破
+        if (Actions.SonicBreak.ShouldUse(out act))
+        {
+            //在烈牙后面使用音速破
+            if (Actions.GnashingFang.RecastTimeRemain > 0 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy)) return true;
+
+            //其他判断
+            if (Level < Actions.DoubleDown.Level && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ReadyToRip) 
+                && Actions.GnashingFang.RecastTimeRemain > 0) return true;
+        }
+
+        //倍攻
+        if (Actions.DoubleDown.ShouldUse(out act, mustUse: true))
+        {
+            //在音速破后使用倍攻
+            if (Actions.SonicBreak.RecastTimeRemain > 0 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy)) return true;
+
+            //2弹无情的特殊判断,提前使用倍攻
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) && Actions.NoMercy.RecastTimeRemain > 55 && Actions.Bloodfest.RecastTimeRemain < 5) return true;
+
+            //AOE
+            if (Actions.DemonSlice.ShouldUse(out _) && !IsMoving) return true;
+        }
+
+        //烈牙后二连
+        if (Actions.WickedTalon.ShouldUse(out act)) return true;
+        if (Actions.SavageClaw.ShouldUse(out act)) return true;
+
+        //命运之环
+        if (Actions.FatedCircle.ShouldUse(out act)) return true;
+
+        //爆发击   
+        if (Actions.BurstStrike.ShouldUse(out act))
+        {do{
+            //如果烈牙剩0.5秒冷却好,不释放爆发击,主要因为技速不同可能会使烈牙延后太多所以判定一下
+            if (Actions.SonicBreak.RecastTimeRemain > 0 && Actions.SonicBreak.RecastTimeRemain < 0.5) break;
+
+            //无情中爆发击判定
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) &&
+                JobGauge.AmmoComboStep == 0 &&
+                Actions.GnashingFang.RecastTimeRemain > 1) return true;
+
+            //无情外防止溢出
+            if (LastWeaponskill == Actions.BrutalShell.ID &&
+                (JobGauge.Ammo == (Level >= 88 ? 3 : 2) ||
+                (Actions.Bloodfest.RecastTimeRemain < 6 && JobGauge.Ammo <= 2 && Actions.NoMercy.RecastTimeRemain > 10 && Level >= Actions.Bloodfest.Level))) return true;
+            } while (false);
+        }
 
         //AOE
-        if (breakUseAmmo && Actions.DoubleDown.ShouldUse(out act, mustUse: true)) return true;
-        if (useAmmo && Actions.FatedCircle.ShouldUse(out act)) return true;
+        if (Actions.DemonSlaughter.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.DemonSlice.ShouldUse(out act, lastComboActionID)) return true;
 
-        if ( Actions.DemonSlaughter.ShouldUse(out act, lastComboActionID)) return true;
-        if ( Actions.DemonSlice.ShouldUse(out act, lastComboActionID)) return true;
-
-        uint remap = Service.IconReplacer.OriginalHook(Actions.GnashingFang.ID);
-        if (remap == Actions.WickedTalon.ID && Actions.WickedTalon.ShouldUse(out act)) return true;
-        if (remap == Actions.SavageClaw.ID && Actions.SavageClaw.ShouldUse(out act)) return true;
-
-
-        //单体
-        if (breakUseAmmo && Actions.GnashingFang.ShouldUse(out act)) return true;
-        if (useAmmo && Actions.BurstStrike.ShouldUse(out act)) return true;
-
-        if (Actions.SonicBreak.ShouldUse(out act)) return true;
-
-        //单体三连
+        //单体三连,如果烈牙剩0.5秒冷却好,不释放基础连击,主要因为技速不同可能会使烈牙延后太多所以判定一下
+        if (Actions.GnashingFang.RecastTimeRemain > 0 && Actions.GnashingFang.RecastTimeRemain < 0.5) return false;
         if (Actions.SolidBarrel.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.BrutalShell.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.KeenEdge.ShouldUse(out act, lastComboActionID)) return true;
@@ -191,24 +294,56 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
+        //危险领域
+        if (Actions.DangerZone.ShouldUse(out act))
+        {
+            //非爆发期
+            if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy)
+            && ((Actions.GnashingFang.RecastTimeRemain > 20)
+            || (Level < Actions.GnashingFang.Level) && Actions.NoMercy.IsCoolDown)) return true;
+
+            //爆发期
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy))
+            {
+                //烈牙冷却中
+                if (Actions.GnashingFang.RecastTimeRemain > 0) return true;
+            }
+        }
+
+        //弓形冲波
+        if (Actions.BowShock.ShouldUse(out act, mustUse: true))
+        {
+            //爆发期
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy))
+            {
+                //音速破在冷却中
+                if (Actions.SonicBreak.RecastTimeRemain > 0) return true;
+            }
+
+            //音速破在冷却中
+            if (Actions.SonicBreak.IsCoolDown && Level < Actions.DoubleDown.Level)
+            {
+                //弓形冲波
+                if (Actions.BowShock.ShouldUse(out act, mustUse: true)) return true;
+                //危险领域
+                if (Actions.DangerZone.ShouldUse(out act)) return true;
+            }
+        }
+
+        //续剑
         if (Actions.JugularRip.ShouldUse(out act)) return true;
         if (Actions.AbdomenTear.ShouldUse(out act)) return true;
         if (Actions.EyeGouge.ShouldUse(out act)) return true;
         if (Actions.Hypervelocity.ShouldUse(out act)) return true;
 
-
-        if (Actions.NoMercy.ShouldUse(out act)) return true;
-        if (Actions.Bloodfest.ShouldUse(out act)) return true;
-        if (Actions.BowShock.ShouldUse(out act, mustUse: true)) return true;
-        if (Actions.DangerZone.ShouldUse(out act)) return true;
+        //血壤
+        if (Actions.GnashingFang.RecastTimeRemain > 0 && Actions.Bloodfest.ShouldUse(out act)) return true;
 
         //搞搞攻击
-        if (Actions.RoughDivide.ShouldUse(out act) && !IsMoving)
-        {
-            if (Actions.RoughDivide.Target.DistanceToPlayer() < 1)
-            {
-                return true;
-            }
+        if (Actions.RoughDivide.Target.DistanceToPlayer() < 1 && !IsMoving)
+        {  
+            if (Actions.RoughDivide.ShouldUse(out act)) return true;
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) && Actions.RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         return false;
     }
