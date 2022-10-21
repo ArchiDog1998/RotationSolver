@@ -160,7 +160,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("DRK_TheBlackestNight", true, "留3000蓝");
+            .SetBool("TheBlackestNight", true, "留3000蓝");
     }
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
@@ -240,7 +240,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         if (Actions.EdgeofDarkness.ShouldUse(out act))
         {do{
             //是否留3000蓝开黑盾
-            if (Config.GetBoolByName("DRK_TheBlackestNight") && LocalPlayer.CurrentMp < 6000) break;
+            if (Config.GetBoolByName("TheBlackestNight") && LocalPlayer.CurrentMp < 6000) break;
             
             //爆发期打完
             if (OpenerFinished && Actions.Delirium.RecastTimeElapsed > TargetHelper.WeaponTotal * 1 && Actions.Delirium.RecastTimeElapsed < TargetHelper.WeaponTotal * 8) return true;
