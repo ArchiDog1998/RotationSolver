@@ -10,11 +10,11 @@ punchline: Auto attack!
 changelog: |-
   ## 错误修复
   - 修复武僧自卫一下子卸三层的bug
+  - 调整了镰刀的循环
   ## 新增功能
-  - 添加了不使用防御能力技的选项用于高难
+  - 添加了打断延迟功能
   ## API
-  - 调整敌人位置API到ObjectInfomation中
-  - 添加了HaveOneCharge来判断是否足够一层用来释放技能。 
+  - 添加了一点点注释
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack

@@ -16,6 +16,10 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         {
         }
     }
+
+    private static bool HaveEnshrouded => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);
+    private static bool HaveSoulReaver => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver);
+
     internal override uint JobID => 39;
     internal struct Actions
     {
@@ -24,98 +28,45 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             //切割
             Slice = new(24373)
             {
-                OtherCheck = b =>
-                {
-                    if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) ||
-                        !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
-                    {
-                        return true;
-                    }
-                    return false;
-                }
+                OtherCheck = b => !HaveEnshrouded || !HaveSoulReaver,
             },
 
             //增盈切割
             WaxingSlice = new(24374)
             {
-                OtherCheck = b =>
-                {
-                    if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) ||
-                        !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
-                    {
-                        return true;
-                    }
-                    return false;
-                }
+                OtherCheck = Slice.OtherCheck,
             },
 
             //地狱切割
             InfernalSlice = new(24375)
             {
-                OtherCheck = b =>
-                {
-                    if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) ||
-                        !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
-                    {
-                        return true;
-                    }
-                    return false;
-                }
+                OtherCheck = Slice.OtherCheck,
             },
 
             //死亡之影
             ShadowofDeath = new(24378, isDot: true)
             {
                 TargetStatus = new[] { ObjectStatus.DeathsDesign },
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver)) return false;
-                    return true;
-                }
+                OtherCheck = b => !HaveSoulReaver,
             },
 
             //灵魂切割
             SoulSlice = new(24380)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver) ||
-                        StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        return false; 
-                    }
-                    if (JobGauge.Soul > 50) return false;
-                    return true;
-                }
+                OtherCheck = b => !HaveEnshrouded && !HaveSoulReaver && JobGauge.Soul <= 50,
             },
 
 //AoE
             //旋转钐割
             SpinningScythe = new(24376)
             {
-                OtherCheck = b =>
-                {
-                    if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) ||
-                        !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
-                    {
-                        return true;
-                    }
-                    return false;
-                }
+                OtherCheck = Slice.OtherCheck,
             },
 
             //噩梦钐割
             NightmareScythe = new(24377)
             {
-                OtherCheck = b =>
-                {
-                    if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) ||
-                        !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver))
-                    {
-                        return true;
-                    }
-                    return false;
-                }
+                OtherCheck = Slice.OtherCheck,
             },
 
             //死亡之涡
@@ -132,16 +83,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             //灵魂钐割
             SoulScythe = new(24381)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver) ||
-                        StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        return false;
-                    }
-                    if (JobGauge.Soul > 50) return false;
-                    return true;
-                }
+                OtherCheck = SoulSlice.OtherCheck,
             },
 
 //妖异之镰状态
@@ -166,7 +108,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 {
                     if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver) &&
                        (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGallows) || 
-                       !(StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGibbet))))
+                       !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGibbet)))
                     {
                         return true;
                     }

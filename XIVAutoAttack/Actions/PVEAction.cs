@@ -136,6 +136,9 @@ namespace XIVAutoAttack.Actions
             set => _filterForTarget = value;
         }
 
+        /// <summary>
+        /// 是否起码有一层技能
+        /// </summary>
         internal bool HaveOneCharge => IsCoolDown ? RecastTimeElapsed >= RecastTime / MaxCharges : true;
 
         internal PVEAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
@@ -321,6 +324,14 @@ namespace XIVAutoAttack.Actions
             return ActionManager.GetActionRange(act.RowId);
         }
 
+        /// <summary>
+        /// 判断是否需要使用这个技能
+        /// </summary>
+        /// <param name="act">返回的技能</param>
+        /// <param name="lastAct">上一个Combo技能的值，如果需要算Combo，请输入他！<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
+        /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供，不判断AOE技能的敌人数量是否达标，并且如果有层数，放完所有层数。</param>
+        /// <param name="emptyOrSkipCombo">如果有层数，放完所有层数，不判断是否为Combo<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
+        /// <returns>这个技能能不能用</returns>
         public virtual bool ShouldUse(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;

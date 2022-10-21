@@ -514,6 +514,6 @@
             TrueNorth = 1250,
 
             //金刚极意
-            RiddleofEarth = 0;
+            RiddleofEarth = 1179;
     }
 }

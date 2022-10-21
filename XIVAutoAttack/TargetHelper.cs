@@ -411,7 +411,9 @@ namespace XIVAutoAttack
                         break;
                 }
 
-                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2).ToArray();
+                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2 
+                && tar.CurrentCastTime >= Service.Configuration.InterruptibleTime).ToArray();
+
                 TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId).ToArray();
 
                 float radius = 25;
