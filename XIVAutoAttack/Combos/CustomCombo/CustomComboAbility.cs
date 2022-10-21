@@ -98,24 +98,19 @@ public abstract partial class CustomCombo
         }
 
 
-        if (HaveHostileInRange && SettingBreak && BreakAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         if (TargetHelper.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
         {
-            if ((IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act)) return true;
-            if ((IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act)) return true;
-        }
-        if (IconReplacer.Move && MoveAbility(abilityRemain, out act))
-        {
-            if (act is PVEAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
+            if (ShouldUseHealAreaAbility(abilityRemain, out act)) return true;
+            if (ShouldUseHealSingleAbility(abilityRemain, out act)) return true;
         }
 
         //防御
         if (HaveHostileInRange)
         {
             //防AOE
-            if (helpDefenseAOE)
+            if (helpDefenseAOE && !Service.Configuration.NoDefenceAbility)
             {
                 if (DefenceAreaAbility(abilityRemain, out act)) return true;
                 if (role == Role.近战 || role == Role.远程)
@@ -129,7 +124,8 @@ public abstract partial class CustomCombo
             if (role == Role.防护)
             {
                 var haveTargets = TargetFilter.ProvokeTarget(TargetHelper.HostileTargets);
-                if ((Service.Configuration.AutoProvokeForTank || TargetHelper.AllianceTanks.Length < 2) && haveTargets != TargetHelper.HostileTargets
+                if ((Service.Configuration.AutoProvokeForTank || TargetHelper.AllianceTanks.Length < 2) 
+                    && haveTargets.Length != TargetHelper.HostileTargets.Length
                     || IconReplacer.BreakorProvoke)
 
                 {
@@ -138,7 +134,8 @@ public abstract partial class CustomCombo
                     if (GeneralActions.Provoke.ShouldUse(out act, mustUse: true)) return true;
                 }
 
-                if (Service.Configuration.AutoDefenseForTank && HaveShield)
+                if (Service.Configuration.AutoDefenseForTank && HaveShield
+                    && !Service.Configuration.NoDefenceAbility)
                 {
                     //被群殴呢
                     if (TargetHelper.TarOnMeTargets.Length > 1 && !IsMoving)
@@ -163,6 +160,13 @@ public abstract partial class CustomCombo
             //辅助防卫
             if (helpDefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         }
+
+        if (HaveHostileInRange && SettingBreak && BreakAbility(abilityRemain, out act)) return true;
+        if (IconReplacer.Move && MoveAbility(abilityRemain, out act))
+        {
+            if (act is PVEAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
+        }
+
 
         //恢复/下踢
         switch (role)
@@ -196,6 +200,18 @@ public abstract partial class CustomCombo
         return false;
     }
 
+    private bool ShouldUseHealAreaAbility(byte abilityRemain, out IAction act)
+    {
+        act = null;
+        return (IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act);
+    }
+
+    private bool ShouldUseHealSingleAbility(byte abilityRemain, out IAction act)
+    {
+        act = null;
+        return (IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act);
+    }
+
     /// <summary>
     /// 覆盖写一些用于攻击的能力技，只有附近有敌人的时候才会有效。
     /// </summary>
@@ -221,7 +237,7 @@ public abstract partial class CustomCombo
 
             if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)
             {
-                if (action.EnermyLocation != FindEnemyLocation(action.Target) && action.Target.HasLocationSide())
+                if (action.EnermyLocation != action.Target.FindEnemyLocation() && action.Target.HasLocationSide())
                 {
                     if (GeneralActions.TrueNorth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
                 }
@@ -230,22 +246,6 @@ public abstract partial class CustomCombo
 
         act = null;
         return false;
-    }
-
-    internal static EnemyLocation FindEnemyLocation(GameObject enemy)
-    {
-        Vector3 pPosition = enemy.Position;
-        float rotation = enemy.Rotation;
-        Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
-
-        Vector3 dir = Service.ClientState.LocalPlayer.Position - pPosition;
-        Vector2 dirVec = new Vector2(dir.Z, dir.X);
-
-        double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
-
-        if (angle < Math.PI / 4) return EnemyLocation.Front;
-        else if (angle > Math.PI * 3 / 4) return EnemyLocation.Back;
-        return EnemyLocation.Side;
     }
 
     /// <summary>

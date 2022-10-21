@@ -137,7 +137,7 @@ namespace XIVAutoAttack
                     if (Service.Configuration.SayoutLocationWrong
                         && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
                         && tar.HasLocationSide()
-                        && loc != CustomCombo.FindEnemyLocation(tar)
+                        && loc != tar.FindEnemyLocation()
                         && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))
                     {
                         Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);

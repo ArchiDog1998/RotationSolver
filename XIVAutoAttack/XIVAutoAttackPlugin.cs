@@ -78,14 +78,14 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     {
         const int COUNT = 20;
 
-        if (CustomCombo.EnemyTarget == null || !Service.Configuration.SayoutLocationWrong) return;
+        if (CustomCombo.EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))return;
         if (CustomCombo.ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
 
-        float radius = CustomCombo.EnemyTarget.HitboxRadius + 3.5f;
-        float rotation = CustomCombo.EnemyTarget.Rotation;
+        float radius = CustomCombo.EnemyLocationTarget.HitboxRadius + 3.5f;
+        float rotation = CustomCombo.EnemyLocationTarget.Rotation;
 
-        Vector3 pPosition = CustomCombo.EnemyTarget.Position;
+        Vector3 pPosition = CustomCombo.EnemyLocationTarget.Position;
 
         if (Service.GameGui == null) return;
         if (!Service.GameGui.WorldToScreen(pPosition, out var scrPos)) return;
@@ -116,7 +116,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         }
         pts.Add(scrPos);
 
-        bool wrong = CustomCombo.ShouldLocation != CustomCombo.FindEnemyLocation(CustomCombo.EnemyTarget);
+        bool wrong = CustomCombo.ShouldLocation != CustomCombo.EnemyLocationTarget.FindEnemyLocation();
         var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
 
         pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));

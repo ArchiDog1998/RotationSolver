@@ -69,16 +69,22 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             Orogeny = new (25752),
 
             //原初之魂
-            InnerBeast = new (49),
+            InnerBeast = new (49)
+            {
+                OtherCheck = b => BuffTime > WeaponRemain + 0.1f && ( JobGauge.BeastGauge >= 50 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease)),
+            },
 
             //钢铁旋风
-            SteelCyclone = new (51),
+            SteelCyclone = new(51)
+            {
+                OtherCheck = InnerBeast.OtherCheck,
+            },
 
             //战嚎
             Infuriate = new (52)
             {
                 BuffsProvide = new [] { ObjectStatus.InnerRelease },
-                OtherCheck = b => TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge <= 50,
+                OtherCheck = b => TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge < 50,
             },
 
             //狂暴
@@ -117,7 +123,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             },
 
             //摆脱
-            ShakeItOff = new (7388),
+            ShakeItOff = new (7388, true),
 
             //死斗
             Holmgang = new (43)
@@ -143,7 +149,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //摆脱 队友套盾
-        if (Actions.ShakeItOff.ShouldUse(out act)) return true;
+        if (Actions.ShakeItOff.ShouldUse(out act, mustUse:true)) return true;
 
         if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
@@ -177,13 +183,10 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
         }
 
         //兽魂输出
-        if (JobGauge.BeastGauge >= 50 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease))
-        {
-            //钢铁旋风
-            if (Actions.SteelCyclone.ShouldUse(out act)) return true;
-            //原初之魂
-            if (Actions.InnerBeast.ShouldUse(out act)) return true;
-        }
+        //钢铁旋风
+        if (Actions.SteelCyclone.ShouldUse(out act)) return true;
+        //原初之魂
+        if (Actions.InnerBeast.ShouldUse(out act)) return true;
 
         //群体
         if (Actions.MythrilTempest.ShouldUse(out act, lastComboActionID)) return true;
@@ -238,14 +241,10 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //爆发
-        if (BuffTime > 3 || Level < Actions.MythrilTempest.Level)
+        if (BuffTime > 3 * TargetHelper.WeaponTotal + TargetHelper.WeaponRemain || Level < Actions.MythrilTempest.Level)
         {
-            //战嚎
-            if (Actions.Infuriate.ShouldUse(out act)) return true;
             //狂暴
             if (!new PVEAction(7389).IsCoolDown && Actions.Berserk.ShouldUse(out act)) return true;
-            //战嚎
-            if (Actions.Infuriate.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         if (LocalPlayer.GetHealthRatio() < 0.6f)
@@ -258,6 +257,9 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
 
         //奶个队友啊。
         if (!HaveShield && Actions.NascentFlash.ShouldUse(out act)) return true;
+
+        //战嚎
+        if (Actions.Infuriate.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //普通攻击
         //群山隆起

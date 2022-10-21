@@ -10,7 +10,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 {
     public abstract partial class CustomCombo
     {
-        internal static BattleChara EnemyTarget;
+        internal static BattleChara EnemyLocationTarget;
         internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
         internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out IAction newAction)
         {
@@ -74,7 +74,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                             IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
                                 Service.IconReplacer.OriginalHook(GCDaction.ID)).Icon,
                         });
-                        EnemyTarget = GCDaction.Target;
+                        EnemyLocationTarget = GCDaction.Target;
                         ShouldLocation = GCDaction.EnermyLocation;
                     }
                 }
@@ -164,9 +164,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
             if (TargetHelper.HPNotFull)
             {
-                if ((IconReplacer.HealArea || CanHealAreaSpell) && !HealAreaAbility(1, out _)
+                if ((IconReplacer.HealArea || CanHealAreaSpell) && !ShouldUseHealAreaAbility(1, out _)
                     && HealAreaGCD(lastComboActionID, out act)) return act;
-                if ((IconReplacer.HealSingle || CanHealSingleSpell) && !HealSingleAbility(1, out _)
+                if ((IconReplacer.HealSingle || CanHealSingleSpell) && !ShouldUseHealSingleAbility(1, out _)
                     && HealSingleGCD(lastComboActionID, out act)) return act;
             }
             if (IconReplacer.DefenseArea && DefenseAreaGCD(abilityRemain, out act)) return act;

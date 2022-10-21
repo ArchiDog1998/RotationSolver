@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Melee;
 
@@ -98,9 +99,9 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             PhantomRush = new (25769),
 
             //演武
-            FormShift = new (4262)
+            FormShift = new(4262)
             {
-                BuffsProvide = new [] { ObjectStatus.FormlessFist, ObjectStatus.PerfectBalance },
+                BuffsProvide = new[] { ObjectStatus.FormlessFist, ObjectStatus.PerfectBalance },
             },
 
             //金刚极意 盾
@@ -114,8 +115,13 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
     {
         {DescType.范围治疗, $"{Actions.Mantra.Action.Name}"},
         {DescType.单体防御, $"{Actions.RiddleofEarth.Action.Name}"},
-        {DescType.移动, $"{Actions.Thunderclap.Action.Name}，目标为面向夹角小于30°内最远目标。"},
+        {DescType.移动, $"{Actions.Thunderclap.Action.Name}"},
     };
+
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetBool("AutoFormShift", true, "自动演武");
+    }
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
@@ -129,7 +135,6 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
         if (Actions.Mantra.ShouldUse(out act)) return true;
         return false;
     }
-
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
@@ -248,7 +253,7 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
 
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
         if (JobGauge.Chakra < 5 && Actions.Meditation.ShouldUse(out act)) return true;
-        if (Actions.FormShift.ShouldUse(out act)) return true;
+        if (Config.GetBoolByName("AutoFormShift") && Actions.FormShift.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -274,7 +279,6 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             {
                 if (Actions.PerfectBalance.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             }
-
         }
 
         if (Actions.RiddleofWind.ShouldUse(out act)) return true;

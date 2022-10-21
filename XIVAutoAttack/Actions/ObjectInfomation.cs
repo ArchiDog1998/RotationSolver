@@ -3,6 +3,7 @@ using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,6 +46,22 @@ namespace XIVAutoAttack.Actions
         {
             if (b == null) return false;
             return b.CurrentHp <= TargetFilter.GetHealthFromMulty(1);
+        }
+
+        internal static EnemyLocation FindEnemyLocation(this GameObject enemy)
+        {
+            Vector3 pPosition = enemy.Position;
+            float rotation = enemy.Rotation;
+            Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+
+            Vector3 dir = Service.ClientState.LocalPlayer.Position - pPosition;
+            Vector2 dirVec = new Vector2(dir.Z, dir.X);
+
+            double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
+
+            if (angle < Math.PI / 4) return EnemyLocation.Front;
+            else if (angle > Math.PI * 3 / 4) return EnemyLocation.Back;
+            return EnemyLocation.Side;
         }
     }
 }

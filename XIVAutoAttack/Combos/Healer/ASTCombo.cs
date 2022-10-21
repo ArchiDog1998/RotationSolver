@@ -115,16 +115,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             },
 
             //占卜
-            Divination = new (16552, true)
-            {
-                OtherCheck = b =>
-                {
-                    
-                    //战斗时间小于5秒时不放   
-                    if (TargetHelper.CombatEngageDuration.Seconds < 5) return false;
-                    return true;
-                },
-            },
+            Divination = new (16552, true),
 
             //抽卡
             Draw = new (3590),

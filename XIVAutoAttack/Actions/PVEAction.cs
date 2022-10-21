@@ -136,6 +136,8 @@ namespace XIVAutoAttack.Actions
             set => _filterForTarget = value;
         }
 
+        internal bool HaveOneCharge => IsCoolDown ? RecastTimeElapsed >= RecastTime / MaxCharges : true;
+
         internal PVEAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
         {
             Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
@@ -363,7 +365,7 @@ namespace XIVAutoAttack.Actions
                 else
                 {
                     //冷却时间没超过一成
-                    if (RecastTimeElapsed < RecastTime / MaxCharges) return false;
+                    if (!HaveOneCharge) return false;
 
                     ////不能连续两个相同的能力技
                     //if (ID == Watcher.LastAbility) return false;
