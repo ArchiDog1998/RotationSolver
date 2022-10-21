@@ -1,7 +1,9 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using System;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.Tank;
 
@@ -20,6 +22,8 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Grit);
     private protected override PVEAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
+
+    private static bool OpenerFinished = false;
 
     internal struct Actions
     {
@@ -49,12 +53,15 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             FloodofDarkness = new DRKAction(16466),
 
             //暗黑锋
-            EdgeofDarkness = new DRKAction(16467),
+            EdgeofDarkness = new DRKAction(16467)
+            {
+                OtherCheck = b => LastAbility != Service.IconReplacer.OriginalHook(EdgeofDarkness.ID) && LocalPlayer.CurrentMp >= 3000,
+            },
 
             //嗜血
             BloodWeapon = new (3625)
             {
-                OtherCheck = b => JobGauge.Blood <= 70 && LocalPlayer.CurrentMp <= 7000,
+                OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
             },
 
             //暗影墙
@@ -92,13 +99,19 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             CarveandSpit = new (3643),
 
             //血溅
-            Bloodspiller = new (7392),
+            Bloodspiller = new (7392)
+            {
+                OtherCheck = b => JobGauge.Blood >= 50 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium),
+            },
 
             //寂灭
             Quietus = new (7391),
 
             //血乱
-            Delirium = new (7390),
+            Delirium = new (7390)
+            {
+                OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
+            },
 
             //至黑之夜
             TheBlackestNight = new (7393)
@@ -113,16 +126,22 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             DarkMissionary = new (16471, true),
 
             //掠影示现
-            LivingShadow = new (16472),
+            LivingShadow = new (16472)
+            {
+                OtherCheck = b => JobGauge.Blood >= 50 && JobGauge.DarksideTimeRemaining > 1,
+            },
 
             //献奉
             Oblation = new (25754, true)
             {
                 ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
-
+            
             //暗影使者
-            Shadowbringer = new (25757),
+            Shadowbringer = new (25757)
+            {
+                OtherCheck = b => JobGauge.DarksideTimeRemaining > 1 && LastAbility != Shadowbringer.ID && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium),
+            },
 
             //腐秽黑暗
             SaltandDarkness = new (25755)
@@ -137,6 +156,13 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         {DescType.单体防御, $"{Actions.Oblation.Action.Name}, {Actions.ShadowWall.Action.Name}, {Actions.DarkMind.Action.Name}"},
         {DescType.移动, $"{Actions.Plunge.Action.Name}"},
     };
+
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration()
+            .SetBool("DRK_TheBlackestNight", true, "留3000蓝");
+    }
+
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.TheBlackestNight.ShouldUse(out act)) return true;
@@ -152,12 +178,37 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         return false;
     }
 
+    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
+    {
+        //嗜血
+        if (Actions.BloodWeapon.ShouldUse(out act)) return true;
+
+        //血乱
+        if (Actions.Delirium.ShouldUse(out act)) return true;
+
+        return base.BreakAbility(abilityRemain, out act);
+    }
+
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        //起手判断
+        if (!InBattle) OpenerFinished = false;
+        if (LastWeaponskill == Actions.Souleater.ID) OpenerFinished = true;
+
+        //寂灭
         if (JobGauge.Blood >= 80 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium))
         {
             if (Actions.Quietus.ShouldUse(out act)) return true;
-            if (Actions.Bloodspiller.ShouldUse(out act)) return true;
+        }
+
+        //血溅
+        if (Actions.Bloodspiller.ShouldUse(out act)) 
+        {
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium) && Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > TargetHelper.WeaponTotal * 1) return true;
+
+            if ((JobGauge.Blood >= 70 && Actions.BloodWeapon.RecastTimeRemain is > 0 and < 3) || (JobGauge.Blood >= 50 && Actions.Delirium.RecastTimeRemain > 37 && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium))) return true;
+
+            if (JobGauge.Blood >= 90) return true;
         }
 
         //AOE
@@ -176,40 +227,59 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     }
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.Blood >= 50 && Actions.LivingShadow.ShouldUse(out act)) return true;
+        //掠影示现
+        if (Actions.LivingShadow.ShouldUse(out act)) return true;
 
-        if (Actions.LivingDead.ShouldUse(out act)) return true;
-
-        //续Buff
-        if (LocalPlayer.CurrentMp >= 6000 || JobGauge.HasDarkArts)
+        //暗黑波动
+        if (Actions.FloodofDarkness.ShouldUse(out act))
         {
-            if (Actions.FloodofDarkness.ShouldUse(out act)) return true;
-            if (Actions.EdgeofDarkness.ShouldUse(out act)) return true;
-            if (Actions.FloodofDarkness.ShouldUse(out act, mustUse: true)) return true;
+            if ((LocalPlayer.CurrentMp >= 6000 || JobGauge.HasDarkArts) && Actions.Unleash.ShouldUse(out _)) return true;
         }
-        if (JobGauge.DarksideTimeRemaining > 0 && Actions.Shadowbringer.ShouldUse(out act, mustUse:true, emptyOrSkipCombo:true)) return true;
 
-        if (Actions.Delirium.ShouldUse(out act)) return true;
+        //暗黑锋
+        if (Actions.EdgeofDarkness.ShouldUse(out act))
+        {do{
+            //是否留3000蓝开黑盾
+            if (Config.GetBoolByName("DRK_TheBlackestNight") && LocalPlayer.CurrentMp < 6000) break;
+            
+            //爆发期打完
+            if (OpenerFinished && Actions.Delirium.RecastTimeElapsed > TargetHelper.WeaponTotal * 1 && Actions.Delirium.RecastTimeElapsed < TargetHelper.WeaponTotal * 8) return true;
 
+            //非爆发期防止溢出+续buff
+            if (JobGauge.HasDarkArts || (LocalPlayer.CurrentMp > 8500 && OpenerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
+            } while (false);
+        }
+       
+
+        if (Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > TargetHelper.WeaponTotal * 1)
+        {
+            //暗影使者
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium) && Actions.Shadowbringer.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+
+            //吸血深渊+精雕怒斩
+            if (Actions.AbyssalDrain.ShouldUse(out act)) return true;
+            if (Actions.CarveandSpit.ShouldUse(out act)) return true;
+        }
+
+        //腐秽大地+腐秽黑暗
         if (Actions.SaltandDarkness.ShouldUse(out act)) return true;
-        if (Actions.BloodWeapon.ShouldUse(out act)) return true;
-        if (!IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
-
-        if (Actions.AbyssalDrain.ShouldUse(out act)) return true;
-        if (Actions.CarveandSpit.ShouldUse(out act)) return true;
-        if (Actions.AbyssalDrain.ShouldUse(out act, mustUse: true)) return true;
-
+        if (OpenerFinished && !IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
 
         //搞搞攻击
         if (Actions.Plunge.ShouldUse(out act) && !IsMoving)
         {
-            if (TargetFilter.DistanceToPlayer(Actions.Plunge.Target) < 1)
-            {
-                return true;
-            }
+            if (TargetFilter.DistanceToPlayer(Actions.Plunge.Target) < 1) return true;
         }
 
         return false;
+    }
+
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    {
+        //行尸走肉
+        if (Actions.LivingDead.ShouldUse(out act)) return true;
+
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
