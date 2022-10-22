@@ -208,10 +208,12 @@
             //夜游魂
             Enshrouded = 2593,
 
-            //死亡祭祀
+            //祭祀环
             CircleofSacrifice = 2972,
             //死亡祭品
             ImmortalSacrifice = 2592,
+            //死亡祭祀
+            BloodsownCircle = 2972,
             //神秘环
             ArcaneCircle = 2599,
 
