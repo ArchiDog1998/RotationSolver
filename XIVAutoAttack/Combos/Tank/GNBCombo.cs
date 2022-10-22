@@ -172,13 +172,15 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
     {
         return base.CreateConfiguration().SetCombo("GNB_Opener", 0, new string[]
         {
-            "4GCD起手",
+            "4GCD起手", 
 
         }, "起手选择");
     }
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
+        if ()
+
         //无情,目前只有4GCD起手的判断
         if (Level >= Actions.BurstStrike.Level && abilityRemain == 1 && Actions.NoMercy.ShouldUse(out act))
         {
@@ -190,7 +192,6 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
 
             //2弹进无情
             else if (JobGauge.Ammo == 2 && Actions.GnashingFang.RecastTimeRemain > 0) return true;
-
         }
         //等级低于爆发击是判断
         if (Level < Actions.BurstStrike.Level && abilityRemain == 1 && Actions.NoMercy.ShouldUse(out act)) return true;
