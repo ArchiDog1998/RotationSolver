@@ -9,18 +9,14 @@ description: |-
 punchline: Auto attack!
 changelog: |-
   ## 错误修复
-  - 修复了武士天下五剑贱不出来的问题
-  - 增加武僧自动演武选项
-  - 解决了战士不会摆脱的问题
-  - 降低了了战士战嚎优先级太低的问题
-  - 尝试解决T一直挑衅的问题
-  - 调整了骑士的循环但可能有bug！
-  - 修复机工和诗人
+  - 修复武僧自卫一下子卸三层的bug
+  - 调整了镰刀的循环
+  - 优化了绝枪，默认4GCD起手
+  - 调整了黑骑，黑骑能力技优先级有点乱,下个版本优化
   ## 新增功能
-  - 添加了不使用防御能力技的选项用于高难
+  - 添加了打断延迟功能
   ## API
-  - 调整敌人位置API到ObjectInfomation中
-  - 添加了HaveOneCharge来判断是否足够一层用来释放技能。 
+  - 添加了一点点注释
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack

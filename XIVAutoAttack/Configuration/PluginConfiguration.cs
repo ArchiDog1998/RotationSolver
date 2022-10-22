@@ -44,6 +44,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthSingleAbility { get; set; } = 0.7f;
     public float HealthSingleSpell { get; set; } = 0.55f;
     public float HealthForDyingTank { get; set; } = 0.15f;
+    public float InterruptibleTime { get; set; } = 0.5f;
 
     public float SpecialDuration { get; set; } = 3;
     public float WeaponInterval { get; set; } = 0.6f;

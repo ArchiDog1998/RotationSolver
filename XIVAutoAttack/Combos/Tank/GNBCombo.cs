@@ -168,14 +168,13 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         {DescType.移动, $"{Actions.RoughDivide.Action.Name}"},
     };
 
-    private protected override ActionConfiguration CreateConfiguration()
-    {
-        return base.CreateConfiguration().SetCombo("GNB_Opener", 0, new string[]
-        {
-            "4GCD起手", 
-
-        }, "起手选择");
-    }
+    //private protected override ActionConfiguration CreateConfiguration()
+    //{
+    //    return base.CreateConfiguration().SetCombo("GNB_Opener", 0, new string[]
+    //    {
+    //        "4GCD起手",
+    //    }, "起手选择");
+    //}
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {

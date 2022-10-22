@@ -374,7 +374,7 @@ namespace XIVAutoAttack
                     if (CanAttack(obj)) return true;
                 }
                 return false;
-            }).Select(obj => (BattleChara)obj).ToArray());
+            }).Cast<BattleChara>().ToArray());
 
             //Filter the fate objects.
             //if (Service.Configuration.ChangeTargetForFate && FateManager.Instance()->FateJoined > 0)
@@ -411,7 +411,9 @@ namespace XIVAutoAttack
                         break;
                 }
 
-                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2).ToArray();
+                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2 
+                && tar.CurrentCastTime >= Service.Configuration.InterruptibleTime).ToArray();
+
                 TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId).ToArray();
 
                 float radius = 25;

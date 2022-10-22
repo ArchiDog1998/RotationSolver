@@ -175,27 +175,27 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                //{
-
-                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //    {
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //    }
-                //}
-
-
-
-                if (Service.TargetManager.Target is BattleChara b)
+                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
                 {
-                    ImGui.Text("Is Boss: " + b.IsBoss().ToString());
-                    ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
 
-
-                    ImGui.Text($"Target: {b.StatusFlags}");
+                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    {
+                        ImGui.Text(item.GameData.Name + item.StatusId);
+                    }
                 }
-                ImGui.Text(FateManager.Instance()->FateJoined.ToString());
-                ImGui.Text(TargetHelper.AllTargets.Length.ToString());
+
+
+
+                //if (Service.TargetManager.Target is BattleChara b)
+                //{
+                //    ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+                //    ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
+
+
+                //    ImGui.Text($"Target: {b.StatusFlags}");
+                //}
+                //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
+                //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
 
 
                 //foreach (var item in Service.ObjectTable)
@@ -275,6 +275,13 @@ internal class ConfigWindow : Window
                     if (ImGui.DragFloat("间隔多久释放能力技", ref weaponInterval, 0.002f, 0.6f, 0.7f))
                     {
                         Service.Configuration.WeaponInterval = weaponInterval;
+                        Service.Configuration.Save();
+                    }
+
+                    float interruptibleTime = Service.Configuration.InterruptibleTime;
+                    if (ImGui.DragFloat("打断类技能延迟多久后释放", ref interruptibleTime, 0.002f, 0, 2))
+                    {
+                        Service.Configuration.InterruptibleTime = interruptibleTime;
                         Service.Configuration.Save();
                     }
 

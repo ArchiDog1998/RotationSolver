@@ -105,7 +105,10 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             },
 
             //金刚极意 盾
-            RiddleofEarth = new (7394, shouldEndSpecial: true),
+            RiddleofEarth = new (7394, shouldEndSpecial: true)
+            {
+                BuffsProvide = new[] {ObjectStatus.RiddleofEarth }, 
+            },
 
             //疾风极意
             RiddleofWind = new (25766);
