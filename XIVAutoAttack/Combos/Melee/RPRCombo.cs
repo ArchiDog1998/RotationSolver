@@ -17,18 +17,24 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         }
     }
 
-    private static bool HaveEnshrouded => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);
-    private static bool HaveSoulReaver => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver);
-
+    private static bool enshrouded => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);
+    private static bool soulReaver => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver);
+    private static bool enhancedGibbet => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGibbet);
+    private static bool enhancedGallows => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGallows);
+    private static bool enhancedCrossReaping => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping);
+    private static bool enhancedVoidReaping => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping);
+    private static bool arcaneCircle => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ArcaneCircle);
+    private static bool plentifulReady =>StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Bloodwhetting);
+    private static bool haveDeathsDesign => Target.FindStatusTimeFromSelf(ObjectStatus.DeathsDesign) > 0;
     internal override uint JobID => 39;
     internal struct Actions
     {
         public static readonly PVEAction
-//单体
+        #region 单体
             //切割
             Slice = new(24373)
             {
-                OtherCheck = b => !HaveEnshrouded || !HaveSoulReaver,
+                OtherCheck = b => !enshrouded || !soulReaver,
             },
 
             //增盈切割
@@ -47,16 +53,16 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             ShadowofDeath = new(24378, isDot: true)
             {
                 TargetStatus = new[] { ObjectStatus.DeathsDesign },
-                OtherCheck = b => !HaveSoulReaver,
+                OtherCheck = b => !soulReaver,
             },
 
             //灵魂切割
             SoulSlice = new(24380)
             {
-                OtherCheck = b => !HaveEnshrouded && !HaveSoulReaver && JobGauge.Soul <= 50,
+                OtherCheck = b => !enshrouded && !soulReaver && JobGauge.Soul <= 50,
             },
-
-//AoE
+        #endregion
+        #region AoE
             //旋转钐割
             SpinningScythe = new(24376)
             {
@@ -73,11 +79,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             WhorlofDeath = new(24379, isDot: true)
             {
                 TargetStatus = new[] { ObjectStatus.DeathsDesign },
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver)) return false;
-                    return true;
-                }
+                OtherCheck = b => !soulReaver
             },
 
             //灵魂钐割
@@ -85,201 +87,96 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             {
                 OtherCheck = SoulSlice.OtherCheck,
             },
-
-//妖异之镰状态
+        #endregion
+        #region 妖异之镰状态
             //绞决
             Gibbet = new PRPAction(24382)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver) &&
-                        StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGibbet))
-                    {
-                        return true;
-                    }
-                    return false;
-                }
+                OtherCheck = b => soulReaver && enhancedGibbet,
             },
 
             //缢杀
             Gallows = new PRPAction(24383)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver) &&
-                       (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGallows) || 
-                       !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGibbet)))
-                    {
-                        return true;
-                    }
-                    return false;
-                }
+                OtherCheck = b => soulReaver && (enhancedGallows || !enhancedGibbet),
             },
 
             //断首
             Guillotine = new(24384)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver)) return true;
-                    return false;
-                }
+                OtherCheck = b => soulReaver,
             },
-
-//红条50灵魂
+        #endregion
+        #region 红条50灵魂
             //隐匿挥割
             BloodStalk = new(24389)
             {
                 BuffsProvide = new[] { ObjectStatus.SoulReaver },
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver) ||
-                        StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        return false;
-                    }
-                    if (JobGauge.Soul < 50) return false;
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice)) return false;
-                    if (Level >= Gluttony.Level && Gluttony.RecastTimeRemain < 8) return false;
-                    return true;
-                }
+                OtherCheck = b => !soulReaver && !enshrouded &&
+                                  JobGauge.Soul >= 50 && !plentifulReady &&
+                                  ((Level >= Gluttony.Level && Gluttony.RecastTimeRemain > 8) || Level < Gluttony.Level),
             },
 
             //束缚挥割
             GrimSwathe = new(24392)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver) ||
-                        StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        return false;
-                    }
-                    if (JobGauge.Soul < 50) return false;
-                    if (Level >= Gluttony.Level && Gluttony.RecastTimeRemain < 8) return false;
-                    return true;
-                }
+                OtherCheck = BloodStalk.OtherCheck,
             },
 
             //暴食
             Gluttony = new(24393)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver) ||
-                        StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        return false;
-                    }
-                    if (JobGauge.Soul < 50) return false;
-                    if (Level >= PlentifulHarvest.Level && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice)) return false; //双附体阶段可以延后防止第二次团契打不进神秘环
-                    return true;
-                },
+                OtherCheck = b => !soulReaver && !enshrouded && JobGauge.Soul >= 50 && !plentifulReady,
             },
-
-//大爆发
+        #endregion
+        #region 大爆发
             //神秘环
             ArcaneCircle = new(24405, true)
             {
-                OtherCheck = b =>
-                {
-                    if(InBattle && Target.FindStatusTimeFromSelf(ObjectStatus.DeathsDesign) > 0)
-                    {
-                        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                        {
-                            if(JobGauge.LemureShroud < 4 && JobGauge.VoidShroud < 2)
-                            {
-                                return true;
-                            }
-                            return false;
-                        }
-                        return true;
-                    }
-                    return false;
-                },
+                OtherCheck = b => InBattle && haveDeathsDesign && 
+                                ((enshrouded && JobGauge.LemureShroud < 4 && JobGauge.VoidShroud < 2) || !enshrouded),
             },
 
             //大丰收
             PlentifulHarvest = new(24385)
             {
-                OtherCheck = b =>
-                {
-                    if (JobGauge.Shroud <= 50 &&
-                        !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.CircleofSacrifice) && 
-                        StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) &&
-                        !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver) &&
-                        !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        return true;
-                    }
-                    return false;
-                }
+                OtherCheck = b => JobGauge.Shroud <= 50 && !soulReaver && !enshrouded && plentifulReady && 
+                                StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.ImmortalSacrifice) < 26
             },
-
-//蓝条50附体
-            //夜游魂衣 变身！
+        #endregion
+        #region 蓝条50附体
+            //夜游魂衣
             Enshroud = new(24394)
             {
-                OtherCheck = b =>
-                {
-                    if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver) && 
-                        !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        if ((StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ArcaneCircle) && JobGauge.Shroud >= 50) ||
-                            (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ArcaneCircle) && JobGauge.Shroud >= 90))
-                        {
-                            return true;
-                        }
-                        if (ArcaneCircle.RecastTimeRemain < 3 && JobGauge.Shroud >= 50) return true;
-                    }
-                    return false;
-                },
+                OtherCheck = b => !soulReaver && !enshrouded &&
+                        ((arcaneCircle && JobGauge.Shroud >= 50) || //神秘环期间附体
+                        (!arcaneCircle && JobGauge.Shroud >= 90) || //防止蓝条溢出
+                        (ArcaneCircle.RecastTimeRemain < 3 && JobGauge.Shroud >= 50) || //双附体起手
+                        (Level <= PlentifulHarvest.Level && JobGauge.Shroud >= 50)) //无法双附体直接打
             },
 
             //团契
-            Communio = new(24398),
+            Communio = new(24398)
+            {
+                OtherCheck = b => enshrouded && JobGauge.LemureShroud ==1,
+            },
 
             //夜游魂切割
             LemuresSlice = new(24399)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        if (JobGauge.VoidShroud >= 2) return true;
-                    }
-                    return false; 
-                }
+                OtherCheck = b => enshrouded && JobGauge.VoidShroud >= 2,
             },
 
             //夜游魂钐割
             LemuresScythe = new(24400)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        if (JobGauge.VoidShroud >= 2) return true;
-                    }
-                    return false;
-                }
+                OtherCheck = LemuresSlice.OtherCheck,
             },
 
             //虚无收割
             VoidReaping = new(24395)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        if(JobGauge.LemureShroud > 1)
-                        {
-                            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping))
-                                return true;
-                        }
-                    }
-                    return false;
-                }
+                OtherCheck = b => enshrouded && JobGauge.LemureShroud > 1 && enhancedVoidReaping,
             },
 
             //交错收割
@@ -287,18 +184,14 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
+                    if (enshrouded)
                     {
-                        if(JobGauge.LemureShroud > 1)
+                        if (JobGauge.LemureShroud > 1 && (enhancedCrossReaping || !enhancedVoidReaping))
                         {
-                            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping) || 
-                                !(StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping)))
                                 return true;
                         }
-                        if(JobGauge.LemureShroud == 1)
+                        if (JobGauge.LemureShroud == 1 && Level < Actions.Communio.Level && enhancedCrossReaping)
                         {
-                            if (Level < Actions.Communio.Level && 
-                                StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping))
                                 return true;
                         }
                     }
@@ -309,17 +202,10 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             //阴冷收割
             GrimReaping = new(24397)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
-                    {
-                        return true;
-                    }
-                    return false;
-                }
+                OtherCheck = b => enshrouded,
             },
-
-//杂项
+        #endregion
+        # region 杂项
             //地狱入境
             HellsIngress = new(24401)
             {
@@ -339,33 +225,22 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             Soulsow = new(24387)
             {
                 BuffsProvide = new[] { ObjectStatus.Soulsow },
-                OtherCheck = b =>
-                {
-                    if (!InBattle) return true;
-                    return false;
-                }
+                OtherCheck = b => !InBattle,
             },
 
             //收获月
             HarvestMoon = new(24388)
             {
                 BuffsNeed = new[] { ObjectStatus.Soulsow },
-                OtherCheck = b =>
-                {
-                    if (InBattle) return true;
-                    return false;
-                }
+                OtherCheck = b => InBattle,
             },
 
             //神秘纹 加盾
             ArcaneCrest = new(24404, true)
             {
-                OtherCheck = b =>
-                {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded)) return false;
-                    return true;
-                }
+                OtherCheck = b => !enshrouded
             };
+        #endregion
     }
     internal override SortedList<DescType, string> Description => new ()
     {
@@ -378,7 +253,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         if(Actions.Soulsow.ShouldUse(out act)) return true;
 
         //处于变身状态。
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded))
+        if (enshrouded)
         {
             if (Actions.ShadowofDeath.ShouldUse(out act)) return true;
             if (JobGauge.LemureShroud == 1 && JobGauge.VoidShroud == 0 && Level >= Actions.Communio.Level)
@@ -427,7 +302,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         if (Actions.Slice.ShouldUse(out act, lastComboActionID)) return true;
 
         //摸不到怪 先花掉收获月
-        if (Actions.HarvestMoon.ShouldUse(out act)) return true;
+        if (Actions.HarvestMoon.ShouldUse(out act, mustUse:true)) return true;
         if (Actions.Harpe.ShouldUse(out act)) return true;
 
         return false;
@@ -462,7 +337,11 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if (GeneralActions.Feint.ShouldUse(out act)) return true;
+        if (!enshrouded)
+        {
+            if (GeneralActions.Feint.ShouldUse(out act)) return true;
+        }
+        act = null;
         return false;
     }
 
