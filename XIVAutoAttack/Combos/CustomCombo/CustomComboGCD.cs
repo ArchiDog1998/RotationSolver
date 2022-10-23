@@ -60,7 +60,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
             IAction act = GCD(lastComboActionID, abilityRemain, helpDefenseAOE, helpDefenseSingle);
             //Sayout!
-            if (act != null && act is PVEAction GCDaction)
+            if (act != null && act is BaseAction GCDaction)
             {
                 if (GCDaction.EnermyLocation != EnemyLocation.None && GCDaction.Target.HasLocationSide()
                      && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TrueNorth))
@@ -160,7 +160,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (EsunaRaise(out act, abilityRemain, false)) return act;
             if (IconReplacer.Move && MoveGCD(lastComboActionID, out act))
             {
-                if(act is PVEAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
+                if(act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
             }
             if (TargetHelper.HPNotFull)
             {

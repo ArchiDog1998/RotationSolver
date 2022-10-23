@@ -7,7 +7,7 @@ namespace XIVAutoAttack.Combos.Melee;
 
 internal class RPRCombo : JobGaugeCombo<RPRGauge>
 {
-    internal class PRPAction : PVEAction
+    internal class PRPAction : BaseAction
     {
         internal override EnemyLocation EnermyLocation => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) 
             ? EnemyLocation.None : base.EnermyLocation;
@@ -29,7 +29,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     internal override uint JobID => 39;
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
         #region 单体
             //切割
             Slice = new(24373)
@@ -140,8 +140,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             //大丰收
             PlentifulHarvest = new(24385)
             {
-                OtherCheck = b => JobGauge.Shroud <= 50 && !soulReaver && !enshrouded && plentifulReady && 
-                                StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.ImmortalSacrifice) < 26
+                OtherCheck = b => JobGauge.Shroud <= 50 && !soulReaver && !enshrouded && plentifulReady
             },
         #endregion
         #region 蓝条50附体
@@ -205,7 +204,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 OtherCheck = b => enshrouded,
             },
         #endregion
-        # region 杂项
+        #region 杂项
             //地狱入境
             HellsIngress = new(24401)
             {
@@ -238,7 +237,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             //神秘纹 加盾
             ArcaneCrest = new(24404, true)
             {
-                OtherCheck = b => !enshrouded
+                OtherCheck = b => !enshrouded && !soulReaver
             };
         #endregion
     }
@@ -337,7 +336,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if (!enshrouded)
+        if (!enshrouded && !soulReaver)
         {
             if (GeneralActions.Feint.ShouldUse(out act)) return true;
         }

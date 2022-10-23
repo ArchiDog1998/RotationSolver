@@ -175,25 +175,22 @@ internal class ConfigWindow : Window
             if (ImGui.BeginTabItem("参数设定"))
             {
 #if DEBUG
-                foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                {
-
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
-                }
-
-
-
-                //if (Service.TargetManager.Target is BattleChara b)
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
                 //{
-                //    ImGui.Text("Is Boss: " + b.IsBoss().ToString());
-                //    ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
 
-
-                //    ImGui.Text($"Target: {b.StatusFlags}");
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
                 //}
+
+
+
+                if (Service.TargetManager.Target is BattleChara b)
+                {
+                    ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+                    ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
+                }
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
                 //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
 
@@ -335,6 +332,13 @@ internal class ConfigWindow : Window
                         //    Service.Configuration.ChangeTargetForFate = changeTargetForFate;
                         //    Service.Configuration.Save();
                         //}
+
+                        bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;
+                        if (ImGui.Checkbox("将敌对列表的对象设为敌对", ref addEnemyListToHostile))
+                        {
+                            Service.Configuration.AddEnemyListToHostile = addEnemyListToHostile;
+                            Service.Configuration.Save();
+                        }
 
                         bool moveToScreen = Service.Configuration.MoveTowardsScreen;
                         if (ImGui.Checkbox("移动技能选屏幕中心的对象", ref moveToScreen))

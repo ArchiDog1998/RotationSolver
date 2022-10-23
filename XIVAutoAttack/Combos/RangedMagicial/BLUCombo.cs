@@ -7,8 +7,10 @@ namespace XIVAutoAttack.Combos.RangedMagicial
 {
     internal class BLUCombo : OtherCombo
     {
-        internal class BLUAction : PVEAction
+        internal class BLUAction : BaseAction
         {
+            public bool OnSlot => TargetHelper.BLUActions.Contains(this.ID);
+
             internal BLUAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
                 : base(actionID, isFriendly, shouldEndSpecial)
             {
@@ -16,7 +18,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial
 
             public sealed override bool ShouldUse(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
             {
-                if (!TargetHelper.BLUActions.Contains(this.ID))
+                if (!OnSlot)
                 {
                     act = null;
                     return false;

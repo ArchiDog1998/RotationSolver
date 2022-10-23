@@ -14,11 +14,11 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
     protected override bool CanHealSingleSpell => TargetHelper.PartyHealers.Length == 0 &&  base.CanHealSingleSpell;
     //看看现在有没有促进
 
-    private protected override PVEAction Raise => Actions.Verraise;
+    private protected override BaseAction Raise => Actions.Verraise;
 
     protected static bool _startLong = false;
 
-    public class RDMAction : PVEAction
+    public class RDMAction : BaseAction
     {
         internal override int Cast100 => NeedBuffNotCast ? 0 : base.Cast100;
         internal override ushort[] BuffsNeed 
@@ -35,7 +35,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
     }
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //赤复活
             Verraise = new(7523, true),
 

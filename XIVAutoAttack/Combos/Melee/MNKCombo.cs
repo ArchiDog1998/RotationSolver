@@ -14,7 +14,7 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
 
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //双龙脚
             DragonKick = new (74)
             {
@@ -173,7 +173,7 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
 
         //确认Buff大于6s
         var times = StatusHelper.FindStatusSelfFromSelf(ObjectStatus.DisciplinedFist);
-        if ((times.Length == 0 || times[0] < 4 + WeaponRemain) && Actions.TwinSnakes.ShouldUse(out act)) return true;
+        if ((times.Length == 0 || times[0] < 4 + WeaponRemain()) && Actions.TwinSnakes.ShouldUse(out act)) return true;
 
         if (Actions.TrueStrike.ShouldUse(out act)) return true;
         return false;

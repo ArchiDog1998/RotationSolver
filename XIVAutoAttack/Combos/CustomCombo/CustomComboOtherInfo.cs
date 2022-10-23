@@ -1,6 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using System;
+using System.ComponentModel;
+using System.Linq;
+using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -16,10 +19,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
             单体防御,
             移动,
         }
-        public static uint LastAction => Watcher.LastAction;
-        public static uint LastWeaponskill => Watcher.LastWeaponskill;
-        public static uint LastAbility => Watcher.LastAbility;
-        public static uint LastSpell => Watcher.LastSpell;
         public static TimeSpan TimeSinceLastAction => Watcher.TimeSinceLastAction;
 
         protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
@@ -27,8 +26,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool IsMoving => XIVAutoAttackPlugin.movingController.IsMoving;
         protected static bool HaveHostileInRange => TargetHelper.HaveHostileInRange;
-        protected static float WeaponRemain => TargetHelper.WeaponRemain;
-
         protected virtual bool CanHealAreaAbility => TargetHelper.CanHealAreaAbility;
         protected virtual bool CanHealAreaSpell => TargetHelper.CanHealAreaSpell;
 
@@ -40,5 +37,60 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static byte Level => LocalPlayer?.Level ?? 0;
 
         protected static bool InBattle => TargetHelper.InBattle;
+
+        protected static float WeaponRemain(uint gcdCount = 0) => TargetHelper.WeaponTotal * gcdCount + TargetHelper.WeaponRemain;
+
+        protected static float Weaponelapsed => TargetHelper.Weaponelapsed;
+
+        protected static bool IsLasSpell(bool isAdjust, params IAction[] actions)
+        {
+            return IsLasSpell(GetIDFromActions(isAdjust, actions));
+        }
+        protected static bool IsLasSpell(params uint[] ids)
+        {
+            return IsActionID(Watcher.LastSpell, ids);
+        }
+
+
+        protected static bool IsLastAbility(bool isAdjust, params IAction[] actions)
+        {
+            return IsLastAbility(GetIDFromActions(isAdjust, actions));
+        }
+        protected static bool IsLastAbility(params uint[] ids)
+        {
+            return IsActionID(Watcher.LastAbility, ids);
+        }
+
+        protected static bool IsLastWeaponSkill(bool isAdjust, params IAction[] actions)
+        {
+            return IsLastWeaponSkill(GetIDFromActions(isAdjust, actions));
+        }
+        protected static bool IsLastWeaponSkill(params uint[] ids)
+        {
+            return IsActionID(Watcher.LastWeaponskill, ids);
+        }
+
+        protected static bool IsLastAction(bool isAdjust, params IAction[] actions)
+        {
+            return IsLastAction(GetIDFromActions(isAdjust, actions));
+        }
+        protected static bool IsLastAction(params uint[] ids)
+        {
+            return IsActionID(Watcher.LastAction, ids);
+        }
+
+        private static bool IsActionID(uint id, params uint[] ids)
+        {
+            foreach (var i in ids)
+            {
+                if (i == id) return true;
+            }
+            return false;
+        }
+
+        private static uint[] GetIDFromActions(bool isAdjust, params IAction[] actions)
+        {
+            return actions.Select(a => isAdjust ? a.AdjustedID : a.ID).ToArray();
+        }
     }
 }
