@@ -9,7 +9,7 @@ namespace XIVAutoAttack.Combos
 {
     internal class BLMCombo : JobGaugeCombo<BLMGauge>
     {
-        internal class BLMAction : PVEAction
+        internal class BLMAction : BaseAction
         {
             private static BLMGauge JobGauge => BLMCombo.JobGauge;
 
@@ -115,7 +115,7 @@ namespace XIVAutoAttack.Combos
         internal struct Actions
         {
 
-            public static readonly PVEAction
+            public static readonly BaseAction
                 //雷1
                 Thunder = new(144u, isDot: true)
                 {
@@ -289,7 +289,7 @@ namespace XIVAutoAttack.Combos
         {
             act = null;
             //刚刚魔泉，别给我转冰了。
-            if (LastAction == Actions.Manafont.ID) return false;
+            if (IsLastAbility(false, Actions.Manafont)) return false;
 
             //星灵转冰
             if (Level >= 90 && JobGauge.InAstralFire && LocalPlayer.CurrentMp == 0
@@ -339,7 +339,7 @@ namespace XIVAutoAttack.Combos
         {
             act = null;
             //刚刚魔泉，别给我转冰了。
-            if (LastAction == Actions.Manafont.ID) return false;
+            if (IsLastAbility(false, Actions.Manafont)) return false;
 
             if (IsMoving)
             {
@@ -528,7 +528,7 @@ namespace XIVAutoAttack.Combos
                 if (Actions.Manafont.ShouldUse(out act)) return true;
 
                 //刚刚魔泉，别给我转冰了。
-                if (LastAction == Actions.Manafont.ID) return false;
+                if (IsLastAbility(false, Actions.Manafont)) return false;
 
                 //否则，转入冰状态。
                 if (JobGauge.PolyglotStacks == 2 || (JobGauge.PolyglotStacks == 1 && JobGauge.EnochianTimer < 3000))

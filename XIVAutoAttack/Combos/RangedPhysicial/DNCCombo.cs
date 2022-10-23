@@ -12,7 +12,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
 
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
 
             //∆Ÿ–∫
             Cascade = new (15989)
@@ -333,7 +333,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
     private bool AttackGCD(out IAction act, bool breaking, uint lastComboActionID)
     {
         //Ω£ŒË
-        if ((breaking || JobGauge.Esprit >= 75) &&
+        if ((breaking || JobGauge.Esprit >= 80) &&
             Actions.SaberDance.ShouldUse(out act, mustUse: true)) return true;
 
         //Ã·ƒ…¿≠

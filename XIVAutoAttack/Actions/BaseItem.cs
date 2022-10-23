@@ -10,6 +10,8 @@ namespace XIVAutoAttack.Actions
         private uint A4 { get; } = 0;
 
         public uint ID => Item.RowId;
+        public uint AdjustedID => Service.IconReplacer.OriginalHook(ID);
+
         public Func<bool> OtherCheck { private get; set; }
         public unsafe bool HaveIt => InventoryManager.Instance()->GetInventoryItemCount(Item.RowId, false) > 0 ||
                 InventoryManager.Instance()->GetInventoryItemCount(Item.RowId, true) > 0;

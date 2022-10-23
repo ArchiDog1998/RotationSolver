@@ -12,6 +12,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -28,49 +29,34 @@ namespace XIVAutoAttack
         private static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
         private static readonly Stopwatch _weaponAbilityStopwatch = new Stopwatch();
 
-        internal static readonly Stopwatch _fisherTimer = new Stopwatch();
-        internal static readonly Stopwatch _unfishingTimer = new Stopwatch();
-        private static bool _isLastFishing = false;
 
         private static long _weaponRandomDelay = 0;
 
-        private static FishType _fishType = FishType.None;
-
-        internal static FishType Fish
-        {
-            get
-            {
-                if (_fisherTimer.IsRunning && _fishType != FishType.Mooch && _fisherTimer.ElapsedMilliseconds > 3000)
-                {
-                    _fisherTimer.Stop();
-                    _fisherTimer.Reset();
-                    _fishType = FishType.None;
-                }
-                return _fishType;
-            }
-            set
-            {
-                if (value != FishType.None)
-                {
-                    _fisherTimer.Restart();
-                }
-                _fishType = value;
-            }
-        }
-
 
         //All Targes
-        internal static BattleChara[] AllTargets { get; private set; } = new BattleChara[0];
+        private static BattleChara[] AllTargets { get; set; } = new BattleChara[0];
 
         internal static BattleChara[] HostileTargets { get; private set; } = new BattleChara[0];
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static BattleChara[] TarOnMeTargets { get; private set; } = new BattleChara[0];
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static BattleChara[] CanInterruptTargets { get; private set; } = new BattleChara[0];
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool HaveHostileInRange { get; private set; } = false;
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static float WeaponRemain { get; private set; } = 0;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static float WeaponTotal { get; private set; } = 0;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static float Weaponelapsed { get; private set; } = 0;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool InBattle { get; private set; } = false;
         internal static byte AbilityRemainCount { get; private set; } = 0;
 
@@ -83,26 +69,42 @@ namespace XIVAutoAttack
         internal static BattleChara[] PartyHealers { get; private set; } = new PlayerCharacter[0];
 
         internal static BattleChara[] AllianceTanks { get; private set; } = new PlayerCharacter[0];
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static BattleChara[] DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static BattleChara[] DeathPeopleParty { get; private set; } = new PlayerCharacter[0];
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static BattleChara[] WeakenPeople { get; private set; } = new PlayerCharacter[0];
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static BattleChara[] DyingPeople { get; private set; } = new PlayerCharacter[0];
         internal static float[] PartyMembersHP { get; private set; } = new float[0];
         internal static float PartyMembersMinHP { get; private set; } = 0;
         internal static float PartyMembersAverHP { get; private set; } = 0;
         internal static float PartyMembersDifferHP { get; private set; } = 0;
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool CanHealAreaAbility { get; private set; } = false;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool CanHealAreaSpell { get; private set; } = false;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool CanHealSingleAbility { get; private set; } = false;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool CanHealSingleSpell { get; private set; } = false;
         internal static bool HavePet { get; private set; } = false;
         internal static bool HPNotFull { get; private set; } = false;
-        internal static bool ShouldUseArea { get; private set; } = false;
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static bool IsHostileAOE { get; private set; } = false;
 
-        public static bool IsHostileAOE { get; private set; } = false;
-        public static bool IsHostileTank { get; private set; } = false;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static bool IsHostileTank { get; private set; } = false;
         internal static  uint[] BLUActions { get;} = new uint[24];
 
         internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
@@ -111,40 +113,11 @@ namespace XIVAutoAttack
 #if DEBUG
         private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
 #endif
-        private static bool restartCombatTimer = true;
-        private static TimeSpan combatDuration = new();
-        private static DateTime combatStart;
-        private static DateTime combatEnd;
-        [Obsolete]
-        public static TimeSpan CombatEngageDuration => combatDuration;
-        private static void UpdateCombatTime()
-        {
-            if (InBattle)
-            {
-                if (restartCombatTimer)
-                {
-                    restartCombatTimer = false;
-                    combatStart = DateTime.Now;
-                }
-
-                combatEnd = DateTime.Now;
-            }
-            else
-            {
-                restartCombatTimer = true;
-                combatDuration = TimeSpan.Zero;
-            }
-
-            combatDuration = combatEnd - combatStart;
-
-        }
-
         internal unsafe static void Framework_Update(Framework framework)
         {
             if (!Service.Conditions.Any()) return;
 
             UpdateCastBar();
-            UpdateCombatTime();
 #if DEBUG
             //Get changed condition.
             string[] enumNames = Enum.GetNames(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));
@@ -173,17 +146,6 @@ namespace XIVAutoAttack
             //    _valus[i] = newValue;
             //}
 #endif
-            //UpdateFishing.
-            bool fishing = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Fishing];
-            if(_isLastFishing && !fishing)
-            {
-                _unfishingTimer.Restart();
-            }
-            _isLastFishing = fishing;
-            if (Fish != FishType.None && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Gathering])
-            {
-                Fish = FishType.None;
-            }
 
             //Update State.
             if (Service.Configuration.UseDtr && IconReplacer.StateString != null)
@@ -543,8 +505,6 @@ namespace XIVAutoAttack
 
             PartyMembersMinHP = PartyMembersHP.Min();
             HPNotFull = PartyMembersMinHP < 1;
-
-            ShouldUseArea = PartyMembersHP.Count(t => t < 1) > Service.Configuration.PartyCount;
             #endregion
         }
 
@@ -596,6 +556,8 @@ namespace XIVAutoAttack
         }
         internal static unsafe uint[] GetEnemies()
         {
+            if (!Service.Configuration.AddEnemyListToHostile) return new uint[0];
+
             var addonByName = Service.GameGui.GetAddonByName("_EnemyList", 1);
             if (addonByName != IntPtr.Zero)
             {
@@ -604,8 +566,6 @@ namespace XIVAutoAttack
                 List<uint> list = new List<uint>(addon->EnemyCount);
                 for (var i = 0; i < addon->EnemyCount; i++)
                 {
-                    //var enemyChara = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager.Instance()->LookupBattleCharaByObjectId(numArray->IntArray[8 + i * 6]);
-                    //if (enemyChara is null) continue;
                     list.Add((uint)numArray->IntArray[8 + i * 6]);
                 }
                 return list.ToArray();
@@ -616,8 +576,6 @@ namespace XIVAutoAttack
         public static void Dispose()
         {
             _weaponDelayStopwatch.Stop();
-            _fisherTimer.Stop();
-            _unfishingTimer.Stop();
         }
     }
 }

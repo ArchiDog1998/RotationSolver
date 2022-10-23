@@ -9,7 +9,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
 {
     internal override uint JobID => 21;
     internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
-    private protected override PVEAction Shield => Actions.Defiance;
+    private protected override BaseAction Shield => Actions.Defiance;
     internal static float BuffTime
     {
         get
@@ -22,7 +22,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
 
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //守护
             Defiance = new (48, shouldEndSpecial: true),
 
@@ -71,7 +71,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //原初之魂
             InnerBeast = new (49)
             {
-                OtherCheck = b => BuffTime > WeaponRemain + 0.1f && ( JobGauge.BeastGauge >= 50 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease)),
+                OtherCheck = b => BuffTime > WeaponRemain() + 0.1f && ( JobGauge.BeastGauge >= 50 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease)),
             },
 
             //钢铁旋风
@@ -112,14 +112,14 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             Vengeance = new (44)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = PVEAction.TankDefenseSelf,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //原初的直觉
             RawIntuition = new (3551)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = PVEAction.TankDefenseSelf,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //摆脱
@@ -128,7 +128,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //死斗
             Holmgang = new (43)
             {
-                OtherCheck = PVEAction.TankBreakOtherCheck,
+                OtherCheck = BaseAction.TankBreakOtherCheck,
             },
 
             ////原初的解放
@@ -241,10 +241,10 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //爆发
-        if (BuffTime > 3 * TargetHelper.WeaponTotal + TargetHelper.WeaponRemain || Level < Actions.MythrilTempest.Level)
+        if (BuffTime >WeaponRemain(3) || Level < Actions.MythrilTempest.Level)
         {
             //狂暴
-            if (!new PVEAction(7389).IsCoolDown && Actions.Berserk.ShouldUse(out act)) return true;
+            if (!new BaseAction(7389).IsCoolDown && Actions.Berserk.ShouldUse(out act)) return true;
         }
 
         if (LocalPlayer.GetHealthRatio() < 0.6f)

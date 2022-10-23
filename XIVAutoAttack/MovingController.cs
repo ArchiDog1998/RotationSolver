@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace XIVAutoAttack
 {
-    internal class MovingController
+    internal class MovingController : IDisposable
     {
         bool PosLocker=false;
         private Hook<ActorMoveHook> actorMoveHook;
@@ -33,7 +33,7 @@ namespace XIVAutoAttack
             }
             return actorMoveHook.Original(address, x,y,z);
         }
-        public bool IsMoving
+        internal bool IsMoving
         {
             get => Marshal.ReadByte(Service.Address.IsMoving) == 1;
             set => PosLocker=!value;

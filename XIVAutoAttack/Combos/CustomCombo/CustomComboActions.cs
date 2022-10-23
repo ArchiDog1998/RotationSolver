@@ -8,15 +8,15 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         internal struct GeneralActions
         {
-            internal static readonly PVEAction
+            internal static readonly BaseAction
                 //昏乱
-                Addle = new PVEAction(7560u)
+                Addle = new BaseAction(7560u)
                 {
                     TargetStatus = new ushort[] { 1203 },
                 },
 
                 //即刻咏唱
-                Swiftcast = new PVEAction(7561u)
+                Swiftcast = new BaseAction(7561u)
                 {
                     BuffsProvide = new ushort[]
                     {
@@ -29,7 +29,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 },
 
                 //康复
-                Esuna = new PVEAction(7568)
+                Esuna = new BaseAction(7568)
                 {
                     ChoiceTarget = (tars) =>
                     {
@@ -46,28 +46,28 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 },
 
                 //营救
-                Rescue = new PVEAction(7571),
+                Rescue = new BaseAction(7571),
 
                 //沉静
-                Repose = new PVEAction(16560),
+                Repose = new BaseAction(16560),
 
                 //醒梦（如果MP低于6000那么使用）
-                LucidDreaming = new PVEAction(7562u)
+                LucidDreaming = new BaseAction(7562u)
                 {
                     OtherCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000,
                 },
 
                 //内丹
-                SecondWind = new PVEAction(7541)
+                SecondWind = new BaseAction(7541)
                 {
                     OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.2,
                 },
 
                 //亲疏自行
-                ArmsLength = new PVEAction(7548, shouldEndSpecial: true),
+                ArmsLength = new BaseAction(7548, shouldEndSpecial: true),
 
                 //铁壁
-                Rampart = new PVEAction(7531, true)
+                Rampart = new BaseAction(7531, true)
                 {
                     BuffsProvide = new ushort[]
                     {
@@ -84,20 +84,20 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     //伪装
                     ObjectStatus.Camouflage, ObjectStatus.Nebula, ObjectStatus.HeartofStone,
                     },
-                    OtherCheck = PVEAction.TankDefenseSelf,
+                    OtherCheck = BaseAction.TankDefenseSelf,
                 },
 
                 //挑衅
-                Provoke = new PVEAction(7533)
+                Provoke = new BaseAction(7533)
                 {
                     FilterForTarget = b => TargetFilter.ProvokeTarget(b),
                 },
 
                 //雪仇
-                Reprisal = new PVEAction(7535),
+                Reprisal = new BaseAction(7535),
 
                 //退避
-                Shirk = new PVEAction(7537, true)
+                Shirk = new BaseAction(7537, true)
                 {
                     ChoiceTarget = friends =>
                     {
@@ -108,40 +108,40 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 },
 
                 //浴血
-                Bloodbath = new PVEAction(7542)
+                Bloodbath = new BaseAction(7542)
                 {
                     OtherCheck = SecondWind.OtherCheck,
                 },
 
                 //牵制
-                Feint = new PVEAction(7549)
+                Feint = new BaseAction(7549)
                 {
                     TargetStatus = new ushort[] { 1195 },
                 },
 
                 //插言
-                Interject = new PVEAction(7538),
+                Interject = new BaseAction(7538),
 
                 //下踢
-                LowBlow = new PVEAction(7540),
+                LowBlow = new BaseAction(7540),
 
                 //扫腿
-                LegSweep = new PVEAction(7863),
+                LegSweep = new BaseAction(7863),
 
                 //伤头
-                HeadGraze = new PVEAction(7551),
+                HeadGraze = new BaseAction(7551),
 
                 //沉稳咏唱
-                Surecast = new PVEAction(7559, shouldEndSpecial: true),
+                Surecast = new BaseAction(7559, shouldEndSpecial: true),
 
                 //真北
-                TrueNorth = new PVEAction(7546, shouldEndSpecial: true)
+                TrueNorth = new BaseAction(7546, shouldEndSpecial: true)
                 {
                     BuffsProvide = new ushort[] { ObjectStatus.TrueNorth },
                 };
 
         }
-        private protected virtual PVEAction Raise => null;
-        private protected virtual PVEAction Shield => null;
+        private protected virtual BaseAction Raise => null;
+        private protected virtual BaseAction Shield => null;
     }
 }

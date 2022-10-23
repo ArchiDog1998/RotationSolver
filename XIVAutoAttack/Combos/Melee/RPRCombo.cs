@@ -7,7 +7,7 @@ namespace XIVAutoAttack.Combos.Melee;
 
 internal class RPRCombo : JobGaugeCombo<RPRGauge>
 {
-    internal class PRPAction : PVEAction
+    internal class PRPAction : BaseAction
     {
         internal override EnemyLocation EnermyLocation => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) 
             ? EnemyLocation.None : base.EnermyLocation;
@@ -29,7 +29,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     internal override uint JobID => 39;
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
         #region 单体
             //切割
             Slice = new(24373)

@@ -35,6 +35,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool CheckForCasting { get; set; } = true;
     public bool PoslockCasting { get; set; } = false;
     public bool RaisePlayerByCasting { get; set; } = true;
+    public bool AddEnemyListToHostile { get; set; } = false;
     public bool UseItem { get; set; } = false;
     public bool SayoutLocationWrong { get; set; } = true;
     public float ObjectMinRadius { get; set; } = 0f;
