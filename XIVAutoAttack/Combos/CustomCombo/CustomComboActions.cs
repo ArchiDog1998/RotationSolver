@@ -60,7 +60,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 //内丹
                 SecondWind = new BaseAction(7541)
                 {
-                    OtherCheck = b => (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < 0.2,
+                    OtherCheck = b => TargetHelper.CanHealSingleAbility,
                 },
 
                 //亲疏自行
