@@ -140,8 +140,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             //大丰收
             PlentifulHarvest = new(24385)
             {
-                OtherCheck = b => JobGauge.Shroud <= 50 && !soulReaver && !enshrouded && plentifulReady && 
-                                StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.ImmortalSacrifice) < 26
+                OtherCheck = b => JobGauge.Shroud <= 50 && !soulReaver && !enshrouded && plentifulReady
             },
         #endregion
         #region 蓝条50附体
@@ -205,7 +204,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 OtherCheck = b => enshrouded,
             },
         #endregion
-        # region 杂项
+        #region 杂项
             //地狱入境
             HellsIngress = new(24401)
             {
@@ -238,7 +237,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             //神秘纹 加盾
             ArcaneCrest = new(24404, true)
             {
-                OtherCheck = b => !enshrouded
+                OtherCheck = b => !enshrouded && !soulReaver
             };
         #endregion
     }
@@ -337,7 +336,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if (!enshrouded)
+        if (!enshrouded && !soulReaver)
         {
             if (GeneralActions.Feint.ShouldUse(out act)) return true;
         }
