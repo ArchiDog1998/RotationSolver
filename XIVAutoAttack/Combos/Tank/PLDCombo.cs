@@ -93,7 +93,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (StatusHelper.HaveStatusFromSelf(ObjectStatus.FightOrFlight)) return true;
+                    if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)) return true;
 
                     if (FightorFlight.IsCoolDown) return true;
 
@@ -106,7 +106,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (StatusHelper.HaveStatusFromSelf(ObjectStatus.FightOrFlight)) return true;
+                    if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)) return true;
 
                     if (FightorFlight.IsCoolDown) return true;
 
@@ -144,9 +144,9 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
                 BuffsNeed = new [] { ObjectStatus.SwordOath },
                 OtherCheck = b =>
                 {
-                    if (StatusHelper.HaveStatusFromSelf(ObjectStatus.FightOrFlight) 
+                    if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight) 
                     && (IsLastWeaponSkill(true, Atonement, RoyalAuthority)
-                    && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) >= WeaponRemain(2))) return true;
+                    && LocalPlayer.FindStatusTime(ObjectStatus.FightOrFlight) >= WeaponRemain(2))) return true;
 
                     var status = StatusHelper.FindAllStatus(LocalPlayer).Where(status => status.StatusId == ObjectStatus.SwordOath);
                     if (status != null && status.Any())
@@ -242,7 +242,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         if (Actions.BladeofTruth.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
 
         //魔法三种姿势
-        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.Requiescat) && (!StatusHelper.HaveStatusFromSelf(ObjectStatus.FightOrFlight)) && LocalPlayer.CurrentMp >= 1000)
+        if (LocalPlayer.HaveStatus(ObjectStatus.Requiescat) && (!LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)) && LocalPlayer.CurrentMp >= 1000)
         {
             var status = StatusHelper.FindAllStatus(LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
             if (status != null && status.Any())
@@ -314,14 +314,14 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     {
         if (inOpener || !Actions.TotalEclipse.ShouldUse(out _))
         {
-            if (IsLastWeaponSkill(true, Actions.Confiteor) || (!StatusHelper.HaveStatusFromSelf(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.RecastTimeRemain <= 59))
+            if (IsLastWeaponSkill(true, Actions.Confiteor) || (!LocalPlayer.HaveStatus(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.RecastTimeRemain <= 59))
             {
                 inOpener = false;
                 openerFinished = true;
             }
         }
 
-        var OpenerStatus = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) <= 19 && !IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade);
+        var OpenerStatus = LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight) && LocalPlayer.FindStatusTime(ObjectStatus.FightOrFlight) <= 19 && !IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade);
 
         //厄运流转
         if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true))
@@ -396,8 +396,8 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             //在4人本道中
             if (InDungeonsMiddle)
             {
-                if (CanUseSpellInDungeonsMiddle && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Requiescat) 
-                    && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ReadyForBladeofFaith)) return true;
+                if (CanUseSpellInDungeonsMiddle && !LocalPlayer.HaveStatus(ObjectStatus.Requiescat) 
+                    && !LocalPlayer.HaveStatus(ObjectStatus.ReadyForBladeofFaith)) return true;
 
                 return false;
             }
@@ -433,7 +433,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             }
 
             //在战逃buff时间剩17秒以下时释放
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) < 17 && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade))
+            if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight) && LocalPlayer.FindStatusTime(ObjectStatus.FightOrFlight) < 17 && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade))
             {
                 //在起手中时,王权剑后释放
                 if (inOpener && IsLastWeaponSkill(true, Actions.RoyalAuthority)) return true;
