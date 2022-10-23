@@ -14,7 +14,8 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
 
     internal override uint JobID => 23;
     private static bool initFinished = false;
-    private static float GCDRemain = 0;
+    private static float RagingStrikes1GCDDelayTime = 0;
+    private static float RadiantFinaleCurrent0GCDRemain = 0;
     private static DateTime RagingStrikesNowTime;
 
     internal struct Actions
@@ -50,8 +51,8 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
                     bool needLow1 = AddOnDot(b, ObjectStatus.VenomousBite, ObjectStatus.Windbite, 40);
                     bool needHigh1 = AddOnDot(b, ObjectStatus.CausticBite, ObjectStatus.Stormbite, 40);
 
-                    if (StatusHelper.HaveStatusFromSelf(ObjectStatus.RagingStrikes) && 
-                        StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.RagingStrikes) < 4 
+                    if (LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes) && 
+                        LocalPlayer.FindStatusTime(ObjectStatus.RagingStrikes) < 4 
                         && (needLow1 || needHigh1)) return true;
 
                     return needLow || needHigh;
@@ -90,7 +91,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
                 },
                 AfterUse = () =>
                 {
-                    GCDRemain = WeaponRemain(1);
+                    RagingStrikes1GCDDelayTime = WeaponRemain(1);
                     RagingStrikesNowTime = DateTime.Now;
                 }
             },
@@ -100,17 +101,21 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    var canUse = DateTime.Now - RagingStrikesNowTime >= new TimeSpan(0, 0, 0, 0, (int)(GCDRemain * 1000));
+                    var canUse = DateTime.Now - RagingStrikesNowTime >= new TimeSpan(0, 0, 0, 0, (int)(RagingStrikes1GCDDelayTime * 1000));
                     static bool SongIsNotNone(Song value) => value != Song.NONE;
                     static bool SongIsWandererMinuet(Song value) => value == Song.WANDERER;
                     if ((Array.TrueForAll(JobGauge.Coda, SongIsNotNone) || Array.Exists(JobGauge.Coda, SongIsWandererMinuet))
                         && BattleVoice.RecastTimeRemain < 1f
                         && RagingStrikes.IsCoolDown 
-                        && StatusHelper.HaveStatusFromSelf(ObjectStatus.RagingStrikes)
+                        && LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes)
                         && canUse) return true;
 
                     return false;
                 },
+                AfterUse = () =>
+                {
+                    RadiantFinaleCurrent0GCDRemain = WeaponRemain();
+                }
             },
 
             //纷乱箭
@@ -182,8 +187,8 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
                 {
                     if (!initFinished || (initFinished && BattleVoice.RecastTimeRemain >= 3.5f))
                     {
-                        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.BattleVoice) || BattleVoice.RecastTimeRemain > 10
-                        && StatusHelper.HaveStatusFromSelf(ObjectStatus.RadiantFinale) || RadiantFinale.RecastTimeRemain > 10
+                        if (LocalPlayer.HaveStatus(ObjectStatus.BattleVoice) || BattleVoice.RecastTimeRemain > 10
+                        && LocalPlayer.HaveStatus(ObjectStatus.RadiantFinale) || RadiantFinale.RecastTimeRemain > 10
                         || Level < RadiantFinale.Level) return true;
                     }
 
@@ -200,17 +205,17 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
                     if (JobGauge.SoulVoice == 100 && BattleVoice.RecastTimeRemain <= 25) return false;
 
                     //爆发快过了,如果手里还有绝峰箭,就把绝峰箭打出去
-                    if (JobGauge.SoulVoice >= 80 && StatusHelper.HaveStatusFromSelf(ObjectStatus.RagingStrikes) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.RagingStrikes) < 10) return true;
+                    if (JobGauge.SoulVoice >= 80 && LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes) && LocalPlayer.FindStatusTime(ObjectStatus.RagingStrikes) < 10) return true;
 
                     if (JobGauge.SoulVoice == 100
-                        && StatusHelper.HaveStatusFromSelf(ObjectStatus.RagingStrikes)
-                        && StatusHelper.HaveStatusFromSelf(ObjectStatus.BattleVoice)
-                        && (StatusHelper.HaveStatusFromSelf(ObjectStatus.RadiantFinale) || Level < RadiantFinale.Level)) return true;
+                        && LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes)
+                        && LocalPlayer.HaveStatus(ObjectStatus.BattleVoice)
+                        && (LocalPlayer.HaveStatus(ObjectStatus.RadiantFinale) || Level < RadiantFinale.Level)) return true;
 
                     if (JobGauge.Song == Song.MAGE && JobGauge.SoulVoice >= 80 && JobGauge.SongTimer < 22 && JobGauge.SongTimer > 18) return true;
 
                     //能量之声等于100或者在爆发箭预备状态
-                    if (JobGauge.SoulVoice == 100 || StatusHelper.HaveStatusFromSelf(ObjectStatus.BlastArrowReady)) return true;
+                    if (JobGauge.SoulVoice == 100 || LocalPlayer.HaveStatus(ObjectStatus.BlastArrowReady)) return true;
 
                     return false;
                 },
@@ -294,8 +299,8 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             return base.EmergercyAbility(abilityRemain, nextGCD, out act);
         }
         else if (abilityRemain != 0 &&
-            (Level < Actions.RagingStrikes.Level || StatusHelper.HaveStatusFromSelf(ObjectStatus.RagingStrikes)) &&
-            (Level < Actions.BattleVoice.Level || StatusHelper.HaveStatusFromSelf(ObjectStatus.BattleVoice)))
+            (Level < Actions.RagingStrikes.Level || LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes)) &&
+            (Level < Actions.BattleVoice.Level || LocalPlayer.HaveStatus(ObjectStatus.BattleVoice)))
         {
             //纷乱箭
             if (Actions.Barrage.ShouldUse(out act)) return true;
@@ -329,13 +334,13 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.RadiantFinale.IsCoolDown && Actions.RadiantFinale.RecastTimeElapsed < 2)
+        if (Actions.RadiantFinale.IsCoolDown && LocalPlayer.FindStatusTime(ObjectStatus.RadiantFinale) > RadiantFinaleCurrent0GCDRemain)
         {
             act = null;
             return false;
         }
         //放浪神的小步舞曲
-        if ((JobGauge.Song == Song.NONE || ((JobGauge.Song != Song.NONE || StatusHelper.HaveStatusFromSelf(ObjectStatus.ArmyEthos)) && abilityRemain == 1))
+        if ((JobGauge.Song == Song.NONE || ((JobGauge.Song != Song.NONE || LocalPlayer.HaveStatus(ObjectStatus.ArmyEthos)) && abilityRemain == 1))
             && JobGauge.SongTimer < 3000)
         {
             if (Actions.WanderersMinuet.ShouldUse(out act)) return true;
@@ -358,8 +363,8 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
         if (Actions.Sidewinder.ShouldUse(out act)) return true;
 
         //看看现在有没有开猛者强击和战斗之声
-        bool empty = (StatusHelper.HaveStatusFromSelf(ObjectStatus.RagingStrikes) 
-            && (StatusHelper.HaveStatusFromSelf(ObjectStatus.BattleVoice) 
+        bool empty = (LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes) 
+            && (LocalPlayer.HaveStatus(ObjectStatus.BattleVoice) 
             || Level < Actions.BattleVoice.Level)) || JobGauge.Song == Song.MAGE;
         //死亡剑雨
         if (Actions.RainofDeath.ShouldUse(out act, emptyOrSkipCombo: empty)) return true;

@@ -282,7 +282,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             if (!Target.IsBoss() && IsTargetDying) return false;
 
             //有野火buff必须释放超荷
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Wildfire)) return true;
+            if (LocalPlayer.HaveStatus(ObjectStatus.Wildfire)) return true;
 
             //在三大金刚还剩8秒冷却好时不释放超荷
             if (Level >= Actions.Drill.Level && Actions.Drill.RecastTimeRemain < 8) return false;
