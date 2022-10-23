@@ -101,10 +101,9 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             //跳跃
             Jump = new (92)
             {
+                BuffsProvide = new ushort[] { ObjectStatus.DiveReady },
                 OtherCheck = b =>
                 {
-                    if (StatusHelper.HaveStatusFromSelf(ObjectStatus.DiveReady)) return false;
-
                     if (safeMove && b.DistanceToPlayer() > 2) return false;
 
                     if (inOpener && IsLastWeaponSkill(true, ChaoticSpring)) return true;
@@ -204,15 +203,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
                 },
 
                 BuffsNeed = new [] {ObjectStatus.PowerSurge},
-
-
-                OtherCheck = b =>
-                {
-                    //增伤buff下
-                    if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.LanceCharge)) return false;
-
-                    return true;
-                }
+                BuffsProvide = new[] { ObjectStatus.LanceCharge }, 
 
             },
 
@@ -220,14 +211,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             BattleLitany = new (3557)
             {
                 BuffsNeed = new[] { ObjectStatus.PowerSurge },
-
-                OtherCheck = b =>
-                {
-                    //增伤buff下
-                    if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.LanceCharge)) return false;
-
-                    return true;
-                }
+                BuffsProvide = new[] { ObjectStatus.LanceCharge },
             };
     }
 
@@ -257,7 +241,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (nextGCD.IsAnySameAction(true, Actions.FullThrust, Actions.CoerthanTorment)
-            || StatusHelper.HaveStatusFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.FangandClaw)
+            || LocalPlayer.HaveStatus(ObjectStatus.LanceCharge) && nextGCD == Actions.FangandClaw)
         {
             //龙剑
             if (abilityRemain ==1 && Actions.LifeSurge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -303,7 +287,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
         if (Actions.Geirskogul.ShouldUse(out act, mustUse: true)) return true;
 
         //破碎冲
-        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.RightEye) && Actions.SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (LocalPlayer.HaveStatus(ObjectStatus.RightEye) && Actions.SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         if (Actions.SpineshatterDive.ShouldUse(out act)) return true;
 
         //幻象冲
@@ -331,7 +315,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
                 inOpener = true;
             }
         }
-        if (Actions.BattleLitany.IsCoolDown && !StatusHelper.HaveStatusFromSelf(ObjectStatus.LanceCharge))
+        if (Actions.BattleLitany.IsCoolDown && !LocalPlayer.HaveStatus(ObjectStatus.LanceCharge))
         {
             inOpener = false;
         }
@@ -355,8 +339,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
         }
 
         //看看是否需要续Buff
-        var time = StatusHelper.FindStatusTimesSelfFromSelf(ObjectStatus.PowerSurge);
-        if (time.Length > 0 && time[0] > 13)
+        if (LocalPlayer.FindStatusTime(ObjectStatus.PowerSurge) > 13)
         {
             if (Actions.FullThrust.ShouldUse(out act, lastComboActionID)) return true;
             if (Actions.VorpalThrust.ShouldUse(out act, lastComboActionID)) return true;

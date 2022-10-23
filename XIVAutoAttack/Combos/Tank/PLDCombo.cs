@@ -12,7 +12,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 {
     internal override uint JobID => 19;
 
-    internal override bool HaveShield => StatusHelper.HaveStatusFromSelf(ObjectStatus.IronWill);
+    internal override bool HaveShield => LocalPlayer.HaveStatus(ObjectStatus.IronWill);
 
     private protected override BaseAction Shield => Actions.IronWill;
 
@@ -148,14 +148,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
                     && (IsLastWeaponSkill(true, Atonement, RoyalAuthority)
                     && LocalPlayer.FindStatusTime(ObjectStatus.FightOrFlight) >= WeaponRemain(2))) return true;
 
-                    var status = StatusHelper.FindAllStatus(LocalPlayer).Where(status => status.StatusId == ObjectStatus.SwordOath);
-                    if (status != null && status.Any())
-                    {
-                        var s = status.First();
-                        if (s.StackCount > 1) return true;
-                    }
-                    
-                    return false;
+                    return LocalPlayer.FindStatusStack(ObjectStatus.SwordOath) > 1;
                 }
             },
 
@@ -244,7 +237,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         //魔法三种姿势
         if (LocalPlayer.HaveStatus(ObjectStatus.Requiescat) && (!LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)) && LocalPlayer.CurrentMp >= 1000)
         {
-            var status = StatusHelper.FindAllStatus(LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
+            var status = LocalPlayer.FindStatus(ObjectStatus.Requiescat);
             if (status != null && status.Any())
             {
                 var s = status.First();

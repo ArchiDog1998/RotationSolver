@@ -10,7 +10,7 @@ namespace XIVAutoAttack.Combos.Tank;
 internal class GNBCombo : JobGaugeCombo<GNBGauge>
 {
     internal override uint JobID => 37;
-    internal override bool HaveShield => StatusHelper.HaveStatusFromSelf(ObjectStatus.RoyalGuard);
+    internal override bool HaveShield => LocalPlayer.HaveStatus(ObjectStatus.RoyalGuard);
     private protected override BaseAction Shield => Actions.RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;

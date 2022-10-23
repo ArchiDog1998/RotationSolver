@@ -19,7 +19,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     }
 
     internal override uint JobID => 32;
-    internal override bool HaveShield => StatusHelper.HaveStatusFromSelf(ObjectStatus.Grit);
+    internal override bool HaveShield => LocalPlayer.HaveStatus(ObjectStatus.Grit);
     private protected override BaseAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
 
@@ -101,7 +101,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //血溅
             Bloodspiller = new (7392)
             {
-                OtherCheck = b => JobGauge.Blood >= 50 || StatusHelper.HaveStatusFromSelf(ObjectStatus.Delirium),
+                OtherCheck = b => JobGauge.Blood >= 50 || LocalPlayer.HaveStatus(ObjectStatus.Delirium),
             },
 
             //寂灭
@@ -140,7 +140,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //暗影使者
             Shadowbringer = new (25757)
             {
-                OtherCheck = b => JobGauge.DarksideTimeRemaining > 1 && IsLastAbility(true, Shadowbringer) && StatusHelper.HaveStatusFromSelf(ObjectStatus.Delirium),
+                OtherCheck = b => JobGauge.DarksideTimeRemaining > 1 && IsLastAbility(true, Shadowbringer) && LocalPlayer.HaveStatus(ObjectStatus.Delirium),
             },
 
             //腐秽黑暗
@@ -196,7 +196,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _)) OpenerFinished = true;
 
         //寂灭
-        if (JobGauge.Blood >= 80 || StatusHelper.HaveStatusFromSelf(ObjectStatus.Delirium))
+        if (JobGauge.Blood >= 80 || LocalPlayer.HaveStatus(ObjectStatus.Delirium))
         {
             if (Actions.Quietus.ShouldUse(out act)) return true;
         }
@@ -204,9 +204,9 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         //血溅
         if (Actions.Bloodspiller.ShouldUse(out act)) 
         {
-            if (StatusHelper.HaveStatusFromSelf(ObjectStatus.Delirium) && Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > WeaponRemain(1)) return true;
+            if (LocalPlayer.HaveStatus(ObjectStatus.Delirium) && Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > WeaponRemain(1)) return true;
 
-            if ((JobGauge.Blood >= 70 && Actions.BloodWeapon.RecastTimeRemain is > 0 and < 3) || (JobGauge.Blood >= 50 && Actions.Delirium.RecastTimeRemain > 37 && !StatusHelper.HaveStatusFromSelf(ObjectStatus.Delirium))) return true;
+            if ((JobGauge.Blood >= 70 && Actions.BloodWeapon.RecastTimeRemain is > 0 and < 3) || (JobGauge.Blood >= 50 && Actions.Delirium.RecastTimeRemain > 37 && !LocalPlayer.HaveStatus(ObjectStatus.Delirium))) return true;
 
             if (JobGauge.Blood >= 90) return true;
         }
@@ -254,7 +254,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         if (Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > WeaponRemain(1))
         {
             //暗影使者
-            if (StatusHelper.HaveStatusFromSelf(ObjectStatus.Delirium) && Actions.Shadowbringer.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (LocalPlayer.HaveStatus(ObjectStatus.Delirium) && Actions.Shadowbringer.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
             //吸血深渊+精雕怒斩
             if (Actions.AbyssalDrain.ShouldUse(out act)) return true;

@@ -28,25 +28,6 @@ namespace XIVAutoAttack.Actions
             {SAMCombo.Actions.Kasha.ID, EnemyLocation.Side },
         };
 
-        [Obsolete("该方法已过时，请使用LocalPlayer.HaveStatus")]
-        internal static bool HaveStatusFromSelf(params ushort[] effectIDs)
-        {
-            return FindStatusTimesSelfFromSelf(effectIDs).Length > 0;
-        }
-
-        [Obsolete("该方法已过时，请使用LocalPlayer.FindStatusTimes")]
-
-        internal static float[] FindStatusTimesSelfFromSelf(params ushort[] effectIDs)
-        {
-            return FindStatusTimes(Service.ClientState.LocalPlayer, effectIDs);
-        }
-
-        [Obsolete("该方法已过时，请使用LocalPlayer.FindStatusTime")]
-        internal static float FindStatusTimeSelfFromSelf(params ushort[] effectIDs)
-        {
-            return FindStatusTime(Service.ClientState.LocalPlayer, effectIDs);
-        }
-
         internal static float FindStatusTime(this BattleChara obj, params ushort[] effectIDs)
         {
             var times = FindStatusTimes(obj, effectIDs);
@@ -76,14 +57,13 @@ namespace XIVAutoAttack.Actions
             return obj.FindStatus(effectIDs).Length > 0;
         }
 
-        private static Status[] FindStatus(this BattleChara obj, params ushort[] effectIDs)
+        internal static Status[] FindStatus(this BattleChara obj, params ushort[] effectIDs)
         {
             uint[] newEffects = effectIDs.Select(a => (uint)a).ToArray();
             return FindAllStatus(obj).Where(status => newEffects.Contains(status.StatusId)).ToArray();
         }
 
-        [Obsolete("这个API未来将不会开放！")]
-        internal static Status[] FindAllStatus(this BattleChara obj)
+        private static Status[] FindAllStatus(this BattleChara obj)
         {
             if (obj == null) return new Status[0];
 

@@ -104,14 +104,14 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
                 {
                     foreach (var friend in Targets)
                     {
-                        if (StatusHelper.FindAllStatus(friend).Any(status => status.StatusId == ObjectStatus.Kardion))
+                        if (friend.HaveStatus(ObjectStatus.Kardion))
                         {
                             return friend;
                         }
                     }
                     return null;
                 },
-                OtherCheck = b => (float)b.CurrentHp / b.MaxHp < 0.7,
+                OtherCheck = b => b.GetHealthRatio() < 0.7,
             },
 
             //ÉñÒí
