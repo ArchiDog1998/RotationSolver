@@ -126,7 +126,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             //暴食
             Gluttony = new(24393)
             {
-                OtherCheck = b => !soulReaver && !enshrouded && JobGauge.Soul >= 50 && !plentifulReady,
+                OtherCheck = b => !soulReaver && !enshrouded && JobGauge.Soul >= 50,
             },
         #endregion
         #region 大爆发
@@ -150,7 +150,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 OtherCheck = b => !soulReaver && !enshrouded &&
                         ((arcaneCircle && JobGauge.Shroud >= 50) || //神秘环期间附体
                         (!arcaneCircle && JobGauge.Shroud >= 90) || //防止蓝条溢出
-                        (ArcaneCircle.RecastTimeRemain < 3 && JobGauge.Shroud >= 50) || //双附体起手
+                        (ArcaneCircle.RecastTimeRemain < 5 && JobGauge.Shroud >= 50) || //双附体起手
                         (Level <= PlentifulHarvest.Level && JobGauge.Shroud >= 50)) //无法双附体直接打
             },
 
@@ -205,18 +205,6 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             },
         #endregion
         #region 杂项
-            //地狱入境
-            HellsIngress = new(24401)
-            {
-                BuffsProvide = new[] { ObjectStatus.EnhancedHarpe },
-            },
-
-            //地狱出境
-            HellsEgress = new(24402)
-            {
-                BuffsProvide = new[] { ObjectStatus.EnhancedHarpe },
-            },
-
             //勾刃
             Harpe = new(24386),
 
@@ -244,18 +232,23 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     internal override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体防御, $"{Actions.ArcaneCrest.Action.Name}"},
-        {DescType.移动, $"{Actions.HellsIngress.Action.Name}"},
     };
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //开场获得收获月
-        if(Actions.Soulsow.ShouldUse(out act)) return true;
+        if (Actions.Soulsow.ShouldUse(out act)) return true;
 
         //处于变身状态。
         if (enshrouded)
         {
+            //夜游魂衣-虚无/交错收割 阴冷收割
+            if (Actions.CrossReaping.ShouldUse(out act)) return true;
+            if (Actions.VoidReaping.ShouldUse(out act)) return true;
+            if (Actions.GrimReaping.ShouldUse(out act)) return true;
+
             if (Actions.ShadowofDeath.ShouldUse(out act)) return true;
-            if (JobGauge.LemureShroud == 1 && JobGauge.VoidShroud == 0 && Level >= Actions.Communio.Level)
+
+            if (JobGauge.LemureShroud == 1 && Level >= Actions.Communio.Level)
             {
                 if (!IsMoving && Actions.Communio.ShouldUse(out act, mustUse: true))
                 {
@@ -269,10 +262,6 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 }
             }
         }
-        //夜游魂衣-虚无/交错收割 阴冷收割
-        if (Actions.CrossReaping.ShouldUse(out act)) return true;
-        if (Actions.VoidReaping.ShouldUse(out act)) return true;
-        if (Actions.GrimReaping.ShouldUse(out act)) return true;
 
         //处于补蓝状态，赶紧补蓝条。
         if (Actions.Guillotine.ShouldUse(out act)) return true;
