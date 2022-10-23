@@ -18,6 +18,17 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
     protected override bool CanHealSingleSpell => TargetHelper.PartyHealers.Length == 0 && base.CanHealSingleSpell;
 
+    /// <summary>
+    /// 在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
+    /// </summary>
+    private static bool CanUseSpellInDungeonsMiddle => TargetHelper.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss() && !IsMoving
+                                                    && TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length >= 3;
+
+    /// <summary>
+    /// 在4人本的道中
+    /// </summary>
+    private static bool InDungeonsMiddle => TargetHelper.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
+
     private static bool inOpener = false;
     private static bool openerFinished = false;
 
@@ -206,11 +217,8 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         }
 
         //安魂祈祷
-        if (!inOpener && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight)
-                   && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) < 17)
-        {
-            if (abilityRemain == 1 && Actions.Requiescat.ShouldUse(out act, mustUse: true)) return true;
-        }     
+        if (abilityRemain == 1 && CanUseRequiescat(out act)) return true;
+  
 
         act = null;
         return false;
@@ -304,39 +312,38 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-
-        if (inOpener)
+        if (inOpener || !Actions.TotalEclipse.ShouldUse(out _))
         {
             if (LastWeaponskill == Actions.Confiteor.ID || (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.RecastTimeRemain <= 59))
             {
                 inOpener = false;
                 openerFinished = true;
             }
+        }
 
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) <= 19)
-            {
-                if (LastWeaponskill != Actions.FastBlade.ID && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade))
-                {
+        var OpenerStatus = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) <= 19 && LastWeaponskill != Actions.FastBlade.ID && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade);
+
                     //厄运流转
                     if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true)) return true;
                     //调停
                     if (Actions.Intervene.ShouldUse(out act) && Actions.Intervene.RecastTimeRemain == 0) return true;
-                    //安魂祈祷
-                    if (abilityRemain == 1 && Actions.Requiescat.ShouldUse(out act, mustUse: true)) return true;
                     //深奥之灵
                     if (Actions.SpiritsWithin.ShouldUse(out act)) return true;
                     //调停
                     if (Actions.Intervene.ShouldUse(out act,emptyOrSkipCombo: true)) return true;
-                }
-            }
-        }
-        else
-        {
-            //深奥之灵
-            if (Actions.SpiritsWithin.ShouldUse(out act)) return true;
 
             //厄运流转
-            if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true)) return true;
+            if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true))
+            {
+                return true;
+            }
+
+            //深奥之灵
+            if (Actions.SpiritsWithin.ShouldUse(out act))
+            {
+                return true;
+            }
+
 
             //偿赎剑
             //if (Actions.Expiacion.ShouldUse(out act, mustUse: true)) return true;
@@ -349,7 +356,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
                     return true;
                 }
             }
-        }
+
 
 
         //Special Defense.
@@ -387,6 +394,68 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         return false;
     }
 
+    /// <summary>
+    /// 判断能否使用战逃反应
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    private bool CanUseFightorFlight(out IAction act)
+    {
+        if (Actions.FightorFlight.ShouldUse(out act))
+        {
+            //在4人本道中
+            if (InDungeonsMiddle)
+            {
+                if (CanUseSpellInDungeonsMiddle && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Requiescat) 
+                    && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ReadyForBladeofFaith)) return true;
+
+                return false;
+            }
+
+            //起手在先锋剑后
+            if (inOpener && LastWeaponskill == Actions.FastBlade.ID) return true;
+
+            //没在起手,冷却好了就用
+            if (!inOpener) return true;
+
+        }
+
+        act = null;
+        return false;
+    }
+
+    /// <summary>
+    /// 判断能否使用安魂祈祷
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    private bool CanUseRequiescat(out IAction act)
+    {
+        //安魂祈祷
+        if (Actions.Requiescat.ShouldUse(out act, mustUse: true))
+        {
+            //在4人本道中
+            if (InDungeonsMiddle)
+            {
+                if (CanUseSpellInDungeonsMiddle) return true;
+
+                return false;
+            }
+
+            //在战逃buff时间剩17秒以下时释放
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) < 17 && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade))
+            {
+                //在起手中时,王权剑后释放
+                if (inOpener && LastWeaponskill == Actions.RoyalAuthority.ID) return true;
+
+                //没在起手时在
+                if (!inOpener) return true;
+            }
+        }
+                       
+        act = null;
+        return false;
+    }
     private bool Defense(out IAction act)
     {
         act = null;

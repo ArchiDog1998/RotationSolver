@@ -12,7 +12,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 {
     internal override uint JobID => 31;
     private static bool initFinished = false;
-    private static bool MCH_Asocial = false;
+    //private static bool MCH_Asocial = false;
     private static bool MCH_Opener = false;
     private static bool MCH_Automaton = false;
     internal struct Actions
@@ -65,7 +65,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
                 //过热不释放技能,打进爆发
                 OtherCheck = b =>
                 {
-                    if (MCH_Asocial || !MCH_Opener) return true;
+                    if (!MCH_Opener) return true;
                     if (initFinished && !JobGauge.IsOverheated) return true;
                     return false;
                 },
@@ -88,82 +88,13 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             //超荷
             Hypercharge = new(17209)
             {
-                OtherCheck = b =>
-                {
-                    var isBoss = Target.IsBoss();
-
-                    //在过热状态或者热量小于50时不释放超荷
-                    if (JobGauge.IsOverheated || JobGauge.Heat < 50) return false;
-                    if (!isBoss && IsTargetDying) return false;
-
-                    //有野火buff必须释放超荷
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Wildfire)) return true;
-
-                    //在三大金刚还剩8秒冷却好时不释放超荷
-                    if (Level >= Drill.Level && Drill.RecastTimeRemain < 8) return false;
-                    if (Level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 8) return false;
-                    if (Level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 8) return false;
-
-                    //小怪AOE或者自嗨期间超荷判断
-                    if ((SpreadShot.ShouldUse(out _) || !isBoss) && IsMoving) return false;
-                    if (((SpreadShot.ShouldUse(out _) || !isBoss) && !IsMoving) || MCH_Asocial || Level < Wildfire.Level) return true;
-
-                    uint wfTimer = 6;
-                    var wildfireCDTime = Wildfire.RecastTimeRemain;
-                    if (Level < BarrelStabilizer.Level) wfTimer = 12;
-
-                    //标准循环起手判断
-                    if (!initFinished && MCH_Opener) return false;
-
-                    //野火前攒热量
-                    if (15 < wildfireCDTime && wildfireCDTime < 43)
-                    {
-                        //如果期间热量溢出超过5,就释放一次超荷
-                        if (LastWeaponskill == Drill.ID && JobGauge.Heat >= 85) return true;
-                        return false;
-                    }
-
-                    //超荷释放判断
-                    if (wildfireCDTime >= wfTimer
-                    || LastWeaponskill == ChainSaw.ID
-                    || (LastWeaponskill != ChainSaw.ID && (!Wildfire.IsCoolDown || wildfireCDTime <= 1))) return true;
-
-                    return false;
-                },
+                OtherCheck = b => !JobGauge.IsOverheated && JobGauge.Heat >= 50,
             },
 
             //野火
             Wildfire = new(2878)
             {
-                OtherCheck = b =>
-                {
-                    var isBoss = b.IsBoss();
-                    //小怪AOE期间不打野火
-                    if (SpreadShot.ShouldUse(out _) || !isBoss) return false;
-                    if (!isBoss && IsTargetDying) return false;
-
-                    //热量低于50且上一个能力技不是超荷时不释放
-                    if (JobGauge.Heat < 50 && LastAbility != Hypercharge.ID) return false;
-
-                    //自嗨判断
-                    if (MCH_Asocial)
-                    {
-                        if (Level >= Drill.Level && Drill.RecastTimeRemain < 10) return false;
-                        if (Level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 10) return false;
-                        if (Level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 10) return false;
-                        if (JobGauge.IsOverheated) return true;
-                        return true;
-                    }
-
-                    if (!initFinished && MCH_Opener) return false;
-
-                    if (JobGauge.IsOverheated) return true;
-
-                    if (LastWeaponskill != ChainSaw.ID
-                    && (LastWeaponskill == Drill.ID || LastWeaponskill == AirAnchor.ID || LastWeaponskill == HeatBlast.ID)) return false;
-
-                    return true;
-                },
+                OtherCheck = b => JobGauge.Heat >= 50 || LastAbility == Hypercharge.ID,
             },
 
             //虹吸弹
@@ -186,30 +117,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             //车式浮空炮塔
             RookAutoturret = new(2864)
             {
-                OtherCheck = b =>
-                {
-                    var isBoss = Target.MaxHp / LocalPlayer.MaxHp > 9.5;
-
-                    //电量等于100,强制释放
-                    if (JobGauge.Battery == 100) return true;
-                    if (!isBoss && IsTargetDying) return false;
-
-                    //基本判断
-                    if (JobGauge.Battery < 50 || JobGauge.IsRobotActive) return false;
-
-                    //自嗨与小怪AOE判断
-                    if (MCH_Asocial || !MCH_Automaton || (!isBoss && !IsMoving) || Level < Wildfire.ID) return true;
-                    if ((SpreadShot.ShouldUse(out _) || !isBoss) && IsMoving) return false;
-
-                    //起手判断
-                    if (!initFinished && MCH_Opener) return false;
-
-                    //机器人吃团辅判断
-                    if (AirAnchor.RecastTimeRemain < 5 && JobGauge.Battery > 80) return true;
-                    if (ChainSaw.RecastTimeRemain < 5 || (ChainSaw.RecastTimeRemain > 55 && JobGauge.Battery <= 60)) return true;
-
-                    return false;
-                },
+                OtherCheck = b => JobGauge.Battery >= 50 && !JobGauge.IsRobotActive,
             },
 
             //策动
@@ -236,8 +144,8 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         return base.CreateConfiguration()
             .SetBool("MCH_Opener", true, "标准起手")
             .SetBool("MCH_Automaton", true, "机器人吃团辅")
-            .SetBool("MCH_Reassemble", true, "整备优先链锯")
-            .SetBool("MCH_Asocial", true, "自嗨循环(没有起手)");
+            .SetBool("MCH_Reassemble", true, "整备优先链锯");
+            //.SetBool("MCH_Asocial", true, "自嗨循环(没有起手)");
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
@@ -251,7 +159,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //野火
-        if (Actions.Wildfire.ShouldUse(out act)) return true;
+        if (Actions.Wildfire.ShouldUse(out act) && CanUseWildfire()) return true;
 
         act = null;
         return false;
@@ -259,12 +167,13 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+
         MCH_Opener = Config.GetBoolByName("MCH_Opener");
         MCH_Automaton = Config.GetBoolByName("MCH_Automaton");
-        MCH_Asocial = Config.GetBoolByName("MCH_Asocial");
-
+        //MCH_Asocial = Config.GetBoolByName("MCH_Asocial");
+        
         //当上一个连击是热阻击弹时完成起手
-        if (InBattle && (LastWeaponskill == Actions.CleanShot.ID || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
+        if (InBattle && (LastWeaponskill == Service.IconReplacer.OriginalHook(Actions.CleanShot.ID) || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
         {
             initFinished = true;
         }
@@ -336,10 +245,10 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (Actions.BarrelStabilizer.ShouldUse(out act)) return true;
 
         //车式浮空炮塔
-        if (Actions.RookAutoturret.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.RookAutoturret.ShouldUse(out act, mustUse: true) && CanUseRookAutoturret()) return true;
 
         //超荷
-        if (Actions.Hypercharge.ShouldUse(out act)) return true;
+        if (Actions.Hypercharge.ShouldUse(out act) && CanUseHypercharge()) return true;
 
         if (Actions.GaussRound.RecastTimeRemain > Actions.Ricochet.RecastTimeRemain)
         {
@@ -350,6 +259,86 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (Actions.GaussRound.ShouldUse(out act, mustUse: true)) return true;
 
         act = null!;
+        return false;
+    }
+
+    private static bool CanUseWildfire()
+    {
+        //小怪AOE期间不打野火
+        if (Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) return false;
+        if (!Target.IsBoss() && IsTargetDying) return false;
+
+        //机工起手判断
+        if (!initFinished && MCH_Opener) return false;
+
+        //在过热时
+        if (JobGauge.IsOverheated) return true;
+
+        if (LastWeaponskill != Actions.ChainSaw.ID
+        && (LastWeaponskill == Actions.Drill.ID || LastWeaponskill == Actions.AirAnchor.ID || LastWeaponskill == Actions.HeatBlast.ID)) return false;
+
+        return true;
+    }
+    
+    private static bool CanUseHypercharge()
+    {
+        //小怪快死了不释放
+        if (!Target.IsBoss() && IsTargetDying) return false;
+
+        //有野火buff必须释放超荷
+        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Wildfire)) return true;
+
+        //在三大金刚还剩8秒冷却好时不释放超荷
+        if (Level >= Actions.Drill.Level && Actions.Drill.RecastTimeRemain < 8) return false;
+        if (Level >= Actions.AirAnchor.Level && Actions.AirAnchor.RecastTimeRemain < 8) return false;
+        if (Level >= Actions.ChainSaw.Level && Actions.ChainSaw.RecastTimeRemain < 8) return false;
+
+        //小怪AOE或者自嗨期间超荷判断
+        if ((Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) && IsMoving) return false;
+        if (((Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) && !IsMoving) || Level < Actions.Wildfire.Level) return true;
+
+        uint wfTimer = 6;
+        var wildfireCDTime = Actions.Wildfire.RecastTimeRemain;
+        if (Level < Actions.BarrelStabilizer.Level) wfTimer = 12;
+
+        //标准循环起手判断
+        if (!initFinished && MCH_Opener) return false;
+
+        //野火前攒热量
+        if (15 < wildfireCDTime && wildfireCDTime < 43)
+        {
+            //如果期间热量溢出超过5,就释放一次超荷
+            if (LastWeaponskill == Actions.Drill.ID && JobGauge.Heat >= 85) return true;
+            return false;
+        }
+
+        //超荷释放判断
+        if (wildfireCDTime >= wfTimer
+        || LastWeaponskill == Actions.ChainSaw.ID
+        || (LastWeaponskill != Actions.ChainSaw.ID && (!Actions.Wildfire.IsCoolDown || wildfireCDTime <= 1))) return true;
+
+        return false;
+    }
+
+    private static bool CanUseRookAutoturret()
+    {
+        //电量等于100,强制释放
+        if (JobGauge.Battery == 100) return true;
+
+        //小怪快死了不释放
+        if (!Target.IsBoss() && IsTargetDying) return false;
+
+        //自嗨与小怪AOE判断
+        if (!MCH_Automaton || (!Target.IsBoss() && !IsMoving) || Level < Actions.Wildfire.ID) return true;
+        if ((Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) && IsMoving) return false;
+
+        //起手判断
+        if (!initFinished && MCH_Opener) return false;
+
+        //机器人吃团辅判断
+        if (Actions.AirAnchor.RecastTimeRemain < 5 && JobGauge.Battery > 80) return true;
+        if (Actions.ChainSaw.RecastTimeRemain < 5 || (Actions.ChainSaw.RecastTimeRemain > 55 && JobGauge.Battery <= 60)) return true;
+
         return false;
     }
 }
