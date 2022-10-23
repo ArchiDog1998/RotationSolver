@@ -9,10 +9,10 @@ namespace XIVAutoAttack.Combos.Melee;
 internal class NINCombo : JobGaugeCombo<NINGauge>
 {
     internal override uint JobID => 30;
-    public class NinAction : PVEAction
+    public class NinAction : BaseAction
     {
-        internal PVEAction[] Ninjutsus { get; }
-        public NinAction(uint actionID, params PVEAction[] ninjutsus)
+        internal BaseAction[] Ninjutsus { get; }
+        public NinAction(uint actionID, params BaseAction[] ninjutsus)
             : base(actionID, false, false)
         {
             Ninjutsus = ninjutsus;
@@ -24,7 +24,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
 
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
 
             //隐遁
             Hide = new (2245),
@@ -48,7 +48,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             },
 
             //攻其不备
-            TrickAttack = new (2258)
+            TrickAttack = new(2258)
             {
                 BuffsNeed = new ushort[] { ObjectStatus.Suiton, ObjectStatus.Hidden },
             },
@@ -85,7 +85,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             Meisui = new (16489)
             {
                 BuffsNeed = new [] { ObjectStatus.Suiton },
-                OtherCheck = b => JobGauge.Ninki <= 50
+                OtherCheck = b => JobGauge.Ninki <= 50 && TrickAttack.RecastTimeRemain > 2,
             },
 
             //生杀予夺
@@ -239,7 +239,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
     {
         act = null;
         if (Service.IconReplacer.OriginalHook(2260) != 2260) return false;
-        if (TargetHelper.Weaponelapsed < 0.2f && TargetHelper.Weaponelapsed > 0) return false;
+        if (Weaponelapsed < 0.2f && Weaponelapsed > 0) return false;
         //有生杀予夺
         if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu))
         {
@@ -303,7 +303,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
                 return true;
             }
             //背刺
-            if (Actions.Suiton.ShouldUse(out _) && Actions.TrickAttack.RecastTimeRemain < 2 && _break)
+            if (Actions.Suiton.ShouldUse(out _) && Actions.TrickAttack.RecastTimeRemain < 4 && _break)
             {
                 _ninactionAim = Actions.Suiton;
                 return true;

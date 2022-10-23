@@ -17,7 +17,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private static bool MCH_Automaton = false;
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //分裂弹
             SplitShot = new(2866),
 
@@ -88,13 +88,83 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             //超荷
             Hypercharge = new(17209)
             {
-                OtherCheck = b => !JobGauge.IsOverheated && JobGauge.Heat >= 50,
+                OtherCheck = b =>
+                {
+                    var isBoss = Target.IsBoss();
+
+                    //在过热状态或者热量小于50时不释放超荷
+                    if (JobGauge.IsOverheated || JobGauge.Heat < 50) return false;
+                    if (!isBoss && IsTargetDying) return false;
+
+                    //有野火buff必须释放超荷
+                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Wildfire)) return true;
+
+                    //在三大金刚还剩8秒冷却好时不释放超荷
+                    if (Level >= Drill.Level && Drill.RecastTimeRemain < 8) return false;
+                    if (Level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 8) return false;
+                    if (Level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 8) return false;
+
+                    //小怪AOE或者自嗨期间超荷判断
+                    if ((SpreadShot.ShouldUse(out _) || !isBoss) && IsMoving) return false;
+                    if (((SpreadShot.ShouldUse(out _) || !isBoss) && !IsMoving) || MCH_Asocial || Level < Wildfire.Level) return true;
+
+                    uint wfTimer = 6;
+                    var wildfireCDTime = Wildfire.RecastTimeRemain;
+                    if (Level < BarrelStabilizer.Level) wfTimer = 12;
+
+                    //标准循环起手判断
+                    if (!initFinished && MCH_Opener) return false;
+
+                    //野火前攒热量
+                    if (15 < wildfireCDTime && wildfireCDTime < 43)
+                    {
+                        //如果期间热量溢出超过5,就释放一次超荷
+                        if (IsLastWeaponSkill(true, Drill) && JobGauge.Heat >= 85) return true;
+                        return false;
+                    }
+
+                    var isLastChainSaw = IsLastWeaponSkill(true, ChainSaw);
+                    //超荷释放判断
+                    if (wildfireCDTime >= wfTimer
+                    || isLastChainSaw
+                    || !isLastChainSaw && (!Wildfire.IsCoolDown || wildfireCDTime <= 1)) return true;
+
+                    return false;
+                },
             },
 
             //野火
             Wildfire = new(2878)
             {
-                OtherCheck = b => JobGauge.Heat >= 50 || LastAbility == Hypercharge.ID,
+                OtherCheck = b =>
+                {
+                    var isBoss = b.IsBoss();
+                    //小怪AOE期间不打野火
+                    if (SpreadShot.ShouldUse(out _) || !isBoss) return false;
+                    if (!isBoss && IsTargetDying) return false;
+
+                    //热量低于50且上一个能力技不是超荷时不释放
+                    if (JobGauge.Heat < 50 && !IsLastAbility(false, Hypercharge)) return false;
+
+                    //自嗨判断
+                    if (MCH_Asocial)
+                    {
+                        if (Level >= Drill.Level && Drill.RecastTimeRemain < 10) return false;
+                        if (Level >= AirAnchor.Level && AirAnchor.RecastTimeRemain < 10) return false;
+                        if (Level >= ChainSaw.Level && ChainSaw.RecastTimeRemain < 10) return false;
+                        if (JobGauge.IsOverheated) return true;
+                        return true;
+                    }
+
+                    if (!initFinished && MCH_Opener) return false;
+
+                    if (JobGauge.IsOverheated) return true;
+
+                    if (!IsLastWeaponSkill(true, ChainSaw)
+                    && IsLastWeaponSkill(true, Drill, AirAnchor, HeatBlast)) return false;
+
+                    return true;
+                },
             },
 
             //虹吸弹
@@ -108,7 +178,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (JobGauge.Heat <= 50 && LastWeaponskill != ChainSaw.ID) return true;
+                    if (JobGauge.Heat <= 50 && !IsLastWeaponSkill(true, ChainSaw)) return true;
 
                     return false;
                 },
@@ -173,7 +243,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         //MCH_Asocial = Config.GetBoolByName("MCH_Asocial");
         
         //当上一个连击是热阻击弹时完成起手
-        if (InBattle && (LastWeaponskill == Service.IconReplacer.OriginalHook(Actions.CleanShot.ID) || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
+        if (InBattle && (IsLastWeaponSkill(true, Actions.CleanShot) || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
         {
             initFinished = true;
         }

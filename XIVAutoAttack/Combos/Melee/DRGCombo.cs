@@ -19,7 +19,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
 
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //¾«×¼´Ì
             TrueThrust = new (75),
 
@@ -75,9 +75,9 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
                 {
 
                     if (safeMove && b.DistanceToPlayer() > 2) return false;
-                    if (LastAction == SpineshatterDive.ID) return false;
+                    if (IsLastAction(true, SpineshatterDive)) return false;
 
-                    if (inOpener && (LastWeaponskill == FangandClaw.ID || LastWeaponskill == HeavensThrust.ID)) return true;
+                    if (inOpener && IsLastWeaponSkill(true,  FangandClaw, HeavensThrust)) return true;
                     if (!inOpener) return true;
 
                     return false;
@@ -91,7 +91,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
                 {
                     if (safeMove && b.DistanceToPlayer() > 2) return false;
 
-                    if (inOpener && LastWeaponskill == RaidenThrust.ID) return true;
+                    if (inOpener && IsLastWeaponSkill(true, RaidenThrust)) return true;
                     if (!inOpener) return true;
 
                     return false;
@@ -107,7 +107,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
 
                     if (safeMove && b.DistanceToPlayer() > 2) return false;
 
-                    if (inOpener && LastWeaponskill == ChaoticSpring.ID) return true;
+                    if (inOpener && IsLastWeaponSkill(true, ChaoticSpring)) return true;
                     if (!inOpener) return true;
 
                     return false;
@@ -126,7 +126,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
                 OtherCheck = b =>
                 {
                     if (Geirskogul.RecastTimeRemain < 12) return false;
-                    if (inOpener && LastWeaponskill == FangandClaw.ID) return true;
+                    if (inOpener && IsLastWeaponSkill(true, FangandClaw)) return true;
                     if (!inOpener) return true;
 
                     return false;
@@ -138,7 +138,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (inOpener && LastWeaponskill == ChaoticSpring.ID) return true;
+                    if (inOpener && IsLastWeaponSkill(true, ChaoticSpring)) return true;
                     if (!inOpener) return true;
 
                     return false;
@@ -160,7 +160,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             //ÌìÁúµã¾¦
             WyrmwindThrust = new (25773)
             {
-                OtherCheck = b => JobGauge.FirstmindsFocusCount == 2 && LastAction != Stardiver.ID,
+                OtherCheck = b => JobGauge.FirstmindsFocusCount == 2 && !IsLastAction(true, Stardiver),
             },
 
             //Áú½£
@@ -168,7 +168,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             { 
                 BuffsProvide = new [] { ObjectStatus.LifeSurge },
 
-                OtherCheck = b => LastAbility != LifeSurge.ID,
+                OtherCheck = b => !IsLastAbility(true, LifeSurge),
             },
 
             //ÃÍÇ¹
@@ -176,7 +176,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (inOpener && LastWeaponskill == TrueThrust.ID) return true;
+                    if (inOpener && IsLastWeaponSkill(true, TrueThrust)) return true;
                     if (!inOpener) return true;
 
                     return false;

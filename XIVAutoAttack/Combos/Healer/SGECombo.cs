@@ -14,12 +14,12 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
     internal override uint JobID => 40;
     internal static byte level => Service.ClientState.LocalPlayer!.Level;
 
-    private protected override PVEAction Raise => Actions.Egeiro;
+    private protected override BaseAction Raise => Actions.Egeiro;
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
     protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //¸´ËÕ
             Egeiro = new(24287),
 

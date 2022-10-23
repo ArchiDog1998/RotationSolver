@@ -14,7 +14,7 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
     
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //ÈÐ·ç
             Hakaze = new (7477),
 

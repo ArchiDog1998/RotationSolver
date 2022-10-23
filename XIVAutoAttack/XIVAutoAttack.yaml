@@ -9,15 +9,18 @@ description: |-
 punchline: Auto attack!
 changelog: |-
   ## 错误修复
-  - 修复武僧自卫一下子卸三层的bug
+  - 调整了身位判断和Boss判断
   - 调整了镰刀的循环
-  - 优化了绝枪，默认4GCD起手
-  - 调整了黑骑，黑骑能力技优先级有点乱,下个版本优化
+  - 修复了以自身为圆心的AOE在手动模式下会释放的问题
+  - 忍者开背刺的水遁提前2s
   ## 新增功能
-  - 添加了打断延迟功能
+  - 可选择是否将敌对列表的对象设为敌对。
+  ## 删除功能
+  - 有了AutoHook谁还需要AutoAttack的钓鱼功能？
   ## API
-  - 添加了一点点注释
-
+  - 上一个技能的释放判断通过函数解决
+  - PVEAction改名回为BaseAction
+  - 删除大量冗余API
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

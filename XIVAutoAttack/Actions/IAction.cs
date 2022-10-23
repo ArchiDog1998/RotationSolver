@@ -4,5 +4,6 @@
     {
        bool Use();
        uint ID { get; }
+       uint AdjustedID { get; }
     }
 }

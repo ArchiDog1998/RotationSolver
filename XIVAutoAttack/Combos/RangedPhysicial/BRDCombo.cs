@@ -26,7 +26,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             return results.Min() < duration;
         }
 
-        public static readonly PVEAction
+        public static readonly BaseAction
             //强力射击
             HeavyShoot = new(97) { BuffsProvide = new[] { ObjectStatus.StraightShotReady } },
 
@@ -72,7 +72,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (LastAbility == RadiantFinale.ID) return true;
+                    if (IsLastAbility(true, RadiantFinale)) return true;
 
                     return false;
                 },
@@ -90,7 +90,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
                 },
                 AfterUse = () =>
                 {
-                    GCDRemain = WeaponRemain;
+                    GCDRemain = WeaponRemain();
                     RagingStrikesNowTime = DateTime.Now;
                 }
             },
@@ -100,7 +100,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    var canUse = DateTime.Now - RagingStrikesNowTime >= new TimeSpan(0, 0, 0, 0, (int)((GCDRemain + TargetHelper.WeaponTotal) * 1000));
+                    var canUse = DateTime.Now - RagingStrikesNowTime >= new TimeSpan(0, 0, 0, 0, (int)((GCDRemain + WeaponRemain(1)) * 1000));
                     static bool SongIsNotNone(Song value) => value != Song.NONE;
                     static bool SongIsWandererMinuet(Song value) => value == Song.WANDERER;
                     if ((Array.TrueForAll(JobGauge.Coda, SongIsNotNone) || Array.Exists(JobGauge.Coda, SongIsWandererMinuet))
@@ -129,7 +129,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (!initFinished || (initFinished && BattleVoice.RecastTimeRemain >= TargetHelper.WeaponTotal)) return true;
+                    if (!initFinished || (initFinished && BattleVoice.RecastTimeRemain >= WeaponRemain(1))) return true;
 
                     return false;
                 },
@@ -320,7 +320,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
         if (abilityRemain == 2 && Actions.RadiantFinale.ShouldUse(out act, mustUse: true)) return true;
 
         //战斗之声
-        if (abilityRemain == 1 && LastAbility == Actions.RadiantFinale.ID && Actions.BattleVoice.ShouldUse(out act, mustUse: true)) return true;
+        if (abilityRemain == 1 && IsLastAbility(true, Actions.RadiantFinale) && Actions.BattleVoice.ShouldUse(out act, mustUse: true)) return true;
 
 
         act = null!;

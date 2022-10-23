@@ -11,7 +11,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
 {
     internal override uint JobID => 37;
     internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.RoyalGuard);
-    private protected override PVEAction Shield => Actions.RoyalGuard;
+    private protected override BaseAction Shield => Actions.RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
@@ -29,7 +29,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
 
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //王室亲卫
             RoyalGuard = new(16142, shouldEndSpecial: true),
 
@@ -46,7 +46,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             Camouflage = new(16140)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = PVEAction.TankDefenseSelf,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //恶魔切
@@ -71,14 +71,14 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             Nebula = new (16148)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = PVEAction.TankDefenseSelf,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //恶魔杀
             DemonSlaughter = new (16149),
 
             //极光
-            Aurora = new PVEAction(16151, true)
+            Aurora = new BaseAction(16151, true)
             {
                 BuffsProvide = new [] { ObjectStatus.Aurora },
             },
@@ -86,7 +86,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             //超火流星
             Superbolide = new (16152)
             {
-                OtherCheck = PVEAction.TankBreakOtherCheck,
+                OtherCheck = BaseAction.TankBreakOtherCheck,
             },
 
             //音速破
@@ -190,6 +190,10 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //无情,目前只有4GCD起手的判断
+        if (Level >= Actions.BurstStrike.Level && abilityRemain == 1 && Actions.NoMercy.ShouldUse(out act))
+        {
+            //4GCD起手判断
+            if (IsLastWeaponSkill(true, Actions.KeenEdge) && JobGauge.Ammo == 1 && Actions.GnashingFang.RecastTimeRemain == 0 && !Actions.Bloodfest.IsCoolDown) return true;
         if (abilityRemain == 1 && CanUseNoMercy(out act))  return true;
 
         act = null;
@@ -200,6 +204,19 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
     {
         //烈牙
         if (CanUseGnashingFang(out act)) return true;
+
+            //无情外烈牙
+            if (JobGauge.Ammo > 0 && Actions.NoMercy.RecastTimeRemain > 17 && Actions.NoMercy.RecastTimeRemain < 35) return true;
+
+            //3弹且将会溢出子弹的情况,提前在无情前进烈牙
+            if (JobGauge.Ammo == 3 && IsLastWeaponSkill(true, Actions.BrutalShell) && Actions.NoMercy.RecastTimeRemain < 3) return true;
+
+            //1弹且血壤快冷却好了
+            if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && Actions.Bloodfest.RecastTimeRemain < 5) return true;
+
+            //4GCD起手烈牙判断
+            if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && ((!Actions.Bloodfest.IsCoolDown && Level >= Actions.Bloodfest.Level) || Level < Actions.Bloodfest.Level)) return true;
+        }          
 
         //音速破
         if (CanUseSonicBreak(out act)) return true;
@@ -217,7 +234,19 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         //爆发击   
         if (CanUseBurstStrike(out act)) return true;
 
-        //AOE连
+            //无情中爆发击判定
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) &&
+                JobGauge.AmmoComboStep == 0 &&
+                Actions.GnashingFang.RecastTimeRemain > 1) return true;
+
+            //无情外防止溢出
+            if (IsLastWeaponSkill(true, Actions.BrutalShell) &&
+                (JobGauge.Ammo == (Level >= 88 ? 3 : 2) ||
+                (Actions.Bloodfest.RecastTimeRemain < 6 && JobGauge.Ammo <= 2 && Actions.NoMercy.RecastTimeRemain > 10 && Level >= Actions.Bloodfest.Level))) return true;
+            } while (false);
+        }
+
+        //AOE
         if (Actions.DemonSlaughter.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.DemonSlice.ShouldUse(out act, lastComboActionID)) return true;
 

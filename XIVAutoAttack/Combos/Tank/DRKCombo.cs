@@ -9,7 +9,7 @@ namespace XIVAutoAttack.Combos.Tank;
 
 internal class DRKCombo : JobGaugeCombo<DRKGauge>
 {
-    public class DRKAction : PVEAction
+    public class DRKAction : BaseAction
     {
         internal override uint MPNeed => JobGauge.HasDarkArts ? 0 : base.MPNeed;
         internal DRKAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
@@ -20,14 +20,14 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
 
     internal override uint JobID => 32;
     internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Grit);
-    private protected override PVEAction Shield => Actions.Grit;
+    private protected override BaseAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
 
     private static bool OpenerFinished = false;
 
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //重斩
             HardSlash = new (3617),
 
@@ -55,7 +55,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //暗黑锋
             EdgeofDarkness = new DRKAction(16467)
             {
-                OtherCheck = b => LastAbility != Service.IconReplacer.OriginalHook(EdgeofDarkness.ID) && LocalPlayer.CurrentMp >= 3000,
+                OtherCheck = b => IsLastAbility(true, EdgeofDarkness) && LocalPlayer.CurrentMp >= 3000,
             },
 
             //嗜血
@@ -68,19 +68,19 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             ShadowWall = new (3636)
             {
                 BuffsProvide = new [] { ObjectStatus.ShadowWall },
-                OtherCheck = PVEAction.TankDefenseSelf,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //弃明投暗
             DarkMind = new(3634)
             {
-                OtherCheck = PVEAction.TankDefenseSelf,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //行尸走肉
             LivingDead = new (3638)
             {
-                OtherCheck = PVEAction.TankBreakOtherCheck,
+                OtherCheck = BaseAction.TankBreakOtherCheck,
             },
 
             //腐秽大地
@@ -140,7 +140,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //暗影使者
             Shadowbringer = new (25757)
             {
-                OtherCheck = b => JobGauge.DarksideTimeRemaining > 1 && LastAbility != Shadowbringer.ID && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium),
+                OtherCheck = b => JobGauge.DarksideTimeRemaining > 1 && IsLastAbility(true, Shadowbringer) && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium),
             },
 
             //腐秽黑暗
@@ -193,7 +193,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     {
         //起手判断
         if (!InBattle) OpenerFinished = false;
-        if (LastWeaponskill == Actions.Souleater.ID || Actions.Unleash.ShouldUse(out _)) OpenerFinished = true;
+        if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _)) OpenerFinished = true;
 
         //寂灭
         if (JobGauge.Blood >= 80 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium))
@@ -204,7 +204,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         //血溅
         if (Actions.Bloodspiller.ShouldUse(out act)) 
         {
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium) && Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > TargetHelper.WeaponTotal * 1) return true;
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium) && Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > WeaponRemain(1)) return true;
 
             if ((JobGauge.Blood >= 70 && Actions.BloodWeapon.RecastTimeRemain is > 0 and < 3) || (JobGauge.Blood >= 50 && Actions.Delirium.RecastTimeRemain > 37 && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium))) return true;
 
@@ -243,7 +243,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             if (Config.GetBoolByName("TheBlackestNight") && LocalPlayer.CurrentMp < 6000) break;
             
             //爆发期打完
-            if (OpenerFinished && Actions.Delirium.RecastTimeElapsed > TargetHelper.WeaponTotal * 1 && Actions.Delirium.RecastTimeElapsed < TargetHelper.WeaponTotal * 8) return true;
+            if (OpenerFinished && Actions.Delirium.RecastTimeElapsed > WeaponRemain (1) && Actions.Delirium.RecastTimeElapsed < WeaponRemain (8)) return true;
 
             //非爆发期防止溢出+续buff
             if (JobGauge.HasDarkArts || (LocalPlayer.CurrentMp > 8500 && OpenerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
@@ -251,7 +251,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         }
        
 
-        if (Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > TargetHelper.WeaponTotal * 1)
+        if (Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > WeaponRemain(1))
         {
             //暗影使者
             if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Delirium) && Actions.Shadowbringer.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;

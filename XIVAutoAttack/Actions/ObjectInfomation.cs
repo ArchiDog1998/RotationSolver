@@ -14,8 +14,7 @@ namespace XIVAutoAttack.Actions
         private unsafe static BNpcBase GetObjectNPC(this GameObject obj)
         {
             if (obj == null) return null;
-            var ptr = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
-            return Service.DataManager.GetExcelSheet<BNpcBase>().GetRow(ptr->GetNpcID());
+            return Service.DataManager.GetExcelSheet<BNpcBase>().GetRow(obj.DataId);
         }
 
         internal static bool HasLocationSide(this GameObject obj)
@@ -27,8 +26,8 @@ namespace XIVAutoAttack.Actions
         internal static bool IsBoss(this BattleChara obj)
         {
             if (obj == null) return false;
-            return obj.MaxHp >= TargetFilter.GetHealthFromMulty(6.5f);
-            //return !obj.GetObjectNPC().IsTargetLine;
+            //return obj.MaxHp >= TargetFilter.GetHealthFromMulty(6.5f);
+            return !obj.GetObjectNPC().IsTargetLine;
         }
 
         internal static float GetHealthRatio(this BattleChara b)

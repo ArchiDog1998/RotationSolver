@@ -12,7 +12,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
     internal override uint JobID => 28;
 
     private static bool _useDeploymentTactics = false;
-    private protected override PVEAction Raise => SMNCombo.Actions.Resurrection;
+    private protected override BaseAction Raise => SMNCombo.Actions.Resurrection;
     protected override bool CanHealSingleSpell => base.CanHealSingleAbility && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
     protected override bool CanHealAreaSpell => base.CanHealAreaAbility  && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
     protected override bool CanHealSingleAbility => base.CanHealSingleSpell;
@@ -20,7 +20,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
     protected override bool CanHealAreaAbility => base.CanHealAreaSpell;
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //毁灭
             Ruin = new (17869),
 

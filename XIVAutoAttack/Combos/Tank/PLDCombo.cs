@@ -14,7 +14,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
     internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.IronWill);
 
-    private protected override PVEAction Shield => Actions.IronWill;
+    private protected override BaseAction Shield => Actions.IronWill;
 
     protected override bool CanHealSingleSpell => TargetHelper.PartyHealers.Length == 0 && base.CanHealSingleSpell;
 
@@ -34,7 +34,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //钢铁信念
             IronWill = new (28, shouldEndSpecial: true),
 
@@ -85,7 +85,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             Sentinel = new (17)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = PVEAction.TankDefenseSelf,
+                OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //厄运流转
@@ -117,7 +117,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             //神圣领域
             HallowedGround = new (30)
             {
-                OtherCheck = PVEAction.TankBreakOtherCheck,
+                OtherCheck = BaseAction.TankBreakOtherCheck,
             },
 
             //圣光幕帘
@@ -145,8 +145,8 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
                 OtherCheck = b =>
                 {
                     if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) 
-                    && (LastWeaponskill == Atonement.ID || LastWeaponskill == RoyalAuthority.ID)
-                    && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) >= TargetHelper.WeaponTotal * 2.8) return true;
+                    && (IsLastWeaponSkill(true, Atonement, RoyalAuthority)
+                    && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) >= WeaponRemain(2))) return true;
 
                     var status = StatusHelper.FindStatusFromSelf(LocalPlayer).Where(status => status.StatusId == ObjectStatus.SwordOath);
                     if (status != null && status.Any())
@@ -190,7 +190,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             PassageofArms = new (7385),
 
             //保护
-            Cover = new PVEAction(27, true)
+            Cover = new BaseAction(27, true)
             {
                 ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
@@ -226,7 +226,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (!TargetHelper.InBattle)
+        if (!InBattle)
         {
             inOpener = false;
             openerFinished = false;
@@ -314,13 +314,17 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     {
         if (inOpener || !Actions.TotalEclipse.ShouldUse(out _))
         {
-            if (LastWeaponskill == Actions.Confiteor.ID || (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.RecastTimeRemain <= 59))
+            if (IsLastWeaponSkill(true, Actions.Confiteor) || (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.RecastTimeRemain <= 59))
             {
                 inOpener = false;
                 openerFinished = true;
             }
         }
 
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) <= 19)
+            {
+                if (IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade))
+                {
         var OpenerStatus = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) <= 19 && LastWeaponskill != Actions.FastBlade.ID && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade);
 
                     //厄运流转

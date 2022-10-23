@@ -12,10 +12,10 @@ namespace XIVAutoAttack.Combos.Healer;
 internal class WHMCombo : JobGaugeCombo<WHMGauge>
 {
     internal override uint JobID => 24;
-    private protected override PVEAction Raise => Actions.Raise;
+    private protected override BaseAction Raise => Actions.Raise;
     internal struct Actions
     {
-        public static readonly PVEAction
+        public static readonly BaseAction
             //复活
             Raise = new (125, true),
 
@@ -192,7 +192,7 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //加个无中生有
-        if (nextGCD is PVEAction action && action.MPNeed > 500 && Actions.ThinAir.ShouldUse(out act)) return true;
+        if (nextGCD is BaseAction action && action.MPNeed > 500 && Actions.ThinAir.ShouldUse(out act)) return true;
 
 
         //天赐救人啊！

@@ -14,10 +14,6 @@ internal class PluginAddressResolver : BaseAddressResolver
     public unsafe uint LastComboAction => *(uint*)LastComboMove;
 
     public IntPtr IsActionIdReplaceable { get; private set; }
-    public IntPtr PlaySpecificSound { get; private set; }
-    public IntPtr GetResourceSync { get; private set; }
-    public IntPtr GetResourceAsync { get; private set; }
-    public IntPtr LoadSoundFile { get; private set; }
     public IntPtr CanAttackFunction { get; private set; }
     private IntPtr _playerMoveControllerAddress;
     public IntPtr IsMoving
@@ -48,10 +44,6 @@ internal class PluginAddressResolver : BaseAddressResolver
         this._playerMoveControllerAddress = scanner.GetStaticAddressFromSig("48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8D 8B ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 83 3D");
 
         this.IsActionIdReplaceable = scanner.ScanText("81 F9 ?? ?? ?? ?? 7F 35");
-        this.PlaySpecificSound = scanner.ScanText("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 33 F6 8B DA 48 8B F9 0F BA E2 0F");
-        this.GetResourceSync = scanner.ScanText("E8 ?? ?? ?? ?? 48 8D 8F ?? ?? ?? ?? 48 89 87 ?? ?? ?? ?? 48 8D 54 24");
-        this.GetResourceAsync = scanner.ScanText("E8 ?? ?? ?? ?? 48 8B D8 EB 07 F0 FF 83");
-        this.LoadSoundFile = scanner.ScanText("E8 ?? ?? ?? ?? 48 85 C0 75 04 B0 F6");
         this.CanAttackFunction = scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
 
         //找G大要这个地址，我反正不知道
