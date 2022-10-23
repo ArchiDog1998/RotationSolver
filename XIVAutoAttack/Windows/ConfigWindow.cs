@@ -269,7 +269,7 @@ internal class ConfigWindow : Window
                     }
 
                     float weaponInterval = Service.Configuration.WeaponInterval;
-                    if (ImGui.DragFloat("间隔多久释放能力技", ref weaponInterval, 0.002f, 0.6f, 0.7f))
+                    if (ImGui.DragFloat("间隔多久释放能力技", ref weaponInterval, 0.002f, 0.5f, 0.7f))
                     {
                         Service.Configuration.WeaponInterval = weaponInterval;
                         Service.Configuration.Save();

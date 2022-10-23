@@ -37,20 +37,20 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
             Gekko = new (7481),
 
             //彼岸花
-            Higanbana = new(7489, isDot:true)
+            Higanbana = new(7489, isDot: true)
             {
                 OtherCheck = b => !IsMoving && SenCount == 1,
                 TargetStatus = new[] { ObjectStatus.Higanbana },
             },
 
             //天下五剑
-            TenkaGoken = new (7488)
+            TenkaGoken = new(7488)
             {
-                OtherCheck = b => !IsMoving && SenCount == 2,
+                OtherCheck = b => !IsMoving,
             },
 
             //纷乱雪月花
-            MidareSetsugekka = new (7487)
+            MidareSetsugekka = new(7487)
             {
                 OtherCheck = b => !IsMoving && SenCount == 3,
             },
@@ -135,9 +135,15 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
         }
 
         if (Actions.OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
-        if (Actions.TenkaGoken.ShouldUse(out act)) if (SenCount > 1) return true;
-        if (Actions.MidareSetsugekka.ShouldUse(out act)) return true;
-        if (Actions.Higanbana.ShouldUse(out act)) return true;
+        if (Actions.TenkaGoken.ShouldUse(out act))
+        {
+            if (SenCount == 2) return true;
+        }
+        else
+        {
+            if (Actions.MidareSetsugekka.ShouldUse(out act)) return true;
+            if (Actions.Higanbana.ShouldUse(out act)) return true;
+        }
 
 
         //123

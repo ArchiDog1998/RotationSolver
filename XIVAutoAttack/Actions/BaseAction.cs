@@ -49,13 +49,22 @@ namespace XIVAutoAttack.Actions
         /// </summary>
         internal virtual int Cast100 => Action.Cast100ms - (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) ? 25 : 0);
         internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
+
+        [Obsolete("这个API以后不再对外开放")]
         internal unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Spell, ID);
         internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ID, Service.ClientState.LocalPlayer.Level), (ushort)1);
         internal unsafe bool IsCoolDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Spell, ID);
         /// <summary>
         /// 是否起码有一层技能
         /// </summary>
-        internal bool HaveOneCharge => IsCoolDown ? RecastTimeElapsed >= RecastTime / MaxCharges : true;
+        internal bool HaveOneCharge => IsCoolDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
+
+        private float RecastTimeOneCharge => RecastTime / MaxCharges;
+
+        /// <summary>
+        /// 下一层转好的时间
+        /// </summary>
+        internal float RecastTimeRemainOneCharge => RecastTimeRemain % RecastTimeOneCharge;
 
         #endregion
 
@@ -141,6 +150,10 @@ namespace XIVAutoAttack.Actions
         /// 使用这个技能需要的前置Buff，有任何一个就好。
         /// </summary>
         internal virtual ushort[] BuffsNeed { get; set; } = null;
+
+        /// <summary>
+        /// 技能使用好后，做点啥，能不用尽量不要用！手动按无效。
+        /// </summary>
         internal System.Action AfterUse { get; set; } = null;
 
         /// <summary>

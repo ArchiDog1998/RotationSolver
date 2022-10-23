@@ -38,7 +38,16 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool InBattle => TargetHelper.InBattle;
 
-        protected static float WeaponRemain(uint gcdCount = 0) => TargetHelper.WeaponTotal * gcdCount + TargetHelper.WeaponRemain;
+        /// <summary>
+        /// 距离下一个GCD转好还需要多少时间
+        /// </summary>
+        /// <param name="gcdCount">要隔着多少个GCD</param>
+        /// <param name="abilityCount">再多少个能力技之后</param>
+        /// <returns>还剩几秒</returns>
+        protected static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0) 
+            => TargetHelper.WeaponTotal * gcdCount 
+            + Service.Configuration.WeaponInterval * abilityCount 
+            + TargetHelper.WeaponRemain;
 
         protected static float Weaponelapsed => TargetHelper.Weaponelapsed;
 
