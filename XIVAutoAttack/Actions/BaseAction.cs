@@ -47,7 +47,7 @@ namespace XIVAutoAttack.Actions
         /// <summary>
         /// 咏唱时间
         /// </summary>
-        internal virtual int Cast100 => Action.Cast100ms - (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) ? 25 : 0);
+        internal virtual int Cast100 => Action.Cast100ms - (StatusHelper.HaveStatusFromSelf(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) ? 25 : 0);
         internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
 
         [Obsolete("这个API以后不再对外开放")]
@@ -117,7 +117,7 @@ namespace XIVAutoAttack.Actions
 
                     if (!XIVAutoAttackPlugin.movingController.IsMoving) return tars;
 
-                    var ts = tars.Where(t => StatusHelper.FindStatusTimeFromSelf(t, TargetStatus) == 0).ToArray();
+                    var ts = tars.Where(t => StatusHelper.FindStatusTime(t, TargetStatus) == 0).ToArray();
 
                     if (ts.Length == 0) return tars;
                     return ts;
@@ -369,7 +369,7 @@ namespace XIVAutoAttack.Actions
             //没有前置Buff
             if (BuffsNeed != null)
             {
-                if (!StatusHelper.HaveStatusSelfFromSelf(BuffsNeed)) return false;
+                if (!StatusHelper.HaveStatusFromSelf(BuffsNeed)) return false;
             }
 
             if (!mustUse)
@@ -436,14 +436,14 @@ namespace XIVAutoAttack.Actions
                 if (!mustUse && TargetStatus != null)
                 {
                     var tar = Target == Service.ClientState.LocalPlayer ? TargetHelper.HostileTargets.OrderBy(p => TargetFilter.DistanceToPlayer(p)).First() : Target;
-                    var times = StatusHelper.FindStatusFromSelf(tar, TargetStatus);
+                    var times = StatusHelper.FindStatusTimes(tar, TargetStatus);
                     if (times.Length > 0 && times.Max() > 4 + TargetHelper.WeaponRemain) return false;
                 }
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (Cast100 > 0 && XIVAutoAttackPlugin.movingController.IsMoving)
                 {
-                    if (!StatusHelper.HaveStatusSelfFromSelf(CustomCombo.GeneralActions.Swiftcast.BuffsProvide))
+                    if (!StatusHelper.HaveStatusFromSelf(CustomCombo.GeneralActions.Swiftcast.BuffsProvide))
                         if (Service.Configuration.PoslockCasting) XIVAutoAttackPlugin.movingController.IsMoving = false;
                         else return false;
                 }

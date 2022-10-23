@@ -9,7 +9,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
 {
     internal class PRPAction : BaseAction
     {
-        internal override EnemyLocation EnermyLocation => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded) 
+        internal override EnemyLocation EnermyLocation => StatusHelper.HaveStatusFromSelf(ObjectStatus.Enshrouded) 
             ? EnemyLocation.None : base.EnermyLocation;
         internal PRPAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
             : base(actionID, isFriendly, shouldEndSpecial)
@@ -17,15 +17,15 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         }
     }
 
-    private static bool enshrouded => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Enshrouded);
-    private static bool soulReaver => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.SoulReaver);
-    private static bool enhancedGibbet => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGibbet);
-    private static bool enhancedGallows => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedGallows);
-    private static bool enhancedCrossReaping => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedCrossReaping);
-    private static bool enhancedVoidReaping => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EnhancedVoidReaping);
-    private static bool arcaneCircle => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ArcaneCircle);
-    private static bool plentifulReady =>StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ImmortalSacrifice) && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Bloodwhetting);
-    private static bool haveDeathsDesign => Target.FindStatusTimeFromSelf(ObjectStatus.DeathsDesign) > 0;
+    private static bool enshrouded => StatusHelper.HaveStatusFromSelf(ObjectStatus.Enshrouded);
+    private static bool soulReaver => StatusHelper.HaveStatusFromSelf(ObjectStatus.SoulReaver);
+    private static bool enhancedGibbet => StatusHelper.HaveStatusFromSelf(ObjectStatus.EnhancedGibbet);
+    private static bool enhancedGallows => StatusHelper.HaveStatusFromSelf(ObjectStatus.EnhancedGallows);
+    private static bool enhancedCrossReaping => StatusHelper.HaveStatusFromSelf(ObjectStatus.EnhancedCrossReaping);
+    private static bool enhancedVoidReaping => StatusHelper.HaveStatusFromSelf(ObjectStatus.EnhancedVoidReaping);
+    private static bool arcaneCircle => StatusHelper.HaveStatusFromSelf(ObjectStatus.ArcaneCircle);
+    private static bool plentifulReady =>StatusHelper.HaveStatusFromSelf(ObjectStatus.ImmortalSacrifice) && !StatusHelper.HaveStatusFromSelf(ObjectStatus.Bloodwhetting);
+    private static bool haveDeathsDesign => Target.FindStatusTime(ObjectStatus.DeathsDesign) > 0;
     internal override uint JobID => 39;
     internal struct Actions
     {

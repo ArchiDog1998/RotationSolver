@@ -10,7 +10,7 @@ namespace XIVAutoAttack.Combos.Tank;
 internal class GNBCombo : JobGaugeCombo<GNBGauge>
 {
     internal override uint JobID => 37;
-    internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.RoyalGuard);
+    internal override bool HaveShield => StatusHelper.HaveStatusFromSelf(ObjectStatus.RoyalGuard);
     private protected override BaseAction Shield => Actions.RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;
@@ -204,7 +204,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         if (Actions.GnashingFang.ShouldUse(out act))
         {
             //无情中3弹烈牙
-            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) || Actions.NoMercy.RecastTimeRemain > 55)) return true;
+            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (StatusHelper.HaveStatusFromSelf(ObjectStatus.NoMercy) || Actions.NoMercy.RecastTimeRemain > 55)) return true;
 
             //无情外烈牙
             if (JobGauge.Ammo > 0 && Actions.NoMercy.RecastTimeRemain > 17 && Actions.NoMercy.RecastTimeRemain < 35) return true;
@@ -223,10 +223,10 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         if (Actions.SonicBreak.ShouldUse(out act))
         {
             //在烈牙后面使用音速破
-            if (Actions.GnashingFang.RecastTimeRemain > 0 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy)) return true;
+            if (Actions.GnashingFang.RecastTimeRemain > 0 && StatusHelper.HaveStatusFromSelf(ObjectStatus.NoMercy)) return true;
 
             //其他判断
-            if (Level < Actions.DoubleDown.Level && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ReadyToRip) 
+            if (Level < Actions.DoubleDown.Level && StatusHelper.HaveStatusFromSelf(ObjectStatus.ReadyToRip) 
                 && Actions.GnashingFang.RecastTimeRemain > 0) return true;
         }
 
@@ -234,10 +234,10 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         if (Actions.DoubleDown.ShouldUse(out act, mustUse: true))
         {
             //在音速破后使用倍攻
-            if (Actions.SonicBreak.RecastTimeRemain > 0 && StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy)) return true;
+            if (Actions.SonicBreak.RecastTimeRemain > 0 && StatusHelper.HaveStatusFromSelf(ObjectStatus.NoMercy)) return true;
 
             //2弹无情的特殊判断,提前使用倍攻
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) && Actions.NoMercy.RecastTimeRemain > 55 && Actions.Bloodfest.RecastTimeRemain < 5) return true;
+            if (StatusHelper.HaveStatusFromSelf(ObjectStatus.NoMercy) && Actions.NoMercy.RecastTimeRemain > 55 && Actions.Bloodfest.RecastTimeRemain < 5) return true;
 
             //AOE
             if (Actions.DemonSlice.ShouldUse(out _) && !IsMoving) return true;
@@ -257,7 +257,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             if (Actions.SonicBreak.RecastTimeRemain > 0 && Actions.SonicBreak.RecastTimeRemain < 0.5) break;
 
             //无情中爆发击判定
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) &&
+            if (StatusHelper.HaveStatusFromSelf(ObjectStatus.NoMercy) &&
                 JobGauge.AmmoComboStep == 0 &&
                 Actions.GnashingFang.RecastTimeRemain > 1) return true;
 
@@ -297,12 +297,12 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         if (Actions.DangerZone.ShouldUse(out act))
         {
             //非爆发期
-            if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy)
+            if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.NoMercy)
             && ((Actions.GnashingFang.RecastTimeRemain > 20)
             || (Level < Actions.GnashingFang.Level) && Actions.NoMercy.IsCoolDown)) return true;
 
             //爆发期
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy))
+            if (StatusHelper.HaveStatusFromSelf(ObjectStatus.NoMercy))
             {
                 //烈牙冷却中
                 if (Actions.GnashingFang.RecastTimeRemain > 0) return true;
@@ -313,7 +313,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         if (Actions.BowShock.ShouldUse(out act, mustUse: true))
         {
             //爆发期
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy))
+            if (StatusHelper.HaveStatusFromSelf(ObjectStatus.NoMercy))
             {
                 //音速破在冷却中
                 if (Actions.SonicBreak.RecastTimeRemain > 0) return true;
@@ -342,7 +342,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         if (Actions.RoughDivide.Target.DistanceToPlayer() < 1 && !IsMoving)
         {  
             if (Actions.RoughDivide.ShouldUse(out act)) return true;
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) && Actions.RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (StatusHelper.HaveStatusFromSelf(ObjectStatus.NoMercy) && Actions.RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         return false;
     }

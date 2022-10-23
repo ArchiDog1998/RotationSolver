@@ -122,7 +122,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
                 {
                     foreach (var friend in friends)
                     {
-                        var times = StatusHelper.FindStatusFromSelf(friend, ObjectStatus.Galvanize);
+                        var times = StatusHelper.FindStatusTimes(friend, ObjectStatus.Galvanize);
                         if (times != null && times.Length > 0) return friend;
                     }
                     return null;

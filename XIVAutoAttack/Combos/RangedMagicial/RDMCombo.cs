@@ -332,7 +332,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
         if (Actions.Redoublement.ShouldUse(out act, lastComboActionID)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
-        bool mustStart = StatusHelper.HaveStatusSelfFromSelf(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;
+        bool mustStart = StatusHelper.HaveStatusFromSelf(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
         if (!mustStart)
@@ -342,14 +342,14 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             //要求较小的魔元不带触发，也可以强制要求跳过判断。
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
-                if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.VerstoneReady))
+                if (StatusHelper.HaveStatusFromSelf(ObjectStatus.VerstoneReady))
                 {
                     return false;
                 }
             }
             if (JobGauge.WhiteMana > JobGauge.BlackMana)
             {
-                if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.VerfireReady))
+                if (StatusHelper.HaveStatusFromSelf(ObjectStatus.VerfireReady))
                 {
                     return false;
                 }
@@ -358,7 +358,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             //看看有没有即刻相关的技能。
             foreach (var buff in Actions.Vercure.BuffsProvide)
             {
-                if (StatusHelper.HaveStatusSelfFromSelf(buff))
+                if (StatusHelper.HaveStatusFromSelf(buff))
                 {
                     return false;
                 }

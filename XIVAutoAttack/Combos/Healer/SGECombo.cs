@@ -104,7 +104,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
                 {
                     foreach (var friend in Targets)
                     {
-                        if (StatusHelper.FindStatusFromSelf(friend).Any(status => status.StatusId == ObjectStatus.Kardion))
+                        if (StatusHelper.FindAllStatus(friend).Any(status => status.StatusId == ObjectStatus.Kardion))
                         {
                             return friend;
                         }
@@ -199,7 +199,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
                             ObjectStatus.EukrasianDiagnosis,
                             ObjectStatus.EukrasianPrognosis,
                         }).Any()
-                        && StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis) < 3
+                        && StatusHelper.FindStatusTime(b, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis) < 3
                         && chara.GetHealthRatio() < 0.9) return true;
                     }
 

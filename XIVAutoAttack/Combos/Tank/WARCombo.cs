@@ -8,13 +8,13 @@ namespace XIVAutoAttack.Combos.Tank;
 internal class WARCombo : JobGaugeCombo<WARGauge>
 {
     internal override uint JobID => 21;
-    internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Defiance);
+    internal override bool HaveShield => StatusHelper.HaveStatusFromSelf(ObjectStatus.Defiance);
     private protected override BaseAction Shield => Actions.Defiance;
     internal static float BuffTime
     {
         get
         {
-            var time = StatusHelper.FindStatusSelfFromSelf(ObjectStatus.SurgingTempest);
+            var time = StatusHelper.FindStatusTimesSelfFromSelf(ObjectStatus.SurgingTempest);
             if (time.Length == 0) return 0;
             return time[0];
         }
@@ -71,7 +71,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //Ô­³õÖ®»ê
             InnerBeast = new (49)
             {
-                OtherCheck = b => BuffTime > WeaponRemain() + 0.1f && ( JobGauge.BeastGauge >= 50 || StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.InnerRelease)),
+                OtherCheck = b => BuffTime > WeaponRemain() + 0.1f && ( JobGauge.BeastGauge >= 50 || StatusHelper.HaveStatusFromSelf(ObjectStatus.InnerRelease)),
             },
 
             //¸ÖÌúÐý·ç

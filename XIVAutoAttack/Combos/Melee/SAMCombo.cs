@@ -147,19 +147,19 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
 
 
         //123
-        bool haveMeikyoShisui = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.MeikyoShisui);
+        bool haveMeikyoShisui = StatusHelper.HaveStatusFromSelf(ObjectStatus.MeikyoShisui);
         //如果是单体，且明镜止水的冷却时间小于3秒。
         if (!JobGauge.HasSetsu && !Actions.Fuga.ShouldUse(out _))
         {
             if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID)) return true;
         }
-        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Moon))
+        if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.Moon))
         {
             if (Actions.Mangetsu.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
             if (Actions.Gekko.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
             if (Actions.Jinpu.ShouldUse(out act, lastComboActionID)) return true;
         }
-        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Flower))
+        if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.Flower))
         {
             if (Actions.Oka.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
             if (Actions.Kasha.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
