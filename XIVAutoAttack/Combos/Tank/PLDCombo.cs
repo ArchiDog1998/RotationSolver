@@ -12,7 +12,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 {
     internal override uint JobID => 19;
 
-    internal override bool HaveShield => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.IronWill);
+    internal override bool HaveShield => StatusHelper.HaveStatusFromSelf(ObjectStatus.IronWill);
 
     private protected override BaseAction Shield => Actions.IronWill;
 
@@ -93,7 +93,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight)) return true;
+                    if (StatusHelper.HaveStatusFromSelf(ObjectStatus.FightOrFlight)) return true;
 
                     if (FightorFlight.IsCoolDown) return true;
 
@@ -106,7 +106,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight)) return true;
+                    if (StatusHelper.HaveStatusFromSelf(ObjectStatus.FightOrFlight)) return true;
 
                     if (FightorFlight.IsCoolDown) return true;
 
@@ -144,11 +144,11 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
                 BuffsNeed = new [] { ObjectStatus.SwordOath },
                 OtherCheck = b =>
                 {
-                    if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) 
+                    if (StatusHelper.HaveStatusFromSelf(ObjectStatus.FightOrFlight) 
                     && (IsLastWeaponSkill(true, Atonement, RoyalAuthority)
                     && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) >= WeaponRemain(2))) return true;
 
-                    var status = StatusHelper.FindStatusFromSelf(LocalPlayer).Where(status => status.StatusId == ObjectStatus.SwordOath);
+                    var status = StatusHelper.FindAllStatus(LocalPlayer).Where(status => status.StatusId == ObjectStatus.SwordOath);
                     if (status != null && status.Any())
                     {
                         var s = status.First();
@@ -242,9 +242,9 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         if (Actions.BladeofTruth.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
 
         //魔法三种姿势
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Requiescat) && (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight)) && LocalPlayer.CurrentMp >= 1000)
+        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.Requiescat) && (!StatusHelper.HaveStatusFromSelf(ObjectStatus.FightOrFlight)) && LocalPlayer.CurrentMp >= 1000)
         {
-            var status = StatusHelper.FindStatusFromSelf(LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
+            var status = StatusHelper.FindAllStatus(LocalPlayer).Where(status => status.StatusId == ObjectStatus.Requiescat);
             if (status != null && status.Any())
             {
                 var s = status.First();
@@ -314,7 +314,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     {
         if (inOpener || !Actions.TotalEclipse.ShouldUse(out _))
         {
-            if (IsLastWeaponSkill(true, Actions.Confiteor) || (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.RecastTimeRemain <= 59))
+            if (IsLastWeaponSkill(true, Actions.Confiteor) || (!StatusHelper.HaveStatusFromSelf(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.RecastTimeRemain <= 59))
             {
                 inOpener = false;
                 openerFinished = true;

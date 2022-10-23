@@ -225,11 +225,11 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //应急换舞伴
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1))
+        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.ClosedPosition1))
         {
             foreach (var friend in TargetHelper.PartyMembers)
             {
-                if (StatusHelper.FindStatusFromSelf(friend, ObjectStatus.ClosedPosition2)?.Length > 0)
+                if (StatusHelper.FindStatusTimes(friend, ObjectStatus.ClosedPosition2)?.Length > 0)
                 {
                     if (Actions.ClosedPosition.ShouldUse(out act) && Actions.ClosedPosition.Target != friend)
                     {
@@ -242,7 +242,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
         else if (Actions.ClosedPosition.ShouldUse(out act)) return true;
 
         //尝试爆发
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TechnicalFinish)
+        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.TechnicalFinish)
         && Actions.Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //百花
@@ -253,7 +253,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
         if (Actions.FanDance3.ShouldUse(out act, mustUse: true)) return true;
 
         //扇舞
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Devilment) || JobGauge.Feathers > 3 || Level < 70)
+        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.Devilment) || JobGauge.Feathers > 3 || Level < 70)
         {
             if (Actions.FanDance2.ShouldUse(out act)) return true;
             if (Actions.FanDance.ShouldUse(out act)) return true;
@@ -283,7 +283,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (!InBattle && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.ClosedPosition1) 
+        if (!InBattle && !StatusHelper.HaveStatusFromSelf(ObjectStatus.ClosedPosition1) 
             && Actions.ClosedPosition.ShouldUse(out act)) return true;
 
         if (SettingBreak)
@@ -292,7 +292,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
         }
 
         if (StepGCD(out act)) return true;
-        if (AttackGCD(out act, StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Devilment), lastComboActionID)) return true;
+        if (AttackGCD(out act, StatusHelper.HaveStatusFromSelf(ObjectStatus.Devilment), lastComboActionID)) return true;
 
         return false;
     }
@@ -307,14 +307,14 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
     private bool StepGCD(out IAction act)
     {
         act = null;
-        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.StandardStep, ObjectStatus.TechnicalStep)) return false;
+        if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.StandardStep, ObjectStatus.TechnicalStep)) return false;
 
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.StandardStep) && JobGauge.CompletedSteps == 2)
+        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.StandardStep) && JobGauge.CompletedSteps == 2)
         {
             act = Actions.StandardStep;
             return true;
         }
-        else if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TechnicalStep) && JobGauge.CompletedSteps == 4)
+        else if (StatusHelper.HaveStatusFromSelf(ObjectStatus.TechnicalStep) && JobGauge.CompletedSteps == 4)
         {
             act = Actions.TechnicalStep;
             return true;
@@ -344,7 +344,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
 
         bool canstandard = Actions.TechnicalStep.RecastTimeRemain == 0 || Actions.TechnicalStep.RecastTimeRemain > 5;
 
-        if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TechnicalFinish))
+        if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.TechnicalFinish))
         {
             //标准舞步
             if (canstandard && Actions.StandardStep.ShouldUse(out act)) return true;

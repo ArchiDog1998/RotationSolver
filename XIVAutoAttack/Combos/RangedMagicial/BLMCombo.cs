@@ -89,10 +89,10 @@ namespace XIVAutoAttack.Combos
                 }
             }
         }
-        private bool HasFire => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Firestarter);
-        private bool HasThunder => StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Thundercloud);
+        private bool HasFire => StatusHelper.HaveStatusFromSelf(ObjectStatus.Firestarter);
+        private bool HasThunder => StatusHelper.HaveStatusFromSelf(ObjectStatus.Thundercloud);
         internal static bool InTranspose = false;
-        private bool TargetHasThunder => StatusHelper.FindStatusFromSelf(Target, ObjectStatus.Thunder,
+        private bool TargetHasThunder => StatusHelper.FindStatusTimes(Target, ObjectStatus.Thunder,
                         ObjectStatus.Thunder2,
                         ObjectStatus.Thunder3,
                         ObjectStatus.Thunder4).Length > 0;
@@ -106,8 +106,8 @@ namespace XIVAutoAttack.Combos
 
                 if (UseThunderIn) return true;
 
-                if (StatusHelper.FindStatusTimeFromSelf(Target, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 20) return true;
-                if (StatusHelper.FindStatusTimeFromSelf(Target, ObjectStatus.Thunder2, ObjectStatus.Thunder4) > 10) return true;
+                if (StatusHelper.FindStatusTime(Target, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 20) return true;
+                if (StatusHelper.FindStatusTime(Target, ObjectStatus.Thunder2, ObjectStatus.Thunder4) > 10) return true;
                 return false;
             }
         } 
@@ -297,7 +297,7 @@ namespace XIVAutoAttack.Combos
                 && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5 
                 || !Actions.Triplecast.IsCoolDown || Actions.Triplecast.RecastTimeRemain < 15
                 ||　(Target is BattleChara b  &&
-                StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 15)))
+                StatusHelper.FindStatusTime(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 15)))
             {
                 Actions.Transpose.AfterUse = () =>
                 {
@@ -535,7 +535,7 @@ namespace XIVAutoAttack.Combos
                 {
                     if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5
                         || (Target is BattleChara b &&
-                        StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10))
+                        StatusHelper.FindStatusTime(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10))
                        && Level >= 90 && AddPolyglotAttach(out act)) return true;
                 }
             }
@@ -600,7 +600,7 @@ namespace XIVAutoAttack.Combos
             if (!InTranspose && Actions.Thunder.ShouldUse(out act, lastAct)) return true;
 
             if (Target is BattleChara b &&
-                            StatusHelper.FindStatusTimeFromSelf(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) < 9
+                            StatusHelper.FindStatusTime(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) < 9
                             && Actions.Thunder.ShouldUse(out act, lastAct)) return true;
 
             return false;

@@ -312,8 +312,8 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         if (!IsMoving)
         {
             //如果没有地星也没有巨星，那就试试看能不能放个。
-            if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.EarthlyDominance)
-                && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
+            if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.EarthlyDominance)
+                && !StatusHelper.HaveStatusFromSelf(ObjectStatus.GiantDominance))
             {
                 if (Actions.EarthlyStar.ShouldUse(out act, mustUse: true)) return true;
             }
@@ -376,7 +376,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             if (Actions.CelestialOpposition.ShouldUse(out act)) return true;
 
             //如果有巨星主宰
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
+            if (StatusHelper.HaveStatusFromSelf(ObjectStatus.GiantDominance))
             {
                 //需要回血的时候炸了。
                 act = Actions.EarthlyStar;
@@ -384,9 +384,9 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             }
 
             //天宫图
-            if (!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios, ObjectStatus.Horoscope) && Actions.Horoscope.ShouldUse(out act)) return true;
+            if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.HoroscopeHelios, ObjectStatus.Horoscope) && Actions.Horoscope.ShouldUse(out act)) return true;
             //阳星天宫图
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios) && Actions.Horoscope.ShouldUse(out act)) return true;
+            if (StatusHelper.HaveStatusFromSelf(ObjectStatus.HoroscopeHelios) && Actions.Horoscope.ShouldUse(out act)) return true;
             //超紧急情况天宫图
             if (tank.Any(t => t.GetHealthRatio() < 0.3) && Actions.Horoscope.ShouldUse(out act)) return true;
         }
@@ -400,7 +400,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         if (Actions.CelestialOpposition.ShouldUse(out act)) return true;
 
         //如果有巨星主宰
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.GiantDominance))
+        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.GiantDominance))
         {
             //需要回血的时候炸了。
             act = Actions.EarthlyStar;
@@ -408,7 +408,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         }
 
         //天宫图
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.HoroscopeHelios) && Actions.Horoscope.ShouldUse(out act)) return true;
+        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.HoroscopeHelios) && Actions.Horoscope.ShouldUse(out act)) return true;
 
         //奶量牌，要看情况。
         if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUse(out act)) return true;

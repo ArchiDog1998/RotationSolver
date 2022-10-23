@@ -241,7 +241,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         if (Service.IconReplacer.OriginalHook(2260) != 2260) return false;
         if (Weaponelapsed < 0.2f && Weaponelapsed > 0) return false;
         //有生杀予夺
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu))
+        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.Kassatsu))
         {
             if (Actions.GokaMekkyaku.ShouldUse(out _))
             {
@@ -269,7 +269,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         else
         {
             bool empty = Actions.Ten.ShouldUse(out _, mustUse: true);
-            bool haveDoton = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Doton);
+            bool haveDoton = StatusHelper.HaveStatusFromSelf(ObjectStatus.Doton);
 
             //加状态
             if (Actions.Huraijin.ShouldUse(out act)) return true;
@@ -337,7 +337,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         act = null;
 
         //有天地人
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TenChiJin))
+        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.TenChiJin))
         {
             uint tenId = Service.IconReplacer.OriginalHook(Actions.Ten.ID);
             uint chiId = Service.IconReplacer.OriginalHook(Actions.Chi.ID);
@@ -383,8 +383,8 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         if (id == 2260)
         {
             //重置
-            if(!StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Kassatsu) 
-                && !StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.TenChiJin)
+            if(!StatusHelper.HaveStatusFromSelf(ObjectStatus.Kassatsu) 
+                && !StatusHelper.HaveStatusFromSelf(ObjectStatus.TenChiJin)
                 && !Actions.Ten.ShouldUse(out _, mustUse: true))
             {
                 //_ninactionAim = null;
@@ -447,7 +447,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         }
 
         //用真北取消隐匿
-        if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.Hidden)
+        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.Hidden)
             && GeneralActions.TrueNorth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //用隐匿恢复忍术数量

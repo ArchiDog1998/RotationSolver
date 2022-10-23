@@ -13,6 +13,7 @@ changelog: |-
   - 调整了镰刀的循环
   - 修复了以自身为圆心的AOE在手动模式下会释放的问题
   - 忍者开背刺的水遁提前2s
+  - 修复武士AOE老天下五剑贱不出来的问题
   ## 新增功能
   - 可选择是否将敌对列表的对象设为敌对。
   ## 删除功能
@@ -21,6 +22,8 @@ changelog: |-
   - 上一个技能的释放判断通过函数解决
   - PVEAction改名回为BaseAction
   - 删除大量冗余API
+  - 有关状态的方法，全部重写
+  - 加了点注释
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
