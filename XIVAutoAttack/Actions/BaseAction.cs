@@ -47,10 +47,9 @@ namespace XIVAutoAttack.Actions
         /// <summary>
         /// 咏唱时间
         /// </summary>
-        internal virtual int Cast100 => Action.Cast100ms - (StatusHelper.HaveStatusFromSelf(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) ? 25 : 0);
+        internal virtual int Cast100 => Action.Cast100ms - (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) ? 25 : 0);
         internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
 
-        [Obsolete("这个API以后不再对外开放")]
         internal unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Spell, ID);
         internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ID, Service.ClientState.LocalPlayer.Level), (ushort)1);
         internal unsafe bool IsCoolDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Spell, ID);
@@ -369,7 +368,7 @@ namespace XIVAutoAttack.Actions
             //没有前置Buff
             if (BuffsNeed != null)
             {
-                if (!StatusHelper.HaveStatusFromSelf(BuffsNeed)) return false;
+                if (!Service.ClientState.LocalPlayer.HaveStatus(BuffsNeed)) return false;
             }
 
             if (!mustUse)
@@ -388,7 +387,7 @@ namespace XIVAutoAttack.Actions
                 //会让GCD转的，充能一层的，看看来不来得及下个GCD
                 if (IsRealGCD)
                 {
-                    if (RecastTimeElapsed + TargetHelper.WeaponRemain < RecastTime / MaxCharges) return false;
+                    if (RecastTimeElapsed + TargetHelper.WeaponRemain < RecastTimeOneCharge) return false;
                 }
                 else
                 {
@@ -443,7 +442,7 @@ namespace XIVAutoAttack.Actions
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (Cast100 > 0 && XIVAutoAttackPlugin.movingController.IsMoving)
                 {
-                    if (!StatusHelper.HaveStatusFromSelf(CustomCombo.GeneralActions.Swiftcast.BuffsProvide))
+                    if (!Service.ClientState.LocalPlayer.HaveStatus(CustomCombo.GeneralActions.Swiftcast.BuffsProvide))
                         if (Service.Configuration.PoslockCasting) XIVAutoAttackPlugin.movingController.IsMoving = false;
                         else return false;
                 }

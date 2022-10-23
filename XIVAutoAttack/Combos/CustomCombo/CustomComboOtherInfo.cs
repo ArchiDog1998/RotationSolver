@@ -51,55 +51,30 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static float Weaponelapsed => TargetHelper.Weaponelapsed;
 
-        protected static bool IsLasSpell(bool isAdjust, params IAction[] actions)
-        {
-            return IsLasSpell(GetIDFromActions(isAdjust, actions));
-        }
-        protected static bool IsLasSpell(params uint[] ids)
-        {
-            return IsActionID(Watcher.LastSpell, ids);
-        }
+        protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
+            => IActionHelper.IsLastSpell(isAdjust, actions);
+        protected static bool IsLastSpell(params uint[] ids)
+            => IActionHelper.IsLastSpell(ids);
 
 
         protected static bool IsLastAbility(bool isAdjust, params IAction[] actions)
-        {
-            return IsLastAbility(GetIDFromActions(isAdjust, actions));
-        }
+            => IActionHelper.IsLastAbility(isAdjust, actions);
+
         protected static bool IsLastAbility(params uint[] ids)
-        {
-            return IsActionID(Watcher.LastAbility, ids);
-        }
+            => IActionHelper.IsLastAbility(ids);
+
 
         protected static bool IsLastWeaponSkill(bool isAdjust, params IAction[] actions)
-        {
-            return IsLastWeaponSkill(GetIDFromActions(isAdjust, actions));
-        }
+            => IActionHelper.IsLastWeaponSkill(isAdjust, actions);
+
         protected static bool IsLastWeaponSkill(params uint[] ids)
-        {
-            return IsActionID(Watcher.LastWeaponskill, ids);
-        }
+            => IActionHelper.IsLastWeaponSkill(ids);
+
 
         protected static bool IsLastAction(bool isAdjust, params IAction[] actions)
-        {
-            return IsLastAction(GetIDFromActions(isAdjust, actions));
-        }
+            => IActionHelper.IsLastAction(isAdjust, actions);
+
         protected static bool IsLastAction(params uint[] ids)
-        {
-            return IsActionID(Watcher.LastAction, ids);
-        }
-
-        private static bool IsActionID(uint id, params uint[] ids)
-        {
-            foreach (var i in ids)
-            {
-                if (i == id) return true;
-            }
-            return false;
-        }
-
-        private static uint[] GetIDFromActions(bool isAdjust, params IAction[] actions)
-        {
-            return actions.Select(a => isAdjust ? a.AdjustedID : a.ID).ToArray();
-        }
+            => IActionHelper.IsLastAction(ids);
     }
 }

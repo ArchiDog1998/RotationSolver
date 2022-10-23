@@ -79,7 +79,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         const int COUNT = 20;
 
         if (CustomCombo.EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
-        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.TrueNorth))return;
+        if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))return;
         if (CustomCombo.ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
 
         float radius = CustomCombo.EnemyLocationTarget.HitboxRadius + 3.5f;

@@ -16,7 +16,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
     private protected override BaseAction Shield => Actions.IronWill;
 
-    protected override bool CanHealSingleSpell => TargetHelper.PartyHealers.Length == 0 && base.CanHealSingleSpell;
+    protected override bool CanHealSingleSpell => TargetHelper.PartyMembers.Length == 1 && base.CanHealSingleSpell;
 
     private static bool inOpener = false;
     private static bool openerFinished = false;

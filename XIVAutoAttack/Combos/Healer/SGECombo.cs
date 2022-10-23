@@ -233,11 +233,8 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //下个技能是
-        if (nextGCD == Actions.Pneuma ||
-            nextGCD == Actions.EukrasianDiagnosis ||
-            nextGCD == Actions.EukrasianPrognosis ||
-            nextGCD == Actions.Diagnosis ||
-            nextGCD == Actions.Prognosis)
+        if (nextGCD.IsAnySameAction(false, Actions.Pneuma , Actions.EukrasianDiagnosis, 
+            Actions.EukrasianPrognosis , Actions.Diagnosis , Actions.Prognosis))
         {
             //活化
             if (Actions.Zoe.ShouldUse(out act)) return true;

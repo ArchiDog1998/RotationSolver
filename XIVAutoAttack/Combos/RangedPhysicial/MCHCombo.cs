@@ -304,23 +304,23 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //等级小于钻头时,绑定狙击弹
-        if (Level < Actions.Drill.Level && nextGCD == Actions.CleanShot)
+        if (Level < Actions.Drill.Level && nextGCD.IsAnySameAction(true, Actions.CleanShot))
         {
             if (Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //等级小于90时或自嗨时,整备不再留层数
         if ((Level < Actions.ChainSaw.Level || !Config.GetBoolByName("MCH_Reassemble")) 
-            && (nextGCD == Actions.AirAnchor || nextGCD == Actions.Drill || nextGCD == Actions.ChainSaw))
+            && nextGCD.IsAnySameAction(true, Actions.AirAnchor , Actions.Drill, Actions.ChainSaw))
         {
             if (Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //整备优先链锯
-        if (Config.GetBoolByName("MCH_Reassemble") && nextGCD == Actions.ChainSaw)
+        if (Config.GetBoolByName("MCH_Reassemble") && nextGCD.IsAnySameAction(true, Actions.ChainSaw))
         {
             if (Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //如果接下来要搞三大金刚了，整备吧！
-        if (nextGCD == Actions.AirAnchor || nextGCD == Actions.Drill)
+        if (nextGCD.IsAnySameAction(true, Actions.AirAnchor, Actions.Drill))
         {
             if (Actions.Reassemble.ShouldUse(out act)) return true;
         }

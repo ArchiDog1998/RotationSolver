@@ -256,7 +256,8 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
     }
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD == Actions.FullThrust || nextGCD == Actions.CoerthanTorment|| StatusHelper.HaveStatusFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.FangandClaw)
+        if (nextGCD.IsAnySameAction(true, Actions.FullThrust, Actions.CoerthanTorment)
+            || StatusHelper.HaveStatusFromSelf(ObjectStatus.LanceCharge) && nextGCD == Actions.FangandClaw)
         {
             //Áú½£
             if (abilityRemain ==1 && Actions.LifeSurge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;

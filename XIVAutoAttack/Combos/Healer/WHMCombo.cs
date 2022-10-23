@@ -198,8 +198,8 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
         //天赐救人啊！
         if (Actions.Benediction.ShouldUse(out act)) return true;
 
-        if (nextGCD == Actions.Medica || nextGCD == Actions.Medica2 ||
-            nextGCD == Actions.Cure3 || nextGCD == Actions.AfflatusRapture)
+        if (nextGCD.IsAnySameAction(true, Actions.Medica , Actions.Medica2,
+            Actions.Cure3, Actions.AfflatusRapture))
         {
             //加个全大赦
             if (Actions.PlenaryIndulgence.ShouldUse(out act)) return true;

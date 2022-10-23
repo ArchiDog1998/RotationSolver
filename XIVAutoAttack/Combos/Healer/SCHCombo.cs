@@ -174,10 +174,8 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD == Actions.Adloquium ||
-            nextGCD == Actions.Succor ||
-            nextGCD == Actions.Indomitability ||
-            nextGCD == Actions.Excogitation)
+        if (nextGCD.IsAnySameAction(true, Actions.Adloquium, Actions.Succor, 
+            Actions.Indomitability, Actions.Excogitation))
         {
             if (Actions.Recitation.ShouldUse(out act)) return true;
         }

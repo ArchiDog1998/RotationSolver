@@ -145,42 +145,36 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
             if (Actions.Higanbana.ShouldUse(out act)) return true;
         }
 
-
         //123
-        bool haveMeikyoShisui = StatusHelper.HaveStatusFromSelf(ObjectStatus.MeikyoShisui);
+        bool haveMeikyoShisui = LocalPlayer.HaveStatus(ObjectStatus.MeikyoShisui);
         //如果是单体，且明镜止水的冷却时间小于3秒。
         if (!JobGauge.HasSetsu && !Actions.Fuga.ShouldUse(out _))
         {
             if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID)) return true;
         }
-        if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.Moon))
+        if (!LocalPlayer.HaveStatus(ObjectStatus.Moon))//月
         {
-            if (Actions.Mangetsu.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Gekko.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Jinpu.ShouldUse(out act, lastComboActionID)) return true;
+            if (GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }
-        if (!StatusHelper.HaveStatusFromSelf(ObjectStatus.Flower))
+        if (!LocalPlayer.HaveStatus(ObjectStatus.Flower))//花
         {
-            if (Actions.Oka.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Kasha.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Shifu.ShouldUse(out act, lastComboActionID)) return true;
+            if (KaGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }
-        if (!JobGauge.HasGetsu)
+        if (!JobGauge.HasGetsu) //月
         {
-            if (Actions.Mangetsu.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Gekko.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Jinpu.ShouldUse(out act, lastComboActionID)) return true;
+            if(GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }
-        if (!JobGauge.HasKa)
+        if (!JobGauge.HasKa) //花
         {
-            if (Actions.Oka.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Kasha.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-            if (Actions.Shifu.ShouldUse(out act, lastComboActionID)) return true;
+            if (KaGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }
-        if (!JobGauge.HasSetsu)
+        if (!JobGauge.HasSetsu) //雪
         {
             if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
         }
+        //来个月？
+        if (GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
+
         if (Actions.Fuga.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.Hakaze.ShouldUse(out act, lastComboActionID)) return true;
 
@@ -189,6 +183,26 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
         if (Actions.Enpi.ShouldUse(out act)) return true;
 
+        return false;
+    }
+
+    private bool KaGCD(out IAction act, uint lastComboActionID, bool haveMeikyoShisui)
+    {
+        if (Actions.Oka.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Actions.Kasha.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Actions.Shifu.ShouldUse(out act, lastComboActionID)) return true;
+
+        act = null;
+        return false;
+    }
+
+    private bool GetsuGCD(out IAction act, uint lastComboActionID, bool haveMeikyoShisui)
+    {
+        if (Actions.Mangetsu.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Actions.Gekko.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Actions.Jinpu.ShouldUse(out act, lastComboActionID)) return true;
+
+        act = null;
         return false;
     }
 
@@ -225,9 +239,7 @@ internal class SAMCombo : JobGaugeCombo<SAMGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (HaveHostileInRange && 
-            nextGCD != Actions.Higanbana && 
-            nextGCD != Actions.OgiNamikiri && 
-            nextGCD != Actions.KaeshiNamikiri &&
+            !nextGCD.IsAnySameAction(false, Actions.Higanbana, Actions.OgiNamikiri,Actions.KaeshiNamikiri) &&
             Actions.MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);

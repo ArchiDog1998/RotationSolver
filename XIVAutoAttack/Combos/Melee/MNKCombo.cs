@@ -171,9 +171,9 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
     {
         if (Actions.FourpointFury.ShouldUse(out act)) return true;
 
-        //确认Buff大于6s
-        var times = StatusHelper.FindStatusTimesSelfFromSelf(ObjectStatus.DisciplinedFist);
-        if ((times.Length == 0 || times[0] < 4 + WeaponRemain()) && Actions.TwinSnakes.ShouldUse(out act)) return true;
+        //确认Buff
+        var time = LocalPlayer.FindStatusTime(ObjectStatus.DisciplinedFist);
+        if (time < WeaponRemain(1) && Actions.TwinSnakes.ShouldUse(out act)) return true;
 
         if (Actions.TrueStrike.ShouldUse(out act)) return true;
         return false;
@@ -235,17 +235,17 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             }
         }
         //有震脚就阴阳
-        else if (StatusHelper.HaveStatusFromSelf(ObjectStatus.PerfectBalance))
+        else if (LocalPlayer.HaveStatus(ObjectStatus.PerfectBalance))
         {
             if (havesolar && LunarNadi(out act)) return true;
             if (SolarNadi(out act)) return true;
         }
 
-        if (StatusHelper.HaveStatusFromSelf(ObjectStatus.CoerlForm))
+        if (LocalPlayer.HaveStatus(ObjectStatus.CoerlForm))
         {
             if (CoerlForm(out act)) return true;
         }
-        else if (StatusHelper.HaveStatusFromSelf(ObjectStatus.RaptorForm))
+        else if (LocalPlayer.HaveStatus(ObjectStatus.RaptorForm))
         {
             if (RaptorForm(out act)) return true;
         }
@@ -270,10 +270,12 @@ internal class MNKCombo : JobGaugeCombo<MNKGauge>
             if ((JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.SOLAR) != 0)
             {
                 //两种Buff都在6s以上
-                var dis = StatusHelper.FindStatusTimesSelfFromSelf(ObjectStatus.DisciplinedFist);
+                var dis = LocalPlayer.FindStatusTime(ObjectStatus.DisciplinedFist);
                 Actions.Demolish.ShouldUse(out _);
-                var demo = StatusHelper.FindStatusTimes(Actions.Demolish.Target, ObjectStatus.Demolish);
-                if (dis.Length != 0 && dis[0] > 6 && (demo.Length != 0 && demo[0] > 6 || !Actions.PerfectBalance.IsCoolDown))
+                var demo = Actions.Demolish.Target.FindStatusTime(ObjectStatus.Demolish);
+                var t = WeaponRemain(2);
+
+                if (dis > t && (demo > t || !Actions.PerfectBalance.IsCoolDown))
                 {
                     if (Actions.PerfectBalance.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
                 }

@@ -288,8 +288,8 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //如果接下来要上毒或者要直线射击，那算了。
-        if (nextGCD == Actions.StraitShoot || nextGCD == Actions.VenomousBite ||
-            nextGCD == Actions.Windbite || nextGCD == Actions.IronJaws)
+        if (nextGCD.IsAnySameAction(true, Actions.StraitShoot, Actions.VenomousBite,
+            Actions.Windbite, Actions.IronJaws))
         {
             return base.EmergercyAbility(abilityRemain, nextGCD, out act);
         }

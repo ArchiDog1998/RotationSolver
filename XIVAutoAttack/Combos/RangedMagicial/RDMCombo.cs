@@ -11,7 +11,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial;
 internal class RDMCombo : JobGaugeCombo<RDMGauge>
 {
     internal override uint JobID => 35;
-    protected override bool CanHealSingleSpell => TargetHelper.PartyHealers.Length == 0 &&  base.CanHealSingleSpell;
+    protected override bool CanHealSingleSpell => TargetHelper.PartyMembers.Length == 1 && base.CanHealSingleSpell;
     //看看现在有没有促进
 
     private protected override BaseAction Raise => Actions.Verraise;
@@ -179,7 +179,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
-        if (nextGCD.ID == Actions.Zwerchhau.ID || nextGCD.ID == Actions.Redoublement.ID || nextGCD.ID == Actions.Moulinet.ID)
+        if (nextGCD.IsAnySameAction(true, Actions.Zwerchhau, Actions.Redoublement, Actions.Moulinet))
         {
             if (Service.Configuration.AutoBreak && Actions.Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
@@ -190,7 +190,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             if (Actions.Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
         //倍增要放到魔连攻击之后
-        if (JobGauge.ManaStacks == 3 || Level < 68 && nextGCD.ID != Actions.Zwerchhau.ID && nextGCD.ID != Actions.Riposte.ID)
+        if (JobGauge.ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Actions.Zwerchhau, Actions.Riposte))
         {
             if (Actions.Manafication.ShouldUse(out act, Service.Address.LastComboAction)) return true;
         }
@@ -332,7 +332,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
         if (Actions.Redoublement.ShouldUse(out act, lastComboActionID)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
-        bool mustStart = StatusHelper.HaveStatusFromSelf(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;
+        bool mustStart = LocalPlayer.HaveStatus(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
         if (!mustStart)
@@ -342,14 +342,14 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             //要求较小的魔元不带触发，也可以强制要求跳过判断。
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
-                if (StatusHelper.HaveStatusFromSelf(ObjectStatus.VerstoneReady))
+                if (LocalPlayer.HaveStatus(ObjectStatus.VerstoneReady))
                 {
                     return false;
                 }
             }
             if (JobGauge.WhiteMana > JobGauge.BlackMana)
             {
-                if (StatusHelper.HaveStatusFromSelf(ObjectStatus.VerfireReady))
+                if (LocalPlayer.HaveStatus(ObjectStatus.VerfireReady))
                 {
                     return false;
                 }
@@ -358,7 +358,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             //看看有没有即刻相关的技能。
             foreach (var buff in Actions.Vercure.BuffsProvide)
             {
-                if (StatusHelper.HaveStatusFromSelf(buff))
+                if (LocalPlayer.HaveStatus(buff))
                 {
                     return false;
                 }

@@ -89,8 +89,8 @@ namespace XIVAutoAttack.Combos
                 }
             }
         }
-        private bool HasFire => StatusHelper.HaveStatusFromSelf(ObjectStatus.Firestarter);
-        private bool HasThunder => StatusHelper.HaveStatusFromSelf(ObjectStatus.Thundercloud);
+        private bool HasFire => LocalPlayer.HaveStatus(ObjectStatus.Firestarter);
+        private bool HasThunder => LocalPlayer.HaveStatus(ObjectStatus.Thundercloud);
         internal static bool InTranspose = false;
         private bool TargetHasThunder => StatusHelper.FindStatusTimes(Target, ObjectStatus.Thunder,
                         ObjectStatus.Thunder2,
@@ -312,13 +312,13 @@ namespace XIVAutoAttack.Combos
             }
             //星灵转火
             if (JobGauge.InUmbralIce && InTranspose && (HasFire || HaveSwift) && 
-                (nextGCD.ID == Actions.Fire3.ID || nextGCD.ID == Actions.Fire2.ID || LocalPlayer.CurrentMp >= 8000
+                (nextGCD.IsAnySameAction(true, Actions.Fire3, Actions.Fire2) || LocalPlayer.CurrentMp >= 8000
                 || (HasFire && LocalPlayer.CurrentMp >= 5600)) )
             {
                 if (Actions.Transpose.ShouldUse(out act)) return true;
             }
             //有火苗转火
-            if(nextGCD.ID == Actions.Fire3.ID && HasFire && JobGauge.InUmbralIce)
+            if(nextGCD.IsAnySameAction(true, Actions.Fire3) && HasFire && JobGauge.InUmbralIce)
             {
                 if (Actions.Transpose.ShouldUse(out act)) return true;
             }

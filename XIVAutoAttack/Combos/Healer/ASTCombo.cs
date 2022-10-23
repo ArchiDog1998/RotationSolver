@@ -248,7 +248,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //如果要群奶了，先上个天宫图！
-        if (nextGCD == Actions.AspectedHelios || nextGCD == Actions.Helios)
+        if (nextGCD.IsAnySameAction(true, Actions.AspectedHelios, Actions.Helios))
         {
             if (Actions.Horoscope.ShouldUse(out act)) return true;
 
@@ -257,7 +257,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         }
 
         //如果要单奶了，先上星位合图！
-        if (nextGCD == Actions.Benefic || nextGCD == Actions.Benefic2 || nextGCD == Actions.AspectedBenefic)
+        if (nextGCD.IsAnySameAction(true, Actions.Benefic, Actions.Benefic2 , Actions.AspectedBenefic))
         {
             if (Actions.Synastry.ShouldUse(out act)) return true;
         }
