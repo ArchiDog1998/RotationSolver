@@ -55,7 +55,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //暗黑锋
             EdgeofDarkness = new DRKAction(16467)
             {
-                OtherCheck = b => IsLastAbility(true, EdgeofDarkness) && LocalPlayer.CurrentMp >= 3000,
+                OtherCheck = b => !IsLastAbility(true, EdgeofDarkness) && LocalPlayer.CurrentMp >= 3000,
             },
 
             //嗜血
@@ -243,7 +243,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             if (Config.GetBoolByName("TheBlackestNight") && LocalPlayer.CurrentMp < 6000) break;
             
             //爆发期打完
-            if (OpenerFinished && Actions.Delirium.RecastTimeElapsed > WeaponRemain (1) && Actions.Delirium.RecastTimeElapsed < WeaponRemain (8)) return true;
+            if (OpenerFinished && Actions.Delirium.RecastTimeRemain > 30 && Actions.Delirium.RecastTimeRemain < 60 - WeaponRemain (3)) return true;
 
             //非爆发期防止溢出+续buff
             if (JobGauge.HasDarkArts || (LocalPlayer.CurrentMp > 8500 && OpenerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;

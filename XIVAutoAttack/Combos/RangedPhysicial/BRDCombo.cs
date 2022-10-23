@@ -90,7 +90,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
                 },
                 AfterUse = () =>
                 {
-                    GCDRemain = WeaponRemain();
+                    GCDRemain = WeaponRemain(1);
                     RagingStrikesNowTime = DateTime.Now;
                 }
             },
@@ -100,7 +100,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    var canUse = DateTime.Now - RagingStrikesNowTime >= new TimeSpan(0, 0, 0, 0, (int)((GCDRemain + WeaponRemain(1)) * 1000));
+                    var canUse = DateTime.Now - RagingStrikesNowTime >= new TimeSpan(0, 0, 0, 0, (int)(GCDRemain * 1000));
                     static bool SongIsNotNone(Song value) => value != Song.NONE;
                     static bool SongIsWandererMinuet(Song value) => value == Song.WANDERER;
                     if ((Array.TrueForAll(JobGauge.Coda, SongIsNotNone) || Array.Exists(JobGauge.Coda, SongIsWandererMinuet))

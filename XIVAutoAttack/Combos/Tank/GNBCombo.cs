@@ -190,10 +190,6 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
         //无情,目前只有4GCD起手的判断
-        if (Level >= Actions.BurstStrike.Level && abilityRemain == 1 && Actions.NoMercy.ShouldUse(out act))
-        {
-            //4GCD起手判断
-            if (IsLastWeaponSkill(true, Actions.KeenEdge) && JobGauge.Ammo == 1 && Actions.GnashingFang.RecastTimeRemain == 0 && !Actions.Bloodfest.IsCoolDown) return true;
         if (abilityRemain == 1 && CanUseNoMercy(out act))  return true;
 
         act = null;
@@ -204,20 +200,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
     {
         //烈牙
         if (CanUseGnashingFang(out act)) return true;
-
-            //无情外烈牙
-            if (JobGauge.Ammo > 0 && Actions.NoMercy.RecastTimeRemain > 17 && Actions.NoMercy.RecastTimeRemain < 35) return true;
-
-            //3弹且将会溢出子弹的情况,提前在无情前进烈牙
-            if (JobGauge.Ammo == 3 && IsLastWeaponSkill(true, Actions.BrutalShell) && Actions.NoMercy.RecastTimeRemain < 3) return true;
-
-            //1弹且血壤快冷却好了
-            if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && Actions.Bloodfest.RecastTimeRemain < 5) return true;
-
-            //4GCD起手烈牙判断
-            if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && ((!Actions.Bloodfest.IsCoolDown && Level >= Actions.Bloodfest.Level) || Level < Actions.Bloodfest.Level)) return true;
-        }          
-
+     
         //音速破
         if (CanUseSonicBreak(out act)) return true;
 
@@ -233,18 +216,6 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
 
         //爆发击   
         if (CanUseBurstStrike(out act)) return true;
-
-            //无情中爆发击判定
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) &&
-                JobGauge.AmmoComboStep == 0 &&
-                Actions.GnashingFang.RecastTimeRemain > 1) return true;
-
-            //无情外防止溢出
-            if (IsLastWeaponSkill(true, Actions.BrutalShell) &&
-                (JobGauge.Ammo == (Level >= 88 ? 3 : 2) ||
-                (Actions.Bloodfest.RecastTimeRemain < 6 && JobGauge.Ammo <= 2 && Actions.NoMercy.RecastTimeRemain > 10 && Level >= Actions.Bloodfest.Level))) return true;
-            } while (false);
-        }
 
         //AOE
         if (Actions.DemonSlaughter.ShouldUse(out act, lastComboActionID)) return true;
@@ -287,19 +258,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         }
 
         //弓形冲波
-        if (Actions.BowShock.ShouldUse(out act, mustUse: true))
-        {do{
-            if (InDungeonsMiddle)
-            {
-                if (CanUseSpellInDungeonsMiddle) return true;
-
-                break;
-            }
-
-            //爆发期,音速破在冷却中
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) && Actions.SonicBreak.RecastTimeRemain > 0) return true;
-            } while(false);
-        }
+        if (CanUseBowShock(out act)) return true;
 
         //续剑
         if (Actions.JugularRip.ShouldUse(out act)) return true;
@@ -364,12 +323,12 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         return false;
     }
 
-    private static bool CanUseNoMercy(out IAction act)
+    private bool CanUseNoMercy(out IAction act)
     {
         if (Level >= Actions.BurstStrike.Level && Actions.NoMercy.ShouldUse(out act))
         {
             //4GCD起手判断
-            if (LastWeaponskill == Actions.KeenEdge.ID && JobGauge.Ammo == 1 && Actions.GnashingFang.RecastTimeRemain == 0 && !Actions.Bloodfest.IsCoolDown) return true;
+            if (IsLastWeaponSkill(Actions.KeenEdge.ID) && JobGauge.Ammo == 1 && Actions.GnashingFang.RecastTimeRemain == 0 && !Actions.Bloodfest.IsCoolDown) return true;
 
             //3弹进无情
             else if (JobGauge.Ammo == (Level >= 88 ? 3 : 2)) return true;
@@ -383,7 +342,8 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         act = null;
         return false;
     }
-    private static bool CanUseGnashingFang(out IAction act)
+
+    private bool CanUseGnashingFang(out IAction act)
     {
         //基础判断
         if (Actions.GnashingFang.ShouldUse(out act))
@@ -398,7 +358,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             if (JobGauge.Ammo > 0 && Actions.NoMercy.RecastTimeRemain > 17 && Actions.NoMercy.RecastTimeRemain < 35) return true;
 
             //3弹且将会溢出子弹的情况,提前在无情前进烈牙
-            if (JobGauge.Ammo == 3 && LastWeaponskill == Actions.BrutalShell.ID && Actions.NoMercy.RecastTimeRemain < 3) return true;
+            if (JobGauge.Ammo == 3 && IsLastWeaponSkill(Actions.BrutalShell.ID) && Actions.NoMercy.RecastTimeRemain < 3) return true;
 
             //1弹且血壤快冷却好了
             if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && Actions.Bloodfest.RecastTimeRemain < 5) return true;
@@ -409,7 +369,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         return false;   
     }
 
-    private static bool CanUseSonicBreak(out IAction act)
+    private bool CanUseSonicBreak(out IAction act)
     {
         //基础判断
         if (Actions.SonicBreak.ShouldUse(out act))
@@ -427,7 +387,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         return false;
     }
 
-    private static bool CanUseDoubleDown(out IAction act)
+    private bool CanUseDoubleDown(out IAction act)
     {      
         //基本判断
         if (Actions.DoubleDown.ShouldUse(out act, mustUse: true))
@@ -451,7 +411,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         return false;
     }
 
-    private static bool CanUseBurstStrike(out IAction act)
+    private bool CanUseBurstStrike(out IAction act)
     {
         if (Actions.BurstStrike.ShouldUse(out act))
         {
@@ -467,11 +427,28 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
                 Actions.GnashingFang.RecastTimeRemain > 1) return true;
 
             //无情外防止溢出
-            if (LastWeaponskill == Actions.BrutalShell.ID &&
+            if (IsLastWeaponSkill(Actions.BrutalShell.ID) &&
                 (JobGauge.Ammo == (Level >= 88 ? 3 : 2) ||
                 (Actions.Bloodfest.RecastTimeRemain < 6 && JobGauge.Ammo <= 2 && Actions.NoMercy.RecastTimeRemain > 10 && Level >= Actions.Bloodfest.Level))) return true;
         }
         return false;
+    }
+    
+    private bool CanUseBowShock(out IAction act)
+    {
+        if (Actions.BowShock.ShouldUse(out act, mustUse: true))
+        {
+            if (InDungeonsMiddle)
+            {
+                if (CanUseSpellInDungeonsMiddle) return true;
+
+                return false;
+            }
+
+            //爆发期,无情中且音速破在冷却中
+            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.NoMercy) && Actions.SonicBreak.RecastTimeRemain > 0) return true;
+        }
+        return false;     
     }
 }
     

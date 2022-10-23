@@ -321,47 +321,33 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             }
         }
 
-            if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) <= 19)
-            {
-                if (IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade))
-                {
-        var OpenerStatus = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) <= 19 && LastWeaponskill != Actions.FastBlade.ID && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade);
+        var OpenerStatus = StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) <= 19 && !IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade);
 
-                    //厄运流转
-                    if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true)) return true;
-                    //调停
-                    if (Actions.Intervene.ShouldUse(out act) && Actions.Intervene.RecastTimeRemain == 0) return true;
-                    //深奥之灵
-                    if (Actions.SpiritsWithin.ShouldUse(out act)) return true;
-                    //调停
-                    if (Actions.Intervene.ShouldUse(out act,emptyOrSkipCombo: true)) return true;
+        //厄运流转
+        if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true))
+        {
+            if (inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
 
-            //厄运流转
-            if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true))
-            {
-                return true;
-            }
+            if (!inOpener) return true;
+        }
 
-            //深奥之灵
-            if (Actions.SpiritsWithin.ShouldUse(out act))
-            {
-                return true;
-            }
+        //深奥之灵
+        if (Actions.SpiritsWithin.ShouldUse(out act, mustUse: true))
+        {
+            if (inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RoyalAuthority)) return true;
 
+            if (!inOpener) return true;
+        }
 
-            //偿赎剑
-            //if (Actions.Expiacion.ShouldUse(out act, mustUse: true)) return true;
+        //调停
+        if (Actions.Intervene.Target.DistanceToPlayer() < 1 && !IsMoving)
+        {
+            if (inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RiotBlade) && Actions.Intervene.ShouldUse(out act) && Actions.Intervene.RecastTimeRemain == 0) return true;
 
-            //搞搞攻击
-            if (Actions.Intervene.ShouldUse(out act) && !IsMoving)
-            {
-                if (Actions.Intervene.Target.DistanceToPlayer() < 1)
-                {
-                    return true;
-                }
-            }
+            if (inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.Atonement) && Actions.Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-
+            if (!inOpener && Actions.Intervene.ShouldUse(out act)) return true;
+        }
 
         //Special Defense.
         if (JobGauge.OathGauge == 100 && Defense(out act) && LocalPlayer.CurrentHp < LocalPlayer.MaxHp) return true;
@@ -417,7 +403,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             }
 
             //起手在先锋剑后
-            if (inOpener && LastWeaponskill == Actions.FastBlade.ID) return true;
+            if (inOpener && IsLastWeaponSkill(true, Actions.FastBlade)) return true;
 
             //没在起手,冷却好了就用
             if (!inOpener) return true;
@@ -450,7 +436,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             if (StatusHelper.HaveStatusSelfFromSelf(ObjectStatus.FightOrFlight) && StatusHelper.FindStatusTimeSelfFromSelf(ObjectStatus.FightOrFlight) < 17 && StatusHelper.HaveStatusFromSelf(Target, ObjectStatus.GoringBlade))
             {
                 //在起手中时,王权剑后释放
-                if (inOpener && LastWeaponskill == Actions.RoyalAuthority.ID) return true;
+                if (inOpener && IsLastWeaponSkill(true, Actions.RoyalAuthority)) return true;
 
                 //没在起手时在
                 if (!inOpener) return true;
