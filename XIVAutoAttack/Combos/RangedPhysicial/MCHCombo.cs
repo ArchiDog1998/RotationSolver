@@ -235,8 +235,8 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //起手虹吸弹、弹射
-        if (Actions.Ricochet.RecastTimeRemain == 0 && Actions.Ricochet.ShouldUse(out act, mustUse: true)) return true;
-        if (Actions.GaussRound.RecastTimeRemain == 0 && Actions.GaussRound.ShouldUse(out act, mustUse: true)) return true;
+        if (!Actions.Ricochet.IsCoolDown  && Actions.Ricochet.ShouldUse(out act, mustUse: true)) return true;
+        if (!Actions.GaussRound.IsCoolDown && Actions.GaussRound.ShouldUse(out act, mustUse: true)) return true;
 
         //枪管加热
         if (Actions.BarrelStabilizer.ShouldUse(out act)) return true;
@@ -274,7 +274,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             if (JobGauge.IsOverheated) return true;
 
             if (!IsLastWeaponSkill(Actions.ChainSaw.ID)
-            && (IsLastWeaponSkill(Actions.Drill.ID) || IsLastWeaponSkill(true, Actions.AirAnchor) || IsLastWeaponSkill(Actions.HeatBlast.ID))) return false;
+            && (IsLastWeaponSkill(Actions.Drill.ID, Actions.HeatBlast.ID) || IsLastWeaponSkill(true, Actions.AirAnchor))) return false;
 
             return true;
         }

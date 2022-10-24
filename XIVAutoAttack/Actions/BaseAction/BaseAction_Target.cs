@@ -104,7 +104,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
                 else
                 {
-                    var tars = TargetFilter.GetMostObjectInRadius(_isFriendly ? TargetHelper.PartyMembers : TargetHelper.HostileTargets, range, Action.EffectRange, _isFriendly, mustUse)
+                    var tars = TargetFilter.GetMostObjectInRadius(_isFriendly ? TargetHelper.PartyMembers : TargetHelper.HostileTargets, range, Action.EffectRange, _isFriendly, mustUse, true)
                         .OrderByDescending(p => (float)p.CurrentHp / p.MaxHp);
                     Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
                 }
@@ -148,7 +148,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (Action.CastType > 1 && ID != SCHCombo.Actions.DeploymentTactics.ID)
                 {
                     //找到能覆盖最多的位置，并且选血最少的来。
-                    var tar = TargetFilter.GetMostObjectInRadius(availableCharas, range, Action.EffectRange, true, mustUse).OrderBy(p => (float)p.CurrentHp / p.MaxHp).First();
+                    var tar = TargetFilter.GetMostObjectInRadius(availableCharas, range, Action.EffectRange, true, mustUse, true).OrderBy(p => p.GetHealthRatio()).First();
                     if (tar == null) return false;
                     Target = tar;
                     return true;
