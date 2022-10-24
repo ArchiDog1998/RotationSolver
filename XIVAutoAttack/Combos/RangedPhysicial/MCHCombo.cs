@@ -15,6 +15,12 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     //private static bool MCH_Asocial = false;
     private static bool MCH_Opener = false;
     private static bool MCH_Automaton = false;
+
+    /// <summary>
+    /// 在4人本的道中
+    /// </summary>
+    private static bool InDungeonsMiddle => TargetHelper.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
+
     internal struct Actions
     {
         public static readonly BaseAction
@@ -89,7 +95,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             //野火
             Wildfire = new(2878)
             {
-                OtherCheck = b => JobGauge.Heat >= 50 || IsLastAbility(false, Hypercharge), 
+                OtherCheck = b => JobGauge.Heat >= 50 || JobGauge.IsOverheated, 
             },
 
             //虹吸弹
@@ -257,8 +263,8 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (Actions.Wildfire.ShouldUse(out act))
         {
             //小怪AOE期间不打野火
-            if (Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) return false;
-            if (!Target.IsBoss() && IsTargetDying) return false;
+            if (Actions.SpreadShot.ShouldUse(out _) || InDungeonsMiddle) return false;
+            //if (!Target.IsBoss() && IsTargetDying) return false;
 
             //机工起手判断
             if (!initFinished && MCH_Opener) return false;

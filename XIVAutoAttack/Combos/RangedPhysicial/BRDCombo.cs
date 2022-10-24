@@ -160,7 +160,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.RecastTimeRemain < 1) return false;
+                    if (Level >= EmpyrealArrow.Level && (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.RecastTimeRemain < 1)) return false;
                     return true;
                 }
             },

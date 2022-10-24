@@ -251,6 +251,8 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         //危险领域
         if (Actions.DangerZone.ShouldUse(out act))
         {
+            if (InDungeonsMiddle) return true;
+
             //爆发期,烈牙之后
             if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.GnashingFang.RecastTimeRemain > 0) return true;
 
@@ -329,6 +331,12 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
 
     private bool CanUseNoMercy(out IAction act)
     {
+        if (InDungeonsMiddle && Actions.NoMercy.ShouldUse(out act))
+        {
+            if (CanUseSpellInDungeonsMiddle) return true;
+            return false;
+        }
+
         if (Level >= Actions.BurstStrike.Level && Actions.NoMercy.ShouldUse(out act))
         {
             //4GCD起手判断
@@ -373,6 +381,11 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         return false;   
     }
 
+    /// <summary>
+    /// 音速破
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private bool CanUseSonicBreak(out IAction act)
     {
         //基础判断
@@ -391,6 +404,11 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         return false;
     }
 
+    /// <summary>
+    /// 倍攻
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private bool CanUseDoubleDown(out IAction act)
     {      
         //基本判断
@@ -399,8 +417,8 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             //在4人本道中
             if (InDungeonsMiddle)
             {
-                //在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
-                if (CanUseSpellInDungeonsMiddle) return true;
+                //在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪),有无情buff
+                if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy)) return true;
 
                 return false;
             }
@@ -414,7 +432,12 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
         }
         return false;
     }
-
+    
+    /// <summary>
+    /// 爆发击
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private bool CanUseBurstStrike(out IAction act)
     {
         if (Actions.BurstStrike.ShouldUse(out act))
@@ -442,12 +465,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
     {
         if (Actions.BowShock.ShouldUse(out act, mustUse: true))
         {
-            if (InDungeonsMiddle)
-            {
-                if (CanUseSpellInDungeonsMiddle) return true;
-
-                return false;
-            }
+            if (InDungeonsMiddle) return true;
 
             //爆发期,无情中且音速破在冷却中
             if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.SonicBreak.RecastTimeRemain > 0) return true;

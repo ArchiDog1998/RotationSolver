@@ -386,6 +386,9 @@
             //血乱
             Delirium = 1972,
 
+            //嗜血
+            BloodWeapon = 742,
+
             //残影镰鼬预备
             PhantomKamaitachiReady = 2723,
 

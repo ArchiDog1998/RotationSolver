@@ -23,7 +23,19 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     private protected override BaseAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
 
-    private static bool OpenerFinished = false;
+    private static bool openerFinished = false;
+    private static float burstDelayTime = 0;
+
+    /// <summary>
+    /// 在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
+    /// </summary>
+    private static bool CanUseSpellInDungeonsMiddle => TargetHelper.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss() && !IsMoving
+                                                    && TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length >= 3;
+
+    /// <summary>
+    /// 在4人本的道中
+    /// </summary>
+    private static bool InDungeonsMiddle => TargetHelper.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
 
     internal struct Actions
     {
@@ -55,7 +67,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //暗黑锋
             EdgeofDarkness = new DRKAction(16467)
             {
-                OtherCheck = b => !IsLastAbility(true, EdgeofDarkness) && LocalPlayer.CurrentMp >= 3000,
+                OtherCheck = b => !IsLastAction(true, EdgeofDarkness, FloodofDarkness) && LocalPlayer.CurrentMp >= 3000,
             },
 
             //嗜血
@@ -111,6 +123,10 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             Delirium = new (7390)
             {
                 OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
+                AfterUse = () =>
+                {
+                    burstDelayTime = WeaponRemain(2);
+                }
             },
 
             //至黑之夜
@@ -140,7 +156,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
             //暗影使者
             Shadowbringer = new (25757)
             {
-                OtherCheck = b => JobGauge.DarksideTimeRemaining > 1 && IsLastAbility(true, Shadowbringer) && LocalPlayer.HaveStatus(ObjectStatus.Delirium),
+                OtherCheck = b => JobGauge.DarksideTimeRemaining > 1 && !IsLastAction(true, Shadowbringer),
             },
 
             //腐秽黑暗
@@ -180,11 +196,25 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
-        //嗜血
-        if (Actions.BloodWeapon.ShouldUse(out act)) return true;
+        if (InDungeonsMiddle && CanUseSpellInDungeonsMiddle)
+        {
+            //嗜血
+            if (Actions.BloodWeapon.ShouldUse(out act)) return true;
 
-        //血乱
-        if (Actions.Delirium.ShouldUse(out act)) return true;
+            //血乱
+            if (Actions.Delirium.ShouldUse(out act)) return true;
+
+            return false;
+        }
+        else
+        {
+            //嗜血
+            if (Actions.BloodWeapon.ShouldUse(out act)) return true;
+
+            //血乱
+            if (Actions.Delirium.ShouldUse(out act)) return true;
+        }
+        
 
         return base.BreakAbility(abilityRemain, out act);
     }
@@ -192,8 +222,8 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //起手判断
-        if (!InBattle) OpenerFinished = false;
-        if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _)) OpenerFinished = true;
+        if (!InBattle) openerFinished = false;
+        if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _)) openerFinished = true;
 
         //寂灭
         if (JobGauge.Blood >= 80 || LocalPlayer.HaveStatus(ObjectStatus.Delirium))
@@ -204,11 +234,10 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         //血溅
         if (Actions.Bloodspiller.ShouldUse(out act)) 
         {
-            if (LocalPlayer.HaveStatus(ObjectStatus.Delirium) && Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > WeaponRemain(1)) return true;
+            if (LocalPlayer.HaveStatus(ObjectStatus.Delirium) && LocalPlayer.FindStatusStack(ObjectStatus.BloodWeapon) <= 3) return true;
 
-            if ((JobGauge.Blood >= 70 && Actions.BloodWeapon.RecastTimeRemain is > 0 and < 3) || (JobGauge.Blood >= 50 && Actions.Delirium.RecastTimeRemain > 37 && !LocalPlayer.HaveStatus(ObjectStatus.Delirium))) return true;
+            if ((JobGauge.Blood >= 50 && Actions.BloodWeapon.RecastTimeRemain is > 0 and < 3) || (JobGauge.Blood >= 90 && !LocalPlayer.HaveStatus(ObjectStatus.Delirium))) return true;
 
-            if (JobGauge.Blood >= 90) return true;
         }
 
         //AOE
@@ -221,7 +250,11 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         if (Actions.HardSlash.ShouldUse(out act, lastComboActionID)) return true;
 
         if (IconReplacer.Move && MoveAbility(1, out act)) return true;
-        if (Actions.Unmend.ShouldUse(out act)) return true;
+        if (Actions.Unmend.ShouldUse(out act))
+        {
+            if (InDungeonsMiddle && Target.DistanceToPlayer() < 5) return false;
+            return true;
+        }
 
         return false;
     }
@@ -239,31 +272,36 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         //暗黑锋
         if (Actions.EdgeofDarkness.ShouldUse(out act))
         {do{
+            if (InDungeonsMiddle && TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 25).Length >= 3) break;
+
             //是否留3000蓝开黑盾
             if (Config.GetBoolByName("TheBlackestNight") && LocalPlayer.CurrentMp < 6000) break;
             
             //爆发期打完
-            if (OpenerFinished && Actions.Delirium.RecastTimeRemain > 30 && Actions.Delirium.RecastTimeRemain < 60 - WeaponRemain (3)) return true;
+            if (openerFinished && Actions.Delirium.RecastTimeElapsed > burstDelayTime && Actions.Delirium.RecastTimeElapsed < 20) return true;
 
             //非爆发期防止溢出+续buff
-            if (JobGauge.HasDarkArts || (LocalPlayer.CurrentMp > 8500 && OpenerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
+            if (JobGauge.HasDarkArts || (LocalPlayer.CurrentMp > 8500 && openerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
             } while (false);
         }
-       
 
-        if (Actions.Delirium.IsCoolDown && Actions.Delirium.RecastTimeElapsed > WeaponRemain(1))
+        if (openerFinished && !IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
+
+        if (Actions.Delirium.RecastTimeElapsed > burstDelayTime && Actions.Delirium.RecastTimeElapsed < 25)
         {
             //暗影使者
-            if (LocalPlayer.HaveStatus(ObjectStatus.Delirium) && Actions.Shadowbringer.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (Actions.Shadowbringer.ShouldUse(out act)) return true;
 
             //吸血深渊+精雕怒斩
             if (Actions.AbyssalDrain.ShouldUse(out act)) return true;
             if (Actions.CarveandSpit.ShouldUse(out act)) return true;
+
+            if (Actions.Shadowbringer.ShouldUse(out act, mustUse: true)) return true;
+
         }
 
         //腐秽大地+腐秽黑暗
         if (Actions.SaltandDarkness.ShouldUse(out act)) return true;
-        if (OpenerFinished && !IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
 
         //搞搞攻击
         if (Actions.Plunge.ShouldUse(out act) && !IsMoving)
