@@ -24,7 +24,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
     private static bool enhancedCrossReaping => LocalPlayer.HaveStatus(ObjectStatus.EnhancedCrossReaping);
     private static bool enhancedVoidReaping => LocalPlayer.HaveStatus(ObjectStatus.EnhancedVoidReaping);
     private static bool arcaneCircle => LocalPlayer.HaveStatus(ObjectStatus.ArcaneCircle);
-    private static bool plentifulReady => LocalPlayer.HaveStatus(ObjectStatus.ImmortalSacrifice) && !LocalPlayer.HaveStatus(ObjectStatus.Bloodwhetting);
+    private static bool plentifulReady => LocalPlayer.HaveStatus(ObjectStatus.ImmortalSacrifice) && !LocalPlayer.HaveStatus(ObjectStatus.BloodsownCircle);
     private static bool haveDeathsDesign => Target.HaveStatus(ObjectStatus.DeathsDesign);
     internal override uint JobID => 39;
     internal struct Actions
@@ -114,7 +114,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 BuffsProvide = new[] { ObjectStatus.SoulReaver },
                 OtherCheck = b => !soulReaver && !enshrouded &&
                                   JobGauge.Soul >= 50 && !plentifulReady &&
-                                  ((Level >= Gluttony.Level && Gluttony.RecastTimeRemain > 8) || Level < Gluttony.Level),
+                                  ((Level >= Gluttony.Level && Gluttony.RecastTimeRemain > 12) || Level < Gluttony.Level),
             },
 
             //束缚挥割
@@ -133,8 +133,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             //神秘环
             ArcaneCircle = new(24405, true)
             {
-                OtherCheck = b => InBattle && haveDeathsDesign && 
-                                ((enshrouded && JobGauge.LemureShroud < 4 && JobGauge.VoidShroud < 2) || !enshrouded),
+                OtherCheck = b => InBattle && haveDeathsDesign
             },
 
             //大丰收
@@ -147,11 +146,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             //夜游魂衣
             Enshroud = new(24394)
             {
-                OtherCheck = b => !soulReaver && !enshrouded &&
-                        ((arcaneCircle && JobGauge.Shroud >= 50) || //神秘环期间附体
-                        (!arcaneCircle && JobGauge.Shroud >= 90) || //防止蓝条溢出
-                        (ArcaneCircle.RecastTimeRemain < 5 && JobGauge.Shroud >= 50) || //双附体起手
-                        (Level <= PlentifulHarvest.Level && JobGauge.Shroud >= 50)) //无法双附体直接打
+                OtherCheck = b => !soulReaver && !enshrouded && JobGauge.Shroud >= 50,
             },
 
             //团契
@@ -241,12 +236,12 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
         //处于变身状态。
         if (enshrouded)
         {
+            if (Actions.ShadowofDeath.ShouldUse(out act)) return true;
+
             //夜游魂衣-虚无/交错收割 阴冷收割
             if (Actions.CrossReaping.ShouldUse(out act)) return true;
             if (Actions.VoidReaping.ShouldUse(out act)) return true;
             if (Actions.GrimReaping.ShouldUse(out act)) return true;
-
-            if (Actions.ShadowofDeath.ShouldUse(out act)) return true;
 
             if (JobGauge.LemureShroud == 1 && Level >= Actions.Communio.Level)
             {
@@ -298,9 +293,12 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        //夜游魂衣-夜游魂切割 夜游魂钐割
-        if (Actions.LemuresSlice.ShouldUse(out act)) return true;
-        if (Actions.LemuresScythe.ShouldUse(out act)) return true;
+        if (enshrouded)
+        {
+            //夜游魂衣-夜游魂切割 夜游魂钐割
+            if (Actions.LemuresSlice.ShouldUse(out act)) return true;
+            if (Actions.LemuresScythe.ShouldUse(out act)) return true;
+        }
 
         //暴食
         if (Actions.Gluttony.ShouldUse(out act, mustUse: true)) return true;
