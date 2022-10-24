@@ -190,6 +190,7 @@ internal class ConfigWindow : Window
                 {
                     ImGui.Text("Is Boss: " + b.IsBoss().ToString());
                     ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
+                    ImGui.Text("NameID: " + b.NameId.ToString());
                 }
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
                 //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
@@ -652,13 +653,15 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
                     ImGui.Text("/aauto BreakProvoke 表示开启一段爆发或挑衅的窗口期。");
                     ImGui.Separator();
+                    ImGui.Text("/aauto Move 开启一段位移的窗口期。");
+                    ImGui.Separator();
                     ImGui.Text("/aauto AutoBreak 更改是否自动爆发。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AttackBig 开始进攻，进攻对象为脚下圈圈最大的。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AttackSmall 开始进攻，进攻对象为脚下圈圈最小的。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto AttackManual 开始进攻，进攻对象为手动选择。");
+                    ImGui.Text("/aauto AttackManual 开始进攻，进攻对象为手动选择，此时不会释放AOE。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AttackCancel 停止进攻，记得一定要经常关掉！");
                     ImGui.Separator();

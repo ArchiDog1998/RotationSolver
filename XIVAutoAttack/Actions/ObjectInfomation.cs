@@ -26,8 +26,8 @@ namespace XIVAutoAttack.Actions
         internal static bool IsBoss(this BattleChara obj)
         {
             if (obj == null) return false;
-            //return obj.MaxHp >= TargetFilter.GetHealthFromMulty(6.5f);
-            return !obj.GetObjectNPC().IsTargetLine;
+            return !(obj.GetObjectNPC()?.IsTargetLine ?? true)
+                || obj.NameId == 541 && obj.MaxHp >= TargetFilter.GetHealthFromMulty(6.5f);
         }
 
         internal static float GetHealthRatio(this BattleChara b)

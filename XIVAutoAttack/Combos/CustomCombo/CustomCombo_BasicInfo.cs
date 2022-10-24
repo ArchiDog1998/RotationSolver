@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Configuration;
 
 namespace XIVAutoAttack.Combos.CustomCombo
@@ -23,7 +24,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 return Target.IsDying();
             }
         }
-        protected static internal BaseAction ActionID => GeneralActions.Repose;
+        private static BaseAction ActionID => GeneralActions.Repose;
 
         public bool IsEnabled
         {

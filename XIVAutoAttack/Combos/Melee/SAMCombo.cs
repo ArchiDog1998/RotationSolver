@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Lumina.Data.Parsing.Layer;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.Melee;

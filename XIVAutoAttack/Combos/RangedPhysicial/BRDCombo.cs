@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
@@ -134,7 +135,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (!initFinished || (initFinished && BattleVoice.RecastTimeRemain >= WeaponRemain(1))) return true;
+                    if (!initFinished || (initFinished && BattleVoice.WillHaveOneCharge(1))) return true;
 
                     return false;
                 },

@@ -6,27 +6,15 @@ description: |-
   如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！
   QQ群：913297282 注意看下载量！
   输入/pattack以设置帮助菜单。
-punchline: Auto attack!
+punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 调整了身位判断和Boss判断
-  - 调整了镰刀的循环
-  - 修复了以自身为圆心的AOE在手动模式下会释放的问题
-  - 忍者开背刺的水遁提前2s
-  - 修复武士AOE老天下五剑贱不出来的问题
-  - 骑士和赤魔自奶的条件从队内无奶妈到只有一个人
-  - 内丹嗜血的发动条件调整为单体治疗能力技的通用条件
-  - 优化代码机工,诗人,绝枪,黑骑,骑士，汐ベMoon对此修改概不负责！
+  - 补充Move的帮助文档内容。
+  - 引用gamous的金句作为本插件的punchline。
   ## 新增功能
-  - 可选择是否将敌对列表的对象设为敌对。
-  ## 删除功能
-  - 有了AutoHook谁还需要AutoAttack的钓鱼功能？
+  - 
   ## API
-  - 上一个技能的释放判断通过函数解决
-  - PVEAction改名回为BaseAction
-  - 删除大量冗余API
-  - 有关状态的方法，全部重写
-  - 加了点注释
+  - BaseAction 添加了WillHaveOneCharge和ElapsedAfter方法
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
