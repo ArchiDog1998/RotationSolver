@@ -109,7 +109,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
                         && BattleVoice.RecastTimeRemain < 1f
                         && RagingStrikes.IsCoolDown 
                         && LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes)
-                        && canUse) return true;
+                        && RagingStrikes.ElapsedAfter(1)) return true;
 
                     return false;
                 },
@@ -135,7 +135,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (!initFinished || (initFinished && BattleVoice.WillHaveOneCharge(1))) return true;
+                    if (!initFinished || (initFinished && !BattleVoice.WillHaveOneCharge(1))) return true;
 
                     return false;
                 },
@@ -148,7 +148,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
                 {
                     if (JobGauge.Song != Song.WANDERER) return false;
 
-                    if (initFinished && (!initFinished || BattleVoice.RecastTimeRemain < 3.5f)) return false;
+                    if (initFinished && (!initFinished || !BattleVoice.WillHaveOneCharge(1))) return false;
 
                     if (JobGauge.SongTimer < 3000 && JobGauge.Repertoire > 0) return true;
                     if (JobGauge.Repertoire == 3 || JobGauge.Repertoire == 2 && EmpyrealArrow.RecastTimeRemain < 2) return true;

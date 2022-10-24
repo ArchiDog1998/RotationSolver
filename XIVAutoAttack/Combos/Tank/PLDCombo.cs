@@ -36,7 +36,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
     private static float FightorFlightDelayTime = 0;
 
     //private bool SlowLoop => Config.GetBoolByName("SlowLoop");
-    private bool SlowLoop = true;
+    private bool SlowLoop = false;
 
     internal struct Actions
     {
@@ -79,10 +79,6 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
                 {
                     return true;
                 },
-                AfterUse = () =>
-                {
-                    RequiescatDelayTime = WeaponRemain(11);
-                }
             },
 
             //全蚀斩
@@ -170,13 +166,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             },
 
             //安魂祈祷
-            Requiescat = new (7383)
-            {
-                AfterUse = () =>
-                {
-                    FightorFlightDelayTime = WeaponRemain(11);
-                }
-            },
+            Requiescat = new (7383),
 
             //悔罪
             Confiteor = new (16459)
@@ -227,7 +217,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         }
 
         //安魂祈祷
-        if (SlowLoop && CanUseRequiescat(out act)) return true;
+        //if (SlowLoop && CanUseRequiescat(out act)) return true;
         if (abilityRemain == 1 && CanUseRequiescat(out act)) return true;
   
 
@@ -331,11 +321,12 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         //厄运流转
         if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true))
         {
-            if (SlowLoop && inOpener && IsLastWeaponSkill(false, Actions.RiotBlade)) return true;
+            if (Actions.FightorFlight.ElapsedAfter(2)) return true;
+            //if (SlowLoop && inOpener && IsLastWeaponSkill(false, Actions.RiotBlade)) return true;
 
-            if (!SlowLoop && inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
+            //if (!SlowLoop && inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
 
-            if (!inOpener) return true;
+            //if (!inOpener) return true;
         }
 
         //深奥之灵
@@ -414,7 +405,8 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
             if (SlowLoop)
             {
-                if (openerFinished && Actions.Requiescat.RecastTimeElapsed > FightorFlightDelayTime) return true;
+                if (openerFinished && Actions.Requiescat.ElapsedAfter(12)) return true;
+
             }
             else
             {
@@ -455,7 +447,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             {
                 if (inOpener && IsLastWeaponSkill(true, Actions.FastBlade)) return true;
 
-                if (openerFinished && Actions.FightorFlight.RecastTimeElapsed > RequiescatDelayTime) return true;
+                if (openerFinished && Actions.FightorFlight.ElapsedAfter(12)) return true;
             }
             else
             {
