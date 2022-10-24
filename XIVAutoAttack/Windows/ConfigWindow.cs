@@ -334,6 +334,8 @@ internal class ConfigWindow : Window
                         //    Service.Configuration.Save();
                         //}
 
+
+
                         bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;
                         if (ImGui.Checkbox("将敌对列表的对象设为敌对", ref addEnemyListToHostile))
                         {
@@ -444,6 +446,13 @@ internal class ConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("技能使用"))
                     {
+                        bool useAOEWhenManual = Service.Configuration.UseAOEWhenManual;
+                        if (ImGui.Checkbox("在手动选择的时候使用AOE技能", ref useAOEWhenManual))
+                        {
+                            Service.Configuration.UseAOEWhenManual = useAOEWhenManual;
+                            Service.Configuration.Save();
+                        }
+
                         bool isOnlyGCD = Service.Configuration.OnlyGCD;
                         if (ImGui.Checkbox("只使用GCD循环，除去能力技", ref isOnlyGCD))
                         {

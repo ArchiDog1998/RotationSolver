@@ -169,17 +169,48 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //如果不用自动找目标，那就直接返回。
                 if (!IconReplacer.AutoTarget)
                 {
-                    if (Service.TargetManager.Target is BattleChara b && TargetHelper.CanAttack(b) && b.DistanceToPlayer() <= range
-                        && (Action.CastType == 1 || mustUse))
+                    if (Service.TargetManager.Target is BattleChara b && TargetHelper.CanAttack(b) && b.DistanceToPlayer() <= range)
                     {
-                        Target = b;
-                        return true;
+                        if (Action.CastType == 1 || mustUse)
+                        {
+                            Target = b;
+                            return true;
+                        }
+
+                        if (Service.Configuration.UseAOEWhenManual)
+                        {
+                            switch (Action.CastType)
+                            {
+                                case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
+                                    if(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetHelper.HostileTargets), range, Action.EffectRange, false, mustUse, false)
+                                        .Contains(b))
+                                    {
+                                        Target = b;
+                                        return true;
+                                    }
+                                    break;
+                                case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
+                                    if (TargetFilter.GetMostObjectInArc(FilterForTarget(TargetHelper.HostileTargets), Action.EffectRange, mustUse, false)
+                                        .Contains(b))
+                                    {
+                                        Target = b;
+                                        return true;
+                                    }
+                                    break;
+                                case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
+                                    if(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetHelper.HostileTargets), range, mustUse, false)
+                                        .Contains(b))
+                                    {
+                                        Target = b;
+                                        return true;
+                                    }
+                                    break;
+                            }
+                        }
                     }
-                    else
-                    {
-                        Target = null;
-                        return false;
-                    }
+
+                    Target = null;
+                    return false;
                 }
                 switch (Action.CastType)
                 {
@@ -192,17 +223,17 @@ namespace XIVAutoAttack.Actions.BaseAction
                         return true;
 
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        tar = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetHelper.HostileTargets), range, Action.EffectRange, false, mustUse));
+                        tar = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetHelper.HostileTargets), range, Action.EffectRange, false, mustUse, true));
                         if (tar == null) return false;
                         Target = tar;
                         return true;
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        tar = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetHelper.HostileTargets), Action.EffectRange, mustUse));
+                        tar = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetHelper.HostileTargets), Action.EffectRange, mustUse, true));
                         if (tar == null) return false;
                         Target = tar;
                         return true;
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        tar = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetHelper.HostileTargets), range, mustUse));
+                        tar = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetHelper.HostileTargets), range, mustUse, true));
                         if (tar == null) return false;
                         Target = tar;
                         return true;
