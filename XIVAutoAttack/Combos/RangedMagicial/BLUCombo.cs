@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Combos.RangedMagicial

@@ -661,7 +661,7 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
                     ImGui.Text("/aauto AttackSmall 开始进攻，进攻对象为脚下圈圈最小的。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto AttackManual 开始进攻，进攻对象为手动选择。");
+                    ImGui.Text("/aauto AttackManual 开始进攻，进攻对象为手动选择，此时不会释放AOE。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AttackCancel 停止进攻，记得一定要经常关掉！");
                     ImGui.Separator();

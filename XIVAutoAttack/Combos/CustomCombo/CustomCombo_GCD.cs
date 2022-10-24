@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Configuration;

@@ -1,0 +1,41 @@
+﻿using Action = Lumina.Excel.GeneratedSheets.Action;
+
+namespace XIVAutoAttack.Actions.BaseAction
+{
+    internal partial class BaseAction : IAction
+    {
+        private bool _isFriendly;
+        private bool _shouldEndSpecial;
+        private bool _isDot;
+        internal byte Level => Action.ClassJobLevel;
+        public uint ID => Action.RowId;
+        public uint AdjustedID => Service.IconReplacer.OriginalHook(ID);
+        internal bool IsGeneralGCD { get; }
+        internal bool IsRealGCD { get; }
+
+        internal Action Action { get; }
+        internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
+        {
+            Action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
+            _shouldEndSpecial = shouldEndSpecial;
+            _isFriendly = isFriendly;
+            _isDot = isDot;
+            IsGeneralGCD = Action.CooldownGroup == GCDCooldownGroup;
+            IsRealGCD = IsGeneralGCD || Action.AdditionalCooldownGroup == GCDCooldownGroup;
+
+            if (Action.PrimaryCostType == 3 || Action.PrimaryCostType == 4)
+            {
+                MPNeed = Action.PrimaryCostValue * 100u;
+            }
+            else if (Action.SecondaryCostType == 3 || Action.SecondaryCostType == 4)
+            {
+                MPNeed = Action.SecondaryCostValue * 100u;
+            }
+            else
+            {
+                MPNeed = 0;
+            }
+            _isDot = isDot;
+        }
+    }
+}
