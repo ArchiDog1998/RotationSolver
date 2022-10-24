@@ -190,6 +190,7 @@ internal class ConfigWindow : Window
                 {
                     ImGui.Text("Is Boss: " + b.IsBoss().ToString());
                     ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
+                    ImGui.Text("NameID: " + b.NameId.ToString());
                 }
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
                 //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
@@ -651,6 +652,8 @@ internal class ConfigWindow : Window
                     ImGui.Text("/aauto AntiRepulsion 表示开启一段防击退的窗口期。");
                     ImGui.Separator();
                     ImGui.Text("/aauto BreakProvoke 表示开启一段爆发或挑衅的窗口期。");
+                    ImGui.Separator();
+                    ImGui.Text("/aauto Move 开启一段位移的窗口期。");
                     ImGui.Separator();
                     ImGui.Text("/aauto AutoBreak 更改是否自动爆发。");
                     ImGui.Separator();

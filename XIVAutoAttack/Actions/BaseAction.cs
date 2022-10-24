@@ -40,6 +40,37 @@ namespace XIVAutoAttack.Actions
         internal virtual uint MPNeed { get; }
 
         #region CoolDown
+
+        /// <summary>
+        /// 距离下一个GCD转好还需要多少时间
+        /// </summary>
+        /// <param name="gcdCount">要隔着多少个GCD</param>
+        /// <param name="abilityCount">再多少个能力技之后</param>
+        /// <returns>还剩几秒</returns>
+        internal static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0)
+            => TargetHelper.WeaponTotal * gcdCount
+            + Service.Configuration.WeaponInterval * abilityCount
+            + TargetHelper.WeaponRemain;
+
+        /// <summary>
+        /// 距离下一个GCD转好这个技能能用吗。
+        /// </summary>
+        /// <param name="gcdCount">要隔着多少个GCD</param>
+        /// <param name="abilityCount">再多少个能力技之后</param>
+        /// <returns>这个时间点是否起码有一层可以用</returns>
+        internal bool WillHaveOneCharge(uint gcdCount = 0, uint abilityCount = 0)
+        {
+            if (HaveOneCharge) return true;
+            var recast = RecastTimeOneCharge;
+            var remain = WeaponRemain(gcdCount, abilityCount);
+
+            if(recast <= remain) return true;
+
+            if (Math.Abs(recast - remain) < 0.05) return true;
+
+            return false;
+        }
+
         /// <summary>
         /// 复唱时间
         /// </summary>

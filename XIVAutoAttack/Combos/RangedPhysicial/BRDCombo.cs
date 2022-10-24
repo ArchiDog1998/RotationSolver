@@ -134,7 +134,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (!initFinished || (initFinished && BattleVoice.RecastTimeRemain >= WeaponRemain(1))) return true;
+                    if (!initFinished || (initFinished && BattleVoice.WillHaveOneCharge(1))) return true;
 
                     return false;
                 },
