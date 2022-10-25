@@ -14,15 +14,9 @@ namespace XIVAutoAttack.Combos.RangedPhysicial;
 internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 {
     internal override uint JobID => 31;
-    private static bool initFinished = false;
-    //private static bool MCH_Asocial = false;
+    private static bool openerFinished = false;
     private static bool MCH_Opener = false;
     private static bool MCH_Automaton = false;
-
-    /// <summary>
-    /// 在4人本的道中
-    /// </summary>
-    private static bool InDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
 
     internal struct Actions
     {
@@ -72,7 +66,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
             ChainSaw = new(25788)
             {
                 //过热不释放技能,打进爆发
-                OtherCheck = b => !MCH_Opener || (initFinished && !JobGauge.IsOverheated),
+                OtherCheck = b => !MCH_Opener || (openerFinished && !JobGauge.IsOverheated),
             },
 
             //毒菌冲击
@@ -98,7 +92,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
             //野火
             Wildfire = new(2878)
             {
-                OtherCheck = b => JobGauge.Heat >= 50 || JobGauge.IsOverheated, 
+                OtherCheck = b => JobGauge.Heat >= 50, 
             },
 
             //虹吸弹
@@ -172,9 +166,9 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         MCH_Automaton = Config.GetBoolByName("MCH_Automaton");
         
         //当上一个连击是热阻击弹时完成起手
-        if (InBattle && (IsLastWeaponSkill(true, Actions.CleanShot) || Actions.Wildfire.RecastTimeRemain > 10 || Actions.SpreadShot.ShouldUse(out _)))
+        if (InBattle && (IsLastWeaponSkill(true, Actions.CleanShot) || !Actions.Wildfire.WillHaveOneCharge(4) || Actions.SpreadShot.ShouldUse(out _)))
         {
-            initFinished = true;
+            openerFinished = true;
         }
 
         //不在战斗中时重置起手
@@ -182,10 +176,10 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         {
             //开场前整备,空气锚和钻头必须冷却好
             if ((!Actions.AirAnchor.IsCoolDown || !Actions.Drill.IsCoolDown) && Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-            initFinished = false;
+            openerFinished = false;
         }
 
-        if (!Config.GetBoolByName("MCH_Opener")) initFinished = true;
+        if (!MCH_Opener) openerFinished = true;
 
         //AOE,毒菌冲击
         if (Actions.Bioblaster.ShouldUse(out act)) return true;
@@ -237,8 +231,8 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
         //起手虹吸弹、弹射
-        if (!Actions.Ricochet.IsCoolDown  && Actions.Ricochet.ShouldUse(out act, mustUse: true)) return true;
-        if (!Actions.GaussRound.IsCoolDown && Actions.GaussRound.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.Ricochet.RecastTimeRemain == 0 && Actions.Ricochet.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.GaussRound.RecastTimeRemain == 0 && Actions.GaussRound.ShouldUse(out act, mustUse: true)) return true;
 
         //枪管加热
         if (Actions.BarrelStabilizer.ShouldUse(out act)) return true;
@@ -261,93 +255,111 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         return false;
     }
 
+    /// <summary>
+    /// 判断能否使用野火
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private bool CanUseWildfire(out IAction act)
     {
-        if (Actions.Wildfire.ShouldUse(out act))
+        if (!Actions.Wildfire.ShouldUse(out act)) return false;
+
+        //小怪和AOE期间不打野火
+        if (Actions.SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()) return false;
+
+        //机工起手判断
+        if (!openerFinished && MCH_Opener) return false;
+
+        //在过热时
+        if (JobGauge.IsOverheated) return true;
+
+        //当上一个技能不是链锯且是钻头,空气锚,热冲击时不释放野火
+        if (!IsLastWeaponSkill(Actions.ChainSaw.ID) && IsLastWeaponSkill(true, Actions.Drill, Actions.HeatBlast, Actions.AirAnchor)) return false;
+
+        return true;
+    }
+
+    /// <summary>
+    /// 判断能否使用超荷
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    private bool CanUseHypercharge(out IAction act)
+    {
+        if (!Actions.Hypercharge.ShouldUse(out act)) return false;
+
+        //小怪快死了不释放
+        if (!Target.IsBoss() && IsTargetDying) return false;
+
+        //有野火buff必须释放超荷
+        if (LocalPlayer.HaveStatus(ObjectStatus.Wildfire)) return true;
+
+        //在三大金刚还剩3个GCD冷却好时不释放超荷
+        if (Actions.Drill.EnoughLevel && Actions.Drill.WillHaveOneCharge(3)) return false;
+        if (Actions.AirAnchor.EnoughLevel && Actions.AirAnchor.WillHaveOneCharge(3)) return false;
+        if (Actions.ChainSaw.EnoughLevel && Actions.ChainSaw.WillHaveOneCharge(3)) return false;
+
+        //小怪AOE和4人本超荷判断
+        if (Actions.SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss())
         {
-            //小怪AOE期间不打野火
-            if (Actions.SpreadShot.ShouldUse(out _) || InDungeonsMiddle) return false;
-            //if (!Target.IsBoss() && IsTargetDying) return false;
+            if (IsMoving) return false;
+            if (!IsMoving) return true;
+        }
 
-            //机工起手判断
-            if (!initFinished && MCH_Opener) return false;
+        //等级低于野火
+        if (!Actions.Wildfire.EnoughLevel) return true;
 
-            //在过热时
-            if (JobGauge.IsOverheated) return true;
+        //标准循环起手判断
+        if (!openerFinished && MCH_Opener) return false;
 
-            if (!IsLastWeaponSkill(Actions.ChainSaw.ID)
-            && (IsLastWeaponSkill(Actions.Drill.ID, Actions.HeatBlast.ID) || IsLastWeaponSkill(true, Actions.AirAnchor))) return false;
+        //野火前攒热量
+        if (!Actions.Wildfire.WillHaveOneCharge(5) && Actions.Wildfire.WillHaveOneCharge(19))
+        {
+            //如果期间热量溢出超过5,就释放一次超荷
+            if (IsLastWeaponSkill(Actions.Drill.ID) && JobGauge.Heat >= 85) return true;
+            return false;
+        }
+        else
+        {
+            //上一个技能是链锯释放超荷
+            if (IsLastWeaponSkill(Actions.ChainSaw.ID)) return true;
+
+            //上一个技能不是链锯且野火即将冷却好时释放超荷
+            if (!IsLastWeaponSkill(Actions.ChainSaw.ID) && (!Actions.Wildfire.IsCoolDown || Actions.Wildfire.WillHaveOneCharge())) return true;
 
             return true;
         }
-        return false;
-    }
-    
-    private bool CanUseHypercharge(out IAction act)
-    {
-        if (Actions.Hypercharge.ShouldUse(out act))
-        {
-            //小怪快死了不释放
-            if (!Target.IsBoss() && IsTargetDying) return false;
-
-            //有野火buff必须释放超荷
-            if (LocalPlayer.HaveStatus(ObjectStatus.Wildfire)) return true;
-
-            //在三大金刚还剩8秒冷却好时不释放超荷
-            if (Actions.Drill.EnoughLevel && Actions.Drill.RecastTimeRemain < 8) return false;
-            if (Actions.AirAnchor.EnoughLevel && Actions.AirAnchor.RecastTimeRemain < 8) return false;
-            if (Actions.ChainSaw.EnoughLevel && Actions.ChainSaw.RecastTimeRemain < 8) return false;
-
-            //小怪AOE或者自嗨期间超荷判断
-            if ((Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) && IsMoving) return false;
-            if (((Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) && !IsMoving) || !Actions.Wildfire.EnoughLevel) return true;
-
-            uint wfTimer = 6;
-            var wildfireCDTime = Actions.Wildfire.RecastTimeRemain;
-            if (!Actions.BarrelStabilizer.EnoughLevel) wfTimer = 12;
-
-            //标准循环起手判断
-            if (!initFinished && MCH_Opener) return false;
-
-            //野火前攒热量
-            if (15 < wildfireCDTime && wildfireCDTime < 43)
-            {
-                //如果期间热量溢出超过5,就释放一次超荷
-                if (IsLastWeaponSkill(Actions.Drill.ID) && JobGauge.Heat >= 85) return true;
-                return false;
-            }
-
-            //超荷释放判断
-            if (wildfireCDTime >= wfTimer
-            || IsLastWeaponSkill(Actions.ChainSaw.ID)
-            || (!IsLastWeaponSkill(Actions.ChainSaw.ID) && (!Actions.Wildfire.IsCoolDown || wildfireCDTime <= 1))) return true;
-         
-        }
-        return false;
     }
 
+    /// <summary>
+    /// 判断能否使用机器人
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private bool CanUseRookAutoturret(out IAction act)
     {
-        if (Actions.RookAutoturret.ShouldUse(out act, mustUse: true))
-        {
-            //电量等于100,强制释放
-            if (JobGauge.Battery == 100) return true;
+        if (!Actions.RookAutoturret.ShouldUse(out act, mustUse: true)) return false;
 
-            //小怪快死了不释放
-            if (!Target.IsBoss() && IsTargetDying) return false;
+        //小怪快死了不释放
+        if (!Target.IsBoss() && IsTargetDying) return false;
 
-            //自嗨与小怪AOE判断
-            if (!MCH_Automaton || (!Target.IsBoss() && !IsMoving) || Level < Actions.Wildfire.ID) return true;
-            if ((Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) && IsMoving) return false;
+        //电量等于100,强制释放
+        if (JobGauge.Battery == 100) return true;
 
-            //起手判断
-            if (!initFinished && MCH_Opener) return false;
+        //小怪,AOE,不吃团辅判断
+        if (!MCH_Automaton || (!Target.IsBoss() && !IsMoving) || Level < Actions.Wildfire.ID) return true;
+        if ((Actions.SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()) && IsMoving) return false;
 
-            //机器人吃团辅判断
-            if (Actions.AirAnchor.RecastTimeRemain < 5 && JobGauge.Battery > 80) return true;
-            if (Actions.ChainSaw.RecastTimeRemain < 5 || (Actions.ChainSaw.RecastTimeRemain > 55 && JobGauge.Battery <= 60)) return true;
+        //起手判断
+        if (!openerFinished && MCH_Opener) return false;
 
-        }
+        //机器人吃团辅判断
+        if (Actions.AirAnchor.WillHaveOneCharge(2) && JobGauge.Battery > 80) return true;
+        if (Actions.ChainSaw.WillHaveOneCharge(2) || (!Actions.ChainSaw.ElapsedAfter(2) && JobGauge.Battery <= 60)) return true;
+
         return false;
     }
+
+
+
 }
