@@ -84,6 +84,8 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         internal bool HaveOneCharge => IsCoolDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
 
+        internal ushort ChargesCount => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
+
         private float RecastTimeOneCharge => RecastTime / MaxCharges;
 
         /// <summary>
