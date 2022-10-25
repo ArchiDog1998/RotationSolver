@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -24,7 +25,7 @@ namespace XIVAutoAttack.Updaters
         internal static byte AbilityRemainCount { get; private set; } = 0;
 
 
-        internal static void UpdateWeaponTime()
+        internal static unsafe void UpdateWeaponTime()
         {
             InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 

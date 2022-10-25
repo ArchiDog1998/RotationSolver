@@ -6,7 +6,7 @@ using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -37,9 +37,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected bool SettingBreak => IconReplacer.BreakorProvoke || Service.Configuration.AutoBreak;
 
+        [Obsolete("少用！给我少用！")]
         protected static byte Level => LocalPlayer?.Level ?? 0;
 
-        protected static bool InBattle => TargetUpdater.InBattle;
+        protected static bool InBattle => ActionUpdater.InBattle;
 
         [Obsolete("该方法已过时，请使用BaseAction.WillHaveOneCharge")]
         /// <summary>
@@ -51,7 +52,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0)
             => CooldownHelper.WeaponRemain(gcdCount, abilityCount);
 
-        protected static float Weaponelapsed => TargetUpdater.Weaponelapsed;
+        protected static float Weaponelapsed => ActionUpdater.Weaponelapsed;
 
         protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastSpell(isAdjust, actions);

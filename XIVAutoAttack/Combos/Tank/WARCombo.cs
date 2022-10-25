@@ -4,17 +4,15 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal class WARCombo : JobGaugeCombo<WARGauge>
+internal sealed class WARCombo : JobGaugeCombo<WARGauge>
 {
     internal override uint JobID => 21;
     internal override bool HaveShield => LocalPlayer.HaveStatus(ObjectStatus.Defiance);
     private protected override BaseAction Shield => Actions.Defiance;
-    internal static float BuffTime => LocalPlayer.FindStatusTime(ObjectStatus.SurgingTempest);
-
     internal struct Actions
     {
         public static readonly BaseAction
@@ -33,7 +31,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //±©·çËé ºì¸«
             StormsEye = new (45)
             {
-                OtherCheck = b => BuffTime < 10,
+                OtherCheck = b => LocalPlayer.WillStatusEnd(1, 0, ObjectStatus.SurgingTempest),
             },
 
             //·É¸«
@@ -66,7 +64,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             //Ô­³õÖ®»ê
             InnerBeast = new (49)
             {
-                OtherCheck = b => BuffTime > WeaponRemain() + 0.1f && ( JobGauge.BeastGauge >= 50 || LocalPlayer.HaveStatus(ObjectStatus.InnerRelease)),
+                OtherCheck = b => !LocalPlayer.WillStatusEnd(1, 0, ObjectStatus.SurgingTempest) && ( JobGauge.BeastGauge >= 50 || LocalPlayer.HaveStatus(ObjectStatus.InnerRelease)),
             },
 
             //¸ÖÌúÐý·ç
@@ -235,8 +233,9 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
+        
         //±¬·¢
-        if (BuffTime >WeaponRemain(3) || Level < Actions.MythrilTempest.Level)
+        if (!LocalPlayer.WillStatusEnd(3, 0, ObjectStatus.SurgingTempest) || !Actions.MythrilTempest.EnoughLevel)
         {
             //¿ñ±©
             if (!new BaseAction(7389).IsCoolDown && Actions.Berserk.ShouldUse(out act)) return true;

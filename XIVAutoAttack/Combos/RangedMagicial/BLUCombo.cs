@@ -1,17 +1,17 @@
-﻿using System;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using System;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.RangedMagicial
 {
-    internal class BLUCombo : OtherCombo
+    internal sealed class BLUCombo : OtherCombo
     {
         internal class BLUAction : BaseAction
         {
-            public uint[] BLUActions
+            public unsafe uint[] BLUActions
             {
                 get
                 {

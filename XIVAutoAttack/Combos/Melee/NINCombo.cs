@@ -8,7 +8,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal class NINCombo : JobGaugeCombo<NINGauge>
+internal sealed class NINCombo : JobGaugeCombo<NINGauge>
 {
     internal override uint JobID => 30;
     public class NinAction : BaseAction
@@ -266,7 +266,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
                 return false;
             }
 
-            if (empty && (!InBattle || Level < Actions.Huraijin.Level) && Actions.Huton.ShouldUse(out _))
+            if (empty && (!InBattle || !Actions.Huraijin.EnoughLevel) && Actions.Huton.ShouldUse(out _))
             {
                 _ninactionAim = Actions.Huton;
                 return false;
@@ -290,7 +290,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             }
         }
         //常规单体忍术
-        if (Actions.Ten.ShouldUse(out _) && (Level < Actions.TenChiJin.Level || Actions.TenChiJin.IsCoolDown))
+        if (Actions.Ten.ShouldUse(out _) && (!Actions.TenChiJin.EnoughLevel || Actions.TenChiJin.IsCoolDown))
         {
             if (Actions.Raiton.ShouldUse(out _))
             {
@@ -298,7 +298,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
                 return true;
             }
 
-            if (Level < Actions.Chi.Level && Actions.FumaShuriken.ShouldUse(out _))
+            if (!Actions.Chi.EnoughLevel && Actions.FumaShuriken.ShouldUse(out _))
             {
                 _ninactionAim = Actions.FumaShuriken;
                 return true;
@@ -427,7 +427,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if(Level >= Actions.Ten.Level)
+        if(Actions.Ten.EnoughLevel)
         {
             if (ChoiceNinjutsus(out act)) return true;
             if (DoNinjutsus(out act)) return true;
@@ -513,7 +513,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             if (Actions.Bhavacakra.ShouldUse(out act)) return true;
         }
 
-        if (Service.ClientState.LocalPlayer.Level < Actions.DreamWithinaDream.Level)
+        if (!Actions.DreamWithinaDream.EnoughLevel)
         {
             if (Actions.Assassinate.ShouldUse(out act)) return true;
         }

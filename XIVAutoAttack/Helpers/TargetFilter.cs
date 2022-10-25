@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Helpers
 {
@@ -141,7 +142,7 @@ namespace XIVAutoAttack.Helpers
 
         internal static BattleChara[] ProvokeTarget(BattleChara[] inputCharas, bool needDistance = false)
         {
-            var tankIDS = GetJobCategory(TargetHelper.AllianceMembers, Role.防护).Select(member => member.ObjectId);
+            var tankIDS = GetJobCategory(TargetUpdater.AllianceMembers, Role.防护).Select(member => member.ObjectId);
             var loc = Service.ClientState.LocalPlayer.Position;
             var id = Service.ClientState.LocalPlayer.ObjectId;
 
@@ -172,7 +173,7 @@ namespace XIVAutoAttack.Helpers
                 //确认一下死了的T有哪些。
 
                 var deathT = GetJobCategory(deathParty, Role.防护);
-                int TCount = TargetHelper.PartyTanks.Length;
+                int TCount = TargetUpdater.PartyTanks.Length;
 
                 //如果全死了，赶紧复活啊。
                 if (TCount > 0 && deathT.Length == TCount)
@@ -236,7 +237,7 @@ namespace XIVAutoAttack.Helpers
 
                 //如果有人在对着他咏唱，那就算了。
                 bool isCasting = false;
-                foreach (var character in TargetHelper.AllianceMembers)
+                foreach (var character in TargetUpdater.AllianceMembers)
                 {
                     if (character.CastTargetObjectId == item.ObjectId)
                     {
@@ -276,11 +277,11 @@ namespace XIVAutoAttack.Helpers
             if (Service.ClientState.LocalPlayer == null) return 0;
 
             var multi = GetJobCategory(new BattleChara[] { Service.ClientState.LocalPlayer }, Role.防护).Length == 0 ? mult : mult * 1.5f;
-            if (TargetHelper.PartyMembers.Length > 4)
+            if (TargetUpdater.PartyMembers.Length > 4)
             {
                 multi *= 2;
             }
-            else if (TargetHelper.PartyMembers.Length == 1)
+            else if (TargetUpdater.PartyMembers.Length == 1)
             {
                 multi = 0.5f;
             }

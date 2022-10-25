@@ -7,8 +7,7 @@ using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
-using XIVAutoAttack.Updaters.TargetUpdater;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -42,7 +41,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         private IAction Invoke(uint actionID, uint lastComboActionID, float comboTime)
         {
-            byte abilityRemain = TargetUpdater.AbilityRemainCount;
+            byte abilityRemain = ActionUpdater.AbilityRemainCount;
 
             //防AOE
             var helpDefenseAOE = Service.Configuration.AutoDefenseForTank && TargetUpdater.IsHostileAOE;

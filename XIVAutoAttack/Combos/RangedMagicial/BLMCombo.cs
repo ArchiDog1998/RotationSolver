@@ -9,7 +9,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos
 {
-    internal class BLMCombo : JobGaugeCombo<BLMGauge>
+    internal sealed class BLMCombo : JobGaugeCombo<BLMGauge>
     {
         internal class BLMAction : BaseAction
         {
@@ -72,48 +72,6 @@ namespace XIVAutoAttack.Combos
             }
         }
 
-        internal override uint JobID => 25;
-
-        /// <summary>
-        /// 判断通晓是否满了。
-        /// </summary>
-        protected static bool IsPolyglotStacksMaxed
-        {
-            get
-            {
-                if (Level < 80)
-                {
-                    return JobGauge.PolyglotStacks == 1;
-                }
-                else
-                {
-                    return JobGauge.PolyglotStacks == 2;
-                }
-            }
-        }
-        private bool HasFire => LocalPlayer.HaveStatus(ObjectStatus.Firestarter);
-        private bool HasThunder => LocalPlayer.HaveStatus(ObjectStatus.Thundercloud);
-        internal static bool InTranspose = false;
-        private bool TargetHasThunder => StatusHelper.FindStatusTimes(Target, ObjectStatus.Thunder,
-                        ObjectStatus.Thunder2,
-                        ObjectStatus.Thunder3,
-                        ObjectStatus.Thunder4).Length > 0;
-        internal static bool UseThunderIn { get; set; } = false;
-        protected override bool CanHealSingleAbility => false;
-        private bool CanGoFire
-        {
-            get
-            {
-                if (!(JobGauge.InUmbralIce && LocalPlayer.CurrentMp > 9000 && (JobGauge.UmbralHearts == 3 || Level < 58))) return false;
-
-                if (UseThunderIn) return true;
-
-                if (StatusHelper.FindStatusTime(Target, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 20) return true;
-                if (StatusHelper.FindStatusTime(Target, ObjectStatus.Thunder2, ObjectStatus.Thunder4) > 10) return true;
-                return false;
-            }
-        } 
-
         internal struct Actions
         {
 
@@ -141,16 +99,16 @@ namespace XIVAutoAttack.Combos
                 },
 
                 //星灵移位
-                Transpose = new (149u) { OtherCheck = b => JobGauge.InUmbralIce || JobGauge.InAstralFire },
+                Transpose = new(149u) { OtherCheck = b => JobGauge.InUmbralIce || JobGauge.InAstralFire },
 
                 //灵极魂
-                UmbralSoul = new (16506u) { OtherCheck = b => JobGauge.InUmbralIce },
+                UmbralSoul = new(16506u) { OtherCheck = b => JobGauge.InUmbralIce },
 
                 //魔罩
-                Manaward = new (157u),
+                Manaward = new(157u),
 
                 //魔泉
-                Manafont = new (158u),
+                Manafont = new(158u),
 
                 //激情咏唱
                 Sharpcast = new(3574u)
@@ -165,85 +123,129 @@ namespace XIVAutoAttack.Combos
                 },
 
                 //黑魔纹
-                Leylines = new (3573u, shouldEndSpecial: true)
+                Leylines = new(3573u, shouldEndSpecial: true)
                 {
-                    BuffsProvide = new [] { ObjectStatus.LeyLines, },
+                    BuffsProvide = new[] { ObjectStatus.LeyLines, },
                 },
 
                 //魔纹步
-                BetweenTheLines = new (7419u, shouldEndSpecial: true)
+                BetweenTheLines = new(7419u, shouldEndSpecial: true)
                 {
-                    BuffsNeed = new [] { ObjectStatus.LeyLines },
+                    BuffsNeed = new[] { ObjectStatus.LeyLines },
                 },
 
                 //以太步
-                AetherialManipulation = new (155)
+                AetherialManipulation = new(155)
                 {
                     ChoiceTarget = TargetFilter.FindMoveTarget,
                 },
 
                 //详述
-                Amplifier = new (25796u) { OtherCheck = b => !IsPolyglotStacksMaxed && JobGauge.EnochianTimer > 10000 },
+                Amplifier = new(25796u) { OtherCheck = b => !IsPolyglotStacksMaxed && JobGauge.EnochianTimer > 10000 },
 
                 //核爆
-                Flare = new (162u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
+                Flare = new(162u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
 
                 //绝望
-                Despair = new (16505u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 3000 },
+                Despair = new(16505u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 3000 },
 
                 //秽浊
-                Foul = new (7422u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 },
+                Foul = new(7422u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 },
 
                 //异言
-                Xenoglossy = new (16507u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 };
+                Xenoglossy = new(16507u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 };
 
 
 
             public static readonly BLMAction
 
                 //火1
-                Fire = new (141u, true),
+                Fire = new(141u, true),
 
                 //火2
-                Fire2 = new (147u, true)
+                Fire2 = new(147u, true)
                 {
                     AfterUse = () => InTranspose = false,
                 },
 
                 //火3
-                Fire3 = new (152u, true)
+                Fire3 = new(152u, true)
                 {
                     AfterUse = () => InTranspose = false,
                 },
 
                 //火4
-                Fire4 = new (3577u, true) { OtherCheck = b => JobGauge.InAstralFire && JobGauge.ElementTimeRemaining > 5000 },
+                Fire4 = new(3577u, true) { OtherCheck = b => JobGauge.InAstralFire && JobGauge.ElementTimeRemaining > 5000 },
 
 
                 //冰1
-                Blizzard = new (142u, false)
+                Blizzard = new(142u, false)
                 {
                     AfterUse = () => UseThunderIn = false,
                 },
 
                 //冰2
-                Blizzard2 = new (25793u, false)
+                Blizzard2 = new(25793u, false)
                 {
                     AfterUse = () => UseThunderIn = false,
                 },
 
                 //冰3
-                Blizzard3 = new (154u, false)
+                Blizzard3 = new(154u, false)
                 {
                     AfterUse = () => UseThunderIn = false,
                 },
 
                 //冰4
-                Blizzard4 = new (3576u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
+                Blizzard4 = new(3576u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) },
 
                 //冻结
-                Freeze = new (159u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2800 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) };
+                Freeze = new(159u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2800 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) };
         }
+
+        internal override uint JobID => 25;
+
+        /// <summary>
+        /// 判断通晓是否满了。
+        /// </summary>
+        protected static bool IsPolyglotStacksMaxed
+        {
+            get
+            {
+                if (!Actions.Xenoglossy.EnoughLevel)
+                {
+                    return JobGauge.PolyglotStacks == 1;
+                }
+                else
+                {
+                    return JobGauge.PolyglotStacks == 2;
+                }
+            }
+        }
+        private bool HasFire => LocalPlayer.HaveStatus(ObjectStatus.Firestarter);
+        private bool HasThunder => LocalPlayer.HaveStatus(ObjectStatus.Thundercloud);
+        internal static bool InTranspose = false;
+        private bool TargetHasThunder => Target.HaveStatus(ObjectStatus.Thunder,
+                        ObjectStatus.Thunder2,
+                        ObjectStatus.Thunder3,
+                        ObjectStatus.Thunder4);
+        internal static bool UseThunderIn { get; set; } = false;
+        protected override bool CanHealSingleAbility => false;
+        private bool CanGoFire
+        {
+            get
+            {
+                if (!(JobGauge.InUmbralIce && LocalPlayer.CurrentMp > 9000 && (JobGauge.UmbralHearts == 3 || Level < 58))) return false;
+
+                if (UseThunderIn) return true;
+
+                if (!Target.WillStatusEnd(7, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)) return true;
+                if (!Target.WillStatusEnd(3, 0, ObjectStatus.Thunder2, ObjectStatus.Thunder4)) return true;
+                return false;
+            }
+        } 
+
+
 
         internal override SortedList<DescType, string> Description => new ()
         {
@@ -296,10 +298,10 @@ namespace XIVAutoAttack.Combos
             //星灵转冰
             if (Level >= 90 && JobGauge.InAstralFire && LocalPlayer.CurrentMp == 0
                 && (JobGauge.PolyglotStacks > 0 || JobGauge.EnochianTimer < 3000)
-                && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5 
-                || !Actions.Triplecast.IsCoolDown || Actions.Triplecast.RecastTimeRemain < 15
+                && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneCharge(2,1) 
+                || !Actions.Triplecast.IsCoolDown || Actions.Triplecast.WillHaveOneCharge(3,1)
                 ||　(Target is BattleChara b  &&
-                StatusHelper.FindStatusTime(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 15)))
+                !b.WillStatusEnd(5, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3))))
             {
                 Actions.Transpose.AfterUse = () =>
                 {
@@ -353,7 +355,7 @@ namespace XIVAutoAttack.Combos
             }
 
             if ((JobGauge.InUmbralIce && !TargetHasThunder) || (JobGauge.InAstralFire && LocalPlayer.CurrentMp <= 4400)
-                || GeneralActions.Swiftcast.RecastTimeRemain > 20)
+                || !GeneralActions.Swiftcast.WillHaveOneCharge(5,1))
             {
                 //加个激情
                 if (Actions.Sharpcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -368,7 +370,7 @@ namespace XIVAutoAttack.Combos
 
                     //加个即刻
                     if (!HasFire && (UseThunderIn || HasThunder) && GeneralActions.Swiftcast.ShouldUse(out act)) return true;
-                    if (!HasFire && GeneralActions.Swiftcast.RecastTimeRemain >= 5 && Actions.Triplecast.RecastTimeRemain < 15 && 
+                    if (!HasFire && !GeneralActions.Swiftcast.WillHaveOneCharge(1, 1) && Actions.Triplecast.WillHaveOneCharge(5, 1) && 
                         Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo:true)) return true;
                 }
             }
@@ -403,7 +405,7 @@ namespace XIVAutoAttack.Combos
                     if (!Actions.Fire2.ShouldUse(out _) && JobGauge.IsParadoxActive && Actions.Fire.ShouldUse(out act)) return true;
 
                     //如果可以不硬读条转火
-                    if(HasFire || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 1.5)
+                    if(HasFire || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneCharge(0, 2))
                     {
                         //补雷
                         if (!UseThunderIn && HasThunder && AddThunder(lastComboActionID, out act)) return true;
@@ -535,9 +537,9 @@ namespace XIVAutoAttack.Combos
                 //否则，转入冰状态。
                 if (JobGauge.PolyglotStacks == 2 || (JobGauge.PolyglotStacks == 1 && JobGauge.EnochianTimer < 3000))
                 {
-                    if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.RecastTimeRemain < 5
+                    if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneCharge(1,1)
                         || (Target is BattleChara b &&
-                        StatusHelper.FindStatusTime(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) > 10))
+                        !b.WillStatusEnd(3, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)))
                        && Level >= 90 && AddPolyglotAttach(out act)) return true;
                 }
             }
@@ -556,7 +558,7 @@ namespace XIVAutoAttack.Combos
             if (Actions.Blizzard2.ShouldUse(out act, lastComboActionID)) return true;
             if (Actions.Blizzard3.ShouldUse(out act, lastComboActionID)) return true;
 
-            if (Level < Actions.Blizzard3.Level && Actions.Transpose.ShouldUse(out act)) return true;
+            if (!Actions.Blizzard3.EnoughLevel && Actions.Transpose.ShouldUse(out act)) return true;
 
             //移动
             if (IsMoving && HaveHostileInRange)
@@ -578,7 +580,7 @@ namespace XIVAutoAttack.Combos
         /// <returns></returns>
         private uint AttackAstralFire( out IAction act)
         {
-            uint addition = Level < Actions.Despair.Level ? 0u : 800u;
+            uint addition = !Actions.Despair.EnoughLevel ? 0u : 800u;
 
             if (Actions.Fire4.ShouldUse( out act)) return Actions.Fire4.MPNeed + addition;
 
@@ -602,7 +604,7 @@ namespace XIVAutoAttack.Combos
             if (!InTranspose && Actions.Thunder.ShouldUse(out act, lastAct)) return true;
 
             if (Target is BattleChara b &&
-                            StatusHelper.FindStatusTime(b, ObjectStatus.Thunder, ObjectStatus.Thunder3) < 9
+                            b.WillStatusEnd(3, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)
                             && Actions.Thunder.ShouldUse(out act, lastAct)) return true;
 
             return false;
@@ -612,7 +614,7 @@ namespace XIVAutoAttack.Combos
         {
             //如果满了，或者等级太低，没有冰心，就别加了。
             act = null;
-            if (JobGauge.UmbralHearts == 3 || Level < Actions.Blizzard4.Level) return false;
+            if (JobGauge.UmbralHearts == 3 || !Actions.Blizzard4.EnoughLevel) return false;
 
             //冻结
             if (Actions.Freeze.ShouldUse(out act)) return true;

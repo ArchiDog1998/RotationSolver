@@ -6,11 +6,11 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal class SCHCombo : JobGaugeCombo<SCHGauge>
+internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
 {
     internal override uint JobID => 28;
 
@@ -125,8 +125,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
                 {
                     foreach (var friend in friends)
                     {
-                        var times = StatusHelper.FindStatusTimes(friend, ObjectStatus.Galvanize);
-                        if (times != null && times.Length > 0) return friend;
+                        if( friend.HaveStatus(ObjectStatus.Galvanize)) return friend;
                     }
                     return null;
                 },
@@ -221,7 +220,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
     private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
     {
         if (Actions.Adloquium.ShouldUse(out act)) return true;
-        if (Level < Actions.Adloquium.Level && Actions.Physick.ShouldUse(out act)) return true;
+        if (!Actions.Adloquium.EnoughLevel && Actions.Physick.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -244,7 +243,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
     private protected override bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
     {
 
-        if (!Actions.DeploymentTactics.IsCoolDown && Level >= Actions.DeploymentTactics.Level)
+        if (!Actions.DeploymentTactics.IsCoolDown && Actions.DeploymentTactics.EnoughLevel)
         {
             _useDeploymentTactics = true;
             if (Actions.Adloquium.ShouldUse(out act)) return true;
@@ -312,7 +311,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
         {
             if (Actions.Aetherflow.ShouldUse(out act)) return true;
         }
-        else if (Actions.Aetherflow.RecastTimeRemain < 6)
+        else if (Actions.Aetherflow.WillHaveOneCharge(3))
         {
             if (Actions.EnergyDrain.ShouldUse(out act)) return true;
         }

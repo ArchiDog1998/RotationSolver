@@ -13,7 +13,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal class DRGCombo : JobGaugeCombo<DRGGauge>
+internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
 {
     internal override uint JobID => 22;
     private static bool inOpener = true;
@@ -126,7 +126,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
 
                 OtherCheck = b =>
                 {
-                    if (Geirskogul.RecastTimeRemain < 12) return false;
+                    if (Geirskogul.WillHaveOneCharge(4)) return false;
                     if (inOpener && IsLastWeaponSkill(true, FangandClaw)) return true;
                     if (!inOpener) return true;
 
@@ -276,7 +276,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
         if (Actions.Stardiver.ShouldUse(out act, mustUse: true)) return true;
 
         //高跳
-        if (Level >= Actions.HighJump.Level)
+        if (Actions.HighJump.EnoughLevel)
         {
             if (Actions.HighJump.ShouldUse(out act)) return true;
         }
@@ -341,7 +341,7 @@ internal class DRGCombo : JobGaugeCombo<DRGGauge>
         }
 
         //看看是否需要续Buff
-        if (LocalPlayer.FindStatusTime(ObjectStatus.PowerSurge) > 13)
+        if (LocalPlayer.WillStatusEnd(5, 0, ObjectStatus.PowerSurge))
         {
             if (Actions.FullThrust.ShouldUse(out act, lastComboActionID)) return true;
             if (Actions.VorpalThrust.ShouldUse(out act, lastComboActionID)) return true;

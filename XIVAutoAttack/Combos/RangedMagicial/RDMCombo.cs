@@ -7,11 +7,11 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
-internal class RDMCombo : JobGaugeCombo<RDMGauge>
+internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
 {
     internal override uint JobID => 35;
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Length == 1 && base.CanHealSingleSpell;
@@ -209,7 +209,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.ManaStacks == 0 && (JobGauge.BlackMana < 50 || JobGauge.WhiteMana < 50) && Actions.Manafication.RecastTimeRemain > 4)
+        if (JobGauge.ManaStacks == 0 && (JobGauge.BlackMana < 50 || JobGauge.WhiteMana < 50) && !Actions.Manafication.WillHaveOneCharge(1, 1))
         {
             //促进满了就用。 
             if (abilityRemain == 2 && Actions.Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -368,8 +368,7 @@ internal class RDMCombo : JobGaugeCombo<RDMGauge>
             }
 
             //如果倍增的时间快到了，但还是没好。
-            float emboldenRemain = Actions.Embolden.RecastTimeRemain;
-            if (emboldenRemain < 30 && emboldenRemain > 1)
+            if (Actions.Embolden.WillHaveOneCharge(10))
             {
                 return false;
             }

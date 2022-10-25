@@ -10,11 +10,11 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal class ASTCombo : JobGaugeCombo<ASTGauge>
+internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
 {
     internal override uint JobID => 33;
 
@@ -323,7 +323,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
             if (Actions.Astrodyne.ShouldUse(out act)) return true;
         }
 
-        if (JobGauge.DrawnCrownCard == CardType.LORD || Actions.MinorArcana.RecastTimeRemain < 3)
+        if (JobGauge.DrawnCrownCard == CardType.LORD || Actions.MinorArcana.WillHaveOneCharge(1))
         {
             //进攻牌，随便发。或者CD要转好了，赶紧发掉。
             if (Actions.CrownPlay.ShouldUse(out act)) return true;

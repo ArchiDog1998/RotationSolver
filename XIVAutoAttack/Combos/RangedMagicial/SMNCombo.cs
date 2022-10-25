@@ -5,11 +5,11 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
-internal class SMNCombo : JobGaugeCombo<SMNGauge>
+internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
 {
     public class SMNAction : BaseAction
     {
@@ -26,7 +26,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
 
     private static bool InBahamut => Service.IconReplacer.OriginalHook(25822) == Actions.Deathflare.ID;
     private static bool InPhoenix => Service.IconReplacer.OriginalHook(25822) == Actions.Rekindle.ID;
-    private static bool InBreak => InBahamut || InPhoenix || Service.ClientState.LocalPlayer.Level < Actions.SummonBahamut.Level;
+    private static bool InBreak => InBahamut || InPhoenix || !Actions.SummonBahamut.EnoughLevel;
     internal struct Actions
     {
         public static readonly SMNAction
@@ -202,7 +202,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
         {
             if (Actions.SummonBahamut.ShouldUse(out act))
             {
-                if (Actions.SearingLight.IsCoolDown || Level < Actions.SearingLight.Level)
+                if (Actions.SearingLight.IsCoolDown || !Actions.SearingLight.EnoughLevel)
                     return true;
             }
             else if (Actions.Aethercharge.ShouldUse(out act)) return true;

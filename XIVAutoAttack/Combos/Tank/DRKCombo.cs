@@ -6,11 +6,11 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal class DRKCombo : JobGaugeCombo<DRKGauge>
+internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
 {
     public class DRKAction : BaseAction
     {

@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Actions.BaseAction
@@ -108,7 +108,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //会让GCD转的，充能一层的，看看来不来得及下个GCD
                 if (IsRealGCD)
                 {
-                    if (RecastTimeElapsed + TargetUpdater.WeaponRemain < RecastTimeOneCharge) return false;
+                    if (RecastTimeElapsed + ActionUpdater.WeaponRemain < RecastTimeOneCharge) return false;
                 }
                 else
                 {
@@ -157,7 +157,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 {
                     var tar = Target == Service.ClientState.LocalPlayer ? TargetUpdater.HostileTargets.OrderBy(p => p.DistanceToPlayer()).First() : Target;
                     var times = tar.FindStatusTimes(TargetStatus);
-                    if (times.Length > 0 && times.Max() > 4 + TargetUpdater.WeaponRemain) return false;
+                    if (times.Length > 0 && times.Max() > 4 + ActionUpdater.WeaponRemain) return false;
                 }
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。

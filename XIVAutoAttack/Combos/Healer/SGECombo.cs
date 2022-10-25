@@ -8,11 +8,11 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal class SGECombo : JobGaugeCombo<SGEGauge>
+internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
 {
     internal override uint JobID => 40;
     internal static byte level => Service.ClientState.LocalPlayer!.Level;
@@ -202,7 +202,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
                             ObjectStatus.EukrasianDiagnosis,
                             ObjectStatus.EukrasianPrognosis,
                         }).Any()
-                        && StatusHelper.FindStatusTime(b, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis) < 3
+                        && b.WillStatusEnd(2, 0, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis)
                         && chara.GetHealthRatio() < 0.9) return true;
                     }
 
@@ -366,9 +366,9 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
 
         var level = Level;
         //发炎
-        if (Actions.Phlegma3.ShouldUse(out act, mustUse: Actions.Phlegma3.RecastTimeRemain < 4, emptyOrSkipCombo: true)) return true;
-        if (level < Actions.Phlegma3.Level && Actions.Phlegma2.ShouldUse(out act, mustUse: Actions.Phlegma2.RecastTimeRemain < 4, emptyOrSkipCombo: true)) return true;
-        if (level < Actions.Phlegma2.Level && Actions.Phlegma.ShouldUse(out act, mustUse: Actions.Phlegma.RecastTimeRemain < 4, emptyOrSkipCombo: true)) return true;
+        if (Actions.Phlegma3.ShouldUse(out act, mustUse: Actions.Phlegma3.WillHaveOneCharge(2), emptyOrSkipCombo: true)) return true;
+        if (!Actions.Phlegma3.EnoughLevel && Actions.Phlegma2.ShouldUse(out act, mustUse: Actions.Phlegma2.WillHaveOneCharge(2), emptyOrSkipCombo: true)) return true;
+        if (!Actions.Phlegma2.EnoughLevel && Actions.Phlegma.ShouldUse(out act, mustUse: Actions.Phlegma.WillHaveOneCharge(2), emptyOrSkipCombo: true)) return true;
 
         //失衡
         if (Actions.Dyskrasia.ShouldUse(out act)) return true;
@@ -391,8 +391,8 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
 
         //发炎
         if (Actions.Phlegma3.ShouldUse(out act, mustUse: true)) return true;
-        if (level < Actions.Phlegma3.Level && Actions.Phlegma2.ShouldUse(out act, mustUse: true)) return true;
-        if (level < Actions.Phlegma2.Level && Actions.Phlegma.ShouldUse(out act, mustUse: true)) return true;
+        if (!Actions.Phlegma3.EnoughLevel && Actions.Phlegma2.ShouldUse(out act, mustUse: true)) return true;
+        if (!Actions.Phlegma2.EnoughLevel && Actions.Phlegma.ShouldUse(out act, mustUse: true)) return true;
 
         //箭毒
         if (JobGauge.Addersting > 0 && Actions.Toxikon.ShouldUse(out act, mustUse: true)) return true;
@@ -441,7 +441,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             //自生2
             if (Actions.Physis2.ShouldUse(out act)) return true;
             //自生
-            if (Level < Actions.Physis2.Level && Actions.Physis.ShouldUse(out act)) return true;
+            if (!Actions.Physis2.EnoughLevel && Actions.Physis.ShouldUse(out act)) return true;
 
             //泛输血
             if (Actions.Panhaima.ShouldUse(out act)) return true;
@@ -513,15 +513,13 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
     }
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
-        var level = Level;
-
         //坚角清汁
-        if (Actions.Kerachole.ShouldUse(out act) && level >= 78) return true;
+        if (Actions.Kerachole.ShouldUse(out act) && level >= Level) return true;
 
         //自生2
         if (Actions.Physis2.ShouldUse(out act)) return true;
         //自生
-        if (level < Actions.Physis2.Level && Actions.Physis.ShouldUse(out act)) return true;
+        if (!Actions.Physis2.EnoughLevel && Actions.Physis.ShouldUse(out act)) return true;
 
         //整体论
         if (Actions.Holos.ShouldUse(out act) && TargetUpdater.PartyMembersAverHP < 0.65f) return true;

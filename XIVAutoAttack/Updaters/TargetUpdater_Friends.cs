@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.Types;
+using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Helpers;
 
-namespace XIVAutoAttack.Updaters.TargetUpdater
+namespace XIVAutoAttack.Updaters
 {
     internal partial class TargetUpdater
     {

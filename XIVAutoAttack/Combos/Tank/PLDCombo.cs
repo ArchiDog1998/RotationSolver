@@ -7,11 +7,11 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal class PLDCombo : JobGaugeCombo<PLDGauge>
+internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
 {
     internal override uint JobID => 19;
 
@@ -34,8 +34,8 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
 
     private static bool inOpener = false;
     private static bool openerFinished = false;
-    private static float RequiescatDelayTime = 0;
-    private static float FightorFlightDelayTime = 0;
+    //private static float RequiescatDelayTime = 0;
+    //private static float FightorFlightDelayTime = 0;
 
     //private bool SlowLoop => Config.GetBoolByName("SlowLoop");
     private bool SlowLoop = false;
@@ -235,7 +235,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
             inOpener = false;
             openerFinished = false;
         }
-        else if (Level > Actions.Requiescat.Level && !openerFinished && !inOpener)
+        else if (Actions.Requiescat.EnoughLevel && !openerFinished && !inOpener)
         {
             inOpener = true;
         }
@@ -269,7 +269,7 @@ internal class PLDCombo : JobGaugeCombo<PLDGauge>
         {
             if (!SlowLoop && LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)
                    && IsLastWeaponSkill(true, Actions.Atonement, Actions.RoyalAuthority)
-                   && LocalPlayer.FindStatusTime(ObjectStatus.FightOrFlight) >= WeaponRemain(2)) return true;
+                   && !LocalPlayer.WillStatusEnd(2, 0, ObjectStatus.FightOrFlight)) return true;
             if (!SlowLoop && LocalPlayer.FindStatusStack(ObjectStatus.SwordOath) > 1) return true;
 
             if (SlowLoop) return true;

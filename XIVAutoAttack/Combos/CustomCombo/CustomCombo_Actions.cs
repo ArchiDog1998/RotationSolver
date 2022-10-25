@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
