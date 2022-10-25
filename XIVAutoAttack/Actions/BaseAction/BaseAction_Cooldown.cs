@@ -63,10 +63,18 @@ namespace XIVAutoAttack.Actions.BaseAction
             return CooldownHelper.RecastAfter(recast, remain, addWeaponRemain);
         }
 
+
+        private unsafe RecastDetail* CoolDownDetail => ActionManager.Instance()->GetRecastGroupDetail(CoolDownGroup);
         /// <summary>
         /// 复唱时间
         /// </summary>
-        private unsafe float RecastTime => ActionManager.Instance()->GetRecastTime(ActionType.Spell, ID);
+        private unsafe float RecastTime => CoolDownDetail->Total;
+
+        internal unsafe float RecastTimeElapsed => CoolDownDetail->Elapsed;
+
+
+        internal unsafe bool IsCoolDown => CoolDownDetail->IsActive != 0;
+
         /// <summary>
         /// 咏唱时间
         /// </summary>
@@ -76,9 +84,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
 
         [Obsolete("能否尽量不用，然后用ElapsedAfter")]
-        internal unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Spell, ID);
         private  unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ID, Service.ClientState.LocalPlayer.Level), (ushort)1);
-        internal unsafe bool IsCoolDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Spell, ID);
         /// <summary>
         /// 是否起码有一层技能
         /// </summary>
