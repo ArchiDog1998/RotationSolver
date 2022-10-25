@@ -18,7 +18,7 @@ namespace XIVAutoAttack.Updaters
         internal static float WeaponTotal { get; private set; } = 0;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static float Weaponelapsed { get; private set; } = 0;
+        internal static float WeaponElapsed { get; private set; } = 0;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool InBattle { get; private set; } = false;
@@ -33,13 +33,17 @@ namespace XIVAutoAttack.Updaters
             var spell = ActionType.Spell;
 
             var weapontotal = instance->GetRecastTime(spell, 11);
-            Weaponelapsed = instance->GetRecastTimeElapsed(spell, 11);
-            WeaponRemain = Math.Max(weapontotal - Weaponelapsed,
+            WeaponElapsed = instance->GetRecastTimeElapsed(spell, 11);
+            WeaponRemain = Math.Max(weapontotal - WeaponElapsed,
                 Service.ClientState.LocalPlayer.TotalCastTime - Service.ClientState.LocalPlayer.CurrentCastTime);
 
             var min = Math.Max(weapontotal - Service.Configuration.WeaponInterval, 0);
             AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
-            WeaponTotal = InBattle ? Math.Max(WeaponTotal, weapontotal) : 0;
+
+            if(weapontotal > 0)
+            {
+                WeaponTotal = weapontotal;
+            }
         }
 
 
@@ -84,7 +88,7 @@ namespace XIVAutoAttack.Updaters
             }
 
             //确定读条时间。
-            if (Weaponelapsed < 0.3)
+            if (WeaponElapsed < 0.3)
             {
                 //能力技就不用提前了。
                 _lastCastingTotal = Service.ClientState.LocalPlayer.TotalCastTime;
@@ -95,13 +99,13 @@ namespace XIVAutoAttack.Updaters
 
             //要超出GCD了，那就不放技能了。
             if (WeaponRemain < Service.Configuration.WeaponInterval
-                || Weaponelapsed < Service.Configuration.WeaponInterval)
+                || WeaponElapsed < Service.Configuration.WeaponInterval)
             {
                 return;
             }
 
             //还在咏唱，就不放技能了。
-            if (Weaponelapsed <= _lastCastingTotal) return;
+            if (WeaponElapsed <= _lastCastingTotal) return;
 
             //只剩下最后一个能力技了，然后卡最后！
             if (AbilityRemainCount == 1)
@@ -111,7 +115,7 @@ namespace XIVAutoAttack.Updaters
                 return;
             }
 
-            else if ((Weaponelapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
+            else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
             {
                 Service.IconReplacer.DoAnAction(false);
                 return;

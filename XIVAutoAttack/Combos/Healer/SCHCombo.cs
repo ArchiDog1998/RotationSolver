@@ -311,7 +311,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
         {
             if (Actions.Aetherflow.ShouldUse(out act)) return true;
         }
-        else if (Actions.Aetherflow.WillHaveOneCharge(3))
+        else if (Actions.Aetherflow.WillHaveOneChargeGCD(3))
         {
             if (Actions.EnergyDrain.ShouldUse(out act)) return true;
         }

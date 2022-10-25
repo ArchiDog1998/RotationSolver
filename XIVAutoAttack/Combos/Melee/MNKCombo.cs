@@ -174,7 +174,7 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
         if (Actions.FourpointFury.ShouldUse(out act)) return true;
 
         //确认Buff
-        if (LocalPlayer.WillStatusEnd(1, 0, ObjectStatus.DisciplinedFist) && Actions.TwinSnakes.ShouldUse(out act)) return true;
+        if (LocalPlayer.WillStatusEndGCD(1, 0, ObjectStatus.DisciplinedFist) && Actions.TwinSnakes.ShouldUse(out act)) return true;
 
         if (Actions.TrueStrike.ShouldUse(out act)) return true;
         return false;
@@ -271,10 +271,10 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
             if ((JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.SOLAR) != 0)
             {
                 //两种Buff都在6s以上
-                var dis = LocalPlayer.WillStatusEnd(2, 0, ObjectStatus.DisciplinedFist);
+                var dis = LocalPlayer.WillStatusEndGCD(2, 0, ObjectStatus.DisciplinedFist);
 
                 Actions.Demolish.ShouldUse(out _);
-                var demo = Actions.Demolish.Target.WillStatusEnd(2, 0, ObjectStatus.Demolish);
+                var demo = Actions.Demolish.Target.WillStatusEndGCD(2, 0, ObjectStatus.Demolish);
 
                 if (!dis && (!demo || !Actions.PerfectBalance.IsCoolDown))
                 {

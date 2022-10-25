@@ -209,7 +209,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.ManaStacks == 0 && (JobGauge.BlackMana < 50 || JobGauge.WhiteMana < 50) && !Actions.Manafication.WillHaveOneCharge(1, 1))
+        if (JobGauge.ManaStacks == 0 && (JobGauge.BlackMana < 50 || JobGauge.WhiteMana < 50) && !Actions.Manafication.WillHaveOneChargeGCD(1, 1))
         {
             //促进满了就用。 
             if (abilityRemain == 2 && Actions.Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -368,7 +368,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
             }
 
             //如果倍增的时间快到了，但还是没好。
-            if (Actions.Embolden.WillHaveOneCharge(10))
+            if (Actions.Embolden.WillHaveOneChargeGCD(10))
             {
                 return false;
             }

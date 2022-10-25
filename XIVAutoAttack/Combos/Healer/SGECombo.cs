@@ -202,7 +202,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
                             ObjectStatus.EukrasianDiagnosis,
                             ObjectStatus.EukrasianPrognosis,
                         }).Any()
-                        && b.WillStatusEnd(2, 0, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis)
+                        && b.WillStatusEndGCD(2, 0, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis)
                         && chara.GetHealthRatio() < 0.9) return true;
                     }
 
@@ -366,9 +366,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
 
         var level = Level;
         //·¢Ñ×
-        if (Actions.Phlegma3.ShouldUse(out act, mustUse: Actions.Phlegma3.WillHaveOneCharge(2), emptyOrSkipCombo: true)) return true;
-        if (!Actions.Phlegma3.EnoughLevel && Actions.Phlegma2.ShouldUse(out act, mustUse: Actions.Phlegma2.WillHaveOneCharge(2), emptyOrSkipCombo: true)) return true;
-        if (!Actions.Phlegma2.EnoughLevel && Actions.Phlegma.ShouldUse(out act, mustUse: Actions.Phlegma.WillHaveOneCharge(2), emptyOrSkipCombo: true)) return true;
+        if (Actions.Phlegma3.ShouldUse(out act, mustUse: Actions.Phlegma3.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
+        if (!Actions.Phlegma3.EnoughLevel && Actions.Phlegma2.ShouldUse(out act, mustUse: Actions.Phlegma2.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
+        if (!Actions.Phlegma2.EnoughLevel && Actions.Phlegma.ShouldUse(out act, mustUse: Actions.Phlegma.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
 
         //Ê§ºâ
         if (Actions.Dyskrasia.ShouldUse(out act)) return true;

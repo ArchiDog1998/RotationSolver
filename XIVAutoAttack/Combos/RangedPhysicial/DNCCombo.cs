@@ -341,7 +341,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
         if (JobGauge.IsDancing) return false;
 
-        bool canstandard = !Actions.TechnicalStep.IsCoolDown || Actions.TechnicalStep.WillHaveOneCharge(2);
+        bool canstandard = !Actions.TechnicalStep.IsCoolDown || Actions.TechnicalStep.WillHaveOneChargeGCD(2);
 
         if (!LocalPlayer.HaveStatus(ObjectStatus.TechnicalFinish))
         {

@@ -126,7 +126,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
 
                 OtherCheck = b =>
                 {
-                    if (Geirskogul.WillHaveOneCharge(4)) return false;
+                    if (Geirskogul.WillHaveOneChargeGCD(4)) return false;
                     if (inOpener && IsLastWeaponSkill(true, FangandClaw)) return true;
                     if (!inOpener) return true;
 
@@ -341,7 +341,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         }
 
         //看看是否需要续Buff
-        if (LocalPlayer.WillStatusEnd(5, 0, ObjectStatus.PowerSurge))
+        if (LocalPlayer.WillStatusEndGCD(5, 0, ObjectStatus.PowerSurge))
         {
             if (Actions.FullThrust.ShouldUse(out act, lastComboActionID)) return true;
             if (Actions.VorpalThrust.ShouldUse(out act, lastComboActionID)) return true;

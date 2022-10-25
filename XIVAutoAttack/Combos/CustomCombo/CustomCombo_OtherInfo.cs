@@ -42,7 +42,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool InBattle => ActionUpdater.InBattle;
 
-        [Obsolete("该方法已过时，请使用BaseAction.WillHaveOneCharge")]
+        [Obsolete("该方法已过时，请使用BaseAction.WillHaveOneCharge", true)]
         /// <summary>
         /// 距离下一个GCD转好还需要多少时间
         /// </summary>
@@ -52,7 +52,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0)
             => CooldownHelper.WeaponRemain(gcdCount, abilityCount);
 
-        protected static float Weaponelapsed => ActionUpdater.Weaponelapsed;
+        protected static float Weaponelapsed => ActionUpdater.WeaponElapsed;
 
         protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastSpell(isAdjust, actions);

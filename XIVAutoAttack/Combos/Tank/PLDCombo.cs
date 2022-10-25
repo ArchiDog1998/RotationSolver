@@ -269,7 +269,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         {
             if (!SlowLoop && LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)
                    && IsLastWeaponSkill(true, Actions.Atonement, Actions.RoyalAuthority)
-                   && !LocalPlayer.WillStatusEnd(2, 0, ObjectStatus.FightOrFlight)) return true;
+                   && !LocalPlayer.WillStatusEndGCD(2, 0, ObjectStatus.FightOrFlight)) return true;
             if (!SlowLoop && LocalPlayer.FindStatusStack(ObjectStatus.SwordOath) > 1) return true;
 
             if (SlowLoop) return true;
@@ -323,7 +323,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         //¶òÔËÁ÷×ª
         if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true))
         {
-            if (Actions.FightorFlight.ElapsedAfter(2)) return true;
+            if (Actions.FightorFlight.ElapsedAfterGCD(2)) return true;
             //if (SlowLoop && inOpener && IsLastWeaponSkill(false, Actions.RiotBlade)) return true;
 
             //if (!SlowLoop && inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
@@ -407,7 +407,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
 
             if (SlowLoop)
             {
-                if (openerFinished && Actions.Requiescat.ElapsedAfter(12)) return true;
+                if (openerFinished && Actions.Requiescat.ElapsedAfterGCD(12)) return true;
 
             }
             else
@@ -449,7 +449,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             {
                 if (inOpener && IsLastWeaponSkill(true, Actions.FastBlade)) return true;
 
-                if (openerFinished && Actions.FightorFlight.ElapsedAfter(12)) return true;
+                if (openerFinished && Actions.FightorFlight.ElapsedAfterGCD(12)) return true;
             }
             else
             {

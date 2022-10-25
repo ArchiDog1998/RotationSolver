@@ -239,8 +239,8 @@ namespace XIVAutoAttack.Combos
 
                 if (UseThunderIn) return true;
 
-                if (!Target.WillStatusEnd(7, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)) return true;
-                if (!Target.WillStatusEnd(3, 0, ObjectStatus.Thunder2, ObjectStatus.Thunder4)) return true;
+                if (!Target.WillStatusEndGCD(7, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)) return true;
+                if (!Target.WillStatusEndGCD(3, 0, ObjectStatus.Thunder2, ObjectStatus.Thunder4)) return true;
                 return false;
             }
         } 
@@ -298,10 +298,10 @@ namespace XIVAutoAttack.Combos
             //星灵转冰
             if (Level >= 90 && JobGauge.InAstralFire && LocalPlayer.CurrentMp == 0
                 && (JobGauge.PolyglotStacks > 0 || JobGauge.EnochianTimer < 3000)
-                && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneCharge(2,1) 
-                || !Actions.Triplecast.IsCoolDown || Actions.Triplecast.WillHaveOneCharge(3,1)
+                && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneChargeGCD(2,1) 
+                || !Actions.Triplecast.IsCoolDown || Actions.Triplecast.WillHaveOneChargeGCD(3,1)
                 ||　(Target is BattleChara b  &&
-                !b.WillStatusEnd(5, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3))))
+                !b.WillStatusEndGCD(5, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3))))
             {
                 Actions.Transpose.AfterUse = () =>
                 {
@@ -355,7 +355,7 @@ namespace XIVAutoAttack.Combos
             }
 
             if ((JobGauge.InUmbralIce && !TargetHasThunder) || (JobGauge.InAstralFire && LocalPlayer.CurrentMp <= 4400)
-                || !GeneralActions.Swiftcast.WillHaveOneCharge(5,1))
+                || !GeneralActions.Swiftcast.WillHaveOneChargeGCD(5,1))
             {
                 //加个激情
                 if (Actions.Sharpcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -370,7 +370,7 @@ namespace XIVAutoAttack.Combos
 
                     //加个即刻
                     if (!HasFire && (UseThunderIn || HasThunder) && GeneralActions.Swiftcast.ShouldUse(out act)) return true;
-                    if (!HasFire && !GeneralActions.Swiftcast.WillHaveOneCharge(1, 1) && Actions.Triplecast.WillHaveOneCharge(5, 1) && 
+                    if (!HasFire && !GeneralActions.Swiftcast.WillHaveOneChargeGCD(1, 1) && Actions.Triplecast.WillHaveOneChargeGCD(5, 1) && 
                         Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo:true)) return true;
                 }
             }
@@ -405,7 +405,7 @@ namespace XIVAutoAttack.Combos
                     if (!Actions.Fire2.ShouldUse(out _) && JobGauge.IsParadoxActive && Actions.Fire.ShouldUse(out act)) return true;
 
                     //如果可以不硬读条转火
-                    if(HasFire || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneCharge(0, 2))
+                    if(HasFire || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneChargeGCD(0, 2))
                     {
                         //补雷
                         if (!UseThunderIn && HasThunder && AddThunder(lastComboActionID, out act)) return true;
@@ -537,9 +537,9 @@ namespace XIVAutoAttack.Combos
                 //否则，转入冰状态。
                 if (JobGauge.PolyglotStacks == 2 || (JobGauge.PolyglotStacks == 1 && JobGauge.EnochianTimer < 3000))
                 {
-                    if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneCharge(1,1)
+                    if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneChargeGCD(1,1)
                         || (Target is BattleChara b &&
-                        !b.WillStatusEnd(3, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)))
+                        !b.WillStatusEndGCD(3, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)))
                        && Level >= 90 && AddPolyglotAttach(out act)) return true;
                 }
             }
@@ -604,7 +604,7 @@ namespace XIVAutoAttack.Combos
             if (!InTranspose && Actions.Thunder.ShouldUse(out act, lastAct)) return true;
 
             if (Target is BattleChara b &&
-                            b.WillStatusEnd(3, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)
+                            b.WillStatusEndGCD(3, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)
                             && Actions.Thunder.ShouldUse(out act, lastAct)) return true;
 
             return false;

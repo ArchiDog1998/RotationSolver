@@ -54,7 +54,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
                     bool needHigh1 = AddOnDot(b, ObjectStatus.CausticBite, ObjectStatus.Stormbite, 40);
 
                     if (LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes) && 
-                        LocalPlayer.WillStatusEnd(1, 1, ObjectStatus.RagingStrikes)
+                        LocalPlayer.WillStatusEndGCD(1, 1, ObjectStatus.RagingStrikes)
                         && (needLow1 || needHigh1)) return true;
 
                     return needLow || needHigh;
@@ -86,7 +86,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (JobGauge.Song == Song.WANDERER || !WanderersMinuet.EnoughLevel && BattleVoice.WillHaveOneCharge(1, 1) 
+                    if (JobGauge.Song == Song.WANDERER || !WanderersMinuet.EnoughLevel && BattleVoice.WillHaveOneChargeGCD(1, 1) 
                         || !BattleVoice.EnoughLevel) return true;
 
                     return false;
@@ -107,10 +107,10 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
                     static bool SongIsNotNone(Song value) => value != Song.NONE;
                     static bool SongIsWandererMinuet(Song value) => value == Song.WANDERER;
                     if ((Array.TrueForAll(JobGauge.Coda, SongIsNotNone) || Array.Exists(JobGauge.Coda, SongIsWandererMinuet))
-                        && BattleVoice.WillHaveOneCharge(0,1)
+                        && BattleVoice.WillHaveOneChargeGCD(0,1)
                         && RagingStrikes.IsCoolDown 
                         && LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes)
-                        && RagingStrikes.ElapsedAfter(1)) return true;
+                        && RagingStrikes.ElapsedAfterGCD(1)) return true;
 
                     return false;
                 },
@@ -126,7 +126,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
                 BuffsProvide = new[] { ObjectStatus.StraightShotReady },
                 OtherCheck = b =>
                 {
-                    if (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.WillHaveOneCharge(1)) return false;
+                    if (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.WillHaveOneChargeGCD(1)) return false;
                     return true;
                 }
             },
@@ -136,7 +136,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (!initFinished || (initFinished && !BattleVoice.WillHaveOneCharge(1))) return true;
+                    if (!initFinished || (initFinished && !BattleVoice.WillHaveOneChargeGCD(1))) return true;
 
                     return false;
                 },
@@ -149,10 +149,10 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
                 {
                     if (JobGauge.Song != Song.WANDERER) return false;
 
-                    if (initFinished && (!initFinished || !BattleVoice.WillHaveOneCharge(1))) return false;
+                    if (initFinished && (!initFinished || !BattleVoice.WillHaveOneChargeGCD(1))) return false;
 
                     if (JobGauge.SongTimer < 3000 && JobGauge.Repertoire > 0) return true;
-                    if (JobGauge.Repertoire == 3 || JobGauge.Repertoire == 2 && EmpyrealArrow.WillHaveOneCharge(0, 0)) return true;
+                    if (JobGauge.Repertoire == 3 || JobGauge.Repertoire == 2 && EmpyrealArrow.WillHaveOneChargeGCD(0, 0)) return true;
                     return false;
                 },
             },
@@ -162,7 +162,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (EmpyrealArrow.EnoughLevel && (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.WillHaveOneCharge(0, 0))) return false;
+                    if (EmpyrealArrow.EnoughLevel && (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.WillHaveOneChargeGCD(0, 0))) return false;
                     return true;
                 }
             },

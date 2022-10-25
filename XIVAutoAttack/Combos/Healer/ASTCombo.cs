@@ -323,7 +323,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
             if (Actions.Astrodyne.ShouldUse(out act)) return true;
         }
 
-        if (JobGauge.DrawnCrownCard == CardType.LORD || Actions.MinorArcana.WillHaveOneCharge(1))
+        if (JobGauge.DrawnCrownCard == CardType.LORD || Actions.MinorArcana.WillHaveOneChargeGCD(1))
         {
             //进攻牌，随便发。或者CD要转好了，赶紧发掉。
             if (Actions.CrownPlay.ShouldUse(out act)) return true;

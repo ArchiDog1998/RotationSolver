@@ -2,11 +2,11 @@
 using Dalamud.Game.ClientState.Statuses;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Melee;
+using XIVAutoAttack.Updaters;
+
 
 namespace XIVAutoAttack.Helpers
 {
@@ -32,16 +32,30 @@ namespace XIVAutoAttack.Helpers
 
 
         /// <summary>
-        /// 距离下几个GCD转好这个技能能用吗。
+        /// 距离下几个GCD转好状态还在嘛。
         /// </summary>
         /// <param name="gcdCount">要隔着多少个完整的GCD</param>
         /// <param name="abilityCount">再多少个能力技之后</param>
-        /// <returns>这个时间点是否起码有一层可以用</returns>
-        internal static bool WillStatusEnd(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, params ushort[] effectIDs)
+        /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
+        /// <returns>这个时间点这个状态还健在嘛</returns>
+        internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true, params ushort[] effectIDs)
         {
-            var remain = FindStatusTime(obj, effectIDs);
+            var remain = obj.FindStatusTime(effectIDs);
             if (remain == 0) return false;
-            return CooldownHelper.RecastAfter(remain, gcdCount, abilityCount);
+            return CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount, addWeaponRemain);
+        }
+
+        /// <summary>
+        /// 距离下几个GCD转好这个技能能用吗。
+        /// </summary>
+        /// <param name="remain">要多少秒呢</param>
+        /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
+        /// <returns>这个时间点这个状态还健在嘛</returns>
+        internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool addWeaponRemain = true, params ushort[] effectIDs)
+        {
+            var remain = obj.FindStatusTime(effectIDs);
+            if (remain == 0) return false;
+            return CooldownHelper.RecastAfter(remain, remainWant, addWeaponRemain);
         }
 
         [Obsolete("计算时间的话，用用WillStatusEnd？")]

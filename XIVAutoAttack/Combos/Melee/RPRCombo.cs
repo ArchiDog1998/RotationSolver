@@ -116,7 +116,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
                 BuffsProvide = new[] { ObjectStatus.SoulReaver },
                 OtherCheck = b => !soulReaver && !enshrouded &&
                                   JobGauge.Soul >= 50 && !plentifulReady &&
-                                  ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneCharge(4)) || !Gluttony.EnoughLevel),
+                                  ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel),
             },
 
             //束缚挥割
