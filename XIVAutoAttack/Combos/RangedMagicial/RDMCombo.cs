@@ -7,13 +7,14 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
 internal class RDMCombo : JobGaugeCombo<RDMGauge>
 {
     internal override uint JobID => 35;
-    protected override bool CanHealSingleSpell => TargetHelper.PartyMembers.Length == 1 && base.CanHealSingleSpell;
+    protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Length == 1 && base.CanHealSingleSpell;
     //看看现在有没有促进
 
     private protected override BaseAction Raise => Actions.Verraise;

@@ -7,6 +7,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
@@ -21,7 +22,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     /// <summary>
     /// 在4人本的道中
     /// </summary>
-    private static bool InDungeonsMiddle => TargetHelper.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
+    private static bool InDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
 
     internal struct Actions
     {

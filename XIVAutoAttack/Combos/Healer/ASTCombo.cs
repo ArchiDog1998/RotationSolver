@@ -10,6 +10,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.Healer;
 
@@ -369,7 +370,7 @@ internal class ASTCombo : JobGaugeCombo<ASTGauge>
         //奶量牌，要看情况。
         if (JobGauge.DrawnCrownCard == CardType.LADY && Actions.CrownPlay.ShouldUse(out act)) return true;
 
-        var tank = TargetHelper.PartyTanks;
+        var tank = TargetUpdater.PartyTanks;
         var isBoss = Actions.Malefic.IsTargetBoss;
         if (Actions.EssentialDignity.IsCoolDown && tank.Length == 1 && tank.Any(t => t.GetHealthRatio() < 0.5) && !isBoss)
         {

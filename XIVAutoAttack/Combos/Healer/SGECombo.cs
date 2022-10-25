@@ -8,6 +8,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.Healer;
 
@@ -17,8 +18,8 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
     internal static byte level => Service.ClientState.LocalPlayer!.Level;
 
     private protected override BaseAction Raise => Actions.Egeiro;
-    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
-    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
+    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
+    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
     internal struct Actions
     {
         public static readonly BaseAction
@@ -194,7 +195,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
             {
                 OtherCheck = b =>
                 {
-                    foreach (var chara in TargetHelper.PartyMembers)
+                    foreach (var chara in TargetUpdater.PartyMembers)
                     {
                         if (chara.StatusList.Select(s => s.StatusId).Intersect(new uint[]
                         {
@@ -295,7 +296,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //泛输血
-        if (JobGauge.Addersgall == 0 && TargetHelper.PartyMembersAverHP < 0.7)
+        if (JobGauge.Addersgall == 0 && TargetUpdater.PartyMembersAverHP < 0.7)
         {
             if (Actions.Panhaima.ShouldUse(out act)) return true;
         }
@@ -399,7 +400,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         //脱战给T刷单盾嫖豆子
         if (!InBattle)
         {
-            var tank = TargetHelper.PartyTanks;
+            var tank = TargetUpdater.PartyTanks;
             if (tank.Length == 1 && Actions.EukrasianDiagnosis.Target == tank.First() && Actions.EukrasianDiagnosis.ShouldUse(out act))
             {
                 if (tank.First().StatusList.Select(s => s.StatusId).Intersect(new uint[]
@@ -430,7 +431,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         if (Actions.Druochole.ShouldUse(out act)) return true;
 
         //当资源不足时加入范围治疗缓解压力
-        var tank = TargetHelper.PartyTanks;
+        var tank = TargetUpdater.PartyTanks;
         var isBoss = Actions.Dosis.Target.IsBoss();
         if (JobGauge.Addersgall == 0 && tank.Length == 1 && tank.Any(t => t.GetHealthRatio() < 0.6f) && !isBoss)
         {
@@ -480,7 +481,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
 
     private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
-        if (TargetHelper.PartyMembersAverHP < 0.55f)
+        if (TargetUpdater.PartyMembersAverHP < 0.55f)
         {
             //魂灵风息
             if (Actions.Pneuma.ShouldUse(out act, mustUse: true)) return true;
@@ -523,7 +524,7 @@ internal class SGECombo : JobGaugeCombo<SGEGauge>
         if (level < Actions.Physis2.Level && Actions.Physis.ShouldUse(out act)) return true;
 
         //整体论
-        if (Actions.Holos.ShouldUse(out act) && TargetHelper.PartyMembersAverHP < 0.65f) return true;
+        if (Actions.Holos.ShouldUse(out act) && TargetUpdater.PartyMembersAverHP < 0.65f) return true;
 
         //寄生清汁
         if (Actions.Ixochole.ShouldUse(out act)) return true;

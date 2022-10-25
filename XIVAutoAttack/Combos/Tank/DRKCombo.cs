@@ -6,6 +6,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.Tank;
 
@@ -31,13 +32,13 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
     /// <summary>
     /// 在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
     /// </summary>
-    private static bool CanUseSpellInDungeonsMiddle => TargetHelper.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss() && !IsMoving
-                                                    && TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length >= 3;
+    private static bool CanUseSpellInDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss() && !IsMoving
+                                                    && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length >= 3;
 
     /// <summary>
     /// 在4人本的道中
     /// </summary>
-    private static bool InDungeonsMiddle => TargetHelper.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
+    private static bool InDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
 
     internal struct Actions
     {
@@ -274,7 +275,7 @@ internal class DRKCombo : JobGaugeCombo<DRKGauge>
         //暗黑锋
         if (Actions.EdgeofDarkness.ShouldUse(out act))
         {do{
-            if (InDungeonsMiddle && TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 25).Length >= 3) break;
+            if (InDungeonsMiddle && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) break;
 
             //是否留3000蓝开黑盾
             if (Config.GetBoolByName("TheBlackestNight") && LocalPlayer.CurrentMp < 6000) break;

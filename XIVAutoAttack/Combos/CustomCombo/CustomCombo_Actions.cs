@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -34,13 +35,13 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 {
                     ChoiceTarget = (tars) =>
                     {
-                        if (TargetHelper.DyingPeople.Length > 0)
+                        if (TargetUpdater.DyingPeople.Length > 0)
                         {
-                            return TargetHelper.DyingPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
+                            return TargetUpdater.DyingPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
                         }
-                        else if (TargetHelper.WeakenPeople.Length > 0)
+                        else if (TargetUpdater.WeakenPeople.Length > 0)
                         {
-                            return TargetHelper.WeakenPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
+                            return TargetUpdater.WeakenPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
                         }
                         return null;
                     },
@@ -61,7 +62,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 //内丹
                 SecondWind = new BaseAction(7541)
                 {
-                    OtherCheck = b => TargetHelper.CanHealSingleAbility,
+                    OtherCheck = b => TargetUpdater.CanHealSingleAbility,
                 },
 
                 //亲疏自行

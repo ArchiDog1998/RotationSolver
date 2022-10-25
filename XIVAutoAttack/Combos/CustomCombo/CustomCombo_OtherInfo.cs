@@ -6,6 +6,7 @@ using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -27,18 +28,18 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : LocalPlayer;
 
         protected static bool IsMoving => XIVAutoAttackPlugin.movingController.IsMoving;
-        protected static bool HaveHostileInRange => TargetHelper.HaveHostileInRange;
-        protected virtual bool CanHealAreaAbility => TargetHelper.CanHealAreaAbility;
-        protected virtual bool CanHealAreaSpell => TargetHelper.CanHealAreaSpell;
+        protected static bool HaveHostileInRange => TargetUpdater.HaveHostileInRange;
+        protected virtual bool CanHealAreaAbility => TargetUpdater.CanHealAreaAbility;
+        protected virtual bool CanHealAreaSpell => TargetUpdater.CanHealAreaSpell;
 
-        protected virtual bool CanHealSingleAbility => TargetHelper.CanHealSingleAbility;
-        protected virtual bool CanHealSingleSpell => TargetHelper.CanHealSingleSpell;
+        protected virtual bool CanHealSingleAbility => TargetUpdater.CanHealSingleAbility;
+        protected virtual bool CanHealSingleSpell => TargetUpdater.CanHealSingleSpell;
 
         protected bool SettingBreak => IconReplacer.BreakorProvoke || Service.Configuration.AutoBreak;
 
         protected static byte Level => LocalPlayer?.Level ?? 0;
 
-        protected static bool InBattle => TargetHelper.InBattle;
+        protected static bool InBattle => TargetUpdater.InBattle;
 
         [Obsolete("该方法已过时，请使用BaseAction.WillHaveOneCharge")]
         /// <summary>
@@ -50,7 +51,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0)
             => CooldownHelper.WeaponRemain(gcdCount, abilityCount);
 
-        protected static float Weaponelapsed => TargetHelper.Weaponelapsed;
+        protected static float Weaponelapsed => TargetUpdater.Weaponelapsed;
 
         protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastSpell(isAdjust, actions);

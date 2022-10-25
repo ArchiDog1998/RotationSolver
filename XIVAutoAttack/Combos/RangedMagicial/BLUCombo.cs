@@ -3,7 +3,7 @@ using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.RangedMagicial
 {
@@ -11,7 +11,20 @@ namespace XIVAutoAttack.Combos.RangedMagicial
     {
         internal class BLUAction : BaseAction
         {
-            public bool OnSlot => TargetHelper.BLUActions.Contains(this.ID);
+            public uint[] BLUActions
+            {
+                get
+                {
+                    uint[] acts = new uint[24];
+                    for (int i = 0; i < 24; i++)
+                    {
+                        acts[i] = ActionManager.Instance()->GetActiveBlueMageActionInSlot(i);
+                    }
+                    return acts;
+                }
+            }
+
+            public bool OnSlot => BLUActions.Contains(this.ID);
 
             internal BLUAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
                 : base(actionID, isFriendly, shouldEndSpecial)

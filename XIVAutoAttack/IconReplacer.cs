@@ -10,7 +10,7 @@ using System.Reflection;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack;
 
@@ -370,7 +370,7 @@ internal sealed class IconReplacer : IDisposable
                 //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + act.Action.Name + TargetHelper.AbilityRemainCount.ToString());
 #endif
                 //Change Target
-                if (TargetHelper.CanAttack(act.Target))
+                if (act.Target.CanAttack())
                 {
                     Service.TargetManager.SetTarget(act.Target);
                 }

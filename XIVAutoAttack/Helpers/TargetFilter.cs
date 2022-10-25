@@ -38,7 +38,7 @@ namespace XIVAutoAttack.Helpers
                 else break;
             }
 
-            return availableCharas.OrderBy(ObjectInfomation.GetHealthRatio).First();
+            return availableCharas.OrderBy(ObjectHelper.GetHealthRatio).First();
 
         }
 
@@ -136,7 +136,7 @@ namespace XIVAutoAttack.Helpers
                 }
             }
 
-            return (attachedT.Count > 0 ? attachedT.ToArray() : charas).OrderBy(ObjectInfomation.GetHealthRatio).First();
+            return (attachedT.Count > 0 ? attachedT.ToArray() : charas).OrderBy(ObjectHelper.GetHealthRatio).First();
         }
 
         internal static BattleChara[] ProvokeTarget(BattleChara[] inputCharas, bool needDistance = false)

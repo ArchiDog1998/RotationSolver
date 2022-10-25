@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Actions.BaseAction
@@ -27,7 +28,6 @@ namespace XIVAutoAttack.Actions.BaseAction
             }
         }
         internal virtual uint MPNeed { get; }
-
 
 
         /// <summary>
@@ -72,10 +72,10 @@ namespace XIVAutoAttack.Actions.BaseAction
         public virtual bool ShouldUse(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
-            byte level = Service.ClientState.LocalPlayer.Level;
+            //byte level = Service.ClientState.LocalPlayer.Level;
 
             //等级不够。
-            if (level < Level) return false;
+            if (!EnoughLevel) return false;
 
             //MP不够
             if (Service.ClientState.LocalPlayer.CurrentMp < MPNeed) return false;
@@ -108,7 +108,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //会让GCD转的，充能一层的，看看来不来得及下个GCD
                 if (IsRealGCD)
                 {
-                    if (RecastTimeElapsed + TargetHelper.WeaponRemain < RecastTimeOneCharge) return false;
+                    if (RecastTimeElapsed + TargetUpdater.WeaponRemain < RecastTimeOneCharge) return false;
                 }
                 else
                 {
@@ -155,9 +155,9 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //目标已有充足的Debuff
                 if (!mustUse && TargetStatus != null)
                 {
-                    var tar = Target == Service.ClientState.LocalPlayer ? TargetHelper.HostileTargets.OrderBy(p => p.DistanceToPlayer()).First() : Target;
+                    var tar = Target == Service.ClientState.LocalPlayer ? TargetUpdater.HostileTargets.OrderBy(p => p.DistanceToPlayer()).First() : Target;
                     var times = tar.FindStatusTimes(TargetStatus);
-                    if (times.Length > 0 && times.Max() > 4 + TargetHelper.WeaponRemain) return false;
+                    if (times.Length > 0 && times.Max() > 4 + TargetUpdater.WeaponRemain) return false;
                 }
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。

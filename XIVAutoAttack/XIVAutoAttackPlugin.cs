@@ -14,6 +14,8 @@ using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 using XIVAutoAttack.Windows;
 
 namespace XIVAutoAttack;
@@ -31,8 +33,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     public string Name => "XIV Auto Attack";
 
     internal static Lumina.Excel.GeneratedSheets.ClassJob[] AllJobs;
-
-    internal static DtrBarEntry dtrEntry;
 
     internal static Watcher watcher;
 
@@ -63,7 +63,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
         Service.Interface.UiBuilder.Draw += UiBuilder_Draw;
-        Service.Framework.Update += TargetHelper.Framework_Update;
+        Service.Framework.Update += MajorUpdater.Framework_Update;
 
         AllJobs = Service.DataManager.GetExcelSheet<ClassJob>().ToArray();
 
@@ -159,11 +159,11 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.Interface.UiBuilder.Draw -= UiBuilder_Draw;
         Service.IconReplacer.Dispose();
-        TargetHelper.Dispose();
-        Service.Framework.Update -= TargetHelper.Framework_Update;
+        MajorUpdater.Dispose();
+        Service.Framework.Update -= MajorUpdater.Framework_Update;
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
 
-        dtrEntry?.Dispose();
+
         watcher?.Dispose();
         movingController?.Dispose();
     }

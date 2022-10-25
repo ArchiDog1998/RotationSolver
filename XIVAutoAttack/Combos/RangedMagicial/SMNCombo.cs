@@ -5,6 +5,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
@@ -51,7 +52,7 @@ internal class SMNCombo : JobGaugeCombo<SMNGauge>
             //宝石兽召唤
             SummonCarbuncle = new (25798)
             {
-                OtherCheck = b => !TargetHelper.HavePet,
+                OtherCheck = b => !TargetUpdater.HavePet,
             },
 
             //灼热之光 团辅

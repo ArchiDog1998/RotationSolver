@@ -6,6 +6,7 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.Healer;
 
@@ -15,8 +16,8 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private static bool _useDeploymentTactics = false;
     private protected override BaseAction Raise => SMNCombo.Actions.Resurrection;
-    protected override bool CanHealSingleSpell => base.CanHealSingleAbility && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
-    protected override bool CanHealAreaSpell => base.CanHealAreaAbility  && (Config.GetBoolByName("GCDHeal") || TargetHelper.PartyHealers.Length < 2);
+    protected override bool CanHealSingleSpell => base.CanHealSingleAbility && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
+    protected override bool CanHealAreaSpell => base.CanHealAreaAbility  && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
     protected override bool CanHealSingleAbility => base.CanHealSingleSpell;
 
     protected override bool CanHealAreaAbility => base.CanHealAreaSpell;
@@ -35,7 +36,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
             //朝日召唤
             SummonEos = new (17215)
             {
-                OtherCheck = b => !TargetHelper.HavePet,
+                OtherCheck = b => !TargetUpdater.HavePet,
             },
 
             //毒菌
@@ -182,7 +183,7 @@ internal class SCHCombo : JobGaugeCombo<SCHGauge>
             if (Actions.Recitation.ShouldUse(out act)) return true;
         }
 
-        foreach (var item in TargetHelper.PartyMembers)
+        foreach (var item in TargetUpdater.PartyMembers)
         {
             if (item.GetHealthRatio() < 0.9) continue;
             foreach (var status in item.StatusList)

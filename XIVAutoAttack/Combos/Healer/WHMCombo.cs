@@ -7,6 +7,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Combos.Healer;
@@ -70,7 +71,7 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
             //天赐
             Benediction = new (140, true)
             {
-                OtherCheck = b => TargetHelper.PartyMembersMinHP < 0.15f,
+                OtherCheck = b => TargetUpdater.PartyMembersMinHP < 0.15f,
             },
 
             //医治 群奶最基础的。300
@@ -139,14 +140,14 @@ internal class WHMCombo : JobGaugeCombo<WHMGauge>
         float healRange = strength * 0.000352f;
 
         //能够放到技能的队员。
-        var canGet = TargetFilter.GetObjectInRadius(TargetHelper.PartyMembers, Math.Max(action.Range, 0.1f));
+        var canGet = TargetFilter.GetObjectInRadius(TargetUpdater.PartyMembers, Math.Max(action.Range, 0.1f));
 
         float bestHeal = 0;
         foreach (var member in canGet)
         {
             float thisHeal = 0;
             Vector3 centerPt = member.Position;
-            foreach (var ran in TargetHelper.PartyMembers)
+            foreach (var ran in TargetUpdater.PartyMembers)
             {
                 //如果不在范围内，那算了。
                 if (Vector3.Distance(centerPt, ran.Position) > action.EffectRange)

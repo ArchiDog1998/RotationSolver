@@ -11,7 +11,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Helpers
 {
-    internal static class ObjectInfomation
+    internal static class ObjectHelper
     {
         private unsafe static BNpcBase GetObjectNPC(this GameObject obj)
         {
@@ -63,6 +63,12 @@ namespace XIVAutoAttack.Helpers
             if (angle < Math.PI / 4) return EnemyLocation.Front;
             else if (angle > Math.PI * 3 / 4) return EnemyLocation.Back;
             return EnemyLocation.Side;
+        }
+
+        public unsafe static bool CanAttack(this GameObject actor)
+        {
+            if (actor == null) return false;
+            return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address) == 1;
         }
     }
 }

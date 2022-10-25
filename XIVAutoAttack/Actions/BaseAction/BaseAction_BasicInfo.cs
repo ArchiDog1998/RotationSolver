@@ -1,4 +1,5 @@
-﻿using Action = Lumina.Excel.GeneratedSheets.Action;
+﻿using System;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Actions.BaseAction
 {
@@ -7,7 +8,10 @@ namespace XIVAutoAttack.Actions.BaseAction
         private bool _isFriendly;
         private bool _shouldEndSpecial;
         private bool _isDot;
+        [Obsolete("尽量别访问Level了，用EnoughLevel来判断")]
         internal byte Level => Action.ClassJobLevel;
+        internal bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= Level;
+
         public uint ID => Action.RowId;
         public uint AdjustedID => Service.IconReplacer.OriginalHook(ID);
         internal bool IsGeneralGCD { get; }

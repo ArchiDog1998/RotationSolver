@@ -5,6 +5,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
@@ -229,7 +230,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
         //Ó¦¼±»»Îè°é
         if (LocalPlayer.HaveStatus(ObjectStatus.ClosedPosition1))
         {
-            foreach (var friend in TargetHelper.PartyMembers)
+            foreach (var friend in TargetUpdater.PartyMembers)
             {
                 if (friend.HaveStatus(ObjectStatus.ClosedPosition2))
                 {

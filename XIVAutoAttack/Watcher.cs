@@ -15,6 +15,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using Item = Lumina.Excel.GeneratedSheets.Item;
 
@@ -88,7 +89,7 @@ namespace XIVAutoAttack
                         {
                             if (item.MacroIndex < 0 || item.MacroIndex > 99) break;
 
-                            TargetHelper.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
+                            TargetUpdater.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
                                 RaptureMacroModule.Instance->Individual[item.MacroIndex]));
                         }
                     }

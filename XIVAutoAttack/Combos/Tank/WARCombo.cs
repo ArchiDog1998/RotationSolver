@@ -4,6 +4,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.Tank;
 
@@ -78,13 +79,13 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
             Infuriate = new (52)
             {
                 BuffsProvide = new [] { ObjectStatus.InnerRelease },
-                OtherCheck = b => TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge < 50,
+                OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge < 50,
             },
 
             //øÒ±©
             Berserk = new (38)
             {
-                OtherCheck = b => TargetFilter.GetObjectInRadius(TargetHelper.HostileTargets, 5).Length > 0,
+                OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0,
             },
 
             //’Ω¿ı
@@ -209,7 +210,7 @@ internal class WARCombo : JobGaugeCombo<WARGauge>
     {
         if (abilityRemain == 2)
         {
-            if(TargetHelper.HostileTargets.Length == 1)
+            if(TargetUpdater.HostileTargets.Length == 1)
             {
                 //∏¥≥£®ºı…À30%£©
                 if (Actions.Vengeance.ShouldUse(out act)) return true;

@@ -7,6 +7,7 @@ using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -40,23 +41,23 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         private IAction Invoke(uint actionID, uint lastComboActionID, float comboTime)
         {
-            byte abilityRemain = TargetHelper.AbilityRemainCount;
+            byte abilityRemain = TargetUpdater.AbilityRemainCount;
 
             //防AOE
-            var helpDefenseAOE = Service.Configuration.AutoDefenseForTank && TargetHelper.IsHostileAOE;
+            var helpDefenseAOE = Service.Configuration.AutoDefenseForTank && TargetUpdater.IsHostileAOE;
 
             //防单体
             bool helpDefenseSingle = false;
             //是个骑士或者奶妈
             if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗 || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
             {
-                if (Service.Configuration.AutoDefenseForTank && TargetHelper.PartyTanks.Any((tank) =>
+                if (Service.Configuration.AutoDefenseForTank && TargetUpdater.PartyTanks.Any((tank) =>
                 {
-                    var attackingTankObj = TargetHelper.HostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
+                    var attackingTankObj = TargetUpdater.HostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
 
                     if (attackingTankObj.Count() != 1) return false;
 
-                    return TargetHelper.IsHostileTank;
+                    return TargetUpdater.IsHostileTank;
                 })) helpDefenseSingle = true;
             }
 
@@ -164,7 +165,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             {
                 if(act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
             }
-            if (TargetHelper.HPNotFull)
+            if (TargetUpdater.HPNotFull)
             {
                 if ((IconReplacer.HealArea || CanHealAreaSpell) && !ShouldUseHealAreaAbility(1, out _)
                     && HealAreaGCD(lastComboActionID, out act)) return act;
@@ -182,7 +183,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
             //硬拉或者开始奶人
             if ((HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) && EsunaRaise(out act, abilityRemain, true)) return act;
-            if (TargetHelper.HPNotFull && HaveHostileInRange)
+            if (TargetUpdater.HPNotFull && HaveHostileInRange)
             {
                 if (CanHealAreaSpell && HealAreaGCD(lastComboActionID, out act)) return act;
                 if (CanHealSingleSpell && HealSingleGCD(lastComboActionID, out act)) return act;
@@ -200,7 +201,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 return false;
             }
             //有某些非常危险的状态。
-            if (IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0 || TargetHelper.DyingPeople.Length > 0)
+            if (IconReplacer.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
                 if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗
                     && GeneralActions.Esuna.ShouldUse(out act, mustUse: true)) return true;
@@ -208,7 +209,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
 
             //有人死了，看看能不能救。
-            if (Service.Configuration.RaiseAll ? TargetHelper.DeathPeopleAll.Length > 0 : TargetHelper.DeathPeopleParty.Length > 0)
+            if (Service.Configuration.RaiseAll ? TargetUpdater.DeathPeopleAll.Length > 0 : TargetUpdater.DeathPeopleParty.Length > 0)
             {
                 if (Service.ClientState.LocalPlayer.ClassJob.Id == 35)
                 {

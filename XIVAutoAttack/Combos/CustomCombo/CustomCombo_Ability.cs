@@ -7,6 +7,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.RangedPhysicial;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Helpers.TargetHelper;
 
 namespace XIVAutoAttack.Combos.CustomCombo;
 
@@ -23,7 +24,7 @@ public abstract partial class CustomCombo
         //有某些非常危险的状态。
         if (JobID == 23)
         {
-            if (IconReplacer.EsunaOrShield && TargetHelper.WeakenPeople.Length > 0 || TargetHelper.DyingPeople.Length > 0)
+            if (IconReplacer.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
                 if (BRDCombo.Actions.WardensPaean.ShouldUse(out act, mustUse: true)) return true;
             }
@@ -33,7 +34,7 @@ public abstract partial class CustomCombo
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
         Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
 
-        if (TargetHelper.CanInterruptTargets.Length > 0)
+        if (TargetUpdater.CanInterruptTargets.Length > 0)
         {
             switch (role)
             {
@@ -64,7 +65,7 @@ public abstract partial class CustomCombo
 
             var defenses = new uint[] { ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill, ObjectStatus.Defiance };
             //Alive Tanks with shield.
-            var defensesTanks = TargetHelper.AllianceTanks.Where(t => t.CurrentHp != 0 && t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
+            var defensesTanks = TargetUpdater.AllianceTanks.Where(t => t.CurrentHp != 0 && t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
             if (defensesTanks == null || defensesTanks.Count() == 0)
             {
                 if (!HaveShield && Shield.ShouldUse(out act)) return true;
@@ -102,7 +103,7 @@ public abstract partial class CustomCombo
 
         if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
         if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
-        if (TargetHelper.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
+        if (TargetUpdater.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
         {
             if (ShouldUseHealAreaAbility(abilityRemain, out act)) return true;
             if (ShouldUseHealSingleAbility(abilityRemain, out act)) return true;
@@ -125,9 +126,9 @@ public abstract partial class CustomCombo
             //防单体
             if (role == Role.防护)
             {
-                var haveTargets = TargetFilter.ProvokeTarget(TargetHelper.HostileTargets);
-                if ((Service.Configuration.AutoProvokeForTank || TargetHelper.AllianceTanks.Length < 2) 
-                    && haveTargets.Length != TargetHelper.HostileTargets.Length
+                var haveTargets = TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets);
+                if ((Service.Configuration.AutoProvokeForTank || TargetUpdater.AllianceTanks.Length < 2) 
+                    && haveTargets.Length != TargetUpdater.HostileTargets.Length
                     || IconReplacer.BreakorProvoke)
 
                 {
@@ -140,17 +141,17 @@ public abstract partial class CustomCombo
                     && !Service.Configuration.NoDefenceAbility)
                 {
                     //被群殴呢
-                    if (TargetHelper.TarOnMeTargets.Length > 1 && !IsMoving)
+                    if (TargetUpdater.TarOnMeTargets.Length > 1 && !IsMoving)
                     {
                         if (GeneralActions.ArmsLength.ShouldUse(out act)) return true;
                         if (DefenceSingleAbility(abilityRemain, out act)) return true;
                     }
 
                     //就一个打我，需要正在对我搞事情。
-                    if (TargetHelper.TarOnMeTargets.Length == 1)
+                    if (TargetUpdater.TarOnMeTargets.Length == 1)
                     {
-                        var tar = TargetHelper.TarOnMeTargets[0];
-                        if (TargetHelper.IsHostileTank)
+                        var tar = TargetUpdater.TarOnMeTargets[0];
+                        if (TargetUpdater.IsHostileTank)
                         {
                             //防卫
                             if (DefenceSingleAbility(abilityRemain, out act)) return true;
