@@ -8,6 +8,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters.TargetUpdater;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -182,7 +183,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (GeneralGCD(lastComboActionID, out var action)) return action;
 
             //硬拉或者开始奶人
-            if ((HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) && EsunaRaise(out act, abilityRemain, true)) return act;
+            if (Service.Configuration.RaisePlayerBySwift && (HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) 
+                && EsunaRaise(out act, abilityRemain, true)) return act;
             if (TargetUpdater.HPNotFull && HaveHostileInRange)
             {
                 if (CanHealAreaSpell && HealAreaGCD(lastComboActionID, out act)) return act;

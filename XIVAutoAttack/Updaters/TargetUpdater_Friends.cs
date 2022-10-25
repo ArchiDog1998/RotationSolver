@@ -159,6 +159,5 @@ namespace XIVAutoAttack.Updaters.TargetUpdater
             #endregion
 
         }
-
     }
 }

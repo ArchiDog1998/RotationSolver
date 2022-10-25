@@ -511,6 +511,12 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        bool raiseSwift = Service.Configuration.RaisePlayerBySwift;
+                        if (ImGui.Checkbox("即刻拉人", ref raiseSwift))
+                        {
+                            Service.Configuration.RaisePlayerBySwift = raiseSwift;
+                            Service.Configuration.Save();
+                        }
 
                         bool raiseCasting = Service.Configuration.RaisePlayerByCasting;
                         if (ImGui.Checkbox("无目标时硬读条拉人", ref raiseCasting))
