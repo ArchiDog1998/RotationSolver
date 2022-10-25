@@ -202,7 +202,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
                             ObjectStatus.EukrasianDiagnosis,
                             ObjectStatus.EukrasianPrognosis,
                         }).Any()
-                        && b.WillStatusEndGCD(2, 0, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis)
+                        && b.WillStatusEndGCD(2, 0, true, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis)
                         && chara.GetHealthRatio() < 0.9) return true;
                     }
 

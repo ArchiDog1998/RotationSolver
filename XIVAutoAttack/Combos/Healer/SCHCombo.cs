@@ -14,7 +14,6 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
 {
     internal override uint JobID => 28;
 
-    private static bool _useDeploymentTactics = false;
     private protected override BaseAction Raise => SMNCombo.Actions.Resurrection;
     protected override bool CanHealSingleSpell => base.CanHealSingleAbility && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
     protected override bool CanHealAreaSpell => base.CanHealAreaAbility  && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
@@ -129,7 +128,6 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
                     }
                     return null;
                 },
-                AfterUse = () => _useDeploymentTactics = false,
             },
 
             //炽天召唤
@@ -204,7 +202,6 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
         //召唤小仙女
         if (Actions.SummonEos.ShouldUse(out act)) return true;
 
-        if (_useDeploymentTactics && Actions.DeploymentTactics.ShouldUse(out act)) return true;
 
         //AOE
         if (Actions.ArtofWar.ShouldUse(out act)) return true;
@@ -245,7 +242,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
 
         if (!Actions.DeploymentTactics.IsCoolDown && Actions.DeploymentTactics.EnoughLevel)
         {
-            _useDeploymentTactics = true;
+            if (Actions.DeploymentTactics.ShouldUse(out act)) return true;
             if (Actions.Adloquium.ShouldUse(out act)) return true;
         }
         if (Actions.Succor.ShouldUse(out act)) return true;

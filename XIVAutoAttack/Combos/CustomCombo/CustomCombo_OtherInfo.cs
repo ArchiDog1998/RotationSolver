@@ -37,7 +37,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected bool SettingBreak => IconReplacer.BreakorProvoke || Service.Configuration.AutoBreak;
 
-        [Obsolete("少用！给我少用！")]
         protected static byte Level => LocalPlayer?.Level ?? 0;
 
         protected static bool InBattle => ActionUpdater.InBattle;
@@ -56,6 +55,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastSpell(isAdjust, actions);
+
         protected static bool IsLastSpell(params uint[] ids)
             => IActionHelper.IsLastSpell(ids);
 

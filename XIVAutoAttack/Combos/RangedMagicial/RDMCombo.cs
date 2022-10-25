@@ -19,7 +19,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
 
     private protected override BaseAction Raise => Actions.Verraise;
 
-    protected static bool _startLong = false;
+    private static bool _startLong = false;
 
     public class RDMAction : BaseAction
     {

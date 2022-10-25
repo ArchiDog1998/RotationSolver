@@ -239,8 +239,8 @@ namespace XIVAutoAttack.Combos
 
                 if (UseThunderIn) return true;
 
-                if (!Target.WillStatusEndGCD(7, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)) return true;
-                if (!Target.WillStatusEndGCD(3, 0, ObjectStatus.Thunder2, ObjectStatus.Thunder4)) return true;
+                if (!Target.WillStatusEndGCD(7, 0, true, ObjectStatus.Thunder, ObjectStatus.Thunder3)) return true;
+                if (!Target.WillStatusEndGCD(3, 0, true, ObjectStatus.Thunder2, ObjectStatus.Thunder4)) return true;
                 return false;
             }
         } 
@@ -301,7 +301,7 @@ namespace XIVAutoAttack.Combos
                 && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneChargeGCD(2,1) 
                 || !Actions.Triplecast.IsCoolDown || Actions.Triplecast.WillHaveOneChargeGCD(3,1)
                 ||　(Target is BattleChara b  &&
-                !b.WillStatusEndGCD(5, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3))))
+                !b.WillStatusEndGCD(5, 0, true, ObjectStatus.Thunder, ObjectStatus.Thunder3))))
             {
                 Actions.Transpose.AfterUse = () =>
                 {
@@ -539,7 +539,7 @@ namespace XIVAutoAttack.Combos
                 {
                     if((HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneChargeGCD(1,1)
                         || (Target is BattleChara b &&
-                        !b.WillStatusEndGCD(3, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)))
+                        !b.WillStatusEndGCD(3, 0, true, ObjectStatus.Thunder, ObjectStatus.Thunder3)))
                        && Level >= 90 && AddPolyglotAttach(out act)) return true;
                 }
             }
@@ -604,7 +604,7 @@ namespace XIVAutoAttack.Combos
             if (!InTranspose && Actions.Thunder.ShouldUse(out act, lastAct)) return true;
 
             if (Target is BattleChara b &&
-                            b.WillStatusEndGCD(3, 0, ObjectStatus.Thunder, ObjectStatus.Thunder3)
+                            b.WillStatusEndGCD(3, 0, true, ObjectStatus.Thunder, ObjectStatus.Thunder3)
                             && Actions.Thunder.ShouldUse(out act, lastAct)) return true;
 
             return false;

@@ -31,7 +31,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
             //±©·çËé ºì¸«
             StormsEye = new (45)
             {
-                OtherCheck = b => LocalPlayer.WillStatusEndGCD(1, 0, ObjectStatus.SurgingTempest),
+                OtherCheck = b => LocalPlayer.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest),
             },
 
             //·É¸«
@@ -64,7 +64,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
             //Ô­³õÖ®»ê
             InnerBeast = new (49)
             {
-                OtherCheck = b => !LocalPlayer.WillStatusEndGCD(1, 0, ObjectStatus.SurgingTempest) && ( JobGauge.BeastGauge >= 50 || LocalPlayer.HaveStatus(ObjectStatus.InnerRelease)),
+                OtherCheck = b => !LocalPlayer.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest) && ( JobGauge.BeastGauge >= 50 || LocalPlayer.HaveStatus(ObjectStatus.InnerRelease)),
             },
 
             //¸ÖÌúÐý·ç
@@ -235,7 +235,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
     {
         
         //±¬·¢
-        if (!LocalPlayer.WillStatusEndGCD(3, 0, ObjectStatus.SurgingTempest) || !Actions.MythrilTempest.EnoughLevel)
+        if (!LocalPlayer.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest) || !Actions.MythrilTempest.EnoughLevel)
         {
             //¿ñ±©
             if (!new BaseAction(7389).IsCoolDown && Actions.Berserk.ShouldUse(out act)) return true;

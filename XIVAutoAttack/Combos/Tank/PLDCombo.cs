@@ -269,7 +269,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         {
             if (!SlowLoop && LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)
                    && IsLastWeaponSkill(true, Actions.Atonement, Actions.RoyalAuthority)
-                   && !LocalPlayer.WillStatusEndGCD(2, 0, ObjectStatus.FightOrFlight)) return true;
+                   && !LocalPlayer.WillStatusEndGCD(2, 0, true, ObjectStatus.FightOrFlight)) return true;
             if (!SlowLoop && LocalPlayer.FindStatusStack(ObjectStatus.SwordOath) > 1) return true;
 
             if (SlowLoop) return true;

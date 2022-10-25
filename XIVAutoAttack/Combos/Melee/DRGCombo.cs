@@ -341,7 +341,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         }
 
         //看看是否需要续Buff
-        if (LocalPlayer.WillStatusEndGCD(5, 0, ObjectStatus.PowerSurge))
+        if (LocalPlayer.WillStatusEndGCD(5, 0, true, ObjectStatus.PowerSurge))
         {
             if (Actions.FullThrust.ShouldUse(out act, lastComboActionID)) return true;
             if (Actions.VorpalThrust.ShouldUse(out act, lastComboActionID)) return true;

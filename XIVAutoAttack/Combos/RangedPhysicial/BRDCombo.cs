@@ -54,7 +54,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
                     bool needHigh1 = AddOnDot(b, ObjectStatus.CausticBite, ObjectStatus.Stormbite, 40);
 
                     if (LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes) && 
-                        LocalPlayer.WillStatusEndGCD(1, 1, ObjectStatus.RagingStrikes)
+                        LocalPlayer.WillStatusEndGCD(1, 1, true, ObjectStatus.RagingStrikes)
                         && (needLow1 || needHigh1)) return true;
 
                     return needLow || needHigh;
