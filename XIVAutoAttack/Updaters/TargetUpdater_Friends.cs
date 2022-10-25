@@ -1,15 +1,18 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Numerics;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Updaters
 {
-    internal partial class TargetUpdater
+    internal static partial class TargetUpdater
     {
         public static BattleChara[] PartyMembers { get; private set; } = new PlayerCharacter[0];
         /// <summary>
@@ -72,6 +75,7 @@ namespace XIVAutoAttack.Updaters
 
             DeathPeopleAll = TargetFilter.GetObjectInRadius(TargetFilter.GetDeath(AllianceMembers), 30);
             DeathPeopleParty = TargetFilter.GetObjectInRadius(TargetFilter.GetDeath(PartyMembers), 30);
+            MaintainDeathPeople();
 
             WeakenPeople = TargetFilter.GetObjectInRadius(PartyMembers, 30).Where(p =>
             {
@@ -158,6 +162,35 @@ namespace XIVAutoAttack.Updaters
             HPNotFull = PartyMembersMinHP < 1;
             #endregion
 
+        }
+
+        static SortedDictionary<uint, Vector3> _locations = new SortedDictionary<uint, Vector3>();
+        private static void MaintainDeathPeople()
+        {
+            SortedDictionary<uint, Vector3> locs = new SortedDictionary<uint, Vector3>();
+            foreach (var item in DeathPeopleAll)
+            {
+                locs[item.ObjectId] = item.Position;
+            }
+            foreach (var item in DeathPeopleParty)
+            {
+                locs[item.ObjectId] = item.Position;
+            }
+
+            DeathPeopleAll = FilterForDeath(DeathPeopleAll);
+            DeathPeopleParty = FilterForDeath(DeathPeopleParty);
+
+            _locations = locs;
+        }
+
+        private static BattleChara[] FilterForDeath(BattleChara[] battleCharas)
+        {
+            return battleCharas.Where(b =>
+            {
+                if (!_locations.TryGetValue(b.ObjectId, out var loc)) return false;
+
+                return loc == b.Position;
+            }).ToArray();
         }
     }
 }

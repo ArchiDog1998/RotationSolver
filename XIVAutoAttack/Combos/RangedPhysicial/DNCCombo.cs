@@ -51,25 +51,25 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
             //∑Á≥µ
             Windmill = new (15993)
             {
-                BuffsProvide = new [] { ObjectStatus.SilkenSymmetry }
+                BuffsProvide = Cascade.BuffsProvide,
             },
 
             //¬‰»–”Í
             Bladeshower = new (15994)
             {
-                BuffsProvide = new [] { ObjectStatus.SilkenFlow }
+                BuffsProvide = Fountain.BuffsProvide,
             },
 
             //…˝∑Á≥µ
             RisingWindmill = new (15995)
             {
-                BuffsNeed = new [] { ObjectStatus.SilkenSymmetry, ObjectStatus.SilkenSymmetry2 },
+                BuffsNeed = ReverseCascade.BuffsNeed,
             },
 
             //¬‰—™”Í
             Bloodshower = new (15996)
             {
-                BuffsNeed = new [] { ObjectStatus.SilkenFlow, ObjectStatus.SilkenFlow2 }
+                BuffsNeed = Fountainfall.BuffsNeed,
             },
 
             //…»ŒË°§∆∆
@@ -82,7 +82,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
             //…»ŒË°§º±
             FanDance3 = new (16009)
             {
-                BuffsNeed = new [] { ObjectStatus.ThreefoldFanDance },
+                BuffsNeed = FanDance2.BuffsProvide,
             },
 
             //…»ŒË°§÷’
@@ -147,11 +147,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
                 {
                     ObjectStatus.StandardFinish,
                 },
-                BuffsProvide = new []
-                {
-                    ObjectStatus.StandardStep,
-                    ObjectStatus.TechnicalStep,
-                },
+                BuffsProvide = StandardStep.BuffsProvide,
             },
 
             //∑¿ ÿ÷Æ…£∞Õ
@@ -256,7 +252,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
         if (Actions.FanDance3.ShouldUse(out act, mustUse: true)) return true;
 
         //…»ŒË
-        if (LocalPlayer.HaveStatus(ObjectStatus.Devilment) || JobGauge.Feathers > 3 || Level < 70)
+        if (LocalPlayer.HaveStatus(ObjectStatus.Devilment) || JobGauge.Feathers > 3 || !Actions.TechnicalStep.EnoughLevel)
         {
             if (Actions.FanDance2.ShouldUse(out act)) return true;
             if (Actions.FanDance.ShouldUse(out act)) return true;

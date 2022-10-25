@@ -10,7 +10,7 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Updaters
 {
-    internal partial class TargetUpdater
+    internal static partial class TargetUpdater
     {
         private static BattleChara[] AllTargets { get; set; } = new BattleChara[0];
 

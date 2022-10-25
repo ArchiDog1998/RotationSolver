@@ -2,7 +2,7 @@
 
 namespace XIVAutoAttack.Updaters
 {
-    internal partial class MajorUpdater
+    internal static class MajorUpdater
     {
 #if DEBUG
         private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();

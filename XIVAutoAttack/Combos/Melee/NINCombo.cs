@@ -21,7 +21,6 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         }
     }
 
-    //private static bool _break = false;
     internal static NinAction _ninactionAim = null;
 
     internal struct Actions
