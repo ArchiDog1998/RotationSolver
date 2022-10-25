@@ -553,7 +553,7 @@ namespace XIVAutoAttack.Helpers
             if (actor == null) return long.MinValue;
             return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address);
         }
-        internal static unsafe uint[] GetEnemies()
+        private static unsafe uint[] GetEnemies()
         {
             if (!Service.Configuration.AddEnemyListToHostile) return new uint[0];
 

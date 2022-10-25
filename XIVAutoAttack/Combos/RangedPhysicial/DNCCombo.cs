@@ -231,7 +231,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
         {
             foreach (var friend in TargetHelper.PartyMembers)
             {
-                if (StatusHelper.FindStatusTimes(friend, ObjectStatus.ClosedPosition2)?.Length > 0)
+                if (friend.HaveStatus(ObjectStatus.ClosedPosition2))
                 {
                     if (Actions.ClosedPosition.ShouldUse(out act) && Actions.ClosedPosition.Target != friend)
                     {
@@ -344,7 +344,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
 
         if (JobGauge.IsDancing) return false;
 
-        bool canstandard = Actions.TechnicalStep.RecastTimeRemain == 0 || Actions.TechnicalStep.RecastTimeRemain > 5;
+        bool canstandard = !Actions.TechnicalStep.IsCoolDown || Actions.TechnicalStep.WillHaveOneCharge(2);
 
         if (!LocalPlayer.HaveStatus(ObjectStatus.TechnicalFinish))
         {

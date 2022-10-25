@@ -194,7 +194,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             Suiton = new (2271, Ten, Chi, Jin)
             {
                 BuffsProvide = new [] { ObjectStatus.Suiton },
-                OtherCheck = b => TrickAttack.RecastTimeRemain < 4,
+                OtherCheck = b => TrickAttack.WillHaveOneCharge(2,2),
             },
 
 
@@ -284,7 +284,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         {
             if (Actions.Katon.ShouldUse(out _))
             {
-                if(!haveDoton && !IsMoving && Actions.TenChiJin.RecastTimeRemain < 2) _ninactionAim = Actions.Doton;
+                if(!haveDoton && !IsMoving && Actions.TenChiJin.WillHaveOneCharge(0, 1)) _ninactionAim = Actions.Doton;
                 else _ninactionAim = Actions.Katon;
                 return true;
             }

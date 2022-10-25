@@ -24,7 +24,7 @@ internal class BRDCombo : JobGaugeCombo<BRDGauge>
     {
         private static bool AddOnDot(BattleChara b, ushort status1, ushort status2, float duration)
         {
-            var results = StatusHelper.FindStatusTimes(b, status1, status2);
+            var results = b.FindStatusTimes(status1, status2);
             if (results.Length != 2) return false;
             return results.Min() < duration;
         }

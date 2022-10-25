@@ -9,11 +9,11 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 调整了忍者的循环
+  - 调整了忍者和舞者的循环为最新API(记得好好研究)
   ## 新增功能
   - 可以在手动选择目标的时候选择是否释放AOE。
   ## API
-  - BaseAction 添加了WillHaveOneCharge和ElapsedAfter方法
+  - 添加了Status相关的剩余时间API
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
