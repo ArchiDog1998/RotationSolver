@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos.Healer;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Actions.BaseAction
 {

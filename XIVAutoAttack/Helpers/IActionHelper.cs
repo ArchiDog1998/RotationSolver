@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XIVAutoAttack.Actions;
 
-namespace XIVAutoAttack.Actions
+namespace XIVAutoAttack.Helpers
 {
     internal static class IActionHelper
     {

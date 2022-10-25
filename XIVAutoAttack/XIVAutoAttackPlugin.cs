@@ -13,6 +13,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Windows;
 
 namespace XIVAutoAttack;

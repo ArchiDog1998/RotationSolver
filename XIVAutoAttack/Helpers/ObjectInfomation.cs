@@ -6,8 +6,10 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using XIVAutoAttack.Actions;
+using XIVAutoAttack.Helpers;
 
-namespace XIVAutoAttack.Actions
+namespace XIVAutoAttack.Helpers
 {
     internal static class ObjectInfomation
     {

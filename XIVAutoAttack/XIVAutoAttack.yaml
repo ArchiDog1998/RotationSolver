@@ -9,9 +9,7 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 补充Move的帮助文档内容。
-  - 引用gamous的金句作为本插件的punchline。
-  - 修复机工,诗人,优化骑士,绝枪,黑骑
+  - 调整了忍者的循环
   ## 新增功能
   - 可以在手动选择目标的时候选择是否释放AOE。
   ## API

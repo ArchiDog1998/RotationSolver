@@ -6,9 +6,8 @@ using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
 
-namespace XIVAutoAttack
+namespace XIVAutoAttack.Helpers
 {
     public record LevelModifier(int Main, int Sub, int Div);
     internal class HealHelper
@@ -79,7 +78,7 @@ namespace XIVAutoAttack
         public static bool SingleHeal(BattleChara chara, uint strength, double isTank, double notTank)
         {
             var shouldHeal = chara.MaxHp * 0.97 - chara.CurrentHp;
-            var healthRatio = ObjectInfomation.GetHealthRatio(chara);
+            var healthRatio = chara.GetHealthRatio();
 
             if (Service.ClientState.LocalPlayer!.Level == 90 && shouldHeal >= CalcNormalHeal(strength)) return true;
             if (healthRatio < isTank && TargetFilter.GetJobCategory(new BattleChara[] { chara }, Role.防护).Length == 1) return true;
@@ -88,18 +87,18 @@ namespace XIVAutoAttack
             return false;
         }
 
-/*        public static bool AreaHeal(uint strength, double memberHP, double healRatio)
-        {
+        /*        public static bool AreaHeal(uint strength, double memberHP, double healRatio)
+                {
 
-            var shouldHeal = TargetHelper.PartyMembersAverHP ;
-            var healthRatio = ;
+                    var shouldHeal = TargetHelper.PartyMembersAverHP ;
+                    var healthRatio = ;
 
-            if (Service.ClientState.LocalPlayer!.Level == 90 && shouldHeal >= CalcNormalHeal(strength)) return true;
-            if (healthRatio < isTank && TargetFilter.GetJobCategory(new BattleChara[] { chara }, Role.防护).Length == 1) return true;
-            if (healthRatio < notTank) return true;
+                    if (Service.ClientState.LocalPlayer!.Level == 90 && shouldHeal >= CalcNormalHeal(strength)) return true;
+                    if (healthRatio < isTank && TargetFilter.GetJobCategory(new BattleChara[] { chara }, Role.防护).Length == 1) return true;
+                    if (healthRatio < notTank) return true;
 
-            return false;
-        }*/
+                    return false;
+                }*/
 
         private static double TraitModifiers(int level)
         {

@@ -16,11 +16,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace XIVAutoAttack
+namespace XIVAutoAttack.Helpers
 {
     internal class TargetHelper
     {
@@ -105,7 +104,7 @@ namespace XIVAutoAttack
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool IsHostileTank { get; private set; } = false;
-        internal static  uint[] BLUActions { get;} = new uint[24];
+        internal static uint[] BLUActions { get; } = new uint[24];
 
         internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
         internal static MacroItem DoingMacro;
@@ -170,17 +169,17 @@ namespace XIVAutoAttack
             if (Service.ClientState.LocalPlayer.CurrentHp == 0
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying]) 
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying])
                 IconReplacer.AutoAttack = false;
 
             InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
-            var instance =ActionManager.Instance();
+            var instance = ActionManager.Instance();
             var spell = ActionType.Spell;
 
             var weapontotal = instance->GetRecastTime(spell, 11);
             Weaponelapsed = instance->GetRecastTimeElapsed(spell, 11);
-            WeaponRemain = Math.Max(weapontotal - Weaponelapsed, 
+            WeaponRemain = Math.Max(weapontotal - Weaponelapsed,
                 Service.ClientState.LocalPlayer.TotalCastTime - Service.ClientState.LocalPlayer.CurrentCastTime);
 
             var min = Math.Max(weapontotal - Service.Configuration.WeaponInterval, 0);
@@ -188,7 +187,7 @@ namespace XIVAutoAttack
             WeaponTotal = InBattle ? Math.Max(WeaponTotal, weapontotal) : 0;
 
             UpdateTargets();
-            if(Service.ClientState.LocalPlayer.ClassJob.Id == 36)
+            if (Service.ClientState.LocalPlayer.ClassJob.Id == 36)
             {
                 for (int i = 0; i < 24; i++)
                 {
@@ -256,7 +255,7 @@ namespace XIVAutoAttack
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied33]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied38]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Jumping61]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted] 
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction2]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InFlight]) return;
@@ -308,7 +307,7 @@ namespace XIVAutoAttack
             //只剩下最后一个能力技了，然后卡最后！
             if (AbilityRemainCount == 1)
             {
-                if(WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponFaster) return;
+                if (WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponFaster) return;
                 Service.IconReplacer.DoAnAction(false);
                 return;
             }
@@ -353,7 +352,7 @@ namespace XIVAutoAttack
             //}
 
             uint[] ids = GetEnemies() ?? new uint[0];
-            
+
             if (AllTargets != null && AllTargets.Length > 0)
             {
                 HostileTargets = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
@@ -373,7 +372,7 @@ namespace XIVAutoAttack
                         break;
                 }
 
-                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2 
+                CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2
                 && tar.CurrentCastTime >= Service.Configuration.InterruptibleTime).ToArray();
 
                 TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId).ToArray();
@@ -486,7 +485,7 @@ namespace XIVAutoAttack
             }
             PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Length);
 
-            if(PartyMembers.Length >= Service.Configuration.PartyCount)
+            if (PartyMembers.Length >= Service.Configuration.PartyCount)
             {
                 CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
                 CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
@@ -523,7 +522,7 @@ namespace XIVAutoAttack
                 if (h.CastTargetObjectId == h.TargetObjectId) return false;
                 if ((act.CastType == 1 || act.CastType == 2) &&
                     act.Range == 0 &&
-                    (act.EffectRange >= 40))
+                    act.EffectRange >= 40)
                     return true;
                 return false;
             });

@@ -4,6 +4,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee;
 
@@ -20,7 +21,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         }
     }
 
-    private static bool _break = false;
+    //private static bool _break = false;
     internal static NinAction _ninactionAim = null;
 
     internal struct Actions
@@ -43,7 +44,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             ThrowingDagger = new (2247),
 
             //夺取
-            Mug = new (2248)
+            Mug = new(2248)
             {
                 OtherCheck = b => JobGauge.Ninki <= 50,
             },
@@ -86,7 +87,7 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             Meisui = new (16489)
             {
                 BuffsNeed = new [] { ObjectStatus.Suiton },
-                OtherCheck = b => JobGauge.Ninki <= 50 && TrickAttack.RecastTimeRemain > 2,
+                OtherCheck = b => JobGauge.Ninki <= 50,
             },
 
             //生杀予夺
@@ -165,22 +166,13 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
 
 
             //风魔手里剑
-            FumaShuriken = new (2265, Ten)
-            {
-                AfterUse = ClearNinjutsus,
-            },
+            FumaShuriken = new (2265, Ten),
 
             //火遁之术
-            Katon = new (2266, Chi, Ten)
-            {
-                AfterUse = ClearNinjutsus,
-            },
+            Katon = new (2266, Chi, Ten),
 
             //雷遁之术
-            Raiton = new (2267, Ten, Chi)
-            {
-                AfterUse = ClearNinjutsus,
-            },
+            Raiton = new (2267, Ten, Chi),
 
 
             //冰遁之术
@@ -190,40 +182,28 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             Huton = new (2269, Jin, Chi, Ten)
             {
                 OtherCheck = b => JobGauge.HutonTimer == 0,
-                AfterUse = ClearNinjutsus,
             },
 
             //土遁之术
             Doton = new (2270, Jin, Ten, Chi)
             {
                 BuffsProvide = new [] { ObjectStatus.Doton },
-                AfterUse = ClearNinjutsus,
             },
 
             //水遁之术
             Suiton = new (2271, Ten, Chi, Jin)
             {
                 BuffsProvide = new [] { ObjectStatus.Suiton },
-                AfterUse = () =>
-                {
-                    ClearNinjutsus();
-                    _break = false;
-                },
+                OtherCheck = b => TrickAttack.RecastTimeRemain < 4,
             },
 
 
             //劫火灭却之术
-            GokaMekkyaku = new (16491, Chi, Ten)
-            {
-                AfterUse = ClearNinjutsus,
-            },
+            GokaMekkyaku = new (16491, Chi, Ten),
 
 
             //冰晶乱流之术
-            HyoshoRanryu = new (16492, Ten, Jin)
-            {
-                AfterUse = ClearNinjutsus,
-            };
+            HyoshoRanryu = new (16492, Ten, Jin);
     }
 
     private protected override ActionConfiguration CreateConfiguration()
@@ -240,7 +220,12 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
     {
         act = null;
         if (Service.IconReplacer.OriginalHook(2260) != 2260) return false;
-        if (Weaponelapsed < 0.2f && Weaponelapsed > 0) return false;
+        if (Weaponelapsed is < 0.2f and > 0) return false;
+
+        if (!LocalPlayer.HaveStatus(ObjectStatus.Ninjutsu))
+        {
+            ClearNinjutsus();
+        }
         //有生杀予夺
         if (LocalPlayer.HaveStatus(ObjectStatus.Kassatsu))
         {
@@ -301,12 +286,6 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
             {
                 if(!haveDoton && !IsMoving && Actions.TenChiJin.RecastTimeRemain < 2) _ninactionAim = Actions.Doton;
                 else _ninactionAim = Actions.Katon;
-                return true;
-            }
-            //背刺
-            if (Actions.Suiton.ShouldUse(out _) && Actions.TrickAttack.RecastTimeRemain < 4 && _break)
-            {
-                _ninactionAim = Actions.Suiton;
                 return true;
             }
         }
@@ -433,7 +412,15 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
 
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
-        _break = true;
+        //夺取
+        if (Actions.Mug.ShouldUse(out act)) return true;
+
+        //背刺
+        if (Actions.Ten.ShouldUse(out _, mustUse: true) && Actions.Suiton.ShouldUse(out _))
+        {
+            _ninactionAim = Actions.Suiton;
+            return true;
+        }
         act = null;
         return false;
     }
@@ -511,17 +498,13 @@ internal class NINCombo : JobGaugeCombo<NINGauge>
         act = null;
         if (!InBattle || Service.IconReplacer.OriginalHook(2260) != 2260) return false;
 
-        if (Actions.Mug.ShouldUse(out act)) return true;
-
         //解决Buff
         if (Actions.TrickAttack.ShouldUse(out act)) return true;
         if (Actions.Meisui.ShouldUse(out act)) return true;
 
-        {
-            if (!XIVAutoAttackPlugin.movingController.IsMoving && Actions.TenChiJin.ShouldUse(out act)) return true;
-            if (Actions.Kassatsu.ShouldUse(out act)) return true;
-            if (UseBreakItem(out act)) return true;
-        }
+        if (!IsMoving && Actions.TenChiJin.ShouldUse(out act)) return true;
+        if (Actions.Kassatsu.ShouldUse(out act)) return true;
+        if (UseBreakItem(out act)) return true;
 
         if (JobGauge.Ninki >= 50)
         {

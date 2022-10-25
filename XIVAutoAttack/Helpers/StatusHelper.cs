@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Melee;
 
-namespace XIVAutoAttack.Actions
+namespace XIVAutoAttack.Helpers
 {
     internal static class StatusHelper
     {
@@ -28,28 +30,44 @@ namespace XIVAutoAttack.Actions
             {SAMCombo.Actions.Kasha.ID, EnemyLocation.Side },
         };
 
+
+        /// <summary>
+        /// 距离下几个GCD转好这个技能能用吗。
+        /// </summary>
+        /// <param name="gcdCount">要隔着多少个完整的GCD</param>
+        /// <param name="abilityCount">再多少个能力技之后</param>
+        /// <returns>这个时间点是否起码有一层可以用</returns>
+        internal static bool WillStatusEnd(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, params ushort[] effectIDs)
+        {
+            var remain = FindStatusTime(obj, effectIDs);
+            if (remain == 0) return false;
+            return CooldownHelper.RecastAfter(remain, gcdCount, abilityCount);
+        }
+
+        [Obsolete("计算时间的话，用用WillStatusEnd？")]
         internal static float FindStatusTime(this BattleChara obj, params ushort[] effectIDs)
         {
-            var times = FindStatusTimes(obj, effectIDs);
+            var times = obj.FindStatusTimes(effectIDs);
             if (times == null || times.Length == 0) return 0;
             return times.Max();
         }
 
+        [Obsolete("计算时间的话，用用WillStatusEnd？")]
         internal static float[] FindStatusTimes(this BattleChara obj, params ushort[] effectIDs)
         {
-            return FindStatus(obj, effectIDs).Select(status => status.RemainingTime).ToArray();
+            return obj.FindStatus(effectIDs).Select(status => status.RemainingTime).ToArray();
         }
 
         internal static byte FindStatusStack(this BattleChara obj, params ushort[] effectIDs)
         {
-            var stacks = FindStatusStacks(obj, effectIDs);
+            var stacks = obj.FindStatusStacks(effectIDs);
             if (stacks == null || stacks.Length == 0) return 0;
             return stacks.Max();
         }
 
         internal static byte[] FindStatusStacks(this BattleChara obj, params ushort[] effectIDs)
         {
-            return FindStatus(obj, effectIDs).Select(status => Math.Max(status.StackCount, (byte)1)).ToArray();
+            return obj.FindStatus(effectIDs).Select(status => Math.Max(status.StackCount, (byte)1)).ToArray();
         }
 
         internal static bool HaveStatus(this BattleChara obj, params ushort[] effectIDs)
@@ -60,7 +78,7 @@ namespace XIVAutoAttack.Actions
         internal static Status[] FindStatus(this BattleChara obj, params ushort[] effectIDs)
         {
             uint[] newEffects = effectIDs.Select(a => (uint)a).ToArray();
-            return FindAllStatus(obj).Where(status => newEffects.Contains(status.StatusId)).ToArray();
+            return obj.FindAllStatus().Where(status => newEffects.Contains(status.StatusId)).ToArray();
         }
 
         private static Status[] FindAllStatus(this BattleChara obj)

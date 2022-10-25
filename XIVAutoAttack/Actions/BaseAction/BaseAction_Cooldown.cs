@@ -1,24 +1,12 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using XIVAutoAttack.Combos;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Actions.BaseAction
 {
     internal partial class BaseAction
     {
-        /// <summary>
-        /// 距离下一个GCD转好还需要多少时间
-        /// </summary>
-        /// <param name="gcdCount">要隔着多少个GCD</param>
-        /// <param name="abilityCount">再多少个能力技之后</param>
-        /// <returns>还剩几秒</returns>
-        internal static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0)
-            => WeaponTime(gcdCount, abilityCount) + TargetHelper.WeaponRemain;
-
-        private static float WeaponTime(uint gcdCount = 0, uint abilityCount = 0)
-            => TargetHelper.WeaponTotal * gcdCount
-            + Service.Configuration.WeaponInterval * abilityCount;
-
         /// <summary>
         /// 这个技能已经运转了几个完整的GCD
         /// </summary>
@@ -29,9 +17,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         {
             if (!IsCoolDown) return false;
             var elapsed = RecastTimeElapsed;
-            var gcdelapsed = WeaponTime(gcdCount, abilityCount) + TargetHelper.Weaponelapsed;
-
-            return IsLessThan(gcdelapsed , elapsed);
+            return CooldownHelper.ElapsedAfter(elapsed, gcdCount, abilityCount);
         }
 
         /// <summary>
@@ -44,18 +30,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         {
             if (HaveOneCharge) return true;
             var recast = RecastTimeOneCharge;
-            var remain = WeaponRemain(gcdCount, abilityCount);
-
-            return IsLessThan(recast, remain);
-        }
-
-        private static bool IsLessThan(float a, float b)
-        {
-            if (a <= b) return true;
-
-            if (Math.Abs(a - b) < 0.05) return true;
-
-            return false;
+            return CooldownHelper.RecastAfter(recast, gcdCount, abilityCount);
         }
 
         /// <summary>

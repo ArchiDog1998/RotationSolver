@@ -6,7 +6,7 @@ using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos;
 
-namespace XIVAutoAttack.Actions
+namespace XIVAutoAttack.Helpers
 {
     internal static class TargetFilter
     {
@@ -103,14 +103,14 @@ namespace XIVAutoAttack.Actions
             return tars.ElementAt(0);
         }
 
-        private  static BattleChara FindMoveTargetScreenCenter(BattleChara[] charas)
+        private static BattleChara FindMoveTargetScreenCenter(BattleChara[] charas)
         {
             var pPosition = Service.ClientState.LocalPlayer.Position;
             if (!Service.GameGui.WorldToScreen(pPosition, out var playerScrPos)) return null;
 
             var tars = charas.Where(t =>
             {
-                if(!Service.GameGui.WorldToScreen(t.Position, out var scrPos)) return false;
+                if (!Service.GameGui.WorldToScreen(t.Position, out var scrPos)) return false;
 
                 var dir = scrPos - playerScrPos;
 
@@ -276,7 +276,7 @@ namespace XIVAutoAttack.Actions
             if (Service.ClientState.LocalPlayer == null) return 0;
 
             var multi = GetJobCategory(new BattleChara[] { Service.ClientState.LocalPlayer }, Role.防护).Length == 0 ? mult : mult * 1.5f;
-            if(TargetHelper.PartyMembers.Length > 4)
+            if (TargetHelper.PartyMembers.Length > 4)
             {
                 multi *= 2;
             }
@@ -298,10 +298,10 @@ namespace XIVAutoAttack.Actions
             ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
 
 
-            var targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.远程));
+            var targets = GetASTTargets(GetJobCategory(ASTTargets, Role.远程));
             if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.近战));
+            targets = GetASTTargets(GetJobCategory(ASTTargets, Role.近战));
             if (targets.Length > 0) return RandomObject(targets);
 
             targets = GetASTTargets(ASTTargets);
@@ -314,10 +314,10 @@ namespace XIVAutoAttack.Actions
         {
             ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
 
-            var targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.近战));
+            var targets = GetASTTargets(GetJobCategory(ASTTargets, Role.近战));
             if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetASTTargets(TargetFilter.GetJobCategory(ASTTargets, Role.远程));
+            targets = GetASTTargets(GetJobCategory(ASTTargets, Role.远程));
             if (targets.Length > 0) return RandomObject(targets);
 
             targets = GetASTTargets(ASTTargets);

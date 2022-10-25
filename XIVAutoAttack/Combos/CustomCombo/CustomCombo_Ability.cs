@@ -6,6 +6,7 @@ using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.RangedPhysicial;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.CustomCombo;
 

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -47,7 +48,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="abilityCount">再多少个能力技之后</param>
         /// <returns>还剩几秒</returns>
         protected static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0)
-            => BaseAction.WeaponRemain(gcdCount, abilityCount);
+            => CooldownHelper.WeaponRemain(gcdCount, abilityCount);
 
         protected static float Weaponelapsed => TargetHelper.Weaponelapsed;
 
