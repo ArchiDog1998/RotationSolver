@@ -7,11 +7,11 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
-internal class MCHCombo : JobGaugeCombo<MCHGauge>
+internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 {
     internal override uint JobID => 31;
     private static bool initFinished = false;
@@ -191,7 +191,7 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
         if (Actions.Bioblaster.ShouldUse(out act)) return true;
         //单体,四个牛逼的技能。先空气锚再钻头
         if (Actions.AirAnchor.ShouldUse(out act)) return true;
-        else if (Level < Actions.AirAnchor.Level && Actions.HotShow.ShouldUse(out act)) return true;
+        else if (!Actions.AirAnchor.EnoughLevel && Actions.HotShow.ShouldUse(out act)) return true;
         if (Actions.Drill.ShouldUse(out act)) return true;
         if (Actions.ChainSaw.ShouldUse(out act, mustUse: true)) return true;
 
@@ -211,12 +211,12 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //等级小于钻头时,绑定狙击弹
-        if (Level < Actions.Drill.Level && nextGCD.IsAnySameAction(true, Actions.CleanShot))
+        if (!Actions.Drill.EnoughLevel && nextGCD.IsAnySameAction(true, Actions.CleanShot))
         {
             if (Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //等级小于90时或自嗨时,整备不再留层数
-        if ((Level < Actions.ChainSaw.Level || !Config.GetBoolByName("MCH_Reassemble")) 
+        if ((!Actions.ChainSaw.EnoughLevel || !Config.GetBoolByName("MCH_Reassemble")) 
             && nextGCD.IsAnySameAction(true, Actions.AirAnchor , Actions.Drill, Actions.ChainSaw))
         {
             if (Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -294,17 +294,17 @@ internal class MCHCombo : JobGaugeCombo<MCHGauge>
             if (LocalPlayer.HaveStatus(ObjectStatus.Wildfire)) return true;
 
             //在三大金刚还剩8秒冷却好时不释放超荷
-            if (Level >= Actions.Drill.Level && Actions.Drill.RecastTimeRemain < 8) return false;
-            if (Level >= Actions.AirAnchor.Level && Actions.AirAnchor.RecastTimeRemain < 8) return false;
-            if (Level >= Actions.ChainSaw.Level && Actions.ChainSaw.RecastTimeRemain < 8) return false;
+            if (Actions.Drill.EnoughLevel && Actions.Drill.RecastTimeRemain < 8) return false;
+            if (Actions.AirAnchor.EnoughLevel && Actions.AirAnchor.RecastTimeRemain < 8) return false;
+            if (Actions.ChainSaw.EnoughLevel && Actions.ChainSaw.RecastTimeRemain < 8) return false;
 
             //小怪AOE或者自嗨期间超荷判断
             if ((Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) && IsMoving) return false;
-            if (((Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) && !IsMoving) || Level < Actions.Wildfire.Level) return true;
+            if (((Actions.SpreadShot.ShouldUse(out _) || !Target.IsBoss()) && !IsMoving) || !Actions.Wildfire.EnoughLevel) return true;
 
             uint wfTimer = 6;
             var wildfireCDTime = Actions.Wildfire.RecastTimeRemain;
-            if (Level < Actions.BarrelStabilizer.Level) wfTimer = 12;
+            if (!Actions.BarrelStabilizer.EnoughLevel) wfTimer = 12;
 
             //标准循环起手判断
             if (!initFinished && MCH_Opener) return false;

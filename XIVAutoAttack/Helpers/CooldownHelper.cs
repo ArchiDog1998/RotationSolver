@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Helpers
 {
@@ -15,7 +16,7 @@ namespace XIVAutoAttack.Helpers
         /// <param name="abilityCount">再多少个能力技之后</param>
         /// <returns>还剩几秒</returns>
         internal static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0)
-            => WeaponTime(gcdCount, abilityCount) + TargetHelper.WeaponRemain;
+            => WeaponTime(gcdCount, abilityCount) + ActionUpdater.WeaponRemain;
 
         /// <summary>
         /// 距离上一次搞好GCD已经过去多少时间里
@@ -24,11 +25,11 @@ namespace XIVAutoAttack.Helpers
         /// <param name="abilityCount">已经过去多少个能力技了</param>
         /// <returns>算出总时间</returns>
         internal static float WeaponElapsed(uint gcdCount = 0, uint abilityCount = 0)
-            => WeaponTime(gcdCount, abilityCount) + TargetHelper.Weaponelapsed;
+            => WeaponTime(gcdCount, abilityCount) + ActionUpdater.Weaponelapsed;
 
 
         private static float WeaponTime(uint gcdCount = 0, uint abilityCount = 0)
-            => TargetHelper.WeaponTotal * gcdCount
+            => ActionUpdater.WeaponTotal * gcdCount
             + Service.Configuration.WeaponInterval * abilityCount;
 
         /// <summary>

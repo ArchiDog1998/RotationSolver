@@ -14,7 +14,6 @@ using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
 using XIVAutoAttack.Updaters;
 using XIVAutoAttack.Windows;
 
@@ -27,12 +26,13 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     private const string _lockCommand = "/aauto";
 
     private readonly WindowSystem windowSystem;
+    private readonly OverlayWindow overlayWindow;
 
     private readonly ConfigWindow configWindow;
     //private readonly SystemSound sound;
     public string Name => "XIV Auto Attack";
 
-    internal static Lumina.Excel.GeneratedSheets.ClassJob[] AllJobs;
+    internal static readonly ClassJob[] AllJobs = Service.DataManager.GetExcelSheet<ClassJob>().ToArray();
 
     internal static Watcher watcher;
 
@@ -57,15 +57,16 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Address.Setup();
 
         Service.IconReplacer = new IconReplacer();
+
         configWindow = new ConfigWindow();
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(configWindow);
+
+        overlayWindow = new OverlayWindow();
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
-        Service.Interface.UiBuilder.Draw += UiBuilder_Draw;
+        Service.Interface.UiBuilder.Draw += overlayWindow.Draw;
         Service.Framework.Update += MajorUpdater.Framework_Update;
-
-        AllJobs = Service.DataManager.GetExcelSheet<ClassJob>().ToArray();
 
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
@@ -75,76 +76,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         movingController = new MovingController();
     }
 
-    private void UiBuilder_Draw()
-    {
-        const int COUNT = 20;
-
-        if (CustomCombo.EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
-        if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))return;
-        if (CustomCombo.ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
-
-        float radius = CustomCombo.EnemyLocationTarget.HitboxRadius + 3.5f;
-        float rotation = CustomCombo.EnemyLocationTarget.Rotation;
-
-        Vector3 pPosition = CustomCombo.EnemyLocationTarget.Position;
-
-        if (Service.GameGui == null) return;
-        if (!Service.GameGui.WorldToScreen(pPosition, out var scrPos)) return;
-
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
-        ImGuiHelpers.ForceNextWindowMainViewport();
-        ImGuiHelpers.SetNextWindowPosRelativeMainViewport(new Vector2(0, 0));
-        ImGui.Begin("Ring",
-            ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
-            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
-        ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
-
-        List<Vector2> pts = new List<Vector2>(2 * COUNT + 2);
-
-        pts.Add(scrPos);
-        switch (CustomCombo.ShouldLocation)
-        {
-            case EnemyLocation.Side:
-                SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
-                pts.Add(scrPos);
-                SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
-                break;
-            case EnemyLocation.Back:
-                SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
-                break;
-            default:
-                return;
-        }
-        pts.Add(scrPos);
-
-        bool wrong = CustomCombo.ShouldLocation != CustomCombo.EnemyLocationTarget.FindEnemyLocation();
-        var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
-
-        pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
-        ImGui.GetWindowDrawList().PathStroke(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 1f)), ImDrawFlags.None, 3);
-        pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
-        ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 0.2f)));
-
-        ImGui.End();
-        ImGui.PopStyleVar();
-    }
-
-    private void SectorPlots(ref List<Vector2> pts, Vector3 centre, float radius, double rotation, int segments)
-    {
-        var step = Math.PI / 2 / segments;
-        for (int i = 0; i <= segments; i++)
-        {
-            Service.GameGui.WorldToScreen(ChangePoint(centre, radius, rotation + i * step), out var pt);
-            pts.Add(pt);
-        }
-    }
-
-    private Vector3 ChangePoint(Vector3 pt, double radius, double rotation)
-    {
-        var x = Math.Sin(rotation) * radius + pt.X;
-        var z = Math.Cos(rotation) * radius + pt.Z;
-        return new Vector3((float)x, pt.Y, (float)z);
-    }
 
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
@@ -157,12 +88,11 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.CommandManager.RemoveHandler(_lockCommand);
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
-        Service.Interface.UiBuilder.Draw -= UiBuilder_Draw;
+        Service.Interface.UiBuilder.Draw -= overlayWindow.Draw;
         Service.IconReplacer.Dispose();
         MajorUpdater.Dispose();
         Service.Framework.Update -= MajorUpdater.Framework_Update;
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
-
 
         watcher?.Dispose();
         movingController?.Dispose();

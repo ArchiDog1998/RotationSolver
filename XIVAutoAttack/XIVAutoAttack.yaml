@@ -11,9 +11,10 @@ changelog: |-
   ## 错误修复
   - 调整了忍者和舞者的循环为最新API(记得好好研究)
   ## 新增功能
-  - 可以在手动选择目标的时候选择是否释放AOE。
+  - 可以选择是否即刻咏唱复活
   ## API
   - 添加了Status相关的剩余时间API
+  - 改了软件框架！
   - 添加了BaseAction的EnoughLevel属性，尽量别用Level了哈。
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack

@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.UI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Helpers;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace XIVAutoAttack.Updaters.TargetUpdater
+namespace XIVAutoAttack.Updaters
 {
     internal partial class TargetUpdater
     {

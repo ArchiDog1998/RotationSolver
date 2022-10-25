@@ -4,7 +4,7 @@ using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Actions.BaseAction
 {
@@ -58,7 +58,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
                     if (!XIVAutoAttackPlugin.movingController.IsMoving) return tars;
 
-                    var ts = tars.Where(t => t.FindStatusTime(TargetStatus) == 0).ToArray();
+                    var ts = tars.Where(t => !t.HaveStatus(TargetStatus)).ToArray();
 
                     if (ts.Length == 0) return tars;
                     return ts;

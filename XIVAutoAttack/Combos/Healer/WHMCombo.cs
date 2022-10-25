@@ -7,12 +7,12 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal class WHMCombo : JobGaugeCombo<WHMGauge>
+internal sealed class WHMCombo : JobGaugeCombo<WHMGauge>
 {
     internal override uint JobID => 24;
     private protected override BaseAction Raise => Actions.Raise;

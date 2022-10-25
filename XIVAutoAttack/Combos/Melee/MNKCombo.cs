@@ -10,7 +10,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal class MNKCombo : JobGaugeCombo<MNKGauge>
+internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
 {
     internal override uint JobID => 20;
 

@@ -1,23 +1,4 @@
 ﻿using Dalamud.Game;
-using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Game.Text.SeStringHandling.Payloads;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using FFXIVClientStructs.FFXIV.Client.Graphics;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel.GeneratedSheets;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using XIVAutoAttack.Combos;
-using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -74,8 +55,8 @@ namespace XIVAutoAttack.Updaters
 
             ActionUpdater.UpdateWeaponTime();
 
-            TargetUpdater.TargetUpdater.UpdateHostileTargets();
-            TargetUpdater.TargetUpdater.UpdateFriends();
+            TargetUpdater.UpdateHostileTargets();
+            TargetUpdater.UpdateFriends();
 
             ActionUpdater.DoAction();
             MacroUpdater.UpdateMacro();

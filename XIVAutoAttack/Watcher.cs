@@ -1,23 +1,16 @@
-﻿using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Hooking;
+﻿using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.System.Resource.Handle;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ImGuiNET;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 using Action = Lumina.Excel.GeneratedSheets.Action;
-using Item = Lumina.Excel.GeneratedSheets.Item;
 
 namespace XIVAutoAttack
 {
@@ -89,7 +82,7 @@ namespace XIVAutoAttack
                         {
                             if (item.MacroIndex < 0 || item.MacroIndex > 99) break;
 
-                            TargetUpdater.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
+                            MacroUpdater.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
                                 RaptureMacroModule.Instance->Individual[item.MacroIndex]));
                         }
                     }

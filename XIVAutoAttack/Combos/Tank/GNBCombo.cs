@@ -6,11 +6,11 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal class GNBCombo : JobGaugeCombo<GNBGauge>
+internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
 {
     internal override uint JobID => 37;
     internal override bool HaveShield => LocalPlayer.HaveStatus(ObjectStatus.RoyalGuard);
@@ -263,7 +263,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             if (!LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.GnashingFang.RecastTimeRemain > 20) return true;
 
             //等级小于烈牙,
-            if (Level < Actions.GnashingFang.Level && (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) || Actions.NoMercy.RecastTimeRemain > 15)) return true;
+            if (!Actions.GnashingFang.EnoughLevel && (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) || Actions.NoMercy.RecastTimeRemain > 15)) return true;
         }
 
         //弓形冲波
@@ -340,19 +340,19 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             return false;
         }
 
-        if (Level >= Actions.BurstStrike.Level && Actions.NoMercy.ShouldUse(out act))
+        if (Actions.BurstStrike.EnoughLevel && Actions.NoMercy.ShouldUse(out act))
         {
             //4GCD起手判断
-            if (IsLastWeaponSkill(Actions.KeenEdge.ID) && JobGauge.Ammo == 1 && Actions.GnashingFang.RecastTimeRemain == 0 && !Actions.Bloodfest.IsCoolDown) return true;
+            if (IsLastWeaponSkill(Actions.KeenEdge.ID) && JobGauge.Ammo == 1 && !Actions.GnashingFang.IsCoolDown && !Actions.Bloodfest.IsCoolDown) return true;
 
             //3弹进无情
             else if (JobGauge.Ammo == (Level >= 88 ? 3 : 2)) return true;
 
             //2弹进无情
-            else if (JobGauge.Ammo == 2 && Actions.GnashingFang.RecastTimeRemain > 0) return true;
+            else if (JobGauge.Ammo == 2 && Actions.GnashingFang.IsCoolDown) return true;
         }
         //等级低于爆发击是判断
-        if (Level < Actions.BurstStrike.Level && Actions.NoMercy.ShouldUse(out act)) return true;
+        if (!Actions.BurstStrike.EnoughLevel && Actions.NoMercy.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -379,7 +379,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && Actions.Bloodfest.RecastTimeRemain < 5) return true;
 
             //4GCD起手烈牙判断
-            if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && ((!Actions.Bloodfest.IsCoolDown && Level >= Actions.Bloodfest.Level) || Level < Actions.Bloodfest.Level)) return true;
+            if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && ((!Actions.Bloodfest.IsCoolDown && Actions.Bloodfest.EnoughLevel) || !Actions.Bloodfest.EnoughLevel)) return true;
         }
         return false;   
     }
@@ -398,11 +398,11 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle) return false;
 
             //在烈牙后面使用音速破
-            if (Actions.GnashingFang.RecastTimeRemain > 0 && LocalPlayer.HaveStatus(ObjectStatus.NoMercy)) return true;
+            if (Actions.GnashingFang.IsCoolDown && LocalPlayer.HaveStatus(ObjectStatus.NoMercy)) return true;
 
             //其他判断
-            if (Level < Actions.DoubleDown.Level && LocalPlayer.HaveStatus(ObjectStatus.ReadyToRip)
-                && Actions.GnashingFang.RecastTimeRemain > 0) return true;
+            if (!Actions.DoubleDown.EnoughLevel && LocalPlayer.HaveStatus(ObjectStatus.ReadyToRip)
+                && Actions.GnashingFang.IsCoolDown) return true;
         }        
         return false;
     }
@@ -449,7 +449,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle && IsMoving) return false;
 
             //如果烈牙剩0.5秒冷却好,不释放爆发击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-            if (Actions.SonicBreak.RecastTimeRemain > 0 && Actions.SonicBreak.RecastTimeRemain < 0.5) return false;
+            if (Actions.SonicBreak.IsCoolDown && Actions.SonicBreak.RecastTimeRemain < 0.5) return false;
 
             //无情中爆发击判定
             if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) &&
@@ -459,7 +459,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             //无情外防止溢出
             if (IsLastWeaponSkill(Actions.BrutalShell.ID) &&
                 (JobGauge.Ammo == (Level >= 88 ? 3 : 2) ||
-                (Actions.Bloodfest.RecastTimeRemain < 6 && JobGauge.Ammo <= 2 && Actions.NoMercy.RecastTimeRemain > 10 && Level >= Actions.Bloodfest.Level))) return true;
+                (Actions.Bloodfest.RecastTimeRemain < 6 && JobGauge.Ammo <= 2 && Actions.NoMercy.RecastTimeRemain > 10 && Actions.Bloodfest.EnoughLevel))) return true;
         }
         return false;
     }
@@ -471,7 +471,7 @@ internal class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle) return true;
 
             //爆发期,无情中且音速破在冷却中
-            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.SonicBreak.RecastTimeRemain > 0) return true;
+            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.SonicBreak.IsCoolDown) return true;
         }
         return false;     
     }

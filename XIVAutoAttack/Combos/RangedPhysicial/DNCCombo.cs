@@ -5,11 +5,11 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Helpers.TargetHelper;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
-internal class DNCCombo : JobGaugeCombo<DNCGauge>
+internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 {
     internal override uint JobID => 38;
 
@@ -301,7 +301,7 @@ internal class DNCCombo : JobGaugeCombo<DNCGauge>
     }
     private protected override bool BreakAbility(byte abilityRemain, out IAction act)
     {
-        if (Level < Actions.TechnicalStep.Level
+        if (!Actions.TechnicalStep.EnoughLevel
             && Actions.Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         return base.BreakAbility(abilityRemain, out act);

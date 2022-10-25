@@ -7,7 +7,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal class RPRCombo : JobGaugeCombo<RPRGauge>
+internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
 {
     internal class PRPAction : BaseAction
     {
@@ -116,7 +116,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                 BuffsProvide = new[] { ObjectStatus.SoulReaver },
                 OtherCheck = b => !soulReaver && !enshrouded &&
                                   JobGauge.Soul >= 50 && !plentifulReady &&
-                                  ((Level >= Gluttony.Level && Gluttony.RecastTimeRemain > 12) || Level < Gluttony.Level),
+                                  ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneCharge(4)) || !Gluttony.EnoughLevel),
             },
 
             //束缚挥割
@@ -186,7 +186,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
                         {
                                 return true;
                         }
-                        if (JobGauge.LemureShroud == 1 && Level < Actions.Communio.Level && enhancedCrossReaping)
+                        if (JobGauge.LemureShroud == 1 && !Communio.EnoughLevel && enhancedCrossReaping)
                         {
                                 return true;
                         }
@@ -245,7 +245,7 @@ internal class RPRCombo : JobGaugeCombo<RPRGauge>
             if (Actions.VoidReaping.ShouldUse(out act)) return true;
             if (Actions.GrimReaping.ShouldUse(out act)) return true;
 
-            if (JobGauge.LemureShroud == 1 && Level >= Actions.Communio.Level)
+            if (JobGauge.LemureShroud == 1 && Actions.Communio.EnoughLevel)
             {
                 if (!IsMoving && Actions.Communio.ShouldUse(out act, mustUse: true))
                 {

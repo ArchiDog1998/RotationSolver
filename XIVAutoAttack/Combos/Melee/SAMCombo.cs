@@ -8,7 +8,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal class SAMCombo : JobGaugeCombo<SAMGauge>
+internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
 {
     internal override uint JobID => 34;
 
