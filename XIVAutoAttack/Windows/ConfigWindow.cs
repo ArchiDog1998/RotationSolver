@@ -11,7 +11,9 @@ using System.Numerics;
 using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Combos.RangedPhysicial;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Windows;
 
@@ -186,12 +188,21 @@ internal class ConfigWindow : Window
 
 
 
-                if (Service.TargetManager.Target is BattleChara b)
-                {
-                    ImGui.Text("Is Boss: " + b.IsBoss().ToString());
-                    ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
-                    ImGui.Text("NameID: " + b.NameId.ToString());
-                }
+                //if (Service.TargetManager.Target is BattleChara b)
+                //{
+                //    ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+                //    ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
+                //    ImGui.Text("NameID: " + b.NameId.ToString());
+                //}
+
+                var baseAction = MCHCombo.Actions.GaussRound;
+                ImGui.Text(baseAction.Action.Name.ToString());
+
+                ImGui.Text(baseAction.IsCoolDown.ToString());
+                ImGui.Text(baseAction.RecastTimeElapsed.ToString());
+                ImGui.Text(baseAction.RecastTime.ToString());
+                ImGui.Text(baseAction.ChargesCount.ToString());
+
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
                 //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
 

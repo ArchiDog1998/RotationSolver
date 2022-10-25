@@ -29,7 +29,8 @@ namespace XIVAutoAttack.Actions.BaseAction
             IsGeneralGCD = Action.CooldownGroup == GCDCooldownGroup;
             IsRealGCD = IsGeneralGCD || Action.AdditionalCooldownGroup == GCDCooldownGroup;
 
-            CoolDownGroup = Action.AdditionalCooldownGroup == 0 ? Action.CooldownGroup : Action.AdditionalCooldownGroup;
+            //CoolDownGroup = GCDCooldownGroup;
+            CoolDownGroup = IsGeneralGCD ? Action.AdditionalCooldownGroup : Action.CooldownGroup;
 
             if (Action.PrimaryCostType == 3 || Action.PrimaryCostType == 4)
             {

@@ -64,11 +64,11 @@ namespace XIVAutoAttack.Actions.BaseAction
         }
 
 
-        private unsafe RecastDetail* CoolDownDetail => ActionManager.Instance()->GetRecastGroupDetail(CoolDownGroup);
+        private unsafe RecastDetail* CoolDownDetail => ActionManager.Instance()->GetRecastGroupDetail(CoolDownGroup - 1);
         /// <summary>
         /// 复唱时间
         /// </summary>
-        private unsafe float RecastTime => CoolDownDetail->Total;
+        internal unsafe float RecastTime => CoolDownDetail->Total;
 
         internal unsafe float RecastTimeElapsed => CoolDownDetail->Elapsed;
 

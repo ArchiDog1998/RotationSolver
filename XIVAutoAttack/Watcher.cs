@@ -2,6 +2,7 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ImGuiNET;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.ComponentModel;
 using System.Numerics;
@@ -66,7 +67,7 @@ namespace XIVAutoAttack
 
 #if DEBUG
                 var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(id)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
-                Service.ChatGui.Print($"{a} , {actionType} , {id} , {param} , {useType} , {pvp} , {TargetHelper.WeaponRemain}");
+                Service.ChatGui.Print($"{a} , {actionType} , {id} , {param} , {useType} , {pvp} , {ActionUpdater.WeaponRemain}");
 #endif
 
                 var action = Service.DataManager.GetExcelSheet<Action>().GetRow(id);

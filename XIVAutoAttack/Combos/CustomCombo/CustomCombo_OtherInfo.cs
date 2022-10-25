@@ -41,7 +41,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool InBattle => ActionUpdater.InBattle;
 
-        [Obsolete("该方法已过时，请使用BaseAction.WillHaveOneCharge", true)]
+        [Obsolete("该方法已过时，请使用BaseAction.WillHaveOneCharge")]
         /// <summary>
         /// 距离下一个GCD转好还需要多少时间
         /// </summary>
