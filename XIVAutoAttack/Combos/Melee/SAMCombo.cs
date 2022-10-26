@@ -5,6 +5,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Controllers;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee;

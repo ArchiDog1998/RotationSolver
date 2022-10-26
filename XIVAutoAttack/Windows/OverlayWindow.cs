@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Windows
 {

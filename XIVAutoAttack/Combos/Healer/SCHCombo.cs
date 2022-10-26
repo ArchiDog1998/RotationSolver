@@ -5,6 +5,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 

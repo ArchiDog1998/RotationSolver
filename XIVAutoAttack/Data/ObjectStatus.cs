@@ -1,4 +1,4 @@
-﻿namespace XIVAutoAttack.Combos
+﻿namespace XIVAutoAttack.Data
 {
     internal struct ObjectStatus
     {

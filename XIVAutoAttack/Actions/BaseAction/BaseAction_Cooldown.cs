@@ -1,6 +1,6 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
-using XIVAutoAttack.Combos;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 

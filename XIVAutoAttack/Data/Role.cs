@@ -1,4 +1,4 @@
-﻿namespace XIVAutoAttack
+﻿namespace XIVAutoAttack.Data
 {
     public enum Role : byte
     {

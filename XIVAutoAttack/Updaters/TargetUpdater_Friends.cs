@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Combos;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Updaters

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 

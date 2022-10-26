@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {

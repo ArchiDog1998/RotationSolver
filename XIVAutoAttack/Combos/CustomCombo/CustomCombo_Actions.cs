@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
