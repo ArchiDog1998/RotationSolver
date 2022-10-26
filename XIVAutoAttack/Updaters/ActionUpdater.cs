@@ -39,13 +39,16 @@ namespace XIVAutoAttack.Updaters
 
         private static unsafe void UpdateWeaponTime()
         {
-            var instance = ActionManager.Instance();
-            var spell = ActionType.Spell;
+            var player = Service.ClientState.LocalPlayer;
+            if (player != null) return;
 
-            var weapontotal = instance->GetRecastTime(spell, 11);
-            WeaponElapsed = instance->GetRecastTimeElapsed(spell, 11);
+            var instance = ActionManager.Instance();
+
+            var weapontotal = (float)Math.Max(instance->GetRecastTime(ActionType.Spell, 11),
+                player.TotalCastTime + 0.1);
+            WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Spell, 11);
             WeaponRemain = Math.Max(weapontotal - WeaponElapsed,
-                Service.ClientState.LocalPlayer.TotalCastTime - Service.ClientState.LocalPlayer.CurrentCastTime);
+                player.TotalCastTime - player.CurrentCastTime);
 
             var min = Math.Max(weapontotal - Service.Configuration.WeaponInterval, 0);
             AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
@@ -75,7 +78,6 @@ namespace XIVAutoAttack.Updaters
         }
 
         static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
-        //static readonly Stopwatch _weaponAbilityStopwatch = new Stopwatch();
         static long _weaponRandomDelay = 0;
         static float _lastCastingTotal = 0;
         internal static void DoAction()
