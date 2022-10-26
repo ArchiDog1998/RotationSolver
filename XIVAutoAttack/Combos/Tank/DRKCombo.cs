@@ -126,10 +126,6 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             Delirium = new (7390)
             {
                 OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
-                AfterUse = () =>
-                {
-                    burstDelayTime = WeaponRemain(2);
-                }
             },
 
             //至黑之夜
@@ -239,7 +235,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
         {
             if (LocalPlayer.HaveStatus(ObjectStatus.Delirium) && LocalPlayer.FindStatusStack(ObjectStatus.BloodWeapon) <= 3) return true;
 
-            if ((JobGauge.Blood >= 50 && Actions.BloodWeapon.RecastTimeRemain is > 0 and < 3) || (JobGauge.Blood >= 90 && !LocalPlayer.HaveStatus(ObjectStatus.Delirium))) return true;
+            if ((JobGauge.Blood >= 50 && Actions.BloodWeapon.WillHaveOneChargeGCD(1)) || (JobGauge.Blood >= 90 && !LocalPlayer.HaveStatus(ObjectStatus.Delirium))) return true;
 
         }
 

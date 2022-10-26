@@ -13,13 +13,13 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// 这个技能已经运转了几个完整的GCD
         /// </summary>
         /// <param name="gcdCount">已经运转了多少个完整的GCD</param>
-        /// <param name="abilityCount">已经运转了多少个能力技之后</param>
+        /// <param name="abilityCount">再多少个能力技之后</param>
         /// <param name="addWeaponElapsed">是否要把<see cref="ActionUpdater.WeaponElapsed"/>加进去</param>
         /// <returns>是否已经冷却了这么久了</returns>
         internal bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0, bool addWeaponElapsed = true)
         {
             if (!IsCoolDown) return false;
-            var elapsed = RecastTimeElapsed;
+            var elapsed = RecastTimeElapsedOneCharge;
             return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, abilityCount, addWeaponElapsed);
         }
 
@@ -32,7 +32,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         internal bool ElapsedAfter(float gcdelapsed, bool addWeaponElapsed = true)
         {
             if (!IsCoolDown) return false;
-            var elapsed = RecastTimeElapsed;
+            var elapsed = RecastTimeElapsedOneCharge;
             return CooldownHelper.ElapsedAfter(elapsed, gcdelapsed, addWeaponElapsed);
         }
 
@@ -46,7 +46,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         internal bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true)
         {
             if (HaveOneCharge) return true;
-            var recast = RecastTimeOneCharge;
+            var recast = RecastTimeRemainOneCharge;
             return CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount, addWeaponRemain);
         }
 
@@ -59,7 +59,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         internal bool WillHaveOneCharge(float remain, bool addWeaponRemain = true)
         {
             if (HaveOneCharge) return true;
-            var recast = RecastTimeOneCharge;
+            var recast = RecastTimeRemainOneCharge;
             return CooldownHelper.RecastAfter(recast, remain, addWeaponRemain);
         }
 
@@ -83,8 +83,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         [Obsolete("能否尽量不用，然后用WillHaveOneCharge")]
         internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
 
-        [Obsolete("能否尽量不用，然后用ElapsedAfter")]
-        private  unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ID, Service.ClientState.LocalPlayer.Level), (ushort)1);
+        internal  unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ID, Service.ClientState.LocalPlayer.Level), (ushort)1);
         /// <summary>
         /// 是否起码有一层技能
         /// </summary>
@@ -92,11 +91,12 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         internal ushort ChargesCount => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
 
-        private float RecastTimeOneCharge => RecastTime / MaxCharges;
+        internal float RecastTimeOneCharge => RecastTime / MaxCharges;
 
         /// <summary>
         /// 下一层转好的时间
         /// </summary>
         internal float RecastTimeRemainOneCharge => RecastTimeRemain % RecastTimeOneCharge;
+        internal float RecastTimeElapsedOneCharge => RecastTimeElapsed % RecastTimeOneCharge;
     }
 }

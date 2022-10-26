@@ -16,9 +16,6 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
 
     internal override uint JobID => 23;
     private static bool initFinished = false;
-    private static float RagingStrikes1GCDDelayTime = 0;
-    private static float RadiantFinaleCurrent0GCDRemain = 0;
-    private static DateTime RagingStrikesNowTime;
 
     internal struct Actions
     {
@@ -71,15 +68,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
             WanderersMinuet = new(3559),
 
             //战斗之声
-            BattleVoice = new(118, true)
-            {
-                OtherCheck = b =>
-                {
-                    if (IsLastAbility(true, RadiantFinale)) return true;
-
-                    return false;
-                },
-            },
+            BattleVoice = new(118, true),
 
             //猛者强击
             RagingStrikes = new(101)
@@ -91,11 +80,6 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
 
                     return false;
                 },
-                AfterUse = () =>
-                {
-                    RagingStrikes1GCDDelayTime = WeaponRemain(1);
-                    RagingStrikesNowTime = DateTime.Now;
-                }
             },
 
             //光明神的最终乐章
@@ -103,21 +87,15 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    var canUse = DateTime.Now - RagingStrikesNowTime >= new TimeSpan(0, 0, 0, 0, (int)(RagingStrikes1GCDDelayTime * 1000));
                     static bool SongIsNotNone(Song value) => value != Song.NONE;
                     static bool SongIsWandererMinuet(Song value) => value == Song.WANDERER;
                     if ((Array.TrueForAll(JobGauge.Coda, SongIsNotNone) || Array.Exists(JobGauge.Coda, SongIsWandererMinuet))
-                        && BattleVoice.WillHaveOneChargeGCD(0,1)
+                        && BattleVoice.WillHaveOneChargeGCD()
                         && RagingStrikes.IsCoolDown 
                         && LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes)
                         && RagingStrikes.ElapsedAfterGCD(1)) return true;
-
                     return false;
                 },
-                AfterUse = () =>
-                {
-                    RadiantFinaleCurrent0GCDRemain = WeaponRemain();
-                }
             },
 
             //纷乱箭
@@ -126,35 +104,18 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
                 BuffsProvide = new[] { ObjectStatus.StraightShotReady },
                 OtherCheck = b =>
                 {
-                    if (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.WillHaveOneChargeGCD(1)) return false;
+                    if (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.WillHaveOneChargeGCD() || JobGauge.Repertoire == 3) return false;
                     return true;
                 }
             },
 
             //九天连箭
-            EmpyrealArrow = new(3558)
-            {
-                OtherCheck = b =>
-                {
-                    if (!initFinished || (initFinished && !BattleVoice.WillHaveOneChargeGCD(1))) return true;
-
-                    return false;
-                },
-            },
+            EmpyrealArrow = new(3558),
 
             //完美音调
             PitchPerfect = new(7404)
             {
-                OtherCheck = b =>
-                {
-                    if (JobGauge.Song != Song.WANDERER) return false;
-
-                    if (initFinished && (!initFinished || !BattleVoice.WillHaveOneChargeGCD(1))) return false;
-
-                    if (JobGauge.SongTimer < 3000 && JobGauge.Repertoire > 0) return true;
-                    if (JobGauge.Repertoire == 3 || JobGauge.Repertoire == 2 && EmpyrealArrow.WillHaveOneChargeGCD(0, 0)) return true;
-                    return false;
-                },
+                OtherCheck = b => JobGauge.Song == Song.WANDERER,
             },
 
             //失血箭
@@ -162,7 +123,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    if (EmpyrealArrow.EnoughLevel && (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.WillHaveOneChargeGCD(0, 0))) return false;
+                    if (EmpyrealArrow.EnoughLevel && (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.WillHaveOneChargeGCD())) return false;
                     return true;
                 }
             },
@@ -183,20 +144,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
             NaturesMinne = new(7408),
 
             //侧风诱导箭
-            Sidewinder = new(3562)
-            {
-                OtherCheck = b =>
-                {
-                    if (!initFinished || (initFinished && BattleVoice.RecastTimeRemain >= 3.5f))
-                    {
-                        if (LocalPlayer.HaveStatus(ObjectStatus.BattleVoice) || BattleVoice.RecastTimeRemain > 10
-                        && LocalPlayer.HaveStatus(ObjectStatus.RadiantFinale) || RadiantFinale.RecastTimeRemain > 10
-                        || !RadiantFinale.EnoughLevel) return true;
-                    }
-
-                    return false;
-                },
-            },
+            Sidewinder = new(3562),
 
             //绝峰箭
             ApexArrow = new(16496)
@@ -204,10 +152,10 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
                 OtherCheck = b =>
                 {
                     //快爆发了,攒着等爆发
-                    if (JobGauge.SoulVoice == 100 && BattleVoice.RecastTimeRemain <= 25) return false;
+                    if (JobGauge.SoulVoice == 100 && BattleVoice.WillHaveOneCharge(25)) return false;
 
                     //爆发快过了,如果手里还有绝峰箭,就把绝峰箭打出去
-                    if (JobGauge.SoulVoice >= 80 && LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes) && LocalPlayer.FindStatusTime(ObjectStatus.RagingStrikes) < 10) return true;
+                    if (JobGauge.SoulVoice >= 80 && LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes) && !LocalPlayer.WillStatusEnd(10, false, ObjectStatus.RagingStrikes)) return true;
 
                     if (JobGauge.SoulVoice == 100
                         && LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes)
@@ -327,7 +275,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
         if (abilityRemain == 2 && Actions.RadiantFinale.ShouldUse(out act, mustUse: true)) return true;
 
         //战斗之声
-        if (abilityRemain == 1 && IsLastAbility(true, Actions.RadiantFinale) && Actions.BattleVoice.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.RadiantFinale.IsCoolDown && Actions.BattleVoice.ShouldUse(out act, mustUse: true)) return true;
 
 
         act = null!;
@@ -336,7 +284,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
 
     private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.RadiantFinale.IsCoolDown && LocalPlayer.FindStatusTime(ObjectStatus.RadiantFinale) > RadiantFinaleCurrent0GCDRemain)
+        if (Actions.RadiantFinale.IsCoolDown && !Actions.RadiantFinale.ElapsedAfterGCD())
         {
             act = null;
             return false;
@@ -352,7 +300,12 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
         if (JobGauge.Song != Song.NONE && Actions.EmpyrealArrow.ShouldUse(out act)) return true;
 
         //完美音调
-        if (Actions.PitchPerfect.ShouldUse(out act)) return true;
+        if (Actions.PitchPerfect.ShouldUse(out act))
+        {
+            if (JobGauge.SongTimer < 3000 && JobGauge.Repertoire > 0) return true;
+
+            if (JobGauge.Repertoire == 3 || JobGauge.Repertoire == 2 && Actions.EmpyrealArrow.WillHaveOneChargeGCD(1)) return true;
+        }
 
         //贤者的叙事谣
         if (JobGauge.SongTimer < 3000 && Actions.MagesBallad.ShouldUse(out act)) return true;
@@ -362,7 +315,14 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
             || JobGauge.Song == Song.NONE) && Actions.ArmysPaeon.ShouldUse(out act)) return true;
 
         //测风诱导箭
-        if (Actions.Sidewinder.ShouldUse(out act)) return true;
+        if (Actions.Sidewinder.ShouldUse(out act))
+        {
+            if (LocalPlayer.HaveStatus(ObjectStatus.BattleVoice) && LocalPlayer.HaveStatus(ObjectStatus.RadiantFinale)) return true;
+
+            if (!Actions.BattleVoice.WillHaveOneCharge(10, false) && !Actions.RadiantFinale.WillHaveOneCharge(10, false)) return true;
+
+            if (!Actions.RadiantFinale.EnoughLevel) return true;
+        }
 
         //看看现在有没有开猛者强击和战斗之声
         bool empty = (LocalPlayer.HaveStatus(ObjectStatus.RagingStrikes) 

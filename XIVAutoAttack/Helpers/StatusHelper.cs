@@ -46,7 +46,7 @@ namespace XIVAutoAttack.Helpers
         }
 
         /// <summary>
-        /// 距离下几个GCD转好这个技能能用吗。
+        /// 几秒后状态还在嘛。
         /// </summary>
         /// <param name="remain">要多少秒呢</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
