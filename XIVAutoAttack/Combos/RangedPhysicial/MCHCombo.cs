@@ -161,7 +161,6 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        Service.ChatGui.Print("" + Actions.a.ElapsedAfterGCD(2) + !Actions.a.WillHaveOneChargeGCD());
         MCH_Opener = Config.GetBoolByName("MCH_Opener");
         MCH_Automaton = Config.GetBoolByName("MCH_Automaton");
         
