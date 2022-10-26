@@ -208,7 +208,7 @@ namespace XIVAutoAttack.Combos
         /// <summary>
         /// 判断通晓是否满了。
         /// </summary>
-        protected static bool IsPolyglotStacksMaxed
+        private static bool IsPolyglotStacksMaxed
         {
             get
             {

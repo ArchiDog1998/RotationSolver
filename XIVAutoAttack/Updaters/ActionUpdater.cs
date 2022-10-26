@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using Dalamud.Game.ClientState.JobGauge.Types;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,7 +7,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XIVAutoAttack.Combos;
 using XIVAutoAttack.Controllers;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -26,10 +29,16 @@ namespace XIVAutoAttack.Updaters
         internal static byte AbilityRemainCount { get; private set; } = 0;
 
 
-        internal static unsafe void UpdateWeaponTime()
+        internal static void UpdateActionInfo()
         {
             InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
+            UpdateWeaponTime();
+            UPdateMPTimer();
+        }
+
+        private static unsafe void UpdateWeaponTime()
+        {
             var instance = ActionManager.Instance();
             var spell = ActionType.Spell;
 
@@ -41,13 +50,29 @@ namespace XIVAutoAttack.Updaters
             var min = Math.Max(weapontotal - Service.Configuration.WeaponInterval, 0);
             AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
 
-            if(weapontotal > 0)
-            {
-                WeaponTotal = weapontotal;
-            }
+            if (weapontotal > 0) WeaponTotal = weapontotal;
         }
 
+        static uint _lastMP = 0;
+        static DateTime _lastMPUpdate = DateTime.Now;
+        public static double MPUpdateElapsed => (DateTime.Now - _lastMPUpdate).TotalSeconds % 3;
+        private static void UPdateMPTimer()
+        {
+            var player = Service.ClientState.LocalPlayer;
+            if (player == null) return;
 
+            //不是黑魔不考虑啊
+            if (player.ClassJob.Id != 25) return;
+
+            //有醒梦，就算了啊
+            if (player.HaveStatus(ObjectStatus.LucidDreaming)) return;
+
+            if(_lastMP < player.CurrentMp)
+            {
+                _lastMPUpdate = DateTime.Now;
+            }
+            _lastMP = player.CurrentMp;
+        }
 
         static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
         //static readonly Stopwatch _weaponAbilityStopwatch = new Stopwatch();

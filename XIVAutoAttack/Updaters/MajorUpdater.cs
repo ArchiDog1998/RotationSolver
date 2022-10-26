@@ -56,7 +56,7 @@ namespace XIVAutoAttack.Updaters
                 CommandController.AutoAttack = false;
 
 
-            ActionUpdater.UpdateWeaponTime();
+            ActionUpdater.UpdateActionInfo();
 
             TargetUpdater.UpdateHostileTargets();
             TargetUpdater.UpdateFriends();

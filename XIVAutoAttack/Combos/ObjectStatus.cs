@@ -519,6 +519,9 @@
             TrueNorth = 1250,
 
             //金刚极意
-            RiddleofEarth = 1179;
+            RiddleofEarth = 1179,
+
+            //醒梦
+            LucidDreaming = 1204;
     }
 }
