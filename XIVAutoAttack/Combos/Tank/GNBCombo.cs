@@ -71,81 +71,81 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             },
 
             //星云
-            Nebula = new (16148)
+            Nebula = new(16148)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
                 OtherCheck = BaseAction.TankDefenseSelf,
             },
 
             //恶魔杀
-            DemonSlaughter = new (16149),
+            DemonSlaughter = new(16149),
 
             //极光
             Aurora = new BaseAction(16151, true)
             {
-                BuffsProvide = new [] { ObjectStatus.Aurora },
+                BuffsProvide = new[] { ObjectStatus.Aurora },
             },
 
             //超火流星
-            Superbolide = new (16152)
+            Superbolide = new(16152)
             {
                 OtherCheck = BaseAction.TankBreakOtherCheck,
             },
 
             //音速破
-            SonicBreak = new (16153),
+            SonicBreak = new(16153),
 
             //粗分斩
-            RoughDivide = new (16154, shouldEndSpecial: true)
+            RoughDivide = new(16154, shouldEndSpecial: true)
             {
                 ChoiceTarget = TargetFilter.FindMoveTarget
             },
 
             //烈牙
-            GnashingFang = new (16146)
+            GnashingFang = new(16146)
             {
                 OtherCheck = b => JobGauge.AmmoComboStep == 0 && JobGauge.Ammo > 0,
             },
 
             //弓形冲波
-            BowShock = new (16159),
+            BowShock = new(16159),
 
             //光之心
-            HeartofLight = new (16160, true),
+            HeartofLight = new(16160, true),
 
             //石之心
-            HeartofStone = new (16161, true)
+            HeartofStone = new(16161, true)
             {
                 BuffsProvide = GeneralActions.Rampart.BuffsProvide,
                 ChoiceTarget = TargetFilter.FindAttackedTarget,
             },
 
             //命运之环
-            FatedCircle = new (16163)
+            FatedCircle = new(16163)
             {
                 OtherCheck = b => JobGauge.Ammo > (Level >= 88 ? 2 : 1),
             },
 
             //血壤
-            Bloodfest = new (16164)
+            Bloodfest = new(16164)
             {
                 OtherCheck = b => JobGauge.Ammo == 0,
             },
 
             //倍攻
-            DoubleDown = new (25760)
+            DoubleDown = new(25760)
             {
                 OtherCheck = b => JobGauge.Ammo >= 2,
             },
 
             //猛兽爪
-            SavageClaw = new (16147)
+            SavageClaw = new(16147)
             {
                 OtherCheck = b => Service.IconReplacer.OriginalHook(GnashingFang.ID) == SavageClaw.ID,
             },
 
             //凶禽爪
-            WickedTalon = new (16150)
+            WickedTalon = new(16150)
             {
                 OtherCheck = b => Service.IconReplacer.OriginalHook(GnashingFang.ID) == WickedTalon.ID,
             },
@@ -172,7 +172,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             Hypervelocity = new (25759)
             {
                 OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ID,
-            };
+            };          
     }
     internal override SortedList<DescType, string> Description => new ()
     {
@@ -226,7 +226,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
 
         //单体三连
         //如果烈牙剩0.5秒冷却好,不释放基础连击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-        if (Actions.GnashingFang.RecastTimeRemain > 0 && Actions.GnashingFang.RecastTimeRemain < 0.5) return false;
+        if (Actions.GnashingFang.IsCoolDown && Actions.GnashingFang.WillHaveOneCharge((float) 0.5, false)) return false;
         if (Actions.SolidBarrel.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.BrutalShell.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.KeenEdge.ShouldUse(out act, lastComboActionID)) return true;
@@ -257,13 +257,13 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle) return true;
 
             //爆发期,烈牙之后
-            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.GnashingFang.RecastTimeRemain > 0) return true;
+            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.GnashingFang.IsCoolDown) return true;
 
             //非爆发期
-            if (!LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.GnashingFang.RecastTimeRemain > 20) return true;
+            if (!LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && !Actions.GnashingFang.WillHaveOneCharge(20, false)) return true;
 
             //等级小于烈牙,
-            if (!Actions.GnashingFang.EnoughLevel && (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) || Actions.NoMercy.RecastTimeRemain > 15)) return true;
+            if (!Actions.GnashingFang.EnoughLevel && (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) || !Actions.NoMercy.WillHaveOneCharge(15, false))) return true;
         }
 
         //弓形冲波
@@ -276,7 +276,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         if (Actions.Hypervelocity.ShouldUse(out act)) return true;
 
         //血壤
-        if (Actions.GnashingFang.RecastTimeRemain > 0 && Actions.Bloodfest.ShouldUse(out act)) return true;
+        if (Actions.GnashingFang.IsCoolDown && Actions.Bloodfest.ShouldUse(out act)) return true;
 
         //搞搞攻击,粗分斩
         if (Actions.RoughDivide.Target.DistanceToPlayer() < 1 && !IsMoving)
@@ -367,19 +367,19 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle) return false;
 
             //无情中3弹烈牙
-            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) || Actions.NoMercy.RecastTimeRemain > 55)) return true;
+            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) || !Actions.NoMercy.WillHaveOneCharge(55, false))) return true;
 
             //无情外烈牙
-            if (JobGauge.Ammo > 0 && Actions.NoMercy.RecastTimeRemain > 17 && Actions.NoMercy.RecastTimeRemain < 35) return true;
+            if (JobGauge.Ammo > 0 && !Actions.NoMercy.WillHaveOneCharge(17, false) && Actions.NoMercy.WillHaveOneCharge(35, false)) return true;
 
             //3弹且将会溢出子弹的情况,提前在无情前进烈牙
-            if (JobGauge.Ammo == 3 && IsLastWeaponSkill(Actions.BrutalShell.ID) && Actions.NoMercy.RecastTimeRemain < 3) return true;
+            if (JobGauge.Ammo == 3 && IsLastWeaponSkill(Actions.BrutalShell.ID) && Actions.NoMercy.WillHaveOneCharge(3, false)) return true;
 
             //1弹且血壤快冷却好了
-            if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && Actions.Bloodfest.RecastTimeRemain < 5) return true;
+            if (JobGauge.Ammo == 1 && !Actions.NoMercy.WillHaveOneCharge(55, false) && Actions.Bloodfest.WillHaveOneCharge(5, false)) return true;
 
             //4GCD起手烈牙判断
-            if (JobGauge.Ammo == 1 && Actions.NoMercy.RecastTimeRemain > 55 && ((!Actions.Bloodfest.IsCoolDown && Actions.Bloodfest.EnoughLevel) || !Actions.Bloodfest.EnoughLevel)) return true;
+            if (JobGauge.Ammo == 1 && !Actions.NoMercy.WillHaveOneCharge(55, false) && ((!Actions.Bloodfest.IsCoolDown && Actions.Bloodfest.EnoughLevel) || !Actions.Bloodfest.EnoughLevel)) return true;
         }
         return false;   
     }
@@ -427,10 +427,10 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             }
 
             //在音速破后使用倍攻
-            if (Actions.SonicBreak.RecastTimeRemain > 0 && LocalPlayer.HaveStatus(ObjectStatus.NoMercy)) return true;
+            if (Actions.SonicBreak.IsCoolDown && LocalPlayer.HaveStatus(ObjectStatus.NoMercy)) return true;
 
             //2弹无情的特殊判断,提前使用倍攻
-            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.NoMercy.RecastTimeRemain > 55 && Actions.Bloodfest.RecastTimeRemain < 5) return true;
+            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && !Actions.NoMercy.WillHaveOneCharge(55, false) && Actions.Bloodfest.WillHaveOneCharge(5, false)) return true;
 
         }
         return false;
@@ -449,17 +449,17 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle && IsMoving) return false;
 
             //如果烈牙剩0.5秒冷却好,不释放爆发击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-            if (Actions.SonicBreak.IsCoolDown && Actions.SonicBreak.RecastTimeRemain < 0.5) return false;
+            if (Actions.SonicBreak.IsCoolDown && Actions.SonicBreak.WillHaveOneCharge((float) 0.5, false)) return false;
 
             //无情中爆发击判定
             if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) &&
                 JobGauge.AmmoComboStep == 0 &&
-                Actions.GnashingFang.RecastTimeRemain > 1) return true;
+                !Actions.GnashingFang.WillHaveOneCharge(1, false)) return true;
 
             //无情外防止溢出
             if (IsLastWeaponSkill(Actions.BrutalShell.ID) &&
                 (JobGauge.Ammo == (Level >= 88 ? 3 : 2) ||
-                (Actions.Bloodfest.RecastTimeRemain < 6 && JobGauge.Ammo <= 2 && Actions.NoMercy.RecastTimeRemain > 10 && Actions.Bloodfest.EnoughLevel))) return true;
+                (Actions.Bloodfest.WillHaveOneCharge(6, false) && JobGauge.Ammo <= 2 && !Actions.NoMercy.WillHaveOneCharge(10, false) && Actions.Bloodfest.EnoughLevel))) return true;
         }
         return false;
     }
