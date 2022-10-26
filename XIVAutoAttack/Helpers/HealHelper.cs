@@ -111,7 +111,7 @@ namespace XIVAutoAttack.Helpers
             };
         }
 
-        private static readonly SortedList<int, LevelModifier> LevelTable = new() {
+        internal static readonly SortedList<int, LevelModifier> LevelTable = new() {
             { 1, new(Main: 20, Sub: 56, Div: 56) },
             { 2, new(Main: 21, Sub: 57, Div: 57) },
             { 3, new(Main: 22, Sub: 60, Div: 60) },
