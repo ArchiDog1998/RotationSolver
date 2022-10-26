@@ -50,7 +50,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial
                 WaterCannon = new(11385);
         }
 
-        private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+        private protected override bool AttackAbility(byte abilityRemain, out IAction act)
         {
             act = null;
             return false;

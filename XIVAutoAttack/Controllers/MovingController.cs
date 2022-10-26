@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XIVAutoAttack
+namespace XIVAutoAttack.Controllers
 {
     internal class MovingController : IDisposable
     {
-        bool PosLocker=false;
+        bool PosLocker = false;
         private Hook<ActorMoveHook> actorMoveHook;
         private delegate IntPtr ActorMoveHook(IntPtr address, float x, float y, float z);
         public MovingController()
@@ -31,12 +31,12 @@ namespace XIVAutoAttack
                 var pos = Service.ClientState.LocalPlayer.Position;
                 return actorMoveHook.Original(address, pos.X, pos.Y, pos.Z);
             }
-            return actorMoveHook.Original(address, x,y,z);
+            return actorMoveHook.Original(address, x, y, z);
         }
         internal bool IsMoving
         {
             get => Marshal.ReadByte(Service.Address.IsMoving) == 1;
-            set => PosLocker=!value;
+            set => PosLocker = !value;
         }
     }
 }

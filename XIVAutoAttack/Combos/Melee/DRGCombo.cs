@@ -9,6 +9,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee;
@@ -267,7 +268,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         //À¿’ﬂ÷Æ∞∂
         if (Actions.Nastrond.ShouldUse(out act, mustUse: true)) return true;
@@ -353,7 +354,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         }
         if (Actions.TrueThrust.ShouldUse(out act)) return true;
 
-        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
+        if (CommandController.Move && MoveAbility(1, out act)) return true;
         if (Actions.PiercingTalon.ShouldUse(out act)) return true;
 
         return false;

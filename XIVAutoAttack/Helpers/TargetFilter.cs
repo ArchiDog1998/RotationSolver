@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Helpers
@@ -17,7 +18,7 @@ namespace XIVAutoAttack.Helpers
             if (availableCharas == null || availableCharas.Length == 0) return null;
 
             //判断一下要选择打体积最大的，还是最小的。
-            if (IconReplacer.AttackBig)
+            if (CommandController.AttackBig)
             {
                 availableCharas = availableCharas.OrderByDescending(player => player.HitboxRadius).ToArray();
             }
@@ -48,7 +49,7 @@ namespace XIVAutoAttack.Helpers
             if (availableCharas == null || availableCharas.Length == 0) return null;
 
             //判断一下要选择打体积最大的，还是最小的。
-            if (IconReplacer.AttackBig)
+            if (CommandController.AttackBig)
             {
                 availableCharas = availableCharas.OrderByDescending(player => player.HitboxRadius).ToArray();
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
@@ -191,7 +192,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
         if (Actions.HeavySwing.ShouldUse(out act, lastComboActionID)) return true;
 
         //够不着，随便打一个吧。
-        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
+        if (CommandController.Move && MoveAbility(1, out act)) return true;
         if (Actions.Tomahawk.ShouldUse(out act)) return true;
 
         return false;
@@ -231,7 +232,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         
         //爆发

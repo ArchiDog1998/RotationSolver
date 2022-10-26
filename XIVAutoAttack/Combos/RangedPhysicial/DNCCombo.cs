@@ -221,7 +221,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
         {DescType.ÒÆ¶¯, $"{Actions.EnAvant.Action.Name}"},
     };
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         //Ó¦¼±»»Îè°é
         if (LocalPlayer.HaveStatus(ObjectStatus.ClosedPosition1))

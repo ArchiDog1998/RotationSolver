@@ -5,6 +5,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
@@ -232,7 +233,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         if (Actions.KeenEdge.ShouldUse(out act, lastComboActionID)) return true;
 
         
-        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
+        if (CommandController.Move && MoveAbility(1, out act)) return true;
 
         if (Actions.LightningShot.ShouldUse(out act))
         {
@@ -249,7 +250,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         //Œ£œ’¡Ï”Ú
         if (Actions.DangerZone.ShouldUse(out act))

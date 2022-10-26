@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
@@ -112,7 +113,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         DateTime lastTime;
         private bool CheckAction(uint actionID)
         {
-            if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0,0,3)) && IconReplacer.AutoAttack)
+            if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0,0,3)) && CommandController.AutoAttack)
             {
                 _lastSayingGCDAction = actionID;
                 lastTime = DateTime.Now;
@@ -161,19 +162,19 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (EmergercyGCD(lastComboActionID, out IAction act)) return act;
 
             if (EsunaRaise(out act, abilityRemain, false)) return act;
-            if (IconReplacer.Move && MoveGCD(lastComboActionID, out act))
+            if (CommandController.Move && MoveGCD(lastComboActionID, out act))
             {
                 if(act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
             }
             if (TargetUpdater.HPNotFull)
             {
-                if ((IconReplacer.HealArea || CanHealAreaSpell) && !ShouldUseHealAreaAbility(1, out _)
+                if ((CommandController.HealArea || CanHealAreaSpell) && !ShouldUseHealAreaAbility(1, out _)
                     && HealAreaGCD(lastComboActionID, out act)) return act;
-                if ((IconReplacer.HealSingle || CanHealSingleSpell) && !ShouldUseHealSingleAbility(1, out _)
+                if ((CommandController.HealSingle || CanHealSingleSpell) && !ShouldUseHealSingleAbility(1, out _)
                     && HealSingleGCD(lastComboActionID, out act)) return act;
             }
-            if (IconReplacer.DefenseArea && DefenseAreaGCD(abilityRemain, out act)) return act;
-            if (IconReplacer.DefenseSingle && DefenseSingleGCD(abilityRemain, out act)) return act;
+            if (CommandController.DefenseArea && DefenseAreaGCD(abilityRemain, out act)) return act;
+            if (CommandController.DefenseSingle && DefenseSingleGCD(abilityRemain, out act)) return act;
 
             //自动防御
             if (helpDefenseAOE && DefenseAreaGCD(abilityRemain, out act)) return act;
@@ -202,7 +203,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 return false;
             }
             //有某些非常危险的状态。
-            if (IconReplacer.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
+            if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
                 if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗
                     && GeneralActions.Esuna.ShouldUse(out act, mustUse: true)) return true;
@@ -216,7 +217,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 {
                     if (HaveSwift && Raise.ShouldUse(out act)) return true;
                 }
-                else if (IconReplacer.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0 || mustUse)
+                else if (CommandController.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0 || mustUse)
                 {
                     if (Raise.ShouldUse(out _))
                     {

@@ -5,6 +5,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
@@ -248,7 +249,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
         if (Actions.SyphonStrike.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.HardSlash.ShouldUse(out act, lastComboActionID)) return true;
 
-        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
+        if (CommandController.Move && MoveAbility(1, out act)) return true;
         if (Actions.Unmend.ShouldUse(out act))
         {
             if (InDungeonsMiddle && Target.DistanceToPlayer() < 5) return false;
@@ -257,7 +258,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
 
         return false;
     }
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         //掠影示现
         if (Actions.LivingShadow.ShouldUse(out act)) return true;

@@ -299,7 +299,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         //如果当前还没有皇冠卡牌，那就抽一张
         if (Actions.MinorArcana.ShouldUse(out act, emptyOrSkipCombo: true)) return true;

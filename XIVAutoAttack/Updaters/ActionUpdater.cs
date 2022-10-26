@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XIVAutoAttack.Controllers;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -47,6 +48,7 @@ namespace XIVAutoAttack.Updaters
         }
 
 
+
         static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
         //static readonly Stopwatch _weaponAbilityStopwatch = new Stopwatch();
         static long _weaponRandomDelay = 0;
@@ -76,7 +78,7 @@ namespace XIVAutoAttack.Updaters
                     _weaponDelayStopwatch.Stop();
                     _weaponDelayStopwatch.Reset();
 
-                    Service.IconReplacer.DoAnAction(true);
+                    CommandController.DoAnAction(true);
 
                     Random ran = new Random(DateTime.Now.Millisecond);
                     _weaponRandomDelay = (long)(ran.NextDouble() * Service.Configuration.WeaponDelay * 1000);
@@ -111,13 +113,13 @@ namespace XIVAutoAttack.Updaters
             if (AbilityRemainCount == 1)
             {
                 if (WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponFaster) return;
-                Service.IconReplacer.DoAnAction(false);
+                CommandController.DoAnAction(false);
                 return;
             }
 
             else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
             {
-                Service.IconReplacer.DoAnAction(false);
+                CommandController.DoAnAction(false);
                 return;
             }
         }

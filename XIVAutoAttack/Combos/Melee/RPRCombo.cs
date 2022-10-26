@@ -293,7 +293,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         if (enshrouded)
         {

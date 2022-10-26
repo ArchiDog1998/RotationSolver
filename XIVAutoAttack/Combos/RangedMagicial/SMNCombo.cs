@@ -280,7 +280,7 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
 
         }, "»˝…Ò’ŸªΩÀ≥–Ú");
     }
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
         if (Actions.Deathflare.ShouldUse(out act, mustUse: true)) return true;

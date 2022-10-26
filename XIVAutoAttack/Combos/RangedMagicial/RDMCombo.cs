@@ -206,7 +206,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
         return value >= 6 && value <= 12;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         if (JobGauge.ManaStacks == 0 && (JobGauge.BlackMana < 50 || JobGauge.WhiteMana < 50) && !Actions.Manafication.WillHaveOneChargeGCD(1, 1))
         {

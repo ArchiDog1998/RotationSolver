@@ -13,6 +13,7 @@ using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack;
 

@@ -3,6 +3,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Linq;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -184,7 +185,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             bool result = Action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
              ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, Target.ObjectId);
 
-            if (_shouldEndSpecial) IconReplacer.ResetSpecial(false);
+            if (_shouldEndSpecial) CommandController.ResetSpecial(false);
             if (result && AfterUse != null) AfterUse.Invoke();
 
             return result;

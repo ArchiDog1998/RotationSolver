@@ -6,6 +6,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee;
@@ -255,14 +256,14 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
             if (OpoOpoForm(out act)) return true;
         }
 
-        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
+        if (CommandController.Move && MoveAbility(1, out act)) return true;
         if (JobGauge.Chakra < 5 && Actions.Meditation.ShouldUse(out act)) return true;
         if (Config.GetBoolByName("AutoFormShift") && Actions.FormShift.ShouldUse(out act)) return true;
 
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         //Υπ½Ε
         if (JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.NONE))

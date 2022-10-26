@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game;
 using System;
 using System.Collections.Generic;
+using XIVAutoAttack.Controllers;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -52,7 +53,7 @@ namespace XIVAutoAttack.Updaters
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying])
-                IconReplacer.AutoAttack = false;
+                CommandController.AutoAttack = false;
 
 
             ActionUpdater.UpdateWeaponTime();

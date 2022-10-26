@@ -6,6 +6,7 @@ using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
@@ -281,7 +282,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         if (Actions.FastBlade.ShouldUse(out act, lastComboActionID)) return true;
 
         //Í¶¶Ü
-        if (IconReplacer.Move && MoveAbility(1, out act)) return true;
+        if (CommandController.Move && MoveAbility(1, out act)) return true;
         if (Actions.ShieldLob.ShouldUse(out act)) return true;
 
         return false;
@@ -316,7 +317,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         var OpenerStatus = LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight) && LocalPlayer.FindStatusTime(ObjectStatus.FightOrFlight) <= 19 && !IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade);
 

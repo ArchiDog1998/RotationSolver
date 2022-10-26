@@ -13,7 +13,9 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 using XIVAutoAttack.Windows;
 
@@ -33,8 +35,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     public string Name => "XIV Auto Attack";
 
     internal static readonly ClassJob[] AllJobs = Service.DataManager.GetExcelSheet<ClassJob>().ToArray();
-
-    internal static Watcher watcher;
 
     internal static MovingController movingController;
     public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, CommandManager commandManager)
@@ -70,8 +70,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
-        watcher = new Watcher();
-        watcher.Enable();
+        Watcher.Enable();
 
         movingController = new MovingController();
     }
@@ -79,7 +78,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
-        IconReplacer.AutoAttack = false;
+        CommandController.AutoAttack = false;
     }
 
     public void Dispose()
@@ -94,7 +93,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Framework.Update -= MajorUpdater.Framework_Update;
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
 
-        watcher?.Dispose();
+        Watcher.Dispose();
         movingController?.Dispose();
     }
 
@@ -109,78 +108,11 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         if (array.Length > 0)
         {
-            DoAutoAttack(array[0]);
+            CommandController.DoAutoAttack(array[0]);
         }
     }
 
-    internal static void DoAutoAttack(string str)
-    {
-        switch (str)
-        {
-            case "HealArea":
-                IconReplacer.StartHealArea();
-                return;
-            case "HealSingle":
-                IconReplacer.StartHealSingle();
-                return;
-            case "DefenseArea":
-                IconReplacer.StartDefenseArea();
-                return;
-            case "DefenseSingle":
-                IconReplacer.StartDefenseSingle();
-                return;
-            case "EsunaShield":
-                IconReplacer.StartEsunaOrShield();
-                return;
-            case "RaiseShirk":
-                IconReplacer.StartRaiseOrShirk();
-                return;
-            case "Move":
-                IconReplacer.StartMove();
-                return;
-            case "AntiRepulsion":
-                IconReplacer.StartAntiRepulsion();
-                return;
-            case "BreakProvoke":
-                IconReplacer.StartBreakOrProvoke();
-                return;
-            case "AutoBreak":
-                Service.Configuration.AutoBreak = !Service.Configuration.AutoBreak;
-                return;
-            case "AttackBig":
-                IconReplacer.AttackBig = true;
-                return;
-            case "AttackSmall":
-                IconReplacer.AttackBig = false;
-                return;
-            case "AttackManual":
-                IconReplacer.AutoTarget = false;
-                IconReplacer.AutoAttack = true;
-                return;
-            case "AttackCancel":
-                IconReplacer.AutoAttack = false;
-                return;
 
-            default:
-                foreach (CustomCombo customCombo in IconReplacer.CustomCombos)
-                {
-                    if (customCombo.JobID != Service.ClientState.LocalPlayer.ClassJob.Id) continue;
-
-                    foreach (var boolean in customCombo.Config.bools)
-                    {
-                        if(boolean.name == str)
-                        {
-                            boolean.value = !boolean.value;
-                            return;
-                        }
-                    }
-
-                    break;
-                }
-                Service.ChatGui.PrintError("无法识别：" + str);
-                return;
-        }
-    }
 
     private void OnCommand(string command, string arguments)
     {

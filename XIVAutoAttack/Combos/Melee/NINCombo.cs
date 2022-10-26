@@ -4,6 +4,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee;
@@ -471,7 +472,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
             if (Actions.SpinningEdge.ShouldUse(out act, lastComboActionID)) return true;
 
             //飞刀
-            if (IconReplacer.Move && MoveAbility(1, out act)) return true;
+            if (CommandController.Move && MoveAbility(1, out act)) return true;
             if (Actions.ThrowingDagger.ShouldUse(out act)) return true;
         }
 
@@ -492,7 +493,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         return false;
     }
 
-    private protected override bool ForAttachAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         act = null;
         if (!InBattle || Service.IconReplacer.OriginalHook(2260) != 2260) return false;

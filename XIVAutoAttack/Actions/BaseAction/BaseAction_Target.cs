@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos.Healer;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
@@ -169,7 +170,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             else if (Action.CanTargetHostile)
             {
                 //如果不用自动找目标，那就直接返回。
-                if (!IconReplacer.AutoTarget)
+                if (!CommandController.AutoTarget)
                 {
                     if (Service.TargetManager.Target is BattleChara b && b.CanAttack() && b.DistanceToPlayer() <= range)
                     {
@@ -248,7 +249,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (Action.EffectRange > 0 && !_isFriendly)
                 {
                     //如果不用自动找目标，那就不打AOE
-                    if (!IconReplacer.AutoTarget) return false;
+                    if (!CommandController.AutoTarget) return false;
                     var count = TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, Action.EffectRange).Length;
                     if (count < (mustUse ? 1 : Service.Configuration.HostileCount)) return false;
                 }

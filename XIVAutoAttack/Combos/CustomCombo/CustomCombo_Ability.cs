@@ -4,6 +4,7 @@ using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.RangedPhysicial;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
@@ -22,7 +23,7 @@ public abstract partial class CustomCombo
         //有某些非常危险的状态。
         if (JobID == 23)
         {
-            if (IconReplacer.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
+            if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
                 if (BRDCombo.Actions.WardensPaean.ShouldUse(out act, mustUse: true)) return true;
             }
@@ -53,13 +54,13 @@ public abstract partial class CustomCombo
         }
         if (role == Role.防护)
         {
-            if (IconReplacer.RaiseOrShirk)
+            if (CommandController.RaiseOrShirk)
             {
                 if (GeneralActions.Shirk.ShouldUse(out act)) return true;
                 if (HaveShield && Shield.ShouldUse(out act)) return true;
             }
 
-            if (IconReplacer.EsunaOrShield && Shield.ShouldUse(out act)) return true;
+            if (CommandController.EsunaOrShield && Shield.ShouldUse(out act)) return true;
 
             var defenses = new uint[] { ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill, ObjectStatus.Defiance };
             //Alive Tanks with shield.
@@ -70,7 +71,7 @@ public abstract partial class CustomCombo
             }
         }
 
-        if (IconReplacer.AntiRepulsion)
+        if (CommandController.AntiRepulsion)
         {
             switch (role)
             {
@@ -93,14 +94,14 @@ public abstract partial class CustomCombo
                     break;
             }
         }
-        if (IconReplacer.EsunaOrShield && role == Role.近战)
+        if (CommandController.EsunaOrShield && role == Role.近战)
         {
             if (GeneralActions.TrueNorth.ShouldUse(out act)) return true;
         }
 
 
-        if (IconReplacer.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
-        if (IconReplacer.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
+        if (CommandController.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
+        if (CommandController.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         if (TargetUpdater.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
         {
             if (ShouldUseHealAreaAbility(abilityRemain, out act)) return true;
@@ -127,7 +128,7 @@ public abstract partial class CustomCombo
                 var haveTargets = TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets);
                 if ((Service.Configuration.AutoProvokeForTank || TargetUpdater.AllianceTanks.Length < 2) 
                     && haveTargets.Length != TargetUpdater.HostileTargets.Length
-                    || IconReplacer.BreakorProvoke)
+                    || CommandController.BreakorProvoke)
 
                 {
                     //开盾挑衅
@@ -163,7 +164,7 @@ public abstract partial class CustomCombo
         }
 
         if (HaveHostileInRange && SettingBreak && BreakAbility(abilityRemain, out act)) return true;
-        if (IconReplacer.Move && MoveAbility(abilityRemain, out act))
+        if (CommandController.Move && MoveAbility(abilityRemain, out act))
         {
             if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
         }
@@ -197,20 +198,20 @@ public abstract partial class CustomCombo
         }
 
         if (GeneralAbility(abilityRemain, out act)) return true;
-        if (HaveHostileInRange && ForAttachAbility(abilityRemain, out act)) return true;
+        if (HaveHostileInRange && AttackAbility(abilityRemain, out act)) return true;
         return false;
     }
 
     private bool ShouldUseHealAreaAbility(byte abilityRemain, out IAction act)
     {
         act = null;
-        return (IconReplacer.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act);
+        return (CommandController.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act);
     }
 
     private bool ShouldUseHealSingleAbility(byte abilityRemain, out IAction act)
     {
         act = null;
-        return (IconReplacer.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act);
+        return (CommandController.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act);
     }
 
     /// <summary>
@@ -220,7 +221,7 @@ public abstract partial class CustomCombo
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected abstract bool ForAttachAbility(byte abilityRemain, out IAction act);
+    private protected abstract bool AttackAbility(byte abilityRemain, out IAction act);
     /// <summary>
     /// 覆盖写一些用于因为后面的GCD技能而要适应的能力技能
     /// </summary>

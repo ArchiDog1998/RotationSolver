@@ -5,7 +5,9 @@ using System.ComponentModel;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.CustomCombo
@@ -35,21 +37,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected virtual bool CanHealSingleAbility => TargetUpdater.CanHealSingleAbility;
         protected virtual bool CanHealSingleSpell => TargetUpdater.CanHealSingleSpell;
 
-        protected bool SettingBreak => IconReplacer.BreakorProvoke || Service.Configuration.AutoBreak;
+        protected bool SettingBreak => CommandController.BreakorProvoke || Service.Configuration.AutoBreak;
 
         protected static byte Level => LocalPlayer?.Level ?? 0;
 
         protected static bool InBattle => ActionUpdater.InBattle;
-
-        [Obsolete("该方法已过时，请使用BaseAction.WillHaveOneCharge")]
-        /// <summary>
-        /// 距离下一个GCD转好还需要多少时间
-        /// </summary>
-        /// <param name="gcdCount">要隔着多少个GCD</param>
-        /// <param name="abilityCount">再多少个能力技之后</param>
-        /// <returns>还剩几秒</returns>
-        protected static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0)
-            => CooldownHelper.WeaponRemain(gcdCount, abilityCount);
 
         protected static float Weaponelapsed => ActionUpdater.WeaponElapsed;
 

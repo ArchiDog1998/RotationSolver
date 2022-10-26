@@ -14,6 +14,7 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.RangedPhysicial;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Windows;
 
@@ -245,10 +246,10 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
-                    bool actionEnable = XIVAutoAttackPlugin.watcher.IsActionHookEnable;
+                    bool actionEnable = Watcher.IsActionHookEnable;
                     if (ImGui.Checkbox("是否监视行为", ref actionEnable))
                     {
-                        XIVAutoAttackPlugin.watcher.ChangeActionHook();
+                        Watcher.ChangeActionHook();
                     }
                     if (ImGui.IsItemHovered())
                     {

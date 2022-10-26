@@ -13,14 +13,14 @@ using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace XIVAutoAttack
+namespace XIVAutoAttack.SigReplacers
 {
-    internal class Watcher : IDisposable
+    internal static class Watcher
     {
         private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint param, uint useType, int pvp, bool* isGroundTarget);
 
-        private Hook<UseActionDelegate> _getActionHook { get; set; }
-        public bool IsActionHookEnable => _getActionHook?.IsEnabled ?? false;
+        private static Hook<UseActionDelegate> _getActionHook { get; set; }
+        public static bool IsActionHookEnable => _getActionHook?.IsEnabled ?? false;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static uint LastAction { get; set; } = 0;
@@ -38,7 +38,7 @@ namespace XIVAutoAttack
         private static DateTime _timeLastActionUsed = DateTime.Now;
         private static DateTime _timeLastSpeak = DateTime.Now;
 
-        internal unsafe void Enable()
+        internal static unsafe void Enable()
         {
             _getActionHook = Hook<UseActionDelegate>.FromAddress((IntPtr)ActionManager.fpUseAction, UseAction);
 
@@ -46,7 +46,7 @@ namespace XIVAutoAttack
             _getActionHook?.Enable();
         }
 
-        public void ChangeActionHook()
+        public static void ChangeActionHook()
         {
             if (_getActionHook == null) return;
             if (_getActionHook.IsEnabled)
@@ -59,7 +59,7 @@ namespace XIVAutoAttack
             }
         }
 
-        private unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint param = 0u, uint useType = 0u, int pvp = 0, bool* a7 = null)
+        private static unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint param = 0u, uint useType = 0u, int pvp = 0, bool* a7 = null)
         {
             if (actionType == ActionType.Spell && useType == 0)
             {
@@ -109,7 +109,7 @@ namespace XIVAutoAttack
                 }
 
                 //事后骂人！
-                if (DateTime.Now - _timeLastSpeak > new TimeSpan(0,0,0,0,200))
+                if (DateTime.Now - _timeLastSpeak > new TimeSpan(0, 0, 0, 0, 200))
                 {
                     _timeLastSpeak = DateTime.Now;
                     if (Service.Configuration.SayoutLocationWrong
@@ -119,7 +119,7 @@ namespace XIVAutoAttack
                         && !Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))
                     {
                         Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
-                        if(!string.IsNullOrEmpty(Service.Configuration.LocationText))
+                        if (!string.IsNullOrEmpty(Service.Configuration.LocationText))
                         {
                             CustomCombo.Speak(Service.Configuration.LocationText);
                         }
@@ -132,7 +132,7 @@ namespace XIVAutoAttack
         }
 
 
-        public void Dispose()
+        public static void Dispose()
         {
             _getActionHook?.Dispose();
         }

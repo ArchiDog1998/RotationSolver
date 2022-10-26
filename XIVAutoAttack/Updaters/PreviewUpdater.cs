@@ -4,6 +4,7 @@ using Dalamud.Game.Text.SeStringHandling.Payloads;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using System;
+using XIVAutoAttack.Controllers;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -13,7 +14,7 @@ namespace XIVAutoAttack.Updaters
 
         internal static void UpdateEntry()
         {
-            if (Service.Configuration.UseDtr && IconReplacer.StateString != null)
+            if (Service.Configuration.UseDtr && CommandController.StateString != null)
             {
                 if (dtrEntry == null)
                 {
@@ -22,7 +23,7 @@ namespace XIVAutoAttack.Updaters
                 dtrEntry.Shown = true;
                 dtrEntry.Text = new SeString(
                     new IconPayload(BitmapFontIcon.DPS),
-                    new TextPayload(IconReplacer.StateString)
+                    new TextPayload(CommandController.StateString)
                     );
             }
             else if (dtrEntry != null)
