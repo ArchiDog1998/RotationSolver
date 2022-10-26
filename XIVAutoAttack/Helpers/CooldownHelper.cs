@@ -1,8 +1,10 @@
-﻿using System;
+﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Helpers
@@ -95,6 +97,32 @@ namespace XIVAutoAttack.Helpers
             if (Math.Abs(a - b) < 0.05) return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// 计算魔法的咏唱时间(黑魔专供)
+        /// </summary>
+        /// <param name="GCDTime">原始咏唱时间(毫秒)</param>
+        /// <returns>真实的咏唱时间(秒)</returns>
+        public static unsafe double CalcSpellTime(double GCDTime)
+        {
+            var uiState = UIState.Instance();
+            //获得当前等级
+            var lvl = uiState->PlayerState.CurrentLevel;
+            //获得咏速
+            var speed = uiState->PlayerState.Attributes[46];
+            //等级对照表
+            var levelModifier = HealHelper.LevelTable[lvl];
+
+            //有黑魔纹Buff时
+            if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.LeyLines))
+            {
+                return Math.Floor(GCDTime * 0.85 * (1000d + Math.Ceiling(130d * (levelModifier.Sub - speed) / levelModifier.Div)) / 10000d) / 100d + 0.1;
+            }
+            else
+            {
+                return Math.Floor(GCDTime * (1000d + Math.Ceiling(130d * (levelModifier.Sub - speed) / levelModifier.Div)) / 10000d) / 100d + 0.1;
+            }
         }
     }
 }
