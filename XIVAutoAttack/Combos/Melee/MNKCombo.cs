@@ -92,9 +92,9 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
 
             //±¨¡—Ω≈ —Ù
             FlintStrike = new (25882),
+
             //∑ÔªÀŒË
             RisingPhoenix = new (25768),
-
 
             //∂∑ªÍ–˝∑ÁΩ≈ “ı—Ù
             TornadoKick = new (3543),

@@ -76,27 +76,27 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
             //³àÕðÀ×
             Verthunder2 = new(16524u)
             {
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsProvide = Jolt.BuffsProvide,
             },
 
             //³àÁÒ·ç
             Veraero2 = new(16525u)
             {
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsProvide = Jolt.BuffsProvide,
             },
 
             //³à»ðÑ×
             Verfire = new(7510)
             {
                 BuffsNeed = new[] { ObjectStatus.VerfireReady },
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsProvide = Jolt.BuffsProvide,
             },
 
             //³à·ÉÊ¯
             Verstone = new(7511)
             {
                 BuffsNeed = new[] { ObjectStatus.VerstoneReady },
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
+                BuffsProvide = Jolt.BuffsProvide,
             },
 
             //½»»÷Õ¶
@@ -163,7 +163,6 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
                 OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && InBattle && JobGauge.ManaStacks == 0,
                 OtherIDsNot = new uint[] { Riposte.ID, Zwerchhau.ID, Scorch.ID, Verflare.ID, Verholy.ID },
             };
-
     }
     internal override SortedList<DescType, string> Description => new ()
     {

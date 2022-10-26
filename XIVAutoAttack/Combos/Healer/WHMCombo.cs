@@ -46,7 +46,7 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge>
             //治疗
             Cure = new (120, true),
             //救疗
-            Cure2 = new (135, true) { OtherIDsNot = new [] { 135u } },
+            Cure2 = new (135, true),
             //神名
             Tetragrammaton = new (3570, true),
             //安慰之心 800

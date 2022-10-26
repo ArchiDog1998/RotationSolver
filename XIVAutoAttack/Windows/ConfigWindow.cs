@@ -195,7 +195,7 @@ internal class ConfigWindow : Window
                 //    ImGui.Text("NameID: " + b.NameId.ToString());
                 //}
 
-                var baseAction = MCHCombo.Actions.GaussRound;
+                var baseAction = MCHCombo.Actions.Ricochet;
                 ImGui.Text(baseAction.Action.Name.ToString());
 
                 ImGui.Text(baseAction.IsCoolDown.ToString());

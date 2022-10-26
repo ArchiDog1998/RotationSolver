@@ -161,7 +161,6 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
         //突进
         if (Actions.Onslaught.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
-
     }
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
@@ -201,7 +200,8 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
     {
         //死斗 如果血不够了。
         if (Actions.Holmgang.ShouldUse(out act)) return true;
-        return false;
+
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)

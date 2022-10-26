@@ -279,7 +279,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
         if (!canUse && JobGauge.DrawnCard != CardType.NONE && JobGauge.Seals.Contains(GetCardSeal(JobGauge.DrawnCard))
             && Actions.Redraw.ShouldUse(out act)) return true;
 
-        act = null!;
+        act = null;
         return false;
     }
 
@@ -295,7 +295,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
         //吉星
         if (Actions.Benefic.ShouldUse(out act)) return true;
 
-        act = null!;
+        act = null;
         return false;
     }
 

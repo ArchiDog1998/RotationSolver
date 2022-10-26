@@ -145,7 +145,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //策动
-        if (Actions.Tactician.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.Tactician.ShouldUse(out act)) return true;
 
         return false;
     }
