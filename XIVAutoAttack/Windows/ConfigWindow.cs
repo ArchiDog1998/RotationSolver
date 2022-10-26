@@ -11,11 +11,13 @@ using System.Numerics;
 using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Combos.RangedPhysicial;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Windows;
 
@@ -197,13 +199,17 @@ internal class ConfigWindow : Window
                 //    ImGui.Text("NameID: " + b.NameId.ToString());
                 //}
 
-                var baseAction = MCHCombo.Actions.Ricochet;
-                ImGui.Text(baseAction.Action.Name.ToString());
+                //var baseAction = NINCombo.Actions.Mug;
+                //ImGui.Text(baseAction.Action.Name.ToString());
 
-                ImGui.Text(baseAction.IsCoolDown.ToString());
-                ImGui.Text(baseAction.RecastTimeElapsed.ToString());
-                ImGui.Text(baseAction.RecastTime.ToString());
-                ImGui.Text(baseAction.ChargesCount.ToString());
+                //ImGui.Text(baseAction.HaveOneCharge.ToString());
+                //ImGui.Text(baseAction.IsGeneralGCD.ToString());
+                //ImGui.Text(baseAction.IsCoolDown.ToString());
+                //ImGui.Text(baseAction.RecastTimeElapsed.ToString());
+                ImGui.Text(NINCombo._ninactionAim?.Action.Name??string.Empty);
+
+                //ImGui.Text(ActionUpdater.WeaponRemain.ToString());
+                //ImGui.Text(ActionUpdater.WeaponTotal.ToString());
 
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
                 //ImGui.Text(TargetHelper.AllTargets.Length.ToString());

@@ -1,4 +1,6 @@
+using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
@@ -165,7 +167,6 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
             //通灵之术
             RabbitMedium = new (2272),
 
-
             //风魔手里剑
             FumaShuriken = new (2265, Ten),
 
@@ -195,7 +196,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
             Suiton = new (2271, Ten, Chi, Jin)
             {
                 BuffsProvide = new [] { ObjectStatus.Suiton },
-                OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(2,2),
+                OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(1,1),
             },
 
 
@@ -221,12 +222,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
     {
         act = null;
         if (Service.IconReplacer.OriginalHook(2260) != 2260) return false;
-        if (Weaponelapsed is < 0.2f and > 0) return false;
 
-        if (!LocalPlayer.HaveStatus(ObjectStatus.Ninjutsu))
-        {
-            ClearNinjutsus();
-        }
         //有生杀予夺
         if (LocalPlayer.HaveStatus(ObjectStatus.Kassatsu))
         {
@@ -263,7 +259,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
 
             if (JobGauge.HutonTimer > 0 && _ninactionAim?.ID == Actions.Huton.ID)
             {
-                _ninactionAim = null;
+                ClearNinjutsus();
                 return false;
             }
 
@@ -367,7 +363,6 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
             if(!LocalPlayer.HaveStatus(ObjectStatus.Kassatsu, ObjectStatus.TenChiJin) 
                 && !Actions.Ten.ShouldUse(out _, mustUse: true))
             {
-                //_ninactionAim = null;
                 return false;
             }
             act = _ninactionAim.Ninjutsus[0];
@@ -407,7 +402,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
                 return true;
             }
         }
-        _ninactionAim = null;
+        //ClearNinjutsus();
         return false;
     }
 
@@ -420,7 +415,6 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         if (Actions.Ten.ShouldUse(out _, mustUse: true) && Actions.Suiton.ShouldUse(out _))
         {
             _ninactionAim = Actions.Suiton;
-            return true;
         }
         act = null;
         return false;
@@ -428,11 +422,19 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if(Actions.Ten.EnoughLevel)
+        if (IsLastAction(false, Actions.DotonChi, Actions.SuitonJin,
+            Actions.RabbitMedium, Actions.FumaShuriken, Actions.Katon, Actions.Raiton,
+            Actions.Hyoton, Actions.Huton, Actions.Doton, Actions.Suiton, Actions.GokaMekkyaku, Actions.HyoshoRanryu))
         {
-            if (ChoiceNinjutsus(out act)) return true;
-            if (DoNinjutsus(out act)) return true;
+            ClearNinjutsus();
         }
+        if (ChoiceNinjutsus(out act)) return true;
+        if (DoNinjutsus(out act)) return true;
+
+
+
+
+
 
         //用真北取消隐匿
         if (LocalPlayer.HaveStatus(ObjectStatus.Hidden)
@@ -446,8 +448,6 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         //无忍术或者忍术中途停了
         if (_ninactionAim == null || (replace != 2260 && replace != _ninactionAim.ID))
         {
-            _ninactionAim = null;
-
             //大招
             if (Actions.FleetingRaiju.ShouldUse(out act, lastComboActionID)) return true;
             if (Actions.ForkedRaiju.ShouldUse(out act, lastComboActionID))

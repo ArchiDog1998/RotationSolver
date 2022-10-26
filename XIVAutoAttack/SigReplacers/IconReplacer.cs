@@ -21,15 +21,7 @@ internal sealed class IconReplacer : IDisposable
 
     private delegate uint GetIconDelegate(IntPtr actionManager, uint actionID);
 
-
-
-
-
     private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
-
-
-
-
 
     private static SortedList<Role, CustomCombo[]> _customCombosDict;
     internal static SortedList<Role, CustomCombo[]> CustomCombosDict

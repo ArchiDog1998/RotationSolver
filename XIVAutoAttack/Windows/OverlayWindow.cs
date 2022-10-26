@@ -17,9 +17,7 @@ namespace XIVAutoAttack.Windows
     internal class OverlayWindow : Window
     {
         public OverlayWindow()
-            :base("Overlay",
-            ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
-            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground)
+            :base("Overlay")
         {
 
         }
@@ -34,6 +32,9 @@ namespace XIVAutoAttack.Windows
         private static void DrawLocation()
         {
             const int COUNT = 20;
+
+            ImGui.Begin("Ring", ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
+            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
 
             if (CustomCombo.EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
             if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth)) return;
@@ -76,6 +77,7 @@ namespace XIVAutoAttack.Windows
             pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
             ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 0.2f)));
 
+            ImGui.End();
             ImGui.PopStyleVar();
 
         }

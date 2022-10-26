@@ -43,8 +43,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool InBattle => ActionUpdater.InBattle;
 
-        protected static float Weaponelapsed => ActionUpdater.WeaponElapsed;
-
         protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastSpell(isAdjust, actions);
 

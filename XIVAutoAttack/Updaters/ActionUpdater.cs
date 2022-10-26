@@ -40,12 +40,16 @@ namespace XIVAutoAttack.Updaters
         private static unsafe void UpdateWeaponTime()
         {
             var player = Service.ClientState.LocalPlayer;
-            if (player != null) return;
+            if (player == null) return;
 
             var instance = ActionManager.Instance();
 
-            var weapontotal = (float)Math.Max(instance->GetRecastTime(ActionType.Spell, 11),
-                player.TotalCastTime + 0.1);
+            var weapontotal = instance->GetRecastTime(ActionType.Spell, 11);
+            if (player.IsCasting)
+            {
+                weapontotal = Math.Max(weapontotal, player.TotalCastTime + 0.1f);
+            }
+
             WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Spell, 11);
             WeaponRemain = Math.Max(weapontotal - WeaponElapsed,
                 player.TotalCastTime - player.CurrentCastTime);
