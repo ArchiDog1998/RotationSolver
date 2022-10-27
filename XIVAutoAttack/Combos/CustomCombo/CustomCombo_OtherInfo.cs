@@ -24,10 +24,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
             单体防御,
             移动,
         }
-        public static TimeSpan TimeSinceLastAction => Watcher.TimeSinceLastAction;
+        protected static double TimeSinceLastAction => Watcher.TimeSinceLastAction.TotalSeconds;
 
-        protected static PlayerCharacter LocalPlayer => Service.ClientState.LocalPlayer;
-        protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : LocalPlayer;
+        protected static PlayerCharacter Player => Service.ClientState.LocalPlayer;
+        protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : Player;
 
         protected static bool IsMoving => XIVAutoAttackPlugin.movingController.IsMoving;
         protected static bool HaveHostileInRange => TargetUpdater.HaveHostileInRange;
@@ -42,7 +42,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         protected bool SettingBreak => CommandController.BreakorProvoke || Service.Configuration.AutoBreak;
 
-        protected static byte Level => LocalPlayer?.Level ?? 0;
+        protected static byte Level => Player?.Level ?? 0;
 
         protected static bool InCombat => ActionUpdater.InCombat;
 

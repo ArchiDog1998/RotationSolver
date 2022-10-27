@@ -12,7 +12,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
 {
     internal class PRPAction : BaseAction
     {
-        internal override EnemyLocation EnermyLocation => LocalPlayer.HaveStatus(ObjectStatus.Enshrouded) 
+        internal override EnemyLocation EnermyLocation => Player.HaveStatus(ObjectStatus.Enshrouded) 
             ? EnemyLocation.None : base.EnermyLocation;
         internal PRPAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
             : base(actionID, isFriendly, shouldEndSpecial)
@@ -20,14 +20,14 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
         }
     }
 
-    private static bool enshrouded => LocalPlayer.HaveStatus(ObjectStatus.Enshrouded);
-    private static bool soulReaver => LocalPlayer.HaveStatus(ObjectStatus.SoulReaver);
-    private static bool enhancedGibbet => LocalPlayer.HaveStatus(ObjectStatus.EnhancedGibbet);
-    private static bool enhancedGallows => LocalPlayer.HaveStatus(ObjectStatus.EnhancedGallows);
-    private static bool enhancedCrossReaping => LocalPlayer.HaveStatus(ObjectStatus.EnhancedCrossReaping);
-    private static bool enhancedVoidReaping => LocalPlayer.HaveStatus(ObjectStatus.EnhancedVoidReaping);
-    private static bool arcaneCircle => LocalPlayer.HaveStatus(ObjectStatus.ArcaneCircle);
-    private static bool plentifulReady => LocalPlayer.HaveStatus(ObjectStatus.ImmortalSacrifice) && !LocalPlayer.HaveStatus(ObjectStatus.BloodsownCircle);
+    private static bool enshrouded => Player.HaveStatus(ObjectStatus.Enshrouded);
+    private static bool soulReaver => Player.HaveStatus(ObjectStatus.SoulReaver);
+    private static bool enhancedGibbet => Player.HaveStatus(ObjectStatus.EnhancedGibbet);
+    private static bool enhancedGallows => Player.HaveStatus(ObjectStatus.EnhancedGallows);
+    private static bool enhancedCrossReaping => Player.HaveStatus(ObjectStatus.EnhancedCrossReaping);
+    private static bool enhancedVoidReaping => Player.HaveStatus(ObjectStatus.EnhancedVoidReaping);
+    private static bool arcaneCircle => Player.HaveStatus(ObjectStatus.ArcaneCircle);
+    private static bool plentifulReady => Player.HaveStatus(ObjectStatus.ImmortalSacrifice) && !Player.HaveStatus(ObjectStatus.BloodsownCircle);
     private static bool haveDeathsDesign => Target.HaveStatus(ObjectStatus.DeathsDesign);
     internal override uint JobID => 39;
     internal struct Actions

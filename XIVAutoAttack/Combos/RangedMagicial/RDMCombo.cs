@@ -334,7 +334,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
         if (Actions.Redoublement.ShouldUse(out act, lastComboActionID)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
-        bool mustStart = LocalPlayer.HaveStatus(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;
+        bool mustStart = Player.HaveStatus(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
         if (!mustStart)
@@ -344,14 +344,14 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
             //要求较小的魔元不带触发，也可以强制要求跳过判断。
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
-                if (LocalPlayer.HaveStatus(ObjectStatus.VerstoneReady))
+                if (Player.HaveStatus(ObjectStatus.VerstoneReady))
                 {
                     return false;
                 }
             }
             if (JobGauge.WhiteMana > JobGauge.BlackMana)
             {
-                if (LocalPlayer.HaveStatus(ObjectStatus.VerfireReady))
+                if (Player.HaveStatus(ObjectStatus.VerfireReady))
                 {
                     return false;
                 }
@@ -360,7 +360,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
             //看看有没有即刻相关的技能。
             foreach (var buff in Actions.Vercure.BuffsProvide)
             {
-                if (LocalPlayer.HaveStatus(buff))
+                if (Player.HaveStatus(buff))
                 {
                     return false;
                 }

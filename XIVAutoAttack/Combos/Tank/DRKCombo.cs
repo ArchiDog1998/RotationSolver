@@ -24,7 +24,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     }
 
     internal override uint JobID => 32;
-    internal override bool HaveShield => LocalPlayer.HaveStatus(ObjectStatus.Grit);
+    internal override bool HaveShield => Player.HaveStatus(ObjectStatus.Grit);
     private protected override BaseAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
 
@@ -72,7 +72,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             //暗黑锋
             EdgeofDarkness = new DRKAction(16467)
             {
-                OtherCheck = b => !IsLastAction(true, EdgeofDarkness, FloodofDarkness) && LocalPlayer.CurrentMp >= 3000,
+                OtherCheck = b => !IsLastAction(true, EdgeofDarkness, FloodofDarkness) && Player.CurrentMp >= 3000,
             },
 
             //嗜血
@@ -118,7 +118,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             //血溅
             Bloodspiller = new (7392)
             {
-                OtherCheck = b => JobGauge.Blood >= 50 || LocalPlayer.HaveStatus(ObjectStatus.Delirium),
+                OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatus(ObjectStatus.Delirium),
             },
 
             //寂灭
@@ -202,7 +202,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
         if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _)) openerFinished = true;
 
         //寂灭
-        if (JobGauge.Blood >= 80 || LocalPlayer.HaveStatus(ObjectStatus.Delirium))
+        if (JobGauge.Blood >= 80 || Player.HaveStatus(ObjectStatus.Delirium))
         {
             if (Actions.Quietus.ShouldUse(out act)) return true;
         }
@@ -210,9 +210,9 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
         //血溅
         if (Actions.Bloodspiller.ShouldUse(out act)) 
         {
-            if (LocalPlayer.HaveStatus(ObjectStatus.Delirium) && LocalPlayer.FindStatusStack(ObjectStatus.BloodWeapon) <= 3) return true;
+            if (Player.HaveStatus(ObjectStatus.Delirium) && Player.FindStatusStack(ObjectStatus.BloodWeapon) <= 3) return true;
 
-            if ((JobGauge.Blood >= 50 && Actions.BloodWeapon.WillHaveOneChargeGCD(1)) || (JobGauge.Blood >= 90 && !LocalPlayer.HaveStatus(ObjectStatus.Delirium))) return true;
+            if ((JobGauge.Blood >= 50 && Actions.BloodWeapon.WillHaveOneChargeGCD(1)) || (JobGauge.Blood >= 90 && !Player.HaveStatus(ObjectStatus.Delirium))) return true;
 
         }
 
@@ -264,7 +264,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
         //暗黑波动
         if (Actions.FloodofDarkness.ShouldUse(out act))
         {
-            if ((LocalPlayer.CurrentMp >= 6000 || JobGauge.HasDarkArts) && Actions.Unleash.ShouldUse(out _)) return true;
+            if ((Player.CurrentMp >= 6000 || JobGauge.HasDarkArts) && Actions.Unleash.ShouldUse(out _)) return true;
         }
 
         //暗黑锋
@@ -273,13 +273,13 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             if (InDungeonsMiddle && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) break;
 
             //是否留3000蓝开黑盾
-            if (Config.GetBoolByName("TheBlackestNight") && LocalPlayer.CurrentMp < 6000) break;
+            if (Config.GetBoolByName("TheBlackestNight") && Player.CurrentMp < 6000) break;
             
             //爆发期打完
             if (openerFinished && Actions.Delirium.RecastTimeElapsed > burstDelayTime && Actions.Delirium.RecastTimeElapsed < 20) return true;
 
             //非爆发期防止溢出+续buff
-            if (JobGauge.HasDarkArts || (LocalPlayer.CurrentMp > 8500 && openerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
+            if (JobGauge.HasDarkArts || (Player.CurrentMp > 8500 && openerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
             } while (false);
         }
 

@@ -185,14 +185,14 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
             //雪！月！花！
             if (Actions.MidareSetsugekka.ShouldUse(out act)) return true;
             //彼岸花在明镜止水中打出，同时应该消耗掉一个月闪
-            if (LocalPlayer.HaveStatus(ObjectStatus.MeikyoShisui) && LocalPlayer.HaveStatus(ObjectStatus.Moon) && Actions.Higanbana.ShouldUse(out act)) return true;
+            if (Player.HaveStatus(ObjectStatus.MeikyoShisui) && Player.HaveStatus(ObjectStatus.Moon) && Actions.Higanbana.ShouldUse(out act)) return true;
         }
-        bool haveMeikyoShisui = LocalPlayer.HaveStatus(ObjectStatus.MeikyoShisui);
-        if (!JobGauge.HasSetsu && !LocalPlayer.HaveStatus(ObjectStatus.Moon))
+        bool haveMeikyoShisui = Player.HaveStatus(ObjectStatus.MeikyoShisui);
+        if (!JobGauge.HasSetsu && !Player.HaveStatus(ObjectStatus.Moon))
         {
             if (GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }
-        if (!LocalPlayer.HaveStatus(ObjectStatus.Flower))
+        if (!Player.HaveStatus(ObjectStatus.Flower))
         {
             if (KaGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }

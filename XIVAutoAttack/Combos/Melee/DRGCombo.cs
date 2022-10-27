@@ -203,7 +203,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
                     targets = Targets;
                     if (targets.Length > 0) return TargetFilter.RandomObject(targets);
 
-                    return LocalPlayer;
+                    return Player;
                 },
 
                 BuffsNeed = new [] {ObjectStatus.PowerSurge},
@@ -245,7 +245,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (nextGCD.IsAnySameAction(true, Actions.FullThrust, Actions.CoerthanTorment)
-            || LocalPlayer.HaveStatus(ObjectStatus.LanceCharge) && nextGCD == Actions.FangandClaw)
+            || Player.HaveStatus(ObjectStatus.LanceCharge) && nextGCD == Actions.FangandClaw)
         {
             //龙剑
             if (abilityRemain ==1 && Actions.LifeSurge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -289,7 +289,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         if (Actions.Geirskogul.ShouldUse(out act, mustUse: true)) return true;
 
         //破碎冲
-        if (LocalPlayer.HaveStatus(ObjectStatus.RightEye) && Actions.SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Player.HaveStatus(ObjectStatus.RightEye) && Actions.SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         if (Actions.SpineshatterDive.ShouldUse(out act)) return true;
 
         //幻象冲
@@ -317,7 +317,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
                 inOpener = true;
             }
         }
-        if (Actions.BattleLitany.IsCoolDown && !LocalPlayer.HaveStatus(ObjectStatus.LanceCharge))
+        if (Actions.BattleLitany.IsCoolDown && !Player.HaveStatus(ObjectStatus.LanceCharge))
         {
             inOpener = false;
         }
@@ -341,7 +341,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         }
 
         //看看是否需要续Buff
-        if (LocalPlayer.WillStatusEndGCD(5, 0, true, ObjectStatus.PowerSurge))
+        if (Player.WillStatusEndGCD(5, 0, true, ObjectStatus.PowerSurge))
         {
             if (Actions.FullThrust.ShouldUse(out act, lastComboActionID)) return true;
             if (Actions.VorpalThrust.ShouldUse(out act, lastComboActionID)) return true;

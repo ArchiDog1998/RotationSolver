@@ -68,7 +68,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (act != null && act is BaseAction GCDaction)
             {
                 if (GCDaction.EnermyLocation != EnemyLocation.None && GCDaction.Target.HasLocationSide()
-                     && !LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))
+                     && !Player.HaveStatus(ObjectStatus.TrueNorth))
                 {
                     if (CheckAction(GCDaction.ID))
                     {

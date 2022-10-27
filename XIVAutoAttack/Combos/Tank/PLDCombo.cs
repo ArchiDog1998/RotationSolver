@@ -17,7 +17,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
 {
     internal override uint JobID => 19;
 
-    internal override bool HaveShield => LocalPlayer.HaveStatus(ObjectStatus.IronWill);
+    internal override bool HaveShield => Player.HaveStatus(ObjectStatus.IronWill);
 
     private protected override BaseAction Shield => Actions.IronWill;
 
@@ -175,19 +175,19 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             //悔罪
             Confiteor = new (16459)
             {
-                OtherCheck = b => LocalPlayer.CurrentMp >= 1000,
+                OtherCheck = b => Player.CurrentMp >= 1000,
             },
 
             //圣环
             HolyCircle = new (16458)
             {
-                OtherCheck = b => LocalPlayer.CurrentMp >= 2000,
+                OtherCheck = b => Player.CurrentMp >= 2000,
             },
 
             //圣灵
             HolySpirit = new (7384)
             {
-                OtherCheck = b => LocalPlayer.CurrentMp >= 2000,
+                OtherCheck = b => Player.CurrentMp >= 2000,
             },
 
             //武装戍卫
@@ -228,7 +228,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         //起手完成判断
         if (inOpener || !Actions.TotalEclipse.ShouldUse(out _))
         {
-            if (IsLastWeaponSkill(true, Actions.Confiteor) || (!LocalPlayer.HaveStatus(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.WillHaveOneCharge(59)))
+            if (IsLastWeaponSkill(true, Actions.Confiteor) || (!Player.HaveStatus(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.WillHaveOneCharge(59)))
             {
                 inOpener = false;
                 openerFinished = true;
@@ -252,10 +252,10 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         //赎罪剑
         if (Actions.Atonement.ShouldUse(out act))
         {
-            if (!SlowLoop && LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)
+            if (!SlowLoop && Player.HaveStatus(ObjectStatus.FightOrFlight)
                    && IsLastWeaponSkill(true, Actions.Atonement, Actions.RoyalAuthority)
-                   && !LocalPlayer.WillStatusEndGCD(2, 0, true, ObjectStatus.FightOrFlight)) return true;
-            if (!SlowLoop && LocalPlayer.FindStatusStack(ObjectStatus.SwordOath) > 1) return true;
+                   && !Player.WillStatusEndGCD(2, 0, true, ObjectStatus.FightOrFlight)) return true;
+            if (!SlowLoop && Player.FindStatusStack(ObjectStatus.SwordOath) > 1) return true;
 
             if (SlowLoop) return true;
         }
@@ -316,7 +316,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             if (abilityRemain == 1 && CanUseRequiescat(out act)) return true;
         }
 
-        var OpenerStatus = LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight) && LocalPlayer.FindStatusTime(ObjectStatus.FightOrFlight) <= 19 && !IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade);
+        var OpenerStatus = Player.HaveStatus(ObjectStatus.FightOrFlight) && Player.FindStatusTime(ObjectStatus.FightOrFlight) <= 19 && !IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade);
 
         //厄运流转
         if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true))
@@ -350,7 +350,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         }
 
         //Special Defense.
-        if (JobGauge.OathGauge == 100 && Defense(out act) && LocalPlayer.CurrentHp < LocalPlayer.MaxHp) return true;
+        if (JobGauge.OathGauge == 100 && Defense(out act) && Player.CurrentHp < Player.MaxHp) return true;
 
         act = null;
         return false;
@@ -396,9 +396,9 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             //在4人本道中
             if (InDungeonsMiddle)
             {
-                if (CanUseSpellInDungeonsMiddle && !LocalPlayer.HaveStatus(ObjectStatus.Requiescat) 
-                    && !LocalPlayer.HaveStatus(ObjectStatus.ReadyForBladeofFaith)
-                    && LocalPlayer.CurrentMp < 2000) return true;
+                if (CanUseSpellInDungeonsMiddle && !Player.HaveStatus(ObjectStatus.Requiescat) 
+                    && !Player.HaveStatus(ObjectStatus.ReadyForBladeofFaith)
+                    && Player.CurrentMp < 2000) return true;
 
                 return false;
             }
@@ -452,7 +452,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             else
             {
                 //在战逃buff时间剩17秒以下时释放
-                if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight) && LocalPlayer.FindStatusTime(ObjectStatus.FightOrFlight) < 17 && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade))
+                if (Player.HaveStatus(ObjectStatus.FightOrFlight) && Player.FindStatusTime(ObjectStatus.FightOrFlight) < 17 && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade))
                 {
                     //在起手中时,王权剑后释放
                     if (inOpener && IsLastWeaponSkill(true, Actions.RoyalAuthority)) return true;
@@ -477,16 +477,16 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
     private bool CanUseConfiteor(out IAction act)
     {
         act = null;
-        if (LocalPlayer.HaveStatus(ObjectStatus.SwordOath)) return false;
+        if (Player.HaveStatus(ObjectStatus.SwordOath)) return false;
 
         //有安魂祈祷buff,且没在战逃中
-        if (LocalPlayer.HaveStatus(ObjectStatus.Requiescat) && !LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight))
+        if (Player.HaveStatus(ObjectStatus.Requiescat) && !Player.HaveStatus(ObjectStatus.FightOrFlight))
         {
             if (SlowLoop && (!IsLastWeaponSkill(true, Actions.GoringBlade) && !IsLastWeaponSkill(true, Actions.Atonement))) return false;
 
-            var statusStack = LocalPlayer.FindStatusStack(ObjectStatus.Requiescat);
-            var statusRemainingTime = LocalPlayer.FindStatusTime(ObjectStatus.Requiescat);
-            if (statusStack == 1 || (statusRemainingTime is > 0 and < 3) || LocalPlayer.CurrentMp <= 2000)
+            var statusStack = Player.FindStatusStack(ObjectStatus.Requiescat);
+            var statusRemainingTime = Player.FindStatusTime(ObjectStatus.Requiescat);
+            if (statusStack == 1 || (statusRemainingTime is > 0 and < 3) || Player.CurrentMp <= 2000)
             {
                 if (Actions.Confiteor.ShouldUse(out act, mustUse: true)) return true;
             }

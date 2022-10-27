@@ -223,8 +223,8 @@ namespace XIVAutoAttack.Combos
                 }
             }
         }
-        private bool HasFire => LocalPlayer.HaveStatus(ObjectStatus.Firestarter);
-        private bool HasThunder => LocalPlayer.HaveStatus(ObjectStatus.Thundercloud);
+        private bool HasFire => Player.HaveStatus(ObjectStatus.Firestarter);
+        private bool HasThunder => Player.HaveStatus(ObjectStatus.Thundercloud);
         internal static bool InTranspose = false;
         private bool TargetHasThunder => Target.HaveStatus(ObjectStatus.Thunder,
                         ObjectStatus.Thunder2,
@@ -236,7 +236,7 @@ namespace XIVAutoAttack.Combos
         {
             get
             {
-                if (!(JobGauge.InUmbralIce && LocalPlayer.CurrentMp > 9000 && (JobGauge.UmbralHearts == 3 || Level < 58))) return false;
+                if (!(JobGauge.InUmbralIce && Player.CurrentMp > 9000 && (JobGauge.UmbralHearts == 3 || Level < 58))) return false;
 
                 if (UseThunderIn) return true;
 
@@ -297,7 +297,7 @@ namespace XIVAutoAttack.Combos
             if (IsLastAbility(false, Actions.Manafont)) return false;
 
             //星灵转冰
-            if (Level >= 90 && JobGauge.InAstralFire && LocalPlayer.CurrentMp == 0
+            if (Level >= 90 && JobGauge.InAstralFire && Player.CurrentMp == 0
                 && (JobGauge.PolyglotStacks > 0 || JobGauge.EnochianTimer < 3000)
                 && (HasFire || !GeneralActions.Swiftcast.IsCoolDown || GeneralActions.Swiftcast.WillHaveOneChargeGCD(2,1) 
                 || !Actions.Triplecast.IsCoolDown || Actions.Triplecast.WillHaveOneChargeGCD(3,1)
@@ -317,8 +317,8 @@ namespace XIVAutoAttack.Combos
             }
             //星灵转火
             if (JobGauge.InUmbralIce && InTranspose && (HasFire || HaveSwift) && 
-                (nextGCD.IsAnySameAction(true, Actions.Fire3, Actions.Fire2) || LocalPlayer.CurrentMp >= 8000
-                || (HasFire && LocalPlayer.CurrentMp >= 5600)) )
+                (nextGCD.IsAnySameAction(true, Actions.Fire3, Actions.Fire2) || Player.CurrentMp >= 8000
+                || (HasFire && Player.CurrentMp >= 5600)) )
             {
                 if (Actions.Transpose.ShouldUse(out act)) return true;
             }
@@ -348,14 +348,14 @@ namespace XIVAutoAttack.Combos
 
             if (IsMoving)
             {
-                if (JobGauge.InAstralFire && (LocalPlayer.CurrentMp < 5000 || JobGauge.ElementTimeRemaining < 5000))
+                if (JobGauge.InAstralFire && (Player.CurrentMp < 5000 || JobGauge.ElementTimeRemaining < 5000))
                 {
                     if (Actions.Transpose.ShouldUse(out act)) return true;
                 }
                 if (!InTranspose && Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             }
 
-            if ((JobGauge.InUmbralIce && !TargetHasThunder) || (JobGauge.InAstralFire && LocalPlayer.CurrentMp <= 4400)
+            if ((JobGauge.InUmbralIce && !TargetHasThunder) || (JobGauge.InAstralFire && Player.CurrentMp <= 4400)
                 || !GeneralActions.Swiftcast.WillHaveOneChargeGCD(5,1))
             {
                 //加个激情
@@ -472,7 +472,7 @@ namespace XIVAutoAttack.Combos
                 //如果需要续时间,提高档数
                 if (JobGauge.ElementTimeRemaining < Config.GetFloatByName("TimeToAdd") * 1000)
                 {
-                    if(LocalPlayer.CurrentMp >= 4000 || JobGauge.AstralFireStacks == 2)
+                    if(Player.CurrentMp >= 4000 || JobGauge.AstralFireStacks == 2)
                     {
                         if (Actions.Fire.ShouldUse(out act)) return true;
                     }
@@ -505,15 +505,15 @@ namespace XIVAutoAttack.Combos
                 }
 
                 //三连
-                if (LocalPlayer.CurrentMp >= 4000 && Actions.Triplecast.ShouldUse(out act)) return true;
+                if (Player.CurrentMp >= 4000 && Actions.Triplecast.ShouldUse(out act)) return true;
 
                 //冰针不够，马上核爆
-                if (JobGauge.UmbralHearts == 1 || LocalPlayer.CurrentMp < 3800)
+                if (JobGauge.UmbralHearts == 1 || Player.CurrentMp < 3800)
                 {
                     if (Actions.Flare.ShouldUse(out act)) return true;
                 }
                 //蓝不够，马上绝望
-                if (LocalPlayer.CurrentMp < Actions.Fire4.MPNeed + Actions.Despair.MPNeed)
+                if (Player.CurrentMp < Actions.Fire4.MPNeed + Actions.Despair.MPNeed)
                 {
                     if (Actions.Despair.ShouldUse(out act)) return true;
                 }
@@ -522,7 +522,7 @@ namespace XIVAutoAttack.Combos
                 if (Actions.Fire2.ShouldUse(out act)) return true;
 
                 //如果MP够打一发伤害。
-                if (LocalPlayer.CurrentMp >= AttackAstralFire(out act))
+                if (Player.CurrentMp >= AttackAstralFire(out act))
                 {
                     //火状态，攻击，强插三连。
                     //if (Actions.Triplecast.ShouldUseAction(out IAction action)) act = action;

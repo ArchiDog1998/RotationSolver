@@ -13,7 +13,7 @@ namespace XIVAutoAttack.Combos.Tank;
 internal sealed class WARCombo : JobGaugeCombo<WARGauge>
 {
     internal override uint JobID => 21;
-    internal override bool HaveShield => LocalPlayer.HaveStatus(ObjectStatus.Defiance);
+    internal override bool HaveShield => Player.HaveStatus(ObjectStatus.Defiance);
     private protected override BaseAction Shield => Actions.Defiance;
     internal struct Actions
     {
@@ -33,7 +33,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
             //±©·çËé ºì¸«
             StormsEye = new (45)
             {
-                OtherCheck = b => LocalPlayer.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest),
+                OtherCheck = b => Player.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest),
             },
 
             //·É¸«
@@ -66,7 +66,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
             //Ô­³õÖ®»ê
             InnerBeast = new (49)
             {
-                OtherCheck = b => !LocalPlayer.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest) && ( JobGauge.BeastGauge >= 50 || LocalPlayer.HaveStatus(ObjectStatus.InnerRelease)),
+                OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest) && ( JobGauge.BeastGauge >= 50 || Player.HaveStatus(ObjectStatus.InnerRelease)),
             },
 
             //¸ÖÌúÐý·ç
@@ -237,13 +237,13 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
     {
         
         //±¬·¢
-        if (!LocalPlayer.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest) || !Actions.MythrilTempest.EnoughLevel)
+        if (!Player.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest) || !Actions.MythrilTempest.EnoughLevel)
         {
             //¿ñ±©
             if (!new BaseAction(7389).IsCoolDown && Actions.Berserk.ShouldUse(out act)) return true;
         }
 
-        if (LocalPlayer.GetHealthRatio() < 0.6f)
+        if (Player.GetHealthRatio() < 0.6f)
         {
             //Õ½Àõ
             if (Actions.ThrillofBattle.ShouldUse(out act)) return true;

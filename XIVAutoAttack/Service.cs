@@ -65,8 +65,8 @@ internal class Service
     public static ToastGui ToastGui { get; private set; }
     [PluginService]
     public static FlyTextGui FlyTextGui { get; private set; }
-    [PluginService]
-    public static SigScanner SigScanner { get; private set; }
+    //[PluginService]
+    //public static SigScanner SigScanner { get; private set; }
     [PluginService]
     public static Framework Framework { get; private set; }
 

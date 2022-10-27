@@ -169,7 +169,7 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
         if (Actions.FourpointFury.ShouldUse(out act)) return true;
 
         //确认Buff
-        if (LocalPlayer.WillStatusEndGCD(3, 0, true, ObjectStatus.DisciplinedFist) && Actions.TwinSnakes.ShouldUse(out act)) return true;
+        if (Player.WillStatusEndGCD(3, 0, true, ObjectStatus.DisciplinedFist) && Actions.TwinSnakes.ShouldUse(out act)) return true;
 
         if (Actions.TrueStrike.ShouldUse(out act)) return true;
         return false;
@@ -231,17 +231,17 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
             }
         }
         //有震脚就阴阳
-        else if (LocalPlayer.HaveStatus(ObjectStatus.PerfectBalance))
+        else if (Player.HaveStatus(ObjectStatus.PerfectBalance))
         {
             if (havesolar && LunarNadi(out act)) return true;
             if (SolarNadi(out act)) return true;
         }
 
-        if (LocalPlayer.HaveStatus(ObjectStatus.CoerlForm))
+        if (Player.HaveStatus(ObjectStatus.CoerlForm))
         {
             if (CoerlForm(out act)) return true;
         }
-        else if (LocalPlayer.HaveStatus(ObjectStatus.RaptorForm))
+        else if (Player.HaveStatus(ObjectStatus.RaptorForm))
         {
             if (RaptorForm(out act)) return true;
         }
@@ -272,7 +272,7 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
             if ((JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.SOLAR) != 0)
             {
                 //两种Buff都在6s以上
-                var dis = LocalPlayer.WillStatusEndGCD(3, 0, true, ObjectStatus.DisciplinedFist);
+                var dis = Player.WillStatusEndGCD(3, 0, true, ObjectStatus.DisciplinedFist);
 
                 Actions.Demolish.ShouldUse(out _);
                 var demo = Actions.Demolish.Target.WillStatusEndGCD(3, 0, true, ObjectStatus.Demolish);

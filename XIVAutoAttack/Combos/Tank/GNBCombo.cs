@@ -15,7 +15,7 @@ namespace XIVAutoAttack.Combos.Tank;
 internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
 {
     internal override uint JobID => 37;
-    internal override bool HaveShield => LocalPlayer.HaveStatus(ObjectStatus.RoyalGuard);
+    internal override bool HaveShield => Player.HaveStatus(ObjectStatus.RoyalGuard);
     private protected override BaseAction Shield => Actions.RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;
@@ -245,13 +245,13 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle) return true;
 
             //爆发期,烈牙之后
-            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.GnashingFang.IsCoolDown) return true;
+            if (Player.HaveStatus(ObjectStatus.NoMercy) && Actions.GnashingFang.IsCoolDown) return true;
 
             //非爆发期
-            if (!LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && !Actions.GnashingFang.WillHaveOneCharge(20, false)) return true;
+            if (!Player.HaveStatus(ObjectStatus.NoMercy) && !Actions.GnashingFang.WillHaveOneCharge(20, false)) return true;
 
             //等级小于烈牙,
-            if (!Actions.GnashingFang.EnoughLevel && (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) || !Actions.NoMercy.WillHaveOneCharge(15, false))) return true;
+            if (!Actions.GnashingFang.EnoughLevel && (Player.HaveStatus(ObjectStatus.NoMercy) || !Actions.NoMercy.WillHaveOneCharge(15, false))) return true;
         }
 
         //弓形冲波
@@ -270,7 +270,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         if (Actions.RoughDivide.Target.DistanceToPlayer() < 1 && !IsMoving)
         {  
             if (Actions.RoughDivide.ShouldUse(out act)) return true;
-            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Player.HaveStatus(ObjectStatus.NoMercy) && Actions.RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         return false;
     }
@@ -355,7 +355,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle) return false;
 
             //无情中3弹烈牙
-            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) || !Actions.NoMercy.WillHaveOneCharge(55, false))) return true;
+            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (Player.HaveStatus(ObjectStatus.NoMercy) || !Actions.NoMercy.WillHaveOneCharge(55, false))) return true;
 
             //无情外烈牙
             if (JobGauge.Ammo > 0 && !Actions.NoMercy.WillHaveOneCharge(17, false) && Actions.NoMercy.WillHaveOneCharge(35, false)) return true;
@@ -386,10 +386,10 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle) return false;
 
             //在烈牙后面使用音速破
-            if (Actions.GnashingFang.IsCoolDown && LocalPlayer.HaveStatus(ObjectStatus.NoMercy)) return true;
+            if (Actions.GnashingFang.IsCoolDown && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
 
             //其他判断
-            if (!Actions.DoubleDown.EnoughLevel && LocalPlayer.HaveStatus(ObjectStatus.ReadyToRip)
+            if (!Actions.DoubleDown.EnoughLevel && Player.HaveStatus(ObjectStatus.ReadyToRip)
                 && Actions.GnashingFang.IsCoolDown) return true;
         }        
         return false;
@@ -409,16 +409,16 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle)
             {
                 //在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪),有无情buff
-                if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy)) return true;
+                if (Player.HaveStatus(ObjectStatus.NoMercy)) return true;
 
                 return false;
             }
 
             //在音速破后使用倍攻
-            if (Actions.SonicBreak.IsCoolDown && LocalPlayer.HaveStatus(ObjectStatus.NoMercy)) return true;
+            if (Actions.SonicBreak.IsCoolDown && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
 
             //2弹无情的特殊判断,提前使用倍攻
-            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && !Actions.NoMercy.WillHaveOneCharge(55, false) && Actions.Bloodfest.WillHaveOneCharge(5, false)) return true;
+            if (Player.HaveStatus(ObjectStatus.NoMercy) && !Actions.NoMercy.WillHaveOneCharge(55, false) && Actions.Bloodfest.WillHaveOneCharge(5, false)) return true;
 
         }
         return false;
@@ -440,7 +440,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (Actions.SonicBreak.IsCoolDown && Actions.SonicBreak.WillHaveOneCharge((float) 0.5, false)) return false;
 
             //无情中爆发击判定
-            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) &&
+            if (Player.HaveStatus(ObjectStatus.NoMercy) &&
                 JobGauge.AmmoComboStep == 0 &&
                 !Actions.GnashingFang.WillHaveOneCharge(1, false)) return true;
 
@@ -459,7 +459,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle) return true;
 
             //爆发期,无情中且音速破在冷却中
-            if (LocalPlayer.HaveStatus(ObjectStatus.NoMercy) && Actions.SonicBreak.IsCoolDown) return true;
+            if (Player.HaveStatus(ObjectStatus.NoMercy) && Actions.SonicBreak.IsCoolDown) return true;
         }
         return false;     
     }

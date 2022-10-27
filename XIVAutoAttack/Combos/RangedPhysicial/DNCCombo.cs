@@ -171,11 +171,11 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
             {
                 ChoiceTarget = Targets =>
                 {
-                    Targets = Targets.Where(b => b.ObjectId != LocalPlayer.ObjectId && b.CurrentHp != 0 &&
+                    Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
                     //Remove Weak
                     b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0 &&
                     //Remove other partner.
-                    b.StatusList.Where(s => s.StatusId == ObjectStatus.ClosedPosition2 && s.SourceID != LocalPlayer.ObjectId).Count() == 0).ToArray();
+                    b.StatusList.Where(s => s.StatusId == ObjectStatus.ClosedPosition2 && s.SourceID != Player.ObjectId).Count() == 0).ToArray();
 
                     var targets = TargetFilter.GetJobCategory(Targets, Role.近战);
                     if (targets.Length > 0) return targets[0];
@@ -228,7 +228,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
     && Actions.Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //应急换舞伴
-        if (LocalPlayer.HaveStatus(ObjectStatus.ClosedPosition1))
+        if (Player.HaveStatus(ObjectStatus.ClosedPosition1))
         {
             foreach (var friend in TargetUpdater.PartyMembers)
             {
@@ -245,7 +245,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
         else if (Actions.ClosedPosition.ShouldUse(out act)) return true;
 
         //尝试爆发
-        if (LocalPlayer.HaveStatus(ObjectStatus.TechnicalFinish)
+        if (Player.HaveStatus(ObjectStatus.TechnicalFinish)
         && Actions.Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //百花
@@ -256,7 +256,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
         if (Actions.FanDance3.ShouldUse(out act, mustUse: true)) return true;
 
         //扇舞
-        if (LocalPlayer.HaveStatus(ObjectStatus.Devilment) || JobGauge.Feathers > 3 || !Actions.TechnicalStep.EnoughLevel)
+        if (Player.HaveStatus(ObjectStatus.Devilment) || JobGauge.Feathers > 3 || !Actions.TechnicalStep.EnoughLevel)
         {
             if (Actions.FanDance2.ShouldUse(out act)) return true;
             if (Actions.FanDance.ShouldUse(out act)) return true;
@@ -286,7 +286,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (!InCombat && !LocalPlayer.HaveStatus(ObjectStatus.ClosedPosition1) 
+        if (!InCombat && !Player.HaveStatus(ObjectStatus.ClosedPosition1) 
             && Actions.ClosedPosition.ShouldUse(out act)) return true;
 
         if (SettingBreak)
@@ -295,7 +295,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
         }
 
         if (StepGCD(out act)) return true;
-        if (AttackGCD(out act, LocalPlayer.HaveStatus(ObjectStatus.Devilment), lastComboActionID)) return true;
+        if (AttackGCD(out act, Player.HaveStatus(ObjectStatus.Devilment), lastComboActionID)) return true;
 
         return false;
     }
@@ -303,14 +303,14 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
     private bool StepGCD(out IAction act)
     {
         act = null;
-        if (!LocalPlayer.HaveStatus(ObjectStatus.StandardStep, ObjectStatus.TechnicalStep)) return false;
+        if (!Player.HaveStatus(ObjectStatus.StandardStep, ObjectStatus.TechnicalStep)) return false;
 
-        if (LocalPlayer.HaveStatus(ObjectStatus.StandardStep) && JobGauge.CompletedSteps == 2)
+        if (Player.HaveStatus(ObjectStatus.StandardStep) && JobGauge.CompletedSteps == 2)
         {
             act = Actions.StandardStep;
             return true;
         }
-        else if (LocalPlayer.HaveStatus(ObjectStatus.TechnicalStep) && JobGauge.CompletedSteps == 4)
+        else if (Player.HaveStatus(ObjectStatus.TechnicalStep) && JobGauge.CompletedSteps == 4)
         {
             act = Actions.TechnicalStep;
             return true;
@@ -341,7 +341,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
         bool canstandard = !Actions.TechnicalStep.IsCoolDown || Actions.TechnicalStep.WillHaveOneChargeGCD(2);
 
-        if (!LocalPlayer.HaveStatus(ObjectStatus.TechnicalFinish))
+        if (!Player.HaveStatus(ObjectStatus.TechnicalFinish))
         {
             //标准舞步
             if (canstandard && Actions.StandardStep.ShouldUse(out act)) return true;
