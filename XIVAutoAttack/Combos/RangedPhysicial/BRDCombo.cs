@@ -16,17 +16,9 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
 {
 
     internal override uint JobID => 23;
-    private static bool initFinished = false;
 
     internal struct Actions
     {
-        private static bool AddOnDot(BattleChara b, ushort status1, ushort status2, float duration)
-        {
-            var results = b.FindStatusTimes(status1, status2);
-            if (results.Length != 2) return false;
-            return results.Min() < duration;
-        }
-
         public static readonly BaseAction
             //Ç¿Á¦Éä»÷
             HeavyShoot = new(97) { BuffsProvide = new[] { ObjectStatus.StraightShotReady } },
@@ -45,17 +37,12 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
-                    bool needLow = AddOnDot(b, ObjectStatus.VenomousBite, ObjectStatus.Windbite, 4);
-                    bool needHigh = AddOnDot(b, ObjectStatus.CausticBite, ObjectStatus.Stormbite, 4);
-
-                    bool needLow1 = AddOnDot(b, ObjectStatus.VenomousBite, ObjectStatus.Windbite, 40);
-                    bool needHigh1 = AddOnDot(b, ObjectStatus.CausticBite, ObjectStatus.Stormbite, 40);
-
                     if (Player.HaveStatus(ObjectStatus.RagingStrikes) && 
-                        Player.WillStatusEndGCD(1, 1, true, ObjectStatus.RagingStrikes)
-                        && (needLow1 || needHigh1)) return true;
+                        !Player.WillStatusEndGCD(1, 1, true, ObjectStatus.RagingStrikes)
+                        && IsLastWeaponSkill(true, IronJaws)) return true;
 
-                    return needLow || needHigh;
+                    return b.WillStatusEndGCD(0, 0, true, ObjectStatus.VenomousBite, ObjectStatus.CausticBite) ^ b.WillStatusEndGCD(1, 0, true, ObjectStatus.VenomousBite, ObjectStatus.CausticBite)
+                    || b.WillStatusEndGCD(0, 0, true, ObjectStatus.Windbite, ObjectStatus.Stormbite) ^ b.WillStatusEndGCD(1, 0, true, ObjectStatus.Windbite, ObjectStatus.Stormbite);
                 },
             },
 
@@ -208,16 +195,9 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (!InCombat)
-        {
-            //if (UseBreakItem(out act)) return true;
-            initFinished = false;
-        }
-
         //ÁæÑÀÀþ³Ý
         if (Actions.IronJaws.ShouldUse(out act))
         {
-            initFinished = true;
             return true;
         }
 

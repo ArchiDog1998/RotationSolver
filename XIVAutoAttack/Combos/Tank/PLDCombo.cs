@@ -316,7 +316,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             if (abilityRemain == 1 && CanUseRequiescat(out act)) return true;
         }
 
-        var OpenerStatus = Player.HaveStatus(ObjectStatus.FightOrFlight) && Player.FindStatusTime(ObjectStatus.FightOrFlight) <= 19 && !IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade);
+        var OpenerStatus = Player.HaveStatus(ObjectStatus.FightOrFlight) && Player.WillStatusEnd(19, false,ObjectStatus.FightOrFlight) && !IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade);
 
         //厄运流转
         if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true))
@@ -452,7 +452,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             else
             {
                 //在战逃buff时间剩17秒以下时释放
-                if (Player.HaveStatus(ObjectStatus.FightOrFlight) && Player.FindStatusTime(ObjectStatus.FightOrFlight) < 17 && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade))
+                if (Player.HaveStatus(ObjectStatus.FightOrFlight) && Player.WillStatusEnd(17, false, ObjectStatus.FightOrFlight) && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade))
                 {
                     //在起手中时,王权剑后释放
                     if (inOpener && IsLastWeaponSkill(true, Actions.RoyalAuthority)) return true;
@@ -485,8 +485,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             if (SlowLoop && (!IsLastWeaponSkill(true, Actions.GoringBlade) && !IsLastWeaponSkill(true, Actions.Atonement))) return false;
 
             var statusStack = Player.FindStatusStack(ObjectStatus.Requiescat);
-            var statusRemainingTime = Player.FindStatusTime(ObjectStatus.Requiescat);
-            if (statusStack == 1 || (statusRemainingTime is > 0 and < 3) || Player.CurrentMp <= 2000)
+            if (statusStack == 1 || (Player.HaveStatus(ObjectStatus.Requiescat) && Player.WillStatusEnd(3, false, ObjectStatus.Requiescat)) || Player.CurrentMp <= 2000)
             {
                 if (Actions.Confiteor.ShouldUse(out act, mustUse: true)) return true;
             }
