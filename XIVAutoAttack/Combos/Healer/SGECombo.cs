@@ -399,7 +399,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
         if (JobGauge.Addersting > 0 && Actions.Toxikon.ShouldUse(out act, mustUse: true)) return true;
 
         //脱战给T刷单盾嫖豆子
-        if (!InBattle)
+        if (!InCombat)
         {
             var tank = TargetUpdater.PartyTanks;
             if (tank.Length == 1 && Actions.EukrasianDiagnosis.Target == tank.First() && Actions.EukrasianDiagnosis.ShouldUse(out act))

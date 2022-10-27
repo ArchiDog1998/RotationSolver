@@ -44,7 +44,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static byte Level => LocalPlayer?.Level ?? 0;
 
-        protected static bool InBattle => ActionUpdater.InBattle;
+        protected static bool InCombat => ActionUpdater.InCombat;
 
         protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastSpell(isAdjust, actions);

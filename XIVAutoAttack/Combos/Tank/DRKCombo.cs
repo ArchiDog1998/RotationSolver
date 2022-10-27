@@ -198,7 +198,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //起手判断
-        if (!InBattle) openerFinished = false;
+        if (!InCombat) openerFinished = false;
         if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _)) openerFinished = true;
 
         //寂灭

@@ -546,7 +546,7 @@ namespace XIVAutoAttack.Combos
             }
 
             //赶在前面弄个激情
-            if (!InBattle && Actions.Sharpcast.ShouldUse(out act)) return true;
+            if (!InCombat && Actions.Sharpcast.ShouldUse(out act)) return true;
 
             if (Config.GetBoolByName("StartFire") && !JobGauge.InAstralFire && !JobGauge.InUmbralIce)
             {

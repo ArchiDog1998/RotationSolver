@@ -269,7 +269,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
             if (Actions.HissatsuShinten.ShouldUse(out act)) return true;
         }
 
-        if (InBattle && Actions.Ikishoten.ShouldUse(out act)) return true;
+        if (InCombat && Actions.Ikishoten.ShouldUse(out act)) return true;
 
         act = null;
         return false;

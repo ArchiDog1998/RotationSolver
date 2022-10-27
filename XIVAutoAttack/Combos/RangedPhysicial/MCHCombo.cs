@@ -157,13 +157,13 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         MCH_Automaton = Config.GetBoolByName("MCH_Automaton");
 
         //当上一个连击是热阻击弹时完成起手
-        if (InBattle && (IsLastWeaponSkill(true, Actions.CleanShot) || !Actions.Wildfire.WillHaveOneChargeGCD(4) || Actions.SpreadShot.ShouldUse(out _)))
+        if (InCombat && (IsLastWeaponSkill(true, Actions.CleanShot) || !Actions.Wildfire.WillHaveOneChargeGCD(4) || Actions.SpreadShot.ShouldUse(out _)))
         {
             openerFinished = true;
         }
 
         //不在战斗中时重置起手
-        if (!InBattle)
+        if (!InCombat)
         {
             //开场前整备,空气锚和钻头必须冷却好
             if ((!Actions.AirAnchor.IsCoolDown || !Actions.Drill.IsCoolDown) && Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;

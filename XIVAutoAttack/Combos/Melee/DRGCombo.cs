@@ -308,7 +308,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
     {
         safeMove = Config.GetBoolByName("DRG_SafeMove");
 
-        if (!InBattle && Config.GetBoolByName("DRG_Opener") && Service.ClientState.LocalPlayer!.Level >= 88)
+        if (!InCombat && Config.GetBoolByName("DRG_Opener") && Service.ClientState.LocalPlayer!.Level >= 88)
         {
             inOpener = false;
 

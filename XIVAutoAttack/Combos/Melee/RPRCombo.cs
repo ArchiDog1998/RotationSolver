@@ -136,7 +136,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
             //神秘环
             ArcaneCircle = new(24405, true)
             {
-                OtherCheck = b => InBattle && haveDeathsDesign
+                OtherCheck = b => InCombat && haveDeathsDesign
             },
 
             //大丰收
@@ -210,14 +210,14 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
             Soulsow = new(24387)
             {
                 BuffsProvide = new[] { ObjectStatus.Soulsow },
-                OtherCheck = b => !InBattle,
+                OtherCheck = b => !InCombat,
             },
 
             //收获月
             HarvestMoon = new(24388)
             {
                 BuffsNeed = new[] { ObjectStatus.Soulsow },
-                OtherCheck = b => InBattle,
+                OtherCheck = b => InCombat,
             },
 
             //神秘纹 加盾

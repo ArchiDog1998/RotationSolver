@@ -215,7 +215,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //ÆðÊÖÖØÖÃ
-        if (!InBattle)
+        if (!InCombat)
         {
             inOpener = false;
             openerFinished = false;

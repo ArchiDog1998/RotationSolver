@@ -25,13 +25,13 @@ namespace XIVAutoAttack.Updaters
         internal static float WeaponElapsed { get; private set; } = 0;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static bool InBattle { get; private set; } = false;
+        internal static bool InCombat { get; private set; } = false;
         internal static byte AbilityRemainCount { get; private set; } = 0;
 
 
         internal static void UpdateActionInfo()
         {
-            InBattle = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
+            InCombat = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
             UpdateWeaponTime();
             UPdateMPTimer();

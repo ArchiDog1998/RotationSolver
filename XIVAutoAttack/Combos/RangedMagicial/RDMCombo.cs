@@ -30,7 +30,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
             get => NeedBuffNotCast ? base.BuffsNeed : null;
             set => base.BuffsNeed = value; 
         }
-        public bool NeedBuffNotCast => !_startLong || InBattle;
+        public bool NeedBuffNotCast => !_startLong || InCombat;
 
         internal RDMAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) : base(actionID, isFriendly, shouldEndSpecial)
         {
@@ -161,7 +161,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
             //Ä§Ôª»¯
             Manafication = new(7521)
             {
-                OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && InBattle && JobGauge.ManaStacks == 0,
+                OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && InCombat && JobGauge.ManaStacks == 0,
                 OtherIDsNot = new uint[] { Riposte.ID, Zwerchhau.ID, Scorch.ID, Verflare.ID, Verholy.ID },
             };
     }

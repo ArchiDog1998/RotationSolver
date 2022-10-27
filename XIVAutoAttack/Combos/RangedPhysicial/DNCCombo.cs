@@ -202,7 +202,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
                     ObjectStatus.ThreefoldFanDance,
                     ObjectStatus.FourfoldFanDance,
                 },
-                OtherCheck = b => InBattle,
+                OtherCheck = b => InCombat,
             },
 
             //º¥–À±Ì—›
@@ -286,7 +286,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        if (!InBattle && !LocalPlayer.HaveStatus(ObjectStatus.ClosedPosition1) 
+        if (!InCombat && !LocalPlayer.HaveStatus(ObjectStatus.ClosedPosition1) 
             && Actions.ClosedPosition.ShouldUse(out act)) return true;
 
         if (SettingBreak)

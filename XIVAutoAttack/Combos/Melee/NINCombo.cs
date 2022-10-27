@@ -263,7 +263,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
                 return false;
             }
 
-            if (empty && (!InBattle || !Actions.Huraijin.EnoughLevel) && Actions.Huton.ShouldUse(out _))
+            if (empty && (!InCombat || !Actions.Huraijin.EnoughLevel) && Actions.Huton.ShouldUse(out _))
             {
                 _ninactionAim = Actions.Huton;
                 return false;
@@ -383,7 +383,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         else if (id == _ninactionAim.ID)
         {
             if (_ninactionAim.ShouldUse(out act, mustUse: true)) return true;
-            if (_ninactionAim.ID == Actions.Doton.ID && !InBattle)
+            if (_ninactionAim.ID == Actions.Doton.ID && !InCombat)
             {
                 act = _ninactionAim;
                 return true;
@@ -427,7 +427,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
             && GeneralActions.TrueNorth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //用隐匿恢复忍术数量
-        if (!InBattle && _ninactionAim == null && Config.GetBoolByName("UseHide")
+        if (!InCombat && _ninactionAim == null && Config.GetBoolByName("UseHide")
             && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUse(out act)) return true;
 
         var replace = Service.IconReplacer.OriginalHook(2260);
@@ -483,7 +483,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         act = null;
-        if (!InBattle || Service.IconReplacer.OriginalHook(2260) != 2260) return false;
+        if (!InCombat || Service.IconReplacer.OriginalHook(2260) != 2260) return false;
 
         //夺取
         if (SettingBreak && Actions.Mug.ShouldUse(out act)) return true;
