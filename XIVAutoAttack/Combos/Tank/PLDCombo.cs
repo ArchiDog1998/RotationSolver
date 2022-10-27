@@ -145,7 +145,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             //µ÷Í£
             Intervene = new (16461, shouldEndSpecial: true)
             {
-                ChoiceTarget = TargetFilter.FindMoveTarget,
+                ChoiceTarget = TargetFilter.FindTargetForMoving,
             },
 
             //Êê×ï½£

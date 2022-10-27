@@ -100,7 +100,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             //¥÷∑÷’∂
             RoughDivide = new(16154, shouldEndSpecial: true)
             {
-                ChoiceTarget = TargetFilter.FindMoveTarget
+                ChoiceTarget = TargetFilter.FindTargetForMoving
             },
 
             //¡“—¿

@@ -9,7 +9,7 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 
+  - 调整手动选择导致的AOE问题
   ## 新增功能
   - 可以选择T是否自动上盾
   ## API

@@ -45,7 +45,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
             //ÃÍ¹¥
             Onslaught = new (7386, shouldEndSpecial: true)
             {
-                ChoiceTarget = TargetFilter.FindMoveTarget,
+                ChoiceTarget = TargetFilter.FindTargetForMoving,
             },
 
             //¶¯ÂÒ    

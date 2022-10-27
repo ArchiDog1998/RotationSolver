@@ -121,7 +121,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
             //…Ò“Ì
             Icarus = new(24295, shouldEndSpecial: true)
             {
-                ChoiceTarget = TargetFilter.FindMoveTarget,
+                ChoiceTarget = TargetFilter.FindTargetForMoving,
             },
 
             //¡Èœ«Â÷≠

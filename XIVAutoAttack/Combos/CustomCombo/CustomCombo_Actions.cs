@@ -63,7 +63,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 //内丹
                 SecondWind = new BaseAction(7541)
                 {
-                    OtherCheck = b => TargetUpdater.CanHealSingleAbility,
+                    OtherCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility,
                 },
 
                 //亲疏自行

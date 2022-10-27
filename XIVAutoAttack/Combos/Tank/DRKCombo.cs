@@ -106,7 +106,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             //跳斩
             Plunge = new (3640, shouldEndSpecial:true)
             {
-                ChoiceTarget = TargetFilter.FindMoveTarget
+                ChoiceTarget = TargetFilter.FindTargetForMoving
             },
 
             //吸血深渊

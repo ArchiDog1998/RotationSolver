@@ -138,7 +138,7 @@ namespace XIVAutoAttack.Combos
                 //以太步
                 AetherialManipulation = new(155)
                 {
-                    ChoiceTarget = TargetFilter.FindMoveTarget,
+                    ChoiceTarget = TargetFilter.FindTargetForMoving,
                 },
 
                 //详述

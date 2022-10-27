@@ -76,7 +76,7 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
             //突进技能
             Thunderclap = new (25762, shouldEndSpecial: true)
             {
-                ChoiceTarget = TargetFilter.FindMoveTarget,
+                ChoiceTarget = TargetFilter.FindTargetForMoving,
             },
 
             //真言

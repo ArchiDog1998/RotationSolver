@@ -199,14 +199,13 @@ internal class ConfigWindow : Window
                 //    ImGui.Text("NameID: " + b.NameId.ToString());
                 //}
 
-                //var baseAction = NINCombo.Actions.Mug;
-                //ImGui.Text(baseAction.Action.Name.ToString());
-
-                //ImGui.Text(baseAction.HaveOneCharge.ToString());
-                //ImGui.Text(baseAction.IsGeneralGCD.ToString());
-                //ImGui.Text(baseAction.IsCoolDown.ToString());
-                //ImGui.Text(baseAction.RecastTimeElapsed.ToString());
-                ImGui.Text(NINCombo._ninactionAim?.Action.Name??string.Empty);
+                var baseAction = MNKCombo.Actions.PerfectBalance;
+                ImGui.Text(baseAction.Action.Name.ToString());
+                ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
+                ImGui.Text("Is GCD: "+baseAction.IsGeneralGCD.ToString());
+                ImGui.Text("Is Cooldown: "+baseAction.IsCoolDown.ToString());
+                ImGui.Text("Elapsed: " + baseAction.RecastTimeElapsed.ToString());
+                //ImGui.Text(NINCombo._ninactionAim?.Action.Name??string.Empty);
 
                 //ImGui.Text(ActionUpdater.WeaponRemain.ToString());
                 //ImGui.Text(ActionUpdater.WeaponTotal.ToString());
@@ -352,7 +351,6 @@ internal class ConfigWindow : Window
                         //    Service.Configuration.ChangeTargetForFate = changeTargetForFate;
                         //    Service.Configuration.Save();
                         //}
-
 
 
                         bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;

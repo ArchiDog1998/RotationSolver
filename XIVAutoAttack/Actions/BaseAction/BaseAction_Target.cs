@@ -103,7 +103,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                     BattleChara[] availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b is BattleChara)
                         .Select(b => (BattleChara)b).ToArray();
 
-                    Target = TargetFilter.FindMoveTarget(TargetFilter.GetObjectInRadius(availableCharas, 20));
+                    Target = TargetFilter.FindTargetForMoving(TargetFilter.GetObjectInRadius(availableCharas, 20));
                 }
                 else
                 {
@@ -249,7 +249,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (Action.EffectRange > 0 && !_isFriendly)
                 {
                     //如果不用自动找目标，那就不打AOE
-                    if (!CommandController.AutoTarget) return false;
+                    if (!mustUse && !CommandController.AutoTarget && !Service.Configuration.UseAOEWhenManual) return false;
+
                     var count = TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, Action.EffectRange).Length;
                     if (count < (mustUse ? 1 : Service.Configuration.HostileCount)) return false;
                 }

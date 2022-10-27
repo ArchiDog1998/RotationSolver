@@ -74,7 +74,7 @@ namespace XIVAutoAttack.Helpers
             return canGet.OrderBy(b => DistanceToPlayer(b)).First();
         }
 
-        internal static BattleChara FindMoveTarget(BattleChara[] charas)
+        internal static BattleChara FindTargetForMoving(BattleChara[] charas)
         {
             if (Service.Configuration.MoveTowardsScreen)
             {
