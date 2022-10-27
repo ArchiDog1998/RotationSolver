@@ -252,7 +252,7 @@ namespace XIVAutoAttack.Combos
         {
             { DescType.单体治疗, $"{Actions.BetweenTheLines.Action.Name}, {Actions.Leylines.Action.Name}, 这个很特殊！" },
             { DescType.单体防御, $"{Actions.Manaward.Action.Name}" },
-            { DescType.移动, $"{Actions.AetherialManipulation.Action.Name}，目标为面向夹角小于30°内最远目标。" },
+            { DescType.移动技能, $"{Actions.AetherialManipulation.Action.Name}，目标为面向夹角小于30°内最远目标。" },
         };
 
         private protected override ActionConfiguration CreateConfiguration()

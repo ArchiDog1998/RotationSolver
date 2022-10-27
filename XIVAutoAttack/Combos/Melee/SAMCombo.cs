@@ -154,7 +154,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
     internal override SortedList<DescType, string> Description => new()
     {
         {DescType.单体防御, $"{Actions.ThirdEye.Action.Name}"},
-        {DescType.移动, $"{Actions.HissatsuGyoten.Action.Name}"},
+        {DescType.移动技能, $"{Actions.HissatsuGyoten.Action.Name}"},
     };
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)

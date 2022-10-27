@@ -228,7 +228,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
 
     internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
     {
-        {DescType.移动, $"{Actions.SpineshatterDive.Action.Name}, {Actions.DragonfireDive.Action.Name}"},
+        {DescType.移动技能, $"{Actions.SpineshatterDive.Action.Name}, {Actions.DragonfireDive.Action.Name}"},
     };
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)

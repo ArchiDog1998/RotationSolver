@@ -209,7 +209,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         {DescType.单体治疗, $"{Actions.Clemency.Action.Name}"},
         {DescType.范围防御, $"{Actions.DivineVeil.Action.Name}, {Actions.PassageofArms.Action.Name}"},
         {DescType.单体防御, $"{Actions.Sentinel.Action.Name}, {Actions.Sheltron.Action.Name}"},
-        {DescType.移动, $"{Actions.Intervene.Action.Name}"},
+        {DescType.移动技能, $"{Actions.Intervene.Action.Name}"},
     };
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)

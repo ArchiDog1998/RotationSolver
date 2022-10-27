@@ -157,7 +157,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
         {DescType.单体治疗, $"GCD: {Actions.Adloquium.Action.Name}, {Actions.Physick.Action.Name}\n                     能力: {Actions.Aetherpact.Action.Name}, {Actions.Protraction.Action.Name}, {Actions.Excogitation.Action.Name}, {Actions.Lustrate.Action.Name}"},
         {DescType.范围防御, $"GCD: {Actions.Succor.Action.Name}, {Actions.SacredSoil.Action.Name}\n                     能力: {Actions.DeploymentTactics.Action.Name}, {Actions.Adloquium.Action.Name}, {Actions.SummonSeraph.Action.Name}, {Actions.FeyIllumination.Action.Name}"},
         {DescType.单体防御, $"{Actions.Adloquium.Action.Name}"},
-        {DescType.移动, $"{Actions.Expedient.Action.Name}"},
+        {DescType.移动技能, $"{Actions.Expedient.Action.Name}"},
     };
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
