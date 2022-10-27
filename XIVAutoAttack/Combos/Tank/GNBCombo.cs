@@ -181,7 +181,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         {DescType.单体治疗, $"{Actions.Aurora.Action.Name}"},
         {DescType.范围防御, $"{Actions.HeartofLight.Action.Name}"},
         {DescType.单体防御, $"{Actions.HeartofStone.Action.Name}, {Actions.Nebula.Action.Name}, {Actions.Camouflage.Action.Name}"},
-        {DescType.移动, $"{Actions.RoughDivide.Action.Name}"},
+        {DescType.移动技能, $"{Actions.RoughDivide.Action.Name}"},
     };
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)

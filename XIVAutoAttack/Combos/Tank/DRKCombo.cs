@@ -171,7 +171,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
         {DescType.单体治疗, $"{Actions.TheBlackestNight.Action.Name}，目标为被打的小可怜"},
         {DescType.范围防御, $"{Actions.DarkMissionary.Action.Name}"},
         {DescType.单体防御, $"{Actions.Oblation.Action.Name}, {Actions.ShadowWall.Action.Name}, {Actions.DarkMind.Action.Name}"},
-        {DescType.移动, $"{Actions.Plunge.Action.Name}"},
+        {DescType.移动技能, $"{Actions.Plunge.Action.Name}"},
     };
 
     private protected override ActionConfiguration CreateConfiguration()

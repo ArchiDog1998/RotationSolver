@@ -169,7 +169,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
     {
         {DescType.单体治疗, $"{Actions.Vercure.Action.Name}"},
         {DescType.范围防御, $"{Actions.MagickBarrier.Action.Name}"},
-        {DescType.移动, $"{Actions.CorpsAcorps.Action.Name}"},
+        {DescType.移动技能, $"{Actions.CorpsAcorps.Action.Name}"},
     };
 
     private protected override ActionConfiguration CreateConfiguration()

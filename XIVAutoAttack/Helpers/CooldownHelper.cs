@@ -103,7 +103,7 @@ namespace XIVAutoAttack.Helpers
         /// 计算魔法的咏唱时间(黑魔专供)
         /// </summary>
         /// <param name="GCDTime">原始咏唱时间(毫秒)</param>
-        /// <returns>真实的咏唱时间(秒)</returns>
+        /// <returns>真实的咏唱时间+读条税(毫秒)</returns>
         public static unsafe double CalcSpellTime(double GCDTime)
         {
             var uiState = UIState.Instance();
@@ -117,11 +117,11 @@ namespace XIVAutoAttack.Helpers
             //有黑魔纹Buff时
             if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.LeyLines))
             {
-                return Math.Floor(GCDTime * 0.85 * (1000d + Math.Ceiling(130d * (levelModifier.Sub - speed) / levelModifier.Div)) / 10000d) / 100d + 0.1;
+                return (Math.Floor(GCDTime * 0.85 * (1000d + Math.Ceiling(130d * (levelModifier.Sub - speed) / levelModifier.Div)) / 10000d) / 100d + 0.1) * 1000;
             }
             else
             {
-                return Math.Floor(GCDTime * (1000d + Math.Ceiling(130d * (levelModifier.Sub - speed) / levelModifier.Div)) / 10000d) / 100d + 0.1;
+                return (Math.Floor(GCDTime * (1000d + Math.Ceiling(130d * (levelModifier.Sub - speed) / levelModifier.Div)) / 10000d) / 100d + 0.1) * 1000;
             }
         }
     }

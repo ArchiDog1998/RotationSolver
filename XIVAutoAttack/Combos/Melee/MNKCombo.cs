@@ -122,7 +122,7 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
     {
         {DescType.范围治疗, $"{Actions.Mantra.Action.Name}"},
         {DescType.单体防御, $"{Actions.RiddleofEarth.Action.Name}"},
-        {DescType.移动, $"{Actions.Thunderclap.Action.Name}"},
+        {DescType.移动技能, $"{Actions.Thunderclap.Action.Name}"},
     };
 
     private protected override ActionConfiguration CreateConfiguration()

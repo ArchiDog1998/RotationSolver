@@ -219,7 +219,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
     {
         {DescType.范围防御, $"{Actions.ShieldSamba.Action.Name}"},
         {DescType.范围治疗, $"{Actions.CuringWaltz.Action.Name}, {Actions.Improvisation.Action.Name}"},
-        {DescType.移动, $"{Actions.EnAvant.Action.Name}"},
+        {DescType.移动技能, $"{Actions.EnAvant.Action.Name}"},
     };
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
