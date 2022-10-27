@@ -163,14 +163,6 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
         {DescType.单体治疗, $"{Actions.Physick.Action.Name}"},
     };
 
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        //灼热之光
-        if (Actions.SearingLight.ShouldUse(out act, mustUse: true)) return true;
-
-        return false;
-    }
-
     private protected override bool MoveGCD(uint lastComboActionID, out IAction act)
     {
         if (Actions.CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
@@ -283,6 +275,12 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
     }
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if (SettingBreak)
+        {
+            //灼热之光
+            if (Actions.SearingLight.ShouldUse(out act, mustUse: true)) return true;
+        }
+
         if (Actions.EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
         if (Actions.Deathflare.ShouldUse(out act, mustUse: true)) return true;
         if (Actions.Rekindle.ShouldUse(out act, mustUse: true)) return true;

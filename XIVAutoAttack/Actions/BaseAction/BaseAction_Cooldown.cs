@@ -80,8 +80,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         internal virtual int Cast100 => Action.Cast100ms - (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) ? 25 : 0);
         
-        [Obsolete("能否尽量不用，然后用WillHaveOneCharge")]
-        internal float RecastTimeRemain => RecastTime - RecastTimeElapsed;
+        private float RecastTimeRemain => RecastTime - RecastTimeElapsed;
 
         internal  unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ID, Service.ClientState.LocalPlayer.Level), (ushort)1);
         /// <summary>

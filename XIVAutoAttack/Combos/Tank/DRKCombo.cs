@@ -195,31 +195,6 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
         return false;
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        if (InDungeonsMiddle && CanUseSpellInDungeonsMiddle)
-        {
-            //嗜血
-            if (Actions.BloodWeapon.ShouldUse(out act)) return true;
-
-            //血乱
-            if (Actions.Delirium.ShouldUse(out act)) return true;
-
-            return false;
-        }
-        else
-        {
-            //嗜血
-            if (Actions.BloodWeapon.ShouldUse(out act)) return true;
-
-            //血乱
-            if (Actions.Delirium.ShouldUse(out act)) return true;
-        }
-        
-
-        return base.BreakAbility(abilityRemain, out act);
-    }
-
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //起手判断
@@ -261,6 +236,28 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     }
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if (SettingBreak)
+        {
+            if (InDungeonsMiddle && CanUseSpellInDungeonsMiddle)
+            {
+                //嗜血
+                if (Actions.BloodWeapon.ShouldUse(out act)) return true;
+
+                //血乱
+                if (Actions.Delirium.ShouldUse(out act)) return true;
+
+                return false;
+            }
+            else
+            {
+                //嗜血
+                if (Actions.BloodWeapon.ShouldUse(out act)) return true;
+
+                //血乱
+                if (Actions.Delirium.ShouldUse(out act)) return true;
+            }
+        }
+
         //掠影示现
         if (Actions.LivingShadow.ShouldUse(out act)) return true;
 

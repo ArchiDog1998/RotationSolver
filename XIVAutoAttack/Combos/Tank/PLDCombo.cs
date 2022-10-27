@@ -212,23 +212,6 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         {DescType.移动, $"{Actions.Intervene.Action.Name}"},
     };
 
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        //战逃反应 加Buff
-        if (abilityRemain == 1 && CanUseFightorFlight(out act))
-        {
-            return true;
-        }
-
-        //安魂祈祷
-        //if (SlowLoop && CanUseRequiescat(out act)) return true;
-        if (abilityRemain == 1 && CanUseRequiescat(out act)) return true;
-  
-
-        act = null;
-        return false;
-    }
-
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //起手重置
@@ -245,7 +228,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         //起手完成判断
         if (inOpener || !Actions.TotalEclipse.ShouldUse(out _))
         {
-            if (IsLastWeaponSkill(true, Actions.Confiteor) || (!LocalPlayer.HaveStatus(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.RecastTimeRemain <= 59))
+            if (IsLastWeaponSkill(true, Actions.Confiteor) || (!LocalPlayer.HaveStatus(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.WillHaveOneCharge(59)))
             {
                 inOpener = false;
                 openerFinished = true;
@@ -320,6 +303,19 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if (SettingBreak)
+        {
+            //战逃反应 加Buff
+            if (abilityRemain == 1 && CanUseFightorFlight(out act))
+            {
+                return true;
+            }
+
+            //安魂祈祷
+            //if (SlowLoop && CanUseRequiescat(out act)) return true;
+            if (abilityRemain == 1 && CanUseRequiescat(out act)) return true;
+        }
+
         var OpenerStatus = LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight) && LocalPlayer.FindStatusTime(ObjectStatus.FightOrFlight) <= 19 && !IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade);
 
         //厄运流转
@@ -346,7 +342,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         //调停
         if (Actions.Intervene.Target.DistanceToPlayer() < 1 && !IsMoving)
         {
-            if (inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RiotBlade) && Actions.Intervene.ShouldUse(out act) && Actions.Intervene.RecastTimeRemain == 0) return true;
+            if (inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RiotBlade) && Actions.Intervene.ShouldUse(out act) && !Actions.Intervene.IsCoolDown) return true;
 
             if (inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.Atonement) && Actions.Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 

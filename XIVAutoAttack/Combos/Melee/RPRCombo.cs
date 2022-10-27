@@ -296,6 +296,14 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if (SettingBreak)
+        {
+            //神秘环
+            if (Actions.ArcaneCircle.ShouldUse(out act)) return true;
+            //夜游魂衣
+            if (Actions.Enshroud.ShouldUse(out act)) return true;
+        }
+
         if (enshrouded)
         {
             //夜游魂衣-夜游魂切割 夜游魂钐割
@@ -309,16 +317,6 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
         if (Actions.GrimSwathe.ShouldUse(out act)) return true;
         //单体
         if (Actions.BloodStalk.ShouldUse(out act)) return true;
-        act = null;
-        return false;
-    }
-
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        //神秘环
-        if (Actions.ArcaneCircle.ShouldUse(out act)) return true;
-        //夜游魂衣
-        if (Actions.Enshroud.ShouldUse(out act)) return true;
         act = null;
         return false;
     }

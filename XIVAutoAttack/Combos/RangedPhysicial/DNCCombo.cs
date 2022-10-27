@@ -224,6 +224,9 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if (SettingBreak && !Actions.TechnicalStep.EnoughLevel
+    && Actions.Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+
         //Ó¦¼±»»Îè°é
         if (LocalPlayer.HaveStatus(ObjectStatus.ClosedPosition1))
         {
@@ -296,13 +299,6 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
         return false;
     }
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        if (!Actions.TechnicalStep.EnoughLevel
-            && Actions.Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-
-        return base.BreakAbility(abilityRemain, out act);
-    }
 
     private bool StepGCD(out IAction act)
     {
@@ -332,6 +328,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
     private bool AttackGCD(out IAction act, bool breaking, uint lastComboActionID)
     {
+
         //½£Îè
         if ((breaking || JobGauge.Esprit >= 80) &&
             Actions.SaberDance.ShouldUse(out act, mustUse: true)) return true;

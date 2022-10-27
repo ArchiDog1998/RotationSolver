@@ -63,12 +63,15 @@ public abstract partial class CustomCombo
 
             if (CommandController.EsunaOrShield && Shield.ShouldUse(out act)) return true;
 
-            var defenses = new uint[] { ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill, ObjectStatus.Defiance };
-            //Alive Tanks with shield.
-            var defensesTanks = TargetUpdater.AllianceTanks.Where(t => t.CurrentHp != 0 && t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
-            if (defensesTanks == null || defensesTanks.Count() == 0)
+            if (Service.Configuration.AutoShield)
             {
-                if (!HaveShield && Shield.ShouldUse(out act)) return true;
+                var defenses = new uint[] { ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill, ObjectStatus.Defiance };
+                //Alive Tanks with shield.
+                var defensesTanks = TargetUpdater.AllianceTanks.Where(t => t.CurrentHp != 0 && t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
+                if (defensesTanks == null || defensesTanks.Count() == 0)
+                {
+                    if (!HaveShield && Shield.ShouldUse(out act)) return true;
+                }
             }
         }
 
@@ -164,7 +167,6 @@ public abstract partial class CustomCombo
             if (helpDefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         }
 
-        if (HaveHostileInRange && SettingBreak && BreakAbility(abilityRemain, out act)) return true;
         if (CommandController.Move && MoveAbility(abilityRemain, out act))
         {
             if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
@@ -296,11 +298,6 @@ public abstract partial class CustomCombo
     /// <param name="act"></param>
     /// <returns></returns>
     private protected virtual bool HealAreaAbility(byte abilityRemain, out IAction act)
-    {
-        act = null; return false;
-    }
-
-    private protected virtual bool BreakAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }

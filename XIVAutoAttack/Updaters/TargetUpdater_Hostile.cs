@@ -65,7 +65,7 @@ namespace XIVAutoAttack.Updaters
 
             uint[] ids = GetEnemies() ?? new uint[0];
 
-            if (AllTargets != null && AllTargets.Length > 0)
+            if (AllTargets != null)
             {
                 HostileTargets = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
 

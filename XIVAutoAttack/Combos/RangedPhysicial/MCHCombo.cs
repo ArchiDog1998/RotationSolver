@@ -151,15 +151,6 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         return false;
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        //野火
-        if (CanUseWildfire(out act)) return true;
-
-        act = null;
-        return false;
-    }
-
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         MCH_Opener = Config.GetBoolByName("MCH_Opener");
@@ -230,6 +221,9 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        //野火
+        if (SettingBreak && CanUseWildfire(out act)) return true;
+
         //起手虹吸弹、弹射
         if (Actions.Ricochet.ChargesCount == Actions.Ricochet.MaxCharges && Actions.Ricochet.ShouldUse(out act, mustUse: true)) return true;
         if (Actions.GaussRound.ChargesCount == Actions.GaussRound.MaxCharges && Actions.GaussRound.ShouldUse(out act, mustUse: true)) return true;

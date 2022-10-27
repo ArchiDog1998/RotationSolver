@@ -37,6 +37,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected virtual bool CanHealSingleAbility => TargetUpdater.CanHealSingleAbility;
         protected virtual bool CanHealSingleSpell => TargetUpdater.CanHealSingleSpell;
 
+        /// <summary>
+        /// 是否处于爆发，自动爆发或者手动点击的爆发
+        /// </summary>
         protected bool SettingBreak => CommandController.BreakorProvoke || Service.Configuration.AutoBreak;
 
         protected static byte Level => LocalPlayer?.Level ?? 0;

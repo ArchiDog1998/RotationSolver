@@ -504,6 +504,13 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        bool autoShieled = Service.Configuration.AutoShield;
+                        if (ImGui.Checkbox("T自动上盾", ref autoShieled))
+                        {
+                            Service.Configuration.AutoShield = autoShieled;
+                            Service.Configuration.Save();
+                        }
+
                         bool autoProvokeforTank = Service.Configuration.AutoProvokeForTank;
                         if (ImGui.Checkbox("T自动挑衅", ref autoProvokeforTank))
                         {

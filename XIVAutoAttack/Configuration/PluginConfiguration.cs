@@ -36,6 +36,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool PoslockCasting { get; set; } = false;
     public bool RaisePlayerByCasting { get; set; } = true;
     public bool RaisePlayerBySwift { get; set; } = true;
+    public bool AutoShield { get; set; } = true;
     public bool AddEnemyListToHostile { get; set; } = false;
     public bool UseAOEWhenManual { get; set; } = false;
     public bool UseItem { get; set; } = false;

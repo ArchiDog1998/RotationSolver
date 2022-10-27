@@ -261,30 +261,20 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
 
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        if (JobGauge.Song == Song.NONE || !Actions.MagesBallad.EnoughLevel)
-        {
-            act = null!;
-            return false;
-        }
-
-        //猛者强击
-        if (Actions.RagingStrikes.ShouldUse(out act)) return true;
-
-        //光明神的最终乐章
-        if (abilityRemain == 2 && Actions.RadiantFinale.ShouldUse(out act, mustUse: true)) return true;
-
-        //战斗之声
-        if (Actions.RadiantFinale.IsCoolDown && Actions.BattleVoice.ShouldUse(out act, mustUse: true)) return true;
-
-
-        act = null!;
-        return false;
-    }
-
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if(SettingBreak && JobGauge.Song != Song.NONE && Actions.MagesBallad.EnoughLevel)
+        {
+            //猛者强击
+            if (Actions.RagingStrikes.ShouldUse(out act)) return true;
+
+            //光明神的最终乐章
+            if (abilityRemain == 2 && Actions.RadiantFinale.ShouldUse(out act, mustUse: true)) return true;
+
+            //战斗之声
+            if (Actions.RadiantFinale.IsCoolDown && Actions.BattleVoice.ShouldUse(out act, mustUse: true)) return true;
+        }
+
         if (Actions.RadiantFinale.IsCoolDown && !Actions.RadiantFinale.ElapsedAfterGCD())
         {
             act = null;

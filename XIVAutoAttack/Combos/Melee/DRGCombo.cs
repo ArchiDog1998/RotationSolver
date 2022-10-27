@@ -254,23 +254,21 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        //猛枪
-        if (inOpener && abilityRemain == 1 && Actions.LanceCharge.ShouldUse(out act, mustUse: true)) return true;
-        if (!inOpener && Actions.LanceCharge.ShouldUse(out act, mustUse: true)) return true;
-
-        //巨龙视线
-        if (Actions.DragonSight.ShouldUse(out act, mustUse: true)) return true;
-
-        //战斗连祷
-        if (Actions.BattleLitany.ShouldUse(out act, mustUse: true)) return true;
-
-        return false;
-    }
-
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if (SettingBreak)
+        {
+            //猛枪
+            if (inOpener && abilityRemain == 1 && Actions.LanceCharge.ShouldUse(out act, mustUse: true)) return true;
+            if (!inOpener && Actions.LanceCharge.ShouldUse(out act, mustUse: true)) return true;
+
+            //巨龙视线
+            if (Actions.DragonSight.ShouldUse(out act, mustUse: true)) return true;
+
+            //战斗连祷
+            if (Actions.BattleLitany.ShouldUse(out act, mustUse: true)) return true;
+        }
+
         //死者之岸
         if (Actions.Nastrond.ShouldUse(out act, mustUse: true)) return true;
 

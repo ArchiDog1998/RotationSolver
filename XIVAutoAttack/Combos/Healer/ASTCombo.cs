@@ -178,23 +178,12 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
         {DescType.单体治疗, $"GCD: {Actions.AspectedBenefic.Action.Name}, {Actions.Benefic2.Action.Name}, {Actions.Benefic.Action.Name}\n                     能力: {Actions.CelestialIntersection.Action.Name}, {Actions.EssentialDignity.Action.Name}"},
         {DescType.范围防御, $"{Actions.CollectiveUnconscious.Action.Name}"},
         {DescType.单体防御, $"{Actions.Exaltation.Action.Name}，给被挨打的T"},
+        {DescType.爆发技能, $"{Actions.Divination.Action.Name}"}
     };
 
     private protected override ActionConfiguration CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("AutoDivination", true, "自动使用占卜");
-    }
-
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        if (Config.GetBoolByName("AutoDivination"))
-        {
-            //团队增伤害,占卜
-            if (Actions.Divination.ShouldUse(out act)) return true;
-        }
-
-        act = null!;
-        return false;
+        return base.CreateConfiguration();
     }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
@@ -302,6 +291,8 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if(SettingBreak && Actions.Divination.ShouldUse(out act)) return true;
+
         //如果当前还没有皇冠卡牌，那就抽一张
         if (Actions.MinorArcana.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 

@@ -166,13 +166,6 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
         return false;
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        if (Actions.ChainStratagem.ShouldUse(out act)) return true;
-
-        return false;
-    }
-
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (nextGCD.IsAnySameAction(true, Actions.Adloquium, Actions.Succor, 
@@ -304,6 +297,10 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if (SettingBreak)
+        {
+            if (Actions.ChainStratagem.ShouldUse(out act)) return true;
+        }
 
         if (JobGauge.Aetherflow == 0)
         {

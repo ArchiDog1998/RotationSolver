@@ -285,6 +285,11 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
                 else _ninactionAim = Actions.Katon;
                 return true;
             }
+            //背刺
+            if (SettingBreak && Actions.Suiton.ShouldUse(out _))
+            {
+                _ninactionAim = Actions.Suiton;
+            }
         }
         //常规单体忍术
         if (Actions.Ten.ShouldUse(out _) && (!Actions.TenChiJin.EnoughLevel || Actions.TenChiJin.IsCoolDown))
@@ -406,20 +411,6 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         return false;
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        //夺取
-        if (Actions.Mug.ShouldUse(out act)) return true;
-
-        //背刺
-        if (Actions.Ten.ShouldUse(out _, mustUse: true) && Actions.Suiton.ShouldUse(out _))
-        {
-            _ninactionAim = Actions.Suiton;
-        }
-        act = null;
-        return false;
-    }
-
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         if (IsLastAction(false, Actions.DotonChi, Actions.SuitonJin,
@@ -430,11 +421,6 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         }
         if (ChoiceNinjutsus(out act)) return true;
         if (DoNinjutsus(out act)) return true;
-
-
-
-
-
 
         //用真北取消隐匿
         if (LocalPlayer.HaveStatus(ObjectStatus.Hidden)
@@ -498,6 +484,10 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
     {
         act = null;
         if (!InBattle || Service.IconReplacer.OriginalHook(2260) != 2260) return false;
+
+        //夺取
+        if (SettingBreak && Actions.Mug.ShouldUse(out act)) return true;
+
 
         //解决Buff
         if (Actions.TrickAttack.ShouldUse(out act)) return true;

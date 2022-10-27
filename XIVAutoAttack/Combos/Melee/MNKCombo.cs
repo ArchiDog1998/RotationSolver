@@ -130,13 +130,6 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
         return base.CreateConfiguration().SetBool("AutoFormShift", true, "×Ô¶¯ÑÝÎä");
     }
 
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        if (Actions.RiddleofFire.ShouldUse(out act)) return true;
-        if (Actions.Brotherhood.ShouldUse(out act)) return true;
-        return false;
-    }
-
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.Mantra.ShouldUse(out act)) return true;
@@ -266,6 +259,12 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if (SettingBreak)
+        {
+            if (Actions.RiddleofFire.ShouldUse(out act)) return true;
+            if (Actions.Brotherhood.ShouldUse(out act)) return true;
+        }
+
         //Õð½Å
         if (JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.NONE))
         {

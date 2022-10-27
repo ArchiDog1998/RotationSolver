@@ -9,15 +9,11 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 调整了忍者和舞者的循环为最新API
-  - 调整了武士的循环
-  - 添加死人位置检查，如果死人在飞，就不算真死人。
+  - 
   ## 新增功能
-  - 可以选择是否即刻咏唱复活
+  - 可以选择T是否自动上盾
   ## API
-  - 添加了Status相关的剩余时间API
-  - 改了软件框架！
-  - 添加了BaseAction的EnoughLevel属性，尽量别用Level了哈。
+  - 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

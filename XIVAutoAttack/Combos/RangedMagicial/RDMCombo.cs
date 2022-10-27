@@ -209,6 +209,12 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        if (SettingBreak)
+        {
+            if (Actions.Manafication.ShouldUse(out act, Service.Address.LastComboAction)) return true;
+            if (Actions.Embolden.ShouldUse(out act, mustUse: true)) return true;
+        }
+
         if (JobGauge.ManaStacks == 0 && (JobGauge.BlackMana < 50 || JobGauge.WhiteMana < 50) && !Actions.Manafication.WillHaveOneChargeGCD(1, 1))
         {
             //促进满了就用。 
@@ -287,13 +293,6 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
         //混乱
         if (GeneralActions.Addle.ShouldUse(out act)) return true;
         if (Actions.MagickBarrier.ShouldUse(out act, mustUse:true)) return true;
-        return false;
-    }
-
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        if (Actions.Manafication.ShouldUse(out act, Service.Address.LastComboAction)) return true;
-        if (Actions.Embolden.ShouldUse(out act, mustUse: true)) return true;
         return false;
     }
 

@@ -184,23 +184,6 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         {DescType.移动, $"{Actions.RoughDivide.Action.Name}"},
     };
 
-    //private protected override ActionConfiguration CreateConfiguration()
-    //{
-    //    return base.CreateConfiguration().SetCombo("GNB_Opener", 0, new string[]
-    //    {
-    //        "4GCD起手",
-    //    }, "起手选择");
-    //}
-
-    private protected override bool BreakAbility(byte abilityRemain, out IAction act)
-    {
-        //无情,目前只有4GCD起手的判断
-        if (abilityRemain == 1 && CanUseNoMercy(out act))  return true;
-
-        act = null;
-        return false;
-    }
-
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //烈牙
@@ -253,6 +236,9 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        //无情,目前只有4GCD起手的判断
+        if (SettingBreak && abilityRemain == 1 && CanUseNoMercy(out act)) return true;
+
         //危险领域
         if (Actions.DangerZone.ShouldUse(out act))
         {
