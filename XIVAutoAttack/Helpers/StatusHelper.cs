@@ -41,7 +41,6 @@ namespace XIVAutoAttack.Helpers
         internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true, params ushort[] effectIDs)
         {
             var remain = obj.FindStatusTime(effectIDs);
-            if (remain == 0) return false;
             return CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount, addWeaponRemain);
         }
 
@@ -54,20 +53,17 @@ namespace XIVAutoAttack.Helpers
         internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool addWeaponRemain = true, params ushort[] effectIDs)
         {
             var remain = obj.FindStatusTime(effectIDs);
-            if (remain == 0) return false;
             return CooldownHelper.RecastAfter(remain, remainWant, addWeaponRemain);
         }
 
-        [Obsolete("计算时间的话，用用WillStatusEnd？")]
-        internal static float FindStatusTime(this BattleChara obj, params ushort[] effectIDs)
+        private static float FindStatusTime(this BattleChara obj, params ushort[] effectIDs)
         {
             var times = obj.FindStatusTimes(effectIDs);
             if (times == null || times.Length == 0) return 0;
             return times.Max();
         }
 
-        [Obsolete("计算时间的话，用用WillStatusEnd？")]
-        internal static float[] FindStatusTimes(this BattleChara obj, params ushort[] effectIDs)
+        private static float[] FindStatusTimes(this BattleChara obj, params ushort[] effectIDs)
         {
             return obj.FindStatus(effectIDs).Select(status => status.RemainingTime).ToArray();
         }

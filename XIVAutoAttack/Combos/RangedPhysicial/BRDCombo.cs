@@ -41,8 +41,8 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
                         !Player.WillStatusEndGCD(1, 1, true, ObjectStatus.RagingStrikes)
                         && IsLastWeaponSkill(true, IronJaws)) return true;
 
-                    return b.WillStatusEndGCD(0, 0, true, ObjectStatus.VenomousBite, ObjectStatus.CausticBite) ^ b.WillStatusEndGCD(1, 0, true, ObjectStatus.VenomousBite, ObjectStatus.CausticBite)
-                    || b.WillStatusEndGCD(0, 0, true, ObjectStatus.Windbite, ObjectStatus.Stormbite) ^ b.WillStatusEndGCD(1, 0, true, ObjectStatus.Windbite, ObjectStatus.Stormbite);
+                    return b.HaveStatus(ObjectStatus.VenomousBite, ObjectStatus.CausticBite) & b.HaveStatus(ObjectStatus.Windbite, ObjectStatus.Stormbite)
+                    & (b.WillStatusEndGCD(2, 0, true, ObjectStatus.VenomousBite, ObjectStatus.CausticBite) |b.WillStatusEndGCD(2, 0, true, ObjectStatus.Windbite, ObjectStatus.Stormbite));
                 },
             },
 

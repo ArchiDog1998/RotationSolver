@@ -132,9 +132,9 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
             },
 
             //标准舞步
-            StandardStep = new (15997)
+            StandardStep = new(15997)
             {
-                BuffsProvide = new []
+                BuffsProvide = new[]
                 {
                     ObjectStatus.StandardStep,
                     ObjectStatus.TechnicalStep,
@@ -142,9 +142,9 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
             },
 
             //技巧舞步
-            TechnicalStep = new (15998)
+            TechnicalStep = new(15998)
             {
-                BuffsNeed = new []
+                BuffsNeed = new[]
                 {
                     ObjectStatus.StandardFinish,
                 },
@@ -291,7 +291,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
         if (SettingBreak)
         {
-            if (Actions.TechnicalStep.ShouldUse(out act)) return true;
+            if (Actions.TechnicalStep.ShouldUse(out act, mustUse:true)) return true;
         }
 
         if (StepGCD(out act)) return true;
@@ -339,12 +339,12 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
         if (JobGauge.IsDancing) return false;
 
-        bool canstandard = !Actions.TechnicalStep.IsCoolDown || Actions.TechnicalStep.WillHaveOneChargeGCD(2);
+        bool canstandard = !Actions.TechnicalStep.WillHaveOneChargeGCD(2);
 
         if (!Player.HaveStatus(ObjectStatus.TechnicalFinish))
         {
             //标准舞步
-            if (canstandard && Actions.StandardStep.ShouldUse(out act)) return true;
+            if (canstandard && Actions.StandardStep.ShouldUse(out act, mustUse:true)) return true;
         }
 
         //用掉Buff
@@ -356,7 +356,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
 
         //标准舞步
-        if (canstandard && Actions.StandardStep.ShouldUse(out act)) return true;
+        if (canstandard && Actions.StandardStep.ShouldUse(out act, mustUse: true)) return true;
 
 
         //aoe
