@@ -358,10 +358,19 @@ namespace XIVAutoAttack.Controllers
                             if (boolean.name == str)
                             {
                                 boolean.value = !boolean.value;
+
+                                Service.ChatGui.PrintError($"改变{str}为{boolean.value}");
+
                                 return;
                             }
                         }
 
+                        var result = customCombo.OnCommand(str);
+                        if (!string.IsNullOrEmpty(result))
+                        {
+                            Service.ChatGui.PrintError("修改结果为：" + result);
+                            return;
+                        }
                         break;
                     }
                     Service.ChatGui.PrintError("无法识别：" + str);

@@ -22,7 +22,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
             单体治疗,
             范围防御,
             单体防御,
-            移动,
+            移动技能,
+            命令说明,
         }
         protected static double TimeSinceLastAction => Watcher.TimeSinceLastAction.TotalSeconds;
 
@@ -72,5 +73,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool IsLastAction(params uint[] ids)
             => IActionHelper.IsLastAction(ids);
+
+        internal virtual string OnCommand(string args) => string.Empty;
     }
 }
