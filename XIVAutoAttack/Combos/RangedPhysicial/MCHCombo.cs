@@ -19,6 +19,11 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
     private static bool MCH_Opener = false;
     private static bool MCH_Automaton = false;
 
+    /// <summary>
+    /// 4人本小怪快死了
+    /// </summary>
+    private static bool isDyingNotBoss => !Target.IsBoss() && IsTargetDying && TargetUpdater.PartyMembers.Length is > 1 and <= 4;
+
     internal struct Actions
     {
         public static readonly BaseAction
@@ -282,8 +287,8 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
     {
         if (!Actions.Hypercharge.ShouldUse(out act)) return false;
 
-        //小怪快死了不释放
-        if (!Target.IsBoss() && IsTargetDying) return false;
+        //4人本小怪快死了不释放
+        if (isDyingNotBoss) return false;
 
         //有野火buff必须释放超荷
         if (Player.HaveStatus(ObjectStatus.Wildfire)) return true;
@@ -334,8 +339,8 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
     {
         if (!Actions.RookAutoturret.ShouldUse(out act, mustUse: true)) return false;
 
-        //小怪快死了不释放
-        if (!Target.IsBoss() && IsTargetDying) return false;
+        //4人本小怪快死了不释放
+        if (isDyingNotBoss) return false;
 
         //如果上一个技能是野火不释放
         if (IsLastAction(Actions.Wildfire.ID)) return false;
