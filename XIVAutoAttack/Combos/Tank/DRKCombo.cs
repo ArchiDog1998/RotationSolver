@@ -29,7 +29,6 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     protected override bool CanHealSingleAbility => false;
 
     private static bool openerFinished = false;
-    private static float burstDelayTime = 0;
 
     /// <summary>
     /// 在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
@@ -276,7 +275,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             if (Config.GetBoolByName("TheBlackestNight") && Player.CurrentMp < 6000) break;
             
             //爆发期打完
-            if (openerFinished && Actions.Delirium.RecastTimeElapsed > burstDelayTime && Actions.Delirium.RecastTimeElapsed < 20) return true;
+            if (openerFinished && Actions.Delirium.ElapsedAfterGCD(1) && Actions.Delirium.ElapsedAfterGCD(7) && Player.HaveStatus(ObjectStatus.Delirium)) return true;
 
             //非爆发期防止溢出+续buff
             if (JobGauge.HasDarkArts || (Player.CurrentMp > 8500 && openerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
@@ -285,7 +284,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
 
         if (openerFinished && !IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
 
-        if (Actions.Delirium.RecastTimeElapsed > burstDelayTime && Actions.Delirium.RecastTimeElapsed < 25)
+        if (Actions.Delirium.ElapsedAfterGCD(1) && Actions.Delirium.ElapsedAfterGCD(8) && Player.HaveStatus(ObjectStatus.Delirium))
         {
             //暗影使者
             if (Actions.Shadowbringer.ShouldUse(out act)) return true;

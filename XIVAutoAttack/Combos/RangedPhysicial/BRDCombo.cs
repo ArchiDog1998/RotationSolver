@@ -38,8 +38,8 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
                 OtherCheck = b =>
                 {
                     if (Player.HaveStatus(ObjectStatus.RagingStrikes) && 
-                        !Player.WillStatusEndGCD(1, 1, true, ObjectStatus.RagingStrikes)
-                        && IsLastWeaponSkill(true, IronJaws)) return true;
+                        Player.WillStatusEndGCD(1, 1, true, ObjectStatus.RagingStrikes)
+                        && !IsLastWeaponSkill(true, IronJaws)) return true;
 
                     return b.HaveStatus(ObjectStatus.VenomousBite, ObjectStatus.CausticBite) & b.HaveStatus(ObjectStatus.Windbite, ObjectStatus.Stormbite)
                     & (b.WillStatusEndGCD(2, 0, true, ObjectStatus.VenomousBite, ObjectStatus.CausticBite) |b.WillStatusEndGCD(2, 0, true, ObjectStatus.Windbite, ObjectStatus.Stormbite));
