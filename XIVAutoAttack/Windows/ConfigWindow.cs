@@ -10,6 +10,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Combos.RangedPhysicial;
@@ -193,13 +194,14 @@ internal class ConfigWindow : Window
                 //    ImGui.Text("NameID: " + b.NameId.ToString());
                 //}
 
-                var baseAction = MNKCombo.Actions.PerfectBalance;
-                ImGui.Text(baseAction.Action.Name.ToString());
-                ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
-                ImGui.Text("Is GCD: "+baseAction.IsGeneralGCD.ToString());
-                ImGui.Text("Is Cooldown: "+baseAction.IsCoolDown.ToString());
-                ImGui.Text("Elapsed: " + baseAction.RecastTimeElapsed.ToString());
-                //ImGui.Text(NINCombo._ninactionAim?.Action.Name??string.Empty);
+                if(IconReplacer.nextAction != null && IconReplacer.nextAction is BaseAction baseAction)
+                {
+                    ImGui.Text(baseAction.Action.Name.ToString());
+                    ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
+                    ImGui.Text("Is GCD: " + baseAction.IsGeneralGCD.ToString());
+                    ImGui.Text("Is Cooldown: " + baseAction.IsCoolDown.ToString());
+                }
+
 
                 //ImGui.Text(ActionUpdater.WeaponRemain.ToString());
                 //ImGui.Text(ActionUpdater.WeaponTotal.ToString());
@@ -207,9 +209,9 @@ internal class ConfigWindow : Window
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
                 //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
 
-                ImGui.Text(Watcher.TimeSinceLastAction.TotalSeconds.ToString());
+                //ImGui.Text(Watcher.TimeSinceLastAction.TotalSeconds.ToString());
 
-                
+
                 //foreach (var item in Service.ObjectTable)
                 //{
                 //    ImGui.Text($"{item.Name}, {item.SubKind}");

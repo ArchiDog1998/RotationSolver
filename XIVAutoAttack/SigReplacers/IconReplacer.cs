@@ -96,7 +96,9 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
-
+#if DEBUG
+    internal static BaseAction nextAction = null;
+#endif
 
     private uint RemapActionID(uint actionID)
     {
@@ -115,7 +117,13 @@ internal sealed class IconReplacer : IDisposable
 
                 if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction))
                 {
-                    if (newAction is BaseAction) return OriginalHook(newAction.ID);
+                    if (newAction is BaseAction baseAct)
+                    {
+#if DEBUG
+                        nextAction = baseAct;
+#endif
+                        return OriginalHook(baseAct.ID);
+                    }
                 }
             }
 

@@ -17,6 +17,9 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
 
     private static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
 
+    private static bool HaveMoon => Player.HaveStatus(ObjectStatus.Moon);
+    private static bool HaveFlower => Player.HaveStatus(ObjectStatus.Flower);
+
     internal struct Actions
     {
         public static readonly BaseAction
@@ -44,7 +47,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
             //彼岸花
             Higanbana = new(7489, isDot: true)
             {
-                OtherCheck = b => !IsMoving && SenCount == 1,
+                OtherCheck = b => !IsMoving && SenCount == 1 && HaveMoon && HaveFlower,
                 TargetStatus = new[] { ObjectStatus.Higanbana },
             },
 
@@ -112,6 +115,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
             //奥义斩浪
             OgiNamikiri = new(25781)
             {
+                OtherCheck = b => HaveFlower && HaveMoon,
                 BuffsNeed = new[] { ObjectStatus.OgiNamikiriReady },
             },
 
@@ -157,11 +161,11 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
         {
             if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID)) return true;
         }
-        if (!Player.HaveStatus(ObjectStatus.Moon))//月
+        if (!HaveMoon)//月
         {
             if (GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }
-        if (!Player.HaveStatus(ObjectStatus.Flower))//花
+        if (!HaveFlower)//花
         {
             if (KaGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }

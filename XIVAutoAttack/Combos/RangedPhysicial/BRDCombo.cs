@@ -196,10 +196,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //¡Ê—¿¿˛≥›
-        if (Actions.IronJaws.ShouldUse(out act))
-        {
-            return true;
-        }
+        if (IsLastWeaponSkill(false, Actions.IronJaws) && Actions.IronJaws.ShouldUse(out act)) return true;
 
         //∑≈¥Û’–£°
         if (Actions.ApexArrow.ShouldUse(out act, mustUse: true)) return true;

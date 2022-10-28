@@ -16,7 +16,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         internal bool IsGeneralGCD { get; }
         internal bool IsRealGCD { get; }
 
-        private byte CoolDownGroup { get; }
+        internal byte CoolDownGroup { get; }
 
         internal Action Action { get; }
         internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
@@ -30,6 +30,11 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             //CoolDownGroup = GCDCooldownGroup;
             CoolDownGroup = IsGeneralGCD ? Action.AdditionalCooldownGroup : Action.CooldownGroup;
+            if(CoolDownGroup == 0)
+            {
+                CoolDownGroup = GCDCooldownGroup;
+            }
+
 
             if (Action.PrimaryCostType == 3 || Action.PrimaryCostType == 4)
             {

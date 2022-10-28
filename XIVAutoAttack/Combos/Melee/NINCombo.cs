@@ -25,7 +25,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         }
     }
 
-    internal static NinAction _ninactionAim = null;
+    private static NinAction _ninactionAim = null;
 
     internal struct Actions
     {
@@ -376,6 +376,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         //失败了
         else if (id == Actions.RabbitMedium.ID)
         {
+            ClearNinjutsus();
             act = null;
             return false;
         }

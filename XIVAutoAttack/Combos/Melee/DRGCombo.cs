@@ -18,7 +18,7 @@ namespace XIVAutoAttack.Combos.Melee;
 internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
 {
     internal override uint JobID => 22;
-    private static bool inOpener = true;
+    private static bool inOpener = false;
     private static bool safeMove = false;
 
     internal struct Actions
@@ -179,6 +179,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
             {
                 OtherCheck = b =>
                 {
+
                     if (inOpener && IsLastWeaponSkill(true, TrueThrust)) return true;
                     if (!inOpener) return true;
 
@@ -222,7 +223,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("DRG_ShouldDelay", true, "延后红龙血")
-            .SetBool("DRG_Opener", true, "88级起手")
+            .SetBool("DRG_Opener", false, "88级起手")
             .SetBool("DRG_SafeMove", true, "安全位移");
     }
 

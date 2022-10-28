@@ -70,8 +70,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         private unsafe float RecastTime => CoolDownDetail->Total;
 
-        [Obsolete("这个方法以后能不用吗？用ElapsedAfter")]
-        internal unsafe float RecastTimeElapsed => CoolDownDetail->Elapsed;
+        private unsafe float RecastTimeElapsed => CoolDownDetail->Elapsed;
 
 
         internal unsafe bool IsCoolDown => CoolDownDetail->IsActive != 0;
