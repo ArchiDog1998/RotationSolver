@@ -32,12 +32,12 @@ namespace XIVAutoAttack.Helpers
 
 
         /// <summary>
-        /// 距离下几个GCD转好状态还在嘛。
+        /// 状态是否在下几个GCD转好后消失。
         /// </summary>
         /// <param name="gcdCount">要隔着多少个完整的GCD</param>
         /// <param name="abilityCount">再多少个能力技之后</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
-        /// <returns>这个时间点这个状态还健在嘛</returns>
+        /// <returns>这个时间点状态是否已经消失</returns>
         internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true, params ushort[] effectIDs)
         {
             var remain = obj.FindStatusTime(effectIDs);
@@ -46,11 +46,11 @@ namespace XIVAutoAttack.Helpers
         }
 
         /// <summary>
-        /// 几秒后状态还在嘛。
+        /// 状态是否在几秒后消失。
         /// </summary>
         /// <param name="remain">要多少秒呢</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
-        /// <returns>这个时间点这个状态还健在嘛</returns>
+        /// <returns>这个时间点状态是否已经消失</returns>
         internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool addWeaponRemain = true, params ushort[] effectIDs)
         {
             var remain = obj.FindStatusTime(effectIDs);
