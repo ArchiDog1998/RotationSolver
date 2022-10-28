@@ -68,8 +68,9 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 复唱时间
         /// </summary>
-        internal unsafe float RecastTime => CoolDownDetail->Total;
+        private unsafe float RecastTime => CoolDownDetail->Total;
 
+        [Obsolete("这个方法以后能不用吗？用ElapsedAfter")]
         internal unsafe float RecastTimeElapsed => CoolDownDetail->Elapsed;
 
 
@@ -95,7 +96,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 下一层转好的时间
         /// </summary>
-        internal float RecastTimeRemainOneCharge => RecastTimeRemain % RecastTimeOneCharge;
-        internal float RecastTimeElapsedOneCharge => RecastTimeElapsed % RecastTimeOneCharge;
+        private float RecastTimeRemainOneCharge => RecastTimeRemain % RecastTimeOneCharge;
+        private float RecastTimeElapsedOneCharge => RecastTimeElapsed % RecastTimeOneCharge;
     }
 }

@@ -157,8 +157,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (!mustUse && TargetStatus != null)
                 {
                     var tar = Target == Service.ClientState.LocalPlayer ? TargetUpdater.HostileTargets.OrderBy(p => p.DistanceToPlayer()).First() : Target;
-                    var times = tar.FindStatusTimes(TargetStatus);
-                    if (times.Length > 0 && times.Max() > 4 + ActionUpdater.WeaponRemain) return false;
+                    
+                    if (!tar.WillStatusEndGCD(2, 0, true, TargetStatus)) return false;
                 }
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
