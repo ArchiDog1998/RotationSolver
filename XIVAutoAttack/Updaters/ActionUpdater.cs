@@ -63,6 +63,7 @@ namespace XIVAutoAttack.Updaters
         static uint _lastMP = 0;
         static DateTime _lastMPUpdate = DateTime.Now;
         public static double MPUpdateElapsed => (DateTime.Now - _lastMPUpdate).TotalSeconds % 3;
+        public static float MPNextUpInCurrGCD => (3 - ((float)MPUpdateElapsed - WeaponElapsed))%3;
         private static void UPdateMPTimer()
         {
             var player = Service.ClientState.LocalPlayer;
