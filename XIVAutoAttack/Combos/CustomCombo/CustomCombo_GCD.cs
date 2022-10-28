@@ -30,6 +30,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 return false;
             }
 
+            UpdateInfo();
             newAction = Invoke(actionID, lastComboActionID, comboTime);
 
             //没获得对象

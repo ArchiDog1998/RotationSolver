@@ -263,6 +263,8 @@ namespace XIVAutoAttack.Controllers
                 return;
             }
 
+            if (Watcher.TimeSinceLastAction.TotalSeconds < 0.5) return;
+
             //0.2s内，不能重复按按钮。
             if (DateTime.Now - _fastClickStopwatch < new TimeSpan(0, 0, 0, 0, 200)) return;
             _fastClickStopwatch = DateTime.Now;

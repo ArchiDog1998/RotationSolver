@@ -207,7 +207,9 @@ internal class ConfigWindow : Window
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
                 //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
 
+                ImGui.Text(Watcher.TimeSinceLastAction.TotalSeconds.ToString());
 
+                
                 //foreach (var item in Service.ObjectTable)
                 //{
                 //    ImGui.Text($"{item.Name}, {item.SubKind}");
