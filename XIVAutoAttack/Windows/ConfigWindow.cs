@@ -102,12 +102,10 @@ internal class ConfigWindow : Window
                             if (enable)
                             {
                                 ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(1f, 1f));
-                                string spacing = "    ";
                                 var actions = combo.Config;
                                 foreach (var boolean in actions.bools)
                                 {
-                                    ImGui.Text(spacing);
-                                    ImGui.SameLine();
+                                    Spacing();
                                     bool val = boolean.value;
                                     if (ImGui.Checkbox($"#{num}: {boolean.description}", ref val))
                                     {
@@ -121,8 +119,7 @@ internal class ConfigWindow : Window
                                 }
                                 foreach (var doubles in actions.doubles)
                                 {
-                                    ImGui.Text(spacing);
-                                    ImGui.SameLine();
+                                    Spacing();
                                     float val = doubles.value;
                                     if (ImGui.DragFloat($"#{num}: {doubles.description}", ref val, doubles.speed, doubles.min, doubles.max))
                                     {
@@ -132,8 +129,7 @@ internal class ConfigWindow : Window
                                 }
                                 foreach (var textItem in actions.texts)
                                 {
-                                    ImGui.Text(spacing);
-                                    ImGui.SameLine();
+                                    Spacing();
                                     string val = textItem.value;
                                     if (ImGui.InputText($"#{num}: {textItem.description}", ref val, 15))
                                     {
@@ -143,8 +139,7 @@ internal class ConfigWindow : Window
                                 }
                                 foreach (var comboItem in actions.combos)
                                 {
-                                    ImGui.Text(spacing);
-                                    ImGui.SameLine();
+                                    Spacing();
                                     int val = comboItem.value;
                                     if (ImGui.Combo($"#{num}: {comboItem.description}", ref val, comboItem.items, comboItem.items.Length))
                                     {
@@ -174,7 +169,6 @@ internal class ConfigWindow : Window
                 ImGui.EndChild();
 
                 ImGui.EndTabItem();
-
             }
 
 
@@ -324,6 +318,13 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;
+                        if (ImGui.Checkbox("将敌对列表的对象设为敌对", ref addEnemyListToHostile))
+                        {
+                            Service.Configuration.AddEnemyListToHostile = addEnemyListToHostile;
+                            Service.Configuration.Save();
+                        }
+
                         int multiCount = Service.Configuration.HostileCount;
                         if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
                         {
@@ -351,14 +352,6 @@ internal class ConfigWindow : Window
                         //    Service.Configuration.ChangeTargetForFate = changeTargetForFate;
                         //    Service.Configuration.Save();
                         //}
-
-
-                        bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;
-                        if (ImGui.Checkbox("将敌对列表的对象设为敌对", ref addEnemyListToHostile))
-                        {
-                            Service.Configuration.AddEnemyListToHostile = addEnemyListToHostile;
-                            Service.Configuration.Save();
-                        }
 
                         bool moveToScreen = Service.Configuration.MoveTowardsScreen;
                         if (ImGui.Checkbox("移动技能选屏幕中心的对象", ref moveToScreen))
@@ -426,14 +419,14 @@ internal class ConfigWindow : Window
                         }
 
                         var str = Service.Configuration.LocationText;
-                        if (ImGui.InputText($"身位错误提示语", ref str, 15))
+                        if (ImGui.InputText("身位错误提示语", ref str, 15))
                         {
                             Service.Configuration.LocationText = str;
                             Service.Configuration.Save();
                         }
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("如果身位错误，你想怎么被骂");
+                            ImGui.SetTooltip("如果身位错误，你想怎么被骂!");
                         }
 
 
@@ -470,24 +463,6 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
-                        bool isOnlyGCD = Service.Configuration.OnlyGCD;
-                        if (ImGui.Checkbox("只使用GCD循环，除去能力技", ref isOnlyGCD))
-                        {
-                            Service.Configuration.OnlyGCD = isOnlyGCD;
-                            Service.Configuration.Save();
-                        }
-
-                        bool noHealOrDefenceAbility = Service.Configuration.NoDefenceAbility;
-                        if (ImGui.Checkbox("不使用防御能力技", ref noHealOrDefenceAbility))
-                        {
-                            Service.Configuration.NoDefenceAbility = noHealOrDefenceAbility;
-                            Service.Configuration.Save();
-                        }
-                        if (ImGui.IsItemHovered())
-                        {
-                            ImGui.SetTooltip("如果要打高难，建议勾上这个，自己安排治疗和奶轴。");
-                        }
-
                         bool autoBreak = Service.Configuration.AutoBreak;
                         if (ImGui.Checkbox("自动进行爆发", ref autoBreak))
                         {
@@ -495,51 +470,78 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
-                        bool autoDefenseforTank = Service.Configuration.AutoDefenseForTank;
-                        if (ImGui.Checkbox("自动上减伤(不太准)", ref autoDefenseforTank))
+                        bool isOnlyGCD = Service.Configuration.OnlyGCD;
+                        if (ImGui.Checkbox("只使用GCD循环，除去能力技", ref isOnlyGCD))
                         {
-                            Service.Configuration.AutoDefenseForTank = autoDefenseforTank;
+                            Service.Configuration.OnlyGCD = isOnlyGCD;
                             Service.Configuration.Save();
                         }
 
-                        bool autoShieled = Service.Configuration.AutoShield;
-                        if (ImGui.Checkbox("T自动上盾", ref autoShieled))
+                        if (!isOnlyGCD)
                         {
-                            Service.Configuration.AutoShield = autoShieled;
-                            Service.Configuration.Save();
-                        }
+                            Spacing();
+                            bool noHealOrDefenceAbility = Service.Configuration.NoDefenceAbility;
+                            if (ImGui.Checkbox("不使用防御能力技", ref noHealOrDefenceAbility))
+                            {
+                                Service.Configuration.NoDefenceAbility = noHealOrDefenceAbility;
+                                Service.Configuration.Save();
+                            }
+                            if (ImGui.IsItemHovered())
+                            {
+                                ImGui.SetTooltip("如果要打高难，建议勾上这个，自己安排治疗和奶轴。");
+                            }
 
-                        bool autoProvokeforTank = Service.Configuration.AutoProvokeForTank;
-                        if (ImGui.Checkbox("T自动挑衅", ref autoProvokeforTank))
-                        {
-                            Service.Configuration.AutoProvokeForTank = autoProvokeforTank;
-                            Service.Configuration.Save();
-                        }
-                        if (ImGui.IsItemHovered())
-                        {
-                            ImGui.SetTooltip("当有怪物在打非T的时候，会自动挑衅。");
-                        }
+                            Spacing();
+                            bool autoDefenseforTank = Service.Configuration.AutoDefenseForTank;
+                            if (ImGui.Checkbox("自动上减伤(不太准)", ref autoDefenseforTank))
+                            {
+                                Service.Configuration.AutoDefenseForTank = autoDefenseforTank;
+                                Service.Configuration.Save();
+                            }
 
+                            Spacing();
+                            bool autoShieled = Service.Configuration.AutoShield;
+                            if (ImGui.Checkbox("T自动上盾", ref autoShieled))
+                            {
+                                Service.Configuration.AutoShield = autoShieled;
+                                Service.Configuration.Save();
+                            }
 
-                        bool alwaysLowBlow = Service.Configuration.AlwaysLowBlow;
-                        if (ImGui.Checkbox("T永远下踢", ref alwaysLowBlow))
-                        {
-                            Service.Configuration.AlwaysLowBlow = alwaysLowBlow;
-                            Service.Configuration.Save();
-                        }
+                            Spacing();
+                            bool autoProvokeforTank = Service.Configuration.AutoProvokeForTank;
+                            if (ImGui.Checkbox("T自动挑衅", ref autoProvokeforTank))
+                            {
+                                Service.Configuration.AutoProvokeForTank = autoProvokeforTank;
+                                Service.Configuration.Save();
+                            }
+                            if (ImGui.IsItemHovered())
+                            {
+                                ImGui.SetTooltip("当有怪物在打非T的时候，会自动挑衅。");
+                            }
 
-                        bool autoUseTrueNorth = Service.Configuration.AutoUseTrueNorth;
-                        if (ImGui.Checkbox("近战自动上真北", ref autoUseTrueNorth))
-                        {
-                            Service.Configuration.AutoUseTrueNorth = autoUseTrueNorth;
-                            Service.Configuration.Save();
-                        }
+                            Spacing();
+                            bool alwaysLowBlow = Service.Configuration.AlwaysLowBlow;
+                            if (ImGui.Checkbox("T永远下踢", ref alwaysLowBlow))
+                            {
+                                Service.Configuration.AlwaysLowBlow = alwaysLowBlow;
+                                Service.Configuration.Save();
+                            }
 
-                        bool raiseSwift = Service.Configuration.RaisePlayerBySwift;
-                        if (ImGui.Checkbox("即刻拉人", ref raiseSwift))
-                        {
-                            Service.Configuration.RaisePlayerBySwift = raiseSwift;
-                            Service.Configuration.Save();
+                            Spacing();
+                            bool autoUseTrueNorth = Service.Configuration.AutoUseTrueNorth;
+                            if (ImGui.Checkbox("近战自动上真北", ref autoUseTrueNorth))
+                            {
+                                Service.Configuration.AutoUseTrueNorth = autoUseTrueNorth;
+                                Service.Configuration.Save();
+                            }
+
+                            Spacing();
+                            bool raiseSwift = Service.Configuration.RaisePlayerBySwift;
+                            if (ImGui.Checkbox("即刻拉人", ref raiseSwift))
+                            {
+                                Service.Configuration.RaisePlayerBySwift = raiseSwift;
+                                Service.Configuration.Save();
+                            }
                         }
 
                         bool raiseCasting = Service.Configuration.RaisePlayerByCasting;
@@ -557,7 +559,7 @@ internal class ConfigWindow : Window
                         }
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("使用高级强心剂、强心剂，爆发药仅有黑魔");
+                            ImGui.SetTooltip("使用爆发药，目前还未写全");
                         }
                     }
 
@@ -611,10 +613,8 @@ internal class ConfigWindow : Window
 
                     ImGui.EndChild();
                 }
-
                 ImGui.PopStyleVar();
                 ImGui.EndTabItem();
-
             }
 
             if (ImGui.BeginTabItem("技能释放事件"))
@@ -638,8 +638,6 @@ internal class ConfigWindow : Window
                             Service.Configuration.Events[i].Name = name;
                             Service.Configuration.Save();
                         }
-
-                        //ImGui.SameLine();
 
                         int macroindex = Service.Configuration.Events[i].MacroIndex;
                         if (ImGui.DragInt("宏编号" + i.ToString(), ref macroindex, 1, 0, 99))
@@ -715,5 +713,16 @@ internal class ConfigWindow : Window
             ImGui.EndTabBar();
         }
         ImGui.End();
+    }
+
+    private static void Spacing(byte count = 1)
+    {
+        string s = string.Empty;
+        for (int i = 0; i < count; i++)
+        {
+            s += "    ";
+        }
+        ImGui.Text(s);
+        ImGui.SameLine();
     }
 }

@@ -11,8 +11,8 @@
   </PropertyGroup>
   <PropertyGroup />
 	<PropertyGroup>
-		<DalamudLibPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\</DalamudLibPath>
-		<OutputPath>E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\$(ProjectName)</OutputPath>
+		<DalamudLibPath>C:\Users\11239\Downloads\Dalamud.Updater.exe_v1.0.4.3\addon\Hooks\dev\</DalamudLibPath>
+		<OutputPath>C:\Users\11239\Downloads\Dalamud.Updater.exe_v1.0.4.3\XIVLauncher\devPlugins\$(ProjectName)</OutputPath>
 	</PropertyGroup>
 	<ItemGroup>
     <None Remove="Combos\Melee\xc41fk2z.u0k~" />

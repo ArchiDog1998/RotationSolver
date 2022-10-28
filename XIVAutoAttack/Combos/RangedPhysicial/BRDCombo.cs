@@ -238,7 +238,6 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
         }
 
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
-
     }
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
