@@ -15,7 +15,6 @@
 		<OutputPath>E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\$(ProjectName)</OutputPath>
 	</PropertyGroup>
 	<ItemGroup>
-    <None Remove="Combos\Melee\xc41fk2z.u0k~" />
   </ItemGroup>
   <ItemGroup>
 	  <PackageReference Include="DalamudPackager" Version="2.1.8" />
