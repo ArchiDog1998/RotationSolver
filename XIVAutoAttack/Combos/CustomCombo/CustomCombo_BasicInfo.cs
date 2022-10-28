@@ -25,6 +25,15 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 return Target.IsDying();
             }
         }
+
+        internal static bool IsTargetBoss
+        {
+            get
+            {
+                if (Target == null) return false;
+                return Target.IsBoss();
+            }
+        }
         private static BaseAction ActionID => GeneralActions.Repose;
 
         public bool IsEnabled
