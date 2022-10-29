@@ -475,7 +475,7 @@ namespace XIVAutoAttack.Helpers
             return distance;
         }
 
-        private static BattleChara GetAttackMarkChara(BattleChara[] charas)
+        internal static BattleChara GetAttackMarkChara(BattleChara[] charas)
         {
             if (!Service.Configuration.ChooseAttackMark) return null;
 

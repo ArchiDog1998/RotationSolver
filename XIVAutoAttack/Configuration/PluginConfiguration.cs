@@ -10,7 +10,6 @@ namespace XIVAutoAttack.Configuration;
 public class PluginConfiguration : IPluginConfiguration
 {
     public int Version { get; set; } = 6;
-
     public int HostileCount { get; set; } = 3;
     public int PartyCount { get; set; } = 2;
     public int VoiceVolume { get; set; } = 80;
@@ -47,6 +46,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseItem { get; set; } = false;
     public bool SayoutLocationWrong { get; set; } = true;
     public bool ChooseAttackMark { get; set; } = true;
+    public bool AttackMarkAOE { get; set; } = true;
     public bool FilterStopMark { get; set; } = true;
     public float ObjectMinRadius { get; set; } = 0f;
     public float HealthDifference { get; set; } = 0.25f;
@@ -56,7 +56,6 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthSingleSpell { get; set; } = 0.55f;
     public float HealthForDyingTank { get; set; } = 0.15f;
     public float InterruptibleTime { get; set; } = 0.5f;
-
     public float SpecialDuration { get; set; } = 3;
     public float WeaponInterval { get; set; } = 0.6f;
     public float WeaponFaster { get; set; } = 0.05f;

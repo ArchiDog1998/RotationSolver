@@ -1,8 +1,10 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos.Healer;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
@@ -214,6 +216,22 @@ namespace XIVAutoAttack.Actions.BaseAction
                     Target = null;
                     return false;
                 }
+
+                //判断一下AOE攻击的时候如果有攻击目标标记目标
+                if (Action.CastType > 1 && NoAOEForAttackMark)
+                {
+                    if (mustUse)
+                    {
+                        Target = TargetFilter.GetAttackMarkChara(TargetUpdater.HostileTargets);
+                        if (Target == null) return false;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
                 switch (Action.CastType)
                 {
                     case 1:
@@ -247,6 +265,20 @@ namespace XIVAutoAttack.Actions.BaseAction
                 Target = Service.ClientState.LocalPlayer;
                 if (Action.EffectRange > 0 && !_isFriendly)
                 {
+                    if(NoAOEForAttackMark)
+                    {
+                        if (mustUse)
+                        {
+                            Target = TargetFilter.GetAttackMarkChara(TargetUpdater.HostileTargets);
+                            if(Target == null) return false;
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+
                     //如果不用自动找目标，那就不打AOE
                     if (!mustUse && !CommandController.AutoTarget && !Service.Configuration.UseAOEWhenManual) return false;
 
@@ -259,5 +291,11 @@ namespace XIVAutoAttack.Actions.BaseAction
             Target = Service.TargetManager.Target is BattleChara battle ? battle : Service.ClientState.LocalPlayer;
             return true;
         }
+        /// <summary>
+        /// 开启攻击标记且有攻击标记目标且不开AOE。
+        /// </summary>
+        private static bool NoAOEForAttackMark =>
+            Service.Configuration.ChooseAttackMark && !Service.Configuration.AttackMarkAOE 
+            && MarkingController.HaveAttackChara(TargetUpdater.HostileTargets);
     }
 }
