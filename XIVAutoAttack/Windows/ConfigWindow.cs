@@ -326,8 +326,6 @@ internal class ConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("目标选择"))
                     {
-
-
                         int isAllTargetAsHostile = Service.Configuration.TargetToHostileType;
                         if (ImGui.Combo("敌对目标筛选条件", ref isAllTargetAsHostile, new string[]
                         {
@@ -344,6 +342,20 @@ internal class ConfigWindow : Window
                         if (ImGui.Checkbox("将敌对列表的对象设为敌对", ref addEnemyListToHostile))
                         {
                             Service.Configuration.AddEnemyListToHostile = addEnemyListToHostile;
+                            Service.Configuration.Save();
+                        }
+
+                        bool chooseAttackMark = Service.Configuration.ChooseAttackMark;
+                        if (ImGui.Checkbox("优先选中有攻击标记的目标", ref chooseAttackMark))
+                        {
+                            Service.Configuration.ChooseAttackMark = chooseAttackMark;
+                            Service.Configuration.Save();
+                        }
+
+                        bool filterStopMark = Service.Configuration.FilterStopMark;
+                        if (ImGui.Checkbox("去掉有停止标记的目标", ref filterStopMark))
+                        {
+                            Service.Configuration.FilterStopMark = filterStopMark;
                             Service.Configuration.Save();
                         }
 

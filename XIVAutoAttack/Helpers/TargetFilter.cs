@@ -40,6 +40,15 @@ namespace XIVAutoAttack.Helpers
         {
             if (availableCharas == null || availableCharas.Length == 0) return null;
 
+            //找到被标记攻击的怪
+            if (GetAttackMarkChara(availableCharas) is BattleChara b && b != null) return b;
+
+            //去掉停止标记的怪
+            if (Service.Configuration.FilterStopMark)
+            {
+                availableCharas = MarkingController.FilterStopCharaes(availableCharas);
+            }
+
             //根据默认设置排序怪
             availableCharas = DefaultTargetingType(availableCharas);
 
@@ -464,6 +473,27 @@ namespace XIVAutoAttack.Helpers
             var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
             distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
             return distance;
+        }
+
+        private static BattleChara GetAttackMarkChara(BattleChara[] charas)
+        {
+            if (!Service.Configuration.ChooseAttackMark) return null;
+
+            var b = MarkingController.Attack1Chara(charas);
+            if (b != null) return b;
+
+            b = MarkingController.Attack2Chara(charas);
+            if (b != null) return b;
+
+            b = MarkingController.Attack3Chara(charas);
+            if (b != null) return b;
+
+            b = MarkingController.Attack4Chara(charas);
+            if (b != null) return b;
+
+            b = MarkingController.Attack5Chara(charas);
+            if (b != null) return b;
+            return null;
         }
 
         private static BattleChara[] DefaultTargetingType(BattleChara[] charas)
