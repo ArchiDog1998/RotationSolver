@@ -1,4 +1,5 @@
 using Dalamud.Configuration;
+using Dalamud.Game.ClientState.Keys;
 using System;
 using System.Collections.Generic;
 
@@ -34,6 +35,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool RaiseAll { get; set; } = false;
     public bool CheckForCasting { get; set; } = true;
     public bool PoslockCasting { get; set; } = false;
+    public VirtualKey PoslockModifier { get; set; } = VirtualKey.CONTROL;
     public bool RaisePlayerByCasting { get; set; } = true;
     public bool RaisePlayerBySwift { get; set; } = true;
     public bool AutoShield { get; set; } = true;

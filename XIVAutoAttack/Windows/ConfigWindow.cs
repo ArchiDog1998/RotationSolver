@@ -1,8 +1,10 @@
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using ImGuiNET;
+using Lumina.Data.Parsing.Uld;
 using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
@@ -40,6 +42,18 @@ internal class ConfigWindow : Window
         {Role.近战, $"{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Feint.Action.Name}" },
         {Role.远程, $"法系{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Addle.Action.Name}" },
     };
+
+    private static string ToName(VirtualKey k)
+    {
+        return k switch
+        {
+            VirtualKey.SHIFT => "SHIFT",
+            VirtualKey.CONTROL => "CTRL",
+            VirtualKey.MENU => "ALT",
+            _ => k.ToString(),
+        };
+    }
+
     public override unsafe void Draw()
     {
         if (ImGui.BeginTabBar("##tabbar"))
@@ -380,15 +394,29 @@ internal class ConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("提示增强"))
                     {
-                        //bool poslockCasting = Service.Configuration.PoslockCasting;
-                        //if (ImGui.Checkbox("使用咏唱移动锁", ref poslockCasting))
-                        //{
-                        //    Service.Configuration.PoslockCasting = poslockCasting;
-                        //    Service.Configuration.Save();
-                        //}
+                        bool poslockCasting = Service.Configuration.PoslockCasting;
+                        VirtualKey poslockModifier = Service.Configuration.PoslockModifier;
+                        if (ImGui.Checkbox("使用咏唱移动锁", ref poslockCasting))
+                        {
+                            Service.Configuration.PoslockCasting = poslockCasting;
+                            Service.Configuration.Save();
+                        }
+                         var modifierChoices = new VirtualKey[]{ VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
+                        if(poslockCasting && ImGui.BeginCombo("无视咏唱锁热键", ToName(poslockModifier)))
+                         {
+                             foreach (VirtualKey k in modifierChoices)
+                             {
+                                 if (ImGui.Selectable(ToName(k)))
+                                 {
+                                     Service.Configuration.PoslockModifier = k;
+                                     Service.Configuration.Save();
+                                 }
+                             }
+                            ImGui.EndCombo();
+                         }
 
                         bool usecheckCasting = Service.Configuration.CheckForCasting;
-                        if (ImGui.Checkbox("使用咏唱是否结束提示", ref usecheckCasting))
+                        if (ImGui.Checkbox("使用咏唱结束提示", ref usecheckCasting))
                         {
                             Service.Configuration.CheckForCasting = usecheckCasting;
                             Service.Configuration.Save();
@@ -677,36 +705,35 @@ internal class ConfigWindow : Window
                 if (ImGui.BeginChild("帮助", new Vector2(0f, -1f), true))
                 {
                     ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
-
-                    ImGui.Text("/aauto HealArea 表示开启一段范围治疗的窗口期。");
+                    CommandHelp("/aauto HealArea", "开启一段范围治疗的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto HealSingle 表示开启一段单体治疗的窗口期。");
+                    CommandHelp("/aauto HealSingle", "开启一段单体治疗的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto DefenseArea 表示开启一段范围防御的窗口期。");
+                    CommandHelp("/aauto DefenseArea", "开启一段范围防御的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto DefenseSingle 表示开启一段单体防御的窗口期。");
+                    CommandHelp("/aauto DefenseSingle", "开启一段单体防御的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto EsunaShield 表示开启一段康复或者盾姿或者真北的窗口期。");
+                    CommandHelp("/aauto EsunaShield", "开启一段康复或者盾姿或者真北的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto RaiseShirk 表示开启强制救人或退避的窗口期。");
+                    CommandHelp("/aauto RaiseShirk", "开启强制救人或退避的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto AntiRepulsion 表示开启一段防击退的窗口期。");
+                    CommandHelp("/aauto AntiRepulsion", "开启一段防击退的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto BreakProvoke 表示开启一段爆发或挑衅的窗口期。");
+                    CommandHelp("/aauto BreakProvoke", "开启一段爆发或挑衅的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto Move 开启一段位移的窗口期。");
+                    CommandHelp("/aauto Move", "开启一段位移的窗口期。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto AutoBreak 更改是否自动爆发。");
+                    CommandHelp("/aauto AutoBreak", "更改是否自动爆发。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto AttackBig 开始进攻，进攻对象为脚下圈圈最大的。");
+                    CommandHelp("/aauto AttackBig", "开始进攻，进攻对象为脚下圈圈最大的。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto AttackSmall 开始进攻，进攻对象为脚下圈圈最小的。");
+                    CommandHelp("/aauto AttackSmall", "开始进攻，进攻对象为脚下圈圈最小的。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto AttackManual 开始进攻，进攻对象为手动选择，此时不会释放AOE。");
+                    CommandHelp("/aauto AttackManual", "开始进攻，进攻对象为手动选择，此时不会释放AOE。");
                     ImGui.Separator();
-                    ImGui.Text("/aauto AttackCancel 停止进攻，记得一定要经常关掉！");
+                    CommandHelp("/aauto AttackCancel", "停止进攻，记得一定要经常关掉！");
                     ImGui.Separator();
-                    ImGui.Text("/aauto EndSpecial 停止特殊状态！");
+                    CommandHelp("/aauto EndSpecial", "停止特殊状态！");
                     ImGui.EndChild();
                 }
                 ImGui.PopStyleVar();
@@ -728,5 +755,14 @@ internal class ConfigWindow : Window
         }
         ImGui.Text(s);
         ImGui.SameLine();
+    }
+    private static void CommandHelp(string command,string help)
+    {
+        if (ImGui.Button(command))
+        {
+            Service.CommandManager.ProcessCommand(command);
+        }
+        ImGui.SameLine();
+        ImGui.Text(" → " + help);
     }
 }

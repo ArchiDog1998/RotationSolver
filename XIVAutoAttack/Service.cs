@@ -5,6 +5,7 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Party;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
@@ -65,6 +66,8 @@ internal class Service
     public static ToastGui ToastGui { get; private set; }
     [PluginService]
     public static FlyTextGui FlyTextGui { get; private set; }
+    [PluginService]
+    public static KeyState KeyState { get; private set; }
     //[PluginService]
     //public static SigScanner SigScanner { get; private set; }
     [PluginService]
