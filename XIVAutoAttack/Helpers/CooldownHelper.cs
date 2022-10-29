@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Updaters;
 
@@ -99,13 +100,15 @@ namespace XIVAutoAttack.Helpers
             return false;
         }
 
+
+
         /// <summary>
         /// 计算魔法的咏唱或GCD时间(法系专供)
         /// </summary>
         /// <param name="GCDTime">原始咏唱时间或GCD时间(毫秒)</param>
         /// <param name="isSpell">是否是需要咏唱的魔法</param>
         /// <param name="isSpellTime">是否是计算咏唱的真实消耗时间,否则计算到判定点的时间</param>
-        /// <returns>返回真实消耗的时间</returns>
+        /// <returns>返回真实消耗的时间(毫秒)</returns>
         public static unsafe double CalcSpellTime(double GCDTime, bool isSpell = true , bool isSpellTime = true)
         {
             var uiState = UIState.Instance();
@@ -119,7 +122,7 @@ namespace XIVAutoAttack.Helpers
             //读条税
             var spellTax = 100d;
             //判定点
-            var spellPoint = 450d;
+            var spellPoint = 500d;
             //有否黑魔纹Buff
             var multiSpeed = Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.LeyLines) ? 0.85 : 1;
 

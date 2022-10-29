@@ -197,7 +197,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     {
         //起手判断
         if (!InCombat) openerFinished = false;
-        if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _)) openerFinished = true;
+        if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _) || !Actions.Shadowbringer.EnoughLevel) openerFinished = true;
 
         //寂灭
         if (JobGauge.Blood >= 80 || Player.HaveStatus(ObjectStatus.Delirium))
@@ -211,6 +211,8 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             if (Player.HaveStatus(ObjectStatus.Delirium) && Player.FindStatusStack(ObjectStatus.BloodWeapon) <= 3) return true;
 
             if ((JobGauge.Blood >= 50 && Actions.BloodWeapon.WillHaveOneChargeGCD(1)) || (JobGauge.Blood >= 90 && !Player.HaveStatus(ObjectStatus.Delirium))) return true;
+
+            if (!Actions.Delirium.EnoughLevel) return true;
 
         }
 
@@ -278,6 +280,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
 
             //非爆发期防止溢出+续buff
             if (JobGauge.HasDarkArts || (Player.CurrentMp > 8500 && openerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
+
             } while (false);
         }
 
@@ -295,6 +298,9 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             if (Actions.Shadowbringer.ShouldUse(out act, mustUse: true)) return true;
 
         }
+        //吸血深渊+精雕怒斩
+        if (!Actions.Delirium.EnoughLevel && Actions.AbyssalDrain.ShouldUse(out act)) return true;
+        if (!Actions.Delirium.EnoughLevel && Actions.CarveandSpit.ShouldUse(out act)) return true;
 
         //腐秽大地+腐秽黑暗
         if (Actions.SaltandDarkness.ShouldUse(out act)) return true;

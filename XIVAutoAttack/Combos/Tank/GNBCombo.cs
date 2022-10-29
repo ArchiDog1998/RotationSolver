@@ -210,7 +210,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
 
         //单体三连
         //如果烈牙剩0.5秒冷却好,不释放基础连击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-        if (Actions.GnashingFang.IsCoolDown && Actions.GnashingFang.WillHaveOneCharge((float) 0.5, false)) return false;
+        if (Actions.GnashingFang.IsCoolDown && Actions.GnashingFang.WillHaveOneCharge((float) 0.5, false) && Actions.GnashingFang.EnoughLevel) return false;
         if (Actions.SolidBarrel.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.BrutalShell.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.KeenEdge.ShouldUse(out act, lastComboActionID)) return true;
@@ -350,8 +350,8 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         //基础判断
         if (Actions.GnashingFang.ShouldUse(out act))
         {
-            //在4人本道中不使用
-            if (InDungeonsMiddle) return false;
+            //在4人本道中使用
+            if (InDungeonsMiddle) return true;
 
             //无情中3弹烈牙
             if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (Player.HaveStatus(ObjectStatus.NoMercy) || !Actions.NoMercy.WillHaveOneCharge(55, false))) return true;
@@ -390,6 +390,8 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             //其他判断
             if (!Actions.DoubleDown.EnoughLevel && Player.HaveStatus(ObjectStatus.ReadyToRip)
                 && Actions.GnashingFang.IsCoolDown) return true;
+             
+            if (!Actions.GnashingFang.EnoughLevel && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
         }        
         return false;
     }
@@ -436,7 +438,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (InDungeonsMiddle && IsMoving) return false;
 
             //如果烈牙剩0.5秒冷却好,不释放爆发击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-            if (Actions.SonicBreak.IsCoolDown && Actions.SonicBreak.WillHaveOneCharge((float) 0.5, false)) return false;
+            if (Actions.SonicBreak.IsCoolDown && Actions.SonicBreak.WillHaveOneCharge((float) 0.5, false) && Actions.GnashingFang.EnoughLevel) return false;
 
             //无情中爆发击判定
             if (Player.HaveStatus(ObjectStatus.NoMercy) &&
@@ -447,6 +449,8 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (IsLastWeaponSkill(Actions.BrutalShell.ID) &&
                 (JobGauge.Ammo == (Level >= 88 ? 3 : 2) ||
                 (Actions.Bloodfest.WillHaveOneCharge(6, false) && JobGauge.Ammo <= 2 && !Actions.NoMercy.WillHaveOneCharge(10, false) && Actions.Bloodfest.EnoughLevel))) return true;
+
+            if (Level < 88 && JobGauge.Ammo == 2) return true;
         }
         return false;
     }
@@ -459,6 +463,8 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
 
             //爆发期,无情中且音速破在冷却中
             if (Player.HaveStatus(ObjectStatus.NoMercy) && Actions.SonicBreak.IsCoolDown) return true;
+
+            if (!Actions.SonicBreak.EnoughLevel && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
         }
         return false;     
     }
