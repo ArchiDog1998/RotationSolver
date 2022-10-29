@@ -74,6 +74,10 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
+        if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty]
+            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56]
+            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty95]
+            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundToDuty97]) return;
         CommandController.AutoAttack = false;
     }
 

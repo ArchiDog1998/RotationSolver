@@ -12,6 +12,7 @@ changelog: |-
   - 修改了宏！！从AttackBig，AttackSmall 改为 AttackSmart!
   - 修复了Dispose忘记删去刷新的问题
   - 更改了大量的UI及交互
+  - 在副本中切换地图不会自动关闭攻击。
   ## 新增功能
   - 添加咏唱锁功能
   - 可以自己选择想要选择目标的各种方法。
