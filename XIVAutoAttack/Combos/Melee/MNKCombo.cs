@@ -6,7 +6,6 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 

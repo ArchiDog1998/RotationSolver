@@ -13,7 +13,6 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
@@ -36,7 +35,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     internal static readonly ClassJob[] AllJobs = Service.DataManager.GetExcelSheet<ClassJob>().ToArray();
 
-    internal static MovingController movingController;
     public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, CommandManager commandManager)
     {
         commandManager.AddHandler(_command, new CommandInfo(OnCommand)
@@ -66,13 +64,11 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
         Service.Interface.UiBuilder.Draw += overlayWindow.Draw;
-        Service.Framework.Update += MajorUpdater.Framework_Update;
-
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
+        MajorUpdater.Enable();
         Watcher.Enable();
 
-        movingController = new MovingController();
     }
 
 
@@ -89,12 +85,11 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.Interface.UiBuilder.Draw -= overlayWindow.Draw;
         Service.IconReplacer.Dispose();
-        MajorUpdater.Dispose();
-        Service.Framework.Update -= MajorUpdater.Framework_Update;
+
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
 
+        MajorUpdater.Dispose();
         Watcher.Dispose();
-        movingController?.Dispose();
     }
 
     private void OnOpenConfigUi()

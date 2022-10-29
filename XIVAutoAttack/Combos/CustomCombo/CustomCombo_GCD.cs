@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Updaters;
 
@@ -17,15 +16,8 @@ namespace XIVAutoAttack.Helpers
         {
             if (availableCharas == null || availableCharas.Length == 0) return null;
 
-            //判断一下要选择打体积最大的，还是最小的。
-            if (CommandController.AttackBig)
-            {
-                availableCharas = availableCharas.OrderByDescending(player => player.HitboxRadius).ToArray();
-            }
-            else
-            {
-                availableCharas = availableCharas.OrderBy(player => player.HitboxRadius).ToArray();
-            }
+            //根据默认设置排序怪
+            availableCharas = DefaultTargetingType(availableCharas);
 
             //找到体积一样小的
             List<BattleChara> canGet = new List<BattleChara>(availableCharas.Length) { availableCharas[0] };
@@ -48,15 +40,8 @@ namespace XIVAutoAttack.Helpers
         {
             if (availableCharas == null || availableCharas.Length == 0) return null;
 
-            //判断一下要选择打体积最大的，还是最小的。
-            if (CommandController.AttackBig)
-            {
-                availableCharas = availableCharas.OrderByDescending(player => player.HitboxRadius).ToArray();
-            }
-            else
-            {
-                availableCharas = availableCharas.OrderBy(player => player.HitboxRadius).ToArray();
-            }
+            //根据默认设置排序怪
+            availableCharas = DefaultTargetingType(availableCharas);
 
             //找到体积一样小的
             List<BattleChara> canGet = new List<BattleChara>(availableCharas.Length) { availableCharas[0] };
@@ -498,6 +483,31 @@ namespace XIVAutoAttack.Helpers
             var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
             distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
             return distance;
+        }
+
+        private static BattleChara[] DefaultTargetingType(BattleChara[] charas)
+        {
+            switch (CommandController.RightTargetingType)
+            {
+                default:
+                case TargetingType.Big:
+                    return charas.OrderByDescending(p => p.HitboxRadius).ToArray();
+
+                case TargetingType.Small:
+                    return charas.OrderBy(p => p.HitboxRadius).ToArray();
+
+                case TargetingType.HighHP:
+                    return charas.OrderByDescending(p => p.CurrentHp).ToArray();
+
+                case TargetingType.LowHP:
+                    return charas.OrderBy(p => p.CurrentHp).ToArray();
+
+                case TargetingType.HighMaxHP:
+                    return charas.OrderByDescending(p => p.MaxHp).ToArray();
+
+                case TargetingType.LowMaxHP:
+                    return charas.OrderBy(p => p.MaxHp).ToArray();
+            }
         }
     }
 }

@@ -10,32 +10,47 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using System.Numerics;
+using Dalamud.Game.Gui.Toast;
 
-namespace XIVAutoAttack.Controllers
+namespace XIVAutoAttack.Updaters
 {
-    internal class MovingController : IDisposable
+    internal static class MovingUpdater
     {
-        private static bool PosLocker = false;
+        private static bool _posLocker = false;
         private static Hook<MovingControllerDelegate> movingHook;
         private delegate bool MovingControllerDelegate(IntPtr ptr);
-        public MovingController()
+        internal static void Enable()
         {
             movingHook ??= Hook<MovingControllerDelegate>.FromAddress(Service.Address.MovingController, new MovingControllerDelegate(MovingDetour));
             movingHook.Enable();
         }
-        public void Dispose()
+        internal static void Dispose()
         {
             movingHook.Disable();
         }
+        
+        internal static void UpdateLocation()
+        {
+            if (Service.ClientState.LocalPlayer == null) return;
+            var p = Service.ClientState.LocalPlayer.Position;
+
+            _moving = _lastPosition != p;
+            _lastPosition = p;
+        }
+
         private static bool MovingDetour(IntPtr ptr)
         {
-            if (Service.Configuration.PoslockCasting && PosLocker && !Service.KeyState[Service.Configuration.PoslockModifier]) return false;
+            if (Service.Configuration.PoslockCasting && _posLocker && !Service.KeyState[Service.Configuration.PoslockModifier]) return false;
             return movingHook.Original(ptr);
         }
-        internal bool IsMoving
+
+        static Vector3 _lastPosition = Vector3.Zero;
+        static bool _moving = false;
+        internal static bool IsMoving
         {
-            get => Service.Conditions[ConditionFlag.BeingMoved];
-            set => PosLocker = !value;
+            get => _moving;
+            set => _posLocker = !value;
         }
     }
 }

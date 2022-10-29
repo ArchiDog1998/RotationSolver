@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos.Healer;
-using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
@@ -57,7 +56,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                         tars = TargetFilter.GetTargetCanDot(tars);
                     }
 
-                    if (!XIVAutoAttackPlugin.movingController.IsMoving) return tars;
+                    if (!MovingUpdater.IsMoving) return tars;
 
                     var ts = tars.Where(t => !t.HaveStatus(TargetStatus)).ToArray();
 

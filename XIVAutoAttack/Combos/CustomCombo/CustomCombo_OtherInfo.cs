@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
@@ -30,7 +29,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static PlayerCharacter Player => Service.ClientState.LocalPlayer;
         protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : Player;
 
-        protected static bool IsMoving => XIVAutoAttackPlugin.movingController.IsMoving;
+        protected static bool IsMoving => MovingUpdater.IsMoving;
         protected static bool HaveHostileInRange => TargetUpdater.HaveHostileInRange;
         protected virtual bool CanHealAreaAbility => TargetUpdater.CanHealAreaAbility;
         protected virtual bool CanHealAreaSpell => TargetUpdater.CanHealAreaSpell;

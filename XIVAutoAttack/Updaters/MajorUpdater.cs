@@ -1,7 +1,6 @@
 ﻿using Dalamud.Game;
 using System;
 using System.Collections.Generic;
-using XIVAutoAttack.Controllers;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -10,7 +9,7 @@ namespace XIVAutoAttack.Updaters
 #if DEBUG
         private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
 #endif
-        internal unsafe static void Framework_Update(Framework framework)
+        private unsafe static void Framework_Update(Framework framework)
         {
             if (!Service.Conditions.Any()) return;
 
@@ -63,12 +62,21 @@ namespace XIVAutoAttack.Updaters
 
             ActionUpdater.DoAction();
             MacroUpdater.UpdateMacro();
+
+            MovingUpdater.UpdateLocation();
+        }
+
+        public static void Enable()
+        {
+            Service.Framework.Update += Framework_Update;
+            MovingUpdater.Enable();
         }
 
         public static void Dispose()
         {
             ActionUpdater.Dispose();
             PreviewUpdater.Dispose();
+            MovingUpdater.Dispose();
         }
     }
 }

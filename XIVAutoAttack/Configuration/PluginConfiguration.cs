@@ -2,6 +2,7 @@ using Dalamud.Configuration;
 using Dalamud.Game.ClientState.Keys;
 using System;
 using System.Collections.Generic;
+using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Configuration;
 
@@ -57,6 +58,9 @@ public class PluginConfiguration : IPluginConfiguration
     public float WeaponFaster { get; set; } = 0.05f;
     public float WeaponDelay { get; set; } = 0;
     public string LocationText { get; set; } = string.Empty;
+
+    public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
+    public int TargetingIndex { get; set; } = 0;
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);

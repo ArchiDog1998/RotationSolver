@@ -2,7 +2,6 @@ using Dalamud.Game;
 using Dalamud.Logging;
 using System;
 using System.Runtime.InteropServices;
-using XIVAutoAttack.Controllers;
 
 namespace XIVAutoAttack.SigReplacers;
 

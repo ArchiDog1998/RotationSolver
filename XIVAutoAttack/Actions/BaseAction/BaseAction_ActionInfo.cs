@@ -3,7 +3,6 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Linq;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Controllers;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -162,11 +161,12 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
-                if (Cast100 > 0 && XIVAutoAttackPlugin.movingController.IsMoving)
+                if (Cast100 > 0 && MovingUpdater.IsMoving)
                 {
                     if (!Service.ClientState.LocalPlayer.HaveStatus(CustomCombo.GeneralActions.Swiftcast.BuffsProvide))
-                        if (Service.Configuration.PoslockCasting) XIVAutoAttackPlugin.movingController.IsMoving = false;
-                        else return false;
+                    {
+                        return false;
+                    }
                 }
             }
             else

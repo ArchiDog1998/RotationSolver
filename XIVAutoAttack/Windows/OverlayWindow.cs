@@ -17,7 +17,8 @@ namespace XIVAutoAttack.Windows
     internal class OverlayWindow : Window
     {
         public OverlayWindow()
-            :base("Overlay")
+            :base("Overlay", ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
+            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground)
         {
 
         }

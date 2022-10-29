@@ -216,6 +216,8 @@ internal class ConfigWindow : Window
                     ImGui.Text("Is Cooldown: " + baseAction.IsCoolDown.ToString());
                 }
 
+                ImGui.Text(MovingUpdater.IsMoving.ToString());
+
 
                 //ImGui.Text(ActionUpdater.WeaponRemain.ToString());
                 //ImGui.Text(ActionUpdater.WeaponTotal.ToString());
@@ -324,12 +326,14 @@ internal class ConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("目标选择"))
                     {
+
+
                         int isAllTargetAsHostile = Service.Configuration.TargetToHostileType;
-                        if (ImGui.Combo("敌对目标条件", ref isAllTargetAsHostile, new string[]
+                        if (ImGui.Combo("敌对目标筛选条件", ref isAllTargetAsHostile, new string[]
                         {
-                        "所有能打的目标都是敌对的目标",
-                        "如果处于打人的目标数量为零，所有能打的都是敌对的",
-                        "只有打人的目标才是敌对的目标",
+                                "所有能打的目标都是敌对的目标",
+                                "如果处于打人的目标数量为零，所有能打的都是敌对的",
+                                "只有打人的目标才是敌对的目标",
                         }, 3))
                         {
                             Service.Configuration.TargetToHostileType = isAllTargetAsHostile;
@@ -387,6 +391,62 @@ internal class ConfigWindow : Window
                         {
                             Service.Configuration.RaiseAll = raiseAll;
                             Service.Configuration.Save();
+                        }
+                    }
+
+                    ImGui.Separator();
+
+                    if (ImGui.CollapsingHeader("敌对选择"))
+                    {
+                        if (ImGui.Button("添加选择条件"))
+                        {
+                            Service.Configuration.TargetingTypes.Add(TargetingType.Big);
+                        }
+
+                        if (ImGui.BeginChild("条件列表", new Vector2(0f, -1f), true))
+                        {
+                            for (int i = 0; i < Service.Configuration.TargetingTypes.Count; i++)
+                            {
+                                var names = Enum.GetNames(typeof(TargetingType));
+                                var targingType = (int)Service.Configuration.TargetingTypes[i];
+                                if (ImGui.Combo("敌对目标选择条件" + i.ToString(), ref targingType, names, names.Length))
+                                {
+                                    Service.Configuration.TargetingTypes[i] = (TargetingType)targingType;
+                                    Service.Configuration.Save();
+                                }
+
+                                if (ImGui.Button("上移条件" + i.ToString()))
+                                {
+                                    if (i != 0)
+                                    {
+                                        var value = Service.Configuration.TargetingTypes[i];
+                                        Service.Configuration.TargetingTypes.RemoveAt(i);
+                                        Service.Configuration.TargetingTypes.Insert(i - 1, value);
+                                    }
+                                }
+                                ImGui.SameLine();
+                                Spacing();
+                                if (ImGui.Button("下移条件" + i.ToString()))
+                                {
+                                    if (i < Service.Configuration.TargetingTypes.Count - 1)
+                                    {
+                                        var value = Service.Configuration.TargetingTypes[i];
+                                        Service.Configuration.TargetingTypes.RemoveAt(i);
+                                        Service.Configuration.TargetingTypes.Insert(i + 1, value);
+                                    }
+                                }
+
+                                ImGui.SameLine();
+                                Spacing();
+
+                                if (ImGui.Button("删除条件" + i.ToString()))
+                                {
+                                    Service.Configuration.TargetingTypes.RemoveAt(i);
+                                }
+
+                                ImGui.Separator();
+                            }
+                            ImGui.EndChild();
                         }
                     }
 
@@ -655,12 +715,12 @@ internal class ConfigWindow : Window
 
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-                if (ImGui.Button("添加"))
+                if (ImGui.Button("添加事件"))
                 {
                     Service.Configuration.Events.Add(new ActionEventInfo());
                 }
 
-                if (ImGui.BeginChild("事件", new Vector2(0f, -1f), true))
+                if (ImGui.BeginChild("事件列表", new Vector2(0f, -1f), true))
                 {
                     for (int i = 0; i < Service.Configuration.Events.Count; i++)
                     {
@@ -686,7 +746,7 @@ internal class ConfigWindow : Window
                         }
 
                         ImGui.SameLine();
-                        if (ImGui.Button("删除" + i.ToString()))
+                        if (ImGui.Button("删除事件" + i.ToString()))
                         {
                             Service.Configuration.Events.RemoveAt(i);
                         }
@@ -725,9 +785,7 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
                     CommandHelp("/aauto AutoBreak", "更改是否自动爆发。");
                     ImGui.Separator();
-                    CommandHelp("/aauto AttackBig", "开始进攻，进攻对象为脚下圈圈最大的。");
-                    ImGui.Separator();
-                    CommandHelp("/aauto AttackSmall", "开始进攻，进攻对象为脚下圈圈最小的。");
+                    CommandHelp("/aauto AttackSmart", "如果不在进攻中就开始进攻，如果在进攻就切换选择目标模式。");
                     ImGui.Separator();
                     CommandHelp("/aauto AttackManual", "开始进攻，进攻对象为手动选择，此时不会释放AOE。");
                     ImGui.Separator();

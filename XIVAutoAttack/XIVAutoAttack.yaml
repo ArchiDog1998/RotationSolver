@@ -9,15 +9,12 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 调整了上一个版本导致的问题，努力测试！
-  - 恢复武士循环
-  - 修复黑魔卡住的问题
-  - 修复龙骑、机工、诗人
+  - 修改了宏！！从AttackBig，AttackSmall 改为 AttackSmart!
   ## 新增功能
-  - 如果抢着aa按的话，aa会放弃自动按那个技能。一定要比aa按的早！
+  - 添加咏唱锁功能
+  - 可以自己选择想要选择目标的各种方法。
   ## API
-  - 添加UpdateInfo接口，用来更新信息。
-  - 删掉了较为底层的API
+  - 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

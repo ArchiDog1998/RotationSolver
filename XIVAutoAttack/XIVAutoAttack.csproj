@@ -14,8 +14,6 @@
 		<DalamudLibPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\</DalamudLibPath>
 		<OutputPath>E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\$(ProjectName)</OutputPath>
 	</PropertyGroup>
-	<ItemGroup>
-  </ItemGroup>
   <ItemGroup>
 	  <PackageReference Include="DalamudPackager" Version="2.1.8" />
 	  <Reference Include="Dalamud">

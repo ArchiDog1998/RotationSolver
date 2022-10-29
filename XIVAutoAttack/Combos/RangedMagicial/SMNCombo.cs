@@ -80,7 +80,7 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
             //∫Ï±¶ Ø’ŸªΩ
             SummonRuby = new (25802)
             {
-                OtherCheck = b => JobGauge.IsIfritReady && !XIVAutoAttackPlugin.movingController.IsMoving,
+                OtherCheck = b => JobGauge.IsIfritReady && !IsMoving,
             },
 
             //ª∆±¶ Ø’ŸªΩ

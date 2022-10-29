@@ -12,12 +12,10 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 
-namespace XIVAutoAttack.Controllers
+namespace XIVAutoAttack
 {
     internal static class CommandController
     {
-
-
         private static DateTime _fastClickStopwatch = DateTime.Now;
         private static DateTime _specialStateStartTime = DateTime.MinValue;
 
@@ -56,25 +54,7 @@ namespace XIVAutoAttack.Controllers
                 }
             }
         }
-        private static bool _attackBig = true;
 
-        internal static bool AttackBig
-        {
-            get => _attackBig;
-            set
-            {
-                string speak = value ? "Big" : "Small";
-                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Attack " + speak);
-                _stateString = speak;
-                AutoTarget = true;
-                AutoAttack = true;
-                if (_attackBig != value)
-                {
-                    _attackBig = value;
-                }
-                UpdateToast();
-            }
-        }
         private static bool _autoTarget = true;
         internal static bool AutoTarget
         {
@@ -245,6 +225,40 @@ namespace XIVAutoAttack.Controllers
             if (sayout && Service.Configuration.AutoSayingOut) CustomCombo.Speak("End Special");
             _specialString = string.Empty;
         }
+
+        internal static TargetingType RightTargetingType
+        {
+            get
+            {
+                if(Service.Configuration.TargetingTypes.Count == 0)
+                {
+                    Service.Configuration.TargetingTypes.Add(TargetingType.Big);
+                    Service.Configuration.Save();
+                }
+
+                return Service.Configuration.TargetingTypes[Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count];
+            }
+        }
+        private static void StartAttackSmart()
+        {
+            if (!AutoAttack)
+            {
+                AutoAttack = true;
+            }
+            else
+            {
+                Service.Configuration.TargetingIndex += 1;
+                Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count;
+            }
+
+            string speak = RightTargetingType.ToString();
+            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Attack " + speak);
+            _stateString = speak;
+            AutoTarget = true;
+
+
+            UpdateToast();
+        }
         #endregion
 
 
@@ -285,12 +299,12 @@ namespace XIVAutoAttack.Controllers
                 if (!isGCD && newiAction is BaseAction act1 && act1.IsRealGCD) return;
 
 #if DEBUG
-            //if (newiAction is BaseAction a) Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + a.Action.Name);
+                //if (newiAction is BaseAction a) Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + a.Action.Name);
 #endif
                 if (newiAction.Use() && newiAction is BaseAction act)
                 {
 #if DEBUG
-                //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + act.Action.Name + TargetHelper.AbilityRemainCount.ToString());
+                    //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + act.Action.Name + TargetHelper.AbilityRemainCount.ToString());
 #endif
                     //Change Target
                     if (act.Target.CanAttack())
@@ -336,11 +350,8 @@ namespace XIVAutoAttack.Controllers
                 case "AutoBreak":
                     Service.Configuration.AutoBreak = !Service.Configuration.AutoBreak;
                     return;
-                case "AttackBig":
-                    AttackBig = true;
-                    return;
-                case "AttackSmall":
-                    AttackBig = false;
+                case "AttackSmart":
+                    StartAttackSmart();
                     return;
                 case "AttackManual":
                     AutoTarget = false;
