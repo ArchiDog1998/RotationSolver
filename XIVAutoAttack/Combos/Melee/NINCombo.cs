@@ -209,7 +209,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
 
     private protected override ActionConfiguration CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("UseHide", true, "脱战隐身恢复忍术");
+        return base.CreateConfiguration().SetBool("UseHide", true, "脱战隐身恢复忍术").SetBool("AutoUnhide", true, "自动取消隐身");
     }
 
     internal override SortedList<DescType, string> Description => new ()
@@ -430,9 +430,11 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         if (DoNinjutsus(out act)) return true;
 
         //用真北取消隐匿
-        if (Player.HaveStatus(ObjectStatus.Hidden)
-            && GeneralActions.TrueNorth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-
+        if (Config.GetBoolByName("AutoUnhide") && Player.HaveStatus(ObjectStatus.Hidden))
+        {
+            //Service.ChatGui.Print($"/statusoff {StatusHelper.GetStatusName(ObjectStatus.Hidden)}");
+            CommandController.SubmitToChat($"/statusoff {StatusHelper.GetStatusName(ObjectStatus.Hidden)}");
+        }
         //用隐匿恢复忍术数量
         if (!InCombat && _ninactionAim == null && Config.GetBoolByName("UseHide")
             && Actions.Ten.IsCoolDown && Actions.Hide.ShouldUse(out act)) return true;

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
@@ -11,6 +12,7 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
+using static XIVAutoAttack.SigReplacers.PluginAddressResolver;
 
 namespace XIVAutoAttack
 {
@@ -387,6 +389,26 @@ namespace XIVAutoAttack
                     }
                     Service.ChatGui.PrintError("无法识别：" + str);
                     return;
+            }
+        }
+
+        /// <summary>
+        /// Submit text/command to outgoing chat.
+        /// Can be used to enter chat commands.
+        /// </summary>
+        /// <param name="text">Text to submit.</param>
+        public unsafe static void SubmitToChat(string text)
+        {
+            IntPtr uiModule = Service.GameGui.GetUIModule();
+
+            using (ChatPayload payload = new ChatPayload(text))
+            {
+                IntPtr mem1 = Marshal.AllocHGlobal(400);
+                Marshal.StructureToPtr(payload, mem1, false);
+
+                Service.Address.GetChatBox(uiModule, mem1, IntPtr.Zero, 0);
+
+                Marshal.FreeHGlobal(mem1);
             }
         }
     }

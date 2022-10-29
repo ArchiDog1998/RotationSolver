@@ -126,7 +126,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 Interject = new BaseAction(7538),
 
                 //下踢
-                LowBlow = new BaseAction(7540),
+                LowBlow = new BaseAction(7540)
+                {
+                    OtherCheck = b => !b.IsBoss(),
+                },
 
                 //扫腿
                 LegSweep = new BaseAction(7863),

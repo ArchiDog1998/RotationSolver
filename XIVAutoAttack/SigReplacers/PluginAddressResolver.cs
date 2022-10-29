@@ -1,12 +1,16 @@
 using Dalamud.Game;
 using Dalamud.Logging;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace XIVAutoAttack.SigReplacers;
 
 internal class PluginAddressResolver : BaseAddressResolver
 {
+
+
     private IntPtr ComboTimer { get; set; }
     public unsafe float ComboTime => *(float*)ComboTimer;
     private IntPtr LastComboMove => ComboTimer + 4;
@@ -18,7 +22,8 @@ internal class PluginAddressResolver : BaseAddressResolver
     public IntPtr MovingController { get; private set; }
     public IntPtr MarkingController { get; private set; }
 
-
+    public delegate void GetChatBoxModuleDelegate(IntPtr uiModule, IntPtr message, IntPtr unused, byte a4);
+    public GetChatBoxModuleDelegate GetChatBox { get; private set; }
     protected override void Setup64Bit(SigScanner scanner)
     {
         //Static
@@ -29,6 +34,8 @@ internal class PluginAddressResolver : BaseAddressResolver
         IsActionIdReplaceable = scanner.ScanText("81 F9 ?? ?? ?? ?? 7F 35");
         CanAttackFunction = scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
         MovingController = scanner.ScanText("40 55 53 48 8D 6C 24 ?? 48 81 EC ?? ?? ?? ?? 48 83 79 ?? ??");
+        var ChatBoxModulePointer = scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9");
+        GetChatBox = Marshal.GetDelegateForFunctionPointer<GetChatBoxModuleDelegate>(ChatBoxModulePointer);
 
         PluginLog.Verbose("===== X I V A U T O A T T C K =====", Array.Empty<object>());
         PluginLog.Verbose($"ComboTimer            0x{ComboTimer:X}", Array.Empty<object>());

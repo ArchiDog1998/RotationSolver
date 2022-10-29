@@ -22,8 +22,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
         }
 
-
-
         internal struct BreakItems
         {
             internal static readonly BaseItem

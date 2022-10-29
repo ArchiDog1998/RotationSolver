@@ -13,13 +13,14 @@ changelog: |-
   - 修复了Dispose忘记删去刷新的问题
   - 更改了大量的UI及交互
   - 在副本中切换地图不会自动关闭攻击。
+  - 修改了绝枪和黑骑的循环
+  - T不再下踢Boss
+  - 忍者不再用真北取消隐遁功能
   ## 新增功能
   - 添加咏唱锁功能
   - 可以自己选择想要选择目标的各种方法。
   - 添加选择标记目标的功能
   - 可以选择多少个GCD后加DOT，推荐2
-  ## API
-  - 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

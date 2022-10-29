@@ -85,7 +85,12 @@ namespace XIVAutoAttack.Helpers
             return obj.FindStatus(effectIDs).Length > 0;
         }
 
-        internal static Status[] FindStatus(this BattleChara obj, params ushort[] effectIDs)
+        internal static string GetStatusName(ushort id)
+        {
+            return Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow(id).Name.ToString();
+        }
+
+        private static Status[] FindStatus(this BattleChara obj, params ushort[] effectIDs)
         {
             uint[] newEffects = effectIDs.Select(a => (uint)a).ToArray();
             return obj.FindAllStatus().Where(status => newEffects.Contains(status.StatusId)).ToArray();
