@@ -361,8 +361,4 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 
         return false;
     }
-
-
-
-
 }

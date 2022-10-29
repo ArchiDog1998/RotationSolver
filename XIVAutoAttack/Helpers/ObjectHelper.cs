@@ -7,7 +7,9 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Helpers
 {
@@ -29,7 +31,7 @@ namespace XIVAutoAttack.Helpers
         {
             if (obj == null) return false;
             return !(obj.GetObjectNPC()?.IsTargetLine ?? true)
-                || obj.NameId == 541 && obj.MaxHp >= TargetFilter.GetHealthFromMulty(6.5f);
+                || obj.NameId == 541 && obj.MaxHp >= GetHealthFromMulty(6.5f);
         }
 
         internal static float GetHealthRatio(this BattleChara b)
@@ -46,7 +48,18 @@ namespace XIVAutoAttack.Helpers
         internal static bool IsDying(this BattleChara b)
         {
             if (b == null) return false;
-            return b.CurrentHp <= TargetFilter.GetHealthFromMulty(1);
+            return b.CurrentHp <= GetHealthFromMulty(1);
+        }
+
+        /// <summary>
+        /// 用于倾泻所有资源来收尾
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        internal static bool CanDot(this BattleChara b)
+        {
+            if (b == null) return false;
+            return b.CurrentHp >= GetHealthFromMulty(0.8f);
         }
 
         internal static EnemyLocation FindEnemyLocation(this GameObject enemy)
@@ -69,6 +82,23 @@ namespace XIVAutoAttack.Helpers
         {
             if (actor == null) return false;
             return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address) == 1;
+        }
+
+        private static uint GetHealthFromMulty(float mult)
+        {
+            if (Service.ClientState.LocalPlayer == null) return 0;
+
+            var multi = TargetFilter.GetJobCategory(new BattleChara[] { Service.ClientState.LocalPlayer }, Role.防护).Length == 0 ? mult : mult * 1.5f;
+            if (TargetUpdater.PartyMembers.Length > 4)
+            {
+                multi *= 2;
+            }
+            else if (TargetUpdater.PartyMembers.Length == 1)
+            {
+                multi = 0.5f;
+            }
+
+            return (uint)(multi * Service.ClientState.LocalPlayer.MaxHp);
         }
     }
 }

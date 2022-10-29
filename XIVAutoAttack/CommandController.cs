@@ -256,7 +256,6 @@ namespace XIVAutoAttack
             _stateString = speak;
             AutoTarget = true;
 
-
             UpdateToast();
         }
         #endregion

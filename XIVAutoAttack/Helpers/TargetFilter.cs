@@ -237,6 +237,11 @@ namespace XIVAutoAttack.Helpers
             }
             return list.ToArray();
         }
+        internal static BattleChara[] GetTargetCanDot(BattleChara[] objects)
+        {
+            return objects.Where(b => b.CanDot()).ToArray();
+        }
+
 
         internal static BattleChara[] GetJobCategory(BattleChara[] objects, Role role)
         {
@@ -249,30 +254,6 @@ namespace XIVAutoAttack.Helpers
                 if (GetJobCategory(obj, validJobs)) result.Add(obj);
             }
             return result.ToArray();
-        }
-
-        internal static BattleChara[] GetTargetCanDot(BattleChara[] objects)
-        {
-            var health = GetHealthFromMulty(0.8f);
-
-            return objects.Where(b => b.CurrentHp >= health).ToArray();
-        }
-
-        internal static uint GetHealthFromMulty(float mult)
-        {
-            if (Service.ClientState.LocalPlayer == null) return 0;
-
-            var multi = GetJobCategory(new BattleChara[] { Service.ClientState.LocalPlayer }, Role.防护).Length == 0 ? mult : mult * 1.5f;
-            if (TargetUpdater.PartyMembers.Length > 4)
-            {
-                multi *= 2;
-            }
-            else if (TargetUpdater.PartyMembers.Length == 1)
-            {
-                multi = 0.5f;
-            }
-
-            return (uint)(multi * Service.ClientState.LocalPlayer.MaxHp);
         }
 
         private static bool GetJobCategory(BattleChara obj, SortedSet<byte> validJobs)

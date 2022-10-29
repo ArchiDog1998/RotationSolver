@@ -820,6 +820,11 @@ internal class ConfigWindow : Window
         {
             Service.CommandManager.ProcessCommand(command);
         }
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip($"µ¥»÷ÒÔÖ´ĞĞÃüÁî: {command}");
+        }
+
         ImGui.SameLine();
         ImGui.Text(" ¡ú " + help);
     }
