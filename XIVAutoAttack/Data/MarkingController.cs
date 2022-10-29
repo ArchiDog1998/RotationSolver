@@ -51,11 +51,16 @@ namespace XIVAutoAttack.Data
         internal static unsafe BattleChara Attack4Chara(BattleChara[] charas) => GetChara(charas, Instance->Attack4);
         internal static unsafe BattleChara Attack5Chara(BattleChara[] charas) => GetChara(charas, Instance->Attack5);
 
-        //internal static unsafe BattleChara Attack1Chara(BattleChara[] charas) => null;
-        //internal static unsafe BattleChara Attack2Chara(BattleChara[] charas) => null;
-        //internal static unsafe BattleChara Attack3Chara(BattleChara[] charas) => null;
-        //internal static unsafe BattleChara Attack4Chara(BattleChara[] charas) => null;
-        //internal static unsafe BattleChara Attack5Chara(BattleChara[] charas) => null;
+        internal static bool HaveAttackChara(BattleChara[] charas)
+        {
+            if (Attack1Chara(charas) != null) return true;
+            if (Attack2Chara(charas) != null) return true;
+            if (Attack3Chara(charas) != null) return true;
+            if (Attack4Chara(charas) != null) return true;
+            if (Attack5Chara(charas) != null) return true;
+            return false;
+        }
+
 
         private static BattleChara GetChara(BattleChara[] charas, uint id)
         {

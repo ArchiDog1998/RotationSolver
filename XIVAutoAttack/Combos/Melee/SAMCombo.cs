@@ -128,6 +128,8 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
     };
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+        bool haveMeikyoShisui = Player.HaveStatus(ObjectStatus.MeikyoShisui);
+
         //赶紧回返！
         if (Service.IconReplacer.OriginalHook(Actions.OgiNamikiri.ID) == Actions.KaeshiNamikiri.ID)
         {
@@ -142,7 +144,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
             if (Actions.KaeshiSetsugekka.ShouldUse(out act, mustUse: true)) return true;
         }
 
-        if (Actions.OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
+        if (!haveMeikyoShisui && Actions.OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
         if (Actions.TenkaGoken.ShouldUse(out act))
         {
             if (SenCount == 2) return true;
@@ -154,7 +156,6 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
         }
 
         //123
-        bool haveMeikyoShisui = Player.HaveStatus(ObjectStatus.MeikyoShisui);
         //如果是单体，且明镜止水的冷却时间小于3秒。
         if (!JobGauge.HasSetsu && !Actions.Fuga.ShouldUse(out _))
         {

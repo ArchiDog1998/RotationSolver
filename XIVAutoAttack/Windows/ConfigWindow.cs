@@ -380,38 +380,40 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
-                        bool textlocation = Service.Configuration.TextLocation;
-                        if (ImGui.Checkbox("写出战技身位", ref textlocation))
+                        if (actionEnable)
                         {
-                            Service.Configuration.TextLocation = textlocation;
-                            Service.Configuration.Save();
-                        }
+                            bool textlocation = Service.Configuration.TextLocation;
+                            if (ImGui.Checkbox("写出战技身位", ref textlocation))
+                            {
+                                Service.Configuration.TextLocation = textlocation;
+                                Service.Configuration.Save();
+                            }
 
-                        bool sayingLocation = Service.Configuration.SayingLocation;
-                        if (ImGui.Checkbox("喊出战技身位", ref sayingLocation))
-                        {
-                            Service.Configuration.SayingLocation = sayingLocation;
-                            Service.Configuration.Save();
-                        }
+                            bool sayingLocation = Service.Configuration.SayingLocation;
+                            if (ImGui.Checkbox("喊出战技身位", ref sayingLocation))
+                            {
+                                Service.Configuration.SayingLocation = sayingLocation;
+                                Service.Configuration.Save();
+                            }
 
-                        bool sayoutLocationWrong = Service.Configuration.SayoutLocationWrong;
-                        if (ImGui.Checkbox("显示身位错误", ref sayoutLocationWrong))
-                        {
-                            Service.Configuration.SayoutLocationWrong = sayoutLocationWrong;
-                            Service.Configuration.Save();
-                        }
+                            bool sayoutLocationWrong = Service.Configuration.SayoutLocationWrong;
+                            if (ImGui.Checkbox("显示身位错误", ref sayoutLocationWrong))
+                            {
+                                Service.Configuration.SayoutLocationWrong = sayoutLocationWrong;
+                                Service.Configuration.Save();
+                            }
 
-                        var str = Service.Configuration.LocationText;
-                        if (ImGui.InputText("身位错误提示语", ref str, 15))
-                        {
-                            Service.Configuration.LocationText = str;
-                            Service.Configuration.Save();
+                            var str = Service.Configuration.LocationText;
+                            if (ImGui.InputText("身位错误提示语", ref str, 15))
+                            {
+                                Service.Configuration.LocationText = str;
+                                Service.Configuration.Save();
+                            }
+                            if (ImGui.IsItemHovered())
+                            {
+                                ImGui.SetTooltip("如果身位错误，你想怎么被骂!");
+                            }
                         }
-                        if (ImGui.IsItemHovered())
-                        {
-                            ImGui.SetTooltip("如果身位错误，你想怎么被骂!");
-                        }
-
 
                         bool autoSayingOut = Service.Configuration.AutoSayingOut;
                         if (ImGui.Checkbox("状态变化时喊出", ref autoSayingOut))
@@ -622,6 +624,22 @@ internal class ConfigWindow : Window
                         {
                             Service.Configuration.ChooseAttackMark = chooseAttackMark;
                             Service.Configuration.Save();
+                        }
+
+                        if (chooseAttackMark)
+                        {
+                            Spacing();
+                            bool attackMarkAOE = Service.Configuration.AttackMarkAOE;
+
+                            if (ImGui.Checkbox("是否还要使用AOE", ref attackMarkAOE))
+                            {
+                                Service.Configuration.AttackMarkAOE = attackMarkAOE;
+                                Service.Configuration.Save();
+                            }
+                            if (ImGui.IsItemHovered())
+                            {
+                                ImGui.SetTooltip("如果勾选了，那么可能这个AOE打不到攻击目标的对象，因为为了追求打到更多的目标。");
+                            }
                         }
 
                         bool filterStopMark = Service.Configuration.FilterStopMark;

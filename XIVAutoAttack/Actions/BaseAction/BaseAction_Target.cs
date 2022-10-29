@@ -1,8 +1,10 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Combos.Healer;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
@@ -214,30 +216,42 @@ namespace XIVAutoAttack.Actions.BaseAction
                     Target = null;
                     return false;
                 }
+
+                //判断一下AOE攻击的时候如果有攻击目标标记目标
+                if (Action.CastType > 1 && NoAOEForAttackMark)
+                {
+                    if (mustUse)
+                    {
+                        Target = TargetFilter.GetAttackMarkChara(TargetUpdater.HostileTargets);
+                        if (Target == null) return false;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
                 switch (Action.CastType)
                 {
                     case 1:
                     default:
                         BattleChara[] canReachTars = FilterForTarget(TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, range));
-                        var tar = ChoiceTarget(canReachTars);
-                        if (tar == null) return false;
-                        Target = tar;
+                        Target = ChoiceTarget(canReachTars);
+                        if (Target == null) return false;
                         return true;
 
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        tar = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, Action.EffectRange, false, mustUse, true));
-                        if (tar == null) return false;
-                        Target = tar;
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, Action.EffectRange, false, mustUse, true));
+                        if (Target == null) return false;
                         return true;
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        tar = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), Action.EffectRange, mustUse, true));
-                        if (tar == null) return false;
-                        Target = tar;
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), Action.EffectRange, mustUse, true));
+                        if (Target == null) return false;
                         return true;
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        tar = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, mustUse, true));
-                        if (tar == null) return false;
-                        Target = tar;
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, mustUse, true));
+                        if (Target == null) return false;
                         return true;
                 }
             }
@@ -247,6 +261,20 @@ namespace XIVAutoAttack.Actions.BaseAction
                 Target = Service.ClientState.LocalPlayer;
                 if (Action.EffectRange > 0 && !_isFriendly)
                 {
+                    if(NoAOEForAttackMark)
+                    {
+                        if (mustUse)
+                        {
+                            Target = TargetFilter.GetAttackMarkChara(TargetUpdater.HostileTargets);
+                            if(Target == null) return false;
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+
                     //如果不用自动找目标，那就不打AOE
                     if (!mustUse && !CommandController.AutoTarget && !Service.Configuration.UseAOEWhenManual) return false;
 
@@ -259,5 +287,11 @@ namespace XIVAutoAttack.Actions.BaseAction
             Target = Service.TargetManager.Target is BattleChara battle ? battle : Service.ClientState.LocalPlayer;
             return true;
         }
+        /// <summary>
+        /// 开启攻击标记且有攻击标记目标且不开AOE。
+        /// </summary>
+        private static bool NoAOEForAttackMark =>
+            Service.Configuration.ChooseAttackMark && !Service.Configuration.AttackMarkAOE 
+            && MarkingController.HaveAttackChara(TargetUpdater.HostileTargets);
     }
 }
