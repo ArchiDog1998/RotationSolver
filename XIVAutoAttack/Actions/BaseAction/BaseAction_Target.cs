@@ -237,25 +237,21 @@ namespace XIVAutoAttack.Actions.BaseAction
                     case 1:
                     default:
                         BattleChara[] canReachTars = FilterForTarget(TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, range));
-                        var tar = ChoiceTarget(canReachTars);
-                        if (tar == null) return false;
-                        Target = tar;
+                        Target = ChoiceTarget(canReachTars);
+                        if (Target == null) return false;
                         return true;
 
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        tar = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, Action.EffectRange, false, mustUse, true));
-                        if (tar == null) return false;
-                        Target = tar;
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, Action.EffectRange, false, mustUse, true));
+                        if (Target == null) return false;
                         return true;
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        tar = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), Action.EffectRange, mustUse, true));
-                        if (tar == null) return false;
-                        Target = tar;
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), Action.EffectRange, mustUse, true));
+                        if (Target == null) return false;
                         return true;
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        tar = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, mustUse, true));
-                        if (tar == null) return false;
-                        Target = tar;
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, mustUse, true));
+                        if (Target == null) return false;
                         return true;
                 }
             }

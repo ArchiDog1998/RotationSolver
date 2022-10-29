@@ -217,7 +217,14 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         {DescType.单体防御, $"{Actions.ShadeShift.Action.Name}"},
         {DescType.移动技能, $"{Actions.Shukuchi.Action.Name}，目标为面向夹角小于30°内最远目标。"},
     };
-    private bool ChoiceNinjutsus(out IAction act)
+
+    private static void SetNinjustus(NinAction act)
+    {
+        if (_ninactionAim != null && IsLastAction(false, Actions.Ten, Actions.Jin, Actions.Chi, Actions.FumaShurikenTen, Actions.FumaShurikenJin)) return;
+        _ninactionAim = act;
+    }
+
+    private  bool ChoiceNinjutsus(out IAction act)
     {
         act = null;
         if (Service.IconReplacer.OriginalHook(2260) != 2260) return false;
@@ -227,24 +234,24 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         {
             if (Actions.GokaMekkyaku.ShouldUse(out _))
             {
-                _ninactionAim = Actions.GokaMekkyaku;
+                SetNinjustus(Actions.GokaMekkyaku);
                 return false;
             }
             if (Actions.HyoshoRanryu.ShouldUse(out _))
             {
-                _ninactionAim = Actions.HyoshoRanryu;
+                SetNinjustus(Actions.HyoshoRanryu);
                 return false;
             }
 
             if (Actions.Katon.ShouldUse(out _))
             {
-                _ninactionAim = Actions.Katon;
+                SetNinjustus(Actions.Katon);
                 return false;
             }
 
             if (Actions.Raiton.ShouldUse(out _))
             {
-                _ninactionAim = Actions.Raiton;
+                SetNinjustus(Actions.Raiton);
                 return false;
             }
         }
@@ -264,7 +271,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
 
             if (empty && (!InCombat || !Actions.Huraijin.EnoughLevel) && Actions.Huton.ShouldUse(out _))
             {
-                _ninactionAim = Actions.Huton;
+                SetNinjustus(Actions.Huton);
                 return false;
             }
 
@@ -281,13 +288,13 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
             if (Actions.Katon.ShouldUse(out _))
             {
                 if(!haveDoton && !IsMoving && Actions.TenChiJin.WillHaveOneChargeGCD(0, 1)) _ninactionAim = Actions.Doton;
-                else _ninactionAim = Actions.Katon;
+                else SetNinjustus(Actions.Katon);
                 return true;
             }
             //背刺
             if (SettingBreak && Actions.Suiton.ShouldUse(out _))
             {
-                _ninactionAim = Actions.Suiton;
+                SetNinjustus(Actions.Suiton);
             }
         }
         //常规单体忍术
@@ -295,13 +302,13 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         {
             if (Actions.Raiton.ShouldUse(out _))
             {
-                _ninactionAim = Actions.Raiton;
+                SetNinjustus(Actions.Raiton);
                 return true;
             }
 
             if (!Actions.Chi.EnoughLevel && Actions.FumaShuriken.ShouldUse(out _))
             {
-                _ninactionAim = Actions.FumaShuriken;
+                SetNinjustus(Actions.FumaShuriken);
                 return true;
             }
         }
