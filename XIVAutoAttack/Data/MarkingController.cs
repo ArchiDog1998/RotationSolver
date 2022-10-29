@@ -69,8 +69,10 @@ namespace XIVAutoAttack.Data
 
         internal unsafe static BattleChara[] FilterStopCharaes(BattleChara[] charas)
         {
+            //return charas;
+
             List<uint> ids = new List<uint>();
-            if(Instance -> Stop1 != 0xE0000000)
+            if (Instance->Stop1 != 0xE0000000)
             {
                 ids.Add(Instance->Stop1);
             }

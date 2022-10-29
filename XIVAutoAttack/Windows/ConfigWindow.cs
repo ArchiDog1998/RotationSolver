@@ -208,7 +208,7 @@ internal class ConfigWindow : Window
                 //    ImGui.Text("NameID: " + b.NameId.ToString());
                 //}
 
-                if(IconReplacer.nextAction != null && IconReplacer.nextAction is BaseAction baseAction)
+                if (IconReplacer.nextAction != null && IconReplacer.nextAction is BaseAction baseAction)
                 {
                     ImGui.Text(baseAction.Action.Name.ToString());
                     ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
@@ -216,11 +216,11 @@ internal class ConfigWindow : Window
                     ImGui.Text("Is Cooldown: " + baseAction.IsCoolDown.ToString());
                 }
 
-                ImGui.Text(MovingUpdater.IsMoving.ToString());
+                //ImGui.Text(MovingUpdater.IsMoving.ToString());
 
 
-                //ImGui.Text(ActionUpdater.WeaponRemain.ToString());
-                //ImGui.Text(ActionUpdater.WeaponTotal.ToString());
+                ImGui.Text(ActionUpdater.WeaponElapsed.ToString());
+                ImGui.Text(ActionUpdater.WeaponRemain.ToString());
 
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
                 //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
@@ -275,6 +275,10 @@ internal class ConfigWindow : Window
                     {
                         ImGui.SetTooltip("如果不监视行为会影响循环以及身位提示，一般用于无法交任务物品时");
                     }
+                    if (!actionEnable)
+                    {
+                        ImGui.TextColored(new Vector4(1, 0, 0, 1), "不监视行为会影响循环以及身位提示，一般用于无法交任务物品时");
+                    }
 
                     bool neverReplaceIcon = Service.Configuration.NeverReplaceIcon;
                     if (ImGui.Checkbox("不替换图标", ref neverReplaceIcon))
@@ -286,179 +290,54 @@ internal class ConfigWindow : Window
                     {
                         ImGui.SetTooltip("如果不替换图标，提前判定的所有功能将失效，如提前提示身位");
                     }
-
-                    float weaponDelay = Service.Configuration.WeaponDelay;
-                    if (ImGui.DragFloat("需要GCD随机手残多少秒", ref weaponDelay, 0.002f, 0, 1))
+                    if (neverReplaceIcon)
                     {
-                        Service.Configuration.WeaponDelay = weaponDelay;
-                        Service.Configuration.Save();
+                        ImGui.TextColored(new Vector4(1, 0, 0, 1), "不替换图标，提前判定的所有功能将失效，如提前提示身位");
                     }
 
-                    float weaponFaster = Service.Configuration.WeaponFaster;
-                    if (ImGui.DragFloat("需要提前几秒按下技能", ref weaponFaster, 0.002f, 0, 0.1f))
+                    if (ImGui.CollapsingHeader("基础设置"))
                     {
-                        Service.Configuration.WeaponFaster = weaponFaster;
-                        Service.Configuration.Save();
-                    }
 
-                    float weaponInterval = Service.Configuration.WeaponInterval;
-                    if (ImGui.DragFloat("间隔多久释放能力技", ref weaponInterval, 0.002f, 0.5f, 0.7f))
-                    {
-                        Service.Configuration.WeaponInterval = weaponInterval;
-                        Service.Configuration.Save();
-                    }
-
-                    float interruptibleTime = Service.Configuration.InterruptibleTime;
-                    if (ImGui.DragFloat("打断类技能延迟多久后释放", ref interruptibleTime, 0.002f, 0, 2))
-                    {
-                        Service.Configuration.InterruptibleTime = interruptibleTime;
-                        Service.Configuration.Save();
-                    }
-
-                    float specialDuration = Service.Configuration.SpecialDuration;
-                    if (ImGui.DragFloat("特殊状态持续多久", ref specialDuration, 0.02f, 1, 20))
-                    {
-                        Service.Configuration.SpecialDuration = specialDuration;
-                        Service.Configuration.Save();
-                    }
-
-                    ImGui.Separator();
-
-                    if (ImGui.CollapsingHeader("目标选择"))
-                    {
-                        int isAllTargetAsHostile = Service.Configuration.TargetToHostileType;
-                        if (ImGui.Combo("敌对目标筛选条件", ref isAllTargetAsHostile, new string[]
+                        float weaponDelay = Service.Configuration.WeaponDelay;
+                        if (ImGui.DragFloat("需要GCD随机手残多少秒", ref weaponDelay, 0.002f, 0, 1))
                         {
-                                "所有能打的目标都是敌对的目标",
-                                "如果处于打人的目标数量为零，所有能打的都是敌对的",
-                                "只有打人的目标才是敌对的目标",
-                        }, 3))
-                        {
-                            Service.Configuration.TargetToHostileType = isAllTargetAsHostile;
+                            Service.Configuration.WeaponDelay = weaponDelay;
                             Service.Configuration.Save();
                         }
 
-                        bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;
-                        if (ImGui.Checkbox("将敌对列表的对象设为敌对", ref addEnemyListToHostile))
+                        float weaponFaster = Service.Configuration.WeaponFaster;
+                        if (ImGui.DragFloat("需要提前几秒按下技能", ref weaponFaster, 0.002f, 0, 0.1f))
                         {
-                            Service.Configuration.AddEnemyListToHostile = addEnemyListToHostile;
+                            Service.Configuration.WeaponFaster = weaponFaster;
                             Service.Configuration.Save();
                         }
 
-                        bool chooseAttackMark = Service.Configuration.ChooseAttackMark;
-                        if (ImGui.Checkbox("优先选中有攻击标记的目标", ref chooseAttackMark))
+                        float weaponInterval = Service.Configuration.WeaponInterval;
+                        if (ImGui.DragFloat("间隔多久释放能力技", ref weaponInterval, 0.002f, 0.5f, 0.7f))
                         {
-                            Service.Configuration.ChooseAttackMark = chooseAttackMark;
+                            Service.Configuration.WeaponInterval = weaponInterval;
                             Service.Configuration.Save();
                         }
 
-                        bool filterStopMark = Service.Configuration.FilterStopMark;
-                        if (ImGui.Checkbox("去掉有停止标记的目标", ref filterStopMark))
+                        float interruptibleTime = Service.Configuration.InterruptibleTime;
+                        if (ImGui.DragFloat("打断类技能延迟多久后释放", ref interruptibleTime, 0.002f, 0, 2))
                         {
-                            Service.Configuration.FilterStopMark = filterStopMark;
+                            Service.Configuration.InterruptibleTime = interruptibleTime;
                             Service.Configuration.Save();
                         }
 
-                        int multiCount = Service.Configuration.HostileCount;
-                        if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
+                        float specialDuration = Service.Configuration.SpecialDuration;
+                        if (ImGui.DragFloat("特殊状态持续多久", ref specialDuration, 0.02f, 1, 20))
                         {
-                            Service.Configuration.HostileCount = multiCount;
+                            Service.Configuration.SpecialDuration = specialDuration;
                             Service.Configuration.Save();
                         }
 
-                        int partyCount = Service.Configuration.PartyCount;
-                        if (ImGui.DragInt("范围治疗最少需要多少人", ref partyCount, 0.02f, 2, 5))
+                        int addDotGCDCount = Service.Configuration.AddDotGCDCount;
+                        if (ImGui.DragInt("还差几个GCD就可以补DOT了", ref addDotGCDCount, 0.2f, 0, 3))
                         {
-                            Service.Configuration.PartyCount = partyCount;
+                            Service.Configuration.AddDotGCDCount = addDotGCDCount;
                             Service.Configuration.Save();
-                        }
-
-                        float minradius = Service.Configuration.ObjectMinRadius;
-                        if (ImGui.DragFloat("攻击对象最小底圈大小", ref minradius, 0.02f, 0, 10))
-                        {
-                            Service.Configuration.ObjectMinRadius = minradius;
-                            Service.Configuration.Save();
-                        }
-
-                        //bool changeTargetForFate = Service.Configuration.ChangeTargetForFate;
-                        //if (ImGui.Checkbox("在Fate中只选择Fate怪", ref changeTargetForFate))
-                        //{
-                        //    Service.Configuration.ChangeTargetForFate = changeTargetForFate;
-                        //    Service.Configuration.Save();
-                        //}
-
-                        bool moveToScreen = Service.Configuration.MoveTowardsScreen;
-                        if (ImGui.Checkbox("移动技能选屏幕中心的对象", ref moveToScreen))
-                        {
-                            Service.Configuration.MoveTowardsScreen = moveToScreen;
-                            Service.Configuration.Save();
-                        }
-                        if (ImGui.IsItemHovered())
-                        {
-                            ImGui.SetTooltip("设为是时移动的对象为屏幕中心的那个，否为游戏角色面朝的对象。");
-                        }
-
-                        bool raiseAll = Service.Configuration.RaiseAll;
-                        if (ImGui.Checkbox("复活所有能复活的人，而非小队", ref raiseAll))
-                        {
-                            Service.Configuration.RaiseAll = raiseAll;
-                            Service.Configuration.Save();
-                        }
-                    }
-
-                    ImGui.Separator();
-
-                    if (ImGui.CollapsingHeader("敌对选择"))
-                    {
-                        if (ImGui.Button("添加选择条件"))
-                        {
-                            Service.Configuration.TargetingTypes.Add(TargetingType.Big);
-                        }
-
-                        if (ImGui.BeginChild("条件列表", new Vector2(0f, -1f), true))
-                        {
-                            for (int i = 0; i < Service.Configuration.TargetingTypes.Count; i++)
-                            {
-                                var names = Enum.GetNames(typeof(TargetingType));
-                                var targingType = (int)Service.Configuration.TargetingTypes[i];
-                                if (ImGui.Combo("敌对目标选择条件" + i.ToString(), ref targingType, names, names.Length))
-                                {
-                                    Service.Configuration.TargetingTypes[i] = (TargetingType)targingType;
-                                    Service.Configuration.Save();
-                                }
-
-                                if (ImGui.Button("上移条件" + i.ToString()))
-                                {
-                                    if (i != 0)
-                                    {
-                                        var value = Service.Configuration.TargetingTypes[i];
-                                        Service.Configuration.TargetingTypes.RemoveAt(i);
-                                        Service.Configuration.TargetingTypes.Insert(i - 1, value);
-                                    }
-                                }
-                                ImGui.SameLine();
-                                Spacing();
-                                if (ImGui.Button("下移条件" + i.ToString()))
-                                {
-                                    if (i < Service.Configuration.TargetingTypes.Count - 1)
-                                    {
-                                        var value = Service.Configuration.TargetingTypes[i];
-                                        Service.Configuration.TargetingTypes.RemoveAt(i);
-                                        Service.Configuration.TargetingTypes.Insert(i + 1, value);
-                                    }
-                                }
-
-                                ImGui.SameLine();
-                                Spacing();
-
-                                if (ImGui.Button("删除条件" + i.ToString()))
-                                {
-                                    Service.Configuration.TargetingTypes.RemoveAt(i);
-                                }
-
-                                ImGui.Separator();
-                            }
-                            ImGui.EndChild();
                         }
                     }
 
@@ -712,6 +591,146 @@ internal class ConfigWindow : Window
                         {
                             Service.Configuration.HealthForDyingTank = healthTank;
                             Service.Configuration.Save();
+                        }
+                    }
+
+                    ImGui.Separator();
+
+                    if (ImGui.CollapsingHeader("目标选择"))
+                    {
+                        int isAllTargetAsHostile = Service.Configuration.TargetToHostileType;
+                        if (ImGui.Combo("敌对目标筛选条件", ref isAllTargetAsHostile, new string[]
+                        {
+                                "所有能打的目标都是敌对的目标",
+                                "如果处于打人的目标数量为零，所有能打的都是敌对的",
+                                "只有打人的目标才是敌对的目标",
+                        }, 3))
+                        {
+                            Service.Configuration.TargetToHostileType = isAllTargetAsHostile;
+                            Service.Configuration.Save();
+                        }
+
+                        bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;
+                        if (ImGui.Checkbox("将敌对列表的对象设为敌对", ref addEnemyListToHostile))
+                        {
+                            Service.Configuration.AddEnemyListToHostile = addEnemyListToHostile;
+                            Service.Configuration.Save();
+                        }
+
+                        bool chooseAttackMark = Service.Configuration.ChooseAttackMark;
+                        if (ImGui.Checkbox("优先选中有攻击标记的目标", ref chooseAttackMark))
+                        {
+                            Service.Configuration.ChooseAttackMark = chooseAttackMark;
+                            Service.Configuration.Save();
+                        }
+
+                        bool filterStopMark = Service.Configuration.FilterStopMark;
+                        if (ImGui.Checkbox("去掉有停止标记的目标", ref filterStopMark))
+                        {
+                            Service.Configuration.FilterStopMark = filterStopMark;
+                            Service.Configuration.Save();
+                        }
+
+                        int multiCount = Service.Configuration.HostileCount;
+                        if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
+                        {
+                            Service.Configuration.HostileCount = multiCount;
+                            Service.Configuration.Save();
+                        }
+
+                        int partyCount = Service.Configuration.PartyCount;
+                        if (ImGui.DragInt("范围治疗最少需要多少人", ref partyCount, 0.02f, 2, 5))
+                        {
+                            Service.Configuration.PartyCount = partyCount;
+                            Service.Configuration.Save();
+                        }
+
+                        float minradius = Service.Configuration.ObjectMinRadius;
+                        if (ImGui.DragFloat("攻击对象最小底圈大小", ref minradius, 0.02f, 0, 10))
+                        {
+                            Service.Configuration.ObjectMinRadius = minradius;
+                            Service.Configuration.Save();
+                        }
+
+                        //bool changeTargetForFate = Service.Configuration.ChangeTargetForFate;
+                        //if (ImGui.Checkbox("在Fate中只选择Fate怪", ref changeTargetForFate))
+                        //{
+                        //    Service.Configuration.ChangeTargetForFate = changeTargetForFate;
+                        //    Service.Configuration.Save();
+                        //}
+
+                        bool moveToScreen = Service.Configuration.MoveTowardsScreen;
+                        if (ImGui.Checkbox("移动技能选屏幕中心的对象", ref moveToScreen))
+                        {
+                            Service.Configuration.MoveTowardsScreen = moveToScreen;
+                            Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("设为是时移动的对象为屏幕中心的那个，否为游戏角色面朝的对象。");
+                        }
+
+                        bool raiseAll = Service.Configuration.RaiseAll;
+                        if (ImGui.Checkbox("复活所有能复活的人，而非小队", ref raiseAll))
+                        {
+                            Service.Configuration.RaiseAll = raiseAll;
+                            Service.Configuration.Save();
+                        }
+                    }
+
+                    ImGui.Separator();
+
+                    if (ImGui.CollapsingHeader("敌对选择"))
+                    {
+                        if (ImGui.Button("添加选择条件"))
+                        {
+                            Service.Configuration.TargetingTypes.Add(TargetingType.Big);
+                        }
+
+                        if (ImGui.BeginChild("条件列表", new Vector2(0f, -1f), true))
+                        {
+                            for (int i = 0; i < Service.Configuration.TargetingTypes.Count; i++)
+                            {
+                                var names = Enum.GetNames(typeof(TargetingType));
+                                var targingType = (int)Service.Configuration.TargetingTypes[i];
+                                if (ImGui.Combo("敌对目标选择条件" + i.ToString(), ref targingType, names, names.Length))
+                                {
+                                    Service.Configuration.TargetingTypes[i] = (TargetingType)targingType;
+                                    Service.Configuration.Save();
+                                }
+
+                                if (ImGui.Button("上移条件" + i.ToString()))
+                                {
+                                    if (i != 0)
+                                    {
+                                        var value = Service.Configuration.TargetingTypes[i];
+                                        Service.Configuration.TargetingTypes.RemoveAt(i);
+                                        Service.Configuration.TargetingTypes.Insert(i - 1, value);
+                                    }
+                                }
+                                ImGui.SameLine();
+                                Spacing();
+                                if (ImGui.Button("下移条件" + i.ToString()))
+                                {
+                                    if (i < Service.Configuration.TargetingTypes.Count - 1)
+                                    {
+                                        var value = Service.Configuration.TargetingTypes[i];
+                                        Service.Configuration.TargetingTypes.RemoveAt(i);
+                                        Service.Configuration.TargetingTypes.Insert(i + 1, value);
+                                    }
+                                }
+
+                                ImGui.SameLine();
+                                Spacing();
+
+                                if (ImGui.Button("删除条件" + i.ToString()))
+                                {
+                                    Service.Configuration.TargetingTypes.RemoveAt(i);
+                                }
+
+                                ImGui.Separator();
+                            }
+                            ImGui.EndChild();
                         }
                     }
 

@@ -53,6 +53,16 @@ namespace XIVAutoAttack.Updaters
             WeaponRemain = Math.Max(weapontotal - WeaponElapsed,
                 player.TotalCastTime - player.CurrentCastTime);
 
+            //确定读条时间。
+            if (WeaponElapsed < 0.3)
+            {
+                _lastCastingTotal = Service.ClientState.LocalPlayer.TotalCastTime;
+
+                //能力技就不用提前了。
+                //补上读条税
+                if (_lastCastingTotal > 0) _lastCastingTotal += 0.1f + Service.Configuration.WeaponFaster;
+            }
+
             var min = Math.Max(weapontotal - Service.Configuration.WeaponInterval, 0);
             AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
 
@@ -82,8 +92,8 @@ namespace XIVAutoAttack.Updaters
         }
 
         static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
-        static long _weaponRandomDelay = 0;
-        static float _lastCastingTotal = 0;
+        internal static long _weaponRandomDelay = 0;
+        internal static float _lastCastingTotal = 0;
         internal static void DoAction()
         {
             if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
@@ -116,18 +126,7 @@ namespace XIVAutoAttack.Updaters
 
                     return;
                 }
-
                 return;
-            }
-
-            //确定读条时间。
-            if (WeaponElapsed < 0.3)
-            {
-                //能力技就不用提前了。
-                _lastCastingTotal = Service.ClientState.LocalPlayer.TotalCastTime;
-
-                //补上读条税
-                if (_lastCastingTotal > 0) _lastCastingTotal += 0.1f + Service.Configuration.WeaponFaster;
             }
 
             //要超出GCD了，那就不放技能了。

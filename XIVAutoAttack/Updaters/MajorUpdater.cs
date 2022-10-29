@@ -74,6 +74,7 @@ namespace XIVAutoAttack.Updaters
 
         public static void Dispose()
         {
+            Service.Framework.Update -= Framework_Update;
             ActionUpdater.Dispose();
             PreviewUpdater.Dispose();
             MovingUpdater.Dispose();

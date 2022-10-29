@@ -37,12 +37,14 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
             {
                 OtherCheck = b =>
                 {
+                    if (IsLastWeaponSkill(false, IronJaws)) return false;
+
                     if (Player.HaveStatus(ObjectStatus.RagingStrikes) && 
-                        Player.WillStatusEndGCD(1, 1, true, ObjectStatus.RagingStrikes)
-                        && !IsLastWeaponSkill(true, IronJaws)) return true;
+                        Player.WillStatusEndGCD(1, 1, true, ObjectStatus.RagingStrikes)) return true;
 
                     return b.HaveStatus(ObjectStatus.VenomousBite, ObjectStatus.CausticBite) & b.HaveStatus(ObjectStatus.Windbite, ObjectStatus.Stormbite)
-                    & (b.WillStatusEndGCD(2, 0, true, ObjectStatus.VenomousBite, ObjectStatus.CausticBite) |b.WillStatusEndGCD(2, 0, true, ObjectStatus.Windbite, ObjectStatus.Stormbite));
+                    & (b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, ObjectStatus.VenomousBite, ObjectStatus.CausticBite) 
+                    | b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, ObjectStatus.Windbite, ObjectStatus.Stormbite));
                 },
             },
 
@@ -196,7 +198,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
         //¡Ê—¿¿˛≥›
-        if (IsLastWeaponSkill(false, Actions.IronJaws) && Actions.IronJaws.ShouldUse(out act)) return true;
+        if (Actions.IronJaws.ShouldUse(out act)) return true;
 
         //∑≈¥Û’–£°
         if (Actions.ApexArrow.ShouldUse(out act, mustUse: true)) return true;

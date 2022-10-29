@@ -10,9 +10,12 @@ punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
   - 修改了宏！！从AttackBig，AttackSmall 改为 AttackSmart!
+  - 修复了Dispose忘记删去刷新的问题
   ## 新增功能
   - 添加咏唱锁功能
   - 可以自己选择想要选择目标的各种方法。
+  - 添加选择标记目标的功能
+  - 可以选择多少个GCD后加DOT，推荐2
   ## API
   - 
 

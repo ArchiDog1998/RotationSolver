@@ -18,6 +18,8 @@ public class PluginConfiguration : IPluginConfiguration
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
     public Dictionary<string, ActionConfiguration> ActionsConfigurations { get; private set; } = new Dictionary<string, ActionConfiguration>();
     public int TargetToHostileType { get; set; } = 1;
+    public int AddDotGCDCount { get; set; } = 2;
+
     public bool AutoBreak { get; set; } = true;
     public bool OnlyGCD { get; set; } = false;
     public bool NoDefenceAbility { get; set; } = false;

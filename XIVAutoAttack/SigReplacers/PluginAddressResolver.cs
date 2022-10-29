@@ -23,7 +23,7 @@ internal class PluginAddressResolver : BaseAddressResolver
     {
         //Static
         ComboTimer = scanner.GetStaticAddressFromSig("F3 0F 11 05 ?? ?? ?? ?? F3 0F 10 45 ?? E8");
-        MarkingController = scanner.GetStaticAddressFromSig("48 8B 94 24 ? ? ? ? 48 8D 0D ? ? ? ? 41 B0 01");
+        MarkingController = scanner.GetStaticAddressFromSig("48 8d 0d ?? ?? ?? ?? e8 ?? ?? ?? ?? 48 3b c3 75 ?? ff c7 3b fe");
 
         //Function
         IsActionIdReplaceable = scanner.ScanText("81 F9 ?? ?? ?? ?? 7F 35");
