@@ -13,9 +13,6 @@ namespace XIVAutoAttack.Updaters
         {
             if (!Service.Conditions.Any() || Service.ClientState.LocalPlayer == null) return;
 
-            //if (!Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat])
-            //    CommandController.AutoAttack = false;
-
             PreviewUpdater.UpdateCastBar();
 #if DEBUG
             //Get changed condition.
@@ -56,9 +53,6 @@ namespace XIVAutoAttack.Updaters
 
             MovingUpdater.UpdateLocation();
 
-            if (Service.ClientState.LocalPlayer.CurrentHp == 0
-             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying])
-                return;
             ActionUpdater.DoAction();
             MacroUpdater.UpdateMacro();
         }
