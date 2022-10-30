@@ -243,14 +243,14 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         {
             if (InDungeonsMiddle) return true;
 
+            //等级小于烈牙,
+            if (!Actions.GnashingFang.EnoughLevel && (Player.HaveStatus(ObjectStatus.NoMercy) || !Actions.NoMercy.WillHaveOneCharge(15, false))) return true;
+
             //爆发期,烈牙之后
             if (Player.HaveStatus(ObjectStatus.NoMercy) && Actions.GnashingFang.IsCoolDown) return true;
 
             //非爆发期
             if (!Player.HaveStatus(ObjectStatus.NoMercy) && !Actions.GnashingFang.WillHaveOneCharge(20, false)) return true;
-
-            //等级小于烈牙,
-            if (!Actions.GnashingFang.EnoughLevel && (Player.HaveStatus(ObjectStatus.NoMercy) || !Actions.NoMercy.WillHaveOneCharge(15, false))) return true;
         }
 
         //弓形冲波
@@ -326,6 +326,8 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (CanUseSpellInDungeonsMiddle) return true;
             return false;
         }
+        //等级低于爆发击是判断
+        if (!Actions.BurstStrike.EnoughLevel && Actions.NoMercy.ShouldUse(out act)) return true;
 
         if (Actions.BurstStrike.EnoughLevel && Actions.NoMercy.ShouldUse(out act))
         {
@@ -338,8 +340,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             //2弹进无情
             else if (JobGauge.Ammo == 2 && Actions.GnashingFang.IsCoolDown) return true;
         }
-        //等级低于爆发击是判断
-        if (!Actions.BurstStrike.EnoughLevel && Actions.NoMercy.ShouldUse(out act)) return true;
+
 
         act = null;
         return false;
@@ -384,14 +385,15 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             //在4人本道中不使用
             if (InDungeonsMiddle) return false;
 
+            if (!Actions.GnashingFang.EnoughLevel && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
+
             //在烈牙后面使用音速破
             if (Actions.GnashingFang.IsCoolDown && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
 
             //其他判断
             if (!Actions.DoubleDown.EnoughLevel && Player.HaveStatus(ObjectStatus.ReadyToRip)
                 && Actions.GnashingFang.IsCoolDown) return true;
-             
-            if (!Actions.GnashingFang.EnoughLevel && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
+            
         }        
         return false;
     }
@@ -434,8 +436,8 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
     {
         if (Actions.BurstStrike.ShouldUse(out act))
         {
-            //在4人本道中且移动时不使用
-            if (InDungeonsMiddle && IsMoving) return false;
+            //在4人本道中且AOE时不使用
+            if (InDungeonsMiddle && Actions.DemonSlice.ShouldUse(out _)) return false;
 
             //如果烈牙剩0.5秒冷却好,不释放爆发击,主要因为技速不同可能会使烈牙延后太多所以判定一下
             if (Actions.SonicBreak.IsCoolDown && Actions.SonicBreak.WillHaveOneCharge((float) 0.5, false) && Actions.GnashingFang.EnoughLevel) return false;
@@ -444,13 +446,12 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
             if (Player.HaveStatus(ObjectStatus.NoMercy) &&
                 JobGauge.AmmoComboStep == 0 &&
                 !Actions.GnashingFang.WillHaveOneCharge(1, false)) return true;
-
+            if (Level < 88 && JobGauge.Ammo == 2) return true;
             //无情外防止溢出
             if (IsLastWeaponSkill(Actions.BrutalShell.ID) &&
                 (JobGauge.Ammo == (Level >= 88 ? 3 : 2) ||
                 (Actions.Bloodfest.WillHaveOneCharge(6, false) && JobGauge.Ammo <= 2 && !Actions.NoMercy.WillHaveOneCharge(10, false) && Actions.Bloodfest.EnoughLevel))) return true;
 
-            if (Level < 88 && JobGauge.Ammo == 2) return true;
         }
         return false;
     }
@@ -461,10 +462,11 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         {
             if (InDungeonsMiddle) return true;
 
+            if (!Actions.SonicBreak.EnoughLevel && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
+
             //爆发期,无情中且音速破在冷却中
             if (Player.HaveStatus(ObjectStatus.NoMercy) && Actions.SonicBreak.IsCoolDown) return true;
 
-            if (!Actions.SonicBreak.EnoughLevel && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
         }
         return false;     
     }
