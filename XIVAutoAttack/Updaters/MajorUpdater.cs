@@ -11,7 +11,10 @@ namespace XIVAutoAttack.Updaters
 #endif
         private unsafe static void Framework_Update(Framework framework)
         {
-            if (!Service.Conditions.Any()) return;
+            if (!Service.Conditions.Any() || Service.ClientState.LocalPlayer == null) return;
+
+            //if (!Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat])
+            //    CommandController.AutoAttack = false;
 
             PreviewUpdater.UpdateCastBar();
 #if DEBUG
@@ -46,24 +49,18 @@ namespace XIVAutoAttack.Updaters
             //Update State.
             PreviewUpdater.UpdateEntry();
 
-            if (Service.ClientState.LocalPlayer == null) return;
-
-            if (Service.ClientState.LocalPlayer.CurrentHp == 0
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying])
-                CommandController.AutoAttack = false;
-
-
             ActionUpdater.UpdateActionInfo();
 
             TargetUpdater.UpdateHostileTargets();
             TargetUpdater.UpdateFriends();
 
+            MovingUpdater.UpdateLocation();
+
+            if (Service.ClientState.LocalPlayer.CurrentHp == 0
+             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying])
+                return;
             ActionUpdater.DoAction();
             MacroUpdater.UpdateMacro();
-
-            MovingUpdater.UpdateLocation();
         }
 
         public static void Enable()

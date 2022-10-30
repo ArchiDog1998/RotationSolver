@@ -14,7 +14,7 @@ public abstract partial class CustomCombo
 {
     private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
-        if (Service.Configuration.OnlyGCD || Player.IsCasting)
+        if (Service.Configuration.OnlyGCD || Player.TotalCastTime - Player.CurrentCastTime > Service.Configuration.WeaponInterval)
         {
             act = null;
             return false;

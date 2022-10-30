@@ -218,8 +218,12 @@ internal class ConfigWindow : Window
 
                 //ImGui.Text(MovingUpdater.IsMoving.ToString());
 
-                ImGui.Text(SAMCombo.Actions.MeikyoShisui.HaveOneCharge.ToString());
-                ImGui.Text(ActionUpdater.WeaponRemain.ToString());
+                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
+                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56].ToString());
+                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty95].ToString());
+                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundToDuty97].ToString());
+
+                //ImGui.Text(ActionUpdater.WeaponRemain.ToString());
 
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
                 //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
@@ -703,7 +707,9 @@ internal class ConfigWindow : Window
                         {
                             Service.Configuration.TargetingTypes.Add(TargetingType.Big);
                         }
-
+                        ImGui.SameLine();
+                        Spacing();
+                        ImGui.Text("你可以设定敌对的选择，以便于在战斗中灵活切换选择敌对的逻辑。");
                         for (int i = 0; i < Service.Configuration.TargetingTypes.Count; i++)
                         {
 
@@ -756,14 +762,17 @@ internal class ConfigWindow : Window
 
             if (ImGui.BeginTabItem("技能释放事件"))
             {
-                ImGui.Text("在这个窗口，你可以设定一些技能释放后，使用什么宏。");
-
-                ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
                 if (ImGui.Button("添加事件"))
                 {
                     Service.Configuration.Events.Add(new ActionEventInfo());
                 }
+                ImGui.SameLine();
+                Spacing();
+                ImGui.Text("在这个窗口，你可以设定一些技能释放后，使用什么宏。");
+
+                ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
+
 
                 if (ImGui.BeginChild("事件列表", new Vector2(0f, -1f), true))
                 {
@@ -830,14 +839,12 @@ internal class ConfigWindow : Window
                     ImGui.Separator();
                     CommandHelp("/aauto AutoBreak", "更改是否自动爆发。");
                     ImGui.Separator();
-                    CommandHelp("/aauto AttackSmart", "如果不在进攻中就开始进攻，如果在进攻就切换选择目标模式。");
+                    CommandHelp("/aauto AttackSmart", "如果不在进攻中就开始进攻，如果在进攻就切换选择敌对目标条件。");
                     ImGui.Separator();
                     CommandHelp("/aauto AttackManual", "开始进攻，进攻对象为手动选择，此时不会释放AOE。");
                     ImGui.Separator();
                     CommandHelp("/aauto AttackCancel", "停止进攻，记得一定要经常关掉！");
                     ImGui.Separator();
-                    CommandHelp("/aauto EndSpecial", "停止特殊状态！");
-                    ImGui.EndChild();
                 }
                 ImGui.PopStyleVar();
 
