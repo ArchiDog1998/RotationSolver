@@ -14,7 +14,7 @@ public abstract partial class CustomCombo
 {
     private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
-        if (Service.Configuration.OnlyGCD)
+        if (Service.Configuration.OnlyGCD || Player.IsCasting)
         {
             act = null;
             return false;
@@ -207,13 +207,13 @@ public abstract partial class CustomCombo
     private bool ShouldUseHealAreaAbility(byte abilityRemain, out IAction act)
     {
         act = null;
-        return (CommandController.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act);
+        return (CommandController.HealArea || CanHealAreaAbility) && ActionUpdater.InCombat && HealAreaAbility(abilityRemain, out act);
     }
 
     private bool ShouldUseHealSingleAbility(byte abilityRemain, out IAction act)
     {
         act = null;
-        return (CommandController.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act);
+        return (CommandController.HealSingle || CanHealSingleAbility) && ActionUpdater.InCombat && HealSingleAbility(abilityRemain, out act);
     }
 
     /// <summary>

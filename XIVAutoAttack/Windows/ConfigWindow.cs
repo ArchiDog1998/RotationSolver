@@ -218,8 +218,7 @@ internal class ConfigWindow : Window
 
                 //ImGui.Text(MovingUpdater.IsMoving.ToString());
 
-
-                ImGui.Text(ActionUpdater.WeaponElapsed.ToString());
+                ImGui.Text(SAMCombo.Actions.MeikyoShisui.HaveOneCharge.ToString());
                 ImGui.Text(ActionUpdater.WeaponRemain.ToString());
 
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
@@ -705,50 +704,47 @@ internal class ConfigWindow : Window
                             Service.Configuration.TargetingTypes.Add(TargetingType.Big);
                         }
 
-                        if (ImGui.BeginChild("条件列表", new Vector2(0f, -1f), true))
+                        for (int i = 0; i < Service.Configuration.TargetingTypes.Count; i++)
                         {
-                            for (int i = 0; i < Service.Configuration.TargetingTypes.Count; i++)
+
+                            ImGui.Separator();
+
+                            var names = Enum.GetNames(typeof(TargetingType));
+                            var targingType = (int)Service.Configuration.TargetingTypes[i];
+                            if (ImGui.Combo("敌对目标选择条件" + i.ToString(), ref targingType, names, names.Length))
                             {
-                                var names = Enum.GetNames(typeof(TargetingType));
-                                var targingType = (int)Service.Configuration.TargetingTypes[i];
-                                if (ImGui.Combo("敌对目标选择条件" + i.ToString(), ref targingType, names, names.Length))
-                                {
-                                    Service.Configuration.TargetingTypes[i] = (TargetingType)targingType;
-                                    Service.Configuration.Save();
-                                }
-
-                                if (ImGui.Button("上移条件" + i.ToString()))
-                                {
-                                    if (i != 0)
-                                    {
-                                        var value = Service.Configuration.TargetingTypes[i];
-                                        Service.Configuration.TargetingTypes.RemoveAt(i);
-                                        Service.Configuration.TargetingTypes.Insert(i - 1, value);
-                                    }
-                                }
-                                ImGui.SameLine();
-                                Spacing();
-                                if (ImGui.Button("下移条件" + i.ToString()))
-                                {
-                                    if (i < Service.Configuration.TargetingTypes.Count - 1)
-                                    {
-                                        var value = Service.Configuration.TargetingTypes[i];
-                                        Service.Configuration.TargetingTypes.RemoveAt(i);
-                                        Service.Configuration.TargetingTypes.Insert(i + 1, value);
-                                    }
-                                }
-
-                                ImGui.SameLine();
-                                Spacing();
-
-                                if (ImGui.Button("删除条件" + i.ToString()))
-                                {
-                                    Service.Configuration.TargetingTypes.RemoveAt(i);
-                                }
-
-                                ImGui.Separator();
+                                Service.Configuration.TargetingTypes[i] = (TargetingType)targingType;
+                                Service.Configuration.Save();
                             }
-                            ImGui.EndChild();
+
+                            if (ImGui.Button("上移条件" + i.ToString()))
+                            {
+                                if (i != 0)
+                                {
+                                    var value = Service.Configuration.TargetingTypes[i];
+                                    Service.Configuration.TargetingTypes.RemoveAt(i);
+                                    Service.Configuration.TargetingTypes.Insert(i - 1, value);
+                                }
+                            }
+                            ImGui.SameLine();
+                            Spacing();
+                            if (ImGui.Button("下移条件" + i.ToString()))
+                            {
+                                if (i < Service.Configuration.TargetingTypes.Count - 1)
+                                {
+                                    var value = Service.Configuration.TargetingTypes[i];
+                                    Service.Configuration.TargetingTypes.RemoveAt(i);
+                                    Service.Configuration.TargetingTypes.Insert(i + 1, value);
+                                }
+                            }
+
+                            ImGui.SameLine();
+                            Spacing();
+
+                            if (ImGui.Button("删除条件" + i.ToString()))
+                            {
+                                Service.Configuration.TargetingTypes.RemoveAt(i);
+                            }
                         }
                     }
 

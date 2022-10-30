@@ -90,7 +90,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         internal ushort ChargesCount => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
 
-        private float RecastTimeOneCharge => RecastTime / MaxCharges;
+        private float RecastTimeOneCharge => Action.Recast100ms / 10f;
 
         /// <summary>
         /// 下一层转好的时间

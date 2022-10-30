@@ -161,7 +161,6 @@ namespace XIVAutoAttack.Updaters
             PartyMembersMinHP = PartyMembersHP.Min();
             HPNotFull = PartyMembersMinHP < 1;
             #endregion
-
         }
 
         static SortedDictionary<uint, Vector3> _locations = new SortedDictionary<uint, Vector3>();

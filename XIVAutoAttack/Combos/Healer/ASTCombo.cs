@@ -64,11 +64,13 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
             Synastry = new (3612, true),
 
             //天星交错
-            CelestialIntersection = new (16556, true)
+            CelestialIntersection = new(16556, true)
             {
                 ChoiceTarget = TargetFilter.FindAttackedTarget,
 
                 TargetStatus = new ushort[] { ObjectStatus.Intersection },
+
+                OtherCheck = b => !IsLastAction(16556),
             },
 
             //擢升

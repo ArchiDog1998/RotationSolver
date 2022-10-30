@@ -121,9 +121,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 BattleChara[] availableCharas = TargetUpdater.PartyMembers.Union(TargetUpdater.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
                 availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
                 //特殊选队友的方法。
-                var tar = ChoiceTarget(availableCharas);
-                if (tar == null) return false;
-                Target = tar;
+                Target = ChoiceTarget(availableCharas);
+                if (Target == null) return false;
                 return true;
 
             }
@@ -133,9 +132,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //还消耗2400的蓝，那肯定是复活的。
                 if (Action.PrimaryCostType == 3 && Action.PrimaryCostValue == 24)
                 {
-                    var tar = TargetFilter.GetDeathPeople(TargetUpdater.DeathPeopleAll, TargetUpdater.DeathPeopleParty);
-                    if (tar == null) return false;
-                    Target = tar;
+                    Target = TargetFilter.GetDeathPeople(TargetUpdater.DeathPeopleAll, TargetUpdater.DeathPeopleParty);
+                    if (Target == null) return false;
                     return true;
                 }
 
@@ -152,18 +150,16 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (Action.CastType > 1 && ID != SCHCombo.Actions.DeploymentTactics.ID)
                 {
                     //找到能覆盖最多的位置，并且选血最少的来。
-                    var tar = TargetFilter.GetMostObjectInRadius(availableCharas, range, Action.EffectRange, true, mustUse, true).OrderBy(p => p.GetHealthRatio()).First();
-                    if (tar == null) return false;
-                    Target = tar;
+                    Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, Action.EffectRange, true, mustUse, true).OrderBy(p => p.GetHealthRatio()).First();
+                    if (Target == null) return false;
                     return true;
                 }
                 else
                 {
                     availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
                     //特殊选队友的方法。
-                    var tar = ChoiceTarget(availableCharas);
-                    if (tar == null) return false;
-                    Target = tar;
+                    Target = ChoiceTarget(availableCharas);
+                    if (Target == null) return false;
                     return true;
                 }
             }

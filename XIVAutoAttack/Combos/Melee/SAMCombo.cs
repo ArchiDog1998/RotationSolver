@@ -148,6 +148,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
         if (Actions.TenkaGoken.ShouldUse(out act))
         {
             if (SenCount == 2) return true;
+            if (Actions.MidareSetsugekka.ShouldUse(out act)) return true;
         }
         else
         {

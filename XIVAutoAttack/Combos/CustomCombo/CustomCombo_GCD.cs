@@ -167,7 +167,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             {
                 if(act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
             }
-            if (TargetUpdater.HPNotFull)
+            if (TargetUpdater.HPNotFull && ActionUpdater.InCombat)
             {
                 if ((CommandController.HealArea || CanHealAreaSpell) && !ShouldUseHealAreaAbility(1, out _)
                     && HealAreaGCD(lastComboActionID, out act)) return act;
@@ -186,12 +186,12 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //硬拉或者开始奶人
             if (Service.Configuration.RaisePlayerBySwift && (HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) 
                 && EsunaRaise(out act, abilityRemain, true)) return act;
-            if (TargetUpdater.HPNotFull && HaveHostileInRange)
+            if (TargetUpdater.HPNotFull && HaveHostileInRange && ActionUpdater.InCombat)
             {
                 if (CanHealAreaSpell && HealAreaGCD(lastComboActionID, out act)) return act;
                 if (CanHealSingleSpell && HealSingleGCD(lastComboActionID, out act)) return act;
             }
-            if (Service.Configuration.RaisePlayerByCasting && EsunaRaise(out act, abilityRemain, true)) return act;
+            if (Service.Configuration.RaisePlayerByCasting && ActionUpdater.InCombat && EsunaRaise(out act, abilityRemain, true)) return act;
 
             return null;
         }
