@@ -27,7 +27,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     private const string _lockCommand = "/aauto";
 
     private readonly WindowSystem windowSystem;
-    private readonly OverlayWindow overlayWindow;
 
     private readonly ConfigWindow configWindow;
     //private readonly SystemSound sound;
@@ -60,10 +59,9 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(configWindow);
 
-        overlayWindow = new OverlayWindow();
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
-        Service.Interface.UiBuilder.Draw += overlayWindow.Draw;
+        Service.Interface.UiBuilder.Draw += OverlayWindow.Draw;
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
         MajorUpdater.Enable();
@@ -87,7 +85,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.CommandManager.RemoveHandler(_lockCommand);
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
-        Service.Interface.UiBuilder.Draw -= overlayWindow.Draw;
+        Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
         Service.IconReplacer.Dispose();
 
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;

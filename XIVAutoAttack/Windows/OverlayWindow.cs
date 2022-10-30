@@ -14,28 +14,31 @@ using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Windows
 {
-    internal class OverlayWindow : Window
+    internal static class OverlayWindow
     {
-        public OverlayWindow()
-            :base("Overlay", ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
-            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground)
-        {
 
-        }
-
-        public override void Draw()
+        public static void Draw()
         {
             if (Service.GameGui == null) return;
 
+
+            ImGui.Begin("Ring", ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
+            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
+
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
+            ImGuiHelpers.ForceNextWindowMainViewport();
+            ImGuiHelpers.SetNextWindowPosRelativeMainViewport(new Vector2(0, 0));
+            ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
+
             DrawLocation();
+
+            ImGui.PopStyleVar();
+            ImGui.End();
         }
 
         private static void DrawLocation()
         {
             const int COUNT = 20;
-
-            ImGui.Begin("Ring", ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
-            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
 
             if (CustomCombo.EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
             if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth)) return;
@@ -47,10 +50,7 @@ namespace XIVAutoAttack.Windows
             Vector3 pPosition = CustomCombo.EnemyLocationTarget.Position;
             if (!Service.GameGui.WorldToScreen(pPosition, out var scrPos)) return;
 
-            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
-            ImGuiHelpers.ForceNextWindowMainViewport();
-            ImGuiHelpers.SetNextWindowPosRelativeMainViewport(new Vector2(0, 0));
-            ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
+
 
             List<Vector2> pts = new List<Vector2>(2 * COUNT + 2);
 
@@ -77,10 +77,6 @@ namespace XIVAutoAttack.Windows
             ImGui.GetWindowDrawList().PathStroke(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 1f)), ImDrawFlags.None, 3);
             pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
             ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 0.2f)));
-
-            ImGui.End();
-            ImGui.PopStyleVar();
-
         }
 
         private static void SectorPlots(ref List<Vector2> pts, Vector3 centre, float radius, double rotation, int segments)
