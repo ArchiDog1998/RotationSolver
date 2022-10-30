@@ -15,8 +15,8 @@ changelog: |-
   - 咏唱的时候不会替换能力技图标
   - 修改使得副本中转场不会自动关掉autoattack
   - 删除多余的帮助
-  ## 新增功能
-  - 
+  - 调整了身位显示窗口
+  - 调整了绝枪
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
