@@ -9,7 +9,7 @@ namespace XIVAutoAttack.Updaters
 #if DEBUG
         private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
 #endif
-        private unsafe static void Framework_Update(Framework framework)
+        private unsafe static void FrameworkUpdate(Framework framework)
         {
             if (!Service.Conditions.Any() || Service.ClientState.LocalPlayer == null) return;
 
@@ -59,13 +59,13 @@ namespace XIVAutoAttack.Updaters
 
         public static void Enable()
         {
-            Service.Framework.Update += Framework_Update;
+            Service.Framework.Update += FrameworkUpdate;
             MovingUpdater.Enable();
         }
 
         public static void Dispose()
         {
-            Service.Framework.Update -= Framework_Update;
+            Service.Framework.Update -= FrameworkUpdate;
             ActionUpdater.Dispose();
             PreviewUpdater.Dispose();
             MovingUpdater.Dispose();

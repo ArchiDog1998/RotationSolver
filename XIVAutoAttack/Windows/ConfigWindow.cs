@@ -269,20 +269,6 @@ internal class ConfigWindow : Window
 
                 if (ImGui.BeginChild("参数", new Vector2(0f, -1f), true))
                 {
-                    bool actionEnable = Watcher.IsActionHookEnable;
-                    if (ImGui.Checkbox("是否监视行为", ref actionEnable))
-                    {
-                        Watcher.ChangeActionHook();
-                    }
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip("如果不监视行为会影响循环以及身位提示，一般用于无法交任务物品时");
-                    }
-                    if (!actionEnable)
-                    {
-                        ImGui.TextColored(new Vector4(1, 0, 0, 1), "不监视行为会影响循环以及身位提示，一般用于无法交任务物品时");
-                    }
-
                     bool neverReplaceIcon = Service.Configuration.NeverReplaceIcon;
                     if (ImGui.Checkbox("不替换图标", ref neverReplaceIcon))
                     {
@@ -296,6 +282,17 @@ internal class ConfigWindow : Window
                     if (neverReplaceIcon)
                     {
                         ImGui.TextColored(new Vector4(1, 0, 0, 1), "不替换图标，提前判定的所有功能将失效，如提前提示身位");
+                    }
+
+                    bool useOverlayWindow = Service.Configuration.UseOverlayWindow;
+                    if (ImGui.Checkbox("使用最高大覆盖窗口", ref useOverlayWindow))
+                    {
+                        Service.Configuration.UseOverlayWindow = useOverlayWindow;
+                        Service.Configuration.Save();
+                    }
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip("这个窗口目前仅用于提前提示身位");
                     }
 
                     if (ImGui.CollapsingHeader("基础设置"))
@@ -383,39 +380,36 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
-                        if (actionEnable)
+                        bool textlocation = Service.Configuration.TextLocation;
+                        if (ImGui.Checkbox("写出战技身位", ref textlocation))
                         {
-                            bool textlocation = Service.Configuration.TextLocation;
-                            if (ImGui.Checkbox("写出战技身位", ref textlocation))
-                            {
-                                Service.Configuration.TextLocation = textlocation;
-                                Service.Configuration.Save();
-                            }
+                            Service.Configuration.TextLocation = textlocation;
+                            Service.Configuration.Save();
+                        }
 
-                            bool sayingLocation = Service.Configuration.SayingLocation;
-                            if (ImGui.Checkbox("喊出战技身位", ref sayingLocation))
-                            {
-                                Service.Configuration.SayingLocation = sayingLocation;
-                                Service.Configuration.Save();
-                            }
+                        bool sayingLocation = Service.Configuration.SayingLocation;
+                        if (ImGui.Checkbox("喊出战技身位", ref sayingLocation))
+                        {
+                            Service.Configuration.SayingLocation = sayingLocation;
+                            Service.Configuration.Save();
+                        }
 
-                            bool sayoutLocationWrong = Service.Configuration.SayoutLocationWrong;
-                            if (ImGui.Checkbox("显示身位错误", ref sayoutLocationWrong))
-                            {
-                                Service.Configuration.SayoutLocationWrong = sayoutLocationWrong;
-                                Service.Configuration.Save();
-                            }
+                        bool sayoutLocationWrong = Service.Configuration.SayoutLocationWrong;
+                        if (useOverlayWindow && ImGui.Checkbox("显示身位错误", ref sayoutLocationWrong))
+                        {
+                            Service.Configuration.SayoutLocationWrong = sayoutLocationWrong;
+                            Service.Configuration.Save();
+                        }
 
-                            var str = Service.Configuration.LocationText;
-                            if (ImGui.InputText("身位错误提示语", ref str, 15))
-                            {
-                                Service.Configuration.LocationText = str;
-                                Service.Configuration.Save();
-                            }
-                            if (ImGui.IsItemHovered())
-                            {
-                                ImGui.SetTooltip("如果身位错误，你想怎么被骂!");
-                            }
+                        var str = Service.Configuration.LocationText;
+                        if (ImGui.InputText("身位错误提示语", ref str, 15))
+                        {
+                            Service.Configuration.LocationText = str;
+                            Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("如果身位错误，你想怎么被骂!");
                         }
 
                         bool autoSayingOut = Service.Configuration.AutoSayingOut;
@@ -485,6 +479,10 @@ internal class ConfigWindow : Window
                             {
                                 Service.Configuration.AutoDefenseForTank = autoDefenseforTank;
                                 Service.Configuration.Save();
+                            }
+                            if (ImGui.IsItemHovered())
+                            {
+                                ImGui.SetTooltip("自动的这个不能识别威力为0的AOE技能，请注意。");
                             }
 
                             Spacing();

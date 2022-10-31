@@ -19,7 +19,7 @@ namespace XIVAutoAttack.Windows
 
         public static void Draw()
         {
-            if (Service.GameGui == null) return;
+            if (Service.GameGui == null || !Service.Configuration.UseOverlayWindow) return;
 
 
             ImGui.Begin("Ring", ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |

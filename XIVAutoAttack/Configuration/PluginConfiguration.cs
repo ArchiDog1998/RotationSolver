@@ -48,6 +48,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ChooseAttackMark { get; set; } = true;
     public bool AttackMarkAOE { get; set; } = true;
     public bool FilterStopMark { get; set; } = true;
+    public bool UseOverlayWindow { get; set; } = true;
     public float ObjectMinRadius { get; set; } = 0f;
     public float HealthDifference { get; set; } = 0.25f;
     public float HealthAreaAbility { get; set; } = 0.75f;

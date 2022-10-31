@@ -8,6 +8,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.SigReplacers.Watcher;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -46,31 +47,36 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool InCombat => ActionUpdater.InCombat;
 
-        protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
+        /// <summary>
+        /// 成功释放的技能，其中第0个为最近成功释放的技能，也就是上一个技能。该列表最大记录40个
+        /// </summary>
+        private protected static ActionRec[] RecordActions => Watcher.RecordActions;
+
+        private protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastSpell(isAdjust, actions);
 
-        protected static bool IsLastSpell(params uint[] ids)
+        private protected static bool IsLastSpell(params uint[] ids)
             => IActionHelper.IsLastSpell(ids);
 
 
-        protected static bool IsLastAbility(bool isAdjust, params IAction[] actions)
+        private protected static bool IsLastAbility(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastAbility(isAdjust, actions);
 
-        protected static bool IsLastAbility(params uint[] ids)
+        private protected static bool IsLastAbility(params uint[] ids)
             => IActionHelper.IsLastAbility(ids);
 
 
-        protected static bool IsLastWeaponSkill(bool isAdjust, params IAction[] actions)
+        private protected static bool IsLastWeaponSkill(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastWeaponSkill(isAdjust, actions);
 
-        protected static bool IsLastWeaponSkill(params uint[] ids)
+        private protected static bool IsLastWeaponSkill(params uint[] ids)
             => IActionHelper.IsLastWeaponSkill(ids);
 
 
-        protected static bool IsLastAction(bool isAdjust, params IAction[] actions)
+        private protected static bool IsLastAction(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastAction(isAdjust, actions);
 
-        protected static bool IsLastAction(params uint[] ids)
+        private protected static bool IsLastAction(params uint[] ids)
             => IActionHelper.IsLastAction(ids);
 
         internal virtual string OnCommand(string args) => string.Empty;

@@ -1,11 +1,15 @@
 ﻿using Dalamud.Hooking;
+using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -17,10 +21,11 @@ namespace XIVAutoAttack.SigReplacers
 {
     internal static class Watcher
     {
-        private unsafe delegate bool UseActionDelegate(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID, uint param, uint useType, int pvp, bool* isGroundTarget);
+        public record ActionRec(DateTime UsedTime, Action action);
 
-        private static Hook<UseActionDelegate> _getActionHook { get; set; }
-        public static bool IsActionHookEnable => _getActionHook?.IsEnabled ?? false;
+        private delegate void ReceiveAbiltyDelegate(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail);
+
+        private static Hook<ReceiveAbiltyDelegate> _receivAbilityHook;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static uint LastAction { get; set; } = 0;
@@ -36,105 +41,106 @@ namespace XIVAutoAttack.SigReplacers
         internal static TimeSpan TimeSinceLastAction => DateTime.Now - _timeLastActionUsed;
 
         private static DateTime _timeLastActionUsed = DateTime.Now;
-        private static DateTime _timeLastSpeak = DateTime.Now;
+
+        const int QUEUECAPACITY = 64;
+        private static Queue<ActionRec> _actions = new Queue<ActionRec>(QUEUECAPACITY);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static ActionRec[] RecordActions => _actions.Reverse().ToArray();
 
         internal static unsafe void Enable()
         {
-            _getActionHook = Hook<UseActionDelegate>.FromAddress((IntPtr)ActionManager.fpUseAction, UseAction);
+            _receivAbilityHook = Hook<ReceiveAbiltyDelegate>.FromAddress(Service.Address.ReceiveAbilty, ReceiveAbilityEffect);
 
-
-            _getActionHook?.Enable();
+            _receivAbilityHook?.Enable();
         }
 
-        public static void ChangeActionHook()
+
+        private static void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail)
         {
-            if (_getActionHook == null) return;
-            if (_getActionHook.IsEnabled)
-            {
-                _getActionHook.Disable();
-            }
-            else
-            {
-                _getActionHook.Enable();
-            }
+            var targetId = Marshal.ReadInt32(effectHeader);
+            var action = Marshal.ReadInt32(effectHeader, 0x8);
+            var type = Marshal.ReadByte(effectHeader, 31);
+            _receivAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTrail);
+
+            //if (DalamudApi.ClientState.LocalPlayer == null) return;
+            if (type != 1 || action == 7 || sourceId != Service.ClientState.LocalPlayer.ObjectId) return;
+            RecordAction((uint)targetId, (uint)action, type);
         }
 
-        private static unsafe bool UseAction(IntPtr actionManager, ActionType actionType, uint actionID, uint targetID = 3758096384u, uint param = 0u, uint useType = 0u, int pvp = 0, bool* a7 = null)
+        private static DateTime _timeLastSpeak = DateTime.Now;
+        private static unsafe void RecordAction(uint targetId, uint id, byte type)
         {
-            if (actionType == ActionType.Spell && useType == 0)
+            if (type != 1) return;
+
+            var action = Service.DataManager.GetExcelSheet<Action>().GetRow(id);
+            var cate = action.ActionCategory.Value;
+            var tar = Service.ObjectTable.SearchById(targetId);
+
+            //Record
+            _timeLastActionUsed = DateTime.Now;
+            LastAction = id;
+
+            if(_actions.Count >= QUEUECAPACITY)
             {
-                var id = ActionManager.Instance()->GetAdjustedActionId(actionID);
+                _actions.Dequeue();
+            }
+            _actions.Enqueue(new ActionRec(_timeLastActionUsed, action));
+
+            if (cate != null)
+            {
+                switch (cate.RowId)
+                {
+                    case 2: //魔法
+                        LastSpell = id;
+                        break;
+                    case 3: //战技
+                        LastWeaponskill = id;
+                        break;
+                    case 4: //能力
+                        LastAbility = id;
+                        break;
+                }
+            }
 
 #if DEBUG
-                var a = actionType == ActionType.Spell ? Service.DataManager.GetExcelSheet<Action>().GetRow(id)?.Name : Service.DataManager.GetExcelSheet<Item>().GetRow(actionID)?.Name;
-                Service.ChatGui.Print($"{a} , {actionType} , {id} , {param} , {useType} , {pvp} , {ActionUpdater.WeaponRemain}");
+            Service.ChatGui.Print($"{action.Name}, {tar.Name}, {ActionUpdater.WeaponRemain}");
 #endif
-
-                var action = Service.DataManager.GetExcelSheet<Action>().GetRow(id);
-                var cate = action.ActionCategory.Value;
-                var tar = Service.ObjectTable.SearchById(targetID);
-
-                //Macro
-                if (id != LastAction)
+            //Macro
+            foreach (var item in Service.Configuration.Events)
+            {
+                if (item.Name == action.Name)
                 {
-                    foreach (var item in Service.Configuration.Events)
-                    {
-                        if (item.Name == action.Name)
-                        {
-                            if (item.MacroIndex < 0 || item.MacroIndex > 99) break;
+                    if (item.MacroIndex < 0 || item.MacroIndex > 99) break;
 
-                            MacroUpdater.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
-                                RaptureMacroModule.Instance->Individual[item.MacroIndex]));
-                        }
-                    }
+                    MacroUpdater.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
+                        RaptureMacroModule.Instance->Individual[item.MacroIndex]));
                 }
-
-                _timeLastActionUsed = DateTime.Now;
-                LastAction = id;
-
-                if (cate != null)
-                {
-                    switch (cate.RowId)
-                    {
-                        case 2: //魔法
-                            LastSpell = id;
-                            break;
-                        case 3: //战技
-                            LastWeaponskill = id;
-                            break;
-                        case 4: //能力
-                            LastAbility = id;
-                            break;
-                    }
-                }
-
-                //事后骂人！
-                if (DateTime.Now - _timeLastSpeak > new TimeSpan(0, 0, 0, 0, 200))
-                {
-                    _timeLastSpeak = DateTime.Now;
-                    if (Service.Configuration.SayoutLocationWrong
-                        && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
-                        && tar.HasLocationSide()
-                        && loc != tar.FindEnemyLocation()
-                        && !Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))
-                    {
-                        Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
-                        if (!string.IsNullOrEmpty(Service.Configuration.LocationText))
-                        {
-                            CustomCombo.Speak(Service.Configuration.LocationText);
-                        }
-                    }
-                }
-
-
             }
-            return _getActionHook.Original.Invoke(actionManager, actionType, actionID, targetID, param, useType, pvp, a7);
-        }
 
+
+            //事后骂人！
+            if (DateTime.Now - _timeLastSpeak > new TimeSpan(0, 0, 0, 0, 200))
+            {
+                _timeLastSpeak = DateTime.Now;
+                if (Service.Configuration.SayoutLocationWrong
+                    && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
+                    && tar.HasLocationSide()
+                    && loc != tar.FindEnemyLocation()
+                    && !Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))
+                {
+                    Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
+                    if (!string.IsNullOrEmpty(Service.Configuration.LocationText))
+                    {
+                        CustomCombo.Speak(Service.Configuration.LocationText);
+                    }
+                }
+            }
+        }
 
         public static void Dispose()
         {
-            _getActionHook?.Dispose();
+            _receivAbilityHook?.Dispose();
         }
     }
 }
