@@ -63,7 +63,7 @@ namespace XIVAutoAttack.SigReplacers
             var type = Marshal.ReadByte(effectHeader, 31);
             _receivAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTrail);
 
-            //if (DalamudApi.ClientState.LocalPlayer == null) return;
+            if (Service.ClientState.LocalPlayer == null) return;
             if (type != 1 || action == 7 || sourceId != Service.ClientState.LocalPlayer.ObjectId) return;
             RecordAction((uint)targetId, (uint)action, type);
         }
@@ -71,8 +71,6 @@ namespace XIVAutoAttack.SigReplacers
         private static DateTime _timeLastSpeak = DateTime.Now;
         private static unsafe void RecordAction(uint targetId, uint id, byte type)
         {
-            if (type != 1) return;
-
             var action = Service.DataManager.GetExcelSheet<Action>().GetRow(id);
             var cate = action.ActionCategory.Value;
             var tar = Service.ObjectTable.SearchById(targetId);

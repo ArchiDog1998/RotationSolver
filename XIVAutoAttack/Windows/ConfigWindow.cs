@@ -189,80 +189,7 @@ internal class ConfigWindow : Window
 
             if (ImGui.BeginTabItem("参数设定"))
             {
-#if DEBUG
-                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                //{
 
-                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //    {
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //    }
-                //}
-
-
-
-                //if (Service.TargetManager.Target is BattleChara b)
-                //{
-                //    ImGui.Text("Is Boss: " + b.IsBoss().ToString());
-                //    ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
-                //    ImGui.Text("NameID: " + b.NameId.ToString());
-                //}
-
-                if (IconReplacer.nextAction != null && IconReplacer.nextAction is BaseAction baseAction)
-                {
-                    ImGui.Text(baseAction.Action.Name.ToString());
-                    ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
-                    ImGui.Text("Is GCD: " + baseAction.IsGeneralGCD.ToString());
-                    ImGui.Text("Is Cooldown: " + baseAction.IsCoolDown.ToString());
-                }
-
-                //ImGui.Text(MovingUpdater.IsMoving.ToString());
-
-                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
-                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56].ToString());
-                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty95].ToString());
-                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundToDuty97].ToString());
-
-                //ImGui.Text(ActionUpdater.WeaponRemain.ToString());
-
-                //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
-                //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
-
-                //ImGui.Text(Watcher.TimeSinceLastAction.TotalSeconds.ToString());
-
-
-                //foreach (var item in Service.ObjectTable)
-                //{
-                //    ImGui.Text($"{item.Name}, {item.SubKind}");
-
-                //}
-
-                //foreach (var item in TargetHelper.PartyMembers)
-                //{
-                //    ImGui.Text(item.Name.ToString());
-                //}
-
-                //if (Service.TargetManager.Target is BattleChara b)
-                //foreach (var item in b.StatusList)
-                //{
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //}
-
-                //foreach (var item in Service.ObjectTable)
-                //{
-                //    if (item is BattleChara battle && item != Service.ClientState.LocalPlayer)
-                //    {
-                //        foreach (var status in battle.StatusList)
-                //        {
-                //            if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //            {
-                //                ImGui.Text(status.GameData.Name + status.StatusId);
-                //            }
-                //        }
-                //    }
-                //}
-
-#endif
                 ImGui.Text("在这个窗口，你可以设定释放技能所需的参数。");
 
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
@@ -848,6 +775,85 @@ internal class ConfigWindow : Window
 
                 ImGui.EndTabItem();
             }
+
+#if DEBUG
+            if (ImGui.BeginTabItem("Debug查看"))
+            {
+                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                //{
+
+                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //    {
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //    }
+                //}
+
+
+
+                //if (Service.TargetManager.Target is BattleChara b)
+                //{
+                //    ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+                //    ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
+                //    ImGui.Text("NameID: " + b.NameId.ToString());
+                //}
+
+                if (IconReplacer.nextAction != null && IconReplacer.nextAction is BaseAction baseAction)
+                {
+                    ImGui.Text(baseAction.Action.Name.ToString());
+                    ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
+                    ImGui.Text("Is GCD: " + baseAction.IsGeneralGCD.ToString());
+                    ImGui.Text("Is Cooldown: " + baseAction.IsCoolDown.ToString());
+                }
+
+                //ImGui.Text(MovingUpdater.IsMoving.ToString());
+
+                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
+                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56].ToString());
+                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty95].ToString());
+                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundToDuty97].ToString());
+
+                //ImGui.Text(ActionUpdater.WeaponRemain.ToString());
+
+                //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
+                //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
+
+                //ImGui.Text(Watcher.TimeSinceLastAction.TotalSeconds.ToString());
+
+
+                //foreach (var item in Service.ObjectTable)
+                //{
+                //    ImGui.Text($"{item.Name}, {item.SubKind}");
+
+                //}
+
+                //foreach (var item in TargetHelper.PartyMembers)
+                //{
+                //    ImGui.Text(item.Name.ToString());
+                //}
+
+                //if (Service.TargetManager.Target is BattleChara b)
+                //foreach (var item in b.StatusList)
+                //{
+                //        ImGui.Text(item.GameData.Name + item.StatusId);
+                //}
+
+                //foreach (var item in Service.ObjectTable)
+                //{
+                //    if (item is BattleChara battle && item != Service.ClientState.LocalPlayer)
+                //    {
+                //        foreach (var status in battle.StatusList)
+                //        {
+                //            if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                //            {
+                //                ImGui.Text(status.GameData.Name + status.StatusId);
+                //            }
+                //        }
+                //    }
+                //}
+
+            }
+
+#endif
 
             ImGui.EndTabBar();
         }
