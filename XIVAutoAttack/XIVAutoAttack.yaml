@@ -9,14 +9,17 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 调整最高显示窗口的原理
+  - 修改最高显示窗口的实现原理
   - 修复地面放置类技能闪退的问题
   - 降低使用技能后0.5s不能自动按到.2s
-  - 正在登出游戏时，屏蔽自动攻击。
+  - 正在登出游戏时，屏蔽自动攻击
+  - 解决了龙骑的魔性不高跳的神奇问题
+  ## 功能移除
+  - 黑魔循环暂时移除，等待Moon小姐姐的补充
   ## API
-  - 添加ActionHelper类辅助判断类的状态。
-  - 删除AfterUse方法。
-  - Action的CastTime和MPNeed均为当前状态下准确的值。
+  - 添加ActionHelper类辅助判断类的状态
+  - 删除AfterUse方法
+  - Action的CastTime和MPNeed均为当前状态下准确的值
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
