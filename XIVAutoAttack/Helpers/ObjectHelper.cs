@@ -48,7 +48,7 @@ namespace XIVAutoAttack.Helpers
         internal static bool IsDying(this BattleChara b)
         {
             if (b == null) return false;
-            return b.CurrentHp <= GetHealthFromMulty(1);
+            return b.CurrentHp <= GetHealthFromMulty(2);
         }
 
         /// <summary>

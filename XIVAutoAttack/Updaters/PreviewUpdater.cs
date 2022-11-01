@@ -38,16 +38,15 @@ namespace XIVAutoAttack.Updaters
             ByteColor redColor = new ByteColor() { A = 255, R = 120, G = 0, B = 60 };
             ByteColor greenColor = new ByteColor() { A = 255, R = 60, G = 120, B = 30 };
 
-
-            var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);
-            if (castBar == IntPtr.Zero) return;
-            AtkResNode* progressBar = ((AtkUnitBase*)castBar)->UldManager.NodeList[5];
-
             bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
                 && Service.Configuration.CheckForCasting && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
             ByteColor c = canMove ? greenColor : redColor;
-            MovingUpdater.IsMoving = canMove || Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TenChiJin);
+            MovingUpdater.IsMoving = canMove;
+
+            var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);
+            if (castBar == IntPtr.Zero) return;
+            AtkResNode* progressBar = ((AtkUnitBase*)castBar)->UldManager.NodeList[5];
 
             progressBar->AddRed = c.R;
             progressBar->AddGreen = c.G;

@@ -1,6 +1,8 @@
 ﻿using Dalamud.Game;
 using System;
 using System.Collections.Generic;
+using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -42,6 +44,7 @@ namespace XIVAutoAttack.Updaters
             //    _valus[i] = newValue;
             //}
 #endif
+            if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TenChiJin)) MovingUpdater.IsMoving = false;
 
             //Update State.
             PreviewUpdater.UpdateEntry();

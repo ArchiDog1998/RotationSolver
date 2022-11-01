@@ -86,11 +86,18 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 是否起码有一层技能
         /// </summary>
-        internal bool HaveOneCharge => IsCoolDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
+        private bool HaveOneCharge => IsCoolDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
+
+#if DEBUG
+        internal bool HaveOneChargeDEBUG => HaveOneCharge;
+        internal float RecastTimeOneChargeDEBUG => RecastTimeOneCharge;
+        internal float RecastTimeElapsedDEBUG => RecastTimeElapsed;
+        internal float RecastTimeRemainDEBUG => RecastTimeRemain;
+#endif
 
         internal ushort ChargesCount => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
 
-        private float RecastTimeOneCharge => Action.MaxCharges <= 1 ? ActionManager.GetAdjustedRecastTime(ActionType.Spell, AdjustedID) : Action.Recast100ms / 10f;
+        private float RecastTimeOneCharge => Action.MaxCharges <= 1 ? ActionManager.GetAdjustedRecastTime(ActionType.Spell, AdjustedID) /1000f : Action.Recast100ms / 10f;
 
         /// <summary>
         /// 下一层转好的时间

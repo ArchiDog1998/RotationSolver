@@ -781,77 +781,55 @@ internal class ConfigWindow : Window
 #if DEBUG
             if (ImGui.BeginTabItem("Debug查看") && Service.ClientState.LocalPlayer != null)
             {
-                //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                //{
-
-                //    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //    {
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //    }
-                //}
-
-
-
-                //if (Service.TargetManager.Target is BattleChara b)
-                //{
-                //    ImGui.Text("Is Boss: " + b.IsBoss().ToString());
-                //    ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
-                //    ImGui.Text("NameID: " + b.NameId.ToString());
-                //}
-
-                if (IconReplacer.nextAction != null && IconReplacer.nextAction is BaseAction baseAction)
+                if (ImGui.CollapsingHeader("自身附加给自己的状态"))
                 {
-                    ImGui.Text(baseAction.ToString());
-                    ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
-                    ImGui.Text("Is GCD: " + baseAction.IsGeneralGCD.ToString());
-                    ImGui.Text("Is Cooldown: " + baseAction.IsCoolDown.ToString());
+                    foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                    {
 
-                    ImGui.Text("Cast Cost: " + baseAction.CastTime.ToString());
-                    ImGui.Text("Can Use: " + baseAction.ShouldUse(out _).ToString());
+                        if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                        {
+                            ImGui.Text(item.GameData.Name + item.StatusId);
+                        }
+                    }
                 }
 
-                //ImGui.Text(MovingUpdater.IsMoving.ToString());
+                if (ImGui.CollapsingHeader("目标信息"))
+                {
+                    if (Service.TargetManager.Target is BattleChara b)
+                    {
+                        ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+                        ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
+                        ImGui.Text("Is Dying: " + b.IsDying().ToString());
 
-                ImGui.Text(ActionUpdater.WeaponRemain.ToString());
-                ImGui.Text(ActionUpdater._lastCastingTotal.ToString());
+                        foreach (var status in b.StatusList)
+                        {
+                            if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                            {
+                                ImGui.Text(status.GameData.Name + status.StatusId);
+                            }
+                        }
+                    }
+                }
 
-                //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
-                //ImGui.Text(TargetHelper.AllTargets.Length.ToString());
+                if (ImGui.CollapsingHeader("下一个技能"))
+                {
+                    BaseAction baseAction = null;
+                    baseAction ??= IconReplacer.nextAction;
+                    if (baseAction != null)
+                    {
+                        ImGui.Text(baseAction.ToString());
+                        ImGui.Text("Have One:" + baseAction.HaveOneChargeDEBUG.ToString());
+                        ImGui.Text("Is General GCD: " + baseAction.IsGeneralGCD.ToString());
+                        ImGui.Text("Is Real GCD: " + baseAction.IsRealGCD.ToString());
+                        ImGui.Text("Recast One: " + baseAction.RecastTimeOneChargeDEBUG.ToString());
+                        ImGui.Text("Recast Elapsed: " + baseAction.RecastTimeElapsedDEBUG.ToString());
+                        ImGui.Text("Recast Remain: " + baseAction.RecastTimeRemainDEBUG.ToString());
+                        ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, baseAction.AdjustedID).ToString());
 
-                //ImGui.Text(Watcher.TimeSinceLastAction.TotalSeconds.ToString());
-
-
-                //foreach (var item in Service.ObjectTable)
-                //{
-                //    ImGui.Text($"{item.Name}, {item.SubKind}");
-
-                //}
-
-                //foreach (var item in TargetHelper.PartyMembers)
-                //{
-                //    ImGui.Text(item.Name.ToString());
-                //}
-
-                //if (Service.TargetManager.Target is BattleChara b)
-                //foreach (var item in b.StatusList)
-                //{
-                //        ImGui.Text(item.GameData.Name + item.StatusId);
-                //}
-
-                //foreach (var item in Service.ObjectTable)
-                //{
-                //    if (item is BattleChara battle && item != Service.ClientState.LocalPlayer)
-                //    {
-                //        foreach (var status in battle.StatusList)
-                //        {
-                //            if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                //            {
-                //                ImGui.Text(status.GameData.Name + status.StatusId);
-                //            }
-                //        }
-                //    }
-                //}
-
+                        ImGui.Text("Cast Cost: " + baseAction.CastTime.ToString());
+                        ImGui.Text($"Can Use: {baseAction.ShouldUse(out _)} {baseAction.ShouldUse(out _, mustUse:true)}");
+                    }
+                }
             }
 #endif
 

@@ -65,19 +65,13 @@ namespace XIVAutoAttack.Actions.BaseAction
         public virtual bool ShouldUse(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
-            //byte level = Service.ClientState.LocalPlayer.Level;
+            byte level = Service.ClientState.LocalPlayer.Level;
 
             //等级不够。
             if (!EnoughLevel) return false;
 
             //MP不够
             if (Service.ClientState.LocalPlayer.CurrentMp < MPNeed) return false;
-
-            //GP不够
-            if (Action.PrimaryCostType == 7)
-            {
-                if (Service.ClientState.LocalPlayer.CurrentGp < Action.PrimaryCostValue) return false;
-            }
 
             //没有前置Buff
             if (BuffsNeed != null)
@@ -105,11 +99,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
                 else
                 {
-                    //冷却时间没超过一成
+                    //冷却时间没超过一成 TODO 这个超过一成应该提前判断
                     if (!HaveOneCharge) return false;
-
-                    ////不能连续两个相同的能力技
-                    //if (ID == Watcher.LastAbility) return false;
                 }
             }
 
@@ -149,7 +140,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (!mustUse && TargetStatus != null)
                 {
                     var tar = Target == Service.ClientState.LocalPlayer ? TargetUpdater.HostileTargets.OrderBy(p => p.DistanceToPlayer()).First() : Target;
-                    
+
                     if (!tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus)) return false;
                 }
 
@@ -165,7 +156,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             else
             {
                 //如果是能力技能，还没填满。
-                if (!(mustUse || emptyOrSkipCombo) && RecastTimeRemain > 4) return false;
+                if (!(mustUse || emptyOrSkipCombo) && RecastTimeRemain > ActionUpdater.WeaponRemain + ActionUpdater.WeaponTotal) return false;
             }
 
             return true;
