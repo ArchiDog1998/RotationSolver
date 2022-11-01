@@ -11,6 +11,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Data;
+using System.Xml.Linq;
 
 namespace XIVAutoAttack.Windows
 {
@@ -21,19 +22,21 @@ namespace XIVAutoAttack.Windows
         {
             if (Service.GameGui == null || !Service.Configuration.UseOverlayWindow) return;
 
-
-            ImGui.Begin("Ring", ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
-            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
+            ImGui.PushID("AutoAttackOverlay");
 
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
-            ImGuiHelpers.ForceNextWindowMainViewport();
+
             ImGuiHelpers.SetNextWindowPosRelativeMainViewport(new Vector2(0, 0));
+            ImGui.Begin("Ring", ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
+
             ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
 
             DrawLocation();
 
             ImGui.PopStyleVar();
             ImGui.End();
+
+            ImGui.PopID();
         }
 
         private static void DrawLocation()

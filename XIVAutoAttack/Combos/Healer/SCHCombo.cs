@@ -153,11 +153,11 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
     }
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.范围治疗, $"GCD: {Actions.Succor.Action.Name}\n                     能力: {Actions.SacredSoil.Action.Name}, {Actions.SummonSeraph.Action.Name}, {Actions.WhisperingDawn.Action.Name}, {Actions.FeyBlessing.Action.Name}, {Actions.Indomitability.Action.Name}"},
-        {DescType.单体治疗, $"GCD: {Actions.Adloquium.Action.Name}, {Actions.Physick.Action.Name}\n                     能力: {Actions.Aetherpact.Action.Name}, {Actions.Protraction.Action.Name}, {Actions.Excogitation.Action.Name}, {Actions.Lustrate.Action.Name}"},
-        {DescType.范围防御, $"GCD: {Actions.Succor.Action.Name}, {Actions.SacredSoil.Action.Name}\n                     能力: {Actions.DeploymentTactics.Action.Name}, {Actions.Adloquium.Action.Name}, {Actions.SummonSeraph.Action.Name}, {Actions.FeyIllumination.Action.Name}"},
-        {DescType.单体防御, $"{Actions.Adloquium.Action.Name}"},
-        {DescType.移动技能, $"{Actions.Expedient.Action.Name}"},
+        {DescType.范围治疗, $"GCD: {Actions.Succor}\n                     能力: {Actions.SacredSoil}, {Actions.SummonSeraph}, {Actions.WhisperingDawn}, {Actions.FeyBlessing}, {Actions.Indomitability}"},
+        {DescType.单体治疗, $"GCD: {Actions.Adloquium}, {Actions.Physick}\n                     能力: {Actions.Aetherpact}, {Actions.Protraction}, {Actions.Excogitation}, {Actions.Lustrate}"},
+        {DescType.范围防御, $"GCD: {Actions.Succor}, {Actions.SacredSoil}\n                     能力: {Actions.DeploymentTactics}, {Actions.Adloquium}, {Actions.SummonSeraph}, {Actions.FeyIllumination}"},
+        {DescType.单体防御, $"{Actions.Adloquium}"},
+        {DescType.移动技能, $"{Actions.Expedient}"},
     };
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {

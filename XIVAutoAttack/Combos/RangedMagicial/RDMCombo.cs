@@ -24,7 +24,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
 
     public class RDMAction : BaseAction
     {
-        internal override int Cast100 => NeedBuffNotCast ? 0 : base.Cast100;
+        internal override float CastTime => NeedBuffNotCast ? 0 : base.CastTime;
         internal override ushort[] BuffsNeed 
         {
             get => NeedBuffNotCast ? base.BuffsNeed : null;
@@ -167,9 +167,9 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
     }
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.单体治疗, $"{Actions.Vercure.Action.Name}"},
-        {DescType.范围防御, $"{Actions.MagickBarrier.Action.Name}"},
-        {DescType.移动技能, $"{Actions.CorpsAcorps.Action.Name}"},
+        {DescType.单体治疗, $"{Actions.Vercure}"},
+        {DescType.范围防御, $"{Actions.MagickBarrier}"},
+        {DescType.移动技能, $"{Actions.CorpsAcorps}"},
     };
 
     private protected override ActionConfiguration CreateConfiguration()

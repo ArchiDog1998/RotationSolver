@@ -9,13 +9,13 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 取消脱离战斗就自动关闭的设定
-  - 观测使用了更为准确的观测方法
-  ## 功能增加
-  - 可选择是否开启最高覆盖屏
-  ## Api
-  - 添加了记录之前40个Action的属性RecordActions
-
+  - 调整最高显示窗口的原理
+  - 修复地面放置类技能闪退的问题
+  - 降低使用技能后0.5s不能自动按到.2s
+  - 正在登出游戏时，屏蔽自动攻击。
+  ## API
+  - 添加ActionHelper类辅助判断类的状态。
+  - 删除AfterUse方法。
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

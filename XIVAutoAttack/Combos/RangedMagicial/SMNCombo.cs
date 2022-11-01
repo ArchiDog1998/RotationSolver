@@ -14,7 +14,6 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
 {
     public class SMNAction : BaseAction
     {
-        internal override int Cast100 => new BaseAction(Service.IconReplacer.OriginalHook(ID)).Cast100;
         public SMNAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
         {
@@ -159,8 +158,8 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
 
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.单体防御, $"{Actions.RadiantAegis.Action.Name}"},
-        {DescType.单体治疗, $"{Actions.Physick.Action.Name}"},
+        {DescType.单体防御, $"{Actions.RadiantAegis}"},
+        {DescType.单体治疗, $"{Actions.Physick}"},
     };
 
     private protected override bool MoveGCD(uint lastComboActionID, out IAction act)
