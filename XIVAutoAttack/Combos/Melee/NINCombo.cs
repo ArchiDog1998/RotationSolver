@@ -214,8 +214,8 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
 
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.单体防御, $"{Actions.ShadeShift.Action.Name}"},
-        {DescType.移动技能, $"{Actions.Shukuchi.Action.Name}，目标为面向夹角小于30°内最远目标。"},
+        {DescType.单体防御, $"{Actions.ShadeShift}"},
+        {DescType.移动技能, $"{Actions.Shukuchi}，目标为面向夹角小于30°内最远目标。"},
     };
 
     private static void SetNinjustus(NinAction act)

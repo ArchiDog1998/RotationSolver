@@ -11,8 +11,6 @@ namespace XIVAutoAttack.Actions.BaseAction
 {
     internal partial class BaseAction 
     {
-        internal const byte GCDCooldownGroup = 58;
-
         internal float Range => ActionManager.GetActionRange(ID);
 
 

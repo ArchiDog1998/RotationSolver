@@ -159,8 +159,8 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
 
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.单体防御, $"{Actions.RadiantAegis.Action.Name}"},
-        {DescType.单体治疗, $"{Actions.Physick.Action.Name}"},
+        {DescType.单体防御, $"{Actions.RadiantAegis}"},
+        {DescType.单体治疗, $"{Actions.Physick}"},
     };
 
     private protected override bool MoveGCD(uint lastComboActionID, out IAction act)

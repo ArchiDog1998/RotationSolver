@@ -107,10 +107,10 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge>
     }
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.范围治疗, $"GCD: {Actions.AfflatusRapture.Action.Name}, {Actions.Medica2.Action.Name}, {Actions.Cure3.Action.Name}, {Actions.Medica.Action.Name}\n                     能力: {Actions.Asylum.Action.Name}, {Actions.Assize.Action.Name}"},
-        {DescType.单体治疗, $"GCD: {Actions.AfflatusSolace.Action.Name}, {Actions.Regen.Action.Name}, {Actions.Cure2.Action.Name}, {Actions.Cure.Action.Name}\n                     能力: {Actions.Tetragrammaton.Action.Name}"},
-        {DescType.范围防御, $"{Actions.Temperance.Action.Name}, {Actions.LiturgyoftheBell.Action.Name}"},
-        {DescType.单体防御, $"{Actions.DivineBenison.Action.Name}, {Actions.Aquaveil.Action.Name}"},
+        {DescType.范围治疗, $"GCD: {Actions.AfflatusRapture}, {Actions.Medica2}, {Actions.Cure3}, {Actions.Medica}\n                     能力: {Actions.Asylum}, {Actions.Assize}"},
+        {DescType.单体治疗, $"GCD: {Actions.AfflatusSolace}, {Actions.Regen}, {Actions.Cure2}, {Actions.Cure}\n                     能力: {Actions.Tetragrammaton}"},
+        {DescType.范围防御, $"{Actions.Temperance}, {Actions.LiturgyoftheBell}"},
+        {DescType.单体防御, $"{Actions.DivineBenison}, {Actions.Aquaveil}"},
     };
     private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
     {
@@ -119,50 +119,50 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge>
         //加Hot
         if (Actions.Medica2.ShouldUse(out act, lastComboActionID)) return true;
 
-        float cure3 = GetBestHeal(Actions.Cure3.Action, 600);
-        float medica = GetBestHeal(Actions.Medica.Action, 300);
+        //float cure3 = GetBestHeal(Actions.Cure3.Action, 600);
+        //float medica = GetBestHeal(Actions.Medica.Action, 300);
 
         //愈疗
-        if (cure3 > medica && Actions.Cure3.ShouldUse(out act)) return true;
+        //if (Actions.Cure3.ShouldUse(out act)) return true;
         if (Actions.Medica.ShouldUse(out act)) return true;
 
         return false;
     }
 
-    [Obsolete]
-    /// <summary>
-    /// 返回总共能大约回复的血量，非常大概。
-    /// </summary>
-    /// <param name="action"></param>
-    /// <param name="strength"></param>
-    /// <returns></returns>
-    internal static float GetBestHeal(Action action, uint strength)
-    {
-        float healRange = strength * 0.000352f;
+    //[Obsolete]
+    ///// <summary>
+    ///// 返回总共能大约回复的血量，非常大概。
+    ///// </summary>
+    ///// <param name="action"></param>
+    ///// <param name="strength"></param>
+    ///// <returns></returns>
+    //internal static float GetBestHeal(Action action, uint strength)
+    //{
+    //    float healRange = strength * 0.000352f;
 
-        //能够放到技能的队员。
-        var canGet = TargetFilter.GetObjectInRadius(TargetUpdater.PartyMembers, Math.Max(action.Range, 0.1f));
+    //    //能够放到技能的队员。
+    //    var canGet = TargetFilter.GetObjectInRadius(TargetUpdater.PartyMembers, Math.Max(action.Range, 0.1f));
 
-        float bestHeal = 0;
-        foreach (var member in canGet)
-        {
-            float thisHeal = 0;
-            Vector3 centerPt = member.Position;
-            foreach (var ran in TargetUpdater.PartyMembers)
-            {
-                //如果不在范围内，那算了。
-                if (Vector3.Distance(centerPt, ran.Position) > action.EffectRange)
-                {
-                    continue;
-                }
+    //    float bestHeal = 0;
+    //    foreach (var member in canGet)
+    //    {
+    //        float thisHeal = 0;
+    //        Vector3 centerPt = member.Position;
+    //        foreach (var ran in TargetUpdater.PartyMembers)
+    //        {
+    //            //如果不在范围内，那算了。
+    //            if (Vector3.Distance(centerPt, ran.Position) > action.EffectRange)
+    //            {
+    //                continue;
+    //            }
 
-                thisHeal += Math.Min(1 - ran.CurrentHp / ran.MaxHp, healRange);
-            }
+    //            thisHeal += Math.Min(1 - ran.CurrentHp / ran.MaxHp, healRange);
+    //        }
 
-            bestHeal = Math.Max(thisHeal, healRange);
-        }
-        return bestHeal;
-    }
+    //        bestHeal = Math.Max(thisHeal, healRange);
+    //    }
+    //    return bestHeal;
+    //}
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {

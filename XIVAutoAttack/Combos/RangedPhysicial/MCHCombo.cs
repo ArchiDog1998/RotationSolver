@@ -136,8 +136,8 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
     internal override SortedList<DescType, string> Description => new()
     {
         {DescType.循环说明, $"请优先使用标准循环,即关闭自嗨循环.\n                     标准循环会在野火前攒热量来打偶数分钟爆发.\n                     AOE和攻击小怪时不会释放野火"},
-        {DescType.爆发技能, $"{Actions.Wildfire.Action.Name}"},
-        {DescType.范围防御, $"{Actions.Tactician.Action.Name}"},
+        {DescType.爆发技能, $"{Actions.Wildfire}"},
+        {DescType.范围防御, $"{Actions.Tactician}"},
     };
 
     private protected override ActionConfiguration CreateConfiguration()
@@ -270,7 +270,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         if (!openerFinished && MCH_Opener) return false;
 
         //在过热时
-        if (JobGauge.IsOverheated) return true;
+        if (IsLastAction(true, Actions.Hypercharge)) return true;
 
         //当上一个技能不是链锯且是钻头,空气锚,热冲击时不释放野火
         if (!IsLastWeaponSkill(Actions.ChainSaw.ID) && IsLastWeaponSkill(true, Actions.Drill, Actions.HeatBlast, Actions.AirAnchor)) return false;
