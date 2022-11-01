@@ -31,20 +31,6 @@ namespace XIVAutoAttack.Actions.BaseAction
             IsGeneralGCD = Action.IsGeneralGCD();
             IsRealGCD = Action.IsRealGCD();
             CoolDownGroup = Action.GetCoolDownGroup();
-
-
-            if (Action.PrimaryCostType is 3 or 4)
-            {
-                MPNeed = Action.PrimaryCostValue * 100u;
-            }
-            else if (Action.SecondaryCostType is 3 or 4)
-            {
-                MPNeed = Action.SecondaryCostValue * 100u;
-            }
-            else
-            {
-                MPNeed = 0;
-            }
         }
 
         public override string ToString()

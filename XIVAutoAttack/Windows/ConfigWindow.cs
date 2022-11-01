@@ -779,7 +779,7 @@ internal class ConfigWindow : Window
             }
 
 #if DEBUG
-            if (ImGui.BeginTabItem("Debug查看"))
+            if (ImGui.BeginTabItem("Debug查看") && Service.ClientState.LocalPlayer != null)
             {
                 //foreach (var item in Service.ClientState.LocalPlayer.StatusList)
                 //{
@@ -799,24 +799,21 @@ internal class ConfigWindow : Window
                 //    ImGui.Text("NameID: " + b.NameId.ToString());
                 //}
 
-                //if (IconReplacer.nextAction != null && IconReplacer.nextAction is BaseAction baseAction)
-                //{
-                //    ImGui.Text(baseAction.ToString());
-                //    ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
-                //    ImGui.Text("Is GCD: " + baseAction.IsGeneralGCD.ToString());
-                //    ImGui.Text("Is Cooldown: " + baseAction.IsCoolDown.ToString());
-                //}
+                if (IconReplacer.nextAction != null && IconReplacer.nextAction is BaseAction baseAction)
+                {
+                    ImGui.Text(baseAction.ToString());
+                    ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
+                    ImGui.Text("Is GCD: " + baseAction.IsGeneralGCD.ToString());
+                    ImGui.Text("Is Cooldown: " + baseAction.IsCoolDown.ToString());
 
-                var action = BLMCombo.Actions.Fire4;
-                ImGui.Text("Cast Time: " + action.Cast.ToString());
-                ImGui.Text("Cast Cost: " + ActionManager.GetActionCost(ActionType.Spell, action.ID, 3, 8, 49, 0).ToString());
-                ImGui.Text("Cast Cost0: " + ActionManager.GetActionCost(ActionType.Spell, action.ID, 0, 0, 0, 0).ToString());
-                ImGui.Text("Cast Resources: " + ActionManager.Instance()->CheckActionResources(ActionType.Spell, action.ID).ToString());
-                ImGui.Text("Cast Stauts: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, action.ID).ToString());
+                    ImGui.Text("Cast Cost: " + baseAction.CastTime.ToString());
+                    ImGui.Text("Can Use: " + baseAction.ShouldUse(out _).ToString());
+                }
 
                 //ImGui.Text(MovingUpdater.IsMoving.ToString());
 
-                //ImGui.Text(ActionUpdater.WeaponRemain.ToString());
+                ImGui.Text(ActionUpdater.WeaponRemain.ToString());
+                ImGui.Text(ActionUpdater._lastCastingTotal.ToString());
 
                 //ImGui.Text(FateManager.Instance()->FateJoined.ToString());
                 //ImGui.Text(TargetHelper.AllTargets.Length.ToString());

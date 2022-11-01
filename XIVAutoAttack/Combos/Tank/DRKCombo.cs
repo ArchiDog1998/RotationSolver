@@ -13,15 +13,6 @@ namespace XIVAutoAttack.Combos.Tank;
 
 internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
 {
-    public class DRKAction : BaseAction
-    {
-        internal override uint MPNeed => JobGauge.HasDarkArts ? 0 : base.MPNeed;
-        internal DRKAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
-            : base(actionID, isFriendly, shouldEndSpecial)
-        {
-        }
-    }
-
     internal override uint JobID => 32;
     internal override bool HaveShield => Player.HaveStatus(ObjectStatus.Grit);
     private protected override BaseAction Shield => Actions.Grit;
@@ -65,10 +56,10 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             Souleater = new (3632),
 
             //暗黑波动
-            FloodofDarkness = new DRKAction(16466),
+            FloodofDarkness = new (16466),
 
             //暗黑锋
-            EdgeofDarkness = new DRKAction(16467)
+            EdgeofDarkness = new (16467)
             {
                 OtherCheck = b => !IsLastAction(true, EdgeofDarkness, FloodofDarkness) && Player.CurrentMp >= 3000,
             },

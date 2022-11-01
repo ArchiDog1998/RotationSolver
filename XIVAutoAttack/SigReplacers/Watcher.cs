@@ -134,10 +134,6 @@ namespace XIVAutoAttack.SigReplacers
                     }
                 }
             }
-
-#if DEBUG
-            Service.ChatGui.Print($"{action.Name}, {tar.Name}, {ActionUpdater.WeaponRemain}");
-#endif
         }
 
         public static void Dispose()

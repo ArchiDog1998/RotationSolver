@@ -4,6 +4,8 @@ using Dalamud.Game.Text.SeStringHandling.Payloads;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using System;
+using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -45,7 +47,7 @@ namespace XIVAutoAttack.Updaters
                 && Service.Configuration.CheckForCasting && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
             ByteColor c = canMove ? greenColor : redColor;
-            MovingUpdater.IsMoving = canMove;
+            MovingUpdater.IsMoving = canMove || Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TenChiJin);
 
             progressBar->AddRed = c.R;
             progressBar->AddGreen = c.G;

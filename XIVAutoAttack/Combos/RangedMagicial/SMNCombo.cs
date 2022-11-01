@@ -14,7 +14,6 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
 {
     public class SMNAction : BaseAction
     {
-        internal override int Cast100 => new BaseAction(Service.IconReplacer.OriginalHook(ID)).Cast100;
         public SMNAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
         {

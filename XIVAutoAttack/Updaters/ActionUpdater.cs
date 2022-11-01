@@ -46,19 +46,15 @@ namespace XIVAutoAttack.Updaters
             var instance = ActionManager.Instance();
 
             var weapontotal = instance->GetRecastTime(ActionType.Spell, 11);
-            if (player.IsCasting)
-            {
-                weapontotal = Math.Max(weapontotal, player.TotalCastTime + 0.1f);
-            }
+            if (player.IsCasting) weapontotal = Math.Max(weapontotal, player.TotalCastTime + 0.1f);
 
             WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Spell, 11);
-            WeaponRemain = Math.Max(weapontotal - WeaponElapsed,
-                player.TotalCastTime - player.CurrentCastTime);
+            WeaponRemain = Math.Max(weapontotal - WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
 
             //确定读条时间。
             if (WeaponElapsed < 0.3)
             {
-                _lastCastingTotal = Service.ClientState.LocalPlayer.TotalCastTime;
+                _lastCastingTotal = player.TotalCastTime;
 
                 //能力技就不用提前了。
                 //补上读条税
@@ -109,6 +105,7 @@ namespace XIVAutoAttack.Updaters
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction2]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InFlight]) return;
 
             //GCD
@@ -161,7 +158,7 @@ namespace XIVAutoAttack.Updaters
 
         public static void Dispose()
         {
-            _weaponDelayStopwatch.Stop();
+            _weaponDelayStopwatch?.Stop();
         }
     }
 }

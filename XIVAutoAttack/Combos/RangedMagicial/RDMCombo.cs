@@ -24,7 +24,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
 
     public class RDMAction : BaseAction
     {
-        internal override int Cast100 => NeedBuffNotCast ? 0 : base.Cast100;
+        internal override float CastTime => NeedBuffNotCast ? 0 : base.CastTime;
         internal override ushort[] BuffsNeed 
         {
             get => NeedBuffNotCast ? base.BuffsNeed : null;

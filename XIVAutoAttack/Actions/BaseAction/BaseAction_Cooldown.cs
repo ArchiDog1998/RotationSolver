@@ -78,14 +78,11 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 咏唱时间
         /// </summary>
-        internal virtual int Cast100 => Action.Cast100ms - (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.LightSpeed, ObjectStatus.Requiescat) ? 25 : 0);
-
-        internal unsafe int Cast => ActionManager.GetAdjustedCastTime(ActionType.Spell, ID);
-        //internal unsafe int Cast => ActionManager.GetActionCost(ActionType.Spell, ID);
+        internal virtual unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
 
         private float RecastTimeRemain => RecastTime - RecastTimeElapsed;
 
-        internal  unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(ID, Service.ClientState.LocalPlayer.Level), (ushort)1);
+        internal  unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(AdjustedID, Service.ClientState.LocalPlayer.Level), (ushort)1);
         /// <summary>
         /// 是否起码有一层技能
         /// </summary>
@@ -93,7 +90,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         internal ushort ChargesCount => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
 
-        private float RecastTimeOneCharge => Action.MaxCharges <= 1 ? ActionManager.GetAdjustedRecastTime(ActionType.Spell, ID) : Action.Recast100ms / 10f;
+        private float RecastTimeOneCharge => Action.MaxCharges <= 1 ? ActionManager.GetAdjustedRecastTime(ActionType.Spell, AdjustedID) : Action.Recast100ms / 10f;
 
         /// <summary>
         /// 下一层转好的时间

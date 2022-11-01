@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +13,7 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
+using XIVAutoAttack.Updaters;
 using static XIVAutoAttack.SigReplacers.PluginAddressResolver;
 
 namespace XIVAutoAttack
@@ -278,7 +280,7 @@ namespace XIVAutoAttack
                 return;
             }
 
-            if (Watcher.TimeSinceLastAction.TotalSeconds < 0.5) return;
+            if (Watcher.TimeSinceLastAction.TotalSeconds < 0.2) return;
 
             //0.2s内，不能重复按按钮。
             if (DateTime.Now - _fastClickStopwatch < new TimeSpan(0, 0, 0, 0, 200)) return;
@@ -305,6 +307,8 @@ namespace XIVAutoAttack
                 if (newiAction.Use() && newiAction is BaseAction act)
                 {
 #if DEBUG
+                    Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.WeaponRemain}");
+
                     //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + act.Action.Name + TargetHelper.AbilityRemainCount.ToString());
 #endif
                     //Change Target
