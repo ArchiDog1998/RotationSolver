@@ -16,6 +16,7 @@ changelog: |-
   ## API
   - 添加ActionHelper类辅助判断类的状态。
   - 删除AfterUse方法。
+  - Action的CastTime和MPNeed均为当前状态下准确的值。
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
