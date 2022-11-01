@@ -158,6 +158,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+
         MCH_Opener = Config.GetBoolByName("MCH_Opener");
         MCH_Automaton = Config.GetBoolByName("MCH_Automaton");
 
@@ -270,7 +271,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         if (!openerFinished && MCH_Opener) return false;
 
         //在过热时
-        if (JobGauge.IsOverheated) return true;
+        if (IsLastAction(true, Actions.Hypercharge)) return true;
 
         //当上一个技能不是链锯且是钻头,空气锚,热冲击时不释放野火
         if (!IsLastWeaponSkill(Actions.ChainSaw.ID) && IsLastWeaponSkill(true, Actions.Drill, Actions.HeatBlast, Actions.AirAnchor)) return false;
