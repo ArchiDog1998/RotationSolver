@@ -25,6 +25,7 @@ namespace XIVAutoAttack.Windows
             ImGui.PushID("AutoAttackOverlay");
 
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
+
             ImGuiHelpers.SetNextWindowPosRelativeMainViewport(new Vector2(0, 0));
             ImGui.Begin("Ring", ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
 
