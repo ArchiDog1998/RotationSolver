@@ -217,9 +217,9 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.范围防御, $"{Actions.ShieldSamba.Action.Name}"},
-        {DescType.范围治疗, $"{Actions.CuringWaltz.Action.Name}, {Actions.Improvisation.Action.Name}"},
-        {DescType.移动技能, $"{Actions.EnAvant.Action.Name}"},
+        {DescType.范围防御, $"{Actions.ShieldSamba}"},
+        {DescType.范围治疗, $"{Actions.CuringWaltz}, {Actions.Improvisation}"},
+        {DescType.移动技能, $"{Actions.EnAvant}"},
     };
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)

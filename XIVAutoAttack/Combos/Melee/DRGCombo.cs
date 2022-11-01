@@ -17,7 +17,6 @@ namespace XIVAutoAttack.Combos.Melee;
 internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
 {
     internal override uint JobID => 22;
-    //private static bool inOpener = false;
     private static bool safeMove = false;
 
     internal struct Actions
@@ -183,7 +182,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
 
     internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
     {
-        {DescType.移动技能, $"{Actions.SpineshatterDive.Action.Name}, {Actions.DragonfireDive.Action.Name}"},
+        {DescType.移动技能, $"{Actions.SpineshatterDive}, {Actions.DragonfireDive}"},
     };
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
@@ -272,19 +271,6 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
     {
         safeMove = Config.GetBoolByName("DRG_SafeMove");
 
-        //if (!InCombat && Config.GetBoolByName("DRG_Opener") && Service.ClientState.LocalPlayer!.Level >= 88)
-        //{
-        //    inOpener = false;
-
-        //    if (!Actions.LanceCharge.IsCoolDown && !Actions.BattleLitany.IsCoolDown)
-        //    {
-        //        inOpener = true;
-        //    }
-        //}
-        //if (Actions.BattleLitany.IsCoolDown && !Player.HaveStatus(ObjectStatus.LanceCharge))
-        //{
-        //    inOpener = false;
-        //}
         #region 群伤
         if (Actions.CoerthanTorment.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.SonicThrust.ShouldUse(out act, lastComboActionID)) return true;

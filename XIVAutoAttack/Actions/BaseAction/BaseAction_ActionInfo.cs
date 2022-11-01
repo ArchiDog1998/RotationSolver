@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Linq;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -11,8 +12,6 @@ namespace XIVAutoAttack.Actions.BaseAction
 {
     internal partial class BaseAction 
     {
-        internal const byte GCDCooldownGroup = 58;
-
         internal float Range => ActionManager.GetActionRange(ID);
 
 
@@ -27,7 +26,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 return EnemyLocation.None;
             }
         }
-        internal virtual uint MPNeed { get; }
+        internal unsafe uint MPNeed => (uint)ActionManager.GetActionCost(ActionType.Spell, AdjustedID, 0, 0, 0, 0);
 
 
         /// <summary>
@@ -49,12 +48,6 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// 使用这个技能需要的前置Buff，有任何一个就好。
         /// </summary>
         internal virtual ushort[] BuffsNeed { get; set; } = null;
-
-        [Obsolete("尽量别用！慢慢抛弃它！以后将不再拥有它！")]
-        /// <summary>
-        /// 技能使用好后，做点啥，能不用尽量不要用！手动按无效。
-        /// </summary>
-        internal System.Action AfterUse { get; set; } = null;
 
         /// <summary>
         /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
@@ -161,7 +154,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
-                if (Cast100 > 0 && MovingUpdater.IsMoving)
+                if (CastTime > 0 && MovingUpdater.IsMoving)
                 {
                     if (!Service.ClientState.LocalPlayer.HaveStatus(CustomCombo.GeneralActions.Swiftcast.BuffsProvide))
                     {
@@ -186,7 +179,6 @@ namespace XIVAutoAttack.Actions.BaseAction
              ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, Target.ObjectId);
 
             if (_shouldEndSpecial) CommandController.ResetSpecial(false);
-            if (result && AfterUse != null) AfterUse.Invoke();
 
             return result;
         }

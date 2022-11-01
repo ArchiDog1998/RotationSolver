@@ -176,11 +176,11 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
     }
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.范围治疗, $"GCD: {Actions.AspectedHelios.Action.Name}, {Actions.Helios.Action.Name}\n                     能力: {Actions.EarthlyStar.Action.Name}, {Actions.CrownPlay.Action.Name}, {Actions.CelestialOpposition.Action.Name}"},
-        {DescType.单体治疗, $"GCD: {Actions.AspectedBenefic.Action.Name}, {Actions.Benefic2.Action.Name}, {Actions.Benefic.Action.Name}\n                     能力: {Actions.CelestialIntersection.Action.Name}, {Actions.EssentialDignity.Action.Name}"},
-        {DescType.范围防御, $"{Actions.CollectiveUnconscious.Action.Name}"},
-        {DescType.单体防御, $"{Actions.Exaltation.Action.Name}，给被挨打的T"},
-        {DescType.爆发技能, $"{Actions.Divination.Action.Name}"}
+        {DescType.范围治疗, $"GCD: {Actions.AspectedHelios}, {Actions.Helios}\n                     能力: {Actions.EarthlyStar}, {Actions.CrownPlay}, {Actions.CelestialOpposition}"},
+        {DescType.单体治疗, $"GCD: {Actions.AspectedBenefic}, {Actions.Benefic2}, {Actions.Benefic}\n                     能力: {Actions.CelestialIntersection}, {Actions.EssentialDignity}"},
+        {DescType.范围防御, $"{Actions.CollectiveUnconscious}"},
+        {DescType.单体防御, $"{Actions.Exaltation}，给被挨打的T"},
+        {DescType.爆发技能, $"{Actions.Divination}"}
     };
 
     private protected override ActionConfiguration CreateConfiguration()

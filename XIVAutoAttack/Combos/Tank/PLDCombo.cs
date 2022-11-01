@@ -205,10 +205,10 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
     }
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.单体治疗, $"{Actions.Clemency.Action.Name}"},
-        {DescType.范围防御, $"{Actions.DivineVeil.Action.Name}, {Actions.PassageofArms.Action.Name}"},
-        {DescType.单体防御, $"{Actions.Sentinel.Action.Name}, {Actions.Sheltron.Action.Name}"},
-        {DescType.移动技能, $"{Actions.Intervene.Action.Name}"},
+        {DescType.单体治疗, $"{Actions.Clemency}"},
+        {DescType.范围防御, $"{Actions.DivineVeil}, {Actions.PassageofArms}"},
+        {DescType.单体防御, $"{Actions.Sentinel}, {Actions.Sheltron}"},
+        {DescType.移动技能, $"{Actions.Intervene}"},
     };
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
