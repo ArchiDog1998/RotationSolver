@@ -229,7 +229,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
     }
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.单体防御, $"{Actions.ArcaneCrest.Action.Name}"},
+        {DescType.单体防御, $"{Actions.ArcaneCrest}"},
     };
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {

@@ -11,20 +11,17 @@ namespace XIVAutoAttack.Combos.RangedMagicial
     {
         internal class BLUAction : BaseAction
         {
-            public unsafe uint[] BLUActions
+            public unsafe bool OnSlot
             {
                 get
                 {
-                    uint[] acts = new uint[24];
                     for (int i = 0; i < 24; i++)
                     {
-                        acts[i] = ActionManager.Instance()->GetActiveBlueMageActionInSlot(i);
+                        if(ID == ActionManager.Instance()->GetActiveBlueMageActionInSlot(i)) return true;
                     }
-                    return acts;
+                    return false;
                 }
             }
-
-            public bool OnSlot => BLUActions.Contains(this.ID);
 
             internal BLUAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
                 : base(actionID, isFriendly, shouldEndSpecial)

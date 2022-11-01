@@ -220,11 +220,11 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
 
     internal override SortedList<DescType, string> Description => new()
     {
-        {DescType.范围治疗, $"GCD: {Actions.Prognosis.Action.Name}\n                     能力: {Actions.Holos.Action.Name}, {Actions.Ixochole.Action.Name}, {Actions.Physis2.Action.Name}, {Actions.Physis.Action.Name}"},
-        {DescType.单体治疗, $"GCD: {Actions.Diagnosis.Action.Name}\n                     能力: {Actions.Druochole.Action.Name}"},
-        {DescType.范围防御, $"{Actions.Panhaima.Action.Name}, {Actions.Kerachole.Action.Name}, {Actions.Prognosis.Action.Name}"},
-        {DescType.单体防御, $"GCD: {Actions.Diagnosis.Action.Name}\n                     能力: {Actions.Haima.Action.Name}, {Actions.Taurochole.Action.Name}"},
-        {DescType.移动技能, $"{Actions.Icarus.Action.Name}，目标为面向夹角小于30°内最远目标。"},
+        {DescType.范围治疗, $"GCD: {Actions.Prognosis}\n                     能力: {Actions.Holos}, {Actions.Ixochole}, {Actions.Physis2}, {Actions.Physis}"},
+        {DescType.单体治疗, $"GCD: {Actions.Diagnosis}\n                     能力: {Actions.Druochole}"},
+        {DescType.范围防御, $"{Actions.Panhaima}, {Actions.Kerachole}, {Actions.Prognosis}"},
+        {DescType.单体防御, $"GCD: {Actions.Diagnosis}\n                     能力: {Actions.Haima}, {Actions.Taurochole}"},
+        {DescType.移动技能, $"{Actions.Icarus}，目标为面向夹角小于30°内最远目标。"},
     };
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {

@@ -119,9 +119,9 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
 
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.范围治疗, $"{Actions.Mantra.Action.Name}"},
-        {DescType.单体防御, $"{Actions.RiddleofEarth.Action.Name}"},
-        {DescType.移动技能, $"{Actions.Thunderclap.Action.Name}"},
+        {DescType.范围治疗, $"{Actions.Mantra}"},
+        {DescType.单体防御, $"{Actions.RiddleofEarth}"},
+        {DescType.移动技能, $"{Actions.Thunderclap}"},
     };
 
     private protected override ActionConfiguration CreateConfiguration()

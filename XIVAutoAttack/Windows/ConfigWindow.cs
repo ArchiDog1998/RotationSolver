@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface.Windowing;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using ImGuiNET;
 using Lumina.Data.Parsing.Uld;
@@ -13,6 +14,7 @@ using System.Numerics;
 using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Combos.RangedPhysicial;
@@ -38,9 +40,9 @@ internal class ConfigWindow : Window
     }
     private static readonly Dictionary<Role, string> _roleDescriptionValue = new Dictionary<Role, string>()
     {
-        {Role.防护, $"{CustomCombo.DescType.单体防御} → {CustomCombo.GeneralActions.Rampart.Action.Name}, {CustomCombo.GeneralActions.Reprisal.Action.Name}" },
-        {Role.近战, $"{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Feint.Action.Name}" },
-        {Role.远程, $"法系{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Addle.Action.Name}" },
+        {Role.防护, $"{CustomCombo.DescType.单体防御} → {CustomCombo.GeneralActions.Rampart}, {CustomCombo.GeneralActions.Reprisal}" },
+        {Role.近战, $"{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Feint}" },
+        {Role.远程, $"法系{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Addle}" },
     };
 
     private static string ToName(VirtualKey k)
@@ -797,20 +799,20 @@ internal class ConfigWindow : Window
                 //    ImGui.Text("NameID: " + b.NameId.ToString());
                 //}
 
-                if (IconReplacer.nextAction != null && IconReplacer.nextAction is BaseAction baseAction)
-                {
-                    ImGui.Text(baseAction.Action.Name.ToString());
-                    ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
-                    ImGui.Text("Is GCD: " + baseAction.IsGeneralGCD.ToString());
-                    ImGui.Text("Is Cooldown: " + baseAction.IsCoolDown.ToString());
-                }
+                //if (IconReplacer.nextAction != null && IconReplacer.nextAction is BaseAction baseAction)
+                //{
+                //    ImGui.Text(baseAction.ToString());
+                //    ImGui.Text("Have One:" + baseAction.HaveOneCharge.ToString());
+                //    ImGui.Text("Is GCD: " + baseAction.IsGeneralGCD.ToString());
+                //    ImGui.Text("Is Cooldown: " + baseAction.IsCoolDown.ToString());
+                //}
+
+                var action = BLMCombo.Actions.Fire4;
+                ImGui.Text("File 4 Cast: " + action.Cast.ToString());
+                ImGui.Text(ActionManager.GetActionCost(ActionType.Spell, action.ID, 3, 8, 49, 0).ToString()); 
+                ImGui.Text(ActionManager.GetActionCost(ActionType.Spell, action.ID, 0, 0, 0, 0).ToString());
 
                 //ImGui.Text(MovingUpdater.IsMoving.ToString());
-
-                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty].ToString());
-                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56].ToString());
-                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty95].ToString());
-                ImGui.Text(Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundToDuty97].ToString());
 
                 //ImGui.Text(ActionUpdater.WeaponRemain.ToString());
 
@@ -852,7 +854,6 @@ internal class ConfigWindow : Window
                 //}
 
             }
-
 #endif
 
             ImGui.EndTabBar();

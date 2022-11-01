@@ -175,8 +175,8 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
     }
     internal override SortedList<DescType, string> Description => new()
     {
-        {DescType.范围防御, $"{Actions.Troubadour.Action.Name}"},
-        {DescType.单体治疗, $"{Actions.NaturesMinne.Action.Name}"},
+        {DescType.范围防御, $"{Actions.Troubadour}"},
+        {DescType.单体治疗, $"{Actions.NaturesMinne}"},
     };
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {

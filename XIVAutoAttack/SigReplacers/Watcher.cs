@@ -1,4 +1,5 @@
-﻿using Dalamud.Hooking;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Hooking;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -58,24 +59,44 @@ namespace XIVAutoAttack.SigReplacers
 
         private static void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail)
         {
-            var targetId = Marshal.ReadInt32(effectHeader);
-            var action = Marshal.ReadInt32(effectHeader, 0x8);
-            var type = Marshal.ReadByte(effectHeader, 31);
             _receivAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTrail);
 
-            if (Service.ClientState.LocalPlayer == null) return;
-            if (type != 1 || action == 7 || sourceId != Service.ClientState.LocalPlayer.ObjectId) return;
-            RecordAction((uint)targetId, (uint)action, type);
+            //不是自己放出来的
+            if (Service.ClientState.LocalPlayer == null || sourceId != Service.ClientState.LocalPlayer.ObjectId) return;
+
+            //不是一个Spell
+            if (Marshal.ReadByte(effectHeader, 31) != 1) return;
+
+            //获得行为
+            var action = Service.DataManager.GetExcelSheet<Action>().GetRow((uint)Marshal.ReadInt32(effectHeader, 0x8));
+
+            //获得目标
+            var tar = Service.ObjectTable.SearchById((uint)Marshal.ReadInt32(effectHeader)) ?? Service.ClientState.LocalPlayer;
+
+
+            RecordAction(tar, action);
         }
 
         private static DateTime _timeLastSpeak = DateTime.Now;
-        private static unsafe void RecordAction(uint targetId, uint id, byte type)
+        private static unsafe void RecordAction(GameObject tar, Action action)
         {
-            var action = Service.DataManager.GetExcelSheet<Action>().GetRow(id);
-            var cate = action.ActionCategory.Value;
-            var tar = Service.ObjectTable.SearchById(targetId);
+            var id = action.RowId;
 
             //Record
+            switch (action.GetActinoType())
+            {
+                case ActionCate.Spell: //魔法
+                    LastSpell = id;
+                    break;
+                case ActionCate.Weaponskill: //战技
+                    LastWeaponskill = id;
+                    break;
+                case ActionCate.Ability: //能力
+                    LastAbility = id;
+                    break;
+                default:
+                    return;
+            }
             _timeLastActionUsed = DateTime.Now;
             LastAction = id;
 
@@ -85,37 +106,16 @@ namespace XIVAutoAttack.SigReplacers
             }
             _actions.Enqueue(new ActionRec(_timeLastActionUsed, action));
 
-            if (cate != null)
-            {
-                switch (cate.RowId)
-                {
-                    case 2: //魔法
-                        LastSpell = id;
-                        break;
-                    case 3: //战技
-                        LastWeaponskill = id;
-                        break;
-                    case 4: //能力
-                        LastAbility = id;
-                        break;
-                }
-            }
 
-#if DEBUG
-            Service.ChatGui.Print($"{action.Name}, {tar.Name}, {ActionUpdater.WeaponRemain}");
-#endif
             //Macro
             foreach (var item in Service.Configuration.Events)
             {
-                if (item.Name == action.Name)
-                {
-                    if (item.MacroIndex < 0 || item.MacroIndex > 99) break;
+                if (item.Name != action.Name) continue;
+                if (item.MacroIndex < 0 || item.MacroIndex > 99) break;
 
-                    MacroUpdater.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
-                        RaptureMacroModule.Instance->Individual[item.MacroIndex]));
-                }
+                MacroUpdater.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
+                    RaptureMacroModule.Instance->Individual[item.MacroIndex]));
             }
-
 
             //事后骂人！
             if (DateTime.Now - _timeLastSpeak > new TimeSpan(0, 0, 0, 0, 200))
@@ -134,6 +134,10 @@ namespace XIVAutoAttack.SigReplacers
                     }
                 }
             }
+
+#if DEBUG
+            Service.ChatGui.Print($"{action.Name}, {tar.Name}, {ActionUpdater.WeaponRemain}");
+#endif
         }
 
         public static void Dispose()

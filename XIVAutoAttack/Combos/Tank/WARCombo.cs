@@ -136,9 +136,9 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
     }
     internal override SortedList<DescType, string> Description => new ()
     {
-        {DescType.范围防御, $"{Actions.ShakeItOff.Action.Name}"},
-        {DescType.单体防御, $"{Actions.RawIntuition.Action.Name}, {Actions.Vengeance.Action.Name}"},
-        {DescType.移动技能, $"GCD: {Actions.PrimalRend.Action.Name}，目标为面向夹角小于30°内最远目标。\n                     能力: {Actions.Onslaught.Action.Name}, "},
+        {DescType.范围防御, $"{Actions.ShakeItOff}"},
+        {DescType.单体防御, $"{Actions.RawIntuition}, {Actions.Vengeance}"},
+        {DescType.移动技能, $"GCD: {Actions.PrimalRend}，目标为面向夹角小于30°内最远目标。\n                     能力: {Actions.Onslaught}, "},
     };
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
