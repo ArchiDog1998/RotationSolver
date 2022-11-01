@@ -158,6 +158,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
+
         MCH_Opener = Config.GetBoolByName("MCH_Opener");
         MCH_Automaton = Config.GetBoolByName("MCH_Automaton");
 

@@ -17,7 +17,6 @@ namespace XIVAutoAttack.Combos.Melee;
 internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
 {
     internal override uint JobID => 22;
-    private static bool inOpener = false;
     private static bool safeMove = false;
 
     internal struct Actions
@@ -76,44 +75,24 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
             {
                 OtherCheck = b =>
                 {
-
                     if (safeMove && b.DistanceToPlayer() > 2) return false;
                     if (IsLastAction(true, SpineshatterDive)) return false;
 
-                    if (inOpener && IsLastWeaponSkill(true,  FangandClaw, HeavensThrust)) return true;
-                    if (!inOpener) return true;
-
-                    return false;
+                    return true;
                 }
             },
 
             //¡˙—◊≥Â
             DragonfireDive = new (96)
             {
-                OtherCheck = b =>
-                {
-                    if (safeMove && b.DistanceToPlayer() > 2) return false;
-
-                    if (inOpener && IsLastWeaponSkill(true, RaidenThrust)) return true;
-                    if (!inOpener) return true;
-
-                    return false;
-                }
+                OtherCheck = b => !safeMove || b.DistanceToPlayer() < 2,
             },
 
             //Ã¯‘æ
             Jump = new (92)
             {
                 BuffsProvide = new ushort[] { ObjectStatus.DiveReady },
-                OtherCheck = b =>
-                {
-                    if (safeMove && b.DistanceToPlayer() > 2) return false;
-
-                    if (inOpener && IsLastWeaponSkill(true, ChaoticSpring)) return true;
-                    if (!inOpener) return true;
-
-                    return false;
-                },
+                OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(ObjectStatus.PowerSurge),
             },
             //∏ﬂÃ¯
             HighJump = new (16478)
@@ -125,26 +104,13 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
             {
                 BuffsNeed = new [] { ObjectStatus.DiveReady },
 
-                OtherCheck = b =>
-                {
-                    if (Geirskogul.WillHaveOneChargeGCD(4)) return false;
-                    if (inOpener && IsLastWeaponSkill(true, FangandClaw)) return true;
-                    if (!inOpener) return true;
-
-                    return false;
-                },
+                OtherCheck = b => !Geirskogul.WillHaveOneChargeGCD(4)
             },
 
             //Œ‰…Ò«π
             Geirskogul = new (3555)
             {
-                OtherCheck = b =>
-                {
-                    if (inOpener && IsLastWeaponSkill(true, ChaoticSpring)) return true;
-                    if (!inOpener) return true;
-
-                    return false;
-                },
+                OtherCheck = b => Jump.IsCoolDown || HighJump.IsCoolDown,
             },
 
             //À¿’ﬂ÷Æ∞∂
@@ -174,17 +140,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
             },
 
             //√Õ«π
-            LanceCharge = new (85)
-            {
-                OtherCheck = b =>
-                {
-
-                    if (inOpener && IsLastWeaponSkill(true, TrueThrust)) return true;
-                    if (!inOpener) return true;
-
-                    return false;
-                }
-            },
+            LanceCharge = new (85),
 
             //æﬁ¡˙ ”œﬂ
             DragonSight = new (7398)
@@ -207,7 +163,6 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
                 },
 
                 BuffsNeed = new [] {ObjectStatus.PowerSurge},
-                BuffsProvide = new[] { ObjectStatus.LanceCharge }, 
 
             },
 
@@ -215,7 +170,6 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
             BattleLitany = new (3557)
             {
                 BuffsNeed = new[] { ObjectStatus.PowerSurge },
-                BuffsProvide = new[] { ObjectStatus.LanceCharge },
             };
     }
 
@@ -259,8 +213,11 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         if (SettingBreak)
         {
             //√Õ«π
-            if (inOpener && abilityRemain == 1 && Actions.LanceCharge.ShouldUse(out act, mustUse: true)) return true;
-            if (!inOpener && Actions.LanceCharge.ShouldUse(out act, mustUse: true)) return true;
+            if (Actions.LanceCharge.ShouldUse(out act, mustUse: true))
+            {
+                if (abilityRemain == 1 && !Player.HaveStatus(ObjectStatus.PowerSurge)) return true;
+                if (Player.HaveStatus(ObjectStatus.PowerSurge)) return true;
+            }
 
             //æﬁ¡˙ ”œﬂ
             if (Actions.DragonSight.ShouldUse(out act, mustUse: true)) return true;
@@ -289,14 +246,20 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         if (Actions.Geirskogul.ShouldUse(out act, mustUse: true)) return true;
 
         //∆∆ÀÈ≥Â
-        if (Player.HaveStatus(ObjectStatus.RightEye) && Actions.SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-        if (Actions.SpineshatterDive.ShouldUse(out act)) return true;
+        if (Actions.SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true))
+        {
+            if (Player.HaveStatus(ObjectStatus.LanceCharge) && Actions.LanceCharge.ElapsedAfterGCD(3)) return true;
+        }
+        if (Player.HaveStatus(ObjectStatus.PowerSurge) && Actions.SpineshatterDive.ChargesCount != 1 && Actions.SpineshatterDive.ShouldUse(out act)) return true;
 
         //ª√œÛ≥Â
         if (Actions.MirageDive.ShouldUse(out act)) return true;
 
         //¡˙—◊≥Â
-        if (Actions.DragonfireDive.ShouldUse(out act, mustUse: true)) return true;
+        if (Actions.DragonfireDive.ShouldUse(out act, mustUse: true))
+        {
+            if (Player.HaveStatus(ObjectStatus.LanceCharge) && Actions.LanceCharge.ElapsedAfterGCD(3)) return true;
+        }
 
         //ÃÏ¡˙µ„æ¶
         if (Actions.WyrmwindThrust.ShouldUse(out act, mustUse: true)) return true;
@@ -308,19 +271,6 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
     {
         safeMove = Config.GetBoolByName("DRG_SafeMove");
 
-        if (!InCombat && Config.GetBoolByName("DRG_Opener") && Service.ClientState.LocalPlayer!.Level >= 88)
-        {
-            inOpener = false;
-
-            if (!Actions.LanceCharge.IsCoolDown && !Actions.BattleLitany.IsCoolDown)
-            {
-                inOpener = true;
-            }
-        }
-        if (Actions.BattleLitany.IsCoolDown && !Player.HaveStatus(ObjectStatus.LanceCharge))
-        {
-            inOpener = false;
-        }
         #region »∫…À
         if (Actions.CoerthanTorment.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.SonicThrust.ShouldUse(out act, lastComboActionID)) return true;
@@ -341,7 +291,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         }
 
         //ø¥ø¥ «∑Ò–Ë“™–¯Buff
-        if (Player.WillStatusEndGCD(5, 0, true, ObjectStatus.PowerSurge))
+        if (!Player.WillStatusEndGCD(5, 0, true, ObjectStatus.PowerSurge))
         {
             if (Actions.FullThrust.ShouldUse(out act, lastComboActionID)) return true;
             if (Actions.VorpalThrust.ShouldUse(out act, lastComboActionID)) return true;
