@@ -858,7 +858,7 @@ internal class ConfigWindow : Window
         //int size = Math.Max(action.Icon.Width, 45);
         //ImGui.Image(action.Icon.ImGuiHandle, new Vector2(size, size));
 
-        ImGui.SameLine();
+        //ImGui.SameLine();
         ImGui.Text($"{type}: {action}");
 
         action.Dispose();
