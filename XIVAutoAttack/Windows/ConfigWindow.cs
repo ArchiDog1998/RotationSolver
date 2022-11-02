@@ -819,10 +819,13 @@ internal class ConfigWindow : Window
                         ImGui.Text("Recast One: " + baseAction.RecastTimeOneChargeDEBUG.ToString());
                         ImGui.Text("Recast Elapsed: " + baseAction.RecastTimeElapsedDEBUG.ToString());
                         ImGui.Text("Recast Remain: " + baseAction.RecastTimeRemainDEBUG.ToString());
-                        //ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, baseAction.AdjustedID).ToString());
+                        ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, baseAction.AdjustedID).ToString());
 
                         ImGui.Text("Cast Cost: " + baseAction.CastTime.ToString());
                         ImGui.Text($"Can Use: {baseAction.ShouldUse(out _)} {baseAction.ShouldUse(out _, mustUse:true)}");
+
+                        ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
+                        ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
                     }
                 }
             }

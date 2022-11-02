@@ -105,9 +105,14 @@ namespace XIVAutoAttack.Updaters
                 AbilityRemain = WeaponRemain + interval;
                 AbilityRemainCount = 0;
             }
+            else if (WeaponRemain < 2 * interval)
+            {
+                AbilityRemain = WeaponRemain - interval;
+                AbilityRemainCount = 1;
+            }
             else
             {
-                var abilityWhole = (int)(weapontotal / Service.Configuration.WeaponInterval - 1);
+                var abilityWhole = (int)(WeaponTotal / Service.Configuration.WeaponInterval - 1);
                 AbilityRemain = interval - WeaponElapsed % interval;
                 AbilityRemainCount = (byte)(abilityWhole - (int)(WeaponElapsed / interval));
             }
@@ -191,17 +196,18 @@ namespace XIVAutoAttack.Updaters
             if (WeaponElapsed <= _lastCastingTotal) return;
 
             //只剩下最后一个能力技了，然后卡最后！
-            if (AbilityRemainCount == 1)
+            if (AbilityRemainCount == 0)
             {
                 if (WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponFaster) return;
                 CommandController.DoAnAction(false);
+
                 return;
             }
-
-            else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
+            else
+            if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
             {
                 CommandController.DoAnAction(false);
-                return;
+                //Service.ChatGui.Print("Other " + AbilityRemainCount.ToString());
             }
         }
 

@@ -44,9 +44,8 @@ namespace XIVAutoAttack.Updaters
 
             MovingUpdater.UpdateLocation();
 
-            ActionUpdater.UpdateNextAction();
-
             ActionUpdater.DoAction();
+            ActionUpdater.UpdateNextAction();
             MacroUpdater.UpdateMacro();
         }
 

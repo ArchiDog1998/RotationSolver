@@ -278,24 +278,29 @@ namespace XIVAutoAttack
                 return;
             }
 
+            var localPlayer = Service.ClientState.LocalPlayer;
+            if (localPlayer == null) return;
+
             if (Watcher.TimeSinceLastAction.TotalSeconds < 0.2) return;
 
             //0.2s内，不能重复按按钮。
             if (DateTime.Now - _fastClickStopwatch < new TimeSpan(0, 0, 0, 0, 200)) return;
             _fastClickStopwatch = DateTime.Now;
 
-            var localPlayer = Service.ClientState.LocalPlayer;
-            if (localPlayer == null) return;
-
             //Do Action
             var nextAction = ActionUpdater.NextAction;
+#if DEBUG
+            //if(nextAction is BaseAction acti)
+            //Service.ChatGui.Print($"Will Do {acti} {ActionUpdater.WeaponElapsed}");
+#endif
             if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
+
 
 
             if (nextAction.Use() && nextAction is BaseAction act)
             {
 #if DEBUG
-                Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.WeaponRemain}");
+                Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                 //Change Target
                 if (act.Target?.CanAttack() ?? false)

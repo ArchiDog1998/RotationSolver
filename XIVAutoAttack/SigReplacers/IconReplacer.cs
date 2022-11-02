@@ -107,7 +107,7 @@ internal sealed class IconReplacer : IDisposable
         if (localPlayer == null || actionID != KeyActionID.ID || Service.Configuration.NeverReplaceIcon)
             return OriginalHook(actionID);
 
-        return ActionUpdater.NextAction.AdjustedID;
+        return ActionUpdater.NextAction?.AdjustedID ?? OriginalHook(actionID);
 
     }
 

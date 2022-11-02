@@ -62,11 +62,9 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供，不判断AOE技能的敌人数量是否达标，并且如果有层数，放完所有层数。</param>
         /// <param name="emptyOrSkipCombo">如果有层数，放完所有层数，不判断是否为Combo<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
         /// <returns>这个技能能不能用</returns>
-        public virtual bool ShouldUse(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
+        public unsafe virtual bool ShouldUse(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
-            byte level = Service.ClientState.LocalPlayer.Level;
-
             //等级不够。
             if (!EnoughLevel) return false;
 
@@ -95,13 +93,15 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //会让GCD转的，充能一层的，看看来不来得及下个GCD
                 if (IsRealGCD)
                 {
-                    if (RecastTimeElapsed + ActionUpdater.WeaponRemain < RecastTimeOneCharge) return false;
+                    if(!WillHaveOneChargeGCD()) return false;
+                    //if (RecastTimeElapsed + ActionUpdater.WeaponRemain < RecastTimeOneCharge) return false;
                 }
                 else
                 {
                     //冷却时间没超过一成且下一个Ability前不能转好
                     if (!HaveOneCharge && !this.WillHaveOneCharge(ActionUpdater.AbilityRemain, false))
                         return false;
+                    //if (!HaveOneCharge) return false;
                 }
             }
 

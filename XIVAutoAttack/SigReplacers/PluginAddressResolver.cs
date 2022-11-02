@@ -29,8 +29,8 @@ internal class PluginAddressResolver : BaseAddressResolver
     public GetChatBoxModuleDelegate GetChatBox { get; private set; }
 
 
-    public unsafe delegate byte CanUseActionOnGameObject(uint actionId, GameObject* obj);
-    public CanUseActionOnGameObject CanUseAction { get; private set; }
+    //public unsafe delegate byte CanUseActionOnGameObject(uint actionId, GameObject* obj);
+    //public CanUseActionOnGameObject CanUseAction { get; private set; }
 
     protected override void Setup64Bit(SigScanner scanner)
     {
@@ -46,8 +46,8 @@ internal class PluginAddressResolver : BaseAddressResolver
 
         GetChatBox = Marshal.GetDelegateForFunctionPointer<GetChatBoxModuleDelegate>(
             scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9"));
-        CanUseAction = Marshal.GetDelegateForFunctionPointer<CanUseActionOnGameObject>(
-            scanner.ScanText("48 89 5C 24 08 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3"));
+        //CanUseAction = Marshal.GetDelegateForFunctionPointer<CanUseActionOnGameObject>(
+        //    scanner.ScanText("48 89 5C 24 08 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3"));
 
 
         PluginLog.Verbose("===== X I V A U T O A T T C K =====", Array.Empty<object>());
