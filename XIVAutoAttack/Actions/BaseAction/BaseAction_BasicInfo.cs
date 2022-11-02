@@ -32,7 +32,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             _shouldEndSpecial = shouldEndSpecial;
             _isFriendly = isFriendly;
             _isDot = isDot;
-
+            
             Icon = Service.DataManager.GetImGuiTextureIcon(_action.Icon);
             IsGeneralGCD = _action.IsGeneralGCD();
             IsRealGCD = _action.IsRealGCD();

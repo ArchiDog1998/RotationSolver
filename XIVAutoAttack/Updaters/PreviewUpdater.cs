@@ -39,9 +39,9 @@ namespace XIVAutoAttack.Updaters
             ByteColor greenColor = new ByteColor() { A = 255, R = 60, G = 120, B = 30 };
 
             bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
-                && Service.Configuration.CheckForCasting && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
+                && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
-            ByteColor c = canMove ? greenColor : redColor;
+            ByteColor c = canMove && Service.Configuration.CheckForCasting ? greenColor : redColor;
             MovingUpdater.IsMoving = canMove;
 
             var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);

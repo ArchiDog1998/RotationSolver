@@ -855,8 +855,8 @@ internal class ConfigWindow : Window
     private static void DrawAction(uint id, string type)
     {
         var action = new BaseAction(id);
-        int size = Math.Max(action.Icon.Width, 45);
-        ImGui.Image(action.Icon.ImGuiHandle, new Vector2(size, size));
+        //int size = Math.Max(action.Icon.Width, 45);
+        //ImGui.Image(action.Icon.ImGuiHandle, new Vector2(size, size));
 
         ImGui.SameLine();
         ImGui.Text($"{type}: {action}");

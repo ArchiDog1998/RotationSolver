@@ -115,7 +115,7 @@ namespace XIVAutoAttack.Updaters
             }
             else
             {
-                var abilityWhole = (int)(WeaponTotal / Service.Configuration.WeaponInterval - 1);
+                var abilityWhole = (int)(weapontotal / Service.Configuration.WeaponInterval - 1);
                 AbilityRemain = interval - WeaponElapsed % interval;
                 AbilityRemainCount = (byte)(abilityWhole - (int)(WeaponElapsed / interval));
             }

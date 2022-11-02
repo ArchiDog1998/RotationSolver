@@ -293,6 +293,7 @@ namespace XIVAutoAttack
             //if(nextAction is BaseAction acti)
             //Service.ChatGui.Print($"Will Do {acti} {ActionUpdater.WeaponElapsed}");
 #endif
+            if(nextAction == null) return;
             if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
 
 
