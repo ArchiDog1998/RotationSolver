@@ -37,11 +37,14 @@ namespace XIVAutoAttack.Updaters
 
 
         internal static IAction NextAction { get; private set; }
-
+#if DEBUG
+        internal static Exception Exception { get; private set; }
+#endif
         internal static void UpdateNextAction()
         {
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer == null) return;
+            NextAction = null;
 
             try
             {
@@ -59,10 +62,10 @@ namespace XIVAutoAttack.Updaters
             }
             catch (Exception ex)
             {
-                PluginLog.Error(ex, "Don't crash the game", Array.Empty<object>());
+                Exception = ex;
+                return;
             }
-
-            NextAction = null;
+            Exception = null;
         }
 
         internal static void UpdateActionInfo()

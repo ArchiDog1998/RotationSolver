@@ -20,7 +20,7 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.SigReplacers
 {
-    internal static class Watcher
+    public static class Watcher
     {
         public record ActionRec(DateTime UsedTime, Action action);
 

@@ -836,6 +836,13 @@ internal class ConfigWindow : Window
                     DrawAction(Watcher.LastSpell, nameof(Watcher.LastSpell));
                     DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
                 }
+
+                if (ImGui.CollapsingHeader("´ó´íÎó") && ActionUpdater.Exception != null)
+                {
+                    ImGui.Text(ActionUpdater.Exception.Message);
+                    if(!string.IsNullOrEmpty( ActionUpdater.Exception.StackTrace)) ImGui.Text(ActionUpdater.Exception.StackTrace);
+                    if(!string.IsNullOrEmpty( ActionUpdater.Exception.Source)) ImGui.Text(ActionUpdater.Exception.Source);
+                }
             }
 #endif
 
