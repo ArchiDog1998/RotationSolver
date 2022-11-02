@@ -264,8 +264,6 @@ namespace XIVAutoAttack
         }
         #endregion
 
-
-
         internal static unsafe void DoAnAction(bool isGCD)
         {
             //停止特殊状态
@@ -289,36 +287,23 @@ namespace XIVAutoAttack
             var localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer == null) return;
 
-            foreach (CustomCombo customCombo in IconReplacer.CustomCombos)
+            //Do Action
+            var nextAction = ActionUpdater.NextAction;
+            if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
+
+
+            if (nextAction.Use() && nextAction is BaseAction act)
             {
-                if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
-
-                if (!customCombo.TryInvoke(CustomCombo.GeneralActions.Repose.ID, Service.Address.LastComboAction, Service.Address.ComboTime,
-                     localPlayer.Level, out var newiAction))
-                {
-                    return;
-                }
-
-                if (!isGCD && newiAction is BaseAction act1 && act1.IsRealGCD) return;
-
 #if DEBUG
-                //if (newiAction is BaseAction a) Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + a.Action.Name);
+                Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.WeaponRemain}");
 #endif
-                if (newiAction.Use() && newiAction is BaseAction act)
+                //Change Target
+                if (act.Target?.CanAttack() ?? false)
                 {
-#if DEBUG
-                    Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.WeaponRemain}");
-
-                    //Service.ChatGui.Print(TargetHelper.WeaponRemain.ToString() + act.Action.Name + TargetHelper.AbilityRemainCount.ToString());
-#endif
-                    //Change Target
-                    if (act.Target.CanAttack())
-                    {
-                        Service.TargetManager.SetTarget(act.Target);
-                    }
+                    Service.TargetManager.SetTarget(act.Target);
                 }
-                return;
             }
+            return;
         }
 
         internal static void DoAutoAttack(string str)

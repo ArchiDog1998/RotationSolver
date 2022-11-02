@@ -12,6 +12,8 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.CustomCombo.CustomCombo;
 
 namespace XIVAutoAttack.SigReplacers;
 
@@ -96,44 +98,17 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
-#if DEBUG
-    internal static BaseAction nextAction = null;
-#endif
+    private static BaseAction KeyActionID => GeneralActions.Repose;
 
     private uint RemapActionID(uint actionID)
     {
-        try
-        {
-            PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
-            if (localPlayer == null || Service.Configuration.NeverReplaceIcon)
-            {
-                return OriginalHook(actionID);
-            }
+        PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
 
-            byte level = localPlayer.Level;
-            foreach (CustomCombo customCombo in CustomCombos)
-            {
-                if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
-
-                if (customCombo.TryInvoke(actionID, Service.Address.LastComboAction, Service.Address.ComboTime, level, out var newAction))
-                {
-                    if (newAction is BaseAction baseAct)
-                    {
-#if DEBUG
-                        nextAction = baseAct;
-#endif
-                        return OriginalHook(baseAct.ID);
-                    }
-                }
-            }
-
+        if (localPlayer == null || actionID != KeyActionID.ID || Service.Configuration.NeverReplaceIcon)
             return OriginalHook(actionID);
-        }
-        catch (Exception ex)
-        {
-            PluginLog.Error(ex, "Don't crash the game", Array.Empty<object>());
-            return OriginalHook(actionID);
-        }
+
+        return ActionUpdater.NextAction.AdjustedID;
+
     }
 
     private ulong IsIconReplaceableDetour(uint actionID)

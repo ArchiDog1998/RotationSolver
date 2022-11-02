@@ -33,16 +33,6 @@ namespace XIVAutoAttack.Updaters
                     _valus[i] = newValue;
                 }
             }
-
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    bool newValue = Service.Conditions[i];
-            //    if (_valus.ContainsKey(i) && _valus[i] != newValue)
-            //    {
-            //        Service.ToastGui.ShowQuest(i.ToString());
-            //    }
-            //    _valus[i] = newValue;
-            //}
 #endif
             //Update State.
             PreviewUpdater.UpdateEntry();
@@ -53,6 +43,8 @@ namespace XIVAutoAttack.Updaters
             TargetUpdater.UpdateFriends();
 
             MovingUpdater.UpdateLocation();
+
+            ActionUpdater.UpdateNextAction();
 
             ActionUpdater.DoAction();
             MacroUpdater.UpdateMacro();

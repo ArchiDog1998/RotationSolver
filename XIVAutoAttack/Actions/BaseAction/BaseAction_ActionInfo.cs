@@ -99,8 +99,9 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
                 else
                 {
-                    //冷却时间没超过一成 TODO 这个超过一成应该提前判断
-                    if (!HaveOneCharge) return false;
+                    //冷却时间没超过一成且下一个Ability前不能转好
+                    if (!HaveOneCharge && !this.WillHaveOneCharge(ActionUpdater.AbilityRemain, false))
+                        return false;
                 }
             }
 
@@ -123,7 +124,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (IsGeneralGCD)
             {
                 //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
-                uint[] comboActions = Action.ActionCombo.Row == 0 ? new uint[0] : new uint[] { Action.ActionCombo.Row };
+                uint[] comboActions = _action.ActionCombo.Row == 0 ? new uint[0] : new uint[] { _action.ActionCombo.Row };
                 if (OtherIDsCombo != null) comboActions = comboActions.Union(OtherIDsCombo).ToArray();
                 bool findCombo = lastAct == uint.MaxValue;
                 if (!findCombo) foreach (var comboAction in comboActions)
@@ -166,7 +167,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         {
             var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
 
-            bool result = Action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
+            bool result = _action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
              ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, Target.ObjectId);
 
             if (_shouldEndSpecial) CommandController.ResetSpecial(false);

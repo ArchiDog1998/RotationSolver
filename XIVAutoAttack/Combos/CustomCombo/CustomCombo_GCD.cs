@@ -16,7 +16,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
     {
         internal static BattleChara EnemyLocationTarget;
         internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
-        internal bool TryInvoke(uint actionID, uint lastComboActionID, float comboTime, byte level, out IAction newAction)
+        internal bool TryInvoke(uint lastComboActionID, float comboTime, out IAction newAction)
         {
 
             newAction = null;
@@ -24,24 +24,17 @@ namespace XIVAutoAttack.Combos.CustomCombo
             {
                 return false;
             }
-            if (ActionID.ID != actionID)
-            {
-                return false;
-            }
 
             UpdateInfo();
-            newAction = Invoke(actionID, lastComboActionID, comboTime);
+            newAction = Invoke(lastComboActionID, comboTime);
 
             //没获得对象
             if (newAction == null) return false;
 
-            //和之前一样
-            if (actionID == newAction.ID) return false;
-
             return true;
         }
 
-        private IAction Invoke(uint actionID, uint lastComboActionID, float comboTime)
+        private IAction Invoke(uint lastComboActionID, float comboTime)
         {
             byte abilityRemain = ActionUpdater.AbilityRemainCount;
 

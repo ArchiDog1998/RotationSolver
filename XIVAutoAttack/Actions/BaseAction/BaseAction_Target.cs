@@ -87,19 +87,25 @@ namespace XIVAutoAttack.Actions.BaseAction
         private bool FindTarget(bool mustUse)
         {
             _position = Service.ClientState.LocalPlayer.Position;
+            var player = Service.ClientState.LocalPlayer;
+
             float range = Range;
 
             //如果都没有距离，这个还需要选对象嘛？选自己啊！
-            if (range == 0 && Action.EffectRange == 0)
+            if (range == 0 && _action.EffectRange == 0)
             {
-                Target = Service.ClientState.LocalPlayer;
+                if (TargetFilter.GetCanAttack(AdjustedID, player).Length == 0) return false;
+
+                Target = player;
                 return true;
             }
 
-            if (Action.TargetArea)
+            if (_action.TargetArea)
             {
+                if (TargetFilter.GetCanAttack(AdjustedID, player).Length == 0) return false;
+
                 //缩地
-                if (Action.EffectRange == 1 && Action.Range == 20)
+                if (_action.EffectRange == 1 && _action.Range == 20)
                 {
                     BattleChara[] availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b is BattleChara)
                         .Select(b => (BattleChara)b).ToArray();
@@ -108,7 +114,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
                 else
                 {
-                    var tars = TargetFilter.GetMostObjectInRadius(_isFriendly ? TargetUpdater.PartyMembers : TargetUpdater.HostileTargets, range, Action.EffectRange, _isFriendly, mustUse, true)
+                    var tars = TargetFilter.GetMostObjectInRadius(_isFriendly ? TargetUpdater.PartyMembers : TargetUpdater.HostileTargets, range, _action.EffectRange, _isFriendly, mustUse, true)
                         .OrderByDescending(p => (float)p.CurrentHp / p.MaxHp);
                     Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
                 }
@@ -116,9 +122,10 @@ namespace XIVAutoAttack.Actions.BaseAction
                 return true;
             }
             //如果能对友方和敌方都能选中
-            else if (Action.CanTargetParty && Action.CanTargetHostile)
+            else if (_action.CanTargetParty && _action.CanTargetHostile)
             {
                 BattleChara[] availableCharas = TargetUpdater.PartyMembers.Union(TargetUpdater.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+                availableCharas = TargetFilter.GetCanAttack(AdjustedID, availableCharas);
                 availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
                 //特殊选队友的方法。
                 Target = ChoiceTarget(availableCharas);
@@ -127,10 +134,10 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             }
             //首先看看是不是能对小队成员进行操作的。
-            else if (Action.CanTargetParty)
+            else if (_action.CanTargetParty)
             {
                 //还消耗2400的蓝，那肯定是复活的。
-                if (Action.PrimaryCostType == 3 && Action.PrimaryCostValue == 24)
+                if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24)
                 {
                     Target = TargetFilter.GetDeathPeople(TargetUpdater.DeathPeopleAll, TargetUpdater.DeathPeopleParty);
                     if (Target == null) return false;
@@ -139,18 +146,19 @@ namespace XIVAutoAttack.Actions.BaseAction
 
                 //找到没死的队友们。
                 BattleChara[] availableCharas = TargetUpdater.PartyMembers.Where(player => player.CurrentHp != 0).ToArray();
+                availableCharas = TargetFilter.GetCanAttack(AdjustedID, availableCharas);
 
-                if (!Action.CanTargetSelf)
+                if (!_action.CanTargetSelf)
                 {
                     availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
                 }
                 if (availableCharas.Length == 0) return false;
 
                 //判断是否是范围。
-                if (Action.CastType > 1 && ID != SCHCombo.Actions.DeploymentTactics.ID)
+                if (_action.CastType > 1 && ID != SCHCombo.Actions.DeploymentTactics.ID)
                 {
                     //找到能覆盖最多的位置，并且选血最少的来。
-                    Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, Action.EffectRange, true, mustUse, true).OrderBy(p => p.GetHealthRatio()).First();
+                    Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, _action.EffectRange, true, mustUse, true).OrderBy(p => p.GetHealthRatio()).First();
                     if (Target == null) return false;
                     return true;
                 }
@@ -164,14 +172,16 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
             }
             //再看看是否可以选中敌对的。
-            else if (Action.CanTargetHostile)
+            else if (_action.CanTargetHostile)
             {
                 //如果不用自动找目标，那就直接返回。
                 if (!CommandController.AutoTarget)
                 {
                     if (Service.TargetManager.Target is BattleChara b && b.CanAttack() && b.DistanceToPlayer() <= range)
                     {
-                        if (Action.CastType == 1 || mustUse)
+                        if (TargetFilter.GetCanAttack(AdjustedID, b).Length == 0) return false;
+
+                        if (_action.CastType == 1 || mustUse)
                         {
                             Target = b;
                             return true;
@@ -179,10 +189,10 @@ namespace XIVAutoAttack.Actions.BaseAction
 
                         if (Service.Configuration.UseAOEWhenManual)
                         {
-                            switch (Action.CastType)
+                            switch (_action.CastType)
                             {
                                 case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                                    if(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, Action.EffectRange, false, mustUse, false)
+                                    if(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, false, mustUse, false)
                                         .Contains(b))
                                     {
                                         Target = b;
@@ -190,7 +200,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                                     }
                                     break;
                                 case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                                    if (TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), Action.EffectRange, mustUse, false)
+                                    if (TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange, mustUse, false)
                                         .Contains(b))
                                     {
                                         Target = b;
@@ -214,11 +224,12 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
 
                 //判断一下AOE攻击的时候如果有攻击目标标记目标
-                if (Action.CastType > 1 && NoAOEForAttackMark)
+                if (_action.CastType > 1 && NoAOEForAttackMark)
                 {
                     if (mustUse)
                     {
                         Target = TargetFilter.GetAttackMarkChara(TargetUpdater.HostileTargets);
+                        if (TargetFilter.GetCanAttack(AdjustedID, Target).Length == 0) return false;
                         if (Target == null) return false;
                         return true;
                     }
@@ -228,34 +239,39 @@ namespace XIVAutoAttack.Actions.BaseAction
                     }
                 }
 
-                switch (Action.CastType)
+                switch (_action.CastType)
                 {
                     case 1:
                     default:
                         BattleChara[] canReachTars = FilterForTarget(TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, range));
+                        canReachTars = TargetFilter.GetCanAttack(AdjustedID, canReachTars);
+
                         Target = ChoiceTarget(canReachTars);
                         if (Target == null) return false;
                         return true;
 
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, Action.EffectRange, false, mustUse, true));
+                        Target = ChoiceTarget(TargetFilter.GetCanAttack(AdjustedID, TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, false, mustUse, true)));
                         if (Target == null) return false;
                         return true;
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        Target = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), Action.EffectRange, mustUse, true));
+                        Target = ChoiceTarget(TargetFilter.GetCanAttack(AdjustedID, TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange, mustUse, true)));
                         if (Target == null) return false;
                         return true;
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        Target = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, mustUse, true));
+                        Target = ChoiceTarget(TargetFilter.GetCanAttack(AdjustedID, TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, mustUse, true)));
                         if (Target == null) return false;
                         return true;
                 }
             }
             //如果只能选自己，那就选自己吧。
-            else if (Action.CanTargetSelf)
+            else if (_action.CanTargetSelf)
             {
-                Target = Service.ClientState.LocalPlayer;
-                if (Action.EffectRange > 0 && !_isFriendly)
+                Target = player;
+
+                if (TargetFilter.GetCanAttack(AdjustedID, player).Length == 0) return false;
+
+                if (_action.EffectRange > 0 && !_isFriendly)
                 {
                     if(NoAOEForAttackMark)
                     {
@@ -274,13 +290,14 @@ namespace XIVAutoAttack.Actions.BaseAction
                     //如果不用自动找目标，那就不打AOE
                     if (!mustUse && !CommandController.AutoTarget && !Service.Configuration.UseAOEWhenManual) return false;
 
-                    var count = TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, Action.EffectRange).Length;
+                    var count = TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, _action.EffectRange).Length;
                     if (count < (mustUse ? 1 : Service.Configuration.HostileCount)) return false;
                 }
                 return true;
             }
 
             Target = Service.TargetManager.Target is BattleChara battle ? battle : Service.ClientState.LocalPlayer;
+            if (TargetFilter.GetCanAttack(AdjustedID, Target).Length == 0) return false;
             return true;
         }
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
 using System.Collections.Generic;
@@ -50,18 +51,17 @@ namespace XIVAutoAttack.Updaters
             }).Cast<BattleChara>().ToArray());
 
             //Filter the fate objects.
-            //if (Service.Configuration.ChangeTargetForFate && FateManager.Instance()->FateJoined > 0)
-            //{
-            //    //Get fate objects.
-            //    var vector = FateManager.Instance()->Unk_Vector;
-            //    uint[] fateIds = new uint[vector.Size()];
-            //    for (ulong i = 0; i < vector.Size(); i++)
-            //    {
-            //        fateIds[i] = vector.Get(i).ObjectID;
-            //    }
+            if (Service.Configuration.ChangeTargetForFate && FateManager.Instance()->FateJoined > 0)
+            {
+                //Get fate objects.
+                var fateId = FateManager.Instance()->CurrentFate->FateId;
 
-            //    AllTargets = AllTargets.Where(t => fateIds.Contains(t.ObjectId)).ToArray();
-            //}
+                AllTargets = AllTargets.Where(t =>
+                {
+                    var objAdress = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address;
+                    return objAdress->FateId == fateId;
+                }).ToArray();
+            }
 
             uint[] ids = GetEnemies() ?? new uint[0];
 

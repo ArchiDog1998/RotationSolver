@@ -1,4 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
@@ -7,8 +9,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -27,6 +33,37 @@ namespace XIVAutoAttack.Updaters
         internal static bool InCombat { get; private set; } = false;
         internal static byte AbilityRemainCount { get; private set; } = 0;
 
+        internal static float AbilityRemain { get; private set; } = 0;
+
+
+        internal static IAction NextAction { get; private set; }
+
+        internal static void UpdateNextAction()
+        {
+            PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
+            if (localPlayer == null) return;
+
+            try
+            {
+                foreach (CustomCombo customCombo in IconReplacer.CustomCombos)
+                {
+                    if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
+
+                    if (customCombo.TryInvoke(Service.Address.LastComboAction, Service.Address.ComboTime, out var newAction))
+                    {
+                        NextAction = newAction;
+                        return;
+                    }
+                    break;
+                }
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Error(ex, "Don't crash the game", Array.Empty<object>());
+            }
+
+            NextAction = null;
+        }
 
         internal static void UpdateActionInfo()
         {
@@ -61,16 +98,28 @@ namespace XIVAutoAttack.Updaters
                 if (_lastCastingTotal > 0) _lastCastingTotal += 0.1f + Service.Configuration.WeaponFaster;
             }
 
-            var min = Math.Max(weapontotal - Service.Configuration.WeaponInterval, 0);
-            AbilityRemainCount = (byte)(Math.Min(WeaponRemain, min) / Service.Configuration.WeaponInterval);
+            //确认能力技的相关信息
+            var interval = Service.Configuration.WeaponInterval;
+            if (WeaponRemain < interval)
+            {
+                AbilityRemain = WeaponRemain + interval;
+                AbilityRemainCount = 0;
+            }
+            else
+            {
+                var abilityWhole = (int)(weapontotal / Service.Configuration.WeaponInterval - 1);
+                AbilityRemain = interval - WeaponElapsed % interval;
+                AbilityRemainCount = (byte)(abilityWhole - (int)(WeaponElapsed / interval));
+            }
 
             if (weapontotal > 0) WeaponTotal = weapontotal;
         }
 
         static uint _lastMP = 0;
         static DateTime _lastMPUpdate = DateTime.Now;
-        public static double MPUpdateElapsed => (DateTime.Now - _lastMPUpdate).TotalSeconds % 3;
-        public static float MPNextUpInCurrGCD => (3 - ((float)MPUpdateElapsed - WeaponElapsed))%3;
+        internal static float MPUpdateElapsed => (float)(DateTime.Now - _lastMPUpdate).TotalSeconds % 3;
+        [Obsolete]
+        public static float MPNextUpInCurrGCD => (3 - (MPUpdateElapsed - WeaponElapsed)) % 3;
         private static void UPdateMPTimer()
         {
             var player = Service.ClientState.LocalPlayer;

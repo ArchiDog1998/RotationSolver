@@ -5,10 +5,12 @@ using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using ImGuiNET;
+using Lumina.Data.Parsing;
 using Lumina.Data.Parsing.Uld;
 using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -100,8 +102,6 @@ internal class ConfigWindow : Window
                             }
 
                             ImGui.NextColumn();
-
-                            //ImGui.Spacing();
 
                             bool enable = combo.IsEnabled;
                             if (ImGui.Checkbox(combo.JobName, ref enable))
@@ -203,14 +203,6 @@ internal class ConfigWindow : Window
                     {
                         Service.Configuration.NeverReplaceIcon = neverReplaceIcon;
                         Service.Configuration.Save();
-                    }
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip("如果不替换图标，提前判定的所有功能将失效，如提前提示身位");
-                    }
-                    if (neverReplaceIcon)
-                    {
-                        ImGui.TextColored(new Vector4(1, 0, 0, 1), "不替换图标，提前判定的所有功能将失效，如提前提示身位");
                     }
 
                     bool useOverlayWindow = Service.Configuration.UseOverlayWindow;
@@ -600,12 +592,12 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
-                        //bool changeTargetForFate = Service.Configuration.ChangeTargetForFate;
-                        //if (ImGui.Checkbox("在Fate中只选择Fate怪", ref changeTargetForFate))
-                        //{
-                        //    Service.Configuration.ChangeTargetForFate = changeTargetForFate;
-                        //    Service.Configuration.Save();
-                        //}
+                        bool changeTargetForFate = Service.Configuration.ChangeTargetForFate;
+                        if (ImGui.Checkbox("在Fate中只选择Fate怪", ref changeTargetForFate))
+                        {
+                            Service.Configuration.ChangeTargetForFate = changeTargetForFate;
+                            Service.Configuration.Save();
+                        }
 
                         bool moveToScreen = Service.Configuration.MoveTowardsScreen;
                         if (ImGui.Checkbox("移动技能选屏幕中心的对象", ref moveToScreen))
@@ -814,9 +806,12 @@ internal class ConfigWindow : Window
                 if (ImGui.CollapsingHeader("下一个技能"))
                 {
                     BaseAction baseAction = null;
-                    baseAction ??= IconReplacer.nextAction;
+                    baseAction ??= ActionUpdater.NextAction as BaseAction;
                     if (baseAction != null)
                     {
+                        int size = Math.Max(baseAction.Icon.Width, 45);
+                        ImGui.Image(baseAction.Icon.ImGuiHandle, new Vector2(size, size));
+
                         ImGui.Text(baseAction.ToString());
                         ImGui.Text("Have One:" + baseAction.HaveOneChargeDEBUG.ToString());
                         ImGui.Text("Is General GCD: " + baseAction.IsGeneralGCD.ToString());

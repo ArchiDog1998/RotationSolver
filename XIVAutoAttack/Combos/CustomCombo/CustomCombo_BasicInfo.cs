@@ -34,7 +34,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 return Target.IsBoss();
             }
         }
-        private static BaseAction ActionID => GeneralActions.Repose;
 
         public bool IsEnabled
         {
@@ -59,7 +58,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         internal virtual bool HaveShield => true;
 
 
-        internal TextureWrap Texture;
+        internal TextureWrap Texture { get; private set; }
         private protected CustomCombo()
         {
             Texture = Service.DataManager.GetImGuiTextureIcon(IconSet.GetJobIcon(this));
