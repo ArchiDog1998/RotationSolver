@@ -25,6 +25,9 @@
             //雷云
             Thundercloud = 164,
 
+            //核爆效果提高
+            EnhancedFlare = 2960,
+
             //黑魔纹
             LeyLines = 737,
 
