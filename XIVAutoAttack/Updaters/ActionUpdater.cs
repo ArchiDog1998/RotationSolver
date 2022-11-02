@@ -62,10 +62,14 @@ namespace XIVAutoAttack.Updaters
             }
             catch (Exception ex)
             {
+#if DEBUG
                 Exception = ex;
                 return;
+#endif
             }
+#if DEBUG
             Exception = null;
+#endif
         }
 
         internal static void UpdateActionInfo()

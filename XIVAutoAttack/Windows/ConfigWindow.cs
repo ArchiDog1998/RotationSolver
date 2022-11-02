@@ -19,6 +19,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Melee;
+using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Combos.RangedPhysicial;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -801,11 +802,16 @@ internal class ConfigWindow : Window
                             }
                         }
                     }
+                    ImGui.Text("");
+                    foreach (var item in TargetUpdater.HostileTargets)
+                    {
+                        ImGui.Text(item.Name.ToString());
+                    }
                 }
 
                 if (ImGui.CollapsingHeader("下一个技能"))
                 {
-                    BaseAction baseAction = null;
+                    BaseAction baseAction = BLMCombo.Actions.Paradox;
                     baseAction ??= ActionUpdater.NextAction as BaseAction;
                     if (baseAction != null)
                     {
@@ -821,7 +827,8 @@ internal class ConfigWindow : Window
                         ImGui.Text("Recast Remain: " + baseAction.RecastTimeRemainDEBUG.ToString());
                         ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, baseAction.AdjustedID).ToString());
 
-                        ImGui.Text("Cast Cost: " + baseAction.CastTime.ToString());
+                        ImGui.Text("Cast Time: " + baseAction.CastTime.ToString());
+                        ImGui.Text("MP: " + baseAction.MPNeed.ToString());
                         ImGui.Text($"Can Use: {baseAction.ShouldUse(out _)} {baseAction.ShouldUse(out _, mustUse:true)}");
 
                         ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());

@@ -26,7 +26,15 @@ namespace XIVAutoAttack.Actions.BaseAction
                 return EnemyLocation.None;
             }
         }
-        internal unsafe uint MPNeed => _action.PrimaryCostType is 3 or 4 ? (uint)ActionManager.GetActionCost(ActionType.Spell, AdjustedID, 0, 0, 0, 0) : 0;
+        internal unsafe uint MPNeed
+        {
+            get
+            {
+                var mp = (uint)ActionManager.GetActionCost(ActionType.Spell, AdjustedID, 0, 0, 0, 0);
+                if (mp < 100) return 0;
+                return mp;
+            }
+        }
 
 
         /// <summary>
