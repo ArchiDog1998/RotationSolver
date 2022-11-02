@@ -828,6 +828,14 @@ internal class ConfigWindow : Window
                         ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
                     }
                 }
+
+                if (ImGui.CollapsingHeader("上一个技能"))
+                {
+                    DrawAction(Watcher.LastAction, nameof(Watcher.LastAction));
+                    DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
+                    DrawAction(Watcher.LastSpell, nameof(Watcher.LastSpell));
+                    DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
+                }
             }
 #endif
 
@@ -835,6 +843,20 @@ internal class ConfigWindow : Window
         }
         ImGui.End();
     }
+
+#if DEBUG
+    private static void DrawAction(uint id, string type)
+    {
+        var action = new BaseAction(id);
+        int size = Math.Max(action.Icon.Width, 45);
+        ImGui.Image(action.Icon.ImGuiHandle, new Vector2(size, size));
+
+        ImGui.SameLine();
+        ImGui.Text($"{type}: {action}");
+
+        action.Dispose();
+    }
+#endif
 
     private static void Spacing(byte count = 1)
     {

@@ -6,7 +6,7 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Actions.BaseAction
 {
-    internal partial class BaseAction : IAction
+    internal partial class BaseAction : IAction, IDisposable
     {
         private bool _isFriendly;
         private bool _shouldEndSpecial;
@@ -42,6 +42,16 @@ namespace XIVAutoAttack.Actions.BaseAction
         public override string ToString()
         {
             return _action.Name;
+        }
+
+        public void Dispose()
+        {
+            Icon.Dispose();
+        }
+
+        ~BaseAction()
+        {
+            Dispose();
         }
     }
 }

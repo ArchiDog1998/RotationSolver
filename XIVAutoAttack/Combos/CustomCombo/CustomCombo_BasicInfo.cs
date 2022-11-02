@@ -9,7 +9,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    public abstract partial class CustomCombo
+    public abstract partial class CustomCombo : IDisposable
     {
         internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
         internal abstract uint JobID { get; }
@@ -88,5 +88,15 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 有什么是需要每一帧进行更新数据用的，放这里。如果有自定义字段，需要在此函数内全部更新一遍。
         /// </summary>
         private protected virtual void UpdateInfo() { }
+
+        public void Dispose()
+        {
+            Texture.Dispose();
+        }
+
+        ~CustomCombo()
+        {
+            Dispose();
+        }
     }
 }
