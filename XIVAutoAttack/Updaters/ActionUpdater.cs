@@ -103,7 +103,7 @@ namespace XIVAutoAttack.Updaters
 
             //确认能力技的相关信息
             var interval = Service.Configuration.WeaponInterval;
-            if (WeaponRemain < interval)
+            if (WeaponRemain < interval || weapontotal == 0)
             {
                 AbilityRemain = WeaponRemain + interval;
                 AbilityRemainCount = 0;
