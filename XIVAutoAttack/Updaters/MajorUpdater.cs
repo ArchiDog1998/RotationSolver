@@ -44,8 +44,6 @@ namespace XIVAutoAttack.Updaters
             //    _valus[i] = newValue;
             //}
 #endif
-            if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TenChiJin)) MovingUpdater.IsMoving = false;
-
             //Update State.
             PreviewUpdater.UpdateEntry();
 

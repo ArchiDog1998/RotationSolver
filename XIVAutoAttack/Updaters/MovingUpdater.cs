@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Numerics;
 using Dalamud.Game.Gui.Toast;
+using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -37,6 +39,9 @@ namespace XIVAutoAttack.Updaters
 
             _moving = _lastPosition != p;
             _lastPosition = p;
+
+            if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TenChiJin)) MovingUpdater.IsMoving = false;
+
         }
 
         private static bool MovingDetour(IntPtr ptr)

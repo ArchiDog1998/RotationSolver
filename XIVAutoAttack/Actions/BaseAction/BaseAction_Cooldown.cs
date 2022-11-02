@@ -78,7 +78,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 咏唱时间
         /// </summary>
-        internal virtual unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
+        internal unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
 
         private float RecastTimeRemain => RecastTime - RecastTimeElapsed;
 
@@ -88,6 +88,8 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         private bool HaveOneCharge => IsCoolDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
 
+        internal ushort ChargesCount => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
+
 #if DEBUG
         internal bool HaveOneChargeDEBUG => HaveOneCharge;
         internal float RecastTimeOneChargeDEBUG => RecastTimeOneCharge;
@@ -95,9 +97,8 @@ namespace XIVAutoAttack.Actions.BaseAction
         internal float RecastTimeRemainDEBUG => RecastTimeRemain;
 #endif
 
-        internal ushort ChargesCount => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
 
-        private float RecastTimeOneCharge => Action.MaxCharges <= 1 ? ActionManager.GetAdjustedRecastTime(ActionType.Spell, AdjustedID) /1000f : Action.Recast100ms / 10f;
+        private float RecastTimeOneCharge => Action.MaxCharges <= 1 ? RecastTime : Action.Recast100ms / 10f;
 
         /// <summary>
         /// 下一层转好的时间
