@@ -90,14 +90,6 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         internal ushort ChargesCount => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
 
-#if DEBUG
-        internal bool HaveOneChargeDEBUG => HaveOneCharge;
-        internal float RecastTimeOneChargeDEBUG => RecastTimeOneCharge;
-        internal float RecastTimeElapsedDEBUG => RecastTimeElapsed;
-        internal float RecastTimeRemainDEBUG => RecastTimeRemain;
-#endif
-
-
         private float RecastTimeOneCharge => Action.MaxCharges <= 1 ? RecastTime : Action.Recast100ms / 10f;
 
         /// <summary>
@@ -105,5 +97,12 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         private float RecastTimeRemainOneCharge => RecastTimeRemain % RecastTimeOneCharge;
         private float RecastTimeElapsedOneCharge => RecastTimeElapsed % RecastTimeOneCharge;
+
+#if DEBUG
+        internal bool HaveOneChargeDEBUG => HaveOneCharge;
+        internal float RecastTimeOneChargeDEBUG => RecastTimeOneCharge;
+        internal float RecastTimeElapsedDEBUG => RecastTimeElapsed;
+        internal float RecastTimeRemainDEBUG => RecastTimeRemain;
+#endif
     }
 }

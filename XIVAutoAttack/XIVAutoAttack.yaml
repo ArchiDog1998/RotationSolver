@@ -13,8 +13,6 @@ changelog: |-
   - 解决了部分Action的RecastTimeOneCharge数值计算有误的bug
   ## 功能增加
   - 添加Debug专用窗口！
-  ## API
-  - 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
