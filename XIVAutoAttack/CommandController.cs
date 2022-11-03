@@ -14,6 +14,7 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
+using XIVAutoAttack.Windows;
 using static XIVAutoAttack.SigReplacers.PluginAddressResolver;
 
 namespace XIVAutoAttack
@@ -300,7 +301,7 @@ namespace XIVAutoAttack
 
             if (nextAction.Use())
             {
-                PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);
+                OverlayWindow.PulseAtionBar(nextAction.AdjustedID);
                 if (nextAction is BaseAction act)
                 {
 #if DEBUG
@@ -374,7 +375,19 @@ namespace XIVAutoAttack
                             {
                                 boolean.value = !boolean.value;
 
-                                Service.ChatGui.Print($"改变{str}为{boolean.value}");
+                                Service.ChatGui.Print($"修改{boolean.description}为{boolean.value}");
+
+                                return;
+                            }
+                        }
+
+                        foreach (var combo in customCombo.Config.combos)
+                        {
+                            if (combo.name == str)
+                            {
+                                combo.value = (combo.value + 1) % combo.items.Length;
+
+                                Service.ChatGui.Print($"修改{combo.description}为{combo.items[combo.value]}");
 
                                 return;
                             }

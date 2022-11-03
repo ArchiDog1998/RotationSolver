@@ -3,6 +3,7 @@ using Dalamud.Game.Gui.Dtr;
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using System;
@@ -42,7 +43,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
             ShowInHelp = true,
         });
 
-        commandManager.AddHandler(_autoCommand, new CommandInfo(TargetObject)
+        commandManager.AddHandler(_autoCommand, new CommandInfo(AttackObject)
         {
             HelpMessage = "设置攻击的模式",
             ShowInHelp = true,
@@ -99,7 +100,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         configWindow.IsOpen = true;
     }
 
-    internal void TargetObject(string command, string arguments)
+    private void AttackObject(string command, string arguments)
     {
         string[] array = arguments.Split();
 
@@ -111,7 +112,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     private void OnCommand(string command, string arguments)
     {
-
         string[] array = arguments.Split();
         switch (array[0])
         {
