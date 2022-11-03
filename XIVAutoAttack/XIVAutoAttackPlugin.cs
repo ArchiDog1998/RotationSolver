@@ -24,7 +24,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 {
     private const string _command = "/pattack";
 
-    private const string _lockCommand = "/aauto";
+    internal const string _autoCommand = "/aauto";
 
     private readonly WindowSystem windowSystem;
 
@@ -42,7 +42,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
             ShowInHelp = true,
         });
 
-        commandManager.AddHandler(_lockCommand, new CommandInfo(TargetObject)
+        commandManager.AddHandler(_autoCommand, new CommandInfo(TargetObject)
         {
             HelpMessage = "设置攻击的模式",
             ShowInHelp = true,
@@ -82,7 +82,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     public void Dispose()
     {
         Service.CommandManager.RemoveHandler(_command);
-        Service.CommandManager.RemoveHandler(_lockCommand);
+        Service.CommandManager.RemoveHandler(_autoCommand);
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
@@ -108,8 +108,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
             CommandController.DoAutoAttack(array[0]);
         }
     }
-
-
 
     private void OnCommand(string command, string arguments)
     {

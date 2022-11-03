@@ -98,7 +98,7 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
-    private static BaseAction KeyActionID => GeneralActions.Repose;
+    internal static BaseAction KeyActionID => GeneralActions.Repose;
 
     private uint RemapActionID(uint actionID)
     {

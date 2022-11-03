@@ -344,7 +344,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
         if (!Player.HaveStatus(ObjectStatus.TechnicalFinish))
         {
             //标准舞步
-            if (canstandard && Actions.StandardStep.ShouldUse(out act, mustUse:true)) return true;
+            if (Actions.StandardStep.ShouldUse(out act, mustUse:true)) return true;
         }
 
         //用掉Buff

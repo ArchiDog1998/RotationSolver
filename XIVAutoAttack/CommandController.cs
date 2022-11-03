@@ -281,7 +281,8 @@ namespace XIVAutoAttack
             var localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer == null) return;
 
-            if (Watcher.TimeSinceLastAction.TotalSeconds < 0.2) return;
+            //这个避让的功能，可以再斟酌一下
+            //if (Watcher.TimeSinceLastAction.TotalSeconds < 0.2) return;
 
             //0.2s内，不能重复按按钮。
             if (DateTime.Now - _fastClickStopwatch < new TimeSpan(0, 0, 0, 0, 200)) return;
@@ -297,16 +298,19 @@ namespace XIVAutoAttack
             if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
 
 
-
-            if (nextAction.Use() && nextAction is BaseAction act)
+            if (nextAction.Use())
             {
-#if DEBUG
-                Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
-#endif
-                //Change Target
-                if (act.Target?.CanAttack() ?? false)
+                PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);
+                if (nextAction is BaseAction act)
                 {
-                    Service.TargetManager.SetTarget(act.Target);
+#if DEBUG
+                    Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
+#endif
+                    //Change Target
+                    if (act.Target?.CanAttack() ?? false)
+                    {
+                        Service.TargetManager.SetTarget(act.Target);
+                    }
                 }
             }
             return;
@@ -343,9 +347,6 @@ namespace XIVAutoAttack
                 case "BreakProvoke":
                     StartBreakOrProvoke();
                     return;
-                case "AutoBreak":
-                    Service.Configuration.AutoBreak = !Service.Configuration.AutoBreak;
-                    return;
                 case "AttackSmart":
                     StartAttackSmart();
                     return;
@@ -355,6 +356,11 @@ namespace XIVAutoAttack
                     return;
                 case "AttackCancel":
                     AutoAttack = false;
+                    return;
+                case "AutoBreak":
+                    Service.Configuration.AutoBreak = !Service.Configuration.AutoBreak;
+                    Service.ChatGui.Print($"修改自动爆发为{Service.Configuration.AutoBreak}");
+
                     return;
 
                 default:
@@ -368,7 +374,7 @@ namespace XIVAutoAttack
                             {
                                 boolean.value = !boolean.value;
 
-                                Service.ChatGui.PrintError($"改变{str}为{boolean.value}");
+                                Service.ChatGui.Print($"改变{str}为{boolean.value}");
 
                                 return;
                             }
@@ -377,7 +383,7 @@ namespace XIVAutoAttack
                         var result = customCombo.OnCommand(str);
                         if (!string.IsNullOrEmpty(result))
                         {
-                            Service.ChatGui.PrintError("修改结果为：" + result);
+                            Service.ChatGui.Print("修改结果为：" + result);
                             return;
                         }
                         break;

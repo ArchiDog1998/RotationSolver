@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,16 +36,12 @@ namespace XIVAutoAttack.Updaters
 
         internal static float AbilityRemain { get; private set; } = 0;
 
+        internal unsafe static IAction NextAction {  get ; private set; }
 
-        internal static IAction NextAction { get; private set; }
-#if DEBUG
-        internal static Exception Exception { get; private set; }
-#endif
         internal static void UpdateNextAction()
         {
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer == null) return;
-            NextAction = null;
 
             try
             {
@@ -60,16 +57,11 @@ namespace XIVAutoAttack.Updaters
                     break;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-#if DEBUG
-                Exception = ex;
-                return;
-#endif
+
             }
-#if DEBUG
-            Exception = null;
-#endif
+            NextAction = null;
         }
 
         internal static void UpdateActionInfo()
@@ -203,18 +195,16 @@ namespace XIVAutoAttack.Updaters
             if (WeaponElapsed <= _lastCastingTotal) return;
 
             //只剩下最后一个能力技了，然后卡最后！
-            if (AbilityRemainCount == 0)
+            if (WeaponRemain < 2 * Service.Configuration.WeaponInterval)
             {
                 if (WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponFaster) return;
                 CommandController.DoAnAction(false);
 
                 return;
             }
-            else
-            if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
+            else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
             {
                 CommandController.DoAnAction(false);
-                //Service.ChatGui.Print("Other " + AbilityRemainCount.ToString());
             }
         }
 

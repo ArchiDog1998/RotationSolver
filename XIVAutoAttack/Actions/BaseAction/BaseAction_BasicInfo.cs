@@ -17,7 +17,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         public uint AdjustedID => Service.IconReplacer.OriginalHook(ID);
 
         public TextureWrap Icon { get; }
-
+        public ushort IconID => _action.Icon;
         internal bool IsGeneralGCD { get; }
         internal bool IsRealGCD { get; }
 
@@ -33,7 +33,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             _isFriendly = isFriendly;
             _isDot = isDot;
             
-            Icon = Service.DataManager.GetImGuiTextureIcon(_action.Icon);
+            Icon = Service.DataManager.GetImGuiTextureIcon(IconID);
             IsGeneralGCD = _action.IsGeneralGCD();
             IsRealGCD = _action.IsRealGCD();
             CoolDownGroup = _action.GetCoolDownGroup();
