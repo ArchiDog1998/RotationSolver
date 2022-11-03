@@ -62,11 +62,11 @@ internal class ConfigWindow : Window
 
     public override unsafe void Draw()
     {
-        if (ImGui.BeginTabBar("##tabbar"))
+        if (ImGui.BeginTabBar("AutoAttack"))
         {
             if (ImGui.BeginTabItem("攻击设定"))
             {
-                ImGui.Text("你可以选择开启想要的职业的连续GCD战技、技能。");
+                ImGui.Text("你可以选择开启想要的职业的连续GCD战技、技能，若职业与当前职业相同则有命令宏提示。");
 
                 ImGui.BeginChild("攻击", new Vector2(0f, -1f), true);
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
@@ -174,6 +174,18 @@ internal class ConfigWindow : Window
                                         comboItem.value = val;
                                         Service.Configuration.Save();
                                     }
+                                    if (ImGui.IsItemHovered())
+                                    {
+                                        ImGui.SetTooltip("关键名称为：" + comboItem.name);
+                                    }
+
+                                    //显示可以设置的案件
+                                    if (Service.ClientState.LocalPlayer != null && Service.ClientState.LocalPlayer.ClassJob.Id == combo.JobID)
+                                    {
+                                        ImGui.SameLine();
+                                        Spacing();
+                                        CommandHelp(comboItem.name);
+                                    }
                                 }
                                 ImGui.PopStyleVar();
 
@@ -224,7 +236,7 @@ internal class ConfigWindow : Window
                     }
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("这个窗口目前仅用于提前提示身位");
+                        ImGui.SetTooltip("这个窗口目前用于提前提示身位，循环教学模式。");
                     }
 
                     if (ImGui.CollapsingHeader("基础设置"))
@@ -307,7 +319,7 @@ internal class ConfigWindow : Window
                         }
 
                         bool teachingMode = Service.Configuration.TeachingMode;
-                        if (ImGui.Checkbox("循环教育模式", ref teachingMode))
+                        if (useOverlayWindow && ImGui.Checkbox("循环教育模式", ref teachingMode))
                         {
                             Service.Configuration.TeachingMode = teachingMode;
                             Service.Configuration.Save();
@@ -757,7 +769,7 @@ internal class ConfigWindow : Window
 
             if (ImGui.BeginTabItem("帮助文档"))
             {
-                ImGui.Text("在这个窗口，你可以看到一大堆帮助内容。");
+                ImGui.Text("在这个窗口，你可以看到战斗用宏，设置用请在设置面板中查看。");
 
                 if (ImGui.BeginChild("帮助", new Vector2(0f, -1f), true))
                 {
