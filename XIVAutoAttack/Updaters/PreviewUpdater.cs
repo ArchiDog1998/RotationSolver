@@ -8,6 +8,7 @@ using Lumina.Excel.GeneratedSheets;
 using System;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -67,7 +68,7 @@ namespace XIVAutoAttack.Updaters
             HigglightAtionBar(ActionUpdater.NextAction.ID);
         }
 
-        private static readonly string[] _barsName = new string[]
+        static readonly string[] _barsName = new string[]
         {
             "_ActionCross",
             "_ActionDoubleCrossL",
@@ -84,15 +85,38 @@ namespace XIVAutoAttack.Updaters
             "_ActionBar09",
         };
 
+        //public enum Sounds : byte
+        //{
+        //    None = 0x00,
+        //    Unknown = 0x01,
+        //    Sound01 = 0x25,
+        //    Sound02 = 0x26,
+        //    Sound03 = 0x27,
+        //    Sound04 = 0x28,
+        //    Sound05 = 0x29,
+        //    Sound06 = 0x2A,
+        //    Sound07 = 0x2B,
+        //    Sound08 = 0x2C,
+        //    Sound09 = 0x2D,
+        //    Sound10 = 0x2E,
+        //    Sound11 = 0x2F,
+        //    Sound12 = 0x30,
+        //    Sound13 = 0x31,
+        //    Sound14 = 0x32,
+        //    Sound15 = 0x33,
+        //    Sound16 = 0x34,
+        //}
+
         internal static unsafe void PulseAtionBar(uint actionID)
         {
             LoopAllSlotBar(bar =>
             {
                 for (int i = 0; i < bar->SlotCount; i++)
                 {
-                    if (bar->ActionBarSlots[i].ActionId == actionID)
+                    if (IsActionSlotRight(bar->ActionBarSlots[i], actionID))
                     {
                         bar->PulseActionBarSlot(i);
+                        //UIModule.PlaySound((uint)Sounds.Sound16, 0, 0, 0);
                         return true;
                     }
                 }
@@ -106,13 +130,27 @@ namespace XIVAutoAttack.Updaters
             {
                 foreach (var slot in bar->Slot)
                 {
-                    if(slot.ActionId == actionID)
+                    //if (IsActionSlotRight(slot, actionID))
                     {
-                        HightlightActionSlot(slot);
+                        //var action_addon = (AtkComponentNode*)&slot;
+                        //var dropdrop_addon = (AtkComponentNode*)action_addon->Component->UldManager.NodeList[0];
+                        //var icon_addon = (AtkComponentNode*)dropdrop_addon->Component->UldManager.NodeList[2];
+
+                        //var icon_addon = slot.Icon;
+                        //if (!icon_addon->AtkResNode.IsVisible) continue;
+                        //var highlight = (AtkImageNode*)icon_addon->Component->UldManager.NodeList[9];
+                        //highlight->PartId = 16;
+                        //highlight->AtkResNode.ToggleVisibility(false);
                     }
                 }
                 return false;
             });
+        }
+
+        private static bool IsActionSlotRight(ActionBarSlot slot, uint actionID)
+        {
+            if (slot.ActionId == IconReplacer.KeyActionID.ID) return false;
+            return Service.IconReplacer.OriginalHook((uint)slot.ActionId) == actionID;
         }
 
         unsafe delegate bool ActionBarAction(AddonActionBarBase* bar);
@@ -124,18 +162,6 @@ namespace XIVAutoAttack.Updaters
                 if (actBar == IntPtr.Zero) continue;
                 if (doingSomething((AddonActionBarBase*)actBar)) return;
             }
-        }
-
-
-        private static unsafe void HightlightActionSlot(ActionBarSlot slot)
-        {
-            var action_addon = (AtkComponentNode*)&slot;
-            var dropdrop_addon = (AtkComponentNode*)action_addon->Component->UldManager.NodeList[0];
-            var icon_addon = (AtkComponentNode*)dropdrop_addon->Component->UldManager.NodeList[2];
-            if (!icon_addon->AtkResNode.IsVisible) return;
-            var highlight = (AtkImageNode*)icon_addon->Component->UldManager.NodeList[9];
-            highlight->PartId = 10;
-            highlight->AtkResNode.ToggleVisibility(true);
         }
 
         public static void Dispose()

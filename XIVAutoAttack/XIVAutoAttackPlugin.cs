@@ -109,8 +109,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         }
     }
 
-
-
     private void OnCommand(string command, string arguments)
     {
 

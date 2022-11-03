@@ -26,7 +26,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 return EnemyLocation.None;
             }
         }
-        internal unsafe uint MPNeed
+        internal virtual unsafe uint MPNeed
         {
             get
             {

@@ -1,5 +1,6 @@
 using Dalamud.Game;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Hooking;
 using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
 using System;
@@ -27,7 +28,6 @@ internal class PluginAddressResolver : BaseAddressResolver
 
     public delegate void GetChatBoxModuleDelegate(IntPtr uiModule, IntPtr message, IntPtr unused, byte a4);
     public GetChatBoxModuleDelegate GetChatBox { get; private set; }
-
 
     //public unsafe delegate byte CanUseActionOnGameObject(uint actionId, GameObject* obj);
     //public CanUseActionOnGameObject CanUseAction { get; private set; }

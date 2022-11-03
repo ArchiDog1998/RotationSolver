@@ -14,6 +14,7 @@ changelog: |-
   - 优化能力技的释放逻辑
   ## 新增功能
   - 添加循环教育模式！
+  - 添加了点击技能播放按下动画的功能。
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

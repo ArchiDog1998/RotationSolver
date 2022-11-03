@@ -300,6 +300,7 @@ namespace XIVAutoAttack
 
             if (nextAction.Use())
             {
+                PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);
                 if (nextAction is BaseAction act)
                 {
 #if DEBUG
@@ -311,7 +312,6 @@ namespace XIVAutoAttack
                         Service.TargetManager.SetTarget(act.Target);
                     }
                 }
-                PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);
             }
             return;
         }

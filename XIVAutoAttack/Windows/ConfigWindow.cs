@@ -140,6 +140,7 @@ internal class ConfigWindow : Window
                                     if(Service.ClientState.LocalPlayer != null && Service.ClientState.LocalPlayer.ClassJob.Id == combo.JobID)
                                     {
                                         ImGui.SameLine();
+                                        Spacing();
                                         CommandHelp(boolean.name);
                                     }
 
@@ -391,6 +392,7 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
                         ImGui.SameLine();
+                        Spacing();
                         CommandHelp("AutoBreak");
 
 
@@ -740,6 +742,7 @@ internal class ConfigWindow : Window
                         }
 
                         ImGui.SameLine();
+                        Spacing();
                         if (ImGui.Button("删除事件" + i.ToString()))
                         {
                             Service.Configuration.Events.RemoveAt(i);
@@ -829,7 +832,7 @@ internal class ConfigWindow : Window
 
                 if (ImGui.CollapsingHeader("下一个技能"))
                 {
-                    BaseAction baseAction = null;
+                    BaseAction baseAction = BLMCombo.Actions.Xenoglossy;
                     baseAction ??= ActionUpdater.NextAction as BaseAction;
                     if (baseAction != null)
                     {
