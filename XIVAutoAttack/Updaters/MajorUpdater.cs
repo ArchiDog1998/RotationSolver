@@ -15,7 +15,6 @@ namespace XIVAutoAttack.Updaters
         {
             if (!Service.Conditions.Any() || Service.ClientState.LocalPlayer == null) return;
 
-            PreviewUpdater.UpdateCastBar();
 #if DEBUG
             //Get changed condition.
             string[] enumNames = Enum.GetNames(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));
@@ -35,7 +34,7 @@ namespace XIVAutoAttack.Updaters
             }
 #endif
             //Update State.
-            PreviewUpdater.UpdateEntry();
+            PreviewUpdater.UpdatePreview();
 
             ActionUpdater.UpdateActionInfo();
 

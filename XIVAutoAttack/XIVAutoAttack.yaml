@@ -9,14 +9,11 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 在Debug专用窗口会有个很大的图片标志着下一个GCD
-  - 调整了一个选怪逻辑，不能使用的技能就选不到怪了
-  - 修改了AbilityRemain的计算方法，使之更准确
-  - 讲咏唱锁和咏唱条显示解耦
-  ## 功能增加
-  - 增加只选中Fate怪功能
-  ## API
-  - 将找Action放在每一帧中运算而不是沉静
+  - 调整了UI显示
+  - 修改了黑骑的爆发逻辑
+  - 优化能力技的释放逻辑
+  ## 新增功能
+  - 添加循环教育模式！
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

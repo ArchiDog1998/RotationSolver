@@ -4,6 +4,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
 using Lumina.Data.Parsing;
 using Lumina.Data.Parsing.Uld;
@@ -34,7 +35,7 @@ internal class ConfigWindow : Window
     private readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
 
     public ConfigWindow()
-        : base("自动攻击设置 (开源免费)", 0, false)
+        : base("自动攻击设置 (开源免费) v"+ typeof(ConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
     {
         RespectCloseHotkey = true;
 
@@ -134,6 +135,14 @@ internal class ConfigWindow : Window
                                     {
                                         ImGui.SetTooltip("关键名称为：" + boolean.name);
                                     }
+
+                                    //显示可以设置的案件
+                                    if(Service.ClientState.LocalPlayer != null && Service.ClientState.LocalPlayer.ClassJob.Id == combo.JobID)
+                                    {
+                                        ImGui.SameLine();
+                                        CommandHelp(boolean.name);
+                                    }
+
                                 }
                                 foreach (var doubles in actions.doubles)
                                 {
@@ -274,7 +283,8 @@ internal class ConfigWindow : Window
                             Service.Configuration.PoslockCasting = poslockCasting;
                             Service.Configuration.Save();
                         }
-                         var modifierChoices = new VirtualKey[]{ VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
+
+                        var modifierChoices = new VirtualKey[]{ VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
                         if(poslockCasting && ImGui.BeginCombo("无视咏唱锁热键", ToName(poslockModifier)))
                          {
                              foreach (VirtualKey k in modifierChoices)
@@ -289,9 +299,16 @@ internal class ConfigWindow : Window
                          }
 
                         bool usecheckCasting = Service.Configuration.CheckForCasting;
-                        if (ImGui.Checkbox("使用咏唱结束提示", ref usecheckCasting))
+                        if (ImGui.Checkbox("使用咏唱结束显示", ref usecheckCasting))
                         {
                             Service.Configuration.CheckForCasting = usecheckCasting;
+                            Service.Configuration.Save();
+                        }
+
+                        bool teachingMode = Service.Configuration.TeachingMode;
+                        if (ImGui.Checkbox("循环教育模式", ref teachingMode))
+                        {
+                            Service.Configuration.TeachingMode = teachingMode;
                             Service.Configuration.Save();
                         }
 
@@ -373,6 +390,9 @@ internal class ConfigWindow : Window
                             Service.Configuration.AutoBreak = autoBreak;
                             Service.Configuration.Save();
                         }
+                        ImGui.SameLine();
+                        CommandHelp("AutoBreak");
+
 
                         bool isOnlyGCD = Service.Configuration.OnlyGCD;
                         if (ImGui.Checkbox("只使用GCD循环，除去能力技", ref isOnlyGCD))
@@ -739,31 +759,29 @@ internal class ConfigWindow : Window
                 if (ImGui.BeginChild("帮助", new Vector2(0f, -1f), true))
                 {
                     ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
-                    CommandHelp("/aauto HealArea", "开启一段范围治疗的窗口期。");
+                    CommandHelp("HealArea", "开启一段范围治疗的窗口期。");
                     ImGui.Separator();
-                    CommandHelp("/aauto HealSingle", "开启一段单体治疗的窗口期。");
+                    CommandHelp("HealSingle", "开启一段单体治疗的窗口期。");
                     ImGui.Separator();
-                    CommandHelp("/aauto DefenseArea", "开启一段范围防御的窗口期。");
+                    CommandHelp("DefenseArea", "开启一段范围防御的窗口期。");
                     ImGui.Separator();
-                    CommandHelp("/aauto DefenseSingle", "开启一段单体防御的窗口期。");
+                    CommandHelp("DefenseSingle", "开启一段单体防御的窗口期。");
                     ImGui.Separator();
-                    CommandHelp("/aauto EsunaShield", "开启一段康复或者盾姿或者真北的窗口期。");
+                    CommandHelp("EsunaShield", "开启一段康复或者盾姿或者真北的窗口期。");
                     ImGui.Separator();
-                    CommandHelp("/aauto RaiseShirk", "开启强制救人或退避的窗口期。");
+                    CommandHelp("RaiseShirk", "开启强制救人或退避的窗口期。");
                     ImGui.Separator();
-                    CommandHelp("/aauto AntiRepulsion", "开启一段防击退的窗口期。");
+                    CommandHelp("AntiRepulsion", "开启一段防击退的窗口期。");
                     ImGui.Separator();
-                    CommandHelp("/aauto BreakProvoke", "开启一段爆发或挑衅的窗口期。");
+                    CommandHelp("BreakProvoke", "开启一段爆发或挑衅的窗口期。");
                     ImGui.Separator();
-                    CommandHelp("/aauto Move", "开启一段位移的窗口期。");
+                    CommandHelp("Move", "开启一段位移的窗口期。");
                     ImGui.Separator();
-                    CommandHelp("/aauto AutoBreak", "更改是否自动爆发。");
+                    CommandHelp("AttackSmart", "如果不在进攻中就开始进攻，如果在进攻就切换选择敌对目标条件。");
                     ImGui.Separator();
-                    CommandHelp("/aauto AttackSmart", "如果不在进攻中就开始进攻，如果在进攻就切换选择敌对目标条件。");
+                    CommandHelp("AttackManual", "开始进攻，进攻对象为手动选择，此时不会释放AOE。");
                     ImGui.Separator();
-                    CommandHelp("/aauto AttackManual", "开始进攻，进攻对象为手动选择，此时不会释放AOE。");
-                    ImGui.Separator();
-                    CommandHelp("/aauto AttackCancel", "停止进攻，记得一定要经常关掉！");
+                    CommandHelp("AttackCancel", "停止进攻，记得一定要经常关掉！");
                     ImGui.Separator();
                 }
                 ImGui.PopStyleVar();
@@ -811,7 +829,7 @@ internal class ConfigWindow : Window
 
                 if (ImGui.CollapsingHeader("下一个技能"))
                 {
-                    BaseAction baseAction = BLMCombo.Actions.Paradox;
+                    BaseAction baseAction = null;
                     baseAction ??= ActionUpdater.NextAction as BaseAction;
                     if (baseAction != null)
                     {
@@ -831,9 +849,12 @@ internal class ConfigWindow : Window
                         ImGui.Text("MP: " + baseAction.MPNeed.ToString());
                         ImGui.Text($"Can Use: {baseAction.ShouldUse(out _)} {baseAction.ShouldUse(out _, mustUse:true)}");
 
-                        ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
-                        ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
+                        ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(baseAction.AdjustedID).ToString());
                     }
+
+                    ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
+                    ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
+
                 }
 
                 if (ImGui.CollapsingHeader("上一个技能"))
@@ -844,12 +865,6 @@ internal class ConfigWindow : Window
                     DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
                 }
 
-                if (ImGui.CollapsingHeader("大错误") && ActionUpdater.Exception != null)
-                {
-                    ImGui.Text(ActionUpdater.Exception.Message);
-                    if(!string.IsNullOrEmpty( ActionUpdater.Exception.StackTrace)) ImGui.Text(ActionUpdater.Exception.StackTrace);
-                    if(!string.IsNullOrEmpty( ActionUpdater.Exception.Source)) ImGui.Text(ActionUpdater.Exception.Source);
-                }
             }
 #endif
 
@@ -882,8 +897,9 @@ internal class ConfigWindow : Window
         ImGui.Text(s);
         ImGui.SameLine();
     }
-    private static void CommandHelp(string command,string help)
+    private static void CommandHelp(string command, string help = null)
     {
+        command = XIVAutoAttackPlugin._autoCommand + " " + command;
         if (ImGui.Button(command))
         {
             Service.CommandManager.ProcessCommand(command);
@@ -893,7 +909,10 @@ internal class ConfigWindow : Window
             ImGui.SetTooltip($"单击以执行命令: {command}");
         }
 
-        ImGui.SameLine();
-        ImGui.Text(" → " + help);
+        if (!string.IsNullOrEmpty(help))
+        {
+            ImGui.SameLine();
+            ImGui.Text(" → " + help);
+        }
     }
 }

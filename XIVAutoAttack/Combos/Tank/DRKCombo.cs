@@ -229,23 +229,16 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     {
         if (SettingBreak)
         {
+            //嗜血
+            if (Actions.BloodWeapon.ShouldUse(out act)) return true;
+
+            //血乱
+            if (Actions.Delirium.ShouldUse(out act)) return true;
+
             if (InDungeonsMiddle && CanUseSpellInDungeonsMiddle)
             {
-                //嗜血
-                if (Actions.BloodWeapon.ShouldUse(out act)) return true;
-
-                //血乱
-                if (Actions.Delirium.ShouldUse(out act)) return true;
-
+                act = null;
                 return false;
-            }
-            else
-            {
-                //嗜血
-                if (Actions.BloodWeapon.ShouldUse(out act)) return true;
-
-                //血乱
-                if (Actions.Delirium.ShouldUse(out act)) return true;
             }
         }
 
@@ -277,7 +270,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
 
         if (openerFinished && !IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
 
-        if (Actions.Delirium.ElapsedAfterGCD(1) && Actions.Delirium.ElapsedAfterGCD(8) && Player.HaveStatus(ObjectStatus.Delirium))
+        if (Actions.Delirium.ElapsedAfterGCD(1) && !Actions.Delirium.ElapsedAfterGCD(8) && Player.HaveStatus(ObjectStatus.Delirium))
         {
             //暗影使者
             if (Actions.Shadowbringer.ShouldUse(out act)) return true;
