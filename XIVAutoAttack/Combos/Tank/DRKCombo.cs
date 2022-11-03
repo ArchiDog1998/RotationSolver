@@ -227,19 +227,13 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     }
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
-        if (SettingBreak)
+        if (SettingBreak && (InDungeonsMiddle && CanUseSpellInDungeonsMiddle || !InDungeonsMiddle))
         {
             //嗜血
             if (Actions.BloodWeapon.ShouldUse(out act)) return true;
 
             //血乱
             if (Actions.Delirium.ShouldUse(out act)) return true;
-
-            if (InDungeonsMiddle && CanUseSpellInDungeonsMiddle)
-            {
-                act = null;
-                return false;
-            }
         }
 
         //掠影示现

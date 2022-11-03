@@ -25,8 +25,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         private static bool iceOpener = false;
         private static bool fireOpener = true;
         private static string MyCommand = "";
+
         private bool DoubleTranspose => Config.GetBoolByName("DoubleTranspose");
-        //private bool DoubleTranspose = false;
 
         internal override SortedList<DescType, string> Description => new()
         {
@@ -93,6 +93,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
         private protected override bool MoveAbility(byte abilityRemain, out IAction act)
         {
+            //以太步
             if (Actions.AetherialManipulation.ShouldUse(out act, mustUse: true)) return true;
 
             return base.MoveAbility(abilityRemain, out act);
@@ -124,13 +125,14 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (Actions.Xenoglossy.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
                 if (Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             }
-
+            if (!HaveHostileInRange && Maintence(out act)) return true;
             //act = null;
             return false;
         }
 
         private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
         {
+            if (!HaveHostileInRange && Maintence(out act)) return true;
             return base.GeneralAbility(abilityRemain, out act);
         }
 
@@ -157,11 +159,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (!inOpener) return true;
 
                 if (!inOpener && JobGauge.InUmbralIce && !JobGauge.IsParadoxActive) return true;
-
-
             }
-            //Service.ChatGui.Print("1++++" + Player.FindStatusStack(ObjectStatus.Triplecast));
-
 
             //黑魔纹
             if (Config.GetBoolByName("AutoLeylines") && Actions.Leylines.ShouldUse(out act))
@@ -216,8 +214,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             {
                 //三连
                 if (IsLastAction(true, Actions.Fire4) && Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-
-
             }
 
             act = null;
@@ -233,7 +229,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         {
             if (JobGauge.InUmbralIce)
             {
-
                 //雷
                 if (CanUseThunder(out act)) return true;
                 //冰阶段
@@ -251,7 +246,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 //悖论
                 if (CanUseParadox(out act)) return true;
                 //火1
-                if (Actions.Paradox.EnoughLevel && Actions.Fire.ShouldUse(out act))
+                if (!Actions.Paradox.EnoughLevel && Actions.Fire.ShouldUse(out act))
                 {
                     if (JobGauge.InAstralFire)
                     {
@@ -328,13 +323,15 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
         private bool LoopManagerArea(out IAction act)
         {
-            if (Actions.Blizzard2.ShouldUse(out act) && !IsLastSpell(true, Actions.Blizzard2))
-            {
-                if (!JobGauge.IsEnochianActive || JobGauge.InAstralFire && Player.CurrentMp < 800) return true;
-            }
+            act = null;
+            if (!Actions.Blizzard2.ShouldUse(out _)) return false;
+
+            if (Actions.Foul.ShouldUse(out act) && IsPolyglotStacksMaxed) return true;
+
+
             if (Actions.Freeze.ShouldUse(out act) && !IsLastSpell(true, Actions.Freeze))
             {
-                if (JobGauge.UmbralIceStacks == 3) return true;
+                if (JobGauge.UmbralIceStacks == 3 && JobGauge.UmbralHearts != 3) return true;
             }
             if (Actions.Thunder2.ShouldUse(out act) && !IsLastSpell(true, Actions.Thunder2))
             {
@@ -352,7 +349,20 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (JobGauge.InAstralFire && Player.HaveStatus(ObjectStatus.EnhancedFlare)) return true;
                 return true;
             }
+            if (Actions.Blizzard2.ShouldUse(out act) && !IsLastSpell(true, Actions.Blizzard2) && JobGauge.UmbralIceStacks != 3)
+            {
+                //if (!JobGauge.IsEnochianActive) return true;
+                //if (JobGauge.InAstralFire) return true;
+                return true;
+            }
             act = null;
+            return false;
+        }
+        private bool Maintence(out IAction act)
+        {
+            if (Actions.UmbralSoul.ShouldUse(out act)) return true;
+            if (Actions.Transpose.ShouldUse(out act)) return true;
+
             return false;
         }
     }

@@ -17,13 +17,22 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
     {
         internal struct Actions
         {
+            internal class ThunderAction : BaseAction
+            {
+                internal override uint MPNeed => HasThunder ? 0 : base.MPNeed;
+
+                internal ThunderAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
+                    : base(actionID, isFriendly, shouldEndSpecial, isDot)
+                {
+                }
+            }
             public static readonly BaseAction
                 //雷1
-                Thunder = new(144u, isDot: true),
-                Thunder3 = new(153u, isDot: true),
+                Thunder = new ThunderAction(144u, isDot: true),
+                Thunder3 = new ThunderAction(153u, isDot: true),
 
                 //雷2
-                Thunder2 = new(7447u, isDot: true)
+                Thunder2 = new ThunderAction(7447u, isDot: true)
                 {
                     TargetStatus = Thunder.TargetStatus,
                 },
@@ -193,7 +202,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             }
 
             //星灵转冰
-            if (DoubleTranspose && JobGauge.InAstralFire && abilityRemain <= 2)
+            if (DoubleTranspose && JobGauge.InAstralFire)
             {
                 if (Actions.Manafont.ElapsedAfter(3, false) || !Actions.Manafont.IsCoolDown)
                 {
@@ -223,10 +232,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
             if (JobGauge.InUmbralIce && JobGauge.UmbralIceStacks < 3)
             {
-                //GCD经过时间 - 冰阶段经过时间 = 星灵在这个gcd使用的时间点
-                //知道跳蓝在这个gcd判定的时间点
-                //两者比较得到在哪跳蓝,或计算得到具体在哪跳的蓝
-                //if () return true;
                 if (!HasFire && MPYuPanDouble >= 7900) return true;
                 //if (IsLastAbility(true, Actions.Transpose) && HasFire && TargetHasThunder && !TargetThunderWillEnd(7)) return true;
             }
@@ -421,10 +426,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         private bool CanUseThunder(out IAction act)
         {
             //Service.ChatGui.Print("1++++" + IsLastSpell(true, Actions.Despair));
-            act = null;
-            if (!DoubleTranspose && !Actions.Thunder.ShouldUse(out act)) return false;
-            if (DoubleTranspose && !HasThunder && !Actions.Thunder.ShouldUse(out act)) return false;
-            if (DoubleTranspose && HasThunder) act = Actions.Thunder;
+            if (!Actions.Thunder.ShouldUse(out act)) return false;
 
             if (IsLastSpell(true, Actions.Thunder)) return false;
 
@@ -479,8 +481,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 }
 
                 if (!HasThunder && (!TargetHasThunder || TargetHasThunder && TargetThunderWillEnd(3))) return true;
-
-
 
                 //if (Player.HaveStatus(ObjectStatus.Sharpcast) && Player.WillStatusEnd(3, false)) return true;
             }
@@ -539,7 +539,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                     if (HasFire) return true;
 
                     //看雷云满足条件吗
-                    if (TargetHasThunder && !TargetThunderWillEnd((float)GCDTime * 3 / 1000) || !HasThunder)
+                    if (TargetHasThunder && !TargetThunderWillEnd((float)GCDTime * 4 / 1000) || !HasThunder)
                     {
                         if (JobGauge.PolyglotStacks == 2 || (JobGauge.PolyglotStacks == 1 && JobGauge.EnochianTimer < GCDTime * 2)) return true;
                         return false;

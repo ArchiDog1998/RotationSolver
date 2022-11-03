@@ -77,7 +77,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
             if (!TargetThunderWillEnd((float)((GCDTime * GCDcount / 1000) + 5))) return false;
 
-            if (!Player.WillStatusEnd((float)(GCDTime * GCDcount / 1000))) return true;
+            if (!Player.WillStatusEnd((float)(GCDTime * GCDcount / 1000), false, ObjectStatus.Thundercloud)) return true;
             return false;
         }
 
