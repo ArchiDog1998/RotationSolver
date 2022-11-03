@@ -844,7 +844,7 @@ internal class ConfigWindow : Window
 
                 if (ImGui.CollapsingHeader("下一个技能"))
                 {
-                    BaseAction baseAction = BLMCombo.Actions.Xenoglossy;
+                    BaseAction baseAction = null;
                     baseAction ??= ActionUpdater.NextAction as BaseAction;
                     if (baseAction != null)
                     {
