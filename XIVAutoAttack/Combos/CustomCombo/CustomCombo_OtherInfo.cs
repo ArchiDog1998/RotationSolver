@@ -25,8 +25,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
             移动技能,
             命令说明,
         }
-        protected static double TimeSinceLastAction => Watcher.TimeSinceLastAction.TotalSeconds;
-
         protected static PlayerCharacter Player => Service.ClientState.LocalPlayer;
         protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : Player;
 
@@ -78,7 +76,5 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool IsLastAction(params uint[] ids)
             => IActionHelper.IsLastAction(ids);
-
-        internal virtual string OnCommand(string args) => string.Empty;
     }
 }

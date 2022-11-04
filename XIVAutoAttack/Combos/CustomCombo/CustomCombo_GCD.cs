@@ -18,7 +18,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
         internal bool TryInvoke(uint lastComboActionID, float comboTime, out IAction newAction)
         {
-
             newAction = null;
             if (!IsEnabled)
             {
@@ -26,8 +25,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
 
             UpdateInfo();
-            newAction = Invoke(lastComboActionID, comboTime);
 
+            newAction = Invoke(lastComboActionID, comboTime);
             //没获得对象
             if (newAction == null) return false;
 
@@ -57,9 +56,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
 
             IAction act = GCD(lastComboActionID, abilityRemain, helpDefenseAOE, helpDefenseSingle);
-            //Sayout!
+
             if (act != null && act is BaseAction GCDaction)
             {
+                //Sayout!
                 if (GCDaction.EnermyLocation != EnemyLocation.None && GCDaction.Target.HasLocationSide()
                      && !Player.HaveStatus(ObjectStatus.TrueNorth))
                 {
@@ -81,14 +81,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     ShouldLocation = EnemyLocation.None;
                 }
 
-                switch (abilityRemain)
-                {
-                    case 0:
-                        return GCDaction;
-                    default:
-                        if (Ability(abilityRemain, GCDaction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
-                        return GCDaction;
-                }
+                if (abilityRemain == 0) return GCDaction;
+
+                if (Ability(abilityRemain, GCDaction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
+
+                return GCDaction;
             }
             else if (act == null)
             {

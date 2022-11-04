@@ -26,7 +26,6 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
     private static bool enhancedGallows => Player.HaveStatus(ObjectStatus.EnhancedGallows);
     private static bool enhancedCrossReaping => Player.HaveStatus(ObjectStatus.EnhancedCrossReaping);
     private static bool enhancedVoidReaping => Player.HaveStatus(ObjectStatus.EnhancedVoidReaping);
-    private static bool arcaneCircle => Player.HaveStatus(ObjectStatus.ArcaneCircle);
     private static bool plentifulReady => Player.HaveStatus(ObjectStatus.ImmortalSacrifice) && !Player.HaveStatus(ObjectStatus.BloodsownCircle);
     private static bool haveDeathsDesign => Target.HaveStatus(ObjectStatus.DeathsDesign);
     internal override uint JobID => 39;

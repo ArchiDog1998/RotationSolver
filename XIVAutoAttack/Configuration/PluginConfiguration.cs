@@ -50,6 +50,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool FilterStopMark { get; set; } = true;
     public bool UseOverlayWindow { get; set; } = true;
     public bool TeachingMode { get; set; } = true;
+    public bool KeyBoardNoise { get; set; } = true;
     public float ObjectMinRadius { get; set; } = 0f;
     public float HealthDifference { get; set; } = 0.25f;
     public float HealthAreaAbility { get; set; } = 0.75f;
@@ -59,7 +60,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthForDyingTank { get; set; } = 0.15f;
     public float InterruptibleTime { get; set; } = 0.5f;
     public float SpecialDuration { get; set; } = 3;
-    public float WeaponInterval { get; set; } = 0.6f;
+    public float WeaponInterval { get; set; } = 0.67f;
     public float WeaponFaster { get; set; } = 0.05f;
     public float WeaponDelay { get; set; } = 0;
     public string LocationText { get; set; } = string.Empty;

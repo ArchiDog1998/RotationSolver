@@ -36,7 +36,6 @@ namespace XIVAutoAttack.Windows
             ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
 
             DrawLocation();
-            UpdateHightLight();
 
             ImGui.PopStyleVar();
             ImGui.End();
@@ -103,101 +102,5 @@ namespace XIVAutoAttack.Windows
             var z = Math.Cos(rotation) * radius + pt.Z;
             return new Vector3((float)x, pt.Y, (float)z);
         }
-
-        private static void UpdateHightLight()
-        {
-            if (ActionUpdater.NextAction == null || !Service.Configuration.TeachingMode) return;
-            HigglightAtionBar(ActionUpdater.NextAction.AdjustedID);
-        }
-
-        static readonly string[] _barsName = new string[]
-        {
-            "_ActionCross",
-            "_ActionDoubleCrossL",
-            "_ActionDoubleCrossR",
-            "_ActionBar",
-            "_ActionBar01",
-            "_ActionBar02",
-            "_ActionBar03",
-            "_ActionBar04",
-            "_ActionBar05",
-            "_ActionBar06",
-            "_ActionBar07",
-            "_ActionBar08",
-            "_ActionBar09",
-        };
-
-        internal static unsafe void PulseAtionBar(uint actionID)
-        {
-
-            LoopAllSlotBar(bar =>
-            {
-                for (int i = 0; i < bar->SlotCount; i++)
-                {
-                    if (IsActionSlotRight(bar->ActionBarSlots[i], actionID))
-                    {
-                        bar->PulseActionBarSlot(i);
-                        //键盘按下效果音效
-                        UIModule.PlaySound(12, 0, 0, 0);
-                        return true;
-                    }
-                }
-                return false;
-            });
-        }
-
-        private static unsafe void HigglightAtionBar(uint actionID)
-        {
-            var color = ImGui.GetColorU32(new Vector4(0.7f, 1f, 0.4f, 1));
-            var offset = 2;
-
-            LoopAllSlotBar(bar =>
-            {
-                var baseX = (float)bar->AtkUnitBase.X;
-                var baseY = (float)bar->AtkUnitBase.Y;
-
-                int i = 0;
-                foreach (var slot in bar->Slot)
-                {
-                    if (IsActionSlotRight(slot, actionID))
-                    {
-                        var realSlot = (AtkComponentNode*)bar->AtkUnitBase.UldManager.NodeList[20 - i];
-                        var dropDown = (AtkComponentNode*)realSlot->Component->UldManager.NodeList[0];
-
-                        var x = realSlot->AtkResNode.X + dropDown->AtkResNode.X + baseX;
-                        var y = realSlot->AtkResNode.Y + dropDown->AtkResNode.Y + baseY;
-
-                        if (!dropDown->AtkResNode.IsVisible) continue;
-
-                        var width = (float)dropDown->AtkResNode.Width;
-                        var height = (float)dropDown->AtkResNode.Height;
-
-                        ImGui.GetWindowDrawList().AddRect(new Vector2(x - offset, y - offset), new Vector2(x + width + offset, y + height + offset), 
-                            color, 8, ImDrawFlags.RoundCornersAll, 5);
-                    }
-                    i++;
-                }
-                return false;
-            });
-        }
-
-        private static bool IsActionSlotRight(ActionBarSlot slot, uint actionID)
-        {
-            if (slot.ActionId == IconReplacer.KeyActionID.ID) return false;
-            return Service.IconReplacer.OriginalHook((uint)slot.ActionId) == actionID;
-        }
-
-        unsafe delegate bool ActionBarAction(AddonActionBarBase* bar);
-        private static unsafe void LoopAllSlotBar(ActionBarAction doingSomething)
-        {
-            foreach (var name in _barsName)
-            {
-                var actBar = Service.GameGui.GetAddonByName(name, 1);
-                if (actBar == IntPtr.Zero) continue;
-                if (doingSomething((AddonActionBarBase*)actBar)) return;
-            }
-        }
-
-
     }
 }

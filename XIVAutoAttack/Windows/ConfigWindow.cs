@@ -88,6 +88,7 @@ internal class ConfigWindow : Window
                         {
                             if (i > 0) ImGui.Separator();
                             var combo = combos[i];
+                            var canAddButton = Service.ClientState.LocalPlayer != null && Service.ClientState.LocalPlayer.ClassJob.Id == combo.JobID;
 
                             ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
@@ -137,7 +138,7 @@ internal class ConfigWindow : Window
                                     }
 
                                     //显示可以设置的案件
-                                    if(Service.ClientState.LocalPlayer != null && Service.ClientState.LocalPlayer.ClassJob.Id == combo.JobID)
+                                    if(canAddButton)
                                     {
                                         ImGui.SameLine();
                                         Spacing();
@@ -168,11 +169,23 @@ internal class ConfigWindow : Window
                                 foreach (var comboItem in actions.combos)
                                 {
                                     Spacing();
-                                    int val = comboItem.value;
-                                    if (ImGui.Combo($"#{num}: {comboItem.description}", ref val, comboItem.items, comboItem.items.Length))
+                                    if (ImGui.BeginCombo($"#{num}: {comboItem.description}", comboItem.items[comboItem.value]))
                                     {
-                                        comboItem.value = val;
-                                        Service.Configuration.Save();
+                                        for (int comboIndex = 0; comboIndex < comboItem.items.Length; comboIndex++)
+                                        {
+                                            if (ImGui.Selectable(comboItem.items[comboIndex]))
+                                            {
+                                                comboItem.value = comboIndex;
+                                                Service.Configuration.Save();
+                                            }
+                                            if (canAddButton)
+                                            {
+                                                ImGui.SameLine();
+                                                Spacing();
+                                                CommandHelp(comboItem.name + comboIndex.ToString());
+                                            }
+                                        }
+                                        ImGui.EndCombo();
                                     }
                                     if (ImGui.IsItemHovered())
                                     {
@@ -180,7 +193,7 @@ internal class ConfigWindow : Window
                                     }
 
                                     //显示可以设置的案件
-                                    if (Service.ClientState.LocalPlayer != null && Service.ClientState.LocalPlayer.ClassJob.Id == combo.JobID)
+                                    if (canAddButton)
                                     {
                                         ImGui.SameLine();
                                         Spacing();
@@ -319,9 +332,16 @@ internal class ConfigWindow : Window
                         }
 
                         bool teachingMode = Service.Configuration.TeachingMode;
-                        if (useOverlayWindow && ImGui.Checkbox("循环教育模式", ref teachingMode))
+                        if (ImGui.Checkbox("循环教育模式", ref teachingMode))
                         {
                             Service.Configuration.TeachingMode = teachingMode;
+                            Service.Configuration.Save();
+                        }
+
+                        bool keyBoardNoise = Service.Configuration.KeyBoardNoise;
+                        if (ImGui.Checkbox("模拟按下键盘效果", ref keyBoardNoise))
+                        {
+                            Service.Configuration.KeyBoardNoise = keyBoardNoise;
                             Service.Configuration.Save();
                         }
 
