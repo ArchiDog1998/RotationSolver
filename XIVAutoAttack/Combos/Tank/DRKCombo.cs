@@ -254,7 +254,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             if (Config.GetBoolByName("TheBlackestNight") && Player.CurrentMp < 6000) break;
             
             //爆发期打完
-            if (openerFinished && Actions.Delirium.ElapsedAfterGCD(1) && Actions.Delirium.ElapsedAfterGCD(7) && Player.HaveStatus(ObjectStatus.Delirium)) return true;
+            if (openerFinished && Actions.Delirium.ElapsedAfterGCD(1) && !Actions.Delirium.ElapsedAfterGCD(7)) return true;
 
             //非爆发期防止溢出+续buff
             if (JobGauge.HasDarkArts || (Player.CurrentMp > 8500 && openerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
@@ -264,7 +264,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
 
         if (openerFinished && !IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
 
-        if (Actions.Delirium.ElapsedAfterGCD(1) && !Actions.Delirium.ElapsedAfterGCD(8) && Player.HaveStatus(ObjectStatus.Delirium))
+        if (Actions.Delirium.ElapsedAfterGCD(1) && !Actions.Delirium.ElapsedAfterGCD(8))
         {
             //暗影使者
             if (Actions.Shadowbringer.ShouldUse(out act)) return true;
