@@ -15,7 +15,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial;
 internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 {
     internal override uint JobID => 31;
-    private static bool openerFinished = false;
+    //private static bool openerFinished = false;
     private static bool MCH_Opener = false;
     private static bool MCH_Automaton = false;
 
@@ -58,21 +58,31 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
             AirAnchor = new(16500)
             {
                 //过热不释放技能
-                OtherCheck = b => !JobGauge.IsOverheated,
+                OtherCheck = b => !JobGauge.IsOverheated || Player.HaveStatus(ObjectStatus.Reassemble),
             },
 
             //钻头
             Drill = new(16498)
             {
                 //过热不释放技能
-                OtherCheck = b => !JobGauge.IsOverheated,
+                OtherCheck = b => !JobGauge.IsOverheated || Player.HaveStatus(ObjectStatus.Reassemble),
             },
 
             //回转飞锯
             ChainSaw = new(25788)
             {
                 //过热不释放技能,打进爆发
-                OtherCheck = b => !MCH_Opener || (openerFinished && !JobGauge.IsOverheated),
+                OtherCheck = b =>
+                {
+                    if (Player.HaveStatus(ObjectStatus.Reassemble)) return true;
+                    if (HeatBlast.ShouldUse(out _)) return false;
+                    
+                    if (!MCH_Opener) return true;
+                    if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(4)) return true;
+                    if (Drill.IsCoolDown && Drill.ElapsedAfterGCD(3)) return true;
+                    return false;
+                }
+
             },
 
             //毒菌冲击
@@ -162,21 +172,12 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         MCH_Opener = Config.GetBoolByName("MCH_Opener");
         MCH_Automaton = Config.GetBoolByName("MCH_Automaton");
 
-        //当上一个连击是热阻击弹时完成起手
-        if (InCombat && (IsLastWeaponSkill(true, Actions.CleanShot) || !Actions.Wildfire.WillHaveOneChargeGCD(4) || Actions.SpreadShot.ShouldUse(out _)))
-        {
-            openerFinished = true;
-        }
-
         //不在战斗中时重置起手
         if (!InCombat)
         {
             //开场前整备,空气锚和钻头必须冷却好
             if ((!Actions.AirAnchor.IsCoolDown || !Actions.Drill.IsCoolDown) && Actions.Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-            openerFinished = false;
         }
-
-        if (!MCH_Opener) openerFinished = true;
 
         //AOE,毒菌冲击
         if (Actions.Bioblaster.ShouldUse(out act)) return true;
@@ -221,6 +222,11 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         if (nextGCD.IsAnySameAction(true, Actions.AirAnchor, Actions.Drill))
         {
             if (Actions.Reassemble.ShouldUse(out act)) return true;
+        }
+
+        if (nextGCD.IsAnySameAction(true, Actions.ChainSaw) && !IsLastWeaponSkill(true, Actions.HeatBlast))
+        {
+            if (SettingBreak && MCH_Opener && Actions.Wildfire.ShouldUse(out act)) return true;
         }
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
@@ -267,8 +273,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         //小怪和AOE期间不打野火
         if (Actions.SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()) return false;
 
-        //机工起手判断
-        if (!openerFinished && MCH_Opener) return false;
+        if (Actions.ChainSaw.EnoughLevel && !Actions.ChainSaw.IsCoolDown) return false;
 
         //在过热时
         if (IsLastAction(true, Actions.Hypercharge)) return true;
@@ -297,7 +302,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         //在三大金刚还剩8秒冷却好时不释放超荷
         if (Actions.Drill.EnoughLevel && Actions.Drill.WillHaveOneCharge(8, false)) return false;
         if (Actions.AirAnchor.EnoughLevel && Actions.AirAnchor.WillHaveOneCharge(8, false)) return false;
-        if (Actions.ChainSaw.EnoughLevel && Actions.ChainSaw.WillHaveOneCharge(8, false)) return false;
+        if (Actions.ChainSaw.EnoughLevel && !Actions.ChainSaw.IsCoolDown && MCH_Opener) return false;
 
         //小怪AOE和4人本超荷判断
         if (Actions.SpreadShot.ShouldUse(out _) || (TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()))
@@ -308,9 +313,6 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 
         //等级低于野火
         if (!Actions.Wildfire.EnoughLevel) return true;
-
-        //标准循环起手判断
-        if (!openerFinished && MCH_Opener) return false;
 
         //野火前攒热量
         if (!Actions.Wildfire.WillHaveOneChargeGCD(5) && Actions.Wildfire.WillHaveOneChargeGCD(18))
@@ -353,12 +355,9 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         if (!MCH_Automaton || (!Target.IsBoss() && !IsMoving) || Level < Actions.Wildfire.ID) return true;
         if ((Actions.SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()) && IsMoving) return false;
 
-        //起手判断
-        if (!openerFinished && MCH_Opener) return false;
-
         //机器人吃团辅判断
         if (Actions.AirAnchor.WillHaveOneChargeGCD() && JobGauge.Battery > 80) return true;
-        if (Actions.ChainSaw.WillHaveOneCharge(6) || (!Actions.ChainSaw.ElapsedAfterGCD(3) && JobGauge.Battery <= 60)) return true;
+        if (Actions.ChainSaw.WillHaveOneCharge(6) || (Actions.ChainSaw.IsCoolDown && !Actions.ChainSaw.ElapsedAfterGCD(3) && JobGauge.Battery <= 60)) return true;
 
         return false;
     }

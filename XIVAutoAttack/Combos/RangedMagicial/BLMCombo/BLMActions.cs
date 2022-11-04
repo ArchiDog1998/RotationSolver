@@ -475,7 +475,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 {
                     return true;
                 }
-                if (IsLastSpell(true, Actions.Despair) && HasThunder && JobGauge.PolyglotStacks == 1)
+                if (IsLastSpell(true, Actions.Despair) && HasThunder && JobGauge.PolyglotStacks <= 1)
                 {
                     return true;
                 }
@@ -517,7 +517,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (IsOldSpell(1,Actions.Thunder3)) return false;
 
                 if (HasFire && !IsLastSpell(true, Actions.Thunder, Actions.Xenoglossy)) return true;
-                if (!HasFire && MPYuPanDouble >= 7900) return true;
+                if (!HasFire && Player.HaveStatus(ObjectStatus.LucidDreaming) && MPYuPanDouble >= 7900) return true;
             }
 
             //在火

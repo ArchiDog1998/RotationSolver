@@ -101,10 +101,10 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
         private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
         {
-            if (nextGCD == Actions.Thunder && JobGauge.InUmbralIce)
-            {
-                if (Actions.Sharpcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-            }
+            //if (nextGCD == Actions.Thunder && JobGauge.InUmbralIce)
+            //{
+            //    if (Actions.Sharpcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            //}
 
 
             act = null;
@@ -156,9 +156,11 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             {
                 //if (Player.HaveStatus(ObjectStatus.Triplecast) && Player.FindStatusStack(ObjectStatus.Triplecast) <= 1) return true;
 
-                if (!inOpener) return true;
+                if (Actions.Sharpcast.ChargesCount > 0) return true;
+                //if (Player.HaveStatus(ObjectStatus.Sharpcast))return true;
+                //return true;
 
-                if (!inOpener && JobGauge.InUmbralIce && !JobGauge.IsParadoxActive) return true;
+                //if (!inOpener && JobGauge.InUmbralIce && !JobGauge.IsParadoxActive) return true;
             }
 
             //黑魔纹
