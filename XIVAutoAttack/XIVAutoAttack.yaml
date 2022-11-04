@@ -10,12 +10,12 @@ punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
   - 调整了UI显示
-  - 修改了黑骑的爆发逻辑
-  - 优化能力技的释放逻辑
-  - Moon小姐姐的上千行黑魔上线！
-  ## 新增功能
-  - 添加循环教育模式！
-  - 添加了点击技能播放按下动画和键盘音效的功能。
+  - 修复教育模式的窗口乱飞问题
+  - 延缓忍者选忍术的时间，尝试解决临时换忍术导致忍术失败的bug
+  ## 功能新增
+  - 支持设置中职业Combo的指定Index选择
+  ## API
+  - 添加InStartState属性和ShouldEndStartState方法
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

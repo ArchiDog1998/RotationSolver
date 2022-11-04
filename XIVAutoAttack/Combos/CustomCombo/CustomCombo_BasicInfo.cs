@@ -84,11 +84,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
             return new ActionConfiguration();
         }
 
-        /// <summary>
-        /// 有什么是需要每一帧进行更新数据用的，放这里。如果有自定义字段，需要在此函数内全部更新一遍。
-        /// </summary>
-        private protected virtual void UpdateInfo() { }
-
         public void Dispose()
         {
             Texture.Dispose();

@@ -18,7 +18,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
         internal bool TryInvoke(uint lastComboActionID, float comboTime, out IAction newAction)
         {
-
             newAction = null;
             if (!IsEnabled)
             {
@@ -26,8 +25,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
 
             UpdateInfo();
-            newAction = Invoke(lastComboActionID, comboTime);
 
+            //更新起手状态
+            UpdateStartState();
+
+            newAction = Invoke(lastComboActionID, comboTime);
             //没获得对象
             if (newAction == null) return false;
 

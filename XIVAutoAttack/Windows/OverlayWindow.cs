@@ -148,34 +148,30 @@ namespace XIVAutoAttack.Windows
 
         private static unsafe void HigglightAtionBar(uint actionID)
         {
-            var color = ImGui.GetColorU32(new Vector4(0.7f, 1f, 0.4f, 1));
-            var offset = 2;
+            uint color = ImGui.GetColorU32(new Vector4(0.7f, 1f, 0.4f, 1));
+            const float offset = 2;
 
             LoopAllSlotBar(bar =>
             {
                 var baseX = (float)bar->AtkUnitBase.X;
                 var baseY = (float)bar->AtkUnitBase.Y;
 
-                int i = 0;
-                foreach (var slot in bar->Slot)
+                for (int i = 0; i < bar->SlotCount; i++)
                 {
-                    if (IsActionSlotRight(slot, actionID))
-                    {
-                        var realSlot = (AtkComponentNode*)bar->AtkUnitBase.UldManager.NodeList[20 - i];
-                        var dropDown = (AtkComponentNode*)realSlot->Component->UldManager.NodeList[0];
+                    if (!IsActionSlotRight(bar->ActionBarSlots[i], actionID)) continue;
+                    var realSlot = (AtkComponentNode*)bar->AtkUnitBase.UldManager.NodeList[20 - i];
+                    var dropDown = (AtkComponentNode*)realSlot->Component->UldManager.NodeList[0];
 
-                        var x = realSlot->AtkResNode.X + dropDown->AtkResNode.X + baseX;
-                        var y = realSlot->AtkResNode.Y + dropDown->AtkResNode.Y + baseY;
+                    var x = realSlot->AtkResNode.X + dropDown->AtkResNode.X + baseX;
+                    var y = realSlot->AtkResNode.Y + dropDown->AtkResNode.Y + baseY;
 
-                        if (!dropDown->AtkResNode.IsVisible) continue;
+                    if (!dropDown->AtkResNode.IsVisible) continue;
 
-                        var width = (float)dropDown->AtkResNode.Width;
-                        var height = (float)dropDown->AtkResNode.Height;
+                    var width = (float)dropDown->AtkResNode.Width;
+                    var height = (float)dropDown->AtkResNode.Height;
 
-                        ImGui.GetWindowDrawList().AddRect(new Vector2(x - offset, y - offset), new Vector2(x + width + offset, y + height + offset), 
-                            color, 8, ImDrawFlags.RoundCornersAll, 5);
-                    }
-                    i++;
+                    ImGui.GetWindowDrawList().AddRect(new Vector2(x - offset, y - offset), new Vector2(x + width + offset, y + height + offset),
+                        color, 8, ImDrawFlags.RoundCornersAll, 5);
                 }
                 return false;
             });
@@ -197,7 +193,5 @@ namespace XIVAutoAttack.Windows
                 if (doingSomething((AddonActionBarBase*)actBar)) return;
             }
         }
-
-
     }
 }

@@ -383,9 +383,12 @@ namespace XIVAutoAttack
 
                         foreach (var combo in customCombo.Config.combos)
                         {
-                            if (combo.name == str)
+                            if (str.StartsWith(combo.name))
                             {
-                                combo.value = (combo.value + 1) % combo.items.Length;
+                                var numStr = str.Substring(combo.name.Length);
+
+                                combo.value = (int.TryParse(numStr, out int num) ? num : combo.value + 1)
+                                    % combo.items.Length;
 
                                 Service.ChatGui.Print($"修改{combo.description}为{combo.items[combo.value]}");
 
