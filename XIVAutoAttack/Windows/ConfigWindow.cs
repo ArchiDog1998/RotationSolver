@@ -337,6 +337,19 @@ internal class ConfigWindow : Window
                             Service.Configuration.TeachingMode = teachingMode;
                             Service.Configuration.Save();
                         }
+                        if (teachingMode)
+                        {
+                            ImGui.SameLine();
+                            Spacing();
+
+                            var teachingColor = Service.Configuration.TeachingModeColor;
+
+                            if(ImGui.ColorEdit3("教育模式颜色", ref teachingColor))
+                            {
+                                Service.Configuration.TeachingModeColor = teachingColor;
+                                Service.Configuration.Save();
+                            }
+                        }
 
                         bool keyBoardNoise = Service.Configuration.KeyBoardNoise;
                         if (ImGui.Checkbox("模拟按下键盘效果", ref keyBoardNoise))
@@ -898,8 +911,8 @@ internal class ConfigWindow : Window
                     DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
                     DrawAction(Watcher.LastSpell, nameof(Watcher.LastSpell));
                     DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
+                    DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
                 }
-
             }
 #endif
 
@@ -912,10 +925,7 @@ internal class ConfigWindow : Window
     private static void DrawAction(uint id, string type)
     {
         var action = new BaseAction(id);
-        //int size = Math.Max(action.Icon.Width, 45);
-        //ImGui.Image(action.Icon.ImGuiHandle, new Vector2(size, size));
 
-        //ImGui.SameLine();
         ImGui.Text($"{type}: {action}");
 
         action.Dispose();
