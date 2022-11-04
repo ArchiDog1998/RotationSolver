@@ -241,7 +241,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         if (CanUseRookAutoturret(out act)) return true;
 
         //超荷
-        if (CanUseHypercharge(out act)) return true;
+        if (CanUseHypercharge(out act) && abilityRemain == 1) return true;
 
         if (Actions.GaussRound.ChargesCount < Actions.Ricochet.ChargesCount)
         {

@@ -274,7 +274,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             {
                 if (Player.CurrentMp == 0) return false;
 
-                if (IsLastSpell(true, Actions.Xenoglossy, Actions.Thunder)) return true;
+                if (IsLastSpell(true, Actions.Xenoglossy, Actions.Thunder) && F4RemainingNumber() <= 2) return true;
             }
 
             if (!DoubleTranspose)
@@ -523,6 +523,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             //在火
             if (JobGauge.InAstralFire)
             {
+                if (JobGauge.EnochianTimer <= 5000 && IsPolyglotStacksMaxed) return true;
 
                 if (IsLastSpell(true, Actions.Xenoglossy) || HaveSwift) return false;
                 //起手
@@ -550,7 +551,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 }
 
                 //if (JobGauge.ElementTimeRemaining < CooldownHelper.CalcSpellTime(2500) + CooldownHelper.CalcSpellTime(3000)) return false;
-                if (JobGauge.EnochianTimer <= 5000 && IsPolyglotStacksMaxed) return true;
+
             }
 
             act = null;
