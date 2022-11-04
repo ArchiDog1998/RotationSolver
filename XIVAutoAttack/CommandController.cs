@@ -301,7 +301,7 @@ namespace XIVAutoAttack
 
             if (nextAction.Use())
             {
-                OverlayWindow.PulseAtionBar(nextAction.AdjustedID);
+                PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);
                 if (nextAction is BaseAction act)
                 {
 #if DEBUG
