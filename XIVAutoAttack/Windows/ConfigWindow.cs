@@ -332,9 +332,16 @@ internal class ConfigWindow : Window
                         }
 
                         bool teachingMode = Service.Configuration.TeachingMode;
-                        if (useOverlayWindow && ImGui.Checkbox("循环教育模式", ref teachingMode))
+                        if (ImGui.Checkbox("循环教育模式", ref teachingMode))
                         {
                             Service.Configuration.TeachingMode = teachingMode;
+                            Service.Configuration.Save();
+                        }
+
+                        bool keyBoardNoise = Service.Configuration.KeyBoardNoise;
+                        if (ImGui.Checkbox("模拟按下键盘效果", ref keyBoardNoise))
+                        {
+                            Service.Configuration.KeyBoardNoise = keyBoardNoise;
                             Service.Configuration.Save();
                         }
 

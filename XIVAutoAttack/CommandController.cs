@@ -301,7 +301,7 @@ namespace XIVAutoAttack
 
             if (nextAction.Use())
             {
-                PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);
+                if(Service.Configuration.KeyBoardNoise) PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);
                 if (nextAction is BaseAction act)
                 {
 #if DEBUG

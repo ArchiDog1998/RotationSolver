@@ -26,9 +26,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
             UpdateInfo();
 
-            //更新起手状态
-            UpdateStartState();
-
             newAction = Invoke(lastComboActionID, comboTime);
             //没获得对象
             if (newAction == null) return false;

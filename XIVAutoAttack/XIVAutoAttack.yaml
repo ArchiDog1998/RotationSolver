@@ -12,10 +12,10 @@ changelog: |-
   - 调整了UI显示
   - 修复教育模式的窗口乱飞问题
   - 延缓忍者选忍术的时间，尝试解决临时换忍术导致忍术失败的bug
+  - 调整RecastOneCharge的算法。
   ## 功能新增
   - 支持设置中职业Combo的指定Index选择
-  ## API
-  - 添加InStartState属性和ShouldEndStartState方法
+  - 可选择是否开启模拟键盘按下的效果
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
