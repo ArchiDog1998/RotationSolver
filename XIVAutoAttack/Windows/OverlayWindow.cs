@@ -112,9 +112,6 @@ namespace XIVAutoAttack.Windows
 
         static readonly string[] _barsName = new string[]
         {
-            "_ActionCross",
-            "_ActionDoubleCrossL",
-            "_ActionDoubleCrossR",
             "_ActionBar",
             "_ActionBar01",
             "_ActionBar02",
