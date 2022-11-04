@@ -153,7 +153,8 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
         else
         {
             if (Actions.MidareSetsugekka.ShouldUse(out act)) return true;
-            if (Actions.Higanbana.ShouldUse(out act)) return true;
+            //更改了彼岸花逻辑，应当在拥有雪闪的时候打出
+            if (Actions.Higanbana.ShouldUse(out act) && JobGauge.HasSetsu) return true;
         }
 
         //123
@@ -162,28 +163,26 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
         {
             if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID)) return true;
         }
-        if (!HaveMoon)//月
+        if (!HaveMoon)//判断风月buff，该buff提供10%伤害加成
         {
             if (GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }
-        if (!HaveFlower)//花
+        if (!HaveFlower)//判断风花buff，该buff提供10%技速加成
         {
             if (KaGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }
-        if (!JobGauge.HasGetsu) //月
+        if (!JobGauge.HasGetsu) //月闪
         {
             if (GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }
-        if (!JobGauge.HasKa) //花
+        if (!JobGauge.HasKa) //花闪
         {
             if (KaGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
         }
-        if (!JobGauge.HasSetsu) //雪
-        {
-            if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-        }
+
         //来个月？
         if (GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
+        if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
 
         if (Actions.Fuga.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.Hakaze.ShouldUse(out act, lastComboActionID)) return true;
@@ -196,6 +195,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
         return false;
     }
 
+    //处理樱花连击
     private bool KaGCD(out IAction act, uint lastComboActionID, bool haveMeikyoShisui)
     {
         if (Actions.Oka.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
@@ -206,6 +206,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
         return false;
     }
 
+    //处理月光连击
     private bool GetsuGCD(out IAction act, uint lastComboActionID, bool haveMeikyoShisui)
     {
         if (Actions.Mangetsu.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
