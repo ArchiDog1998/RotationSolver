@@ -252,7 +252,6 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
 
         act = null;
         return false;
-
     }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)

@@ -24,7 +24,7 @@ namespace XIVAutoAttack.Windows
 
         public static void Draw()
         {
-            if (Service.GameGui == null || !Service.Configuration.UseOverlayWindow) return;
+            if (Service.GameGui == null || Service.ClientState.LocalPlayer == null || !Service.Configuration.UseOverlayWindow) return;
 
             ImGui.PushID("AutoAttackOverlay");
 

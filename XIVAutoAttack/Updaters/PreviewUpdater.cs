@@ -123,6 +123,8 @@ namespace XIVAutoAttack.Updaters
                     if (!iconAddon->AtkResNode.IsVisible) continue;
 
                     AtkImageNode* highLightPtr = null;
+                    AtkResNode* lastHightLigth = null;
+                    AtkResNode* nextNode = null;
 
                     for (int nodeIndex = 8; nodeIndex < iconAddon->Component->UldManager.NodeListCount; nodeIndex++)
                     {
@@ -130,11 +132,22 @@ namespace XIVAutoAttack.Updaters
                         if(node->NodeID == highLightId)
                         {
                             highLightPtr = (AtkImageNode*)node;
+                        }
+                        else if(node ->Type == NodeType.Image)
+                        {
+                            var mayLastNode = (AtkImageNode*)node;
+                            if(mayLastNode->PartId == 16)
+                            {
+                                lastHightLigth = node;
+                                continue;
+                            }
+                        }
+                        if(lastHightLigth != null && highLightPtr == null)
+                        {
+                            nextNode = node;
                             break;
                         }
                     }
-
-                    var lastHightLigth = iconAddon->Component->UldManager.NodeList[10];
 
                     if (highLightPtr == null)
                     {
@@ -143,12 +156,10 @@ namespace XIVAutoAttack.Updaters
                         highLightPtr->AtkResNode.NodeID = highLightId;
 
                         //Change LinkList
-                        var nextAddom = iconAddon->Component->UldManager.NodeList[11];
-
                         lastHightLigth->PrevSiblingNode = (AtkResNode*)highLightPtr;
-                        highLightPtr->AtkResNode.PrevSiblingNode = nextAddom;
+                        highLightPtr->AtkResNode.PrevSiblingNode = nextNode;
 
-                        nextAddom->NextSiblingNode = (AtkResNode*)highLightPtr;
+                        nextNode->NextSiblingNode = (AtkResNode*)highLightPtr;
                         highLightPtr->AtkResNode.NextSiblingNode = lastHightLigth;
 
                         iconAddon->Component->UldManager.UpdateDrawNodeList();
