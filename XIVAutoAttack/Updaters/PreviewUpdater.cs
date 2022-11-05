@@ -24,7 +24,6 @@ namespace XIVAutoAttack.Updaters
             UpdateEntry();
             UpdateCastBar();
             UpdateHightLight();
-
         }
 
         static DtrBarEntry dtrEntry;
@@ -70,8 +69,12 @@ namespace XIVAutoAttack.Updaters
 
         private static void UpdateHightLight()
         {
-            if (ActionUpdater.NextAction == null || !Service.Configuration.TeachingMode) return;
-            HigglightAtionBar(ActionUpdater.NextAction.AdjustedID);
+            var actId = ActionUpdater.NextAction?.AdjustedID ?? 0;
+
+            HigglightAtionBar((slot) =>
+            {
+                return Service.Configuration.TeachingMode && IsActionSlotRight(slot, actId);
+            });
         }
 
         static readonly string[] _barsName = new string[]
@@ -107,7 +110,7 @@ namespace XIVAutoAttack.Updaters
             });
         }
 
-        private static unsafe void HigglightAtionBar(uint actionID)
+        private static unsafe void HigglightAtionBar(Func<ActionBarSlot, bool> shouldShow = null)
         {
             LoopAllSlotBar((bar, index) =>
             {
@@ -121,7 +124,7 @@ namespace XIVAutoAttack.Updaters
 
                     AtkImageNode* highLightPtr = null;
 
-                    for (int nodeIndex = 0; nodeIndex < iconAddon->Component->UldManager.NodeListCount; nodeIndex++)
+                    for (int nodeIndex = 8; nodeIndex < iconAddon->Component->UldManager.NodeListCount; nodeIndex++)
                     {
                         var node = iconAddon->Component->UldManager.NodeList[nodeIndex];
                         if(node->NodeID == highLightId)
@@ -135,28 +138,32 @@ namespace XIVAutoAttack.Updaters
 
                     if (highLightPtr == null)
                     {
-
                         //Create new Addon
-                        var newHighLight = CloneNode((AtkImageNode*)lastHightLigth);
-                        newHighLight->AtkResNode.NodeID = highLightId;
+                        highLightPtr = CloneNode((AtkImageNode*)lastHightLigth);
+                        highLightPtr->AtkResNode.NodeID = highLightId;
 
                         //Change LinkList
                         var nextAddom = iconAddon->Component->UldManager.NodeList[11];
 
-                        lastHightLigth->PrevSiblingNode = (AtkResNode*)newHighLight;
-                        newHighLight->AtkResNode.PrevSiblingNode = nextAddom;
+                        lastHightLigth->PrevSiblingNode = (AtkResNode*)highLightPtr;
+                        highLightPtr->AtkResNode.PrevSiblingNode = nextAddom;
 
-                        nextAddom->NextSiblingNode = (AtkResNode*)newHighLight;
-                        newHighLight->AtkResNode.NextSiblingNode = lastHightLigth;
-
+                        nextAddom->NextSiblingNode = (AtkResNode*)highLightPtr;
+                        highLightPtr->AtkResNode.NextSiblingNode = lastHightLigth;
 
                         iconAddon->Component->UldManager.UpdateDrawNodeList();
-
-                        //Change PartId (not necessary)
-                        newHighLight->PartId = 16;
-
-                        highLightPtr = newHighLight;
                     }
+
+                    //Refine Color
+                    highLightPtr->AtkResNode.AddRed = 0;
+                    highLightPtr->AtkResNode.AddGreen = 10;
+                    highLightPtr->AtkResNode.AddBlue = 40;
+
+                    //Change Color
+                    var color = Service.Configuration.TeachingModeColor;
+                    highLightPtr->AtkResNode.MultiplyRed = (byte)(color.X * 100);
+                    highLightPtr->AtkResNode.MultiplyGreen = (byte)(color.Y * 100);
+                    highLightPtr->AtkResNode.MultiplyBlue = (byte)(color.Z * 100);
 
                     //Update Location
                     highLightPtr->AtkResNode.SetPositionFloat(lastHightLigth->X, lastHightLigth->Y);
@@ -164,7 +171,7 @@ namespace XIVAutoAttack.Updaters
                     highLightPtr->AtkResNode.SetHeight(lastHightLigth->Height);
 
                     //Update Visibility
-                    highLightPtr->AtkResNode.ToggleVisibility(IsActionSlotRight(slot, actionID));
+                    highLightPtr->AtkResNode.ToggleVisibility(shouldShow?.Invoke(slot) ?? false);
                 }
                 return false;
             });
@@ -212,6 +219,8 @@ namespace XIVAutoAttack.Updaters
         }
         public unsafe static void Dispose()
         {
+            //Hide All highLight.
+            HigglightAtionBar();
             dtrEntry?.Dispose();
         }
     }

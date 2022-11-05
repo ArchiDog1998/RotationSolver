@@ -330,9 +330,6 @@
             EukrasianDiagnosis = 2607,
             EukrasianPrognosis = 2609,
 
-            //鼓舞
-            Galvanize = 297,
-
             //钢铁信念 盾姿
             IronWill = 79,
 
@@ -371,11 +368,25 @@
 
             //山崩预备
             TitansFavor = 2853,
+        #region SCH
+            //鼓舞
+            Galvanize = 297,
+
+            //转化
+            Dissipation = 791,
+
+            //秘策
+            Recitation = 1896,
 
             //毒菌
             Bio = 179,
             Bio2 = 189,
             Biolysis = 1895,
+            
+            //连环计
+            ChainStratagem = 1221,
+        #endregion
+
 
             //暗影墙
             ShadowWall = 747,
