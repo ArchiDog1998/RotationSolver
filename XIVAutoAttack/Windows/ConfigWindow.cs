@@ -517,6 +517,14 @@ internal class ConfigWindow : Window
                                 Service.Configuration.RaisePlayerBySwift = raiseSwift;
                                 Service.Configuration.Save();
                             }
+
+                            Spacing();
+                            bool useAreaAbilityFriendly = Service.Configuration.UseAreaAbilityFriendly;
+                            if (ImGui.Checkbox("使用友方地面放置技能", ref useAreaAbilityFriendly))
+                            {
+                                Service.Configuration.UseAreaAbilityFriendly = useAreaAbilityFriendly;
+                                Service.Configuration.Save();
+                            }
                         }
 
                         bool raiseCasting = Service.Configuration.RaisePlayerByCasting;

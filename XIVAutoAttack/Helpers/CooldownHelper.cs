@@ -19,7 +19,7 @@ namespace XIVAutoAttack.Helpers
         /// <param name="abilityCount">再多少个能力技之后</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>还剩几秒</returns>
-        internal static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true)
+        private static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true)
             => addWeaponRemain ? WeaponTime(gcdCount, abilityCount) + ActionUpdater.WeaponRemain : WeaponTime(gcdCount, abilityCount);
 
         /// <summary>
@@ -78,12 +78,6 @@ namespace XIVAutoAttack.Helpers
             return IsLessThan(recast, remain);
         }
 
-        /// <summary>
-        /// 距离下几个GCD转好这个技能能用吗。
-        /// </summary>
-        /// <param name="gcdCount">要隔着多少个完整的GCD</param>
-        /// <param name="abilityCount">再多少个能力技之后</param>
-        /// <returns>这个时间点是否起码有一层可以用</returns>
         internal static bool RecastAfter(float recast, float remain, bool addWeaponRemain = true)
         {
             if (addWeaponRemain) remain += ActionUpdater.WeaponRemain;

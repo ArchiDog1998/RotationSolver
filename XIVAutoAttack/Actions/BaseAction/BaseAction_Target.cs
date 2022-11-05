@@ -108,14 +108,61 @@ namespace XIVAutoAttack.Actions.BaseAction
                         .Select(b => (BattleChara)b).ToArray();
 
                     Target = TargetFilter.FindTargetForMoving(TargetFilter.GetObjectInRadius(availableCharas, 20));
+                    _position = Target.Position;
+
                 }
                 else
                 {
-                    var tars = TargetFilter.GetMostObjectInRadius(_isFriendly ? TargetUpdater.PartyMembers : TargetUpdater.HostileTargets, range, _action.EffectRange, _isFriendly, mustUse, true)
-                        .OrderByDescending(p => (float)p.CurrentHp / p.MaxHp);
-                    Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
+                    if (_isFriendly)
+                    {
+                        //如果用户不想使用自动友方地面放置功能
+                        if (!Service.Configuration.UseAreaAbilityFriendly) return false;
+
+                        //如果当前目标是Boss且有身位，放他身上。
+                        if(Service.TargetManager.Target is BattleChara b && b.IsBoss() && b.HasLocationSide())
+                        {
+                            Target = b;
+                            _position = Target.Position;
+                        }
+                        //计算玩家和被打的Ｔ之间的关系。
+                        else
+                        {
+                            var attackT = TargetFilter.FindAttackedTarget(TargetFilter.GetObjectInRadius(TargetUpdater.PartyTanks,
+                                range + _action.EffectRange));
+
+                            Target = Service.ClientState.LocalPlayer;
+
+                            if (attackT == null)
+                            {
+                                _position = Target.Position;
+                            }
+                            else
+                            {
+                                var disToTankRound = Vector3.Distance(Target.Position, attackT.Position) + attackT.HitboxRadius;
+
+                                if(disToTankRound  < _action.EffectRange 
+                                    || disToTankRound > 2 * _action.EffectRange - Target.HitboxRadius 
+                                    || disToTankRound > range)
+                                {
+                                    _position = Target.Position;
+                                }
+                                else
+                                {
+                                    Vector3 directionToTank = attackT.Position - Target.Position;
+                                    var MoveDirection = directionToTank / directionToTank.Length() * (disToTankRound - _action.EffectRange);
+                                    _position = Target.Position + MoveDirection;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var tars = TargetFilter.GetMostObjectInRadius(TargetUpdater.HostileTargets, range, _action.EffectRange, false, mustUse, true)
+                            .OrderByDescending(p => p.GetHealthRatio());
+                        Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
+                        _position = Target.Position;
+                    }
                 }
-                _position = Target.Position;
                 return true;
             }
             //如果能对友方和敌方都能选中

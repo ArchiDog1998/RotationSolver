@@ -46,7 +46,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static bool InCombat => ActionUpdater.InCombat;
 
         /// <summary>
-        /// 成功释放的技能，其中第0个为最近成功释放的技能，也就是上一个技能。该列表最大记录40个
+        /// 成功释放的技能，其中第0个为最近成功释放的技能，也就是上一个技能。该列表最大记录64个
         /// </summary>
         protected static ActionRec[] RecordActions => Watcher.RecordActions;
 
@@ -63,7 +63,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static bool IsLastAbility(params uint[] ids)
             => IActionHelper.IsLastAbility(ids);
 
-
         protected static bool IsLastWeaponSkill(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastWeaponSkill(isAdjust, actions);
 
@@ -76,5 +75,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool IsLastAction(params uint[] ids)
             => IActionHelper.IsLastAction(ids);
+
+        protected static bool RecastAfterGCD(float recast, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true)
+            => CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount, addWeaponRemain);
+
+        protected static bool RecastAfter(float recast, float remain, bool addWeaponRemain = true)
+            => CooldownHelper.RecastAfter(recast, remain, addWeaponRemain);
     }
 }

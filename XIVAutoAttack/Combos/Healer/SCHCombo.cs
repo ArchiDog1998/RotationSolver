@@ -17,10 +17,8 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
     internal override uint JobID => 28;
 
     private protected override BaseAction Raise => SMNCombo.Actions.Resurrection;
-    protected override bool CanHealSingleSpell => base.CanHealSingleAbility && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
-    protected override bool CanHealAreaSpell => base.CanHealAreaAbility  && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
-    protected override bool CanHealSingleAbility => base.CanHealSingleSpell;
-    protected override bool CanHealAreaAbility => base.CanHealAreaSpell;
+    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
+    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
     private static bool HasAetherflow => JobGauge.Aetherflow > 0;
     private static bool HasSeraph => JobGauge.SeraphTimer > 0;
     internal struct Actions
@@ -296,24 +294,20 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (HasSeraph)
-        {
-            //慰藉
-            if (Actions.Consolation.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-        }
+        //慰藉
+        if (Actions.Consolation.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-            //异想的祥光
-            if (Actions.FeyBlessing.ShouldUse(out act)) return true;
+        //异想的祥光
+        if (Actions.FeyBlessing.ShouldUse(out act)) return true;
 
-            //仙光的低语
-            if (Actions.WhisperingDawn.ShouldUse(out act)) return true;
+        //仙光的低语
+        if (Actions.WhisperingDawn.ShouldUse(out act)) return true;
 
-            //野战治疗阵
-            if (Actions.SacredSoil.ShouldUse(out act)) return true;
+        //野战治疗阵
+        if (Actions.SacredSoil.ShouldUse(out act)) return true;
 
-            //不屈不挠之策
-            if (Actions.Indomitability.ShouldUse(out act)) return true;
-
+        //不屈不挠之策
+        if (Actions.Indomitability.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -333,11 +327,8 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
         //野战治疗阵
         if (Actions.SacredSoil.ShouldUse(out act)) return true;
 
-        if (HasSeraph)
-        {
-            //慰藉
-            if (Actions.Consolation.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-        }
+        //慰藉
+        if (Actions.Consolation.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //疾风怒涛之计
         if (Actions.Expedient.ShouldUse(out act)) return true;
