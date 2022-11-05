@@ -18,7 +18,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     private protected override BaseAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
 
-    private static bool openerFinished = false;
+    //private static bool openerFinished = false;
 
     /// <summary>
     /// 在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
@@ -186,9 +186,9 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        //起手判断
-        if (!InCombat) openerFinished = false;
-        if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _) || !Actions.Shadowbringer.EnoughLevel) openerFinished = true;
+        ///起手判断
+        //if (!InCombat) openerFinished = false;
+        //if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _) || !Actions.Shadowbringer.EnoughLevel) openerFinished = true;
 
         //寂灭
         if (JobGauge.Blood >= 80 || Player.HaveStatus(ObjectStatus.Delirium))
@@ -254,7 +254,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             if (Config.GetBoolByName("TheBlackestNight") && Player.CurrentMp < 6000) break;
             
             //爆发期打完
-            if (openerFinished && Actions.Delirium.ElapsedAfterGCD(1) && !Actions.Delirium.ElapsedAfterGCD(7)) return true;
+            if (Actions.Delirium.IsCoolDown && Actions.Delirium.ElapsedAfterGCD(1) && !Actions.Delirium.ElapsedAfterGCD(7)) return true;
 
             //非爆发期防止溢出+续buff
             if (JobGauge.HasDarkArts || (Player.CurrentMp > 8500 && openerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
@@ -262,7 +262,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
             } while (false);
         }
 
-        if (openerFinished && !IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
+        if (!IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
 
         if (Actions.Delirium.ElapsedAfterGCD(1) && !Actions.Delirium.ElapsedAfterGCD(8))
         {
