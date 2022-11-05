@@ -21,7 +21,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         internal override uint JobID => 25;
         protected override bool CanHealSingleAbility => false;
 
-        private static bool inOpener = false;
+        //private static bool inOpener = false;
         private static bool iceOpener = false;
         private static bool fireOpener = true;
         private static string MyCommand = "";
@@ -138,7 +138,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
         private protected override bool AttackAbility(byte abilityRemain, out IAction act)
         {
-            if (fireOpener && inOpener && Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true) && Actions.Leylines.IsCoolDown) return true;
+            
 
             //三连咏唱
             if (CanUseTriplecast(out act)) return true;
@@ -156,7 +156,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             {
                 //if (Player.HaveStatus(ObjectStatus.Triplecast) && Player.FindStatusStack(ObjectStatus.Triplecast) <= 1) return true;
 
-                if (Actions.Sharpcast.ChargesCount > 0) return true;
+                return true;
                 //if (Player.HaveStatus(ObjectStatus.Sharpcast))return true;
                 //return true;
 
@@ -168,8 +168,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             {
                 if (Player.HaveStatus(ObjectStatus.Triplecast) && Player.FindStatusStack(ObjectStatus.Triplecast) <= 1) return true;
 
-                if (!inOpener && JobGauge.InAstralFire) return true;
-                //return true;
+                if (!Player.HaveStatus(ObjectStatus.Triplecast)) return true;
             }
             //详述
             if (Actions.Amplifier.ShouldUse(out act)) return true;
@@ -188,34 +187,22 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         {
             if (!InCombat)
             {
-                inOpener = true;
                 //激情咏唱
                 if (Actions.Sharpcast.ShouldUse(out act) && HaveHostileInRange) return true;
             }
-            if (InCombat && inOpener)
-            {
-                if (!JobGauge.IsEnochianActive)
-                {
-                    inOpener = false;
-                }
-                if (IsLastAction(true, Actions.Despair))
-                {
-                    inOpener = false;
-                }
-            }
-            if (iceOpener && inOpener)
+            if (iceOpener)
             {
                 //三连
-                if (Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true))
+                if (Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true) && Actions.Triplecast.ChargesCount == 2)
                 {
                     if (IsLastAction(true, Actions.Fire3) || IsLastSpell(true, Actions.Xenoglossy)) return true;
                 }
             }
 
-            if (fireOpener && inOpener)
+            if (fireOpener)
             {
                 //三连
-                if (IsLastAction(true, Actions.Fire4) && Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+                if (IsLastAction(true, Actions.Fire4) && Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true) && Actions.Triplecast.ChargesCount == 2) return true;
             }
 
             act = null;

@@ -236,7 +236,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 //if (IsLastAbility(true, Actions.Transpose) && HasFire && TargetHasThunder && !TargetThunderWillEnd(7)) return true;
             }
 
-            if (fireOpener && inOpener && Actions.Leylines.IsCoolDown) return true;
+            if (fireOpener && Actions.Leylines.IsCoolDown) return true;
             act = null;
             return false;
         }
@@ -267,6 +267,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         private bool CanUseTriplecast(out IAction act)
         {
             if (!Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return false;
+
+            if (fireOpener && Actions.Leylines.IsCoolDown) return true;
 
             if (!JobGauge.InAstralFire) return false;
 
@@ -527,7 +529,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
                 if (IsLastSpell(true, Actions.Xenoglossy) || HaveSwift) return false;
                 //起手
-                if (iceOpener && inOpener && !JobGauge.IsParadoxActive && Player.CurrentMp <= 1200) return true;
+                if (iceOpener && !JobGauge.IsParadoxActive && Player.CurrentMp <= 1200) return true;
                 //魔泉时
                 if (!Actions.Manafont.ElapsedAfter(3, false) && Actions.Manafont.IsCoolDown) return false;
 

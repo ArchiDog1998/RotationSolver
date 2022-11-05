@@ -18,8 +18,6 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     private protected override BaseAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
 
-    //private static bool openerFinished = false;
-
     /// <summary>
     /// 在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
     /// </summary>
@@ -185,11 +183,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     }
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
-    {
-        ///起手判断
-        //if (!InCombat) openerFinished = false;
-        //if (IsLastWeaponSkill(true, Actions.Souleater) || Actions.Unleash.ShouldUse(out _) || !Actions.Shadowbringer.EnoughLevel) openerFinished = true;
-
+    {       
         //寂灭
         if (JobGauge.Blood >= 80 || Player.HaveStatus(ObjectStatus.Delirium))
         {
@@ -246,22 +240,9 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
         }
 
         //暗黑锋
-        if (Actions.EdgeofDarkness.ShouldUse(out act))
-        {do{
-            if (InDungeonsMiddle && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) break;
+        if (CanUseEdgeofDarkness(out act)) return true;
 
-            //是否留3000蓝开黑盾
-            if (Config.GetBoolByName("TheBlackestNight") && Player.CurrentMp < 6000) break;
-            
-            //爆发期打完
-            if (Actions.Delirium.IsCoolDown && Actions.Delirium.ElapsedAfterGCD(1) && !Actions.Delirium.ElapsedAfterGCD(7)) return true;
-
-            //非爆发期防止溢出+续buff
-            if (JobGauge.HasDarkArts || (Player.CurrentMp > 8500 && openerFinished) || JobGauge.DarksideTimeRemaining < 10) return true;
-
-            } while (false);
-        }
-
+        //腐秽大地
         if (!IsMoving && Actions.SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
 
         if (Actions.Delirium.ElapsedAfterGCD(1) && !Actions.Delirium.ElapsedAfterGCD(8))
@@ -328,6 +309,24 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         if (Actions.Plunge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+
+        return false;
+    }
+
+    private bool CanUseEdgeofDarkness(out IAction act)
+    {
+        if (!Actions.EdgeofDarkness.ShouldUse(out act)) return false;
+
+        if (InDungeonsMiddle && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) return false;
+
+        //是否留3000蓝开黑盾
+        if (Config.GetBoolByName("TheBlackestNight") && Player.CurrentMp < 6000) return false;
+
+        //爆发期打完
+        if (Actions.Delirium.IsCoolDown && Actions.Delirium.ElapsedAfterGCD(1) && !Actions.Delirium.ElapsedAfterGCD(7)) return true;
+
+        //非爆发期防止溢出+续buff
+        if (JobGauge.HasDarkArts || Player.CurrentMp > 8500 || JobGauge.DarksideTimeRemaining < 10) return true;
 
         return false;
     }
