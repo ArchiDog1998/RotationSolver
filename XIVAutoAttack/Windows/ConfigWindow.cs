@@ -337,6 +337,19 @@ internal class ConfigWindow : Window
                             Service.Configuration.TeachingMode = teachingMode;
                             Service.Configuration.Save();
                         }
+                        if (teachingMode)
+                        {
+                            ImGui.SameLine();
+                            Spacing();
+
+                            var teachingColor = Service.Configuration.TeachingModeColor;
+
+                            if(ImGui.ColorEdit3("教育模式颜色", ref teachingColor))
+                            {
+                                Service.Configuration.TeachingModeColor = teachingColor;
+                                Service.Configuration.Save();
+                            }
+                        }
 
                         bool keyBoardNoise = Service.Configuration.KeyBoardNoise;
                         if (ImGui.Checkbox("模拟按下键盘效果", ref keyBoardNoise))
@@ -794,6 +807,12 @@ internal class ConfigWindow : Window
                 if (ImGui.BeginChild("帮助", new Vector2(0f, -1f), true))
                 {
                     ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
+                    CommandHelp("AttackSmart", "如果不在进攻中就开始进攻，如果在进攻就切换选择敌对目标条件。");
+                    ImGui.Separator();
+                    CommandHelp("AttackManual", "开始进攻，进攻对象为手动选择，此时不会释放AOE。");
+                    ImGui.Separator();
+                    CommandHelp("AttackCancel", "停止进攻，记得一定要经常关掉！");
+                    ImGui.Separator();
                     CommandHelp("HealArea", "开启一段范围治疗的窗口期。");
                     ImGui.Separator();
                     CommandHelp("HealSingle", "开启一段单体治疗的窗口期。");
@@ -811,12 +830,6 @@ internal class ConfigWindow : Window
                     CommandHelp("BreakProvoke", "开启一段爆发或挑衅的窗口期。");
                     ImGui.Separator();
                     CommandHelp("Move", "开启一段位移的窗口期。");
-                    ImGui.Separator();
-                    CommandHelp("AttackSmart", "如果不在进攻中就开始进攻，如果在进攻就切换选择敌对目标条件。");
-                    ImGui.Separator();
-                    CommandHelp("AttackManual", "开始进攻，进攻对象为手动选择，此时不会释放AOE。");
-                    ImGui.Separator();
-                    CommandHelp("AttackCancel", "停止进攻，记得一定要经常关掉！");
                     ImGui.Separator();
                 }
                 ImGui.PopStyleVar();
@@ -898,8 +911,8 @@ internal class ConfigWindow : Window
                     DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
                     DrawAction(Watcher.LastSpell, nameof(Watcher.LastSpell));
                     DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
+                    DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
                 }
-
             }
 #endif
 
@@ -912,10 +925,7 @@ internal class ConfigWindow : Window
     private static void DrawAction(uint id, string type)
     {
         var action = new BaseAction(id);
-        //int size = Math.Max(action.Icon.Width, 45);
-        //ImGui.Image(action.Icon.ImGuiHandle, new Vector2(size, size));
 
-        //ImGui.SameLine();
         ImGui.Text($"{type}: {action}");
 
         action.Dispose();

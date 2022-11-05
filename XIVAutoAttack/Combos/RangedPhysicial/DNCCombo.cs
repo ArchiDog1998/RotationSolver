@@ -289,12 +289,13 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
         if (!InCombat && !Player.HaveStatus(ObjectStatus.ClosedPosition1) 
             && Actions.ClosedPosition.ShouldUse(out act)) return true;
 
+        if (StepGCD(out act)) return true;
+
         if (SettingBreak)
         {
-            if (Actions.TechnicalStep.ShouldUse(out act, mustUse:true)) return true;
+            if (Actions.TechnicalStep.ShouldUse(out act, mustUse: true)) return true;
         }
 
-        if (StepGCD(out act)) return true;
         if (AttackGCD(out act, Player.HaveStatus(ObjectStatus.Devilment), lastComboActionID)) return true;
 
         return false;

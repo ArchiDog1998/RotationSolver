@@ -9,14 +9,11 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 调整了UI显示
-  - 修复教育模式的窗口乱飞问题
-  - 延缓忍者选忍术的时间，尝试解决临时换忍术导致忍术失败的bug
-  - 调整RecastOneCharge的算法。
-  - 修改武士循环
+  - 修复舞者小舞跳了一半跳大舞的bug
+  - 修改了教育模式无法关闭，和之前的提示不会消失的问题。
+  - 咏唱未结束时，不跳能力技。
   ## 功能新增
-  - 支持设置中职业Combo的指定Index选择
-  - 可选择是否开启模拟键盘按下的效果
+  - 添加教育模式颜色自定义
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
@@ -25,6 +22,8 @@ tags:
   - Attack
 category_tags: 
   - jobs
+image_urls:
+  - https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/gifs/Example_DNC.gif
 download_count: 1024
 download_link_install: https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest.zip
 download_link_update: https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest.zip

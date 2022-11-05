@@ -142,7 +142,7 @@ namespace XIVAutoAttack.Updaters
         }
 
         static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
-        internal static long _weaponRandomDelay = 0;
+        static long _weaponRandomDelay = 0;
         internal static float _lastCastingTotal = 0;
         internal static void DoAction()
         {
