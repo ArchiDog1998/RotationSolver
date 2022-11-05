@@ -11,11 +11,7 @@ changelog: |-
   ## 错误修复
   - 修改了判定Boss的方法
   - 修改了插入高亮边框的办法
-  ## 功能新增
-  - 添加教育模式颜色自定义
-  - 可选择是否自动友方地面放置类技能
-  ## API
-  - 添加仅用于数据的RecastAfterGCD和RecastAfter解决职业量谱问题
+  - 修改了图片GIF的名称
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
