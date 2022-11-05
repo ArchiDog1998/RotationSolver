@@ -87,10 +87,10 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         /// <returns></returns>
         internal static bool BenignMp()
         {
-            if (inOpener || HaveSwift || HasFire || JobGauge.IsParadoxActive || Actions.Triplecast.ChargesCount == 0) return false;
+            if (HaveSwift || HasFire || JobGauge.IsParadoxActive || Actions.Triplecast.ChargesCount == 0) return false;
 
             //双星灵时悖论后到星灵前时间
-            var tatolTime = (float)(GCDTime * 2 - 0.8) / 1000;
+            var tatolTime = (float)(GCDTime * 2 - 0.7) / 1000;
 
             if (tatolTime > (6 - (ActionUpdater.MPUpdateElapsed + (float)GCDTime / 1000 * 3) % 3) && F4RemainingNumber() == 1)
             {

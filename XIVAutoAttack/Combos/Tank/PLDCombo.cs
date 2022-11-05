@@ -33,12 +33,6 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
     /// </summary>
     private static bool InDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
 
-    private static bool inOpener = false;
-    private static bool openerFinished = false;
-    //private static float RequiescatDelayTime = 0;
-    //private static float FightorFlightDelayTime = 0;
-
-    //private bool SlowLoop => Config.GetBoolByName("SlowLoop");
     private bool SlowLoop = false;
 
     internal struct Actions
@@ -213,27 +207,6 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
 
     private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
     {
-        //起手重置
-        if (!InCombat)
-        {
-            inOpener = false;
-            openerFinished = false;
-        }
-        else if (Actions.Requiescat.EnoughLevel && !openerFinished && !inOpener)
-        {
-            inOpener = true;
-        }
-
-        //起手完成判断
-        if (inOpener || !Actions.TotalEclipse.ShouldUse(out _))
-        {
-            if (IsLastWeaponSkill(true, Actions.Confiteor) || (!Player.HaveStatus(ObjectStatus.Requiescat) && Actions.Requiescat.IsCoolDown && Actions.Requiescat.WillHaveOneCharge(59)))
-            {
-                inOpener = false;
-                openerFinished = true;
-            }
-        }
-
         //三个大招
         if (Actions.BladeofValor.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
         if (Actions.BladeofFaith.ShouldUse(out act, mustUse: true)) return true;
@@ -242,11 +215,9 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         //魔法三种姿势
         if (CanUseConfiteor(out act)) return true;
 
-
         //AOE 二连
         if (Actions.Prominence.ShouldUse(out act, lastComboActionID)) return true;
         if (Actions.TotalEclipse.ShouldUse(out act, lastComboActionID)) return true;
-
 
         //赎罪剑
         if (Actions.Atonement.ShouldUse(out act))
@@ -315,37 +286,36 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             if (abilityRemain == 1 && CanUseRequiescat(out act)) return true;
         }
 
-        var OpenerStatus = Player.HaveStatus(ObjectStatus.FightOrFlight) && Player.WillStatusEnd(19, false,ObjectStatus.FightOrFlight) && !IsLastWeaponSkill(true, Actions.FastBlade) && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade);
 
         //厄运流转
         if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true))
         {
+            if (InDungeonsMiddle) return true;
+
             if (Actions.FightorFlight.ElapsedAfterGCD(2)) return true;
+
             //if (SlowLoop && inOpener && IsLastWeaponSkill(false, Actions.RiotBlade)) return true;
 
             //if (!SlowLoop && inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
 
-            //if (!inOpener) return true;
         }
 
         //深奥之灵
         if (Actions.SpiritsWithin.ShouldUse(out act, mustUse: true))
         {
-            if (SlowLoop && inOpener && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
+            //if (SlowLoop && inOpener && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
 
-            if (!SlowLoop && inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RoyalAuthority)) return true;
+            if (InDungeonsMiddle) return true;
 
-            if (!inOpener) return true;
+            if (Actions.FightorFlight.ElapsedAfterGCD(3)) return true;
         }
 
         //调停
-        if (Actions.Intervene.Target.DistanceToPlayer() < 1 && !IsMoving)
+        if (Actions.Intervene.Target.DistanceToPlayer() < 1 && !IsMoving && Target.HaveStatus(ObjectStatus.GoringBlade))
         {
-            if (inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.RiotBlade) && Actions.Intervene.ShouldUse(out act) && !Actions.Intervene.IsCoolDown) return true;
+            if (Actions.FightorFlight.ElapsedAfterGCD(2) && Actions.Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-            if (inOpener && OpenerStatus && IsLastWeaponSkill(true, Actions.Atonement) && Actions.Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-
-            if (!inOpener && Actions.Intervene.ShouldUse(out act)) return true;
+            if (Actions.Intervene.ShouldUse(out act)) return true;
         }
 
         //Special Defense.
@@ -404,16 +374,14 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
 
             if (SlowLoop)
             {
-                if (openerFinished && Actions.Requiescat.ElapsedAfterGCD(12)) return true;
+                //if (openerFinished && Actions.Requiescat.ElapsedAfterGCD(12)) return true;
 
             }
             else
             {
                 //起手在先锋剑后
-                if (inOpener && IsLastWeaponSkill(true, Actions.FastBlade)) return true;
+                return true;
 
-                //没在起手,冷却好了就用
-                if (!inOpener) return true;
             }
 
 
@@ -444,20 +412,17 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             //长循环
             if (SlowLoop)
             {
-                if (inOpener && IsLastWeaponSkill(true, Actions.FastBlade)) return true;
+                //if (inOpener && IsLastWeaponSkill(true, Actions.FastBlade)) return true;
 
-                if (openerFinished && Actions.FightorFlight.ElapsedAfterGCD(12)) return true;
+                //if (openerFinished && Actions.FightorFlight.ElapsedAfterGCD(12)) return true;
             }
             else
             {
                 //在战逃buff时间剩17秒以下时释放
-                if (Player.HaveStatus(ObjectStatus.FightOrFlight) && Player.WillStatusEnd(17, false, ObjectStatus.FightOrFlight) && StatusHelper.HaveStatus(Target, ObjectStatus.GoringBlade))
+                if (Player.HaveStatus(ObjectStatus.FightOrFlight) && Player.WillStatusEnd(17, false, ObjectStatus.FightOrFlight) && Target.HaveStatus(ObjectStatus.GoringBlade))
                 {
                     //在起手中时,王权剑后释放
-                    if (inOpener && IsLastWeaponSkill(true, Actions.RoyalAuthority)) return true;
-
-                    //没在起手时在
-                    if (!inOpener) return true;
+                    return true;
                 }
             }
            
