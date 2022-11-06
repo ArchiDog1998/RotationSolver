@@ -73,12 +73,13 @@ namespace XIVAutoAttack.SigReplacers
             //获得目标
             var tar = Service.ObjectTable.SearchById((uint)Marshal.ReadInt32(effectHeader)) ?? Service.ClientState.LocalPlayer;
 
-
-            RecordAction(tar, action);
+            //获得身为技能是否正确flag
+            var flag = Marshal.ReadByte(effectArray+3);
+            RecordAction(tar, action,flag);
         }
 
         private static DateTime _timeLastSpeak = DateTime.Now;
-        private static unsafe void RecordAction(GameObject tar, Action action)
+        private static unsafe void RecordAction(GameObject tar, Action action,byte flag)
         {
             var id = action.RowId;
 
