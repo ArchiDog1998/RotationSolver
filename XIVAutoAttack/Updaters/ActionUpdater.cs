@@ -49,7 +49,7 @@ namespace XIVAutoAttack.Updaters
                 {
                     if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
 
-                    if (customCombo.TryInvoke(Service.Address.LastComboAction, Service.Address.ComboTime, out var newAction))
+                    if (customCombo.TryInvoke(Service.Address.LastComboAction, out var newAction))
                     {
                         NextAction = newAction;
                         return;

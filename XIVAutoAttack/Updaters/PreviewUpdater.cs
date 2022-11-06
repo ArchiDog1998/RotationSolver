@@ -7,14 +7,8 @@ using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
 using System;
-using System.Collections.Generic;
-using System.Numerics;
 using System.Runtime.InteropServices;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Updaters
@@ -78,6 +72,25 @@ namespace XIVAutoAttack.Updaters
                 return Service.Configuration.TeachingMode && IsActionSlotRight(slot, hot, actId);
             });
         }
+
+
+        internal static unsafe void PulseAtionBar(uint actionID)
+        {
+            LoopAllSlotBar((bar, hotbar, index) =>
+            {
+                return IsActionSlotRight(bar, hotbar, actionID);
+            });
+        }
+
+        private unsafe static bool IsActionSlotRight(ActionBarSlot* slot, HotBarSlot* hot, uint actionID)
+        {
+            if (hot->IconTypeA != HotbarSlotType.Action) return false;
+            if (hot->IconTypeB != HotbarSlotType.Action) return false;
+            if (slot->ActionId == IconReplacer.KeyActionID.ID) return false;
+
+            return Service.IconReplacer.OriginalHook((uint)slot->ActionId) == actionID;
+        }
+
         const int ActionBarSlotsCount = 12;
         static readonly string[] _barsName = new string[]
         {
@@ -92,14 +105,34 @@ namespace XIVAutoAttack.Updaters
             "_ActionBar08",
             "_ActionBar09",
         };
-
-        internal static unsafe void PulseAtionBar(uint actionID)
+        unsafe delegate bool ActionBarAction(ActionBarSlot* bar, HotBarSlot* hot, uint highLightID);
+        unsafe delegate bool ActionBarPredicate(ActionBarSlot* bar, HotBarSlot* hot);
+        private static unsafe void LoopAllSlotBar(ActionBarAction doingSomething)
         {
-            LoopAllSlotBar((bar, hotbar, index) =>
+            for (int i = 0; i < _barsName.Length; i++)
             {
-                return IsActionSlotRight(bar, hotbar, actionID);
-            });
+                var name = _barsName[i];
+                var actBarPtr = Service.GameGui.GetAddonByName(name, 1);
+                if (actBarPtr == IntPtr.Zero) continue;
+                var actBar = (AddonActionBarBase*)actBarPtr;
+                var hotbar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[i];
+
+                for (int slotIndex = 0; slotIndex < ActionBarSlotsCount; slotIndex++)
+                {
+                    var hotBarSlot = hotbar->Slot[slotIndex];
+                    var actionBarSlot = &actBar->ActionBarSlots[slotIndex];
+                    var highLightId = 0x53550000 + (uint)i * ActionBarSlotsCount + (uint)slotIndex;
+                    if (doingSomething(actionBarSlot, hotBarSlot, highLightId))
+                    {
+                        actBar->PulseActionBarSlot(slotIndex);
+                        //键盘按下效果音效
+                        UIModule.PlaySound(12, 0, 0, 0);
+                        return;
+                    }
+                }
+            }
         }
+
 
         private static unsafe void HigglightAtionBar(ActionBarPredicate shouldShow = null)
         {
@@ -190,49 +223,6 @@ namespace XIVAutoAttack.Updaters
             newNode->NextSiblingNode = null;
             return (AtkImageNode*)newNode;
         }
-
-        private unsafe static bool IsActionSlotRight(ActionBarSlot* slot, HotBarSlot* hot, uint actionID)
-        {
-            if (hot->IconTypeA != HotbarSlotType.Action) return false;
-            if (hot->IconTypeB != HotbarSlotType.Action) return false;
-            if (slot->ActionId == IconReplacer.KeyActionID.ID) return false;
-            return Service.IconReplacer.OriginalHook((uint)slot->ActionId) == actionID;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bar"></param>
-        /// <param name="hot"></param>
-        /// <param name="highLightID"></param>
-        /// <returns>True for pulse and return</returns>
-        unsafe delegate bool ActionBarAction(ActionBarSlot* bar, HotBarSlot* hot, uint highLightID);
-        unsafe delegate bool ActionBarPredicate(ActionBarSlot* bar, HotBarSlot* hot);
-        private static unsafe void LoopAllSlotBar(ActionBarAction doingSomething)
-        {
-            for (int i = 0; i < _barsName.Length; i++)
-            {
-                var name = _barsName[i];
-                var actBarPtr = Service.GameGui.GetAddonByName(name, 1);
-                if (actBarPtr == IntPtr.Zero) continue;
-                var actBar = (AddonActionBarBase*)actBarPtr;
-                var hotbar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[i];
-
-                for (int slotIndex = 0; slotIndex < ActionBarSlotsCount; slotIndex++)
-                {
-                    var hotBarSlot = hotbar->Slot[slotIndex];
-                    var actionBarSlot = &actBar->ActionBarSlots[slotIndex];
-                    var highLightId = 0x53550000 + (uint)i * ActionBarSlotsCount + (uint)slotIndex;
-                    if (doingSomething(actionBarSlot, hotBarSlot, highLightId))
-                    {
-                        actBar->PulseActionBarSlot(slotIndex);
-                        //键盘按下效果音效
-                        UIModule.PlaySound(12, 0, 0, 0);
-                        return;
-                    }
-                }
-            }
-        }
-
         public unsafe static void Dispose()
         {
             //Hide All highLight.
