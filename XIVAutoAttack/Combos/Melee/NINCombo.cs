@@ -231,7 +231,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         if (Service.IconReplacer.OriginalHook(2260) != 2260) return false;
 
         //在GCD快转完的时候再判断是否调整非空忍术
-        if (_ninactionAim != null && ActionUpdater.AbilityRemainCount != 0) return false;
+        if (_ninactionAim != null && ActionUpdater.WeaponRemain < 0.2) return false;
 
         //有生杀予夺
         if (Player.HaveStatus(ObjectStatus.Kassatsu))

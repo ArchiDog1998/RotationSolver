@@ -9,9 +9,8 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 修改了判定Boss的方法
-  - 修改了插入高亮边框的办法
-  - 修改了图片GIF的名称
+  - 再次缩减忍者的判定忍术时间范围
+  - 尝试解决教育模式高亮给错对象的问题
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
