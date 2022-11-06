@@ -26,7 +26,37 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         private static bool fireOpener = true;
         private static string MyCommand = "";
 
-        private bool DoubleTranspose => Config.GetBoolByName("DoubleTranspose");
+        enum LoopName
+        {           
+            Standard,           //标准循环          
+            StandardEx,         //标准循环改
+            NewShortFour,       //新短4
+            NewShortFive,       //新短5
+            LongSingleF3Three,  //长单3
+            LongSingleF3Four,   //长单4
+            LongSingleF3Five,   //长单5
+            LongSingleF2Four,   //长单4(F2)
+            SwiftSingleThree,   //瞬单3
+            SwiftSingleFour,    //瞬单4
+            LongDoubleTwo,      //长双2
+            LongDoubleThree,    //长双3
+            SwiftDoubleTwo,     //瞬双2
+            SwiftDoubleThree,   //瞬双3
+            FireDoubleFour,     //火双4
+        }
+        /// <summary>
+        /// 标准循环
+        /// </summary>
+        private bool StandardLoop => Config.GetComboByName("UseLoopManager") == 0;
+        /// <summary>
+        /// 双星灵循环
+        /// </summary>
+        private bool DoubleTranspose => Config.GetComboByName("UseLoopManager") == 1;
+        /// <summary>
+        /// 进阶压冰循环
+        /// </summary>
+        private bool FewBlizzard => Config.GetComboByName("UseLoopManager") == 2;
+
 
         internal override SortedList<DescType, string> Description => new()
         {
@@ -38,15 +68,20 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         private protected override ActionConfiguration CreateConfiguration()
         {
             return base.CreateConfiguration()
-                .SetBool("DoubleTranspose", true, "双星灵循环")
-                .SetBool("AutoLeylines", true, "自动上黑魔纹");
+                        .SetCombo("UseLoopManager", 0, new string[]
+                        {
+                            "标准循环", "双星灵循环", "进阶压冰循环",
+
+                        }, "循环管理")
+                        //.SetBool("DoubleTranspose", true, "双星灵循环")
+                        .SetBool("AutoLeylines", true, "自动上黑魔纹");
         }
 
         internal override string OnCommand(string args)
         {
             MyCommand = args;
 
-            return Mpyupan + "+" + MPYuPanDouble;
+            return TsPointElapsed + "+" + MPYuPanDouble;
         }
 
         private bool CommandManager(out IAction act)
@@ -58,11 +93,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         private protected override void UpdateInfo()
         {
             //跳蓝判定点计算
-            if (JobGauge.InAstralFire && Actions.Transpose.IsCoolDown && !Actions.Transpose.ElapsedAfter(0.1f, false))
-            {
-                MPNextUpInCurrGCD = (3 - (ActionUpdater.MPUpdateElapsed - ActionUpdater.WeaponElapsed)) % 3 - 0.09;
-                Mpyupan = ActionUpdater.WeaponElapsed;// - (15000 - JobGauge.ElementTimeRemaining);
-            }
+           
             MPYuCe(2);
 
             base.UpdateInfo();
@@ -113,12 +144,14 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
         private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
         {
+            //星灵移位
+            //if (CanUseTranspose(ActionUpdater.AbilityRemainCount, out act)) return true;
             //起手
             if (OpenerManager(out act)) return true;
 
             //循环
             if (LoopManagerArea(out act)) return true;
-            if (LoopManager(out act)) return true;
+            if (UseLoopManager(out act)) return true;
 
             if (IsMoving && InCombat && HaveHostileInRange)
             {
@@ -138,8 +171,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
         private protected override bool AttackAbility(byte abilityRemain, out IAction act)
         {
-            
-
+           
             //三连咏唱
             if (CanUseTriplecast(out act)) return true;
             //魔泉
@@ -152,23 +184,14 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             if (CanUseSwiftcast(out act)) return true;
 
             //激情咏唱
-            if (Actions.Sharpcast.ShouldUse(out act, emptyOrSkipCombo: true))
-            {
-                //if (Player.HaveStatus(ObjectStatus.Triplecast) && Player.FindStatusStack(ObjectStatus.Triplecast) <= 1) return true;
-
-                return true;
-                //if (Player.HaveStatus(ObjectStatus.Sharpcast))return true;
-                //return true;
-
-                //if (!inOpener && JobGauge.InUmbralIce && !JobGauge.IsParadoxActive) return true;
-            }
+            if (CanUseSharpcast(out act)) return true;
 
             //黑魔纹
             if (Config.GetBoolByName("AutoLeylines") && Actions.Leylines.ShouldUse(out act))
             {
                 if (Player.HaveStatus(ObjectStatus.Triplecast) && Player.FindStatusStack(ObjectStatus.Triplecast) <= 1) return true;
 
-                if (!Player.HaveStatus(ObjectStatus.Triplecast)) return true;
+                if (!Player.HaveStatus(ObjectStatus.Triplecast) && JobGauge.InAstralFire) return true;
             }
             //详述
             if (Actions.Amplifier.ShouldUse(out act)) return true;
@@ -214,7 +237,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         /// </summary>
         /// <param name="act"></param>
         /// <returns></returns>
-        private bool LoopManager(out IAction act)
+        private bool UseLoopManager(out IAction act)
         {
             if (JobGauge.InUmbralIce)
             {

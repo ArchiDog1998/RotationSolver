@@ -154,24 +154,34 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         {
             if (!Actions.Transpose.ShouldUse(out act, mustUse: true)) return false;
 
+            if (StandardLoop)
+            {
+
+            }
+
             //星灵转火
             if (JobGauge.InUmbralIce)
             {
+                //标准循环改
+                if (HasFire && Player.CurrentMp >= 9600 && JobGauge.UmbralHearts == 3 && !JobGauge.IsParadoxActive) return true;
+
                 if (!JobGauge.IsParadoxActive && JobGauge.UmbralHearts != 3)
                 {
+                    var time1 = ActionUpdater.WeaponElapsed + GCDTime / 1000;
+                    var time2 = ActionUpdater.MPUpdateElapsed + 3;
                     //瞬双2,长双2(2-1)
-                    if (Player.CurrentMp >= 8000 && MPYuPanDouble < 9400 && !HasFire && IsLastSpell(true, Actions.Xenoglossy, Actions.Thunder) && IsOldSpell(1, Actions.Paradox))
+                    if (IsOldSpell(1, Actions.Paradox) && abilityRemain == 1 && !HasFire)
                     {
                         // && (!GeneralActions.Swiftcast.IsCoolDown || HaveSwift)
                         return true;
                     }
                     //瞬双3,长双3(2/3-1)
-                    if (Player.CurrentMp >= 9600 && !HasFire && IsLastSpell(true, Actions.Xenoglossy, Actions.Thunder))
+                    if (IsOldSpell(1, Actions.Paradox) && abilityRemain == 1 && !HasFire && time1 > time2)
                     {
                         return true;
                     }
 
-                    //if (IsLastSpell(true, Actions.Paradox)) return false;
+                    if (IsLastSpell(true, Actions.Paradox)) return false;
 
                     //火双3
                     if (Player.CurrentMp >= 5600 && HasFire && CanF4Number(3) && !CanF4Number(4) && !CanF4Number(5))
@@ -188,21 +198,11 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                     {
                         return true;
                     }
-
-                }
-
-                //标准循环改
-                if (Player.CurrentMp >= 9600 && JobGauge.UmbralHearts == 3 && !JobGauge.IsParadoxActive)
-                {
-                    if (HasFire && IsLastSpell(true, Actions.Paradox))
-                    {
-                        return true;
-                    }
                 }
             }
 
             //星灵转冰
-            if (DoubleTranspose && JobGauge.InAstralFire)
+            if (DoubleTranspose && JobGauge.InAstralFire && abilityRemain == 2)
             {
                 if (Actions.Manafont.ElapsedAfter(3, false) || !Actions.Manafont.IsCoolDown)
                 {
@@ -210,7 +210,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                     {
                         return true;
                     }
-                    if (Player.CurrentMp < 1200 && IsLastSpell(true, Actions.Xenoglossy, Actions.Thunder) && !CanUseDespair(out _))
+                    if (IsOldSpell(1, Actions.Despair) && IsLastSpell(true, Actions.Xenoglossy, Actions.Thunder))
                     {
                         return true;
                     }
@@ -232,11 +232,13 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
             if (JobGauge.InUmbralIce && JobGauge.UmbralIceStacks < 3)
             {
-                if (!HasFire && MPYuPanDouble >= 7900) return true;
-                //if (IsLastAbility(true, Actions.Transpose) && HasFire && TargetHasThunder && !TargetThunderWillEnd(7)) return true;
+                //if (IsLastSpell(true, Actions.Thunder) || IsOldSpell(1, Actions.Thunder3)) return false;
+
+                if (!HasFire && !Player.HaveStatus(ObjectStatus.LeyLines)) return true;
+                //if (!HasFire && MpBackGCDRCanDouble(0)) return true;
             }
 
-            if (fireOpener && Actions.Leylines.IsCoolDown) return true;
+            //if (fireOpener && Actions.Leylines.IsCoolDown) return true;
             act = null;
             return false;
         }
@@ -250,9 +252,11 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         {
             if (!GeneralActions.Swiftcast.ShouldUse(out act)) return false;
 
-            if (DoubleTranspose && JobGauge.InUmbralIce)
+            if (DoubleTranspose && JobGauge.InUmbralIce && JobGauge.UmbralIceStacks < 3 && !JobGauge.IsParadoxActive)
             {
-                if (!JobGauge.IsParadoxActive && JobGauge.UmbralIceStacks < 3 && MPYuPanDouble >= 7900) return true;
+                //if (IsOldSpell(1, Actions.Thunder3)) return false;
+                if (!HasFire && Player.HaveStatus(ObjectStatus.LucidDreaming)) return true;
+                if (!HasFire && MPYuPanDouble > 7900) return true;
             }
 
             act = null;
@@ -268,12 +272,18 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         {
             if (!Actions.Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return false;
 
-            if (fireOpener && Actions.Leylines.IsCoolDown) return true;
+            if (DoubleTranspose && JobGauge.InUmbralIce && JobGauge.UmbralIceStacks < 3 && !JobGauge.IsParadoxActive)
+            {
+                //if (IsOldSpell(1, Actions.Thunder3)) return false;
+                if (Player.HaveStatus(ObjectStatus.LucidDreaming) && !HasFire && MpBackGCDRCanDouble(0)) return true;
+            }
 
             if (!JobGauge.InAstralFire) return false;
 
             if (!JobGauge.IsParadoxActive)
             {
+                if (fireOpener && Actions.Leylines.IsCoolDown && !Actions.Leylines.ElapsedAfterGCD(1) && !Actions.Manafont.IsCoolDown) return true;
+
                 if (Player.CurrentMp == 0) return false;
 
                 if (IsLastSpell(true, Actions.Xenoglossy, Actions.Thunder) && F4RemainingNumber() <= 2) return true;
@@ -284,6 +294,17 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (IsLastSpell(true, Actions.Xenoglossy, Actions.Thunder) && Actions.Triplecast.ShouldUse(out act)) return true;
             }
 
+            act = null;
+            return false;
+        }
+
+        private bool CanUseSharpcast(out IAction act)
+        {
+            if (Actions.Sharpcast.ShouldUse(out act, emptyOrSkipCombo: true))
+            {
+                if (Actions.Triplecast.IsCoolDown && Actions.Triplecast.ChargesCount == 1 && Player.HaveStatus(ObjectStatus.Triplecast)) return false;
+                if (!IsLastSpell(true, Actions.Thunder)) return true;
+            }
             act = null;
             return false;
         }
@@ -331,13 +352,15 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             //冰阶段进火
             if (JobGauge.InUmbralIce)
             {
-                //标准循环
-                if (!HasFire && !HaveSwift && JobGauge.UmbralHearts == 3 && !JobGauge.IsParadoxActive) return true;
+                if (JobGauge.IsParadoxActive) return false;
 
-                if (JobGauge.UmbralHearts == 3 || HasFire || JobGauge.IsParadoxActive) return false;
+                //标准循环
+                if (JobGauge.UmbralHearts == 3) return true;
+                //没有火苗
+                if (HasFire) return false;
 
                 //瞬单条件
-                if (HaveSwift && !Player.HaveStatus(ObjectStatus.LucidDreaming))
+                if (HaveSwift)
                 {
                     //瞬单3
                     if (Player.CurrentMp >= 5600 && CanF4Number(3) && !CanF4Number(4)) return true;
@@ -346,7 +369,12 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 }
 
                 //长单3,4,5
-                if (!HaveSwift) return true;
+                if (!HaveSwift)
+                {
+                    if (JobGauge.PolyglotStacks == 0) return true;
+
+                    return true;
+                }
             }
 
             if (JobGauge.InAstralFire)
@@ -438,9 +466,9 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (JobGauge.UmbralIceStacks == 3)
                 {
                     if (!TargetHasThunder || TargetThunderWillEnd(3)) return true;
+                    if (HasThunder && Player.WillStatusEnd(3, false, ObjectStatus.Thundercloud)) return true;
                     return false;
                 }
-
                 if (TargetHasThunder && !TargetThunderWillEnd(10)) return false;
                 //有悖论时不释放
                 if (JobGauge.IsParadoxActive) return false;
@@ -459,28 +487,31 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                     if (!TargetHasThunder || TargetHasThunder && TargetThunderWillEnd(3)) return true;
                     return false;
                 }
-
-                if (TargetHasThunder && !TargetThunderWillEnd(6)) return false;
                 //上个技能是异言pass
                 if (IsLastSpell(true, Actions.Xenoglossy)) return false;
                 //魔泉时
                 if (!Actions.Manafont.ElapsedAfter(3, false) && Actions.Manafont.IsCoolDown) return false;
 
-                //if (BenignMp() && HasThunder) return true;  
+                if (TargetHasThunder && !TargetThunderWillEnd(8)) return false;
 
-                if (HasThunder && JobGauge.IsParadoxActive) return true;
+                if (HasThunder && JobGauge.IsParadoxActive && TargetThunderWillEnd(5)) return true;
 
                 //未来观测卡跳蓝(三连咏唱)
                 if (BenignMp()) return true;
 
-                if (IsLastSpell(true, Actions.Despair) && Player.HaveStatus(ObjectStatus.Sharpcast) && HasThunder)
+                //if (IsLastSpell(true, Actions.Despair) && Player.HaveStatus(ObjectStatus.Sharpcast) && HasThunder)
+                //{
+                //    return true;
+                //}
+
+                if (IsLastSpell(true, Actions.Despair) && Player.HaveStatus(ObjectStatus.Sharpcast) && HasThunder && !MpBackGCDCanDouble(1) && HaveXeCounts(2) <= 1)
                 {
                     return true;
                 }
-                if (IsLastSpell(true, Actions.Despair) && HasThunder && JobGauge.PolyglotStacks <= 1)
-                {
-                    return true;
-                }
+                //if (IsLastSpell(true, Actions.Despair) && HasThunder && GeneralActions.Swiftcast.IsCoolDown && !GeneralActions.Swiftcast.WillHaveOneChargeGCD(1))
+                //{
+                //    return true;
+                //}
 
                 if (!HasThunder && (!TargetHasThunder || TargetHasThunder && TargetThunderWillEnd(3))) return true;
 
@@ -499,6 +530,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         {
             if (!Actions.Xenoglossy.ShouldUse(out act)) return false;
 
+            //标准循环
             if (!DoubleTranspose)
             {
                 if (JobGauge.UmbralHearts != 3) return false;
@@ -512,20 +544,20 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             //在冰
             if (JobGauge.InUmbralIce)
             {
-
-                if (JobGauge.UmbralHearts == 3) return false;
-                if (JobGauge.IsParadoxActive) return false;
+                if (JobGauge.UmbralHearts == 3 || JobGauge.IsParadoxActive) return false;
                 if (IsLastSpell(true, Actions.Thunder, Actions.Xenoglossy)) return false;
-                if (IsOldSpell(1,Actions.Thunder3)) return false;
 
+                if (MpTwoInIce) return true;
+                if (IsOldSpell(1,Actions.Thunder3)) return false;
+                if (JobGauge.PolyglotStacks == 2) return true;
                 if (HasFire && !IsLastSpell(true, Actions.Thunder, Actions.Xenoglossy)) return true;
-                if (!HasFire && Player.HaveStatus(ObjectStatus.LucidDreaming) && MPYuPanDouble >= 7900) return true;
+                if (!HasFire && (HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) && !Player.HaveStatus(ObjectStatus.LeyLines)) return true;
             }
 
             //在火
             if (JobGauge.InAstralFire)
             {
-                if (JobGauge.EnochianTimer <= 5000 && IsPolyglotStacksMaxed) return true;
+
 
                 if (IsLastSpell(true, Actions.Xenoglossy) || HaveSwift) return false;
                 //起手
@@ -541,19 +573,19 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                     //火双n
                     if (HasFire) return true;
 
+                    //长瞬双
+                    if (JobGauge.PolyglotStacks >= 1 && MpBackGCDCanDouble(1)) return true;
+
                     //看雷云满足条件吗
                     if (TargetHasThunder && !TargetThunderWillEnd((float)GCDTime * 4 / 1000) || !HasThunder)
                     {
                         if (JobGauge.PolyglotStacks == 2 || (JobGauge.PolyglotStacks == 1 && JobGauge.EnochianTimer < GCDTime * 2)) return true;
                         return false;
                     }
-
-                    //长瞬双
-                    if (JobGauge.PolyglotStacks >= 1) return true;
                 }
 
-                //if (JobGauge.ElementTimeRemaining < CooldownHelper.CalcSpellTime(2500) + CooldownHelper.CalcSpellTime(3000)) return false;
-
+                if (JobGauge.ElementTimeRemaining < GCDTime + CooldownHelper.CalcSpellTime(3000)) return false;
+                if (JobGauge.EnochianTimer <= 5000 && IsPolyglotStacksMaxed) return true;
             }
 
             act = null;
