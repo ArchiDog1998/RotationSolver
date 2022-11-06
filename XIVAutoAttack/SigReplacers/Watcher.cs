@@ -74,7 +74,7 @@ namespace XIVAutoAttack.SigReplacers
             var tar = Service.ObjectTable.SearchById((uint)Marshal.ReadInt32(effectHeader)) ?? Service.ClientState.LocalPlayer;
 
             //获得身为技能是否正确flag
-            var flag = Marshal.ReadByte(effectArray+3);
+            var flag = Marshal.ReadByte(effectArray + 3);
             RecordAction(tar, action,flag);
         }
 
@@ -124,8 +124,7 @@ namespace XIVAutoAttack.SigReplacers
                 _timeLastSpeak = DateTime.Now;
                 if (Service.Configuration.SayoutLocationWrong
                     && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
-                    && tar.HasLocationSide()
-                    && loc != tar.FindEnemyLocation()
+                    && flag != 0
                     && !Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))
                 {
                     Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
