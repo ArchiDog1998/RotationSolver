@@ -26,10 +26,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
         public static readonly BaseAction
         #region 治疗
             //医术
-            Physick = new(190, true)
-            {
-                OtherCheck = b => !Adloquium.EnoughLevel
-            },
+            Physick = new(190, true),
 
             //鼓舞激励之策
             Adloquium = new(185, true)
@@ -73,7 +70,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
             },
 
             //慰藉
-            Consolation = new(16547)
+            Consolation = new(16546)
             {
                 OtherCheck = b => HasSeraph,
             },
@@ -113,7 +110,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
             //朝日召唤
             SummonEos = new(17215)//夕月召唤 17216
             {
-                OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatus(ObjectStatus.Dissipation) || !Dissipation.IsCoolDown),
+                OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatus(ObjectStatus.Dissipation) || (Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel)),
             },
 
             //仙光的低语/天使的低语
@@ -137,13 +134,13 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
             //以太契约-异想的融光
             Aetherpact = new(7437, true)
             {
-                OtherCheck = b =>  JobGauge.FairyGauge >= 10 && TargetUpdater.HavePet && !HasSeraph
+                OtherCheck = b => JobGauge.FairyGauge >= 10 && TargetUpdater.HavePet && !HasSeraph
             },
 
             //异想的祥光
             FeyBlessing = new(16543)
             {
-                OtherCheck = b => HasSeraph && TargetUpdater.HavePet,
+                OtherCheck = b => !HasSeraph && TargetUpdater.HavePet,
             },
         #endregion
         #region 其他
@@ -159,7 +156,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
             //连环计
             ChainStratagem = new(7436)
             {
-                OtherCheck = b => InCombat
+                OtherCheck = b => InCombat && IsTargetBoss
             },
 
             //展开战术
@@ -175,6 +172,9 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
                 },
             },
 
+            //应急战术
+            EmergencyTactics = new(3586),
+
             //疾风怒涛之计
             Expedient = new(25868);
         #endregion
@@ -184,7 +184,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
     }
-    internal override SortedList<DescType, string> Description => new ()
+    internal override SortedList<DescType, string> Description => new()
     {
         {DescType.范围治疗, $"GCD: {Actions.Succor}\n                     能力: {Actions.SacredSoil}, {Actions.SummonSeraph}, {Actions.WhisperingDawn}, {Actions.FeyBlessing}, {Actions.Indomitability}"},
         {DescType.单体治疗, $"GCD: {Actions.Adloquium}, {Actions.Physick}\n                     能力: {Actions.SacredSoil}, {Actions.Aetherpact}, {Actions.Protraction}, {Actions.Excogitation}, {Actions.Lustrate}"},
@@ -194,17 +194,10 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        //秘策
-        //3583不屈不挠之策 技能:7434深谋远虑之策
-        if (nextGCD.IsAnySameAction(true,Actions.Indomitability, Actions.Excogitation) && !HasAetherflow)
+        //秘策绑定单盾群盾
+        if (nextGCD.IsAnySameAction(true, Actions.Succor, Actions.Adloquium))
         {
             if (Actions.Recitation.ShouldUse(out act)) return true;
-        }
-
-        //召唤大天使
-        if (nextGCD.IsAnySameAction(true, Actions.Consolation))
-        {
-            if (Actions.SummonSeraph.ShouldUse(out act)) return true;
         }
 
         //以太契约
@@ -213,7 +206,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
             if (item.GetHealthRatio() < 0.9) continue;
             foreach (var status in item.StatusList)
             {
-                if(status.StatusId == 1223 && status.SourceObject != null 
+                if (status.StatusId == 1223 && status.SourceObject != null
                     && status.SourceObject.OwnerId == Service.ClientState.LocalPlayer.ObjectId)
                 {
                     act = Actions.Aetherpact;
@@ -258,7 +251,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //以太契约
-        if (Actions.Aetherpact.ShouldUse(out act)) return true;
+        if (Actions.Aetherpact.ShouldUse(out act) && JobGauge.FairyGauge >= 70) return true;
 
         //生命回生法
         if (Actions.Protraction.ShouldUse(out act)) return true;
@@ -271,6 +264,9 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
 
         //生命活性法
         if (Actions.Lustrate.ShouldUse(out act)) return true;
+
+        //以太契约
+        if (Actions.Aetherpact.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -295,6 +291,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //慰藉
+        if (Actions.SummonSeraph.ShouldUse(out act)) return true;
         if (Actions.Consolation.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //异想的祥光
@@ -324,14 +321,18 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        //野战治疗阵
-        if (Actions.SacredSoil.ShouldUse(out act)) return true;
-
-        //慰藉
-        if (Actions.Consolation.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        //异想的幻光
+        if (Actions.FeyIllumination.ShouldUse(out act)) return true;
 
         //疾风怒涛之计
         if (Actions.Expedient.ShouldUse(out act)) return true;
+
+        //慰藉
+        if (Actions.SummonSeraph.ShouldUse(out act)) return true;
+        if (Actions.Consolation.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+
+        //野战治疗阵
+        if (Actions.SacredSoil.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -346,7 +347,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
 
         //能量吸收
         if (Actions.EnergyDrain.ShouldUse(out act)) return true;
-        
+
         //转化
         if (Actions.Dissipation.ShouldUse(out act)) return true;
 
