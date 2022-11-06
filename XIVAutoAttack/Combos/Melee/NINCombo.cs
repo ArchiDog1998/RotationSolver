@@ -105,7 +105,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
             //强甲破点突
             ArmorCrush = new (3563)
             {
-                OtherCheck = b => JobGauge.HutonTimer < 30000 && JobGauge.HutonTimer > 0,
+                OtherCheck = b => RecastAfter(JobGauge.HutonTimer/1000f, 29) && JobGauge.HutonTimer > 0,
             },
 
             //通灵之术·大虾蟆
@@ -176,7 +176,6 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
             //雷遁之术
             Raiton = new (2267, Ten, Chi),
 
-
             //冰遁之术
             Hyoton = new (2268, Ten, Jin),
 
@@ -199,10 +198,8 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
                 OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(1,1),
             },
 
-
             //劫火灭却之术
             GokaMekkyaku = new (16491, Chi, Ten),
-
 
             //冰晶乱流之术
             HyoshoRanryu = new (16492, Ten, Jin);
@@ -436,7 +433,6 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         //用真北取消隐匿
         if (Config.GetBoolByName("AutoUnhide") && Player.HaveStatus(ObjectStatus.Hidden))
         {
-            //Service.ChatGui.Print($"/statusoff {StatusHelper.GetStatusName(ObjectStatus.Hidden)}");
             CommandController.SubmitToChat($"/statusoff {StatusHelper.GetStatusName(ObjectStatus.Hidden)}");
         }
         //用隐匿恢复忍术数量

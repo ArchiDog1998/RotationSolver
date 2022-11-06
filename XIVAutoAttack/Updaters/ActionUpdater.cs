@@ -67,7 +67,10 @@ namespace XIVAutoAttack.Updaters
         internal static void UpdateActionInfo()
         {
             //结束战斗，那就关闭。
-            if(Service.ClientState.LocalPlayer.CurrentHp == 0) CommandController.AutoAttack = false;
+            if(Service.ClientState.LocalPlayer.CurrentHp == 0 
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut])
+                CommandController.AutoAttack = false;
+
             InCombat = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
             UpdateWeaponTime();
@@ -157,7 +160,6 @@ namespace XIVAutoAttack.Updaters
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction2]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InFlight]) return;
 
             //GCD

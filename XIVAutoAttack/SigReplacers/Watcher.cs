@@ -13,6 +13,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
@@ -78,7 +79,6 @@ namespace XIVAutoAttack.SigReplacers
             RecordAction(tar, action,flag);
         }
 
-        private static DateTime _timeLastSpeak = DateTime.Now;
         private static unsafe void RecordAction(GameObject tar, Action action,byte flag)
         {
             var id = action.RowId;
@@ -119,19 +119,15 @@ namespace XIVAutoAttack.SigReplacers
             }
 
             //事后骂人！
-            if (DateTime.Now - _timeLastSpeak > new TimeSpan(0, 0, 0, 0, 200))
+            if (Service.Configuration.SayoutLocationWrong
+                && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
+                && (flag != 0 || NINCombo.Actions.TrickAttack.ID == id && loc != tar.FindEnemyLocation() && tar.HasLocationSide())
+                && !Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))
             {
-                _timeLastSpeak = DateTime.Now;
-                if (Service.Configuration.SayoutLocationWrong
-                    && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
-                    && flag != 0
-                    && !Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))
+                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
+                if (!string.IsNullOrEmpty(Service.Configuration.LocationText))
                 {
-                    Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
-                    if (!string.IsNullOrEmpty(Service.Configuration.LocationText))
-                    {
-                        CustomCombo.Speak(Service.Configuration.LocationText);
-                    }
+                    CustomCombo.Speak(Service.Configuration.LocationText);
                 }
             }
         }

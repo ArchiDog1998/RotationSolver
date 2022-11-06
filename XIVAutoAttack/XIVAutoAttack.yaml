@@ -11,6 +11,8 @@ changelog: |-
   ## 错误修复
   - 再次缩减忍者的判定忍术时间范围
   - 尝试解决教育模式高亮给错对象的问题
+  - 调整了学者的循环
+  - 调整了身位骂人判断
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
