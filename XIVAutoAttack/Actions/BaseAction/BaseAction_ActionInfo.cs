@@ -143,7 +143,19 @@ namespace XIVAutoAttack.Actions.BaseAction
                             break;
                         }
                     }
-                if (!emptyOrSkipCombo && !findCombo && comboActions.Length > 0) return false;
+
+                if (!emptyOrSkipCombo && comboActions.Length > 0)
+                {
+                    if (findCombo)
+                    {
+                        if (Service.Address.ComboTime < ActionUpdater.WeaponRemain) return false;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    if (!findCombo) return false;
+                }
 
                 //目标已有充足的Debuff
                 if (!mustUse && TargetStatus != null)

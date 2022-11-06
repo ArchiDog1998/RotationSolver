@@ -67,7 +67,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         MajorUpdater.Enable();
         Watcher.Enable();
-
+        CountDown.Enable();
     }
 
 
@@ -93,6 +93,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         MajorUpdater.Dispose();
         Watcher.Dispose();
+        CountDown.Dispose();
     }
 
     private void OnOpenConfigUi()

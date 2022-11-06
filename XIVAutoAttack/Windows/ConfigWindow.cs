@@ -921,6 +921,9 @@ internal class ConfigWindow : Window
                     DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
                     DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
                 }
+
+                ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
+
             }
 #endif
 

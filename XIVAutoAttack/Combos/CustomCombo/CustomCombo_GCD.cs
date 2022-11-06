@@ -8,6 +8,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.CustomCombo
@@ -16,7 +17,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
     {
         internal static BattleChara EnemyLocationTarget;
         internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
-        internal bool TryInvoke(uint lastComboActionID, float comboTime, out IAction newAction)
+        internal bool TryInvoke(uint lastComboActionID,  out IAction newAction)
         {
             newAction = null;
             if (!IsEnabled)
@@ -26,15 +27,19 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
             UpdateInfo();
 
-            newAction = Invoke(lastComboActionID, comboTime);
+            newAction = Invoke(lastComboActionID);
             //没获得对象
             if (newAction == null) return false;
 
             return true;
         }
 
-        private IAction Invoke(uint lastComboActionID, float comboTime)
+        private IAction Invoke(uint lastComboActionID)
         {
+            //倒计时专用能力。
+            var countDown = CountDown.CountDownTime;
+            if (countDown > 0) return CountDownAction(countDown);
+
             byte abilityRemain = ActionUpdater.AbilityRemainCount;
 
             //防AOE
@@ -222,6 +227,12 @@ namespace XIVAutoAttack.Combos.CustomCombo
             return false;
         }
 
+        /// <summary>
+        /// 在倒计时的时候返回这个函数里面的内容。
+        /// </summary>
+        /// <param name="remainTime">距离战斗开始的时间(s)</param>
+        /// <returns>要使用的技能</returns>
+        private protected virtual IAction CountDownAction(float remainTime) => null;
 
         /// <summary>
         /// 一些非常紧急的GCD战技，优先级最高
