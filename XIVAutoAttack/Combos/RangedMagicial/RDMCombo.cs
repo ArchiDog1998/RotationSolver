@@ -9,12 +9,22 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.RangedMagicial.RDMCombo;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
-internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
+internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
 {
-    internal override uint JobID => 35;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 35;
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Length == 1 && base.CanHealSingleSpell;
     //看看现在有没有促进
 
@@ -164,7 +174,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
                 OtherIDsNot = new uint[] { Riposte.ID, Zwerchhau.ID, Scorch.ID, Verflare.ID, Verholy.ID },
             };
     }
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体治疗, $"{Actions.Vercure}"},
         {DescType.范围防御, $"{Actions.MagickBarrier}"},
@@ -188,13 +198,13 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
         //开场爆发的时候释放。
         if (Service.Configuration.AutoBreak && GetRightValue(JobGauge.WhiteMana) && GetRightValue(JobGauge.BlackMana))
         {
-            if (Actions.Manafication.ShouldUse(out act, Service.Address.LastComboAction)) return true;
+            if (Actions.Manafication.ShouldUse(out act)) return true;
             if (Actions.Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
         //倍增要放到魔连攻击之后
         if (JobGauge.ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Actions.Zwerchhau, Actions.Riposte))
         {
-            if (Actions.Manafication.ShouldUse(out act, Service.Address.LastComboAction)) return true;
+            if (Actions.Manafication.ShouldUse(out act)) return true;
         }
 
         act = null;
@@ -210,7 +220,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
     {
         if (SettingBreak)
         {
-            if (Actions.Manafication.ShouldUse(out act, Service.Address.LastComboAction)) return true;
+            if (Actions.Manafication.ShouldUse(out act)) return true;
             if (Actions.Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
 
@@ -240,7 +250,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         _startLong = Config.GetBoolByName("StartLong");
 
@@ -276,7 +286,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealSingleGCD(out IAction act)
     {
         if (Actions.Vercure.ShouldUse(out act, mustUse: true)) return true;
         return false;
@@ -295,7 +305,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
         return false;
     }
 
-    private protected override bool EmergercyGCD(uint lastComboActionID, out IAction act)
+    private protected override bool EmergercyGCD(out IAction act)
     {
         byte level = Level;
         #region 远程三连
@@ -310,13 +320,13 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
         }
 
         //如果上一次打了赤神圣或者赤核爆了
-        if (lastComboActionID == Actions.Verholy.ID || lastComboActionID == Actions.Verflare.ID)
+        //if (lastComboActionID == Actions.Verholy.ID || lastComboActionID == Actions.Verflare.ID)
         {
             if (Actions.Scorch.ShouldUse(out act, mustUse: true)) return true;
         }
 
         //如果上一次打了焦热
-        if (lastComboActionID == Actions.Scorch.ID)
+        //if (lastComboActionID == Actions.Scorch.ID)
         {
             if (Actions.Resolution.ShouldUse(out act, mustUse: true)) return true;
         }
@@ -324,13 +334,13 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge>
 
         #region 近战三连
 
-        if (lastComboActionID == Actions.Moulinet.ID && JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20)
+        if (/*lastComboActionID == Actions.Moulinet.ID && */JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20)
         {
             if (Actions.Moulinet.ShouldUse(out act)) return true;
             if (Actions.Riposte.ShouldUse(out act)) return true;
         }
-        if (Actions.Zwerchhau.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.Redoublement.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Zwerchhau.ShouldUse(out act)) return true;
+        if (Actions.Redoublement.ShouldUse(out act)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
         bool mustStart = Player.HaveStatus(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Actions.Embolden.IsCoolDown;

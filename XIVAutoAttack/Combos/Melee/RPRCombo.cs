@@ -5,11 +5,21 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using static XIVAutoAttack.Combos.Melee.RPRCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
+internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
 {
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
     internal class PRPAction : BaseAction
     {
         internal override EnemyLocation EnermyLocation => Player.HaveStatus(ObjectStatus.Enshrouded) 
@@ -28,7 +38,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
     private static bool enhancedVoidReaping => Player.HaveStatus(ObjectStatus.EnhancedVoidReaping);
     private static bool plentifulReady => Player.HaveStatus(ObjectStatus.ImmortalSacrifice) && !Player.HaveStatus(ObjectStatus.BloodsownCircle);
     private static bool haveDeathsDesign => Target.HaveStatus(ObjectStatus.DeathsDesign);
-    internal override uint JobID => 39;
+    public override uint JobID => 39;
     internal struct Actions
     {
         public static readonly BaseAction
@@ -226,11 +236,11 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
             };
         #endregion
     }
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体防御, $"{Actions.ArcaneCrest}"},
     };
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //开场获得收获月
         if (Actions.Soulsow.ShouldUse(out act)) return true;
@@ -278,13 +288,13 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge>
         if (Actions.SoulScythe.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //群体二连
-        if (Actions.NightmareScythe.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.SpinningScythe.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.NightmareScythe.ShouldUse(out act)) return true;
+        if (Actions.SpinningScythe.ShouldUse(out act)) return true;
 
         //单体三连
-        if (Actions.InfernalSlice.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.WaxingSlice.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.Slice.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.InfernalSlice.ShouldUse(out act)) return true;
+        if (Actions.WaxingSlice.ShouldUse(out act)) return true;
+        if (Actions.Slice.ShouldUse(out act)) return true;
 
         //摸不到怪 先花掉收获月
         if (Actions.HarvestMoon.ShouldUse(out act, mustUse:true)) return true;

@@ -10,10 +10,12 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo.BLMCombo;
+
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 {
-    internal sealed partial class BLMCombo : JobGaugeCombo<BLMGauge>
+    internal sealed partial class BLMCombo : JobGaugeCombo<BLMGauge, CommandType>
     {
         internal struct Actions
         {

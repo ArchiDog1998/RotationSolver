@@ -6,12 +6,22 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.Tank.WARCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal sealed class WARCombo : JobGaugeCombo<WARGauge>
+internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
 {
-    internal override uint JobID => 21;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 21;
     internal override bool HaveShield => Player.HaveStatus(ObjectStatus.Defiance);
     private protected override BaseAction Shield => Actions.Defiance;
     internal struct Actions
@@ -134,7 +144,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
                 BuffsNeed = new [] { ObjectStatus.PrimalRendReady },
             };
     }
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围防御, $"{Actions.ShakeItOff}"},
         {DescType.单体防御, $"{Actions.RawIntuition}, {Actions.Vengeance}"},
@@ -150,7 +160,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
         return false;
     }
 
-    private protected override bool MoveGCD(uint lastComboActionID, out IAction act)
+    private protected override bool MoveGCD(out IAction act)
     {
         //放个大 蛮荒崩裂 会往前飞
         if (Actions.PrimalRend.ShouldUse(out act, mustUse: true)) return true;
@@ -164,7 +174,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //搞搞攻击
         if (Actions.PrimalRend.ShouldUse(out act, mustUse: true) && !IsMoving)
@@ -182,14 +192,14 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge>
         if (Actions.InnerBeast.ShouldUse(out act)) return true;
 
         //群体
-        if (Actions.MythrilTempest.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.Overpower.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.MythrilTempest.ShouldUse(out act)) return true;
+        if (Actions.Overpower.ShouldUse(out act)) return true;
 
         //单体
-        if (Actions.StormsEye.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.StormsPath.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.Maim.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.HeavySwing.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.StormsEye.ShouldUse(out act)) return true;
+        if (Actions.StormsPath.ShouldUse(out act)) return true;
+        if (Actions.Maim.ShouldUse(out act)) return true;
+        if (Actions.HeavySwing.ShouldUse(out act)) return true;
 
         //够不着，随便打一个吧。
         if (CommandController.Move && MoveAbility(1, out act)) return true;

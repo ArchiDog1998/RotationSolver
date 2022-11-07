@@ -51,8 +51,8 @@ namespace XIVAutoAttack
                     _autoAttack = value;
                     if (!value)
                     {
-                        CustomCombo.ShouldLocation = EnemyLocation.None;
-                        if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Cancel");
+                        CustomCombo<Enum>.ShouldLocation = EnemyLocation.None;
+                        if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Cancel");
                         _stateString = "Off";
                         UpdateToast();
                     }
@@ -68,7 +68,7 @@ namespace XIVAutoAttack
             {
                 if (!value)
                 {
-                    if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Manual");
+                    if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Manual");
                     _stateString = "Manual";
                     UpdateToast();
                 }
@@ -87,7 +87,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Heal Area");
+                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Heal Area");
                 _specialString = "Heal Area";
                 HealArea = true;
                 UpdateToast();
@@ -102,7 +102,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Heal Single");
+                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Heal Single");
                 _specialString = "Heal Single";
                 HealSingle = true;
                 UpdateToast();
@@ -117,7 +117,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Defense Area");
+                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Defense Area");
                 _specialString = "Defense Area";
                 DefenseArea = true;
                 UpdateToast();
@@ -132,7 +132,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Defense Single");
+                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Defense Single");
                 _specialString = "Defense Single";
                 DefenseSingle = true;
                 UpdateToast();
@@ -149,7 +149,7 @@ namespace XIVAutoAttack
                 _specialStateStartTime = DateTime.Now;
                 Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
                 string speak = role == Role.防护 ? "Shield" : "Esuna";
-                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start " + speak);
+                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start " + speak);
                 _specialString = speak;
                 EsunaOrShield = true;
                 UpdateToast();
@@ -166,7 +166,7 @@ namespace XIVAutoAttack
                 _specialStateStartTime = DateTime.Now;
                 Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
                 string speak = role == Role.防护 ? "Shirk" : "Raise";
-                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start " + speak);
+                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start " + speak);
                 _specialString = speak;
 
                 RaiseOrShirk = true;
@@ -184,7 +184,7 @@ namespace XIVAutoAttack
                 _specialStateStartTime = DateTime.Now;
                 Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
                 string speak = role == Role.防护 ? "Provoke" : "Break";
-                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start " + speak);
+                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start " + speak);
                 _specialString = speak;
                 BreakorProvoke = true;
                 UpdateToast();
@@ -199,7 +199,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Anti repulsion");
+                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Anti repulsion");
                 _specialString = "Anti repulsion";
                 AntiRepulsion = true;
                 UpdateToast();
@@ -215,7 +215,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Start Move");
+                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Move");
                 _specialString = "Move";
                 Move = true;
                 UpdateToast();
@@ -227,7 +227,7 @@ namespace XIVAutoAttack
             _specialStateStartTime = DateTime.MinValue;
             HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = BreakorProvoke
                 = AntiRepulsion = Move = false;
-            if (sayout && Service.Configuration.AutoSayingOut) CustomCombo.Speak("End Special");
+            if (sayout && Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("End Special");
             _specialString = string.Empty;
         }
 
@@ -257,7 +257,7 @@ namespace XIVAutoAttack
             }
 
             string speak = RightTargetingType.ToString();
-            if (Service.Configuration.AutoSayingOut) CustomCombo.Speak("Attack " + speak);
+            if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Attack " + speak);
             _stateString = speak;
             AutoTarget = true;
 
@@ -365,7 +365,7 @@ namespace XIVAutoAttack
                     return;
 
                 default:
-                    foreach (CustomCombo customCombo in IconReplacer.CustomCombos)
+                    foreach (ICustomCombo customCombo in IconReplacer.CustomCombos)
                     {
                         if (customCombo.JobID != Service.ClientState.LocalPlayer.ClassJob.Id) continue;
 
@@ -387,8 +387,25 @@ namespace XIVAutoAttack
                             {
                                 var numStr = str.Substring(combo.name.Length);
 
-                                combo.value = (int.TryParse(numStr, out int num) ? num : combo.value + 1)
-                                    % combo.items.Length;
+                                if(string.IsNullOrEmpty(numStr) || str.Length == 0)
+                                {
+                                    combo.value = (combo.value + 1) % combo.items.Length;
+
+                                }
+                                else if (int.TryParse(numStr, out int num))
+                                {
+                                    combo.value = num % combo.items.Length;
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < combo.items.Length; i++)
+                                    {
+                                        if (combo.items[i] == str)
+                                        {
+                                            combo.value = i;
+                                        }
+                                    }
+                                }
 
                                 Service.ChatGui.Print($"修改{combo.description}为{combo.items[combo.value]}");
 

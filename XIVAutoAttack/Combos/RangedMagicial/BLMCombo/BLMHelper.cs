@@ -5,16 +5,20 @@ using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.SigReplacers.Watcher;
+using System.Threading;
+using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Combos.CustomCombo;
+using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo.BLMCombo;
+
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 {
     /// <summary>
     /// 黑魔帮助类
     /// </summary>
-    internal sealed partial class BLMCombo : JobGaugeCombo<BLMGauge>
+    internal sealed partial class BLMCombo : JobGaugeCombo<BLMGauge, CommandType>
     {
         internal static double TsPointElapsed = 0;
         internal static double TsPointRemain = 0;

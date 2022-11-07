@@ -45,11 +45,11 @@ namespace XIVAutoAttack.Updaters
 
             try
             {
-                foreach (CustomCombo customCombo in IconReplacer.CustomCombos)
+                foreach (ICustomCombo customCombo in IconReplacer.CustomCombos)
                 {
                     if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
 
-                    if (customCombo.TryInvoke(Service.Address.LastComboAction, out var newAction))
+                    if (customCombo.TryInvoke(out var newAction))
                     {
                         NextAction = newAction;
                         return;
@@ -62,6 +62,12 @@ namespace XIVAutoAttack.Updaters
 
             }
             NextAction = null;
+
+            //Auto start at count Down.
+            if(Service.Configuration.AutoStartCountdown && CountDown.CountDownTime > 0)
+            {
+                if(!CommandController.AutoAttack) CommandController.AutoAttack = true;
+            }
         }
 
         internal static void UpdateActionInfo()

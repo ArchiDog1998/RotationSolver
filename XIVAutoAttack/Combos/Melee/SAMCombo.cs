@@ -7,12 +7,22 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
+using static XIVAutoAttack.Combos.Melee.SAMCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
+internal sealed class SAMCombo : JobGaugeCombo<SAMGauge, CommandType>
 {
-    internal override uint JobID => 34;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 34;
 
     private static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
 
@@ -121,12 +131,12 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
             //回返斩浪
             KaeshiNamikiri = new(25782);
     }
-    internal override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> Description => new()
     {
         {DescType.单体防御, $"{Actions.ThirdEye}"},
         {DescType.移动技能, $"{Actions.HissatsuGyoten}"},
     };
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         bool haveMeikyoShisui = Player.HaveStatus(ObjectStatus.MeikyoShisui);
 
@@ -161,31 +171,31 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
         //如果是单体，且明镜止水的冷却时间小于3秒。
         if (!JobGauge.HasSetsu && !Actions.Fuga.ShouldUse(out _))
         {
-            if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID)) return true;
+            if (Actions.Yukikaze.ShouldUse(out act)) return true;
         }
         if (!HaveMoon)//判断风月buff，该buff提供10%伤害加成
         {
-            if (GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
+            if (GetsuGCD(out act, haveMeikyoShisui)) return true;
         }
         if (!HaveFlower)//判断风花buff，该buff提供10%技速加成
         {
-            if (KaGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
+            if (KaGCD(out act, haveMeikyoShisui)) return true;
         }
         if (!JobGauge.HasGetsu) //月闪
         {
-            if (GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
+            if (GetsuGCD(out act, haveMeikyoShisui)) return true;
         }
         if (!JobGauge.HasKa) //花闪
         {
-            if (KaGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
+            if (KaGCD(out act, haveMeikyoShisui)) return true;
         }
 
         //来个月？
-        if (GetsuGCD(out act, lastComboActionID, haveMeikyoShisui)) return true;
-        if (Actions.Yukikaze.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (GetsuGCD(out act, haveMeikyoShisui)) return true;
+        if (Actions.Yukikaze.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
 
-        if (Actions.Fuga.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.Hakaze.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Fuga.ShouldUse(out act)) return true;
+        if (Actions.Hakaze.ShouldUse(out act)) return true;
 
 
 
@@ -196,22 +206,22 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge>
     }
 
     //处理樱花连击
-    private bool KaGCD(out IAction act, uint lastComboActionID, bool haveMeikyoShisui)
+    private bool KaGCD(out IAction act, bool haveMeikyoShisui)
     {
-        if (Actions.Oka.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-        if (Actions.Kasha.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-        if (Actions.Shifu.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Oka.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Actions.Kasha.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Actions.Shifu.ShouldUse(out act)) return true;
 
         act = null;
         return false;
     }
 
     //处理月光连击
-    private bool GetsuGCD(out IAction act, uint lastComboActionID, bool haveMeikyoShisui)
+    private bool GetsuGCD(out IAction act, bool haveMeikyoShisui)
     {
-        if (Actions.Mangetsu.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-        if (Actions.Gekko.ShouldUse(out act, lastComboActionID, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-        if (Actions.Jinpu.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Mangetsu.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Actions.Gekko.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Actions.Jinpu.ShouldUse(out act)) return true;
 
         act = null;
         return false;

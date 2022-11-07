@@ -13,17 +13,27 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo.BLMCombo;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 {
-    internal sealed partial class BLMCombo : JobGaugeCombo<BLMGauge>
-    {      
-        internal override uint JobID => 25;
+    internal sealed partial class BLMCombo : JobGaugeCombo<BLMGauge, CommandType>
+    {
+        internal enum CommandType : byte
+        {
+            None,
+        }
+
+        protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+        {
+            //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+        };
+
+        public override uint JobID => 25;
         protected override bool CanHealSingleAbility => false;
 
         private static bool iceOpener = false;
         private static bool fireOpener = true;
-        private static string MyCommand = "";
 
         enum LoopName
         {           
@@ -56,8 +66,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         /// </summary>
         private bool FewBlizzard => Config.GetComboByName("UseLoop") == 2;
 
-
-        internal override SortedList<DescType, string> Description => new()
+        public override SortedList<DescType, string> Description => new()
         {
             { DescType.单体治疗, $"{Actions.BetweenTheLines}, {Actions.Leylines}, 这个很特殊！" },
             { DescType.单体防御, $"{Actions.Manaward}" },
@@ -69,13 +78,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             return base.CreateConfiguration()
                         .SetCombo("UseLoop", 1, new string[] { "标准循环", "星灵循环", "压冰循环" }, "循环管理")
                         .SetBool("AutoLeylines", true, "自动上黑魔纹");
-        }
-
-        internal override string OnCommand(string args)
-        {
-            MyCommand = args;
-
-            return TsPointElapsed + "+" + MPYuPanDouble;
         }
 
         private bool CommandManager(out IAction act)
@@ -138,7 +140,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             return false;
         }
 
-        private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+        private protected override bool GeneralGCD(out IAction act)
         {
             //起手
             if (OpenerManager(out act)) return true;

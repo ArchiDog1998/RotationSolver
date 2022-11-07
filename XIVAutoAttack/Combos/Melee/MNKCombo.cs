@@ -8,12 +8,22 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using static XIVAutoAttack.Combos.Melee.MNKCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
+internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
 {
-    internal override uint JobID => 20;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 20;
 
     internal struct Actions
     {
@@ -117,7 +127,7 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
             RiddleofWind = new (25766);
     }
 
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围治疗, $"{Actions.Mantra}"},
         {DescType.单体防御, $"{Actions.RiddleofEarth}"},
@@ -206,7 +216,7 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         bool havesolar = (JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.SOLAR) != 0;
         bool havelunar = (JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.LUNAR) != 0;

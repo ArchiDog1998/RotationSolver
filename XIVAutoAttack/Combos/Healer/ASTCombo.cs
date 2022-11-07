@@ -12,12 +12,23 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.Healer.ASTCombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
+internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
 {
-    internal override uint JobID => 33;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    { 
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+
+    public override uint JobID => 33;
 
     private protected override BaseAction Raise => Actions.Ascend;
 
@@ -174,7 +185,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
                 ChoiceTarget = TargetFilter.ASTRangeTarget,
             };
     }
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围治疗, $"GCD: {Actions.AspectedHelios}, {Actions.Helios}\n                     能力: {Actions.EarthlyStar}, {Actions.CrownPlay}, {Actions.CelestialOpposition}"},
         {DescType.单体治疗, $"GCD: {Actions.AspectedBenefic}, {Actions.Benefic2}, {Actions.Benefic}\n                     能力: {Actions.CelestialIntersection}, {Actions.EssentialDignity}"},
@@ -206,7 +217,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
         return base.DefenceAreaAbility(abilityRemain, out act);
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //群体输出
         if (Actions.Gravity.ShouldUse(out act)) return true;
@@ -226,7 +237,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
         return false;
     }
 
-    private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealAreaGCD(out IAction act)
     {
         //阳星相位
         if (Actions.AspectedHelios.ShouldUse(out act)) return true;
@@ -275,7 +286,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealSingleGCD(out IAction act)
     {
         //吉星相位
         if (Actions.AspectedBenefic.Target.GetHealthRatio() > 0.4

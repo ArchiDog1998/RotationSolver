@@ -44,9 +44,9 @@ internal class ConfigWindow : Window
     }
     private static readonly Dictionary<Role, string> _roleDescriptionValue = new Dictionary<Role, string>()
     {
-        {Role.防护, $"{CustomCombo.DescType.单体防御} → {CustomCombo.GeneralActions.Rampart}, {CustomCombo.GeneralActions.Reprisal}" },
-        {Role.近战, $"{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Feint}" },
-        {Role.远程, $"法系{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Addle}" },
+        {Role.防护, $"{DescType.单体防御} → {CustomCombo<Enum>.GeneralActions.Rampart}, {CustomCombo<Enum>.GeneralActions.Reprisal}" },
+        {Role.近战, $"{DescType.范围防御} → {CustomCombo<Enum>.GeneralActions.Feint}" },
+        {Role.远程, $"法系{DescType.范围防御} → {CustomCombo<Enum>.GeneralActions.Addle}" },
     };
 
     private static string ToName(VirtualKey k)
@@ -198,6 +198,17 @@ internal class ConfigWindow : Window
                                         ImGui.SameLine();
                                         Spacing();
                                         CommandHelp(comboItem.name);
+                                    }
+                                }
+
+                                if (canAddButton)
+                                {
+                                    ImGui.NewLine();
+
+                                    foreach (var customCMD in combo.CommandShow)
+                                    {
+                                        Spacing();
+                                        CommandHelp(customCMD.Key, customCMD.Value);
                                     }
                                 }
                                 ImGui.PopStyleVar();
@@ -448,6 +459,17 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        bool attackSafeMode = Service.Configuration.AttackSafeMode;
+                        if (ImGui.Checkbox("攻击安全模式", ref attackSafeMode))
+                        {
+                            Service.Configuration.AttackSafeMode = attackSafeMode;
+                            Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("绝对保证在单目标的时候不打AOE，就算大招也是。但是如果怪的数量达到标准依然会使用AOE。");
+                        }
+
                         if (!isOnlyGCD)
                         {
                             Spacing();
@@ -550,6 +572,13 @@ internal class ConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("触发条件"))
                     {
+                        bool autoStartCountdown = Service.Configuration.AutoStartCountdown;
+                        if (ImGui.Checkbox("倒计时时自动打开攻击", ref autoStartCountdown))
+                        {
+                            Service.Configuration.AutoStartCountdown = autoStartCountdown;
+                            Service.Configuration.Save();
+                        }
+
                         float speed = 0.005f;
                         float healthDiff = Service.Configuration.HealthDifference;
                         if (ImGui.DragFloat("多少的HP标准差以下，可以用群疗", ref healthDiff, speed * 2, 0, 0.5f))
@@ -922,8 +951,18 @@ internal class ConfigWindow : Window
                     DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
                 }
 
-                ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
+                if (ImGui.CollapsingHeader("倒计时、按键"))
+                {
+                    ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
 
+                    foreach (var key in (VirtualKey[])Enum.GetValues(typeof(VirtualKey)))
+                    {
+                        if (Service.KeyState[key])
+                        {
+                            ImGui.Text(key.ToString());
+                        }
+                    }
+                }
             }
 #endif
 

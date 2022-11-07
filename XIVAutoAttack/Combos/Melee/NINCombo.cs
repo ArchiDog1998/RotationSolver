@@ -9,12 +9,22 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.Melee.NINCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal sealed class NINCombo : JobGaugeCombo<NINGauge>
+internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
 {
-    internal override uint JobID => 30;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 30;
     public class NinAction : BaseAction
     {
         internal BaseAction[] Ninjutsus { get; }
@@ -210,7 +220,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         return base.CreateConfiguration().SetBool("UseHide", true, "脱战隐身恢复忍术").SetBool("AutoUnhide", true, "自动取消隐身");
     }
 
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体防御, $"{Actions.ShadeShift}"},
         {DescType.移动技能, $"{Actions.Shukuchi}，目标为面向夹角小于30°内最远目标。"},
@@ -419,7 +429,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         if (IsLastAction(false, Actions.DotonChi, Actions.SuitonJin,
             Actions.RabbitMedium, Actions.FumaShuriken, Actions.Katon, Actions.Raiton,
@@ -444,8 +454,8 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         if (_ninactionAim == null || (replace != 2260 && replace != _ninactionAim.ID))
         {
             //大招
-            if (Actions.FleetingRaiju.ShouldUse(out act, lastComboActionID)) return true;
-            if (Actions.ForkedRaiju.ShouldUse(out act, lastComboActionID))
+            if (Actions.FleetingRaiju.ShouldUse(out act)) return true;
+            if (Actions.ForkedRaiju.ShouldUse(out act))
             {
                 if (TargetFilter.DistanceToPlayer(Actions.ForkedRaiju.Target) < 2)
                 {
@@ -453,19 +463,19 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
                 }
             }
 
-            if (Actions.PhantomKamaitachi.ShouldUse(out act, lastComboActionID)) return true;
+            if (Actions.PhantomKamaitachi.ShouldUse(out act)) return true;
 
             if (Actions.Huraijin.ShouldUse(out act)) return true;
 
             //AOE
-            if (Actions.HakkeMujinsatsu.ShouldUse(out act, lastComboActionID)) return true;
-            if (Actions.DeathBlossom.ShouldUse(out act, lastComboActionID)) return true;
+            if (Actions.HakkeMujinsatsu.ShouldUse(out act)) return true;
+            if (Actions.DeathBlossom.ShouldUse(out act)) return true;
 
             //Single
-            if (Actions.ArmorCrush.ShouldUse(out act, lastComboActionID)) return true;
-            if (Actions.AeolianEdge.ShouldUse(out act, lastComboActionID)) return true;
-            if (Actions.GustSlash.ShouldUse(out act, lastComboActionID)) return true;
-            if (Actions.SpinningEdge.ShouldUse(out act, lastComboActionID)) return true;
+            if (Actions.ArmorCrush.ShouldUse(out act)) return true;
+            if (Actions.AeolianEdge.ShouldUse(out act)) return true;
+            if (Actions.GustSlash.ShouldUse(out act)) return true;
+            if (Actions.SpinningEdge.ShouldUse(out act)) return true;
 
             //飞刀
             if (CommandController.Move && MoveAbility(1, out act)) return true;
@@ -476,10 +486,10 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge>
         return false;
     }
 
-    private protected override bool MoveGCD(uint lastComboActionID, out IAction act)
+    private protected override bool MoveGCD(out IAction act)
     {
-        if (Actions.ForkedRaiju.ShouldUse(out act, lastComboActionID)) return true;
-        return base.MoveGCD(lastComboActionID, out act);
+        if (Actions.ForkedRaiju.ShouldUse(out act)) return true;
+        return base.MoveGCD(out act);
     }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)

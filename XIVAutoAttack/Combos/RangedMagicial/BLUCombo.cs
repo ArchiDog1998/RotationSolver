@@ -1,14 +1,25 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
+using static XIVAutoAttack.Combos.RangedMagicial.BLUCombo;
 
 namespace XIVAutoAttack.Combos.RangedMagicial
 {
-    internal sealed class BLUCombo : OtherCombo
+    internal sealed class BLUCombo : OtherCombo<CommandType>
     {
+        internal enum CommandType : byte
+        {
+            None,
+        }
+
+        protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+        {
+            //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+        };
         internal class BLUAction : BaseAction
         {
             public unsafe bool OnSlot
@@ -28,17 +39,17 @@ namespace XIVAutoAttack.Combos.RangedMagicial
             {
             }
 
-            public sealed override bool ShouldUse(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
+            public sealed override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false)
             {
                 if (!OnSlot)
                 {
                     act = null;
                     return false;
                 }
-                return base.ShouldUse(out act, lastAct, mustUse, emptyOrSkipCombo);
+                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo);
             }
         }
-        internal override uint JobID => 36;
+        public override uint JobID => 36;
 
         internal struct Actions
         {
@@ -53,7 +64,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial
             return false;
         }
 
-        private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+        private protected override bool GeneralGCD(out IAction act)
         {
             act = null;
             return false;

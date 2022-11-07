@@ -9,13 +9,23 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using static XIVAutoAttack.Combos.RangedPhysicial.BRDCombo;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
-internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
+internal sealed class BRDCombo : JobGaugeCombo<BRDGauge, CommandType>
 {
+    internal enum CommandType : byte
+    {
+        None,
+    }
 
-    internal override uint JobID => 23;
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+
+    public override uint JobID => 23;
 
     internal struct Actions
     {
@@ -173,7 +183,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
                 },
             };
     }
-    internal override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> Description => new()
     {
         {DescType.范围防御, $"{Actions.Troubadour}"},
         {DescType.单体治疗, $"{Actions.NaturesMinne}"},
@@ -195,7 +205,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //伶牙俐齿
         if (Actions.IronJaws.ShouldUse(out act)) return true;

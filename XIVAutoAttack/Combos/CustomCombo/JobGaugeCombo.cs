@@ -6,7 +6,7 @@ using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract class JobGaugeCombo<T> : CustomCombo where T : JobGaugeBase
+    internal abstract class JobGaugeCombo<T, TCmd> : CustomCombo<TCmd> where T : JobGaugeBase where TCmd : Enum
     {
         private static T _gauge;
 

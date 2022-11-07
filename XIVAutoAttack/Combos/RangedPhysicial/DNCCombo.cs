@@ -7,12 +7,23 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.RangedPhysicial.DNCCombo;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
-internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
+internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
 {
-    internal override uint JobID => 38;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+
+    public override uint JobID => 38;
 
     internal struct Actions
     {
@@ -215,7 +226,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
             };
     }
 
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围防御, $"{Actions.ShieldSamba}"},
         {DescType.范围治疗, $"{Actions.CuringWaltz}, {Actions.Improvisation}"},
@@ -284,7 +295,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         if (!InCombat && !Player.HaveStatus(ObjectStatus.ClosedPosition1) 
             && Actions.ClosedPosition.ShouldUse(out act)) return true;
@@ -296,7 +307,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
             if (Actions.TechnicalStep.ShouldUse(out act, mustUse: true)) return true;
         }
 
-        if (AttackGCD(out act, Player.HaveStatus(ObjectStatus.Devilment), lastComboActionID)) return true;
+        if (AttackGCD(out act, Player.HaveStatus(ObjectStatus.Devilment))) return true;
 
         return false;
     }
@@ -327,7 +338,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
         return false;
     }
 
-    private bool AttackGCD(out IAction act, bool breaking, uint lastComboActionID)
+    private bool AttackGCD(out IAction act, bool breaking)
     {
 
         //剑舞
@@ -361,11 +372,11 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge>
 
 
         //aoe
-        if (Actions.Bladeshower.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Bladeshower.ShouldUse(out act)) return true;
         if (Actions.Windmill.ShouldUse(out act)) return true;
 
         //single
-        if (Actions.Fountain.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Fountain.ShouldUse(out act)) return true;
         if (Actions.Cascade.ShouldUse(out act)) return true;
 
         return false;

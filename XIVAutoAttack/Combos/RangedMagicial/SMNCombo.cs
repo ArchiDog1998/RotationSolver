@@ -7,11 +7,21 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.RangedMagicial.SMNCombo;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
-internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
+internal sealed class SMNCombo : JobGaugeCombo<SMNGauge, CommandType>
 {
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
     public class SMNAction : BaseAction
     {
         public SMNAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
@@ -20,7 +30,7 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
 
         }
     }
-    internal override uint JobID => 27;
+    public override uint JobID => 27;
     protected override bool CanHealSingleSpell => false;
     private protected override BaseAction Raise => Actions.Resurrection;
 
@@ -156,19 +166,19 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
             };
     }
 
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体防御, $"{Actions.RadiantAegis}"},
         {DescType.单体治疗, $"{Actions.Physick}"},
     };
 
-    private protected override bool MoveGCD(uint lastComboActionID, out IAction act)
+    private protected override bool MoveGCD(out IAction act)
     {
         if (Actions.CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
-        return base.MoveGCD(lastComboActionID, out act);
+        return base.MoveGCD(out act);
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //宝石兽召唤
         if (Actions.SummonCarbuncle.ShouldUse(out act)) return true;
@@ -177,7 +187,7 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
         if (!InBahamut && !InPhoenix)
         {
             if (Actions.RuinIV.ShouldUse(out act, mustUse: true)) return true;
-            if (Actions.CrimsonStrike.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
+            if (Actions.CrimsonStrike.ShouldUse(out act, mustUse: true)) return true;
             if (Actions.CrimsonCyclone.ShouldUse(out act, mustUse: true))
             {
                 if (Actions.CrimsonCyclone.Target.DistanceToPlayer() < 2)
@@ -309,7 +319,7 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealSingleGCD(out IAction act)
     {
         //医术
         if (Actions.Physick.ShouldUse(out act)) return true;

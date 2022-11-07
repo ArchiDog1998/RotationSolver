@@ -13,11 +13,11 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    public abstract partial class CustomCombo
+    public abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {
         internal static BattleChara EnemyLocationTarget;
         internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
-        internal bool TryInvoke(uint lastComboActionID,  out IAction newAction)
+        public bool TryInvoke(out IAction newAction)
         {
             newAction = null;
             if (!IsEnabled)
@@ -27,14 +27,14 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
             UpdateInfo();
 
-            newAction = Invoke(lastComboActionID);
+            newAction = Invoke();
             //没获得对象
             if (newAction == null) return false;
 
             return true;
         }
 
-        private IAction Invoke(uint lastComboActionID)
+        private IAction Invoke()
         {
             //倒计时专用能力。
             var countDown = CountDown.CountDownTime;
@@ -60,7 +60,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 })) helpDefenseSingle = true;
             }
 
-            IAction act = GCD(lastComboActionID, abilityRemain, helpDefenseAOE, helpDefenseSingle);
+            IAction act = GCD(abilityRemain, helpDefenseAOE, helpDefenseSingle);
 
             if (act != null && act is BaseAction GCDaction)
             {
@@ -153,38 +153,38 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
         }
 
-        private IAction GCD(uint lastComboActionID, byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
+        private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
         {
-            if (EmergercyGCD(lastComboActionID, out IAction act)) return act;
+            if (EmergercyGCD(out IAction act)) return act;
 
             if (EsunaRaise(out act, abilityRemain, false)) return act;
-            if (CommandController.Move && MoveGCD(lastComboActionID, out act))
+            if (CommandController.Move && MoveGCD( out act))
             {
                 if(act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
             }
             if (TargetUpdater.HPNotFull && ActionUpdater.InCombat)
             {
                 if ((CommandController.HealArea || CanHealAreaSpell) && !ShouldUseHealAreaAbility(1, out _)
-                    && HealAreaGCD(lastComboActionID, out act)) return act;
+                    && HealAreaGCD(out act)) return act;
                 if ((CommandController.HealSingle || CanHealSingleSpell) && !ShouldUseHealSingleAbility(1, out _)
-                    && HealSingleGCD(lastComboActionID, out act)) return act;
+                    && HealSingleGCD(out act)) return act;
             }
-            if (CommandController.DefenseArea && DefenseAreaGCD(abilityRemain, out act)) return act;
-            if (CommandController.DefenseSingle && DefenseSingleGCD(abilityRemain, out act)) return act;
+            if (CommandController.DefenseArea && DefenseAreaGCD(out act)) return act;
+            if (CommandController.DefenseSingle && DefenseSingleGCD(out act)) return act;
 
             //自动防御
-            if (helpDefenseAOE && DefenseAreaGCD(abilityRemain, out act)) return act;
-            if (helpDefenseSingle && DefenseSingleGCD(abilityRemain, out act)) return act;
+            if (helpDefenseAOE && DefenseAreaGCD(out act)) return act;
+            if (helpDefenseSingle && DefenseSingleGCD(out act)) return act;
 
-            if (GeneralGCD(lastComboActionID, out var action)) return action;
+            if (GeneralGCD(out var action)) return action;
 
             //硬拉或者开始奶人
             if (Service.Configuration.RaisePlayerBySwift && (HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) 
                 && EsunaRaise(out act, abilityRemain, true)) return act;
             if (TargetUpdater.HPNotFull && HaveHostileInRange && ActionUpdater.InCombat)
             {
-                if (CanHealAreaSpell && HealAreaGCD(lastComboActionID, out act)) return act;
-                if (CanHealSingleSpell && HealSingleGCD(lastComboActionID, out act)) return act;
+                if (CanHealAreaSpell && HealAreaGCD(out act)) return act;
+                if (CanHealSingleSpell && HealSingleGCD(out act)) return act;
             }
             if (Service.Configuration.RaisePlayerByCasting && ActionUpdater.InCombat && EsunaRaise(out act, abilityRemain, true)) return act;
 
@@ -228,7 +228,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         }
 
         /// <summary>
-        /// 在倒计时的时候返回这个函数里面的内容。
+        /// 在倒计时的时候返回这个函数里面的技能。
         /// </summary>
         /// <param name="remainTime">距离战斗开始的时间(s)</param>
         /// <returns>要使用的技能</returns>
@@ -240,7 +240,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
-        private protected virtual bool EmergercyGCD(uint lastComboActionID, out IAction act)
+        private protected virtual bool EmergercyGCD(out IAction act)
         {
             act = null; return false;
         }
@@ -250,9 +250,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
-        private protected abstract bool GeneralGCD(uint lastComboActionID, out IAction act);
+        private protected abstract bool GeneralGCD(out IAction act);
 
-        private protected virtual bool MoveGCD(uint lastComboActionID, out IAction act)
+        private protected virtual bool MoveGCD(out IAction act)
         {
             act = null; return false;
         }
@@ -263,7 +263,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
-        private protected virtual bool HealSingleGCD(uint lastComboActionID, out IAction act)
+        private protected virtual bool HealSingleGCD(out IAction act)
         {
             act = null; return false;
         }
@@ -275,16 +275,16 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
-        private protected virtual bool HealAreaGCD(uint lastComboActionID, out IAction act)
+        private protected virtual bool HealAreaGCD(out IAction act)
         {
             act = null; return false;
         }
 
-        private protected virtual bool DefenseSingleGCD(uint lastComboActionID, out IAction act)
+        private protected virtual bool DefenseSingleGCD(out IAction act)
         {
             act = null; return false;
         }
-        private protected virtual bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
+        private protected virtual bool DefenseAreaGCD(out IAction act)
         {
             act = null; return false;
         }

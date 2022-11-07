@@ -10,12 +10,22 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.Healer.SGECombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
+internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
 {
-    internal override uint JobID => 40;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 40;
     internal static byte level => Service.ClientState.LocalPlayer!.Level;
 
     private protected override BaseAction Raise => Actions.Egeiro;
@@ -218,7 +228,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
         return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
     }
 
-    internal override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> Description => new()
     {
         {DescType.范围治疗, $"GCD: {Actions.Prognosis}\n                     能力: {Actions.Holos}, {Actions.Ixochole}, {Actions.Physis2}, {Actions.Physis}"},
         {DescType.单体治疗, $"GCD: {Actions.Diagnosis}\n                     能力: {Actions.Druochole}"},
@@ -270,7 +280,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
         return false;
     }
 
-    private protected override bool DefenseSingleGCD(uint lastComboActionID, out IAction act)
+    private protected override bool DefenseSingleGCD(out IAction act)
     {
         //诊断
         if (Actions.EukrasianDiagnosis.ShouldUse(out act))
@@ -311,7 +321,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
         return false;
     }
 
-    private protected override bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
+    private protected override bool DefenseAreaGCD(out IAction act)
     {
         //预后
         if (Actions.EukrasianPrognosis.ShouldUse(out act))
@@ -359,7 +369,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //箭毒
         if (JobGauge.Addersting == 3 && Actions.Toxikon.ShouldUse(out act, mustUse: true)) return true;
@@ -382,8 +392,8 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
         }
         else if (JobGauge.Eukrasia)
         {
-            if (DefenseAreaGCD(lastComboActionID, out act)) return true;
-            if (DefenseSingleGCD(lastComboActionID, out act)) return true;
+            if (DefenseAreaGCD(out act)) return true;
+            if (DefenseSingleGCD(out act)) return true;
         }
 
         //注药
@@ -451,7 +461,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealSingleGCD(out IAction act)
     {
         //诊断
         if (Actions.EukrasianDiagnosis.ShouldUse(out act))
@@ -479,7 +489,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge>
         return false;
     }
 
-    private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealAreaGCD(out IAction act)
     {
         if (TargetUpdater.PartyMembersAverHP < 0.55f)
         {

@@ -8,12 +8,22 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.Tank.GNBCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
+internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
 {
-    internal override uint JobID => 37;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 37;
     internal override bool HaveShield => Player.HaveStatus(ObjectStatus.RoyalGuard);
     private protected override BaseAction Shield => Actions.RoyalGuard;
 
@@ -175,7 +185,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
                 OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ID,
             };          
     }
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体治疗, $"{Actions.Aurora}"},
         {DescType.范围防御, $"{Actions.HeartofLight}"},
@@ -183,7 +193,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         {DescType.移动技能, $"{Actions.RoughDivide}"},
     };
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //烈牙
         if (CanUseGnashingFang(out act)) return true;
@@ -205,15 +215,15 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge>
         if (CanUseBurstStrike(out act)) return true;
 
         //AOE
-        if (Actions.DemonSlaughter.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.DemonSlice.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.DemonSlaughter.ShouldUse(out act)) return true;
+        if (Actions.DemonSlice.ShouldUse(out act)) return true;
 
         //单体三连
         //如果烈牙剩0.5秒冷却好,不释放基础连击,主要因为技速不同可能会使烈牙延后太多所以判定一下
         if (Actions.GnashingFang.IsCoolDown && Actions.GnashingFang.WillHaveOneCharge((float) 0.5, false) && Actions.GnashingFang.EnoughLevel) return false;
-        if (Actions.SolidBarrel.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.BrutalShell.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.KeenEdge.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.SolidBarrel.ShouldUse(out act)) return true;
+        if (Actions.BrutalShell.ShouldUse(out act)) return true;
+        if (Actions.KeenEdge.ShouldUse(out act)) return true;
 
         
         if (CommandController.Move && MoveAbility(1, out act)) return true;

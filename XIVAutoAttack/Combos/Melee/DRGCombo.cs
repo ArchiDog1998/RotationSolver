@@ -11,12 +11,22 @@ using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using static XIVAutoAttack.Combos.Melee.DRGCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
+internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
 {
-    internal override uint JobID => 22;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 22;
     private static bool safeMove = false;
 
     internal struct Actions
@@ -180,7 +190,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
             .SetBool("DRG_SafeMove", true, "安全位移");
     }
 
-    internal override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    public override SortedList<DescType, string> Description => new SortedList<DescType, string>()
     {
         {DescType.移动技能, $"{Actions.SpineshatterDive}, {Actions.DragonfireDive}"},
     };
@@ -267,14 +277,14 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         safeMove = Config.GetBoolByName("DRG_SafeMove");
 
         #region 群伤
-        if (Actions.CoerthanTorment.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.SonicThrust.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.DoomSpike.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.CoerthanTorment.ShouldUse(out act)) return true;
+        if (Actions.SonicThrust.ShouldUse(out act)) return true;
+        if (Actions.DoomSpike.ShouldUse(out act)) return true;
 
         #endregion
 
@@ -293,13 +303,13 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge>
         //看看是否需要续Buff
         if (!Player.WillStatusEndGCD(5, 0, true, ObjectStatus.PowerSurge))
         {
-            if (Actions.FullThrust.ShouldUse(out act, lastComboActionID)) return true;
-            if (Actions.VorpalThrust.ShouldUse(out act, lastComboActionID)) return true;
-            if (Actions.ChaosThrust.ShouldUse(out act, lastComboActionID)) return true;
+            if (Actions.FullThrust.ShouldUse(out act)) return true;
+            if (Actions.VorpalThrust.ShouldUse(out act)) return true;
+            if (Actions.ChaosThrust.ShouldUse(out act)) return true;
         }
         else
         {
-            if (Actions.Disembowel.ShouldUse(out act, lastComboActionID)) return true;
+            if (Actions.Disembowel.ShouldUse(out act)) return true;
         }
         if (Actions.TrueThrust.ShouldUse(out act)) return true;
 

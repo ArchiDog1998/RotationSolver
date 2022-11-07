@@ -47,14 +47,14 @@ namespace XIVAutoAttack.Windows
         {
             const int COUNT = 20;
 
-            if (CustomCombo.EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
+            if (CustomCombo<Enum>.EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
             if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth)) return;
-            if (CustomCombo.ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
+            if (CustomCombo<Enum>.ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
 
-            float radius = CustomCombo.EnemyLocationTarget.HitboxRadius + 3.5f;
-            float rotation = CustomCombo.EnemyLocationTarget.Rotation;
+            float radius = CustomCombo<Enum>.EnemyLocationTarget.HitboxRadius + 3.5f;
+            float rotation = CustomCombo<Enum>.EnemyLocationTarget.Rotation;
 
-            Vector3 pPosition = CustomCombo.EnemyLocationTarget.Position;
+            Vector3 pPosition = CustomCombo<Enum>.EnemyLocationTarget.Position;
             if (!Service.GameGui.WorldToScreen(pPosition, out var scrPos)) return;
 
 
@@ -62,7 +62,7 @@ namespace XIVAutoAttack.Windows
             List<Vector2> pts = new List<Vector2>(2 * COUNT + 2);
 
             pts.Add(scrPos);
-            switch (CustomCombo.ShouldLocation)
+            switch (CustomCombo<Enum>.ShouldLocation)
             {
                 case EnemyLocation.Side:
                     SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
@@ -77,7 +77,7 @@ namespace XIVAutoAttack.Windows
             }
             pts.Add(scrPos);
 
-            bool wrong = CustomCombo.ShouldLocation != CustomCombo.EnemyLocationTarget.FindEnemyLocation();
+            bool wrong = CustomCombo<Enum>.ShouldLocation != CustomCombo<Enum>.EnemyLocationTarget.FindEnemyLocation();
             var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
 
             pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));

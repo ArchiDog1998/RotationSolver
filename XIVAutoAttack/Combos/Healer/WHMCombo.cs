@@ -9,13 +9,22 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using Action = Lumina.Excel.GeneratedSheets.Action;
+using static XIVAutoAttack.Combos.Healer.WHMCombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal sealed class WHMCombo : JobGaugeCombo<WHMGauge>
+internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
 {
-    internal override uint JobID => 24;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 24;
     private protected override BaseAction Raise => Actions.Raise;
     internal struct Actions
     {
@@ -105,19 +114,19 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge>
             //节制
             Temperance = new (16536, true);
     }
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.范围治疗, $"GCD: {Actions.AfflatusRapture}, {Actions.Medica2}, {Actions.Cure3}, {Actions.Medica}\n                     能力: {Actions.Asylum}, {Actions.Assize}"},
         {DescType.单体治疗, $"GCD: {Actions.AfflatusSolace}, {Actions.Regen}, {Actions.Cure2}, {Actions.Cure}\n                     能力: {Actions.Tetragrammaton}"},
         {DescType.范围防御, $"{Actions.Temperance}, {Actions.LiturgyoftheBell}"},
         {DescType.单体防御, $"{Actions.DivineBenison}, {Actions.Aquaveil}"},
     };
-    private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealAreaGCD(out IAction act)
     {
         //狂喜之心
         if (Actions.AfflatusRapture.ShouldUse(out act)) return true;
         //加Hot
-        if (Actions.Medica2.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Medica2.ShouldUse(out act)) return true;
 
         //float cure3 = GetBestHeal(Actions.Cure3.Action, 600);
         //float medica = GetBestHeal(Actions.Medica.Action, 300);
@@ -234,7 +243,7 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealSingleGCD(out IAction act)
     {
         //安慰之心
         if (Actions.AfflatusSolace.ShouldUse(out act)) return true;
@@ -243,7 +252,7 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge>
         if (Actions.Regen.ShouldUse(out act)) return true;
 
         //救疗
-        if (Actions.Cure2.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Cure2.ShouldUse(out act)) return true;
 
         //治疗
         if (Actions.Cure.ShouldUse(out act)) return true;
@@ -251,7 +260,7 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //苦难之心
         if (Actions.AfflatusMisery.ShouldUse(out act, mustUse: true)) return true;
