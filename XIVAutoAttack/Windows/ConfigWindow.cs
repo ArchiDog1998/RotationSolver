@@ -459,6 +459,17 @@ internal class ConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        bool attackSafeMode = Service.Configuration.AttackSafeMode;
+                        if (ImGui.Checkbox("攻击安全模式", ref attackSafeMode))
+                        {
+                            Service.Configuration.AttackSafeMode = attackSafeMode;
+                            Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("绝对保证在单目标的时候不打AOE，就算大招也是。但是如果怪的数量达到标准依然会使用AOE。");
+                        }
+
                         if (!isOnlyGCD)
                         {
                             Spacing();

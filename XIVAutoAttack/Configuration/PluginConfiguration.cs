@@ -55,6 +55,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool KeyBoardNoise { get; set; } = true;
     public bool UseAreaAbilityFriendly { get; set; } = true;
     public bool AutoStartCountdown { get; set; } = true;
+    public bool AttackSafeMode { get; set; } = false;
     public float ObjectMinRadius { get; set; } = 0f;
     public float HealthDifference { get; set; } = 0.25f;
     public float HealthAreaAbility { get; set; } = 0.75f;

@@ -15,6 +15,7 @@ changelog: |-
   ## 功能增加
   - 增加了Combo时间来不及不打Combo的功能
   - 增加了倒计时自动开启AutoAttack的功能
+  - 增加了攻击安全模式，这个模式下单目标永远不打AOE
   ## API
   - 支持倒计时技能释放，请覆写CountDownAction函数
   - 移除lastComboActionID参数
