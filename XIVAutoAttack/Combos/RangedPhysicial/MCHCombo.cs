@@ -99,6 +99,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 
             //弹射
             Ricochet = new(2890),
+            aaa = new(7557),
 
             //枪管加热
             BarrelStabilizer = new(7414)
@@ -185,6 +186,12 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         return false;
     }
 
+    private protected override IAction CountDownAction(float remainTime)
+    {
+        //提前5秒整备
+        if (remainTime <= 5 && Actions.Reassemble.ShouldUse(out _, emptyOrSkipCombo:true)) return Actions.Reassemble;
+        return base.CountDownAction(remainTime);
+    }
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //等级小于钻头时,绑定狙击弹

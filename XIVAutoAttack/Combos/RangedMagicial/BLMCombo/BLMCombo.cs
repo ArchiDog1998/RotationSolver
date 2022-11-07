@@ -21,7 +21,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         internal override uint JobID => 25;
         protected override bool CanHealSingleAbility => false;
 
-        //private static bool inOpener = false;
         private static bool iceOpener = false;
         private static bool fireOpener = true;
         private static string MyCommand = "";
@@ -47,15 +46,15 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         /// <summary>
         /// 标准循环
         /// </summary>
-        private bool StandardLoop => Config.GetComboByName("UseLoopManager") == 0;
+        private bool StandardLoop => Config.GetComboByName("UseLoop") == 0;
         /// <summary>
         /// 双星灵循环
         /// </summary>
-        private bool DoubleTranspose => Config.GetComboByName("UseLoopManager") == 1;
+        private bool DoubleTranspose => Config.GetComboByName("UseLoop") == 1;
         /// <summary>
         /// 进阶压冰循环
         /// </summary>
-        private bool FewBlizzard => Config.GetComboByName("UseLoopManager") == 2;
+        private bool FewBlizzard => Config.GetComboByName("UseLoop") == 2;
 
 
         internal override SortedList<DescType, string> Description => new()
@@ -68,12 +67,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         private protected override ActionConfiguration CreateConfiguration()
         {
             return base.CreateConfiguration()
-                        .SetCombo("UseLoopManager", 0, new string[]
-                        {
-                            "标准循环", "双星灵循环", "进阶压冰循环",
-
-                        }, "循环管理")
-                        //.SetBool("DoubleTranspose", true, "双星灵循环")
+                        .SetCombo("UseLoop", 1, new string[] { "标准循环", "星灵循环", "压冰循环" }, "循环管理")
                         .SetBool("AutoLeylines", true, "自动上黑魔纹");
         }
 
@@ -97,6 +91,13 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             MPYuCe(2);
 
             base.UpdateInfo();
+        }
+
+        private protected override IAction CountDownAction(float remainTime)
+        {
+            //战斗前激情
+            if (remainTime <= 21 && Actions.Sharpcast.ShouldUse(out var act)) return act;
+            return base.CountDownAction(remainTime);
         }
 
         private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
@@ -132,11 +133,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
         private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
         {
-            //if (nextGCD == Actions.Thunder && JobGauge.InUmbralIce)
-            //{
-            //    if (Actions.Sharpcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-            //}
-
 
             act = null;
             return false;
@@ -144,8 +140,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
         private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
         {
-            //星灵移位
-            //if (CanUseTranspose(ActionUpdater.AbilityRemainCount, out act)) return true;
             //起手
             if (OpenerManager(out act)) return true;
 
@@ -170,16 +164,19 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         }
 
         private protected override bool AttackAbility(byte abilityRemain, out IAction act)
-        {
-           
+        {          
             //三连咏唱
             if (CanUseTriplecast(out act)) return true;
+
             //魔泉
             if (Actions.Manafont.ShouldUse(out act) && IsLastSpell(true, Actions.Despair, Actions.Xenoglossy) && Player.CurrentMp == 0 && JobGauge.InAstralFire) return true;
+            
             //星灵移位
             if (CanUseTranspose(abilityRemain, out act)) return true;
+
             //醒梦
             if (CanUseLucidDreaming(out act)) return true;
+
             //即刻
             if (CanUseSwiftcast(out act)) return true;
 
@@ -191,11 +188,13 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             {
                 if (Player.HaveStatus(ObjectStatus.Triplecast) && Player.FindStatusStack(ObjectStatus.Triplecast) <= 1) return true;
 
+                if (!Player.HaveStatus(ObjectStatus.Triplecast) && JobGauge.InUmbralIce && IsLastSpell(true, Actions.Thunder, Actions.Xenoglossy)) return true;
+
                 if (!Player.HaveStatus(ObjectStatus.Triplecast) && JobGauge.InAstralFire) return true;
             }
+
             //详述
             if (Actions.Amplifier.ShouldUse(out act)) return true;
-
 
             act = null;
             return false;
