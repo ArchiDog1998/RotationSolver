@@ -73,7 +73,7 @@ internal sealed class IconReplacer : IDisposable
     private static void SetStaticValues()
     {
         _customCombos = (from t in Assembly.GetAssembly(typeof(ICustomCombo)).GetTypes()
-                         where t.GetInterfaces().Contains(typeof(ICustomCombo))
+                         where t.GetInterfaces().Contains(typeof(ICustomCombo)) && !t.IsAbstract && !t.IsInterface
                          select (ICustomCombo)Activator.CreateInstance(t)).ToArray();
 
         _customCombosDict = new SortedList<Role, ICustomCombo[]>
