@@ -133,7 +133,7 @@ namespace XIVAutoAttack.Data
 
         };
 
-        public static uint GetJobIcon(CustomCombo combo)
+        internal static uint GetJobIcon(ICustomCombo combo)
         {
             IconType type = IconType.Gold;
             switch (combo.Role)

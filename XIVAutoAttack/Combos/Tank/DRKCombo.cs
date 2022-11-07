@@ -8,12 +8,22 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.Tank.DRKCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
+internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
 {
-    internal override uint JobID => 32;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 32;
     internal override bool HaveShield => Player.HaveStatus(ObjectStatus.Grit);
     private protected override BaseAction Shield => Actions.Grit;
     protected override bool CanHealSingleAbility => false;
@@ -153,7 +163,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
                 BuffsNeed = new [] { ObjectStatus.SaltedEarth },
             };
     }
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体治疗, $"{Actions.TheBlackestNight}，目标为被打的小可怜"},
         {DescType.范围防御, $"{Actions.DarkMissionary}"},
@@ -182,7 +192,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {       
         //寂灭
         if (JobGauge.Blood >= 80 || Player.HaveStatus(ObjectStatus.Delirium))
@@ -202,13 +212,13 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge>
         }
 
         //AOE
-        if (Actions.StalwartSoul.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.StalwartSoul.ShouldUse(out act)) return true;
         if (Actions.Unleash.ShouldUse(out act)) return true;
 
         //单体
-        if (Actions.Souleater.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.SyphonStrike.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.HardSlash.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Souleater.ShouldUse(out act)) return true;
+        if (Actions.SyphonStrike.ShouldUse(out act)) return true;
+        if (Actions.HardSlash.ShouldUse(out act)) return true;
 
         if (CommandController.Move && MoveAbility(1, out act)) return true;
         if (Actions.Unmend.ShouldUse(out act))

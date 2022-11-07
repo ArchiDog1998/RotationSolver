@@ -9,12 +9,22 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.RangedPhysicial.MCHCombo;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
-internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
+internal sealed class MCHCombo : JobGaugeCombo<MCHGauge, CommandType>
 {
-    internal override uint JobID => 31;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 31;
 
     /// <summary>
     /// 4人本小怪快死了
@@ -124,7 +134,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
                 },
             };
     }
-    internal override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> Description => new()
     {
         {DescType.循环说明, $"标准循环会在野火前攒热量来打偶数分钟爆发.\n                     AOE和攻击小怪时不会释放野火"},
         {DescType.爆发技能, $"{Actions.Wildfire}"},
@@ -147,7 +157,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
         return false;
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //不在战斗中时重置起手
         if (!InCombat)
@@ -178,9 +188,9 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge>
 
         //单体常规GCD
         if (JobGauge.IsOverheated && Actions.HeatBlast.ShouldUse(out act)) return true;
-        if (Actions.CleanShot.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.SlugShot.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.SplitShot.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.CleanShot.ShouldUse(out act)) return true;
+        if (Actions.SlugShot.ShouldUse(out act)) return true;
+        if (Actions.SplitShot.ShouldUse(out act)) return true;
 
         return false;
     }

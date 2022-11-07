@@ -45,11 +45,11 @@ namespace XIVAutoAttack.Updaters
 
             try
             {
-                foreach (CustomCombo customCombo in IconReplacer.CustomCombos)
+                foreach (ICustomCombo customCombo in IconReplacer.CustomCombos)
                 {
                     if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
 
-                    if (customCombo.TryInvoke(Service.Address.LastComboAction, out var newAction))
+                    if (customCombo.TryInvoke(out var newAction))
                     {
                         NextAction = newAction;
                         return;

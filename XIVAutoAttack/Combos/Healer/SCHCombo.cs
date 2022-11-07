@@ -9,12 +9,22 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.Healer.SCHCombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
+internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
 {
-    internal override uint JobID => 28;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 28;
 
     private protected override BaseAction Raise => SMNCombo.Actions.Resurrection;
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
@@ -184,7 +194,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
     }
-    internal override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> Description => new()
     {
         {DescType.范围治疗, $"GCD: {Actions.Succor}\n                     能力: {Actions.SacredSoil}, {Actions.SummonSeraph}, {Actions.WhisperingDawn}, {Actions.FeyBlessing}, {Actions.Indomitability}"},
         {DescType.单体治疗, $"GCD: {Actions.Adloquium}, {Actions.Physick}\n                     能力: {Actions.SacredSoil}, {Actions.Aetherpact}, {Actions.Protraction}, {Actions.Excogitation}, {Actions.Lustrate}"},
@@ -218,7 +228,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //召唤小仙女
         if (Actions.SummonEos.ShouldUse(out act)) return true;
@@ -237,7 +247,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealSingleGCD(out IAction act)
     {
         //鼓舞激励之策
         if (Actions.Adloquium.ShouldUse(out act)) return true;
@@ -280,7 +290,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
         return false;
     }
 
-    private protected override bool HealAreaGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealAreaGCD(out IAction act)
     {
         //士气高扬之策
         if (Actions.Succor.ShouldUse(out act)) return true;
@@ -310,7 +320,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge>
         return false;
     }
 
-    private protected override bool DefenseAreaGCD(uint lastComboActionID, out IAction act)
+    private protected override bool DefenseAreaGCD(out IAction act)
     {
         //士气高扬之策
         if (Actions.Succor.ShouldUse(out act)) return true;

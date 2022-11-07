@@ -9,13 +9,13 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    public abstract partial class CustomCombo : IDisposable
+    public abstract partial class CustomCombo<TCmd> : ICustomCombo, IDisposable where TCmd : Enum
     {
         internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
-        internal abstract uint JobID { get; }
-        internal Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
+        public abstract uint JobID { get; }
+        public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
 
-        internal string JobName => XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Name;
+        public string JobName => XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Name;
 
         internal static bool IsTargetDying
         {
@@ -50,7 +50,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 }
             }
         }
-        internal virtual SortedList<DescType, string> Description { get; } = new SortedList<DescType, string>();
+        public virtual SortedList<DescType, string> Description { get; } = new SortedList<DescType, string>();
 
 
         internal static bool HaveSwift => Player.HaveStatus(GeneralActions.Swiftcast.BuffsProvide);
@@ -58,13 +58,13 @@ namespace XIVAutoAttack.Combos.CustomCombo
         internal virtual bool HaveShield => true;
 
 
-        internal TextureWrap Texture { get; private set; }
+        public TextureWrap Texture { get; private set; }
         private protected CustomCombo()
         {
             Texture = Service.DataManager.GetImGuiTextureIcon(IconSet.GetJobIcon(this));
         }
 
-        internal ActionConfiguration Config
+        public ActionConfiguration Config
         {
             get
             {

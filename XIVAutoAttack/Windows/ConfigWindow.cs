@@ -44,9 +44,9 @@ internal class ConfigWindow : Window
     }
     private static readonly Dictionary<Role, string> _roleDescriptionValue = new Dictionary<Role, string>()
     {
-        {Role.防护, $"{CustomCombo.DescType.单体防御} → {CustomCombo.GeneralActions.Rampart}, {CustomCombo.GeneralActions.Reprisal}" },
-        {Role.近战, $"{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Feint}" },
-        {Role.远程, $"法系{CustomCombo.DescType.范围防御} → {CustomCombo.GeneralActions.Addle}" },
+        {Role.防护, $"{DescType.单体防御} → {CustomCombo<Enum>.GeneralActions.Rampart}, {CustomCombo<Enum>.GeneralActions.Reprisal}" },
+        {Role.近战, $"{DescType.范围防御} → {CustomCombo<Enum>.GeneralActions.Feint}" },
+        {Role.远程, $"法系{DescType.范围防御} → {CustomCombo<Enum>.GeneralActions.Addle}" },
     };
 
     private static string ToName(VirtualKey k)
@@ -198,6 +198,17 @@ internal class ConfigWindow : Window
                                         ImGui.SameLine();
                                         Spacing();
                                         CommandHelp(comboItem.name);
+                                    }
+                                }
+
+                                if (canAddButton)
+                                {
+                                    ImGui.NewLine();
+
+                                    foreach (var customCMD in combo.CommandShow)
+                                    {
+                                        Spacing();
+                                        CommandHelp(customCMD.Key, customCMD.Value);
                                     }
                                 }
                                 ImGui.PopStyleVar();

@@ -70,7 +70,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供，不判断AOE技能的敌人数量是否达标，并且如果有层数，放完所有层数。</param>
         /// <param name="emptyOrSkipCombo">如果有层数，放完所有层数，不判断是否为Combo<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
         /// <returns>这个技能能不能用</returns>
-        public unsafe virtual bool ShouldUse(out IAction act, uint lastAct = uint.MaxValue, bool mustUse = false, bool emptyOrSkipCombo = false)
+        public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
             //等级不够。
@@ -118,7 +118,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             {
                 foreach (var id in OtherIDsNot)
                 {
-                    if (lastAct == id) return false;
+                    if (Service.Address.LastComboAction == id) return false;
                 }
             }
 
@@ -134,10 +134,10 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
                 uint[] comboActions = _action.ActionCombo.Row == 0 ? new uint[0] : new uint[] { _action.ActionCombo.Row };
                 if (OtherIDsCombo != null) comboActions = comboActions.Union(OtherIDsCombo).ToArray();
-                bool findCombo = lastAct == uint.MaxValue;
+                bool findCombo = false;
                 if (!findCombo) foreach (var comboAction in comboActions)
                     {
-                        if (comboAction == lastAct)
+                        if (comboAction == Service.Address.LastComboAction)
                         {
                             findCombo = true;
                             break;
@@ -168,7 +168,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (CastTime > 0 && MovingUpdater.IsMoving)
                 {
-                    if (!Service.ClientState.LocalPlayer.HaveStatus(CustomCombo.GeneralActions.Swiftcast.BuffsProvide))
+                    if (!Service.ClientState.LocalPlayer.HaveStatus(CustomCombo<Enum>.GeneralActions.Swiftcast.BuffsProvide))
                     {
                         return false;
                     }

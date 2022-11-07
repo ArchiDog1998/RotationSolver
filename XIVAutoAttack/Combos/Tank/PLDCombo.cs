@@ -9,12 +9,22 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.Tank.PLDCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
+internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
 {
-    internal override uint JobID => 19;
+    internal enum CommandType : byte
+    {
+        None,
+    }
+
+    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    {
+        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
+    };
+    public override uint JobID => 19;
 
     internal override bool HaveShield => Player.HaveStatus(ObjectStatus.IronWill);
 
@@ -197,7 +207,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         //盾牌猛击
         //ShieldBash = new BaseAction(16),
     }
-    internal override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> Description => new ()
     {
         {DescType.单体治疗, $"{Actions.Clemency}"},
         {DescType.范围防御, $"{Actions.DivineVeil}, {Actions.PassageofArms}"},
@@ -205,19 +215,19 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         {DescType.移动技能, $"{Actions.Intervene}"},
     };
 
-    private protected override bool GeneralGCD(uint lastComboActionID, out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
         //三个大招
-        if (Actions.BladeofValor.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
+        if (Actions.BladeofValor.ShouldUse(out act, mustUse: true)) return true;
         if (Actions.BladeofFaith.ShouldUse(out act, mustUse: true)) return true;
-        if (Actions.BladeofTruth.ShouldUse(out act, lastComboActionID, mustUse: true)) return true;
+        if (Actions.BladeofTruth.ShouldUse(out act, mustUse: true)) return true;
 
         //魔法三种姿势
         if (CanUseConfiteor(out act)) return true;
 
         //AOE 二连
-        if (Actions.Prominence.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.TotalEclipse.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.Prominence.ShouldUse(out act)) return true;
+        if (Actions.TotalEclipse.ShouldUse(out act)) return true;
 
         //赎罪剑
         if (Actions.Atonement.ShouldUse(out act))
@@ -230,10 +240,10 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
             if (SlowLoop) return true;
         }
         //单体三连
-        if (Actions.GoringBlade.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.RageofHalone.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.RiotBlade.ShouldUse(out act, lastComboActionID)) return true;
-        if (Actions.FastBlade.ShouldUse(out act, lastComboActionID)) return true;
+        if (Actions.GoringBlade.ShouldUse(out act)) return true;
+        if (Actions.RageofHalone.ShouldUse(out act)) return true;
+        if (Actions.RiotBlade.ShouldUse(out act)) return true;
+        if (Actions.FastBlade.ShouldUse(out act)) return true;
 
         //投盾
         if (CommandController.Move && MoveAbility(1, out act)) return true;
@@ -250,7 +260,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge>
         return false;
     }
 
-    private protected override bool HealSingleGCD(uint lastComboActionID, out IAction act)
+    private protected override bool HealSingleGCD(out IAction act)
     {
         //深仁厚泽
         if (Actions.Clemency.ShouldUse(out act)) return true;

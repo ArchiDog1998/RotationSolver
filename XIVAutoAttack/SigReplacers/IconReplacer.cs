@@ -13,7 +13,6 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.CustomCombo.CustomCombo;
 
 namespace XIVAutoAttack.SigReplacers;
 
@@ -25,8 +24,8 @@ internal sealed class IconReplacer : IDisposable
 
     private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
 
-    private static SortedList<Role, CustomCombo[]> _customCombosDict;
-    internal static SortedList<Role, CustomCombo[]> CustomCombosDict
+    private static SortedList<Role, ICustomCombo[]> _customCombosDict;
+    internal static SortedList<Role, ICustomCombo[]> CustomCombosDict
     {
         get
         {
@@ -37,8 +36,8 @@ internal sealed class IconReplacer : IDisposable
             return _customCombosDict;
         }
     }
-    private static CustomCombo[] _customCombos;
-    internal static CustomCombo[] CustomCombos
+    private static ICustomCombo[] _customCombos;
+    internal static ICustomCombo[] CustomCombos
     {
         get
         {
@@ -73,11 +72,11 @@ internal sealed class IconReplacer : IDisposable
 
     private static void SetStaticValues()
     {
-        _customCombos = (from t in Assembly.GetAssembly(typeof(CustomCombo)).GetTypes()
-                         where t.BaseType?.BaseType == typeof(CustomCombo)
-                         select (CustomCombo)Activator.CreateInstance(t)).ToArray();
+        _customCombos = (from t in Assembly.GetAssembly(typeof(ICustomCombo)).GetTypes()
+                         where t.GetInterfaces().Contains(typeof(ICustomCombo))
+                         select (ICustomCombo)Activator.CreateInstance(t)).ToArray();
 
-        _customCombosDict = new SortedList<Role, CustomCombo[]>
+        _customCombosDict = new SortedList<Role, ICustomCombo[]>
             (_customCombos.GroupBy(g => g.Role).ToDictionary(set => set.Key, set => set.OrderBy(i => i.JobID).ToArray()));
     }
 
@@ -98,7 +97,7 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
-    internal static BaseAction KeyActionID => GeneralActions.Repose;
+    internal static BaseAction KeyActionID => CustomCombo<Enum>.GeneralActions.Repose;
 
     private uint RemapActionID(uint actionID)
     {
