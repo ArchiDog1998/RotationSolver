@@ -11,6 +11,7 @@ changelog: |-
   ## 错误修复
   ## 功能增加
   - 增加了Combo时间来不及不打Combo的功能
+  - 增加了倒计时自动开启AutoAttack的功能
   ## API
   - 支持倒计时技能释放，请覆写CountDownAction函数
 

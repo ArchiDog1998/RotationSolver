@@ -62,6 +62,12 @@ namespace XIVAutoAttack.Updaters
 
             }
             NextAction = null;
+
+            //Auto start at count Down.
+            if(Service.Configuration.AutoStartCountdown && CountDown.CountDownTime > 0)
+            {
+                if(!CommandController.AutoAttack) CommandController.AutoAttack = true;
+            }
         }
 
         internal static void UpdateActionInfo()

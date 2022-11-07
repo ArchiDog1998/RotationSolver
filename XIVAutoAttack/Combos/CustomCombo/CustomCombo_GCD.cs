@@ -228,7 +228,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         }
 
         /// <summary>
-        /// 在倒计时的时候返回这个函数里面的内容。
+        /// 在倒计时的时候返回这个函数里面的技能。
         /// </summary>
         /// <param name="remainTime">距离战斗开始的时间(s)</param>
         /// <returns>要使用的技能</returns>

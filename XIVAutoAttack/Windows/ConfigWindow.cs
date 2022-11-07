@@ -550,6 +550,13 @@ internal class ConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("触发条件"))
                     {
+                        bool autoStartCountdown = Service.Configuration.AutoStartCountdown;
+                        if (ImGui.Checkbox("倒计时时自动打开攻击", ref autoStartCountdown))
+                        {
+                            Service.Configuration.AutoStartCountdown = autoStartCountdown;
+                            Service.Configuration.Save();
+                        }
+
                         float speed = 0.005f;
                         float healthDiff = Service.Configuration.HealthDifference;
                         if (ImGui.DragFloat("多少的HP标准差以下，可以用群疗", ref healthDiff, speed * 2, 0, 0.5f))
@@ -922,8 +929,18 @@ internal class ConfigWindow : Window
                     DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
                 }
 
-                ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
+                if (ImGui.CollapsingHeader("倒计时、按键"))
+                {
+                    ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
 
+                    foreach (var key in (VirtualKey[])Enum.GetValues(typeof(VirtualKey)))
+                    {
+                        if (Service.KeyState[key])
+                        {
+                            ImGui.Text(key.ToString());
+                        }
+                    }
+                }
             }
 #endif
 
