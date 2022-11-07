@@ -87,6 +87,8 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         private bool FindTarget(bool mustUse)
         {
+            if(Service.Configuration.AttackSafeMode) mustUse = false;
+
             _position = Service.ClientState.LocalPlayer.Position;
             var player = Service.ClientState.LocalPlayer;
 
