@@ -76,10 +76,10 @@ namespace XIVAutoAttack.SigReplacers
 
             //获得身为技能是否正确flag
             var flag = Marshal.ReadByte(effectArray + 3);
-            RecordAction(tar, action,flag);
+            RecordAction(tar, action, flag);
         }
 
-        private static unsafe void RecordAction(GameObject tar, Action action,byte flag)
+        private static unsafe void RecordAction(GameObject tar, Action action, byte flag)
         {
             var id = action.RowId;
 
@@ -107,7 +107,6 @@ namespace XIVAutoAttack.SigReplacers
             }
             _actions.Enqueue(new ActionRec(_timeLastActionUsed, action));
 
-
             //Macro
             foreach (var item in Service.Configuration.Events)
             {
@@ -121,7 +120,7 @@ namespace XIVAutoAttack.SigReplacers
             //事后骂人！
             if (Service.Configuration.SayoutLocationWrong
                 && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
-                && (flag != 0 || NINCombo.Actions.TrickAttack.ID == id && loc != tar.FindEnemyLocation() && tar.HasLocationSide())
+                && loc != tar.FindEnemyLocation() && tar.HasLocationSide()
                 && !Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))
             {
                 Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
