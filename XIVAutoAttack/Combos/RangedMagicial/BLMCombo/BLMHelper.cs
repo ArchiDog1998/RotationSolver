@@ -9,9 +9,8 @@ using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 using System.Threading;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Combos.CustomCombo;
 using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo.BLMCombo;
-
+using static XIVAutoAttack.SigReplacers.Watcher;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 {
