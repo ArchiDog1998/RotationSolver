@@ -116,14 +116,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
             }
 
-            //如果有输入上次的数据，那么上次不能是上述的ID。
-            if (OtherIDsNot != null)
-            {
-                foreach (var id in OtherIDsNot)
-                {
-                    if (Service.Address.LastComboAction == id) return false;
-                }
-            }
+
 
             //看看有没有目标，如果没有，就说明不符合条件。
             if (!FindTarget(mustUse)) return false;
@@ -133,30 +126,31 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             if (IsGeneralGCD)
             {
-                //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
-                uint[] comboActions = _action.ActionCombo?.Row != 0 ? new uint[] { _action.ActionCombo.Row } : new uint[0];
-                if (OtherIDsCombo != null) comboActions = comboActions.Union(OtherIDsCombo).ToArray();
-                bool findCombo = false;
-                foreach (var comboAction in comboActions)
+                if (!emptyOrSkipCombo)
                 {
-                    if (comboAction == Service.Address.LastComboAction)
+                    //如果有输入上次的数据，那么上次不能是上述的ID。
+                    if (OtherIDsNot != null)
                     {
-                        findCombo = true;
-                        break;
+                        if(OtherIDsNot.Contains(Service.Address.LastComboAction)) return false;
+                    }
+
+                    //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
+                    uint[] comboActions = _action.ActionCombo?.Row != 0 ? new uint[] { _action.ActionCombo.Row } : new uint[0];
+                    if (OtherIDsCombo != null) comboActions = comboActions.Union(OtherIDsCombo).ToArray();
+
+                    if (comboActions.Length > 0)
+                    {
+                        if (comboActions.Contains(Service.Address.LastComboAction))
+                        {
+                            if (Service.Address.ComboTime < ActionUpdater.WeaponRemain) return false;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                 }
 
-                if (!emptyOrSkipCombo && comboActions.Length > 0)
-                {
-                    if (findCombo)
-                    {
-                        if (Service.Address.ComboTime < ActionUpdater.WeaponRemain) return false;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
 
                 //目标已有充足的Debuff
                 if (!mustUse && TargetStatus != null)

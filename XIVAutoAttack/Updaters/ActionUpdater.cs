@@ -69,7 +69,10 @@ namespace XIVAutoAttack.Updaters
             }
             catch(Exception ex)
             {
+#if DEBUG
                 exception = ex;
+#endif
+
             }
 
             NextAction = null;
@@ -95,21 +98,18 @@ namespace XIVAutoAttack.Updaters
 
             var instance = ActionManager.Instance();
 
+            var castTotal = player.TotalCastTime;
+            castTotal = castTotal > 2.5f ? castTotal + 0.1f : castTotal;
+
             var weapontotal = instance->GetRecastTime(ActionType.Spell, 11);
-            if (player.IsCasting) weapontotal = Math.Max(weapontotal, player.TotalCastTime + 0.1f);
+            if (player.IsCasting) weapontotal = Math.Max(weapontotal, castTotal);
 
             WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Spell, 11);
             WeaponRemain = Math.Max(weapontotal - WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
 
             //确定读条时间。
-            if (WeaponElapsed < 0.3)
-            {
-                _lastCastingTotal = player.TotalCastTime;
+            if (WeaponElapsed < 0.3) _lastCastingTotal = castTotal;
 
-                //能力技就不用提前了。
-                //补上读条税
-                if (_lastCastingTotal > 0) _lastCastingTotal += 0.1f + Service.Configuration.WeaponFaster;
-            }
 
             //确认能力技的相关信息
             var interval = Service.Configuration.WeaponInterval;
