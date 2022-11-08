@@ -38,8 +38,18 @@ namespace XIVAutoAttack.Updaters
 
         internal unsafe static IAction NextAction {  get ; private set; }
 
+#if DEBUG
+        internal static Exception exception;
+#endif
+
         internal static void UpdateNextAction()
         {
+            //Auto start at count Down.
+            if (Service.Configuration.AutoStartCountdown && CountDown.CountDownTime > 0)
+            {
+                if (!CommandController.AutoAttack) CommandController.StartAttackSmart();
+            }
+
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer == null) return;
 
@@ -57,17 +67,15 @@ namespace XIVAutoAttack.Updaters
                     break;
                 }
             }
-            catch
+            catch(Exception ex)
             {
+#if DEBUG
+                exception = ex;
+#endif
 
             }
+
             NextAction = null;
-
-            //Auto start at count Down.
-            if(Service.Configuration.AutoStartCountdown && CountDown.CountDownTime > 0)
-            {
-                if(!CommandController.AutoAttack) CommandController.AutoAttack = true;
-            }
         }
 
         internal static void UpdateActionInfo()
@@ -75,7 +83,7 @@ namespace XIVAutoAttack.Updaters
             //结束战斗，那就关闭。
             if(Service.ClientState.LocalPlayer.CurrentHp == 0 
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut])
-                CommandController.AutoAttack = false;
+                CommandController.AttackCancel();
 
             InCombat = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
@@ -90,21 +98,18 @@ namespace XIVAutoAttack.Updaters
 
             var instance = ActionManager.Instance();
 
+            var castTotal = player.TotalCastTime;
+            castTotal = castTotal > 2.5f ? castTotal + 0.1f : castTotal;
+
             var weapontotal = instance->GetRecastTime(ActionType.Spell, 11);
-            if (player.IsCasting) weapontotal = Math.Max(weapontotal, player.TotalCastTime + 0.1f);
+            if (player.IsCasting) weapontotal = Math.Max(weapontotal, castTotal);
 
             WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Spell, 11);
             WeaponRemain = Math.Max(weapontotal - WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
 
             //确定读条时间。
-            if (WeaponElapsed < 0.3)
-            {
-                _lastCastingTotal = player.TotalCastTime;
+            if (WeaponElapsed < 0.3) _lastCastingTotal = castTotal;
 
-                //能力技就不用提前了。
-                //补上读条税
-                if (_lastCastingTotal > 0) _lastCastingTotal += 0.1f + Service.Configuration.WeaponFaster;
-            }
 
             //确认能力技的相关信息
             var interval = Service.Configuration.WeaponInterval;

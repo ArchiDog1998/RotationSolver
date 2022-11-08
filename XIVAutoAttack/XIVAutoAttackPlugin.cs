@@ -29,7 +29,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     private readonly WindowSystem windowSystem;
 
-    private readonly ConfigWindow configWindow;
+    private static ConfigWindow configWindow;
     //private readonly SystemSound sound;
     public string Name => "XIV Auto Attack";
 
@@ -77,7 +77,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty95]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundToDuty97]) return;
-        CommandController.AutoAttack = false;
+        CommandController.AttackCancel();
     }
 
     public void Dispose()
@@ -184,9 +184,14 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
                     break;
                 }
             default:
-                configWindow.Toggle();
+                OpenConfigWindow();
                 break;
         }
         Service.Configuration.Save();
+    }
+
+    internal static void OpenConfigWindow()
+    {
+        configWindow.Toggle();
     }
 }

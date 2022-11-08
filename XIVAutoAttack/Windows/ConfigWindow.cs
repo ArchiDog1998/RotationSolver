@@ -22,6 +22,7 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Combos.RangedPhysicial;
+using XIVAutoAttack.Combos.Tank;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -260,7 +261,7 @@ internal class ConfigWindow : Window
                     }
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("这个窗口目前用于提前提示身位，循环教学模式。");
+                        ImGui.SetTooltip("这个窗口目前用于提前提示身位。");
                     }
 
                     if (ImGui.CollapsingHeader("基础设置"))
@@ -395,6 +396,10 @@ internal class ConfigWindow : Window
                         {
                             Service.Configuration.SayoutLocationWrong = sayoutLocationWrong;
                             Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("身位错误不是很准，仅供参考。");
                         }
 
                         var str = Service.Configuration.LocationText;
@@ -914,7 +919,7 @@ internal class ConfigWindow : Window
 
                 if (ImGui.CollapsingHeader("下一个技能"))
                 {
-                    BaseAction baseAction = null;
+                    BaseAction baseAction = GNBCombo.Actions.GnashingFang;
                     baseAction ??= ActionUpdater.NextAction as BaseAction;
                     if (baseAction != null)
                     {
@@ -955,13 +960,18 @@ internal class ConfigWindow : Window
                 {
                     ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
 
-                    foreach (var key in (VirtualKey[])Enum.GetValues(typeof(VirtualKey)))
+                    if(ActionUpdater.exception != null)
                     {
-                        if (Service.KeyState[key])
-                        {
-                            ImGui.Text(key.ToString());
-                        }
+                        ImGui.Text(ActionUpdater.exception.Message);
                     }
+
+                    //foreach (var key in (VirtualKey[])Enum.GetValues(typeof(VirtualKey)))
+                    //{
+                    //    if (Service.KeyState[key])
+                    //    {
+                    //        ImGui.Text(key.ToString());
+                    //    }
+                    //}
                 }
             }
 #endif

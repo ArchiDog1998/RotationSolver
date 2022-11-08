@@ -197,7 +197,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
     {
         //烈牙
         if (CanUseGnashingFang(out act)) return true;
-     
+
         //音速破
         if (CanUseSonicBreak(out act)) return true;
 
@@ -205,8 +205,8 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
         if (CanUseDoubleDown(out act)) return true;
 
         //烈牙后二连
-        if (Actions.WickedTalon.ShouldUse(out act)) return true;
-        if (Actions.SavageClaw.ShouldUse(out act)) return true;
+        if (Actions.WickedTalon.ShouldUse(out act, emptyOrSkipCombo:true)) return true;
+        if (Actions.SavageClaw.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //命运之环 AOE
         if (Actions.FatedCircle.ShouldUse(out act)) return true;
@@ -220,19 +220,17 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
 
         //单体三连
         //如果烈牙剩0.5秒冷却好,不释放基础连击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-        if (Actions.GnashingFang.IsCoolDown && Actions.GnashingFang.WillHaveOneCharge((float) 0.5, false) && Actions.GnashingFang.EnoughLevel) return false;
+        if (Actions.GnashingFang.IsCoolDown && Actions.GnashingFang.WillHaveOneCharge((float)0.5, false) && Actions.GnashingFang.EnoughLevel) return false;
         if (Actions.SolidBarrel.ShouldUse(out act)) return true;
         if (Actions.BrutalShell.ShouldUse(out act)) return true;
         if (Actions.KeenEdge.ShouldUse(out act)) return true;
 
-        
         if (CommandController.Move && MoveAbility(1, out act)) return true;
 
         if (Actions.LightningShot.ShouldUse(out act))
         {
             if (InDungeonsMiddle && Actions.LightningShot.Target.DistanceToPlayer() > 3) return true;
         }
-
         return false;
     }
 
@@ -240,7 +238,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
     {
         //超火流星 如果谢不够了。
         if (Actions.Superbolide.ShouldUse(out act)) return true;
-        return false;
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
@@ -281,6 +279,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
             if (Actions.RoughDivide.ShouldUse(out act)) return true;
             if (Player.HaveStatus(ObjectStatus.NoMercy) && Actions.RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
+        act = null;
         return false;
     }
 

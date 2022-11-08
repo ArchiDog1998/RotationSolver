@@ -9,16 +9,13 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 用户宏更改设置Combo支持直接输入名称
-  - 身为提示改回原来的方案
-  ## 功能增加
-  - 增加了Combo时间来不及不打Combo的功能
-  - 增加了倒计时自动开启AutoAttack的功能
-  - 增加了攻击安全模式，这个模式下单目标永远不打AOE
-  ## API
-  - 支持倒计时技能释放，请覆写CountDownAction函数
-  - 移除lastComboActionID参数
-  - 添加自定义宏框架
+  - 调整了倒计时自动开启战斗的提示。
+  - 禁止充能形能力技连续使用。
+  - 修复了机工。
+  = 增加黑魔循环选项(依然是测试版,有bug会卡壳,谨慎使用)
+  ## 功能新增
+  - 命令输入错误的时候直接打开帮助窗口。
+  - 增加白魔蓝花满了就放的功能。
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

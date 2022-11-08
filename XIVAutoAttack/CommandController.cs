@@ -44,7 +44,7 @@ namespace XIVAutoAttack
         internal static bool AutoAttack
         {
             get => _autoAttack;
-            set
+            private set
             {
                 if (_autoAttack != value)
                 {
@@ -244,7 +244,7 @@ namespace XIVAutoAttack
                 return Service.Configuration.TargetingTypes[Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count];
             }
         }
-        private static void StartAttackSmart()
+        internal static void StartAttackSmart()
         {
             if (!AutoAttack)
             {
@@ -317,6 +317,11 @@ namespace XIVAutoAttack
             return;
         }
 
+        internal static void AttackCancel()
+        {
+            AutoAttack = false;
+        }
+
         internal static void DoAutoAttack(string str)
         {
             switch (str)
@@ -356,7 +361,7 @@ namespace XIVAutoAttack
                     AutoAttack = true;
                     return;
                 case "AttackCancel":
-                    AutoAttack = false;
+                    AttackCancel();
                     return;
                 case "AutoBreak":
                     Service.Configuration.AutoBreak = !Service.Configuration.AutoBreak;
@@ -422,6 +427,8 @@ namespace XIVAutoAttack
                         break;
                     }
                     Service.ChatGui.PrintError("无法识别：" + str);
+                    Service.ChatGui.PrintError("已开启设置界面");
+                    XIVAutoAttackPlugin.OpenConfigWindow();
                     return;
             }
         }
