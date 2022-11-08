@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -106,10 +107,12 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
                 else
                 {
+                    //不能连续使用
+                    if (Watcher.LastAction == AdjustedID) return false;
+
                     //冷却时间没超过一成且下一个Ability前不能转好
                     if (!HaveOneCharge && !this.WillHaveOneCharge(ActionUpdater.AbilityRemain, false))
                         return false;
-                    //if (!HaveOneCharge) return false;
                 }
             }
 
@@ -125,24 +128,23 @@ namespace XIVAutoAttack.Actions.BaseAction
             //看看有没有目标，如果没有，就说明不符合条件。
             if (!FindTarget(mustUse)) return false;
 
-
             //用于自定义的要求没达到
             if (OtherCheck != null && !OtherCheck(Target)) return false;
 
             if (IsGeneralGCD)
             {
                 //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
-                uint[] comboActions = _action.ActionCombo.Row == 0 ? new uint[0] : new uint[] { _action.ActionCombo.Row };
+                uint[] comboActions = _action.ActionCombo?.Row != 0 ? new uint[] { _action.ActionCombo.Row } : new uint[0];
                 if (OtherIDsCombo != null) comboActions = comboActions.Union(OtherIDsCombo).ToArray();
                 bool findCombo = false;
-                if (!findCombo) foreach (var comboAction in comboActions)
+                foreach (var comboAction in comboActions)
+                {
+                    if (comboAction == Service.Address.LastComboAction)
                     {
-                        if (comboAction == Service.Address.LastComboAction)
-                        {
-                            findCombo = true;
-                            break;
-                        }
+                        findCombo = true;
+                        break;
                     }
+                }
 
                 if (!emptyOrSkipCombo && comboActions.Length > 0)
                 {
@@ -154,7 +156,6 @@ namespace XIVAutoAttack.Actions.BaseAction
                     {
                         return false;
                     }
-                    if (!findCombo) return false;
                 }
 
                 //目标已有充足的Debuff

@@ -38,8 +38,18 @@ namespace XIVAutoAttack.Updaters
 
         internal unsafe static IAction NextAction {  get ; private set; }
 
+#if DEBUG
+        internal static Exception exception;
+#endif
+
         internal static void UpdateNextAction()
         {
+            //Auto start at count Down.
+            if (Service.Configuration.AutoStartCountdown && CountDown.CountDownTime > 0)
+            {
+                if (!CommandController.AutoAttack) CommandController.StartAttackSmart();
+            }
+
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer == null) return;
 
@@ -57,17 +67,12 @@ namespace XIVAutoAttack.Updaters
                     break;
                 }
             }
-            catch
+            catch(Exception ex)
             {
-
+                exception = ex;
             }
+
             NextAction = null;
-
-            //Auto start at count Down.
-            if(Service.Configuration.AutoStartCountdown && CountDown.CountDownTime > 0)
-            {
-                if(!CommandController.AutoAttack) CommandController.AutoAttack = true;
-            }
         }
 
         internal static void UpdateActionInfo()
@@ -75,7 +80,7 @@ namespace XIVAutoAttack.Updaters
             //结束战斗，那就关闭。
             if(Service.ClientState.LocalPlayer.CurrentHp == 0 
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut])
-                CommandController.AutoAttack = false;
+                CommandController.AttackCancel();
 
             InCombat = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
