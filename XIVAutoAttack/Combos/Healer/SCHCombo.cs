@@ -138,7 +138,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
             //转化
             Dissipation = new(3587)
             {
-                OtherCheck = b => !HasAetherflow && InCombat && TargetUpdater.HavePet,
+                OtherCheck = b => !HasAetherflow && !HasSeraph && InCombat && TargetUpdater.HavePet,
             },
 
             //以太契约-异想的融光
