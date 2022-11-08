@@ -135,7 +135,10 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
             },
 
             //划圆斩
-            Moulinet = new(7513),
+            Moulinet = new(7513)
+            {
+                OtherCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
+            },
 
             //赤治疗
             Vercure = new(7514, true)
@@ -162,7 +165,10 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
             Verholy = new(7526),
 
             //焦热
-            Scorch = new(16530),
+            Scorch = new(16530)
+            {
+                OtherIDsCombo = new uint[] {Verholy.ID},
+            },
 
             //决断
             Resolution = new(25858),
@@ -230,7 +236,8 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
             if (abilityRemain == 2 && Actions.Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
             //即刻咏唱
-            if (GeneralActions.Swiftcast.ShouldUse(out act, mustUse: true)) return true;
+            if (!Player.HaveStatus(ObjectStatus.Acceleration)
+                && GeneralActions.Swiftcast.ShouldUse(out act, mustUse: true)) return true;
         }
 
         //攻击四个能力技。
@@ -319,26 +326,17 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
             if (Actions.Verflare.ShouldUse(out act, mustUse: true)) return true;
         }
 
-        //如果上一次打了赤神圣或者赤核爆了
-        //if (lastComboActionID == Actions.Verholy.ID || lastComboActionID == Actions.Verflare.ID)
-        {
-            if (Actions.Scorch.ShouldUse(out act, mustUse: true)) return true;
-        }
+        //焦热
+        if (Actions.Scorch.ShouldUse(out act, mustUse: true)) return true;
 
-        //如果上一次打了焦热
-        //if (lastComboActionID == Actions.Scorch.ID)
-        {
-            if (Actions.Resolution.ShouldUse(out act, mustUse: true)) return true;
-        }
+        //决断
+        if (Actions.Resolution.ShouldUse(out act, mustUse: true)) return true;
         #endregion
 
         #region 近战三连
 
-        if (/*lastComboActionID == Actions.Moulinet.ID && */JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20)
-        {
-            if (Actions.Moulinet.ShouldUse(out act)) return true;
-            if (Actions.Riposte.ShouldUse(out act)) return true;
-        }
+
+        if (Actions.Moulinet.ShouldUse(out act)) return true;
         if (Actions.Zwerchhau.ShouldUse(out act)) return true;
         if (Actions.Redoublement.ShouldUse(out act)) return true;
 
@@ -393,6 +391,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
         {
             if (JobGauge.BlackMana >= 50 && JobGauge.WhiteMana >= 50 && Actions.Riposte.ShouldUse(out act)) return true;
         }
+        if(JobGauge.ManaStacks > 0 && Actions.Riposte.ShouldUse(out act)) return true;
         #endregion
 
         return false;
