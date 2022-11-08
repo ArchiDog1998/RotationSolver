@@ -304,7 +304,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge, CommandType>
         //在三大金刚还剩8秒冷却好时不释放超荷
         if (Actions.Drill.EnoughLevel && Actions.Drill.WillHaveOneCharge(8, false)) return false;
         if (Actions.AirAnchor.EnoughLevel && Actions.AirAnchor.WillHaveOneCharge(8, false)) return false;
-        if (Actions.ChainSaw.EnoughLevel && (Actions.ChainSaw.IsCoolDown && Actions.AirAnchor.WillHaveOneCharge(8, false) || !Actions.ChainSaw.IsCoolDown ) && Config.GetBoolByName("MCH_Opener")) return false;
+        if (Actions.ChainSaw.EnoughLevel && (Actions.ChainSaw.IsCoolDown && Actions.ChainSaw.WillHaveOneCharge(8, false) || !Actions.ChainSaw.IsCoolDown ) && Config.GetBoolByName("MCH_Opener")) return false;
 
         //小怪AOE和4人本超荷判断
         if (Actions.SpreadShot.ShouldUse(out _) || (TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()))
