@@ -10,7 +10,34 @@
             Thunder3 = 163,
 
             Thunder4 = 1210,
+        #region WHM
+            //医济
+            Medica2 = 150,
+            TrueMedica2 = 2792,
 
+            //再生
+            Regen1 = 158,
+            Regen2 = 897,
+            Regen3 = 1330,
+
+            //神速咏唱
+            PresenceOfMind = 157,
+
+            //无中生有
+            ThinAir = 1217,
+
+            //神祝祷
+            DivineBenison = 1218,
+
+            //疾风
+            Aero = 143,
+
+            //烈风
+            Aero2 = 144,
+
+            //天辉
+            Dia = 1871,
+        #endregion
             //即刻咏唱
             Swiftcast1 = 1325,
             Swiftcast2 = 1987,
@@ -49,24 +76,6 @@
 
             //促进
             Acceleration = 1238,
-
-            //疾风
-            Aero = 143,
-
-            //烈风
-            Aero2 = 144,
-
-            //天辉
-            Dia = 1871,
-
-            //医济的Hot
-            Medica2 = 150,
-            TrueMedica2 = 2792,
-
-            //再生
-            Regen1 = 158,
-            Regen2 = 897,
-            Regen3 = 1330,
 
             //死亡宣告，可以被解除的！
             Doom = 910,

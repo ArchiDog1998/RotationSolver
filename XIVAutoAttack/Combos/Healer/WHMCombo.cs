@@ -1,11 +1,10 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
@@ -29,14 +28,81 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
     internal struct Actions
     {
         public static readonly BaseAction
-            //复活
-            Raise = new (125, true),
+        #region 治疗
+            //治疗
+            Cure = new(120, true),
 
-            //飞石 平A
-            Stone = new (119),
+            //医治
+            Medica = new(124, true),
+
+            //复活
+            Raise = new(125, true),
+
+            //救疗
+            Cure2 = new(135, true),
+
+            //医济
+            Medica2 = new(133, true)
+            {
+                BuffsProvide = new[] { ObjectStatus.Medica2, ObjectStatus.TrueMedica2 }
+            },
+
+            //再生
+            Regen = new(137, true)
+            {
+                TargetStatus = new[]
+                {
+                    ObjectStatus.Regen1,
+                    ObjectStatus.Regen2,
+                    ObjectStatus.Regen3,
+                }
+            },
+
+            //愈疗
+            Cure3 = new(131, true),
+
+            //天赐祝福
+            Benediction = new(140, true)
+            {
+                OtherCheck = b => TargetUpdater.PartyMembersMinHP < 0.15f,
+            },
+
+            //庇护所
+            Asylum = new(3569, true)
+            {
+                OtherCheck = b => !IsMoving
+            },
+
+            //安慰之心
+            AfflatusSolace = new(16531, true)
+            {
+                OtherCheck = b => JobGauge.Lily > 0,
+            },
+
+            //神名
+            Tetragrammaton = new(3570, true),
+
+            //神祝祷
+            DivineBenison = new(7432, true),
+
+            //狂喜之心
+            AfflatusRapture = new(16534, true)
+            {
+                OtherCheck = b => JobGauge.Lily > 0,
+            },
+
+            //水流幕
+            Aquaveil = new(25861, true),
+
+            //礼仪之铃
+            LiturgyoftheBell = new(25862, true),
+        #endregion
+        #region 输出
+            //飞石 
+            Stone = new(119),//坚石127 垒石3568 崩石7431 闪耀16533 闪灼25859
 
             //疾风 Dot
-            Aero = new (121, isDot:true)
+            Aero = new(121, isDot: true)//烈风132 天辉16532
             {
                 TargetStatus = new ushort[]
                 {
@@ -45,149 +111,67 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
                     ObjectStatus.Dia,
                 }
             },
+
+            //神圣
+            Holy = new(139),//豪圣 25860
+
+            //法令
+            Assize = new(3571, true),
+
             //苦难之心
-            AfflatusMisery = new (16535)
+            AfflatusMisery = new(16535)
             {
                 OtherCheck = b => JobGauge.BloodLily == 3,
             },
-            //神圣
-            Holy = new (139),
-
-            //治疗
-            Cure = new (120, true),
-            //救疗
-            Cure2 = new (135, true),
-            //神名
-            Tetragrammaton = new (3570, true),
-            //安慰之心 800
-            AfflatusSolace = new (16531, true)
-            {
-                OtherCheck = b => JobGauge.Lily > 0,
-            },
-            //再生
-            Regen = new (137, true)
-            {
-                TargetStatus = new []
-                {
-                    ObjectStatus.Regen1,
-                    ObjectStatus.Regen2,
-                    ObjectStatus.Regen3,
-                }
-            },
-            //水流幕
-            Aquaveil = new (25861, true),
-            //神祝祷
-            DivineBenison = new (7432, true),
-            //天赐
-            Benediction = new (140, true)
-            {
-                OtherCheck = b => TargetUpdater.PartyMembersMinHP < 0.15f,
-            },
-
-            //医治 群奶最基础的。300
-            Medica = new (124, true),
-            //愈疗 600
-            Cure3 = new (131, true),
-            //医济 群奶加Hot。
-            Medica2 = new (133, true) { BuffsProvide = new [] { ObjectStatus.Medica2, ObjectStatus.TrueMedica2 } },
-            //庇护所
-            Asylum = new (3569, true),
-
-            //法令
-            Assize = new (3571, true),
-
-            //狂喜之心 400
-            AfflatusRapture = new (16534, true)
-            {
-                OtherCheck = b => JobGauge.Lily > 0,
-            },
-            //礼仪之铃
-            LiturgyoftheBell = new (25862, true),
-
+        #endregion
+        #region buff
             //神速咏唱
-            PresenseOfMind = new (136, true),
+            PresenseOfMind = new(136, true),
+
             //无中生有
-            ThinAir = new (7430, true),
+            ThinAir = new(7430, true),
 
             //全大赦
-            PlenaryIndulgence = new (7433, true),
+            PlenaryIndulgence = new(7433, true),
+
             //节制
-            Temperance = new (16536, true);
+            Temperance = new(16536, true);
+        #endregion
     }
-    public override SortedList<DescType, string> Description => new ()
+
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetBool("UseLilyWhenFull", true, "蓝花集满时自动释放蓝花");
+    }
+    public override SortedList<DescType, string> Description => new()
     {
         {DescType.范围治疗, $"GCD: {Actions.AfflatusRapture}, {Actions.Medica2}, {Actions.Cure3}, {Actions.Medica}\n                     能力: {Actions.Asylum}, {Actions.Assize}"},
         {DescType.单体治疗, $"GCD: {Actions.AfflatusSolace}, {Actions.Regen}, {Actions.Cure2}, {Actions.Cure}\n                     能力: {Actions.Tetragrammaton}"},
         {DescType.范围防御, $"{Actions.Temperance}, {Actions.LiturgyoftheBell}"},
         {DescType.单体防御, $"{Actions.DivineBenison}, {Actions.Aquaveil}"},
     };
-    private protected override bool HealAreaGCD(out IAction act)
+    private protected override bool GeneralGCD(out IAction act)
     {
-        //狂喜之心
-        if (Actions.AfflatusRapture.ShouldUse(out act)) return true;
-        //加Hot
-        if (Actions.Medica2.ShouldUse(out act)) return true;
+        //苦难之心
+        if (Actions.AfflatusMisery.ShouldUse(out act, mustUse: true)) return true;
 
-        //float cure3 = GetBestHeal(Actions.Cure3.Action, 600);
-        //float medica = GetBestHeal(Actions.Medica.Action, 300);
+        //泄蓝花 狂喜之心
+        bool liliesNearlyFull = JobGauge.Lily == 2 && JobGauge.LilyTimer >= 17000;
+        bool liliesFullNoBlood = JobGauge.Lily == 3 && JobGauge.BloodLily < 3;
+        if(Config.GetBoolByName("UseLilyWhenFull") && (liliesNearlyFull || liliesFullNoBlood))
+        {
+            if (Actions.AfflatusRapture.ShouldUse(out act)) return true;
+        }
 
-        //愈疗
-        //if (Actions.Cure3.ShouldUse(out act)) return true;
-        if (Actions.Medica.ShouldUse(out act)) return true;
+        //群体输出
+        if (Actions.Holy.ShouldUse(out act)) return true;
 
-        return false;
-    }
+        //单体输出
+        if (Actions.Aero.ShouldUse(out act, mustUse: IsMoving && HaveHostileInRange)) return true;
+        if (Actions.Stone.ShouldUse(out act)) return true;
 
-    //[Obsolete]
-    ///// <summary>
-    ///// 返回总共能大约回复的血量，非常大概。
-    ///// </summary>
-    ///// <param name="action"></param>
-    ///// <param name="strength"></param>
-    ///// <returns></returns>
-    //internal static float GetBestHeal(Action action, uint strength)
-    //{
-    //    float healRange = strength * 0.000352f;
-
-    //    //能够放到技能的队员。
-    //    var canGet = TargetFilter.GetObjectInRadius(TargetUpdater.PartyMembers, Math.Max(action.Range, 0.1f));
-
-    //    float bestHeal = 0;
-    //    foreach (var member in canGet)
-    //    {
-    //        float thisHeal = 0;
-    //        Vector3 centerPt = member.Position;
-    //        foreach (var ran in TargetUpdater.PartyMembers)
-    //        {
-    //            //如果不在范围内，那算了。
-    //            if (Vector3.Distance(centerPt, ran.Position) > action.EffectRange)
-    //            {
-    //                continue;
-    //            }
-
-    //            thisHeal += Math.Min(1 - ran.CurrentHp / ran.MaxHp, healRange);
-    //        }
-
-    //        bestHeal = Math.Max(thisHeal, healRange);
-    //    }
-    //    return bestHeal;
-    //}
-
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
-    {
-        //加个神祝祷
-        if (Actions.DivineBenison.ShouldUse(out act)) return true;
-        //水流幕
-        if (Actions.Aquaveil.ShouldUse(out act)) return true;
-        return false;
-    }
-
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
-    {
-        //节制
-        if (Actions.Temperance.ShouldUse(out act)) return true;
-        //礼仪之铃
-        if (Actions.LiturgyoftheBell.ShouldUse(out act)) return true;
+        
+        act = null;
         return false;
     }
 
@@ -205,42 +189,17 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //加个无中生有
-        if (nextGCD is BaseAction action && action.MPNeed > 500 && Actions.ThinAir.ShouldUse(out act)) return true;
+        if (nextGCD is BaseAction action && action.MPNeed >= 1000 &&
+            Actions.ThinAir.ShouldUse(out act)) return true;
 
-
-        //天赐救人啊！
-        if (Actions.Benediction.ShouldUse(out act)) return true;
-
-        if (nextGCD.IsAnySameAction(true, Actions.Medica , Actions.Medica2,
+        //加个全大赦
+        if (nextGCD.IsAnySameAction(true, Actions.Medica, Actions.Medica2,
             Actions.Cure3, Actions.AfflatusRapture))
         {
-            //加个全大赦
             if (Actions.PlenaryIndulgence.ShouldUse(out act)) return true;
         }
 
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
-    }
-
-    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
-    {
-        //庇护所
-        if (!IsMoving && Actions.Asylum.ShouldUse(out act)) return true;
-
-        //加个法令
-        if (Actions.Assize.ShouldUse(out act)) return true;
-
-        return false;
-    }
-
-    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
-    {
-        //神名
-        if (Actions.Tetragrammaton.ShouldUse(out act)) return true;
-
-        //庇护所
-        if (!IsMoving && Actions.Asylum.ShouldUse(out act)) return true;
-
-        return false;
     }
 
     private protected override bool HealSingleGCD(out IAction act)
@@ -260,19 +219,62 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
         return false;
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        //苦难之心
-        if (Actions.AfflatusMisery.ShouldUse(out act, mustUse: true)) return true;
+        //神祝祷
+        if (Actions.DivineBenison.ShouldUse(out act)) return true;
 
-        //群体输出
-        if (Actions.Holy.ShouldUse(out act)) return true;
+        //神名
+        if (Actions.Tetragrammaton.ShouldUse(out act)) return true;
 
-        //单体输出
-        if (Actions.Aero.ShouldUse(out act, mustUse: IsMoving && HaveHostileInRange)) return true;
-        if (Actions.Stone.ShouldUse(out act)) return true;
+        //庇护所
+        if (Actions.Asylum.ShouldUse(out act)) return true;
+
+        //天赐
+        if (Actions.Benediction.ShouldUse(out act)) return true;
+        return false;
+    }
+
+    private protected override bool HealAreaGCD(out IAction act)
+    {
+        //狂喜之心
+        if (Actions.AfflatusRapture.ShouldUse(out act)) return true;
+
+        //医济
+        if (Actions.Medica2.ShouldUse(out act)) return true;
+
+        //医治
+        if (Actions.Medica.ShouldUse(out act)) return true;
+
+        return false;
+    }
+
+    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
+    {
+        //庇护所
+        if (Actions.Asylum.ShouldUse(out act)) return true;
 
         act = null;
+        return false;
+    }
+
+    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    {
+        //神祝祷
+        if (Actions.DivineBenison.ShouldUse(out act)) return true;
+
+        //水流幕
+        if (Actions.Aquaveil.ShouldUse(out act)) return true;
+        return false;
+    }
+
+    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    {
+        //节制
+        if (Actions.Temperance.ShouldUse(out act)) return true;
+
+        //礼仪之铃
+        if (Actions.LiturgyoftheBell.ShouldUse(out act)) return true;
         return false;
     }
 }
