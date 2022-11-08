@@ -23,115 +23,113 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
     {
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
-    public override uint JobID => 20;
+    public override uint[] JobIDs => new uint[] { 20, 2 };
 
-    internal struct Actions
+
+    public static readonly BaseAction
+        //双龙脚
+        DragonKick = new(74)
+        {
+            BuffsProvide = new[] { ObjectStatus.LeadenFist },
+        },
+
+        //连击
+        Bootshine = new(53),
+
+        //破坏神冲 aoe
+        ArmoftheDestroyer = new(62),
+
+        //双掌打 伤害提高
+        TwinSnakes = new(61),
+
+        //正拳
+        TrueStrike = new(54),
+
+        //四面脚 aoe
+        FourpointFury = new(16473),
+
+        //破碎拳
+        Demolish = new(66, isDot: true)
+        {
+            TargetStatus = new ushort[] { ObjectStatus.Demolish },
+        },
+
+        //崩拳
+        SnapPunch = new(56),
+
+        //地烈劲 aoe
+        Rockbreaker = new(70),
+
+        //斗气
+        Meditation = new(3546),
+
+        //铁山靠
+        SteelPeak = new(25761)
+        {
+            OtherCheck = b => InCombat,
+        },
+
+        //空鸣拳
+        HowlingFist = new(25763)
+        {
+            OtherCheck = b => InCombat,
+        },
+
+        //义结金兰
+        Brotherhood = new(7396, true),
+
+        //红莲极意 提高dps
+        RiddleofFire = new(7395),
+
+        //突进技能
+        Thunderclap = new(25762, shouldEndSpecial: true)
+        {
+            ChoiceTarget = TargetFilter.FindTargetForMoving,
+        },
+
+        //真言
+        Mantra = new(65, true),
+
+        //震脚
+        PerfectBalance = new(69)
+        {
+            BuffsNeed = new ushort[] { ObjectStatus.RaptorForm },
+            OtherCheck = b => InCombat,
+        },
+
+        //苍气炮 阴
+        ElixirField = new(3545),
+
+        //爆裂脚 阳
+        FlintStrike = new(25882),
+
+        //凤凰舞
+        RisingPhoenix = new(25768),
+
+        //斗魂旋风脚 阴阳
+        TornadoKick = new(3543),
+        PhantomRush = new(25769),
+
+        //演武
+        FormShift = new(4262)
+        {
+            BuffsProvide = new[] { ObjectStatus.FormlessFist, ObjectStatus.PerfectBalance },
+        },
+
+        //金刚极意 盾
+        RiddleofEarth = new(7394, shouldEndSpecial: true)
+        {
+            BuffsProvide = new[] { ObjectStatus.RiddleofEarth },
+        },
+
+        //疾风极意
+        RiddleofWind = new(25766);
+
+    public override SortedList<DescType, string> Description => new()
     {
-        public static readonly BaseAction
-            //双龙脚
-            DragonKick = new (74)
-            {
-                BuffsProvide = new [] { ObjectStatus.LeadenFist },
-            },
-
-            //连击
-            Bootshine = new (53),
-
-            //破坏神冲 aoe
-            ArmoftheDestroyer = new (62),
-
-            //双掌打 伤害提高
-            TwinSnakes = new (61),
-
-            //正拳
-            TrueStrike = new (54),
-
-            //四面脚 aoe
-            FourpointFury = new (16473),
-
-            //破碎拳
-            Demolish = new(66, isDot:true)
-            {
-                TargetStatus = new ushort[] { ObjectStatus.Demolish },
-            },
-
-            //崩拳
-            SnapPunch = new (56),
-
-            //地烈劲 aoe
-            Rockbreaker = new (70),
-
-            //斗气
-            Meditation = new (3546),
-
-            //铁山靠
-            SteelPeak = new (25761)
-            {
-                OtherCheck = b => InCombat,
-            },
-
-            //空鸣拳
-            HowlingFist = new (25763)
-            {
-                OtherCheck = b => InCombat,
-            },
-
-            //义结金兰
-            Brotherhood = new (7396, true),
-
-            //红莲极意 提高dps
-            RiddleofFire = new (7395),
-
-            //突进技能
-            Thunderclap = new (25762, shouldEndSpecial: true)
-            {
-                ChoiceTarget = TargetFilter.FindTargetForMoving,
-            },
-
-            //真言
-            Mantra = new (65, true),
-
-            //震脚
-            PerfectBalance = new (69)
-            {
-                BuffsNeed = new ushort[] { ObjectStatus.RaptorForm },
-                OtherCheck = b => InCombat,
-            },
-
-            //苍气炮 阴
-            ElixirField = new (3545),
-
-            //爆裂脚 阳
-            FlintStrike = new (25882),
-
-            //凤凰舞
-            RisingPhoenix = new (25768),
-
-            //斗魂旋风脚 阴阳
-            TornadoKick = new (3543),
-            PhantomRush = new (25769),
-
-            //演武
-            FormShift = new(4262)
-            {
-                BuffsProvide = new[] { ObjectStatus.FormlessFist, ObjectStatus.PerfectBalance },
-            },
-
-            //金刚极意 盾
-            RiddleofEarth = new (7394, shouldEndSpecial: true)
-            {
-                BuffsProvide = new[] {ObjectStatus.RiddleofEarth }, 
-            },
-
-            //疾风极意
-            RiddleofWind = new (25766);
-    }
-
-    public override SortedList<DescType, string> Description => new ()
-    {
-        {DescType.范围治疗, $"{Actions.Mantra}"},
-        {DescType.单体防御, $"{Actions.RiddleofEarth}"},
-        {DescType.移动技能, $"{Actions.Thunderclap}"},
+        {DescType.范围治疗, $"{Mantra}"},
+        {DescType.单体防御, $"{RiddleofEarth}"},
+        {DescType.移动技能, $"{Thunderclap}"},
     };
 
     private protected override ActionConfiguration CreateConfiguration()
@@ -141,13 +139,13 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Mantra.ShouldUse(out act)) return true;
+        if (Mantra.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.RiddleofEarth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (RiddleofEarth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
@@ -159,36 +157,36 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (Actions.Thunderclap.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Thunderclap.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
 
     private bool OpoOpoForm(out IAction act)
     {
-        if (Actions.ArmoftheDestroyer.ShouldUse(out act)) return true;
-        if (Actions.DragonKick.ShouldUse(out act)) return true;
-        if (Actions.Bootshine.ShouldUse(out act)) return true;
+        if (ArmoftheDestroyer.ShouldUse(out act)) return true;
+        if (DragonKick.ShouldUse(out act)) return true;
+        if (Bootshine.ShouldUse(out act)) return true;
         return false;
     }
 
 
     private bool RaptorForm(out IAction act)
     {
-        if (Actions.FourpointFury.ShouldUse(out act)) return true;
+        if (FourpointFury.ShouldUse(out act)) return true;
 
         //确认Buff
-        if (Player.WillStatusEndGCD(3, 0, true, ObjectStatus.DisciplinedFist) && Actions.TwinSnakes.ShouldUse(out act)) return true;
+        if (Player.WillStatusEndGCD(3, 0, true, ObjectStatus.DisciplinedFist) && TwinSnakes.ShouldUse(out act)) return true;
 
-        if (Actions.TrueStrike.ShouldUse(out act)) return true;
+        if (TrueStrike.ShouldUse(out act)) return true;
         return false;
     }
 
     private bool CoerlForm(out IAction act)
     {
-        if (Actions.Rockbreaker.ShouldUse(out act)) return true;
-        if (Actions.Demolish.ShouldUse(out act)) return true;
-        if (Actions.SnapPunch.ShouldUse(out act)) return true;
+        if (Rockbreaker.ShouldUse(out act)) return true;
+        if (Demolish.ShouldUse(out act)) return true;
+        if (SnapPunch.ShouldUse(out act)) return true;
         return false;
     }
 
@@ -226,17 +224,17 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
         {
             if (havesolar && havelunar)
             {
-                if (Actions.PhantomRush.ShouldUse(out act, mustUse: true)) return true;
-                if (Actions.TornadoKick.ShouldUse(out act, mustUse: true)) return true;
+                if (PhantomRush.ShouldUse(out act, mustUse: true)) return true;
+                if (TornadoKick.ShouldUse(out act, mustUse: true)) return true;
             }
             if (JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.RAPTOR))
             {
-                if (Actions.RisingPhoenix.ShouldUse(out act, mustUse: true)) return true;
-                if (Actions.FlintStrike.ShouldUse(out act, mustUse: true)) return true;
+                if (RisingPhoenix.ShouldUse(out act, mustUse: true)) return true;
+                if (FlintStrike.ShouldUse(out act, mustUse: true)) return true;
             }
             else
             {
-                if (Actions.ElixirField.ShouldUse(out act, mustUse: true)) return true;
+                if (ElixirField.ShouldUse(out act, mustUse: true)) return true;
             }
         }
         //有震脚就阴阳
@@ -260,8 +258,8 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
         }
 
         if (CommandController.Move && MoveAbility(1, out act)) return true;
-        if (JobGauge.Chakra < 5 && Actions.Meditation.ShouldUse(out act)) return true;
-        if (Config.GetBoolByName("AutoFormShift") && Actions.FormShift.ShouldUse(out act)) return true;
+        if (JobGauge.Chakra < 5 && Meditation.ShouldUse(out act)) return true;
+        if (Config.GetBoolByName("AutoFormShift") && FormShift.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -270,8 +268,8 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
     {
         if (SettingBreak)
         {
-            if (Actions.RiddleofFire.ShouldUse(out act)) return true;
-            if (Actions.Brotherhood.ShouldUse(out act)) return true;
+            if (RiddleofFire.ShouldUse(out act)) return true;
+            if (Brotherhood.ShouldUse(out act)) return true;
         }
 
         //震脚
@@ -283,27 +281,27 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
                 //两种Buff都在6s以上
                 var dis = Player.WillStatusEndGCD(3, 0, true, ObjectStatus.DisciplinedFist);
 
-                Actions.Demolish.ShouldUse(out _);
-                var demo = Actions.Demolish.Target.WillStatusEndGCD(3, 0, true, ObjectStatus.Demolish);
+                Demolish.ShouldUse(out _);
+                var demo = Demolish.Target.WillStatusEndGCD(3, 0, true, ObjectStatus.Demolish);
 
-                if (!dis && (!demo || !Actions.PerfectBalance.IsCoolDown))
+                if (!dis && (!demo || !PerfectBalance.IsCoolDown))
                 {
-                    if (Actions.PerfectBalance.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+                    if (PerfectBalance.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
                 }
             }
             else
             {
-                if (Actions.PerfectBalance.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+                if (PerfectBalance.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             }
         }
 
-        if (Actions.RiddleofWind.ShouldUse(out act)) return true;
+        if (RiddleofWind.ShouldUse(out act)) return true;
 
         if (JobGauge.Chakra == 5)
         {
-            if (Actions.HowlingFist.ShouldUse(out act)) return true;
-            if (Actions.SteelPeak.ShouldUse(out act)) return true;
-            if (Actions.HowlingFist.ShouldUse(out act, mustUse: true)) return true;
+            if (HowlingFist.ShouldUse(out act)) return true;
+            if (SteelPeak.ShouldUse(out act)) return true;
+            if (HowlingFist.ShouldUse(out act, mustUse: true)) return true;
         }
 
         return false;

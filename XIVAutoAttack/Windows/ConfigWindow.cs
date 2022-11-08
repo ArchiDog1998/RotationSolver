@@ -89,7 +89,7 @@ internal class ConfigWindow : Window
                         {
                             if (i > 0) ImGui.Separator();
                             var combo = combos[i];
-                            var canAddButton = Service.ClientState.LocalPlayer != null && Service.ClientState.LocalPlayer.ClassJob.Id == combo.JobID;
+                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains( Service.ClientState.LocalPlayer.ClassJob.Id);
 
                             ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
@@ -335,6 +335,10 @@ internal class ConfigWindow : Window
                              }
                             ImGui.EndCombo();
                          }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("手柄玩家为按下LT+RT无视咏唱锁");
+                        }
 
                         bool usecheckCasting = Service.Configuration.CheckForCasting;
                         if (ImGui.Checkbox("使用咏唱结束显示", ref usecheckCasting))
@@ -558,6 +562,13 @@ internal class ConfigWindow : Window
                         if (ImGui.Checkbox("无目标时硬读条拉人", ref raiseCasting))
                         {
                             Service.Configuration.RaisePlayerByCasting = raiseCasting;
+                            Service.Configuration.Save();
+                        }
+
+                        bool useHealWhenNotAHealer = Service.Configuration.UseHealWhenNotAHealer;
+                        if (ImGui.Checkbox("非奶妈是否要用奶人的技能", ref useHealWhenNotAHealer))
+                        {
+                            Service.Configuration.UseHealWhenNotAHealer = useHealWhenNotAHealer;
                             Service.Configuration.Save();
                         }
 
@@ -919,7 +930,7 @@ internal class ConfigWindow : Window
 
                 if (ImGui.CollapsingHeader("下一个技能"))
                 {
-                    BaseAction baseAction = GNBCombo.Actions.GnashingFang;
+                    BaseAction baseAction = null;
                     baseAction ??= ActionUpdater.NextAction as BaseAction;
                     if (baseAction != null)
                     {
@@ -963,15 +974,14 @@ internal class ConfigWindow : Window
                     if(ActionUpdater.exception != null)
                     {
                         ImGui.Text(ActionUpdater.exception.Message);
+                        ImGui.Text(ActionUpdater.exception.StackTrace);
                     }
+                }
 
-                    //foreach (var key in (VirtualKey[])Enum.GetValues(typeof(VirtualKey)))
-                    //{
-                    //    if (Service.KeyState[key])
-                    //    {
-                    //        ImGui.Text(key.ToString());
-                    //    }
-                    //}
+
+                foreach (var item in IconReplacer.RightComboBaseAction)
+                {
+                    ImGui.Text(item.ToString());
                 }
             }
 #endif

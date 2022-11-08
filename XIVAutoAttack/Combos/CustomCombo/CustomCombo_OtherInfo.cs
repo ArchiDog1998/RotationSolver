@@ -19,11 +19,13 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         protected static bool IsMoving => MovingUpdater.IsMoving;
         protected static bool HaveHostileInRange => TargetUpdater.HaveHostileInRange;
-        protected virtual bool CanHealAreaAbility => TargetUpdater.CanHealAreaAbility;
-        protected virtual bool CanHealAreaSpell => TargetUpdater.CanHealAreaSpell;
+        private bool canUseHealAction => Role == Data.Role.治疗 || Service.Configuration.UseHealWhenNotAHealer;
 
-        protected virtual bool CanHealSingleAbility => TargetUpdater.CanHealSingleAbility;
-        protected virtual bool CanHealSingleSpell => TargetUpdater.CanHealSingleSpell;
+        protected virtual bool CanHealAreaAbility => TargetUpdater.CanHealAreaAbility && canUseHealAction;
+        protected virtual bool CanHealAreaSpell => TargetUpdater.CanHealAreaSpell && canUseHealAction;
+
+        protected virtual bool CanHealSingleAbility => TargetUpdater.CanHealSingleAbility && canUseHealAction;
+        protected virtual bool CanHealSingleSpell => TargetUpdater.CanHealSingleSpell && canUseHealAction;
 
         /// <summary>
         /// 是否处于爆发，自动爆发或者手动点击的爆发

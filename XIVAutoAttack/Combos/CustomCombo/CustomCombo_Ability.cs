@@ -21,17 +21,17 @@ public abstract partial class CustomCombo<TCmd> where TCmd : Enum
         }
 
         //有某些非常危险的状态。
-        if (JobID == 23)
+        if (JobIDs.Any(i => i == 23))
         {
             if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
-                if (BRDCombo.Actions.WardensPaean.ShouldUse(out act, mustUse: true)) return true;
+                if (BRDCombo.WardensPaean.ShouldUse(out act, mustUse: true)) return true;
             }
         }
 
 
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
-        Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
+        Role role = Role;
 
         if (TargetUpdater.CanInterruptTargets.Length > 0)
         {
@@ -236,7 +236,7 @@ public abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {
         if (nextGCD is BaseAction action)
         {
-            if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role != Role.近战 &&
+            if (Role != Role.近战 &&
             action.CastTime >= 5 && GeneralActions.Swiftcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
             if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)

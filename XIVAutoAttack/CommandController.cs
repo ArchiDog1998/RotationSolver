@@ -244,7 +244,7 @@ namespace XIVAutoAttack
                 return Service.Configuration.TargetingTypes[Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count];
             }
         }
-        internal static void StartAttackSmart()
+        private static void StartAttackSmart()
         {
             if (!AutoAttack)
             {
@@ -322,6 +322,20 @@ namespace XIVAutoAttack
             AutoAttack = false;
         }
 
+        internal static void UpdateAutoAttack()
+        {
+            //结束战斗，那就关闭。
+            if (Service.ClientState.LocalPlayer.CurrentHp == 0
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut])
+                AttackCancel();
+
+            //Auto start at count Down.
+            else if (Service.Configuration.AutoStartCountdown && CountDown.CountDownTime > 0)
+            {
+                if (!AutoAttack) StartAttackSmart();
+            }
+        }
+
         internal static void DoAutoAttack(string str)
         {
             switch (str)
@@ -370,10 +384,10 @@ namespace XIVAutoAttack
                     return;
 
                 default:
-                    foreach (ICustomCombo customCombo in IconReplacer.CustomCombos)
-                    {
-                        if (customCombo.JobID != Service.ClientState.LocalPlayer.ClassJob.Id) continue;
 
+                    var customCombo = IconReplacer.RightNowCombo;
+                    if(customCombo != null)
+                    {
                         foreach (var boolean in customCombo.Config.bools)
                         {
                             if (boolean.name == str)

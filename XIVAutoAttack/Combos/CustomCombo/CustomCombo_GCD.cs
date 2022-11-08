@@ -48,7 +48,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //防单体
             bool helpDefenseSingle = false;
             //是个骑士或者奶妈
-            if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗 || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
+            if (Role == Role.治疗 || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
             {
                 if (Service.Configuration.AutoDefenseForTank && TargetUpdater.PartyTanks.Any((tank) =>
                 {
@@ -201,8 +201,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //有某些非常危险的状态。
             if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
-                if ((Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role == Role.治疗
-                    && GeneralActions.Esuna.ShouldUse(out act, mustUse: true)) return true;
+                if (Role == Role.治疗 && GeneralActions.Esuna.ShouldUse(out act, mustUse: true)) return true;
 
             }
 

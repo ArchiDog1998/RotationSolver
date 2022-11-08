@@ -23,10 +23,9 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
     {
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
-    public override uint JobID => 24;
-    private protected override BaseAction Raise => Actions.Raise;
-    internal struct Actions
-    {
+    public override uint[] JobIDs => new uint[] {24, 6};
+    private protected override BaseAction Raise => Raise1;
+
         public static readonly BaseAction
         #region 治疗
             //治疗
@@ -36,7 +35,7 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
             Medica = new(124, true),
 
             //复活
-            Raise = new(125, true),
+            Raise1 = new(125, true),
 
             //救疗
             Cure2 = new(135, true),
@@ -137,7 +136,6 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
             //节制
             Temperance = new(16536, true);
         #endregion
-    }
 
     private protected override ActionConfiguration CreateConfiguration()
     {
@@ -145,30 +143,30 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
     }
     public override SortedList<DescType, string> Description => new()
     {
-        {DescType.范围治疗, $"GCD: {Actions.AfflatusRapture}, {Actions.Medica2}, {Actions.Cure3}, {Actions.Medica}\n                     能力: {Actions.Asylum}, {Actions.Assize}"},
-        {DescType.单体治疗, $"GCD: {Actions.AfflatusSolace}, {Actions.Regen}, {Actions.Cure2}, {Actions.Cure}\n                     能力: {Actions.Tetragrammaton}"},
-        {DescType.范围防御, $"{Actions.Temperance}, {Actions.LiturgyoftheBell}"},
-        {DescType.单体防御, $"{Actions.DivineBenison}, {Actions.Aquaveil}"},
+        {DescType.范围治疗, $"GCD: {AfflatusRapture}, {Medica2}, {Cure3}, {Medica}\n                     能力: {Asylum}, {Assize}"},
+        {DescType.单体治疗, $"GCD: {AfflatusSolace}, {Regen}, {Cure2}, {Cure}\n                     能力: {Tetragrammaton}"},
+        {DescType.范围防御, $"{Temperance}, {LiturgyoftheBell}"},
+        {DescType.单体防御, $"{DivineBenison}, {Aquaveil}"},
     };
     private protected override bool GeneralGCD(out IAction act)
     {
         //苦难之心
-        if (Actions.AfflatusMisery.ShouldUse(out act, mustUse: true)) return true;
+        if (AfflatusMisery.ShouldUse(out act, mustUse: true)) return true;
 
         //泄蓝花 狂喜之心
         bool liliesNearlyFull = JobGauge.Lily == 2 && JobGauge.LilyTimer >= 17000;
         bool liliesFullNoBlood = JobGauge.Lily == 3 && JobGauge.BloodLily < 3;
         if(Config.GetBoolByName("UseLilyWhenFull") && (liliesNearlyFull || liliesFullNoBlood))
         {
-            if (Actions.AfflatusRapture.ShouldUse(out act)) return true;
+            if (AfflatusRapture.ShouldUse(out act)) return true;
         }
 
         //群体输出
-        if (Actions.Holy.ShouldUse(out act)) return true;
+        if (Holy.ShouldUse(out act)) return true;
 
         //单体输出
-        if (Actions.Aero.ShouldUse(out act, mustUse: IsMoving && HaveHostileInRange)) return true;
-        if (Actions.Stone.ShouldUse(out act)) return true;
+        if (Aero.ShouldUse(out act, mustUse: IsMoving && HaveHostileInRange)) return true;
+        if (Stone.ShouldUse(out act)) return true;
 
         
         act = null;
@@ -178,10 +176,10 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         //加个神速咏唱
-        if (Actions.PresenseOfMind.ShouldUse(out act)) return true;
+        if (PresenseOfMind.ShouldUse(out act)) return true;
 
         //加个法令
-        if (Actions.Assize.ShouldUse(out act)) return true;
+        if (Assize.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -190,13 +188,12 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
     {
         //加个无中生有
         if (nextGCD is BaseAction action && action.MPNeed >= 1000 &&
-            Actions.ThinAir.ShouldUse(out act)) return true;
+            ThinAir.ShouldUse(out act)) return true;
 
         //加个全大赦
-        if (nextGCD.IsAnySameAction(true, Actions.Medica, Actions.Medica2,
-            Actions.Cure3, Actions.AfflatusRapture))
+        if (nextGCD.IsAnySameAction(true, Medica, Medica2, Cure3, AfflatusRapture))
         {
-            if (Actions.PlenaryIndulgence.ShouldUse(out act)) return true;
+            if (PlenaryIndulgence.ShouldUse(out act)) return true;
         }
 
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
@@ -205,16 +202,16 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
     private protected override bool HealSingleGCD(out IAction act)
     {
         //安慰之心
-        if (Actions.AfflatusSolace.ShouldUse(out act)) return true;
+        if (AfflatusSolace.ShouldUse(out act)) return true;
 
         //再生
-        if (Actions.Regen.ShouldUse(out act)) return true;
+        if (Regen.ShouldUse(out act)) return true;
 
         //救疗
-        if (Actions.Cure2.ShouldUse(out act)) return true;
+        if (Cure2.ShouldUse(out act)) return true;
 
         //治疗
-        if (Actions.Cure.ShouldUse(out act)) return true;
+        if (Cure.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -222,29 +219,29 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //神祝祷
-        if (Actions.DivineBenison.ShouldUse(out act)) return true;
+        if (DivineBenison.ShouldUse(out act)) return true;
 
         //神名
-        if (Actions.Tetragrammaton.ShouldUse(out act)) return true;
+        if (Tetragrammaton.ShouldUse(out act)) return true;
 
         //庇护所
-        if (Actions.Asylum.ShouldUse(out act)) return true;
+        if (Asylum.ShouldUse(out act)) return true;
 
         //天赐
-        if (Actions.Benediction.ShouldUse(out act)) return true;
+        if (Benediction.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool HealAreaGCD(out IAction act)
     {
         //狂喜之心
-        if (Actions.AfflatusRapture.ShouldUse(out act)) return true;
+        if (AfflatusRapture.ShouldUse(out act)) return true;
 
         //医济
-        if (Actions.Medica2.ShouldUse(out act)) return true;
+        if (Medica2.ShouldUse(out act)) return true;
 
         //医治
-        if (Actions.Medica.ShouldUse(out act)) return true;
+        if (Medica.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -252,7 +249,7 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //庇护所
-        if (Actions.Asylum.ShouldUse(out act)) return true;
+        if (Asylum.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -261,20 +258,20 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //神祝祷
-        if (Actions.DivineBenison.ShouldUse(out act)) return true;
+        if (DivineBenison.ShouldUse(out act)) return true;
 
         //水流幕
-        if (Actions.Aquaveil.ShouldUse(out act)) return true;
+        if (Aquaveil.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //节制
-        if (Actions.Temperance.ShouldUse(out act)) return true;
+        if (Temperance.ShouldUse(out act)) return true;
 
         //礼仪之铃
-        if (Actions.LiturgyoftheBell.ShouldUse(out act)) return true;
+        if (LiturgyoftheBell.ShouldUse(out act)) return true;
         return false;
     }
 }

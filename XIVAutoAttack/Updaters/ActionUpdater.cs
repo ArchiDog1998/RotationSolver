@@ -44,27 +44,19 @@ namespace XIVAutoAttack.Updaters
 
         internal static void UpdateNextAction()
         {
-            //Auto start at count Down.
-            if (Service.Configuration.AutoStartCountdown && CountDown.CountDownTime > 0)
-            {
-                if (!CommandController.AutoAttack) CommandController.StartAttackSmart();
-            }
+
 
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer == null) return;
 
             try
             {
-                foreach (ICustomCombo customCombo in IconReplacer.CustomCombos)
-                {
-                    if (customCombo.JobID != localPlayer.ClassJob.Id) continue;
+                var customCombo = IconReplacer.RightNowCombo;
 
-                    if (customCombo.TryInvoke(out var newAction))
-                    {
-                        NextAction = newAction;
-                        return;
-                    }
-                    break;
+                if (customCombo?.TryInvoke(out var newAction) ?? false)
+                {
+                    NextAction = newAction;
+                    return;
                 }
             }
             catch(Exception ex)
@@ -80,11 +72,6 @@ namespace XIVAutoAttack.Updaters
 
         internal static void UpdateActionInfo()
         {
-            //结束战斗，那就关闭。
-            if(Service.ClientState.LocalPlayer.CurrentHp == 0 
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut])
-                CommandController.AttackCancel();
-
             InCombat = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
             UpdateWeaponTime();

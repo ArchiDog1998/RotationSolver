@@ -14,20 +14,20 @@ namespace XIVAutoAttack.Helpers
     {
         public static readonly SortedList<uint, EnemyLocation> ActionLocations = new SortedList<uint, EnemyLocation>()
         {
-            {DRGCombo.Actions.FangandClaw.ID, EnemyLocation.Side },
-            {DRGCombo.Actions.WheelingThrust.ID, EnemyLocation.Back },
-            {DRGCombo.Actions.ChaosThrust.ID, EnemyLocation.Back },
+            {DRGCombo.FangandClaw.ID, EnemyLocation.Side },
+            {DRGCombo.WheelingThrust.ID, EnemyLocation.Back },
+            {DRGCombo.ChaosThrust.ID, EnemyLocation.Back },
             {25772, EnemyLocation.Back },
-            {MNKCombo.Actions.Demolish.ID, EnemyLocation.Back },
-            {MNKCombo.Actions.SnapPunch.ID, EnemyLocation.Side },
-            {NINCombo.Actions.TrickAttack.ID, EnemyLocation.Back },
-            {NINCombo.Actions.AeolianEdge.ID, EnemyLocation.Back },
-            {NINCombo.Actions.ArmorCrush.ID, EnemyLocation.Side },
-            {NINCombo.Actions.Suiton.ID, EnemyLocation.Back },
-            {RPRCombo.Actions.Gibbet.ID, EnemyLocation.Side },
-            {RPRCombo.Actions.Gallows.ID, EnemyLocation.Back },
-            {SAMCombo.Actions.Gekko.ID, EnemyLocation.Back },
-            {SAMCombo.Actions.Kasha.ID, EnemyLocation.Side },
+            {MNKCombo.Demolish.ID, EnemyLocation.Back },
+            {MNKCombo.SnapPunch.ID, EnemyLocation.Side },
+            {NINCombo.TrickAttack.ID, EnemyLocation.Back },
+            {NINCombo.AeolianEdge.ID, EnemyLocation.Back },
+            {NINCombo.ArmorCrush.ID, EnemyLocation.Side },
+            {NINCombo.Suiton.ID, EnemyLocation.Back },
+            {RPRCombo.Gibbet.ID, EnemyLocation.Side },
+            {RPRCombo.Gallows.ID, EnemyLocation.Back },
+            {SAMCombo.Gekko.ID, EnemyLocation.Back },
+            {SAMCombo.Kasha.ID, EnemyLocation.Side },
         };
 
 

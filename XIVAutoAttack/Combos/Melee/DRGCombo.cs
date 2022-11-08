@@ -26,162 +26,159 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
     {
         //{CommandType.None, "" }, //Ð´ºÃ×¢ÊÍ°¡£¡ÓÃÀ´ÌáÊ¾ÓÃ»§µÄ¡£
     };
-    public override uint JobID => 22;
+    public override uint[] JobIDs => new uint[] { 22, 4 };
     private static bool safeMove = false;
 
-    internal struct Actions
-    {
-        public static readonly BaseAction
-            //¾«×¼´Ì
-            TrueThrust = new (75),
+    public static readonly BaseAction
+        //¾«×¼´Ì
+        TrueThrust = new(75),
 
-            //¹áÍ¨´Ì
-            VorpalThrust = new (78) { OtherIDsCombo = new [] { 16479u } },
+        //¹áÍ¨´Ì
+        VorpalThrust = new(78) { OtherIDsCombo = new[] { 16479u } },
 
-            //Ö±´Ì
-            FullThrust = new (84),
+        //Ö±´Ì
+        FullThrust = new(84),
 
-            //²Ôñ·´Ì
-            HeavensThrust = new (25771),
+        //²Ôñ·´Ì
+        HeavensThrust = new(25771),
 
-            //¿ªÌÅÇ¹
-            Disembowel = new (87) { OtherIDsCombo = new [] { 16479u } },
+        //¿ªÌÅÇ¹
+        Disembowel = new(87) { OtherIDsCombo = new[] { 16479u } },
 
-            //Ó£»¨Å­·Å
-            ChaosThrust = new (88),
+        //Ó£»¨Å­·Å
+        ChaosThrust = new(88),
 
-            //Ó£»¨Å­·Å
-            ChaoticSpring = new(25772),
+        //Ó£»¨Å­·Å
+        ChaoticSpring = new(25772),
 
-            //ÁúÑÀÁú×¦
-            FangandClaw = new (3554)
+        //ÁúÑÀÁú×¦
+        FangandClaw = new(3554)
+        {
+            BuffsNeed = new ushort[] { ObjectStatus.SharperFangandClaw },
+        },
+
+        //ÁúÎ²´ó»ØÐý
+        WheelingThrust = new(3556)
+        {
+            BuffsNeed = new ushort[] { ObjectStatus.EnhancedWheelingThrust },
+        },
+
+        //ÁúÑÛÀ×µç
+        RaidenThrust = new(16479),
+
+        //¹á´©¼â
+        PiercingTalon = new(90),
+
+        //ËÀÌìÇ¹
+        DoomSpike = new(86),
+
+        //ÒôËÙ´Ì
+        SonicThrust = new(7397) { OtherIDsCombo = new[] { 25770u } },
+
+        //É½¾³¿áÐÌ
+        CoerthanTorment = new(16477),
+
+        //ÆÆËé³å
+        SpineshatterDive = new(95)
+        {
+            OtherCheck = b =>
             {
-                BuffsNeed = new ushort[] { ObjectStatus.SharperFangandClaw },
+                if (safeMove && b.DistanceToPlayer() > 2) return false;
+                if (IsLastAction(true, SpineshatterDive)) return false;
+
+                return true;
+            }
+        },
+
+        //ÁúÑ×³å
+        DragonfireDive = new(96)
+        {
+            OtherCheck = b => !safeMove || b.DistanceToPlayer() < 2,
+        },
+
+        //ÌøÔ¾
+        Jump = new(92)
+        {
+            BuffsProvide = new ushort[] { ObjectStatus.DiveReady },
+            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(ObjectStatus.PowerSurge),
+        },
+        //¸ßÌø
+        HighJump = new(16478)
+        {
+            OtherCheck = Jump.OtherCheck,
+        },
+        //»ÃÏó³å
+        MirageDive = new(7399)
+        {
+            BuffsNeed = new[] { ObjectStatus.DiveReady },
+
+            OtherCheck = b => !Geirskogul.WillHaveOneChargeGCD(4)
+        },
+
+        //ÎäÉñÇ¹
+        Geirskogul = new(3555)
+        {
+            OtherCheck = b => Jump.IsCoolDown || HighJump.IsCoolDown,
+        },
+
+        //ËÀÕßÖ®°¶
+        Nastrond = new(7400)
+        {
+            OtherCheck = b => JobGauge.IsLOTDActive,
+        },
+
+        //×¹ÐÇ³å
+        Stardiver = new(16480)
+        {
+            OtherCheck = b => JobGauge.IsLOTDActive && JobGauge.LOTDTimer < 25000,
+        },
+
+        //ÌìÁúµã¾¦
+        WyrmwindThrust = new(25773)
+        {
+            OtherCheck = b => JobGauge.FirstmindsFocusCount == 2 && !IsLastAction(true, Stardiver),
+        },
+
+        //Áú½£
+        LifeSurge = new(83)
+        {
+            BuffsProvide = new[] { ObjectStatus.LifeSurge },
+
+            OtherCheck = b => !IsLastAbility(true, LifeSurge),
+        },
+
+        //ÃÍÇ¹
+        LanceCharge = new(85),
+
+        //¾ÞÁúÊÓÏß
+        DragonSight = new(7398)
+        {
+            ChoiceTarget = Targets =>
+            {
+                Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
+                b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+
+                var targets = TargetFilter.GetJobCategory(Targets, Role.½üÕ½);
+                if (targets.Length > 0) return TargetFilter.RandomObject(targets);
+
+                targets = TargetFilter.GetJobCategory(Targets, Role.Ô¶³Ì);
+                if (targets.Length > 0) return TargetFilter.RandomObject(targets);
+
+                targets = Targets;
+                if (targets.Length > 0) return TargetFilter.RandomObject(targets);
+
+                return Player;
             },
 
-            //ÁúÎ²´ó»ØÐý
-            WheelingThrust = new (3556)
-            {
-                BuffsNeed = new ushort[] { ObjectStatus.EnhancedWheelingThrust },
-            },
+            BuffsNeed = new[] { ObjectStatus.PowerSurge },
 
-            //ÁúÑÛÀ×µç
-            RaidenThrust = new (16479),
+        },
 
-            //¹á´©¼â
-            PiercingTalon = new (90),
-
-            //ËÀÌìÇ¹
-            DoomSpike = new (86),
-
-            //ÒôËÙ´Ì
-            SonicThrust = new (7397) { OtherIDsCombo = new [] { 25770u } },
-
-            //É½¾³¿áÐÌ
-            CoerthanTorment = new (16477),
-
-            //ÆÆËé³å
-            SpineshatterDive = new (95)
-            {
-                OtherCheck = b =>
-                {
-                    if (safeMove && b.DistanceToPlayer() > 2) return false;
-                    if (IsLastAction(true, SpineshatterDive)) return false;
-
-                    return true;
-                }
-            },
-
-            //ÁúÑ×³å
-            DragonfireDive = new (96)
-            {
-                OtherCheck = b => !safeMove || b.DistanceToPlayer() < 2,
-            },
-
-            //ÌøÔ¾
-            Jump = new (92)
-            {
-                BuffsProvide = new ushort[] { ObjectStatus.DiveReady },
-                OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(ObjectStatus.PowerSurge),
-            },
-            //¸ßÌø
-            HighJump = new (16478)
-            {
-                OtherCheck = Jump.OtherCheck,
-            },
-            //»ÃÏó³å
-            MirageDive = new (7399)
-            {
-                BuffsNeed = new [] { ObjectStatus.DiveReady },
-
-                OtherCheck = b => !Geirskogul.WillHaveOneChargeGCD(4)
-            },
-
-            //ÎäÉñÇ¹
-            Geirskogul = new (3555)
-            {
-                OtherCheck = b => Jump.IsCoolDown || HighJump.IsCoolDown,
-            },
-
-            //ËÀÕßÖ®°¶
-            Nastrond = new (7400)
-            {
-                OtherCheck = b => JobGauge.IsLOTDActive,
-            },
-
-            //×¹ÐÇ³å
-            Stardiver = new (16480)
-            {
-                OtherCheck = b => JobGauge.IsLOTDActive && JobGauge.LOTDTimer < 25000,
-            },
-
-            //ÌìÁúµã¾¦
-            WyrmwindThrust = new (25773)
-            {
-                OtherCheck = b => JobGauge.FirstmindsFocusCount == 2 && !IsLastAction(true, Stardiver),
-            },
-
-            //Áú½£
-            LifeSurge = new (83) 
-            { 
-                BuffsProvide = new [] { ObjectStatus.LifeSurge },
-
-                OtherCheck = b => !IsLastAbility(true, LifeSurge),
-            },
-
-            //ÃÍÇ¹
-            LanceCharge = new (85),
-
-            //¾ÞÁúÊÓÏß
-            DragonSight = new (7398)
-            {
-                ChoiceTarget = Targets =>
-                {
-                    Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
-                    b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
-
-                    var targets = TargetFilter.GetJobCategory(Targets, Role.½üÕ½);
-                    if (targets.Length > 0) return TargetFilter.RandomObject(targets);
-
-                    targets = TargetFilter.GetJobCategory(Targets, Role.Ô¶³Ì);
-                    if (targets.Length > 0) return TargetFilter.RandomObject(targets);
-
-                    targets = Targets;
-                    if (targets.Length > 0) return TargetFilter.RandomObject(targets);
-
-                    return Player;
-                },
-
-                BuffsNeed = new [] {ObjectStatus.PowerSurge},
-
-            },
-
-            //Õ½¶·Á¬µ»
-            BattleLitany = new (3557)
-            {
-                BuffsNeed = new[] { ObjectStatus.PowerSurge },
-            };
-    }
+        //Õ½¶·Á¬µ»
+        BattleLitany = new(3557)
+        {
+            BuffsNeed = new[] { ObjectStatus.PowerSurge },
+        };
 
     private protected override ActionConfiguration CreateConfiguration()
     {
@@ -192,15 +189,15 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
 
     public override SortedList<DescType, string> Description => new SortedList<DescType, string>()
     {
-        {DescType.ÒÆ¶¯¼¼ÄÜ, $"{Actions.SpineshatterDive}, {Actions.DragonfireDive}"},
+        {DescType.ÒÆ¶¯¼¼ÄÜ, $"{SpineshatterDive}, {DragonfireDive}"},
     };
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         if (abilityRemain > 1)
         {
-            if (Actions.SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-            if (Actions.DragonfireDive.ShouldUse(out act, mustUse: true)) return true;
+            if (SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (DragonfireDive.ShouldUse(out act, mustUse: true)) return true;
         }
 
         act = null;
@@ -208,11 +205,11 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
     }
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.IsAnySameAction(true, Actions.FullThrust, Actions.CoerthanTorment)
-            || Player.HaveStatus(ObjectStatus.LanceCharge) && nextGCD == Actions.FangandClaw)
+        if (nextGCD.IsAnySameAction(true, FullThrust, CoerthanTorment)
+            || Player.HaveStatus(ObjectStatus.LanceCharge) && nextGCD.IsAnySameAction(false, FangandClaw))
         {
             //Áú½£
-            if (abilityRemain ==1 && Actions.LifeSurge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (abilityRemain == 1 && LifeSurge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
@@ -223,56 +220,56 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
         if (SettingBreak)
         {
             //ÃÍÇ¹
-            if (Actions.LanceCharge.ShouldUse(out act, mustUse: true))
+            if (LanceCharge.ShouldUse(out act, mustUse: true))
             {
                 if (abilityRemain == 1 && !Player.HaveStatus(ObjectStatus.PowerSurge)) return true;
                 if (Player.HaveStatus(ObjectStatus.PowerSurge)) return true;
             }
 
             //¾ÞÁúÊÓÏß
-            if (Actions.DragonSight.ShouldUse(out act, mustUse: true)) return true;
+            if (DragonSight.ShouldUse(out act, mustUse: true)) return true;
 
             //Õ½¶·Á¬µ»
-            if (Actions.BattleLitany.ShouldUse(out act, mustUse: true)) return true;
+            if (BattleLitany.ShouldUse(out act, mustUse: true)) return true;
         }
 
         //ËÀÕßÖ®°¶
-        if (Actions.Nastrond.ShouldUse(out act, mustUse: true)) return true;
+        if (Nastrond.ShouldUse(out act, mustUse: true)) return true;
 
         //×¹ÐÇ³å
-        if (Actions.Stardiver.ShouldUse(out act, mustUse: true)) return true;
+        if (Stardiver.ShouldUse(out act, mustUse: true)) return true;
 
         //¸ßÌø
-        if (Actions.HighJump.EnoughLevel)
+        if (HighJump.EnoughLevel)
         {
-            if (Actions.HighJump.ShouldUse(out act)) return true;
+            if (HighJump.ShouldUse(out act)) return true;
         }
         else
         {
-            if (Actions.Jump.ShouldUse(out act)) return true;
+            if (Jump.ShouldUse(out act)) return true;
         }
 
         //³¢ÊÔ½øÈëºìÁúÑª
-        if (Actions.Geirskogul.ShouldUse(out act, mustUse: true)) return true;
+        if (Geirskogul.ShouldUse(out act, mustUse: true)) return true;
 
         //ÆÆËé³å
-        if (Actions.SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true))
+        if (SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true))
         {
-            if (Player.HaveStatus(ObjectStatus.LanceCharge) && Actions.LanceCharge.ElapsedAfterGCD(3)) return true;
+            if (Player.HaveStatus(ObjectStatus.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
         }
-        if (Player.HaveStatus(ObjectStatus.PowerSurge) && Actions.SpineshatterDive.ChargesCount != 1 && Actions.SpineshatterDive.ShouldUse(out act)) return true;
+        if (Player.HaveStatus(ObjectStatus.PowerSurge) && SpineshatterDive.ChargesCount != 1 && SpineshatterDive.ShouldUse(out act)) return true;
 
         //»ÃÏó³å
-        if (Actions.MirageDive.ShouldUse(out act)) return true;
+        if (MirageDive.ShouldUse(out act)) return true;
 
         //ÁúÑ×³å
-        if (Actions.DragonfireDive.ShouldUse(out act, mustUse: true))
+        if (DragonfireDive.ShouldUse(out act, mustUse: true))
         {
-            if (Player.HaveStatus(ObjectStatus.LanceCharge) && Actions.LanceCharge.ElapsedAfterGCD(3)) return true;
+            if (Player.HaveStatus(ObjectStatus.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
         }
 
         //ÌìÁúµã¾¦
-        if (Actions.WyrmwindThrust.ShouldUse(out act, mustUse: true)) return true;
+        if (WyrmwindThrust.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -282,39 +279,39 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
         safeMove = Config.GetBoolByName("DRG_SafeMove");
 
         #region ÈºÉË
-        if (Actions.CoerthanTorment.ShouldUse(out act)) return true;
-        if (Actions.SonicThrust.ShouldUse(out act)) return true;
-        if (Actions.DoomSpike.ShouldUse(out act)) return true;
+        if (CoerthanTorment.ShouldUse(out act)) return true;
+        if (SonicThrust.ShouldUse(out act)) return true;
+        if (DoomSpike.ShouldUse(out act)) return true;
 
         #endregion
 
         #region µ¥Ìå
         if (Config.GetBoolByName("ShouldDelay"))
         {
-            if (Actions.WheelingThrust.ShouldUse(out act)) return true;
-            if (Actions.FangandClaw.ShouldUse(out act)) return true;
+            if (WheelingThrust.ShouldUse(out act)) return true;
+            if (FangandClaw.ShouldUse(out act)) return true;
         }
         else
         {
-            if (Actions.FangandClaw.ShouldUse(out act)) return true;
-            if (Actions.WheelingThrust.ShouldUse(out act)) return true;
+            if (FangandClaw.ShouldUse(out act)) return true;
+            if (WheelingThrust.ShouldUse(out act)) return true;
         }
 
         //¿´¿´ÊÇ·ñÐèÒªÐøBuff
         if (!Player.WillStatusEndGCD(5, 0, true, ObjectStatus.PowerSurge))
         {
-            if (Actions.FullThrust.ShouldUse(out act)) return true;
-            if (Actions.VorpalThrust.ShouldUse(out act)) return true;
-            if (Actions.ChaosThrust.ShouldUse(out act)) return true;
+            if (FullThrust.ShouldUse(out act)) return true;
+            if (VorpalThrust.ShouldUse(out act)) return true;
+            if (ChaosThrust.ShouldUse(out act)) return true;
         }
         else
         {
-            if (Actions.Disembowel.ShouldUse(out act)) return true;
+            if (Disembowel.ShouldUse(out act)) return true;
         }
-        if (Actions.TrueThrust.ShouldUse(out act)) return true;
+        if (TrueThrust.ShouldUse(out act)) return true;
 
         if (CommandController.Move && MoveAbility(1, out act)) return true;
-        if (Actions.PiercingTalon.ShouldUse(out act)) return true;
+        if (PiercingTalon.ShouldUse(out act)) return true;
 
         return false;
 

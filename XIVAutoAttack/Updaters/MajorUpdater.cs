@@ -37,6 +37,7 @@ namespace XIVAutoAttack.Updaters
             PreviewUpdater.UpdatePreview();
 
             ActionUpdater.UpdateActionInfo();
+            CommandController.UpdateAutoAttack();
 
             TargetUpdater.UpdateHostileTargets();
             TargetUpdater.UpdateFriends();

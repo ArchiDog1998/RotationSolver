@@ -1,9 +1,5 @@
 ﻿using ImGuiScene;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -13,7 +9,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
     internal interface ICustomCombo
     {
         Role Role { get; }
-        uint JobID { get; }
+        uint[] JobIDs { get; }
 
         bool IsEnabled { get; set; }
 
