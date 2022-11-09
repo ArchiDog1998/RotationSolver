@@ -150,7 +150,7 @@ internal class ComboConfigWindow : Window
                         {
                             if (i > 0) ImGui.Separator();
                             var combo = combos[i];
-                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains( Service.ClientState.LocalPlayer.ClassJob.Id);
+                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains(Service.ClientState.LocalPlayer.ClassJob.Id);
 
                             DrawTexture(combo, () =>
                             {
