@@ -90,7 +90,7 @@ internal class ConfigWindow : Window
                         {
                             if (i > 0) ImGui.Separator();
                             var combo = combos[i];
-                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains( Service.ClientState.LocalPlayer.ClassJob.Id);
+                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains(Service.ClientState.LocalPlayer.ClassJob.Id);
 
                             DrawTexture(combo, () =>
                             {
@@ -1010,13 +1010,15 @@ internal class ConfigWindow : Window
         var attr = Attribute.GetCustomAttribute(texture.GetType(), typeof(ComboDevInfoAttribute));
         if (attr is ComboDevInfoAttribute devAttr)
         {
+            ImGui.SameLine();
+            Spacing();
+            ImGui.Text($" - {string.Join(", ", devAttr.Authors.Select(a => a.ToName()))}");
+
+            ImGui.SameLine();
             if (ImGui.Button("ิดย๋"))
             {
                 System.Diagnostics.Process.Start("cmd", $"/C start {devAttr.URL}");
             }
-            ImGui.SameLine();
-            Spacing();
-            ImGui.Text($" - {string.Join(", ", devAttr.Authors.Select(a => a.ToName()))}");
         }
 
         if (enable)
