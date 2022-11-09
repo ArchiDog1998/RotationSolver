@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -12,10 +13,9 @@ using static XIVAutoAttack.Combos.Melee.MNKCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/MNKCombo.cs")]
 internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
-
     internal enum CommandType : byte
     {
         None,

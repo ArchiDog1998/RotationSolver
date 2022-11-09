@@ -18,6 +18,7 @@ using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Combos.RangedMagicial;
@@ -822,11 +823,15 @@ internal class ConfigWindow : Window
 
             if (ImGui.BeginTabItem("技能释放条件"))
             {
-                foreach (var item in IconReplacer.RightComboBaseAction)
+                foreach (var pair in IconReplacer.RightComboBaseAction.GroupBy(a => a.CateName).OrderBy(g => g.Key))
                 {
-                    if (ImGui.CollapsingHeader(item.CateName))
+                    if (ImGui.CollapsingHeader(pair.Key))
                     {
-                        DrawAction(item);
+                        foreach (var item in pair)
+                        {
+                            DrawAction(item);
+                            ImGui.Separator();
+                        }
                     }
                 }
             }
@@ -992,13 +997,7 @@ internal class ConfigWindow : Window
 
         bool enable = texture.IsEnabled;
 
-        var check = texture.Name;
-        if(texture is ICustomCombo combo)
-        {
-            check += $" - {string.Join(", ", combo.Authors.Select(a => a.ToName()))}";
-        }
-
-        if (ImGui.Checkbox(check, ref enable))
+        if (ImGui.Checkbox(texture.Name, ref enable))
         {
             texture.IsEnabled = enable;
             Service.Configuration.Save();
@@ -1006,6 +1005,18 @@ internal class ConfigWindow : Window
         if (ImGui.IsItemHovered())
         {
             if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
+        }
+
+        var attr = Attribute.GetCustomAttribute(texture.GetType(), typeof(ComboDevInfoAttribute));
+        if (attr is ComboDevInfoAttribute devAttr)
+        {
+            if (ImGui.Button("源码"))
+            {
+                System.Diagnostics.Process.Start(devAttr.URL);
+            }
+            ImGui.SameLine();
+            Spacing();
+            ImGui.Text($" - {string.Join(", ", devAttr.Authors.Select(a => a.ToName()))}");
         }
 
         if (enable)

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -17,10 +18,10 @@ using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo.BLMCombo;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 {
+    [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/tree/main/XIVAutoAttack/Combos/RangedMagicial/BLMCombo",
+    ComboAuthor.Armolion)]
     internal sealed partial class BLMCombo : JobGaugeCombo<BLMGauge, CommandType>
     {
-        public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
-
         internal enum CommandType : byte
         {
             None,

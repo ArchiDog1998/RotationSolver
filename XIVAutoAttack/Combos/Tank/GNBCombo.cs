@@ -3,6 +3,7 @@ using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -12,10 +13,10 @@ using static XIVAutoAttack.Combos.Tank.GNBCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/GNBCombo.cs",
+   ComboAuthor.Armolion)]
 internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
-
     internal enum CommandType : byte
     {
         None,

@@ -10,10 +10,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
     {
         Role Role { get; }
         uint[] JobIDs { get; }
-        ComboAuthor[] Authors { get; }
-
-
-        string Name { get; }
 
         ActionConfiguration Config { get; }
 

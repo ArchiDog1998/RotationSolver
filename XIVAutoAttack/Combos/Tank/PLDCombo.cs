@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -13,10 +14,10 @@ using static XIVAutoAttack.Combos.Tank.PLDCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/PLDCombo.cs",
+   ComboAuthor.Armolion)]
 internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
-
     internal enum CommandType : byte
     {
         None,

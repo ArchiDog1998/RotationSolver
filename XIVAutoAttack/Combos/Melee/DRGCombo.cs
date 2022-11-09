@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Configuration;
@@ -15,10 +16,10 @@ using static XIVAutoAttack.Combos.Melee.DRGCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/DRGCombo.cs",
+   ComboAuthor.Armolion)]
 internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
-
     internal enum CommandType : byte
     {
         None,

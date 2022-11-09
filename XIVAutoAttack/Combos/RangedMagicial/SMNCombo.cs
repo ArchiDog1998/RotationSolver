@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -11,10 +12,9 @@ using static XIVAutoAttack.Combos.RangedMagicial.SMNCombo;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedMagicial/SMNCombo.cs")]
 internal sealed class SMNCombo : JobGaugeCombo<SMNGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
-
     internal enum CommandType : byte
     {
         None,

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -9,10 +10,10 @@ using static XIVAutoAttack.Combos.Melee.RPRCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/RPRCombo.cs",
+   ComboAuthor.NiGuangOwO)]
 internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.NiGuangOwO };
-
     internal enum CommandType : byte
     {
         None,
