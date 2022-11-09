@@ -155,11 +155,11 @@ namespace XIVAutoAttack.Actions.BaseAction
                     }
                 }
 
-
                 //目标已有充足的Debuff
                 if (!mustUse && TargetStatus != null)
                 {
-                    var tar = Target == Service.ClientState.LocalPlayer ? TargetUpdater.HostileTargets.OrderBy(p => p.DistanceToPlayer()).First() : Target;
+                    var tar = Target == Service.ClientState.LocalPlayer && TargetUpdater.HostileTargets.Length > 0
+                        ? TargetUpdater.HostileTargets.OrderBy(p => p.DistanceToPlayer()).First() : Target;
 
                     if (!tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus)) return false;
                 }
