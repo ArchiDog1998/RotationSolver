@@ -38,6 +38,7 @@ internal sealed class IconReplacer : IDisposable
             return null;
         }
     }
+    internal static BaseAction[] AllBaseActions => RightComboBaseActions.Union(GeneralBaseAction).ToArray();
 
     internal static BaseAction[] RightComboBaseActions
     {

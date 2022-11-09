@@ -15,7 +15,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         act = CommandController.NextAction;
-        if (act is BaseAction a && a != null && !a.IsRealGCD) return true;
+        if (act is BaseAction a && a != null && !a.IsRealGCD && a.ShouldUse(out _, mustUse:true, skipDisable:true)) return true;
 
         if (Service.Configuration.OnlyGCD || Player.TotalCastTime - Player.CurrentCastTime > Service.Configuration.WeaponInterval)
         {
