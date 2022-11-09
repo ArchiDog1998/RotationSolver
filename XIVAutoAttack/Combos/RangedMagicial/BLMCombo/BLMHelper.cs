@@ -27,7 +27,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
 
         internal static float MpUpdateRemain => 3 - ActionUpdater.MPUpdateElapsed;
-        internal static bool IsPolyglotStacksMaxed => Actions.Xenoglossy.EnoughLevel ? JobGauge.PolyglotStacks == 2 : JobGauge.PolyglotStacks == 1;
+        internal static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? JobGauge.PolyglotStacks == 2 : JobGauge.PolyglotStacks == 1;
         internal static bool HasFire => Player.HaveStatus(ObjectStatus.Firestarter);
         internal static bool HasThunder => Player.HaveStatus(ObjectStatus.Thundercloud);
         internal static bool TargetHasThunder => Target.HaveStatus(ObjectStatus.Thunder, ObjectStatus.Thunder2, ObjectStatus.Thunder3, ObjectStatus.Thunder4);
@@ -140,7 +140,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         /// <returns></returns>
         internal static bool BenignMp()
         {
-            if (HaveSwift || HasFire || JobGauge.IsParadoxActive || Actions.Triplecast.ChargesCount == 0) return false;
+            if (HaveSwift || HasFire || JobGauge.IsParadoxActive || Triplecast.ChargesCount == 0) return false;
 
             //双星灵时悖论后到星灵前时间
             if (MpBackGCDCanDouble(3) && F4RemainingNumber() == 1)
@@ -156,7 +156,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 return true;
 
             }
-            if (MpBackGCDCanDouble(1) && IsLastSpell(true, Actions.Despair))
+            if (MpBackGCDCanDouble(1) && IsLastSpell(true, Despair))
             {
                 if (HaveXeCounts(2) > 1 || HaveXeCounts(2) == 1 && HaveT3InIce(2)) return true;
                 return true;
@@ -174,7 +174,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         internal static byte F4RemainingNumber()
         {
             if (!JobGauge.InAstralFire) return 0;
-            var mpCount = (byte)((Player.CurrentMp - 800) / Actions.Fire4.MPNeed);
+            var mpCount = (byte)((Player.CurrentMp - 800) / Fire4.MPNeed);
             var timeCountDe = (byte)((JobGauge.ElementTimeRemaining - CalcSpellTime(3000)) / CalcSpellTime(2800));
             var timeCountPe = (byte)((JobGauge.ElementTimeRemaining - CalcSpellTime(2500)) / CalcSpellTime(2800));
             if (JobGauge.IsParadoxActive) return Math.Min(mpCount, timeCountPe);
@@ -186,7 +186,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             //天语经过时间(秒)
             var gcdTime = GCDTime / 1000;
 
-            if (JobGauge.InAstralFire && Actions.Transpose.IsCoolDown && !Actions.Transpose.ElapsedAfter(0.1f, false))
+            if (JobGauge.InAstralFire && Transpose.IsCoolDown && !Transpose.ElapsedAfter(0.1f, false))
             {
                 MPNextUpInCurrGCD = (3 - (ActionUpdater.MPUpdateElapsed - ActionUpdater.WeaponElapsed)) % 3;
                 TsPointElapsed = ActionUpdater.WeaponElapsed - 0.1;// - (15000 - JobGauge.ElementTimeRemaining);

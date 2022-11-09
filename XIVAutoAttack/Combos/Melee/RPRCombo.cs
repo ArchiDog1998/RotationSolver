@@ -11,6 +11,8 @@ namespace XIVAutoAttack.Combos.Melee;
 
 internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.NiGuangOwO };
+
     internal enum CommandType : byte
     {
         None,
@@ -38,267 +40,266 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
     private static bool enhancedVoidReaping => Player.HaveStatus(ObjectStatus.EnhancedVoidReaping);
     private static bool plentifulReady => Player.HaveStatus(ObjectStatus.ImmortalSacrifice) && !Player.HaveStatus(ObjectStatus.BloodsownCircle);
     private static bool haveDeathsDesign => Target.HaveStatus(ObjectStatus.DeathsDesign);
-    public override uint JobID => 39;
-    internal struct Actions
-    {
-        public static readonly BaseAction
-        #region 单体
-            //切割
-            Slice = new(24373)
-            {
-                OtherCheck = b => !enshrouded || !soulReaver,
-            },
+    public override uint[] JobIDs => new uint[] { 39 };
 
-            //增盈切割
-            WaxingSlice = new(24374)
-            {
-                OtherCheck = Slice.OtherCheck,
-            },
+    public static readonly BaseAction
+    #region 单体
+        //切割
+        Slice = new(24373)
+        {
+            OtherCheck = b => !enshrouded || !soulReaver,
+        },
 
-            //地狱切割
-            InfernalSlice = new(24375)
-            {
-                OtherCheck = Slice.OtherCheck,
-            },
+        //增盈切割
+        WaxingSlice = new(24374)
+        {
+            OtherCheck = Slice.OtherCheck,
+        },
 
-            //死亡之影
-            ShadowofDeath = new(24378, isDot: true)
-            {
-                TargetStatus = new[] { ObjectStatus.DeathsDesign },
-                OtherCheck = b => !soulReaver,
-            },
+        //地狱切割
+        InfernalSlice = new(24375)
+        {
+            OtherCheck = Slice.OtherCheck,
+        },
 
-            //灵魂切割
-            SoulSlice = new(24380)
-            {
-                OtherCheck = b => !enshrouded && !soulReaver && JobGauge.Soul <= 50,
-            },
-        #endregion
-        #region AoE
-            //旋转钐割
-            SpinningScythe = new(24376)
-            {
-                OtherCheck = Slice.OtherCheck,
-            },
+        //死亡之影
+        ShadowofDeath = new(24378, isDot: true)
+        {
+            TargetStatus = new[] { ObjectStatus.DeathsDesign },
+            OtherCheck = b => !soulReaver,
+        },
 
-            //噩梦钐割
-            NightmareScythe = new(24377)
-            {
-                OtherCheck = Slice.OtherCheck,
-            },
+        //灵魂切割
+        SoulSlice = new(24380)
+        {
+            OtherCheck = b => !enshrouded && !soulReaver && JobGauge.Soul <= 50,
+        },
+    #endregion
+    #region AoE
+        //旋转钐割
+        SpinningScythe = new(24376)
+        {
+            OtherCheck = Slice.OtherCheck,
+        },
 
-            //死亡之涡
-            WhorlofDeath = new(24379, isDot: true)
-            {
-                TargetStatus = new[] { ObjectStatus.DeathsDesign },
-                OtherCheck = b => !soulReaver
-            },
+        //噩梦钐割
+        NightmareScythe = new(24377)
+        {
+            OtherCheck = Slice.OtherCheck,
+        },
 
-            //灵魂钐割
-            SoulScythe = new(24381)
-            {
-                OtherCheck = SoulSlice.OtherCheck,
-            },
-        #endregion
-        #region 妖异之镰状态
-            //绞决
-            Gibbet = new PRPAction(24382)
-            {
-                OtherCheck = b => soulReaver && enhancedGibbet,
-            },
+        //死亡之涡
+        WhorlofDeath = new(24379, isDot: true)
+        {
+            TargetStatus = new[] { ObjectStatus.DeathsDesign },
+            OtherCheck = b => !soulReaver
+        },
 
-            //缢杀
-            Gallows = new PRPAction(24383)
-            {
-                OtherCheck = b => soulReaver && (enhancedGallows || !enhancedGibbet),
-            },
+        //灵魂钐割
+        SoulScythe = new(24381)
+        {
+            OtherCheck = SoulSlice.OtherCheck,
+        },
+    #endregion
+    #region 妖异之镰状态
+        //绞决
+        Gibbet = new PRPAction(24382)
+        {
+            OtherCheck = b => soulReaver && enhancedGibbet,
+        },
 
-            //断首
-            Guillotine = new(24384)
-            {
-                OtherCheck = b => soulReaver,
-            },
-        #endregion
-        #region 红条50灵魂
-            //隐匿挥割
-            BloodStalk = new(24389)
-            {
-                BuffsProvide = new[] { ObjectStatus.SoulReaver },
-                OtherCheck = b => !soulReaver && !enshrouded &&
-                                  JobGauge.Soul >= 50 && !plentifulReady &&
-                                  ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel),
-            },
+        //缢杀
+        Gallows = new PRPAction(24383)
+        {
+            OtherCheck = b => soulReaver && (enhancedGallows || !enhancedGibbet),
+        },
 
-            //束缚挥割
-            GrimSwathe = new(24392)
-            {
-                OtherCheck = BloodStalk.OtherCheck,
-            },
+        //断首
+        Guillotine = new(24384)
+        {
+            OtherCheck = b => soulReaver,
+        },
+    #endregion
+    #region 红条50灵魂
+        //隐匿挥割
+        BloodStalk = new(24389)
+        {
+            BuffsProvide = new[] { ObjectStatus.SoulReaver },
+            OtherCheck = b => !soulReaver && !enshrouded &&
+                              JobGauge.Soul >= 50 && !plentifulReady &&
+                              ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel),
+        },
 
-            //暴食
-            Gluttony = new(24393)
-            {
-                OtherCheck = b => !soulReaver && !enshrouded && JobGauge.Soul >= 50,
-            },
-        #endregion
-        #region 大爆发
-            //神秘环
-            ArcaneCircle = new(24405, true)
-            {
-                OtherCheck = b => InCombat && haveDeathsDesign
-            },
+        //束缚挥割
+        GrimSwathe = new(24392)
+        {
+            OtherCheck = BloodStalk.OtherCheck,
+        },
 
-            //大丰收
-            PlentifulHarvest = new(24385)
-            {
-                OtherCheck = b => JobGauge.Shroud <= 50 && !soulReaver && !enshrouded && plentifulReady
-            },
-        #endregion
-        #region 蓝条50附体
-            //夜游魂衣
-            Enshroud = new(24394)
-            {
-                OtherCheck = b => !soulReaver && !enshrouded && JobGauge.Shroud >= 50,
-            },
+        //暴食
+        Gluttony = new(24393)
+        {
+            OtherCheck = b => !soulReaver && !enshrouded && JobGauge.Soul >= 50,
+        },
+    #endregion
+    #region 大爆发
+        //神秘环
+        ArcaneCircle = new(24405, true)
+        {
+            OtherCheck = b => InCombat && haveDeathsDesign
+        },
 
-            //团契
-            Communio = new(24398)
-            {
-                OtherCheck = b => enshrouded && JobGauge.LemureShroud ==1,
-            },
+        //大丰收
+        PlentifulHarvest = new(24385)
+        {
+            OtherCheck = b => JobGauge.Shroud <= 50 && !soulReaver && !enshrouded && plentifulReady
+        },
+    #endregion
+    #region 蓝条50附体
+        //夜游魂衣
+        Enshroud = new(24394)
+        {
+            OtherCheck = b => !soulReaver && !enshrouded && JobGauge.Shroud >= 50,
+        },
 
-            //夜游魂切割
-            LemuresSlice = new(24399)
-            {
-                OtherCheck = b => enshrouded && JobGauge.VoidShroud >= 2,
-            },
+        //团契
+        Communio = new(24398)
+        {
+            OtherCheck = b => enshrouded && JobGauge.LemureShroud == 1,
+        },
 
-            //夜游魂钐割
-            LemuresScythe = new(24400)
-            {
-                OtherCheck = LemuresSlice.OtherCheck,
-            },
+        //夜游魂切割
+        LemuresSlice = new(24399)
+        {
+            OtherCheck = b => enshrouded && JobGauge.VoidShroud >= 2,
+        },
 
-            //虚无收割
-            VoidReaping = new(24395)
-            {
-                OtherCheck = b => enshrouded && JobGauge.LemureShroud > 1 && enhancedVoidReaping,
-            },
+        //夜游魂钐割
+        LemuresScythe = new(24400)
+        {
+            OtherCheck = LemuresSlice.OtherCheck,
+        },
 
-            //交错收割
-            CrossReaping = new(24396)
+        //虚无收割
+        VoidReaping = new(24395)
+        {
+            OtherCheck = b => enshrouded && JobGauge.LemureShroud > 1 && enhancedVoidReaping,
+        },
+
+        //交错收割
+        CrossReaping = new(24396)
+        {
+            OtherCheck = b =>
             {
-                OtherCheck = b =>
+                if (enshrouded)
                 {
-                    if (enshrouded)
+                    if (JobGauge.LemureShroud > 1 && (enhancedCrossReaping || !enhancedVoidReaping))
                     {
-                        if (JobGauge.LemureShroud > 1 && (enhancedCrossReaping || !enhancedVoidReaping))
-                        {
-                                return true;
-                        }
-                        if (JobGauge.LemureShroud == 1 && !Communio.EnoughLevel && enhancedCrossReaping)
-                        {
-                                return true;
-                        }
+                        return true;
                     }
-                    return false;
+                    if (JobGauge.LemureShroud == 1 && !Communio.EnoughLevel && enhancedCrossReaping)
+                    {
+                        return true;
+                    }
                 }
-            },
+                return false;
+            }
+        },
 
-            //阴冷收割
-            GrimReaping = new(24397)
-            {
-                OtherCheck = b => enshrouded,
-            },
-        #endregion
-        #region 杂项
-            //勾刃
-            Harpe = new(24386),
+        //阴冷收割
+        GrimReaping = new(24397)
+        {
+            OtherCheck = b => enshrouded,
+        },
+    #endregion
+    #region 杂项
+        //勾刃
+        Harpe = new(24386),
 
-            //播魂种
-            Soulsow = new(24387)
-            {
-                BuffsProvide = new[] { ObjectStatus.Soulsow },
-                OtherCheck = b => !InCombat,
-            },
+        //播魂种
+        Soulsow = new(24387)
+        {
+            BuffsProvide = new[] { ObjectStatus.Soulsow },
+            OtherCheck = b => !InCombat,
+        },
 
-            //收获月
-            HarvestMoon = new(24388)
-            {
-                BuffsNeed = new[] { ObjectStatus.Soulsow },
-                OtherCheck = b => InCombat,
-            },
+        //收获月
+        HarvestMoon = new(24388)
+        {
+            BuffsNeed = new[] { ObjectStatus.Soulsow },
+            OtherCheck = b => InCombat,
+        },
 
-            //神秘纹 加盾
-            ArcaneCrest = new(24404, true)
-            {
-                OtherCheck = b => !enshrouded && !soulReaver
-            };
-        #endregion
-    }
-    public override SortedList<DescType, string> Description => new ()
+        //神秘纹 加盾
+        ArcaneCrest = new(24404, true)
+        {
+            OtherCheck = b => !enshrouded && !soulReaver
+        };
+    #endregion
+
+    public override SortedList<DescType, string> DescriptionDict => new ()
     {
-        {DescType.单体防御, $"{Actions.ArcaneCrest}"},
+        {DescType.单体防御, $"{ArcaneCrest}"},
     };
     private protected override bool GeneralGCD(out IAction act)
     {
         //开场获得收获月
-        if (Actions.Soulsow.ShouldUse(out act)) return true;
+        if (Soulsow.ShouldUse(out act)) return true;
 
         //处于变身状态。
         if (enshrouded)
         {
-            if (Actions.ShadowofDeath.ShouldUse(out act)) return true;
+            if (ShadowofDeath.ShouldUse(out act)) return true;
 
             //夜游魂衣-虚无/交错收割 阴冷收割
-            if (Actions.CrossReaping.ShouldUse(out act)) return true;
-            if (Actions.VoidReaping.ShouldUse(out act)) return true;
-            if (Actions.GrimReaping.ShouldUse(out act)) return true;
+            if (CrossReaping.ShouldUse(out act)) return true;
+            if (VoidReaping.ShouldUse(out act)) return true;
+            if (GrimReaping.ShouldUse(out act)) return true;
 
-            if (JobGauge.LemureShroud == 1 && Actions.Communio.EnoughLevel)
+            if (JobGauge.LemureShroud == 1 && Communio.EnoughLevel)
             {
-                if (!IsMoving && Actions.Communio.ShouldUse(out act, mustUse: true))
+                if (!IsMoving && Communio.ShouldUse(out act, mustUse: true))
                 {
                     return true;
                 }
                 //跑机制来不及读条？补个buff混一下
                 else
                 {
-                    if (Actions.ShadowofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
-                    if (Actions.WhorlofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
+                    if (ShadowofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
+                    if (WhorlofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
                 }
             }
         }
 
         //处于补蓝状态，赶紧补蓝条。
-        if (Actions.Guillotine.ShouldUse(out act)) return true;
-        if (Actions.Gibbet.ShouldUse(out act)) return true;
-        if (Actions.Gallows.ShouldUse(out act)) return true;
+        if (Guillotine.ShouldUse(out act)) return true;
+        if (Gibbet.ShouldUse(out act)) return true;
+        if (Gallows.ShouldUse(out act)) return true;
 
         //上Debuff
-        if (Actions.WhorlofDeath.ShouldUse(out act)) return true;
-        if (Actions.ShadowofDeath.ShouldUse(out act)) return true;
+        if (WhorlofDeath.ShouldUse(out act)) return true;
+        if (ShadowofDeath.ShouldUse(out act)) return true;
 
         //大丰收
-        if (Actions.PlentifulHarvest.ShouldUse(out act, mustUse: true)) return true;
+        if (PlentifulHarvest.ShouldUse(out act, mustUse: true)) return true;
 
         //灵魂切割
-        if (Actions.SoulSlice.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (SoulSlice.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         //灵魂钐割
-        if (Actions.SoulScythe.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (SoulScythe.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //群体二连
-        if (Actions.NightmareScythe.ShouldUse(out act)) return true;
-        if (Actions.SpinningScythe.ShouldUse(out act)) return true;
+        if (NightmareScythe.ShouldUse(out act)) return true;
+        if (SpinningScythe.ShouldUse(out act)) return true;
 
         //单体三连
-        if (Actions.InfernalSlice.ShouldUse(out act)) return true;
-        if (Actions.WaxingSlice.ShouldUse(out act)) return true;
-        if (Actions.Slice.ShouldUse(out act)) return true;
+        if (InfernalSlice.ShouldUse(out act)) return true;
+        if (WaxingSlice.ShouldUse(out act)) return true;
+        if (Slice.ShouldUse(out act)) return true;
 
         //摸不到怪 先花掉收获月
-        if (Actions.HarvestMoon.ShouldUse(out act, mustUse:true)) return true;
-        if (Actions.Harpe.ShouldUse(out act)) return true;
+        if (HarvestMoon.ShouldUse(out act, mustUse:true)) return true;
+        if (Harpe.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -308,24 +309,24 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
         if (SettingBreak)
         {
             //神秘环
-            if (Actions.ArcaneCircle.ShouldUse(out act)) return true;
+            if (ArcaneCircle.ShouldUse(out act)) return true;
             //夜游魂衣
-            if (Actions.Enshroud.ShouldUse(out act)) return true;
+            if (Enshroud.ShouldUse(out act)) return true;
         }
 
         if (enshrouded)
         {
             //夜游魂衣-夜游魂切割 夜游魂钐割
-            if (Actions.LemuresSlice.ShouldUse(out act)) return true;
-            if (Actions.LemuresScythe.ShouldUse(out act)) return true;
+            if (LemuresSlice.ShouldUse(out act)) return true;
+            if (LemuresScythe.ShouldUse(out act)) return true;
         }
 
         //暴食
-        if (Actions.Gluttony.ShouldUse(out act, mustUse: true)) return true;
+        if (Gluttony.ShouldUse(out act, mustUse: true)) return true;
         //AOE
-        if (Actions.GrimSwathe.ShouldUse(out act)) return true;
+        if (GrimSwathe.ShouldUse(out act)) return true;
         //单体
-        if (Actions.BloodStalk.ShouldUse(out act)) return true;
+        if (BloodStalk.ShouldUse(out act)) return true;
         act = null;
         return false;
     }
@@ -344,7 +345,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //神秘纹
-        if (Actions.ArcaneCrest.ShouldUse(out act)) return true;
+        if (ArcaneCrest.ShouldUse(out act)) return true;
         return false;
     }
 }

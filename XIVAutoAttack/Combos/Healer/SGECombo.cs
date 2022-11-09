@@ -16,6 +16,8 @@ namespace XIVAutoAttack.Combos.Healer;
 
 internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
+
     internal enum CommandType : byte
     {
         None,
@@ -25,14 +27,13 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
     {
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
-    public override uint JobID => 40;
+    public override uint[] JobIDs => new uint[] { 40 };
     internal static byte level => Service.ClientState.LocalPlayer!.Level;
 
-    private protected override BaseAction Raise => Actions.Egeiro;
+    private protected override BaseAction Raise => Egeiro;
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
     protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
-    internal struct Actions
-    {
+
         public static readonly BaseAction
             //复苏
             Egeiro = new(24287),
@@ -220,21 +221,18 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
                     return false;
                 },
             };
-
-    }
-
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
     }
 
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.范围治疗, $"GCD: {Actions.Prognosis}\n                     能力: {Actions.Holos}, {Actions.Ixochole}, {Actions.Physis2}, {Actions.Physis}"},
-        {DescType.单体治疗, $"GCD: {Actions.Diagnosis}\n                     能力: {Actions.Druochole}"},
-        {DescType.范围防御, $"{Actions.Panhaima}, {Actions.Kerachole}, {Actions.Prognosis}"},
-        {DescType.单体防御, $"GCD: {Actions.Diagnosis}\n                     能力: {Actions.Haima}, {Actions.Taurochole}"},
-        {DescType.移动技能, $"{Actions.Icarus}，目标为面向夹角小于30°内最远目标。"},
+        {DescType.范围治疗, $"GCD: {Prognosis}\n                     能力: {Holos}, {Ixochole}, {Physis2}, {Physis}"},
+        {DescType.单体治疗, $"GCD: {Diagnosis}\n                     能力: {Druochole}"},
+        {DescType.范围防御, $"{Panhaima}, {Kerachole}, {Prognosis}"},
+        {DescType.单体防御, $"GCD: {Diagnosis}\n                     能力: {Haima}, {Taurochole}"},
+        {DescType.移动技能, $"{Icarus}，目标为面向夹角小于30°内最远目标。"},
     };
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
@@ -247,17 +245,17 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
         if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //下个技能是
-        if (nextGCD.IsAnySameAction(false, Actions.Pneuma , Actions.EukrasianDiagnosis, 
-            Actions.EukrasianPrognosis , Actions.Diagnosis , Actions.Prognosis))
+        if (nextGCD.IsAnySameAction(false, Pneuma , EukrasianDiagnosis, 
+            EukrasianPrognosis , Diagnosis , Prognosis))
         {
             //活化
-            if (Actions.Zoe.ShouldUse(out act)) return true;
+            if (Zoe.ShouldUse(out act)) return true;
         }
 
-        if (nextGCD == Actions.Diagnosis)
+        if (nextGCD == Diagnosis)
         {
             //混合
-            if (Actions.Krasis.ShouldUse(out act)) return true;
+            if (Krasis.ShouldUse(out act)) return true;
         }
 
         act = null;
@@ -270,11 +268,11 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
         if (JobGauge.Addersgall == 0)
         {
             //输血
-            if (Actions.Haima.ShouldUse(out act)) return true;
+            if (Haima.ShouldUse(out act)) return true;
         }
 
         //白牛清汁
-        if (Actions.Taurochole.ShouldUse(out act)) return true;
+        if (Taurochole.ShouldUse(out act)) return true;
 
         act = null!;
         return false;
@@ -283,9 +281,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
     private protected override bool DefenseSingleGCD(out IAction act)
     {
         //诊断
-        if (Actions.EukrasianDiagnosis.ShouldUse(out act))
+        if (EukrasianDiagnosis.ShouldUse(out act))
         {
-            if (Actions.EukrasianDiagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
+            if (EukrasianDiagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
             {
                 ObjectStatus.EukrasianDiagnosis,
                 ObjectStatus.EukrasianPrognosis,
@@ -293,9 +291,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
             }).Count() > 0) return false;
 
             //均衡
-            if (Actions.Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.ShouldUse(out act)) return true;
 
-            act = Actions.EukrasianDiagnosis;
+            act = EukrasianDiagnosis;
             return true;
         }
 
@@ -308,14 +306,14 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
         //泛输血
         if (JobGauge.Addersgall == 0 && TargetUpdater.PartyMembersAverHP < 0.7)
         {
-            if (Actions.Panhaima.ShouldUse(out act)) return true;
+            if (Panhaima.ShouldUse(out act)) return true;
         }
 
         //坚角清汁
-        if (Actions.Kerachole.ShouldUse(out act)) return true;
+        if (Kerachole.ShouldUse(out act)) return true;
 
         //整体论
-        if (Actions.Holos.ShouldUse(out act)) return true;
+        if (Holos.ShouldUse(out act)) return true;
 
         act = null!;
         return false;
@@ -324,9 +322,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
     private protected override bool DefenseAreaGCD(out IAction act)
     {
         //预后
-        if (Actions.EukrasianPrognosis.ShouldUse(out act))
+        if (EukrasianPrognosis.ShouldUse(out act))
         {
-            if (Actions.EukrasianPrognosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
+            if (EukrasianPrognosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
             {
                 ObjectStatus.EukrasianDiagnosis,
                 ObjectStatus.EukrasianPrognosis,
@@ -334,9 +332,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
             }).Count() > 0) return false;
 
             //均衡
-            if (Actions.Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.ShouldUse(out act)) return true;
 
-            act = Actions.EukrasianPrognosis;
+            act = EukrasianPrognosis;
             return true;
         }
 
@@ -347,23 +345,23 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //神翼
-        if (Actions.Icarus.ShouldUse(out act)) return true;
+        if (Icarus.ShouldUse(out act)) return true;
         return false;
     }
 
     private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
     {
         //心关
-        if (Actions.Kardia.ShouldUse(out act)) return true;
+        if (Kardia.ShouldUse(out act)) return true;
 
         //根素
-        if (JobGauge.Addersgall == 0 && Actions.Rhizomata.ShouldUse(out act)) return true;
+        if (JobGauge.Addersgall == 0 && Rhizomata.ShouldUse(out act)) return true;
 
         //拯救
-        if (Actions.Soteria.ShouldUse(out act)) return true;
+        if (Soteria.ShouldUse(out act)) return true;
 
         //消化
-        if (Actions.Pepsis.ShouldUse(out act)) return true;
+        if (Pepsis.ShouldUse(out act)) return true;
 
         act = null!;
         return false;
@@ -372,21 +370,21 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //箭毒
-        if (JobGauge.Addersting == 3 && Actions.Toxikon.ShouldUse(out act, mustUse: true)) return true;
+        if (JobGauge.Addersting == 3 && Toxikon.ShouldUse(out act, mustUse: true)) return true;
 
         var level = Level;
         //发炎
-        if (Actions.Phlegma3.ShouldUse(out act, mustUse: Actions.Phlegma3.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
-        if (!Actions.Phlegma3.EnoughLevel && Actions.Phlegma2.ShouldUse(out act, mustUse: Actions.Phlegma2.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
-        if (!Actions.Phlegma2.EnoughLevel && Actions.Phlegma.ShouldUse(out act, mustUse: Actions.Phlegma.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
+        if (Phlegma3.ShouldUse(out act, mustUse: Phlegma3.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
+        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: Phlegma2.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
+        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: Phlegma.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
 
         //失衡
-        if (Actions.Dyskrasia.ShouldUse(out act)) return true;
+        if (Dyskrasia.ShouldUse(out act)) return true;
 
-        if(Actions.EukrasianDosis.ShouldUse(out var enAct))
+        if(EukrasianDosis.ShouldUse(out var enAct))
         {
             //补上Dot
-            if (Actions.Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.ShouldUse(out act)) return true;
             act = enAct;
             return true;
         }
@@ -397,21 +395,21 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
         }
 
         //注药
-        if (Actions.Dosis.ShouldUse(out act)) return true;
+        if (Dosis.ShouldUse(out act)) return true;
 
         //发炎
-        if (Actions.Phlegma3.ShouldUse(out act, mustUse: true)) return true;
-        if (!Actions.Phlegma3.EnoughLevel && Actions.Phlegma2.ShouldUse(out act, mustUse: true)) return true;
-        if (!Actions.Phlegma2.EnoughLevel && Actions.Phlegma.ShouldUse(out act, mustUse: true)) return true;
+        if (Phlegma3.ShouldUse(out act, mustUse: true)) return true;
+        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: true)) return true;
+        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: true)) return true;
 
         //箭毒
-        if (JobGauge.Addersting > 0 && Actions.Toxikon.ShouldUse(out act, mustUse: true)) return true;
+        if (JobGauge.Addersting > 0 && Toxikon.ShouldUse(out act, mustUse: true)) return true;
 
         //脱战给T刷单盾嫖豆子
         if (!InCombat)
         {
             var tank = TargetUpdater.PartyTanks;
-            if (tank.Length == 1 && Actions.EukrasianDiagnosis.Target == tank.First() && Actions.EukrasianDiagnosis.ShouldUse(out act))
+            if (tank.Length == 1 && EukrasianDiagnosis.Target == tank.First() && EukrasianDiagnosis.ShouldUse(out act))
             {
                 if (tank.First().StatusList.Select(s => s.StatusId).Intersect(new uint[]
                 {
@@ -421,12 +419,12 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
                 }).Any()) return false;
 
                 //均衡
-                if (Actions.Eukrasia.ShouldUse(out act)) return true;
+                if (Eukrasia.ShouldUse(out act)) return true;
 
-                act = Actions.EukrasianDiagnosis;
+                act = EukrasianDiagnosis;
                 return true;
             }
-            if (Actions.Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.ShouldUse(out act)) return true;
         }
 
         return false;
@@ -435,26 +433,26 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //白牛青汁
-        if (Actions.Taurochole.ShouldUse(out act)) return true;
+        if (Taurochole.ShouldUse(out act)) return true;
 
         //灵橡清汁
-        if (Actions.Druochole.ShouldUse(out act)) return true;
+        if (Druochole.ShouldUse(out act)) return true;
 
         //当资源不足时加入范围治疗缓解压力
         var tank = TargetUpdater.PartyTanks;
-        var isBoss = Actions.Dosis.Target.IsBoss();
+        var isBoss = Dosis.Target.IsBoss();
         if (JobGauge.Addersgall == 0 && tank.Length == 1 && tank.Any(t => t.GetHealthRatio() < 0.6f) && !isBoss)
         {
             //整体论
-            if (Actions.Holos.ShouldUse(out act)) return true;
+            if (Holos.ShouldUse(out act)) return true;
 
             //自生2
-            if (Actions.Physis2.ShouldUse(out act)) return true;
+            if (Physis2.ShouldUse(out act)) return true;
             //自生
-            if (!Actions.Physis2.EnoughLevel && Actions.Physis.ShouldUse(out act)) return true;
+            if (!Physis2.EnoughLevel && Physis.ShouldUse(out act)) return true;
 
             //泛输血
-            if (Actions.Panhaima.ShouldUse(out act)) return true;
+            if (Panhaima.ShouldUse(out act)) return true;
         }
 
         act = null!;
@@ -464,9 +462,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
     private protected override bool HealSingleGCD(out IAction act)
     {
         //诊断
-        if (Actions.EukrasianDiagnosis.ShouldUse(out act))
+        if (EukrasianDiagnosis.ShouldUse(out act))
         {
-            if (Actions.EukrasianDiagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
+            if (EukrasianDiagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
             {
                 //均衡诊断
                 ObjectStatus.EukrasianDiagnosis,
@@ -474,18 +472,18 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
                 ObjectStatus.Galvanize,
             }).Count() > 0)
             {
-                if (Actions.Diagnosis.ShouldUse(out act)) return true;
+                if (Diagnosis.ShouldUse(out act)) return true;
             }
 
             //均衡
-            if (Actions.Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.ShouldUse(out act)) return true;
 
-            act = Actions.EukrasianDiagnosis;
+            act = EukrasianDiagnosis;
             return true;
         }
 
         //诊断
-        if (Actions.Diagnosis.ShouldUse(out act)) return true;
+        if (Diagnosis.ShouldUse(out act)) return true;
         return false;
     }
 
@@ -494,12 +492,12 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
         if (TargetUpdater.PartyMembersAverHP < 0.55f)
         {
             //魂灵风息
-            if (Actions.Pneuma.ShouldUse(out act, mustUse: true)) return true;
+            if (Pneuma.ShouldUse(out act, mustUse: true)) return true;
         }
 
-        if (Actions.EukrasianPrognosis.ShouldUse(out act))
+        if (EukrasianPrognosis.ShouldUse(out act))
         {
-            if (Actions.EukrasianPrognosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
+            if (EukrasianPrognosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
             {
                 //均衡诊断
                 ObjectStatus.EukrasianDiagnosis,
@@ -507,35 +505,35 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
                 ObjectStatus.Galvanize,
             }).Count() > 0)
             {
-                if (Actions.Prognosis.ShouldUse(out act)) return true;
+                if (Prognosis.ShouldUse(out act)) return true;
             }
 
             //均衡
-            if (Actions.Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.ShouldUse(out act)) return true;
 
-            act = Actions.EukrasianPrognosis;
+            act = EukrasianPrognosis;
             return true;
         }
 
         //预后
-        if (Actions.Prognosis.ShouldUse(out act)) return true;
+        if (Prognosis.ShouldUse(out act)) return true;
         return false;
     }
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //坚角清汁
-        if (Actions.Kerachole.ShouldUse(out act) && level >= Level) return true;
+        if (Kerachole.ShouldUse(out act) && level >= Level) return true;
 
         //自生2
-        if (Actions.Physis2.ShouldUse(out act)) return true;
+        if (Physis2.ShouldUse(out act)) return true;
         //自生
-        if (!Actions.Physis2.EnoughLevel && Actions.Physis.ShouldUse(out act)) return true;
+        if (!Physis2.EnoughLevel && Physis.ShouldUse(out act)) return true;
 
         //整体论
-        if (Actions.Holos.ShouldUse(out act) && TargetUpdater.PartyMembersAverHP < 0.65f) return true;
+        if (Holos.ShouldUse(out act) && TargetUpdater.PartyMembersAverHP < 0.65f) return true;
 
         //寄生清汁
-        if (Actions.Ixochole.ShouldUse(out act)) return true;
+        if (Ixochole.ShouldUse(out act)) return true;
 
         return false;
     }

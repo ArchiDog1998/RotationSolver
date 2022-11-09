@@ -15,6 +15,8 @@ namespace XIVAutoAttack.Combos.Tank;
 
 internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
+
     internal enum CommandType : byte
     {
         None,
@@ -24,11 +26,11 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
     {
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
-    public override uint JobID => 19;
+    public override uint[] JobIDs => new uint[] { 19, 1 };
 
     internal override bool HaveShield => Player.HaveStatus(ObjectStatus.IronWill);
 
-    private protected override BaseAction Shield => Actions.IronWill;
+    private protected override BaseAction Shield => IronWill;
 
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Length == 1 && base.CanHealSingleSpell;
 
@@ -45,209 +47,206 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
 
     private bool SlowLoop = false;
 
-    internal struct Actions
-    {
-        public static readonly BaseAction
-            //钢铁信念
-            IronWill = new (28, shouldEndSpecial: true),
+    public static readonly BaseAction
+        //钢铁信念
+        IronWill = new(28, shouldEndSpecial: true),
 
-            //先锋剑
-            FastBlade = new (9),
+        //先锋剑
+        FastBlade = new(9),
 
-            //暴乱剑
-            RiotBlade = new (15),
+        //暴乱剑
+        RiotBlade = new(15),
 
-            //沥血剑
-            GoringBlade = new (3538, isDot:true)
+        //沥血剑
+        GoringBlade = new(3538, isDot: true)
+        {
+            TargetStatus = new[]
             {
-                TargetStatus = new []
-                {
                     ObjectStatus.GoringBlade,
                     ObjectStatus.BladeofValor,
-                }
-            },
+            }
+        },
 
-            //战女神之怒
-            RageofHalone = new (21),
+        //战女神之怒
+        RageofHalone = new(21),
 
-            //王权剑
-            RoyalAuthority = new (3539),
+        //王权剑
+        RoyalAuthority = new(3539),
 
-            //投盾
-            ShieldLob = new (24)
+        //投盾
+        ShieldLob = new(24)
+        {
+            FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+        },
+
+        //战逃反应
+        FightorFlight = new(20)
+        {
+            OtherCheck = b =>
             {
-                FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+                return true;
             },
+        },
 
-            //战逃反应
-            FightorFlight = new (20)
-            {
-                OtherCheck = b =>
-                {
-                    return true;
-                },
-            },
+        //全蚀斩
+        TotalEclipse = new(7381),
 
-            //全蚀斩
-            TotalEclipse = new (7381),
+        //日珥斩
+        Prominence = new(16457),
 
-            //日珥斩
-            Prominence = new (16457),
+        //预警
+        Sentinel = new(17)
+        {
+            BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+            OtherCheck = BaseAction.TankDefenseSelf,
+        },
 
-            //预警
-            Sentinel = new (17)
-            {
-                BuffsProvide = GeneralActions.Rampart.BuffsProvide,
-                OtherCheck = BaseAction.TankDefenseSelf,
-            },
+        //厄运流转
+        CircleofScorn = new(23)
+        {
+            //OtherCheck = b =>
+            //{
+            //    if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)) return true;
 
-            //厄运流转
-            CircleofScorn = new (23)
-            {
-                //OtherCheck = b =>
-                //{
-                //    if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)) return true;
+            //    if (FightorFlight.IsCoolDown) return true;
 
-                //    if (FightorFlight.IsCoolDown) return true;
+            //    return false;
+            //}
+        },
 
-                //    return false;
-                //}
-            },
+        //深奥之灵
+        SpiritsWithin = new(29)
+        {
+            //OtherCheck = b =>
+            //{
+            //    if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)) return true;
 
-            //深奥之灵
-            SpiritsWithin = new (29)
-            {
-                //OtherCheck = b =>
-                //{
-                //    if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)) return true;
+            //    if (FightorFlight.IsCoolDown) return true;
 
-                //    if (FightorFlight.IsCoolDown) return true;
+            //    return false;
+            //}
+        },
 
-                //    return false;
-                //}
-            },
+        //神圣领域
+        HallowedGround = new(30)
+        {
+            OtherCheck = BaseAction.TankBreakOtherCheck,
+        },
 
-            //神圣领域
-            HallowedGround = new (30)
-            {
-                OtherCheck = BaseAction.TankBreakOtherCheck,
-            },
+        //圣光幕帘
+        DivineVeil = new(3540),
 
-            //圣光幕帘
-            DivineVeil = new (3540),
+        //深仁厚泽
+        Clemency = new(3541, true, true),
 
-            //深仁厚泽
-            Clemency = new (3541, true, true),
+        //干预
+        Intervention = new(7382, true)
+        {
+            ChoiceTarget = TargetFilter.FindAttackedTarget,
+        },
 
-            //干预
-            Intervention = new (7382, true)
-            {
-                ChoiceTarget = TargetFilter.FindAttackedTarget,
-            },
+        //调停
+        Intervene = new(16461, shouldEndSpecial: true)
+        {
+            ChoiceTarget = TargetFilter.FindTargetForMoving,
+        },
 
-            //调停
-            Intervene = new (16461, shouldEndSpecial: true)
-            {
-                ChoiceTarget = TargetFilter.FindTargetForMoving,
-            },
+        //赎罪剑
+        Atonement = new(16460)
+        {
+            BuffsNeed = new[] { ObjectStatus.SwordOath },
+        },
 
-            //赎罪剑
-            Atonement = new (16460)
-            {
-                BuffsNeed = new [] { ObjectStatus.SwordOath },
-            },
+        //偿赎剑
+        Expiacion = new(25747),
 
-            //偿赎剑
-            Expiacion = new (25747),
+        //英勇之剑
+        BladeofValor = new(25750),
 
-            //英勇之剑
-            BladeofValor = new (25750),
+        //真理之剑
+        BladeofTruth = new(25749),
 
-            //真理之剑
-            BladeofTruth = new (25749),
+        //信念之剑
+        BladeofFaith = new(25748)
+        {
+            BuffsNeed = new[] { ObjectStatus.ReadyForBladeofFaith },
+        },
 
-            //信念之剑
-            BladeofFaith = new (25748)
-            {
-                BuffsNeed = new [] { ObjectStatus.ReadyForBladeofFaith },
-            },
+        //安魂祈祷
+        Requiescat = new(7383),
 
-            //安魂祈祷
-            Requiescat = new (7383),
+        //悔罪
+        Confiteor = new(16459)
+        {
+            OtherCheck = b => Player.CurrentMp >= 1000,
+        },
 
-            //悔罪
-            Confiteor = new (16459)
-            {
-                OtherCheck = b => Player.CurrentMp >= 1000,
-            },
+        //圣环
+        HolyCircle = new(16458)
+        {
+            OtherCheck = b => Player.CurrentMp >= 2000,
+        },
 
-            //圣环
-            HolyCircle = new (16458)
-            {
-                OtherCheck = b => Player.CurrentMp >= 2000,
-            },
+        //圣灵
+        HolySpirit = new(7384)
+        {
+            OtherCheck = b => Player.CurrentMp >= 2000,
+        },
 
-            //圣灵
-            HolySpirit = new (7384)
-            {
-                OtherCheck = b => Player.CurrentMp >= 2000,
-            },
+        //武装戍卫
+        PassageofArms = new(7385),
 
-            //武装戍卫
-            PassageofArms = new (7385),
+        //保护
+        Cover = new BaseAction(27, true)
+        {
+            ChoiceTarget = TargetFilter.FindAttackedTarget,
+        },
 
-            //保护
-            Cover = new BaseAction(27, true)
-            {
-                ChoiceTarget = TargetFilter.FindAttackedTarget,
-            },
-
-            //盾阵
-            Sheltron = new (3542);
-        //盾牌猛击
-        //ShieldBash = new BaseAction(16),
-    }
-    public override SortedList<DescType, string> Description => new ()
+        //盾阵
+        Sheltron = new(3542);
+    //盾牌猛击
+    //ShieldBash = new BaseAction(16),
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.单体治疗, $"{Actions.Clemency}"},
-        {DescType.范围防御, $"{Actions.DivineVeil}, {Actions.PassageofArms}"},
-        {DescType.单体防御, $"{Actions.Sentinel}, {Actions.Sheltron}"},
-        {DescType.移动技能, $"{Actions.Intervene}"},
+        {DescType.单体治疗, $"{Clemency}"},
+        {DescType.范围防御, $"{DivineVeil}, {PassageofArms}"},
+        {DescType.单体防御, $"{Sentinel}, {Sheltron}"},
+        {DescType.移动技能, $"{Intervene}"},
     };
 
     private protected override bool GeneralGCD(out IAction act)
     {
         //三个大招
-        if (Actions.BladeofValor.ShouldUse(out act, mustUse: true)) return true;
-        if (Actions.BladeofFaith.ShouldUse(out act, mustUse: true)) return true;
-        if (Actions.BladeofTruth.ShouldUse(out act, mustUse: true)) return true;
+        if (BladeofValor.ShouldUse(out act, mustUse: true)) return true;
+        if (BladeofFaith.ShouldUse(out act, mustUse: true)) return true;
+        if (BladeofTruth.ShouldUse(out act, mustUse: true)) return true;
 
         //魔法三种姿势
         if (CanUseConfiteor(out act)) return true;
 
         //AOE 二连
-        if (Actions.Prominence.ShouldUse(out act)) return true;
-        if (Actions.TotalEclipse.ShouldUse(out act)) return true;
+        if (Prominence.ShouldUse(out act)) return true;
+        if (TotalEclipse.ShouldUse(out act)) return true;
 
         //赎罪剑
-        if (Actions.Atonement.ShouldUse(out act))
+        if (Atonement.ShouldUse(out act))
         {
             if (!SlowLoop && Player.HaveStatus(ObjectStatus.FightOrFlight)
-                   && IsLastWeaponSkill(true, Actions.Atonement, Actions.RoyalAuthority)
+                   && IsLastWeaponSkill(true, Atonement, RoyalAuthority)
                    && !Player.WillStatusEndGCD(2, 0, true, ObjectStatus.FightOrFlight)) return true;
             if (!SlowLoop && Player.FindStatusStack(ObjectStatus.SwordOath) > 1) return true;
 
             if (SlowLoop) return true;
         }
         //单体三连
-        if (Actions.GoringBlade.ShouldUse(out act)) return true;
-        if (Actions.RageofHalone.ShouldUse(out act)) return true;
-        if (Actions.RiotBlade.ShouldUse(out act)) return true;
-        if (Actions.FastBlade.ShouldUse(out act)) return true;
+        if (GoringBlade.ShouldUse(out act)) return true;
+        if (RageofHalone.ShouldUse(out act)) return true;
+        if (RiotBlade.ShouldUse(out act)) return true;
+        if (FastBlade.ShouldUse(out act)) return true;
 
         //投盾
         if (CommandController.Move && MoveAbility(1, out act)) return true;
-        if (Actions.ShieldLob.ShouldUse(out act)) return true;
+        if (ShieldLob.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -255,7 +254,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //调停
-        if (Actions.Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         return false;
     }
@@ -263,7 +262,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
     private protected override bool HealSingleGCD(out IAction act)
     {
         //深仁厚泽
-        if (Actions.Clemency.ShouldUse(out act)) return true;
+        if (Clemency.ShouldUse(out act)) return true;
 
         return false;
     }
@@ -271,10 +270,10 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //圣光幕帘
-        if (Actions.DivineVeil.ShouldUse(out act)) return true;
+        if (DivineVeil.ShouldUse(out act)) return true;
 
         //武装戍卫
-        if (Actions.PassageofArms.ShouldUse(out act)) return true;
+        if (PassageofArms.ShouldUse(out act)) return true;
 
         if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
@@ -298,11 +297,11 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
 
 
         //厄运流转
-        if (Actions.CircleofScorn.ShouldUse(out act, mustUse: true))
+        if (CircleofScorn.ShouldUse(out act, mustUse: true))
         {
             if (InDungeonsMiddle) return true;
 
-            if (Actions.FightorFlight.ElapsedAfterGCD(2)) return true;
+            if (FightorFlight.ElapsedAfterGCD(2)) return true;
 
             //if (SlowLoop && inOpener && IsLastWeaponSkill(false, Actions.RiotBlade)) return true;
 
@@ -311,21 +310,21 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         }
 
         //深奥之灵
-        if (Actions.SpiritsWithin.ShouldUse(out act, mustUse: true))
+        if (SpiritsWithin.ShouldUse(out act, mustUse: true))
         {
             //if (SlowLoop && inOpener && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
 
             if (InDungeonsMiddle) return true;
 
-            if (Actions.FightorFlight.ElapsedAfterGCD(3)) return true;
+            if (FightorFlight.ElapsedAfterGCD(3)) return true;
         }
 
         //调停
-        if (Actions.Intervene.Target.DistanceToPlayer() < 1 && !IsMoving && Target.HaveStatus(ObjectStatus.GoringBlade))
+        if (Intervene.Target.DistanceToPlayer() < 1 && !IsMoving && Target.HaveStatus(ObjectStatus.GoringBlade))
         {
-            if (Actions.FightorFlight.ElapsedAfterGCD(2) && Actions.Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (FightorFlight.ElapsedAfterGCD(2) && Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-            if (Actions.Intervene.ShouldUse(out act)) return true;
+            if (Intervene.ShouldUse(out act)) return true;
         }
 
         //Special Defense.
@@ -337,7 +336,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //神圣领域 如果谢不够了。
-        if (Actions.HallowedGround.ShouldUse(out act)) return true;
+        if (HallowedGround.ShouldUse(out act)) return true;
         return false;
     }
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
@@ -347,7 +346,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         if (abilityRemain == 1)
         {
             //预警（减伤30%）
-            if (Actions.Sentinel.ShouldUse(out act)) return true;
+            if (Sentinel.ShouldUse(out act)) return true;
 
             //铁壁（减伤20%）
             if (GeneralActions.Rampart.ShouldUse(out act)) return true;
@@ -357,7 +356,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         if (GeneralActions.Reprisal.ShouldUse(out act)) return true;
 
         //干预（减伤10%）
-        if (!HaveShield && Actions.Intervention.ShouldUse(out act)) return true;
+        if (!HaveShield && Intervention.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -370,12 +369,12 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
     /// <returns></returns>
     private bool CanUseFightorFlight(out IAction act)
     {
-        if (Actions.FightorFlight.ShouldUse(out act))
+        if (FightorFlight.ShouldUse(out act))
         {
             //在4人本道中
             if (InDungeonsMiddle)
             {
-                if (CanUseSpellInDungeonsMiddle && !Player.HaveStatus(ObjectStatus.Requiescat) 
+                if (CanUseSpellInDungeonsMiddle && !Player.HaveStatus(ObjectStatus.Requiescat)
                     && !Player.HaveStatus(ObjectStatus.ReadyForBladeofFaith)
                     && Player.CurrentMp < 2000) return true;
 
@@ -409,7 +408,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
     private bool CanUseRequiescat(out IAction act)
     {
         //安魂祈祷
-        if (Actions.Requiescat.ShouldUse(out act, mustUse: true))
+        if (Requiescat.ShouldUse(out act, mustUse: true))
         {
             //在4人本道中
             if (InDungeonsMiddle)
@@ -435,9 +434,9 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
                     return true;
                 }
             }
-           
+
         }
-                       
+
         act = null;
         return false;
     }
@@ -456,20 +455,20 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         //有安魂祈祷buff,且没在战逃中
         if (Player.HaveStatus(ObjectStatus.Requiescat) && !Player.HaveStatus(ObjectStatus.FightOrFlight))
         {
-            if (SlowLoop && (!IsLastWeaponSkill(true, Actions.GoringBlade) && !IsLastWeaponSkill(true, Actions.Atonement))) return false;
+            if (SlowLoop && (!IsLastWeaponSkill(true, GoringBlade) && !IsLastWeaponSkill(true, Atonement))) return false;
 
             var statusStack = Player.FindStatusStack(ObjectStatus.Requiescat);
             if (statusStack == 1 || (Player.HaveStatus(ObjectStatus.Requiescat) && Player.WillStatusEnd(3, false, ObjectStatus.Requiescat)) || Player.CurrentMp <= 2000)
             {
-                if (Actions.Confiteor.ShouldUse(out act, mustUse: true)) return true;
+                if (Confiteor.ShouldUse(out act, mustUse: true)) return true;
             }
             else
             {
-                if (Actions.HolyCircle.ShouldUse(out act)) return true;
-                if (Actions.HolySpirit.ShouldUse(out act)) return true;
+                if (HolyCircle.ShouldUse(out act)) return true;
+                if (HolySpirit.ShouldUse(out act)) return true;
             }
         }
-        
+
         act = null;
         return false;
     }
@@ -482,12 +481,12 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         if (HaveShield)
         {
             //盾阵
-            if (Actions.Sheltron.ShouldUse(out act)) return true;
+            if (Sheltron.ShouldUse(out act)) return true;
         }
         else
         {
             //保护
-            if (Actions.Cover.ShouldUse(out act)) return true;
+            if (Cover.ShouldUse(out act)) return true;
         }
 
         return false;

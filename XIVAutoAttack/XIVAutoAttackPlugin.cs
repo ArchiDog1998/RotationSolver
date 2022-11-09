@@ -114,80 +114,9 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     private void OnCommand(string command, string arguments)
     {
         string[] array = arguments.Split();
-        switch (array[0])
-        {
-            case "setall":
-                {
-                    foreach (var item in IconReplacer.CustomCombos)
-                    {
-                        item.IsEnabled = true;
-                    }
-                    Service.ChatGui.Print("All SET");
-                    Service.Configuration.Save();
-                    break;
-                }
-            case "unsetall":
-                {
-                    foreach (var item in IconReplacer.CustomCombos)
-                    {
-                        item.IsEnabled = false;
-                    }
-                    Service.ChatGui.Print("All UNSET");
-                    Service.Configuration.Save();
-                    break;
-                }
-            case "set":
-                {
-                    string text3 = array[1].ToLowerInvariant();
-                    for (int i = 0; i < IconReplacer.CustomCombos.Length; i++)
-                    {
-                        var value = IconReplacer.CustomCombos[i];
-                        if (value.JobName.ToLowerInvariant() == text3)
-                        {
-                            value.IsEnabled = true;
-                            Service.ChatGui.Print($"{value} SET");
-                            break;
-                        }
-                    }
-                    Service.Configuration.Save();
-                    break;
-                }
-            case "toggle":
-                {
-                    string text = array[1].ToLowerInvariant();
-                    for (int i = 0; i < IconReplacer.CustomCombos.Length; i++)
-                    {
-                        var customComboPreset2 = IconReplacer.CustomCombos[i];
-                        if (customComboPreset2.JobName.ToLowerInvariant() == text)
-                        {
-                            customComboPreset2.IsEnabled = !customComboPreset2.IsEnabled;
-                            Service.ChatGui.Print(customComboPreset2.JobName + " " + (customComboPreset2.IsEnabled ? "SET" : "UNSET"));
-                        }
-                    }
-                    Service.Configuration.Save();
-                    break;
-                }
-            case "unset":
-                {
-                    string text2 = array[1].ToLowerInvariant();
-                    for (int i = 0; i < IconReplacer.CustomCombos.Length; i++)
-                    {
-                        var value = IconReplacer.CustomCombos[i];
-                        if (value.JobName.ToLowerInvariant() == text2)
-                        {
-                            value.IsEnabled = true;
-                            Service.ChatGui.Print($"{value} UNSET");
-                            break;
-                        }
-                    }
-                    Service.Configuration.Save();
-                    break;
-                }
-            default:
-                OpenConfigWindow();
-                break;
-        }
-        Service.Configuration.Save();
+
+        if (IconReplacer.AutoAttackConfig(array[0], array[1]))
+            OpenConfigWindow();
     }
 
     internal static void OpenConfigWindow()

@@ -11,6 +11,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial
 {
     internal sealed class BLUCombo : OtherCombo<CommandType>
     {
+        public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
+
         internal enum CommandType : byte
         {
             None,
@@ -49,14 +51,11 @@ namespace XIVAutoAttack.Combos.RangedMagicial
                 return base.ShouldUse(out act, mustUse, emptyOrSkipCombo);
             }
         }
-        public override uint JobID => 36;
+        public override uint[] JobIDs => new uint[] { 36 };
 
-        internal struct Actions
-        {
             public static readonly BLUAction
                 //水炮
                 WaterCannon = new(11385);
-        }
 
         private protected override bool AttackAbility(byte abilityRemain, out IAction act)
         {

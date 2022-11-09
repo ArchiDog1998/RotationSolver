@@ -153,7 +153,7 @@ namespace XIVAutoAttack.Data
                     break;
 
             }
-            return _icons[type][combo.JobID - 1];
+            return _icons[type][combo.JobIDs[0] - 1];
         }
     }
 }

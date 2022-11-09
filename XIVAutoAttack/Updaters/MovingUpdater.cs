@@ -46,7 +46,14 @@ namespace XIVAutoAttack.Updaters
 
         private static bool MovingDetour(IntPtr ptr)
         {
-            if (Service.Configuration.PoslockCasting && _posLocker && !Service.KeyState[Service.Configuration.PoslockModifier]) return false;
+            if (Service.Configuration.PoslockCasting && _posLocker)
+            {
+                //没有键盘取消
+                if(!Service.KeyState[Service.Configuration.PoslockModifier]
+                    //也没有手柄取消
+                  && !(Service.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) > 0.5f
+                  && Service.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.R2) > 0.5f)) return false;
+            }
             return movingHook.Original(ptr);
         }
 

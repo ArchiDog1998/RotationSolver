@@ -89,40 +89,10 @@ internal class ConfigWindow : Window
                         {
                             if (i > 0) ImGui.Separator();
                             var combo = combos[i];
-                            var canAddButton = Service.ClientState.LocalPlayer != null && Service.ClientState.LocalPlayer.ClassJob.Id == combo.JobID;
+                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains( Service.ClientState.LocalPlayer.ClassJob.Id);
 
-                            ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
-
-                            ImGui.Columns(2, i.ToString(), false);
-                            int size = Math.Min(combo.Texture.Width, 45);
-                            ImGui.SetColumnWidth(0, size + 5);
-
-                            var str = string.Join('\n', combo.Description.Select(pair => pair.Key.ToString() + " → " + pair.Value));
-
-                            ImGui.Image(combo.Texture.ImGuiHandle, new Vector2(size, size));
-                            if (ImGui.IsItemHovered())
+                            DrawTexture(combo, () =>
                             {
-                                if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
-                            }
-
-                            ImGui.NextColumn();
-
-                            bool enable = combo.IsEnabled;
-                            if (ImGui.Checkbox(combo.JobName, ref enable))
-                            {
-                                combo.IsEnabled = enable;
-                                Service.Configuration.Save();
-                            }
-                            if (ImGui.IsItemHovered())
-                            {
-                                if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
-                            }
-                            string text = $"#{num}: 为{combo.JobName}的连续GCD战技、技能。";
-                            ImGui.TextColored(shadedColor, text);
-
-                            if (enable)
-                            {
-                                ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(1f, 1f));
                                 var actions = combo.Config;
                                 foreach (var boolean in actions.bools)
                                 {
@@ -139,7 +109,7 @@ internal class ConfigWindow : Window
                                     }
 
                                     //显示可以设置的案件
-                                    if(canAddButton)
+                                    if (canAddButton)
                                     {
                                         ImGui.SameLine();
                                         Spacing();
@@ -212,10 +182,8 @@ internal class ConfigWindow : Window
                                         CommandHelp(customCMD.Key, customCMD.Value);
                                     }
                                 }
-                                ImGui.PopStyleVar();
 
-                            }
-                            ImGui.Columns(1);
+                            });
 
                             num++;
                         }
@@ -235,7 +203,6 @@ internal class ConfigWindow : Window
 
                 ImGui.EndTabItem();
             }
-
 
             if (ImGui.BeginTabItem("参数设定"))
             {
@@ -335,6 +302,10 @@ internal class ConfigWindow : Window
                              }
                             ImGui.EndCombo();
                          }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip("手柄玩家为按下LT+RT无视咏唱锁");
+                        }
 
                         bool usecheckCasting = Service.Configuration.CheckForCasting;
                         if (ImGui.Checkbox("使用咏唱结束显示", ref usecheckCasting))
@@ -558,6 +529,13 @@ internal class ConfigWindow : Window
                         if (ImGui.Checkbox("无目标时硬读条拉人", ref raiseCasting))
                         {
                             Service.Configuration.RaisePlayerByCasting = raiseCasting;
+                            Service.Configuration.Save();
+                        }
+
+                        bool useHealWhenNotAHealer = Service.Configuration.UseHealWhenNotAHealer;
+                        if (ImGui.Checkbox("非奶妈是否要用奶人的技能", ref useHealWhenNotAHealer))
+                        {
+                            Service.Configuration.UseHealWhenNotAHealer = useHealWhenNotAHealer;
                             Service.Configuration.Save();
                         }
 
@@ -842,6 +820,17 @@ internal class ConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
+            if (ImGui.BeginTabItem("技能释放条件"))
+            {
+                foreach (var item in IconReplacer.RightComboBaseAction)
+                {
+                    if (ImGui.CollapsingHeader(item.CateName))
+                    {
+                        DrawAction(item);
+                    }
+                }
+            }
+
             if (ImGui.BeginTabItem("帮助文档"))
             {
                 ImGui.Text("在这个窗口，你可以看到战斗用宏，设置用请在设置面板中查看。");
@@ -919,28 +908,9 @@ internal class ConfigWindow : Window
 
                 if (ImGui.CollapsingHeader("下一个技能"))
                 {
-                    BaseAction baseAction = GNBCombo.Actions.GnashingFang;
+                    BaseAction baseAction = null;
                     baseAction ??= ActionUpdater.NextAction as BaseAction;
-                    if (baseAction != null)
-                    {
-                        int size = Math.Max(baseAction.Icon.Width, 45);
-                        ImGui.Image(baseAction.Icon.ImGuiHandle, new Vector2(size, size));
-
-                        ImGui.Text(baseAction.ToString());
-                        ImGui.Text("Have One:" + baseAction.HaveOneChargeDEBUG.ToString());
-                        ImGui.Text("Is General GCD: " + baseAction.IsGeneralGCD.ToString());
-                        ImGui.Text("Is Real GCD: " + baseAction.IsRealGCD.ToString());
-                        ImGui.Text("Recast One: " + baseAction.RecastTimeOneChargeDEBUG.ToString());
-                        ImGui.Text("Recast Elapsed: " + baseAction.RecastTimeElapsedDEBUG.ToString());
-                        ImGui.Text("Recast Remain: " + baseAction.RecastTimeRemainDEBUG.ToString());
-                        ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, baseAction.AdjustedID).ToString());
-
-                        ImGui.Text("Cast Time: " + baseAction.CastTime.ToString());
-                        ImGui.Text("MP: " + baseAction.MPNeed.ToString());
-                        ImGui.Text($"Can Use: {baseAction.ShouldUse(out _)} {baseAction.ShouldUse(out _, mustUse:true)}");
-
-                        ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(baseAction.AdjustedID).ToString());
-                    }
+                    DrawAction(baseAction);
 
                     ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
                     ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
@@ -963,15 +933,8 @@ internal class ConfigWindow : Window
                     if(ActionUpdater.exception != null)
                     {
                         ImGui.Text(ActionUpdater.exception.Message);
+                        ImGui.Text(ActionUpdater.exception.StackTrace);
                     }
-
-                    //foreach (var key in (VirtualKey[])Enum.GetValues(typeof(VirtualKey)))
-                    //{
-                    //    if (Service.KeyState[key])
-                    //    {
-                    //        ImGui.Text(key.ToString());
-                    //    }
-                    //}
                 }
             }
 #endif
@@ -979,6 +942,80 @@ internal class ConfigWindow : Window
             ImGui.EndTabBar();
         }
         ImGui.End();
+    }
+
+    private unsafe static void DrawAction(BaseAction act)
+    {
+        if (act == null) return;
+
+        DrawTexture(act, () =>
+        {
+            CommandHelp("Enable" + act.Name, $"使用{act}");
+            CommandHelp("Disable" + act.Name, $"关闭{act}");
+            CommandHelp($"Insert{act}-{5}", $"5s内最高优先插入{act}");
+#if DEBUG
+            ImGui.Text(act.ToString());
+            ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());
+            ImGui.Text("Is General GCD: " + act.IsGeneralGCD.ToString());
+            ImGui.Text("Is Real GCD: " + act.IsRealGCD.ToString());
+            ImGui.Text("Recast One: " + act.RecastTimeOneChargeDEBUG.ToString());
+            ImGui.Text("Recast Elapsed: " + act.RecastTimeElapsedDEBUG.ToString());
+            ImGui.Text("Recast Remain: " + act.RecastTimeRemainDEBUG.ToString());
+            ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, act.AdjustedID).ToString());
+
+            ImGui.Text("Cast Time: " + act.CastTime.ToString());
+            ImGui.Text("MP: " + act.MPNeed.ToString());
+            ImGui.Text($"Can Use: {act.ShouldUse(out _)} {act.ShouldUse(out _, mustUse: true)}");
+
+            ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(act.AdjustedID).ToString());
+#endif
+        });
+    }
+
+    private static void DrawTexture<T>(T texture, System.Action otherThing) where T : class, ITexture
+    {
+        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
+
+        ImGui.Columns(2, texture.Name, false);
+        int size = Math.Min(texture.Texture.Width, 45);
+        ImGui.SetColumnWidth(0, size + 5);
+
+        var str = texture.Description;
+
+        ImGui.Image(texture.Texture.ImGuiHandle, new Vector2(size, size));
+        if (ImGui.IsItemHovered())
+        {
+            if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
+        }
+
+        ImGui.NextColumn();
+
+        bool enable = texture.IsEnabled;
+
+        var check = texture.Name;
+        if(texture is ICustomCombo combo)
+        {
+            check += $" - {string.Join(", ", combo.Authors.Select(a => a.ToName()))}";
+        }
+
+        if (ImGui.Checkbox(check, ref enable))
+        {
+            texture.IsEnabled = enable;
+            Service.Configuration.Save();
+        }
+        if (ImGui.IsItemHovered())
+        {
+            if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
+        }
+
+        if (enable)
+        {
+            ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(1f, 1f));
+            otherThing?.Invoke();
+            ImGui.PopStyleVar();
+        }
+        ImGui.Columns(1);
+        ImGui.PopStyleVar();
     }
 
 #if DEBUG

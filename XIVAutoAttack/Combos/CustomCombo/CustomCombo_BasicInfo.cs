@@ -1,7 +1,9 @@
 ﻿using ImGuiScene;
+using Lumina.Data.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -12,10 +14,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
     public abstract partial class CustomCombo<TCmd> : ICustomCombo, IDisposable where TCmd : Enum
     {
         internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
-        public abstract uint JobID { get; }
-        public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Role;
+        public abstract uint[] JobIDs { get; }
+        public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => JobIDs.Contains(job.RowId)).Role;
 
-        public string JobName => XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == JobID).Name;
+        public string Name => XIVAutoAttackPlugin.AllJobs.First(job => JobIDs.Contains(job.RowId)).Name;
+        public abstract ComboAuthor[] Authors { get; }
 
         internal static bool IsTargetDying
         {
@@ -37,20 +40,22 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         public bool IsEnabled
         {
-            get => Service.Configuration.EnabledActions.Contains(JobName);
+            get => Service.Configuration.EnabledCombos.Contains(Name);
             set
             {
                 if (value)
                 {
-                    Service.Configuration.EnabledActions.Add(JobName);
+                    Service.Configuration.EnabledCombos.Add(Name);
                 }
                 else
                 {
-                    Service.Configuration.EnabledActions.Remove(JobName);
+                    Service.Configuration.EnabledCombos.Remove(Name);
                 }
             }
         }
-        public virtual SortedList<DescType, string> Description { get; } = new SortedList<DescType, string>();
+        public string Description => string.Join('\n', DescriptionDict.Select(pair => pair.Key.ToString() + " → " + pair.Value));
+
+        public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
 
 
         internal static bool HaveSwift => Player.HaveStatus(GeneralActions.Swiftcast.BuffsProvide);
@@ -58,7 +63,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         internal virtual bool HaveShield => true;
 
 
-        public TextureWrap Texture { get; private set; }
+        public TextureWrap Texture { get; }
         private protected CustomCombo()
         {
             Texture = Service.DataManager.GetImGuiTextureIcon(IconSet.GetJobIcon(this));
@@ -69,12 +74,12 @@ namespace XIVAutoAttack.Combos.CustomCombo
             get
             {
                 var con = CreateConfiguration();
-                if (Service.Configuration.ActionsConfigurations.TryGetValue(JobName, out var lastcom))
+                if (Service.Configuration.ActionsConfigurations.TryGetValue(Name, out var lastcom))
                 {
                     if (con.IsTheSame(lastcom)) return lastcom;
                 }
                 //con.Supply(lastcom);
-                Service.Configuration.ActionsConfigurations[JobName] = con;
+                Service.Configuration.ActionsConfigurations[Name] = con;
                 Service.Configuration.Save();
                 return con;
             }

@@ -14,7 +14,8 @@ public class PluginConfiguration : IPluginConfiguration
     public int HostileCount { get; set; } = 3;
     public int PartyCount { get; set; } = 2;
     public int VoiceVolume { get; set; } = 80;
-    public SortedSet<string> EnabledActions { get; private set; } = new SortedSet<string>();
+    public SortedSet<string> EnabledCombos { get; private set; } = new SortedSet<string>();
+    public SortedSet<uint> DiabledActions { get; private set; } = new SortedSet<uint>();
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
     public Dictionary<string, ActionConfiguration> ActionsConfigurations { get; private set; } = new Dictionary<string, ActionConfiguration>();
     public int TargetToHostileType { get; set; } = 1;
@@ -56,6 +57,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseAreaAbilityFriendly { get; set; } = true;
     public bool AutoStartCountdown { get; set; } = true;
     public bool AttackSafeMode { get; set; } = false;
+    public bool UseHealWhenNotAHealer { get; set; } = true;
     public float ObjectMinRadius { get; set; } = 0f;
     public float HealthDifference { get; set; } = 0.25f;
     public float HealthAreaAbility { get; set; } = 0.75f;

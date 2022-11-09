@@ -15,6 +15,7 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.SigReplacers;
+using Dalamud.Game.ClientState.GamePad;
 
 namespace XIVAutoAttack;
 
@@ -68,8 +69,8 @@ internal class Service
     public static FlyTextGui FlyTextGui { get; private set; }
     [PluginService]
     public static KeyState KeyState { get; private set; }
-    //[PluginService]
-    //public static SigScanner SigScanner { get; private set; }
+    [PluginService]
+    public static GamepadState GamepadState { get; private set; }
     [PluginService]
     public static Framework Framework { get; private set; }
 
