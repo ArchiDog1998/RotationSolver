@@ -115,7 +115,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     {
         string[] array = arguments.Split();
 
-        if (IconReplacer.AutoAttackConfig(array[0], array[1]))
+        if (IconReplacer.AutoAttackConfig(array[0], array.Length > 1 ? array[1] : array[0]))
             OpenConfigWindow();
     }
 

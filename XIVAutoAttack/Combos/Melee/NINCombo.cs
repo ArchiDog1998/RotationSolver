@@ -115,7 +115,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         //强甲破点突
         ArmorCrush = new(3563)
         {
-            OtherCheck = b => RecastAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
+            OtherCheck = b => RemainAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
         },
 
         //通灵之术·大虾蟆

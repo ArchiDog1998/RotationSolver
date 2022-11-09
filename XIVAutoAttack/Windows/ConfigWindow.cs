@@ -90,7 +90,7 @@ internal class ConfigWindow : Window
                         {
                             if (i > 0) ImGui.Separator();
                             var combo = combos[i];
-                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains( Service.ClientState.LocalPlayer.ClassJob.Id);
+                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains(Service.ClientState.LocalPlayer.ClassJob.Id);
 
                             DrawTexture(combo, () =>
                             {
@@ -982,12 +982,12 @@ internal class ConfigWindow : Window
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
         ImGui.Columns(2, texture.Name, false);
-        int size = Math.Min(texture.Texture.Width, 45);
-        ImGui.SetColumnWidth(0, size + 5);
+
+        ImGui.SetColumnWidth(0, texture.Texture.Width + 5);
 
         var str = texture.Description;
 
-        ImGui.Image(texture.Texture.ImGuiHandle, new Vector2(size, size));
+        ImGui.Image(texture.Texture.ImGuiHandle, new Vector2(texture.Texture.Width, texture.Texture.Height));
         if (ImGui.IsItemHovered())
         {
             if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
@@ -1010,13 +1010,15 @@ internal class ConfigWindow : Window
         var attr = Attribute.GetCustomAttribute(texture.GetType(), typeof(ComboDevInfoAttribute));
         if (attr is ComboDevInfoAttribute devAttr)
         {
-            if (ImGui.Button("ิดย๋"))
-            {
-                System.Diagnostics.Process.Start(devAttr.URL);
-            }
             ImGui.SameLine();
             Spacing();
             ImGui.Text($" - {string.Join(", ", devAttr.Authors.Select(a => a.ToName()))}");
+
+            ImGui.SameLine();
+            if (ImGui.Button("ิดย๋"))
+            {
+                System.Diagnostics.Process.Start("cmd", $"/C start {devAttr.URL}");
+            }
         }
 
         if (enable)
