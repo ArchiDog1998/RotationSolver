@@ -1012,7 +1012,7 @@ internal class ConfigWindow : Window
         {
             if (ImGui.Button("ิดย๋"))
             {
-                System.Diagnostics.Process.Start(devAttr.URL);
+                System.Diagnostics.Process.Start("cmd", $"/C start {devAttr.URL}");
             }
             ImGui.SameLine();
             Spacing();
