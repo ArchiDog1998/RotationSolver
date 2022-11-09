@@ -12,7 +12,7 @@ using static XIVAutoAttack.SigReplacers.Watcher;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    public abstract partial class CustomCombo<TCmd> where TCmd : Enum
+    internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {
         protected static PlayerCharacter Player => Service.ClientState.LocalPlayer;
         protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : Player;

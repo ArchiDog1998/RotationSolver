@@ -10,7 +10,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.CustomCombo;
 
-public abstract partial class CustomCombo<TCmd> where TCmd : Enum
+internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
 {
     private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {

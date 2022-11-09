@@ -17,6 +17,7 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
+using Lumina.Data.Parsing;
 
 namespace XIVAutoAttack.Windows;
 
@@ -890,7 +891,7 @@ internal class ComboConfigWindow : Window
 
                 if (ImGui.BeginChild("条件列表", new Vector2(0f, -1f), true))
                 {
-                    foreach (var pair in IconReplacer.RightComboBaseAction.GroupBy(a => a.CateName).OrderBy(g => g.Key))
+                    foreach (var pair in IconReplacer.RightComboBaseActions.GroupBy(a => a.CateName).OrderBy(g => g.Key))
                     {
                         if (ImGui.CollapsingHeader(pair.Key))
                         {
@@ -899,6 +900,15 @@ internal class ComboConfigWindow : Window
                                 DrawAction(item);
                                 ImGui.Separator();
                             }
+                        }
+                    }
+
+                    if (ImGui.CollapsingHeader("所有职能技能"))
+                    {
+                        foreach (var item in IconReplacer.GeneralBaseAction)
+                        {
+                            DrawAction(item);
+                            ImGui.Separator();
                         }
                     }
                     ImGui.EndChild();

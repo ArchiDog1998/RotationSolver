@@ -7,10 +7,10 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    public class CustomComboActions
+    internal class CustomComboActions
     {
 
-        internal static readonly BaseAction
+        public static readonly BaseAction
             //昏乱
             Addle = new BaseAction(7560u)
             {

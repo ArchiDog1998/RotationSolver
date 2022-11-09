@@ -39,20 +39,34 @@ internal sealed class IconReplacer : IDisposable
         }
     }
 
-    internal static BaseAction[] RightComboBaseAction
+    internal static BaseAction[] RightComboBaseActions
     {
         get
         {
             var combo = RightNowCombo;
             if (combo == null) return new BaseAction[0];
-            var type = combo.GetType();
-
-            return (from field in type.GetFields()
-                    where field.IsStatic && typeof(BaseAction).IsAssignableFrom(field.FieldType)
-                    select (BaseAction)field.GetValue(combo) into act
-                    orderby act.ID
-                    select act).ToArray();
+            return GetActions(combo, combo.GetType());
         }
+    }
+
+    internal static BaseAction[] GeneralBaseAction
+    {
+        get
+        {
+            var combo = RightNowCombo;
+            if (combo == null) return new BaseAction[0];
+            return GetActions(combo, typeof(CustomComboActions));
+        }
+    }
+
+    private static BaseAction[] GetActions(ICustomCombo combo, Type type)
+    {
+
+        return (from field in type.GetFields()
+                where field.IsStatic && typeof(BaseAction).IsAssignableFrom(field.FieldType)
+                select (BaseAction)field.GetValue(combo) into act
+                orderby act.ID
+                select act).ToArray();
     }
 
     private static SortedList<Role, ICustomCombo[]> _customCombosDict;
