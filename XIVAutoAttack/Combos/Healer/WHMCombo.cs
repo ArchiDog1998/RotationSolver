@@ -46,7 +46,8 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
             //医济
             Medica2 = new(133, true)
             {
-                BuffsProvide = new[] { ObjectStatus.Medica2, ObjectStatus.TrueMedica2 }
+                BuffsProvide = new[] { ObjectStatus.Medica2, ObjectStatus.TrueMedica2 },
+                OtherCheck = b => !IsLastSpell(true,Medica2)
             },
 
             //再生
@@ -128,7 +129,10 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
         #endregion
         #region buff
             //神速咏唱
-            PresenseOfMind = new(136, true),
+            PresenseOfMind = new(136, true)
+            {
+                OtherCheck = b => !IsMoving
+            },
 
             //无中生有
             ThinAir = new(7430, true),
@@ -194,7 +198,7 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
             ThinAir.ShouldUse(out act)) return true;
 
         //加个全大赦
-        if (nextGCD.IsAnySameAction(true, Medica, Medica2, Cure3, AfflatusRapture))
+        if (nextGCD.IsAnySameAction(true, Medica, Medica2, Cure3))
         {
             if (PlenaryIndulgence.ShouldUse(out act)) return true;
         }
