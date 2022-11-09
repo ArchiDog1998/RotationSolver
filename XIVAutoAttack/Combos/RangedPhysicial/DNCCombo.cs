@@ -13,6 +13,8 @@ namespace XIVAutoAttack.Combos.RangedPhysicial;
 
 internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
+
     internal enum CommandType : byte
     {
         None,

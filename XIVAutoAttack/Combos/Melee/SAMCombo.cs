@@ -13,6 +13,8 @@ namespace XIVAutoAttack.Combos.Melee;
 
 internal sealed class SAMCombo : JobGaugeCombo<SAMGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.fatinghenji };
+
     internal enum CommandType : byte
     {
         None,

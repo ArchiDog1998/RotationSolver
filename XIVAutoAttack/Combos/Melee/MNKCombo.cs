@@ -14,6 +14,8 @@ namespace XIVAutoAttack.Combos.Melee;
 
 internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
+
     internal enum CommandType : byte
     {
         None,

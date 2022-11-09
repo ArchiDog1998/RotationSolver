@@ -14,6 +14,8 @@ namespace XIVAutoAttack.Combos.Tank;
 
 internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
+
     internal enum CommandType : byte
     {
         None,

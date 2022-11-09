@@ -14,6 +14,8 @@ namespace XIVAutoAttack.Combos.Healer;
 
 internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.NiGuangOwO };
+
     internal enum CommandType : byte
     {
         None,

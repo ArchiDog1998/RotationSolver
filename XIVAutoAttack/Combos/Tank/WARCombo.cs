@@ -12,6 +12,8 @@ namespace XIVAutoAttack.Combos.Tank;
 
 internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
+
     internal enum CommandType : byte
     {
         None,

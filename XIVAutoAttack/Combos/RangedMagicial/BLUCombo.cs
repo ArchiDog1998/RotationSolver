@@ -11,6 +11,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial
 {
     internal sealed class BLUCombo : OtherCombo<CommandType>
     {
+        public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
+
         internal enum CommandType : byte
         {
             None,

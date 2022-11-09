@@ -16,6 +16,8 @@ namespace XIVAutoAttack.Combos.Healer;
 
 internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
+
     internal enum CommandType : byte
     {
         None,

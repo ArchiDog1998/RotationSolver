@@ -17,6 +17,8 @@ namespace XIVAutoAttack.Combos.Melee;
 
 internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
+
     internal enum CommandType : byte
     {
         None,

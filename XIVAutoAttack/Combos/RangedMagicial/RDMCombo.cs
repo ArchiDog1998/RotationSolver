@@ -15,6 +15,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial;
 
 internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
+
     internal enum CommandType : byte
     {
         None,

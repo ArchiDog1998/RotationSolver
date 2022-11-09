@@ -19,6 +19,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 {
     internal sealed partial class BLMCombo : JobGaugeCombo<BLMGauge, CommandType>
     {
+        public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
+
         internal enum CommandType : byte
         {
             None,

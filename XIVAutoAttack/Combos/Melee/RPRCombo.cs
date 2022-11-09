@@ -11,6 +11,8 @@ namespace XIVAutoAttack.Combos.Melee;
 
 internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.NiGuangOwO };
+
     internal enum CommandType : byte
     {
         None,

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -16,6 +17,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => JobIDs.Contains(job.RowId)).Role;
 
         public string JobName => XIVAutoAttackPlugin.AllJobs.First(job => JobIDs.Contains(job.RowId)).Name;
+        public abstract ComboAuthor[] Authors { get; }
 
         internal static bool IsTargetDying
         {

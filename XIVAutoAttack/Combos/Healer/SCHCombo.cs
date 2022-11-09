@@ -15,6 +15,8 @@ namespace XIVAutoAttack.Combos.Healer;
 
 internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.NiGuangOwO };
+
     internal enum CommandType : byte
     {
         None,

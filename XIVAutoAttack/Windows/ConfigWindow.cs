@@ -108,7 +108,7 @@ internal class ConfigWindow : Window
                             ImGui.NextColumn();
 
                             bool enable = combo.IsEnabled;
-                            if (ImGui.Checkbox(combo.JobName, ref enable))
+                            if (ImGui.Checkbox($"{combo.JobName} - {string.Join(", ", combo.Authors.Select(a => a.ToName()))}", ref enable))
                             {
                                 combo.IsEnabled = enable;
                                 Service.Configuration.Save();

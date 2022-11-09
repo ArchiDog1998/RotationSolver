@@ -13,6 +13,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial;
 
 internal sealed class SMNCombo : JobGaugeCombo<SMNGauge, CommandType>
 {
+    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
+
     internal enum CommandType : byte
     {
         None,
