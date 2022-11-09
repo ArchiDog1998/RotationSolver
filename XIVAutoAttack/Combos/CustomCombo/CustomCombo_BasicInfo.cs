@@ -14,11 +14,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
 {
     public abstract partial class CustomCombo<TCmd> : ICustomCombo, IDisposable where TCmd : Enum
     {
-        internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38 };
+        internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38, 5 };
         public abstract uint[] JobIDs { get; }
-        public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => JobIDs.Contains(job.RowId)).Role;
+        public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Role;
 
-        public string Name => XIVAutoAttackPlugin.AllJobs.First(job => JobIDs.Contains(job.RowId)).Name;
+        public string Name => XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Name;
 
         internal static bool IsTargetDying
         {
