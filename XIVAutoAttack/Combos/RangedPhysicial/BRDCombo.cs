@@ -152,11 +152,13 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge, CommandType>
         {
             OtherCheck = b =>
             {
+                if (Player.HaveStatus(ObjectStatus.BlastArrowReady) || (QuickNock.ShouldUse(out _) && JobGauge.SoulVoice == 100)) return true;
+
                 //快爆发了,攒着等爆发
                 if (JobGauge.SoulVoice == 100 && BattleVoice.WillHaveOneCharge(25)) return false;
 
                 //爆发快过了,如果手里还有绝峰箭,就把绝峰箭打出去
-                if (JobGauge.SoulVoice >= 80 && Player.HaveStatus(ObjectStatus.RagingStrikes) && !Player.WillStatusEnd(10, false, ObjectStatus.RagingStrikes)) return true;
+                if (JobGauge.SoulVoice >= 80 && Player.HaveStatus(ObjectStatus.RagingStrikes) && Player.WillStatusEnd(10, false, ObjectStatus.RagingStrikes)) return true;
 
                 if (JobGauge.SoulVoice == 100
                     && Player.HaveStatus(ObjectStatus.RagingStrikes)
@@ -166,7 +168,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge, CommandType>
                 if (JobGauge.Song == Song.MAGE && JobGauge.SoulVoice >= 80 && JobGauge.SongTimer < 22 && JobGauge.SongTimer > 18) return true;
 
                 //能量之声等于100或者在爆发箭预备状态
-                if (JobGauge.SoulVoice == 100 || Player.HaveStatus(ObjectStatus.BlastArrowReady)) return true;
+                if (!Player.HaveStatus(ObjectStatus.RagingStrikes) && JobGauge.SoulVoice == 100) return true;
 
                 return false;
             },
@@ -253,6 +255,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge, CommandType>
     {
         if (SettingBreak && JobGauge.Song != Song.NONE && MagesBallad.EnoughLevel)
         {
+
             //猛者强击
             if (RagingStrikes.ShouldUse(out act)) return true;
 
@@ -260,7 +263,11 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge, CommandType>
             if (abilityRemain == 2 && RadiantFinale.ShouldUse(out act, mustUse: true)) return true;
 
             //战斗之声
-            if (RadiantFinale.IsCoolDown && BattleVoice.ShouldUse(out act, mustUse: true)) return true;
+            if (BattleVoice.ShouldUse(out act, mustUse: true))
+            {
+                if (RadiantFinale.IsCoolDown && RadiantFinale.EnoughLevel) return true;
+                if (RagingStrikes.IsCoolDown && RagingStrikes.ElapsedAfterGCD(1) && !RadiantFinale.EnoughLevel) return true;
+            }
         }
 
         if (RadiantFinale.IsCoolDown && !RadiantFinale.ElapsedAfterGCD())
@@ -296,11 +303,11 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge, CommandType>
         //测风诱导箭
         if (Sidewinder.ShouldUse(out act))
         {
-            if (Player.HaveStatus(ObjectStatus.BattleVoice) && Player.HaveStatus(ObjectStatus.RadiantFinale)) return true;
+            if (Player.HaveStatus(ObjectStatus.BattleVoice) && (Player.HaveStatus(ObjectStatus.RadiantFinale) || !RadiantFinale.EnoughLevel)) return true;
 
             if (!BattleVoice.WillHaveOneCharge(10, false) && !RadiantFinale.WillHaveOneCharge(10, false)) return true;
 
-            if (!RadiantFinale.EnoughLevel) return true;
+            if (RagingStrikes.IsCoolDown && !Player.HaveStatus(ObjectStatus.RagingStrikes)) return true;
         }
 
         //看看现在有没有开猛者强击和战斗之声

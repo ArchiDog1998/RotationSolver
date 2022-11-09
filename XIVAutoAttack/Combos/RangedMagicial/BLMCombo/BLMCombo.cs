@@ -148,9 +148,13 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             //起手
             if (OpenerManager(out act)) return true;
 
-            //循环
+            //AOE
             if (LoopManagerArea(out act)) return true;
-            if (UseLoopManager(out act)) return true;
+
+            //低级适配
+            if (Level < 90 && LoopManagerSingleNOMax(out act)) return true;
+            //满级循环
+            if (Level == 90 && UseLoopManager(out act)) return true;
 
             if (IsMoving && InCombat && HaveHostileInRange)
             {
@@ -261,15 +265,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             {
                 //悖论
                 if (CanUseParadox(out act)) return true;
-                //火1
-                if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
-                {
-                    if (JobGauge.InAstralFire)
-                    {
-                        if (JobGauge.ElementTimeRemaining <= CalcSpellTime(2500) * 2) return true;
-                        if (Level < 60) return true;
-                    }
-                }
                 //火3
                 if (CanUseFire3(out act)) return true;
                 //雷
@@ -298,9 +293,14 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         {
             if (JobGauge.InUmbralIce)
             {
+                if (Transpose.ShouldUse(out act))
+                {
+                    if (!Fire4.EnoughLevel && Player.CurrentMp == 10000) return true;
+                }
                 //雷
                 if (CanUseThunder(out act)) return true;
                 //冰阶段
+                if (!Fire3.EnoughLevel && Blizzard.ShouldUse(out act)) return true;
                 if (JobGauge.UmbralIceStacks == 3 && Blizzard4.ShouldUse(out act)) return true;
                 //异言
                 if (CanUseXenoglossy(out act)) return true;
@@ -308,15 +308,19 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (CanUseParadox(out act)) return true;
                 //火3
                 if (CanUseFire3(out act)) return true;
-
             }
             else if (JobGauge.InAstralFire)
             {
-                
                 //火3
                 if (CanUseFire3(out act)) return true;
                 //雷
                 if (CanUseThunder(out act)) return true;
+                //火1
+                if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
+                {
+                    if (JobGauge.ElementTimeRemaining <= CalcSpellTime(2500) * 2) return true;
+                    if (Level < 60) return true;
+                }
                 //异言
                 if (CanUseXenoglossy(out act)) return true;
                 //火4
@@ -325,13 +329,23 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (CanUseDespair(out act)) return true;
                 //冰3转冰
                 if (CanUseBlizzard3(out act)) return true;
+                if (Transpose.ShouldUse(out act))
+                {
+                    if (!Fire3.EnoughLevel && Player.CurrentMp < 1600) return true;
+                }
             }
             else
             {
-                //火3
-                if (CanUseFire3(out act)) return true;
+                if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
+                {
+                    if (JobGauge.ElementTimeRemaining <= CalcSpellTime(2500) * 2) return true;
+                    if (Level < 60) return true;
+                }
                 //冰3
                 if (Blizzard3.ShouldUse(out act)) return true;
+                if (Blizzard.ShouldUse(out act)) return true;
+                //火3
+                if (CanUseFire3(out act)) return true;
             }
             act = null;
             return false;
@@ -356,6 +370,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
             if (Fire2.ShouldUse(out act))
             {
+                if (Level < 20) return false;
+                if (JobGauge.InUmbralIce && !Freeze.EnoughLevel && Player.CurrentMp == 10000) return true;
                 if (JobGauge.InUmbralIce && JobGauge.UmbralHearts == 3) return true;
                 if (JobGauge.InAstralFire && !Player.HaveStatus(ObjectStatus.EnhancedFlare)) return true;
                 if (JobGauge.InAstralFire && JobGauge.UmbralHearts > 1) return true;

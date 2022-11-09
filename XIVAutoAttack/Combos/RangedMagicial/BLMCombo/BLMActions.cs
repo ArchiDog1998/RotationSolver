@@ -227,6 +227,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         private bool CanUseLucidDreaming(out IAction act)
         {
             if (!LucidDreaming.ShouldUse(out act)) return false;
+            if (Blizzard2.ShouldUse(out _)) return false;
             if (StandardLoop) return false;
             if (JobGauge.InUmbralIce && JobGauge.UmbralIceStacks < 3 && !JobGauge.IsParadoxActive)
             {
@@ -371,6 +372,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             {
                 if (JobGauge.IsParadoxActive) return false;
 
+                if (!Fire4.EnoughLevel && Player.CurrentMp == 10000) return true;
+
                 //标准循环
                 if (JobGauge.UmbralHearts == 3) return true;
                 //没有火苗
@@ -456,6 +459,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         {
             if (!Blizzard3.ShouldUse(out act)) return false;
             if (IsLastSpell(true, Blizzard3)) return false;
+
+            if (Level < 90 && Player.CurrentMp < 1600) return true;
 
             //标准循环
             if (StandardLoop && (Player.CurrentMp == 0 || !CanUseFire4(out _) && !CanUseDespair(out _))) return true;
