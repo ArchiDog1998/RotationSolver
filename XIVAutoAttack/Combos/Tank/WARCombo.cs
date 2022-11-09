@@ -116,14 +116,14 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
         //¸´³ð
         Vengeance = new(44)
         {
-            BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+            BuffsProvide = Rampart.BuffsProvide,
             OtherCheck = BaseAction.TankDefenseSelf,
         },
 
         //Ô­³õµÄÖ±¾õ
         RawIntuition = new(3551)
         {
-            BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+            BuffsProvide = Rampart.BuffsProvide,
             OtherCheck = BaseAction.TankDefenseSelf,
         },
 
@@ -155,7 +155,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
         //°ÚÍÑ ¶ÓÓÑÌ×¶Ü
         if (ShakeItOff.ShouldUse(out act, mustUse: true)) return true;
 
-        if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
+        if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -232,11 +232,11 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
             if (Vengeance.ShouldUse(out act)) return true;
 
             //Ìú±Ú£¨¼õÉË20%£©
-            if (GeneralActions.Rampart.ShouldUse(out act)) return true;
+            if (Rampart.ShouldUse(out act)) return true;
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
-        if (GeneralActions.Reprisal.ShouldUse(out act)) return true;
+        if (Reprisal.ShouldUse(out act)) return true;
 
         act = null;
         return false;

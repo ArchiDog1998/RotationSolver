@@ -329,7 +329,7 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge, CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //»ìÂÒ
-        if (GeneralActions.Addle.ShouldUse(out act)) return true;
+        if (Addle.ShouldUse(out act)) return true;
         return false;
     }
 }

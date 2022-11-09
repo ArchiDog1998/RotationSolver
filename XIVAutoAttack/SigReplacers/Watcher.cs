@@ -117,13 +117,18 @@ namespace XIVAutoAttack.SigReplacers
                     RaptureMacroModule.Instance->Individual[item.MacroIndex]));
             }
 
+#if DEBUG
+            Service.ChatGui.Print($"{action.Name}, {flag}");
+#endif
+
             //事后骂人！
             if (Service.Configuration.SayoutLocationWrong
                 && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
-                && loc != tar.FindEnemyLocation() && tar.HasLocationSide()
-                && !Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))
+                && loc.Tags.Length > 0 && !loc.Tags.Contains(flag))
+                //&& loc != tar.FindEnemyLocation() && tar.HasLocationSide()
+                //&& !Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))
             {
-                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
+                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, $"要打{loc.Loc.ToName()}", "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
                 if (!string.IsNullOrEmpty(Service.Configuration.LocationText))
                 {
                     CustomCombo<Enum>.Speak(Service.Configuration.LocationText);

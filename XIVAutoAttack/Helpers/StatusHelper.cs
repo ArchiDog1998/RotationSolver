@@ -12,22 +12,23 @@ namespace XIVAutoAttack.Helpers
 {
     internal static class StatusHelper
     {
-        public static readonly SortedList<uint, EnemyLocation> ActionLocations = new SortedList<uint, EnemyLocation>()
+        public record LocationInfo(EnemyLocation Loc, byte[] Tags);
+        public static readonly SortedList<uint, LocationInfo> ActionLocations = new SortedList<uint, LocationInfo>()
         {
-            {DRGCombo.FangandClaw.ID, EnemyLocation.Side },
-            {DRGCombo.WheelingThrust.ID, EnemyLocation.Back },
-            {DRGCombo.ChaosThrust.ID, EnemyLocation.Back },
-            {25772, EnemyLocation.Back },
-            {MNKCombo.Demolish.ID, EnemyLocation.Back },
-            {MNKCombo.SnapPunch.ID, EnemyLocation.Side },
-            {NINCombo.TrickAttack.ID, EnemyLocation.Back },
-            {NINCombo.AeolianEdge.ID, EnemyLocation.Back },
-            {NINCombo.ArmorCrush.ID, EnemyLocation.Side },
-            {NINCombo.Suiton.ID, EnemyLocation.Back },
-            {RPRCombo.Gibbet.ID, EnemyLocation.Side },
-            {RPRCombo.Gallows.ID, EnemyLocation.Back },
-            {SAMCombo.Gekko.ID, EnemyLocation.Back },
-            {SAMCombo.Kasha.ID, EnemyLocation.Side },
+            {DRGCombo.FangandClaw.ID, new( EnemyLocation.Side, new byte[] { 13 })},
+            {DRGCombo.WheelingThrust.ID, new(EnemyLocation.Back, new byte[] { 10 }) },
+            {DRGCombo.ChaosThrust.ID,new(EnemyLocation.Back, new byte[] { 66, 28 }) }, //需要60级同步
+            {25772, new(EnemyLocation.Back, new byte[] { 66, 28 }) },
+            {MNKCombo.Demolish.ID, new(EnemyLocation.Back, new byte[] { 49 }) },
+            {MNKCombo.SnapPunch.ID, new(EnemyLocation.Side, new byte[] { 19 }) },
+            {NINCombo.TrickAttack.ID, new(EnemyLocation.Back, new byte[] { 25 }) },
+            {NINCombo.AeolianEdge.ID,new( EnemyLocation.Back, new byte[] { 30, 68 }) },
+            {NINCombo.ArmorCrush.ID, new(EnemyLocation.Side, new byte[] { 30, 66 }) },
+            {NINCombo.Suiton.ID, new(EnemyLocation.Back, new byte[] { }) },
+            {RPRCombo.Gibbet.ID, new(EnemyLocation.Side , new byte[] { 11 })},
+            {RPRCombo.Gallows.ID, new(EnemyLocation.Back, new byte[] { 11 }) },
+            {SAMCombo.Gekko.ID, new(EnemyLocation.Back , new byte[] { 68, 29 })},
+            {SAMCombo.Kasha.ID, new(EnemyLocation.Side, new byte[] { 29, 68 }) },
         };
 
 

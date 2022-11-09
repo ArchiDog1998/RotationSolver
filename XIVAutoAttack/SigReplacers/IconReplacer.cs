@@ -128,7 +128,7 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
-    internal static BaseAction KeyActionID => CustomCombo<Enum>.GeneralActions.Repose;
+    internal static BaseAction KeyActionID => CustomComboActions.Repose;
 
     private uint RemapActionID(uint actionID)
     {

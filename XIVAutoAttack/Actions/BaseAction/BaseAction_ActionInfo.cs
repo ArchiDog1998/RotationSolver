@@ -22,7 +22,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             {
                 if (StatusHelper.ActionLocations.TryGetValue(ID, out var location))
                 {
-                    return location;
+                    return location.Loc;
                 }
                 return EnemyLocation.None;
             }
@@ -166,7 +166,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (CastTime > 0 && MovingUpdater.IsMoving)
                 {
-                    if (!Service.ClientState.LocalPlayer.HaveStatus(CustomCombo<Enum>.GeneralActions.Swiftcast.BuffsProvide))
+                    if (!Service.ClientState.LocalPlayer.HaveStatus(CustomComboActions.Swiftcast.BuffsProvide))
                     {
                         return false;
                     }

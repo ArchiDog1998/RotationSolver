@@ -1,29 +1,17 @@
 using Dalamud.Game.ClientState.Keys;
-using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface.Windowing;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
-using Lumina.Data.Parsing;
-using Lumina.Data.Parsing.Uld;
-using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Numerics;
-using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Melee;
-using XIVAutoAttack.Combos.RangedMagicial;
-using XIVAutoAttack.Combos.RangedPhysicial;
-using XIVAutoAttack.Combos.Tank;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -32,12 +20,12 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Windows;
 
-internal class ConfigWindow : Window
+internal class ComboConfigWindow : Window
 {
-    private readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
+    private static readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
 
-    public ConfigWindow()
-        : base("自动攻击设置 (开源免费) v"+ typeof(ConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
+    public ComboConfigWindow()
+        : base("自动攻击设置 (开源免费) v"+ typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
     {
         RespectCloseHotkey = true;
 
@@ -46,9 +34,9 @@ internal class ConfigWindow : Window
     }
     private static readonly Dictionary<Role, string> _roleDescriptionValue = new Dictionary<Role, string>()
     {
-        {Role.防护, $"{DescType.单体防御} → {CustomCombo<Enum>.GeneralActions.Rampart}, {CustomCombo<Enum>.GeneralActions.Reprisal}" },
-        {Role.近战, $"{DescType.范围防御} → {CustomCombo<Enum>.GeneralActions.Feint}" },
-        {Role.远程, $"法系{DescType.范围防御} → {CustomCombo<Enum>.GeneralActions.Addle}" },
+        {Role.防护, $"{DescType.单体防御} → {CustomComboActions.Rampart}, {CustomComboActions.Reprisal}" },
+        {Role.近战, $"{DescType.范围防御} → {CustomComboActions.Feint}" },
+        {Role.远程, $"法系{DescType.范围防御} → {CustomComboActions.Addle}" },
     };
 
     private static string ToName(VirtualKey k)
@@ -64,8 +52,80 @@ internal class ConfigWindow : Window
 
     public override unsafe void Draw()
     {
-        if (ImGui.BeginTabBar("AutoAttack"))
+        if (ImGui.BeginTabBar("AutoAttackSettings"))
         {
+#if DEBUG
+            if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem("Debug查看"))
+            {
+                if (ImGui.CollapsingHeader("自身附加给自己的状态"))
+                {
+                    foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+                    {
+
+                        if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                        {
+                            ImGui.Text(item.GameData.Name + item.StatusId);
+                        }
+                    }
+                }
+
+                if (ImGui.CollapsingHeader("目标信息"))
+                {
+                    if (Service.TargetManager.Target is BattleChara b)
+                    {
+                        ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+                        ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
+                        ImGui.Text("Is Dying: " + b.IsDying().ToString());
+
+                        foreach (var status in b.StatusList)
+                        {
+                            if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                            {
+                                ImGui.Text(status.GameData.Name + status.StatusId);
+                            }
+                        }
+                    }
+                    ImGui.Text("");
+                    foreach (var item in TargetUpdater.HostileTargets)
+                    {
+                        ImGui.Text(item.Name.ToString());
+                    }
+                }
+
+                if (ImGui.CollapsingHeader("下一个技能"))
+                {
+                    BaseAction baseAction = null;
+                    baseAction ??= ActionUpdater.NextAction as BaseAction;
+                    DrawAction(baseAction);
+
+                    ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
+                    ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
+
+                }
+
+                if (ImGui.CollapsingHeader("上一个技能"))
+                {
+                    DrawAction(Watcher.LastAction, nameof(Watcher.LastAction));
+                    DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
+                    DrawAction(Watcher.LastSpell, nameof(Watcher.LastSpell));
+                    DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
+                    DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
+                }
+
+                if (ImGui.CollapsingHeader("倒计时、按键"))
+                {
+                    ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
+
+                    if (ActionUpdater.exception != null)
+                    {
+                        ImGui.Text(ActionUpdater.exception.Message);
+                        ImGui.Text(ActionUpdater.exception.StackTrace);
+                    }
+                }
+                ImGui.EndTabItem();
+            }
+#endif
+
             if (ImGui.BeginTabItem("攻击设定"))
             {
                 ImGui.Text("你可以选择开启想要的职业的连续GCD战技、技能，若职业与当前职业相同则有命令宏提示。");
@@ -808,7 +868,7 @@ internal class ConfigWindow : Window
                         }
 
                         ImGui.SameLine();
-                        Spacing();
+                        ComboConfigWindow.Spacing();
                         if (ImGui.Button("删除事件" + i.ToString()))
                         {
                             Service.Configuration.Events.RemoveAt(i);
@@ -823,17 +883,28 @@ internal class ConfigWindow : Window
 
             if (ImGui.BeginTabItem("技能释放条件"))
             {
-                foreach (var pair in IconReplacer.RightComboBaseAction.GroupBy(a => a.CateName).OrderBy(g => g.Key))
+                ImGui.Text("在这个窗口，你可以设定每个技能的释放条件。");
+
+                ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
+
+
+                if (ImGui.BeginChild("条件列表", new Vector2(0f, -1f), true))
                 {
-                    if (ImGui.CollapsingHeader(pair.Key))
+                    foreach (var pair in IconReplacer.RightComboBaseAction.GroupBy(a => a.CateName).OrderBy(g => g.Key))
                     {
-                        foreach (var item in pair)
+                        if (ImGui.CollapsingHeader(pair.Key))
                         {
-                            DrawAction(item);
-                            ImGui.Separator();
+                            foreach (var item in pair)
+                            {
+                                DrawAction(item);
+                                ImGui.Separator();
+                            }
                         }
                     }
+                    ImGui.EndChild();
                 }
+                ImGui.PopStyleVar();
+                ImGui.EndTabItem();
             }
 
             if (ImGui.BeginTabItem("帮助文档"))
@@ -873,111 +944,14 @@ internal class ConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
-#if DEBUG
-            if (ImGui.BeginTabItem("Debug查看") && Service.ClientState.LocalPlayer != null)
-            {
-                if (ImGui.CollapsingHeader("自身附加给自己的状态"))
-                {
-                    foreach (var item in Service.ClientState.LocalPlayer.StatusList)
-                    {
-
-                        if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                        {
-                            ImGui.Text(item.GameData.Name + item.StatusId);
-                        }
-                    }
-                }
-
-                if (ImGui.CollapsingHeader("目标信息"))
-                {
-                    if (Service.TargetManager.Target is BattleChara b)
-                    {
-                        ImGui.Text("Is Boss: " + b.IsBoss().ToString());
-                        ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
-                        ImGui.Text("Is Dying: " + b.IsDying().ToString());
-
-                        foreach (var status in b.StatusList)
-                        {
-                            if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                            {
-                                ImGui.Text(status.GameData.Name + status.StatusId);
-                            }
-                        }
-                    }
-                    ImGui.Text("");
-                    foreach (var item in TargetUpdater.HostileTargets)
-                    {
-                        ImGui.Text(item.Name.ToString());
-                    }
-                }
-
-                if (ImGui.CollapsingHeader("下一个技能"))
-                {
-                    BaseAction baseAction = null;
-                    baseAction ??= ActionUpdater.NextAction as BaseAction;
-                    DrawAction(baseAction);
-
-                    ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
-                    ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
-
-                }
-
-                if (ImGui.CollapsingHeader("上一个技能"))
-                {
-                    DrawAction(Watcher.LastAction, nameof(Watcher.LastAction));
-                    DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
-                    DrawAction(Watcher.LastSpell, nameof(Watcher.LastSpell));
-                    DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
-                    DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
-                }
-
-                if (ImGui.CollapsingHeader("倒计时、按键"))
-                {
-                    ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
-
-                    if(ActionUpdater.exception != null)
-                    {
-                        ImGui.Text(ActionUpdater.exception.Message);
-                        ImGui.Text(ActionUpdater.exception.StackTrace);
-                    }
-                }
-            }
-#endif
-
             ImGui.EndTabBar();
         }
         ImGui.End();
     }
 
-    private unsafe static void DrawAction(BaseAction act)
-    {
-        if (act == null) return;
 
-        DrawTexture(act, () =>
-        {
-            CommandHelp("Enable" + act.Name, $"使用{act}");
-            CommandHelp("Disable" + act.Name, $"关闭{act}");
-            CommandHelp($"Insert{act}-{5}", $"5s内最高优先插入{act}");
-#if DEBUG
-            ImGui.Text(act.ToString());
-            ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());
-            ImGui.Text("Is General GCD: " + act.IsGeneralGCD.ToString());
-            ImGui.Text("Is Real GCD: " + act.IsRealGCD.ToString());
-            ImGui.Text("Recast One: " + act.RecastTimeOneChargeDEBUG.ToString());
-            ImGui.Text("Recast Elapsed: " + act.RecastTimeElapsedDEBUG.ToString());
-            ImGui.Text("Recast Remain: " + act.RecastTimeRemainDEBUG.ToString());
-            ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, act.AdjustedID).ToString());
 
-            ImGui.Text("Cast Time: " + act.CastTime.ToString());
-            ImGui.Text("MP: " + act.MPNeed.ToString());
-            ImGui.Text($"Can Use: {act.ShouldUse(out _)} {act.ShouldUse(out _, mustUse: true)}");
-
-            ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(act.AdjustedID).ToString());
-#endif
-        });
-    }
-
-    private static void DrawTexture<T>(T texture, System.Action otherThing) where T : class, ITexture
+    internal static void DrawTexture<T>(T texture, System.Action otherThing) where T : class, ITexture
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
@@ -1011,11 +985,13 @@ internal class ConfigWindow : Window
         if (attr is ComboDevInfoAttribute devAttr)
         {
             ImGui.SameLine();
-            Spacing();
-            ImGui.Text($" - {string.Join(", ", devAttr.Authors.Select(a => a.ToName()))}");
+
+            ImGui.TextColored(shadedColor, $" - {string.Join(", ", devAttr.Authors.Select(a => a.ToName()))}");
 
             ImGui.SameLine();
-            if (ImGui.Button("源码"))
+            Spacing();
+
+            if (ImGui.Button($"{texture.Name}源码"))
             {
                 System.Diagnostics.Process.Start("cmd", $"/C start {devAttr.URL}");
             }
@@ -1042,7 +1018,7 @@ internal class ConfigWindow : Window
     }
 #endif
 
-    private static void Spacing(byte count = 1)
+    internal static void Spacing(byte count = 1)
     {
         string s = string.Empty;
         for (int i = 0; i < count; i++)
@@ -1070,4 +1046,32 @@ internal class ConfigWindow : Window
             ImGui.Text(" → " + help);
         }
     }
+    private unsafe static void DrawAction(BaseAction act)
+    {
+        if (act == null) return;
+
+        DrawTexture(act, () =>
+        {
+            CommandHelp("Enable" + act.Name, $"使用{act}");
+            CommandHelp("Disable" + act.Name, $"关闭{act}");
+            CommandHelp($"Insert{act}-{5}", $"5s内最高优先插入{act}");
+#if DEBUG
+            ImGui.Text(act.ToString());
+            ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());
+            ImGui.Text("Is General GCD: " + act.IsGeneralGCD.ToString());
+            ImGui.Text("Is Real GCD: " + act.IsRealGCD.ToString());
+            ImGui.Text("Recast One: " + act.RecastTimeOneChargeDEBUG.ToString());
+            ImGui.Text("Recast Elapsed: " + act.RecastTimeElapsedDEBUG.ToString());
+            ImGui.Text("Recast Remain: " + act.RecastTimeRemainDEBUG.ToString());
+            ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, act.AdjustedID).ToString());
+
+            ImGui.Text("Cast Time: " + act.CastTime.ToString());
+            ImGui.Text("MP: " + act.MPNeed.ToString());
+            ImGui.Text($"Can Use: {act.ShouldUse(out _)} {act.ShouldUse(out _, mustUse: true)}");
+
+            ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(act.AdjustedID).ToString());
+#endif
+        });
+    }
+
 }
