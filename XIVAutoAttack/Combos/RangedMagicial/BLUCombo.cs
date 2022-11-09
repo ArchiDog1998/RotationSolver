@@ -53,9 +53,12 @@ namespace XIVAutoAttack.Combos.RangedMagicial
         }
         public override uint[] JobIDs => new uint[] { 36 };
 
-            public static readonly BLUAction
-                //水炮
-                WaterCannon = new(11385);
+        public static readonly BLUAction
+            //水炮
+            WaterCannon = new(11385),
+
+            //陆行鸟陨石
+            ChocoMeteor = new(23284);
 
         private protected override bool AttackAbility(byte abilityRemain, out IAction act)
         {
@@ -65,6 +68,15 @@ namespace XIVAutoAttack.Combos.RangedMagicial
 
         private protected override bool GeneralGCD(out IAction act)
         {
+            if (FateCombo(out act)) return true;
+
+            act = null;
+            return false;
+        }
+
+        private bool FateCombo(out IAction act)
+        {
+            if (ChocoMeteor.ShouldUse(out act, mustUse:true)) return true;
             act = null;
             return false;
         }

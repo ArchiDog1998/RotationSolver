@@ -68,7 +68,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge, CommandType>
         //空气锚
         AirAnchor = new(16500)
         {
-            OtherCheck = b => !JobGauge.IsOverheated || JobGauge.IsOverheated && RemainAfterGCD(JobGauge.OverheatTimeRemaining, 0),
+            OtherCheck = b => !JobGauge.IsOverheated || JobGauge.IsOverheated && RemainAfterGCD(JobGauge.OverheatTimeRemaining / 1000, 0),
         },
 
         //钻头

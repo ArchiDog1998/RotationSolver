@@ -99,6 +99,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
         AspectedHelios = new(3601, true)
         {
             BuffsProvide = new ushort[] { ObjectStatus.AspectedHelios },
+            OtherCheck = b => !IsLastSpell(true, AspectedHelios),
         },
 
         //天星冲日

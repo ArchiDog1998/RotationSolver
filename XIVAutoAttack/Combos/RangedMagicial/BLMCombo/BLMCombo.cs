@@ -149,7 +149,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             if (OpenerManager(out act)) return true;
 
             //AOE
-            if (LoopManagerArea(out act)) return true;
+            if (Blizzard2.ShouldUse(out _) && LoopManagerArea(out act)) return true;
 
             //低级适配
             if (Level < 90 && LoopManagerSingleNOMax(out act)) return true;
@@ -300,7 +300,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 //雷
                 if (CanUseThunder(out act)) return true;
                 //冰阶段
-                if (!Fire3.EnoughLevel && Blizzard.ShouldUse(out act)) return true;
+                if (!Fire3.EnoughLevel && Blizzard.ShouldUse(out act) && Player.CurrentMp < 9000) return true;
                 if (JobGauge.UmbralIceStacks == 3 && Blizzard4.ShouldUse(out act)) return true;
                 //异言
                 if (CanUseXenoglossy(out act)) return true;
@@ -354,7 +354,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         private bool LoopManagerArea(out IAction act)
         {
             act = null;
-            if (!Blizzard2.ShouldUse(out _)) return false;
+            //if (!Blizzard2.ShouldUse(out _)) return false;
 
             if (Foul.ShouldUse(out act) && IsPolyglotStacksMaxed) return true;
 
@@ -368,9 +368,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (HasThunder || !TargetHasThunder) return true;
             }
 
-            if (Fire2.ShouldUse(out act))
+            if (Fire2.ShouldUse(out act) && Level >= 20)
             {
-                if (Level < 20) return false;
                 if (JobGauge.InUmbralIce && !Freeze.EnoughLevel && Player.CurrentMp == 10000) return true;
                 if (JobGauge.InUmbralIce && JobGauge.UmbralHearts == 3) return true;
                 if (JobGauge.InAstralFire && !Player.HaveStatus(ObjectStatus.EnhancedFlare)) return true;
@@ -381,7 +380,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (JobGauge.InAstralFire && Player.HaveStatus(ObjectStatus.EnhancedFlare)) return true;
                 return true;
             }
-            if (Blizzard2.ShouldUse(out act) && !IsLastSpell(true, Blizzard2) && JobGauge.UmbralIceStacks != 3)
+            if (Blizzard2.ShouldUse(out act) && JobGauge.UmbralIceStacks != 3)
             {
                 //if (!JobGauge.IsEnochianActive) return true;
                 //if (JobGauge.InAstralFire) return true;

@@ -595,7 +595,7 @@ internal class ComboConfigWindow : Window
                         }
 
                         bool useHealWhenNotAHealer = Service.Configuration.UseHealWhenNotAHealer;
-                        if (ImGui.Checkbox("非奶妈是否要用奶人的技能", ref useHealWhenNotAHealer))
+                        if (ImGui.Checkbox("非奶妈用奶人的技能", ref useHealWhenNotAHealer))
                         {
                             Service.Configuration.UseHealWhenNotAHealer = useHealWhenNotAHealer;
                             Service.Configuration.Save();
