@@ -187,7 +187,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (DarkMissionary.ShouldUse(out act)) return true;
-        if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
+        if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -305,12 +305,12 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
             if (ShadowWall.ShouldUse(out act)) return true;
 
             //减伤20%
-            if (GeneralActions.Rampart.ShouldUse(out act)) return true;
+            if (Rampart.ShouldUse(out act)) return true;
             if (DarkMind.ShouldUse(out act)) return true;
         }
         //降低攻击
         //雪仇
-        if (GeneralActions.Reprisal.ShouldUse(out act)) return true;
+        if (Reprisal.ShouldUse(out act)) return true;
 
         act = null;
         return false;

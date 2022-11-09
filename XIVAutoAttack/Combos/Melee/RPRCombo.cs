@@ -337,7 +337,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
         //牵制
         if (!enshrouded && !soulReaver)
         {
-            if (GeneralActions.Feint.ShouldUse(out act)) return true;
+            if (Feint.ShouldUse(out act)) return true;
         }
         act = null;
         return false;

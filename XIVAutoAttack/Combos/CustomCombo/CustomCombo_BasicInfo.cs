@@ -12,7 +12,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    public abstract partial class CustomCombo<TCmd> : ICustomCombo, IDisposable where TCmd : Enum
+    public abstract partial class CustomCombo<TCmd> : CustomComboActions, ICustomCombo, IDisposable where TCmd : Enum
     {
         internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38, 5 };
         public abstract uint[] JobIDs { get; }
@@ -58,7 +58,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
 
 
-        internal static bool HaveSwift => Player.HaveStatus(GeneralActions.Swiftcast.BuffsProvide);
+        internal static bool HaveSwift => Player.HaveStatus(Swiftcast.BuffsProvide);
 
         internal virtual bool HaveShield => true;
 

@@ -45,7 +45,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
 
         internal RDMAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) : base(actionID, isFriendly, shouldEndSpecial)
         {
-            BuffsNeed = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray();
+            BuffsNeed = Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray();
         }
     }
     public static readonly BaseAction
@@ -55,7 +55,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
         //震荡
         Jolt = new(7503)
         {
-            BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
+            BuffsProvide = Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
         },
 
         //回刺
@@ -143,7 +143,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
         //赤治疗
         Vercure = new(7514, true)
         {
-            BuffsProvide = GeneralActions.Swiftcast.BuffsProvide.Union(Acceleration.BuffsProvide).ToArray(),
+            BuffsProvide = Swiftcast.BuffsProvide.Union(Acceleration.BuffsProvide).ToArray(),
         },
 
         //六分反击
@@ -236,7 +236,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
 
             //即刻咏唱
             if (!Player.HaveStatus(ObjectStatus.Acceleration)
-                && GeneralActions.Swiftcast.ShouldUse(out act, mustUse: true)) return true;
+                && Swiftcast.ShouldUse(out act, mustUse: true)) return true;
         }
 
         //攻击四个能力技。
@@ -306,7 +306,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //混乱
-        if (GeneralActions.Addle.ShouldUse(out act)) return true;
+        if (Addle.ShouldUse(out act)) return true;
         if (MagickBarrier.ShouldUse(out act, mustUse:true)) return true;
         return false;
     }

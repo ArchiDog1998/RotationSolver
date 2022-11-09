@@ -16,12 +16,14 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
+using Dalamud.Game.ClientState.Objects.Types;
 
 namespace XIVAutoAttack.Windows
 {
     internal static class OverlayWindow
     {
-
+        internal static BattleChara EnemyLocationTarget;
+        internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
         public static void Draw()
         {
             if (Service.GameGui == null || Service.ClientState.LocalPlayer == null || !Service.Configuration.UseOverlayWindow) return;
@@ -47,14 +49,14 @@ namespace XIVAutoAttack.Windows
         {
             const int COUNT = 20;
 
-            if (CustomCombo<Enum>.EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
+            if (EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
             if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth)) return;
-            if (CustomCombo<Enum>.ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
+            if (ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
 
-            float radius = CustomCombo<Enum>.EnemyLocationTarget.HitboxRadius + 3.5f;
-            float rotation = CustomCombo<Enum>.EnemyLocationTarget.Rotation;
+            float radius = EnemyLocationTarget.HitboxRadius + 3.5f;
+            float rotation = EnemyLocationTarget.Rotation;
 
-            Vector3 pPosition = CustomCombo<Enum>.EnemyLocationTarget.Position;
+            Vector3 pPosition = EnemyLocationTarget.Position;
             if (!Service.GameGui.WorldToScreen(pPosition, out var scrPos)) return;
 
 
@@ -62,7 +64,7 @@ namespace XIVAutoAttack.Windows
             List<Vector2> pts = new List<Vector2>(2 * COUNT + 2);
 
             pts.Add(scrPos);
-            switch (CustomCombo<Enum>.ShouldLocation)
+            switch (ShouldLocation)
             {
                 case EnemyLocation.Side:
                     SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
@@ -77,7 +79,7 @@ namespace XIVAutoAttack.Windows
             }
             pts.Add(scrPos);
 
-            bool wrong = CustomCombo<Enum>.ShouldLocation != CustomCombo<Enum>.EnemyLocationTarget.FindEnemyLocation();
+            bool wrong = ShouldLocation != EnemyLocationTarget.FindEnemyLocation();
             var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
 
             pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));

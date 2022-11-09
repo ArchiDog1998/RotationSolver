@@ -41,16 +41,16 @@ public abstract partial class CustomCombo<TCmd> where TCmd : Enum
             switch (role)
             {
                 case Role.防护:
-                    if (GeneralActions.Interject.ShouldUse(out act)) return true;
+                    if (Interject.ShouldUse(out act)) return true;
                     break;
 
                 case Role.近战:
-                    if (GeneralActions.LegSweep.ShouldUse(out act)) return true;
+                    if (LegSweep.ShouldUse(out act)) return true;
                     break;
                 case Role.远程:
                     if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
                     {
-                        if (GeneralActions.HeadGraze.ShouldUse(out act)) return true;
+                        if (HeadGraze.ShouldUse(out act)) return true;
                     }
                     break;
             }
@@ -59,7 +59,7 @@ public abstract partial class CustomCombo<TCmd> where TCmd : Enum
         {
             if (CommandController.RaiseOrShirk)
             {
-                if (GeneralActions.Shirk.ShouldUse(out act)) return true;
+                if (Shirk.ShouldUse(out act)) return true;
                 if (HaveShield && Shield.ShouldUse(out act)) return true;
             }
 
@@ -83,26 +83,26 @@ public abstract partial class CustomCombo<TCmd> where TCmd : Enum
             {
                 case Role.防护:
                 case Role.近战:
-                    if (GeneralActions.ArmsLength.ShouldUse(out act)) return true;
+                    if (ArmsLength.ShouldUse(out act)) return true;
                     break;
                 case Role.治疗:
-                    if (GeneralActions.Surecast.ShouldUse(out act)) return true;
+                    if (Surecast.ShouldUse(out act)) return true;
                     break;
                 case Role.远程:
                     if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
                     {
-                        if (GeneralActions.ArmsLength.ShouldUse(out act)) return true;
+                        if (ArmsLength.ShouldUse(out act)) return true;
                     }
                     else
                     {
-                        if (GeneralActions.Surecast.ShouldUse(out act)) return true;
+                        if (Surecast.ShouldUse(out act)) return true;
                     }
                     break;
             }
         }
         if (CommandController.EsunaOrShield && role == Role.近战)
         {
-            if (GeneralActions.TrueNorth.ShouldUse(out act)) return true;
+            if (TrueNorth.ShouldUse(out act)) return true;
         }
 
 
@@ -139,7 +139,7 @@ public abstract partial class CustomCombo<TCmd> where TCmd : Enum
                 {
                     //开盾挑衅
                     if (!HaveShield && Shield.ShouldUse(out act)) return true;
-                    if (GeneralActions.Provoke.ShouldUse(out act, mustUse: true)) return true;
+                    if (Provoke.ShouldUse(out act, mustUse: true)) return true;
                 }
 
                 if (Service.Configuration.AutoDefenseForTank && HaveShield
@@ -148,7 +148,7 @@ public abstract partial class CustomCombo<TCmd> where TCmd : Enum
                     //被群殴呢
                     if (TargetUpdater.TarOnMeTargets.Length > 1 && !IsMoving)
                     {
-                        if (GeneralActions.ArmsLength.ShouldUse(out act)) return true;
+                        if (ArmsLength.ShouldUse(out act)) return true;
                         if (DefenceSingleAbility(abilityRemain, out act)) return true;
                     }
 
@@ -180,24 +180,24 @@ public abstract partial class CustomCombo<TCmd> where TCmd : Enum
         {
             case Role.防护:
                 if (Service.Configuration.AlwaysLowBlow &&
-                    GeneralActions.LowBlow.ShouldUse(out act)) return true;
+                    LowBlow.ShouldUse(out act)) return true;
                 break;
             case Role.近战:
-                if (GeneralActions.SecondWind.ShouldUse(out act)) return true;
-                if (GeneralActions.Bloodbath.ShouldUse(out act)) return true;
+                if (SecondWind.ShouldUse(out act)) return true;
+                if (Bloodbath.ShouldUse(out act)) return true;
                 break;
             case Role.治疗:
-                if (GeneralActions.LucidDreaming.ShouldUse(out act)) return true;
+                if (LucidDreaming.ShouldUse(out act)) return true;
                 break;
             case Role.远程:
                 if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
                 {
-                    if (GeneralActions.SecondWind.ShouldUse(out act)) return true;
+                    if (SecondWind.ShouldUse(out act)) return true;
                 }
                 else
                 {
                     if (Service.ClientState.LocalPlayer.ClassJob.Id != 25
-                        && GeneralActions.LucidDreaming.ShouldUse(out act)) return true;
+                        && LucidDreaming.ShouldUse(out act)) return true;
                 }
                 break;
         }
@@ -240,13 +240,13 @@ public abstract partial class CustomCombo<TCmd> where TCmd : Enum
         if (nextGCD is BaseAction action)
         {
             if (Role != Role.近战 &&
-            action.CastTime >= 5 && GeneralActions.Swiftcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            action.CastTime >= 5 && Swiftcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
             if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)
             {
                 if (action.EnermyLocation != action.Target.FindEnemyLocation() && action.Target.HasLocationSide())
                 {
-                    if (GeneralActions.TrueNorth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+                    if (TrueNorth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
                 }
             }
         }

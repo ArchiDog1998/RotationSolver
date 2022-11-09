@@ -98,7 +98,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         //Ô¤¾¯
         Sentinel = new(17)
         {
-            BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+            BuffsProvide = Rampart.BuffsProvide,
             OtherCheck = BaseAction.TankDefenseSelf,
         },
 
@@ -276,7 +276,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         //Îä×°ÊùÎÀ
         if (PassageofArms.ShouldUse(out act)) return true;
 
-        if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
+        if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -350,11 +350,11 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
             if (Sentinel.ShouldUse(out act)) return true;
 
             //Ìú±Ú£¨¼õÉË20%£©
-            if (GeneralActions.Rampart.ShouldUse(out act)) return true;
+            if (Rampart.ShouldUse(out act)) return true;
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
-        if (GeneralActions.Reprisal.ShouldUse(out act)) return true;
+        if (Reprisal.ShouldUse(out act)) return true;
 
         //¸ÉÔ¤£¨¼õÉË10%£©
         if (!HaveShield && Intervention.ShouldUse(out act)) return true;

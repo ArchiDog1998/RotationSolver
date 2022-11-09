@@ -34,9 +34,9 @@ internal class ComboConfigWindow : Window
     }
     private static readonly Dictionary<Role, string> _roleDescriptionValue = new Dictionary<Role, string>()
     {
-        {Role.防护, $"{DescType.单体防御} → {CustomCombo<Enum>.GeneralActions.Rampart}, {CustomCombo<Enum>.GeneralActions.Reprisal}" },
-        {Role.近战, $"{DescType.范围防御} → {CustomCombo<Enum>.GeneralActions.Feint}" },
-        {Role.远程, $"法系{DescType.范围防御} → {CustomCombo<Enum>.GeneralActions.Addle}" },
+        {Role.防护, $"{DescType.单体防御} → {CustomComboActions.Rampart}, {CustomComboActions.Reprisal}" },
+        {Role.近战, $"{DescType.范围防御} → {CustomComboActions.Feint}" },
+        {Role.远程, $"法系{DescType.范围防御} → {CustomComboActions.Addle}" },
     };
 
     private static string ToName(VirtualKey k)

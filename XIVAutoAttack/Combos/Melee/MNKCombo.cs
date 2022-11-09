@@ -153,7 +153,7 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (GeneralActions.Feint.ShouldUse(out act)) return true;
+        if (Feint.ShouldUse(out act)) return true;
         return false;
     }
 

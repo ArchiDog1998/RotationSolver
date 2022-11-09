@@ -66,7 +66,7 @@ namespace XIVAutoAttack
                     _autoAttack = value;
                     if (!value)
                     {
-                        CustomCombo<Enum>.ShouldLocation = EnemyLocation.None;
+                        OverlayWindow.ShouldLocation = EnemyLocation.None;
                         if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Cancel");
                         _stateString = "Off";
                         UpdateToast();

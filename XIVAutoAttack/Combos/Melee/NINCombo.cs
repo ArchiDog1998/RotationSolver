@@ -542,7 +542,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if (GeneralActions.Feint.ShouldUse(out act)) return true;
+        if (Feint.ShouldUse(out act)) return true;
         return false;
     }
 }

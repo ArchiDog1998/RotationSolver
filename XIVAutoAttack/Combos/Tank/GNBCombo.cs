@@ -60,7 +60,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
         //Î±×°
         Camouflage = new(16140)
         {
-            BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+            BuffsProvide = Rampart.BuffsProvide,
             OtherCheck = BaseAction.TankDefenseSelf,
         },
 
@@ -85,7 +85,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
         //ÐÇÔÆ
         Nebula = new(16148)
         {
-            BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+            BuffsProvide = Rampart.BuffsProvide,
             OtherCheck = BaseAction.TankDefenseSelf,
         },
 
@@ -128,7 +128,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
         //Ê¯Ö®ÐÄ
         HeartofStone = new(16161, true)
         {
-            BuffsProvide = GeneralActions.Rampart.BuffsProvide,
+            BuffsProvide = Rampart.BuffsProvide,
             ChoiceTarget = TargetFilter.FindAttackedTarget,
         },
 
@@ -286,7 +286,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (HeartofLight.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-        if (GeneralActions.Reprisal.ShouldUse(out act, mustUse: true)) return true;
+        if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
         return false;
     }
 
@@ -308,14 +308,14 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
             if (Nebula.ShouldUse(out act)) return true;
 
             //Ìú±Ú£¨¼õÉË20%£©
-            if (GeneralActions.Rampart.ShouldUse(out act)) return true;
+            if (Rampart.ShouldUse(out act)) return true;
 
             //Î±×°£¨¼õÉË10%£©
             if (Camouflage.ShouldUse(out act)) return true;
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
-        if (GeneralActions.Reprisal.ShouldUse(out act)) return true;
+        if (Reprisal.ShouldUse(out act)) return true;
 
         act = null;
         return false;
