@@ -22,7 +22,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             {
                 if (StatusHelper.ActionLocations.TryGetValue(ID, out var location))
                 {
-                    return location;
+                    return location.Loc;
                 }
                 return EnemyLocation.None;
             }

@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
+using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
@@ -145,7 +146,7 @@ namespace XIVAutoAttack.Updaters
         static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
         static long _weaponRandomDelay = 0;
         internal static float _lastCastingTotal = 0;
-        internal static void DoAction()
+        internal unsafe static void DoAction()
         {
             if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInQuestEvent]
@@ -158,7 +159,9 @@ namespace XIVAutoAttack.Updaters
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction2]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InFlight]) return;
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InFlight]
+                //避免技能队列激活的时候反复按。
+                || *(bool*)((IntPtr)ActionManager.Instance() + 0x68)) return;
 
             //GCD
             if (WeaponRemain <= Service.Configuration.WeaponFaster)
