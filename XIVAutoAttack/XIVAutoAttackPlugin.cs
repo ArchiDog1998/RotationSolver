@@ -29,7 +29,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     private readonly WindowSystem windowSystem;
 
-    private static ConfigWindow configWindow;
+    private static ComboConfigWindow _comboConfigWindow;
     //private readonly SystemSound sound;
     public string Name => "XIV Auto Attack";
 
@@ -56,9 +56,9 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         Service.IconReplacer = new IconReplacer();
 
-        configWindow = new ConfigWindow();
+        _comboConfigWindow = new ();
         windowSystem = new WindowSystem(Name);
-        windowSystem.AddWindow(configWindow);
+        windowSystem.AddWindow(_comboConfigWindow);
 
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
@@ -69,7 +69,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Watcher.Enable();
         CountDown.Enable();
     }
-
 
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
@@ -98,7 +97,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     private void OnOpenConfigUi()
     {
-        configWindow.IsOpen = true;
+        _comboConfigWindow.IsOpen = true;
     }
 
     private void AttackObject(string command, string arguments)
@@ -121,6 +120,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     internal static void OpenConfigWindow()
     {
-        configWindow.Toggle();
+        _comboConfigWindow.Toggle();
     }
 }

@@ -59,7 +59,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             //三连咏唱
             Triplecast = new(7421u)
             {
-                BuffsProvide = GeneralActions.Swiftcast.BuffsProvide,
+                BuffsProvide = Swiftcast.BuffsProvide,
             },
 
             //黑魔纹
@@ -174,18 +174,18 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                     //瞬双2,长双2(2-1)
                     if (IsOldSpell(1, Paradox) && abilityRemain == 1 && !HasFire)
                     {
-                        if (DoubleTranspose && (!GeneralActions.Swiftcast.IsCoolDown || HaveSwift)) return true;
+                        if (DoubleTranspose && (!Swiftcast.IsCoolDown || HaveSwift)) return true;
                         if (FewBlizzard && Player.CurrentMp > 6000) return true;
                     }
                     //瞬双3,长双3(2/3-1)
                     if (IsOldSpell(1, Paradox) && abilityRemain == 1 && !HasFire && time1 > time2)
                     {
-                        if (DoubleTranspose && (!GeneralActions.Swiftcast.IsCoolDown || HaveSwift)) return true;
+                        if (DoubleTranspose && (!Swiftcast.IsCoolDown || HaveSwift)) return true;
                         if (FewBlizzard && Player.CurrentMp > 6000) return true;
                     }
                     if (IsOldSpell(1, Paradox) && Player.CurrentMp >= 9600 && !HasFire)
                     {
-                        if (DoubleTranspose && (!GeneralActions.Swiftcast.IsCoolDown || HaveSwift)) return true;
+                        if (DoubleTranspose && (!Swiftcast.IsCoolDown || HaveSwift)) return true;
                         if (FewBlizzard && Player.CurrentMp > 6000) return true;
                     }
 
@@ -226,7 +226,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         /// <returns></returns>
         private bool CanUseLucidDreaming(out IAction act)
         {
-            if (!GeneralActions.LucidDreaming.ShouldUse(out act)) return false;
+            if (!LucidDreaming.ShouldUse(out act)) return false;
             if (Blizzard2.ShouldUse(out _)) return false;
             if (StandardLoop) return false;
             if (JobGauge.InUmbralIce && JobGauge.UmbralIceStacks < 3 && !JobGauge.IsParadoxActive)
@@ -250,7 +250,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         /// <returns></returns>
         private bool CanUseSwiftcast(out IAction act)
         {
-            if (!GeneralActions.Swiftcast.ShouldUse(out act)) return false;
+            if (!Swiftcast.ShouldUse(out act)) return false;
             if (StandardLoop) return false;
             if (JobGauge.InUmbralIce && JobGauge.UmbralIceStacks < 3 && !JobGauge.IsParadoxActive)
             {
@@ -573,7 +573,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (IsOldSpell(1, Thunder3)) return false;
                 if (JobGauge.PolyglotStacks == 2) return true;
                 if (HasFire && !IsLastSpell(true, Thunder, Xenoglossy)) return true;
-                if (!HasFire && (HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) && !Player.HaveStatus(ObjectStatus.LeyLines)) return true;
+                if (!HasFire && (HaveSwift || !Swiftcast.IsCoolDown) && !Player.HaveStatus(ObjectStatus.LeyLines)) return true;
             }
 
             //在火

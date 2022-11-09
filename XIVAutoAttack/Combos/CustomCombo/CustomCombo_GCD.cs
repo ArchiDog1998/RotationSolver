@@ -10,13 +10,13 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
+using XIVAutoAttack.Windows;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    public abstract partial class CustomCombo<TCmd> where TCmd : Enum
+    internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {
-        internal static BattleChara EnemyLocationTarget;
-        internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
+
         public bool TryInvoke(out IAction newAction)
         {
             newAction = null;
@@ -77,13 +77,13 @@ namespace XIVAutoAttack.Combos.CustomCombo
                             IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
                                 Service.IconReplacer.OriginalHook(GCDaction.ID)).Icon,
                         });
-                        EnemyLocationTarget = GCDaction.Target;
-                        ShouldLocation = GCDaction.EnermyLocation;
+                        OverlayWindow.EnemyLocationTarget = GCDaction.Target;
+                        OverlayWindow.ShouldLocation = GCDaction.EnermyLocation;
                     }
                 }
                 else
                 {
-                    ShouldLocation = EnemyLocation.None;
+                    OverlayWindow.ShouldLocation = EnemyLocation.None;
                 }
 
                 if (abilityRemain == 0 || ActionUpdater.WeaponElapsed < ActionUpdater._lastCastingTotal) return GCDaction;
@@ -94,13 +94,13 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
             else if (act == null)
             {
-                ShouldLocation = EnemyLocation.None;
-                if (Ability(abilityRemain, GeneralActions.Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
+                OverlayWindow.ShouldLocation = EnemyLocation.None;
+                if (Ability(abilityRemain, Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
                 return null;
             }
             else
             {
-                ShouldLocation = EnemyLocation.None;
+                OverlayWindow.ShouldLocation = EnemyLocation.None;
             }
             return act;
         }
@@ -182,7 +182,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (GeneralGCD(out var action)) return action;
 
             //硬拉或者开始奶人
-            if (Service.Configuration.RaisePlayerBySwift && (HaveSwift || !GeneralActions.Swiftcast.IsCoolDown) 
+            if (Service.Configuration.RaisePlayerBySwift && (HaveSwift || !Swiftcast.IsCoolDown) 
                 && EsunaRaise(out act, abilityRemain, true)) return act;
             if (TargetUpdater.HPNotFull && HaveHostileInRange && ActionUpdater.InCombat)
             {
@@ -204,7 +204,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //有某些非常危险的状态。
             if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
-                if (Role == Role.治疗 && GeneralActions.Esuna.ShouldUse(out act, mustUse: true)) return true;
+                if (Role == Role.治疗 && Esuna.ShouldUse(out act, mustUse: true)) return true;
 
             }
 
@@ -215,11 +215,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 {
                     if (HaveSwift && Raise.ShouldUse(out act)) return true;
                 }
-                else if (CommandController.RaiseOrShirk || HaveSwift || !GeneralActions.Swiftcast.IsCoolDown && actabilityRemain > 0 || mustUse)
+                else if (CommandController.RaiseOrShirk || HaveSwift || !Swiftcast.IsCoolDown && actabilityRemain > 0 || mustUse)
                 {
                     if (Raise.ShouldUse(out _))
                     {
-                        if (mustUse && GeneralActions.Swiftcast.ShouldUse(out act)) return true;
+                        if (mustUse && Swiftcast.ShouldUse(out act)) return true;
                         act = Raise;
                         return true;
                     }

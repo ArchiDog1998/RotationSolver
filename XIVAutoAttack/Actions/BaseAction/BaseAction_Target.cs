@@ -202,7 +202,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (_action.CastType > 1 && ID != SCHCombo.DeploymentTactics.ID)
                 {
                     //找到能覆盖最多的位置，并且选血最少的来。
-                    Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, _action.EffectRange, true, mustUse, true).OrderBy(p => p.GetHealthRatio()).First();
+                    Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, _action.EffectRange, true, mustUse, true)
+                        .OrderBy(p => p.GetHealthRatio()).FirstOrDefault();
                     if (Target == null) return false;
                     return true;
                 }

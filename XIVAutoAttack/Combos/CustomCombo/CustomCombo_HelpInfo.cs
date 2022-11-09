@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    public abstract partial class CustomCombo<TCmd> where TCmd : Enum
+    internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {
         protected TCmd LastCommand { get; private set; } = default(TCmd);
 

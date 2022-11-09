@@ -124,7 +124,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
         {
             //混乱
-            if (GeneralActions.Addle.ShouldUse(out act)) return true;
+            if (Addle.ShouldUse(out act)) return true;
             return false;
         }
 

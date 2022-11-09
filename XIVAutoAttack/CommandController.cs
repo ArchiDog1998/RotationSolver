@@ -66,7 +66,7 @@ namespace XIVAutoAttack
                     _autoAttack = value;
                     if (!value)
                     {
-                        CustomCombo<Enum>.ShouldLocation = EnemyLocation.None;
+                        OverlayWindow.ShouldLocation = EnemyLocation.None;
                         if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Cancel");
                         _stateString = "Off";
                         UpdateToast();
@@ -451,7 +451,7 @@ namespace XIVAutoAttack
                         {
                             var actName = str.Substring(6);
 
-                            foreach (var act in IconReplacer.RightComboBaseAction)
+                            foreach (var act in IconReplacer.RightComboBaseActions)
                             {
                                 if(actName == act.Name)
                                 {
@@ -464,7 +464,7 @@ namespace XIVAutoAttack
                         {
                             var actName = str.Substring(7);
 
-                            foreach (var act in IconReplacer.RightComboBaseAction)
+                            foreach (var act in IconReplacer.RightComboBaseActions)
                             {
                                 if (actName == act.Name)
                                 {
@@ -481,7 +481,7 @@ namespace XIVAutoAttack
                             if(strs!= null && strs.Length == 2 && double.TryParse(strs[1], out var time))
                             {
                                 var actName = strs[0];
-                                foreach (var act in IconReplacer.RightComboBaseAction)
+                                foreach (var act in IconReplacer.RightComboBaseActions)
                                 {
                                     if (actName == act.Name)
                                     {
