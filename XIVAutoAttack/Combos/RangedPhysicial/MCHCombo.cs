@@ -60,12 +60,15 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge, CommandType>
         AutoCrossbow = new(16497),
 
         //热弹
-        HotShot = new(2872),
+        HotShot = new(2872)
+        {
+            //OtherCheck = AirAnchor.OtherCheck,
+        },
 
         //空气锚
         AirAnchor = new(16500)
         {
-            OtherCheck = b => !JobGauge.IsOverheated || JobGauge.IsOverheated && JobGauge.OverheatTimeRemaining < 1300,
+            OtherCheck = b => !JobGauge.IsOverheated || JobGauge.IsOverheated && RemainAfterGCD(JobGauge.OverheatTimeRemaining, 0),
         },
 
         //钻头
@@ -164,7 +167,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge, CommandType>
         if (!InCombat)
         {
             //开场前整备,空气锚和钻头必须冷却好
-            if ((!AirAnchor.IsCoolDown || !Drill.IsCoolDown) && Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolDown || !Drill.IsCoolDown) && Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         //AOE,毒菌冲击
@@ -211,7 +214,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge, CommandType>
         }
         //等级小于90时,整备不再留层数
         if ((!ChainSaw.EnoughLevel || !Config.GetBoolByName("MCH_Reassemble"))
-            && nextGCD.IsAnySameAction(true, AirAnchor, Drill, ChainSaw))
+            && nextGCD.IsAnySameAction(false, AirAnchor, Drill))
         {
             if (Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
@@ -302,9 +305,9 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge, CommandType>
         if (isDyingNotBoss) return false;
 
         //在三大金刚还剩8秒冷却好时不释放超荷
-        if (Drill.EnoughLevel && Drill.WillHaveOneCharge(8, false)) return false;
-        if (AirAnchor.EnoughLevel && AirAnchor.WillHaveOneCharge(8, false)) return false;
-        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(8, false) || !ChainSaw.IsCoolDown) && Config.GetBoolByName("MCH_Opener")) return false;
+        if (Drill.EnoughLevel && Drill.WillHaveOneCharge(7.5f, false)) return false;
+        if (AirAnchor.EnoughLevel && AirAnchor.WillHaveOneCharge(7.5f, false)) return false;
+        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(7.5f, false) || !ChainSaw.IsCoolDown) && Config.GetBoolByName("MCH_Opener")) return false;
 
         //小怪AOE和4人本超荷判断
         if (SpreadShot.ShouldUse(out _) || (TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()))
