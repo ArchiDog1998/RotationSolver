@@ -46,7 +46,8 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
             //医济
             Medica2 = new(133, true)
             {
-                BuffsProvide = new[] { ObjectStatus.Medica2, ObjectStatus.TrueMedica2 }
+                BuffsProvide = new[] { ObjectStatus.Medica2, ObjectStatus.TrueMedica2 },
+                OtherCheck = b => !IsLastSpell(true,Medica2)
             },
 
             //再生

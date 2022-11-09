@@ -67,10 +67,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static bool IsLastAction(params uint[] ids)
             => IActionHelper.IsLastAction(ids);
 
-        protected static bool RecastAfterGCD(float recast, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true)
-            => CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount, addWeaponRemain);
+        protected static bool RemainAfterGCD(float remain, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true)
+            => CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount, addWeaponRemain);
 
-        protected static bool RecastAfter(float recast, float remain, bool addWeaponRemain = true)
-            => CooldownHelper.RecastAfter(recast, remain, addWeaponRemain);
+        protected static bool RemainAfter(float remain, float remainNeed, bool addWeaponRemain = true)
+            => CooldownHelper.RecastAfter(remain, remainNeed, addWeaponRemain);
     }
 }
