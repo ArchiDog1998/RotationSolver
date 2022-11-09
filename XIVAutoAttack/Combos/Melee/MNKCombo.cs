@@ -127,7 +127,7 @@ internal sealed class MNKCombo : JobGaugeCombo<MNKGauge, CommandType>
         //疾风极意
         RiddleofWind = new(25766);
 
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.范围治疗, $"{Mantra}"},
         {DescType.单体防御, $"{RiddleofEarth}"},

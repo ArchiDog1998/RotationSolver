@@ -194,7 +194,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
     }
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.范围治疗, $"GCD: {Succor}\n                     能力: {SacredSoil}, {SummonSeraph}, {WhisperingDawn}, {FeyBlessing}, {Indomitability}"},
         {DescType.单体治疗, $"GCD: {Adloquium}, {Physick}\n                     能力: {SacredSoil}, {Aetherpact}, {Protraction}, {Excogitation}, {Lustrate}"},

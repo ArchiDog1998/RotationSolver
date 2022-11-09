@@ -68,7 +68,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         /// </summary>
         private bool FewBlizzard => Config.GetComboByName("UseLoop") == 2;
 
-        public override SortedList<DescType, string> Description => new()
+        public override SortedList<DescType, string> DescriptionDict => new()
         {
             { DescType.单体治疗, $"{BetweenTheLines}, {Leylines}, 这个很特殊！" },
             { DescType.单体防御, $"{Manaward}" },

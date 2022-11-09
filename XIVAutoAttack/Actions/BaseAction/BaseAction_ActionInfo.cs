@@ -74,6 +74,10 @@ namespace XIVAutoAttack.Actions.BaseAction
         public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
+
+            //用户不让用！
+            if (!IsEnabled) return false;
+
             //等级不够。
             if (!EnoughLevel) return false;
 

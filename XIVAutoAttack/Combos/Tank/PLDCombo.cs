@@ -206,7 +206,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         Sheltron = new(3542);
     //¶ÜÅÆÃÍ»÷
     //ShieldBash = new BaseAction(16),
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.µ¥ÌåÖÎÁÆ, $"{Clemency}"},
         {DescType.·¶Î§·ÀÓù, $"{DivineVeil}, {PassageofArms}"},

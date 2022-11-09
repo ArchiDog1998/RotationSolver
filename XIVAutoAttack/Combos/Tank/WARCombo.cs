@@ -144,7 +144,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
         {
             BuffsNeed = new[] { ObjectStatus.PrimalRendReady },
         };
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.·¶Î§·ÀÓù, $"{ShakeItOff}"},
         {DescType.µ¥Ìå·ÀÓù, $"{RawIntuition}, {Vengeance}"},

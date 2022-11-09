@@ -184,7 +184,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
         {
             OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ID,
         };
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.µ•ÃÂ÷Œ¡∆, $"{Aurora}"},
         {DescType.∑∂Œß∑¿”˘, $"{HeartofLight}"},

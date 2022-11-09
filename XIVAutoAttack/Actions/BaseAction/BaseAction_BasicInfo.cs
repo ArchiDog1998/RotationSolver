@@ -1,4 +1,5 @@
 ﻿using ImGuiScene;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -8,16 +9,41 @@ namespace XIVAutoAttack.Actions.BaseAction
 {
     internal partial class BaseAction : IAction, IDisposable
     {
-        private bool _isFriendly;
         private bool _shouldEndSpecial;
+        private bool _isFriendly;
         private bool _isDot;
         internal bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
-
+        public string Name => _action.Name;
+        public string Description => string.Empty;   
+        internal string CateName
+        {
+            get
+            {
+                string result = _isFriendly ? "支援" : "攻击";
+                result += IsRealGCD ? "GCD" : "能力技";
+                if (_isDot) result += " - Dot";
+                return result;
+            }
+        }
+        public bool IsEnabled
+        {
+            get => !Service.Configuration.DiabledActions.Contains(ID);
+            set
+            {
+                if (value)
+                {
+                    Service.Configuration.DiabledActions.Remove(ID);
+                }
+                else
+                {
+                    Service.Configuration.DiabledActions.Add(ID);
+                }
+            }
+        }
         public uint ID => _action.RowId;
         public uint AdjustedID => Service.IconReplacer.OriginalHook(ID);
 
-        public TextureWrap Icon { get; }
-        public ushort IconID => _action.Icon;
+        public TextureWrap Texture { get; }
         internal bool IsGeneralGCD { get; }
         internal bool IsRealGCD { get; }
 
@@ -33,7 +59,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             _isFriendly = isFriendly;
             _isDot = isDot;
             
-            Icon = Service.DataManager.GetImGuiTextureIcon(IconID);
+            Texture = Service.DataManager.GetImGuiTextureIcon(_action.Icon);
             IsGeneralGCD = _action.IsGeneralGCD();
             IsRealGCD = _action.IsRealGCD();
             CoolDownGroup = _action.GetCoolDownGroup();
@@ -41,12 +67,12 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         public override string ToString()
         {
-            return _action.Name;
+            return Name;
         }
 
         public void Dispose()
         {
-            Icon.Dispose();
+            Texture.Dispose();
         }
 
         ~BaseAction()

@@ -49,7 +49,9 @@ internal sealed class IconReplacer : IDisposable
 
             return (from field in type.GetFields()
                     where field.IsStatic && typeof(BaseAction).IsAssignableFrom(field.FieldType)
-                    select (BaseAction)field.GetValue(combo)).ToArray();
+                    select (BaseAction)field.GetValue(combo) into act
+                    orderby act.ID
+                    select act).ToArray();
         }
     }
 
@@ -174,7 +176,7 @@ internal sealed class IconReplacer : IDisposable
                     for (int i = 0; i < CustomCombos.Length; i++)
                     {
                         var value = CustomCombos[i];
-                        if (value.JobName.ToLowerInvariant() == text3)
+                        if (value.Name.ToLowerInvariant() == text3)
                         {
                             value.IsEnabled = true;
                             Service.ChatGui.Print($"{value} SET");
@@ -190,10 +192,10 @@ internal sealed class IconReplacer : IDisposable
                     for (int i = 0; i < CustomCombos.Length; i++)
                     {
                         var customComboPreset2 = CustomCombos[i];
-                        if (customComboPreset2.JobName.ToLowerInvariant() == text)
+                        if (customComboPreset2.Name.ToLowerInvariant() == text)
                         {
                             customComboPreset2.IsEnabled = !customComboPreset2.IsEnabled;
-                            Service.ChatGui.Print(customComboPreset2.JobName + " " + (customComboPreset2.IsEnabled ? "SET" : "UNSET"));
+                            Service.ChatGui.Print(customComboPreset2.Name + " " + (customComboPreset2.IsEnabled ? "SET" : "UNSET"));
                         }
                     }
                     Service.Configuration.Save();
@@ -205,7 +207,7 @@ internal sealed class IconReplacer : IDisposable
                     for (int i = 0; i < CustomCombos.Length; i++)
                     {
                         var value = CustomCombos[i];
-                        if (value.JobName.ToLowerInvariant() == text2)
+                        if (value.Name.ToLowerInvariant() == text2)
                         {
                             value.IsEnabled = true;
                             Service.ChatGui.Print($"{value} UNSET");

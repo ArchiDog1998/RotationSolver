@@ -226,7 +226,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
         return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
     }
 
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.范围治疗, $"GCD: {Prognosis}\n                     能力: {Holos}, {Ixochole}, {Physis2}, {Physis}"},
         {DescType.单体治疗, $"GCD: {Diagnosis}\n                     能力: {Druochole}"},

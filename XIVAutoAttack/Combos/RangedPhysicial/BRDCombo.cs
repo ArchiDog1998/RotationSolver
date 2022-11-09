@@ -182,7 +182,7 @@ internal sealed class BRDCombo : JobGaugeCombo<BRDGauge, CommandType>
                     ObjectStatus.ShieldSamba,
             },
         };
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.·¶Î§·ÀÓù, $"{Troubadour}"},
         {DescType.µ¥ÌåÖÎÁÆ, $"{NaturesMinne}"},

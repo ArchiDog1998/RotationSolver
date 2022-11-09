@@ -162,7 +162,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
         {
             BuffsNeed = new[] { ObjectStatus.SaltedEarth },
         };
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.单体治疗, $"{TheBlackestNight}，目标为被打的小可怜"},
         {DescType.范围防御, $"{DarkMissionary}"},

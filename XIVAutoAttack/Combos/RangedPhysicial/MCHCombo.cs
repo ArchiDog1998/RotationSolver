@@ -134,7 +134,7 @@ internal sealed class MCHCombo : JobGaugeCombo<MCHGauge, CommandType>
                     ObjectStatus.ShieldSamba,
             },
         };
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.循环说明, $"标准循环会在野火前攒热量来打偶数分钟爆发.\n                     AOE和攻击小怪时不会释放野火"},
         {DescType.爆发技能, $"{Wildfire}"},

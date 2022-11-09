@@ -186,7 +186,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
             ChoiceTarget = TargetFilter.ASTRangeTarget,
         };
 
-    public override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> DescriptionDict => new ()
     {
         {DescType.范围治疗, $"GCD: {AspectedHelios}, {Helios}\n                     能力: {EarthlyStar}, {CrownPlay}, {CelestialOpposition}"},
         {DescType.单体治疗, $"GCD: {AspectedBenefic}, {Benefic2}, {Benefic}\n                     能力: {CelestialIntersection}, {EssentialDignity}"},

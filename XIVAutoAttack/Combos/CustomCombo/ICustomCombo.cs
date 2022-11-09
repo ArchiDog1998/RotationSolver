@@ -6,20 +6,19 @@ using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal interface ICustomCombo
+    internal interface ICustomCombo : ITexture
     {
         Role Role { get; }
         uint[] JobIDs { get; }
         ComboAuthor[] Authors { get; }
-        bool IsEnabled { get; set; }
 
-        string JobName { get; }
+
+        string Name { get; }
 
         ActionConfiguration Config { get; }
 
-        SortedList<DescType, string> Description { get; }
+        SortedList<DescType, string> DescriptionDict { get; }
         Dictionary<string, string> CommandShow { get; }
-        TextureWrap Texture{ get; }
 
         string OnCommand(string args);
         bool TryInvoke(out IAction newAction);

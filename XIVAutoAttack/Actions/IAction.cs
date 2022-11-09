@@ -2,11 +2,10 @@
 
 namespace XIVAutoAttack.Actions
 {
-    public interface IAction
+    public interface IAction : ITexture
     {
        bool Use();
        uint ID { get; }
-       TextureWrap Icon { get; }
        uint AdjustedID { get; }
     }
 }

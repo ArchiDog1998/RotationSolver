@@ -189,7 +189,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
             .SetBool("DRG_SafeMove", true, "安全位移");
     }
 
-    public override SortedList<DescType, string> Description => new SortedList<DescType, string>()
+    public override SortedList<DescType, string> DescriptionDict => new SortedList<DescType, string>()
     {
         {DescType.移动技能, $"{SpineshatterDive}, {DragonfireDive}"},
     };

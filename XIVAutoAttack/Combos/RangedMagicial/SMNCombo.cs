@@ -165,7 +165,7 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge, CommandType>
         {
             BuffsNeed = new[] { ObjectStatus.GarudasFavor },
         };
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.单体防御, $"{RadiantAegis}"},
         {DescType.单体治疗, $"{Physick}"},

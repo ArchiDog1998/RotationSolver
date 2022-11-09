@@ -179,7 +179,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
             OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && InCombat && JobGauge.ManaStacks == 0,
             OtherIDsNot = new uint[] { Riposte.ID, Zwerchhau.ID, Scorch.ID, Verflare.ID, Verholy.ID },
         };
-    public override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> DescriptionDict => new ()
     {
         {DescType.µ¥ÌåÖÎÁÆ, $"{Vercure}"},
         {DescType.·¶Î§·ÀÓù, $"{MagickBarrier}"},

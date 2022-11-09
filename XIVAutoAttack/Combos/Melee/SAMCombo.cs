@@ -132,7 +132,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge, CommandType>
         //回返斩浪
         KaeshiNamikiri = new(25782);
 
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.单体防御, $"{ThirdEye}"},
         {DescType.移动技能, $"{HissatsuGyoten}"},

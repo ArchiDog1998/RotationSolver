@@ -219,7 +219,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         return base.CreateConfiguration().SetBool("UseHide", true, "脱战隐身恢复忍术").SetBool("AutoUnhide", true, "自动取消隐身");
     }
 
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.单体防御, $"{ShadeShift}"},
         {DescType.移动技能, $"{Shukuchi}，目标为面向夹角小于30°内最远目标。"},

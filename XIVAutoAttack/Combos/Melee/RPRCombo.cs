@@ -237,7 +237,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
         };
     #endregion
 
-    public override SortedList<DescType, string> Description => new ()
+    public override SortedList<DescType, string> DescriptionDict => new ()
     {
         {DescType.单体防御, $"{ArcaneCrest}"},
     };

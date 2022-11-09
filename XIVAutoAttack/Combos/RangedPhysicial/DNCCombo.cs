@@ -225,7 +225,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
             BuffsNeed = new[] { ObjectStatus.FlourishingFinish },
         };
 
-    public override SortedList<DescType, string> Description => new()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.∑∂Œß∑¿”˘, $"{ShieldSamba}"},
         {DescType.∑∂Œß÷Œ¡∆, $"{CuringWaltz}, {Improvisation}"},
