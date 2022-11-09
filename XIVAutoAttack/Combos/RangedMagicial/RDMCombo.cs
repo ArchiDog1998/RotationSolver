@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -13,10 +14,9 @@ using static XIVAutoAttack.Combos.RangedMagicial.RDMCombo;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedMagicial/RDMCombo.cs")]
 internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
-
     internal enum CommandType : byte
     {
         None,

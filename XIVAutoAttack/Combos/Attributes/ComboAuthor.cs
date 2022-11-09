@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XIVAutoAttack.Combos.CustomCombo
+namespace XIVAutoAttack.Combos.Attributes
 {
     public enum ComboAuthor
     {

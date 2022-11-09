@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -13,10 +14,10 @@ using static XIVAutoAttack.Combos.RangedPhysicial.MCHCombo;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/MCHCombo.cs",
+   ComboAuthor.Armolion)]
 internal sealed class MCHCombo : JobGaugeCombo<MCHGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
-
     internal enum CommandType : byte
     {
         None,

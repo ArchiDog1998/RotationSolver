@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -14,10 +15,10 @@ using static XIVAutoAttack.Combos.Healer.SGECombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SGECombo.cs",
+   ComboAuthor.Armolion)]
 internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.Armolion };
-
     internal enum CommandType : byte
     {
         None,

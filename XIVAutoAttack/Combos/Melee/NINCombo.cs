@@ -4,6 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -13,10 +14,9 @@ using static XIVAutoAttack.Combos.Melee.NINCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/NINCombo.cs")]
 internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.None };
-
     internal enum CommandType : byte
     {
         None,

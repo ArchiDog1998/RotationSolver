@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -16,10 +17,10 @@ using static XIVAutoAttack.Combos.Healer.ASTCombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/ASTCombo.cs",
+    ComboAuthor.Armolion)]
 internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] {ComboAuthor.Armolion};
-
     internal enum CommandType : byte
     {
         None,

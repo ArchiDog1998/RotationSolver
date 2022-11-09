@@ -3,6 +3,7 @@ using Lumina.Data.Parsing.Layer;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -11,10 +12,10 @@ using static XIVAutoAttack.Combos.Melee.SAMCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/SAMCombo.cs",
+   ComboAuthor.fatinghenji)]
 internal sealed class SAMCombo : JobGaugeCombo<SAMGauge, CommandType>
 {
-    public override ComboAuthor[] Authors => new ComboAuthor[] { ComboAuthor.fatinghenji };
-
     internal enum CommandType : byte
     {
         None,
