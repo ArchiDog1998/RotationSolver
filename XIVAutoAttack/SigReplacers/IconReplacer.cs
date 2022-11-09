@@ -29,6 +29,8 @@ internal sealed class IconReplacer : IDisposable
     {
         get
         {
+            if (Service.ClientState.LocalPlayer == null) return null;
+
             foreach (ICustomCombo customCombo in CustomCombos)
             {
                 if (!customCombo.JobIDs.Contains(Service.ClientState.LocalPlayer.ClassJob.Id)) continue;
@@ -62,7 +64,6 @@ internal sealed class IconReplacer : IDisposable
 
     private static BaseAction[] GetActions(ICustomCombo combo, Type type)
     {
-
         return (from field in type.GetFields()
                 where field.IsStatic && typeof(BaseAction).IsAssignableFrom(field.FieldType)
                 select (BaseAction)field.GetValue(combo) into act
