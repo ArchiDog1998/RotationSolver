@@ -34,6 +34,7 @@ namespace XIVAutoAttack
             {
                 var time = DateTime.Now - _actionAddTime;
                 if (time > _actionTime) _nextAction = null;
+                if (IActionHelper.IsLastAction(true, _nextAction)) _nextAction = null;
                 return _nextAction;
             }
         }
