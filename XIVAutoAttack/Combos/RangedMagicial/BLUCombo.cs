@@ -70,6 +70,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial
             return false;
         }
 
-        private static bool AllOnSlot(params BLUAction[] actions) => actions.All(a => a.OnSlot);
+        private static bool AllOnSlot(params BLUAction[] actions)  => actions.All(a => a.OnSlot);
     }
 }

@@ -121,10 +121,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
         {
+#if DEBUG
             IAction act = CommandController.NextAction;
-            if (act is BaseAction a && a != null && a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable:true)) return act;
-
-            if (EmergercyGCD(out act)) return act;
+            if (act is BaseAction a && a != null && a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return act;
+#endif
+            if (EmergercyGCD(out var act)) return act;
 
             if (EsunaRaise(out act, abilityRemain, false)) return act;
             if (CommandController.Move && MoveGCD( out act))

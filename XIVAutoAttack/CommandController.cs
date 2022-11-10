@@ -25,10 +25,11 @@ namespace XIVAutoAttack
         private static DateTime _fastClickStopwatch = DateTime.Now;
         private static DateTime _specialStateStartTime = DateTime.MinValue;
 
+#if DEBUG
         private static BaseAction _nextAction;
         private static TimeSpan _actionTime = TimeSpan.Zero;
         private static DateTime _actionAddTime = DateTime.Now;
-        internal static BaseAction NextAction 
+        internal static BaseAction NextAction
         {
             get
             {
@@ -38,7 +39,7 @@ namespace XIVAutoAttack
                 return _nextAction;
             }
         }
-
+#endif
 
         #region UI
         private static string _stateString = "Off";
@@ -447,6 +448,7 @@ namespace XIVAutoAttack
                                 return;
                             }
                         }
+#if DEBUG
 
                         if (str.StartsWith("Enable"))
                         {
@@ -454,7 +456,7 @@ namespace XIVAutoAttack
 
                             foreach (var act in IconReplacer.AllBaseActions)
                             {
-                                if(actName == act.Name)
+                                if (actName == act.Name)
                                 {
                                     act.IsEnabled = true;
                                     Service.ChatGui.Print($"启用\"{act.Name}\"");
@@ -479,7 +481,7 @@ namespace XIVAutoAttack
                             var subStr = str.Substring(6);
                             var strs = subStr.Split('-');
 
-                            if(strs!= null && strs.Length == 2 && double.TryParse(strs[1], out var time))
+                            if (strs != null && strs.Length == 2 && double.TryParse(strs[1], out var time))
                             {
                                 var actName = strs[0];
                                 foreach (var act in IconReplacer.AllBaseActions)
@@ -494,6 +496,7 @@ namespace XIVAutoAttack
                                 }
                             }
                         }
+#endif
 
                         var result = customCombo.OnCommand(str);
                         if (!string.IsNullOrEmpty(result))

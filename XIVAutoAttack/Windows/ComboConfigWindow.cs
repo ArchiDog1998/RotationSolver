@@ -1062,10 +1062,11 @@ internal class ComboConfigWindow : Window
 
         DrawTexture(act, () =>
         {
+#if DEBUG
             CommandHelp("Enable" + act.Name, $"使用{act}");
             CommandHelp("Disable" + act.Name, $"关闭{act}");
             CommandHelp($"Insert{act}-{5}", $"5s内最高优先插入{act}");
-#if DEBUG
+
             ImGui.Text(act.ToString());
             ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());
             ImGui.Text("Is General GCD: " + act.IsGeneralGCD.ToString());
