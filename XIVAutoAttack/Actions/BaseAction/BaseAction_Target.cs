@@ -330,7 +330,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                     //如果不用自动找目标，那就不打AOE
                     if (!mustUse && !CommandController.AutoTarget && !Service.Configuration.UseAOEWhenManual) return false;
 
-                    var count = TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, _action.EffectRange).Length;
+                    var count = TargetFilter.GetObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange).Length;
                     if (count < (mustUse ? 1 : Service.Configuration.HostileCount)) return false;
                 }
                 return true;
