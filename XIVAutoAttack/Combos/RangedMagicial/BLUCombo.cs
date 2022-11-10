@@ -22,6 +22,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial
         {
             //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
         };
+
         internal class BLUAction : BaseAction
         {
             public unsafe bool OnSlot
@@ -53,9 +54,9 @@ namespace XIVAutoAttack.Combos.RangedMagicial
         }
         public override uint[] JobIDs => new uint[] { 36 };
 
-            public static readonly BLUAction
-                //水炮
-                WaterCannon = new(11385);
+        public static readonly BLUAction
+            //水炮
+            WaterCannon = new(11385);
 
         private protected override bool AttackAbility(byte abilityRemain, out IAction act)
         {
@@ -68,5 +69,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial
             act = null;
             return false;
         }
+
+        private static bool AllOnSlot(params BLUAction[] actions) => actions.All(a => a.OnSlot);
     }
 }
