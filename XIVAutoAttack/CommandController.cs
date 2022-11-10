@@ -25,20 +25,6 @@ namespace XIVAutoAttack
         private static DateTime _fastClickStopwatch = DateTime.Now;
         private static DateTime _specialStateStartTime = DateTime.MinValue;
 
-        private static BaseAction _nextAction;
-        private static TimeSpan _actionTime = TimeSpan.Zero;
-        private static DateTime _actionAddTime = DateTime.Now;
-        internal static BaseAction NextAction 
-        {
-            get
-            {
-                var time = DateTime.Now - _actionAddTime;
-                if (time > _actionTime) _nextAction = null;
-                return _nextAction;
-            }
-        }
-
-
         #region UI
         private static string _stateString = "Off";
         private static string _specialString = string.Empty;
@@ -67,7 +53,7 @@ namespace XIVAutoAttack
                     if (!value)
                     {
                         OverlayWindow.ShouldLocation = EnemyLocation.None;
-                        if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Cancel");
+                        if (Service.Configuration.AutoSayingOut) Watcher.Speak("Cancel");
                         _stateString = "Off";
                         UpdateToast();
                     }
@@ -83,7 +69,7 @@ namespace XIVAutoAttack
             {
                 if (!value)
                 {
-                    if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Manual");
+                    if (Service.Configuration.AutoSayingOut) Watcher.Speak("Manual");
                     _stateString = "Manual";
                     UpdateToast();
                 }
@@ -102,7 +88,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Heal Area");
+                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Heal Area");
                 _specialString = "Heal Area";
                 HealArea = true;
                 UpdateToast();
@@ -117,7 +103,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Heal Single");
+                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Heal Single");
                 _specialString = "Heal Single";
                 HealSingle = true;
                 UpdateToast();
@@ -132,7 +118,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Defense Area");
+                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Defense Area");
                 _specialString = "Defense Area";
                 DefenseArea = true;
                 UpdateToast();
@@ -147,7 +133,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Defense Single");
+                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Defense Single");
                 _specialString = "Defense Single";
                 DefenseSingle = true;
                 UpdateToast();
@@ -164,7 +150,7 @@ namespace XIVAutoAttack
                 _specialStateStartTime = DateTime.Now;
                 Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
                 string speak = role == Role.防护 ? "Shield" : "Esuna";
-                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start " + speak);
+                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
                 _specialString = speak;
                 EsunaOrShield = true;
                 UpdateToast();
@@ -181,7 +167,7 @@ namespace XIVAutoAttack
                 _specialStateStartTime = DateTime.Now;
                 Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
                 string speak = role == Role.防护 ? "Shirk" : "Raise";
-                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start " + speak);
+                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
                 _specialString = speak;
 
                 RaiseOrShirk = true;
@@ -199,7 +185,7 @@ namespace XIVAutoAttack
                 _specialStateStartTime = DateTime.Now;
                 Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
                 string speak = role == Role.防护 ? "Provoke" : "Break";
-                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start " + speak);
+                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
                 _specialString = speak;
                 BreakorProvoke = true;
                 UpdateToast();
@@ -214,7 +200,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Anti repulsion");
+                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Anti repulsion");
                 _specialString = "Anti repulsion";
                 AntiRepulsion = true;
                 UpdateToast();
@@ -230,7 +216,7 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Start Move");
+                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Move");
                 _specialString = "Move";
                 Move = true;
                 UpdateToast();
@@ -242,7 +228,7 @@ namespace XIVAutoAttack
             _specialStateStartTime = DateTime.MinValue;
             HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = BreakorProvoke
                 = AntiRepulsion = Move = false;
-            if (sayout && Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("End Special");
+            if (sayout && Service.Configuration.AutoSayingOut) Watcher.Speak("End Special");
             _specialString = string.Empty;
         }
 
@@ -272,7 +258,7 @@ namespace XIVAutoAttack
             }
 
             string speak = RightTargetingType.ToString();
-            if (Service.Configuration.AutoSayingOut) CustomCombo<Enum>.Speak("Attack " + speak);
+            if (Service.Configuration.AutoSayingOut) Watcher.Speak("Attack " + speak);
             _stateString = speak;
             AutoTarget = true;
 
@@ -444,53 +430,6 @@ namespace XIVAutoAttack
                                 Service.ChatGui.Print($"修改{combo.description}为{combo.items[combo.value]}");
 
                                 return;
-                            }
-                        }
-
-                        if (str.StartsWith("Enable"))
-                        {
-                            var actName = str.Substring(6);
-
-                            foreach (var act in IconReplacer.AllBaseActions)
-                            {
-                                if(actName == act.Name)
-                                {
-                                    act.IsEnabled = true;
-                                    Service.ChatGui.Print($"启用\"{act.Name}\"");
-                                }
-                            }
-                        }
-                        else if (str.StartsWith("Disable"))
-                        {
-                            var actName = str.Substring(7);
-
-                            foreach (var act in IconReplacer.AllBaseActions)
-                            {
-                                if (actName == act.Name)
-                                {
-                                    act.IsEnabled = false;
-                                    Service.ChatGui.Print($"关闭\"{act.Name}\"");
-                                }
-                            }
-                        }
-                        else if (str.StartsWith("Insert"))
-                        {
-                            var subStr = str.Substring(6);
-                            var strs = subStr.Split('-');
-
-                            if(strs!= null && strs.Length == 2 && double.TryParse(strs[1], out var time))
-                            {
-                                var actName = strs[0];
-                                foreach (var act in IconReplacer.AllBaseActions)
-                                {
-                                    if (actName == act.Name)
-                                    {
-                                        _actionTime = new TimeSpan(0, 0, 0, 0, (int)(time * 1000));
-                                        _actionAddTime = DateTime.Now;
-                                        _nextAction = act;
-                                        Service.ChatGui.Print($"将在{time}s 内使用技能\"{act.Name}\"");
-                                    }
-                                }
                             }
                         }
 

@@ -370,7 +370,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
             if (Fire2.ShouldUse(out act) && Level >= 20)
             {
-                if (JobGauge.InUmbralIce && !Freeze.EnoughLevel && Player.CurrentMp == 10000) return true;
+                if (!JobGauge.InUmbralIce && !Freeze.EnoughLevel) return true;
+                if (JobGauge.InUmbralIce && !Freeze.EnoughLevel && Player.CurrentMp >= 9000) return true;
                 if (JobGauge.InUmbralIce && JobGauge.UmbralHearts == 3) return true;
                 if (JobGauge.InAstralFire && !Player.HaveStatus(ObjectStatus.EnhancedFlare)) return true;
                 if (JobGauge.InAstralFire && JobGauge.UmbralHearts > 1) return true;

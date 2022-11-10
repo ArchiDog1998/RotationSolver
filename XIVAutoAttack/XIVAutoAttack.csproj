@@ -4,6 +4,7 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <TargetFramework>netcoreapp5.0</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <LangVersion>Preview</LangVersion>

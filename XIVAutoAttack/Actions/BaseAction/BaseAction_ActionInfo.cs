@@ -63,6 +63,34 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         internal Func<BattleChara, bool> OtherCheck { get; set; } = null;
 
+
+        internal bool WillCooldown
+        {
+            get
+            {
+                //如果首个CoolDown不是GCD技能，而且没法释放。
+                if (!IsGeneralGCD && IsCoolDown)
+                {
+                    //会让GCD转的，充能一层的，看看来不来得及下个GCD
+                    if (IsRealGCD)
+                    {
+                        if (!WillHaveOneChargeGCD()) return false;
+                    }
+                    else
+                    {
+                        //不能连续使用
+                        if (Watcher.LastAction == AdjustedID) return false;
+
+                        //冷却时间没超过一成且下一个Ability前不能转好
+                        if (!HaveOneCharge && !WillHaveOneCharge(ActionUpdater.AbilityRemain, false))
+                            return false;
+                    }
+                }
+
+                return true;
+            }
+        }
+
         /// <summary>
         /// 判断是否需要使用这个技能
         /// </summary>
@@ -99,28 +127,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
             }
 
-
-            //如果首个CoolDown不是GCD能，而且没法释放。
-            if (!IsGeneralGCD && IsCoolDown)
-            {
-                //会让GCD转的，充能一层的，看看来不来得及下个GCD
-                if (IsRealGCD)
-                {
-                    if(!WillHaveOneChargeGCD()) return false;
-                    //if (RecastTimeElapsed + ActionUpdater.WeaponRemain < RecastTimeOneCharge) return false;
-                }
-                else
-                {
-                    //不能连续使用
-                    if (Watcher.LastAction == AdjustedID) return false;
-
-                    //冷却时间没超过一成且下一个Ability前不能转好
-                    if (!HaveOneCharge && !this.WillHaveOneCharge(ActionUpdater.AbilityRemain, false))
-                        return false;
-                }
-            }
-
-
+            //还冷却不下来呢，来不及。
+            if (!WillCooldown) return false;
 
             //看看有没有目标，如果没有，就说明不符合条件。
             if (!FindTarget(mustUse)) return false;
