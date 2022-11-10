@@ -25,22 +25,6 @@ namespace XIVAutoAttack
         private static DateTime _fastClickStopwatch = DateTime.Now;
         private static DateTime _specialStateStartTime = DateTime.MinValue;
 
-#if DEBUG
-        private static BaseAction _nextAction;
-        private static TimeSpan _actionTime = TimeSpan.Zero;
-        private static DateTime _actionAddTime = DateTime.Now;
-        internal static BaseAction NextAction
-        {
-            get
-            {
-                var time = DateTime.Now - _actionAddTime;
-                if (time > _actionTime) _nextAction = null;
-                if (IActionHelper.IsLastAction(true, _nextAction)) _nextAction = null;
-                return _nextAction;
-            }
-        }
-#endif
-
         #region UI
         private static string _stateString = "Off";
         private static string _specialString = string.Empty;
@@ -448,55 +432,6 @@ namespace XIVAutoAttack
                                 return;
                             }
                         }
-#if DEBUG
-
-                        if (str.StartsWith("Enable"))
-                        {
-                            var actName = str.Substring(6);
-
-                            foreach (var act in IconReplacer.AllBaseActions)
-                            {
-                                if (actName == act.Name)
-                                {
-                                    act.IsEnabled = true;
-                                    Service.ChatGui.Print($"启用\"{act.Name}\"");
-                                }
-                            }
-                        }
-                        else if (str.StartsWith("Disable"))
-                        {
-                            var actName = str.Substring(7);
-
-                            foreach (var act in IconReplacer.AllBaseActions)
-                            {
-                                if (actName == act.Name)
-                                {
-                                    act.IsEnabled = false;
-                                    Service.ChatGui.Print($"关闭\"{act.Name}\"");
-                                }
-                            }
-                        }
-                        else if (str.StartsWith("Insert"))
-                        {
-                            var subStr = str.Substring(6);
-                            var strs = subStr.Split('-');
-
-                            if (strs != null && strs.Length == 2 && double.TryParse(strs[1], out var time))
-                            {
-                                var actName = strs[0];
-                                foreach (var act in IconReplacer.AllBaseActions)
-                                {
-                                    if (actName == act.Name)
-                                    {
-                                        _actionTime = new TimeSpan(0, 0, 0, 0, (int)(time * 1000));
-                                        _actionAddTime = DateTime.Now;
-                                        _nextAction = act;
-                                        Service.ChatGui.Print($"将在{time}s 内使用技能\"{act.Name}\"");
-                                    }
-                                }
-                            }
-                        }
-#endif
 
                         var result = customCombo.OnCommand(str);
                         if (!string.IsNullOrEmpty(result))
