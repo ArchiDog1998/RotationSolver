@@ -19,7 +19,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Role;
 
         public string Name => XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Name;
-        public virtual string Author => string.Empty;
+        public virtual string Author => "未知作者，可能是秋水吧";
 
         internal static bool IsTargetDying
         {
