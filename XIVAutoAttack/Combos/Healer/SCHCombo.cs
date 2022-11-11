@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using FFXIVClientStructs.FFXIV.Common.Lua;
 using System.Collections.Generic;
+using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
@@ -11,12 +12,10 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 using static XIVAutoAttack.Combos.Healer.SCHCombo;
-using System.Linq;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SCHCombo.cs",
-   ComboAuthor.NiGuangOwO)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SCHCombo.cs")]
 internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
 {
     internal enum CommandType : byte
@@ -46,16 +45,16 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
         {
             TargetStatus = new ushort[]
             {
-                    ObjectStatus.EukrasianDiagnosis,
-                    ObjectStatus.EukrasianPrognosis,
-                    ObjectStatus.Galvanize,
+                    StatusIDs.EukrasianDiagnosis,
+                    StatusIDs.EukrasianPrognosis,
+                    StatusIDs.Galvanize,
             },
         },
 
         //士气高扬之策
         Succor = new(186, true)
         {
-            BuffsProvide = new[] { ObjectStatus.Galvanize },
+            BuffsProvide = new[] { StatusIDs.Galvanize },
         },
 
         //生命活性法
@@ -95,7 +94,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
         //毒菌
         Bio = new(17864, isDot: true)//猛毒菌 17865 蛊毒法 16540
         {
-            TargetStatus = new ushort[] { ObjectStatus.Bio, ObjectStatus.Bio2, ObjectStatus.Biolysis },
+            TargetStatus = new ushort[] { StatusIDs.Bio, StatusIDs.Bio2, StatusIDs.Biolysis },
         },
 
         //毁灭
@@ -123,7 +122,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
         //朝日召唤
         SummonEos = new(17215)//夕月召唤 17216
         {
-            OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatus(ObjectStatus.Dissipation) || (Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel)),
+            OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatus(StatusIDs.Dissipation) || (Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel)),
         },
 
         //仙光的低语/天使的低语
@@ -179,7 +178,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
             {
                 foreach (var friend in friends)
                 {
-                    if (friend.HaveStatus(ObjectStatus.Galvanize)) return friend;
+                    if (friend.HaveStatus(StatusIDs.Galvanize)) return friend;
                 }
                 return null;
             },
@@ -267,10 +266,10 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
         p.StatusList.Any(
             status => (status.StatusId == 1223 && status.SourceObject != null
             && status.SourceObject.OwnerId == Service.ClientState.LocalPlayer.ObjectId))
-     );
+        );
         //以太契约
-        if (Aetherpact.ShouldUse(out act) && JobGauge.FairyGauge >= 70&&!haveLink) return true;
-        
+        if (Aetherpact.ShouldUse(out act) && JobGauge.FairyGauge >= 70 && !haveLink) return true;
+
         //生命回生法
         if (Protraction.ShouldUse(out act)) return true;
 
@@ -284,8 +283,8 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
         if (Lustrate.ShouldUse(out act)) return true;
 
         //以太契约
-        if (Aetherpact.ShouldUse(out act)&&!haveLink) return true;
-        
+        if (Aetherpact.ShouldUse(out act) && !haveLink) return true;
+
         return false;
     }
 
