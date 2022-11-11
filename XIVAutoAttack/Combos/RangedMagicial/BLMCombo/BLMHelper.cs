@@ -28,9 +28,9 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
         internal static float MpUpdateRemain => 3 - ActionUpdater.MPUpdateElapsed;
         internal static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? JobGauge.PolyglotStacks == 2 : JobGauge.PolyglotStacks == 1;
-        internal static bool HasFire => Player.HaveStatus(ObjectStatus.Firestarter);
-        internal static bool HasThunder => Player.HaveStatus(ObjectStatus.Thundercloud);
-        internal static bool TargetHasThunder => Target.HaveStatus(ObjectStatus.Thunder, ObjectStatus.Thunder2, ObjectStatus.Thunder3, ObjectStatus.Thunder4);
+        internal static bool HasFire => Player.HaveStatus(StatusIDs.Firestarter);
+        internal static bool HasThunder => Player.HaveStatus(StatusIDs.Thundercloud);
+        internal static bool TargetHasThunder => Target.HaveStatus(StatusIDs.Thunder, StatusIDs.Thunder2, StatusIDs.Thunder3, StatusIDs.Thunder4);
         /// <summary>
         /// GCD间隔总时间
         /// </summary>
@@ -40,7 +40,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
         internal static bool MpTwoInIce => MpUpdateRemain > (3 - GCDTime / 1000) && MpUpdateRemain < (GCDTime / 1000 - 0.8);
         internal static ActionRec[] RecordSpells => RecordActions.Where(b => b.action.ActionCategory.Value.RowId == 2).ToArray();
         internal static bool IsOldSpell(int count, IAction action) => RecordSpells[count].action.RowId == action.ID;
-        internal static bool TargetThunderWillEnd(float time) => Target.WillStatusEnd(time, false, ObjectStatus.Thunder, ObjectStatus.Thunder2, ObjectStatus.Thunder3, ObjectStatus.Thunder4);
+        internal static bool TargetThunderWillEnd(float time) => Target.WillStatusEnd(time, false, StatusIDs.Thunder, StatusIDs.Thunder2, StatusIDs.Thunder3, StatusIDs.Thunder4);
         /// <summary>
         /// 几个GCD后跳两次蓝所用时间
         /// </summary>
@@ -130,7 +130,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 
             if (!TargetThunderWillEnd((float)((GCDTime * GCDcount / 1000) + 5))) return false;
 
-            if (!Player.WillStatusEnd((float)(GCDTime * GCDcount / 1000), false, ObjectStatus.Thundercloud)) return true;
+            if (!Player.WillStatusEnd((float)(GCDTime * GCDcount / 1000), false, StatusIDs.Thundercloud)) return true;
             return false;
         }
 

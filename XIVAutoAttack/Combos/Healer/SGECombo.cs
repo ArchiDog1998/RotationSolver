@@ -46,9 +46,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
             {
                 TargetStatus = new ushort[] 
                 { 
-                    ObjectStatus.EukrasianDosis, 
-                    ObjectStatus.EukrasianDosis2, 
-                    ObjectStatus.EukrasianDosis3
+                    StatusIDs.EukrasianDosis, 
+                    StatusIDs.EukrasianDosis2, 
+                    StatusIDs.EukrasianDosis3
                 },
             },
 
@@ -65,7 +65,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
             //心关
             Kardia = new(24285, true)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.Kardia },
+                BuffsProvide = new ushort[] { StatusIDs.Kardia },
                 ChoiceTarget = Targets =>
                 {
                     var targets = TargetFilter.GetJobCategory(Targets, Role.防护);
@@ -88,7 +88,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
                     foreach (var status in b.StatusList)
                     {
                         if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId
-                            && status.StatusId == ObjectStatus.Kardion)
+                            && status.StatusId == StatusIDs.Kardion)
                         {
                             return false;
                         }
@@ -119,7 +119,7 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
                 {
                     foreach (var friend in Targets)
                     {
-                        if (friend.HaveStatus(ObjectStatus.Kardion))
+                        if (friend.HaveStatus(StatusIDs.Kardion))
                         {
                             return friend;
                         }
@@ -211,10 +211,10 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
                     {
                         if (chara.StatusList.Select(s => s.StatusId).Intersect(new uint[]
                         {
-                            ObjectStatus.EukrasianDiagnosis,
-                            ObjectStatus.EukrasianPrognosis,
+                            StatusIDs.EukrasianDiagnosis,
+                            StatusIDs.EukrasianPrognosis,
                         }).Any()
-                        && b.WillStatusEndGCD(2, 0, true, ObjectStatus.EukrasianDiagnosis, ObjectStatus.EukrasianPrognosis)
+                        && b.WillStatusEndGCD(2, 0, true, StatusIDs.EukrasianDiagnosis, StatusIDs.EukrasianPrognosis)
                         && chara.GetHealthRatio() < 0.9) return true;
                     }
 
@@ -285,9 +285,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
         {
             if (EukrasianDiagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
             {
-                ObjectStatus.EukrasianDiagnosis,
-                ObjectStatus.EukrasianPrognosis,
-                ObjectStatus.Galvanize,
+                StatusIDs.EukrasianDiagnosis,
+                StatusIDs.EukrasianPrognosis,
+                StatusIDs.Galvanize,
             }).Count() > 0) return false;
 
             //均衡
@@ -326,9 +326,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
         {
             if (EukrasianPrognosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
             {
-                ObjectStatus.EukrasianDiagnosis,
-                ObjectStatus.EukrasianPrognosis,
-                ObjectStatus.Galvanize,
+                StatusIDs.EukrasianDiagnosis,
+                StatusIDs.EukrasianPrognosis,
+                StatusIDs.Galvanize,
             }).Count() > 0) return false;
 
             //均衡
@@ -413,9 +413,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
             {
                 if (tank.First().StatusList.Select(s => s.StatusId).Intersect(new uint[]
                 {
-                ObjectStatus.EukrasianDiagnosis,
-                ObjectStatus.EukrasianPrognosis,
-                ObjectStatus.Galvanize,
+                StatusIDs.EukrasianDiagnosis,
+                StatusIDs.EukrasianPrognosis,
+                StatusIDs.Galvanize,
                 }).Any()) return false;
 
                 //均衡
@@ -467,9 +467,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
             if (EukrasianDiagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
             {
                 //均衡诊断
-                ObjectStatus.EukrasianDiagnosis,
-                ObjectStatus.EukrasianPrognosis,
-                ObjectStatus.Galvanize,
+                StatusIDs.EukrasianDiagnosis,
+                StatusIDs.EukrasianPrognosis,
+                StatusIDs.Galvanize,
             }).Count() > 0)
             {
                 if (Diagnosis.ShouldUse(out act)) return true;
@@ -500,9 +500,9 @@ internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
             if (EukrasianPrognosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
             {
                 //均衡诊断
-                ObjectStatus.EukrasianDiagnosis,
-                ObjectStatus.EukrasianPrognosis,
-                ObjectStatus.Galvanize,
+                StatusIDs.EukrasianDiagnosis,
+                StatusIDs.EukrasianPrognosis,
+                StatusIDs.Galvanize,
             }).Count() > 0)
             {
                 if (Prognosis.ShouldUse(out act)) return true;

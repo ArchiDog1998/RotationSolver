@@ -22,11 +22,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
             {
                 BuffsProvide = new ushort[]
                 {
-                    ObjectStatus.Swiftcast1,
-                    ObjectStatus.Swiftcast2,
-                    ObjectStatus.Swiftcast3,
-                    ObjectStatus.Triplecast,
-                    ObjectStatus.Dualcast,
+                    StatusIDs.Swiftcast1,
+                    StatusIDs.Swiftcast2,
+                    StatusIDs.Swiftcast3,
+                    StatusIDs.Triplecast,
+                    StatusIDs.Dualcast,
                 }
             },
 
@@ -73,18 +73,18 @@ namespace XIVAutoAttack.Combos.CustomCombo
             {
                 BuffsProvide = new ushort[]
                 {
-                    ObjectStatus.Holmgang, ObjectStatus.WillDead, ObjectStatus.WalkingDead, ObjectStatus.Superbolide, ObjectStatus.HallowedGround,
-                    ObjectStatus.Rampart1, ObjectStatus.Rampart2, ObjectStatus.Rampart3,
+                    StatusIDs.Holmgang, StatusIDs.WillDead, StatusIDs.WalkingDead, StatusIDs.Superbolide, StatusIDs.HallowedGround,
+                    StatusIDs.Rampart1, StatusIDs.Rampart2, StatusIDs.Rampart3,
                     //原初的直觉和血气
-                    ObjectStatus.RawIntuition, ObjectStatus.Bloodwhetting,
+                    StatusIDs.RawIntuition, StatusIDs.Bloodwhetting,
                     //复仇
-                    ObjectStatus.Vengeance,
+                    StatusIDs.Vengeance,
                     //预警
-                    ObjectStatus.Sentinel,
+                    StatusIDs.Sentinel,
                     //暗影墙
-                    ObjectStatus.ShadowWall, ObjectStatus.DarkMind,
+                    StatusIDs.ShadowWall, StatusIDs.DarkMind,
                     //伪装
-                    ObjectStatus.Camouflage, ObjectStatus.Nebula, ObjectStatus.HeartofStone,
+                    StatusIDs.Camouflage, StatusIDs.Nebula, StatusIDs.HeartofStone,
                 },
                 OtherCheck = BaseAction.TankDefenseSelf,
             },
@@ -142,7 +142,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //真北
             TrueNorth = new BaseAction(7546, shouldEndSpecial: true)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.TrueNorth },
+                BuffsProvide = new ushort[] { StatusIDs.TrueNorth },
             };
 
         private protected virtual BaseAction Raise => null;

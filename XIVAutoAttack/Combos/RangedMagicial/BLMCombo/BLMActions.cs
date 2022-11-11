@@ -52,7 +52,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             //激情咏唱
             Sharpcast = new(3574u)
             {
-                BuffsProvide = new[] { ObjectStatus.Sharpcast },
+                BuffsProvide = new[] { StatusIDs.Sharpcast },
                 OtherCheck = b => HaveHostileInRange,
             },
 
@@ -65,13 +65,13 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             //黑魔纹
             Leylines = new(3573u, shouldEndSpecial: true)
             {
-                BuffsProvide = new[] { ObjectStatus.LeyLines, },
+                BuffsProvide = new[] { StatusIDs.LeyLines, },
             },
 
             //魔纹步
             BetweenTheLines = new(7419u, shouldEndSpecial: true)
             {
-                BuffsNeed = new[] { ObjectStatus.LeyLines },
+                BuffsNeed = new[] { StatusIDs.LeyLines },
             },
 
             //以太步
@@ -233,7 +233,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             {
                 //if (IsLastSpell(true, Actions.Thunder) || IsOldSpell(1, Actions.Thunder3)) return false;
 
-                if (HasFire || Player.HaveStatus(ObjectStatus.LeyLines)) return false;
+                if (HasFire || Player.HaveStatus(StatusIDs.LeyLines)) return false;
                 if (Transpose.IsCoolDown && MPYuPanDouble >= 7900) return true;
                 if (Transpose.IsCoolDown) return true;
             }
@@ -256,7 +256,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             {
                 if (HasFire) return false;
                 //if (IsOldSpell(1, Actions.Thunder3)) return false;
-                if (Player.HaveStatus(ObjectStatus.LucidDreaming)) return true;
+                if (Player.HaveStatus(StatusIDs.LucidDreaming)) return true;
                 if (MPYuPanDouble >= 9400) return true;
             }
 
@@ -319,7 +319,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 return false;
             }
 
-            if (Triplecast.IsCoolDown && Triplecast.ChargesCount == 1 && Player.HaveStatus(ObjectStatus.Triplecast)) return false;
+            if (Triplecast.IsCoolDown && Triplecast.ChargesCount == 1 && Player.HaveStatus(StatusIDs.Triplecast)) return false;
             //if (!IsLastSpell(true, Actions.Thunder)) return true;
             return true;
 
@@ -488,7 +488,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (JobGauge.UmbralIceStacks == 3 || StandardLoop)
                 {
                     if (!TargetHasThunder || TargetThunderWillEnd(3)) return true;
-                    if (HasThunder && Player.WillStatusEnd(3, false, ObjectStatus.Thundercloud)) return true;
+                    if (HasThunder && Player.WillStatusEnd(3, false, StatusIDs.Thundercloud)) return true;
                     return false;
                 }
                 if (TargetHasThunder && !TargetThunderWillEnd(10)) return false;
@@ -526,7 +526,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 //    return true;
                 //}
 
-                if (FewBlizzard && IsLastSpell(true, Despair) && Player.HaveStatus(ObjectStatus.Sharpcast) && HasThunder && !MpBackGCDCanDouble(1) && HaveXeCounts(2) <= 1)
+                if (FewBlizzard && IsLastSpell(true, Despair) && Player.HaveStatus(StatusIDs.Sharpcast) && HasThunder && !MpBackGCDCanDouble(1) && HaveXeCounts(2) <= 1)
                 {
                     return true;
                 }
@@ -573,7 +573,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (IsOldSpell(1, Thunder3)) return false;
                 if (JobGauge.PolyglotStacks == 2) return true;
                 if (HasFire && !IsLastSpell(true, Thunder, Xenoglossy)) return true;
-                if (!HasFire && (HaveSwift || !Swiftcast.IsCoolDown) && !Player.HaveStatus(ObjectStatus.LeyLines)) return true;
+                if (!HasFire && (HaveSwift || !Swiftcast.IsCoolDown) && !Player.HaveStatus(StatusIDs.LeyLines)) return true;
             }
 
             //在火

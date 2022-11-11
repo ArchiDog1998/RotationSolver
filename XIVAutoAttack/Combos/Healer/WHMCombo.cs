@@ -45,7 +45,7 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
             //医济
             Medica2 = new(133, true)
             {
-                BuffsProvide = new[] { ObjectStatus.Medica2, ObjectStatus.TrueMedica2 },
+                BuffsProvide = new[] { StatusIDs.Medica2, StatusIDs.TrueMedica2 },
                 OtherCheck = b => !IsLastSpell(true,Medica2)
             },
 
@@ -54,9 +54,9 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
             {
                 TargetStatus = new[]
                 {
-                    ObjectStatus.Regen1,
-                    ObjectStatus.Regen2,
-                    ObjectStatus.Regen3,
+                    StatusIDs.Regen1,
+                    StatusIDs.Regen2,
+                    StatusIDs.Regen3,
                 }
             },
 
@@ -108,9 +108,9 @@ internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
             {
                 TargetStatus = new ushort[]
                 {
-                    ObjectStatus.Aero,
-                    ObjectStatus.Aero2,
-                    ObjectStatus.Dia,
+                    StatusIDs.Aero,
+                    StatusIDs.Aero2,
+                    StatusIDs.Dia,
                 }
             },
 

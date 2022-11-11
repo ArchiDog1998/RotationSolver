@@ -24,7 +24,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
         //{CommandType.None, "" }, //Ð´ºÃ×¢ÊÍ°¡£¡ÓÃÀ´ÌáÊ¾ÓÃ»§µÄ¡£
     };
     public override uint[] JobIDs => new uint[] { 21, 3 };
-    internal override bool HaveShield => Player.HaveStatus(ObjectStatus.Defiance);
+    internal override bool HaveShield => Player.HaveStatus(StatusIDs.Defiance);
     private protected override BaseAction Shield => Defiance;
 
     public static readonly BaseAction
@@ -43,7 +43,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
         //±©·çËé ºì¸«
         StormsEye = new(45)
         {
-            OtherCheck = b => Player.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest),
+            OtherCheck = b => Player.WillStatusEndGCD(3, 0, true, StatusIDs.SurgingTempest),
         },
 
         //·É¸«
@@ -61,7 +61,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
         //¶¯ÂÒ    
         Upheaval = new(7387)
         {
-            BuffsNeed = new ushort[] { ObjectStatus.SurgingTempest },
+            BuffsNeed = new ushort[] { StatusIDs.SurgingTempest },
         },
 
         //³¬Ñ¹¸«
@@ -76,7 +76,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
         //Ô­³õÖ®»ê
         InnerBeast = new(49)
         {
-            OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatus(ObjectStatus.InnerRelease)),
+            OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusIDs.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatus(StatusIDs.InnerRelease)),
         },
 
         //¸ÖÌúÐý·ç
@@ -88,7 +88,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
         //Õ½º¿
         Infuriate = new(52)
         {
-            BuffsProvide = new[] { ObjectStatus.InnerRelease },
+            BuffsProvide = new[] { StatusIDs.InnerRelease },
             OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge < 50,
         },
 
@@ -142,7 +142,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
         //Âù»Ä±ÀÁÑ
         PrimalRend = new(25753)
         {
-            BuffsNeed = new[] { ObjectStatus.PrimalRendReady },
+            BuffsNeed = new[] { StatusIDs.PrimalRendReady },
         };
     public override SortedList<DescType, string> DescriptionDict => new()
     {
@@ -246,7 +246,7 @@ internal sealed class WARCombo : JobGaugeCombo<WARGauge, CommandType>
     {
 
         //±¬·¢
-        if (!Player.WillStatusEndGCD(3, 0, true, ObjectStatus.SurgingTempest) || !MythrilTempest.EnoughLevel)
+        if (!Player.WillStatusEndGCD(3, 0, true, StatusIDs.SurgingTempest) || !MythrilTempest.EnoughLevel)
         {
             //¿ñ±©
             if (!new BaseAction(7389).IsCoolDown && Berserk.ShouldUse(out act)) return true;

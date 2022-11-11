@@ -194,11 +194,11 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
             //黑魔纹
             if (Config.GetBoolByName("AutoLeylines") && Leylines.ShouldUse(out act))
             {
-                if (Player.HaveStatus(ObjectStatus.Triplecast) && Player.FindStatusStack(ObjectStatus.Triplecast) <= 1) return true;
+                if (Player.HaveStatus(StatusIDs.Triplecast) && Player.FindStatusStack(StatusIDs.Triplecast) <= 1) return true;
 
-                if (!Player.HaveStatus(ObjectStatus.Triplecast) && JobGauge.InUmbralIce && IsLastSpell(true, Thunder, Xenoglossy)) return true;
+                if (!Player.HaveStatus(StatusIDs.Triplecast) && JobGauge.InUmbralIce && IsLastSpell(true, Thunder, Xenoglossy)) return true;
 
-                if (!Player.HaveStatus(ObjectStatus.Triplecast) && JobGauge.InAstralFire) return true;
+                if (!Player.HaveStatus(StatusIDs.Triplecast) && JobGauge.InAstralFire) return true;
             }
 
             //详述
@@ -372,12 +372,12 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
                 if (Level < 20) return false;
                 if (JobGauge.InUmbralIce && !Freeze.EnoughLevel && Player.CurrentMp == 10000) return true;
                 if (JobGauge.InUmbralIce && JobGauge.UmbralHearts == 3) return true;
-                if (JobGauge.InAstralFire && !Player.HaveStatus(ObjectStatus.EnhancedFlare)) return true;
+                if (JobGauge.InAstralFire && !Player.HaveStatus(StatusIDs.EnhancedFlare)) return true;
                 if (JobGauge.InAstralFire && JobGauge.UmbralHearts > 1) return true;
             }
             if (Flare.ShouldUse(out act))
             {
-                if (JobGauge.InAstralFire && Player.HaveStatus(ObjectStatus.EnhancedFlare)) return true;
+                if (JobGauge.InAstralFire && Player.HaveStatus(StatusIDs.EnhancedFlare)) return true;
                 return true;
             }
             if (Blizzard2.ShouldUse(out act) && !IsLastSpell(true, Blizzard2) && JobGauge.UmbralIceStacks != 3)

@@ -26,7 +26,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
     public override uint[] JobIDs => new uint[] { 37 };
-    internal override bool HaveShield => Player.HaveStatus(ObjectStatus.RoyalGuard);
+    internal override bool HaveShield => Player.HaveStatus(StatusIDs.RoyalGuard);
     private protected override BaseAction Shield => RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;
@@ -94,7 +94,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
         //极光
         Aurora = new BaseAction(16151, true)
         {
-            BuffsProvide = new[] { ObjectStatus.Aurora },
+            BuffsProvide = new[] { StatusIDs.Aurora },
         },
 
         //超火流星
@@ -251,13 +251,13 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
             if (InDungeonsMiddle) return true;
 
             //等级小于烈牙,
-            if (!GnashingFang.EnoughLevel && (Player.HaveStatus(ObjectStatus.NoMercy) || !NoMercy.WillHaveOneCharge(15, false))) return true;
+            if (!GnashingFang.EnoughLevel && (Player.HaveStatus(StatusIDs.NoMercy) || !NoMercy.WillHaveOneCharge(15, false))) return true;
 
             //爆发期,烈牙之后
-            if (Player.HaveStatus(ObjectStatus.NoMercy) && GnashingFang.IsCoolDown) return true;
+            if (Player.HaveStatus(StatusIDs.NoMercy) && GnashingFang.IsCoolDown) return true;
 
             //非爆发期
-            if (!Player.HaveStatus(ObjectStatus.NoMercy) && !GnashingFang.WillHaveOneCharge(20, false)) return true;
+            if (!Player.HaveStatus(StatusIDs.NoMercy) && !GnashingFang.WillHaveOneCharge(20, false)) return true;
         }
 
         //弓形冲波
@@ -276,7 +276,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
         if (RoughDivide.Target.DistanceToPlayer() < 1 && !IsMoving)
         {
             if (RoughDivide.ShouldUse(out act)) return true;
-            if (Player.HaveStatus(ObjectStatus.NoMercy) && RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Player.HaveStatus(StatusIDs.NoMercy) && RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         act = null;
         return false;
@@ -363,7 +363,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
             if (InDungeonsMiddle) return true;
 
             //无情中3弹烈牙
-            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (Player.HaveStatus(ObjectStatus.NoMercy) || !NoMercy.WillHaveOneCharge(55, false))) return true;
+            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (Player.HaveStatus(StatusIDs.NoMercy) || !NoMercy.WillHaveOneCharge(55, false))) return true;
 
             //无情外烈牙
             if (JobGauge.Ammo > 0 && !NoMercy.WillHaveOneCharge(17, false) && NoMercy.WillHaveOneCharge(35, false)) return true;
@@ -393,13 +393,13 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
             //在4人本道中不使用
             if (InDungeonsMiddle) return false;
 
-            if (!GnashingFang.EnoughLevel && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
+            if (!GnashingFang.EnoughLevel && Player.HaveStatus(StatusIDs.NoMercy)) return true;
 
             //在烈牙后面使用音速破
-            if (GnashingFang.IsCoolDown && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
+            if (GnashingFang.IsCoolDown && Player.HaveStatus(StatusIDs.NoMercy)) return true;
 
             //其他判断
-            if (!DoubleDown.EnoughLevel && Player.HaveStatus(ObjectStatus.ReadyToRip)
+            if (!DoubleDown.EnoughLevel && Player.HaveStatus(StatusIDs.ReadyToRip)
                 && GnashingFang.IsCoolDown) return true;
 
         }
@@ -420,16 +420,16 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
             if (InDungeonsMiddle)
             {
                 //在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪),有无情buff
-                if (Player.HaveStatus(ObjectStatus.NoMercy)) return true;
+                if (Player.HaveStatus(StatusIDs.NoMercy)) return true;
 
                 return false;
             }
 
             //在音速破后使用倍攻
-            if (SonicBreak.IsCoolDown && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
+            if (SonicBreak.IsCoolDown && Player.HaveStatus(StatusIDs.NoMercy)) return true;
 
             //2弹无情的特殊判断,提前使用倍攻
-            if (Player.HaveStatus(ObjectStatus.NoMercy) && !NoMercy.WillHaveOneCharge(55, false) && Bloodfest.WillHaveOneCharge(5, false)) return true;
+            if (Player.HaveStatus(StatusIDs.NoMercy) && !NoMercy.WillHaveOneCharge(55, false) && Bloodfest.WillHaveOneCharge(5, false)) return true;
 
         }
         return false;
@@ -451,7 +451,7 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
             if (SonicBreak.IsCoolDown && SonicBreak.WillHaveOneCharge((float)0.5, false) && GnashingFang.EnoughLevel) return false;
 
             //无情中爆发击判定
-            if (Player.HaveStatus(ObjectStatus.NoMercy) &&
+            if (Player.HaveStatus(StatusIDs.NoMercy) &&
                 JobGauge.AmmoComboStep == 0 &&
                 !GnashingFang.WillHaveOneCharge(1, false)) return true;
             if (Level < 88 && JobGauge.Ammo == 2) return true;
@@ -470,10 +470,10 @@ internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
         {
             if (InDungeonsMiddle) return true;
 
-            if (!SonicBreak.EnoughLevel && Player.HaveStatus(ObjectStatus.NoMercy)) return true;
+            if (!SonicBreak.EnoughLevel && Player.HaveStatus(StatusIDs.NoMercy)) return true;
 
             //爆发期,无情中且音速破在冷却中
-            if (Player.HaveStatus(ObjectStatus.NoMercy) && SonicBreak.IsCoolDown) return true;
+            if (Player.HaveStatus(StatusIDs.NoMercy) && SonicBreak.IsCoolDown) return true;
 
         }
         return false;

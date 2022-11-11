@@ -32,32 +32,32 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         //∆Ÿ–∫
         Cascade = new(15989)
         {
-            BuffsProvide = new[] { ObjectStatus.SilkenSymmetry }
+            BuffsProvide = new[] { StatusIDs.SilkenSymmetry }
         },
 
         //≈Á»™
         Fountain = new(15990)
         {
-            BuffsProvide = new[] { ObjectStatus.SilkenFlow }
+            BuffsProvide = new[] { StatusIDs.SilkenFlow }
         },
 
         //ƒÊ∆Ÿ–∫
         ReverseCascade = new(15991)
         {
-            BuffsNeed = new[] { ObjectStatus.SilkenSymmetry, ObjectStatus.SilkenSymmetry2 },
+            BuffsNeed = new[] { StatusIDs.SilkenSymmetry, StatusIDs.SilkenSymmetry2 },
         },
 
         //◊π≈Á»™
         Fountainfall = new(15992)
         {
-            BuffsNeed = new[] { ObjectStatus.SilkenFlow, ObjectStatus.SilkenFlow2 }
+            BuffsNeed = new[] { StatusIDs.SilkenFlow, StatusIDs.SilkenFlow2 }
         },
 
         //…»ŒË°§–Ú
         FanDance = new(16007)
         {
             OtherCheck = b => JobGauge.Feathers > 0,
-            BuffsProvide = new[] { ObjectStatus.ThreefoldFanDance },
+            BuffsProvide = new[] { StatusIDs.ThreefoldFanDance },
         },
 
         //∑Á≥µ
@@ -88,7 +88,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         FanDance2 = new(16008)
         {
             OtherCheck = b => JobGauge.Feathers > 0,
-            BuffsProvide = new[] { ObjectStatus.ThreefoldFanDance },
+            BuffsProvide = new[] { StatusIDs.ThreefoldFanDance },
         },
 
         //…»ŒË°§º±
@@ -100,7 +100,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         //…»ŒË°§÷’
         FanDance4 = new(25791)
         {
-            BuffsNeed = new[] { ObjectStatus.FourfoldFanDance },
+            BuffsNeed = new[] { StatusIDs.FourfoldFanDance },
         },
 
         //Ω£ŒË
@@ -112,7 +112,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         //¡˜–«ŒË
         StarfallDance = new(25792)
         {
-            BuffsNeed = new[] { ObjectStatus.FlourishingStarfall },
+            BuffsNeed = new[] { StatusIDs.FlourishingStarfall },
         },
 
         //«∞≥Â≤Ω
@@ -147,8 +147,8 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         {
             BuffsProvide = new[]
             {
-                    ObjectStatus.StandardStep,
-                    ObjectStatus.TechnicalStep,
+                    StatusIDs.StandardStep,
+                    StatusIDs.TechnicalStep,
             },
         },
 
@@ -157,7 +157,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         {
             BuffsNeed = new[]
             {
-                    ObjectStatus.StandardFinish,
+                    StatusIDs.StandardFinish,
             },
             BuffsProvide = StandardStep.BuffsProvide,
         },
@@ -167,10 +167,10 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         {
             BuffsProvide = new[]
             {
-                    ObjectStatus.Troubadour,
-                    ObjectStatus.Tactician1,
-                    ObjectStatus.Tactician2,
-                    ObjectStatus.ShieldSamba,
+                    StatusIDs.Troubadour,
+                    StatusIDs.Tactician1,
+                    StatusIDs.Tactician2,
+                    StatusIDs.ShieldSamba,
             },
         },
 
@@ -184,9 +184,9 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
             {
                 Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
                 //Remove Weak
-                b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0 &&
+                b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { StatusIDs.Weakness, StatusIDs.BrinkofDeath }).Count() == 0 &&
                 //Remove other partner.
-                b.StatusList.Where(s => s.StatusId == ObjectStatus.ClosedPosition2 && s.SourceID != Player.ObjectId).Count() == 0).ToArray();
+                b.StatusList.Where(s => s.StatusId == StatusIDs.ClosedPosition2 && s.SourceID != Player.ObjectId).Count() == 0).ToArray();
 
                 var targets = TargetFilter.GetJobCategory(Targets, Role.Ω¸’Ω);
                 if (targets.Length > 0) return targets[0];
@@ -207,11 +207,11 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         //∞Ÿª®’˘—ﬁ
         Flourish = new(16013)
         {
-            BuffsNeed = new[] { ObjectStatus.StandardFinish },
+            BuffsNeed = new[] { StatusIDs.StandardFinish },
             BuffsProvide = new[]
             {
-                    ObjectStatus.ThreefoldFanDance,
-                    ObjectStatus.FourfoldFanDance,
+                    StatusIDs.ThreefoldFanDance,
+                    StatusIDs.FourfoldFanDance,
             },
             OtherCheck = b => InCombat,
         },
@@ -222,7 +222,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         //Ã·¿≠ƒ…
         Tillana = new(25790)
         {
-            BuffsNeed = new[] { ObjectStatus.FlourishingFinish },
+            BuffsNeed = new[] { StatusIDs.FlourishingFinish },
         };
 
     public override SortedList<DescType, string> DescriptionDict => new()
@@ -238,11 +238,11 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
     && Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //”¶º±ªªŒË∞È
-        if (Player.HaveStatus(ObjectStatus.ClosedPosition1))
+        if (Player.HaveStatus(StatusIDs.ClosedPosition1))
         {
             foreach (var friend in TargetUpdater.PartyMembers)
             {
-                if (friend.HaveStatus(ObjectStatus.ClosedPosition2))
+                if (friend.HaveStatus(StatusIDs.ClosedPosition2))
                 {
                     if (ClosedPosition.ShouldUse(out act) && ClosedPosition.Target != friend)
                     {
@@ -255,7 +255,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         else if (ClosedPosition.ShouldUse(out act)) return true;
 
         //≥¢ ‘±¨∑¢
-        if (Player.HaveStatus(ObjectStatus.TechnicalFinish)
+        if (Player.HaveStatus(StatusIDs.TechnicalFinish)
         && Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //∞Ÿª®
@@ -266,7 +266,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
         if (FanDance3.ShouldUse(out act, mustUse: true)) return true;
 
         //…»ŒË
-        if (Player.HaveStatus(ObjectStatus.Devilment) || JobGauge.Feathers > 3 || !TechnicalStep.EnoughLevel)
+        if (Player.HaveStatus(StatusIDs.Devilment) || JobGauge.Feathers > 3 || !TechnicalStep.EnoughLevel)
         {
             if (FanDance2.ShouldUse(out act)) return true;
             if (FanDance.ShouldUse(out act)) return true;
@@ -296,7 +296,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        if (!InCombat && !Player.HaveStatus(ObjectStatus.ClosedPosition1)
+        if (!InCombat && !Player.HaveStatus(StatusIDs.ClosedPosition1)
             && ClosedPosition.ShouldUse(out act)) return true;
 
         if (StepGCD(out act)) return true;
@@ -306,7 +306,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
             if (TechnicalStep.ShouldUse(out act, mustUse: true)) return true;
         }
 
-        if (AttackGCD(out act, Player.HaveStatus(ObjectStatus.Devilment))) return true;
+        if (AttackGCD(out act, Player.HaveStatus(StatusIDs.Devilment))) return true;
 
         return false;
     }
@@ -314,14 +314,14 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
     private bool StepGCD(out IAction act)
     {
         act = null;
-        if (!Player.HaveStatus(ObjectStatus.StandardStep, ObjectStatus.TechnicalStep)) return false;
+        if (!Player.HaveStatus(StatusIDs.StandardStep, StatusIDs.TechnicalStep)) return false;
 
-        if (Player.HaveStatus(ObjectStatus.StandardStep) && JobGauge.CompletedSteps == 2)
+        if (Player.HaveStatus(StatusIDs.StandardStep) && JobGauge.CompletedSteps == 2)
         {
             act = StandardStep;
             return true;
         }
-        else if (Player.HaveStatus(ObjectStatus.TechnicalStep) && JobGauge.CompletedSteps == 4)
+        else if (Player.HaveStatus(StatusIDs.TechnicalStep) && JobGauge.CompletedSteps == 4)
         {
             act = TechnicalStep;
             return true;
@@ -352,7 +352,7 @@ internal sealed class DNCCombo : JobGaugeCombo<DNCGauge, CommandType>
 
         bool canstandard = !TechnicalStep.WillHaveOneChargeGCD(2);
 
-        if (!Player.HaveStatus(ObjectStatus.TechnicalFinish))
+        if (!Player.HaveStatus(StatusIDs.TechnicalFinish))
         {
             //±Í◊ºŒË≤Ω
             if (StandardStep.ShouldUse(out act, mustUse: true)) return true;

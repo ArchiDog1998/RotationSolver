@@ -223,7 +223,7 @@ namespace XIVAutoAttack.Helpers
                 bool haveRase = false;
                 foreach (var status in item.StatusList)
                 {
-                    if (status.StatusId == ObjectStatus.Raise)
+                    if (status.StatusId == StatusIDs.Raise)
                     {
                         haveRase = true;
                         break;
@@ -273,7 +273,7 @@ namespace XIVAutoAttack.Helpers
 
         internal static BattleChara ASTRangeTarget(BattleChara[] ASTTargets)
         {
-            ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+            ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { StatusIDs.Weakness, StatusIDs.BrinkofDeath }).Count() == 0).ToArray();
 
 
             var targets = GetASTTargets(GetJobCategory(ASTTargets, Role.远程));
@@ -290,7 +290,7 @@ namespace XIVAutoAttack.Helpers
 
         internal static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
         {
-            ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+            ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { StatusIDs.Weakness, StatusIDs.BrinkofDeath }).Count() == 0).ToArray();
 
             var targets = GetASTTargets(GetJobCategory(ASTTargets, Role.近战));
             if (targets.Length > 0) return RandomObject(targets);
@@ -308,12 +308,12 @@ namespace XIVAutoAttack.Helpers
         {
             var allStatus = new uint[]
             {
-            ObjectStatus.TheArrow,
-            ObjectStatus.TheBalance,
-            ObjectStatus.TheBole,
-            ObjectStatus.TheEwer,
-            ObjectStatus.TheSpear,
-            ObjectStatus.TheSpire,
+            StatusIDs.TheArrow,
+            StatusIDs.TheBalance,
+            StatusIDs.TheBole,
+            StatusIDs.TheEwer,
+            StatusIDs.TheSpear,
+            StatusIDs.TheSpire,
             };
             return sources.Where((t) =>
             {

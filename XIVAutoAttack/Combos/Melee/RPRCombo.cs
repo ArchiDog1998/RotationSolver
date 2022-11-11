@@ -24,7 +24,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
     };
     internal class PRPAction : BaseAction
     {
-        internal override EnemyLocation EnermyLocation => Player.HaveStatus(ObjectStatus.Enshrouded) 
+        internal override EnemyLocation EnermyLocation => Player.HaveStatus(StatusIDs.Enshrouded) 
             ? EnemyLocation.None : base.EnermyLocation;
         internal PRPAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) 
             : base(actionID, isFriendly, shouldEndSpecial)
@@ -32,14 +32,14 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
         }
     }
 
-    private static bool enshrouded => Player.HaveStatus(ObjectStatus.Enshrouded);
-    private static bool soulReaver => Player.HaveStatus(ObjectStatus.SoulReaver);
-    private static bool enhancedGibbet => Player.HaveStatus(ObjectStatus.EnhancedGibbet);
-    private static bool enhancedGallows => Player.HaveStatus(ObjectStatus.EnhancedGallows);
-    private static bool enhancedCrossReaping => Player.HaveStatus(ObjectStatus.EnhancedCrossReaping);
-    private static bool enhancedVoidReaping => Player.HaveStatus(ObjectStatus.EnhancedVoidReaping);
-    private static bool plentifulReady => Player.HaveStatus(ObjectStatus.ImmortalSacrifice) && !Player.HaveStatus(ObjectStatus.BloodsownCircle);
-    private static bool haveDeathsDesign => Target.HaveStatus(ObjectStatus.DeathsDesign);
+    private static bool enshrouded => Player.HaveStatus(StatusIDs.Enshrouded);
+    private static bool soulReaver => Player.HaveStatus(StatusIDs.SoulReaver);
+    private static bool enhancedGibbet => Player.HaveStatus(StatusIDs.EnhancedGibbet);
+    private static bool enhancedGallows => Player.HaveStatus(StatusIDs.EnhancedGallows);
+    private static bool enhancedCrossReaping => Player.HaveStatus(StatusIDs.EnhancedCrossReaping);
+    private static bool enhancedVoidReaping => Player.HaveStatus(StatusIDs.EnhancedVoidReaping);
+    private static bool plentifulReady => Player.HaveStatus(StatusIDs.ImmortalSacrifice) && !Player.HaveStatus(StatusIDs.BloodsownCircle);
+    private static bool haveDeathsDesign => Target.HaveStatus(StatusIDs.DeathsDesign);
     public override uint[] JobIDs => new uint[] { 39 };
 
     public static readonly BaseAction
@@ -65,7 +65,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
         //死亡之影
         ShadowofDeath = new(24378, isDot: true)
         {
-            TargetStatus = new[] { ObjectStatus.DeathsDesign },
+            TargetStatus = new[] { StatusIDs.DeathsDesign },
             OtherCheck = b => !soulReaver,
         },
 
@@ -91,7 +91,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
         //死亡之涡
         WhorlofDeath = new(24379, isDot: true)
         {
-            TargetStatus = new[] { ObjectStatus.DeathsDesign },
+            TargetStatus = new[] { StatusIDs.DeathsDesign },
             OtherCheck = b => !soulReaver
         },
 
@@ -124,7 +124,7 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
         //隐匿挥割
         BloodStalk = new(24389)
         {
-            BuffsProvide = new[] { ObjectStatus.SoulReaver },
+            BuffsProvide = new[] { StatusIDs.SoulReaver },
             OtherCheck = b => !soulReaver && !enshrouded &&
                               JobGauge.Soul >= 50 && !plentifulReady &&
                               ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel),
@@ -219,14 +219,14 @@ internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
         //播魂种
         Soulsow = new(24387)
         {
-            BuffsProvide = new[] { ObjectStatus.Soulsow },
+            BuffsProvide = new[] { StatusIDs.Soulsow },
             OtherCheck = b => !InCombat,
         },
 
         //收获月
         HarvestMoon = new(24388)
         {
-            BuffsNeed = new[] { ObjectStatus.Soulsow },
+            BuffsNeed = new[] { StatusIDs.Soulsow },
             OtherCheck = b => InCombat,
         },
 

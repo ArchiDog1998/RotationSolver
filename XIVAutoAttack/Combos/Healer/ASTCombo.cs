@@ -47,10 +47,10 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
         {
             TargetStatus = new ushort[]
             {
-                    ObjectStatus.Combust,
-                    ObjectStatus.Combust2,
-                    ObjectStatus.Combust3,
-                    ObjectStatus.Combust4,
+                    StatusIDs.Combust,
+                    StatusIDs.Combust2,
+                    StatusIDs.Combust3,
+                    StatusIDs.Combust4,
             }
         },
 
@@ -66,7 +66,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
         //吉星相位
         AspectedBenefic = new(3595, true)
         {
-            TargetStatus = new ushort[] { ObjectStatus.AspectedBenefic },
+            TargetStatus = new ushort[] { StatusIDs.AspectedBenefic },
         },
 
         //先天禀赋
@@ -80,7 +80,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
         {
             ChoiceTarget = TargetFilter.FindAttackedTarget,
 
-            TargetStatus = new ushort[] { ObjectStatus.Intersection },
+            TargetStatus = new ushort[] { StatusIDs.Intersection },
 
             OtherCheck = b => !IsLastAction(16556),
         },
@@ -97,7 +97,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
         //阳星相位
         AspectedHelios = new(3601, true)
         {
-            BuffsProvide = new ushort[] { ObjectStatus.AspectedHelios },
+            BuffsProvide = new ushort[] { StatusIDs.AspectedHelios },
         },
 
         //天星冲日
@@ -141,7 +141,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
         //重抽
         Redraw = new(3593)
         {
-            BuffsNeed = new[] { ObjectStatus.ClarifyingDraw },
+            BuffsNeed = new[] { StatusIDs.ClarifyingDraw },
         },
 
         //小奥秘卡
@@ -321,7 +321,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
         if (!IsMoving)
         {
             //如果没有地星也没有巨星，那就试试看能不能放个。
-            if (!Player.HaveStatus(ObjectStatus.EarthlyDominance, ObjectStatus.GiantDominance))
+            if (!Player.HaveStatus(StatusIDs.EarthlyDominance, StatusIDs.GiantDominance))
             {
                 if (EarthlyStar.ShouldUse(out act, mustUse: true)) return true;
             }
@@ -384,7 +384,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
             if (CelestialOpposition.ShouldUse(out act)) return true;
 
             //如果有巨星主宰
-            if (Player.HaveStatus(ObjectStatus.GiantDominance))
+            if (Player.HaveStatus(StatusIDs.GiantDominance))
             {
                 //需要回血的时候炸了。
                 act = EarthlyStar;
@@ -392,9 +392,9 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
             }
 
             //天宫图
-            if (!Player.HaveStatus(ObjectStatus.HoroscopeHelios, ObjectStatus.Horoscope) && Horoscope.ShouldUse(out act)) return true;
+            if (!Player.HaveStatus(StatusIDs.HoroscopeHelios, StatusIDs.Horoscope) && Horoscope.ShouldUse(out act)) return true;
             //阳星天宫图
-            if (Player.HaveStatus(ObjectStatus.HoroscopeHelios) && Horoscope.ShouldUse(out act)) return true;
+            if (Player.HaveStatus(StatusIDs.HoroscopeHelios) && Horoscope.ShouldUse(out act)) return true;
             //超紧急情况天宫图
             if (tank.Any(t => t.GetHealthRatio() < 0.3) && Horoscope.ShouldUse(out act)) return true;
         }
@@ -408,7 +408,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
         if (CelestialOpposition.ShouldUse(out act)) return true;
 
         //如果有巨星主宰
-        if (Player.HaveStatus(ObjectStatus.GiantDominance))
+        if (Player.HaveStatus(StatusIDs.GiantDominance))
         {
             //需要回血的时候炸了。
             act = EarthlyStar;
@@ -416,7 +416,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
         }
 
         //天宫图
-        if (Player.HaveStatus(ObjectStatus.HoroscopeHelios) && Horoscope.ShouldUse(out act)) return true;
+        if (Player.HaveStatus(StatusIDs.HoroscopeHelios) && Horoscope.ShouldUse(out act)) return true;
 
         //奶量牌，要看情况。
         if (JobGauge.DrawnCrownCard == CardType.LADY && CrownPlay.ShouldUse(out act)) return true;

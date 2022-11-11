@@ -56,13 +56,13 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
         //ÁúÑÀÁú×¦
         FangandClaw = new(3554)
         {
-            BuffsNeed = new ushort[] { ObjectStatus.SharperFangandClaw },
+            BuffsNeed = new ushort[] { StatusIDs.SharperFangandClaw },
         },
 
         //ÁúÎ²´ó»ØÐý
         WheelingThrust = new(3556)
         {
-            BuffsNeed = new ushort[] { ObjectStatus.EnhancedWheelingThrust },
+            BuffsNeed = new ushort[] { StatusIDs.EnhancedWheelingThrust },
         },
 
         //ÁúÑÛÀ×µç
@@ -101,8 +101,8 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
         //ÌøÔ¾
         Jump = new(92)
         {
-            BuffsProvide = new ushort[] { ObjectStatus.DiveReady },
-            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(ObjectStatus.PowerSurge),
+            BuffsProvide = new ushort[] { StatusIDs.DiveReady },
+            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(StatusIDs.PowerSurge),
         },
         //¸ßÌø
         HighJump = new(16478)
@@ -112,7 +112,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
         //»ÃÏó³å
         MirageDive = new(7399)
         {
-            BuffsNeed = new[] { ObjectStatus.DiveReady },
+            BuffsNeed = new[] { StatusIDs.DiveReady },
 
             OtherCheck = b => !Geirskogul.WillHaveOneChargeGCD(4)
         },
@@ -144,7 +144,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
         //Áú½£
         LifeSurge = new(83)
         {
-            BuffsProvide = new[] { ObjectStatus.LifeSurge },
+            BuffsProvide = new[] { StatusIDs.LifeSurge },
 
             OtherCheck = b => !IsLastAbility(true, LifeSurge),
         },
@@ -158,7 +158,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
             ChoiceTarget = Targets =>
             {
                 Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
-                b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+                b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { StatusIDs.Weakness, StatusIDs.BrinkofDeath }).Count() == 0).ToArray();
 
                 var targets = TargetFilter.GetJobCategory(Targets, Role.½üÕ½);
                 if (targets.Length > 0) return TargetFilter.RandomObject(targets);
@@ -172,14 +172,14 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
                 return Player;
             },
 
-            BuffsNeed = new[] { ObjectStatus.PowerSurge },
+            BuffsNeed = new[] { StatusIDs.PowerSurge },
 
         },
 
         //Õ½¶·Á¬µ»
         BattleLitany = new(3557)
         {
-            BuffsNeed = new[] { ObjectStatus.PowerSurge },
+            BuffsNeed = new[] { StatusIDs.PowerSurge },
         };
 
     private protected override ActionConfiguration CreateConfiguration()
@@ -208,7 +208,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (nextGCD.IsAnySameAction(true, FullThrust, CoerthanTorment)
-            || Player.HaveStatus(ObjectStatus.LanceCharge) && nextGCD.IsAnySameAction(false, FangandClaw))
+            || Player.HaveStatus(StatusIDs.LanceCharge) && nextGCD.IsAnySameAction(false, FangandClaw))
         {
             //Áú½£
             if (abilityRemain == 1 && LifeSurge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -224,8 +224,8 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
             //ÃÍÇ¹
             if (LanceCharge.ShouldUse(out act, mustUse: true))
             {
-                if (abilityRemain == 1 && !Player.HaveStatus(ObjectStatus.PowerSurge)) return true;
-                if (Player.HaveStatus(ObjectStatus.PowerSurge)) return true;
+                if (abilityRemain == 1 && !Player.HaveStatus(StatusIDs.PowerSurge)) return true;
+                if (Player.HaveStatus(StatusIDs.PowerSurge)) return true;
             }
 
             //¾ÞÁúÊÓÏß
@@ -257,9 +257,9 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
         //ÆÆËé³å
         if (SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true))
         {
-            if (Player.HaveStatus(ObjectStatus.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
+            if (Player.HaveStatus(StatusIDs.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
         }
-        if (Player.HaveStatus(ObjectStatus.PowerSurge) && SpineshatterDive.ChargesCount != 1 && SpineshatterDive.ShouldUse(out act)) return true;
+        if (Player.HaveStatus(StatusIDs.PowerSurge) && SpineshatterDive.ChargesCount != 1 && SpineshatterDive.ShouldUse(out act)) return true;
 
         //»ÃÏó³å
         if (MirageDive.ShouldUse(out act)) return true;
@@ -267,7 +267,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
         //ÁúÑ×³å
         if (DragonfireDive.ShouldUse(out act, mustUse: true))
         {
-            if (Player.HaveStatus(ObjectStatus.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
+            if (Player.HaveStatus(StatusIDs.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
         }
 
         //ÌìÁúµã¾¦
@@ -300,7 +300,7 @@ internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
         }
 
         //¿´¿´ÊÇ·ñÐèÒªÐøBuff
-        if (!Player.WillStatusEndGCD(5, 0, true, ObjectStatus.PowerSurge))
+        if (!Player.WillStatusEndGCD(5, 0, true, StatusIDs.PowerSurge))
         {
             if (FullThrust.ShouldUse(out act)) return true;
             if (VorpalThrust.ShouldUse(out act)) return true;

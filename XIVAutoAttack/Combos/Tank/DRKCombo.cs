@@ -26,7 +26,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
     public override uint[] JobIDs => new uint[] { 32 };
-    internal override bool HaveShield => Player.HaveStatus(ObjectStatus.Grit);
+    internal override bool HaveShield => Player.HaveStatus(StatusIDs.Grit);
     private protected override BaseAction Shield => Grit;
     protected override bool CanHealSingleAbility => false;
 
@@ -81,7 +81,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
         //暗影墙
         ShadowWall = new(3636)
         {
-            BuffsProvide = new[] { ObjectStatus.ShadowWall },
+            BuffsProvide = new[] { StatusIDs.ShadowWall },
             OtherCheck = BaseAction.TankDefenseSelf,
         },
 
@@ -115,7 +115,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
         //血溅
         Bloodspiller = new(7392)
         {
-            OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatus(ObjectStatus.Delirium),
+            OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatus(StatusIDs.Delirium),
         },
 
         //寂灭
@@ -160,7 +160,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
         //腐秽黑暗
         SaltandDarkness = new(25755)
         {
-            BuffsNeed = new[] { ObjectStatus.SaltedEarth },
+            BuffsNeed = new[] { StatusIDs.SaltedEarth },
         };
     public override SortedList<DescType, string> DescriptionDict => new()
     {
@@ -194,7 +194,7 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //寂灭
-        if (JobGauge.Blood >= 80 || Player.HaveStatus(ObjectStatus.Delirium))
+        if (JobGauge.Blood >= 80 || Player.HaveStatus(StatusIDs.Delirium))
         {
             if (Quietus.ShouldUse(out act)) return true;
         }
@@ -202,9 +202,9 @@ internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
         //血溅
         if (Bloodspiller.ShouldUse(out act))
         {
-            if (Player.HaveStatus(ObjectStatus.Delirium) && Player.FindStatusStack(ObjectStatus.BloodWeapon) <= 3) return true;
+            if (Player.HaveStatus(StatusIDs.Delirium) && Player.FindStatusStack(StatusIDs.BloodWeapon) <= 3) return true;
 
-            if ((JobGauge.Blood >= 50 && BloodWeapon.WillHaveOneChargeGCD(1)) || (JobGauge.Blood >= 90 && !Player.HaveStatus(ObjectStatus.Delirium))) return true;
+            if ((JobGauge.Blood >= 50 && BloodWeapon.WillHaveOneChargeGCD(1)) || (JobGauge.Blood >= 90 && !Player.HaveStatus(StatusIDs.Delirium))) return true;
 
             if (!Delirium.EnoughLevel) return true;
 

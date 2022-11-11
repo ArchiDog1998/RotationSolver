@@ -40,7 +40,7 @@ namespace XIVAutoAttack.Updaters
             _moving = _lastPosition != p;
             _lastPosition = p;
 
-            if (Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TenChiJin)) MovingUpdater.IsMoving = false;
+            if (Service.ClientState.LocalPlayer.HaveStatus(StatusIDs.TenChiJin)) MovingUpdater.IsMoving = false;
 
         }
 

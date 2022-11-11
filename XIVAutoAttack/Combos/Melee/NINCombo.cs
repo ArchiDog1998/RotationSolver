@@ -65,7 +65,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         //攻其不备
         TrickAttack = new(2258)
         {
-            BuffsNeed = new ushort[] { ObjectStatus.Suiton, ObjectStatus.Hidden },
+            BuffsNeed = new ushort[] { StatusIDs.Suiton, StatusIDs.Hidden },
         },
 
         //旋风刃
@@ -86,7 +86,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         //天地人
         TenChiJin = new(7403)
         {
-            BuffsProvide = new[] { ObjectStatus.Kassatsu, ObjectStatus.TenChiJin },
+            BuffsProvide = new[] { StatusIDs.Kassatsu, StatusIDs.TenChiJin },
             OtherCheck = b => JobGauge.HutonTimer > 0,
         },
 
@@ -99,14 +99,14 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         //命水
         Meisui = new(16489)
         {
-            BuffsNeed = new[] { ObjectStatus.Suiton },
+            BuffsNeed = new[] { StatusIDs.Suiton },
             OtherCheck = b => JobGauge.Ninki <= 50,
         },
 
         //生杀予夺
         Kassatsu = new(2264, isFriendly: true)
         {
-            BuffsProvide = new[] { ObjectStatus.Kassatsu, ObjectStatus.TenChiJin },
+            BuffsProvide = new[] { StatusIDs.Kassatsu, StatusIDs.TenChiJin },
         },
 
         //八卦无刃杀
@@ -130,19 +130,19 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         //残影镰鼬
         PhantomKamaitachi = new(25774)
         {
-            BuffsNeed = new[] { ObjectStatus.PhantomKamaitachiReady },
+            BuffsNeed = new[] { StatusIDs.PhantomKamaitachiReady },
         },
 
         //月影雷兽牙
         FleetingRaiju = new(25778)
         {
-            BuffsNeed = new[] { ObjectStatus.RaijuReady },
+            BuffsNeed = new[] { StatusIDs.RaijuReady },
         },
 
         //月影雷兽爪
         ForkedRaiju = new(25777)
         {
-            BuffsNeed = new[] { ObjectStatus.RaijuReady },
+            BuffsNeed = new[] { StatusIDs.RaijuReady },
         },
 
         //风来刃
@@ -198,13 +198,13 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         //土遁之术
         Doton = new(2270, Jin, Ten, Chi)
         {
-            BuffsProvide = new[] { ObjectStatus.Doton },
+            BuffsProvide = new[] { StatusIDs.Doton },
         },
 
         //水遁之术
         Suiton = new(2271, Ten, Chi, Jin)
         {
-            BuffsProvide = new[] { ObjectStatus.Suiton },
+            BuffsProvide = new[] { StatusIDs.Suiton },
             OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),
         },
 
@@ -240,7 +240,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         if (_ninactionAim != null && ActionUpdater.WeaponRemain < 0.2) return false;
 
         //有生杀予夺
-        if (Player.HaveStatus(ObjectStatus.Kassatsu))
+        if (Player.HaveStatus(StatusIDs.Kassatsu))
         {
             if (GokaMekkyaku.ShouldUse(out _))
             {
@@ -268,7 +268,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         else
         {
             bool empty = Ten.ShouldUse(out _, mustUse: true);
-            bool haveDoton = Player.HaveStatus(ObjectStatus.Doton);
+            bool haveDoton = Player.HaveStatus(StatusIDs.Doton);
 
             //加状态
             if (Huraijin.ShouldUse(out act)) return true;
@@ -335,7 +335,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         act = null;
 
         //有天地人
-        if (Player.HaveStatus(ObjectStatus.TenChiJin))
+        if (Player.HaveStatus(StatusIDs.TenChiJin))
         {
             uint tenId = Service.IconReplacer.OriginalHook(Ten.ID);
             uint chiId = Service.IconReplacer.OriginalHook(Chi.ID);
@@ -381,7 +381,7 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         if (id == 2260)
         {
             //重置
-            if (!Player.HaveStatus(ObjectStatus.Kassatsu, ObjectStatus.TenChiJin)
+            if (!Player.HaveStatus(StatusIDs.Kassatsu, StatusIDs.TenChiJin)
                 && !Ten.ShouldUse(out _, mustUse: true))
             {
                 return false;
@@ -440,9 +440,9 @@ internal sealed class NINCombo : JobGaugeCombo<NINGauge, CommandType>
         if (DoNinjutsus(out act)) return true;
 
         //用真北取消隐匿
-        if (Config.GetBoolByName("AutoUnhide") && Player.HaveStatus(ObjectStatus.Hidden))
+        if (Config.GetBoolByName("AutoUnhide") && Player.HaveStatus(StatusIDs.Hidden))
         {
-            CommandController.SubmitToChat($"/statusoff {StatusHelper.GetStatusName(ObjectStatus.Hidden)}");
+            CommandController.SubmitToChat($"/statusoff {StatusHelper.GetStatusName(StatusIDs.Hidden)}");
         }
         //用隐匿恢复忍术数量
         if (!InCombat && _ninactionAim == null && Config.GetBoolByName("UseHide")

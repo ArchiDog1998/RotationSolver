@@ -45,7 +45,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
 
         internal RDMAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false) : base(actionID, isFriendly, shouldEndSpecial)
         {
-            BuffsNeed = Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray();
+            BuffsNeed = Swiftcast.BuffsProvide.Union(new[] { StatusIDs.Acceleration }).ToArray();
         }
     }
     public static readonly BaseAction
@@ -55,7 +55,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
         //震荡
         Jolt = new(7503)
         {
-            BuffsProvide = Swiftcast.BuffsProvide.Union(new[] { ObjectStatus.Acceleration }).ToArray(),
+            BuffsProvide = Swiftcast.BuffsProvide.Union(new[] { StatusIDs.Acceleration }).ToArray(),
         },
 
         //回刺
@@ -72,8 +72,8 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
         {
             BuffsProvide = new[]
             {
-                    ObjectStatus.Bind1,
-                    ObjectStatus.Bind2,
+                    StatusIDs.Bind1,
+                    StatusIDs.Bind2,
             }
         },
 
@@ -98,14 +98,14 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
         //赤火炎
         Verfire = new(7510)
         {
-            BuffsNeed = new[] { ObjectStatus.VerfireReady },
+            BuffsNeed = new[] { StatusIDs.VerfireReady },
             BuffsProvide = Jolt.BuffsProvide,
         },
 
         //赤飞石
         Verstone = new(7511)
         {
-            BuffsNeed = new[] { ObjectStatus.VerstoneReady },
+            BuffsNeed = new[] { StatusIDs.VerstoneReady },
             BuffsProvide = Jolt.BuffsProvide,
         },
 
@@ -131,7 +131,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
         //促进
         Acceleration = new(7518)
         {
-            BuffsProvide = new[] { ObjectStatus.Acceleration },
+            BuffsProvide = new[] { StatusIDs.Acceleration },
         },
 
         //划圆斩
@@ -235,7 +235,7 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
             if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
             //即刻咏唱
-            if (!Player.HaveStatus(ObjectStatus.Acceleration)
+            if (!Player.HaveStatus(StatusIDs.Acceleration)
                 && Swiftcast.ShouldUse(out act, mustUse: true)) return true;
         }
 
@@ -350,14 +350,14 @@ internal sealed class RDMCombo : JobGaugeCombo<RDMGauge, CommandType>
             //要求较小的魔元不带触发，也可以强制要求跳过判断。
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
-                if (Player.HaveStatus(ObjectStatus.VerstoneReady))
+                if (Player.HaveStatus(StatusIDs.VerstoneReady))
                 {
                     return false;
                 }
             }
             if (JobGauge.WhiteMana > JobGauge.BlackMana)
             {
-                if (Player.HaveStatus(ObjectStatus.VerfireReady))
+                if (Player.HaveStatus(StatusIDs.VerfireReady))
                 {
                     return false;
                 }

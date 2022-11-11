@@ -28,8 +28,8 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge, CommandType>
 
     private static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
 
-    private static bool HaveMoon => Player.HaveStatus(ObjectStatus.Moon);
-    private static bool HaveFlower => Player.HaveStatus(ObjectStatus.Flower);
+    private static bool HaveMoon => Player.HaveStatus(StatusIDs.Moon);
+    private static bool HaveFlower => Player.HaveStatus(StatusIDs.Flower);
 
 
     public static readonly BaseAction
@@ -58,7 +58,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge, CommandType>
         Higanbana = new(7489, isDot: true)
         {
             OtherCheck = b => !IsMoving && SenCount == 1 && HaveMoon && HaveFlower,
-            TargetStatus = new[] { ObjectStatus.Higanbana },
+            TargetStatus = new[] { StatusIDs.Higanbana },
         },
 
         //天下五剑
@@ -85,7 +85,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge, CommandType>
         //明镜止水
         MeikyoShisui = new(7499)
         {
-            BuffsProvide = new[] { ObjectStatus.MeikyoShisui },
+            BuffsProvide = new[] { StatusIDs.MeikyoShisui },
             OtherCheck = b => JobGauge.HasSetsu && !JobGauge.HasKa && !JobGauge.HasGetsu,
         },
 
@@ -126,7 +126,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge, CommandType>
         OgiNamikiri = new(25781)
         {
             OtherCheck = b => HaveFlower && HaveMoon,
-            BuffsNeed = new[] { ObjectStatus.OgiNamikiriReady },
+            BuffsNeed = new[] { StatusIDs.OgiNamikiriReady },
         },
 
         //回返斩浪
@@ -139,7 +139,7 @@ internal sealed class SAMCombo : JobGaugeCombo<SAMGauge, CommandType>
     };
     private protected override bool GeneralGCD(out IAction act)
     {
-        bool haveMeikyoShisui = Player.HaveStatus(ObjectStatus.MeikyoShisui);
+        bool haveMeikyoShisui = Player.HaveStatus(StatusIDs.MeikyoShisui);
 
         //赶紧回返！
         if (Service.IconReplacer.OriginalHook(OgiNamikiri.ID) == KaeshiNamikiri.ID)

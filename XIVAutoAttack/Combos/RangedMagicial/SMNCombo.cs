@@ -124,7 +124,7 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge, CommandType>
         //毁绝
         RuinIV = new(7426)
         {
-            BuffsNeed = new[] { ObjectStatus.FurtherRuin },
+            BuffsNeed = new[] { StatusIDs.FurtherRuin },
         },
 
         //龙神迸发
@@ -148,7 +148,7 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge, CommandType>
         //深红旋风
         CrimsonCyclone = new(25835)
         {
-            BuffsNeed = new[] { ObjectStatus.IfritsFavor },
+            BuffsNeed = new[] { StatusIDs.IfritsFavor },
         },
 
         //深红强袭
@@ -157,13 +157,13 @@ internal sealed class SMNCombo : JobGaugeCombo<SMNGauge, CommandType>
         //山崩
         MountainBuster = new(25836)
         {
-            BuffsNeed = new[] { ObjectStatus.TitansFavor },
+            BuffsNeed = new[] { StatusIDs.TitansFavor },
         },
 
         //螺旋气流
         Slipstream = new(25837)
         {
-            BuffsNeed = new[] { ObjectStatus.GarudasFavor },
+            BuffsNeed = new[] { StatusIDs.GarudasFavor },
         };
     public override SortedList<DescType, string> DescriptionDict => new()
     {

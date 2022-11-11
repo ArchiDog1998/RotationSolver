@@ -64,7 +64,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
 
             if (Service.Configuration.AutoShield)
             {
-                var defenses = new uint[] { ObjectStatus.Grit, ObjectStatus.RoyalGuard, ObjectStatus.IronWill, ObjectStatus.Defiance };
+                var defenses = new uint[] { StatusIDs.Grit, StatusIDs.RoyalGuard, StatusIDs.IronWill, StatusIDs.Defiance };
                 //Alive Tanks with shield.
                 var defensesTanks = TargetUpdater.AllianceTanks.Where(t => t.CurrentHp != 0 && t.StatusList.Select(s => s.StatusId).Intersect(defenses).Count() > 0);
                 if (defensesTanks == null || defensesTanks.Count() == 0)

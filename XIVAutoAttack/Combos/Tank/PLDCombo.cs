@@ -28,7 +28,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
     };
     public override uint[] JobIDs => new uint[] { 19, 1 };
 
-    internal override bool HaveShield => Player.HaveStatus(ObjectStatus.IronWill);
+    internal override bool HaveShield => Player.HaveStatus(StatusIDs.IronWill);
 
     private protected override BaseAction Shield => IronWill;
 
@@ -62,8 +62,8 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         {
             TargetStatus = new[]
             {
-                    ObjectStatus.GoringBlade,
-                    ObjectStatus.BladeofValor,
+                    StatusIDs.GoringBlade,
+                    StatusIDs.BladeofValor,
             }
         },
 
@@ -154,7 +154,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         //赎罪剑
         Atonement = new(16460)
         {
-            BuffsNeed = new[] { ObjectStatus.SwordOath },
+            BuffsNeed = new[] { StatusIDs.SwordOath },
         },
 
         //偿赎剑
@@ -169,7 +169,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         //信念之剑
         BladeofFaith = new(25748)
         {
-            BuffsNeed = new[] { ObjectStatus.ReadyForBladeofFaith },
+            BuffsNeed = new[] { StatusIDs.ReadyForBladeofFaith },
         },
 
         //安魂祈祷
@@ -231,10 +231,10 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         //赎罪剑
         if (Atonement.ShouldUse(out act))
         {
-            if (!SlowLoop && Player.HaveStatus(ObjectStatus.FightOrFlight)
+            if (!SlowLoop && Player.HaveStatus(StatusIDs.FightOrFlight)
                    && IsLastWeaponSkill(true, Atonement, RoyalAuthority)
-                   && !Player.WillStatusEndGCD(2, 0, true, ObjectStatus.FightOrFlight)) return true;
-            if (!SlowLoop && Player.FindStatusStack(ObjectStatus.SwordOath) > 1) return true;
+                   && !Player.WillStatusEndGCD(2, 0, true, StatusIDs.FightOrFlight)) return true;
+            if (!SlowLoop && Player.FindStatusStack(StatusIDs.SwordOath) > 1) return true;
 
             if (SlowLoop) return true;
         }
@@ -320,7 +320,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
         }
 
         //调停
-        if (Intervene.Target.DistanceToPlayer() < 1 && !IsMoving && Target.HaveStatus(ObjectStatus.GoringBlade))
+        if (Intervene.Target.DistanceToPlayer() < 1 && !IsMoving && Target.HaveStatus(StatusIDs.GoringBlade))
         {
             if (FightorFlight.ElapsedAfterGCD(2) && Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
@@ -374,8 +374,8 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
             //在4人本道中
             if (InDungeonsMiddle)
             {
-                if (CanUseSpellInDungeonsMiddle && !Player.HaveStatus(ObjectStatus.Requiescat)
-                    && !Player.HaveStatus(ObjectStatus.ReadyForBladeofFaith)
+                if (CanUseSpellInDungeonsMiddle && !Player.HaveStatus(StatusIDs.Requiescat)
+                    && !Player.HaveStatus(StatusIDs.ReadyForBladeofFaith)
                     && Player.CurrentMp < 2000) return true;
 
                 return false;
@@ -428,7 +428,7 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
             else
             {
                 //在战逃buff时间剩17秒以下时释放
-                if (Player.HaveStatus(ObjectStatus.FightOrFlight) && Player.WillStatusEnd(17, false, ObjectStatus.FightOrFlight) && Target.HaveStatus(ObjectStatus.GoringBlade))
+                if (Player.HaveStatus(StatusIDs.FightOrFlight) && Player.WillStatusEnd(17, false, StatusIDs.FightOrFlight) && Target.HaveStatus(StatusIDs.GoringBlade))
                 {
                     //在起手中时,王权剑后释放
                     return true;
@@ -450,15 +450,15 @@ internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
     private bool CanUseConfiteor(out IAction act)
     {
         act = null;
-        if (Player.HaveStatus(ObjectStatus.SwordOath)) return false;
+        if (Player.HaveStatus(StatusIDs.SwordOath)) return false;
 
         //有安魂祈祷buff,且没在战逃中
-        if (Player.HaveStatus(ObjectStatus.Requiescat) && !Player.HaveStatus(ObjectStatus.FightOrFlight))
+        if (Player.HaveStatus(StatusIDs.Requiescat) && !Player.HaveStatus(StatusIDs.FightOrFlight))
         {
             if (SlowLoop && (!IsLastWeaponSkill(true, GoringBlade) && !IsLastWeaponSkill(true, Atonement))) return false;
 
-            var statusStack = Player.FindStatusStack(ObjectStatus.Requiescat);
-            if (statusStack == 1 || (Player.HaveStatus(ObjectStatus.Requiescat) && Player.WillStatusEnd(3, false, ObjectStatus.Requiescat)) || Player.CurrentMp <= 2000)
+            var statusStack = Player.FindStatusStack(StatusIDs.Requiescat);
+            if (statusStack == 1 || (Player.HaveStatus(StatusIDs.Requiescat) && Player.WillStatusEnd(3, false, StatusIDs.Requiescat)) || Player.CurrentMp <= 2000)
             {
                 if (Confiteor.ShouldUse(out act, mustUse: true)) return true;
             }
