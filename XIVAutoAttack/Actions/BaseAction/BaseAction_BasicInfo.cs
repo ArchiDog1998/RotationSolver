@@ -14,7 +14,8 @@ namespace XIVAutoAttack.Actions.BaseAction
         private bool _isDot;
         internal bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
         public string Name => _action.Name;
-        public string Description => string.Empty;   
+        public string Description => string.Empty;
+        public string Author => string.Empty;
         internal string CateName
         {
             get

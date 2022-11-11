@@ -14,8 +14,7 @@ using static XIVAutoAttack.Combos.Tank.PLDCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/PLDCombo.cs",
-   ComboAuthor.Armolion)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/PLDCombo.cs")]
 internal sealed class PLDCombo : JobGaugeCombo<PLDGauge, CommandType>
 {
     internal enum CommandType : byte

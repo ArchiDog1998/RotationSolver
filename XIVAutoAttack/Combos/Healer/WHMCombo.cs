@@ -13,8 +13,7 @@ using static XIVAutoAttack.Combos.Healer.WHMCombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/WHMCombo.cs",
-   ComboAuthor.NiGuangOwO)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/WHMCombo.cs")]
 internal sealed class WHMCombo : JobGaugeCombo<WHMGauge, CommandType>
 {
     internal enum CommandType : byte

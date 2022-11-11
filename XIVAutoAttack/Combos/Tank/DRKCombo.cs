@@ -13,8 +13,7 @@ using static XIVAutoAttack.Combos.Tank.DRKCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/DRKCombo.cs",
-   ComboAuthor.Armolion)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/DRKCombo.cs")]
 internal sealed class DRKCombo : JobGaugeCombo<DRKGauge, CommandType>
 {
     internal enum CommandType : byte

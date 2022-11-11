@@ -12,8 +12,7 @@ using static XIVAutoAttack.Combos.Melee.SAMCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/SAMCombo.cs",
-   ComboAuthor.fatinghenji)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/SAMCombo.cs")]
 internal sealed class SAMCombo : JobGaugeCombo<SAMGauge, CommandType>
 {
     internal enum CommandType : byte

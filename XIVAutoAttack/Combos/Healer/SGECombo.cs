@@ -15,8 +15,7 @@ using static XIVAutoAttack.Combos.Healer.SGECombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SGECombo.cs",
-   ComboAuthor.Armolion)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SGECombo.cs")]
 internal sealed class SGECombo : JobGaugeCombo<SGEGauge, CommandType>
 {
     internal enum CommandType : byte

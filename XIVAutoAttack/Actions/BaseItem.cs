@@ -20,6 +20,8 @@ namespace XIVAutoAttack.Actions
         public TextureWrap Texture { get; }
         public bool IsEnabled { get; set; }
         public string Description => string.Empty;
+        public string Author => string.Empty;
+
         public string Name => _item.Name;
 
         public BaseItem(uint row, uint a4 = 0)

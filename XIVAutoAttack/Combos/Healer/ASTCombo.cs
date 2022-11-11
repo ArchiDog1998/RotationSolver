@@ -17,8 +17,7 @@ using static XIVAutoAttack.Combos.Healer.ASTCombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/ASTCombo.cs",
-    ComboAuthor.Armolion)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/ASTCombo.cs")]
 internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
 {
     internal enum CommandType : byte
@@ -306,7 +305,7 @@ internal sealed class ASTCombo : JobGaugeCombo<ASTGauge, CommandType>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
-        if(SettingBreak && Divination.ShouldUse(out act)) return true;
+        if (SettingBreak && Divination.ShouldUse(out act)) return true;
 
         //如果当前还没有皇冠卡牌，那就抽一张
         if (MinorArcana.ShouldUse(out act, emptyOrSkipCombo: true)) return true;

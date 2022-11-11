@@ -150,7 +150,7 @@ internal class ComboConfigWindow : Window
                         for (int i = 0; i < combos.Length; i++)
                         {
                             if (i > 0) ImGui.Separator();
-                            var combo = combos[i];
+                            var combo = IconReplacer.GetChooseCombo(combos[i]);
                             var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains(Service.ClientState.LocalPlayer.ClassJob.Id);
 
                             DrawTexture(combo, () =>
@@ -245,7 +245,7 @@ internal class ComboConfigWindow : Window
                                     }
                                 }
 
-                            });
+                            }, combo.JobIDs[0], combos[i].combos.Select(c => c.Author).ToArray());
 
                             num++;
                         }
@@ -961,7 +961,7 @@ internal class ComboConfigWindow : Window
 
 
 
-    internal static void DrawTexture<T>(T texture, System.Action otherThing) where T : class, ITexture
+    internal static void DrawTexture<T>(T texture, Action otherThing, uint jobId = 0, string[] authors = null) where T : class, ITexture
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
@@ -992,11 +992,32 @@ internal class ComboConfigWindow : Window
         }
 
         var attr = Attribute.GetCustomAttribute(texture.GetType(), typeof(ComboDevInfoAttribute));
+
+        ImGui.SameLine();
+
+        if(authors == null || authors.Length < 2)
+        {
+            ImGui.TextColored(shadedColor, $" - {texture.Author}");
+        }
+        else
+        {
+            int i;
+            for (i = 0; i < authors.Length; i++)
+            {
+                if(authors[i] == texture.Author)
+                {
+                    break;
+                }
+            }
+            if(ImGui.Combo(texture.Name + "зїеп", ref i, authors, authors.Length))
+            {
+                Service.Configuration.ComboChoices[jobId] = authors[i];
+            }
+        }
+
         if (attr is ComboDevInfoAttribute devAttr)
         {
-            ImGui.SameLine();
 
-            ImGui.TextColored(shadedColor, $" - {string.Join(", ", devAttr.Authors.Select(a => a.ToName()))}");
 
             ImGui.SameLine();
             Spacing();

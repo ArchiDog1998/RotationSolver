@@ -14,8 +14,7 @@ using static XIVAutoAttack.Combos.RangedPhysicial.BRDCombo;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/BRDCombo.cs",
-    ComboAuthor.Armolion)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/BRDCombo.cs")]
 internal sealed class BRDCombo : JobGaugeCombo<BRDGauge, CommandType>
 {
     internal enum CommandType : byte

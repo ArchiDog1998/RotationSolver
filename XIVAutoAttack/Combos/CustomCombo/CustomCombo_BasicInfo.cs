@@ -19,6 +19,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Role;
 
         public string Name => XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Name;
+        public virtual string Author => string.Empty;
 
         internal static bool IsTargetDying
         {
@@ -74,16 +75,20 @@ namespace XIVAutoAttack.Combos.CustomCombo
             get
             {
                 var con = CreateConfiguration();
-                if (Service.Configuration.ActionsConfigurations.TryGetValue(Name, out var lastcom))
+                if (Service.Configuration.CombosConfigurations.TryGetValue(JobIDs[0], out var lastcom))
                 {
-                    if (con.IsTheSame(lastcom)) return lastcom;
+                    if(lastcom.TryGetValue(Author, out var lastCon))
+                    {
+                        if (con.IsTheSame(lastCon)) return lastCon;
+                    }
                 }
                 //con.Supply(lastcom);
-                Service.Configuration.ActionsConfigurations[Name] = con;
+                Service.Configuration.CombosConfigurations[JobIDs[0]][Author] = con;
                 Service.Configuration.Save();
                 return con;
             }
         }
+
         private protected virtual ActionConfiguration CreateConfiguration()
         {
             return new ActionConfiguration();

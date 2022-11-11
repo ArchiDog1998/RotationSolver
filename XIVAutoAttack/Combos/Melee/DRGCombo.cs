@@ -16,8 +16,7 @@ using static XIVAutoAttack.Combos.Melee.DRGCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/DRGCombo.cs",
-   ComboAuthor.Armolion)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/DRGCombo.cs")]
 internal sealed class DRGCombo : JobGaugeCombo<DRGGauge, CommandType>
 {
     internal enum CommandType : byte

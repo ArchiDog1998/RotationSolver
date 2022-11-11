@@ -10,8 +10,7 @@ using static XIVAutoAttack.Combos.Melee.RPRCombo;
 
 namespace XIVAutoAttack.Combos.Melee;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/RPRCombo.cs",
-   ComboAuthor.NiGuangOwO)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/RPRCombo.cs")]
 internal sealed class RPRCombo : JobGaugeCombo<RPRGauge, CommandType>
 {
     internal enum CommandType : byte

@@ -17,7 +17,8 @@ public class PluginConfiguration : IPluginConfiguration
     public SortedSet<string> EnabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DiabledActions { get; private set; } = new SortedSet<uint>();
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
-    public Dictionary<string, ActionConfiguration> ActionsConfigurations { get; private set; } = new Dictionary<string, ActionConfiguration>();
+    public Dictionary<uint, Dictionary<string, ActionConfiguration>> CombosConfigurations { get; private set; } = new Dictionary<uint, Dictionary<string, ActionConfiguration>>();
+    public Dictionary<uint, string> ComboChoices { get; private set; } = new Dictionary<uint, string>();
     public int TargetToHostileType { get; set; } = 1;
     public int AddDotGCDCount { get; set; } = 2;
 

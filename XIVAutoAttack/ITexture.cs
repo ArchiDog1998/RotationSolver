@@ -12,6 +12,7 @@ namespace XIVAutoAttack
         TextureWrap Texture { get; }
         bool IsEnabled { get; set; }
         string Name { get; }
+        string Author { get; }
         string Description { get; }
     }
 }

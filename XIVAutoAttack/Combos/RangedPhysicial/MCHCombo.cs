@@ -14,8 +14,7 @@ using static XIVAutoAttack.Combos.RangedPhysicial.MCHCombo;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/MCHCombo.cs",
-   ComboAuthor.Armolion)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/MCHCombo.cs")]
 internal sealed class MCHCombo : JobGaugeCombo<MCHGauge, CommandType>
 {
     internal enum CommandType : byte

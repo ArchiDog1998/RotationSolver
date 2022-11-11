@@ -18,8 +18,7 @@ using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo.BLMCombo;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo
 {
-    [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/tree/main/XIVAutoAttack/Combos/RangedMagicial/BLMCombo",
-    ComboAuthor.Armolion)]
+    [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/tree/main/XIVAutoAttack/Combos/RangedMagicial/BLMCombo")]
     internal sealed partial class BLMCombo : JobGaugeCombo<BLMGauge, CommandType>
     {
         internal enum CommandType : byte

@@ -13,8 +13,7 @@ using static XIVAutoAttack.Combos.Tank.GNBCombo;
 
 namespace XIVAutoAttack.Combos.Tank;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/GNBCombo.cs",
-   ComboAuthor.Armolion)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/GNBCombo.cs")]
 internal sealed class GNBCombo : JobGaugeCombo<GNBGauge, CommandType>
 {
     internal enum CommandType : byte

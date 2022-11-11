@@ -14,8 +14,7 @@ using static XIVAutoAttack.Combos.Healer.SCHCombo;
 
 namespace XIVAutoAttack.Combos.Healer;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SCHCombo.cs",
-   ComboAuthor.NiGuangOwO)]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SCHCombo.cs")]
 internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
 {
     internal enum CommandType : byte
