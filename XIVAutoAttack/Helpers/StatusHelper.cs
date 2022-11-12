@@ -40,9 +40,9 @@ namespace XIVAutoAttack.Helpers
         /// <param name="abilityCount">再多少个能力技之后</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点状态是否已经消失</returns>
-        internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true, params StatusID[] effectIDs)
+        internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true, bool isFromSelf = true, params StatusID[] effectIDs)
         {
-            var remain = obj.FindStatusTime(effectIDs);
+            var remain = obj.FindStatusTime(isFromSelf, effectIDs);
             return CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount, addWeaponRemain);
         }
 
@@ -52,58 +52,47 @@ namespace XIVAutoAttack.Helpers
         /// <param name="remain">要多少秒呢</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点状态是否已经消失</returns>
-        internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool addWeaponRemain = true, params StatusID[] effectIDs)
+        internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool addWeaponRemain = true, bool isFromSelf = true, params StatusID[] effectIDs)
         {
-            var remain = obj.FindStatusTime(effectIDs);
+            var remain = obj.FindStatusTime(isFromSelf, effectIDs);
             return CooldownHelper.RecastAfter(remain, remainWant, addWeaponRemain);
         }
 
-        internal static float FindStatusTime(this BattleChara obj, params StatusID[] effectIDs)
+        internal static float FindStatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            var times = obj.FindStatusTimes(effectIDs);
+            var times = obj.FindStatusTimes(isFromSelf, effectIDs);
             if (times == null || times.Length == 0) return 0;
             return times.Max();
         }
 
-        private static float[] FindStatusTimes(this BattleChara obj, params StatusID[] effectIDs)
+        private static float[] FindStatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.FindStatus(true, effectIDs).Select(status => status.RemainingTime).ToArray();
+            return obj.FindStatus(isFromSelf, effectIDs).Select(status => status.RemainingTime).ToArray();
         }
 
-        internal static byte FindStatusStack(this BattleChara obj, params StatusID[] effectIDs)
+        internal static byte FindStatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            var stacks = obj.FindStatusStacks(effectIDs);
+            var stacks = obj.FindStatusStacks(isFromSelf, effectIDs);
             if (stacks == null || stacks.Length == 0) return 0;
             return stacks.Max();
         }
 
-        internal static byte[] FindStatusStacks(this BattleChara obj, params StatusID[] effectIDs)
+        internal static byte[] FindStatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.FindStatus(true, effectIDs).Select(status => Math.Max(status.StackCount, (byte)1)).ToArray();
+            return obj.FindStatus(isFromSelf, effectIDs).Select(status => Math.Max(status.StackCount, (byte)1)).ToArray();
         }
 
         /// <summary>
-        /// 表示角色<paramref name="obj"/>是否存在任何人赋予的参数<paramref name="effectIDs"/>中的任何一个
+        /// 表示角色<paramref name="obj"/>是否存在任何人或自己赋予的参数<paramref name="effectIDs"/>中的任何一个
         /// </summary>
         /// <param name="obj">检查对象</param>
         /// <param name="effectIDs">状态</param>
         /// <returns>是否拥有任何一个状态</returns>
-        internal static bool HaveStatus(this BattleChara obj, params StatusID[] effectIDs)
+        internal static bool HaveStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.FindStatus(false, effectIDs).Length > 0;
+            return obj.FindStatus(isFromSelf, effectIDs).Length > 0;
         }
 
-
-        /// <summary>
-        /// 表示角色<paramref name="obj"/>是否存在玩家自己赋予的参数<paramref name="effectIDs"/>中的任何一个
-        /// </summary>
-        /// <param name="obj">检查对象</param>
-        /// <param name="effectIDs">状态</param>
-        /// <returns>是否拥有任何一个状态</returns>
-        internal static bool HaveStatusFromSelf(this BattleChara obj, params StatusID[] effectIDs)
-        {
-            return obj.FindStatus(true, effectIDs).Length > 0;
-        }
 
         /// <summary>
         /// 获得状态的名字

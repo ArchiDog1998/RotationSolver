@@ -108,13 +108,13 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             if (InDungeonsMiddle) return true;
 
             //等级小于烈牙,
-            if (!GnashingFang.EnoughLevel && (Player.HaveStatusFromSelf(StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(15, false))) return true;
+            if (!GnashingFang.EnoughLevel && (Player.HaveStatus(StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(15, false))) return true;
 
             //爆发期,烈牙之后
-            if (Player.HaveStatusFromSelf(StatusID.NoMercy) && GnashingFang.IsCoolDown) return true;
+            if (Player.HaveStatus(StatusID.NoMercy) && GnashingFang.IsCoolDown) return true;
 
             //非爆发期
-            if (!Player.HaveStatusFromSelf(StatusID.NoMercy) && !GnashingFang.WillHaveOneCharge(20, false)) return true;
+            if (!Player.HaveStatus(StatusID.NoMercy) && !GnashingFang.WillHaveOneCharge(20, false)) return true;
         }
 
         //弓形冲波
@@ -133,7 +133,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (RoughDivide.Target.DistanceToPlayer() < 1 && !IsMoving)
         {
             if (RoughDivide.ShouldUse(out act)) return true;
-            if (Player.HaveStatusFromSelf(StatusID.NoMercy) && RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Player.HaveStatus(StatusID.NoMercy) && RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         act = null;
         return false;
@@ -220,7 +220,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             if (InDungeonsMiddle) return true;
 
             //无情中3弹烈牙
-            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (Player.HaveStatusFromSelf(StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(55, false))) return true;
+            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (Player.HaveStatus(StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(55, false))) return true;
 
             //无情外烈牙
             if (JobGauge.Ammo > 0 && !NoMercy.WillHaveOneCharge(17, false) && NoMercy.WillHaveOneCharge(35, false)) return true;
@@ -250,13 +250,13 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             //在4人本道中不使用
             if (InDungeonsMiddle) return false;
 
-            if (!GnashingFang.EnoughLevel && Player.HaveStatusFromSelf(StatusID.NoMercy)) return true;
+            if (!GnashingFang.EnoughLevel && Player.HaveStatus(StatusID.NoMercy)) return true;
 
             //在烈牙后面使用音速破
-            if (GnashingFang.IsCoolDown && Player.HaveStatusFromSelf(StatusID.NoMercy)) return true;
+            if (GnashingFang.IsCoolDown && Player.HaveStatus(StatusID.NoMercy)) return true;
 
             //其他判断
-            if (!DoubleDown.EnoughLevel && Player.HaveStatusFromSelf(StatusID.ReadyToRip)
+            if (!DoubleDown.EnoughLevel && Player.HaveStatus(StatusID.ReadyToRip)
                 && GnashingFang.IsCoolDown) return true;
 
         }
@@ -277,16 +277,16 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             if (InDungeonsMiddle)
             {
                 //在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪),有无情buff
-                if (Player.HaveStatusFromSelf(StatusID.NoMercy)) return true;
+                if (Player.HaveStatus(StatusID.NoMercy)) return true;
 
                 return false;
             }
 
             //在音速破后使用倍攻
-            if (SonicBreak.IsCoolDown && Player.HaveStatusFromSelf(StatusID.NoMercy)) return true;
+            if (SonicBreak.IsCoolDown && Player.HaveStatus(StatusID.NoMercy)) return true;
 
             //2弹无情的特殊判断,提前使用倍攻
-            if (Player.HaveStatusFromSelf(StatusID.NoMercy) && !NoMercy.WillHaveOneCharge(55, false) && Bloodfest.WillHaveOneCharge(5, false)) return true;
+            if (Player.HaveStatus(StatusID.NoMercy) && !NoMercy.WillHaveOneCharge(55, false) && Bloodfest.WillHaveOneCharge(5, false)) return true;
 
         }
         return false;
@@ -308,7 +308,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             if (SonicBreak.IsCoolDown && SonicBreak.WillHaveOneCharge((float)0.5, false) && GnashingFang.EnoughLevel) return false;
 
             //无情中爆发击判定
-            if (Player.HaveStatusFromSelf(StatusID.NoMercy) &&
+            if (Player.HaveStatus(StatusID.NoMercy) &&
                 JobGauge.AmmoComboStep == 0 &&
                 !GnashingFang.WillHaveOneCharge(1, false)) return true;
             if (Level < 88 && JobGauge.Ammo == 2) return true;
@@ -327,10 +327,10 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         {
             if (InDungeonsMiddle) return true;
 
-            if (!SonicBreak.EnoughLevel && Player.HaveStatusFromSelf(StatusID.NoMercy)) return true;
+            if (!SonicBreak.EnoughLevel && Player.HaveStatus(StatusID.NoMercy)) return true;
 
             //爆发期,无情中且音速破在冷却中
-            if (Player.HaveStatusFromSelf(StatusID.NoMercy) && SonicBreak.IsCoolDown) return true;
+            if (Player.HaveStatus(StatusID.NoMercy) && SonicBreak.IsCoolDown) return true;
 
         }
         return false;

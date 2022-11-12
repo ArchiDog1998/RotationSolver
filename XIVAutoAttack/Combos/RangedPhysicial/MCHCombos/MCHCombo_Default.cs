@@ -76,7 +76,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
             if (Drill.ShouldUse(out act)) return true;
             if (ChainSaw.ShouldUse(out act, mustUse: true))
             {
-                if (Player.HaveStatusFromSelf(StatusID.Reassemble)) return true;
+                if (Player.HaveStatus(StatusID.Reassemble)) return true;
                 if (!Config.GetBoolByName("MCH_Opener") || Wildfire.IsCoolDown) return true;
                 if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(4)) return true;
                 if (Drill.IsCoolDown && Drill.ElapsedAfterGCD(3)) return true;
@@ -195,10 +195,10 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
     /// <returns></returns>
     private bool CanUseHypercharge(out IAction act)
     {
-        if (!Hypercharge.ShouldUse(out act) || Player.HaveStatusFromSelf(StatusID.Reassemble)) return false;
+        if (!Hypercharge.ShouldUse(out act) || Player.HaveStatus(StatusID.Reassemble)) return false;
 
         //有野火buff必须释放超荷
-        if (Player.HaveStatusFromSelf(StatusID.Wildfire)) return true;
+        if (Player.HaveStatus(StatusID.Wildfire)) return true;
 
         //4人本小怪快死了不释放
         if (isDyingNotBoss) return false;

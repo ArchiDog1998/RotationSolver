@@ -84,7 +84,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
             if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
             //即刻咏唱
-            if (!Player.HaveStatusFromSelf(StatusID.Acceleration)
+            if (!Player.HaveStatus(StatusID.Acceleration)
                 && Swiftcast.ShouldUse(out act, mustUse: true)) return true;
         }
 
@@ -197,14 +197,14 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
             //要求较小的魔元不带触发，也可以强制要求跳过判断。
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
-                if (Player.HaveStatusFromSelf(StatusID.VerstoneReady))
+                if (Player.HaveStatus(StatusID.VerstoneReady))
                 {
                     return false;
                 }
             }
             if (JobGauge.WhiteMana > JobGauge.BlackMana)
             {
-                if (Player.HaveStatusFromSelf(StatusID.VerfireReady))
+                if (Player.HaveStatus(StatusID.VerfireReady))
                 {
                     return false;
                 }
@@ -213,7 +213,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
             //看看有没有即刻相关的技能。
             foreach (var buff in Vercure.BuffsProvide)
             {
-                if (Player.HaveStatusFromSelf(buff))
+                if (Player.HaveStatus(buff))
                 {
                     return false;
                 }

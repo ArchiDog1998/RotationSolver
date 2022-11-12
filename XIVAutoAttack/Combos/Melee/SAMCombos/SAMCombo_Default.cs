@@ -35,7 +35,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        bool haveMeikyoShisui = Player.HaveStatusFromSelf(StatusID.MeikyoShisui);
+        bool haveMeikyoShisui = Player.HaveStatus(StatusID.MeikyoShisui);
 
         //¸Ï½ô»Ø·µ£¡
         if (Service.IconReplacer.OriginalHook(OgiNamikiri.ID) == KaeshiNamikiri.ID)

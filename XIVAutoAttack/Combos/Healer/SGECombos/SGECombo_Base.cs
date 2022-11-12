@@ -68,7 +68,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
 
                 return targets[0];
             },
-            OtherCheck = b => !b.HaveStatusFromSelf(StatusID.Kardion),
+            OtherCheck = b => !b.HaveStatus(StatusID.Kardion),
         },
 
         //Ô¤ºó
@@ -93,7 +93,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
             {
                 foreach (var friend in Targets)
                 {
-                    if (friend.HaveStatusFromSelf(StatusID.Kardion))
+                    if (friend.HaveStatus(StatusID.Kardion))
                     {
                         return friend;
                     }

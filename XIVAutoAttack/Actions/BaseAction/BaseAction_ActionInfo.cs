@@ -50,7 +50,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         internal uint[] OtherIDsCombo { private get; set; } = null;
 
         /// <summary>
-        /// 使用了这个技能会得到的Buff，如果有这些Buff中的一种，那么就不会执行。 
+        /// 使用了这个技能会得到的Buff，如果有这些Buff中的一种，那么就不会执行，这个buff是自己提供的。 
         /// </summary>
         internal StatusID[] BuffsProvide { get; set; } = null;
 
@@ -116,7 +116,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             //没有前置Buff
             if (BuffsNeed != null)
             {
-                if (!Service.ClientState.LocalPlayer.HaveStatusFromSelf(BuffsNeed)) return false;
+                if (!Service.ClientState.LocalPlayer.HaveStatus(true, BuffsNeed)) return false;
             }
 
             //防止友方类技能连续使用
@@ -128,7 +128,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             //已有提供的Buff的任何一种
             if (BuffsProvide != null && !mustUse)
             {
-                if (Service.ClientState.LocalPlayer.HaveStatusFromSelf(BuffsProvide)) return false;
+                if (Service.ClientState.LocalPlayer.HaveStatus(true, BuffsProvide)) return false;
             }
 
             //还冷却不下来呢，来不及。
@@ -172,13 +172,13 @@ namespace XIVAutoAttack.Actions.BaseAction
                 {
                     var tar = Target ?? Service.ClientState.LocalPlayer;
 
-                    if (!tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus)) return false;
+                    if (!tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, true, TargetStatus)) return false;
                 }
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (CastTime > 0 && MovingUpdater.IsMoving)
                 {
-                    if (!Service.ClientState.LocalPlayer.HaveStatusFromSelf(CustomComboActions.Swiftcast.BuffsProvide))
+                    if (!Service.ClientState.LocalPlayer.HaveStatus(true, CustomComboActions.Swiftcast.BuffsProvide))
                     {
                         return false;
                     }

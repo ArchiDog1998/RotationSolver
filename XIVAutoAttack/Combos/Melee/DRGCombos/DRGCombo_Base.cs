@@ -90,7 +90,7 @@ internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> wher
         Jump = new(92)
         {
             BuffsProvide = new StatusID[] { StatusID.DiveReady },
-            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatusFromSelf(StatusID.PowerSurge),
+            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(StatusID.PowerSurge),
         },
         //¸ßÌø
         HighJump = new(16478)

@@ -14,7 +14,7 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
 {
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
-    internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.Defiance);
+    internal sealed override bool HaveShield => Player.HaveStatus(StatusID.Defiance);
     private sealed protected override BaseAction Shield => Defiance;
 
     public static readonly BaseAction
@@ -66,7 +66,7 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
         //Ô­³õÖ®»ê
         InnerBeast = new(49)
         {
-            OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatusFromSelf(StatusID.InnerRelease)),
+            OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatus(StatusID.InnerRelease)),
         },
 
         //¸ÖÌúĞı·ç

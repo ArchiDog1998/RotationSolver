@@ -56,7 +56,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
             {
                 var defenses = new StatusID[] { StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance };
                 //Alive Tanks with shield.
-                var defensesTanks = TargetUpdater.AllianceTanks.Where(t => t.CurrentHp != 0 && t.HaveStatus(defenses));
+                var defensesTanks = TargetUpdater.AllianceTanks.Where(t => t.CurrentHp != 0 && t.HaveStatus(true, defenses));
                 if (defensesTanks == null || defensesTanks.Count() == 0)
                 {
                     if (!HaveShield && Shield.ShouldUse(out act)) return true;

@@ -15,7 +15,7 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
 
     public class PRPAction : BaseAction
     {
-        internal override EnemyLocation EnermyLocation => Player.HaveStatusFromSelf(StatusID.Enshrouded)
+        internal override EnemyLocation EnermyLocation => Player.HaveStatus(StatusID.Enshrouded)
             ? EnemyLocation.None : base.EnermyLocation;
         internal PRPAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
@@ -23,14 +23,14 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
         }
     }
     protected static byte LemureShroud => JobGauge.LemureShroud;
-    protected static bool enshrouded => Player.HaveStatusFromSelf(StatusID.Enshrouded);
-    protected static bool soulReaver => Player.HaveStatusFromSelf(StatusID.SoulReaver);
-    protected static bool enhancedGibbet => Player.HaveStatusFromSelf(StatusID.EnhancedGibbet);
-    protected static bool enhancedGallows => Player.HaveStatusFromSelf(StatusID.EnhancedGallows);
-    protected static bool enhancedCrossReaping => Player.HaveStatusFromSelf(StatusID.EnhancedCrossReaping);
-    protected static bool enhancedVoidReaping => Player.HaveStatusFromSelf(StatusID.EnhancedVoidReaping);
-    protected static bool plentifulReady => Player.HaveStatusFromSelf(StatusID.ImmortalSacrifice) && !Player.HaveStatusFromSelf(StatusID.BloodsownCircle);
-    protected static bool haveDeathsDesign => Target.HaveStatusFromSelf(StatusID.DeathsDesign);
+    protected static bool enshrouded => Player.HaveStatus(StatusID.Enshrouded);
+    protected static bool soulReaver => Player.HaveStatus(StatusID.SoulReaver);
+    protected static bool enhancedGibbet => Player.HaveStatus(StatusID.EnhancedGibbet);
+    protected static bool enhancedGallows => Player.HaveStatus(StatusID.EnhancedGallows);
+    protected static bool enhancedCrossReaping => Player.HaveStatus(StatusID.EnhancedCrossReaping);
+    protected static bool enhancedVoidReaping => Player.HaveStatus(StatusID.EnhancedVoidReaping);
+    protected static bool plentifulReady => Player.HaveStatus(StatusID.ImmortalSacrifice) && !Player.HaveStatus(StatusID.BloodsownCircle);
+    protected static bool haveDeathsDesign => Target.HaveStatus(StatusID.DeathsDesign);
 
     public static readonly BaseAction
     #region 单体

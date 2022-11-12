@@ -16,7 +16,7 @@ namespace XIVAutoAttack.Combos.Tank.GNBCombos;
 internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
-    internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.RoyalGuard);
+    internal sealed override bool HaveShield => Player.HaveStatus(StatusID.RoyalGuard);
     private sealed protected override BaseAction Shield => RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;

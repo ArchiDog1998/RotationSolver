@@ -18,8 +18,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombos
     {
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
 
-        protected static bool HasFire => Player.HaveStatusFromSelf(StatusID.Firestarter);
-        protected static bool HasThunder => Player.HaveStatusFromSelf(StatusID.Thundercloud);
+        protected static bool HasFire => Player.HaveStatus(StatusID.Firestarter);
+        protected static bool HasThunder => Player.HaveStatus(StatusID.Thundercloud);
 
         public class ThunderAction : BaseAction
         {
