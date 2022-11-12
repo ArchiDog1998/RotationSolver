@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using FFXIVClientStructs.FFXIV.Common.Lua;
 using System.Collections.Generic;
+using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
@@ -260,8 +261,14 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
+        //判断是否有人有线
+        var haveLink = TargetUpdater.PartyMembers.Any(p =>
+        p.StatusList.Any(
+            status => (status.StatusId == 1223 && status.SourceObject != null
+            && status.SourceObject.OwnerId == Service.ClientState.LocalPlayer.ObjectId))
+        );
         //以太契约
-        if (Aetherpact.ShouldUse(out act) && JobGauge.FairyGauge >= 70) return true;
+        if (Aetherpact.ShouldUse(out act) && JobGauge.FairyGauge >= 70 && !haveLink) return true;
 
         //生命回生法
         if (Protraction.ShouldUse(out act)) return true;
@@ -276,7 +283,7 @@ internal sealed class SCHCombo : JobGaugeCombo<SCHGauge, CommandType>
         if (Lustrate.ShouldUse(out act)) return true;
 
         //以太契约
-        if (Aetherpact.ShouldUse(out act)) return true;
+        if (Aetherpact.ShouldUse(out act) && !haveLink) return true;
 
         return false;
     }
