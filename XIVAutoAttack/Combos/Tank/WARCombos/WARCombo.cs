@@ -13,8 +13,8 @@ namespace XIVAutoAttack.Combos.Tank.WARCombos;
 internal abstract class WARCombo<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCmd : Enum
 {
 
-    public sealed override uint[] JobIDs => new uint[] { 21, 3 };
-    internal sealed override bool HaveShield => Player.HaveStatus(StatusIDs.Defiance);
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
+    internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.Defiance);
     private sealed protected override BaseAction Shield => Defiance;
 
     public static readonly BaseAction
@@ -33,7 +33,7 @@ internal abstract class WARCombo<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCm
         //±©·çËé ºì¸«
         StormsEye = new(45)
         {
-            OtherCheck = b => Player.WillStatusEndGCD(3, 0, true, StatusIDs.SurgingTempest),
+            OtherCheck = b => Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest),
         },
 
         //·É¸«
@@ -51,7 +51,7 @@ internal abstract class WARCombo<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCm
         //¶¯ÂÒ    
         Upheaval = new(7387)
         {
-            BuffsNeed = new ushort[] { StatusIDs.SurgingTempest },
+            BuffsNeed = new StatusID[] { StatusID.SurgingTempest },
         },
 
         //³¬Ñ¹¸«
@@ -66,7 +66,7 @@ internal abstract class WARCombo<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCm
         //Ô­³õÖ®»ê
         InnerBeast = new(49)
         {
-            OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusIDs.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatus(StatusIDs.InnerRelease)),
+            OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatusFromSelf(StatusID.InnerRelease)),
         },
 
         //¸ÖÌúÐý·ç
@@ -78,7 +78,7 @@ internal abstract class WARCombo<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCm
         //Õ½º¿
         Infuriate = new(52)
         {
-            BuffsProvide = new[] { StatusIDs.InnerRelease },
+            BuffsProvide = new[] { StatusID.InnerRelease },
             OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge < 50,
         },
 
@@ -132,6 +132,6 @@ internal abstract class WARCombo<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCm
         //Âù»Ä±ÀÁÑ
         PrimalRend = new(25753)
         {
-            BuffsNeed = new[] { StatusIDs.PrimalRendReady },
+            BuffsNeed = new[] { StatusID.PrimalRendReady },
         };
 }

@@ -13,9 +13,9 @@ namespace XIVAutoAttack.Combos.Tank.PLDCombos;
 internal abstract class PLDCombo<TCmd> : JobGaugeCombo<PLDGauge, TCmd> where TCmd : Enum
 {
 
-    public sealed override uint[] JobIDs => new uint[] { 19, 1 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Paladin, ClassJobID.Gladiator };
 
-    internal sealed override bool HaveShield => Player.HaveStatus(StatusIDs.IronWill);
+    internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.IronWill);
 
     private sealed protected override BaseAction Shield => IronWill;
 
@@ -37,8 +37,8 @@ internal abstract class PLDCombo<TCmd> : JobGaugeCombo<PLDGauge, TCmd> where TCm
         {
             TargetStatus = new[]
             {
-                    StatusIDs.GoringBlade,
-                    StatusIDs.BladeofValor,
+                    StatusID.GoringBlade,
+                    StatusID.BladeofValor,
             }
         },
 
@@ -129,7 +129,7 @@ internal abstract class PLDCombo<TCmd> : JobGaugeCombo<PLDGauge, TCmd> where TCm
         // Í◊ÔΩ£
         Atonement = new(16460)
         {
-            BuffsNeed = new[] { StatusIDs.SwordOath },
+            BuffsNeed = new[] { StatusID.SwordOath },
         },
 
         //≥• ÍΩ£
@@ -144,7 +144,7 @@ internal abstract class PLDCombo<TCmd> : JobGaugeCombo<PLDGauge, TCmd> where TCm
         //–≈ƒÓ÷ÆΩ£
         BladeofFaith = new(25748)
         {
-            BuffsNeed = new[] { StatusIDs.ReadyForBladeofFaith },
+            BuffsNeed = new[] { StatusID.ReadyForBladeofFaith },
         },
 
         //∞≤ªÍ∆Ìµª

@@ -151,7 +151,7 @@ internal class ComboConfigWindow : Window
                         {
                             if (i > 0) ImGui.Separator();
                             var combo = IconReplacer.GetChooseCombo(combos[i]);
-                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains(Service.ClientState.LocalPlayer.ClassJob.Id);
+                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id);
 
                             DrawTexture(combo, () =>
                             {
@@ -976,7 +976,7 @@ internal class ComboConfigWindow : Window
 
 
 
-    internal static void DrawTexture<T>(T texture, Action otherThing, uint jobId = 0, string[] authors = null) where T : class, ITexture
+    internal static void DrawTexture<T>(T texture, Action otherThing, ClassJobID jobId = 0, string[] authors = null) where T : class, ITexture
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
@@ -1028,7 +1028,7 @@ internal class ComboConfigWindow : Window
             }
             if(ImGui.Combo(texture.Name + "зїеп", ref i, authors, authors.Length))
             {
-                Service.Configuration.ComboChoices[jobId] = authors[i];
+                Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
             }
         }
 

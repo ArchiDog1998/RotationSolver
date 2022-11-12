@@ -19,7 +19,7 @@ namespace XIVAutoAttack.SigReplacers;
 
 internal sealed class IconReplacer : IDisposable
 {
-    public record CustomComboGroup(uint jobId, uint[] classJobIds, ICustomCombo[] combos);
+    public record CustomComboGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomCombo[] combos);
 
     private delegate ulong IsIconReplaceableDelegate(uint actionID);
 
@@ -35,7 +35,7 @@ internal sealed class IconReplacer : IDisposable
 
             foreach (var combos in CustomCombos)
             {
-                if (!combos.classJobIds.Contains(Service.ClientState.LocalPlayer.ClassJob.Id)) continue;
+                if (!combos.classJobIds.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id)) continue;
                 return GetChooseCombo(combos);
             }
 
@@ -46,7 +46,7 @@ internal sealed class IconReplacer : IDisposable
     internal static ICustomCombo GetChooseCombo(CustomComboGroup group)
     {
         var id = group.jobId;
-        if(Service.Configuration.ComboChoices.TryGetValue(id, out var choice))
+        if(Service.Configuration.ComboChoices.TryGetValue((uint)id, out var choice))
         {
             foreach (var combo in group.combos)
             {

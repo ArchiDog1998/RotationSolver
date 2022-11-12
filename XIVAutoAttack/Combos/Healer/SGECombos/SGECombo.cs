@@ -16,7 +16,7 @@ namespace XIVAutoAttack.Combos.Healer.SGECombos;
 
 internal abstract class SGECombo<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 40 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
     private sealed protected override BaseAction Raise => Egeiro;
 
     public static readonly BaseAction
@@ -29,11 +29,11 @@ internal abstract class SGECombo<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCm
         //均衡注药
         EukrasianDosis = new(24283, isEot: true)
         {
-            TargetStatus = new ushort[]
+            TargetStatus = new StatusID[]
             {
-                StatusIDs.EukrasianDosis,
-                StatusIDs.EukrasianDosis2,
-                StatusIDs.EukrasianDosis3
+                StatusID.EukrasianDosis,
+                StatusID.EukrasianDosis2,
+                StatusID.EukrasianDosis3
             },
         },
 
@@ -50,7 +50,7 @@ internal abstract class SGECombo<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCm
         //心关
         Kardia = new(24285, true)
         {
-            BuffsProvide = new ushort[] { StatusIDs.Kardia },
+            BuffsProvide = new StatusID[] { StatusID.Kardia },
             ChoiceTarget = Targets =>
             {
                 var targets = TargetFilter.GetJobCategory(Targets, Role.防护);
@@ -68,18 +68,7 @@ internal abstract class SGECombo<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCm
 
                 return targets[0];
             },
-            OtherCheck = b =>
-            {
-                foreach (var status in b.StatusList)
-                {
-                    if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId
-                        && status.StatusId == StatusIDs.Kardion)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            },
+            OtherCheck = b => !b.HaveStatusFromSelf(StatusID.Kardion),
         },
 
         //预后
@@ -104,7 +93,7 @@ internal abstract class SGECombo<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCm
             {
                 foreach (var friend in Targets)
                 {
-                    if (friend.HaveStatus(StatusIDs.Kardion))
+                    if (friend.HaveStatusFromSelf(StatusID.Kardion))
                     {
                         return friend;
                     }
@@ -194,12 +183,8 @@ internal abstract class SGECombo<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCm
             {
                 foreach (var chara in TargetUpdater.PartyMembers)
                 {
-                    if (chara.StatusList.Select(s => s.StatusId).Intersect(new uint[]
-                    {
-                            StatusIDs.EukrasianDiagnosis,
-                            StatusIDs.EukrasianPrognosis,
-                    }).Any()
-                    && b.WillStatusEndGCD(2, 0, true, StatusIDs.EukrasianDiagnosis, StatusIDs.EukrasianPrognosis)
+                    if(chara.HaveStatus(StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
+                    && b.WillStatusEndGCD(2, 0, true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
                     && chara.GetHealthRatio() < 0.9) return true;
                 }
 

@@ -5,12 +5,13 @@ using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
 {
     internal abstract class BLUCombo<TCmd> : OtherCombo<TCmd> where TCmd : Enum
     {
-        public sealed override uint[] JobIDs => new uint[] { 36 };
+        public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlueMage };
 
         public class BLUAction : BaseAction
         {

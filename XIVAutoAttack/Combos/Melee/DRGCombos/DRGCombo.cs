@@ -16,7 +16,7 @@ namespace XIVAutoAttack.Combos.Melee.DRGCombos;
 
 internal abstract class DRGCombo<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 22, 4 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dragoon, ClassJobID.Lancer };
     private static bool safeMove = false;
 
     public static readonly BaseAction
@@ -44,13 +44,13 @@ internal abstract class DRGCombo<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCm
         //ÁúÑÀÁú×¦
         FangandClaw = new(ActionIDs.FangandClaw)
         {
-            BuffsNeed = new ushort[] { StatusIDs.SharperFangandClaw },
+            BuffsNeed = new StatusID[] { StatusID.SharperFangandClaw },
         },
 
         //ÁúÎ²´ó»ØÐý
         WheelingThrust = new(ActionIDs.WheelingThrust)
         {
-            BuffsNeed = new ushort[] { StatusIDs.EnhancedWheelingThrust },
+            BuffsNeed = new StatusID[] { StatusID.EnhancedWheelingThrust },
         },
 
         //ÁúÑÛÀ×µç
@@ -89,8 +89,8 @@ internal abstract class DRGCombo<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCm
         //ÌøÔ¾
         Jump = new(92)
         {
-            BuffsProvide = new ushort[] { StatusIDs.DiveReady },
-            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(StatusIDs.PowerSurge),
+            BuffsProvide = new StatusID[] { StatusID.DiveReady },
+            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatusFromSelf(StatusID.PowerSurge),
         },
         //¸ßÌø
         HighJump = new(16478)
@@ -100,7 +100,7 @@ internal abstract class DRGCombo<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCm
         //»ÃÏó³å
         MirageDive = new(7399)
         {
-            BuffsNeed = new[] { StatusIDs.DiveReady },
+            BuffsNeed = new[] { StatusID.DiveReady },
 
             OtherCheck = b => !Geirskogul.WillHaveOneChargeGCD(4)
         },
@@ -132,7 +132,7 @@ internal abstract class DRGCombo<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCm
         //Áú½£
         LifeSurge = new(83)
         {
-            BuffsProvide = new[] { StatusIDs.LifeSurge },
+            BuffsProvide = new[] { StatusID.LifeSurge },
 
             OtherCheck = b => !IsLastAbility(true, LifeSurge),
         },
@@ -146,7 +146,7 @@ internal abstract class DRGCombo<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCm
             ChoiceTarget = Targets =>
             {
                 Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
-                b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { StatusIDs.Weakness, StatusIDs.BrinkofDeath }).Count() == 0).ToArray();
+                !b.HaveStatus(StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
 
                 var targets = TargetFilter.GetJobCategory(Targets, Role.½üÕ½);
                 if (targets.Length > 0) return TargetFilter.RandomObject(targets);
@@ -160,14 +160,14 @@ internal abstract class DRGCombo<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCm
                 return Player;
             },
 
-            BuffsNeed = new[] { StatusIDs.PowerSurge },
+            BuffsNeed = new[] { StatusID.PowerSurge },
 
         },
 
         //Õ½¶·Á¬µ»
         BattleLitany = new(3557)
         {
-            BuffsNeed = new[] { StatusIDs.PowerSurge },
+            BuffsNeed = new[] { StatusID.PowerSurge },
         };
 
 }

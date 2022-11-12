@@ -14,7 +14,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.MCHCombos;
 
 internal abstract class MCHCombo<TCmd> : JobGaugeCombo<MCHGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 31 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Machinist };
 
     public static readonly BaseAction
         //分裂弹
@@ -74,7 +74,7 @@ internal abstract class MCHCombo<TCmd> : JobGaugeCombo<MCHGauge, TCmd> where TCm
         //整备
         Reassemble = new(2876)
         {
-            BuffsProvide = new ushort[] { StatusIDs.Reassemble },
+            BuffsProvide = new StatusID[] { StatusID.Reassemble },
             OtherCheck = b => HaveHostileInRange,
         },
 
@@ -114,10 +114,10 @@ internal abstract class MCHCombo<TCmd> : JobGaugeCombo<MCHGauge, TCmd> where TCm
         {
             BuffsProvide = new[]
             {
-                    StatusIDs.Troubadour,
-                    StatusIDs.Tactician1,
-                    StatusIDs.Tactician2,
-                    StatusIDs.ShieldSamba,
+                    StatusID.Troubadour,
+                    StatusID.Tactician1,
+                    StatusID.Tactician2,
+                    StatusID.ShieldSamba,
             },
         };
 }

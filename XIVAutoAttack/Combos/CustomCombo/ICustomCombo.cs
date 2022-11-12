@@ -9,7 +9,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
     internal interface ICustomCombo : ITexture
     {
         Role Role { get; }
-        uint[] JobIDs { get; }
+        ClassJobID[] JobIDs { get; }
 
         ActionConfiguration Config { get; }
 

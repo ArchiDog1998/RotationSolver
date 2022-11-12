@@ -15,12 +15,12 @@ namespace XIVAutoAttack.Combos.Melee.SAMCombos;
 //   ComboAuthor.fatinghenji)]
 internal abstract class SAMCombo<TCmd> : JobGaugeCombo<SAMGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 34 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
 
     protected static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
 
-    protected static bool HaveMoon => Player.HaveStatus(StatusIDs.Moon);
-    protected static bool HaveFlower => Player.HaveStatus(StatusIDs.Flower);
+    protected static bool HaveMoon => Player.HaveStatusFromSelf(StatusID.Moon);
+    protected static bool HaveFlower => Player.HaveStatusFromSelf(StatusID.Flower);
 
 
     public static readonly BaseAction
@@ -49,7 +49,7 @@ internal abstract class SAMCombo<TCmd> : JobGaugeCombo<SAMGauge, TCmd> where TCm
         Higanbana = new(7489, isEot: true)
         {
             OtherCheck = b => !IsMoving && SenCount == 1 && HaveMoon && HaveFlower,
-            TargetStatus = new[] { StatusIDs.Higanbana },
+            TargetStatus = new[] { StatusID.Higanbana },
         },
 
         //天下五剑
@@ -76,7 +76,7 @@ internal abstract class SAMCombo<TCmd> : JobGaugeCombo<SAMGauge, TCmd> where TCm
         //明镜止水
         MeikyoShisui = new(7499)
         {
-            BuffsProvide = new[] { StatusIDs.MeikyoShisui },
+            BuffsProvide = new[] { StatusID.MeikyoShisui },
             OtherCheck = b => JobGauge.HasSetsu && !JobGauge.HasKa && !JobGauge.HasGetsu,
         },
 
@@ -117,7 +117,7 @@ internal abstract class SAMCombo<TCmd> : JobGaugeCombo<SAMGauge, TCmd> where TCm
         OgiNamikiri = new(25781)
         {
             OtherCheck = b => HaveFlower && HaveMoon,
-            BuffsNeed = new[] { StatusIDs.OgiNamikiriReady },
+            BuffsNeed = new[] { StatusID.OgiNamikiriReady },
         },
 
         //回返斩浪

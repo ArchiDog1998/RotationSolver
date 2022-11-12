@@ -16,7 +16,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.RDMCombos;
 internal abstract class RDMCombo<TCmd> : JobGaugeCombo<RDMGauge, TCmd> where TCmd : Enum
 {
 
-    public sealed override uint[] JobIDs => new uint[] { 35 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.RedMage };
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Length == 1 && base.CanHealSingleSpell;
     //看看现在有没有促进
 
@@ -29,7 +29,7 @@ internal abstract class RDMCombo<TCmd> : JobGaugeCombo<RDMGauge, TCmd> where TCm
         //震荡
         Jolt = new(7503)
         {
-            BuffsProvide = Swiftcast.BuffsProvide.Union(new[] { StatusIDs.Acceleration }).ToArray(),
+            BuffsProvide = Swiftcast.BuffsProvide.Union(new[] { StatusID.Acceleration }).ToArray(),
         },
 
         //回刺
@@ -49,8 +49,8 @@ internal abstract class RDMCombo<TCmd> : JobGaugeCombo<RDMGauge, TCmd> where TCm
         {
             BuffsProvide = new[]
             {
-                 StatusIDs.Bind1,
-                 StatusIDs.Bind2,
+                 StatusID.Bind1,
+                 StatusID.Bind2,
             }
         },
 
@@ -81,14 +81,14 @@ internal abstract class RDMCombo<TCmd> : JobGaugeCombo<RDMGauge, TCmd> where TCm
         //赤火炎
         Verfire = new(7510)
         {
-            BuffsNeed = new[] { StatusIDs.VerfireReady },
+            BuffsNeed = new[] { StatusID.VerfireReady },
             BuffsProvide = Jolt.BuffsProvide,
         },
 
         //赤飞石
         Verstone = new(7511)
         {
-            BuffsNeed = new[] { StatusIDs.VerstoneReady },
+            BuffsNeed = new[] { StatusID.VerstoneReady },
             BuffsProvide = Jolt.BuffsProvide,
         },
 
@@ -114,7 +114,7 @@ internal abstract class RDMCombo<TCmd> : JobGaugeCombo<RDMGauge, TCmd> where TCm
         //促进
         Acceleration = new(7518)
         {
-            BuffsProvide = new[] { StatusIDs.Acceleration },
+            BuffsProvide = new[] { StatusID.Acceleration },
         },
 
         //划圆斩

@@ -13,14 +13,14 @@ namespace XIVAutoAttack.Combos.Melee.MNKCombos;
 
 internal abstract class MNKCombo<TCmd> : JobGaugeCombo<MNKGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 20, 2 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
 
 
     public static readonly BaseAction
         //Ë«Áú½Å
         DragonKick = new(74)
         {
-            BuffsProvide = new[] { StatusIDs.LeadenFist },
+            BuffsProvide = new[] { StatusID.LeadenFist },
         },
 
         //Á¬»÷
@@ -41,7 +41,7 @@ internal abstract class MNKCombo<TCmd> : JobGaugeCombo<MNKGauge, TCmd> where TCm
         //ÆÆËéÈ­
         Demolish = new(66, isEot: true)
         {
-            TargetStatus = new ushort[] { StatusIDs.Demolish },
+            TargetStatus = new StatusID[] { StatusID.Demolish },
         },
 
         //±ÀÈ­
@@ -83,7 +83,7 @@ internal abstract class MNKCombo<TCmd> : JobGaugeCombo<MNKGauge, TCmd> where TCm
         //Õð½Å
         PerfectBalance = new(69)
         {
-            BuffsNeed = new ushort[] { StatusIDs.RaptorForm },
+            BuffsNeed = new StatusID[] { StatusID.RaptorForm },
             OtherCheck = b => InCombat,
         },
 
@@ -103,13 +103,13 @@ internal abstract class MNKCombo<TCmd> : JobGaugeCombo<MNKGauge, TCmd> where TCm
         //ÑÝÎä
         FormShift = new(4262)
         {
-            BuffsProvide = new[] { StatusIDs.FormlessFist, StatusIDs.PerfectBalance },
+            BuffsProvide = new[] { StatusID.FormlessFist, StatusID.PerfectBalance },
         },
 
         //½ð¸Õ¼«Òâ ¶Ü
         RiddleofEarth = new(7394, shouldEndSpecial: true)
         {
-            BuffsProvide = new[] { StatusIDs.RiddleofEarth },
+            BuffsProvide = new[] { StatusID.RiddleofEarth },
         },
 
         //¼²·ç¼«Òâ

@@ -17,7 +17,7 @@ namespace XIVAutoAttack.Combos.Healer.ASTCombos;
 
 internal abstract class ASTCombo<TCmd> : JobGaugeCombo<ASTGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { ClassJobIDs.Astrologian };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Astrologian };
 
     private sealed protected override BaseAction Raise => Ascend;
 
@@ -32,12 +32,12 @@ internal abstract class ASTCombo<TCmd> : JobGaugeCombo<ASTGauge, TCmd> where TCm
         //烧灼
         Combust = new(3599, isEot: true)
         {
-            TargetStatus = new ushort[]
+            TargetStatus = new StatusID[]
             {
-                StatusIDs.Combust,
-                StatusIDs.Combust2,
-                StatusIDs.Combust3,
-                StatusIDs.Combust4,
+                StatusID.Combust,
+                StatusID.Combust2,
+                StatusID.Combust3,
+                StatusID.Combust4,
             }
         },
 
@@ -53,7 +53,7 @@ internal abstract class ASTCombo<TCmd> : JobGaugeCombo<ASTGauge, TCmd> where TCm
         //吉星相位
         AspectedBenefic = new(3595, true, isEot: true)
         {
-            TargetStatus = new ushort[] { StatusIDs.AspectedBenefic },
+            TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
         },
 
         //先天禀赋
@@ -67,7 +67,7 @@ internal abstract class ASTCombo<TCmd> : JobGaugeCombo<ASTGauge, TCmd> where TCm
         {
             ChoiceTarget = TargetFilter.FindAttackedTarget,
 
-            TargetStatus = new ushort[] { StatusIDs.Intersection },
+            TargetStatus = new StatusID[] { StatusID.Intersection },
         },
 
         //擢升
@@ -82,7 +82,7 @@ internal abstract class ASTCombo<TCmd> : JobGaugeCombo<ASTGauge, TCmd> where TCm
         //阳星相位
         AspectedHelios = new(3601, true, isEot: true)
         {
-            BuffsProvide = new ushort[] { StatusIDs.AspectedHelios },
+            BuffsProvide = new StatusID[] { StatusID.AspectedHelios },
         },
 
         //天星冲日
@@ -126,7 +126,7 @@ internal abstract class ASTCombo<TCmd> : JobGaugeCombo<ASTGauge, TCmd> where TCm
         //重抽
         Redraw = new(3593)
         {
-            BuffsNeed = new[] { StatusIDs.ClarifyingDraw },
+            BuffsNeed = new[] { StatusID.ClarifyingDraw },
         },
 
         //小奥秘卡

@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
@@ -95,12 +96,11 @@ internal sealed class SGECombo_Default : SGECombo<CommandType>
         //Õï¶Ï
         if (EukrasianDiagnosis.ShouldUse(out act))
         {
-            if (EukrasianDiagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
-            {
-                StatusIDs.EukrasianDiagnosis,
-                StatusIDs.EukrasianPrognosis,
-                StatusIDs.Galvanize,
-            }).Count() > 0) return false;
+            if (EukrasianDiagnosis.Target.HaveStatus(
+                StatusID.EukrasianDiagnosis,
+                StatusID.EukrasianPrognosis,
+                StatusID.Galvanize
+            )) return false;
 
             //¾ùºâ
             if (Eukrasia.ShouldUse(out act)) return true;
@@ -136,12 +136,11 @@ internal sealed class SGECombo_Default : SGECombo<CommandType>
         //Ô¤ºó
         if (EukrasianPrognosis.ShouldUse(out act))
         {
-            if (EukrasianPrognosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
-            {
-                StatusIDs.EukrasianDiagnosis,
-                StatusIDs.EukrasianPrognosis,
-                StatusIDs.Galvanize,
-            }).Count() > 0) return false;
+            if (EukrasianDiagnosis.Target.HaveStatus(
+                StatusID.EukrasianDiagnosis,
+                StatusID.EukrasianPrognosis,
+                StatusID.Galvanize
+            )) return false;
 
             //¾ùºâ
             if (Eukrasia.ShouldUse(out act)) return true;
@@ -223,12 +222,11 @@ internal sealed class SGECombo_Default : SGECombo<CommandType>
             var tank = TargetUpdater.PartyTanks;
             if (tank.Length == 1 && EukrasianDiagnosis.Target == tank.First() && EukrasianDiagnosis.ShouldUse(out act))
             {
-                if (tank.First().StatusList.Select(s => s.StatusId).Intersect(new uint[]
-                {
-                StatusIDs.EukrasianDiagnosis,
-                StatusIDs.EukrasianPrognosis,
-                StatusIDs.Galvanize,
-                }).Any()) return false;
+                if (tank.First().HaveStatus(
+                    StatusID.EukrasianDiagnosis,
+                    StatusID.EukrasianPrognosis,
+                    StatusID.Galvanize
+                )) return false;
 
                 //¾ùºâ
                 if (Eukrasia.ShouldUse(out act)) return true;
@@ -276,13 +274,11 @@ internal sealed class SGECombo_Default : SGECombo<CommandType>
         //Õï¶Ï
         if (EukrasianDiagnosis.ShouldUse(out act))
         {
-            if (EukrasianDiagnosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
-            {
-                //¾ùºâÕï¶Ï
-                StatusIDs.EukrasianDiagnosis,
-                StatusIDs.EukrasianPrognosis,
-                StatusIDs.Galvanize,
-            }).Count() > 0)
+            if (EukrasianDiagnosis.Target.HaveStatus(
+                StatusID.EukrasianDiagnosis,
+                StatusID.EukrasianPrognosis,
+                StatusID.Galvanize
+            ))
             {
                 if (Diagnosis.ShouldUse(out act)) return true;
             }
@@ -309,13 +305,11 @@ internal sealed class SGECombo_Default : SGECombo<CommandType>
 
         if (EukrasianPrognosis.ShouldUse(out act))
         {
-            if (EukrasianPrognosis.Target.StatusList.Select(s => s.StatusId).Intersect(new uint[]
-            {
-                //¾ùºâÕï¶Ï
-                StatusIDs.EukrasianDiagnosis,
-                StatusIDs.EukrasianPrognosis,
-                StatusIDs.Galvanize,
-            }).Count() > 0)
+            if (EukrasianPrognosis.Target.HaveStatus(
+                StatusID.EukrasianDiagnosis,
+                StatusID.EukrasianPrognosis,
+                StatusID.Galvanize
+            ))
             {
                 if (Prognosis.ShouldUse(out act)) return true;
             }

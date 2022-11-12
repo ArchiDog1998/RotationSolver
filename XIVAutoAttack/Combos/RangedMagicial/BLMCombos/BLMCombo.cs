@@ -16,10 +16,10 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombos
 {
     internal abstract partial class BLMCombo<TCmd> : JobGaugeCombo<BLMGauge, TCmd> where TCmd : Enum
     {
-        public sealed override uint[] JobIDs => new uint[] { 25, 7 };
+        public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
 
-        protected static bool HasFire => Player.HaveStatus(StatusIDs.Firestarter);
-        protected static bool HasThunder => Player.HaveStatus(StatusIDs.Thundercloud);
+        protected static bool HasFire => Player.HaveStatusFromSelf(StatusID.Firestarter);
+        protected static bool HasThunder => Player.HaveStatusFromSelf(StatusID.Thundercloud);
 
         public class ThunderAction : BaseAction
         {
@@ -56,7 +56,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombos
             //激情咏唱
             Sharpcast = new(3574u)
             {
-                BuffsProvide = new[] { StatusIDs.Sharpcast },
+                BuffsProvide = new[] { StatusID.Sharpcast },
                 OtherCheck = b => HaveHostileInRange,
             },
 
@@ -69,7 +69,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombos
             //黑魔纹
             Leylines = new(3573u, shouldEndSpecial: true)
             {
-                BuffsProvide = new[] { StatusIDs.LeyLines, },
+                BuffsProvide = new[] { StatusID.LeyLines, },
             },
 
             //魔纹步

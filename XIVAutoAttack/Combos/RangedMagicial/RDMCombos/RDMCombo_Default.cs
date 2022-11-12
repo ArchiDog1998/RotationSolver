@@ -84,7 +84,7 @@ internal sealed class RDMCombo_Default : RDMCombo<CommandType>
             if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
             //即刻咏唱
-            if (!Player.HaveStatus(StatusIDs.Acceleration)
+            if (!Player.HaveStatusFromSelf(StatusID.Acceleration)
                 && Swiftcast.ShouldUse(out act, mustUse: true)) return true;
         }
 
@@ -187,7 +187,7 @@ internal sealed class RDMCombo_Default : RDMCombo<CommandType>
         if (Redoublement.ShouldUse(out act)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
-        bool mustStart = Player.HaveStatus(1971) || JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Embolden.IsCoolDown;
+        bool mustStart = /*Player.HaveStatus(1971)|| */ JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Embolden.IsCoolDown;
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
         if (!mustStart)
@@ -197,14 +197,14 @@ internal sealed class RDMCombo_Default : RDMCombo<CommandType>
             //要求较小的魔元不带触发，也可以强制要求跳过判断。
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
-                if (Player.HaveStatus(StatusIDs.VerstoneReady))
+                if (Player.HaveStatusFromSelf(StatusID.VerstoneReady))
                 {
                     return false;
                 }
             }
             if (JobGauge.WhiteMana > JobGauge.BlackMana)
             {
-                if (Player.HaveStatus(StatusIDs.VerfireReady))
+                if (Player.HaveStatusFromSelf(StatusID.VerfireReady))
                 {
                     return false;
                 }
@@ -213,7 +213,7 @@ internal sealed class RDMCombo_Default : RDMCombo<CommandType>
             //看看有没有即刻相关的技能。
             foreach (var buff in Vercure.BuffsProvide)
             {
-                if (Player.HaveStatus(buff))
+                if (Player.HaveStatusFromSelf(buff))
                 {
                     return false;
                 }

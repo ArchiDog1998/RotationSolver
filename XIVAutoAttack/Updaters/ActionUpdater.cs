@@ -134,7 +134,7 @@ namespace XIVAutoAttack.Updaters
             if (player.ClassJob.Id != 25) return;
 
             //有醒梦，就算了啊
-            if (player.HaveStatus(StatusIDs.LucidDreaming)) return;
+            if (player.HaveStatusFromSelf(StatusID.LucidDreaming)) return;
 
             if(_lastMP < player.CurrentMp)
             {

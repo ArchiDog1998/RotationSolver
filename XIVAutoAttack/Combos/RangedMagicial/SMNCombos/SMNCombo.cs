@@ -13,7 +13,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.SMNCombos;
 
 internal abstract class SMNCombo<TCmd> : JobGaugeCombo<SMNGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 27, 26 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Summoner, ClassJobID.Arcanist };
     protected override bool CanHealSingleSpell => false;
     private sealed protected override BaseAction Raise => Resurrection;
 
@@ -105,7 +105,7 @@ internal abstract class SMNCombo<TCmd> : JobGaugeCombo<SMNGauge, TCmd> where TCm
         //毁绝
         RuinIV = new(7426)
         {
-            BuffsNeed = new[] { StatusIDs.FurtherRuin },
+            BuffsNeed = new[] { StatusID.FurtherRuin },
         },
 
         //龙神迸发
@@ -129,7 +129,7 @@ internal abstract class SMNCombo<TCmd> : JobGaugeCombo<SMNGauge, TCmd> where TCm
         //深红旋风
         CrimsonCyclone = new(25835)
         {
-            BuffsNeed = new[] { StatusIDs.IfritsFavor },
+            BuffsNeed = new[] { StatusID.IfritsFavor },
         },
 
         //深红强袭
@@ -138,12 +138,12 @@ internal abstract class SMNCombo<TCmd> : JobGaugeCombo<SMNGauge, TCmd> where TCm
         //山崩
         MountainBuster = new(25836)
         {
-            BuffsNeed = new[] { StatusIDs.TitansFavor },
+            BuffsNeed = new[] { StatusID.TitansFavor },
         },
 
         //螺旋气流
         Slipstream = new(25837)
         {
-            BuffsNeed = new[] { StatusIDs.GarudasFavor },
+            BuffsNeed = new[] { StatusID.GarudasFavor },
         };
 }

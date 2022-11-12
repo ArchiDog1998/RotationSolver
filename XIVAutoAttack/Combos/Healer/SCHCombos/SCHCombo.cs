@@ -14,7 +14,7 @@ namespace XIVAutoAttack.Combos.Healer.SCHCombos;
 
 internal abstract class SCHCombo<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 28 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Scholar };
 
     private sealed protected override BaseAction Raise => Resurrection;
     protected static bool HasAetherflow => JobGauge.Aetherflow > 0;
@@ -28,11 +28,11 @@ internal abstract class SCHCombo<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCm
         //鼓舞激励之策
         Adloquium = new(185, true)
         {
-            TargetStatus = new ushort[]
+            TargetStatus = new StatusID[]
             {
-                    StatusIDs.EukrasianDiagnosis,
-                    StatusIDs.EukrasianPrognosis,
-                    StatusIDs.Galvanize,
+                    StatusID.EukrasianDiagnosis,
+                    StatusID.EukrasianPrognosis,
+                    StatusID.Galvanize,
             },
         },
 
@@ -43,7 +43,7 @@ internal abstract class SCHCombo<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCm
         //士气高扬之策
         Succor = new(186, true)
         {
-            BuffsProvide = new[] { StatusIDs.Galvanize },
+            BuffsProvide = new[] { StatusID.Galvanize },
         },
 
         //生命活性法
@@ -83,7 +83,7 @@ internal abstract class SCHCombo<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCm
         //毒菌
         Bio = new(17864, isEot: true)//猛毒菌 17865 蛊毒法 16540
         {
-            TargetStatus = new ushort[] { StatusIDs.Bio, StatusIDs.Bio2, StatusIDs.Biolysis },
+            TargetStatus = new StatusID[] { StatusID.Bio, StatusID.Bio2, StatusID.Biolysis },
         },
 
         //毁灭
@@ -111,7 +111,7 @@ internal abstract class SCHCombo<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCm
         //朝日召唤
         SummonEos = new(17215)//夕月召唤 17216
         {
-            OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatus(StatusIDs.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
+            OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatusFromSelf(StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
         },
 
         //仙光的低语/天使的低语
@@ -167,7 +167,7 @@ internal abstract class SCHCombo<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCm
             {
                 foreach (var friend in friends)
                 {
-                    if (friend.HaveStatus(StatusIDs.Galvanize)) return friend;
+                    if (friend.HaveStatusFromSelf(StatusID.Galvanize)) return friend;
                 }
                 return null;
             },

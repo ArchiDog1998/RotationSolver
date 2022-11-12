@@ -59,7 +59,7 @@ internal sealed class DRGCombo_Default : DRGCombo<CommandType>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (nextGCD.IsAnySameAction(true, FullThrust, CoerthanTorment)
-            || Player.HaveStatus(StatusIDs.LanceCharge) && nextGCD.IsAnySameAction(false, FangandClaw))
+            || Player.HaveStatusFromSelf(StatusID.LanceCharge) && nextGCD.IsAnySameAction(false, FangandClaw))
         {
             //龙剑
             if (abilityRemain == 1 && LifeSurge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -75,8 +75,8 @@ internal sealed class DRGCombo_Default : DRGCombo<CommandType>
             //猛枪
             if (LanceCharge.ShouldUse(out act, mustUse: true))
             {
-                if (abilityRemain == 1 && !Player.HaveStatus(StatusIDs.PowerSurge)) return true;
-                if (Player.HaveStatus(StatusIDs.PowerSurge)) return true;
+                if (abilityRemain == 1 && !Player.HaveStatusFromSelf(StatusID.PowerSurge)) return true;
+                if (Player.HaveStatusFromSelf(StatusID.PowerSurge)) return true;
             }
 
             //巨龙视线
@@ -108,9 +108,9 @@ internal sealed class DRGCombo_Default : DRGCombo<CommandType>
         //破碎冲
         if (SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true))
         {
-            if (Player.HaveStatus(StatusIDs.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
+            if (Player.HaveStatusFromSelf(StatusID.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
         }
-        if (Player.HaveStatus(StatusIDs.PowerSurge) && SpineshatterDive.ChargesCount != 1 && SpineshatterDive.ShouldUse(out act)) return true;
+        if (Player.HaveStatusFromSelf(StatusID.PowerSurge) && SpineshatterDive.ChargesCount != 1 && SpineshatterDive.ShouldUse(out act)) return true;
 
         //幻象冲
         if (MirageDive.ShouldUse(out act)) return true;
@@ -118,7 +118,7 @@ internal sealed class DRGCombo_Default : DRGCombo<CommandType>
         //龙炎冲
         if (DragonfireDive.ShouldUse(out act, mustUse: true))
         {
-            if (Player.HaveStatus(StatusIDs.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
+            if (Player.HaveStatusFromSelf(StatusID.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
         }
 
         //天龙点睛
@@ -151,7 +151,7 @@ internal sealed class DRGCombo_Default : DRGCombo<CommandType>
         }
 
         //看看是否需要续Buff
-        if (!Player.WillStatusEndGCD(5, 0, true, StatusIDs.PowerSurge))
+        if (!Player.WillStatusEndGCD(5, 0, true, StatusID.PowerSurge))
         {
             if (FullThrust.ShouldUse(out act)) return true;
             if (VorpalThrust.ShouldUse(out act)) return true;

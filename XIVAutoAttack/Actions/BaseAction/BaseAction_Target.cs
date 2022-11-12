@@ -60,7 +60,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
                     if (!MovingUpdater.IsMoving) return tars;
 
-                    var ts = tars.Where(t => !t.HaveStatus(TargetStatus)).ToArray();
+                    var ts = tars.Where(t => !t.HaveStatusFromSelf(TargetStatus)).ToArray();
 
                     if (ts.Length == 0) return tars;
                     return ts;
@@ -72,7 +72,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 给敌人造成的Debuff,如果有这些Debuff，那么不会执行。
         /// </summary>
-        internal ushort[] TargetStatus { get; set; } = null;
+        internal StatusID[] TargetStatus { get; set; } = null;
 
         internal static bool TankDefenseSelf(BattleChara chara)
         {

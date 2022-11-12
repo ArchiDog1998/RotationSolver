@@ -15,20 +15,20 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.BRDCombos;
 
 internal abstract class BRDCombo<TCmd> : JobGaugeCombo<BRDGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 23, 5 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Bard, ClassJobID.Archer };
 
     public static readonly BaseAction
         //Ç¿Á¦Éä»÷
-        HeavyShoot = new(97) { BuffsProvide = new[] { StatusIDs.StraightShotReady } },
+        HeavyShoot = new(97) { BuffsProvide = new[] { StatusID.StraightShotReady } },
 
         //Ö±ÏßÉä»÷
-        StraitShoot = new(98) { BuffsNeed = new[] { StatusIDs.StraightShotReady } },
+        StraitShoot = new(98) { BuffsNeed = new[] { StatusID.StraightShotReady } },
 
         //¶¾Ò©¼ý
-        VenomousBite = new(100, isEot: true) { TargetStatus = new[] { StatusIDs.VenomousBite, StatusIDs.CausticBite } },
+        VenomousBite = new(100, isEot: true) { TargetStatus = new[] { StatusID.VenomousBite, StatusID.CausticBite } },
 
         //·çÊ´¼ý
-        Windbite = new(113, isEot: true) { TargetStatus = new[] { StatusIDs.Windbite, StatusIDs.Stormbite } },
+        Windbite = new(113, isEot: true) { TargetStatus = new[] { StatusID.Windbite, StatusID.Stormbite } },
 
         //ÁæÑÀÀþ³Ý
         IronJaws = new(3560, isEot: true)
@@ -37,12 +37,12 @@ internal abstract class BRDCombo<TCmd> : JobGaugeCombo<BRDGauge, TCmd> where TCm
             {
                 if (IsLastWeaponSkill(false, IronJaws)) return false;
 
-                if (Player.HaveStatus(StatusIDs.RagingStrikes) &&
-                    Player.WillStatusEndGCD(1, 1, true, StatusIDs.RagingStrikes)) return true;
+                if (Player.HaveStatusFromSelf(StatusID.RagingStrikes) &&
+                    Player.WillStatusEndGCD(1, 1, true, StatusID.RagingStrikes)) return true;
 
-                return b.HaveStatus(StatusIDs.VenomousBite, StatusIDs.CausticBite) & b.HaveStatus(StatusIDs.Windbite, StatusIDs.Stormbite)
-                & (b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, StatusIDs.VenomousBite, StatusIDs.CausticBite)
-                | b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, StatusIDs.Windbite, StatusIDs.Stormbite));
+                return b.HaveStatusFromSelf(StatusID.VenomousBite, StatusID.CausticBite) & b.HaveStatusFromSelf(StatusID.Windbite, StatusID.Stormbite)
+                & (b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, StatusID.VenomousBite, StatusID.CausticBite)
+                | b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, StatusID.Windbite, StatusID.Stormbite));
             },
         },
 
@@ -120,10 +120,10 @@ internal abstract class BRDCombo<TCmd> : JobGaugeCombo<BRDGauge, TCmd> where TCm
             RainofDeath = new(117),
 
         //Á¬Öé¼ý
-        QuickNock = new(106) { BuffsProvide = new[] { StatusIDs.ShadowbiteReady } },
+        QuickNock = new(106) { BuffsProvide = new[] { StatusID.ShadowbiteReady } },
 
         //Ó°ÊÉ¼ý
-        Shadowbite = new(16494) { BuffsNeed = new[] { StatusIDs.ShadowbiteReady } },
+        Shadowbite = new(16494) { BuffsNeed = new[] { StatusID.ShadowbiteReady } },
 
         //¹âÒõÉñµÄÀñÔÞ¿­¸è
         WardensPaean = new(3561),
@@ -166,10 +166,10 @@ internal abstract class BRDCombo<TCmd> : JobGaugeCombo<BRDGauge, TCmd> where TCm
             {
                 BuffsProvide = new[]
             {
-                    StatusIDs.Troubadour,
-                    StatusIDs.Tactician1,
-                    StatusIDs.Tactician2,
-                    StatusIDs.ShieldSamba,
+                    StatusID.Troubadour,
+                    StatusID.Tactician1,
+                    StatusID.Tactician2,
+                    StatusID.ShieldSamba,
             },
             };
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)

@@ -79,7 +79,7 @@ internal sealed class MNKCombo_Default : MNKCombo<CommandType>
         if (FourpointFury.ShouldUse(out act)) return true;
 
         //确认Buff
-        if (Player.WillStatusEndGCD(3, 0, true, StatusIDs.DisciplinedFist) && TwinSnakes.ShouldUse(out act)) return true;
+        if (Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist) && TwinSnakes.ShouldUse(out act)) return true;
 
         if (TrueStrike.ShouldUse(out act)) return true;
         return false;
@@ -141,17 +141,17 @@ internal sealed class MNKCombo_Default : MNKCombo<CommandType>
             }
         }
         //有震脚就阴阳
-        else if (Player.HaveStatus(StatusIDs.PerfectBalance))
+        else if (Player.HaveStatusFromSelf(StatusID.PerfectBalance))
         {
             if (havesolar && LunarNadi(out act)) return true;
             if (SolarNadi(out act)) return true;
         }
 
-        if (Player.HaveStatus(StatusIDs.CoerlForm))
+        if (Player.HaveStatusFromSelf(StatusID.CoerlForm))
         {
             if (CoerlForm(out act)) return true;
         }
-        else if (Player.HaveStatus(StatusIDs.RaptorForm))
+        else if (Player.HaveStatusFromSelf(StatusID.RaptorForm))
         {
             if (RaptorForm(out act)) return true;
         }
@@ -182,10 +182,10 @@ internal sealed class MNKCombo_Default : MNKCombo<CommandType>
             if ((JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.SOLAR) != 0)
             {
                 //两种Buff都在6s以上
-                var dis = Player.WillStatusEndGCD(3, 0, true, StatusIDs.DisciplinedFist);
+                var dis = Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist);
 
                 Demolish.ShouldUse(out _);
-                var demo = Demolish.Target.WillStatusEndGCD(3, 0, true, StatusIDs.Demolish);
+                var demo = Demolish.Target.WillStatusEndGCD(3, 0, true, StatusID.Demolish);
 
                 if (!dis && (!demo || !PerfectBalance.IsCoolDown))
                 {

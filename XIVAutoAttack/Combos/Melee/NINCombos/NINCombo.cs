@@ -15,7 +15,7 @@ namespace XIVAutoAttack.Combos.Melee.NINCombos;
 
 internal abstract class NINCombo<TCmd> : JobGaugeCombo<NINGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 30, 29 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Ninja, ClassJobID.Rogue };
     public class NinAction : BaseAction
     {
         internal BaseAction[] Ninjutsus { get; }
@@ -52,7 +52,7 @@ internal abstract class NINCombo<TCmd> : JobGaugeCombo<NINGauge, TCmd> where TCm
         //攻其不备
         TrickAttack = new(ActionIDs.TrickAttack)
         {
-            BuffsNeed = new ushort[] { StatusIDs.Suiton, StatusIDs.Hidden },
+            BuffsNeed = new StatusID[] { StatusID.Suiton, StatusID.Hidden },
         },
 
         //旋风刃
@@ -73,7 +73,7 @@ internal abstract class NINCombo<TCmd> : JobGaugeCombo<NINGauge, TCmd> where TCm
         //天地人
         TenChiJin = new(7403)
         {
-            BuffsProvide = new[] { StatusIDs.Kassatsu, StatusIDs.TenChiJin },
+            BuffsProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
             OtherCheck = b => JobGauge.HutonTimer > 0,
         },
 
@@ -86,14 +86,14 @@ internal abstract class NINCombo<TCmd> : JobGaugeCombo<NINGauge, TCmd> where TCm
         //命水
         Meisui = new(16489)
         {
-            BuffsNeed = new[] { StatusIDs.Suiton },
+            BuffsNeed = new[] { StatusID.Suiton },
             OtherCheck = b => JobGauge.Ninki <= 50,
         },
 
         //生杀予夺
         Kassatsu = new(2264, isFriendly: true)
         {
-            BuffsProvide = new[] { StatusIDs.Kassatsu, StatusIDs.TenChiJin },
+            BuffsProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
         },
 
         //八卦无刃杀
@@ -117,19 +117,19 @@ internal abstract class NINCombo<TCmd> : JobGaugeCombo<NINGauge, TCmd> where TCm
         //残影镰鼬
         PhantomKamaitachi = new(25774)
         {
-            BuffsNeed = new[] { StatusIDs.PhantomKamaitachiReady },
+            BuffsNeed = new[] { StatusID.PhantomKamaitachiReady },
         },
 
         //月影雷兽牙
         FleetingRaiju = new(25778)
         {
-            BuffsNeed = new[] { StatusIDs.RaijuReady },
+            BuffsNeed = new[] { StatusID.RaijuReady },
         },
 
         //月影雷兽爪
         ForkedRaiju = new(25777)
         {
-            BuffsNeed = new[] { StatusIDs.RaijuReady },
+            BuffsNeed = new[] { StatusID.RaijuReady },
         },
 
         //风来刃
@@ -185,13 +185,13 @@ internal abstract class NINCombo<TCmd> : JobGaugeCombo<NINGauge, TCmd> where TCm
         //土遁之术
         Doton = new(2270, Jin, Ten, Chi)
         {
-            BuffsProvide = new[] { StatusIDs.Doton },
+            BuffsProvide = new[] { StatusID.Doton },
         },
 
         //水遁之术
         Suiton = new(ActionIDs.Suiton, Ten, Chi, Jin)
         {
-            BuffsProvide = new[] { StatusIDs.Suiton },
+            BuffsProvide = new[] { StatusID.Suiton },
             OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),
         },
 

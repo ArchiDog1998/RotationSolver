@@ -86,8 +86,8 @@ internal sealed class BRDCombo_Default : BRDCombo<CommandType>
             return base.EmergercyAbility(abilityRemain, nextGCD, out act);
         }
         else if (abilityRemain != 0 &&
-            (!RagingStrikes.EnoughLevel || Player.HaveStatus(StatusIDs.RagingStrikes)) &&
-            (!BattleVoice.EnoughLevel || Player.HaveStatus(StatusIDs.BattleVoice)))
+            (!RagingStrikes.EnoughLevel || Player.HaveStatusFromSelf(StatusID.RagingStrikes)) &&
+            (!BattleVoice.EnoughLevel || Player.HaveStatusFromSelf(StatusID.BattleVoice)))
         {
             //纷乱箭
             if (Barrage.ShouldUse(out act)) return true;
@@ -121,7 +121,7 @@ internal sealed class BRDCombo_Default : BRDCombo<CommandType>
             return false;
         }
         //放浪神的小步舞曲
-        if ((JobGauge.Song == Song.NONE || (JobGauge.Song != Song.NONE || Player.HaveStatus(StatusIDs.ArmyEthos)) && abilityRemain == 1)
+        if ((JobGauge.Song == Song.NONE || (JobGauge.Song != Song.NONE || Player.HaveStatusFromSelf(StatusID.ArmyEthos)) && abilityRemain == 1)
             && JobGauge.SongTimer < 3000)
         {
             if (WanderersMinuet.ShouldUse(out act)) return true;
@@ -148,16 +148,16 @@ internal sealed class BRDCombo_Default : BRDCombo<CommandType>
         //测风诱导箭
         if (Sidewinder.ShouldUse(out act))
         {
-            if (Player.HaveStatus(StatusIDs.BattleVoice) && (Player.HaveStatus(StatusIDs.RadiantFinale) || !RadiantFinale.EnoughLevel)) return true;
+            if (Player.HaveStatusFromSelf(StatusID.BattleVoice) && (Player.HaveStatusFromSelf(StatusID.RadiantFinale) || !RadiantFinale.EnoughLevel)) return true;
 
             if (!BattleVoice.WillHaveOneCharge(10, false) && !RadiantFinale.WillHaveOneCharge(10, false)) return true;
 
-            if (RagingStrikes.IsCoolDown && !Player.HaveStatus(StatusIDs.RagingStrikes)) return true;
+            if (RagingStrikes.IsCoolDown && !Player.HaveStatusFromSelf(StatusID.RagingStrikes)) return true;
         }
 
         //看看现在有没有开猛者强击和战斗之声
-        bool empty = Player.HaveStatus(StatusIDs.RagingStrikes)
-            && (Player.HaveStatus(StatusIDs.BattleVoice)
+        bool empty = Player.HaveStatusFromSelf(StatusID.RagingStrikes)
+            && (Player.HaveStatusFromSelf(StatusID.BattleVoice)
             || !BattleVoice.EnoughLevel) || JobGauge.Song == Song.MAGE;
         //死亡剑雨
         if (RainofDeath.ShouldUse(out act, emptyOrSkipCombo: empty)) return true;

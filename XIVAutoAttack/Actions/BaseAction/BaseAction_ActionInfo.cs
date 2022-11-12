@@ -4,6 +4,7 @@ using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Linq;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
@@ -51,12 +52,12 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 使用了这个技能会得到的Buff，如果有这些Buff中的一种，那么就不会执行。 
         /// </summary>
-        internal ushort[] BuffsProvide { get; set; } = null;
+        internal StatusID[] BuffsProvide { get; set; } = null;
 
         /// <summary>
         /// 使用这个技能需要的前置Buff，有任何一个就好。
         /// </summary>
-        internal virtual ushort[] BuffsNeed { get; set; } = null;
+        internal virtual StatusID[] BuffsNeed { get; set; } = null;
 
         /// <summary>
         /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
@@ -115,7 +116,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             //没有前置Buff
             if (BuffsNeed != null)
             {
-                if (!Service.ClientState.LocalPlayer.HaveStatus(BuffsNeed)) return false;
+                if (!Service.ClientState.LocalPlayer.HaveStatusFromSelf(BuffsNeed)) return false;
             }
 
             //防止友方类技能连续使用
@@ -127,7 +128,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             //已有提供的Buff的任何一种
             if (BuffsProvide != null && !mustUse)
             {
-                if (Service.ClientState.LocalPlayer.StatusList.Select(s => (ushort)s.StatusId).Intersect(BuffsProvide).Count() > 0) return false;
+                if (Service.ClientState.LocalPlayer.HaveStatusFromSelf(BuffsProvide)) return false;
             }
 
             //还冷却不下来呢，来不及。
@@ -177,7 +178,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (CastTime > 0 && MovingUpdater.IsMoving)
                 {
-                    if (!Service.ClientState.LocalPlayer.HaveStatus(CustomComboActions.Swiftcast.BuffsProvide))
+                    if (!Service.ClientState.LocalPlayer.HaveStatusFromSelf(CustomComboActions.Swiftcast.BuffsProvide))
                     {
                         return false;
                     }

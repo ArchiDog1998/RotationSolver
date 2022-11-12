@@ -40,11 +40,11 @@ internal sealed class DNCCombo_Default : DNCCombo<CommandType>
     && Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //应急换舞伴
-        if (Player.HaveStatus(StatusIDs.ClosedPosition1))
+        if (Player.HaveStatusFromSelf(StatusID.ClosedPosition1))
         {
             foreach (var friend in TargetUpdater.PartyMembers)
             {
-                if (friend.HaveStatus(StatusIDs.ClosedPosition2))
+                if (friend.HaveStatusFromSelf(StatusID.ClosedPosition2))
                 {
                     if (ClosedPosition.ShouldUse(out act) && ClosedPosition.Target != friend)
                     {
@@ -57,7 +57,7 @@ internal sealed class DNCCombo_Default : DNCCombo<CommandType>
         else if (ClosedPosition.ShouldUse(out act)) return true;
 
         //尝试爆发
-        if (Player.HaveStatus(StatusIDs.TechnicalFinish)
+        if (Player.HaveStatusFromSelf(StatusID.TechnicalFinish)
         && Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //百花
@@ -68,7 +68,7 @@ internal sealed class DNCCombo_Default : DNCCombo<CommandType>
         if (FanDance3.ShouldUse(out act, mustUse: true)) return true;
 
         //扇舞
-        if (Player.HaveStatus(StatusIDs.Devilment) || JobGauge.Feathers > 3 || !TechnicalStep.EnoughLevel)
+        if (Player.HaveStatusFromSelf(StatusID.Devilment) || JobGauge.Feathers > 3 || !TechnicalStep.EnoughLevel)
         {
             if (FanDance2.ShouldUse(out act)) return true;
             if (FanDance.ShouldUse(out act)) return true;
@@ -98,7 +98,7 @@ internal sealed class DNCCombo_Default : DNCCombo<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        if (!InCombat && !Player.HaveStatus(StatusIDs.ClosedPosition1)
+        if (!InCombat && !Player.HaveStatusFromSelf(StatusID.ClosedPosition1)
             && ClosedPosition.ShouldUse(out act)) return true;
 
         if (StepGCD(out act)) return true;
@@ -108,7 +108,7 @@ internal sealed class DNCCombo_Default : DNCCombo<CommandType>
             if (TechnicalStep.ShouldUse(out act, mustUse: true)) return true;
         }
 
-        if (AttackGCD(out act, Player.HaveStatus(StatusIDs.Devilment))) return true;
+        if (AttackGCD(out act, Player.HaveStatusFromSelf(StatusID.Devilment))) return true;
 
         return false;
     }
@@ -116,14 +116,14 @@ internal sealed class DNCCombo_Default : DNCCombo<CommandType>
     private bool StepGCD(out IAction act)
     {
         act = null;
-        if (!Player.HaveStatus(StatusIDs.StandardStep, StatusIDs.TechnicalStep)) return false;
+        if (!Player.HaveStatusFromSelf(StatusID.StandardStep, StatusID.TechnicalStep)) return false;
 
-        if (Player.HaveStatus(StatusIDs.StandardStep) && JobGauge.CompletedSteps == 2)
+        if (Player.HaveStatusFromSelf(StatusID.StandardStep) && JobGauge.CompletedSteps == 2)
         {
             act = StandardStep;
             return true;
         }
-        else if (Player.HaveStatus(StatusIDs.TechnicalStep) && JobGauge.CompletedSteps == 4)
+        else if (Player.HaveStatusFromSelf(StatusID.TechnicalStep) && JobGauge.CompletedSteps == 4)
         {
             act = TechnicalStep;
             return true;
@@ -154,7 +154,7 @@ internal sealed class DNCCombo_Default : DNCCombo<CommandType>
 
         bool canstandard = !TechnicalStep.WillHaveOneChargeGCD(2);
 
-        if (!Player.HaveStatus(StatusIDs.TechnicalFinish))
+        if (!Player.HaveStatusFromSelf(StatusID.TechnicalFinish))
         {
             //标准舞步
             if (StandardStep.ShouldUse(out act, mustUse: true)) return true;

@@ -13,39 +13,39 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
 internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCmd : Enum
 {
 
-    public sealed override uint[] JobIDs => new uint[] { 38 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dancer };
 
     public static readonly BaseAction
 
         //∆Ÿ–∫
         Cascade = new(15989)
         {
-            BuffsProvide = new[] { StatusIDs.SilkenSymmetry }
+            BuffsProvide = new[] { StatusID.SilkenSymmetry }
         },
 
         //≈Á»™
         Fountain = new(15990)
         {
-            BuffsProvide = new[] { StatusIDs.SilkenFlow }
+            BuffsProvide = new[] { StatusID.SilkenFlow }
         },
 
         //ƒÊ∆Ÿ–∫
         ReverseCascade = new(15991)
         {
-            BuffsNeed = new[] { StatusIDs.SilkenSymmetry, StatusIDs.SilkenSymmetry2 },
+            BuffsNeed = new[] { StatusID.SilkenSymmetry, StatusID.SilkenSymmetry2 },
         },
 
         //◊π≈Á»™
         Fountainfall = new(15992)
         {
-            BuffsNeed = new[] { StatusIDs.SilkenFlow, StatusIDs.SilkenFlow2 }
+            BuffsNeed = new[] { StatusID.SilkenFlow, StatusID.SilkenFlow2 }
         },
 
         //…»ŒË°§–Ú
         FanDance = new(16007)
         {
             OtherCheck = b => JobGauge.Feathers > 0,
-            BuffsProvide = new[] { StatusIDs.ThreefoldFanDance },
+            BuffsProvide = new[] { StatusID.ThreefoldFanDance },
         },
 
         //∑Á≥µ
@@ -76,7 +76,7 @@ internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCm
         FanDance2 = new(16008)
         {
             OtherCheck = b => JobGauge.Feathers > 0,
-            BuffsProvide = new[] { StatusIDs.ThreefoldFanDance },
+            BuffsProvide = new[] { StatusID.ThreefoldFanDance },
         },
 
         //…»ŒË°§º±
@@ -88,7 +88,7 @@ internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCm
         //…»ŒË°§÷’
         FanDance4 = new(25791)
         {
-            BuffsNeed = new[] { StatusIDs.FourfoldFanDance },
+            BuffsNeed = new[] { StatusID.FourfoldFanDance },
         },
 
         //Ω£ŒË
@@ -100,7 +100,7 @@ internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCm
         //¡˜–«ŒË
         StarfallDance = new(25792)
         {
-            BuffsNeed = new[] { StatusIDs.FlourishingStarfall },
+            BuffsNeed = new[] { StatusID.FlourishingStarfall },
         },
 
         //«∞≥Â≤Ω
@@ -135,8 +135,8 @@ internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCm
         {
             BuffsProvide = new[]
             {
-                    StatusIDs.StandardStep,
-                    StatusIDs.TechnicalStep,
+                    StatusID.StandardStep,
+                    StatusID.TechnicalStep,
             },
         },
 
@@ -145,7 +145,7 @@ internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCm
         {
             BuffsNeed = new[]
             {
-                    StatusIDs.StandardFinish,
+                    StatusID.StandardFinish,
             },
             BuffsProvide = StandardStep.BuffsProvide,
         },
@@ -155,10 +155,10 @@ internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCm
         {
             BuffsProvide = new[]
             {
-                    StatusIDs.Troubadour,
-                    StatusIDs.Tactician1,
-                    StatusIDs.Tactician2,
-                    StatusIDs.ShieldSamba,
+                    StatusID.Troubadour,
+                    StatusID.Tactician1,
+                    StatusID.Tactician2,
+                    StatusID.ShieldSamba,
             },
         },
 
@@ -172,9 +172,10 @@ internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCm
             {
                 Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
                 //Remove Weak
-                b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { StatusIDs.Weakness, StatusIDs.BrinkofDeath }).Count() == 0 &&
+                !b.HaveStatus( StatusID.Weakness, StatusID.BrinkofDeath)
                 //Remove other partner.
-                b.StatusList.Where(s => s.StatusId == StatusIDs.ClosedPosition2 && s.SourceID != Player.ObjectId).Count() == 0).ToArray();
+                //&& !b.HaveStatusFromSelf(StatusID.ClosedPosition2)
+                ).ToArray();
 
                 var targets = TargetFilter.GetJobCategory(Targets, Role.Ω¸’Ω);
                 if (targets.Length > 0) return targets[0];
@@ -195,11 +196,11 @@ internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCm
         //∞Ÿª®’˘—ﬁ
         Flourish = new(16013)
         {
-            BuffsNeed = new[] { StatusIDs.StandardFinish },
+            BuffsNeed = new[] { StatusID.StandardFinish },
             BuffsProvide = new[]
             {
-                    StatusIDs.ThreefoldFanDance,
-                    StatusIDs.FourfoldFanDance,
+                    StatusID.ThreefoldFanDance,
+                    StatusID.FourfoldFanDance,
             },
             OtherCheck = b => InCombat,
         },
@@ -210,7 +211,7 @@ internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCm
         //Ã·¿≠ƒ…
         Tillana = new(25790)
         {
-            BuffsNeed = new[] { StatusIDs.FlourishingFinish },
+            BuffsNeed = new[] { StatusID.FlourishingFinish },
         };
 
 }

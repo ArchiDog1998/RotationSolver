@@ -12,8 +12,8 @@ using XIVAutoAttack.Updaters;
 namespace XIVAutoAttack.Combos.Tank.DRKCombos;
 internal abstract class DRKCombo<TCmd> : JobGaugeCombo<DRKGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 32 };
-    internal sealed override bool HaveShield => Player.HaveStatus(StatusIDs.Grit);
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
+    internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.Grit);
     private sealed protected override BaseAction Shield => Grit;
 
 
@@ -57,7 +57,7 @@ internal abstract class DRKCombo<TCmd> : JobGaugeCombo<DRKGauge, TCmd> where TCm
         //暗影墙
         ShadowWall = new(3636)
         {
-            BuffsProvide = new[] { StatusIDs.ShadowWall },
+            BuffsProvide = new[] { StatusID.ShadowWall },
             OtherCheck = BaseAction.TankDefenseSelf,
         },
 
@@ -91,7 +91,7 @@ internal abstract class DRKCombo<TCmd> : JobGaugeCombo<DRKGauge, TCmd> where TCm
         //血溅
         Bloodspiller = new(7392)
         {
-            OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatus(StatusIDs.Delirium),
+            OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatusFromSelf(StatusID.Delirium),
         },
 
         //寂灭
@@ -136,6 +136,6 @@ internal abstract class DRKCombo<TCmd> : JobGaugeCombo<DRKGauge, TCmd> where TCm
         //腐秽黑暗
         SaltandDarkness = new(25755)
         {
-            BuffsNeed = new[] { StatusIDs.SaltedEarth },
+            BuffsNeed = new[] { StatusID.SaltedEarth },
         };
 }

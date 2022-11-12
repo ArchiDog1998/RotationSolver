@@ -11,11 +11,11 @@ namespace XIVAutoAttack.Combos.Melee.RPRCombos;
 
 internal abstract class RPRCombo<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 39 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
 
     public class PRPAction : BaseAction
     {
-        internal override EnemyLocation EnermyLocation => Player.HaveStatus(StatusIDs.Enshrouded)
+        internal override EnemyLocation EnermyLocation => Player.HaveStatusFromSelf(StatusID.Enshrouded)
             ? EnemyLocation.None : base.EnermyLocation;
         internal PRPAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
@@ -23,14 +23,14 @@ internal abstract class RPRCombo<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCm
         }
     }
     protected static byte LemureShroud => JobGauge.LemureShroud;
-    protected static bool enshrouded => Player.HaveStatus(StatusIDs.Enshrouded);
-    protected static bool soulReaver => Player.HaveStatus(StatusIDs.SoulReaver);
-    protected static bool enhancedGibbet => Player.HaveStatus(StatusIDs.EnhancedGibbet);
-    protected static bool enhancedGallows => Player.HaveStatus(StatusIDs.EnhancedGallows);
-    protected static bool enhancedCrossReaping => Player.HaveStatus(StatusIDs.EnhancedCrossReaping);
-    protected static bool enhancedVoidReaping => Player.HaveStatus(StatusIDs.EnhancedVoidReaping);
-    protected static bool plentifulReady => Player.HaveStatus(StatusIDs.ImmortalSacrifice) && !Player.HaveStatus(StatusIDs.BloodsownCircle);
-    protected static bool haveDeathsDesign => Target.HaveStatus(StatusIDs.DeathsDesign);
+    protected static bool enshrouded => Player.HaveStatusFromSelf(StatusID.Enshrouded);
+    protected static bool soulReaver => Player.HaveStatusFromSelf(StatusID.SoulReaver);
+    protected static bool enhancedGibbet => Player.HaveStatusFromSelf(StatusID.EnhancedGibbet);
+    protected static bool enhancedGallows => Player.HaveStatusFromSelf(StatusID.EnhancedGallows);
+    protected static bool enhancedCrossReaping => Player.HaveStatusFromSelf(StatusID.EnhancedCrossReaping);
+    protected static bool enhancedVoidReaping => Player.HaveStatusFromSelf(StatusID.EnhancedVoidReaping);
+    protected static bool plentifulReady => Player.HaveStatusFromSelf(StatusID.ImmortalSacrifice) && !Player.HaveStatusFromSelf(StatusID.BloodsownCircle);
+    protected static bool haveDeathsDesign => Target.HaveStatusFromSelf(StatusID.DeathsDesign);
 
     public static readonly BaseAction
     #region 单体
@@ -55,7 +55,7 @@ internal abstract class RPRCombo<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCm
         //死亡之影
         ShadowofDeath = new(24378, isEot: true)
         {
-            TargetStatus = new[] { StatusIDs.DeathsDesign },
+            TargetStatus = new[] { StatusID.DeathsDesign },
             OtherCheck = b => !soulReaver,
         },
 
@@ -81,7 +81,7 @@ internal abstract class RPRCombo<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCm
         //死亡之涡
         WhorlofDeath = new(24379, isEot: true)
         {
-            TargetStatus = new[] { StatusIDs.DeathsDesign },
+            TargetStatus = new[] { StatusID.DeathsDesign },
             OtherCheck = b => !soulReaver
         },
 
@@ -114,7 +114,7 @@ internal abstract class RPRCombo<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCm
         //隐匿挥割
         BloodStalk = new(24389)
         {
-            BuffsProvide = new[] { StatusIDs.SoulReaver },
+            BuffsProvide = new[] { StatusID.SoulReaver },
             OtherCheck = b => !soulReaver && !enshrouded &&
                               JobGauge.Soul >= 50 && !plentifulReady &&
                               (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel),
@@ -209,14 +209,14 @@ internal abstract class RPRCombo<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCm
         //播魂种
         Soulsow = new(24387)
         {
-            BuffsProvide = new[] { StatusIDs.Soulsow },
+            BuffsProvide = new[] { StatusID.Soulsow },
             OtherCheck = b => !InCombat,
         },
 
         //收获月
         HarvestMoon = new(24388)
         {
-            BuffsNeed = new[] { StatusIDs.Soulsow },
+            BuffsNeed = new[] { StatusID.Soulsow },
             OtherCheck = b => InCombat,
         },
 

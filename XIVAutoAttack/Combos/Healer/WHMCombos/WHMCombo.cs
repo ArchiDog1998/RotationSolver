@@ -13,7 +13,7 @@ namespace XIVAutoAttack.Combos.Healer.WHMCombos;
 
 internal abstract class WHMCombo<TCmd> : JobGaugeCombo<WHMGauge, TCmd> where TCmd : Enum
 {
-    public sealed override uint[] JobIDs => new uint[] { 24, 6 };
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.WhiteMage, ClassJobID.Conjurer };
     private sealed protected override BaseAction Raise => Raise1;
 
     public static readonly BaseAction
@@ -33,7 +33,7 @@ internal abstract class WHMCombo<TCmd> : JobGaugeCombo<WHMGauge, TCmd> where TCm
         //医济
         Medica2 = new(133, true, isEot: true)
         {
-            BuffsProvide = new[] { StatusIDs.Medica2, StatusIDs.TrueMedica2 },
+            BuffsProvide = new[] { StatusID.Medica2, StatusID.TrueMedica2 },
         },
 
         //再生
@@ -41,9 +41,9 @@ internal abstract class WHMCombo<TCmd> : JobGaugeCombo<WHMGauge, TCmd> where TCm
         {
             TargetStatus = new[]
             {
-                StatusIDs.Regen1,
-                StatusIDs.Regen2,
-                StatusIDs.Regen3,
+                StatusID.Regen1,
+                StatusID.Regen2,
+                StatusID.Regen3,
             }
         },
 
@@ -93,11 +93,11 @@ internal abstract class WHMCombo<TCmd> : JobGaugeCombo<WHMGauge, TCmd> where TCm
         //疾风 Dot
         Aero = new(121, isEot: true)//烈风132 天辉16532
         {
-            TargetStatus = new ushort[]
+            TargetStatus = new StatusID[]
             {
-                    StatusIDs.Aero,
-                    StatusIDs.Aero2,
-                    StatusIDs.Dia,
+                    StatusID.Aero,
+                    StatusID.Aero2,
+                    StatusID.Dia,
             }
         },
 

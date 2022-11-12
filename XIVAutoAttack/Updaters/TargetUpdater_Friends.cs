@@ -86,39 +86,31 @@ namespace XIVAutoAttack.Updaters
                 return false;
             }).ToArray();
 
-            uint[] dangeriousStatus = new uint[]
+            var dangeriousStatus = new StatusID[]
             {
-                StatusIDs.Doom,
-                StatusIDs.Amnesia,
-                StatusIDs.Stun,
-                StatusIDs.Stun2,
-                StatusIDs.Sleep,
-                StatusIDs.Sleep2,
-                StatusIDs.Sleep3,
-                StatusIDs.Pacification,
-                StatusIDs.Pacification2,
-                StatusIDs.Silence,
-                StatusIDs.Slow,
-                StatusIDs.Slow2,
-                StatusIDs.Slow3,
-                StatusIDs.Slow4,
-                StatusIDs.Slow5,
-                StatusIDs.Blind,
-                StatusIDs.Blind2,
-                StatusIDs.Blind3,
-                StatusIDs.Paralysis,
-                StatusIDs.Paralysis2,
-                StatusIDs.Nightmare,
+                StatusID.Doom,
+                StatusID.Amnesia,
+                StatusID.Stun,
+                StatusID.Stun2,
+                StatusID.Sleep,
+                StatusID.Sleep2,
+                StatusID.Sleep3,
+                StatusID.Pacification,
+                StatusID.Pacification2,
+                StatusID.Silence,
+                StatusID.Slow,
+                StatusID.Slow2,
+                StatusID.Slow3,
+                StatusID.Slow4,
+                StatusID.Slow5,
+                StatusID.Blind,
+                StatusID.Blind2,
+                StatusID.Blind3,
+                StatusID.Paralysis,
+                StatusID.Paralysis2,
+                StatusID.Nightmare,
             };
-            DyingPeople = WeakenPeople.Where(p =>
-            {
-                foreach (var status in p.StatusList)
-                {
-                    if (dangeriousStatus.Contains(status.StatusId)) return true;
-                    //if (status.StackCount > 2) return true;
-                }
-                return false;
-            }).ToArray();
+            DyingPeople = WeakenPeople.Where(p => p.HaveStatus(dangeriousStatus)).ToArray();
             #endregion
 
             #region Health
@@ -145,7 +137,7 @@ namespace XIVAutoAttack.Updaters
             {
                 //TODO:少了所有罩子类技能
                 var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, 
-                    StatusIDs.AspectedHelios, StatusIDs.Medica2, StatusIDs.TrueMedica2)
+                    StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2)
                     * Service.Configuration.HealingOfTimeSubstactArea;
 
                 CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility
@@ -159,9 +151,9 @@ namespace XIVAutoAttack.Updaters
                 CanHealAreaAbility = CanHealAreaSpell = false;
             }
 
-            var singleHots = new ushort[] {StatusIDs.AspectedBenefic, StatusIDs.Regen1,
-                StatusIDs.Regen2,
-                StatusIDs.Regen3};
+            var singleHots = new StatusID[] {StatusID.AspectedBenefic, StatusID.Regen1,
+                StatusID.Regen2,
+                StatusID.Regen3};
 
             //Hot衰减
             var abilityCount = PartyMembers.Count(p =>
@@ -188,7 +180,7 @@ namespace XIVAutoAttack.Updaters
             #endregion
         }
 
-        static float GetHealingOfTimeRatio(BattleChara target, params ushort[] statusIds)
+        static float GetHealingOfTimeRatio(BattleChara target, params StatusID[] statusIds)
         {
             var buffTime = target.FindStatusTime(statusIds);
 
