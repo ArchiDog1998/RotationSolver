@@ -66,28 +66,31 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
             if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolDown || !Drill.IsCoolDown) && Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
-        //AOE,毒菌冲击
-        if (Bioblaster.ShouldUse(out act)) return true;
-        //单体,四个牛逼的技能。先空气锚再钻头
-        if (AirAnchor.ShouldUse(out act)) return true;
-        else if (!AirAnchor.EnoughLevel && HotShot.ShouldUse(out act)) return true;
-        if (Drill.ShouldUse(out act)) return true;
-        if (ChainSaw.ShouldUse(out act, mustUse: true))
+        if (!JobGauge.IsOverheated || JobGauge.IsOverheated && RemainAfterGCD(JobGauge.OverheatTimeRemaining, 0))
         {
-            if (Player.HaveStatusFromSelf(StatusID.Reassemble)) return true;
-            if (!Config.GetBoolByName("MCH_Opener") || Wildfire.IsCoolDown) return true;
-            if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(4)) return true;
-            if (Drill.IsCoolDown && Drill.ElapsedAfterGCD(3)) return true;
+            //AOE,毒菌冲击
+            if (Bioblaster.ShouldUse(out act)) return true;
+            //单体,四个牛逼的技能。先空气锚再钻头
+            if (AirAnchor.ShouldUse(out act)) return true;
+            else if (!AirAnchor.EnoughLevel && HotShot.ShouldUse(out act)) return true;
+            if (Drill.ShouldUse(out act)) return true;
+            if (ChainSaw.ShouldUse(out act, mustUse: true))
+            {
+                if (Player.HaveStatusFromSelf(StatusID.Reassemble)) return true;
+                if (!Config.GetBoolByName("MCH_Opener") || Wildfire.IsCoolDown) return true;
+                if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(4)) return true;
+                if (Drill.IsCoolDown && Drill.ElapsedAfterGCD(3)) return true;
+            }
         }
 
         //群体常规GCD
         if (JobGauge.IsOverheated && AutoCrossbow.ShouldUse(out act)) return true;
         if (SpreadShot.ShouldUse(out act)) return true;
-        //过热状态
 
+        //过热状态
+        if (JobGauge.IsOverheated && HeatBlast.ShouldUse(out act)) return true;
 
         //单体常规GCD
-        if (JobGauge.IsOverheated && HeatBlast.ShouldUse(out act)) return true;
         if (CleanShot.ShouldUse(out act)) return true;
         if (SlugShot.ShouldUse(out act)) return true;
         if (SplitShot.ShouldUse(out act)) return true;

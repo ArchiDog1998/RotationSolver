@@ -14,14 +14,27 @@ namespace XIVAutoAttack.Updaters
 {
     internal static partial class TargetUpdater
     {
+        /// <summary>
+        /// 小队成员们
+        /// </summary>
         public static BattleChara[] PartyMembers { get; private set; } = new PlayerCharacter[0];
         /// <summary>
-        /// 玩家们
+        /// 团队成员们
         /// </summary>
         internal static BattleChara[] AllianceMembers { get; private set; } = new PlayerCharacter[0];
+
+        /// <summary>
+        /// 小队坦克们
+        /// </summary>
         internal static BattleChara[] PartyTanks { get; private set; } = new PlayerCharacter[0];
+        /// <summary>
+        /// 小队治疗们
+        /// </summary>
         internal static BattleChara[] PartyHealers { get; private set; } = new PlayerCharacter[0];
 
+        /// <summary>
+        /// 团队坦克们
+        /// </summary>
         internal static BattleChara[] AllianceTanks { get; private set; } = new PlayerCharacter[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -35,9 +48,21 @@ namespace XIVAutoAttack.Updaters
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static BattleChara[] DyingPeople { get; private set; } = new PlayerCharacter[0];
+        /// <summary>
+        /// 小队成员HP
+        /// </summary>
         internal static float[] PartyMembersHP { get; private set; } = new float[0];
+        /// <summary>
+        /// 小队成员最小的HP
+        /// </summary>
         internal static float PartyMembersMinHP { get; private set; } = 0;
+        /// <summary>
+        /// 小队成员平均HP
+        /// </summary>
         internal static float PartyMembersAverHP { get; private set; } = 0;
+        /// <summary>
+        /// 小队成员HP差值
+        /// </summary>
         internal static float PartyMembersDifferHP { get; private set; } = 0;
 
 
@@ -52,7 +77,14 @@ namespace XIVAutoAttack.Updaters
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool CanHealSingleSpell { get; private set; } = false;
+
+        /// <summary>
+        /// 有宠物
+        /// </summary>
         internal static bool HavePet { get; private set; } = false;
+        /// <summary>
+        /// 血量没有满
+        /// </summary>
         internal static bool HPNotFull { get; private set; } = false;
 
         internal unsafe static void UpdateFriends()

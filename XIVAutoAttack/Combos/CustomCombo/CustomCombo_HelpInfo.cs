@@ -26,6 +26,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
         }
 
+        /// <summary>
+        /// 命令说明
+        /// </summary>
         protected virtual SortedList<TCmd, string> CommandDescription { get; } = new SortedList<TCmd, string>();
 
 

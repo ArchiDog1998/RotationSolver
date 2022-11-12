@@ -42,34 +42,19 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
         AutoCrossbow = new(16497),
 
         //热弹
-        HotShot = new(2872)
-        {
-            //OtherCheck = AirAnchor.OtherCheck,
-        },
+        HotShot = new(2872),
 
         //空气锚
-        AirAnchor = new(16500)
-        {
-            //OtherCheck = b => !JobGauge.IsOverheated || JobGauge.IsOverheated && RemainAfterGCD(JobGauge.OverheatTimeRemaining, 0),
-        },
+        AirAnchor = new(16500),
 
         //钻头
-        Drill = new(16498)
-        {
-            OtherCheck = AirAnchor.OtherCheck,
-        },
+        Drill = new(16498),
 
         //回转飞锯
-        ChainSaw = new(25788)
-        {
-            OtherCheck = AirAnchor.OtherCheck,
-        },
+        ChainSaw = new(25788),
 
         //毒菌冲击
-        Bioblaster = new(16499, isEot: true)
-        {
-            OtherCheck = AirAnchor.OtherCheck,
-        },
+        Bioblaster = new(16499, isEot: true),
 
         //整备
         Reassemble = new(2876)
