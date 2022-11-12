@@ -105,6 +105,11 @@ namespace XIVAutoAttack.Helpers
             return obj.FindStatus(true, effectIDs).Length > 0;
         }
 
+        /// <summary>
+        /// 获得状态的名字
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         internal static string GetStatusName(StatusID id)
         {
             return Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow((uint)id).Name.ToString();

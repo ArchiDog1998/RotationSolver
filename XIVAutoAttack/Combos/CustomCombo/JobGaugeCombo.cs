@@ -10,6 +10,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
     {
         private static T _gauge;
 
+        /// <summary>
+        /// 职业量谱
+        /// </summary>
         public static T JobGauge
         {
             get
@@ -36,6 +39,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         }
 
+        /// <summary>
+        /// 是否使用爆发药
+        /// </summary>
+        /// <param name="act"></param>
+        /// <returns></returns>
         protected bool UseBreakItem(out IAction act)
         {
             act = null;

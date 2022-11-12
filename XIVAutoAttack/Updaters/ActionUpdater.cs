@@ -123,6 +123,9 @@ namespace XIVAutoAttack.Updaters
 
         static uint _lastMP = 0;
         static DateTime _lastMPUpdate = DateTime.Now;
+        /// <summary>
+        /// 跳蓝经过时间
+        /// </summary>
         internal static float MPUpdateElapsed => (float)(DateTime.Now - _lastMPUpdate).TotalSeconds % 3;
 
         private static void UPdateMPTimer()

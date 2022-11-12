@@ -12,6 +12,9 @@ namespace XIVAutoAttack.Actions.BaseAction
         private bool _shouldEndSpecial;
         private bool _isFriendly;
         private bool _isEot;
+        /// <summary>
+        /// 玩家当前等级是否大于等于技能可用等级
+        /// </summary>
         internal bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
         public string Name => _action.Name;
         public string Description => string.Empty;
@@ -58,7 +61,13 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
             }
         }
+        /// <summary>
+        /// 技能ID
+        /// </summary>
         public uint ID => _action.RowId;
+        /// <summary>
+        /// 调整后的ID(真实技能ID)
+        /// </summary>
         public uint AdjustedID => Service.IconReplacer.OriginalHook(ID);
 
         public uint IconID { get; }

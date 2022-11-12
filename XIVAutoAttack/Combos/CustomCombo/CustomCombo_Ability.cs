@@ -254,6 +254,12 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         act = null; return false;
     }
 
+    /// <summary>
+    /// 移动能力技
+    /// </summary>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected virtual bool MoveAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
@@ -271,10 +277,22 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         act = null; return false;
     }
 
+    /// <summary>
+    /// 单体防御能力技
+    /// </summary>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected virtual bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
+    /// <summary>
+    /// 范围防御能力技
+    /// </summary>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected virtual bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;

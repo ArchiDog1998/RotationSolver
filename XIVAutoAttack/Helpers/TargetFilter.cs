@@ -121,6 +121,11 @@ namespace XIVAutoAttack.Helpers
             return tars.ElementAt(0);
         }
 
+        /// <summary>
+        /// 发现被攻击的目标
+        /// </summary>
+        /// <param name="charas"></param>
+        /// <returns></returns>
         internal static BattleChara FindAttackedTarget(BattleChara[] charas)
         {
             if (charas.Length == 0) return null;
@@ -136,6 +141,12 @@ namespace XIVAutoAttack.Helpers
             return (attachedT.Count > 0 ? attachedT.ToArray() : charas).OrderBy(ObjectHelper.GetHealthRatio).First();
         }
 
+        /// <summary>
+        /// 挑衅目标
+        /// </summary>
+        /// <param name="inputCharas"></param>
+        /// <param name="needDistance"></param>
+        /// <returns></returns>
         internal static BattleChara[] ProvokeTarget(BattleChara[] inputCharas, bool needDistance = false)
         {
             var tankIDS = GetJobCategory(TargetUpdater.AllianceMembers, Role.防护).Select(member => member.ObjectId);
@@ -161,7 +172,12 @@ namespace XIVAutoAttack.Helpers
             return targets.ToArray();
         }
 
-
+        /// <summary>
+        /// 获得死亡的角色
+        /// </summary>
+        /// <param name="deathAll"></param>
+        /// <param name="deathParty"></param>
+        /// <returns></returns>
         internal static BattleChara GetDeathPeople(BattleChara[] deathAll, BattleChara[] deathParty)
         {
             if (deathParty.Length != 0)
@@ -318,6 +334,13 @@ namespace XIVAutoAttack.Helpers
         #endregion
 
         #region Find many targets
+        /// <summary>
+        /// 获得范围<paramref name="radius"/>内对象<paramref name="objects"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objects"></param>
+        /// <param name="radius"></param>
+        /// <returns></returns>
         internal static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
         {
             return objects.Where(o => DistanceToPlayer(o) <= radius).ToArray();
@@ -461,6 +484,11 @@ namespace XIVAutoAttack.Helpers
         }
         #endregion
 
+        /// <summary>
+        /// 对象<paramref name="obj"/>距玩家的距离
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         internal static float DistanceToPlayer(this GameObject obj)
         {
             var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
