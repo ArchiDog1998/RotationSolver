@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Gui.Dtr;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
@@ -52,7 +53,13 @@ namespace XIVAutoAttack.Updaters
                 && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
             ByteColor c = canMove && Service.Configuration.CheckForCasting ? greenColor : redColor;
-            MovingUpdater.IsMoving = canMove;
+            var isAlive = false;
+            if(Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId) is BattleChara b
+                && b.CurrentHp != 0)
+            {
+                isAlive = true;
+            }
+            MovingUpdater.IsMoving = canMove && isAlive;
 
             var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);
             if (castBar == IntPtr.Zero) return;
