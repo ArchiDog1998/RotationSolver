@@ -7,14 +7,13 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Healer.SGECombos;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Healer.SGECombo_Default;
+using static XIVAutoAttack.Combos.Healer.SGECombos.SGECombo_Default;
 
-namespace XIVAutoAttack.Combos.Healer;
+namespace XIVAutoAttack.Combos.Healer.SGECombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SGECombo.cs")]
 internal sealed class SGECombo_Default : SGECombo<CommandType>
@@ -58,8 +57,8 @@ internal sealed class SGECombo_Default : SGECombo<CommandType>
         if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //下个技能是
-        if (nextGCD.IsAnySameAction(false, Pneuma , EukrasianDiagnosis, 
-            EukrasianPrognosis , Diagnosis , Prognosis))
+        if (nextGCD.IsAnySameAction(false, Pneuma, EukrasianDiagnosis,
+            EukrasianPrognosis, Diagnosis, Prognosis))
         {
             //活化
             if (Zoe.ShouldUse(out act)) return true;
@@ -194,7 +193,7 @@ internal sealed class SGECombo_Default : SGECombo<CommandType>
         //失衡
         if (Dyskrasia.ShouldUse(out act)) return true;
 
-        if(EukrasianDosis.ShouldUse(out var enAct))
+        if (EukrasianDosis.ShouldUse(out var enAct))
         {
             //补上Dot
             if (Eukrasia.ShouldUse(out act)) return true;

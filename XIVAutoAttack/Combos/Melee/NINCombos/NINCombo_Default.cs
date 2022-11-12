@@ -6,14 +6,13 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Melee.NINCombos;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Melee.NINCombo_Default;
+using static XIVAutoAttack.Combos.Melee.NINCombos.NINCombo_Default;
 
-namespace XIVAutoAttack.Combos.Melee;
+namespace XIVAutoAttack.Combos.Melee.NINCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/NINCombo.cs")]
 internal sealed class NINCombo_Default : NINCombo<CommandType>
@@ -268,13 +267,13 @@ internal sealed class NINCombo_Default : NINCombo<CommandType>
 
         var replace = Service.IconReplacer.OriginalHook(2260);
         //无忍术或者忍术中途停了
-        if (_ninactionAim == null || (replace != 2260 && replace != _ninactionAim.ID))
+        if (_ninactionAim == null || replace != 2260 && replace != _ninactionAim.ID)
         {
             //大招
             if (FleetingRaiju.ShouldUse(out act)) return true;
             if (ForkedRaiju.ShouldUse(out act))
             {
-                if (TargetFilter.DistanceToPlayer(ForkedRaiju.Target) < 2)
+                if (ForkedRaiju.Target.DistanceToPlayer() < 2)
                 {
                     return true;
                 }

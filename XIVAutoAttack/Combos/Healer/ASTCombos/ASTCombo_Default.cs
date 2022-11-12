@@ -9,14 +9,13 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Healer.ASTCombos;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Healer.ASTCombo_Default;
+using static XIVAutoAttack.Combos.Healer.ASTCombos.ASTCombo_Default;
 
-namespace XIVAutoAttack.Combos.Healer;
+namespace XIVAutoAttack.Combos.Healer.ASTCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/ASTCombo.cs")]
 internal sealed class ASTCombo_Default : ASTCombo<CommandType>
@@ -29,11 +28,11 @@ internal sealed class ASTCombo_Default : ASTCombo<CommandType>
     }
 
     protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    { 
+    {
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
 
-    public override SortedList<DescType, string> DescriptionDict => new ()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.范围治疗, $"GCD: {AspectedHelios}, {Helios}\n                     能力: {EarthlyStar}, {CrownPlay}, {CelestialOpposition}"},
         {DescType.单体治疗, $"GCD: {AspectedBenefic}, {Benefic2}, {Benefic}\n                     能力: {CelestialIntersection}, {EssentialDignity}"},
@@ -69,13 +68,13 @@ internal sealed class ASTCombo_Default : ASTCombo<CommandType>
         if (Combust.ShouldUse(out act)) return true;
         if (Malefic.ShouldUse(out act)) return true;
         if (Combust.ShouldUse(out act, mustUse: IsMoving && HaveHostileInRange)) return true;
-/*        var times = StatusHelper.FindStatusFromSelf(Actions.Combust.Target,
-            new ushort[] { ObjectStatus.Combust, ObjectStatus.Combust2, ObjectStatus.Combust3 });
-        if (times.Length == 0 || times.Max() < 25)
-        {
-            if (Actions.Combust.ShouldUseAction(out act, mustUse: IsMoving && HaveTargetAngle)) return true;
-        }
-*/
+        /*        var times = StatusHelper.FindStatusFromSelf(Actions.Combust.Target,
+                    new ushort[] { ObjectStatus.Combust, ObjectStatus.Combust2, ObjectStatus.Combust3 });
+                if (times.Length == 0 || times.Max() < 25)
+                {
+                    if (Actions.Combust.ShouldUseAction(out act, mustUse: IsMoving && HaveTargetAngle)) return true;
+                }
+        */
         act = null!;
         return false;
     }
@@ -106,7 +105,7 @@ internal sealed class ASTCombo_Default : ASTCombo<CommandType>
         }
 
         //如果要单奶了，先上星位合图！
-        if (nextGCD.IsAnySameAction(true, Benefic, Benefic2 , AspectedBenefic))
+        if (nextGCD.IsAnySameAction(true, Benefic, Benefic2, AspectedBenefic))
         {
             if (Synastry.ShouldUse(out act)) return true;
         }

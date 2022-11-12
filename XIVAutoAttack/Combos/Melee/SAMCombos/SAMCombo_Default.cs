@@ -5,13 +5,12 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Melee.SAMCombos;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
-using static XIVAutoAttack.Combos.Melee.SAMCombo_Default;
+using static XIVAutoAttack.Combos.Melee.SAMCombos.SAMCombo_Default;
 
-namespace XIVAutoAttack.Combos.Melee;
+namespace XIVAutoAttack.Combos.Melee.SAMCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/SAMCombo.cs")]
 internal sealed class SAMCombo_Default : SAMCombo<CommandType>

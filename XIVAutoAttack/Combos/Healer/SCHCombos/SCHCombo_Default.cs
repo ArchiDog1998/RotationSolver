@@ -6,15 +6,14 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Healer.SCHCombos;
 using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Healer.SCHCombo_Default;
+using static XIVAutoAttack.Combos.Healer.SCHCombos.SCHCombo_Default;
 
-namespace XIVAutoAttack.Combos.Healer;
+namespace XIVAutoAttack.Combos.Healer.SCHCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SCHCombo.cs")]
 internal sealed class SCHCombo_Default : SCHCombo<CommandType>
@@ -106,8 +105,8 @@ internal sealed class SCHCombo_Default : SCHCombo<CommandType>
         //判断是否有人有线
         var haveLink = TargetUpdater.PartyMembers.Any(p =>
         p.StatusList.Any(
-            status => (status.StatusId == 1223 && status.SourceObject != null
-            && status.SourceObject.OwnerId == Service.ClientState.LocalPlayer.ObjectId))
+            status => status.StatusId == 1223 && status.SourceObject != null
+            && status.SourceObject.OwnerId == Service.ClientState.LocalPlayer.ObjectId)
         );
         //以太契约
         if (Aetherpact.ShouldUse(out act) && JobGauge.FairyGauge >= 70 && !haveLink) return true;

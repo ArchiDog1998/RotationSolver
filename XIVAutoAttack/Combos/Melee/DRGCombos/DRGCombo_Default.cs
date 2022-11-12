@@ -9,13 +9,12 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Healer;
-using XIVAutoAttack.Combos.Melee.DRGCombos;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Melee.DRGCombo_Default;
+using static XIVAutoAttack.Combos.Melee.DRGCombos.DRGCombo_Default;
 
-namespace XIVAutoAttack.Combos.Melee;
+namespace XIVAutoAttack.Combos.Melee.DRGCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/DRGCombo.cs")]
 internal sealed class DRGCombo_Default : DRGCombo<CommandType>

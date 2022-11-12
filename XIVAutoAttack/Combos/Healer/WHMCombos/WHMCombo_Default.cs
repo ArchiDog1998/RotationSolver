@@ -5,14 +5,13 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Healer.WHMCombos;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Healer.WHMCombo_Default;
+using static XIVAutoAttack.Combos.Healer.WHMCombos.WHMCombo_Default;
 
-namespace XIVAutoAttack.Combos.Healer;
+namespace XIVAutoAttack.Combos.Healer.WHMCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/WHMCombo.cs")]
 internal sealed class WHMCombo_Default : WHMCombo<CommandType>
@@ -48,7 +47,7 @@ internal sealed class WHMCombo_Default : WHMCombo<CommandType>
         //泄蓝花 狂喜之心
         bool liliesNearlyFull = JobGauge.Lily == 2 && JobGauge.LilyTimer >= 17000;
         bool liliesFullNoBlood = JobGauge.Lily == 3 && JobGauge.BloodLily < 3;
-        if(Config.GetBoolByName("UseLilyWhenFull") && (liliesNearlyFull || liliesFullNoBlood))
+        if (Config.GetBoolByName("UseLilyWhenFull") && (liliesNearlyFull || liliesFullNoBlood))
         {
             if (AfflatusRapture.ShouldUse(out act)) return true;
         }
@@ -60,7 +59,7 @@ internal sealed class WHMCombo_Default : WHMCombo<CommandType>
         if (Aero.ShouldUse(out act, mustUse: IsMoving && HaveHostileInRange)) return true;
         if (Stone.ShouldUse(out act)) return true;
 
-        
+
         act = null;
         return false;
     }

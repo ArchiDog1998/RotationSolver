@@ -81,9 +81,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     {
                         if (con.IsTheSame(lastCon)) return lastCon;
                     }
+                    lastcom[Author] = con;
                 }
-                //con.Supply(lastcom);
-                if (!Service.Configuration.CombosConfigurations.ContainsKey(JobIDs[0]))
+                else
                 {
 					Service.Configuration.CombosConfigurations.Add(JobIDs[0], new Dictionary<string, ActionConfiguration>() { {Author,con } });
 				}

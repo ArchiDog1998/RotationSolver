@@ -14,7 +14,7 @@ changelog: |-
   - 可以根据Hot技能适当降低治疗阈值
   - 可以同一个职业多个不同Combo
   ## API
-  - 
+  - 改框架
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

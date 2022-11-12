@@ -6,13 +6,12 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Melee.MNKCombos;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Melee.MNKCombo_Default;
+using static XIVAutoAttack.Combos.Melee.MNKCombos.MNKCombo_Default;
 
-namespace XIVAutoAttack.Combos.Melee;
+namespace XIVAutoAttack.Combos.Melee.MNKCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/MNKCombo.cs")]
 internal sealed class MNKCombo_Default : MNKCombo<CommandType>

@@ -4,12 +4,11 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Melee.RPRCombos;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Melee.RPRCombo_Default;
+using static XIVAutoAttack.Combos.Melee.RPRCombos.RPRCombo_Default;
 
-namespace XIVAutoAttack.Combos.Melee;
+namespace XIVAutoAttack.Combos.Melee.RPRCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/RPRCombo.cs")]
 internal sealed class RPRCombo_Default : RPRCombo<CommandType>
@@ -25,7 +24,7 @@ internal sealed class RPRCombo_Default : RPRCombo<CommandType>
     {
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
-    public override SortedList<DescType, string> DescriptionDict => new ()
+    public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.单体防御, $"{ArcaneCrest}"},
     };
@@ -88,7 +87,7 @@ internal sealed class RPRCombo_Default : RPRCombo<CommandType>
         if (Slice.ShouldUse(out act)) return true;
 
         //摸不到怪 先花掉收获月
-        if (HarvestMoon.ShouldUse(out act, mustUse:true)) return true;
+        if (HarvestMoon.ShouldUse(out act, mustUse: true)) return true;
         if (Harpe.ShouldUse(out act)) return true;
 
         return false;
