@@ -16,6 +16,9 @@ namespace XIVAutoAttack.Updaters
     {
         private static BattleChara[] AllTargets { get; set; } = new BattleChara[0];
 
+        /// <summary>
+        /// 敌人
+        /// </summary>
         internal static BattleChara[] HostileTargets { get; private set; } = new BattleChara[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]

@@ -59,46 +59,16 @@ internal abstract class BRDCombo_Base<TCmd> : JobGaugeCombo<BRDGauge, TCmd> wher
         BattleVoice = new(118, true),
 
         //猛者强击
-        RagingStrikes = new(101)
-        {
-            //    OtherCheck = b =>
-            //    {
-            //        if (JobGauge.Song == Song.WANDERER || !WanderersMinuet.EnoughLevel && BattleVoice.WillHaveOneChargeGCD(1, 1)
-            //            || !BattleVoice.EnoughLevel) return true;
+        RagingStrikes = new(101),
 
-            //        return false;
-            //    },
-        },
+        //光明神的最终乐章
+        RadiantFinale = new(25785, true),
 
-            //光明神的最终乐章
-            RadiantFinale = new(25785, true)
-            {
-                //    OtherCheck = b =>
-                //    {
-                //        static bool SongIsNotNone(Song value) => value != Song.NONE;
-                //        static bool SongIsWandererMinuet(Song value) => value == Song.WANDERER;
-                //        if ((Array.TrueForAll(JobGauge.Coda, SongIsNotNone) || Array.Exists(JobGauge.Coda, SongIsWandererMinuet))
-                //            && BattleVoice.WillHaveOneChargeGCD()
-                //            && RagingStrikes.IsCoolDown
-                //            && Player.HaveStatus(StatusIDs.RagingStrikes)
-                //            && RagingStrikes.ElapsedAfterGCD(1)) return true;
-                //        return false;
-                //    },
-            },
+        //纷乱箭
+        Barrage = new(107),
 
-                //纷乱箭
-                Barrage = new(107)
-                {
-                    //    BuffsProvide = new[] { StatusIDs.StraightShotReady },
-                    //    OtherCheck = b =>
-                    //    {
-                    //        if (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.WillHaveOneChargeGCD() || JobGauge.Repertoire == 3) return false;
-                    //        return true;
-                    //    }
-                },
-
-                    //九天连箭
-                    EmpyrealArrow = new(3558),
+        //九天连箭
+        EmpyrealArrow = new(3558),
 
         //完美音调
         PitchPerfect = new(7404)
@@ -107,17 +77,10 @@ internal abstract class BRDCombo_Base<TCmd> : JobGaugeCombo<BRDGauge, TCmd> wher
         },
 
         //失血箭
-        Bloodletter = new(110)
-        {
-            //    OtherCheck = b =>
-            //    {
-            //        if (EmpyrealArrow.EnoughLevel && (!EmpyrealArrow.IsCoolDown || EmpyrealArrow.WillHaveOneChargeGCD())) return false;
-            //        return true;
-            //    }
-        },
+        Bloodletter = new(110),
 
-            //死亡箭雨
-            RainofDeath = new(117),
+        //死亡箭雨
+        RainofDeath = new(117),
 
         //连珠箭
         QuickNock = new(106) { BuffsProvide = new[] { StatusID.ShadowbiteReady } },

@@ -217,6 +217,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <returns></returns>
         private protected abstract bool GeneralGCD(out IAction act);
 
+        /// <summary>
+        /// 移动GCD技能
+        /// </summary>
+        /// <param name="act"></param>
+        /// <returns></returns>
         private protected virtual bool MoveGCD(out IAction act)
         {
             act = null; return false;
@@ -245,10 +250,20 @@ namespace XIVAutoAttack.Combos.CustomCombo
             act = null; return false;
         }
 
+        /// <summary>
+        /// 单体防御GCD
+        /// </summary>
+        /// <param name="act"></param>
+        /// <returns></returns>
         private protected virtual bool DefenseSingleGCD(out IAction act)
         {
             act = null; return false;
         }
+        /// <summary>
+        /// 范围防御GCD
+        /// </summary>
+        /// <param name="act"></param>
+        /// <returns></returns>
         private protected virtual bool DefenseAreaGCD(out IAction act)
         {
             act = null; return false;

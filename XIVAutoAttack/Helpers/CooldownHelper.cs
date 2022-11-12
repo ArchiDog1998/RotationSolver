@@ -78,6 +78,12 @@ namespace XIVAutoAttack.Helpers
             return IsLessThan(recast, remain);
         }
 
+        /// <summary>
+        /// 几秒钟以后是否已经结束
+        /// </summary>
+        /// <param name="remain">要多少秒呢</param>
+        /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
+        /// <returns>这个时间点是否已经结束</returns>
         internal static bool RecastAfter(float recast, float remain, bool addWeaponRemain = true)
         {
             if (addWeaponRemain) remain += ActionUpdater.WeaponRemain;
@@ -103,7 +109,7 @@ namespace XIVAutoAttack.Helpers
         /// <param name="isSpell">是否是需要咏唱的魔法</param>
         /// <param name="isSpellTime">是否是计算咏唱的真实消耗时间,否则计算到判定点的时间</param>
         /// <returns>返回真实消耗的时间(毫秒)</returns>
-        public static unsafe double CalcSpellTime(double GCDTime, bool isSpell = true , bool isSpellTime = true)
+        internal static unsafe double CalcSpellTime(double GCDTime, bool isSpell = true , bool isSpellTime = true)
         {
             var uiState = UIState.Instance();
             //获得当前等级

@@ -19,8 +19,14 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => (uint)JobIDs[0] == job.RowId).Role;
 
         public string Name => XIVAutoAttackPlugin.AllJobs.First(job => (uint)JobIDs[0] == job.RowId).Name;
+        /// <summary>
+        /// 作者
+        /// </summary>
         public abstract string Author { get; }
 
+        /// <summary>
+        /// 目标是否将要死亡
+        /// </summary>
         internal static bool IsTargetDying
         {
             get
@@ -30,6 +36,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
         }
 
+        /// <summary>
+        /// 目标是否是Boss
+        /// </summary>
         internal static bool IsTargetBoss
         {
             get
@@ -56,9 +65,14 @@ namespace XIVAutoAttack.Combos.CustomCombo
         }
         public string Description => string.Join('\n', DescriptionDict.Select(pair => pair.Key.ToString() + " → " + pair.Value));
 
+        /// <summary>
+        /// 说明字典
+        /// </summary>
         public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
 
-
+        /// <summary>
+        /// 有即刻相关Buff
+        /// </summary>
         internal static bool HaveSwift => Player.HaveStatusFromSelf(Swiftcast.BuffsProvide);
 
         internal virtual bool HaveShield => true;
