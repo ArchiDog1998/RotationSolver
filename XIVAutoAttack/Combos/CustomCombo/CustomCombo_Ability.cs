@@ -35,7 +35,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
                     if (LegSweep.ShouldUse(out act)) return true;
                     break;
                 case Role.Ô¶³Ì:
-                    if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+                    if (RangePhysicial.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id))
                     {
                         if (HeadGraze.ShouldUse(out act)) return true;
                     }
@@ -76,7 +76,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
                     if (Surecast.ShouldUse(out act)) return true;
                     break;
                 case Role.Ô¶³Ì:
-                    if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+                    if (RangePhysicial.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id))
                     {
                         if (ArmsLength.ShouldUse(out act)) return true;
                     }
@@ -177,7 +177,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
                 if (LucidDreaming.ShouldUse(out act)) return true;
                 break;
             case Role.Ô¶³Ì:
-                if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+                if (RangePhysicial.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id))
                 {
                     if (SecondWind.ShouldUse(out act)) return true;
                 }

@@ -50,7 +50,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     if (BreakItems.TinctureofStrength6.ShoudUseItem(out act)) return true;
                     break;
                 case Role.远程:
-                    if (RangePhysicial.Contains(Service.ClientState.LocalPlayer.ClassJob.Id))
+                    if (RangePhysicial.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id))
                     {
                         if (BreakItems.TinctureofDexterity6.ShoudUseItem(out act)) return true;
                     }

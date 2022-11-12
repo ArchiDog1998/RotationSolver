@@ -97,7 +97,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         /// <param name="act">返回的技能</param>
         /// <param name="lastAct">上一个Combo技能的值，如果需要算Combo，请输入他！<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
-        /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供，不判断AOE技能的敌人数量是否达标，并且如果有层数，放完所有层数。</param>
+        /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供，不判断AOE技能的敌人数量是否达标.</param>
         /// <param name="emptyOrSkipCombo">如果有层数，放完所有层数，不判断是否为Combo<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
         /// <returns>这个技能能不能用</returns>
         public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
@@ -187,7 +187,8 @@ namespace XIVAutoAttack.Actions.BaseAction
             else
             {
                 //如果是能力技能，还没填满。
-                if (!(mustUse || emptyOrSkipCombo) && RecastTimeRemain > ActionUpdater.WeaponRemain + ActionUpdater.WeaponTotal) return false;
+                if (!emptyOrSkipCombo && RecastTimeRemain > ActionUpdater.WeaponRemain + ActionUpdater.WeaponTotal)
+                    return false;
             }
 
             return true;
