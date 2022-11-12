@@ -11,7 +11,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Healer.WHMCombos;
 
-internal abstract class WHMCombo<TCmd> : JobGaugeCombo<WHMGauge, TCmd> where TCmd : Enum
+internal abstract class WHMCombo_Base<TCmd> : JobGaugeCombo<WHMGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.WhiteMage, ClassJobID.Conjurer };
     private sealed protected override BaseAction Raise => Raise1;

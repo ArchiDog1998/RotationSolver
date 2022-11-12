@@ -13,7 +13,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Melee.NINCombos;
 
-internal abstract class NINCombo<TCmd> : JobGaugeCombo<NINGauge, TCmd> where TCmd : Enum
+internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Ninja, ClassJobID.Rogue };
     public class NinAction : BaseAction

@@ -16,7 +16,7 @@ using static XIVAutoAttack.Combos.Healer.SCHCombos.SCHCombo_Default;
 namespace XIVAutoAttack.Combos.Healer.SCHCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SCHCombos/SCHCombo_Default.cs")]
-internal sealed class SCHCombo_Default : SCHCombo<CommandType>
+internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
 {
     public override string Author => "Ana Amari";
 

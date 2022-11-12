@@ -10,7 +10,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Tank.WARCombos;
 
-internal abstract class WARCombo<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCmd : Enum
+internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCmd : Enum
 {
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };

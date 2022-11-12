@@ -11,7 +11,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee.MNKCombos;
 
-internal abstract class MNKCombo<TCmd> : JobGaugeCombo<MNKGauge, TCmd> where TCmd : Enum
+internal abstract class MNKCombo_Base<TCmd> : JobGaugeCombo<MNKGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
 

@@ -12,7 +12,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Healer.SCHCombos;
 
-internal abstract class SCHCombo<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCmd : Enum
+internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Scholar };
 

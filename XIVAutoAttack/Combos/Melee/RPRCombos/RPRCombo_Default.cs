@@ -11,7 +11,7 @@ using static XIVAutoAttack.Combos.Melee.RPRCombos.RPRCombo_Default;
 namespace XIVAutoAttack.Combos.Melee.RPRCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/RPRCombos/RPRCombo_Default.cs")]
-internal sealed class RPRCombo_Default : RPRCombo<CommandType>
+internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
 {
     public override string Author => "逆光";
 

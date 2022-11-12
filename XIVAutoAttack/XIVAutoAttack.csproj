@@ -15,6 +15,9 @@
 		<DalamudLibPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\</DalamudLibPath>
 		<OutputPath>E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\$(ProjectName)</OutputPath>
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Combos\Melee\RPRCombos\RPRCombo_Base.cs~RF32fb3c3.TMP" />
+	</ItemGroup>
   <ItemGroup>
 	  <PackageReference Include="DalamudPackager" Version="2.1.8" />
 	  <Reference Include="Dalamud">

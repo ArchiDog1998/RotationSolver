@@ -15,7 +15,7 @@ using static XIVAutoAttack.Combos.Melee.NINCombos.NINCombo_Default;
 namespace XIVAutoAttack.Combos.Melee.NINCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/NINCombos/NINCombo_Default.cs")]
-internal sealed class NINCombo_Default : NINCombo<CommandType>
+internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
 {
     public override string Author => "秋水";
 

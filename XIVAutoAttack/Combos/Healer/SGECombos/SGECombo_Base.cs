@@ -14,7 +14,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Healer.SGECombos;
 
-internal abstract class SGECombo<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCmd : Enum
+internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
     private sealed protected override BaseAction Raise => Egeiro;

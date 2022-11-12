@@ -11,7 +11,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.SMNCombos;
 
-internal abstract class SMNCombo<TCmd> : JobGaugeCombo<SMNGauge, TCmd> where TCmd : Enum
+internal abstract class SMNCombo_Base<TCmd> : JobGaugeCombo<SMNGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Summoner, ClassJobID.Arcanist };
     protected override bool CanHealSingleSpell => false;

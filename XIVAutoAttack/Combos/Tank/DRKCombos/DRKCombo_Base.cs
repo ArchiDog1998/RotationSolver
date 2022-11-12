@@ -10,7 +10,7 @@ using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Tank.DRKCombos;
-internal abstract class DRKCombo<TCmd> : JobGaugeCombo<DRKGauge, TCmd> where TCmd : Enum
+internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
     internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.Grit);

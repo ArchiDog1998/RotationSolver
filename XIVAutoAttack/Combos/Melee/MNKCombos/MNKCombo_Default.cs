@@ -14,7 +14,7 @@ using static XIVAutoAttack.Combos.Melee.MNKCombos.MNKCombo_Default;
 namespace XIVAutoAttack.Combos.Melee.MNKCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/MNKCombos/MNKCombo_Default.cs")]
-internal sealed class MNKCombo_Default : MNKCombo<CommandType>
+internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
 {
     public override string Author => "ÇïË®";
 

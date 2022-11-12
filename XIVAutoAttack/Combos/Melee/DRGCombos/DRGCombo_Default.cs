@@ -17,7 +17,7 @@ using static XIVAutoAttack.Combos.Melee.DRGCombos.DRGCombo_Default;
 namespace XIVAutoAttack.Combos.Melee.DRGCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/DRGCombos/DRGCombo_Default.cs")]
-internal sealed class DRGCombo_Default : DRGCombo<CommandType>
+internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
 {
     public override string Author => "Ï«¥ÙMoon";
 

@@ -14,7 +14,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombos
 {
-    internal abstract partial class BLMCombo<TCmd> : JobGaugeCombo<BLMGauge, TCmd> where TCmd : Enum
+    internal abstract partial class BLMCombo_Base<TCmd> : JobGaugeCombo<BLMGauge, TCmd> where TCmd : Enum
     {
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
 

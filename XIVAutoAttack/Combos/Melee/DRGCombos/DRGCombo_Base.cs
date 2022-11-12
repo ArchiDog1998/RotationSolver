@@ -14,7 +14,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee.DRGCombos;
 
-internal abstract class DRGCombo<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCmd : Enum
+internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dragoon, ClassJobID.Lancer };
     private static bool safeMove = false;

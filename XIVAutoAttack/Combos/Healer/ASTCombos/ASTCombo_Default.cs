@@ -18,7 +18,7 @@ using static XIVAutoAttack.Combos.Healer.ASTCombos.ASTCombo_Default;
 namespace XIVAutoAttack.Combos.Healer.ASTCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/ASTCombos/ASTCombo_Default.cs")]
-internal sealed class ASTCombo_Default : ASTCombo<CommandType>
+internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
 {
     public override string Author => "汐ベMoon";
 
