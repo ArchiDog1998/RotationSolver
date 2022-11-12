@@ -13,7 +13,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial.BRDCombos;
 
-internal abstract class BRDCombo<TCmd> : JobGaugeCombo<BRDGauge, TCmd> where TCmd : Enum
+internal abstract class BRDCombo_Base<TCmd> : JobGaugeCombo<BRDGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Bard, ClassJobID.Archer };
 

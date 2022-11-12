@@ -13,7 +13,7 @@ namespace XIVAutoAttack.Combos.Melee.SAMCombos;
 
 //[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/SAMCombo.cs",
 //   ComboAuthor.fatinghenji)]
-internal abstract class SAMCombo<TCmd> : JobGaugeCombo<SAMGauge, TCmd> where TCmd : Enum
+internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
 

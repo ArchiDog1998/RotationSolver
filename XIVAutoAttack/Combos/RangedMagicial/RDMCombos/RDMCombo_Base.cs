@@ -13,7 +13,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.RDMCombos;
 
-internal abstract class RDMCombo<TCmd> : JobGaugeCombo<RDMGauge, TCmd> where TCmd : Enum
+internal abstract class RDMCombo_Base<TCmd> : JobGaugeCombo<RDMGauge, TCmd> where TCmd : Enum
 {
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.RedMage };

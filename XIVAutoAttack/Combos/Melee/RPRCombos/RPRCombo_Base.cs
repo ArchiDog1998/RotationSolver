@@ -9,7 +9,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Melee.RPRCombos;
 
-internal abstract class RPRCombo<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCmd : Enum
+internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
 

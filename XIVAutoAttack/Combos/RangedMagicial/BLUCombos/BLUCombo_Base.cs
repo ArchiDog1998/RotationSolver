@@ -9,7 +9,7 @@ using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
 {
-    internal abstract class BLUCombo<TCmd> : OtherCombo<TCmd> where TCmd : Enum
+    internal abstract class BLUCombo_Base<TCmd> : OtherCombo<TCmd> where TCmd : Enum
     {
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlueMage };
 

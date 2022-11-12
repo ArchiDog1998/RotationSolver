@@ -12,7 +12,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial.MCHCombos;
 
-internal abstract class MCHCombo<TCmd> : JobGaugeCombo<MCHGauge, TCmd> where TCmd : Enum
+internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Machinist };
 

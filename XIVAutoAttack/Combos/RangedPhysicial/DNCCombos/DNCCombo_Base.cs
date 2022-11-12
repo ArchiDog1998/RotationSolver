@@ -10,7 +10,7 @@ using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
-internal abstract class DNCCombo<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCmd : Enum
+internal abstract class DNCCombo_Base<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCmd : Enum
 {
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dancer };

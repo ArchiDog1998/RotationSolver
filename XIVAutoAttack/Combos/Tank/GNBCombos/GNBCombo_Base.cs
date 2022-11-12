@@ -13,7 +13,7 @@ using XIVAutoAttack.Updaters;
 namespace XIVAutoAttack.Combos.Tank.GNBCombos;
 
 
-internal abstract class GNBCombo<TCmd> : JobGaugeCombo<GNBGauge, TCmd> where TCmd : Enum
+internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
     internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.RoyalGuard);

@@ -15,7 +15,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Healer.ASTCombos;
 
-internal abstract class ASTCombo<TCmd> : JobGaugeCombo<ASTGauge, TCmd> where TCmd : Enum
+internal abstract class ASTCombo_Base<TCmd> : JobGaugeCombo<ASTGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Astrologian };
 

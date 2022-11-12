@@ -13,7 +13,7 @@ using static XIVAutoAttack.Combos.RangedPhysicial.DNCCombos.DNCCombo_Default;
 namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/DNCCombos/DNCCombo_Default.cs")]
-internal sealed class DNCCombo_Default : DNCCombo<CommandType>
+internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
 {
     internal enum CommandType : byte
     {

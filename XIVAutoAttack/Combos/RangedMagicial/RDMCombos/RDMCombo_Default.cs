@@ -15,7 +15,7 @@ using static XIVAutoAttack.Combos.RangedMagicial.RDMCombos.RDMCombo_Default;
 namespace XIVAutoAttack.Combos.RangedMagicial.RDMCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedMagicial/RDMCombos/RDMCombo_Default.cs")]
-internal sealed class RDMCombo_Default : RDMCombo<CommandType>
+internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 {
     public override string Author => "ÇïË®";
 

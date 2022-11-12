@@ -14,7 +14,7 @@ using static XIVAutoAttack.Combos.Healer.WHMCombos.WHMCombo_Default;
 namespace XIVAutoAttack.Combos.Healer.WHMCombos;
 
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/WHMCombos/WHMCombo_Default.cs")]
-internal sealed class WHMCombo_Default : WHMCombo<CommandType>
+internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
 {
     public override string Author => "秋水";
 
