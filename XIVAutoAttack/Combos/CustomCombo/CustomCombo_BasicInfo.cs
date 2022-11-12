@@ -83,7 +83,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     }
                 }
                 //con.Supply(lastcom);
-                Service.Configuration.CombosConfigurations[JobIDs[0]][Author] = con;
+                if (!Service.Configuration.CombosConfigurations.ContainsKey(JobIDs[0]))
+                {
+					Service.Configuration.CombosConfigurations.Add(JobIDs[0], new Dictionary<string, ActionConfiguration>() { {Author,con } });
+				}
                 Service.Configuration.Save();
                 return con;
             }
