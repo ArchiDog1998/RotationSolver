@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ImGuiScene;
+using System.Collections.Generic;
 using XIVAutoAttack.Combos.CustomCombo;
 
 namespace XIVAutoAttack.Data
@@ -18,8 +19,31 @@ namespace XIVAutoAttack.Data
         Green,
         Role,
     }
-    public sealed class IconSet
+
+    public static class IconSet
     {
+        private static readonly Dictionary<uint, TextureWrap> _textures = new Dictionary<uint, TextureWrap>();
+
+        public static TextureWrap GetTexture(this ITexture text)
+        {
+            var id = text.IconID;
+            if(!_textures.TryGetValue(id, out var texture))
+            {
+                texture = Service.DataManager.GetImGuiTextureIcon(id);
+                _textures.Add(id, texture);
+            }
+
+            return texture;
+        }
+
+        public static void Dispose()
+        {
+            foreach (var item in _textures.Values)
+            {
+                item.Dispose();
+            }
+        }
+
         private static readonly Dictionary<IconType, uint[]> _icons = new Dictionary<IconType, uint[]>()
         {
             { IconType.Gold, new uint[40]
@@ -153,7 +177,7 @@ namespace XIVAutoAttack.Data
                     break;
 
             }
-            return _icons[type][combo.JobIDs[0] - 1];
+            return _icons[type][(uint)combo.JobIDs[0] - 1];
         }
     }
 }

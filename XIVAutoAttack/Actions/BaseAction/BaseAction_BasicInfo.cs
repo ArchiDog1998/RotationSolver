@@ -7,21 +7,39 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Actions.BaseAction
 {
-    internal partial class BaseAction : IAction, IDisposable
+    internal partial class BaseAction : IAction
     {
         private bool _shouldEndSpecial;
         private bool _isFriendly;
-        private bool _isDot;
+        private bool _isEot;
         internal bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
         public string Name => _action.Name;
-        public string Description => string.Empty;   
+        public string Description => string.Empty;
+        public string Author => string.Empty;
         internal string CateName
         {
             get
             {
-                string result = _isFriendly ? "支援" : "攻击";
-                result += IsRealGCD ? "GCD" : "能力技";
-                if (_isDot) result += " - Dot";
+                string result;
+
+                if (_isFriendly)
+                {
+                    result = "支援";
+                    if (_isEot)
+                    {
+                        result += "Hot";
+                    }
+                }
+                else
+                {
+                    result = "攻击";
+
+                    if (_isEot)
+                    {
+                        result += "Dot";
+                    }
+                }
+                result += IsRealGCD ? "-GCD" : "-能力技";
                 return result;
             }
         }
@@ -43,7 +61,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         public uint ID => _action.RowId;
         public uint AdjustedID => Service.IconReplacer.OriginalHook(ID);
 
-        public TextureWrap Texture { get; }
+        public uint IconID { get; }
         internal bool IsGeneralGCD { get; }
         internal bool IsRealGCD { get; }
 
@@ -52,14 +70,14 @@ namespace XIVAutoAttack.Actions.BaseAction
         private Action _action;
 
 
-        internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
+        internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false)
         {
             _action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
             _shouldEndSpecial = shouldEndSpecial;
             _isFriendly = isFriendly;
-            _isDot = isDot;
-            
-            Texture = Service.DataManager.GetImGuiTextureIcon(_action.Icon);
+            _isEot = isEot;
+
+            IconID =_action.Icon;
             IsGeneralGCD = _action.IsGeneralGCD();
             IsRealGCD = _action.IsRealGCD();
             CoolDownGroup = _action.GetCoolDownGroup();
@@ -68,16 +86,6 @@ namespace XIVAutoAttack.Actions.BaseAction
         public override string ToString()
         {
             return Name;
-        }
-
-        public void Dispose()
-        {
-            Texture.Dispose();
-        }
-
-        ~BaseAction()
-        {
-            Dispose();
         }
     }
 }

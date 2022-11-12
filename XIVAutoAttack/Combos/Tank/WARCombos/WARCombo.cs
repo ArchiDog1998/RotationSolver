@@ -1,0 +1,137 @@
+using Dalamud.Game.ClientState.JobGauge.Types;
+using System;
+using System.Collections.Generic;
+using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Updaters;
+
+namespace XIVAutoAttack.Combos.Tank.WARCombos;
+
+internal abstract class WARCombo<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCmd : Enum
+{
+
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
+    internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.Defiance);
+    private sealed protected override BaseAction Shield => Defiance;
+
+    public static readonly BaseAction
+        //ÊØ»¤
+        Defiance = new(48, shouldEndSpecial: true),
+
+        //ÖØÅü
+        HeavySwing = new(31),
+
+        //Ð×²ÐÁÑ
+        Maim = new(37),
+
+        //±©·çÕ¶ ÂÌ¸«
+        StormsPath = new(42),
+
+        //±©·çËé ºì¸«
+        StormsEye = new(45)
+        {
+            OtherCheck = b => Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest),
+        },
+
+        //·É¸«
+        Tomahawk = new(46)
+        {
+            FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+        },
+
+        //ÃÍ¹¥
+        Onslaught = new(7386, shouldEndSpecial: true)
+        {
+            ChoiceTarget = TargetFilter.FindTargetForMoving,
+        },
+
+        //¶¯ÂÒ    
+        Upheaval = new(7387)
+        {
+            BuffsNeed = new StatusID[] { StatusID.SurgingTempest },
+        },
+
+        //³¬Ñ¹¸«
+        Overpower = new(41),
+
+        //ÃØÒø±©·ç
+        MythrilTempest = new(16462),
+
+        //ÈºÉ½Â¡Æð
+        Orogeny = new(25752),
+
+        //Ô­³õÖ®»ê
+        InnerBeast = new(49)
+        {
+            OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatusFromSelf(StatusID.InnerRelease)),
+        },
+
+        //¸ÖÌúÐý·ç
+        SteelCyclone = new(51)
+        {
+            OtherCheck = InnerBeast.OtherCheck,
+        },
+
+        //Õ½º¿
+        Infuriate = new(52)
+        {
+            BuffsProvide = new[] { StatusID.InnerRelease },
+            OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge < 50,
+        },
+
+        //¿ñ±©
+        Berserk = new(38)
+        {
+            OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0,
+        },
+
+        //Õ½Àõ
+        ThrillofBattle = new(40),
+
+        //Ì©È»×ÔÈô
+        Equilibrium = new(3552),
+
+        //Ô­³õµÄÓÂÃÍ
+        NascentFlash = new(16464)
+        {
+            ChoiceTarget = TargetFilter.FindAttackedTarget,
+        },
+
+        ////Ô­³õµÄÑªÆø
+        //Bloodwhetting = new BaseAction(25751),
+
+        //¸´³ð
+        Vengeance = new(44)
+        {
+            BuffsProvide = Rampart.BuffsProvide,
+            OtherCheck = BaseAction.TankDefenseSelf,
+        },
+
+        //Ô­³õµÄÖ±¾õ
+        RawIntuition = new(3551)
+        {
+            BuffsProvide = Rampart.BuffsProvide,
+            OtherCheck = BaseAction.TankDefenseSelf,
+        },
+
+        //°ÚÍÑ
+        ShakeItOff = new(7388, true),
+
+        //ËÀ¶·
+        Holmgang = new(43)
+        {
+            OtherCheck = BaseAction.TankBreakOtherCheck,
+        },
+
+        ////Ô­³õµÄ½â·Å
+        //InnerRelease = new BaseAction(7389),
+
+        //Âù»Ä±ÀÁÑ
+        PrimalRend = new(25753)
+        {
+            BuffsNeed = new[] { StatusID.PrimalRendReady },
+        };
+}

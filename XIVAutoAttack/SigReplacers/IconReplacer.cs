@@ -19,6 +19,8 @@ namespace XIVAutoAttack.SigReplacers;
 
 internal sealed class IconReplacer : IDisposable
 {
+    public record CustomComboGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomCombo[] combos);
+
     private delegate ulong IsIconReplaceableDelegate(uint actionID);
 
     private delegate uint GetIconDelegate(IntPtr actionManager, uint actionID);
@@ -31,15 +33,32 @@ internal sealed class IconReplacer : IDisposable
         {
             if (Service.ClientState.LocalPlayer == null) return null;
 
-            foreach (ICustomCombo customCombo in CustomCombos)
+            foreach (var combos in CustomCombos)
             {
-                if (!customCombo.JobIDs.Contains(Service.ClientState.LocalPlayer.ClassJob.Id)) continue;
-                return customCombo;
+                if (!combos.classJobIds.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id)) continue;
+                return GetChooseCombo(combos);
             }
 
             return null;
         }
     }
+
+    internal static ICustomCombo GetChooseCombo(CustomComboGroup group)
+    {
+        var id = group.jobId;
+        if(Service.Configuration.ComboChoices.TryGetValue((uint)id, out var choice))
+        {
+            foreach (var combo in group.combos)
+            {
+                if( combo.Author == choice)
+                {
+                    return combo;
+                }
+            }
+        }
+        return group.combos[0];
+    }
+
     internal static BaseAction[] AllBaseActions => RightComboBaseActions.Union(GeneralBaseAction).ToArray();
 
     internal static BaseAction[] RightComboBaseActions
@@ -71,8 +90,8 @@ internal sealed class IconReplacer : IDisposable
                 select act).ToArray();
     }
 
-    private static SortedList<Role, ICustomCombo[]> _customCombosDict;
-    internal static SortedList<Role, ICustomCombo[]> CustomCombosDict
+    private static SortedList<Role, CustomComboGroup[]> _customCombosDict;
+    internal static SortedList<Role, CustomComboGroup[]> CustomCombosDict
     {
         get
         {
@@ -83,8 +102,8 @@ internal sealed class IconReplacer : IDisposable
             return _customCombosDict;
         }
     }
-    private static ICustomCombo[] _customCombos;
-    private static ICustomCombo[] CustomCombos
+    private static CustomComboGroup[] _customCombos;
+    private static CustomComboGroup[] CustomCombos
     {
         get
         {
@@ -119,12 +138,30 @@ internal sealed class IconReplacer : IDisposable
 
     private static void SetStaticValues()
     {
+        
         _customCombos = (from t in Assembly.GetAssembly(typeof(ICustomCombo)).GetTypes()
                          where t.GetInterfaces().Contains(typeof(ICustomCombo)) && !t.IsAbstract && !t.IsInterface
-                         select (ICustomCombo)Activator.CreateInstance(t)).ToArray();
+                         select (ICustomCombo)Activator.CreateInstance(t) into combo
+                         group combo by combo.JobIDs[0] into comboGrp
+                         select new CustomComboGroup(comboGrp.Key, comboGrp.First().JobIDs, SetCombos(comboGrp.ToArray())))
+                         .ToArray();
 
-        _customCombosDict = new SortedList<Role, ICustomCombo[]>
-            (_customCombos.GroupBy(g => g.Role).ToDictionary(set => set.Key, set => set.OrderBy(i => i.JobIDs[0]).ToArray()));
+        _customCombosDict = new SortedList<Role, CustomComboGroup[]>
+            (_customCombos.GroupBy(g => g.combos[0].Role).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
+    }
+
+    private static ICustomCombo[] SetCombos(ICustomCombo[] combos)
+    {
+        var result = new List<ICustomCombo>(combos.Length);
+
+        foreach (var combo in combos)
+        {
+            if(!result.Any(c => c.Author == combo.Author))
+            {
+                result.Add(combo);
+            }
+        }
+        return result.ToArray();
     }
 
     public void Dispose()
@@ -170,7 +207,10 @@ internal sealed class IconReplacer : IDisposable
                 {
                     foreach (var item in CustomCombos)
                     {
-                        item.IsEnabled = true;
+                        foreach (var combo in item.combos)
+                        {
+                            combo.IsEnabled = true;
+                        }
                     }
                     Service.ChatGui.Print("All SET");
                     Service.Configuration.Save();
@@ -180,56 +220,12 @@ internal sealed class IconReplacer : IDisposable
                 {
                     foreach (var item in CustomCombos)
                     {
-                        item.IsEnabled = false;
+                        foreach (var combo in item.combos)
+                        {
+                            combo.IsEnabled = false;
+                        }
                     }
                     Service.ChatGui.Print("All UNSET");
-                    Service.Configuration.Save();
-                    break;
-                }
-            case "set":
-                {
-                    string text3 = str1.ToLowerInvariant();
-                    for (int i = 0; i < CustomCombos.Length; i++)
-                    {
-                        var value = CustomCombos[i];
-                        if (value.Name.ToLowerInvariant() == text3)
-                        {
-                            value.IsEnabled = true;
-                            Service.ChatGui.Print($"{value} SET");
-                            break;
-                        }
-                    }
-                    Service.Configuration.Save();
-                    break;
-                }
-            case "toggle":
-                {
-                    string text = str1.ToLowerInvariant();
-                    for (int i = 0; i < CustomCombos.Length; i++)
-                    {
-                        var customComboPreset2 = CustomCombos[i];
-                        if (customComboPreset2.Name.ToLowerInvariant() == text)
-                        {
-                            customComboPreset2.IsEnabled = !customComboPreset2.IsEnabled;
-                            Service.ChatGui.Print(customComboPreset2.Name + " " + (customComboPreset2.IsEnabled ? "SET" : "UNSET"));
-                        }
-                    }
-                    Service.Configuration.Save();
-                    break;
-                }
-            case "unset":
-                {
-                    string text2 = str1.ToLowerInvariant();
-                    for (int i = 0; i < CustomCombos.Length; i++)
-                    {
-                        var value = CustomCombos[i];
-                        if (value.Name.ToLowerInvariant() == text2)
-                        {
-                            value.IsEnabled = true;
-                            Service.ChatGui.Print($"{value} UNSET");
-                            break;
-                        }
-                    }
                     Service.Configuration.Save();
                     break;
                 }

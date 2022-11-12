@@ -150,8 +150,8 @@ internal class ComboConfigWindow : Window
                         for (int i = 0; i < combos.Length; i++)
                         {
                             if (i > 0) ImGui.Separator();
-                            var combo = combos[i];
-                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains(Service.ClientState.LocalPlayer.ClassJob.Id);
+                            var combo = IconReplacer.GetChooseCombo(combos[i]);
+                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id);
 
                             DrawTexture(combo, () =>
                             {
@@ -245,7 +245,7 @@ internal class ComboConfigWindow : Window
                                     }
                                 }
 
-                            });
+                            }, combo.JobIDs[0], combos[i].combos.Select(c => c.Author).ToArray());
 
                             num++;
                         }
@@ -646,6 +646,13 @@ internal class ComboConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        float healingOfTimeSubstactArea = Service.Configuration.HealingOfTimeSubstactArea;
+                        if (ImGui.DragFloat("如果使用群体Hot技能，阈值下降多少", ref healingOfTimeSubstactArea, speed, 0, 1))
+                        {
+                            Service.Configuration.HealingOfTimeSubstactArea = healingOfTimeSubstactArea;
+                            Service.Configuration.Save();
+                        }
+
                         float healthSingleA = Service.Configuration.HealthSingleAbility;
                         if (ImGui.DragFloat("多少的HP，可以用能力技单奶", ref healthSingleA, speed, 0, 1))
                         {
@@ -659,6 +666,14 @@ internal class ComboConfigWindow : Window
                             Service.Configuration.HealthSingleSpell = healthSingleS;
                             Service.Configuration.Save();
                         }
+
+                        float healingOfTimeSubstact = Service.Configuration.HealingOfTimeSubstactSingle;
+                        if (ImGui.DragFloat("如果使用单体Hot技能，阈值下降多少", ref healingOfTimeSubstact, speed, 0, 1))
+                        {
+                            Service.Configuration.HealingOfTimeSubstactSingle = healingOfTimeSubstact;
+                            Service.Configuration.Save();
+                        }
+
 
                         float healthTank = Service.Configuration.HealthForDyingTank;
                         if (ImGui.DragFloat("低于多少的HP，坦克要放大招了", ref healthTank, speed, 0, 1))
@@ -961,17 +976,19 @@ internal class ComboConfigWindow : Window
 
 
 
-    internal static void DrawTexture<T>(T texture, System.Action otherThing) where T : class, ITexture
+    internal static void DrawTexture<T>(T texture, Action otherThing, ClassJobID jobId = 0, string[] authors = null) where T : class, ITexture
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
         ImGui.Columns(2, texture.Name, false);
 
-        ImGui.SetColumnWidth(0, texture.Texture.Width + 5);
+        var t = texture.GetTexture();
+
+        ImGui.SetColumnWidth(0, t.Width + 5);
 
         var str = texture.Description;
 
-        ImGui.Image(texture.Texture.ImGuiHandle, new Vector2(texture.Texture.Width, texture.Texture.Height));
+        ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
         if (ImGui.IsItemHovered())
         {
             if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
@@ -992,11 +1009,32 @@ internal class ComboConfigWindow : Window
         }
 
         var attr = Attribute.GetCustomAttribute(texture.GetType(), typeof(ComboDevInfoAttribute));
+
+        ImGui.SameLine();
+
+        if(authors == null || authors.Length < 2)
+        {
+            ImGui.TextColored(shadedColor, $" - {texture.Author}");
+        }
+        else
+        {
+            int i;
+            for (i = 0; i < authors.Length; i++)
+            {
+                if(authors[i] == texture.Author)
+                {
+                    break;
+                }
+            }
+            if(ImGui.Combo(texture.Name + "作者", ref i, authors, authors.Length))
+            {
+                Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
+            }
+        }
+
         if (attr is ComboDevInfoAttribute devAttr)
         {
-            ImGui.SameLine();
 
-            ImGui.TextColored(shadedColor, $" - {string.Join(", ", devAttr.Authors.Select(a => a.ToName()))}");
 
             ImGui.SameLine();
             Spacing();

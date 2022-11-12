@@ -12,13 +12,14 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract partial class CustomCombo<TCmd> : CustomComboActions, ICustomCombo, IDisposable where TCmd : Enum
+    internal abstract partial class CustomCombo<TCmd> : CustomComboActions, ICustomCombo where TCmd : Enum
     {
         internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38, 5 };
-        public abstract uint[] JobIDs { get; }
-        public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Role;
+        public abstract ClassJobID[] JobIDs { get; }
+        public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => (uint)JobIDs[0] == job.RowId).Role;
 
-        public string Name => XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Name;
+        public string Name => XIVAutoAttackPlugin.AllJobs.First(job => (uint)JobIDs[0] == job.RowId).Name;
+        public abstract string Author { get; }
 
         internal static bool IsTargetDying
         {
@@ -58,15 +59,15 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
 
 
-        internal static bool HaveSwift => Player.HaveStatus(Swiftcast.BuffsProvide);
+        internal static bool HaveSwift => Player.HaveStatusFromSelf(Swiftcast.BuffsProvide);
 
         internal virtual bool HaveShield => true;
 
 
-        public TextureWrap Texture { get; }
+        public uint IconID { get; }
         private protected CustomCombo()
         {
-            Texture = Service.DataManager.GetImGuiTextureIcon(IconSet.GetJobIcon(this));
+            IconID = IconSet.GetJobIcon(this);
         }
 
         public ActionConfiguration Config
@@ -74,29 +75,26 @@ namespace XIVAutoAttack.Combos.CustomCombo
             get
             {
                 var con = CreateConfiguration();
-                if (Service.Configuration.ActionsConfigurations.TryGetValue(Name, out var lastcom))
+                if (Service.Configuration.CombosConfigurations.TryGetValue((uint)JobIDs[0], out var lastcom))
                 {
-                    if (con.IsTheSame(lastcom)) return lastcom;
+                    if(lastcom.TryGetValue(Author, out var lastCon))
+                    {
+                        if (con.IsTheSame(lastCon)) return lastCon;
+                    }
+                    lastcom[Author] = con;
                 }
-                //con.Supply(lastcom);
-                Service.Configuration.ActionsConfigurations[Name] = con;
+                else
+                {
+					Service.Configuration.CombosConfigurations.Add((uint)JobIDs[0], new Dictionary<string, ActionConfiguration>() { {Author,con } });
+				}
                 Service.Configuration.Save();
                 return con;
             }
         }
+
         private protected virtual ActionConfiguration CreateConfiguration()
         {
             return new ActionConfiguration();
-        }
-
-        public void Dispose()
-        {
-            Texture.Dispose();
-        }
-
-        ~CustomCombo()
-        {
-            Dispose();
         }
     }
 }

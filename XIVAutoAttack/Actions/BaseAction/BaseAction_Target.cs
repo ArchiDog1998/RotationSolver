@@ -53,14 +53,14 @@ namespace XIVAutoAttack.Actions.BaseAction
                 {
                     if (TargetStatus == null) return tars;
 
-                    if (_isDot)
+                    if (_isEot)
                     {
                         tars = TargetFilter.GetTargetCanDot(tars);
                     }
 
                     if (!MovingUpdater.IsMoving) return tars;
 
-                    var ts = tars.Where(t => !t.HaveStatus(TargetStatus)).ToArray();
+                    var ts = tars.Where(t => !t.HaveStatusFromSelf(TargetStatus)).ToArray();
 
                     if (ts.Length == 0) return tars;
                     return ts;
@@ -72,7 +72,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 给敌人造成的Debuff,如果有这些Debuff，那么不会执行。
         /// </summary>
-        internal ushort[] TargetStatus { get; set; } = null;
+        internal StatusID[] TargetStatus { get; set; } = null;
 
         internal static bool TankDefenseSelf(BattleChara chara)
         {
@@ -199,12 +199,13 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (availableCharas.Length == 0) return false;
 
                 //判断是否是范围。
-                if (_action.CastType > 1 && ID != SCHCombo.DeploymentTactics.ID)
+                if (_action.CastType > 1 && ID != ActionIDs.DeploymentTactics)
                 {
                     //找到能覆盖最多的位置，并且选血最少的来。
                     Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, _action.EffectRange, true, mustUse, true)
                         .OrderBy(p => p.GetHealthRatio()).FirstOrDefault();
                     if (Target == null) return false;
+
                     return true;
                 }
                 else
@@ -330,7 +331,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                     //如果不用自动找目标，那就不打AOE
                     if (!mustUse && !CommandController.AutoTarget && !Service.Configuration.UseAOEWhenManual) return false;
 
-                    var count = TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, _action.EffectRange).Length;
+                    var count = TargetFilter.GetObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange).Length;
                     if (count < (mustUse ? 1 : Service.Configuration.HostileCount)) return false;
                 }
                 return true;

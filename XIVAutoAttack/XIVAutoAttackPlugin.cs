@@ -14,6 +14,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
@@ -93,6 +94,8 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Dispose();
         Watcher.Dispose();
         CountDown.Dispose();
+
+        IconSet.Dispose();
     }
 
     private void OnOpenConfigUi()

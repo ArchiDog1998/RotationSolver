@@ -220,16 +220,7 @@ namespace XIVAutoAttack.Helpers
                 if (item.CurrentHp != 0) continue;
 
                 //如果已经有复活的Buff了，那就算了。
-                bool haveRase = false;
-                foreach (var status in item.StatusList)
-                {
-                    if (status.StatusId == ObjectStatus.Raise)
-                    {
-                        haveRase = true;
-                        break;
-                    }
-                }
-                if (haveRase) continue;
+                if (item.HaveStatus(StatusID.Raise)) continue;
 
                 //如果有人在对着他咏唱，那就算了。
                 bool isCasting = false;
@@ -273,7 +264,7 @@ namespace XIVAutoAttack.Helpers
 
         internal static BattleChara ASTRangeTarget(BattleChara[] ASTTargets)
         {
-            ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+            ASTTargets = ASTTargets.Where(b => !b.HaveStatus(StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
 
 
             var targets = GetASTTargets(GetJobCategory(ASTTargets, Role.远程));
@@ -290,7 +281,7 @@ namespace XIVAutoAttack.Helpers
 
         internal static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
         {
-            ASTTargets = ASTTargets.Where(b => b.StatusList.Select(status => status.StatusId).Intersect(new uint[] { ObjectStatus.Weakness, ObjectStatus.BrinkofDeath }).Count() == 0).ToArray();
+            ASTTargets = ASTTargets.Where(b => !b.HaveStatus(StatusID.Weakness,StatusID.BrinkofDeath)).ToArray();
 
             var targets = GetASTTargets(GetJobCategory(ASTTargets, Role.近战));
             if (targets.Length > 0) return RandomObject(targets);
@@ -306,26 +297,16 @@ namespace XIVAutoAttack.Helpers
 
         internal static BattleChara[] GetASTTargets(BattleChara[] sources)
         {
-            var allStatus = new uint[]
+            var allStatus = new StatusID[]
             {
-            ObjectStatus.TheArrow,
-            ObjectStatus.TheBalance,
-            ObjectStatus.TheBole,
-            ObjectStatus.TheEwer,
-            ObjectStatus.TheSpear,
-            ObjectStatus.TheSpire,
+            StatusID.TheArrow,
+            StatusID.TheBalance,
+            StatusID.TheBole,
+            StatusID.TheEwer,
+            StatusID.TheSpear,
+            StatusID.TheSpire,
             };
-            return sources.Where((t) =>
-            {
-                foreach (Dalamud.Game.ClientState.Statuses.Status status in t.StatusList)
-                {
-                    if (allStatus.Contains(status.StatusId) && status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }).ToArray();
+            return sources.Where((t) => !t.HaveStatusFromSelf(allStatus)).ToArray();
         }
 
         internal static BattleChara RandomObject(BattleChara[] objs)

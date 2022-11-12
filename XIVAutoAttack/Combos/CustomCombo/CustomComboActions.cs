@@ -14,19 +14,19 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //昏乱
             Addle = new BaseAction(7560u)
             {
-                TargetStatus = new ushort[] { 1203 },
+                OtherCheck = b => !b.HaveStatus(StatusID.Addle),
             },
 
             //即刻咏唱
             Swiftcast = new BaseAction(7561u)
             {
-                BuffsProvide = new ushort[]
+                BuffsProvide = new StatusID[]
                 {
-                    ObjectStatus.Swiftcast1,
-                    ObjectStatus.Swiftcast2,
-                    ObjectStatus.Swiftcast3,
-                    ObjectStatus.Triplecast,
-                    ObjectStatus.Dualcast,
+                    StatusID.Swiftcast1,
+                    StatusID.Swiftcast2,
+                    StatusID.Swiftcast3,
+                    StatusID.Triplecast,
+                    StatusID.Dualcast,
                 }
             },
 
@@ -71,20 +71,20 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //铁壁
             Rampart = new BaseAction(7531, true)
             {
-                BuffsProvide = new ushort[]
+                BuffsProvide = new StatusID[]
                 {
-                    ObjectStatus.Holmgang, ObjectStatus.WillDead, ObjectStatus.WalkingDead, ObjectStatus.Superbolide, ObjectStatus.HallowedGround,
-                    ObjectStatus.Rampart1, ObjectStatus.Rampart2, ObjectStatus.Rampart3,
+                    StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead, StatusID.Superbolide, StatusID.HallowedGround,
+                    StatusID.Rampart1, StatusID.Rampart2, StatusID.Rampart3,
                     //原初的直觉和血气
-                    ObjectStatus.RawIntuition, ObjectStatus.Bloodwhetting,
+                    StatusID.RawIntuition, StatusID.Bloodwhetting,
                     //复仇
-                    ObjectStatus.Vengeance,
+                    StatusID.Vengeance,
                     //预警
-                    ObjectStatus.Sentinel,
+                    StatusID.Sentinel,
                     //暗影墙
-                    ObjectStatus.ShadowWall, ObjectStatus.DarkMind,
+                    StatusID.ShadowWall, StatusID.DarkMind,
                     //伪装
-                    ObjectStatus.Camouflage, ObjectStatus.Nebula, ObjectStatus.HeartofStone,
+                    StatusID.Camouflage, StatusID.Nebula, StatusID.HeartofStone,
                 },
                 OtherCheck = BaseAction.TankDefenseSelf,
             },
@@ -118,7 +118,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //牵制
             Feint = new BaseAction(7549)
             {
-                TargetStatus = new ushort[] { 1195 },
+                OtherCheck = b => !b.HaveStatus(StatusID.Feint),
             },
 
             //插言
@@ -142,7 +142,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //真北
             TrueNorth = new BaseAction(7546, shouldEndSpecial: true)
             {
-                BuffsProvide = new ushort[] { ObjectStatus.TrueNorth },
+                BuffsProvide = new StatusID[] { StatusID.TrueNorth },
             };
 
         private protected virtual BaseAction Raise => null;

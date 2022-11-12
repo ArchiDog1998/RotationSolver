@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Melee;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Updaters;
 
 
@@ -15,20 +16,20 @@ namespace XIVAutoAttack.Helpers
         public record LocationInfo(EnemyLocation Loc, byte[] Tags);
         public static readonly SortedList<uint, LocationInfo> ActionLocations = new SortedList<uint, LocationInfo>()
         {
-            {DRGCombo.FangandClaw.ID, new( EnemyLocation.Side, new byte[] { 13 })},
-            {DRGCombo.WheelingThrust.ID, new(EnemyLocation.Back, new byte[] { 10 }) },
-            {DRGCombo.ChaosThrust.ID,new(EnemyLocation.Back, new byte[] { 66, 28 }) }, //需要60级同步
-            {25772, new(EnemyLocation.Back, new byte[] { 66, 28 }) },
-            {MNKCombo.Demolish.ID, new(EnemyLocation.Back, new byte[] { 49 }) },
-            {MNKCombo.SnapPunch.ID, new(EnemyLocation.Side, new byte[] { 19 }) },
-            {NINCombo.TrickAttack.ID, new(EnemyLocation.Back, new byte[] { 25 }) },
-            {NINCombo.AeolianEdge.ID,new( EnemyLocation.Back, new byte[] { 30, 68 }) },
-            {NINCombo.ArmorCrush.ID, new(EnemyLocation.Side, new byte[] { 30, 66 }) },
-            {NINCombo.Suiton.ID, new(EnemyLocation.Back, new byte[] { }) },
-            {RPRCombo.Gibbet.ID, new(EnemyLocation.Side , new byte[] { 11 })},
-            {RPRCombo.Gallows.ID, new(EnemyLocation.Back, new byte[] { 11 }) },
-            {SAMCombo.Gekko.ID, new(EnemyLocation.Back , new byte[] { 68, 29 })},
-            {SAMCombo.Kasha.ID, new(EnemyLocation.Side, new byte[] { 29, 68 }) },
+            {ActionIDs.FangandClaw, new( EnemyLocation.Side, new byte[] { 13 })},
+            {ActionIDs.WheelingThrust, new(EnemyLocation.Back, new byte[] { 10 }) },
+            {ActionIDs.ChaosThrust, new(EnemyLocation.Back, new byte[] { 66, 28 }) }, //需要60级同步
+            {ActionIDs.ChaoticSpring, new(EnemyLocation.Back, new byte[] { 66, 28 }) },
+            {ActionIDs.Demolish, new(EnemyLocation.Back, new byte[] { 49 }) },
+            {ActionIDs.SnapPunch, new(EnemyLocation.Side, new byte[] { 19 }) },
+            {ActionIDs.TrickAttack, new(EnemyLocation.Back, new byte[] { 25 }) },
+            {ActionIDs.AeolianEdge,new( EnemyLocation.Back, new byte[] { 30, 68 }) },
+            {ActionIDs.ArmorCrush, new(EnemyLocation.Side, new byte[] { 30, 66 }) },
+            {ActionIDs.Suiton, new(EnemyLocation.Back, new byte[] { }) },
+            {ActionIDs.Gibbet, new(EnemyLocation.Side , new byte[] { 11 })},
+            {ActionIDs.Gallows, new(EnemyLocation.Back, new byte[] { 11 }) },
+            {ActionIDs.Gekko, new(EnemyLocation.Back , new byte[] { 68, 29 })},
+            {ActionIDs.Kasha, new(EnemyLocation.Side, new byte[] { 29, 68 }) },
         };
 
 
@@ -39,7 +40,7 @@ namespace XIVAutoAttack.Helpers
         /// <param name="abilityCount">再多少个能力技之后</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点状态是否已经消失</returns>
-        internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true, params ushort[] effectIDs)
+        internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true, params StatusID[] effectIDs)
         {
             var remain = obj.FindStatusTime(effectIDs);
             return CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount, addWeaponRemain);
@@ -51,57 +52,75 @@ namespace XIVAutoAttack.Helpers
         /// <param name="remain">要多少秒呢</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点状态是否已经消失</returns>
-        internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool addWeaponRemain = true, params ushort[] effectIDs)
+        internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool addWeaponRemain = true, params StatusID[] effectIDs)
         {
             var remain = obj.FindStatusTime(effectIDs);
             return CooldownHelper.RecastAfter(remain, remainWant, addWeaponRemain);
         }
 
-        private static float FindStatusTime(this BattleChara obj, params ushort[] effectIDs)
+        internal static float FindStatusTime(this BattleChara obj, params StatusID[] effectIDs)
         {
             var times = obj.FindStatusTimes(effectIDs);
             if (times == null || times.Length == 0) return 0;
             return times.Max();
         }
 
-        private static float[] FindStatusTimes(this BattleChara obj, params ushort[] effectIDs)
+        private static float[] FindStatusTimes(this BattleChara obj, params StatusID[] effectIDs)
         {
-            return obj.FindStatus(effectIDs).Select(status => status.RemainingTime).ToArray();
+            return obj.FindStatus(true, effectIDs).Select(status => status.RemainingTime).ToArray();
         }
 
-        internal static byte FindStatusStack(this BattleChara obj, params ushort[] effectIDs)
+        internal static byte FindStatusStack(this BattleChara obj, params StatusID[] effectIDs)
         {
             var stacks = obj.FindStatusStacks(effectIDs);
             if (stacks == null || stacks.Length == 0) return 0;
             return stacks.Max();
         }
 
-        internal static byte[] FindStatusStacks(this BattleChara obj, params ushort[] effectIDs)
+        internal static byte[] FindStatusStacks(this BattleChara obj, params StatusID[] effectIDs)
         {
-            return obj.FindStatus(effectIDs).Select(status => Math.Max(status.StackCount, (byte)1)).ToArray();
+            return obj.FindStatus(true, effectIDs).Select(status => Math.Max(status.StackCount, (byte)1)).ToArray();
         }
 
-        internal static bool HaveStatus(this BattleChara obj, params ushort[] effectIDs)
+        /// <summary>
+        /// 表示角色<paramref name="obj"/>是否存在任何人赋予的参数<paramref name="effectIDs"/>中的任何一个
+        /// </summary>
+        /// <param name="obj">检查对象</param>
+        /// <param name="effectIDs">状态</param>
+        /// <returns>是否拥有任何一个状态</returns>
+        internal static bool HaveStatus(this BattleChara obj, params StatusID[] effectIDs)
         {
-            return obj.FindStatus(effectIDs).Length > 0;
+            return obj.FindStatus(false, effectIDs).Length > 0;
         }
 
-        internal static string GetStatusName(ushort id)
+
+        /// <summary>
+        /// 表示角色<paramref name="obj"/>是否存在玩家自己赋予的参数<paramref name="effectIDs"/>中的任何一个
+        /// </summary>
+        /// <param name="obj">检查对象</param>
+        /// <param name="effectIDs">状态</param>
+        /// <returns>是否拥有任何一个状态</returns>
+        internal static bool HaveStatusFromSelf(this BattleChara obj, params StatusID[] effectIDs)
         {
-            return Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow(id).Name.ToString();
+            return obj.FindStatus(true, effectIDs).Length > 0;
         }
 
-        private static Status[] FindStatus(this BattleChara obj, params ushort[] effectIDs)
+        internal static string GetStatusName(StatusID id)
+        {
+            return Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow((uint)id).Name.ToString();
+        }
+
+        private static Status[] FindStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
             uint[] newEffects = effectIDs.Select(a => (uint)a).ToArray();
-            return obj.FindAllStatus().Where(status => newEffects.Contains(status.StatusId)).ToArray();
+            return obj.FindAllStatus(isFromSelf).Where(status => newEffects.Contains(status.StatusId)).ToArray();
         }
 
-        private static Status[] FindAllStatus(this BattleChara obj)
+        private static Status[] FindAllStatus(this BattleChara obj, bool isFromSelf)
         {
             if (obj == null) return new Status[0];
 
-            return obj.StatusList.Where(status => status.SourceID == Service.ClientState.LocalPlayer.ObjectId).ToArray();
+            return obj.StatusList.Where(status => isFromSelf ? status.SourceID == Service.ClientState.LocalPlayer.ObjectId : true).ToArray();
         }
     }
 }

@@ -86,39 +86,31 @@ namespace XIVAutoAttack.Updaters
                 return false;
             }).ToArray();
 
-            uint[] dangeriousStatus = new uint[]
+            var dangeriousStatus = new StatusID[]
             {
-                ObjectStatus.Doom,
-                ObjectStatus.Amnesia,
-                ObjectStatus.Stun,
-                ObjectStatus.Stun2,
-                ObjectStatus.Sleep,
-                ObjectStatus.Sleep2,
-                ObjectStatus.Sleep3,
-                ObjectStatus.Pacification,
-                ObjectStatus.Pacification2,
-                ObjectStatus.Silence,
-                ObjectStatus.Slow,
-                ObjectStatus.Slow2,
-                ObjectStatus.Slow3,
-                ObjectStatus.Slow4,
-                ObjectStatus.Slow5,
-                ObjectStatus.Blind,
-                ObjectStatus.Blind2,
-                ObjectStatus.Blind3,
-                ObjectStatus.Paralysis,
-                ObjectStatus.Paralysis2,
-                ObjectStatus.Nightmare,
+                StatusID.Doom,
+                StatusID.Amnesia,
+                StatusID.Stun,
+                StatusID.Stun2,
+                StatusID.Sleep,
+                StatusID.Sleep2,
+                StatusID.Sleep3,
+                StatusID.Pacification,
+                StatusID.Pacification2,
+                StatusID.Silence,
+                StatusID.Slow,
+                StatusID.Slow2,
+                StatusID.Slow3,
+                StatusID.Slow4,
+                StatusID.Slow5,
+                StatusID.Blind,
+                StatusID.Blind2,
+                StatusID.Blind3,
+                StatusID.Paralysis,
+                StatusID.Paralysis2,
+                StatusID.Nightmare,
             };
-            DyingPeople = WeakenPeople.Where(p =>
-            {
-                foreach (var status in p.StatusList)
-                {
-                    if (dangeriousStatus.Contains(status.StatusId)) return true;
-                    //if (status.StackCount > 2) return true;
-                }
-                return false;
-            }).ToArray();
+            DyingPeople = WeakenPeople.Where(p => p.HaveStatus(dangeriousStatus)).ToArray();
             #endregion
 
             #region Health
@@ -143,24 +135,56 @@ namespace XIVAutoAttack.Updaters
 
             if (PartyMembers.Length >= Service.Configuration.PartyCount)
             {
-                CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
-                CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
+                //TODO:少了所有罩子类技能
+                var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, 
+                    StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2)
+                    * Service.Configuration.HealingOfTimeSubstactArea;
+
+                CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility
+                    -  ratio;
+
+                CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell
+                    -  ratio;
             }
             else
             {
                 CanHealAreaAbility = CanHealAreaSpell = false;
             }
-            var abilityCount = PartyMembersHP.Count(p => p < Service.Configuration.HealthSingleAbility);
+
+            var singleHots = new StatusID[] {StatusID.AspectedBenefic, StatusID.Regen1,
+                StatusID.Regen2,
+                StatusID.Regen3};
+
+            //Hot衰减
+            var abilityCount = PartyMembers.Count(p =>
+            {
+                var ratio = GetHealingOfTimeRatio(p, singleHots);
+                return p.GetHealthRatio() < Service.Configuration.HealthSingleAbility -
+                    Service.Configuration.HealingOfTimeSubstactSingle * ratio;
+            });
             CanHealSingleAbility = abilityCount > 0;
             if (abilityCount >= Service.Configuration.PartyCount) CanHealAreaAbility = true;
 
-            var gcdCount = PartyMembersHP.Count(p => p < Service.Configuration.HealthSingleSpell);
+
+            var gcdCount = PartyMembers.Count(p =>
+            {
+                var ratio = GetHealingOfTimeRatio(p, singleHots);
+                return p.GetHealthRatio() < Service.Configuration.HealthSingleSpell - 
+                    Service.Configuration.HealingOfTimeSubstactSingle * ratio;
+            });
             CanHealSingleSpell = gcdCount > 0;
             if (gcdCount >= Service.Configuration.PartyCount) CanHealAreaSpell = true;
 
             PartyMembersMinHP = PartyMembersHP.Min();
             HPNotFull = PartyMembersMinHP < 1;
             #endregion
+        }
+
+        static float GetHealingOfTimeRatio(BattleChara target, params StatusID[] statusIds)
+        {
+            var buffTime = target.FindStatusTime(statusIds);
+
+            return Math.Min(1, buffTime / 15);
         }
 
         static SortedDictionary<uint, Vector3> _locations = new SortedDictionary<uint, Vector3>();

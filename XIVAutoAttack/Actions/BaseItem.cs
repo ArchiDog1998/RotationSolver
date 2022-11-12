@@ -17,15 +17,17 @@ namespace XIVAutoAttack.Actions
         public unsafe bool HaveIt => InventoryManager.Instance()->GetInventoryItemCount(_item.RowId, false) > 0 ||
                 InventoryManager.Instance()->GetInventoryItemCount(_item.RowId, true) > 0;
 
-        public TextureWrap Texture { get; }
+        public uint IconID { get; }
         public bool IsEnabled { get; set; }
         public string Description => string.Empty;
+        public string Author => string.Empty;
+
         public string Name => _item.Name;
 
         public BaseItem(uint row, uint a4 = 0)
         {
             _item = Service.DataManager.GetExcelSheet<Item>().GetRow(row);
-            Texture = Service.DataManager.GetImGuiTextureIcon(_item.Icon);
+            IconID = _item.Icon;
 
             A4 = a4;
         }
@@ -43,7 +45,6 @@ namespace XIVAutoAttack.Actions
             if (OtherCheck != null && !OtherCheck()) return false;
 
             return HaveIt;
-
         }
 
         public unsafe bool Use()

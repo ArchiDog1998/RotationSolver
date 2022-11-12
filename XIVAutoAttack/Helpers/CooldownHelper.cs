@@ -118,7 +118,7 @@ namespace XIVAutoAttack.Helpers
             //判定点
             var spellPoint = 500d;
             //有否黑魔纹Buff
-            var multiSpeed = Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.LeyLines) ? 0.85 : 1;
+            var multiSpeed = Service.ClientState.LocalPlayer.HaveStatusFromSelf(StatusID.LeyLines) ? 0.85 : 1;
 
             //计算值
             var val = Math.Floor(GCDTime * multiSpeed * (1000d + Math.Ceiling(130d * (levelModifier.Sub - speed) / levelModifier.Div)) / 10000d) / 100d * 1000;
