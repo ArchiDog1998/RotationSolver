@@ -14,7 +14,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 {
     internal abstract partial class CustomCombo<TCmd> : CustomComboActions, ICustomCombo where TCmd : Enum
     {
-        internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38, 5 };
+        internal static readonly ClassJobID[] RangePhysicial = new ClassJobID[] { ClassJobID.Machinist, ClassJobID.Archer, ClassJobID.Dancer, ClassJobID.Bard };
         public abstract ClassJobID[] JobIDs { get; }
         public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => (uint)JobIDs[0] == job.RowId).Role;
 

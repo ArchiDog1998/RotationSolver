@@ -127,7 +127,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //下踢
             LowBlow = new BaseAction(7540)
             {
-                OtherCheck = b => !b.IsBoss(),
+                OtherCheck = b => !b.IsBoss() &&　!MovingUpdater.IsMoving,
             },
 
             //扫腿
