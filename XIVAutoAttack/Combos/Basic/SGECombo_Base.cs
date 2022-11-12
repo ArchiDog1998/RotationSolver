@@ -1,18 +1,12 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Types;
-using Lumina.Excel.GeneratedSheets;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
-namespace XIVAutoAttack.Combos.Healer.SGECombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCmd : Enum
 {
@@ -183,7 +177,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
             {
                 foreach (var chara in TargetUpdater.PartyMembers)
                 {
-                    if(chara.HaveStatus(StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
+                    if (chara.HaveStatus(StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
                     && b.WillStatusEndGCD(2, 0, true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
                     && chara.GetHealthRatio() < 0.9) return true;
                 }

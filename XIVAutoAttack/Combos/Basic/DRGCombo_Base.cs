@@ -1,18 +1,12 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Healer;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
-namespace XIVAutoAttack.Combos.Melee.DRGCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCmd : Enum
 {

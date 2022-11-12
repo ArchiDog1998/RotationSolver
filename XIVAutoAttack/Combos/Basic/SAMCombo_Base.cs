@@ -1,15 +1,11 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using Lumina.Data.Parsing.Layer;
 using System;
-using System.Collections.Generic;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
 
-namespace XIVAutoAttack.Combos.Melee.SAMCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 //[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/SAMCombo.cs",
 //   ComboAuthor.fatinghenji)]

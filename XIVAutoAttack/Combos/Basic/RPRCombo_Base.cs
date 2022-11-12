@@ -1,13 +1,12 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
-namespace XIVAutoAttack.Combos.Melee.RPRCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCmd : Enum
 {

@@ -12,7 +12,7 @@ using XIVAutoAttack.Helpers;
 using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default.BLMCombo_Default;
 
 using static XIVAutoAttack.SigReplacers.Watcher;
-using XIVAutoAttack.Combos.RangedMagicial.BLMCombos;
+using XIVAutoAttack.Combos.Basic;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
 

@@ -1,19 +1,13 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
 
-namespace XIVAutoAttack.Combos.Healer.ASTCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class ASTCombo_Base<TCmd> : JobGaugeCombo<ASTGauge, TCmd> where TCmd : Enum
 {

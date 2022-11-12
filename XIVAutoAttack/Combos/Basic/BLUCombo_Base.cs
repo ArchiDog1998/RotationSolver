@@ -1,13 +1,12 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 
-namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
+namespace XIVAutoAttack.Combos.Basic
 {
     internal abstract class BLUCombo_Base<TCmd> : OtherCombo<TCmd> where TCmd : Enum
     {
