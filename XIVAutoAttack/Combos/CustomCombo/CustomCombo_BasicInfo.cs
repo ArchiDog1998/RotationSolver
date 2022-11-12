@@ -12,14 +12,14 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract partial class CustomCombo<TCmd> : CustomComboActions, ICustomCombo, IDisposable where TCmd : Enum
+    internal abstract partial class CustomCombo<TCmd> : CustomComboActions, ICustomCombo where TCmd : Enum
     {
         internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38, 5 };
         public abstract uint[] JobIDs { get; }
         public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Role;
 
         public string Name => XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Name;
-        public virtual string Author => "未知作者，可能是秋水吧";
+        public abstract string Author { get; }
 
         internal static bool IsTargetDying
         {
@@ -64,10 +64,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
         internal virtual bool HaveShield => true;
 
 
-        public TextureWrap Texture { get; }
+        public uint IconID { get; }
         private protected CustomCombo()
         {
-            Texture = Service.DataManager.GetImGuiTextureIcon(IconSet.GetJobIcon(this));
+            IconID = IconSet.GetJobIcon(this);
         }
 
         public ActionConfiguration Config
@@ -92,16 +92,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         private protected virtual ActionConfiguration CreateConfiguration()
         {
             return new ActionConfiguration();
-        }
-
-        public void Dispose()
-        {
-            Texture.Dispose();
-        }
-
-        ~CustomCombo()
-        {
-            Dispose();
         }
     }
 }

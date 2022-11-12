@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Melee;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Updaters;
 
 
@@ -15,20 +16,20 @@ namespace XIVAutoAttack.Helpers
         public record LocationInfo(EnemyLocation Loc, byte[] Tags);
         public static readonly SortedList<uint, LocationInfo> ActionLocations = new SortedList<uint, LocationInfo>()
         {
-            {DRGCombo.FangandClaw.ID, new( EnemyLocation.Side, new byte[] { 13 })},
-            {DRGCombo.WheelingThrust.ID, new(EnemyLocation.Back, new byte[] { 10 }) },
-            {DRGCombo.ChaosThrust.ID,new(EnemyLocation.Back, new byte[] { 66, 28 }) }, //需要60级同步
-            {25772, new(EnemyLocation.Back, new byte[] { 66, 28 }) },
-            {MNKCombo.Demolish.ID, new(EnemyLocation.Back, new byte[] { 49 }) },
-            {MNKCombo.SnapPunch.ID, new(EnemyLocation.Side, new byte[] { 19 }) },
-            {NINCombo.TrickAttack.ID, new(EnemyLocation.Back, new byte[] { 25 }) },
-            {NINCombo.AeolianEdge.ID,new( EnemyLocation.Back, new byte[] { 30, 68 }) },
-            {NINCombo.ArmorCrush.ID, new(EnemyLocation.Side, new byte[] { 30, 66 }) },
-            {NINCombo.Suiton.ID, new(EnemyLocation.Back, new byte[] { }) },
-            {RPRCombo.Gibbet.ID, new(EnemyLocation.Side , new byte[] { 11 })},
-            {RPRCombo.Gallows.ID, new(EnemyLocation.Back, new byte[] { 11 }) },
-            {SAMCombo.Gekko.ID, new(EnemyLocation.Back , new byte[] { 68, 29 })},
-            {SAMCombo.Kasha.ID, new(EnemyLocation.Side, new byte[] { 29, 68 }) },
+            {ActionIDs.FangandClaw, new( EnemyLocation.Side, new byte[] { 13 })},
+            {ActionIDs.WheelingThrust, new(EnemyLocation.Back, new byte[] { 10 }) },
+            {ActionIDs.ChaosThrust, new(EnemyLocation.Back, new byte[] { 66, 28 }) }, //需要60级同步
+            {ActionIDs.ChaoticSpring, new(EnemyLocation.Back, new byte[] { 66, 28 }) },
+            {ActionIDs.Demolish, new(EnemyLocation.Back, new byte[] { 49 }) },
+            {ActionIDs.SnapPunch, new(EnemyLocation.Side, new byte[] { 19 }) },
+            {ActionIDs.TrickAttack, new(EnemyLocation.Back, new byte[] { 25 }) },
+            {ActionIDs.AeolianEdge,new( EnemyLocation.Back, new byte[] { 30, 68 }) },
+            {ActionIDs.ArmorCrush, new(EnemyLocation.Side, new byte[] { 30, 66 }) },
+            {ActionIDs.Suiton, new(EnemyLocation.Back, new byte[] { }) },
+            {ActionIDs.Gibbet, new(EnemyLocation.Side , new byte[] { 11 })},
+            {ActionIDs.Gallows, new(EnemyLocation.Back, new byte[] { 11 }) },
+            {ActionIDs.Gekko, new(EnemyLocation.Back , new byte[] { 68, 29 })},
+            {ActionIDs.Kasha, new(EnemyLocation.Side, new byte[] { 29, 68 }) },
         };
 
 
@@ -57,7 +58,7 @@ namespace XIVAutoAttack.Helpers
             return CooldownHelper.RecastAfter(remain, remainWant, addWeaponRemain);
         }
 
-        private static float FindStatusTime(this BattleChara obj, params ushort[] effectIDs)
+        internal static float FindStatusTime(this BattleChara obj, params ushort[] effectIDs)
         {
             var times = obj.FindStatusTimes(effectIDs);
             if (times == null || times.Length == 0) return 0;

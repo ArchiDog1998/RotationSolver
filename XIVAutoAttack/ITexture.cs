@@ -9,7 +9,7 @@ namespace XIVAutoAttack
 {
     public interface ITexture
     {
-        TextureWrap Texture { get; }
+        uint IconID { get; }
         bool IsEnabled { get; set; }
         string Name { get; }
         string Author { get; }

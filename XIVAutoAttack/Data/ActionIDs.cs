@@ -21,6 +21,8 @@ namespace XIVAutoAttack.Data
             //龙尾大回旋
             WheelingThrust = 3556,
             //樱花怒放
+            ChaosThrust = 88,
+            //樱花怒放
             ChaoticSpring = 25772,
             //展开战术
             DeploymentTactics = 3585,
@@ -28,10 +30,9 @@ namespace XIVAutoAttack.Data
             Gibbet = 24382,
             //缢杀
             Gallows = 24383,
-
-        //月光
-        Gekko = 7481,
-        //花车
-        Kasha = 7482;
+            //月光
+            Gekko = 7481,
+            //花车
+            Kasha = 7482;
     }
 }

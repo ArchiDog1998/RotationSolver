@@ -62,6 +62,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float ObjectMinRadius { get; set; } = 0f;
     public float HealthDifference { get; set; } = 0.25f;
     public float HealthAreaAbility { get; set; } = 0.75f;
+    public float HealingOfTimeSubstactSingle { get; set; } = 0.3f;
+    public float HealingOfTimeSubstactArea { get; set; } = 0.3f;
     public float HealthAreafSpell { get; set; } = 0.65f;
     public float HealthSingleAbility { get; set; } = 0.7f;
     public float HealthSingleSpell { get; set; } = 0.55f;

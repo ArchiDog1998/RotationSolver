@@ -143,24 +143,56 @@ namespace XIVAutoAttack.Updaters
 
             if (PartyMembers.Length >= Service.Configuration.PartyCount)
             {
-                CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
-                CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
+                //TODO:少了所有罩子类技能
+                var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, 
+                    StatusIDs.AspectedHelios, StatusIDs.Medica2, StatusIDs.TrueMedica2)
+                    * Service.Configuration.HealingOfTimeSubstactArea;
+
+                CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility
+                    -  ratio;
+
+                CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell
+                    -  ratio;
             }
             else
             {
                 CanHealAreaAbility = CanHealAreaSpell = false;
             }
-            var abilityCount = PartyMembersHP.Count(p => p < Service.Configuration.HealthSingleAbility);
+
+            var singleHots = new ushort[] {StatusIDs.AspectedBenefic, StatusIDs.Regen1,
+                StatusIDs.Regen2,
+                StatusIDs.Regen3};
+
+            //Hot衰减
+            var abilityCount = PartyMembers.Count(p =>
+            {
+                var ratio = GetHealingOfTimeRatio(p, singleHots);
+                return p.GetHealthRatio() < Service.Configuration.HealthSingleAbility -
+                    Service.Configuration.HealingOfTimeSubstactSingle * ratio;
+            });
             CanHealSingleAbility = abilityCount > 0;
             if (abilityCount >= Service.Configuration.PartyCount) CanHealAreaAbility = true;
 
-            var gcdCount = PartyMembersHP.Count(p => p < Service.Configuration.HealthSingleSpell);
+
+            var gcdCount = PartyMembers.Count(p =>
+            {
+                var ratio = GetHealingOfTimeRatio(p, singleHots);
+                return p.GetHealthRatio() < Service.Configuration.HealthSingleSpell - 
+                    Service.Configuration.HealingOfTimeSubstactSingle * ratio;
+            });
             CanHealSingleSpell = gcdCount > 0;
             if (gcdCount >= Service.Configuration.PartyCount) CanHealAreaSpell = true;
 
             PartyMembersMinHP = PartyMembersHP.Min();
             HPNotFull = PartyMembersMinHP < 1;
             #endregion
+        }
+
+        static float GetHealingOfTimeRatio(BattleChara target, params ushort[] statusIds)
+        {
+            var buffTime = target.FindStatusTime(statusIds);
+
+            return Math.Min(1, buffTime / 15);
         }
 
         static SortedDictionary<uint, Vector3> _locations = new SortedDictionary<uint, Vector3>();

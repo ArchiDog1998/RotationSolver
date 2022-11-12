@@ -20,16 +20,6 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
             return false;
         }
 
-        //有某些非常危险的状态。
-        if (JobIDs.Any(i => i == 23))
-        {
-            if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
-            {
-                if (BRDCombo.WardensPaean.ShouldUse(out act, mustUse: true)) return true;
-            }
-        }
-
-
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
         Role role = Role;
 

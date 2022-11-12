@@ -118,13 +118,16 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (!Service.ClientState.LocalPlayer.HaveStatus(BuffsNeed)) return false;
             }
 
-            if (!mustUse)
+            //防止友方类技能连续使用
+            if(_isFriendly && _isEot)
             {
-                //已有提供的Buff的任何一种
-                if (BuffsProvide != null)
-                {
-                    if (Service.ClientState.LocalPlayer.StatusList.Select(s => (ushort)s.StatusId).Intersect(BuffsProvide).Count() > 0) return false;
-                }
+                if (IActionHelper.IsLastAction(true, this)) return false;
+            }
+
+            //已有提供的Buff的任何一种
+            if (BuffsProvide != null && !mustUse)
+            {
+                if (Service.ClientState.LocalPlayer.StatusList.Select(s => (ushort)s.StatusId).Intersect(BuffsProvide).Count() > 0) return false;
             }
 
             //还冷却不下来呢，来不及。

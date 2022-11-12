@@ -53,7 +53,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 {
                     if (TargetStatus == null) return tars;
 
-                    if (_isDot)
+                    if (_isEot)
                     {
                         tars = TargetFilter.GetTargetCanDot(tars);
                     }
@@ -199,12 +199,13 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (availableCharas.Length == 0) return false;
 
                 //判断是否是范围。
-                if (_action.CastType > 1 && ID != SCHCombo.DeploymentTactics.ID)
+                if (_action.CastType > 1 && ID != ActionIDs.DeploymentTactics)
                 {
                     //找到能覆盖最多的位置，并且选血最少的来。
                     Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, _action.EffectRange, true, mustUse, true)
                         .OrderBy(p => p.GetHealthRatio()).FirstOrDefault();
                     if (Target == null) return false;
+
                     return true;
                 }
                 else
