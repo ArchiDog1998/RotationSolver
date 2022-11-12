@@ -11,7 +11,7 @@ using static XIVAutoAttack.Combos.Tank.WARCombos.WARCombo_Default;
 
 namespace XIVAutoAttack.Combos.Tank.WARCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/WARCombo.cs")]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/WARCombos/WARCombo_Default.cs")]
 internal sealed class WARCombo_Default : WARCombo<CommandType>
 {
     public override string Author => "Ï«¥ÙMoon";

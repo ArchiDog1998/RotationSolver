@@ -14,7 +14,7 @@ using static XIVAutoAttack.Combos.RangedPhysicial.MCHCombos.MCHCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial.MCHCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/MCHCombo.cs")]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/MCHCombos/MCHCombo_Default.cs")]
 internal sealed class MCHCombo_Default : MCHCombo<CommandType>
 {
     internal enum CommandType : byte

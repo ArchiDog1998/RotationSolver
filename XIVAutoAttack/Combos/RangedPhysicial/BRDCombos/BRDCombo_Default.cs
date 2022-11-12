@@ -14,7 +14,7 @@ using static XIVAutoAttack.Combos.RangedPhysicial.BRDCombos.BRDCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial.BRDCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/BRDCombo.cs")]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/BRDCombos/BRDCombo_Default.cs")]
 internal sealed class BRDCombo_Default : BRDCombo<CommandType>
 {
     internal enum CommandType : byte

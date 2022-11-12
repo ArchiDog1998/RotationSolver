@@ -15,7 +15,7 @@ using static XIVAutoAttack.Combos.Healer.SGECombos.SGECombo_Default;
 
 namespace XIVAutoAttack.Combos.Healer.SGECombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SGECombo.cs")]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SGECombos/SGECombo_Default.cs")]
 internal sealed class SGECombo_Default : SGECombo<CommandType>
 {
     public override string Author => "Ï«¥ÙMoon";

@@ -13,7 +13,7 @@ using static XIVAutoAttack.Combos.Tank.GNBCombos.GNBCombo_Default;
 
 namespace XIVAutoAttack.Combos.Tank.GNBCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/GNBCombo.cs")]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/GNBCombos/GNBCombo_Default.cs")]
 internal sealed class GNBCombo_Default : GNBCombo<CommandType>
 {
     public override string Author => "Ï«¥ÙMoon";

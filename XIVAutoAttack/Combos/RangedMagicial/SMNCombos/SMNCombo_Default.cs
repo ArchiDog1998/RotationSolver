@@ -12,7 +12,7 @@ using static XIVAutoAttack.Combos.RangedMagicial.SMNCombos.SMNCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.SMNCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedMagicial/SMNCombo.cs")]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedMagicial/SMNCombos/SMNCombo_Default.cs")]
 internal sealed class SMNCombo_Default : SMNCombo<CommandType>
 {
     public override string Author => "ÇïË®";

@@ -14,7 +14,7 @@ using static XIVAutoAttack.Combos.Tank.PLDCombos.PLDCombo_Default;
 
 namespace XIVAutoAttack.Combos.Tank.PLDCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/PLDCombo.cs")]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/PLDCombos/PLDCombo_Default.cs")]
 internal sealed class PLDCombo_Default : PLDCombo<CommandType>
 {
     public override string Author => "Ï«¥ÙMoon";

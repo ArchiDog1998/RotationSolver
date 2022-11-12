@@ -13,7 +13,7 @@ using static XIVAutoAttack.Combos.Tank.DRKCombos.DRKCombo_Default;
 
 namespace XIVAutoAttack.Combos.Tank.DRKCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/DRKCombo.cs")]
+[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/DRKCombos/DRKCombo_Default.cs")]
 internal sealed class DRKCombo_Default : DRKCombo<CommandType>
 {
     internal enum CommandType : byte
