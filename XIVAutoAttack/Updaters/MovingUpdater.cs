@@ -46,6 +46,9 @@ namespace XIVAutoAttack.Updaters
 
         private static bool MovingDetour(IntPtr ptr)
         {
+            if (Service.Conditions[ConditionFlag.OccupiedInEvent])
+                return movingHook.Original(ptr);
+
             if (Service.Configuration.PoslockCasting && _posLocker)
             {
                 //没有键盘取消

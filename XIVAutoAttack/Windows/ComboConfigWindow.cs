@@ -1062,7 +1062,6 @@ internal class ComboConfigWindow : Window
 
         ImGui.Text($"{type}: {action}");
 
-        action.Dispose();
     }
 #endif
 

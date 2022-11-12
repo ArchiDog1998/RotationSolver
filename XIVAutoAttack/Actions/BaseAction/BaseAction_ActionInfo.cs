@@ -193,7 +193,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             return true;
         }
-
+        
         public virtual unsafe bool Use()
         {
             var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
