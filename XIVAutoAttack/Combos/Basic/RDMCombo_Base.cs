@@ -17,144 +17,197 @@ internal abstract class RDMCombo_Base<TCmd> : JobGaugeCombo<RDMGauge, TCmd> wher
 
     private sealed protected override BaseAction Raise => Verraise;
 
-    public static readonly BaseAction
-        //³à¸´»î
-        Verraise = new(7523, true),
+    /// <summary>
+    /// ³à¸´»î
+    /// </summary>
+    public static BaseAction Verraise { get; } = new(ActionID.Verraise, true);
 
-        //Õðµ´
-        Jolt = new(7503)
-        {
-            BuffsProvide = Swiftcast.BuffsProvide.Union(new[] { StatusID.Acceleration }).ToArray(),
-        },
+    /// <summary>
+    /// Õðµ´
+    /// </summary>
+    public static BaseAction Jolt { get; } = new(ActionID.Jolt)
+    {
+        BuffsProvide = Swiftcast.BuffsProvide.Union(new[] { StatusID.Acceleration }).ToArray(),
+    };
 
-        //»Ø´Ì
-        Riposte = new(7504)
-        {
-            OtherCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
-        },
+    /// <summary>
+    /// »Ø´Ì
+    /// </summary>
+    public static BaseAction Riposte { get; } = new(ActionID.Riposte)
+    {
+        OtherCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
+    };
 
-        //³àÉÁÀ×
-        Verthunder = new(7505)
-        {
-            BuffsNeed = Jolt.BuffsProvide,
-        },
+    /// <summary>
+    /// ³àÉÁÀ×
+    /// </summary>
+    public static BaseAction Verthunder { get; } = new(ActionID.Verthunder)
+    {
+        BuffsNeed = Jolt.BuffsProvide,
+    };
 
-        //¶Ì±øÏà½Ó
-        CorpsAcorps = new(7506, shouldEndSpecial: true)
+    /// <summary>
+    /// ¶Ì±øÏà½Ó
+    /// </summary>
+    public static BaseAction CorpsAcorps { get; } = new(ActionID.CorpsAcorps, shouldEndSpecial: true)
+    {
+        BuffsProvide = new[]
         {
-            BuffsProvide = new[]
-            {
                  StatusID.Bind1,
                  StatusID.Bind2,
             }
-        },
+    };
 
-        //³à¼²·ç
-        Veraero = new(7507)
-        {
-            BuffsNeed = Jolt.BuffsProvide,
-        },
+    /// <summary>
+    /// ³à¼²·ç
+    /// </summary>
+    public static BaseAction Veraero { get; } = new(ActionID.Veraero)
+    {
+        BuffsNeed = Jolt.BuffsProvide,
+    };
 
-        //É¢Ëé
-        Scatter = new(7509)
-        {
-            BuffsNeed = Jolt.BuffsProvide,
-        },
+    /// <summary>
+    /// É¢Ëé
+    /// </summary>
+    public static BaseAction Scatter { get; } = new(ActionID.Scatter)
+    {
+        BuffsNeed = Jolt.BuffsProvide,
+    };
 
-        //³àÕðÀ×
-        Verthunder2 = new(16524u)
-        {
-            BuffsProvide = Jolt.BuffsProvide,
-        },
+    /// <summary>
+    /// ³àÕðÀ×
+    /// </summary>
+    public static BaseAction Verthunder2 { get; } = new(ActionID.Verthunder2)
+    {
+        BuffsProvide = Jolt.BuffsProvide,
+    };
 
-        //³àÁÒ·ç
-        Veraero2 = new(16525u)
-        {
-            BuffsProvide = Jolt.BuffsProvide,
-        },
+    /// <summary>
+    /// ³àÁÒ·ç
+    /// </summary>
+    public static BaseAction Veraero2 { get; } = new(ActionID.Veraero2)
+    {
+        BuffsProvide = Jolt.BuffsProvide,
+    };
 
-        //³à»ðÑ×
-        Verfire = new(7510)
-        {
-            BuffsNeed = new[] { StatusID.VerfireReady },
-            BuffsProvide = Jolt.BuffsProvide,
-        },
+    /// <summary>
+    /// ³à»ðÑ×
+    /// </summary>
+    public static BaseAction Verfire { get; } = new(ActionID.Verfire)
+    {
+        BuffsNeed = new[] { StatusID.VerfireReady },
+        BuffsProvide = Jolt.BuffsProvide,
+    };
 
-        //³à·ÉÊ¯
-        Verstone = new(7511)
-        {
-            BuffsNeed = new[] { StatusID.VerstoneReady },
-            BuffsProvide = Jolt.BuffsProvide,
-        },
+    /// <summary>
+    /// ³à·ÉÊ¯
+    /// </summary>
+    public static BaseAction Verstone { get; } = new(ActionID.Verstone)
+    {
+        BuffsNeed = new[] { StatusID.VerstoneReady },
+        BuffsProvide = Jolt.BuffsProvide,
+    };
 
-        //½»»÷Õ¶
-        Zwerchhau = new(7512)
-        {
-            OtherCheck = b => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
-        },
+    /// <summary>
+    /// ½»»÷Õ¶
+    /// </summary>
+    public static BaseAction Zwerchhau { get; } = new(ActionID.Zwerchhau)
+    {
+        OtherCheck = b => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
+    };
 
-        //½»½£
-        Engagement = new(16527),
+    /// <summary>
+    /// ½»½£
+    /// </summary>
+    public static BaseAction Engagement { get; } = new(ActionID.Engagement);
 
-        //·É½£
-        Fleche = new(7517),
+    /// <summary>
+    /// ·É½£
+    /// </summary>
+    public static BaseAction Fleche { get; } = new(ActionID.Fleche);
 
-        //Á¬¹¥
-        Redoublement = new(7516)
-        {
-            OtherCheck = b => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
-        },
+    /// <summary>
+    /// Á¬¹¥
+    /// </summary>
+    public static BaseAction Redoublement { get; } = new(ActionID.Redoublement)
+    {
+        OtherCheck = b => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
+    };
 
 
-        //´Ù½ø
-        Acceleration = new(7518)
-        {
-            BuffsProvide = new[] { StatusID.Acceleration },
-        },
+    /// <summary>
+    /// ´Ù½ø
+    /// </summary>
+    public static BaseAction Acceleration { get; } = new(ActionID.Acceleration)
+    {
+        BuffsProvide = new[] { StatusID.Acceleration },
+    };
 
-        //»®Ô²Õ¶
-        Moulinet = new(7513)
-        {
-            OtherCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
-        },
+    /// <summary>
+    /// »®Ô²Õ¶
+    /// </summary>
+    public static BaseAction Moulinet { get; } = new(ActionID.Moulinet)
+    {
+        OtherCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
+    };
 
-        //³àÖÎÁÆ
-        Vercure = new(7514, true)
-        {
-            BuffsProvide = Swiftcast.BuffsProvide.Union(Acceleration.BuffsProvide).ToArray(),
-        },
+    /// <summary>
+    /// ³àÖÎÁÆ
+    /// </summary>
+    public static BaseAction Vercure { get; } = new(ActionID.Vercure, true)
+    {
+        BuffsProvide = Swiftcast.BuffsProvide.Union(Acceleration.BuffsProvide).ToArray(),
+    };
 
-        //Áù·Ö·´»÷
-        ContreSixte = new(7519u),
+    /// <summary>
+    /// Áù·Ö·´»÷
+    /// </summary>
+    public static BaseAction ContreSixte { get; } = new(ActionID.ContreSixte);
 
-        //¹ÄÀø
-        Embolden = new(7520, true),
+    /// <summary>
+    /// ¹ÄÀø
+    /// </summary>
+    public static BaseAction Embolden { get; } = new(ActionID.Embolden, true);
 
-        //ÐøÕ¶
-        Reprise = new(16529),
+    /// <summary>
+    /// ÐøÕ¶
+    /// </summary>
+    public static BaseAction Reprise { get; } = new(ActionID.Reprise);
 
-        //¿¹ËÀ
-        MagickBarrier = new(25857),
+    /// <summary>
+    /// ¿¹ËÀ
+    /// </summary>
+    public static BaseAction MagickBarrier { get; } = new(ActionID.MagickBarrier);
 
-        //³àºË±¬
-        Verflare = new(7525),
+    /// <summary>
+    /// ³àºË±¬
+    /// </summary>
+    public static BaseAction Verflare { get; } = new(ActionID.Verflare);
 
-        //³àÉñÊ¥
-        Verholy = new(7526),
+    /// <summary>
+    /// ³àÉñÊ¥
+    /// </summary>
+    public static BaseAction Verholy { get; } = new(ActionID.Verholy);
 
-        //½¹ÈÈ
-        Scorch = new(16530)
-        {
-            OtherIDsCombo = new uint[] { Verholy.ID },
-        },
+    /// <summary>
+    /// ½¹ÈÈ
+    /// </summary>
+    public static BaseAction Scorch { get; } = new(ActionID.Scorch)
+    {
+        OtherIDsCombo = new uint[] { Verholy.ID },
+    };
 
-        //¾ö¶Ï
-        Resolution = new(25858),
+    /// <summary>
+    /// ¾ö¶Ï
+    /// </summary>
+    public static BaseAction Resolution { get; } = new(ActionID.Resolution);
 
-        //Ä§Ôª»¯
-        Manafication = new(7521)
-        {
-            OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && InCombat && JobGauge.ManaStacks == 0,
-            OtherIDsNot = new uint[] { Riposte.ID, Zwerchhau.ID, Scorch.ID, Verflare.ID, Verholy.ID },
-        };
+    /// <summary>
+    /// Ä§Ôª»¯
+    /// </summary>
+    public static BaseAction Manafication { get; } = new(ActionID.Manafication)
+    {
+        OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && InCombat && JobGauge.ManaStacks == 0,
+        OtherIDsNot = new uint[] { Riposte.ID, Zwerchhau.ID, Scorch.ID, Verflare.ID, Verholy.ID },
+    };
 }

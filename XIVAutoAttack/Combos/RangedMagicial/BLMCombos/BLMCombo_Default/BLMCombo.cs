@@ -301,7 +301,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         {
             if (Transpose.ShouldUse(out act))
             {
-                if (!Fire4.EnoughLevel && Player.CurrentMp == 10000) return true;
+                if (!Fire4.EnoughLevel && Player.CurrentMp >= 9600) return true;
             }
             //雷
             if (CanUseThunder(out act)) return true;
@@ -370,7 +370,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         }
         if (Thunder2.ShouldUse(out act) && !IsLastSpell(true, Thunder2))
         {
-            if (HasThunder || !TargetHasThunder) return true;
+            if (HasThunder || !Thunder2.Target.HaveStatusFromSelf(StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4)) return true;
         }
 
         if (Fire2.ShouldUse(out act) && Level >= 20)

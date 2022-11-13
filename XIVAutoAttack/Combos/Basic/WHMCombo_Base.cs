@@ -12,118 +12,163 @@ internal abstract class WHMCombo_Base<TCmd> : JobGaugeCombo<WHMGauge, TCmd> wher
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.WhiteMage, ClassJobID.Conjurer };
     private sealed protected override BaseAction Raise => Raise1;
 
-    public static readonly BaseAction
+
     #region 治疗
-        //治疗
-        Cure = new(120, true),
+    /// <summary>
+    /// 治疗
+    /// </summary>
+    public static BaseAction Cure { get; } = new(ActionID.Cure, true);
 
-        //医治
-        Medica = new(124, true),
+    /// <summary>
+    /// 医治
+    /// </summary>
+    public static BaseAction Medica { get; } = new(ActionID.Medica, true);
 
-        //复活
-        Raise1 = new(125, true),
+    /// <summary>
+    /// 复活
+    /// </summary>
+    public static BaseAction Raise1 { get; } = new(ActionID.Raise1, true);
 
-        //救疗
-        Cure2 = new(135, true),
+    /// <summary>
+    /// 救疗
+    /// </summary>
+    public static BaseAction Cure2 { get; } = new(ActionID.Cure2, true);
 
-        //医济
-        Medica2 = new(133, true, isEot: true)
+    /// <summary>
+    /// 医济
+    /// </summary>
+    public static BaseAction Medica2 { get; } = new(ActionID.Medica2, true, isEot: true)
+    {
+        BuffsProvide = new[] { StatusID.Medica2, StatusID.TrueMedica2 },
+    };
+
+    /// <summary>
+    /// 再生
+    /// </summary>
+    public static BaseAction Regen { get; } = new(ActionID.Regen, true, isEot: true)
+    {
+        TargetStatus = new[]
         {
-            BuffsProvide = new[] { StatusID.Medica2, StatusID.TrueMedica2 },
-        },
+            StatusID.Regen1,
+            StatusID.Regen2,
+            StatusID.Regen3,
+        }
+    };
 
-        //再生
-        Regen = new(137, true, isEot: true)
-        {
-            TargetStatus = new[]
-            {
-                StatusID.Regen1,
-                StatusID.Regen2,
-                StatusID.Regen3,
-            }
-        },
+    /// <summary>
+    /// 愈疗
+    /// </summary>
+    public static BaseAction Cure3 { get; } = new(ActionID.Cure3, true);
 
-        //愈疗
-        Cure3 = new(131, true),
+    /// <summary>
+    /// 天赐祝福
+    /// </summary>
+    public static BaseAction Benediction { get; } = new(ActionID.Benediction, true);
 
-        //天赐祝福
-        Benediction = new(140, true)
-        {
-            OtherCheck = b => TargetUpdater.PartyMembersMinHP < 0.15f,
-        },
+    /// <summary>
+    /// 庇护所
+    /// </summary>
+    public static BaseAction Asylum { get; } = new(ActionID.Asylum, true)
+    {
+        OtherCheck = b => !IsMoving
+    };
 
-        //庇护所
-        Asylum = new(3569, true)
-        {
-            OtherCheck = b => !IsMoving
-        },
+    /// <summary>
+    /// 安慰之心
+    /// </summary>
+    public static BaseAction AfflatusSolace { get; } = new(ActionID.AfflatusSolace, true)
+    {
+        OtherCheck = b => JobGauge.Lily > 0,
+    };
 
-        //安慰之心
-        AfflatusSolace = new(16531, true)
-        {
-            OtherCheck = b => JobGauge.Lily > 0,
-        },
+    /// <summary>
+    /// 神名
+    /// </summary>
+    public static BaseAction Tetragrammaton { get; } = new(ActionID.Tetragrammaton, true);
 
-        //神名
-        Tetragrammaton = new(3570, true),
+    /// <summary>
+    /// 神祝祷
+    /// </summary>
+    public static BaseAction DivineBenison { get; } = new(ActionID.DivineBenison, true);
 
-        //神祝祷
-        DivineBenison = new(7432, true),
+    /// <summary>
+    /// 狂喜之心
+    /// </summary>
+    public static BaseAction AfflatusRapture { get; } = new(ActionID.AfflatusRapture, true)
+    {
+        OtherCheck = b => JobGauge.Lily > 0,
+    };
 
-        //狂喜之心
-        AfflatusRapture = new(16534, true)
-        {
-            OtherCheck = b => JobGauge.Lily > 0,
-        },
+    /// <summary>
+    /// 水流幕
+    /// </summary>
+    public static BaseAction Aquaveil { get; } = new(ActionID.Aquaveil, true);
 
-        //水流幕
-        Aquaveil = new(25861, true),
-
-        //礼仪之铃
-        LiturgyoftheBell = new(25862, true),
+    /// <summary>
+    /// 礼仪之铃
+    /// </summary>
+    public static BaseAction LiturgyoftheBell { get; } = new(ActionID.LiturgyoftheBell, true);
     #endregion
     #region 输出
-        //飞石 
-        Stone = new(119),//坚石127 垒石3568 崩石7431 闪耀16533 闪灼25859
+    /// <summary>
+    /// 飞石 
+    /// </summary>
+    public static BaseAction Stone { get; } = new(ActionID.Stone);//坚石127 垒石3568 崩石7431 闪耀16533 闪灼25859
 
-        //疾风 Dot
-        Aero = new(121, isEot: true)//烈风132 天辉16532
-        {
-            TargetStatus = new StatusID[]
-            {
-                    StatusID.Aero,
-                    StatusID.Aero2,
-                    StatusID.Dia,
-            }
-        },
+    /// <summary>
+    /// 疾风 Dot
+    /// </summary>
+    public static BaseAction Aero { get; } = new(ActionID.Aero, isEot: true)//烈风132 天辉16532
+    {
+        TargetStatus = new StatusID[]
+      {
+            StatusID.Aero,
+            StatusID.Aero2,
+            StatusID.Dia,
+      }
+    };
 
-        //神圣
-        Holy = new(139),//豪圣 25860
+    /// <summary>
+    /// 神圣
+    /// </summary>
+    public static BaseAction Holy { get; } = new(ActionID.Holy);//豪圣 25860
 
-        //法令
-        Assize = new(3571, true),
+    /// <summary>
+    /// 法令
+    /// </summary>
+    public static BaseAction Assize { get; } = new(ActionID.Assize, true);
 
-        //苦难之心
-        AfflatusMisery = new(16535)
-        {
-            OtherCheck = b => JobGauge.BloodLily == 3,
-        },
+    /// <summary>
+    /// 苦难之心
+    /// </summary>
+    public static BaseAction AfflatusMisery { get; } = new(ActionID.AfflatusMisery)
+    {
+        OtherCheck = b => JobGauge.BloodLily == 3,
+    };
     #endregion
     #region buff
-        //神速咏唱
-        PresenseOfMind = new(136, true)
-        {
-            OtherCheck = b => !IsMoving
-        },
+    /// <summary>
+    /// 神速咏唱
+    /// </summary>
+    public static BaseAction PresenseOfMind { get; } = new(ActionID.PresenseOfMind, true)
+    {
+        OtherCheck = b => !IsMoving
+    };
 
-        //无中生有
-        ThinAir = new(7430, true),
+    /// <summary>
+    /// 无中生有
+    /// </summary>
+    public static BaseAction ThinAir { get; } = new(ActionID.ThinAir, true);
 
-        //全大赦
-        PlenaryIndulgence = new(7433, true),
+    /// <summary>
+    /// 全大赦
+    /// </summary>
+    public static BaseAction PlenaryIndulgence { get; } = new(ActionID.PlenaryIndulgence, true);
 
-        //节制
-        Temperance = new(16536, true);
+    /// <summary>
+    /// 节制
+    /// </summary>
+    public static BaseAction Temperance { get; } = new(ActionID.Temperance, true);
     #endregion
 
 }

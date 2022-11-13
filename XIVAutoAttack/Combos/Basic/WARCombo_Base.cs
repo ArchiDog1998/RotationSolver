@@ -15,121 +15,159 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.Defiance);
     private sealed protected override BaseAction Shield => Defiance;
 
-    public static readonly BaseAction
-        //ÊØ»¤
-        Defiance = new(48, shouldEndSpecial: true),
+    /// <summary>
+    /// ÊØ»¤
+    /// </summary>
+    public static BaseAction Defiance { get; } = new(ActionID.Defiance, shouldEndSpecial: true);
 
-        //ÖØÅü
-        HeavySwing = new(31),
+    /// <summary>
+    /// ÖØÅü
+    /// </summary>
+    public static BaseAction HeavySwing { get; } = new(ActionID.HeavySwing);
 
-        //Ð×²ÐÁÑ
-        Maim = new(37),
+    /// <summary>
+    /// Ð×²ÐÁÑ
+    /// </summary>
+    public static BaseAction Maim { get; } = new(ActionID.Maim);
 
-        //±©·çÕ¶ ÂÌ¸«
-        StormsPath = new(42),
+    /// <summary>
+    /// ±©·çÕ¶ ÂÌ¸«
+    /// </summary>
+    public static BaseAction StormsPath { get; } = new(ActionID.StormsPath);
 
-        //±©·çËé ºì¸«
-        StormsEye = new(45)
-        {
-            OtherCheck = b => Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest),
-        },
+    /// <summary>
+    /// ±©·çËé ºì¸«
+    /// </summary>
+    public static BaseAction StormsEye { get; } = new(ActionID.StormsEye)
+    {
+        OtherCheck = b => Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest),
+    };
 
-        //·É¸«
-        Tomahawk = new(46)
-        {
-            FilterForTarget = b => TargetFilter.ProvokeTarget(b),
-        },
+    /// <summary>
+    /// ·É¸«
+    /// </summary>
+    public static BaseAction Tomahawk { get; } = new(ActionID.Tomahawk)
+    {
+        FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+    };
 
-        //ÃÍ¹¥
-        Onslaught = new(7386, shouldEndSpecial: true)
-        {
-            ChoiceTarget = TargetFilter.FindTargetForMoving,
-        },
+    /// <summary>
+    /// ÃÍ¹¥
+    /// </summary>
+    public static BaseAction Onslaught { get; } = new(ActionID.Onslaught, shouldEndSpecial: true)
+    {
+        ChoiceTarget = TargetFilter.FindTargetForMoving,
+    };
 
-        //¶¯ÂÒ    
-        Upheaval = new(7387)
-        {
-            BuffsNeed = new StatusID[] { StatusID.SurgingTempest },
-        },
+    /// <summary>
+    /// ¶¯ÂÒ    
+    /// </summary>
+    public static BaseAction Upheaval { get; } = new(ActionID.Upheaval)
+    {
+        BuffsNeed = new StatusID[] { StatusID.SurgingTempest },
+    };
 
-        //³¬Ñ¹¸«
-        Overpower = new(41),
+    /// <summary>
+    /// ³¬Ñ¹¸«
+    /// </summary>
+    public static BaseAction Overpower { get; } = new(ActionID.Overpower);
 
-        //ÃØÒø±©·ç
-        MythrilTempest = new(16462),
+    /// <summary>
+    /// ÃØÒø±©·ç
+    /// </summary>
+    public static BaseAction MythrilTempest = new(ActionID.MythrilTempest);
 
-        //ÈºÉ½Â¡Æð
-        Orogeny = new(25752),
+    /// <summary>
+    /// ÈºÉ½Â¡Æð
+    /// </summary>
+    public static BaseAction Orogeny { get; } = new(ActionID.Orogeny);
 
-        //Ô­³õÖ®»ê
-        InnerBeast = new(49)
-        {
-            OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatus(true, StatusID.InnerRelease)),
-        },
+    /// <summary>
+    /// Ô­³õÖ®»ê
+    /// </summary>
+    public static BaseAction InnerBeast { get; } = new(ActionID.InnerBeast)
+    {
+        OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatus(true, StatusID.InnerRelease)),
+    };
 
-        //¸ÖÌúÐý·ç
-        SteelCyclone = new(51)
-        {
-            OtherCheck = InnerBeast.OtherCheck,
-        },
+    /// <summary>
+    /// ¸ÖÌúÐý·ç
+    /// </summary>
+    public static BaseAction SteelCyclone { get; } = new(ActionID.SteelCyclone)
+    {
+        OtherCheck = InnerBeast.OtherCheck,
+    };
 
-        //Õ½º¿
-        Infuriate = new(52)
-        {
-            BuffsProvide = new[] { StatusID.InnerRelease },
-            OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge < 50,
-        },
+    /// <summary>
+    /// Õ½º¿
+    /// </summary>
+    public static BaseAction Infuriate { get; } = new(ActionID.Infuriate)
+    {
+        BuffsProvide = new[] { StatusID.InnerRelease },
+        OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge < 50,
+    };
+    /// <summary>
+    /// ¿ñ±©
+    /// </summary>
+    public static BaseAction Berserk { get; } = new(ActionID.Berserk)
+    {
+        OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0,
+    };
 
-        //¿ñ±©
-        Berserk = new(38)
-        {
-            OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0,
-        },
+    /// <summary>
+    /// Õ½Àõ
+    /// </summary>
+    public static BaseAction ThrillofBattle { get; } = new(ActionID.ThrillofBattle);
 
-        //Õ½Àõ
-        ThrillofBattle = new(40),
+    /// <summary>
+    /// Ì©È»×ÔÈô
+    /// </summary>
+    public static BaseAction Equilibrium { get; } = new(ActionID.Equilibrium);
 
-        //Ì©È»×ÔÈô
-        Equilibrium = new(3552),
+    /// <summary>
+    /// Ô­³õµÄÓÂÃÍ
+    /// </summary>
+    public static BaseAction NascentFlash { get; } = new(ActionID.NascentFlash)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
 
-        //Ô­³õµÄÓÂÃÍ
-        NascentFlash = new(16464)
-        {
-            ChoiceTarget = TargetFilter.FindAttackedTarget,
-        },
+    /// <summary>
+    /// ¸´³ð
+    /// </summary>
+    public static BaseAction Vengeance { get; } = new(ActionID.Vengeance)
+    {
+        BuffsProvide = Rampart.BuffsProvide,
+        OtherCheck = BaseAction.TankDefenseSelf,
+    };
 
-        ////Ô­³õµÄÑªÆø
-        //Bloodwhetting = new BaseAction(25751),
+    /// <summary>
+    /// Ô­³õµÄÖ±¾õ
+    /// </summary>
+    public static BaseAction RawIntuition { get; } = new(ActionID.RawIntuition)
+    {
+        BuffsProvide = Rampart.BuffsProvide,
+        OtherCheck = BaseAction.TankDefenseSelf,
+    };
 
-        //¸´³ð
-        Vengeance = new(44)
-        {
-            BuffsProvide = Rampart.BuffsProvide,
-            OtherCheck = BaseAction.TankDefenseSelf,
-        },
+    /// <summary>
+    /// °ÚÍÑ
+    /// </summary>
+    public static BaseAction ShakeItOff { get; } = new(ActionID.ShakeItOff, true);
+    
+    /// <summary>
+    /// ËÀ¶·
+    /// </summary>
+    public static BaseAction Holmgang { get; } = new(ActionID.Holmgang)
+    {
+        OtherCheck = BaseAction.TankBreakOtherCheck,
+    };
 
-        //Ô­³õµÄÖ±¾õ
-        RawIntuition = new(3551)
-        {
-            BuffsProvide = Rampart.BuffsProvide,
-            OtherCheck = BaseAction.TankDefenseSelf,
-        },
-
-        //°ÚÍÑ
-        ShakeItOff = new(7388, true),
-
-        //ËÀ¶·
-        Holmgang = new(43)
-        {
-            OtherCheck = BaseAction.TankBreakOtherCheck,
-        },
-
-        ////Ô­³õµÄ½â·Å
-        //InnerRelease = new BaseAction(7389),
-
-        //Âù»Ä±ÀÁÑ
-        PrimalRend = new(25753)
-        {
-            BuffsNeed = new[] { StatusID.PrimalRendReady },
-        };
+    /// <summary>
+    /// Âù»Ä±ÀÁÑ
+    /// </summary>
+    public static BaseAction PrimalRend { get; } = new(ActionID.PrimalRend)
+    {
+        BuffsNeed = new[] { StatusID.PrimalRendReady }
+    };
 }

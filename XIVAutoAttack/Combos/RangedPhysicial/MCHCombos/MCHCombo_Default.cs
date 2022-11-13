@@ -142,8 +142,8 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (SettingBreak && CanUseWildfire(out act)) return true;
 
         //起手虹吸弹、弹射
-        if (Ricochet.ChargesCount == Ricochet.MaxCharges && Ricochet.ShouldUse(out act, mustUse: true)) return true;
-        if (GaussRound.ChargesCount == GaussRound.MaxCharges && GaussRound.ShouldUse(out act, mustUse: true)) return true;
+        if (Ricochet.ChargesCount == Ricochet.MaxCharges && Ricochet.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (GaussRound.ChargesCount == GaussRound.MaxCharges && GaussRound.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
         //枪管加热
         if (BarrelStabilizer.ShouldUse(out act)) return true;
@@ -157,10 +157,10 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (GaussRound.ChargesCount <= Ricochet.ChargesCount)
         {
             //弹射
-            if (Ricochet.ShouldUse(out act, mustUse: true)) return true;
+            if (Ricochet.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
         }
         //虹吸弹
-        if (GaussRound.ShouldUse(out act, mustUse: true)) return true;
+        if (GaussRound.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
         act = null!;
         return false;

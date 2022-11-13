@@ -18,105 +18,155 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
     protected static bool HaveMoon => Player.HaveStatus(true, StatusID.Moon);
     protected static bool HaveFlower => Player.HaveStatus(true, StatusID.Flower);
 
+    /// <summary>
+    /// 刃风
+    /// </summary>
+    public static BaseAction Hakaze { get; } = new(ActionID.Hakaze);
 
-    public static readonly BaseAction
-        //刃风
-        Hakaze = new(7477),
+    /// <summary>
+    /// 阵风
+    /// </summary>
+    public static BaseAction Jinpu { get; } = new(ActionID.Jinpu);
 
-        //阵风
-        Jinpu = new(7478),
+    /// <summary>
+    /// 心眼
+    /// </summary>
+    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye);
 
-        //心眼
-        ThirdEye = new(7498),
+    /// <summary>
+    /// 燕飞
+    /// </summary>
+    public static BaseAction Enpi { get; } = new(ActionID.Enpi);
 
-        //燕飞
-        Enpi = new(7486),
+    //士风
+    public static BaseAction Shifu { get; } = new(ActionID.Shifu);
 
-        //士风
-        Shifu = new(7479),
+    /// <summary>
+    /// 风雅
+    /// </summary>
+    public static BaseAction Fuga { get; } = new(ActionID.Fuga);
 
-        //风雅
-        Fuga = new(7483),
+    /// <summary>
+    /// 月光
+    /// </summary>
+    public static BaseAction Gekko { get; } = new(ActionID.Gekko);
 
-        //月光
-        Gekko = new(ActionID.Gekko),
+    /// <summary>
+    /// 彼岸花
+    /// </summary>
+    public static BaseAction Higanbana { get; } = new(ActionID.Higanbana, isEot: true)
+    {
+        OtherCheck = b => !IsMoving && SenCount == 1 && HaveMoon && HaveFlower,
+        TargetStatus = new[] { StatusID.Higanbana },
+    };
 
-        //彼岸花
-        Higanbana = new(7489, isEot: true)
-        {
-            OtherCheck = b => !IsMoving && SenCount == 1 && HaveMoon && HaveFlower,
-            TargetStatus = new[] { StatusID.Higanbana },
-        },
+    /// <summary>
+    /// 天下五剑
+    /// </summary>
+    public static BaseAction TenkaGoken { get; } = new(ActionID.TenkaGoken)
+    {
+        OtherCheck = b => !IsMoving,
+    };
 
-        //天下五剑
-        TenkaGoken = new(7488)
-        {
-            OtherCheck = b => !IsMoving,
-        },
+    /// <summary>
+    /// 纷乱雪月花
+    /// </summary>
+    public static BaseAction MidareSetsugekka { get; } = new(ActionID.MidareSetsugekka)
+    {
+        OtherCheck = b => !IsMoving && SenCount == 3,
+    };
 
-        //纷乱雪月花
-        MidareSetsugekka = new(7487)
-        {
-            OtherCheck = b => !IsMoving && SenCount == 3,
-        },
+    /// <summary>
+    /// 满月
+    /// </summary>
+    public static BaseAction Mangetsu { get; } = new(ActionID.Mangetsu);
 
-        //满月
-        Mangetsu = new(7484),
+    /// <summary>
+    /// 花车
+    /// </summary>
+    public static BaseAction Kasha { get; } = new(ActionID.Kasha);
 
-        //花车
-        Kasha = new(ActionID.Kasha),
+    /// <summary>
+    /// 樱花
+    /// </summary>
+    public static BaseAction Oka { get; } = new(ActionID.Oka);
 
-        //樱花
-        Oka = new(7485),
+    /// <summary>
+    /// 明镜止水
+    /// </summary>
+    public static BaseAction MeikyoShisui { get; } = new(ActionID.MeikyoShisui)
+    {
+        BuffsProvide = new[] { StatusID.MeikyoShisui },
+        OtherCheck = b => JobGauge.HasSetsu && !JobGauge.HasKa && !JobGauge.HasGetsu,
+    };
 
-        //明镜止水
-        MeikyoShisui = new(7499)
-        {
-            BuffsProvide = new[] { StatusID.MeikyoShisui },
-            OtherCheck = b => JobGauge.HasSetsu && !JobGauge.HasKa && !JobGauge.HasGetsu,
-        },
+    /// <summary>
+    /// 雪风
+    /// </summary>
+    public static BaseAction Yukikaze { get; } = new(ActionID.Yukikaze);
 
-        //雪风
-        Yukikaze = new(7480),
+    /// <summary>
+    /// 必杀剑·晓天
+    /// </summary>
+    public static BaseAction HissatsuGyoten { get; } = new(ActionID.HissatsuGyoten);
 
-        //必杀剑·晓天
-        HissatsuGyoten = new(7492),
+    /// <summary>
+    /// 必杀剑·震天
+    /// </summary>
+    public static BaseAction HissatsuShinten { get; } = new(ActionID.HissatsuShinten);
 
-        //必杀剑·震天
-        HissatsuShinten = new(7490),
+    /// <summary>
+    /// 必杀剑·九天
+    /// </summary>
+    public static BaseAction HissatsuKyuten { get; } = new(ActionID.HissatsuKyuten);
 
-        //必杀剑·九天
-        HissatsuKyuten = new(7491),
+    /// <summary>
+    /// 意气冲天
+    /// </summary>
+    public static BaseAction Ikishoten { get; } = new(ActionID.Ikishoten);
 
-        //意气冲天
-        Ikishoten = new(16482),
+    /// <summary>
+    /// 必杀剑·红莲
+    /// </summary>
+    public static BaseAction HissatsuGuren { get; } = new(ActionID.HissatsuGuren);
 
-        //必杀剑·红莲
-        HissatsuGuren = new(7496),
+    /// <summary>
+    /// 必杀剑·闪影
+    /// </summary>
+    public static BaseAction HissatsuSenei { get; } = new(ActionID.HissatsuSenei);
 
-        //必杀剑·闪影
-        HissatsuSenei = new(16481),
+    /// <summary>
+    /// 回返五剑
+    /// </summary>
+    public static BaseAction KaeshiGoken { get; } = new(ActionID.KaeshiGoken);
 
-        //回返五剑
-        KaeshiGoken = new(16485),
+    /// <summary>
+    /// 回返雪月花
+    /// </summary>
+    public static BaseAction KaeshiSetsugekka { get; } = new(ActionID.KaeshiSetsugekka);
 
-        //回返雪月花
-        KaeshiSetsugekka = new(16486),
+    /// <summary>
+    /// 照破
+    /// </summary>
+    public static BaseAction Shoha { get; } = new(ActionID.Shoha);
 
-        //照破
-        Shoha = new(16487),
+    /// <summary>
+    /// 无明照破
+    /// </summary>
+    public static BaseAction Shoha2 { get; } = new(ActionID.Shoha2);
 
-        //无明照破
-        Shoha2 = new(25779),
+    /// <summary>
+    /// 奥义斩浪
+    /// </summary>
+    public static BaseAction OgiNamikiri { get; } = new(ActionID.OgiNamikiri)
+    {
+        OtherCheck = b => HaveFlower && HaveMoon,
+        BuffsNeed = new[] { StatusID.OgiNamikiriReady },
+    };
 
-        //奥义斩浪
-        OgiNamikiri = new(25781)
-        {
-            OtherCheck = b => HaveFlower && HaveMoon,
-            BuffsNeed = new[] { StatusID.OgiNamikiriReady },
-        },
-
-        //回返斩浪
-        KaeshiNamikiri = new(25782);
+    /// <summary>
+    /// 回返斩浪
+    /// </summary>
+    public static BaseAction KaeshiNamikiri { get; } = new(ActionID.KaeshiNamikiri);
 
 }

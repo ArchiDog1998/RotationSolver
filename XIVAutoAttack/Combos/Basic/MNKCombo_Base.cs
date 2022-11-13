@@ -11,104 +11,150 @@ internal abstract class MNKCombo_Base<TCmd> : JobGaugeCombo<MNKGauge, TCmd> wher
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
 
+    /// <summary>
+    /// 双龙脚
+    /// </summary>
+    public static BaseAction DragonKick { get; } = new(ActionID.DragonKick)
+    {
+        BuffsProvide = new[] { StatusID.LeadenFist },
+    };
 
-    public static readonly BaseAction
-        //双龙脚
-        DragonKick = new(74)
-        {
-            BuffsProvide = new[] { StatusID.LeadenFist },
-        },
+    /// <summary>
+    /// 连击
+    /// </summary>
+    public static BaseAction Bootshine { get; } = new(ActionID.Bootshine);
 
-        //连击
-        Bootshine = new(53),
+    /// <summary>
+    /// 破坏神冲 aoe
+    /// </summary>
+    public static BaseAction ArmoftheDestroyer { get; } = new(ActionID.ArmoftheDestroyer);
 
-        //破坏神冲 aoe
-        ArmoftheDestroyer = new(62),
+    /// <summary>
+    /// 双掌打 伤害提高
+    /// </summary>
+    public static BaseAction TwinSnakes { get; } = new(ActionID.TwinSnakes);
 
-        //双掌打 伤害提高
-        TwinSnakes = new(61),
+    /// <summary>
+    /// 正拳
+    /// </summary>
+    public static BaseAction TrueStrike { get; } = new(ActionID.TrueStrike);
 
-        //正拳
-        TrueStrike = new(54),
+    /// <summary>
+    /// 四面脚 aoe
+    /// </summary>
+    public static BaseAction FourpointFury { get; } = new(ActionID.FourpointFury);
 
-        //四面脚 aoe
-        FourpointFury = new(16473),
+    /// <summary>
+    /// 破碎拳
+    /// </summary>
+    public static BaseAction Demolish { get; } = new(ActionID.Demolish, isEot: true)
+    {
+        TargetStatus = new StatusID[] { StatusID.Demolish },
+    };
 
-        //破碎拳
-        Demolish = new(66, isEot: true)
-        {
-            TargetStatus = new StatusID[] { StatusID.Demolish },
-        },
+    /// <summary>
+    /// 崩拳
+    /// </summary>
+    public static BaseAction SnapPunch { get; } = new(ActionID.SnapPunch);
 
-        //崩拳
-        SnapPunch = new(ActionID.SnapPunch),
+    /// <summary>
+    /// 地烈劲 aoe
+    /// </summary>
+    public static BaseAction Rockbreaker { get; } = new(ActionID.Rockbreaker);
 
-        //地烈劲 aoe
-        Rockbreaker = new(70),
+    /// <summary>
+    /// 斗气
+    /// </summary>
+    public static BaseAction Meditation { get; } = new(ActionID.Meditation);
 
-        //斗气
-        Meditation = new(3546),
+    /// <summary>
+    /// 铁山靠
+    /// </summary>
+    public static BaseAction SteelPeak { get; } = new(ActionID.SteelPeak)
+    {
+        OtherCheck = b => InCombat,
+    };
 
-        //铁山靠
-        SteelPeak = new(25761)
-        {
-            OtherCheck = b => InCombat,
-        },
+    /// <summary>
+    /// 空鸣拳
+    /// </summary>
+    public static BaseAction HowlingFist { get; } = new(ActionID.HowlingFist)
+    {
+        OtherCheck = b => InCombat,
+    };
 
-        //空鸣拳
-        HowlingFist = new(25763)
-        {
-            OtherCheck = b => InCombat,
-        },
+    /// <summary>
+    /// 义结金兰
+    /// </summary>
+    public static BaseAction Brotherhood { get; } = new(ActionID.Brotherhood, true);
 
-        //义结金兰
-        Brotherhood = new(7396, true),
+    /// <summary>
+    /// 红莲极意 提高dps
+    /// </summary>
+    public static BaseAction RiddleofFire { get; } = new(ActionID.RiddleofFire);
 
-        //红莲极意 提高dps
-        RiddleofFire = new(7395),
+    /// <summary>
+    /// 突进技能
+    /// </summary>
+    public static BaseAction Thunderclap { get; } = new(ActionID.Thunderclap, shouldEndSpecial: true)
+    {
+        ChoiceTarget = TargetFilter.FindTargetForMoving,
+    };
 
-        //突进技能
-        Thunderclap = new(25762, shouldEndSpecial: true)
-        {
-            ChoiceTarget = TargetFilter.FindTargetForMoving,
-        },
+    /// <summary>
+    /// 真言
+    /// </summary>
+    public static BaseAction Mantra { get; } = new(ActionID.Mantra, true);
 
-        //真言
-        Mantra = new(65, true),
+    /// <summary>
+    /// 震脚
+    /// </summary>
+    public static BaseAction PerfectBalance { get; } = new(ActionID.PerfectBalance)
+    {
+        BuffsNeed = new StatusID[] { StatusID.RaptorForm },
+        OtherCheck = b => InCombat,
+    };
 
-        //震脚
-        PerfectBalance = new(69)
-        {
-            BuffsNeed = new StatusID[] { StatusID.RaptorForm },
-            OtherCheck = b => InCombat,
-        },
+    /// <summary>
+    /// 苍气炮 阴
+    /// </summary>
+    public static BaseAction ElixirField { get; } = new(ActionID.ElixirField);
 
-        //苍气炮 阴
-        ElixirField = new(3545),
+    /// <summary>
+    /// 爆裂脚 阳
+    /// </summary>
+    public static BaseAction FlintStrike { get; } = new(ActionID.FlintStrike);
 
-        //爆裂脚 阳
-        FlintStrike = new(25882),
+    /// <summary>
+    /// 凤凰舞
+    /// </summary>
+    public static BaseAction RisingPhoenix { get; } = new(ActionID.RisingPhoenix);
 
-        //凤凰舞
-        RisingPhoenix = new(25768),
+    /// <summary>
+    /// 斗魂旋风脚 阴阳
+    /// </summary>
+    public static BaseAction TornadoKick { get; } = new(ActionID.TornadoKick);
+    public static BaseAction PhantomRush { get; } = new(ActionID.PhantomRush);
 
-        //斗魂旋风脚 阴阳
-        TornadoKick = new(3543),
-        PhantomRush = new(25769),
+    /// <summary>
+    /// 演武
+    /// </summary>
+    public static BaseAction FormShift { get; } = new(ActionID.FormShift)
+    {
+        BuffsProvide = new[] { StatusID.FormlessFist, StatusID.PerfectBalance },
+    };
 
-        //演武
-        FormShift = new(4262)
-        {
-            BuffsProvide = new[] { StatusID.FormlessFist, StatusID.PerfectBalance },
-        },
+    /// <summary>
+    /// 金刚极意 盾
+    /// </summary>
+    public static BaseAction RiddleofEarth { get; } = new(ActionID.RiddleofEarth, shouldEndSpecial: true)
+    {
+        BuffsProvide = new[] { StatusID.RiddleofEarth },
+    };
 
-        //金刚极意 盾
-        RiddleofEarth = new(7394, shouldEndSpecial: true)
-        {
-            BuffsProvide = new[] { StatusID.RiddleofEarth },
-        },
-
-        //疾风极意
-        RiddleofWind = new(25766);
+    /// <summary>
+    /// 疾风极意
+    /// </summary>
+    public static BaseAction RiddleofWind { get; } = new(ActionID.RiddleofWind);
 
 }

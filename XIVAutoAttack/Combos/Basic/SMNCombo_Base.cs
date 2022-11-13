@@ -17,129 +17,127 @@ internal abstract class SMNCombo_Base<TCmd> : JobGaugeCombo<SMNGauge, TCmd> wher
     protected static bool InPhoenix => Service.IconReplacer.OriginalHook(25822) == Rekindle.ID;
     protected static bool InBreak => InBahamut || InPhoenix || !SummonBahamut.EnoughLevel;
 
+    //宝石耀
+    public static BaseAction Gemshine { get; } = new(ActionID.Gemshine)
+    {
+        OtherCheck = b => JobGauge.Attunement > 0,
+    };
 
-    public static readonly BaseAction
-        //宝石耀
-        Gemshine = new(25883)
-        {
-            OtherCheck = b => JobGauge.Attunement > 0,
-        },
+    //宝石辉
+    public static BaseAction PreciousBrilliance { get; } = new(ActionID.PreciousBrilliance)
+    {
+        OtherCheck = b => JobGauge.Attunement > 0,
+    };
 
-        //宝石辉
-        PreciousBrilliance = new(25884)
-        {
-            OtherCheck = b => JobGauge.Attunement > 0,
-        },
+    //毁灭 单体攻击
+    public static BaseAction Ruin { get; } = new(ActionID.Ruin);
 
-        //毁灭 单体攻击
-        Ruin = new(163),
+    //迸裂 范围伤害
+    public static BaseAction Outburst { get; } = new(ActionID.Outburst);
 
-        //迸裂 范围伤害
-        Outburst = new(16511),
+    //宝石兽召唤
+    public static BaseAction SummonCarbuncle { get; } = new(ActionID.SummonCarbuncle)
+    {
+        OtherCheck = b => !TargetUpdater.HavePet,
+    };
 
-        //宝石兽召唤
-        SummonCarbuncle = new(25798)
-        {
-            OtherCheck = b => !TargetUpdater.HavePet,
-        },
+    //灼热之光 团辅
+    public static BaseAction SearingLight { get; } = new(ActionID.SearingLight)
+    {
+        OtherCheck = b => InCombat && !InBahamut && !InPhoenix
+    };
 
-        //灼热之光 团辅
-        SearingLight = new(25801)
-        {
-            OtherCheck = b => InCombat && !InBahamut && !InPhoenix
-        },
+    //守护之光 给自己戴套
+    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis);
 
-        //守护之光 给自己戴套
-        RadiantAegis = new(25799),
+    //医术
+    public static BaseAction Physick { get; } = new(ActionID.Physick, true);
 
-        //医术
-        Physick = new(16230, true),
+    //以太蓄能 
+    public static BaseAction Aethercharge { get; } = new(ActionID.Aethercharge)
+    {
+        OtherCheck = b => InCombat,
+    };
 
-        //以太蓄能 
-        Aethercharge = new(25800)
-        {
-            OtherCheck = b => InCombat,
-        },
+    //龙神召唤
+    public static BaseAction SummonBahamut { get; } = new(ActionID.SummonBahamut);
 
-        //龙神召唤
-        SummonBahamut = new(7427),
+    //红宝石召唤
+    public static BaseAction SummonRuby { get; } = new(ActionID.SummonRuby)
+    {
+        OtherCheck = b => JobGauge.IsIfritReady && !IsMoving,
+    };
 
-        //红宝石召唤
-        SummonRuby = new(25802)
-        {
-            OtherCheck = b => JobGauge.IsIfritReady && !IsMoving,
-        },
+    //黄宝石召唤
+    public static BaseAction SummonTopaz { get; } = new(ActionID.SummonTopaz)
+    {
+        OtherCheck = b => JobGauge.IsTitanReady,
+    };
 
-        //黄宝石召唤
-        SummonTopaz = new(25803)
-        {
-            OtherCheck = b => JobGauge.IsTitanReady,
-        },
-
-        //绿宝石召唤
-        SummonEmerald = new(25804)
-        {
-            OtherCheck = b => JobGauge.IsGarudaReady,
-        },
+    //绿宝石召唤
+    public static BaseAction SummonEmerald { get; } = new(ActionID.SummonEmerald)
+    {
+        OtherCheck = b => JobGauge.IsGarudaReady,
+    };
 
 
-        //复生
-        Resurrection = new(173, true),
+    //复生
+    public static BaseAction Resurrection { get; } = new(ActionID.Resurrection, true);
 
-        //能量吸收
-        EnergyDrain = new(16508),
+    //能量吸收
+    public static BaseAction EnergyDrain { get; } = new(ActionID.EnergyDrain);
 
-        //能量抽取
-        EnergySiphon = new(16510),
+    //能量抽取
+    public static BaseAction EnergySiphon { get; } = new(ActionID.EnergySiphon);
 
-        //溃烂爆发
-        Fester = new(181),
+    //溃烂爆发
+    public static BaseAction Fester { get; } = new(ActionID.Fester);
 
-        //痛苦核爆
-        Painflare = new(3578),
+    //痛苦核爆
+    public static BaseAction Painflare { get; } = new(ActionID.Painflare);
 
-        //毁绝
-        RuinIV = new(7426)
-        {
-            BuffsNeed = new[] { StatusID.FurtherRuin },
-        },
+    //毁绝
+    public static BaseAction RuinIV { get; } = new(ActionID.RuinIV)
+    {
+        BuffsNeed = new[] { StatusID.FurtherRuin },
+    };
 
-        //龙神迸发
-        EnkindleBahamut = new(7429)
-        {
-            OtherCheck = b => InBahamut || InPhoenix,
-        },
+    //龙神迸发
+    public static BaseAction EnkindleBahamut { get; } = new(ActionID.EnkindleBahamut)
+    {
+        OtherCheck = b => InBahamut || InPhoenix,
+    };
 
-        //死星核爆
-        Deathflare = new(3582)
-        {
-            OtherCheck = b => InBahamut,
-        },
+    //死星核爆
+    public static BaseAction Deathflare { get; } = new(ActionID.Deathflare)
+    {
+        OtherCheck = b => InBahamut,
+    };
 
-        //苏生之炎
-        Rekindle = new(25830, true)
-        {
-            OtherCheck = b => InPhoenix,
-        },
+    //苏生之炎
+    public static BaseAction Rekindle { get; } = new(ActionID.Rekindle, true)
+    {
+        OtherCheck = b => InPhoenix,
+    };
 
-        //深红旋风
-        CrimsonCyclone = new(25835)
-        {
-            BuffsNeed = new[] { StatusID.IfritsFavor },
-        },
+    //深红旋风
+    public static BaseAction CrimsonCyclone { get; } = new(ActionID.CrimsonCyclone)
+    {
+        BuffsNeed = new[] { StatusID.IfritsFavor },
+    };
 
-        //深红强袭
-        CrimsonStrike = new(25885),
+    //深红强袭
+    public static BaseAction CrimsonStrike { get; } = new(ActionID.CrimsonStrike);
 
-        //山崩
-        MountainBuster = new(25836)
-        {
-            BuffsNeed = new[] { StatusID.TitansFavor },
-        },
+    //山崩
+    public static BaseAction MountainBuster { get; } = new(ActionID.MountainBuster)
+    {
+        BuffsNeed = new[] { StatusID.TitansFavor },
+    };
 
-        //螺旋气流
-        Slipstream = new(25837)
-        {
-            BuffsNeed = new[] { StatusID.GarudasFavor },
-        };
+    //螺旋气流
+    public static BaseAction Slipstream { get; } = new(ActionID.Slipstream)
+    {
+        BuffsNeed = new[] { StatusID.GarudasFavor },
+    };
 }
