@@ -6,6 +6,7 @@ using Dalamud.Utility.Signatures;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using XIVAutoAttack.Data;
 using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 namespace XIVAutoAttack.SigReplacers;
@@ -17,7 +18,7 @@ internal class PluginAddressResolver : BaseAddressResolver
     private IntPtr ComboTimer { get; set; }
     public unsafe float ComboTime => *(float*)ComboTimer;
     private IntPtr LastComboMove => ComboTimer + 4;
-    public unsafe uint LastComboAction => *(uint*)LastComboMove;
+    public unsafe ActionID LastComboAction => *(ActionID*)LastComboMove;
 
 
     public IntPtr IsActionIdReplaceable { get; private set; }

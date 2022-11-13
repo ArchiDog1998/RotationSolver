@@ -9,206 +9,256 @@ using XIVAutoAttack.Helpers;
 namespace XIVAutoAttack.Combos.Basic;
 internal abstract class DNCCombo_Base<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCmd : Enum
 {
-
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dancer };
 
-    public static readonly BaseAction
+    /// <summary>
+    /// 瀑泻
+    /// </summary>
+    public static BaseAction Cascade { get; } = new(ActionID.Cascade)
+    {
+        BuffsProvide = new[] { StatusID.SilkenSymmetry }
+    };
 
-        //瀑泻
-        Cascade = new(15989)
-        {
-            BuffsProvide = new[] { StatusID.SilkenSymmetry }
-        },
+    /// <summary>
+    /// 喷泉
+    /// </summary>
+    public static BaseAction Fountain { get; } = new(ActionID.Fountain)
+    {
+        BuffsProvide = new[] { StatusID.SilkenFlow }
+    };
 
-        //喷泉
-        Fountain = new(15990)
-        {
-            BuffsProvide = new[] { StatusID.SilkenFlow }
-        },
+    /// <summary>
+    /// 逆瀑泻
+    /// </summary>
+    public static BaseAction ReverseCascade { get; } = new(ActionID.ReverseCascade)
+    {
+        BuffsNeed = new[] { StatusID.SilkenSymmetry, StatusID.SilkenSymmetry2 },
+    };
 
-        //逆瀑泻
-        ReverseCascade = new(15991)
-        {
-            BuffsNeed = new[] { StatusID.SilkenSymmetry, StatusID.SilkenSymmetry2 },
-        },
+    /// <summary>
+    /// 坠喷泉
+    /// </summary>
+    public static BaseAction Fountainfall { get; } = new(ActionID.Fountainfall)
+    {
+        BuffsNeed = new[] { StatusID.SilkenFlow, StatusID.SilkenFlow2 }
+    };
 
-        //坠喷泉
-        Fountainfall = new(15992)
-        {
-            BuffsNeed = new[] { StatusID.SilkenFlow, StatusID.SilkenFlow2 }
-        },
+    /// <summary>
+    /// 扇舞·序
+    /// </summary>
+    public static BaseAction FanDance { get; } = new(ActionID.FanDance)
+    {
+        OtherCheck = b => JobGauge.Feathers > 0,
+        BuffsProvide = new[] { StatusID.ThreefoldFanDance },
+    };
 
-        //扇舞·序
-        FanDance = new(16007)
-        {
-            OtherCheck = b => JobGauge.Feathers > 0,
-            BuffsProvide = new[] { StatusID.ThreefoldFanDance },
-        },
+    /// <summary>
+    /// 风车
+    /// </summary>
+    public static BaseAction Windmill { get; } = new(ActionID.Windmill)
+    {
+        BuffsProvide = Cascade.BuffsProvide,
+    };
 
-        //风车
-        Windmill = new(15993)
-        {
-            BuffsProvide = Cascade.BuffsProvide,
-        },
+    /// <summary>
+    /// 落刃雨
+    /// </summary>
+    public static BaseAction Bladeshower { get; } = new(ActionID.Windmill)
+    {
+        BuffsProvide = Fountain.BuffsProvide,
+    };
 
-        //落刃雨
-        Bladeshower = new(15994)
-        {
-            BuffsProvide = Fountain.BuffsProvide,
-        },
+    /// <summary>
+    /// 升风车
+    /// </summary>
+    public static BaseAction RisingWindmill { get; } = new(ActionID.RisingWindmill)
+    {
+        BuffsNeed = ReverseCascade.BuffsNeed,
+    };
 
-        //升风车
-        RisingWindmill = new(15995)
-        {
-            BuffsNeed = ReverseCascade.BuffsNeed,
-        },
+    /// <summary>
+    /// 落血雨
+    /// </summary>
+    public static BaseAction Bloodshower { get; } = new(ActionID.Bloodshower)
+    {
+        BuffsNeed = Fountainfall.BuffsNeed,
+    };
 
-        //落血雨
-        Bloodshower = new(15996)
-        {
-            BuffsNeed = Fountainfall.BuffsNeed,
-        },
+    /// <summary>
+    /// 扇舞·破
+    /// </summary>
+    public static BaseAction FanDance2 { get; } = new(ActionID.FanDance2)
+    {
+        OtherCheck = b => JobGauge.Feathers > 0,
+        BuffsProvide = new[] { StatusID.ThreefoldFanDance },
+    };
 
-        //扇舞·破
-        FanDance2 = new(16008)
-        {
-            OtherCheck = b => JobGauge.Feathers > 0,
-            BuffsProvide = new[] { StatusID.ThreefoldFanDance },
-        },
+    /// <summary>
+    /// 扇舞·急
+    /// </summary>
+    public static BaseAction FanDance3 { get; } = new(ActionID.FanDance3)
+    {
+        BuffsNeed = FanDance2.BuffsProvide,
+    };
 
-        //扇舞·急
-        FanDance3 = new(16009)
-        {
-            BuffsNeed = FanDance2.BuffsProvide,
-        },
+    /// <summary>
+    /// 扇舞·终
+    /// </summary>
+    public static BaseAction FanDance4 { get; } = new(ActionID.FanDance4)
+    {
+        BuffsNeed = new[] { StatusID.FourfoldFanDance },
+    };
 
-        //扇舞·终
-        FanDance4 = new(25791)
-        {
-            BuffsNeed = new[] { StatusID.FourfoldFanDance },
-        },
+    /// <summary>
+    /// 剑舞
+    /// </summary>
+    public static BaseAction SaberDance { get; } = new(ActionID.SaberDance)
+    {
+        OtherCheck = b => JobGauge.Esprit >= 50,
+    };
 
-        //剑舞
-        SaberDance = new(16005)
-        {
-            OtherCheck = b => JobGauge.Esprit >= 50,
-        },
+    /// <summary>
+    /// 流星舞
+    /// </summary>
+    public static BaseAction StarfallDance { get; } = new(ActionID.StarfallDance)
+    {
+        BuffsNeed = new[] { StatusID.FlourishingStarfall },
+    };
 
-        //流星舞
-        StarfallDance = new(25792)
-        {
-            BuffsNeed = new[] { StatusID.FlourishingStarfall },
-        },
+    /// <summary>
+    /// 前冲步
+    /// </summary>
+    public static BaseAction EnAvant { get; } = new(ActionID.EnAvant, true, shouldEndSpecial: true);
 
-        //前冲步
-        EnAvant = new(16010, shouldEndSpecial: true),
+    /// <summary>
+    /// 蔷薇曲脚步
+    /// </summary>
+    public static BaseAction Emboite { get; } = new(ActionID.Emboite, true)
+    {
+        OtherCheck = b => (ActionID)JobGauge.NextStep == ActionID.Emboite,
+    };
 
-        //蔷薇曲脚步
-        Emboite = new(15999)
-        {
-            OtherCheck = b => JobGauge.NextStep == 15999,
-        },
+    /// <summary>
+    /// 小鸟交叠跳
+    /// </summary>
+    public static BaseAction Entrechat { get; } = new(ActionID.Entrechat, true)
+    {
+        OtherCheck = b => (ActionID)JobGauge.NextStep == ActionID.Entrechat,
+    };
 
-        //小鸟交叠跳
-        Entrechat = new(16000)
-        {
-            OtherCheck = b => JobGauge.NextStep == 16000,
-        },
+    /// <summary>
+    /// 绿叶小踢腿
+    /// </summary>
+    public static BaseAction Jete { get; } = new(ActionID.Jete, true)
+    {
+        OtherCheck = b => (ActionID)JobGauge.NextStep == ActionID.Jete,
+    };
 
-        //绿叶小踢腿
-        Jete = new(16001)
-        {
-            OtherCheck = b => JobGauge.NextStep == 16001,
-        },
+    /// <summary>
+    /// 金冠趾尖转
+    /// </summary>
+    public static BaseAction Pirouette { get; } = new(ActionID.Pirouette, true)
+    {
+        OtherCheck = b => (ActionID)JobGauge.NextStep == ActionID.Pirouette,
+    };
 
-        //金冠趾尖转
-        Pirouette = new(16002)
-        {
-            OtherCheck = b => JobGauge.NextStep == 16002,
-        },
-
-        //标准舞步
-        StandardStep = new(15997)
-        {
-            BuffsProvide = new[]
-            {
-                    StatusID.StandardStep,
-                    StatusID.TechnicalStep,
+    /// <summary>
+    /// 标准舞步
+    /// </summary>
+    public static BaseAction StandardStep { get; } = new(ActionID.StandardStep)
+    {
+        BuffsProvide = new[]
+         {
+                StatusID.StandardStep,
+                StatusID.TechnicalStep,
             },
-        },
+    };
 
-        //技巧舞步
-        TechnicalStep = new(15998)
-        {
-            BuffsNeed = new[]
-            {
-                    StatusID.StandardFinish,
+    /// <summary>
+    /// 技巧舞步
+    /// </summary>
+    public static BaseAction TechnicalStep { get; } = new(ActionID.TechnicalStep)
+    {
+        BuffsNeed = new[]
+         {
+                StatusID.StandardFinish,
             },
-            BuffsProvide = StandardStep.BuffsProvide,
-        },
+        BuffsProvide = StandardStep.BuffsProvide,
+    };
 
-        //防守之桑巴
-        ShieldSamba = new(16012, true)
+    /// <summary>
+    /// 防守之桑巴
+    /// </summary>
+    public static BaseAction ShieldSamba { get; } = new(ActionID.ShieldSamba, true)
+    {
+        OtherCheck = b => !Player.HaveStatus(false, StatusID.Troubadour,
+            StatusID.Tactician1,
+            StatusID.Tactician2,
+            StatusID.ShieldSamba),
+    };
+
+    /// <summary>
+    /// 治疗之华尔兹
+    /// </summary>
+    public static BaseAction CuringWaltz { get; } = new(ActionID.CuringWaltz, true);
+
+    /// <summary>
+    /// 闭式舞姿
+    /// </summary>
+    public static BaseAction ClosedPosition { get; } = new(ActionID.ClosedPosition, true)
+    {
+        ChoiceTarget = Targets =>
         {
-            BuffsProvide = new[]
-            {
-                    StatusID.Troubadour,
-                    StatusID.Tactician1,
-                    StatusID.Tactician2,
-                    StatusID.ShieldSamba,
+            Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
+            //Remove Weak
+            !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
+            //Remove other partner.
+            && (!b.HaveStatus(false, StatusID.ClosedPosition2) | b.HaveStatus(true, StatusID.ClosedPosition2)) 
+            ).ToArray();
+
+            var targets = TargetFilter.GetJobCategory(Targets, Role.近战);
+            if (targets.Length > 0) return targets[0];
+
+            targets = TargetFilter.GetJobCategory(Targets, Role.远程);
+            if (targets.Length > 0) return targets[0];
+
+            targets = Targets;
+            if (targets.Length > 0) return targets[0];
+
+            return null;
+        },
+    };
+
+    /// <summary>
+    /// 进攻之探戈
+    /// </summary>
+    public static BaseAction Devilment { get; } = new(ActionID.Devilment, true);
+
+    /// <summary>
+    /// 百花争艳
+    /// </summary>
+    public static BaseAction Flourish { get; } = new(ActionID.Flourish, true)
+    {
+        BuffsNeed = new[] { StatusID.StandardFinish },
+        BuffsProvide = new[]
+        {
+                 StatusID.ThreefoldFanDance,
+                 StatusID.FourfoldFanDance,
             },
-        },
+        OtherCheck = b => InCombat,
+    };
 
-        //治疗之华尔兹
-        CuringWaltz = new(16015, true),
+    /// <summary>
+    /// 即兴表演
+    /// </summary>
+    public static BaseAction Improvisation { get; } = new(ActionID.Improvisation, true);
 
-        //闭式舞姿
-        ClosedPosition = new(16006, true)
-        {
-            ChoiceTarget = Targets =>
-            {
-                Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
-                //Remove Weak
-                !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
-                //Remove other partner.
-                //&& !b.HaveStatusFromSelf(StatusID.ClosedPosition2)
-                ).ToArray();
-
-                var targets = TargetFilter.GetJobCategory(Targets, Role.近战);
-                if (targets.Length > 0) return targets[0];
-
-                targets = TargetFilter.GetJobCategory(Targets, Role.远程);
-                if (targets.Length > 0) return targets[0];
-
-                targets = Targets;
-                if (targets.Length > 0) return targets[0];
-
-                return null;
-            },
-        },
-
-        //进攻之探戈
-        Devilment = new(16011, true),
-
-        //百花争艳
-        Flourish = new(16013)
-        {
-            BuffsNeed = new[] { StatusID.StandardFinish },
-            BuffsProvide = new[]
-            {
-                    StatusID.ThreefoldFanDance,
-                    StatusID.FourfoldFanDance,
-            },
-            OtherCheck = b => InCombat,
-        },
-
-        //即兴表演
-        Improvisation = new(16014, true),
-
-        //提拉纳
-        Tillana = new(25790)
-        {
-            BuffsNeed = new[] { StatusID.FlourishingFinish },
-        };
+    /// <summary>
+    /// 提拉纳
+    /// </summary>
+    public static BaseAction Tillana { get; } = new(ActionID.Tillana)
+    {
+        BuffsNeed = new[] { StatusID.FlourishingFinish },
+    };
 
 }

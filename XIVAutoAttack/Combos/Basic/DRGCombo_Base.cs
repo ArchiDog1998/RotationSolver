@@ -11,157 +11,183 @@ namespace XIVAutoAttack.Combos.Basic;
 internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dragoon, ClassJobID.Lancer };
-    private static bool safeMove = false;
 
-    public static readonly BaseAction
-        //¾«×¼´Ì
-        TrueThrust = new(75),
+    /// <summary>
+    /// ¾«×¼´Ì
+    /// </summary>
+    public static BaseAction TrueThrust { get; } = new(ActionID.TrueThrust);
 
-        //¹áÍ¨´Ì
-        VorpalThrust = new(78) { OtherIDsCombo = new[] { 16479u } },
+    /// <summary>
+    /// ¹áÍ¨´Ì
+    /// </summary>
+    public static BaseAction VorpalThrust { get; } = new(ActionID.VorpalThrust)
+    {
+        OtherIDsCombo = new[] { ActionID.RaidenThrust }
+    };
 
-        //Ö±´Ì
-        FullThrust = new(84),
+    /// <summary>
+    /// Ö±´Ì
+    /// </summary>
+    public static BaseAction FullThrust { get; } = new(ActionID.FullThrust);
 
-        //²Ôñ·´Ì
-        HeavensThrust = new(25771),
+    /// <summary>
+    /// ¿ªÌÅÇ¹
+    /// </summary>
+    public static BaseAction Disembowel { get; } = new(ActionID.Disembowel)
+    {
+        OtherIDsCombo = new[] { ActionID.RaidenThrust }
+    };
 
-        //¿ªÌÅÇ¹
-        Disembowel = new(87) { OtherIDsCombo = new[] { 16479u } },
+    /// <summary>
+    /// Ó£»¨Å­·Å
+    /// </summary>
+    public static BaseAction ChaosThrust { get; } = new(ActionID.ChaosThrust);
 
-        //Ó£»¨Å­·Å
-        ChaosThrust = new(ActionID.ChaosThrust),
+    /// <summary>
+    /// ÁúÑÀÁú×¦
+    /// </summary>
+    public static BaseAction FangandClaw { get; } = new(ActionID.FangandClaw)
+    {
+        BuffsNeed = new StatusID[] { StatusID.SharperFangandClaw },
+    };
 
-        //Ó£»¨Å­·Å
-        ChaoticSpring = new(25772),
+    /// <summary>
+    /// ÁúÎ²´ó»ØÐý
+    /// </summary>
+    public static BaseAction WheelingThrust { get; } = new(ActionID.WheelingThrust)
+    {
+        BuffsNeed = new StatusID[] { StatusID.EnhancedWheelingThrust },
+    };
 
-        //ÁúÑÀÁú×¦
-        FangandClaw = new(ActionID.FangandClaw)
+    /// <summary>
+    /// ¹á´©¼â
+    /// </summary>
+    public static BaseAction PiercingTalon { get; } = new(ActionID.PiercingTalon);
+
+    /// <summary>
+    /// ËÀÌìÇ¹
+    /// </summary>
+    public static BaseAction DoomSpike { get; } = new(ActionID.DoomSpike);
+
+    /// <summary>
+    /// ÒôËÙ´Ì
+    /// </summary>
+    public static BaseAction SonicThrust { get; } = new(ActionID.SonicThrust)
+    {
+        OtherIDsCombo = new[] { ActionID.DraconianFury }
+    };
+
+    /// <summary>
+    /// É½¾³¿áÐÌ
+    /// </summary>
+    public static BaseAction CoerthanTorment { get; } = new(ActionID.CoerthanTorment);
+
+    /// <summary>
+    /// ÆÆËé³å
+    /// </summary>
+    public static BaseAction SpineshatterDive { get; } = new(ActionID.SpineshatterDive);
+
+    /// <summary>
+    /// ÁúÑ×³å
+    /// </summary>
+    public static BaseAction DragonfireDive { get; } = new(ActionID.DragonfireDive);
+
+    /// <summary>
+    /// ÌøÔ¾
+    /// </summary>
+    public static BaseAction Jump { get; } = new(ActionID.Jump)
+    {
+        BuffsProvide = new StatusID[] { StatusID.DiveReady },
+    };
+
+    /// <summary>
+    /// ¸ßÌø
+    /// </summary>
+    public static BaseAction HighJump { get; } = new(ActionID.HighJump)
+    {
+        BuffsProvide = Jump.BuffsProvide,
+    };
+
+    /// <summary>
+    /// »ÃÏó³å
+    /// </summary>
+    public static BaseAction MirageDive { get; } = new(ActionID.MirageDive)
+    {
+        BuffsNeed = Jump.BuffsProvide,
+    };
+
+    /// <summary>
+    /// ÎäÉñÇ¹
+    /// </summary>
+    public static BaseAction Geirskogul { get; } = new(ActionID.Geirskogul);
+
+    /// <summary>
+    /// ËÀÕßÖ®°¶
+    /// </summary>
+    public static BaseAction Nastrond { get; } = new(ActionID.Nastrond)
+    {
+        OtherCheck = b => JobGauge.IsLOTDActive,
+    };
+
+    /// <summary>
+    /// ×¹ÐÇ³å
+    /// </summary>
+    public static BaseAction Stardiver { get; } = new(ActionID.Stardiver)
+    {
+        OtherCheck = b => JobGauge.IsLOTDActive,
+    };
+
+    /// <summary>
+    /// ÌìÁúµã¾¦
+    /// </summary>
+    public static BaseAction WyrmwindThrust { get; } = new(ActionID.WyrmwindThrust)
+    {
+        OtherCheck = b => JobGauge.FirstmindsFocusCount == 2,
+    };
+
+    /// <summary>
+    /// Áú½£
+    /// </summary>
+    public static BaseAction LifeSurge { get; } = new(ActionID.LifeSurge, true)
+    {
+        BuffsProvide = new[] { StatusID.LifeSurge },
+
+        OtherCheck = b => !IsLastAbility(true, LifeSurge),
+    };
+
+    /// <summary>
+    /// ÃÍÇ¹
+    /// </summary>
+    public static BaseAction LanceCharge { get; } = new(ActionID.LanceCharge, true);
+
+    /// <summary>
+    /// ¾ÞÁúÊÓÏß
+    /// </summary>
+    public static BaseAction DragonSight { get; } = new(ActionID.DragonSight, true)
+    {
+        ChoiceTarget = Targets =>
         {
-            BuffsNeed = new StatusID[] { StatusID.SharperFangandClaw },
+            Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
+            !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
+
+            var targets = TargetFilter.GetJobCategory(Targets, Role.½üÕ½);
+            if (targets.Length > 0) return TargetFilter.RandomObject(targets);
+
+            targets = TargetFilter.GetJobCategory(Targets, Role.Ô¶³Ì);
+            if (targets.Length > 0) return TargetFilter.RandomObject(targets);
+
+            targets = Targets;
+            if (targets.Length > 0) return TargetFilter.RandomObject(targets);
+
+            return Player;
         },
+    };
 
-        //ÁúÎ²´ó»ØÐý
-        WheelingThrust = new(ActionID.WheelingThrust)
-        {
-            BuffsNeed = new StatusID[] { StatusID.EnhancedWheelingThrust },
-        },
-
-        //ÁúÑÛÀ×µç
-        RaidenThrust = new(16479),
-
-        //¹á´©¼â
-        PiercingTalon = new(90),
-
-        //ËÀÌìÇ¹
-        DoomSpike = new(86),
-
-        //ÒôËÙ´Ì
-        SonicThrust = new(7397) { OtherIDsCombo = new[] { 25770u } },
-
-        //É½¾³¿áÐÌ
-        CoerthanTorment = new(16477),
-
-        //ÆÆËé³å
-        SpineshatterDive = new(95)
-        {
-            OtherCheck = b =>
-            {
-                if (safeMove && b.DistanceToPlayer() > 2) return false;
-                if (IsLastAction(true, SpineshatterDive)) return false;
-
-                return true;
-            }
-        },
-
-        //ÁúÑ×³å
-        DragonfireDive = new(96)
-        {
-            OtherCheck = b => !safeMove || b.DistanceToPlayer() < 2,
-        },
-
-        //ÌøÔ¾
-        Jump = new(92)
-        {
-            BuffsProvide = new StatusID[] { StatusID.DiveReady },
-            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(true, StatusID.PowerSurge),
-        },
-        //¸ßÌø
-        HighJump = new(16478)
-        {
-            OtherCheck = Jump.OtherCheck,
-        },
-        //»ÃÏó³å
-        MirageDive = new(7399)
-        {
-            BuffsNeed = new[] { StatusID.DiveReady },
-
-            OtherCheck = b => !Geirskogul.WillHaveOneChargeGCD(4)
-        },
-
-        //ÎäÉñÇ¹
-        Geirskogul = new(3555)
-        {
-            OtherCheck = b => Jump.IsCoolDown || HighJump.IsCoolDown,
-        },
-
-        //ËÀÕßÖ®°¶
-        Nastrond = new(7400)
-        {
-            OtherCheck = b => JobGauge.IsLOTDActive,
-        },
-
-        //×¹ÐÇ³å
-        Stardiver = new(16480)
-        {
-            OtherCheck = b => JobGauge.IsLOTDActive && JobGauge.LOTDTimer < 25000,
-        },
-
-        //ÌìÁúµã¾¦
-        WyrmwindThrust = new(25773)
-        {
-            OtherCheck = b => JobGauge.FirstmindsFocusCount == 2 && !IsLastAction(true, Stardiver),
-        },
-
-        //Áú½£
-        LifeSurge = new(83)
-        {
-            BuffsProvide = new[] { StatusID.LifeSurge },
-
-            OtherCheck = b => !IsLastAbility(true, LifeSurge),
-        },
-
-        //ÃÍÇ¹
-        LanceCharge = new(85),
-
-        //¾ÞÁúÊÓÏß
-        DragonSight = new(7398)
-        {
-            ChoiceTarget = Targets =>
-            {
-                Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
-                !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
-
-                var targets = TargetFilter.GetJobCategory(Targets, Role.½üÕ½);
-                if (targets.Length > 0) return TargetFilter.RandomObject(targets);
-
-                targets = TargetFilter.GetJobCategory(Targets, Role.Ô¶³Ì);
-                if (targets.Length > 0) return TargetFilter.RandomObject(targets);
-
-                targets = Targets;
-                if (targets.Length > 0) return TargetFilter.RandomObject(targets);
-
-                return Player;
-            },
-
-            BuffsNeed = new[] { StatusID.PowerSurge },
-
-        },
-
-        //Õ½¶·Á¬µ»
-        BattleLitany = new(3557)
-        {
-            BuffsNeed = new[] { StatusID.PowerSurge },
-        };
-
+    /// <summary>
+    /// Õ½¶·Á¬µ»
+    /// </summary>
+    public static BaseAction BattleLitany { get; } = new(ActionID.BattleLitany, true)
+    {
+        BuffsNeed = new[] { StatusID.PowerSurge },
+    };
 }
