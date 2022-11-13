@@ -76,7 +76,7 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     /// <summary>
     /// 秘银暴风
     /// </summary>
-    public static BaseAction MythrilTempest = new(ActionID.MythrilTempest);
+    public static BaseAction MythrilTempest { get; } = new(ActionID.MythrilTempest);
 
     /// <summary>
     /// 群山隆起
@@ -88,7 +88,15 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     /// </summary>
     public static BaseAction InnerBeast { get; } = new(ActionID.InnerBeast)
     {
-        OtherCheck = b =>  (JobGauge.BeastGauge >= 50 || Player.HaveStatus(true, StatusID.InnerRelease)),
+        OtherCheck = b => JobGauge.BeastGauge >= 50 || Player.HaveStatus(true, StatusID.InnerRelease), 
+    };
+
+    /// <summary>
+    /// 原初的解放
+    /// </summary>
+    public static BaseAction InnerRelease { get; } = new(ActionID.InnerRelease)
+    {
+        OtherCheck = InnerBeast.OtherCheck,
     };
 
     /// <summary>
@@ -105,7 +113,7 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     public static BaseAction Infuriate { get; } = new(ActionID.Infuriate)
     {
         BuffsProvide = new[] { StatusID.InnerRelease },
-        OtherCheck = b => HaveHostileInRange && JobGauge.BeastGauge < 50,
+        OtherCheck = b => HaveHostileInRange && JobGauge.BeastGauge < 50 && InCombat,
     };
 
     /// <summary>
@@ -173,7 +181,6 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     {
         //死斗 如果血不够了。
         if (Holmgang.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(Holmgang.Target)) return true;
-
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
 }

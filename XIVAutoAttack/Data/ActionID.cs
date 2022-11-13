@@ -2512,6 +2512,11 @@ namespace XIVAutoAttack.Data
         InnerBeast = 49,
 
         /// <summary>
+        /// 原初的解放
+        /// </summary>
+        InnerRelease = 7389,
+
+        /// <summary>
         /// 钢铁旋风
         /// </summary>
         SteelCyclone = 51,
@@ -2565,11 +2570,6 @@ namespace XIVAutoAttack.Data
         /// 死斗
         /// </summary>
         Holmgang = 43,
-
-        /// <summary>
-        /// 原初的解放
-        /// </summary>
-        InnerRelease = 7389,
 
         /// <summary>
         /// 蛮荒崩裂

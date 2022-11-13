@@ -67,7 +67,7 @@ internal sealed class IconReplacer : IDisposable
         {
             var combo = RightNowCombo;
             if (combo == null) return new BaseAction[0];
-            return GetActions(combo, combo.GetType());
+            return GetActions(combo, combo.GetType().BaseType);
         }
     }
 
@@ -83,9 +83,9 @@ internal sealed class IconReplacer : IDisposable
 
     private static BaseAction[] GetActions(ICustomCombo combo, Type type)
     {
-        return (from field in type.GetFields()
-                where field.IsStatic && typeof(BaseAction).IsAssignableFrom(field.FieldType)
-                select (BaseAction)field.GetValue(combo) into act
+        return (from prop in type.GetProperties()
+                where typeof(BaseAction).IsAssignableFrom(prop.PropertyType)
+                select (BaseAction)prop.GetValue(combo) into act
                 orderby act.ID
                 select act).ToArray();
     }
@@ -186,13 +186,13 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
-    internal static BaseAction KeyActionID => CustomComboActions.Repose;
+    internal static ActionID KeyActionID => ActionID.Repose;
 
     private uint RemapActionID(uint actionID)
     {
         PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
 
-        if (localPlayer == null || actionID != KeyActionID.ID || Service.Configuration.NeverReplaceIcon)
+        if (localPlayer == null || actionID != (uint)KeyActionID || Service.Configuration.NeverReplaceIcon)
             return OriginalHook(actionID);
 
         return ActionUpdater.NextAction?.AdjustedID ?? OriginalHook(actionID);

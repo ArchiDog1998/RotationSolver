@@ -37,7 +37,7 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
 
     static WARCombo_Default()
     {
-        InnerBeast.AddOtherCheck(b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest));
+        //InnerBeast.AddOtherCheck(b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest));
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
@@ -66,6 +66,7 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
+
         //¸ã¸ã¹¥»÷
         if (PrimalRend.ShouldUse(out act, mustUse: true) && !IsMoving)
         {
@@ -132,7 +133,7 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
         if (!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) || !MythrilTempest.EnoughLevel)
         {
             //¿ñ±©
-            if (Berserk.ShouldUse(out act)) return true;
+            if (!InnerRelease.IsCoolDown && Berserk.ShouldUse(out act)) return true;
         }
 
         if (Player.GetHealthRatio() < 0.6f)

@@ -46,7 +46,6 @@ namespace XIVAutoAttack.Updaters
         internal static void UpdateNextAction()
         {
 
-
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer == null) return;
 
@@ -56,6 +55,8 @@ namespace XIVAutoAttack.Updaters
 
                 if (customCombo?.TryInvoke(out var newAction) ?? false)
                 {
+                    //Service.ChatGui.Print("Hello");
+
                     NextAction = newAction;
                     return;
                 }

@@ -53,13 +53,13 @@ namespace XIVAutoAttack.Updaters
                 && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
             ByteColor c = canMove && Service.Configuration.CheckForCasting ? greenColor : redColor;
-            var isAlive = false;
+            var isTarDead = false;
             if(Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId) is BattleChara b
-                && b.CurrentHp != 0)
+                && b.CurrentHp == 0)
             {
-                isAlive = true;
+                isTarDead = true;
             }
-            MovingUpdater.IsMoving = canMove && isAlive;
+            MovingUpdater.IsMoving = canMove || isTarDead;
 
             var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);
             if (castBar == IntPtr.Zero) return;
@@ -93,7 +93,7 @@ namespace XIVAutoAttack.Updaters
         {
             if (hot->IconTypeA != HotbarSlotType.Action) return false;
             if (hot->IconTypeB != HotbarSlotType.Action) return false;
-            if (slot->ActionId == IconReplacer.KeyActionID.ID) return false;
+            if (slot->ActionId == (uint)IconReplacer.KeyActionID) return false;
 
             return Service.IconReplacer.OriginalHook((uint)slot->ActionId) == actionID;
         }

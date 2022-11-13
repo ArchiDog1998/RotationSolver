@@ -110,7 +110,7 @@ internal class ComboConfigWindow : Window
                     DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
                     DrawAction(Watcher.LastSpell, nameof(Watcher.LastSpell));
                     DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
-                    DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
+                    DrawAction((uint)Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
                 }
 
                 if (ImGui.CollapsingHeader("倒计时、按键"))
@@ -1012,35 +1012,35 @@ internal class ComboConfigWindow : Window
 
         ImGui.SameLine();
 
-        if(authors == null)
+        if (!string.IsNullOrEmpty(texture.Author))
         {
-            authors = new string[] { texture.Author };
-        }
+            authors ??= new string[] { texture.Author };
 
-        int i;
-        for (i = 0; i < authors.Length; i++)
-        {
-            if (authors[i] == texture.Author)
+            int i;
+            for (i = 0; i < authors.Length; i++)
             {
-                break;
+                if (authors[i] == texture.Author)
+                {
+                    break;
+                }
+            }
+
+            Spacing();
+            ImGui.TextDisabled("-  ");
+            ImGui.SameLine();
+            ImGui.SetNextItemWidth(100);
+            if (ImGui.Combo("##" + texture.Name + "作者", ref i, authors, authors.Length))
+            {
+                Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
             }
         }
 
-        ImGui.SetNextItemWidth(20);
-        if (ImGui.Combo("##" + texture.Name + "作者", ref i, authors, authors.Length))
-        {
-            Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
-        }
-
-
         if (attr is ComboDevInfoAttribute devAttr)
         {
-
-
             ImGui.SameLine();
             Spacing();
 
-            if (ImGui.Button($"{texture.Name}源码"))
+            if (ImGui.Button($"源码##{texture.Name}"))
             {
                 System.Diagnostics.Process.Start("cmd", $"/C start {devAttr.URL}");
             }
@@ -1059,7 +1059,7 @@ internal class ComboConfigWindow : Window
 #if DEBUG
     private static void DrawAction(uint id, string type)
     {
-        var action = new BaseAction(id);
+        var action = new BaseAction((ActionID)id);
 
         ImGui.Text($"{type}: {action}");
 

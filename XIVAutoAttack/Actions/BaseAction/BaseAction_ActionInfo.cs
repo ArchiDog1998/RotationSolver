@@ -138,7 +138,8 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (!FindTarget(mustUse)) return false;
 
             //用于自定义的要求没达到
-            if (OtherCheck != null && (!OtherCheck(Target) || !_otherCheckEvent(Target))) return false;
+            if (OtherCheck != null && !OtherCheck(Target)) return false;
+            if (_otherCheckEvent != null && !_otherCheckEvent(Target)) return false;
 
             if (IsGeneralGCD)
             {

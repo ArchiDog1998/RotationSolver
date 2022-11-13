@@ -491,6 +491,7 @@ namespace XIVAutoAttack.Helpers
         /// <returns></returns>
         internal static float DistanceToPlayer(this GameObject obj)
         {
+            if (obj == null) return 0;
             var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
             distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
             return distance;
