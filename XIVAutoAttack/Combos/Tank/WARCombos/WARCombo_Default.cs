@@ -37,7 +37,7 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
 
     static WARCombo_Default()
     {
-        //InnerBeast.AddOtherCheck(b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest));
+        InnerBeast.AddOtherCheck(b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest));
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)

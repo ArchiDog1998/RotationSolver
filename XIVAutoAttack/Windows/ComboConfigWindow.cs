@@ -687,7 +687,7 @@ internal class ComboConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("目标选择"))
                     {
-                        int isAllTargetAsHostile = Service.Configuration.TargetToHostileType;
+                        int isAllTargetAsHostile = IconReplacer.RightNowTargetToHostileType;
                         if (ImGui.Combo("敌对目标筛选条件", ref isAllTargetAsHostile, new string[]
                         {
                                 "所有能打的目标都是敌对的目标",
@@ -695,7 +695,7 @@ internal class ComboConfigWindow : Window
                                 "只有打人的目标才是敌对的目标",
                         }, 3))
                         {
-                            Service.Configuration.TargetToHostileType = isAllTargetAsHostile;
+                            IconReplacer.RightNowTargetToHostileType = (byte)isAllTargetAsHostile;
                             Service.Configuration.Save();
                         }
 
@@ -1028,7 +1028,7 @@ internal class ComboConfigWindow : Window
             Spacing();
             ImGui.TextDisabled("-  ");
             ImGui.SameLine();
-            ImGui.SetNextItemWidth(100);
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(authors[i]).X + 30);
             if (ImGui.Combo("##" + texture.Name + "作者", ref i, authors, authors.Length))
             {
                 Service.Configuration.ComboChoices[(uint)jobId] = authors[i];

@@ -19,7 +19,8 @@ public class PluginConfiguration : IPluginConfiguration
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
     public Dictionary<uint, Dictionary<string, ActionConfiguration>> CombosConfigurations { get; private set; } = new Dictionary<uint, Dictionary<string, ActionConfiguration>>();
     public Dictionary<uint, string> ComboChoices { get; private set; } = new Dictionary<uint, string>();
-    public int TargetToHostileType { get; set; } = 1;
+    public Dictionary<uint, byte> TargetToHostileTypes { get; set; } = 
+        new Dictionary<uint, byte>();
     public int AddDotGCDCount { get; set; } = 2;
 
     public bool AutoBreak { get; set; } = true;

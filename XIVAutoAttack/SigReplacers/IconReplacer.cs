@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Hooking;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Data.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,6 +27,28 @@ internal sealed class IconReplacer : IDisposable
     private delegate uint GetIconDelegate(IntPtr actionManager, uint actionID);
 
     private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
+
+    public static byte RightNowTargetToHostileType
+    {
+        get
+        {
+            if (Service.ClientState.LocalPlayer == null) return 0;
+            var id = Service.ClientState.LocalPlayer.ClassJob.Id;
+            if (Service.Configuration.TargetToHostileTypes.TryGetValue(id, out var type))
+            {
+                return type;
+            }
+
+            var role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => id == job.RowId).Role;
+            return role == Role.·À»¤ ? (byte)1 : (byte)2;
+        }
+        set
+        {
+            if (Service.ClientState.LocalPlayer == null) return;
+            var id = Service.ClientState.LocalPlayer.ClassJob.Id;
+            Service.Configuration.TargetToHostileTypes[id] = value;
+        }
+    }
 
     public static ICustomCombo RightNowCombo
     {
@@ -54,6 +77,14 @@ internal sealed class IconReplacer : IDisposable
                 {
                     return combo;
                 }
+            }
+        }
+
+        foreach (var item in group.combos)
+        {
+            if (item.GetType().Name.Contains("Default"))
+            {
+                return item;
             }
         }
         return group.combos[0];

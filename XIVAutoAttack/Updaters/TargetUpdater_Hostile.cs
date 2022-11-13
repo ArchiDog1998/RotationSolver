@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Updaters
@@ -72,7 +73,7 @@ namespace XIVAutoAttack.Updaters
             {
                 HostileTargets = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
 
-                switch (Service.Configuration.TargetToHostileType)
+                switch (IconReplacer.RightNowTargetToHostileType)
                 {
                     case 0:
                         HostileTargets = AllTargets;
