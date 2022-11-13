@@ -17,147 +17,200 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
 
+    /// <summary>
+    /// ÍõÊÒÇ×ÎÀ
+    /// </summary>
+    public static BaseAction RoyalGuard { get; } = new(ActionID.RoyalGuard, shouldEndSpecial: true);
 
-    public static readonly BaseAction
-        //ÍõÊÒÇ×ÎÀ
-        RoyalGuard = new(16142, shouldEndSpecial: true),
+    /// <summary>
+    /// ÀûÈÐÕ¶
+    /// </summary>
+    public static BaseAction KeenEdge { get; } = new(ActionID.KeenEdge);
 
-        //ÀûÈÐÕ¶
-        KeenEdge = new(16137),
+    /// <summary>
+    /// ÎÞÇé
+    /// </summary>
+    public static BaseAction NoMercy { get; } = new(ActionID.NoMercy);
 
-        //ÎÞÇé
-        NoMercy = new(16138),
+    /// <summary>
+    /// ²Ð±©µ¯
+    /// </summary>
+    public static BaseAction BrutalShell { get; } = new(ActionID.BrutalShell);
 
-        //²Ð±©µ¯
-        BrutalShell = new(16139),
+    /// <summary>
+    /// Î±×°
+    /// </summary>
+    public static BaseAction Camouflage { get; } = new(ActionID.Camouflage)
+    {
+        BuffsProvide = Rampart.BuffsProvide,
+        OtherCheck = BaseAction.TankDefenseSelf,
+    };
 
-        //Î±×°
-        Camouflage = new(16140)
-        {
-            BuffsProvide = Rampart.BuffsProvide,
-            OtherCheck = BaseAction.TankDefenseSelf,
-        },
+    /// <summary>
+    /// ¶ñÄ§ÇÐ
+    /// </summary>
+    public static BaseAction DemonSlice { get; } = new(ActionID.DemonSlice);
 
-        //¶ñÄ§ÇÐ
-        DemonSlice = new(16141),
+    /// <summary>
+    /// ÉÁÀ×µ¯
+    /// </summary>
+    public static BaseAction LightningShot { get; } = new(ActionID.LightningShot);
 
-        //ÉÁÀ×µ¯
-        LightningShot = new(16143),
+    /// <summary>
+    /// Î£ÏÕÁìÓò
+    /// </summary>
+    public static BaseAction DangerZone { get; } = new(ActionID.DangerZone);
 
-        //Î£ÏÕÁìÓò
-        DangerZone = new(16144),
+    /// <summary>
+    /// Ñ¸Á¬Õ¶
+    /// </summary>
+    public static BaseAction SolidBarrel { get; } = new(ActionID.SolidBarrel);
 
-        //Ñ¸Á¬Õ¶
-        SolidBarrel = new(16145),
+    /// <summary>
+    /// ±¬·¢»÷
+    /// </summary>
+    public static BaseAction BurstStrike { get; } = new(ActionID.BurstStrike)
+    {
+        OtherCheck = b => JobGauge.Ammo > 0,
+    };
 
-        //±¬·¢»÷
-        BurstStrike = new(16162)
-        {
-            OtherCheck = b => JobGauge.Ammo > 0,
-        },
+    /// <summary>
+    /// ÐÇÔÆ
+    /// </summary>
+    public static BaseAction Nebula { get; } = new(ActionID.Nebula)
+    {
+        BuffsProvide = Rampart.BuffsProvide,
+        OtherCheck = BaseAction.TankDefenseSelf,
+    };
 
-        //ÐÇÔÆ
-        Nebula = new(16148)
-        {
-            BuffsProvide = Rampart.BuffsProvide,
-            OtherCheck = BaseAction.TankDefenseSelf,
-        },
+    /// <summary>
+    /// ¶ñÄ§É±
+    /// </summary>
+    public static BaseAction DemonSlaughter { get; } = new(ActionID.DemonSlaughter);
 
-        //¶ñÄ§É±
-        DemonSlaughter = new(16149),
+    /// <summary>
+    /// ¼«¹â
+    /// </summary>
+    public static BaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, true);
 
-        //¼«¹â
-        Aurora = new BaseAction(16151, true)
-        {
-            BuffsProvide = new[] { StatusID.Aurora },
-        },
+    /// <summary>
+    /// ³¬»ðÁ÷ÐÇ
+    /// </summary>
+    public static BaseAction Superbolide { get; } = new(ActionID.Superbolide)
+    {
+        OtherCheck = BaseAction.TankBreakOtherCheck,
+    };
 
-        //³¬»ðÁ÷ÐÇ
-        Superbolide = new(16152)
-        {
-            OtherCheck = BaseAction.TankBreakOtherCheck,
-        },
+    /// <summary>
+    /// ÒôËÙÆÆ
+    /// </summary>
+    public static BaseAction SonicBreak { get; } = new(ActionID.SonicBreak);
 
-        //ÒôËÙÆÆ
-        SonicBreak = new(16153),
+    /// <summary>
+    /// ´Ö·ÖÕ¶
+    /// </summary>
+    public static BaseAction RoughDivide { get; } = new(ActionID.RoughDivide, shouldEndSpecial: true)
+    {
+        ChoiceTarget = TargetFilter.FindTargetForMoving
+    };
 
-        //´Ö·ÖÕ¶
-        RoughDivide = new(16154, shouldEndSpecial: true)
-        {
-            ChoiceTarget = TargetFilter.FindTargetForMoving
-        },
+    /// <summary>
+    /// ÁÒÑÀ
+    /// </summary>
+    public static BaseAction GnashingFang { get; } = new(ActionID.GnashingFang)
+    {
+        OtherCheck = b => JobGauge.AmmoComboStep == 0 && JobGauge.Ammo > 0,
+    };
 
-        //ÁÒÑÀ
-        GnashingFang = new(16146)
-        {
-            OtherCheck = b => JobGauge.AmmoComboStep == 0 && JobGauge.Ammo > 0,
-        },
+    /// <summary>
+    /// ¹­ÐÎ³å²¨
+    /// </summary>
+    public static BaseAction BowShock { get; } = new(ActionID.BowShock);
 
-        //¹­ÐÎ³å²¨
-        BowShock = new(16159),
+    /// <summary>
+    /// ¹âÖ®ÐÄ
+    /// </summary>
+    public static BaseAction HeartofLight { get; } = new(ActionID.HeartofLight, true);
 
-        //¹âÖ®ÐÄ
-        HeartofLight = new(16160, true),
+    /// <summary>
+    /// Ê¯Ö®ÐÄ
+    /// </summary>
+    public static BaseAction HeartofStone { get; } = new(ActionID.HeartofStone, true)
+    {
+        BuffsProvide = Rampart.BuffsProvide,
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
 
-        //Ê¯Ö®ÐÄ
-        HeartofStone = new(16161, true)
-        {
-            BuffsProvide = Rampart.BuffsProvide,
-            ChoiceTarget = TargetFilter.FindAttackedTarget,
-        },
+    /// <summary>
+    /// ÃüÔËÖ®»·
+    /// </summary>
+    public static BaseAction FatedCircle { get; } = new(ActionID.FatedCircle)
+    {
+        OtherCheck = b => JobGauge.Ammo > (Level >= 88 ? 2 : 1),
+    };
 
-        //ÃüÔËÖ®»·
-        FatedCircle = new(16163)
-        {
-            OtherCheck = b => JobGauge.Ammo > (Level >= 88 ? 2 : 1),
-        },
+    /// <summary>
+    /// ÑªÈÀ
+    /// </summary>
+    public static BaseAction Bloodfest { get; } = new(ActionID.Bloodfest)
+    {
+        OtherCheck = b => JobGauge.Ammo == 0,
+    };
 
-        //ÑªÈÀ
-        Bloodfest = new(16164)
-        {
-            OtherCheck = b => JobGauge.Ammo == 0,
-        },
+    /// <summary>
+    /// ±¶¹¥
+    /// </summary>
+    public static BaseAction DoubleDown { get; } = new(ActionID.DoubleDown)
+    {
+        OtherCheck = b => JobGauge.Ammo >= 2,
+    };
 
-        //±¶¹¥
-        DoubleDown = new(25760)
-        {
-            OtherCheck = b => JobGauge.Ammo >= 2,
-        },
+    /// <summary>
+    /// ÃÍÊÞ×¦
+    /// </summary>
+    public static BaseAction SavageClaw { get; } = new(ActionID.SavageClaw)
+    {
+        OtherCheck = b => Service.IconReplacer.OriginalHook(GnashingFang.ID) == SavageClaw.ID,
+    };
 
-        //ÃÍÊÞ×¦
-        SavageClaw = new(16147)
-        {
-            OtherCheck = b => Service.IconReplacer.OriginalHook(GnashingFang.ID) == SavageClaw.ID,
-        },
+    /// <summary>
+    /// Ð×ÇÝ×¦
+    /// </summary>
+    public static BaseAction WickedTalon { get; } = new(ActionID.WickedTalon)
+    {
+        OtherCheck = b => Service.IconReplacer.OriginalHook(GnashingFang.ID) == WickedTalon.ID,
+    };
 
-        //Ð×ÇÝ×¦
-        WickedTalon = new(16150)
-        {
-            OtherCheck = b => Service.IconReplacer.OriginalHook(GnashingFang.ID) == WickedTalon.ID,
-        },
+    /// <summary>
+    /// Ëººí
+    /// </summary>
+    public static BaseAction JugularRip { get; } = new(ActionID.JugularRip)
+    {
+        OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == JugularRip.ID,
+    };
 
-        //Ëººí
-        JugularRip = new(16156)
-        {
-            OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == JugularRip.ID,
-        },
+    /// <summary>
+    /// ÁÑÌÅ
+    /// </summary>
+    public static BaseAction AbdomenTear { get; } = new(ActionID.AbdomenTear)
+    {
+        OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == AbdomenTear.ID,
+    };
 
-        //ÁÑÌÅ
-        AbdomenTear = new(16157)
-        {
-            OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == AbdomenTear.ID,
-        },
+    /// <summary>
+    /// ´©Ä¿
+    /// </summary>
+    public static BaseAction EyeGouge { get; } = new(ActionID.EyeGouge)
+    {
+        OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == EyeGouge.ID,
+    };
 
-        //´©Ä¿
-        EyeGouge = new(16158)
-        {
-            OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == EyeGouge.ID,
-        },
-
-        //³¬¸ßËÙ
-        Hypervelocity = new(25759)
-        {
-            OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ID,
-        };
+    /// <summary>
+    /// ³¬¸ßËÙ
+    /// </summary>
+    public static BaseAction Hypervelocity { get; } = new(ActionID.Hypervelocity)
+    {
+        OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ID,
+    };
 }
 

@@ -10,93 +10,127 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Machinist };
 
-    public static readonly BaseAction
-        //分裂弹
-        SplitShot = new(2866),
+    //分裂弹
+    public static BaseAction SplitShot { get; } = new(ActionID.SplitShot);
 
-        //独头弹
-        SlugShot = new(2868)
+    /// <summary>
+    /// 独头弹
+    /// </summary>
+    public static BaseAction SlugShot { get; } = new(ActionID.SlugShot)
+    {
+        OtherIDsCombo = new[] { 7411u },
+    };
+
+    /// <summary>
+    /// 狙击弹
+    /// </summary>
+    public static BaseAction CleanShot { get; } = new(ActionID.CleanShot)
+    {
+        OtherIDsCombo = new[] { 7412u },
+    };
+
+    /// <summary>
+    /// 热冲击
+    /// </summary>
+    public static BaseAction HeatBlast { get; } = new(ActionID.HeatBlast);
+
+    /// <summary>
+    /// 散射
+    /// </summary>
+    public static BaseAction SpreadShot { get; } = new(ActionID.SpreadShot);
+
+    /// <summary>
+    /// 自动弩
+    /// </summary>
+    public static BaseAction AutoCrossbow { get; } = new(ActionID.AutoCrossbow);
+
+    /// <summary>
+    /// 热弹
+    /// </summary>
+    public static BaseAction HotShot { get; } = new(ActionID.HotShot);
+
+    /// <summary>
+    /// 空气锚
+    /// </summary>
+    public static BaseAction AirAnchor { get; } = new(ActionID.AirAnchor);
+
+    /// <summary>
+    /// 钻头
+    /// </summary>
+    public static BaseAction Drill { get; } = new(ActionID.Drill);
+
+    /// <summary>
+    /// 回转飞锯
+    /// </summary>
+    public static BaseAction ChainSaw { get; } = new(ActionID.ChainSaw);
+
+    /// <summary>
+    /// 毒菌冲击
+    /// </summary>
+    public static BaseAction Bioblaster { get; } = new(ActionID.Bioblaster, isEot: true);
+
+    /// <summary>
+    /// 整备
+    /// </summary>
+    public static BaseAction Reassemble { get; } = new(ActionID.Reassemble)
+    {
+        BuffsProvide = new StatusID[] { StatusID.Reassemble },
+        OtherCheck = b => HaveHostileInRange,
+    };
+
+    /// <summary>
+    /// 超荷
+    /// </summary>
+    public static BaseAction Hypercharge { get; } = new(ActionID.Hypercharge)
+    {
+        OtherCheck = b => !JobGauge.IsOverheated && JobGauge.Heat >= 50,
+    };
+
+    /// <summary>
+    /// 野火
+    /// </summary>
+    public static BaseAction Wildfire { get; } = new(ActionID.Wildfire)
+    {
+        OtherCheck = b => JobGauge.Heat >= 50,
+    };
+
+    /// <summary>
+    /// 虹吸弹
+    /// </summary>
+    public static BaseAction GaussRound { get; } = new(ActionID.GaussRound);
+
+    /// <summary>
+    /// 弹射
+    /// </summary>
+    public static BaseAction Ricochet { get; } = new(ActionID.Ricochet);
+
+    /// <summary>
+    /// 枪管加热
+    /// </summary>
+    public static BaseAction BarrelStabilizer { get; } = new(ActionID.BarrelStabilizer)
+    {
+        OtherCheck = b => JobGauge.Heat <= 50 && !IsLastWeaponSkill(false, ChainSaw),
+    };
+
+    /// <summary>
+    /// 车式浮空炮塔
+    /// </summary>
+    public static BaseAction RookAutoturret { get; } = new(ActionID.RookAutoturret)
+    {
+        OtherCheck = b => JobGauge.Battery >= 50 && !JobGauge.IsRobotActive,
+    };
+
+    /// <summary>
+    /// 策动
+    /// </summary>
+    public static BaseAction Tactician { get; } = new(ActionID.Tactician, true)
+    {
+        BuffsProvide = new[]
         {
-            OtherIDsCombo = new[] { 7411u },
-        },
-
-        //狙击弹
-        CleanShot = new(2873)
-        {
-            OtherIDsCombo = new[] { 7412u },
-        },
-
-        //热冲击
-        HeatBlast = new(7410),
-
-        //散射
-        SpreadShot = new(2870),
-
-        //自动弩
-        AutoCrossbow = new(16497),
-
-        //热弹
-        HotShot = new(2872),
-
-        //空气锚
-        AirAnchor = new(16500),
-
-        //钻头
-        Drill = new(16498),
-
-        //回转飞锯
-        ChainSaw = new(25788),
-
-        //毒菌冲击
-        Bioblaster = new(16499, isEot: true),
-
-        //整备
-        Reassemble = new(2876)
-        {
-            BuffsProvide = new StatusID[] { StatusID.Reassemble },
-            OtherCheck = b => HaveHostileInRange,
-        },
-
-        //超荷
-        Hypercharge = new(17209)
-        {
-            OtherCheck = b => !JobGauge.IsOverheated && JobGauge.Heat >= 50,
-        },
-
-        //野火
-        Wildfire = new(2878)
-        {
-            OtherCheck = b => JobGauge.Heat >= 50,
-        },
-
-        //虹吸弹
-        GaussRound = new(2874),
-
-        //弹射
-        Ricochet = new(2890),
-        aaa = new(7557),
-
-        //枪管加热
-        BarrelStabilizer = new(7414)
-        {
-            OtherCheck = b => JobGauge.Heat <= 50 && !IsLastWeaponSkill(false, ChainSaw),
-        },
-
-        //车式浮空炮塔
-        RookAutoturret = new(2864)
-        {
-            OtherCheck = b => JobGauge.Battery >= 50 && !JobGauge.IsRobotActive,
-        },
-
-        //策动
-        Tactician = new(16889, true)
-        {
-            BuffsProvide = new[]
-            {
                     StatusID.Troubadour,
                     StatusID.Tactician1,
                     StatusID.Tactician2,
                     StatusID.ShieldSamba,
             },
-        };
+    };
 }

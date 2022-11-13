@@ -12,126 +12,176 @@ internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> wher
     internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.Grit);
     private sealed protected override BaseAction Shield => Grit;
 
+    /// <summary>
+    /// 重斩
+    /// </summary>
+    public static BaseAction HardSlash { get; } = new(ActionID.HardSlash);
 
-    public static readonly BaseAction
-        //重斩
-        HardSlash = new(3617),
+    /// <summary>
+    /// 吸收斩
+    /// </summary>
+    public static BaseAction SyphonStrike { get; } = new(ActionID.SyphonStrike);
 
-        //吸收斩
-        SyphonStrike = new(3623),
+    /// <summary>
+    /// 释放
+    /// </summary>
+    public static BaseAction Unleash { get; } = new(ActionID.Unleash);
 
-        //释放
-        Unleash = new(3621),
+    /// <summary>
+    /// 深恶痛绝
+    /// </summary>
+    public static BaseAction Grit { get; } = new(ActionID.Grit, shouldEndSpecial: true);
 
-        //深恶痛绝
-        Grit = new(3629, shouldEndSpecial: true),
+    /// <summary>
+    /// 伤残
+    /// </summary>
+    public static BaseAction Unmend { get; } = new(ActionID.Unmend)
+    {
+        FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+    };
 
-        //伤残
-        Unmend = new(3624)
-        {
-            FilterForTarget = b => TargetFilter.ProvokeTarget(b),
-        },
+    /// <summary>
+    /// 噬魂斩
+    /// </summary>
+    public static BaseAction Souleater { get; } = new(ActionID.Souleater);
 
-        //噬魂斩
-        Souleater = new(3632),
+    /// <summary>
+    /// 暗黑波动
+    /// </summary>
+    public static BaseAction FloodofDarkness { get; } = new(ActionID.FloodofDarkness);
 
-        //暗黑波动
-        FloodofDarkness = new(16466),
+    /// <summary>
+    /// 暗黑锋
+    /// </summary>
+    public static BaseAction EdgeofDarkness { get; } = new(ActionID.EdgeofDarkness)
+    {
+        OtherCheck = b => !IsLastAction(true, EdgeofDarkness, FloodofDarkness) && Player.CurrentMp >= 3000,
+    };
 
-        //暗黑锋
-        EdgeofDarkness = new(16467)
-        {
-            OtherCheck = b => !IsLastAction(true, EdgeofDarkness, FloodofDarkness) && Player.CurrentMp >= 3000,
-        },
+    /// <summary>
+    /// 嗜血
+    /// </summary>
+    public static BaseAction BloodWeapon { get; } = new(ActionID.BloodWeapon)
+    {
+        OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
+    };
 
-        //嗜血
-        BloodWeapon = new(3625)
-        {
-            OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
-        },
+    /// <summary>
+    /// 暗影墙
+    /// </summary>
+    public static BaseAction ShadowWall { get; } = new(ActionID.ShadowWall)
+    {
+        BuffsProvide = new[] { StatusID.ShadowWall },
+        OtherCheck = BaseAction.TankDefenseSelf,
+    };
 
-        //暗影墙
-        ShadowWall = new(3636)
-        {
-            BuffsProvide = new[] { StatusID.ShadowWall },
-            OtherCheck = BaseAction.TankDefenseSelf,
-        },
+    /// <summary>
+    /// 弃明投暗
+    /// </summary>
+    public static BaseAction DarkMind { get; } = new(ActionID.DarkMind)
+    {
+        OtherCheck = BaseAction.TankDefenseSelf,
+    };
 
-        //弃明投暗
-        DarkMind = new(3634)
-        {
-            OtherCheck = BaseAction.TankDefenseSelf,
-        },
+    /// <summary>
+    /// 行尸走肉
+    /// </summary>
+    public static BaseAction LivingDead { get; } = new(ActionID.LivingDead)
+    {
+        OtherCheck = BaseAction.TankBreakOtherCheck,
+    };
 
-        //行尸走肉
-        LivingDead = new(3638)
-        {
-            OtherCheck = BaseAction.TankBreakOtherCheck,
-        },
+    /// <summary>
+    /// 腐秽大地
+    /// </summary>
+    public static BaseAction SaltedEarth { get; } = new(ActionID.SaltedEarth);
 
-        //腐秽大地
-        SaltedEarth = new(3639),
+    /// <summary>
+    /// 跳斩
+    /// </summary>
+    public static BaseAction Plunge { get; } = new(ActionID.Plunge, shouldEndSpecial: true)
+    {
+        ChoiceTarget = TargetFilter.FindTargetForMoving
+    };
 
-        //跳斩
-        Plunge = new(3640, shouldEndSpecial: true)
-        {
-            ChoiceTarget = TargetFilter.FindTargetForMoving
-        },
+    /// <summary>
+    /// 吸血深渊
+    /// </summary>
+    public static BaseAction AbyssalDrain { get; } = new(ActionID.AbyssalDrain);
 
-        //吸血深渊
-        AbyssalDrain = new(3641),
+    /// <summary>
+    /// 精雕怒斩
+    /// </summary>
+    public static BaseAction CarveandSpit { get; } = new(ActionID.CarveandSpit);
 
-        //精雕怒斩
-        CarveandSpit = new(3643),
+    /// <summary>
+    /// 血溅
+    /// </summary>
+    public static BaseAction Bloodspiller { get; } = new(ActionID.Bloodspiller)
+    {
+        OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatus(true, StatusID.Delirium),
+    };
 
-        //血溅
-        Bloodspiller = new(7392)
-        {
-            OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatus(true, StatusID.Delirium),
-        },
+    /// <summary>
+    /// 寂灭
+    /// </summary>
+    public static BaseAction Quietus { get; } = new(ActionID.Quietus);
 
-        //寂灭
-        Quietus = new(7391),
+    /// <summary>
+    /// 血乱
+    /// </summary>
+    public static BaseAction Delirium { get; } = new(ActionID.Delirium)
+    {
+        OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
+    };
 
-        //血乱
-        Delirium = new(7390)
-        {
-            OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
-        },
+    /// <summary>
+    /// 至黑之夜
+    /// </summary>
+    public static BaseAction TheBlackestNight { get; } = new(ActionID.TheBlackestNight)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
 
-        //至黑之夜
-        TheBlackestNight = new(7393)
-        {
-            ChoiceTarget = TargetFilter.FindAttackedTarget,
-        },
+    /// <summary>
+    /// 刚魂
+    /// </summary>
+    public static BaseAction StalwartSoul { get; } = new(ActionID.StalwartSoul);
 
-        //刚魂
-        StalwartSoul = new(16468),
+    /// <summary>
+    /// 暗黑布道
+    /// </summary>
+    public static BaseAction DarkMissionary { get; } = new(ActionID.DarkMissionary, true);
 
-        //暗黑布道
-        DarkMissionary = new(16471, true),
+    /// <summary>
+    /// 掠影示现
+    /// </summary>
+    public static BaseAction LivingShadow { get; } = new(ActionID.LivingShadow)
+    {
+        OtherCheck = b => JobGauge.Blood >= 50 && JobGauge.DarksideTimeRemaining > 1,
+    };
 
-        //掠影示现
-        LivingShadow = new(16472)
-        {
-            OtherCheck = b => JobGauge.Blood >= 50 && JobGauge.DarksideTimeRemaining > 1,
-        },
+    /// <summary>
+    /// 献奉
+    /// </summary>
+    public static BaseAction Oblation { get; } = new(ActionID.Oblation, true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
 
-        //献奉
-        Oblation = new(25754, true)
-        {
-            ChoiceTarget = TargetFilter.FindAttackedTarget,
-        },
+    /// <summary>
+    /// 暗影使者
+    /// </summary>
+    public static BaseAction Shadowbringer { get; } = new(ActionID.Shadowbringer)
+    {
+        OtherCheck = b => JobGauge.DarksideTimeRemaining > 1 && !IsLastAction(true, Shadowbringer),
+    };
 
-        //暗影使者
-        Shadowbringer = new(25757)
-        {
-            OtherCheck = b => JobGauge.DarksideTimeRemaining > 1 && !IsLastAction(true, Shadowbringer),
-        },
-
-        //腐秽黑暗
-        SaltandDarkness = new(25755)
-        {
-            BuffsNeed = new[] { StatusID.SaltedEarth },
-        };
+    /// <summary>
+    /// 腐秽黑暗
+    /// </summary>
+    public static BaseAction SaltandDarkness { get; } = new(ActionID.SaltandDarkness)
+    {
+        BuffsNeed = new[] { StatusID.SaltedEarth },
+    };
 }

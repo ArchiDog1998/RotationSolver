@@ -19,179 +19,262 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
         }
     }
 
-    public static readonly BaseAction
+    /// <summary>
+    /// 隐遁
+    /// </summary>
+    public static BaseAction Hide { get; } = new(ActionID.Hide);
 
-        //隐遁
-        Hide = new(2245),
+    /// <summary>
+    /// 双刃旋
+    /// </summary>
+    public static BaseAction SpinningEdge { get; } = new(ActionID.SpinningEdge);
 
-        //双刃旋
-        SpinningEdge = new(2240),
+    /// <summary>
+    /// 残影
+    /// </summary>
+    public static BaseAction ShadeShift { get; } = new(ActionID.ShadeShift);
 
-        //残影
-        ShadeShift = new(2241),
+    /// <summary>
+    /// 绝风
+    /// </summary>
+    public static BaseAction GustSlash { get; } = new(ActionID.GustSlash);
 
-        //绝风
-        GustSlash = new(2242),
+    /// <summary>
+    /// 飞刀
+    /// </summary>
+    public static BaseAction ThrowingDagger { get; } = new(ActionID.ThrowingDagger);
 
-        //飞刀
-        ThrowingDagger = new(2247),
+    /// <summary>
+    /// 夺取
+    /// </summary>
+    public static BaseAction Mug { get; } = new(ActionID.Mug)
+    {
+        OtherCheck = b => JobGauge.Ninki <= 50,
+    };
 
-        //夺取
-        Mug = new(2248)
-        {
-            OtherCheck = b => JobGauge.Ninki <= 50,
-        },
+    /// <summary>
+    /// 攻其不备
+    /// </summary>
+    public static BaseAction TrickAttack { get; } = new(ActionID.TrickAttack)
+    {
+        BuffsNeed = new StatusID[] { StatusID.Suiton, StatusID.Hidden },
+    };
 
-        //攻其不备
-        TrickAttack = new(ActionID.TrickAttack)
-        {
-            BuffsNeed = new StatusID[] { StatusID.Suiton, StatusID.Hidden },
-        },
+    /// <summary>
+    /// 旋风刃
+    /// </summary>
+    public static BaseAction AeolianEdge { get; } = new(ActionID.AeolianEdge);
 
-        //旋风刃
-        AeolianEdge = new(ActionID.AeolianEdge),
+    /// <summary>
+    /// 血雨飞花
+    /// </summary>
+    public static BaseAction DeathBlossom { get; } = new(ActionID.DeathBlossom);
 
-        //血雨飞花
-        DeathBlossom = new(2254),
+    /// <summary>
+    /// 天之印
+    /// </summary>
+    public static BaseAction Ten { get; } = new(ActionID.Ten);
 
-        //天之印
-        Ten = new(2259),
+    /// <summary>
+    /// 地之印
+    /// </summary>
+    public static BaseAction Chi { get; } = new(ActionID.Chi);
 
-        //地之印
-        Chi = new(2261),
+    /// <summary>
+    /// 人之印
+    /// </summary>
+    public static BaseAction Jin { get; } = new(ActionID.Jin);
 
-        //人之印
-        Jin = new(2263),
+    /// <summary>
+    /// 天地人
+    /// </summary>
+    public static BaseAction TenChiJin { get; } = new(ActionID.TenChiJin)
+    {
+        BuffsProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
+        OtherCheck = b => JobGauge.HutonTimer > 0,
+    };
 
-        //天地人
-        TenChiJin = new(7403)
-        {
-            BuffsProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
-            OtherCheck = b => JobGauge.HutonTimer > 0,
-        },
+    /// <summary>
+    /// 缩地
+    /// </summary>
+    public static BaseAction Shukuchi { get; } = new(ActionID.Shukuchi, true);
 
-        //缩地
-        Shukuchi = new(2262, true),
+    /// <summary>
+    /// 断绝
+    /// </summary>
+    public static BaseAction Assassinate { get; } = new(ActionID.Assassinate);
 
-        //断绝
-        Assassinate = new(2246),
+    /// <summary>
+    /// 命水
+    /// </summary>
+    public static BaseAction Meisui { get; } = new(ActionID.Meisui)
+    {
+        BuffsNeed = new[] { StatusID.Suiton },
+        OtherCheck = b => JobGauge.Ninki <= 50,
+    };
 
-        //命水
-        Meisui = new(16489)
-        {
-            BuffsNeed = new[] { StatusID.Suiton },
-            OtherCheck = b => JobGauge.Ninki <= 50,
-        },
+    /// <summary>
+    /// 生杀予夺
+    /// </summary>
+    public static BaseAction Kassatsu { get; } = new(ActionID.Kassatsu, isFriendly: true)
+    {
+        BuffsProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
+    };
 
-        //生杀予夺
-        Kassatsu = new(2264, isFriendly: true)
-        {
-            BuffsProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
-        },
+    /// <summary>
+    /// 八卦无刃杀
+    /// </summary>
+    public static BaseAction HakkeMujinsatsu { get; } = new(ActionID.HakkeMujinsatsu);
 
-        //八卦无刃杀
-        HakkeMujinsatsu = new(16488),
+    /// <summary>
+    /// 强甲破点突
+    /// </summary>
+    public static BaseAction ArmorCrush { get; } = new(ActionID.ArmorCrush)
+    {
+        OtherCheck = b => RemainAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
+    };
 
-        //强甲破点突
-        ArmorCrush = new(ActionID.ArmorCrush)
-        {
-            OtherCheck = b => RemainAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
-        },
+    /// <summary>
+    /// 通灵之术·大虾蟆
+    /// </summary>
+    public static BaseAction HellfrogMedium { get; } = new(ActionID.HellfrogMedium);
 
-        //通灵之术·大虾蟆
-        HellfrogMedium = new(7401),
+    /// <summary>
+    /// 六道轮回
+    /// </summary>
+    public static BaseAction Bhavacakra { get; } = new(ActionID.Bhavacakra);
 
-        //六道轮回
-        Bhavacakra = new(7402),
+    /// <summary>
+    /// 分身之术
+    /// </summary>
+    public static BaseAction Bunshin { get; } = new(ActionID.Bunshin);
 
-        //分身之术
-        Bunshin = new(16493),
+    /// <summary>
+    /// 残影镰鼬
+    /// </summary>
+    public static BaseAction PhantomKamaitachi { get; } = new(ActionID.PhantomKamaitachi)
+    {
+        BuffsNeed = new[] { StatusID.PhantomKamaitachiReady },
+    };
 
-        //残影镰鼬
-        PhantomKamaitachi = new(25774)
-        {
-            BuffsNeed = new[] { StatusID.PhantomKamaitachiReady },
-        },
+    /// <summary>
+    /// 月影雷兽牙
+    /// </summary>
+    public static BaseAction FleetingRaiju { get; } = new(ActionID.FleetingRaiju)
+    {
+        BuffsNeed = new[] { StatusID.RaijuReady },
+    };
 
-        //月影雷兽牙
-        FleetingRaiju = new(25778)
-        {
-            BuffsNeed = new[] { StatusID.RaijuReady },
-        },
+    /// <summary>
+    /// 月影雷兽爪
+    /// </summary>
+    public static BaseAction ForkedRaiju { get; } = new(ActionID.ForkedRaiju)
+    {
+        BuffsNeed = new[] { StatusID.RaijuReady },
+    };
 
-        //月影雷兽爪
-        ForkedRaiju = new(25777)
-        {
-            BuffsNeed = new[] { StatusID.RaijuReady },
-        },
+    /// <summary>
+    /// 风来刃
+    /// </summary>
+    public static BaseAction Huraijin { get; } = new(ActionID.Huraijin)
+    {
+        OtherCheck = b => JobGauge.HutonTimer == 0,
+    };
 
-        //风来刃
-        Huraijin = new(25876)
-        {
-            OtherCheck = b => JobGauge.HutonTimer == 0,
-        },
+    /// <summary>
+    /// 梦幻三段
+    /// </summary>
+    public static BaseAction DreamWithinaDream { get; } = new(ActionID.DreamWithinaDream);
 
-        //梦幻三段
-        DreamWithinaDream = new(3566),
+    /// <summary>
+    /// 风魔手里剑天
+    /// </summary>
+    public static BaseAction FumaShurikenTen { get; } = new(ActionID.FumaShurikenTen);
 
-        //风魔手里剑天
-        FumaShurikenTen = new(18873),
+    /// <summary>
+    /// 风魔手里剑人
+    /// </summary>
+    public static BaseAction FumaShurikenJin { get; } = new(ActionID.FumaShurikenJin);
 
-        //风魔手里剑人
-        FumaShurikenJin = new(18875),
+    /// <summary>
+    /// 火遁之术天
+    /// </summary>
+    public static BaseAction KatonTen { get; } = new(ActionID.KatonTen);
 
-        //火遁之术天
-        KatonTen = new(18876),
+    /// <summary>
+    /// 雷遁之术地
+    /// </summary>
+    public static BaseAction RaitonChi { get; } = new(ActionID.RaitonChi);
 
-        //雷遁之术地
-        RaitonChi = new(18877),
+    /// <summary>
+    /// 土遁之术地
+    /// </summary>
+    public static BaseAction DotonChi { get; } = new(ActionID.DotonChi);
 
-        //土遁之术地
-        DotonChi = new(18880),
+    /// <summary>
+    /// 水遁之术人
+    /// </summary>
+    public static BaseAction SuitonJin { get; } = new(ActionID.SuitonJin);
 
-        //水遁之术人
-        SuitonJin = new(18881);
 
-    public static readonly NinAction
+    /// <summary>
+    /// 通灵之术
+    /// </summary>
+    public static NinAction RabbitMedium { get; } = new(ActionID.RabbitMedium);
 
-        //通灵之术
-        RabbitMedium = new(2272),
+    /// <summary>
+    /// 风魔手里剑
+    /// </summary>
+    public static NinAction FumaShuriken { get; } = new(ActionID.FumaShuriken, Ten);
 
-        //风魔手里剑
-        FumaShuriken = new(2265, Ten),
+    /// <summary>
+    /// 火遁之术
+    /// </summary>
+    public static NinAction Katon { get; } = new(ActionID.Katon, Chi, Ten);
 
-        //火遁之术
-        Katon = new(2266, Chi, Ten),
+    /// <summary>
+    /// 雷遁之术
+    /// </summary>
+    public static NinAction Raiton { get; } = new(ActionID.Raiton, Ten, Chi);
 
-        //雷遁之术
-        Raiton = new(2267, Ten, Chi),
+    /// <summary>
+    /// 冰遁之术
+    /// </summary>
+    public static NinAction Hyoton { get; } = new(ActionID.Hyoton, Ten, Jin);
 
-        //冰遁之术
-        Hyoton = new(2268, Ten, Jin),
+    /// <summary>
+    /// 风遁之术
+    /// </summary>
+    public static NinAction Huton { get; } = new(ActionID.Huton, Jin, Chi, Ten)
+    {
+        OtherCheck = b => JobGauge.HutonTimer == 0,
+    };
 
-        //风遁之术
-        Huton = new(2269, Jin, Chi, Ten)
-        {
-            OtherCheck = b => JobGauge.HutonTimer == 0,
-        },
+    /// <summary>
+    /// 土遁之术
+    /// </summary>
+    public static NinAction Doton { get; } = new(ActionID.Doton, Jin, Ten, Chi)
+    {
+        BuffsProvide = new[] { StatusID.Doton },
+    };
 
-        //土遁之术
-        Doton = new(2270, Jin, Ten, Chi)
-        {
-            BuffsProvide = new[] { StatusID.Doton },
-        },
+    /// <summary>
+    /// 水遁之术
+    /// </summary>
+    public static NinAction Suiton { get; } = new(ActionID.SuitonActionID.Suiton, Ten, Chi, Jin)
+    {
+        BuffsProvide = new[] { StatusID.Suiton },
+        OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),
+    };
 
-        //水遁之术
-        Suiton = new(ActionID.Suiton, Ten, Chi, Jin)
-        {
-            BuffsProvide = new[] { StatusID.Suiton },
-            OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),
-        },
+    /// <summary>
+    /// 劫火灭却之术
+    /// </summary>
+    public static NinAction GokaMekkyaku { get; } = new(ActionID.GokaMekkyaku, Chi, Ten);
 
-        //劫火灭却之术
-        GokaMekkyaku = new(16491, Chi, Ten),
-
-        //冰晶乱流之术
-        HyoshoRanryu = new(16492, Ten, Jin);
+    /// <summary>
+    /// 冰晶乱流之术
+    /// </summary>
+    public static NinAction HyoshoRanryu { get; } = new(ActionID.HyoshoRanryu, Ten, Jin);
 
 }

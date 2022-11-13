@@ -30,199 +30,253 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
     protected static bool PlentifulReady => Player.HaveStatus(true, StatusID.ImmortalSacrifice) && !Player.HaveStatus(true, StatusID.BloodsownCircle);
     protected static bool HaveDeathsDesign => Target.HaveStatus(true, StatusID.DeathsDesign);
 
-    public static readonly BaseAction
     #region 单体
-        //切割
-        Slice = new(24373)
-        {
-            OtherCheck = b => !Enshrouded || !SoulReaver,
-        },
+    /// <summary>
+    /// 切割
+    /// </summary>
+    public static BaseAction Slice { get; } = new(ActionID.Slice)
+    {
+        OtherCheck = b => !Enshrouded || !SoulReaver,
+    };
 
-        //增盈切割
-        WaxingSlice = new(24374)
-        {
-            OtherCheck = Slice.OtherCheck,
-        },
+    /// <summary>
+    /// 增盈切割
+    /// </summary>
+    public static BaseAction WaxingSlice { get; } = new(ActionID.WaxingSlice)
+    {
+        OtherCheck = Slice.OtherCheck,
+    };
 
-        //地狱切割
-        InfernalSlice = new(24375)
-        {
-            OtherCheck = Slice.OtherCheck,
-        },
+    /// <summary>
+    /// 地狱切割
+    /// </summary>
+    public static BaseAction InfernalSlice { get; } = new(ActionID.InfernalSlice)
+    {
+        OtherCheck = Slice.OtherCheck,
+    };
 
-        //死亡之影
-        ShadowofDeath = new(24378, isEot: true)
-        {
-            TargetStatus = new[] { StatusID.DeathsDesign },
-            OtherCheck = b => !SoulReaver,
-        },
+    /// <summary>
+    /// 死亡之影
+    /// </summary>
+    public static BaseAction ShadowofDeath { get; } = new(ActionID.ShadowofDeath, isEot: true)
+    {
+        TargetStatus = new[] { StatusID.DeathsDesign },
+        OtherCheck = b => !SoulReaver,
+    };
 
-        //灵魂切割
-        SoulSlice = new(24380)
-        {
-            OtherCheck = b => !Enshrouded && !SoulReaver && JobGauge.Soul <= 50,
-        },
+    /// <summary>
+    /// 灵魂切割
+    /// </summary>
+    public static BaseAction SoulSlice { get; } = new(ActionID.SoulSlice)
+    {
+        OtherCheck = b => !Enshrouded && !SoulReaver && JobGauge.Soul <= 50,
+    };
     #endregion
     #region AoE
-        //旋转钐割
-        SpinningScythe = new(24376)
-        {
-            OtherCheck = Slice.OtherCheck,
-        },
+    /// <summary>
+    /// 旋转钐割
+    /// </summary>
+    public static BaseAction SpinningScythe { get; } = new(ActionID.SpinningScythe)
+    {
+        OtherCheck = Slice.OtherCheck,
+    };
 
-        //噩梦钐割
-        NightmareScythe = new(24377)
-        {
-            OtherCheck = Slice.OtherCheck,
-        },
+    /// <summary>
+    /// 噩梦钐割
+    /// </summary>
+    public static BaseAction NightmareScythe { get; } = new(ActionID.NightmareScythe)
+    {
+        OtherCheck = Slice.OtherCheck,
+    };
 
-        //死亡之涡
-        WhorlofDeath = new(24379, isEot: true)
-        {
-            TargetStatus = new[] { StatusID.DeathsDesign },
-            OtherCheck = b => !SoulReaver
-        },
-
-        //灵魂钐割
-        SoulScythe = new(24381)
-        {
-            OtherCheck = SoulSlice.OtherCheck,
-        },
+    /// <summary>
+    /// 死亡之涡
+    /// </summary>
+    public static BaseAction WhorlofDeath { get; } = new(ActionID.WhorlofDeath, isEot: true)
+    {
+        TargetStatus = new[] { StatusID.DeathsDesign },
+        OtherCheck = b => !SoulReaver
+    };
+    
+    /// <summary>
+    /// 灵魂钐割
+    /// </summary>
+    public static BaseAction SoulScythe { get; } = new(ActionID.SoulScythe)
+    {
+        OtherCheck = SoulSlice.OtherCheck,
+    };
     #endregion
     #region 妖异之镰状态
-        //绞决
-        Gibbet = new PRPAction(ActionID.Gibbet)
-        {
-            OtherCheck = b => SoulReaver && EnhancedGibbet,
-        },
+    /// <summary>
+    /// 绞决
+    /// </summary>
+    public static BaseAction Gibbet { get; } = new(ActionID.Gibbet)
+    {
+        OtherCheck = b => SoulReaver && EnhancedGibbet,
+    };
 
-        //缢杀
-        Gallows = new PRPAction(ActionID.Gallows)
-        {
-            OtherCheck = b => SoulReaver && (EnhancedGallows || !EnhancedGibbet),
-        },
+    /// <summary>
+    /// 缢杀
+    /// </summary>
+    public static BaseAction Gallows { get; } = new(ActionID.Gallows)
+    {
+        OtherCheck = b => SoulReaver && (EnhancedGallows || !EnhancedGibbet),
+    };
 
-        //断首
-        Guillotine = new(24384)
-        {
-            OtherCheck = b => SoulReaver,
-        },
+    /// <summary>
+    /// 断首
+    /// </summary>
+    public static BaseAction Guillotine { get; } = new(ActionID.Guillotine)
+    {
+        OtherCheck = b => SoulReaver,
+    };
     #endregion
     #region 红条50灵魂
-        //隐匿挥割
-        BloodStalk = new(24389)
-        {
-            BuffsProvide = new[] { StatusID.SoulReaver },
-            OtherCheck = b => !SoulReaver && !Enshrouded &&
-                              JobGauge.Soul >= 50 && !PlentifulReady &&
-                              (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel),
-        },
+    /// <summary>
+    /// 隐匿挥割
+    /// </summary>
+    public static BaseAction BloodStalk { get; } = new(ActionID.BloodStalk)
+    {
+        BuffsProvide = new[] { StatusID.SoulReaver },
+        OtherCheck = b => !SoulReaver && !Enshrouded &&
+                          JobGauge.Soul >= 50 && !PlentifulReady &&
+                          (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel),
+    };
 
-        //束缚挥割
-        GrimSwathe = new(24392)
-        {
-            OtherCheck = BloodStalk.OtherCheck,
-        },
+    /// <summary>
+    /// 束缚挥割
+    /// </summary>
+    public static BaseAction GrimSwathe { get; } = new(ActionID.GrimSwathe)
+    {
+        OtherCheck = BloodStalk.OtherCheck,
+    };
 
-        //暴食
-        Gluttony = new(24393)
-        {
-            OtherCheck = b => !SoulReaver && !Enshrouded && JobGauge.Soul >= 50,
-        },
+    /// <summary>
+    /// 暴食
+    /// </summary>
+    public static BaseAction Gluttony { get; } = new(ActionID.Gluttony)
+    {
+        OtherCheck = b => !SoulReaver && !Enshrouded && JobGauge.Soul >= 50,
+    };
     #endregion
     #region 大爆发
-        //神秘环
-        ArcaneCircle = new(24405, true)
-        {
-            OtherCheck = b => InCombat && HaveDeathsDesign
-        },
+    /// <summary>
+    /// 神秘环
+    /// </summary>
+    public static BaseAction ArcaneCircle { get; } = new(ActionID.ArcaneCircle, true)
+    {
+        OtherCheck = b => InCombat && HaveDeathsDesign
+    };
 
-        //大丰收
-        PlentifulHarvest = new(24385)
-        {
-            OtherCheck = b => JobGauge.Shroud <= 50 && !SoulReaver && !Enshrouded && PlentifulReady
-        },
+    /// <summary>
+    /// 大丰收
+    /// </summary>
+    public static BaseAction PlentifulHarvest { get; } = new(ActionID.PlentifulHarvest)
+    {
+        OtherCheck = b => JobGauge.Shroud <= 50 && !SoulReaver && !Enshrouded && PlentifulReady
+    };
     #endregion
     #region 蓝条50附体
-        //夜游魂衣
-        Enshroud = new(24394)
-        {
-            OtherCheck = b => !SoulReaver && !Enshrouded && JobGauge.Shroud >= 50,
-        },
+    /// <summary>
+    /// 夜游魂衣
+    /// </summary>
+    public static BaseAction Enshroud { get; } = new(ActionID.Enshroud)
+    {
+        OtherCheck = b => !SoulReaver && !Enshrouded && JobGauge.Shroud >= 50,
+    };
 
-        //团契
-        Communio = new(24398)
-        {
-            OtherCheck = b => Enshrouded && JobGauge.LemureShroud == 1,
-        },
+    /// <summary>
+    /// 团契
+    /// </summary>
+    public static BaseAction Communio { get; } = new(ActionID.Communio)
+    {
+        OtherCheck = b => Enshrouded && JobGauge.LemureShroud == 1,
+    };
 
-        //夜游魂切割
-        LemuresSlice = new(24399)
-        {
-            OtherCheck = b => Enshrouded && JobGauge.VoidShroud >= 2,
-        },
+    /// <summary>
+    /// 夜游魂切割
+    /// </summary>
+    public static BaseAction LemuresSlice { get; } = new(ActionID.LemuresSlice)
+    {
+        OtherCheck = b => Enshrouded && JobGauge.VoidShroud >= 2,
+    };
 
-        //夜游魂钐割
-        LemuresScythe = new(24400)
-        {
-            OtherCheck = LemuresSlice.OtherCheck,
-        },
+    /// <summary>
+    /// 夜游魂钐割
+    /// </summary>
+    public static BaseAction LemuresScythe { get; } = new(ActionID.LemuresScythe)
+    {
+        OtherCheck = LemuresSlice.OtherCheck,
+    };
 
-        //虚无收割
-        VoidReaping = new(24395)
-        {
-            OtherCheck = b => Enshrouded && JobGauge.LemureShroud > 1 && EnhancedVoidReaping,
-        },
+    /// <summary>
+    /// 虚无收割
+    /// </summary>
+    public static BaseAction VoidReaping { get; } = new(ActionID.VoidReaping)
+    {
+        OtherCheck = b => Enshrouded && JobGauge.LemureShroud > 1 && EnhancedVoidReaping,
+    };
 
-        //交错收割
-        CrossReaping = new(24396)
+    /// <summary>
+    /// 交错收割
+    /// </summary>
+    public static BaseAction CrossReaping { get; } = new(ActionID.CrossReaping)
+    {
+        OtherCheck = b =>
         {
-            OtherCheck = b =>
+            if (Enshrouded)
             {
-                if (Enshrouded)
+                if (JobGauge.LemureShroud > 1 && (EnhancedCrossReaping || !EnhancedVoidReaping))
                 {
-                    if (JobGauge.LemureShroud > 1 && (EnhancedCrossReaping || !EnhancedVoidReaping))
-                    {
-                        return true;
-                    }
-                    if (JobGauge.LemureShroud == 1 && !Communio.EnoughLevel && EnhancedCrossReaping)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                return false;
+                if (JobGauge.LemureShroud == 1 && !Communio.EnoughLevel && EnhancedCrossReaping)
+                {
+                    return true;
+                }
             }
-        },
+            return false;
+        }
+    };
 
-        //阴冷收割
-        GrimReaping = new(24397)
-        {
-            OtherCheck = b => Enshrouded,
-        },
+    /// <summary>
+    /// 阴冷收割
+    /// </summary>
+    public static BaseAction GrimReaping { get; } = new(ActionID.GrimReaping)
+    {
+        OtherCheck = b => Enshrouded,
+    };
     #endregion
     #region 杂项
-        //勾刃
-        Harpe = new(24386),
+    /// <summary>
+    /// 勾刃
+    /// </summary>
+    public static BaseAction Harpe { get; } = new(ActionID.Harpe);
+    /// <summary>
+    /// 播魂种
+    /// </summary>
+    public static BaseAction Soulsow { get; } = new(ActionID.Soulsow)
+    {
+        BuffsProvide = new[] { StatusID.Soulsow },
+        OtherCheck = b => !InCombat,
+    };
 
-        //播魂种
-        Soulsow = new(24387)
-        {
-            BuffsProvide = new[] { StatusID.Soulsow },
-            OtherCheck = b => !InCombat,
-        },
+    /// <summary>
+    /// 收获月
+    /// </summary>
+    public static BaseAction HarvestMoon { get; } = new(ActionID.HarvestMoon)
+    {
+        BuffsNeed = new[] { StatusID.Soulsow },
+        OtherCheck = b => InCombat,
+    };
 
-        //收获月
-        HarvestMoon = new(24388)
-        {
-            BuffsNeed = new[] { StatusID.Soulsow },
-            OtherCheck = b => InCombat,
-        },
-
-        //神秘纹 加盾
-        ArcaneCrest = new(24404, true)
-        {
-            OtherCheck = b => !Enshrouded && !SoulReaver
-        };
+    /// <summary>
+    /// 神秘纹 加盾
+    /// </summary>
+    public static BaseAction ArcaneCrest { get; } = new(ActionID.ArcaneCrest, true)
+    {
+        OtherCheck = b => !Enshrouded && !SoulReaver
+    };
     #endregion
 
 }

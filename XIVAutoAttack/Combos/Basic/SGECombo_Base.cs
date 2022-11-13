@@ -13,176 +13,237 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
     private sealed protected override BaseAction Raise => Egeiro;
 
-    public static readonly BaseAction
-        //复苏
-        Egeiro = new(24287),
+    /// <summary>
+    /// 复苏
+    /// </summary>
+    public static BaseAction Egeiro { get; } = new(ActionID.Egeiro);
 
-        //注药
-        Dosis = new(24283),
+    /// <summary>
+    /// 注药
+    /// </summary>
+    public static BaseAction Dosis { get; } = new(ActionID.Dosis);
 
-        //均衡注药
-        EukrasianDosis = new(24283, isEot: true)
+    /// <summary>
+    /// 均衡注药
+    /// </summary>
+    public static BaseAction EukrasianDosis { get; } = new(ActionID.EukrasianDosis, isEot: true)
+    {
+        TargetStatus = new StatusID[]
         {
-            TargetStatus = new StatusID[]
-            {
                 StatusID.EukrasianDosis,
                 StatusID.EukrasianDosis2,
                 StatusID.EukrasianDosis3
-            },
         },
+    };
 
-        //发炎
-        Phlegma = new(24289),
-        //发炎2
-        Phlegma2 = new(24307),
-        //发炎3
-        Phlegma3 = new(24313),
+    /// <summary>
+    /// 发炎
+    /// </summary>
+    public static BaseAction Phlegma { get; } = new(ActionID.Phlegma);
 
-        //诊断
-        Diagnosis = new(24284, true),
+    /// <summary>
+    /// 发炎2
+    /// </summary>
+    public static BaseAction Phlegma2 { get; } = new(ActionID.Phlegma2);
 
-        //心关
-        Kardia = new(24285, true)
+    /// <summary>
+    /// 发炎3
+    /// </summary>
+    public static BaseAction Phlegma3 { get; } = new(ActionID.Phlegma3);
+
+    /// <summary>
+    /// 诊断
+    /// </summary>
+    public static BaseAction Diagnosis { get; } = new(ActionID.Diagnosis, true);
+
+    /// <summary>
+    /// 心关
+    /// </summary>
+    public static BaseAction Kardia { get; } = new(ActionID.Kardia, true)
+    {
+        BuffsProvide = new StatusID[] { StatusID.Kardia },
+        ChoiceTarget = Targets =>
         {
-            BuffsProvide = new StatusID[] { StatusID.Kardia },
-            ChoiceTarget = Targets =>
+            var targets = TargetFilter.GetJobCategory(Targets, Role.防护);
+            targets = targets.Length == 0 ? Targets : targets;
+
+            if (targets.Length == 0) return null;
+
+            foreach (var tar in targets)
             {
-                var targets = TargetFilter.GetJobCategory(Targets, Role.防护);
-                targets = targets.Length == 0 ? Targets : targets;
-
-                if (targets.Length == 0) return null;
-
-                foreach (var tar in targets)
+                if (tar.TargetObject?.TargetObject?.ObjectId == tar.ObjectId)
                 {
-                    if (tar.TargetObject?.TargetObject?.ObjectId == tar.ObjectId)
-                    {
-                        return tar;
-                    }
+                    return tar;
                 }
+            }
 
-                return targets[0];
-            },
-            OtherCheck = b => !b.HaveStatus(true, StatusID.Kardion),
+            return targets[0];
         },
+        OtherCheck = b => !b.HaveStatus(true, StatusID.Kardion),
+    };
 
-        //预后
-        Prognosis = new(24286, true, shouldEndSpecial: true),
+    /// <summary>
+    /// 预后
+    /// </summary>
+    public static BaseAction Prognosis { get; } = new(ActionID.Prognosis, true, shouldEndSpecial: true);
 
-        //自生
-        Physis = new(24288, true),
+    /// <summary>
+    /// 自生
+    /// </summary>
+    public static BaseAction Physis { get; } = new(ActionID.Physis, true);
 
-        //自生2
-        Physis2 = new(24302, true),
+    /// <summary>
+    /// 自生2
+    /// </summary>
+    public static BaseAction Physis2 { get; } = new(ActionID.Physis2, true);
 
-        //均衡
-        Eukrasia = new(24290)
+    /// <summary>
+    /// 均衡
+    /// </summary>
+    public static BaseAction Eukrasia { get; } = new(ActionID.Eukrasia)
+    {
+        OtherCheck = b => !JobGauge.Eukrasia,
+    };
+
+    /// <summary>
+    /// 拯救
+    /// </summary>
+    public static BaseAction Soteria { get; } = new(ActionID.Soteria, true)
+    {
+        ChoiceTarget = Targets =>
         {
-            OtherCheck = b => !JobGauge.Eukrasia,
-        },
-
-        //拯救
-        Soteria = new(24294, true)
-        {
-            ChoiceTarget = Targets =>
+            foreach (var friend in Targets)
             {
-                foreach (var friend in Targets)
+                if (friend.HaveStatus(true, StatusID.Kardion))
                 {
-                    if (friend.HaveStatus(true, StatusID.Kardion))
-                    {
-                        return friend;
-                    }
+                    return friend;
                 }
-                return null;
-            },
-            OtherCheck = b => b.GetHealthRatio() < 0.7,
+            }
+            return null;
         },
+        OtherCheck = b => b.GetHealthRatio() < 0.7,
+    };
 
-        //神翼
-        Icarus = new(24295, shouldEndSpecial: true)
+    /// <summary>
+    /// 神翼
+    /// </summary>
+    public static BaseAction Icarus { get; } = new(ActionID.Icarus, shouldEndSpecial: true)
+    {
+        ChoiceTarget = TargetFilter.FindTargetForMoving,
+    };
+
+    /// <summary>
+    /// 灵橡清汁
+    /// </summary>
+    public static BaseAction Druochole { get; } = new(ActionID.Druochole, true)
+    {
+        OtherCheck = b => JobGauge.Addersgall > 0 && HealHelper.SingleHeal(b, 600, 0.9, 0.85),
+    };
+
+    /// <summary>
+    /// 失衡
+    /// </summary>
+    public static BaseAction Dyskrasia { get; } = new(ActionID.Dyskrasia);
+
+    /// <summary>
+    /// 坚角清汁
+    /// </summary>
+    public static BaseAction Kerachole { get; } = new(ActionID.Kerachole, true)
+    {
+        OtherCheck = b => JobGauge.Addersgall > 0,
+    };
+
+    /// <summary>
+    /// 寄生清汁
+    /// </summary>
+    public static BaseAction Ixochole { get; } = new(ActionID.Ixochole, true)
+    {
+        OtherCheck = b => JobGauge.Addersgall > 0,
+    };
+
+    /// <summary>
+    /// 活化
+    /// </summary>
+    public static BaseAction Zoe { get; } = new(ActionID.Zoe);
+
+    /// <summary>
+    /// 白牛清汁
+    /// </summary>
+    public static BaseAction Taurochole { get; } = new(ActionID.Taurochole, true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+        OtherCheck = b => JobGauge.Addersgall > 0,
+    };
+
+    /// <summary>
+    /// 箭毒
+    /// </summary>
+    public static BaseAction Toxikon { get; } = new(ActionID.Toxikon);
+
+    /// <summary>
+    /// 输血
+    /// </summary>
+    public static BaseAction Haima { get; } = new(ActionID.Haima, true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+
+    /// <summary>
+    /// 均衡诊断
+    /// </summary>
+    public static BaseAction EukrasianDiagnosis { get; } = new(ActionID.EukrasianDiagnosis, true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+
+    /// <summary>
+    /// 均衡预后
+    /// </summary>
+    public static BaseAction EukrasianPrognosis { get; } = new(ActionID.EukrasianPrognosis, true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+
+    /// <summary>
+    /// 根素
+    /// </summary>
+    public static BaseAction Rhizomata { get; } = new(ActionID.Rhizomata);
+
+    /// <summary>
+    /// 整体论
+    /// </summary>
+    public static BaseAction Holos { get; } = new(ActionID.Holos, true);
+
+    /// <summary>
+    /// 泛输血
+    /// </summary>
+    public static BaseAction Panhaima { get; } = new(ActionID.Panhaima, true);
+
+    /// <summary>
+    /// 混合
+    /// </summary>
+    public static BaseAction Krasis { get; } = new(ActionID.Krasis, true);
+
+    /// <summary>
+    /// 魂灵风息
+    /// </summary>
+    public static BaseAction Pneuma { get; } = new(ActionID.Pneuma);
+
+    /// <summary>
+    /// 消化
+    /// </summary>
+    public static BaseAction Pepsis { get; } = new(ActionID.Pepsis, true)
+    {
+        OtherCheck = b =>
         {
-            ChoiceTarget = TargetFilter.FindTargetForMoving,
-        },
-
-        //灵橡清汁
-        Druochole = new(24296, true)
-        {
-            OtherCheck = b => JobGauge.Addersgall > 0 && HealHelper.SingleHeal(b, 600, 0.9, 0.85),
-        },
-
-        //失衡
-        Dyskrasia = new(24297),
-
-        //坚角清汁
-        Kerachole = new(24298, true)
-        {
-            OtherCheck = b => JobGauge.Addersgall > 0,
-        },
-
-        //寄生清汁
-        Ixochole = new(24299, true)
-        {
-            OtherCheck = b => JobGauge.Addersgall > 0,
-        },
-
-        //活化
-        Zoe = new(24300),
-
-        //白牛清汁
-        Taurochole = new(24303, true)
-        {
-            ChoiceTarget = TargetFilter.FindAttackedTarget,
-            OtherCheck = b => JobGauge.Addersgall > 0,
-        },
-
-        //箭毒
-        Toxikon = new(24304),
-
-        //输血
-        Haima = new(24305, true)
-        {
-            ChoiceTarget = TargetFilter.FindAttackedTarget,
-        },
-
-        //均衡诊断
-        EukrasianDiagnosis = new(24291, true)
-        {
-            ChoiceTarget = TargetFilter.FindAttackedTarget,
-        },
-
-        //均衡预后
-        EukrasianPrognosis = new(24292, true)
-        {
-            ChoiceTarget = TargetFilter.FindAttackedTarget,
-        },
-
-        //根素
-        Rhizomata = new(24309),
-
-        //整体论
-        Holos = new(24310, true),
-
-        //泛输血
-        Panhaima = new(24311, true),
-
-        //混合
-        Krasis = new(24317, true),
-
-        //魂灵风息
-        Pneuma = new(24318),
-
-        //消化
-        Pepsis = new(24301, true)
-        {
-            OtherCheck = b =>
+            foreach (var chara in TargetUpdater.PartyMembers)
             {
-                foreach (var chara in TargetUpdater.PartyMembers)
-                {
-                    if (chara.HaveStatus(true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
-                    && b.WillStatusEndGCD(2, 0, true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
-                    && chara.GetHealthRatio() < 0.9) return true;
-                }
+                if (chara.HaveStatus(true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
+                && b.WillStatusEndGCD(2, 0, true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
+                && chara.GetHealthRatio() < 0.9) return true;
+            }
 
-                return false;
-            },
-        };
+            return false;
+        },
+    };
 }
