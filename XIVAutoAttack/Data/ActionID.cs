@@ -396,7 +396,324 @@ namespace XIVAutoAttack.Data
         /// </summary>
         RainofDeath = 117,
 
+        /// <summary>
+        /// 连珠箭
+        /// </summary>
+        QuickNock = 106,
 
+        /// <summary>
+        /// 影噬箭
+        /// </summary>
+        Shadowbite = 16494,
+
+        /// <summary>
+        /// 光阴神的礼赞凯歌
+        /// </summary>
+        WardensPaean = 3561,
+
+        /// <summary>
+        /// 大地神的抒情恋歌
+        /// </summary>
+        NaturesMinne = 7408,
+
+        /// <summary>
+        /// 侧风诱导箭
+        /// </summary>
+        Sidewinder = 3562,
+
+        /// <summary>
+        /// 绝峰箭
+        /// </summary>
+        ApexArrow = 16496,
+
+        /// <summary>
+        /// 行吟
+        /// </summary>
+        Troubadour = 7405,
+        #endregion
+
+        #region Dancer
+        /// <summary>
+        /// 瀑泻
+        /// </summary>
+        Cascade = 15989,
+
+        /// <summary>
+        /// 喷泉
+        /// </summary>
+        Fountain = 15990,
+
+        /// <summary>
+        /// 逆瀑泻
+        /// </summary>
+        ReverseCascade = 15991,
+
+        /// <summary>
+        /// 坠喷泉
+        /// </summary>
+        Fountainfall = 15992,
+
+        /// <summary>
+        /// 扇舞·序
+        /// </summary>
+        FanDance = 16007,
+
+        /// <summary>
+        /// 风车
+        /// </summary>
+        Windmill = 15993,
+
+        /// <summary>
+        /// 落刃雨
+        /// </summary>
+        Bladeshower = 15994,
+
+        /// <summary>
+        /// 升风车
+        /// </summary>
+        RisingWindmill = 15995,
+
+        /// <summary>
+        /// 落血雨
+        /// </summary>
+        Bloodshower = 15996,
+
+        /// <summary>
+        /// 扇舞·破
+        /// </summary>
+        FanDance2 = 16008,
+
+        /// <summary>
+        /// 扇舞·急
+        /// </summary>
+        FanDance3 = 16009,
+
+        /// <summary>
+        /// 扇舞·终
+        /// </summary>
+        FanDance4 = 25791,
+
+        /// <summary>
+        /// 剑舞
+        /// </summary>
+        SaberDance = 16005,
+
+        /// <summary>
+        /// 流星舞
+        /// </summary>
+        StarfallDance = 25792,
+
+        /// <summary>
+        /// 前冲步
+        /// </summary>
+        EnAvant = 16010,
+
+        /// <summary>
+        /// 蔷薇曲脚步
+        /// </summary>
+        Emboite = 15999,
+
+        /// <summary>
+        /// 小鸟交叠跳
+        /// </summary>
+        Entrechat = 16000,
+
+        /// <summary>
+        /// 绿叶小踢腿
+        /// </summary>
+        Jete = 16001,
+
+        /// <summary>
+        /// 金冠趾尖转
+        /// </summary>
+        Pirouette = 16002,
+
+        /// <summary>
+        /// 标准舞步
+        /// </summary>
+        StandardStep = 15997,
+
+        /// <summary>
+        /// 技巧舞步
+        /// </summary>
+        TechnicalStep = 15998,
+
+        /// <summary>
+        /// 防守之桑巴
+        /// </summary>
+        ShieldSamba = 16012,
+
+        /// <summary>
+        /// 治疗之华尔兹
+        /// </summary>
+        CuringWaltz = 16015,
+
+        /// <summary>
+        /// 闭式舞姿
+        /// </summary>
+        ClosedPosition = 16006,
+
+        /// <summary>
+        /// 进攻之探戈
+        /// </summary>
+        Devilment = 16011,
+
+        /// <summary>
+        /// 百花争艳
+        /// </summary>
+        Flourish = 16013,
+
+        /// <summary>
+        /// 即兴表演
+        /// </summary>
+        Improvisation = 16014,
+
+        /// <summary>
+        /// 提拉纳
+        /// </summary>
+        Tillana = 25790,
+        #endregion
+
+        #region Dragoon
+        /// <summary>
+        /// 精准刺
+        /// </summary>
+        TrueThrust = 75,
+
+        /// <summary>
+        /// 贯通刺
+        /// </summary>
+        VorpalThrust = 78,
+
+        /// <summary>
+        /// 龙眼雷电
+        /// </summary>
+        RaidenThrust = 16479,
+
+        /// <summary>
+        /// 直刺
+        /// </summary>
+        FullThrust = 84,
+
+        /// <summary>
+        /// 苍穹刺
+        /// </summary>
+        HeavensThrust = 25771,
+
+        /// <summary>
+        /// 开膛枪
+        /// </summary>
+        Disembowel = 87,
+
+        /// <summary>
+        /// 樱花怒放
+        /// </summary>
+        ChaosThrust = 88,
+
+        /// <summary>
+        /// 樱花怒放
+        /// </summary>
+        ChaoticSpring = 25772,
+
+        /// <summary>
+        /// 龙尾大回旋
+        /// </summary>
+        WheelingThrust = 3556,
+
+        /// <summary>
+        /// 龙牙龙爪
+        /// </summary>
+        FangandClaw = 3554,
+
+        /// <summary>
+        /// 贯穿尖
+        /// </summary>
+        PiercingTalon = 90,
+
+        /// <summary>
+        /// 死天枪
+        /// </summary>
+        DoomSpike = 86,
+
+        /// <summary>
+        /// 音速刺
+        /// </summary>
+        SonicThrust = 7397,
+
+        /// <summary>
+        /// 龙眼苍穹
+        /// </summary>
+        DraconianFury = 25770,
+
+        /// <summary>
+        /// 山境酷刑
+        /// </summary>
+        CoerthanTorment = 16477,
+
+        /// <summary>
+        /// 破碎冲
+        /// </summary>
+        SpineshatterDive = 95,
+
+        /// <summary>
+        /// 龙炎冲
+        /// </summary>
+        DragonfireDive = 96,
+
+        /// <summary>
+        /// 跳跃
+        /// </summary>
+        Jump = 92,
+
+        /// <summary>
+        /// 高跳
+        /// </summary>
+        HighJump = 16478,
+
+        /// <summary>
+        /// 幻象冲
+        /// </summary>
+        MirageDive = 7399,
+
+        /// <summary>
+        /// 武神枪
+        /// </summary>
+        Geirskogul = 3555,
+
+        /// <summary>
+        /// 死者之岸
+        /// </summary>
+        Nastrond = 7400,
+
+        /// <summary>
+        /// 坠星冲
+        /// </summary>
+        Stardiver = 16480,
+
+        /// <summary>
+        /// 天龙点睛
+        /// </summary>
+        WyrmwindThrust = 25773,
+
+        /// <summary>
+        /// 龙剑
+        /// </summary>
+        LifeSurge = 83,
+
+        /// <summary>
+        /// 猛枪
+        /// </summary>
+        LanceCharge = 85,
+
+        /// <summary>
+        /// 巨龙视线
+        /// </summary>
+        DragonSight = 7398,
+
+        /// <summary>
+        /// 战斗连祷
+        /// </summary>
+        BattleLitany = 3557,
         #endregion
         /// <summary>
         /// 崩拳
@@ -418,26 +735,13 @@ namespace XIVAutoAttack.Data
             /// 水遁之术
             /// </summary>
             Suiton = 2271,
-            /// <summary>
-            /// 龙牙龙爪
-            /// </summary>
-            FangandClaw = 3554,
+
             /// <summary>
             /// 强甲破点突
             /// </summary>
             ArmorCrush = 3563,
-            /// <summary>
-            /// 龙尾大回旋
-            /// </summary>
-            WheelingThrust = 3556,
-            /// <summary>
-            /// 樱花怒放
-            /// </summary>
-            ChaosThrust = 88,
-            /// <summary>
-            /// 樱花怒放
-            /// </summary>
-            ChaoticSpring = 25772,
+
+
             /// <summary>
             /// 展开战术
             /// </summary>
