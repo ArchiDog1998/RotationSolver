@@ -354,7 +354,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     {
         if (!Thunder.ShouldUse(out act)) return false;
 
-        if (IsLastSpell(true, Thunder)) return false;
+        if (IsLastSpell(true, Thunder) || Thunder.Target.IsBoss()) return false;
 
         //在冰
         if (JobGauge.InUmbralIce)
