@@ -157,7 +157,7 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
         },
 
         //展开战术
-        DeploymentTactics = new(ActionIDs.DeploymentTactics, true)
+        DeploymentTactics = new(ActionID.DeploymentTactics, true)
         {
             ChoiceTarget = friends =>
             {

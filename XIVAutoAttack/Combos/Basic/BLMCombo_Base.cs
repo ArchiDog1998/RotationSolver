@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -19,129 +20,203 @@ namespace XIVAutoAttack.Combos.Basic
         {
             internal override uint MPNeed => HasThunder ? 0 : base.MPNeed;
 
-            internal ThunderAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
+            internal ThunderAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
                 : base(actionID, isFriendly, shouldEndSpecial, isDot)
             {
             }
         }
-        public static readonly BaseAction
-            //雷1
-            Thunder = new ThunderAction(144u, isDot: true),
-            Thunder3 = new ThunderAction(153u, isDot: true),
 
-            //雷2
-            Thunder2 = new ThunderAction(7447u, isDot: true)
+        public class ElementAction : BaseAction
+        {
+            internal ElementAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false) : base(actionID, isFriendly, shouldEndSpecial, isEot)
             {
-                TargetStatus = Thunder.TargetStatus,
-            },
+            }
 
-            //星灵移位
-            Transpose = new(149u) { OtherCheck = b => JobGauge.InUmbralIce || JobGauge.InAstralFire },
-
-            //灵极魂
-            UmbralSoul = new(16506u) { OtherCheck = b => JobGauge.InUmbralIce },
-
-            //魔罩
-            Manaward = new(157u),
-
-            //魔泉
-            Manafont = new(158u),
-
-            //激情咏唱
-            Sharpcast = new(3574u)
+            public override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
             {
-                BuffsProvide = new[] { StatusID.Sharpcast },
-                OtherCheck = b => HaveHostileInRange,
-            },
-
-            //三连咏唱
-            Triplecast = new(7421u)
-            {
-                BuffsProvide = Swiftcast.BuffsProvide,
-            },
-
-            //黑魔纹
-            Leylines = new(3573u, shouldEndSpecial: true)
-            {
-                BuffsProvide = new[] { StatusID.LeyLines, },
-            },
-
-            //魔纹步
-            BetweenTheLines = new(7419u, shouldEndSpecial: true)
-            {
-                BuffsNeed = Leylines.BuffsProvide,
-            },
-
-            //以太步
-            AetherialManipulation = new(155)
-            {
-                ChoiceTarget = TargetFilter.FindTargetForMoving,
-            },
-
-            //详述
-            Amplifier = new(25796u) { OtherCheck = b => JobGauge.EnochianTimer > 10000 },
-
-            //核爆
-            Flare = new(162u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 && JobGauge.ElementTimeRemaining > 4000 },
-
-            //绝望
-            Despair = new(16505u) { OtherCheck = b => JobGauge.AstralFireStacks == 3 },
-
-            //秽浊
-            Foul = new(7422u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 },
-
-            //异言
-            Xenoglossy = new(16507u) { OtherCheck = b => JobGauge.PolyglotStacks != 0 },
-
-            //崩溃
-            Scathe = new(156u),
-
-            //悖论
-            Paradox = new(25797u)
-            {
-                OtherCheck = b => JobGauge.IsParadoxActive,
-            },
-
-            //火1
-            Fire = new(141u, true),
-
-            //火2
-            Fire2 = new(147u, true),
-
-            //火3
-            Fire3 = new(152u, true),
-
-            //火4
-            Fire4 = new(3577u, true)
-            {
-                OtherCheck = b => JobGauge.InAstralFire,
-            },
-
-
-            //冰1
-            Blizzard = new(142u, false),
-
-            //冰2
-            Blizzard2 = new(25793u, false),
-
-            //冰3
-            Blizzard3 = new(154u, false),
-
-            //冰4
-            Blizzard4 = new(3576u, false)
-            {
-                OtherCheck = b =>
+                if (CastTime - 0.5f > JobGauge.ElementTimeRemaining / 1000f)
                 {
-                    if (IsLastSpell(true, Blizzard4)) return false;
-
-                    if (JobGauge.UmbralHearts == 3) return false;
-
-                    return JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2500 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1);
+                    act = null;
+                    return false;
                 }
-            },
+                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
+            }
+        }
 
-            //冻结
-            Freeze = new(159u, false) { OtherCheck = b => JobGauge.InUmbralIce && JobGauge.ElementTimeRemaining > 2800 * (JobGauge.UmbralIceStacks == 3 ? 0.5 : 1) };
 
+        /// <summary>
+        /// 闪雷
+        /// </summary>
+        public static BaseAction Thunder { get; } = new ThunderAction(ActionID.Thunder, isDot: true);
+
+        /// <summary>
+        /// 暴雷
+        /// </summary>
+        public static BaseAction Thunder3 { get; } = new ThunderAction(ActionID.Thunder3, isDot: true);
+
+        /// <summary>
+        /// 震雷
+        /// </summary>
+        public static BaseAction Thunder2 { get; } = new ThunderAction(ActionID.Thunder2, isDot: true);
+
+        /// <summary>
+        /// 星灵移位
+        /// </summary>
+        public static BaseAction Transpose { get; } = new(ActionID.Transpose) { OtherCheck = b => JobGauge.InUmbralIce || JobGauge.InAstralFire };
+
+        /// <summary>
+        /// 灵极魂
+        /// </summary>
+        public static BaseAction UmbralSoul { get; } = new(ActionID.UmbralSoul) { OtherCheck = b => JobGauge.InUmbralIce };
+
+        /// <summary>
+        /// 魔罩
+        /// </summary>
+        public static BaseAction Manaward { get; } = new(ActionID.Manaward, true);
+
+        /// <summary>
+        /// 魔泉
+        /// </summary>
+        public static BaseAction Manafont { get; } = new(ActionID.Manafont);
+
+        /// <summary>
+        /// 激情咏唱
+        /// </summary>
+        public static BaseAction Sharpcast { get; } = new(ActionID.Sharpcast)
+        {
+            BuffsProvide = new[] { StatusID.Sharpcast },
+            OtherCheck = b => HaveHostileInRange,
+        };
+
+        /// <summary>
+        /// 三连咏唱
+        /// </summary>
+        public static BaseAction Triplecast { get; } = new(ActionID.Triplecast)
+        {
+            BuffsProvide = Swiftcast.BuffsProvide,
+        };
+
+        /// <summary>
+        /// 黑魔纹
+        /// </summary>
+        public static BaseAction Leylines { get; } = new(ActionID.Leylines, true, shouldEndSpecial: true)
+        {
+            BuffsProvide = new[] { StatusID.LeyLines, },
+        };
+
+        /// <summary>
+        /// 魔纹步
+        /// </summary>
+        public static BaseAction BetweenTheLines { get; } = new(ActionID.BetweenTheLines, true, shouldEndSpecial: true)
+        {
+            BuffsNeed = Leylines.BuffsProvide,
+        };
+
+        /// <summary>
+        /// 以太步
+        /// </summary>
+        public static BaseAction AetherialManipulation { get; } = new(ActionID.AetherialManipulation, true)
+        {
+            ChoiceTarget = TargetFilter.FindTargetForMoving,
+        };
+
+        /// <summary>
+        /// 详述
+        /// </summary>
+        public static BaseAction Amplifier { get; } = new(ActionID.Amplifier) { OtherCheck = b => JobGauge.EnochianTimer > 10000 && JobGauge.PolyglotStacks < 2 };
+
+        /// <summary>
+        /// 核爆
+        /// </summary>
+        public static BaseAction Flare { get; } = new ElementAction(ActionID.Flare) { OtherCheck = b => JobGauge.InAstralFire };
+
+        /// <summary>
+        /// 绝望
+        /// </summary>
+        public static BaseAction Despair { get; } = new ElementAction(ActionID.Despair) { OtherCheck = b => JobGauge.InAstralFire };
+
+        /// <summary>
+        /// 秽浊
+        /// </summary>
+        public static BaseAction Foul { get; } = new(ActionID.Foul) { OtherCheck = b => JobGauge.PolyglotStacks != 0 };
+
+        /// <summary>
+        /// 异言
+        /// </summary>
+        public static BaseAction Xenoglossy { get; } = new(ActionID.Xenoglossy) { OtherCheck = b => JobGauge.PolyglotStacks != 0 };
+
+        /// <summary>
+        /// 崩溃
+        /// </summary>
+        public static BaseAction Scathe { get; } = new(ActionID.Scathe);
+
+        /// <summary>
+        /// 悖论
+        /// </summary>
+        public static BaseAction Paradox { get; } = new(ActionID.Paradox)
+        {
+            OtherCheck = b => JobGauge.IsParadoxActive,
+        };
+
+        /// <summary>
+        /// 火1
+        /// </summary>
+        public static BaseAction Fire { get; } = new ElementAction(ActionID.Fire);
+
+        /// <summary>
+        /// 火2
+        /// </summary>
+        public static BaseAction Fire2 { get; } = new ElementAction(ActionID.Fire2);
+
+        /// <summary>
+        /// 火3
+        /// </summary>
+        public static BaseAction Fire3 { get; } = new ElementAction(ActionID.Fire3);
+
+        /// <summary>
+        /// 火4
+        /// </summary>
+        public static BaseAction Fire4 { get; } = new ElementAction(ActionID.Fire4)
+        {
+            OtherCheck = b => JobGauge.InAstralFire,
+        };
+
+        /// <summary>
+        /// 冰1
+        /// </summary>
+        public static BaseAction Blizzard { get; } = new ElementAction(ActionID.Blizzard);
+
+        /// <summary>
+        /// 冰2
+        /// </summary>
+        public static BaseAction Blizzard2 { get; } = new ElementAction(ActionID.Blizzard2);
+
+        /// <summary>
+        /// 冰3
+        /// </summary>
+        public static BaseAction Blizzard3 { get; } = new ElementAction(ActionID.Blizzard3);
+
+        /// <summary>
+        /// 冰4
+        /// </summary>
+        public static BaseAction Blizzard4 { get; } = new ElementAction(ActionID.Blizzard4)
+        {
+            OtherCheck = b =>
+            {
+                if (IsLastSpell(true, Blizzard4)) return false;
+
+                if (JobGauge.UmbralHearts == 3) return false;
+
+                return JobGauge.InUmbralIce;
+            }
+        };
+
+        /// <summary>
+        /// 冻结
+        /// </summary>
+        public static BaseAction Freeze { get; } = new ElementAction(ActionID.Freeze)
+        {
+            OtherCheck = b => JobGauge.InUmbralIce,
+        };
     }
 }

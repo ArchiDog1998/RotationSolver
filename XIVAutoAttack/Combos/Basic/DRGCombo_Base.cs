@@ -30,19 +30,19 @@ internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> wher
         Disembowel = new(87) { OtherIDsCombo = new[] { 16479u } },
 
         //Ó£»¨Å­·Å
-        ChaosThrust = new(ActionIDs.ChaosThrust),
+        ChaosThrust = new(ActionID.ChaosThrust),
 
         //Ó£»¨Å­·Å
         ChaoticSpring = new(25772),
 
         //ÁúÑÀÁú×¦
-        FangandClaw = new(ActionIDs.FangandClaw)
+        FangandClaw = new(ActionID.FangandClaw)
         {
             BuffsNeed = new StatusID[] { StatusID.SharperFangandClaw },
         },
 
         //ÁúÎ²´ó»ØÐý
-        WheelingThrust = new(ActionIDs.WheelingThrust)
+        WheelingThrust = new(ActionID.WheelingThrust)
         {
             BuffsNeed = new StatusID[] { StatusID.EnhancedWheelingThrust },
         },

@@ -39,7 +39,7 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
         Fuga = new(7483),
 
         //月光
-        Gekko = new(ActionIDs.Gekko),
+        Gekko = new(ActionID.Gekko),
 
         //彼岸花
         Higanbana = new(7489, isEot: true)
@@ -64,7 +64,7 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
         Mangetsu = new(7484),
 
         //花车
-        Kasha = new(ActionIDs.Kasha),
+        Kasha = new(ActionID.Kasha),
 
         //樱花
         Oka = new(7485),

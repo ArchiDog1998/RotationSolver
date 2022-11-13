@@ -16,20 +16,20 @@ namespace XIVAutoAttack.Helpers
         public record LocationInfo(EnemyLocation Loc, byte[] Tags);
         public static readonly SortedList<uint, LocationInfo> ActionLocations = new SortedList<uint, LocationInfo>()
         {
-            {ActionIDs.FangandClaw, new( EnemyLocation.Side, new byte[] { 13 })},
-            {ActionIDs.WheelingThrust, new(EnemyLocation.Back, new byte[] { 10 }) },
-            {ActionIDs.ChaosThrust, new(EnemyLocation.Back, new byte[] { 66, 28 }) }, //需要60级同步
-            {ActionIDs.ChaoticSpring, new(EnemyLocation.Back, new byte[] { 66, 28 }) },
-            {ActionIDs.Demolish, new(EnemyLocation.Back, new byte[] { 49 }) },
-            {ActionIDs.SnapPunch, new(EnemyLocation.Side, new byte[] { 19 }) },
-            {ActionIDs.TrickAttack, new(EnemyLocation.Back, new byte[] { 25 }) },
-            {ActionIDs.AeolianEdge,new( EnemyLocation.Back, new byte[] { 30, 68 }) },
-            {ActionIDs.ArmorCrush, new(EnemyLocation.Side, new byte[] { 30, 66 }) },
-            {ActionIDs.Suiton, new(EnemyLocation.Back, new byte[] { }) },
-            {ActionIDs.Gibbet, new(EnemyLocation.Side , new byte[] { 11 })},
-            {ActionIDs.Gallows, new(EnemyLocation.Back, new byte[] { 11 }) },
-            {ActionIDs.Gekko, new(EnemyLocation.Back , new byte[] { 68, 29 })},
-            {ActionIDs.Kasha, new(EnemyLocation.Side, new byte[] { 29, 68 }) },
+            {ActionID.FangandClaw, new( EnemyLocation.Side, new byte[] { 13 })},
+            {ActionID.WheelingThrust, new(EnemyLocation.Back, new byte[] { 10 }) },
+            {ActionID.ChaosThrust, new(EnemyLocation.Back, new byte[] { 66, 28 }) }, //需要60级同步
+            {ActionID.ChaoticSpring, new(EnemyLocation.Back, new byte[] { 66, 28 }) },
+            {ActionID.Demolish, new(EnemyLocation.Back, new byte[] { 49 }) },
+            {ActionID.SnapPunch, new(EnemyLocation.Side, new byte[] { 19 }) },
+            {ActionID.TrickAttack, new(EnemyLocation.Back, new byte[] { 25 }) },
+            {ActionID.AeolianEdge,new( EnemyLocation.Back, new byte[] { 30, 68 }) },
+            {ActionID.ArmorCrush, new(EnemyLocation.Side, new byte[] { 30, 66 }) },
+            {ActionID.Suiton, new(EnemyLocation.Back, new byte[] { }) },
+            {ActionID.Gibbet, new(EnemyLocation.Side , new byte[] { 11 })},
+            {ActionID.Gallows, new(EnemyLocation.Back, new byte[] { 11 }) },
+            {ActionID.Gekko, new(EnemyLocation.Back , new byte[] { 68, 29 })},
+            {ActionID.Kasha, new(EnemyLocation.Side, new byte[] { 29, 68 }) },
         };
 
 

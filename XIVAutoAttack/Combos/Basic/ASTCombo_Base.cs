@@ -15,154 +15,216 @@ internal abstract class ASTCombo_Base<TCmd> : JobGaugeCombo<ASTGauge, TCmd> wher
 
     private sealed protected override BaseAction Raise => Ascend;
 
+    /// <summary>
+    /// 生辰
+    /// </summary>
+    public static BaseAction Ascend { get; } = new(ActionID.Ascend, true);
 
-    public static readonly BaseAction
-        //生辰
-        Ascend = new(3603, true),
+    /// <summary>
+    /// 凶星
+    /// </summary>
+    public static BaseAction Malefic { get; } = new(ActionID.Malefic);
 
-        //凶星
-        Malefic = new(3596),
-
-        //烧灼
-        Combust = new(3599, isEot: true)
+    /// <summary>
+    /// 烧灼
+    /// </summary>
+    public static BaseAction Combust { get; } = new(ActionID.Combust, isEot: true)
+    {
+        TargetStatus = new StatusID[]
         {
-            TargetStatus = new StatusID[]
-            {
-                StatusID.Combust,
-                StatusID.Combust2,
-                StatusID.Combust3,
-                StatusID.Combust4,
-            }
+            StatusID.Combust,
+            StatusID.Combust2,
+            StatusID.Combust3,
+            StatusID.Combust4,
+        }
+    };
+
+    /// <summary>
+    /// 重力    
+    /// </summary>
+    public static BaseAction Gravity { get; } = new(ActionID.Gravity);
+
+    /// <summary>
+    /// 吉星
+    /// </summary>
+    public static BaseAction Benefic { get; } = new(ActionID.Benefic, true);
+
+    /// <summary>
+    /// 福星
+    /// </summary>
+    public static BaseAction Benefic2 { get; } = new(ActionID.Benefic2, true);
+
+    /// <summary>
+    /// 吉星相位
+    /// </summary>
+    public static BaseAction AspectedBenefic { get; } = new(ActionID.AspectedBenefic, true, isEot: true)
+    {
+        TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
+    };
+
+    /// <summary>
+    /// 先天禀赋
+    /// </summary>
+    public static BaseAction EssentialDignity { get; } = new(ActionID.EssentialDignity, true);
+
+    /// <summary>
+    /// 星位合图
+    /// </summary>
+    public static BaseAction Synastry { get; } = new(ActionID.Synastry, true);
+
+    /// <summary>
+    /// 天星交错
+    /// </summary>
+    public static BaseAction CelestialIntersection { get; } = new(ActionID.CelestialIntersection, true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+
+        TargetStatus = new StatusID[] { StatusID.Intersection },
+    };
+
+    /// <summary>
+    /// 擢升
+    /// </summary>
+    public static BaseAction Exaltation { get; } = new(ActionID.Exaltation, true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+
+    /// <summary>
+    /// 阳星
+    /// </summary>
+    public static BaseAction Helios { get; } = new(ActionID.Helios, true);
+
+    /// <summary>
+    /// 阳星相位
+    /// </summary>
+    public static BaseAction AspectedHelios { get; } = new(ActionID.AspectedHelios, true, isEot: true)
+    {
+        BuffsProvide = new StatusID[] { StatusID.AspectedHelios },
+    };
+
+    /// <summary>
+    /// 天星冲日
+    /// </summary>
+    public static BaseAction CelestialOpposition { get; } = new(ActionID.CelestialOpposition, true);
+
+    /// <summary>
+    /// 地星
+    /// </summary>
+    public static BaseAction EarthlyStar { get; } = new(ActionID.EarthlyStar, true);
+
+    /// <summary>
+    /// 命运之轮 减伤，手动放。
+    /// </summary>
+    public static BaseAction CollectiveUnconscious { get; } = new(ActionID.CollectiveUnconscious, true);
+
+    /// <summary>
+    /// 天宫图
+    /// </summary>
+    public static BaseAction Horoscope { get; } = new(ActionID.Horoscope, true);
+
+    /// <summary>
+    /// 光速
+    /// </summary>
+    public static BaseAction Lightspeed { get; } = new(ActionID.Lightspeed);
+
+    /// <summary>
+    /// 中间学派
+    /// </summary>
+    public static BaseAction NeutralSect { get; } = new(ActionID.NeutralSect);
+
+    /// <summary>
+    /// 大宇宙
+    /// </summary>
+    public static BaseAction Macrocosmos { get; } = new(ActionID.Macrocosmos);
+
+    /// <summary>
+    /// 星力
+    /// </summary>
+    public static BaseAction Astrodyne { get; } = new(ActionID.Astrodyne)
+    {
+        OtherCheck = b =>
+        {
+            if (JobGauge.Seals.Length != 3) return false;
+            if (JobGauge.Seals.Contains(SealType.NONE)) return false;
+            return true;
         },
+    };
 
-        //重力    
-        Gravity = new(3615),
+    /// <summary>
+    /// 占卜
+    /// </summary>
+    public static BaseAction Divination { get; } = new(ActionID.Divination, true);
 
-        //吉星
-        Benefic = new(3594, true),
+    /// <summary>
+    /// 抽卡
+    /// </summary>
+    public static BaseAction Draw { get; } = new(ActionID.Draw);
 
-        //福星
-        Benefic2 = new(3610, true),
+    /// <summary>
+    /// 重抽
+    /// </summary>
+    public static BaseAction Redraw { get; } = new(ActionID.Redraw)
+    {
+        BuffsNeed = new[] { StatusID.ClarifyingDraw },
+    };
 
-        //吉星相位
-        AspectedBenefic = new(3595, true, isEot: true)
-        {
-            TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
-        },
+    /// <summary>
+    /// 小奥秘卡
+    /// </summary>
+    public static BaseAction MinorArcana { get; } = new(ActionID.MinorArcana);
 
-        //先天禀赋
-        EssentialDignity = new(3614, true),
+    /// <summary>
+    /// 出王冠卡
+    /// </summary>
+    public static BaseAction CrownPlay { get; } = new(ActionID.CrownPlay);
 
-        //星位合图
-        Synastry = new(3612, true),
+    /// <summary>
+    /// 太阳神之衡
+    /// </summary>
+    public static BaseAction Balance { get; } = new(ActionID.Balance)
+    {
+        ChoiceTarget = TargetFilter.ASTMeleeTarget,
+    };
 
-        //天星交错
-        CelestialIntersection = new(16556, true)
-        {
-            ChoiceTarget = TargetFilter.FindAttackedTarget,
+    /// <summary>
+    /// 放浪神之箭
+    /// </summary>
+    public static BaseAction Arrow { get; } = new(ActionID.Arrow)
+    {
+        ChoiceTarget = TargetFilter.ASTMeleeTarget,
+    };
 
-            TargetStatus = new StatusID[] { StatusID.Intersection },
-        },
+    /// <summary>
+    /// 战争神之枪
+    /// </summary>
+    public static BaseAction Spear { get; } = new(ActionID.Spear)
+    {
+        ChoiceTarget = TargetFilter.ASTMeleeTarget,
+    };
 
-        //擢升
-        Exaltation = new(25873, true)
-        {
-            ChoiceTarget = TargetFilter.FindAttackedTarget,
-        },
+    /// <summary>
+    /// 世界树之干
+    /// </summary>
+    public static BaseAction Bole { get; } = new(ActionID.Bole)
+    {
+        ChoiceTarget = TargetFilter.ASTRangeTarget,
+    };
 
-        //阳星
-        Helios = new(3600, true),
+    /// <summary>
+    /// 河流神之瓶
+    /// </summary>
+    public static BaseAction Ewer { get; } = new(ActionID.Ewer)
+    {
+        ChoiceTarget = TargetFilter.ASTRangeTarget,
+    };
 
-        //阳星相位
-        AspectedHelios = new(3601, true, isEot: true)
-        {
-            BuffsProvide = new StatusID[] { StatusID.AspectedHelios },
-        },
-
-        //天星冲日
-        CelestialOpposition = new(16553, true),
-
-        //地星
-        EarthlyStar = new(7439, true),
-
-        //命运之轮 减伤，手动放。
-        CollectiveUnconscious = new(3613, true),
-
-        //天宫图
-        Horoscope = new(16557, true),
-
-        //光速
-        Lightspeed = new(3606),
-
-        //中间学派
-        NeutralSect = new(16559),
-
-        //大宇宙
-        Macrocosmos = new(25874),
-
-        //星力
-        Astrodyne = new(25870)
-        {
-            OtherCheck = b =>
-            {
-                if (JobGauge.Seals.Length != 3) return false;
-                if (JobGauge.Seals.Contains(SealType.NONE)) return false;
-                return true;
-            },
-        },
-
-        //占卜
-        Divination = new(16552, true),
-
-        //抽卡
-        Draw = new(3590),
-
-        //重抽
-        Redraw = new(3593)
-        {
-            BuffsNeed = new[] { StatusID.ClarifyingDraw },
-        },
-
-        //小奥秘卡
-        MinorArcana = new(7443),
-
-        //出王冠卡
-        CrownPlay = new(25869),
-
-        //太阳神之衡
-        Balance = new(4401)
-        {
-            ChoiceTarget = TargetFilter.ASTMeleeTarget,
-        },
-
-        //放浪神之箭
-        Arrow = new(4402)
-        {
-            ChoiceTarget = TargetFilter.ASTMeleeTarget,
-        },
-
-        //战争神之枪
-        Spear = new(4403)
-        {
-            ChoiceTarget = TargetFilter.ASTMeleeTarget,
-        },
-
-        //世界树之干
-        Bole = new(4404)
-        {
-            ChoiceTarget = TargetFilter.ASTRangeTarget,
-        },
-
-        //河流神之瓶
-        Ewer = new(4405)
-        {
-            ChoiceTarget = TargetFilter.ASTRangeTarget,
-        },
-
-        //建筑神之塔
-        Spire = new(4406)
-        {
-            ChoiceTarget = TargetFilter.ASTRangeTarget,
-        };
+    /// <summary>
+    /// 建筑神之塔
+    /// </summary>
+    public static BaseAction Spire { get; } = new(ActionID.Spire)
+    {
+        ChoiceTarget = TargetFilter.ASTRangeTarget,
+    };
 
 }

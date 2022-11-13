@@ -120,7 +120,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             }
 
             //防止友方类技能连续使用
-            if(_isFriendly && _isEot)
+            if(_isEot)
             {
                 if (IActionHelper.IsLastAction(true, this)) return false;
             }

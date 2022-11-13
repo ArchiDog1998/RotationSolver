@@ -41,7 +41,7 @@ internal abstract class MNKCombo_Base<TCmd> : JobGaugeCombo<MNKGauge, TCmd> wher
         },
 
         //±¿»≠
-        SnapPunch = new(ActionIDs.SnapPunch),
+        SnapPunch = new(ActionID.SnapPunch),
 
         //µÿ¡“æ¢ aoe
         Rockbreaker = new(70),

@@ -26,7 +26,7 @@ namespace XIVAutoAttack.Combos.Basic
                 }
             }
 
-            internal BLUAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
+            internal BLUAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false)
                 : base(actionID, isFriendly, shouldEndSpecial)
             {
             }
@@ -42,9 +42,8 @@ namespace XIVAutoAttack.Combos.Basic
             }
         }
 
-        public static readonly BLUAction
-            //水炮
-            WaterCannon = new(11385);
+        //水炮
+        public static BLUAction WaterCannon { get; } = new(ActionID.WaterCannon);
 
 
         protected static bool AllOnSlot(params BLUAction[] actions) => actions.All(a => a.OnSlot);

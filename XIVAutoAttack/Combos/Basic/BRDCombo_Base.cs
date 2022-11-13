@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -12,72 +13,78 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class BRDCombo_Base<TCmd> : JobGaugeCombo<BRDGauge, TCmd> where TCmd : Enum
 {
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Bard, ClassJobID.Archer };
+    public sealed override ClassJobID[] JobIDs => new [] { ClassJobID.Bard, ClassJobID.Archer };
 
     public static readonly BaseAction
         //强力射击
-        HeavyShoot = new(97) { BuffsProvide = new[] { StatusID.StraightShotReady } },
+        HeavyShoot = new(ActionID.HeavyShoot) { BuffsProvide = new[] { StatusID.StraightShotReady } },
 
         //直线射击
-        StraitShoot = new(98) { BuffsNeed = new[] { StatusID.StraightShotReady } },
+        StraitShoot = new(ActionID.StraitShoot) { BuffsNeed = new[] { StatusID.StraightShotReady } },
 
-        //毒药箭
-        VenomousBite = new(100, isEot: true) { TargetStatus = new[] { StatusID.VenomousBite, StatusID.CausticBite } },
+        //毒咬箭
+        VenomousBite = new(ActionID.VenomousBite, isEot: true) 
+        { 
+            TargetStatus = new[] { StatusID.VenomousBite, StatusID.CausticBite } 
+        },
 
         //风蚀箭
-        Windbite = new(113, isEot: true) { TargetStatus = new[] { StatusID.Windbite, StatusID.Stormbite } },
+        Windbite = new(ActionID.Windbite, isEot: true) 
+        { 
+            TargetStatus = new[] { StatusID.Windbite, StatusID.Stormbite } 
+        },
 
         //伶牙俐齿
-        IronJaws = new(3560, isEot: true)
+        IronJaws = new(ActionID.IronJaws, isEot: true)
         {
             OtherCheck = b =>
             {
-                if (IsLastWeaponSkill(false, IronJaws)) return false;
+                return b.HaveStatus(true, VenomousBite.TargetStatus) 
+                    & b.HaveStatus(true, Windbite.TargetStatus)
 
-                if (Player.HaveStatus(true, StatusID.RagingStrikes) &&
-                    Player.WillStatusEndGCD(1, 1, true, StatusID.RagingStrikes)) return true;
-
-                return b.HaveStatus(true, StatusID.VenomousBite, StatusID.CausticBite) & b.HaveStatus(true, StatusID.Windbite, StatusID.Stormbite)
-                & (b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, StatusID.VenomousBite, StatusID.CausticBite)
-                | b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, StatusID.Windbite, StatusID.Stormbite));
+                & (b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, VenomousBite.TargetStatus)
+                | b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, Windbite.TargetStatus));
             },
         },
 
+        //放浪神的小步舞曲
+        WanderersMinuet = new(ActionID.WanderersMinuet),
+
         //贤者的叙事谣
-        MagesBallad = new(114),
+        MagesBallad = new(ActionID.MagesBallad),
 
         //军神的赞美歌
-        ArmysPaeon = new(116),
-
-        //放浪神的小步舞曲
-        WanderersMinuet = new(3559),
+        ArmysPaeon = new(ActionID.ArmysPaeon),
 
         //战斗之声
-        BattleVoice = new(118, true),
+        BattleVoice = new(ActionID.BattleVoice, true),
 
         //猛者强击
-        RagingStrikes = new(101),
+        RagingStrikes = new(ActionID.RagingStrikes, true),
 
         //光明神的最终乐章
-        RadiantFinale = new(25785, true),
+        RadiantFinale = new(ActionID.RadiantFinale, true)
+        {
+            OtherCheck = b => JobGauge.Coda.Any(s => s != Song.NONE),
+        },
 
         //纷乱箭
-        Barrage = new(107),
+        Barrage = new(ActionID.Barrage),
 
         //九天连箭
-        EmpyrealArrow = new(3558),
+        EmpyrealArrow = new(ActionID.EmpyrealArrow),
 
         //完美音调
-        PitchPerfect = new(7404)
+        PitchPerfect = new(ActionID.PitchPerfect)
         {
             OtherCheck = b => JobGauge.Song == Song.WANDERER,
         },
 
         //失血箭
-        Bloodletter = new(110),
+        Bloodletter = new(ActionID.Bloodletter),
 
         //死亡箭雨
-        RainofDeath = new(117),
+        RainofDeath = new(ActionID.RainofDeath),
 
         //连珠箭
         QuickNock = new(106) { BuffsProvide = new[] { StatusID.ShadowbiteReady } },

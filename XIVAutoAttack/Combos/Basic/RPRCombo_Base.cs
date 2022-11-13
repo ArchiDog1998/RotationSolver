@@ -91,13 +91,13 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
     #endregion
     #region 妖异之镰状态
         //绞决
-        Gibbet = new PRPAction(ActionIDs.Gibbet)
+        Gibbet = new PRPAction(ActionID.Gibbet)
         {
             OtherCheck = b => SoulReaver && EnhancedGibbet,
         },
 
         //缢杀
-        Gallows = new PRPAction(ActionIDs.Gallows)
+        Gallows = new PRPAction(ActionID.Gallows)
         {
             OtherCheck = b => SoulReaver && (EnhancedGallows || !EnhancedGibbet),
         },

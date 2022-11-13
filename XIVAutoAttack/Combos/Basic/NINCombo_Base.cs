@@ -43,13 +43,13 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
         },
 
         //攻其不备
-        TrickAttack = new(ActionIDs.TrickAttack)
+        TrickAttack = new(ActionID.TrickAttack)
         {
             BuffsNeed = new StatusID[] { StatusID.Suiton, StatusID.Hidden },
         },
 
         //旋风刃
-        AeolianEdge = new(ActionIDs.AeolianEdge),
+        AeolianEdge = new(ActionID.AeolianEdge),
 
         //血雨飞花
         DeathBlossom = new(2254),
@@ -93,7 +93,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
         HakkeMujinsatsu = new(16488),
 
         //强甲破点突
-        ArmorCrush = new(ActionIDs.ArmorCrush)
+        ArmorCrush = new(ActionID.ArmorCrush)
         {
             OtherCheck = b => RemainAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
         },
@@ -182,7 +182,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
         },
 
         //水遁之术
-        Suiton = new(ActionIDs.Suiton, Ten, Chi, Jin)
+        Suiton = new(ActionID.Suiton, Ten, Chi, Jin)
         {
             BuffsProvide = new[] { StatusID.Suiton },
             OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),
