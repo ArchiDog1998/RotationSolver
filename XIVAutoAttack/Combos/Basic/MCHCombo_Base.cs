@@ -3,6 +3,7 @@ using System;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
@@ -10,7 +11,9 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Machinist };
 
-    //分裂弹
+    /// <summary>
+    /// 分裂弹
+    /// </summary>
     public static BaseAction SplitShot { get; } = new(ActionID.SplitShot);
 
     /// <summary>
@@ -18,7 +21,7 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
     /// </summary>
     public static BaseAction SlugShot { get; } = new(ActionID.SlugShot)
     {
-        OtherIDsCombo = new[] { 7411u },
+        OtherIDsCombo = new[] { ActionID.HeatedSplitShot },
     };
 
     /// <summary>
@@ -26,13 +29,16 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
     /// </summary>
     public static BaseAction CleanShot { get; } = new(ActionID.CleanShot)
     {
-        OtherIDsCombo = new[] { 7412u },
+        OtherIDsCombo = new[] { ActionID.HeatedSlugShot },
     };
 
     /// <summary>
     /// 热冲击
     /// </summary>
-    public static BaseAction HeatBlast { get; } = new(ActionID.HeatBlast);
+    public static BaseAction HeatBlast { get; } = new(ActionID.HeatBlast)
+    {
+        OtherCheck = b => JobGauge.IsOverheated,
+    };
 
     /// <summary>
     /// 散射
@@ -42,7 +48,10 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
     /// <summary>
     /// 自动弩
     /// </summary>
-    public static BaseAction AutoCrossbow { get; } = new(ActionID.AutoCrossbow);
+    public static BaseAction AutoCrossbow { get; } = new(ActionID.AutoCrossbow)
+    {
+        OtherCheck = HeatBlast.OtherCheck,
+    };
 
     /// <summary>
     /// 热弹
@@ -89,10 +98,7 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
     /// <summary>
     /// 野火
     /// </summary>
-    public static BaseAction Wildfire { get; } = new(ActionID.Wildfire)
-    {
-        OtherCheck = b => JobGauge.Heat >= 50,
-    };
+    public static BaseAction Wildfire { get; } = new(ActionID.Wildfire);
 
     /// <summary>
     /// 虹吸弹
@@ -109,7 +115,7 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
     /// </summary>
     public static BaseAction BarrelStabilizer { get; } = new(ActionID.BarrelStabilizer)
     {
-        OtherCheck = b => JobGauge.Heat <= 50 && !IsLastWeaponSkill(false, ChainSaw),
+        OtherCheck = b => JobGauge.Heat <= 50,
     };
 
     /// <summary>
@@ -125,12 +131,9 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
     /// </summary>
     public static BaseAction Tactician { get; } = new(ActionID.Tactician, true)
     {
-        BuffsProvide = new[]
-        {
-                    StatusID.Troubadour,
-                    StatusID.Tactician1,
-                    StatusID.Tactician2,
-                    StatusID.ShieldSamba,
-            },
+        OtherCheck = b => !Player.HaveStatus(false, StatusID.Troubadour,
+            StatusID.Tactician1,
+            StatusID.Tactician2,
+            StatusID.ShieldSamba),
     };
 }

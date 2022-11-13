@@ -16,7 +16,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
     /// <summary>
     /// ¸´ËÕ
     /// </summary>
-    public static BaseAction Egeiro { get; } = new(ActionID.Egeiro);
+    public static BaseAction Egeiro { get; } = new(ActionID.Egeiro, true);
 
     /// <summary>
     /// ×¢Ò©
@@ -30,9 +30,9 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
     {
         TargetStatus = new StatusID[]
         {
-                StatusID.EukrasianDosis,
-                StatusID.EukrasianDosis2,
-                StatusID.EukrasianDosis3
+             StatusID.EukrasianDosis,
+             StatusID.EukrasianDosis2,
+             StatusID.EukrasianDosis3
         },
     };
 

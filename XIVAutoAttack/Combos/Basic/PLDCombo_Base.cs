@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -41,20 +42,15 @@ internal abstract class PLDCombo_Base<TCmd> : JobGaugeCombo<PLDGauge, TCmd> wher
     {
         TargetStatus = new[]
         {
-                    StatusID.GoringBlade,
-                    StatusID.BladeofValor,
-            }
+            StatusID.GoringBlade,
+            StatusID.BladeofValor,
+        }
     };
 
     /// <summary>
-    /// 战女神之怒
+    /// 战女神之怒(王权剑)
     /// </summary>
     public static BaseAction RageofHalone { get; } = new(ActionID.RageofHalone);
-
-    /// <summary>
-    /// 王权剑
-    /// </summary>
-    public static BaseAction RoyalAuthority { get; } = new(ActionID.RoyalAuthority);
 
     /// <summary>
     /// 投盾
@@ -67,13 +63,7 @@ internal abstract class PLDCombo_Base<TCmd> : JobGaugeCombo<PLDGauge, TCmd> wher
     /// <summary>
     /// 战逃反应
     /// </summary>
-    public static BaseAction FightorFlight { get; } = new(ActionID.FightorFlight)
-    {
-        OtherCheck = b =>
-        {
-            return true;
-        },
-    };
+    public static BaseAction FightorFlight { get; } = new(ActionID.FightorFlight, true);
 
     /// <summary>
     /// 全蚀斩
@@ -97,45 +87,22 @@ internal abstract class PLDCombo_Base<TCmd> : JobGaugeCombo<PLDGauge, TCmd> wher
     /// <summary>
     /// 厄运流转
     /// </summary>
-    public static BaseAction CircleofScorn { get; } = new(ActionID.CircleofScorn)
-    {
-        //OtherCheck = b =>
-        //{
-        //    if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)) return true;
-
-        //    if (FightorFlight.IsCoolDown) return true;
-
-        //    return false;
-        //}
-    };
+    public static BaseAction CircleofScorn { get; } = new(ActionID.CircleofScorn);
 
     /// <summary>
     /// 深奥之灵
     /// </summary>
-    public static BaseAction SpiritsWithin { get; } = new(ActionID.SpiritsWithin)
-    {
-        //OtherCheck = b =>
-        //{
-        //    if (LocalPlayer.HaveStatus(ObjectStatus.FightOrFlight)) return true;
-
-        //    if (FightorFlight.IsCoolDown) return true;
-
-        //    return false;
-        //}
-    };
+    public static BaseAction SpiritsWithin { get; } = new(ActionID.SpiritsWithin);
 
     /// <summary>
     /// 神圣领域
     /// </summary>
-    public static BaseAction HallowedGround { get; } = new(ActionID.HallowedGround)
-    {
-        OtherCheck = BaseAction.TankBreakOtherCheck,
-    };
+    public static BaseAction HallowedGround { get; } = new(ActionID.HallowedGround);
     
     /// <summary>
     /// 圣光幕帘
     /// </summary>
-    public static BaseAction DivineVeil { get; } = new(ActionID.DivineVeil);
+    public static BaseAction DivineVeil { get; } = new(ActionID.DivineVeil, true);
 
     /// <summary>
     /// 深仁厚泽
@@ -192,36 +159,27 @@ internal abstract class PLDCombo_Base<TCmd> : JobGaugeCombo<PLDGauge, TCmd> wher
     /// <summary>
     /// 安魂祈祷
     /// </summary>
-    public static BaseAction Requiescat { get; } = new(ActionID.Requiescat);
+    public static BaseAction Requiescat { get; } = new(ActionID.Requiescat, true);
 
     /// <summary>
     /// 悔罪
     /// </summary>
-    public static BaseAction Confiteor { get; } = new(ActionID.Confiteor)
-    {
-        OtherCheck = b => Player.CurrentMp >= 1000,
-    };
+    public static BaseAction Confiteor { get; } = new(ActionID.Confiteor);
 
     /// <summary>
     /// 圣环
     /// </summary>
-    public static BaseAction HolyCircle { get; } = new(ActionID.HolyCircle)
-    {
-        OtherCheck = b => Player.CurrentMp >= 2000,
-    };
+    public static BaseAction HolyCircle { get; } = new(ActionID.HolyCircle);
 
     /// <summary>
     /// 圣灵
     /// </summary>
-    public static BaseAction HolySpirit { get; } = new(ActionID.HolySpirit)
-    {
-        OtherCheck = b => Player.CurrentMp >= 2000,
-    };
+    public static BaseAction HolySpirit { get; } = new(ActionID.HolySpirit);
 
     /// <summary>
     /// 武装戍卫
     /// </summary>
-    public static BaseAction PassageofArms { get; } = new(ActionID.PassageofArms);
+    public static BaseAction PassageofArms { get; } = new(ActionID.PassageofArms, true);
 
     /// <summary>
     /// 保护
@@ -235,6 +193,11 @@ internal abstract class PLDCombo_Base<TCmd> : JobGaugeCombo<PLDGauge, TCmd> wher
     /// 盾阵
     /// </summary>
     public static BaseAction Sheltron { get; } = new(ActionID.Sheltron);
-    //盾牌猛击
-    //ShieldBash = new BaseAction(16),
+
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    {
+        if (HallowedGround.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(HallowedGround.Target)) return true;
+        //神圣领域 如果谢不够了。
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+    }
 }

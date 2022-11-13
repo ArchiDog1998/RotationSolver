@@ -7,8 +7,6 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-//[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/SAMCombo.cs",
-//   ComboAuthor.fatinghenji)]
 internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
@@ -31,14 +29,16 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
     /// <summary>
     /// 心眼
     /// </summary>
-    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye);
+    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye, true);
 
     /// <summary>
     /// 燕飞
     /// </summary>
     public static BaseAction Enpi { get; } = new(ActionID.Enpi);
 
-    //士风
+    /// <summary>
+    /// 士风
+    /// </summary>
     public static BaseAction Shifu { get; } = new(ActionID.Shifu);
 
     /// <summary>
@@ -56,7 +56,7 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
     /// </summary>
     public static BaseAction Higanbana { get; } = new(ActionID.Higanbana, isEot: true)
     {
-        OtherCheck = b => !IsMoving && SenCount == 1 && HaveMoon && HaveFlower,
+        OtherCheck = b => !IsMoving && SenCount == 1,
         TargetStatus = new[] { StatusID.Higanbana },
     };
 
@@ -65,7 +65,7 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
     /// </summary>
     public static BaseAction TenkaGoken { get; } = new(ActionID.TenkaGoken)
     {
-        OtherCheck = b => !IsMoving,
+        OtherCheck = b => !IsMoving && SenCount == 2,
     };
 
     /// <summary>
@@ -97,7 +97,6 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
     public static BaseAction MeikyoShisui { get; } = new(ActionID.MeikyoShisui)
     {
         BuffsProvide = new[] { StatusID.MeikyoShisui },
-        OtherCheck = b => JobGauge.HasSetsu && !JobGauge.HasKa && !JobGauge.HasGetsu,
     };
 
     /// <summary>

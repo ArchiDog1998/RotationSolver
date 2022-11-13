@@ -72,7 +72,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         if (Atonement.ShouldUse(out act))
         {
             if (!SlowLoop && Player.HaveStatus(true, StatusID.FightOrFlight)
-                   && IsLastWeaponSkill(true, Atonement, RoyalAuthority)
+                   && IsLastWeaponSkill(true, Atonement, RageofHalone)
                    && !Player.WillStatusEndGCD(2, 0, true, StatusID.FightOrFlight)) return true;
             if (!SlowLoop && Player.FindStatusStack(true, StatusID.SwordOath) > 1) return true;
 
@@ -173,12 +173,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         act = null;
         return false;
     }
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
-    {
-        //神圣领域 如果谢不够了。
-        if (HallowedGround.ShouldUse(out act)) return true;
-        return false;
-    }
+
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (Defense(out act)) return true;

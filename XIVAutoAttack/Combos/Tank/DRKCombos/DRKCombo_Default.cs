@@ -161,13 +161,6 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
-    {
-        //行尸走肉
-        if (LivingDead.ShouldUse(out act)) return true;
-
-        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
-    }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {

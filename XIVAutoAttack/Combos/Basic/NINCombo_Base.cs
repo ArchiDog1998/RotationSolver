@@ -12,7 +12,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
     public class NinAction : BaseAction
     {
         internal BaseAction[] Ninjutsus { get; }
-        internal NinAction(uint actionID, params BaseAction[] ninjutsus)
+        internal NinAction(ActionID actionID, params BaseAction[] ninjutsus)
             : base(actionID, false, false)
         {
             Ninjutsus = ninjutsus;
@@ -22,7 +22,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
     /// <summary>
     /// 隐遁
     /// </summary>
-    public static BaseAction Hide { get; } = new(ActionID.Hide);
+    public static BaseAction Hide { get; } = new(ActionID.Hide, true);
 
     /// <summary>
     /// 双刃旋
@@ -32,7 +32,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
     /// <summary>
     /// 残影
     /// </summary>
-    public static BaseAction ShadeShift { get; } = new(ActionID.ShadeShift);
+    public static BaseAction ShadeShift { get; } = new(ActionID.ShadeShift, true);
 
     /// <summary>
     /// 绝风
@@ -73,22 +73,22 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
     /// <summary>
     /// 天之印
     /// </summary>
-    public static BaseAction Ten { get; } = new(ActionID.Ten);
+    public static BaseAction Ten { get; } = new(ActionID.Ten, true);
 
     /// <summary>
     /// 地之印
     /// </summary>
-    public static BaseAction Chi { get; } = new(ActionID.Chi);
+    public static BaseAction Chi { get; } = new(ActionID.Chi, true);
 
     /// <summary>
     /// 人之印
     /// </summary>
-    public static BaseAction Jin { get; } = new(ActionID.Jin);
+    public static BaseAction Jin { get; } = new(ActionID.Jin, true);
 
     /// <summary>
     /// 天地人
     /// </summary>
-    public static BaseAction TenChiJin { get; } = new(ActionID.TenChiJin)
+    public static BaseAction TenChiJin { get; } = new(ActionID.TenChiJin, true)
     {
         BuffsProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
         OtherCheck = b => JobGauge.HutonTimer > 0,
@@ -107,7 +107,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
     /// <summary>
     /// 命水
     /// </summary>
-    public static BaseAction Meisui { get; } = new(ActionID.Meisui)
+    public static BaseAction Meisui { get; } = new(ActionID.Meisui, true)
     {
         BuffsNeed = new[] { StatusID.Suiton },
         OtherCheck = b => JobGauge.Ninki <= 50,
@@ -116,9 +116,9 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
     /// <summary>
     /// 生杀予夺
     /// </summary>
-    public static BaseAction Kassatsu { get; } = new(ActionID.Kassatsu, isFriendly: true)
+    public static BaseAction Kassatsu { get; } = new(ActionID.Kassatsu, true)
     {
-        BuffsProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
+        BuffsProvide = TenChiJin.BuffsProvide,
     };
 
     /// <summary>
@@ -147,7 +147,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
     /// <summary>
     /// 分身之术
     /// </summary>
-    public static BaseAction Bunshin { get; } = new(ActionID.Bunshin);
+    public static BaseAction Bunshin { get; } = new(ActionID.Bunshin, true);
 
     /// <summary>
     /// 残影镰鼬
@@ -170,7 +170,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
     /// </summary>
     public static BaseAction ForkedRaiju { get; } = new(ActionID.ForkedRaiju)
     {
-        BuffsNeed = new[] { StatusID.RaijuReady },
+        BuffsNeed = FleetingRaiju.BuffsNeed,
     };
 
     /// <summary>
@@ -261,7 +261,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
     /// <summary>
     /// 水遁之术
     /// </summary>
-    public static NinAction Suiton { get; } = new(ActionID.SuitonActionID.Suiton, Ten, Chi, Jin)
+    public static NinAction Suiton { get; } = new(ActionID.Suiton, Ten, Chi, Jin)
     {
         BuffsProvide = new[] { StatusID.Suiton },
         OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),

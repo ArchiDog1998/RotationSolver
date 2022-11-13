@@ -170,9 +170,9 @@ internal sealed class IconReplacer : IDisposable
         isIconReplaceableHook.Dispose();
     }
 
-    internal uint OriginalHook(uint actionID)
+    internal ActionID OriginalHook(ActionID actionID)
     {
-        return getIconHook.Original.Invoke(actionManager, actionID);
+        return (ActionID)getIconHook.Original.Invoke(actionManager, (uint)actionID);
     }
 
     private unsafe uint GetIconDetour(IntPtr actionManager, uint actionID)

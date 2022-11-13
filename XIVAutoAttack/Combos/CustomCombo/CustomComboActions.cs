@@ -82,9 +82,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     //预警
                     StatusID.Sentinel,
                     //暗影墙
-                    StatusID.ShadowWall, StatusID.DarkMind,
-                    //伪装
-                    StatusID.Camouflage, StatusID.Nebula, StatusID.HeartofStone,
+                    StatusID.ShadowWall,
+                    //星云
+                    StatusID.Nebula,
                 },
                 OtherCheck = BaseAction.TankDefenseSelf,
             },

@@ -49,14 +49,7 @@ internal abstract class RDMCombo_Base<TCmd> : JobGaugeCombo<RDMGauge, TCmd> wher
     /// <summary>
     /// ¶Ì±øÏà½Ó
     /// </summary>
-    public static BaseAction CorpsAcorps { get; } = new(ActionID.CorpsAcorps, shouldEndSpecial: true)
-    {
-        BuffsProvide = new[]
-        {
-                 StatusID.Bind1,
-                 StatusID.Bind2,
-            }
-    };
+    public static BaseAction CorpsAcorps { get; } = new(ActionID.CorpsAcorps, shouldEndSpecial: true);
 
     /// <summary>
     /// ³à¼²·ç
@@ -138,7 +131,7 @@ internal abstract class RDMCombo_Base<TCmd> : JobGaugeCombo<RDMGauge, TCmd> wher
     /// <summary>
     /// ´Ù½ø
     /// </summary>
-    public static BaseAction Acceleration { get; } = new(ActionID.Acceleration)
+    public static BaseAction Acceleration { get; } = new(ActionID.Acceleration, true)
     {
         BuffsProvide = new[] { StatusID.Acceleration },
     };
@@ -169,15 +162,15 @@ internal abstract class RDMCombo_Base<TCmd> : JobGaugeCombo<RDMGauge, TCmd> wher
     /// </summary>
     public static BaseAction Embolden { get; } = new(ActionID.Embolden, true);
 
-    /// <summary>
-    /// ÐøÕ¶
-    /// </summary>
-    public static BaseAction Reprise { get; } = new(ActionID.Reprise);
+    ///// <summary>
+    ///// ÐøÕ¶
+    ///// </summary>
+    //public static BaseAction Reprise { get; } = new(ActionID.Reprise);
 
     /// <summary>
     /// ¿¹ËÀ
     /// </summary>
-    public static BaseAction MagickBarrier { get; } = new(ActionID.MagickBarrier);
+    public static BaseAction MagickBarrier { get; } = new(ActionID.MagickBarrier, true);
 
     /// <summary>
     /// ³àºË±¬
@@ -194,7 +187,7 @@ internal abstract class RDMCombo_Base<TCmd> : JobGaugeCombo<RDMGauge, TCmd> wher
     /// </summary>
     public static BaseAction Scorch { get; } = new(ActionID.Scorch)
     {
-        OtherIDsCombo = new uint[] { Verholy.ID },
+        OtherIDsCombo = new [] { ActionID.Verholy },
     };
 
     /// <summary>
@@ -208,6 +201,6 @@ internal abstract class RDMCombo_Base<TCmd> : JobGaugeCombo<RDMGauge, TCmd> wher
     public static BaseAction Manafication { get; } = new(ActionID.Manafication)
     {
         OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && InCombat && JobGauge.ManaStacks == 0,
-        OtherIDsNot = new uint[] { Riposte.ID, Zwerchhau.ID, Scorch.ID, Verflare.ID, Verholy.ID },
+        OtherIDsNot = new [] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
     };
 }

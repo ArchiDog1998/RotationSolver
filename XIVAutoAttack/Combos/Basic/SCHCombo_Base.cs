@@ -27,12 +27,9 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
     /// </summary>
     public static BaseAction Adloquium { get; } = new(ActionID.Adloquium, true)
     {
-        TargetStatus = new StatusID[]
-        {
-                    StatusID.EukrasianDiagnosis,
-                    StatusID.EukrasianPrognosis,
-                    StatusID.Galvanize,
-        },
+        OtherCheck = b => !b.HaveStatus(false, StatusID.EukrasianDiagnosis,
+            StatusID.EukrasianPrognosis,
+            StatusID.Galvanize),
     };
 
 
@@ -96,17 +93,17 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
     #endregion
     #region 进攻
     /// <summary>
-    /// 毒菌
+    /// 毒菌 猛毒菌 蛊毒法
     /// </summary>
-    public static BaseAction Bio { get; } = new(ActionID.Bio, isEot: true)//猛毒菌 17865 蛊毒法 16540
+    public static BaseAction Bio { get; } = new(ActionID.Bio, isEot: true)
     {
         TargetStatus = new StatusID[] { StatusID.Bio, StatusID.Bio2, StatusID.Biolysis },
     };
 
     /// <summary>
-    /// 毁灭
+    /// 毁灭 气炎法 魔炎法 死炎法 极炎法
     /// </summary>
-    public static BaseAction Ruin { get; } = new(ActionID.Ruin);//气炎法 3584 魔炎法 7435 死炎法 16541 极炎法 25865
+    public static BaseAction Ruin { get; } = new(ActionID.Ruin);
 
     /// <summary>
     /// 毁坏
@@ -208,7 +205,7 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
     /// <summary>
     /// 展开战术
     /// </summary>
-    public static BaseAction DeploymentTactics { get; } = new(ActionID.DeploymentTacticsActionID.DeploymentTactics, true)
+    public static BaseAction DeploymentTactics { get; } = new(ActionID.DeploymentTactics, true)
     {
         ChoiceTarget = friends =>
         {

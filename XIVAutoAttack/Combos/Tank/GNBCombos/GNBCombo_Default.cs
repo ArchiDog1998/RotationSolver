@@ -91,12 +91,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
-    {
-        //超火流星 如果谢不够了。
-        if (Superbolide.ShouldUse(out act)) return true;
-        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
-    }
+
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {

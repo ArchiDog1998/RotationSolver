@@ -30,7 +30,7 @@ internal abstract class SMNCombo_Base<TCmd> : JobGaugeCombo<SMNGauge, TCmd> wher
     };
 
     //毁灭 单体攻击
-    public static BaseAction Ruin { get; } = new(ActionID.Ruin);
+    public static BaseAction Ruin { get; } = new(ActionID.RuinSMN);
 
     //迸裂 范围伤害
     public static BaseAction Outburst { get; } = new(ActionID.Outburst);
@@ -82,10 +82,10 @@ internal abstract class SMNCombo_Base<TCmd> : JobGaugeCombo<SMNGauge, TCmd> wher
 
 
     //复生
-    public static BaseAction Resurrection { get; } = new(ActionID.Resurrection, true);
+    public static BaseAction Resurrection { get; } = new(ActionID.ResurrectionSMN, true);
 
     //能量吸收
-    public static BaseAction EnergyDrain { get; } = new(ActionID.EnergyDrain);
+    public static BaseAction EnergyDrain { get; } = new(ActionID.EnergyDrainSMN);
 
     //能量抽取
     public static BaseAction EnergySiphon { get; } = new(ActionID.EnergySiphon);

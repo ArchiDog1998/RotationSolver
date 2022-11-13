@@ -16,7 +16,7 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
     {
         internal override EnemyLocation EnermyLocation => Player.HaveStatus(true, StatusID.Enshrouded)
             ? EnemyLocation.None : base.EnermyLocation;
-        internal PRPAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
+        internal PRPAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
         {
         }

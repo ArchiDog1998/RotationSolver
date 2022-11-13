@@ -1,8 +1,4 @@
 ﻿
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Basic.RPRCombo_Base<TCmd>;
-
 namespace XIVAutoAttack.Data
 {
     internal enum ActionID : uint
@@ -705,54 +701,67 @@ namespace XIVAutoAttack.Data
         /// 重斩
         /// </summary>
         HardSlash = 3617,
+
         /// <summary>
         /// 吸收斩
         /// </summary>
         SyphonStrike = 3623,
+
         /// <summary>
         /// 释放
         /// </summary>
         Unleash = 3621,
+
         /// <summary>
         /// 深恶痛绝
         /// </summary>
         Grit = 3629,
+
         /// <summary>
         /// 伤残
         /// </summary>
         Unmend = 3624,     
+
         /// <summary>
         /// 噬魂斩
         /// </summary>
         Souleater = 3632,
+
         /// <summary>
         /// 暗黑波动
         /// </summary>
         FloodofDarkness = 16466,
+
         /// <summary>
         /// 暗黑锋
         /// </summary>
-        EdgeofDarkness = 16467,      
+        EdgeofDarkness = 16467,  
+        
         /// <summary>
         /// 嗜血
         /// </summary>
-        BloodWeapon = 3625,       
+        BloodWeapon = 3625,   
+        
         /// <summary>
         /// 暗影墙
         /// </summary>
-        ShadowWall = 3636,      
+        ShadowWall = 3636,   
+        
         /// <summary>
         /// 弃明投暗
         /// </summary>
-        DarkMind = 3634,       
+        DarkMind = 3634,  
+        
         /// <summary>
         /// 行尸走肉
         /// </summary>
-        LivingDead = 3638,      
+        LivingDead = 3638,  
+        
         /// <summary>
         /// 腐秽大地
         /// </summary>
         SaltedEarth = 3639,
+
         /// <summary>
         /// 跳斩
         /// </summary>
@@ -762,10 +771,12 @@ namespace XIVAutoAttack.Data
         /// 吸血深渊
         /// </summary>
         AbyssalDrain = 3641,
+
         /// <summary>
         /// 精雕怒斩
         /// </summary>
         CarveandSpit = 3643,
+
         /// <summary>
         /// 血溅
         /// </summary>
@@ -775,6 +786,7 @@ namespace XIVAutoAttack.Data
         /// 寂灭
         /// </summary>
         Quietus = 7391,
+
         /// <summary>
         /// 血乱
         /// </summary>
@@ -783,19 +795,23 @@ namespace XIVAutoAttack.Data
         /// <summary>
         /// 至黑之夜
         /// </summary>
-        TheBlackestNight = 7393,     
+        TheBlackestNight = 7393,  
+        
         /// <summary>
         /// 刚魂
         /// </summary>
         StalwartSoul = 16468,
+
         /// <summary>
         /// 暗黑布道
         /// </summary>
         DarkMissionary = 16471,
+
         /// <summary>
         /// 掠影示现
         /// </summary>
-        LivingShadow = 16472,       
+        LivingShadow = 16472,     
+        
         /// <summary>
         /// 献奉
         /// </summary>
@@ -820,10 +836,12 @@ namespace XIVAutoAttack.Data
         /// 战斗连祷
         /// </summary>
         BattleLitany = 3557,
+
         /// <summary>
         /// 暗影使者
         /// </summary>
-        Shadowbringer = 25757,     
+        Shadowbringer = 25757,  
+        
         /// <summary>
         /// 腐秽黑暗
         /// </summary>
@@ -835,50 +853,62 @@ namespace XIVAutoAttack.Data
         /// 王室亲卫
         /// </summary>
         RoyalGuard = 16142,
+
         /// <summary>
         /// 利刃斩
         /// </summary>
         KeenEdge = 16137,
+
         /// <summary>
         /// 无情
         /// </summary>
         NoMercy = 16138,
+
         /// <summary>
         /// 残暴弹
         /// </summary>
         BrutalShell = 16139,
+
         /// <summary>
         /// 伪装
         /// </summary>
-        Camouflage = 16140,       
+        Camouflage = 16140,    
+        
         /// <summary>
         /// 恶魔切
         /// </summary>
         DemonSlice = 16141,
+
         /// <summary>
         /// 闪雷弹
         /// </summary>
         LightningShot = 16143,
+
         /// <summary>
         /// 危险领域
         /// </summary>
         DangerZone = 16144,
+
         /// <summary>
         /// 迅连斩
         /// </summary>
         SolidBarrel = 16145,
+
         /// <summary>
         /// 爆发击
         /// </summary>
-        BurstStrike = 16162,   
+        BurstStrike = 16162,  
+        
         /// <summary>
         /// 星云
         /// </summary>
         Nebula = 16148,      
+
         /// <summary>
         /// 恶魔杀
         /// </summary>
         DemonSlaughter = 16149,
+
         /// <summary>
         /// 极光
         /// </summary>
@@ -887,27 +917,33 @@ namespace XIVAutoAttack.Data
         /// <summary>
         /// 超火流星
         /// </summary>
-        Superbolide = 16152,     
+        Superbolide = 16152,  
+        
         /// <summary>
         /// 音速破
         /// </summary>
         SonicBreak = 16153,
+
         /// <summary>
         /// 粗分斩
         /// </summary>
-        RoughDivide = 16154,    
+        RoughDivide = 16154,  
+        
         /// <summary>
         /// 烈牙
         /// </summary>
-        GnashingFang = 16146,     
+        GnashingFang = 16146, 
+        
         /// <summary>
         /// 弓形冲波
         /// </summary>
         BowShock = 16159,
+
         /// <summary>
         /// 光之心
         /// </summary>
         HeartofLight = 16160,
+
         /// <summary>
         /// 石之心
         /// </summary>
@@ -916,35 +952,48 @@ namespace XIVAutoAttack.Data
         /// <summary>
         /// 命运之环
         /// </summary>
-        FatedCircle = 16163,    
+        FatedCircle = 16163, 
+
         /// <summary>
         /// 血壤
         /// </summary>
         Bloodfest = 16164,
+
         /// <summary>
         /// 倍攻
         /// </summary>
         DoubleDown = 25760,
+
         /// <summary>
         /// 猛兽爪
         /// </summary>
-        SavageClaw = 16147,    
+        SavageClaw = 16147,   
+        
         /// <summary>
         /// 凶禽爪
         /// </summary>
-        WickedTalon = 16150,    
+        WickedTalon = 16150,
+
+        /// <summary>
+        /// 续剑
+        /// </summary>
+        Continuation = 16155,
+
         /// <summary>
         /// 撕喉
         /// </summary>
-        JugularRip = 16156,     
+        JugularRip = 16156,   
+        
         /// <summary>
         /// 裂膛
         /// </summary>
-        AbdomenTear = 16157,     
+        AbdomenTear = 16157,   
+        
         /// <summary>
         /// 穿目
         /// </summary>
-        EyeGouge = 16158,      
+        EyeGouge = 16158,     
+        
         /// <summary>
         /// 超高速
         /// </summary>
@@ -956,10 +1005,21 @@ namespace XIVAutoAttack.Data
         /// 分裂弹
         /// </summary>
         SplitShot = 2866,
+
+        /// <summary>
+        /// 热分裂弹
+        /// </summary>
+        HeatedSplitShot = 7411,
+
         /// <summary>
         /// 独头弹
         /// </summary>
-        SlugShot = 2868,        
+        SlugShot = 2868,
+
+        /// <summary>
+        /// 热独头弹
+        /// </summary>
+        HeatedSlugShot = 7412,
 
         /// <summary>
         /// 狙击弹
@@ -970,34 +1030,42 @@ namespace XIVAutoAttack.Data
         /// 热冲击
         /// </summary>
         HeatBlast = 7410,
+
         /// <summary>
         /// 散射
         /// </summary>
         SpreadShot = 2870,
+
         /// <summary>
         /// 自动弩
         /// </summary>
         AutoCrossbow = 16497,
+
         /// <summary>
         /// 热弹
         /// </summary>
         HotShot = 2872,
+
         /// <summary>
         /// 空气锚
         /// </summary>
         AirAnchor = 16500,
+
         /// <summary>
         /// 钻头
         /// </summary>
         Drill = 16498,
+
         /// <summary>
         /// 回转飞锯
         /// </summary>
         ChainSaw = 25788,
+
         /// <summary>
         /// 毒菌冲击
         /// </summary>
         Bioblaster = 16499,
+
         /// <summary>
         /// 整备
         /// </summary>
@@ -1006,7 +1074,8 @@ namespace XIVAutoAttack.Data
         /// <summary>
         /// 超荷
         /// </summary>
-        Hypercharge = 17209,      
+        Hypercharge = 17209,    
+        
         /// <summary>
         /// 野火
         /// </summary>
@@ -1016,18 +1085,22 @@ namespace XIVAutoAttack.Data
         /// 虹吸弹
         /// </summary>
         GaussRound = 2874,
+
         /// <summary>
         /// 弹射
         /// </summary>
-        Ricochet = 2890,        
+        Ricochet = 2890,    
+        
         /// <summary>
         /// 枪管加热
         /// </summary>
         BarrelStabilizer = 7414,   
+
         /// <summary>
         /// 车式浮空炮塔
         /// </summary>
         RookAutoturret = 2864,    
+
         /// <summary>
         /// 策动
         /// </summary>
@@ -1035,7 +1108,9 @@ namespace XIVAutoAttack.Data
         #endregion
 
         #region MNK
-        //双龙脚
+        /// <summary>
+        /// 双龙脚
+        /// </summary>
         DragonKick = 74,  
         
         /// <summary>
@@ -1164,168 +1239,212 @@ namespace XIVAutoAttack.Data
         /// 隐遁
         /// </summary>
         Hide = 2245,
+
         /// <summary>
         /// 双刃旋
         /// </summary>
         SpinningEdge = 2240,
-        //残影
+
+        /// <summary>
+        /// 残影
+        /// </summary>
         ShadeShift = 2241,
+
         /// <summary>
         /// 绝风
         /// </summary>
         GustSlash = 2242,
+
         /// <summary>
         /// 飞刀
         /// </summary>
         ThrowingDagger = 2247,
+
         /// <summary>
         /// 夺取
         /// </summary>
         Mug = 2248,      
+
         /// <summary>
         /// 攻其不备
         /// </summary>
         TrickAttack = 2258,   
+
         /// <summary>
         /// 旋风刃
         /// </summary>
         AeolianEdge = 2255,
+
         /// <summary>
         /// 血雨飞花
         /// </summary>
         DeathBlossom = 2254,
+
         /// <summary>
         /// 天之印
         /// </summary>
         Ten = 2259,
+
         /// <summary>
         /// 地之印
         /// </summary>
         Chi = 2261,
+
         /// <summary>
         /// 人之印
         /// </summary>
         Jin = 2263,
+
         /// <summary>
         /// 天地人
         /// </summary>
-        TenChiJin = 7403,        
+        TenChiJin = 7403, 
+        
         /// <summary>
         /// 缩地
         /// </summary>
         Shukuchi = 2262,
+
         /// <summary>
         /// 断绝
         /// </summary>
         Assassinate = 2246,
+
         /// <summary>
         /// 命水
         /// </summary>
-        Meisui = 16489,        
+        Meisui = 16489,    
+        
         /// <summary>
         /// 生杀予夺
         /// </summary>
-        Kassatsu = 2264,       
+        Kassatsu = 2264,      
+        
         /// <summary>
         /// 八卦无刃杀
         /// </summary>
         HakkeMujinsatsu = 16488,
+
         /// <summary>
         /// 强甲破点突
         /// </summary>
-        ArmorCrush = 3563,       
+        ArmorCrush = 3563,    
+        
         /// <summary>
         /// 通灵之术·大虾蟆
         /// </summary>
         HellfrogMedium = 7401,
+
         /// <summary>
         /// 六道轮回
         /// </summary>
         Bhavacakra = 7402,
+
         /// <summary>
         /// 分身之术
         /// </summary>
         Bunshin = 16493,
+
         /// <summary>
         /// 残影镰鼬
         /// </summary>
-        PhantomKamaitachi = 25774,     
+        PhantomKamaitachi = 25774,  
+        
         /// <summary>
         /// 月影雷兽牙
         /// </summary>
-        FleetingRaiju = 25778,       
+        FleetingRaiju = 25778, 
+        
         /// <summary>
         /// 月影雷兽爪
         /// </summary>
-        ForkedRaiju = 25777,       
+        ForkedRaiju = 25777,   
+        
         /// <summary>
         /// 风来刃
         /// </summary>
-        Huraijin = 25876,       
+        Huraijin = 25876,      
+        
         /// <summary>
         /// 梦幻三段
         /// </summary>
         DreamWithinaDream = 3566,
+
         /// <summary>
         /// 风魔手里剑天
         /// </summary>
         FumaShurikenTen = 18873,
+
         /// <summary>
         /// 风魔手里剑人
         /// </summary>
         FumaShurikenJin = 18875,
+
         /// <summary>
         /// 火遁之术天
         /// </summary>
         KatonTen = 18876,
+
         /// <summary>
         /// 雷遁之术地
         /// </summary>
         RaitonChi = 18877,
+
         /// <summary>
         /// 土遁之术地
         /// </summary>
         DotonChi = 18880,
+
         /// <summary>
         /// 水遁之术人
         /// </summary>
         SuitonJin = 18881,
+
         /// <summary>
         /// 通灵之术
         /// </summary>
         RabbitMedium = 2272,
+
         /// <summary>
         /// 风魔手里剑
         /// </summary>
         FumaShuriken = 2265,
+
         /// <summary>
         /// 火遁之术
         /// </summary>
         Katon = 2266,
+
         /// <summary>
         /// 雷遁之术
         /// </summary>
         Raiton = 2267,
+
         /// <summary>
         /// 冰遁之术
         /// </summary>
         Hyoton = 2268,
+
         /// <summary>
         /// 风遁之术
         /// </summary>
-        Huton = 2269,      
+        Huton = 2269, 
+        
         /// <summary>
         /// 土遁之术
         /// </summary>
-        Doton = 2270,        
+        Doton = 2270,    
+        
         /// <summary>
         /// 水遁之术
         /// </summary>
-        Suiton = 2271,     
+        Suiton = 2271,   
+        
         /// <summary>
         /// 劫火灭却之术
         /// </summary>
         GokaMekkyaku = 16491,
+
         /// <summary>
         /// 冰晶乱流之术
         /// </summary>
@@ -1337,118 +1456,147 @@ namespace XIVAutoAttack.Data
         /// 钢铁信念
         /// </summary>
         IronWill = 28,
+
         /// <summary>
         /// 先锋剑
         /// </summary>
         FastBlade = 9,
+
         /// <summary>
         /// 暴乱剑
         /// </summary>
         RiotBlade = 15,
+
         /// <summary>
         /// 沥血剑
         /// </summary>
         GoringBlade = 3538,  
+
         /// <summary>
         /// 战女神之怒
         /// </summary>
         RageofHalone = 21,
+
         /// <summary>
         /// 王权剑
         /// </summary>
         RoyalAuthority = 3539,
+
         /// <summary>
         /// 投盾
         /// </summary>
-        ShieldLob = 24,       
+        ShieldLob = 24,
+
         /// <summary>
         /// 战逃反应
         /// </summary>
-        FightorFlight = 20,      
+        FightorFlight = 20, 
+        
         /// <summary>
         /// 全蚀斩
         /// </summary>
         TotalEclipse = 7381,
+
         /// <summary>
         /// 日珥斩
         /// </summary>
         Prominence = 16457,
+
         /// <summary>
         /// 预警
         /// </summary>
-        Sentinel = 17,       
+        Sentinel = 17,   
+        
         /// <summary>
         /// 厄运流转
         /// </summary>
-        CircleofScorn = 23,      
+        CircleofScorn = 23,  
+        
         /// <summary>
         /// 深奥之灵
         /// </summary>
-        SpiritsWithin = 29,      
+        SpiritsWithin = 29,  
+        
         /// <summary>
         /// 神圣领域
         /// </summary>
-        HallowedGround = 30,       
+        HallowedGround = 30,  
+        
         /// <summary>
         /// 圣光幕帘
         /// </summary>
         DivineVeil = 3540,
+
         /// <summary>
         /// 深仁厚泽
         /// </summary>
         Clemency = 3541,
+
         /// <summary>
         /// 干预
         /// </summary>
-        Intervention = 7382,        
+        Intervention = 7382,  
+        
         /// <summary>
         /// 调停
         /// </summary>
-        Intervene = 16461,        
+        Intervene = 16461,  
+        
         /// <summary>
         /// 赎罪剑
         /// </summary>
-        Atonement = 16460,      
+        Atonement = 16460,
+        
         /// <summary>
         /// 偿赎剑
         /// </summary>
         Expiacion = 25747,
+
         /// <summary>
         /// 英勇之剑
         /// </summary>
         BladeofValor = 25750,
+
         /// <summary>
         /// 真理之剑
         /// </summary>
         BladeofTruth = 25749,
+
         /// <summary>
         /// 信念之剑
         /// </summary>
-        BladeofFaith = 25748,     
+        BladeofFaith = 25748,  
+        
         /// <summary>
         /// 安魂祈祷
         /// </summary>
         Requiescat = 7383,
+
         /// <summary>
         /// 悔罪
         /// </summary>
-        Confiteor = 16459,    
+        Confiteor = 16459,
+        
         /// <summary>
         /// 圣环
         /// </summary>
-        HolyCircle = 16458,     
+        HolyCircle = 16458, 
+        
         /// <summary>
         /// 圣灵
         /// </summary>
-        HolySpirit = 7384,   
+        HolySpirit = 7384,  
+        
         /// <summary>
         /// 武装戍卫
         /// </summary>
         PassageofArms = 7385,
+
         /// <summary>
         /// 保护
         /// </summary>
         Cover = 27,
+
         /// <summary>
         /// 盾阵
         /// </summary>
@@ -1460,104 +1608,132 @@ namespace XIVAutoAttack.Data
         /// 赤复活
         /// </summary>
         Verraise = 7523,
+
         /// <summary>
         /// 震荡
         /// </summary>
         Jolt = 7503,       
+
         /// <summary>
         /// 回刺
         /// </summary>
-        Riposte = 7504,     
+        Riposte = 7504,   
+        
         /// <summary>
         /// 赤闪雷
         /// </summary>
-        Verthunder = 7505,    
-        //短兵相接
+        Verthunder = 7505,   
+        
+        /// <summary>
+        /// 短兵相接
+        /// </summary>
         CorpsAcorps = 7506,  
+
         /// <summary>
         /// 赤疾风
         /// </summary>
-        Veraero = 7507,     
+        Veraero = 7507,   
+        
         /// <summary>
         /// 散碎
         /// </summary>
-        Scatter = 7509,      
+        Scatter = 7509,  
+        
         /// <summary>
         /// 赤震雷
         /// </summary>
-        Verthunder2 = 16524,     
+        Verthunder2 = 16524, 
+        
         /// <summary>
         /// 赤烈风
         /// </summary>
-        Veraero2 = 16525,      
+        Veraero2 = 16525,  
+        
         /// <summary>
         /// 赤火炎
         /// </summary>
-        Verfire = 7510,      
+        Verfire = 7510,   
+        
         /// <summary>
         /// 赤飞石
         /// </summary>
-        Verstone = 7511,     
+        Verstone = 7511,   
+        
         /// <summary>
         /// 交击斩
         /// </summary>
-        Zwerchhau = 7512,    
+        Zwerchhau = 7512,   
+        
         /// <summary>
         /// 交剑
         /// </summary>
         Engagement = 16527,
+
         /// <summary>
         /// 飞剑
         /// </summary>
         Fleche = 7517,
+
         /// <summary>
         /// 连攻
         /// </summary>
-        Redoublement = 7516,     
+        Redoublement = 7516,  
+        
         /// <summary>
         /// 促进
         /// </summary>
-        Acceleration = 7518,      
+        Acceleration = 7518, 
+        
         /// <summary>
         /// 划圆斩
         /// </summary>
-        Moulinet = 7513,      
+        Moulinet = 7513,  
+        
         /// <summary>
         /// 赤治疗
         /// </summary>
-        Vercure = 7514,      
+        Vercure = 7514,   
+        
         /// <summary>
         /// 六分反击
         /// </summary>
         ContreSixte = 7519,
+
         /// <summary>
         /// 鼓励
         /// </summary>
         Embolden = 7520,
+
         /// <summary>
         /// 续斩
         /// </summary>
         Reprise = 16529,
+
         /// <summary>
         /// 抗死
         /// </summary>
         MagickBarrier = 25857,
+
         /// <summary>
         /// 赤核爆
         /// </summary>
         Verflare = 7525,
+
         /// <summary>
         /// 赤神圣
         /// </summary>
         Verholy = 7526,
+
         /// <summary>
         /// 焦热
         /// </summary>
-        Scorch = 16530,       
+        Scorch = 16530,   
+        
         /// <summary>
         /// 决断
         /// </summary>
         Resolution = 25858,
+
         /// <summary>
         /// 魔元化
         /// </summary>
@@ -1569,110 +1745,137 @@ namespace XIVAutoAttack.Data
         /// 切割
         /// </summary>
         Slice = 24373,  
+
         /// <summary>
         /// 增盈切割
         /// </summary>
-        WaxingSlice = 24374,    
+        WaxingSlice = 24374,
+
         /// <summary>
         /// 地狱切割
         /// </summary>
         InfernalSlice = 24375, 
+
         /// <summary>
         /// 死亡之影
         /// </summary>
-        ShadowofDeath = 24378,   
+        ShadowofDeath = 24378,
+
         /// <summary>
         /// 灵魂切割
         /// </summary>
-        SoulSlice = 24380,      
+        SoulSlice = 24380,   
+        
         /// <summary>
         /// 旋转钐割
         /// </summary>
         SpinningScythe = 24376,  
+
         /// <summary>
         /// 噩梦钐割
         /// </summary>
         NightmareScythe = 24377, 
+
         /// <summary>
         /// 死亡之涡
         /// </summary>
-        WhorlofDeath = 24379,    
+        WhorlofDeath = 24379, 
+        
         /// <summary>
         /// 灵魂钐割
         /// </summary>
-        SoulScythe = 24381,   
+        SoulScythe = 24381,  
+        
         /// <summary>
         /// 绞决
         /// </summary>
-        Gibbet = 24382,       
+        Gibbet = 24382,     
+        
         /// <summary>
         /// 缢杀
         /// </summary>
-        Gallows = 24383,      
+        Gallows = 24383,  
+        
         /// <summary>
         /// 断首
         /// </summary>
         Guillotine = 24384,   
+
         /// <summary>
         /// 隐匿挥割
         /// </summary>
-        BloodStalk = 24389,     
+        BloodStalk = 24389,  
+        
         /// <summary>
         /// 束缚挥割
         /// </summary>
-        GrimSwathe = 24392,      
+        GrimSwathe = 24392,  
+        
         /// <summary>
         /// 暴食
         /// </summary>
-        Gluttony = 24393,       
+        Gluttony = 24393,   
+        
         /// <summary>
         /// 神秘环
         /// </summary>
-        ArcaneCircle = 24405,      
+        ArcaneCircle = 24405,   
+        
         /// <summary>
         /// 大丰收
         /// </summary>
-        PlentifulHarvest = 24385,    
+        PlentifulHarvest = 24385, 
+        
         /// <summary>
         /// 夜游魂衣
         /// </summary>
-        Enshroud = 24394,       
+        Enshroud = 24394,   
+        
         /// <summary>
         /// 团契
         /// </summary>
-        Communio = 24398,      
+        Communio = 24398,   
+        
         /// <summary>
         /// 夜游魂切割
         /// </summary>
-        LemuresSlice = 24399,    
+        LemuresSlice = 24399, 
+        
         /// <summary>
         /// 夜游魂钐割
         /// </summary>
-        LemuresScythe = 24400,  
+        LemuresScythe = 24400, 
+        
         /// <summary>
         /// 虚无收割
         /// </summary>
-        VoidReaping = 24395,     
+        VoidReaping = 24395,  
+        
         /// <summary>
         /// 交错收割
         /// </summary>
-        CrossReaping = 24396,     
+        CrossReaping = 24396, 
+        
         /// <summary>
         /// 阴冷收割
         /// </summary>
-        GrimReaping = 24397,      
+        GrimReaping = 24397,    
+        
         /// <summary>
         /// 勾刃
         /// </summary>
         Harpe = 24386,
+
         /// <summary>
         /// 播魂种
         /// </summary>
-        Soulsow = 24387,        
+        Soulsow = 24387, 
+        
         /// <summary>
         /// 收获月
         /// </summary>
-        HarvestMoon = 24388,       
+        HarvestMoon = 24388,   
+        
         /// <summary>
         /// 神秘纹 加盾
         /// </summary>
@@ -1684,106 +1887,132 @@ namespace XIVAutoAttack.Data
         /// 刃风
         /// </summary>
         Hakaze = 7477,
+
         /// <summary>
         /// 阵风
         /// </summary>
         Jinpu = 7478,
+
         /// <summary>
         /// 心眼
         /// </summary>
         ThirdEye = 7498,
+
         /// <summary>
         /// 燕飞
         /// </summary>
         Enpi = 7486,
+
         /// <summary>
         /// 士风
         /// </summary>
         Shifu = 7479,
+
         /// <summary>
         /// 风雅
         /// </summary>
         Fuga = 7483,
+
         /// <summary>
         /// 月光
         /// </summary>
         Gekko = 7481,
+
         /// <summary>
         /// 彼岸花
         /// </summary>
-        Higanbana = 7489, 
+        Higanbana = 7489,
+        
         /// <summary>
         /// 天下五剑
         /// </summary>
-        TenkaGoken = 7488,       
+        TenkaGoken = 7488,   
+        
         /// <summary>
         /// 纷乱雪月花
         /// </summary>
         MidareSetsugekka = 7487,  
+
         /// <summary>
         /// 满月
         /// </summary>
         Mangetsu = 7484,
+
         /// <summary>
         /// 花车
         /// </summary>
         Kasha = 7482,
+
         /// <summary>
         /// 樱花
         /// </summary>
         Oka = 7485,
+
         /// <summary>
         /// 明镜止水
         /// </summary>
-        MeikyoShisui = 7499,       
+        MeikyoShisui = 7499,  
+        
         /// <summary>
         /// 雪风
         /// </summary>
         Yukikaze = 7480,
+
         /// <summary>
         /// 必杀剑·晓天
         /// </summary>
         HissatsuGyoten = 7492,
+
         /// <summary>
         /// 必杀剑·震天
         /// </summary>
         HissatsuShinten = 7490,
+
         /// <summary>
         /// 必杀剑·九天
         /// </summary>
         HissatsuKyuten = 7491,
+
         /// <summary>
         /// 意气冲天
         /// </summary>
         Ikishoten = 16482,
+
         /// <summary>
         /// 必杀剑·红莲
         /// </summary>
         HissatsuGuren = 7496,
+
         /// <summary>
         /// 必杀剑·闪影
         /// </summary>
         HissatsuSenei = 16481,
+
         /// <summary>
         /// 回返五剑
         /// </summary>
         KaeshiGoken = 16485,
+
         /// <summary>
         /// 回返雪月花
         /// </summary>
         KaeshiSetsugekka = 16486,
+
         /// <summary>
         /// 照破
         /// </summary>
         Shoha = 16487,
+
         /// <summary>
         /// 无明照破
         /// </summary>
         Shoha2 = 25779,
+
         /// <summary>
         /// 奥义斩浪
         /// </summary>
-        OgiNamikiri = 25781,      
+        OgiNamikiri = 25781,  
+        
         /// <summary>
         /// 回返斩浪
         /// </summary>
@@ -1795,110 +2024,137 @@ namespace XIVAutoAttack.Data
         /// 医术
         /// </summary>
         Physick = 190,
+
         /// <summary>
         /// 鼓舞激励之策
         /// </summary>
         Adloquium = 185,
+
         /// <summary>
         /// 复生
         /// </summary>
         Resurrection = 173,
+
         /// <summary>
         /// 士气高扬之策
         /// </summary>
-        Succor = 186,        
+        Succor = 186,      
+        
         /// <summary>
         /// 生命活性法
         /// </summary>
         Lustrate = 189,   
+
         /// <summary>
         /// 野战治疗阵
         /// </summary>
-        SacredSoil = 188,     
+        SacredSoil = 188,    
+        
         /// <summary>
         /// 不屈不挠之策
         /// </summary>
         Indomitability = 3583, 
+
         /// <summary>
         /// 深谋远虑之策
         /// </summary>
-        Excogitation = 7434,     
+        Excogitation = 7434,    
+        
         /// <summary>
         /// 慰藉
         /// </summary>
-        Consolation = 16546,    
+        Consolation = 16546,   
+        
         /// <summary>
         /// 生命回生法
         /// </summary>
-        Protraction = 25867,        
+        Protraction = 25867,   
+        
         /// <summary>
         /// 毒菌
         /// </summary>
         Bio = 17864,     
+
         /// <summary>
         /// 毁灭
         /// </summary>
         Ruin = 17869,
+
         /// <summary>
         /// 毁坏
         /// </summary>
         Ruin2 = 17870,
+
         /// <summary>
         /// 能量吸收
         /// </summary>
-        EnergyDrain = 167,    
+        EnergyDrain = 167, 
+        
         /// <summary>
         /// 破阵法
         /// </summary>
-        ArtofWar = 16539,       
+        ArtofWar = 16539,    
+        
         /// <summary>
         /// 炽天召唤
         /// </summary>
-        SummonSeraph = 16545,   
+        SummonSeraph = 16545, 
+        
         /// <summary>
         /// 朝日召唤
         /// </summary>
-        SummonEos = 17215,     
+        SummonEos = 17215,   
+        
         /// <summary>
         /// 仙光的低语/天使的低语
         /// </summary>
         WhisperingDawn = 16537, 
+
         /// <summary>
         /// 异想的幻光/炽天的幻光
         /// </summary>
         FeyIllumination = 16538,  
+
         /// <summary>
         /// 转化
         /// </summary>
-        Dissipation = 3587,      
+        Dissipation = 3587,    
+        
         /// <summary>
         /// 以太契约-异想的融光
         /// </summary>
         Aetherpact = 7437,     
+
         /// <summary>
         /// 异想的祥光
         /// </summary>
         FeyBlessing = 16543,   
+
         /// <summary>
         /// 以太超流
         /// </summary>
-        Aetherflow = 166,    
+        Aetherflow = 166,   
+        
         /// <summary>
         /// 秘策
         /// </summary>
         Recitation = 16542,
+
         /// <summary>
         /// 连环计
         /// </summary>
-        ChainStratagem = 7436,   
+        ChainStratagem = 7436,  
+        
         /// <summary>
         /// 展开战术
         /// </summary>
-        DeploymentTactics = 3585,        
+        DeploymentTactics = 3585,  
+        
         /// <summary>
         /// 应急战术
         /// </summary>
         EmergencyTactics = 3586,
+
         /// <summary>
         /// 疾风怒涛之计
         /// </summary>
@@ -1910,118 +2166,147 @@ namespace XIVAutoAttack.Data
         /// 复苏
         /// </summary>
         Egeiro = 24287,
+
         /// <summary>
         /// 注药
         /// </summary>
         Dosis = 24283,
+
         /// <summary>
         /// 均衡注药
         /// </summary>
-        EukrasianDosis = 24283,        
+        EukrasianDosis = 24283,  
+        
         /// <summary>
         /// 发炎
         /// </summary>
         Phlegma = 24289,
+
         /// <summary>
         /// 发炎2
         /// </summary>
         Phlegma2 = 24307,
+
         /// <summary>
         /// 发炎3
         /// </summary>
         Phlegma3 = 24313,
+
         /// <summary>
         /// 诊断
         /// </summary>
         Diagnosis = 24284,
+
         /// <summary>
         /// 心关
         /// </summary>
-        Kardia = 24285,        
+        Kardia = 24285,   
+        
         /// <summary>
         /// 预后
         /// </summary>
         Prognosis = 24286,
+
         /// <summary>
         /// 自生
         /// </summary>
         Physis = 24288,
+
         /// <summary>
         /// 自生2
         /// </summary>
         Physis2 = 24302,
+
         /// <summary>
         /// 均衡
         /// </summary>
-        Eukrasia = 24290,       
+        Eukrasia = 24290,  
+        
         /// <summary>
         /// 拯救
         /// </summary>
-        Soteria = 24294,     
+        Soteria = 24294,  
+        
         /// <summary>
         /// 神翼
         /// </summary>
-        Icarus = 24295,       
+        Icarus = 24295,     
+        
         /// <summary>
         /// 灵橡清汁
         /// </summary>
-        Druochole = 24296,        
+        Druochole = 24296,  
+        
         /// <summary>
         /// 失衡
         /// </summary>
         Dyskrasia = 24297,
+
         /// <summary>
         /// 坚角清汁
         /// </summary>
-        Kerachole = 24298,       
+        Kerachole = 24298,     
+        
         /// <summary>
         /// 寄生清汁
         /// </summary>
-        Ixochole = 24299,       
+        Ixochole = 24299,   
+        
         /// <summary>
         /// 活化
         /// </summary>
         Zoe = 24300,
+
         /// <summary>
         /// 白牛清汁
         /// </summary>
-        Taurochole = 24303,       
+        Taurochole = 24303,     
+        
         /// <summary>
         /// 箭毒
         /// </summary>
         Toxikon = 24304,
+
         /// <summary>
         /// 输血
         /// </summary>
-        Haima = 24305,        
+        Haima = 24305,   
+        
         /// <summary>
         /// 均衡诊断
         /// </summary>
-        EukrasianDiagnosis = 24291,        
+        EukrasianDiagnosis = 24291,
+        
         /// <summary>
         /// 均衡预后
         /// </summary>
-        EukrasianPrognosis = 24292,        
+        EukrasianPrognosis = 24292, 
+        
         /// <summary>
         /// 根素
         /// </summary>
         Rhizomata = 24309,
+
         /// <summary>
         /// 整体论
         /// </summary>
         Holos = 24310,
+
         /// <summary>
         /// 泛输血
         /// </summary>
         Panhaima = 24311,
+
         /// <summary>
         /// 混合
         /// </summary>
         Krasis = 24317,
+
         /// <summary>
         /// 魂灵风息
         /// </summary>
         Pneuma = 24318,
+
         /// <summary>
         /// 消化
         /// </summary>
@@ -2033,102 +2318,127 @@ namespace XIVAutoAttack.Data
         /// 宝石耀
         /// </summary>
         Gemshine = 25883,
+
         /// <summary>
         /// 宝石辉
         /// </summary>
         PreciousBrilliance = 25884,
+
         /// <summary>
         /// 毁灭
         /// </summary>
-        Ruin = 163,
+        RuinSMN = 163,
+
         /// <summary>
         /// 迸裂
         /// </summary>
         Outburst = 16511,
+
         /// <summary>
         /// 宝石兽召唤
         /// </summary>
-        SummonCarbuncle = 25798,       
+        SummonCarbuncle = 25798,  
+        
         /// <summary>
         /// 灼热之光 团辅
         /// </summary>
-        SearingLight = 25801,      
+        SearingLight = 25801,   
+        
         /// <summary>
         /// 守护之光
         /// </summary>
         RadiantAegis = 25799,
+
         /// <summary>
         /// 医术
         /// </summary>
-        Physick = 16230,
+        PhysickSMN = 16230,
+
         /// <summary>
         /// 以太蓄能 
         /// </summary>
-        Aethercharge = 25800,    
+        Aethercharge = 25800, 
+        
         /// <summary>
         /// 龙神召唤
         /// </summary>
         SummonBahamut = 7427,
+
         /// <summary>
         /// 红宝石召唤
         /// </summary>
-        SummonRuby = 25802,      
+        SummonRuby = 25802, 
+        
         /// <summary>
         /// 黄宝石召唤
         /// </summary>
         SummonTopaz = 25803,
+
         /// <summary>
         /// 绿宝石召唤
         /// </summary>
         SummonEmerald = 25804,
+
         /// <summary>
         /// 复生
         /// </summary>
-        Resurrection = 173,
+        ResurrectionSMN = 173,
+
         /// <summary>
         /// 能量吸收
         /// </summary>
-        EnergyDrain = 16508,
+        EnergyDrainSMN = 16508,
+
         /// <summary>
         /// 能量抽取
         /// </summary>
         EnergySiphon = 16510,
+
         /// <summary>
         /// 溃烂爆发
         /// </summary>
         Fester = 181,
+
         /// <summary>
         /// 痛苦核爆
         /// </summary>
         Painflare = 3578,
+
         /// <summary>
         /// 毁绝
         /// </summary>
         RuinIV = 7426,
+
         /// <summary>
         /// 龙神迸发
         /// </summary>
         EnkindleBahamut = 7429,
+
         /// <summary>
         /// 死星核爆
         /// </summary>
         Deathflare = 3582,
+
         /// <summary>
         /// 苏生之炎
         /// </summary>
         Rekindle = 25830,
+
         /// <summary>
         /// 深红旋风
         /// </summary>
         CrimsonCyclone = 25835,
+
         /// <summary>
         /// 深红强袭
         /// </summary>
         CrimsonStrike = 25885,
+
         /// <summary>
         /// 山崩
         /// </summary>
         MountainBuster = 25836,
+
         /// <summary>
         /// 螺旋气流
         /// </summary>
@@ -2140,98 +2450,122 @@ namespace XIVAutoAttack.Data
         /// 守护
         /// </summary>
         Defiance = 48,
+
         /// <summary>
         /// 重劈
         /// </summary>
         HeavySwing = 31,
+
         /// <summary>
         /// 凶残裂
         /// </summary>
         Maim = 37,
+
         /// <summary>
         /// 暴风斩
         /// </summary>
         StormsPath = 42,
+
         /// <summary>
         /// 暴风碎 红斧
         /// </summary>
         StormsEye = 45,
+
         /// <summary>
         /// 飞斧
         /// </summary>
         Tomahawk = 46,
+
         /// <summary>
         /// 猛攻
         /// </summary>
         Onslaught = 7386,
+
         /// <summary>
         /// 动乱    
         /// </summary>
         Upheaval = 7387,
+
         /// <summary>
         /// 超压斧
         /// </summary>
         Overpower = 41,
+
         /// <summary>
         /// 秘银暴风
         /// </summary>
         MythrilTempest = 16462,
+
         /// <summary>
         /// 群山隆起
         /// </summary>
         Orogeny = 25752,
+
         /// <summary>
         /// 原初之魂
         /// </summary>
         InnerBeast = 49,
+
         /// <summary>
         /// 钢铁旋风
         /// </summary>
         SteelCyclone = 51,
+
         /// <summary>
         /// 战嚎
         /// </summary>
         Infuriate = 52,
+
         /// <summary>
         /// 狂暴
         /// </summary>
         Berserk = 38,
+
         /// <summary>
         /// 战栗
         /// </summary>
         ThrillofBattle = 40,
+
         /// <summary>
         /// 泰然自若
         /// </summary>
         Equilibrium = 3552,
+
         /// <summary>
         /// 原初的勇猛
         /// </summary>
         NascentFlash = 16464,
+
         /// <summary>
         /// 原初的血气
         /// </summary>
         Bloodwhetting = 25751,
+
         /// <summary>
         /// 复仇
         /// </summary>
         Vengeance = 44,
+
         /// <summary>
         /// 原初的直觉
         /// </summary>
         RawIntuition = 3551,
+
         /// <summary>
         /// 摆脱
         /// </summary>
         ShakeItOff = 7388,
+
         /// <summary>
         /// 死斗
         /// </summary>
         Holmgang = 43,
+
         /// <summary>
         /// 原初的解放
         /// </summary>
         InnerRelease = 7389,
+
         /// <summary>
         /// 蛮荒崩裂
         /// </summary>
@@ -2243,94 +2577,117 @@ namespace XIVAutoAttack.Data
         /// 治疗
         /// </summary>
         Cure = 120,
+
         /// <summary>
         /// 医治
         /// </summary>
         Medica = 124,
+
         /// <summary>
         /// 复活
         /// </summary>
         Raise1 = 125,
+
         /// <summary>
         /// 救疗
         /// </summary>
         Cure2 = 135,
+
         /// <summary>
         /// 医济
         /// </summary>
         Medica2 = 133,
+
         /// <summary>
         /// 再生
         /// </summary>
         Regen = 137,
+
         /// <summary>
         /// 愈疗
         /// </summary>
         Cure3 = 131,
+
         /// <summary>
         /// 天赐祝福
         /// </summary>
         Benediction = 140,
+
         /// <summary>
         /// 庇护所
         /// </summary>
         Asylum = 3569,
+
         /// <summary>
         /// 安慰之心
         /// </summary>
         AfflatusSolace = 16531,
+
         /// <summary>
         /// 神名
         /// </summary>
         Tetragrammaton = 3570,
+
         /// <summary>
         /// 神祝祷
         /// </summary>
         DivineBenison = 7432,
+
         /// <summary>
         /// 狂喜之心
         /// </summary>
         AfflatusRapture = 16534,
+
         /// <summary>
         /// 水流幕
         /// </summary>
         Aquaveil = 25861,
+
         /// <summary>
         /// 礼仪之铃
         /// </summary>
         LiturgyoftheBell = 25862,
+
         /// <summary>
         /// 飞石 
         /// </summary>
         Stone = 119,
+
         /// <summary>
         /// 疾风
         /// </summary>
         Aero = 121,
+
         /// <summary>
         /// 神圣
         /// </summary>
         Holy = 139,
+
         /// <summary>
         /// 法令
         /// </summary>
         Assize = 3571,
+
         /// <summary>
         /// 苦难之心
         /// </summary>
         AfflatusMisery = 16535,
+
         /// <summary>
         /// 神速咏唱
         /// </summary>
         PresenseOfMind = 136,
+
         /// <summary>
         /// 无中生有
         /// </summary>
         ThinAir = 7430,
+
         /// <summary>
         /// 全大赦
         /// </summary>
         PlenaryIndulgence = 7433,
+
         /// <summary>
         /// 节制
         /// </summary>

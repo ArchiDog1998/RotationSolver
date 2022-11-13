@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -158,10 +159,7 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     /// <summary>
     /// ËÀ¶·
     /// </summary>
-    public static BaseAction Holmgang { get; } = new(ActionID.Holmgang)
-    {
-        OtherCheck = BaseAction.TankBreakOtherCheck,
-    };
+    public static BaseAction Holmgang { get; } = new(ActionID.Holmgang);
 
     /// <summary>
     /// Âù»Ä±ÀÁÑ
@@ -170,4 +168,12 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     {
         BuffsNeed = new[] { StatusID.PrimalRendReady }
     };
+
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    {
+        //ËÀ¶· Èç¹ûÑª²»¹»ÁË¡£
+        if (Holmgang.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(Holmgang.Target)) return true;
+
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+    }
 }

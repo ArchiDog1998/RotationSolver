@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -16,6 +17,8 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
 
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
+
+    protected static byte MaxAmmo => Level >= 88 ? (byte)3 : (byte)2;
 
     /// <summary>
     /// ÍõÊÒÇ×ÎÀ
@@ -40,9 +43,8 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// <summary>
     /// Î±×°
     /// </summary>
-    public static BaseAction Camouflage { get; } = new(ActionID.Camouflage)
+    public static BaseAction Camouflage { get; } = new(ActionID.Camouflage, true)
     {
-        BuffsProvide = Rampart.BuffsProvide,
         OtherCheck = BaseAction.TankDefenseSelf,
     };
 
@@ -77,7 +79,7 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// <summary>
     /// ÐÇÔÆ
     /// </summary>
-    public static BaseAction Nebula { get; } = new(ActionID.Nebula)
+    public static BaseAction Nebula { get; } = new(ActionID.Nebula, true)
     {
         BuffsProvide = Rampart.BuffsProvide,
         OtherCheck = BaseAction.TankDefenseSelf,
@@ -96,10 +98,7 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// <summary>
     /// ³¬»ðÁ÷ÐÇ
     /// </summary>
-    public static BaseAction Superbolide { get; } = new(ActionID.Superbolide)
-    {
-        OtherCheck = BaseAction.TankBreakOtherCheck,
-    };
+    public static BaseAction Superbolide { get; } = new(ActionID.Superbolide, true);
 
     /// <summary>
     /// ÒôËÙÆÆ
@@ -137,7 +136,6 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// </summary>
     public static BaseAction HeartofStone { get; } = new(ActionID.HeartofStone, true)
     {
-        BuffsProvide = Rampart.BuffsProvide,
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 
@@ -146,15 +144,15 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// </summary>
     public static BaseAction FatedCircle { get; } = new(ActionID.FatedCircle)
     {
-        OtherCheck = b => JobGauge.Ammo > (Level >= 88 ? 2 : 1),
+        OtherCheck = b => JobGauge.Ammo > 0,
     };
 
     /// <summary>
     /// ÑªÈÀ
     /// </summary>
-    public static BaseAction Bloodfest { get; } = new(ActionID.Bloodfest)
+    public static BaseAction Bloodfest { get; } = new(ActionID.Bloodfest, true)
     {
-        OtherCheck = b => JobGauge.Ammo == 0,
+        OtherCheck = b =>¡¡MaxAmmo - JobGauge.Ammo > 1,
     };
 
     /// <summary>
@@ -162,7 +160,7 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// </summary>
     public static BaseAction DoubleDown { get; } = new(ActionID.DoubleDown)
     {
-        OtherCheck = b => JobGauge.Ammo >= 2,
+        OtherCheck = b => JobGauge.Ammo > 1,
     };
 
     /// <summary>
@@ -170,7 +168,7 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// </summary>
     public static BaseAction SavageClaw { get; } = new(ActionID.SavageClaw)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(GnashingFang.ID) == SavageClaw.ID,
+        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang) == ActionID.SavageClaw,
     };
 
     /// <summary>
@@ -178,7 +176,8 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// </summary>
     public static BaseAction WickedTalon { get; } = new(ActionID.WickedTalon)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(GnashingFang.ID) == WickedTalon.ID,
+        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang) 
+        == ActionID.WickedTalon,
     };
 
     /// <summary>
@@ -186,7 +185,8 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// </summary>
     public static BaseAction JugularRip { get; } = new(ActionID.JugularRip)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == JugularRip.ID,
+        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)
+        == ActionID.JugularRip,
     };
 
     /// <summary>
@@ -194,7 +194,8 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// </summary>
     public static BaseAction AbdomenTear { get; } = new(ActionID.AbdomenTear)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == AbdomenTear.ID,
+        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)
+        == ActionID.AbdomenTear,
     };
 
     /// <summary>
@@ -202,7 +203,8 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// </summary>
     public static BaseAction EyeGouge { get; } = new(ActionID.EyeGouge)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == EyeGouge.ID,
+        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)
+        == ActionID.EyeGouge,
     };
 
     /// <summary>
@@ -210,7 +212,15 @@ internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> wher
     /// </summary>
     public static BaseAction Hypervelocity { get; } = new(ActionID.Hypervelocity)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(16155) == Hypervelocity.ID,
+        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)
+        == ActionID.Hypervelocity,
     };
+
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    {
+        //³¬»ðÁ÷ÐÇ Èç¹ûÐ»²»¹»ÁË¡£
+        if (Superbolide.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(Superbolide.Target)) return true;
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+    }
 }
 

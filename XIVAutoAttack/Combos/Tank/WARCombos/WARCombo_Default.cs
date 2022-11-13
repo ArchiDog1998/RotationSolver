@@ -91,13 +91,6 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
 
         return false;
     }
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
-    {
-        //死斗 如果血不够了。
-        if (Holmgang.ShouldUse(out act)) return true;
-
-        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
-    }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {

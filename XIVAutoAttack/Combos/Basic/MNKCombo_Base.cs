@@ -32,7 +32,7 @@ internal abstract class MNKCombo_Base<TCmd> : JobGaugeCombo<MNKGauge, TCmd> wher
     /// <summary>
     /// 双掌打 伤害提高
     /// </summary>
-    public static BaseAction TwinSnakes { get; } = new(ActionID.TwinSnakes);
+    public static BaseAction TwinSnakes { get; } = new(ActionID.TwinSnakes, isEot: true);
 
     /// <summary>
     /// 正拳
@@ -65,7 +65,7 @@ internal abstract class MNKCombo_Base<TCmd> : JobGaugeCombo<MNKGauge, TCmd> wher
     /// <summary>
     /// 斗气
     /// </summary>
-    public static BaseAction Meditation { get; } = new(ActionID.Meditation);
+    public static BaseAction Meditation { get; } = new(ActionID.Meditation, true);
 
     /// <summary>
     /// 铁山靠
@@ -91,7 +91,7 @@ internal abstract class MNKCombo_Base<TCmd> : JobGaugeCombo<MNKGauge, TCmd> wher
     /// <summary>
     /// 红莲极意 提高dps
     /// </summary>
-    public static BaseAction RiddleofFire { get; } = new(ActionID.RiddleofFire);
+    public static BaseAction RiddleofFire { get; } = new(ActionID.RiddleofFire, true);
 
     /// <summary>
     /// 突进技能
@@ -139,7 +139,7 @@ internal abstract class MNKCombo_Base<TCmd> : JobGaugeCombo<MNKGauge, TCmd> wher
     /// <summary>
     /// 演武
     /// </summary>
-    public static BaseAction FormShift { get; } = new(ActionID.FormShift)
+    public static BaseAction FormShift { get; } = new(ActionID.FormShift, true)
     {
         BuffsProvide = new[] { StatusID.FormlessFist, StatusID.PerfectBalance },
     };
@@ -147,7 +147,7 @@ internal abstract class MNKCombo_Base<TCmd> : JobGaugeCombo<MNKGauge, TCmd> wher
     /// <summary>
     /// 金刚极意 盾
     /// </summary>
-    public static BaseAction RiddleofEarth { get; } = new(ActionID.RiddleofEarth, shouldEndSpecial: true)
+    public static BaseAction RiddleofEarth { get; } = new(ActionID.RiddleofEarth, true, shouldEndSpecial: true)
     {
         BuffsProvide = new[] { StatusID.RiddleofEarth },
     };
@@ -155,6 +155,5 @@ internal abstract class MNKCombo_Base<TCmd> : JobGaugeCombo<MNKGauge, TCmd> wher
     /// <summary>
     /// 疾风极意
     /// </summary>
-    public static BaseAction RiddleofWind { get; } = new(ActionID.RiddleofWind);
-
+    public static BaseAction RiddleofWind { get; } = new(ActionID.RiddleofWind, true);
 }

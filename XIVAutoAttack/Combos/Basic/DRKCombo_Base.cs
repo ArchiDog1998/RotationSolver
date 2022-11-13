@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -53,32 +54,26 @@ internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> wher
     /// <summary>
     /// 暗黑锋
     /// </summary>
-    public static BaseAction EdgeofDarkness { get; } = new(ActionID.EdgeofDarkness)
-    {
-        OtherCheck = b => !IsLastAction(true, EdgeofDarkness, FloodofDarkness) && Player.CurrentMp >= 3000,
-    };
+    public static BaseAction EdgeofDarkness { get; } = new(ActionID.EdgeofDarkness);
 
     /// <summary>
     /// 嗜血
     /// </summary>
-    public static BaseAction BloodWeapon { get; } = new(ActionID.BloodWeapon)
-    {
-        OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
-    };
+    public static BaseAction BloodWeapon { get; } = new(ActionID.BloodWeapon);
 
     /// <summary>
     /// 暗影墙
     /// </summary>
-    public static BaseAction ShadowWall { get; } = new(ActionID.ShadowWall)
+    public static BaseAction ShadowWall { get; } = new(ActionID.ShadowWall, true)
     {
-        BuffsProvide = new[] { StatusID.ShadowWall },
+        BuffsProvide = Rampart.BuffsProvide,
         OtherCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>
     /// 弃明投暗
     /// </summary>
-    public static BaseAction DarkMind { get; } = new(ActionID.DarkMind)
+    public static BaseAction DarkMind { get; } = new(ActionID.DarkMind, true)
     {
         OtherCheck = BaseAction.TankDefenseSelf,
     };
@@ -86,10 +81,7 @@ internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> wher
     /// <summary>
     /// 行尸走肉
     /// </summary>
-    public static BaseAction LivingDead { get; } = new(ActionID.LivingDead)
-    {
-        OtherCheck = BaseAction.TankBreakOtherCheck,
-    };
+    public static BaseAction LivingDead { get; } = new(ActionID.LivingDead, true);
 
     /// <summary>
     /// 腐秽大地
@@ -125,15 +117,15 @@ internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> wher
     /// <summary>
     /// 寂灭
     /// </summary>
-    public static BaseAction Quietus { get; } = new(ActionID.Quietus);
+    public static BaseAction Quietus { get; } = new(ActionID.Quietus)
+    {
+        OtherCheck = Bloodspiller.OtherCheck,
+    };
 
     /// <summary>
     /// 血乱
     /// </summary>
-    public static BaseAction Delirium { get; } = new(ActionID.Delirium)
-    {
-        OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
-    };
+    public static BaseAction Delirium { get; } = new(ActionID.Delirium);
 
     /// <summary>
     /// 至黑之夜
@@ -158,7 +150,7 @@ internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> wher
     /// </summary>
     public static BaseAction LivingShadow { get; } = new(ActionID.LivingShadow)
     {
-        OtherCheck = b => JobGauge.Blood >= 50 && JobGauge.DarksideTimeRemaining > 1,
+        OtherCheck = b => JobGauge.Blood >= 50,
     };
 
     /// <summary>
@@ -174,7 +166,7 @@ internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> wher
     /// </summary>
     public static BaseAction Shadowbringer { get; } = new(ActionID.Shadowbringer)
     {
-        OtherCheck = b => JobGauge.DarksideTimeRemaining > 1 && !IsLastAction(true, Shadowbringer),
+        OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
     };
 
     /// <summary>
@@ -184,4 +176,13 @@ internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> wher
     {
         BuffsNeed = new[] { StatusID.SaltedEarth },
     };
+
+
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    {
+        //行尸走肉
+        if (LivingDead.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(LivingDead.Target)) return true;
+
+        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+    }
 }
