@@ -126,7 +126,7 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
         if (!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) || !MythrilTempest.EnoughLevel)
         {
             //¿ñ±©
-            if (!new BaseAction(7389).IsCoolDown && Berserk.ShouldUse(out act)) return true;
+            if (Berserk.ShouldUse(out act)) return true;
         }
 
         if (Player.GetHealthRatio() < 0.6f)

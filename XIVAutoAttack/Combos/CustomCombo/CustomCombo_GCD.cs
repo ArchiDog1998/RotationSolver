@@ -75,7 +75,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                         if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                         {
                             IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
-                                Service.IconReplacer.OriginalHook(GCDaction.ID)).Icon,
+                                (uint)Service.IconReplacer.OriginalHook((ActionID)GCDaction.ID)).Icon,
                         });
                         OverlayWindow.EnemyLocationTarget = GCDaction.Target;
                         OverlayWindow.ShouldLocation = GCDaction.EnermyLocation;

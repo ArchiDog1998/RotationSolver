@@ -1,4 +1,5 @@
 ﻿using ImGuiScene;
+using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Actions
 {

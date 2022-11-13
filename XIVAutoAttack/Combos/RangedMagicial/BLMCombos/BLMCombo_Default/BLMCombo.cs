@@ -370,7 +370,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         }
         if (Thunder2.ShouldUse(out act) && !IsLastSpell(true, Thunder2))
         {
-            if (HasThunder || !Thunder2.Target.HaveStatusFromSelf(StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4)) return true;
+            if (HasThunder || !Thunder2.Target.HaveStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4)) return true;
         }
 
         if (Fire2.ShouldUse(out act) && Level >= 20)

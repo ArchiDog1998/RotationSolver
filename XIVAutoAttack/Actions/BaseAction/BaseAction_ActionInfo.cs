@@ -21,7 +21,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         {
             get
             {
-                if (StatusHelper.ActionLocations.TryGetValue(ID, out var location))
+                if (StatusHelper.ActionLocations.TryGetValue((ActionID)ID, out var location))
                 {
                     return location.Loc;
                 }

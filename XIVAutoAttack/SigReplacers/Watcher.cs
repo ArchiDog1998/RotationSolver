@@ -126,7 +126,7 @@ namespace XIVAutoAttack.SigReplacers
 
             //事后骂人！
             if (Service.Configuration.SayoutLocationWrong
-                && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
+                && StatusHelper.ActionLocations.TryGetValue((ActionID)id, out var loc)
                 && loc.Tags.Length > 0 && !loc.Tags.Contains(flag))
                 //&& loc != tar.FindEnemyLocation() && tar.HasLocationSide()
                 //&& !Service.ClientState.LocalPlayer.HaveStatus(ObjectStatus.TrueNorth))

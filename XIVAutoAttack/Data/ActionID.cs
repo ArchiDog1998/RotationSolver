@@ -1,7 +1,7 @@
 ﻿
 namespace XIVAutoAttack.Data
 {
-    internal enum ActionID : uint
+    public enum ActionID : uint
     {
         #region Astrologian
 
@@ -2699,5 +2699,106 @@ namespace XIVAutoAttack.Data
         Temperance = 16536,
         #endregion
 
+        #region General
+        /// <summary>
+        /// 昏乱
+        /// </summary>
+        Addle = 7560,
+
+        /// <summary>
+        /// 即刻咏唱
+        /// </summary>
+        Swiftcast = 7561,
+
+        /// <summary>
+        /// 康复
+        /// </summary>
+        Esuna = 7568,
+
+        /// <summary>
+        /// 营救
+        /// </summary>
+        Rescue = 7571,
+
+        /// <summary>
+        /// 沉静
+        /// </summary>
+        Repose = 16560,
+
+        /// <summary>
+        /// 醒梦
+        /// </summary>
+        LucidDreaming = 7562,
+
+        /// <summary>
+        /// 内丹
+        /// </summary>
+        SecondWind = 7541,
+
+        /// <summary>
+        /// 亲疏自行
+        /// </summary>
+        ArmsLength = 7548,
+
+        /// <summary>
+        /// 铁壁
+        /// </summary>
+        Rampart = 7531,
+
+        /// <summary>
+        /// 挑衅
+        /// </summary>
+        Provoke = 7533,
+
+        /// <summary>
+        /// 雪仇
+        /// </summary>
+        Reprisal = 7535,
+
+        /// <summary>
+        /// 退避
+        /// </summary>
+        Shirk = 7537,
+
+        /// <summary>
+        /// 浴血
+        /// </summary>
+        Bloodbath = 7542,
+
+        /// <summary>
+        /// 牵制
+        /// </summary>
+        Feint = 7549,
+
+        /// <summary>
+        /// 插言
+        /// </summary>
+        Interject = 7538,
+
+        /// <summary>
+        /// 下踢
+        /// </summary>
+        LowBlow = 7540,
+
+        /// <summary>
+        /// 7863
+        /// </summary>
+        LegSweep = 7863,
+
+        /// <summary>
+        /// 伤头
+        /// </summary>
+        HeadGraze = 7551,
+
+        /// <summary>
+        /// 沉稳咏唱
+        /// </summary>
+        Surecast = 7559,
+
+        /// <summary>
+        /// 真北
+        /// </summary>
+        TrueNorth = 7546,
+        #endregion
     }
 }

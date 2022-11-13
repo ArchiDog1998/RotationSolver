@@ -14,7 +14,7 @@ namespace XIVAutoAttack.Helpers
     internal static class StatusHelper
     {
         public record LocationInfo(EnemyLocation Loc, byte[] Tags);
-        public static readonly SortedList<uint, LocationInfo> ActionLocations = new SortedList<uint, LocationInfo>()
+        public static readonly SortedList<ActionID, LocationInfo> ActionLocations = new SortedList<ActionID, LocationInfo>()
         {
             {ActionID.FangandClaw, new( EnemyLocation.Side, new byte[] { 13 })},
             {ActionID.WheelingThrust, new(EnemyLocation.Back, new byte[] { 10 }) },

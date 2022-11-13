@@ -48,16 +48,16 @@ namespace XIVAutoAttack.Actions.BaseAction
         }
         public bool IsEnabled
         {
-            get => !Service.Configuration.DiabledActions.Contains(ID);
+            get => !Service.Configuration.DiabledActions.Contains((uint)ID);
             set
             {
                 if (value)
                 {
-                    Service.Configuration.DiabledActions.Remove(ID);
+                    Service.Configuration.DiabledActions.Remove((uint)ID);
                 }
                 else
                 {
-                    Service.Configuration.DiabledActions.Add(ID);
+                    Service.Configuration.DiabledActions.Add((uint)ID);
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 调整后的ID(真实技能ID)
         /// </summary>
-        public uint AdjustedID => Service.IconReplacer.OriginalHook(ID);
+        public uint AdjustedID => (uint)Service.IconReplacer.OriginalHook((ActionID)ID);
 
         public uint IconID { get; }
         internal bool IsGeneralGCD { get; }
