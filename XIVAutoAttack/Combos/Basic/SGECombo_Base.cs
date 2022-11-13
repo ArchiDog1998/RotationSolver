@@ -69,15 +69,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
 
             if (targets.Length == 0) return null;
 
-            foreach (var tar in targets)
-            {
-                if (tar.TargetObject?.TargetObject?.ObjectId == tar.ObjectId)
-                {
-                    return tar;
-                }
-            }
-
-            return targets[0];
+            return TargetFilter.FindAttackedTarget(targets);
         },
         OtherCheck = b => !b.HaveStatus(true, StatusID.Kardion),
     };
@@ -100,7 +92,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
     /// <summary>
     /// 均衡
     /// </summary>
-    public static BaseAction Eukrasia { get; } = new(ActionID.Eukrasia)
+    public static BaseAction Eukrasia { get; } = new(ActionID.Eukrasia, true)
     {
         OtherCheck = b => !JobGauge.Eukrasia,
     };
@@ -137,7 +129,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
     /// </summary>
     public static BaseAction Druochole { get; } = new(ActionID.Druochole, true)
     {
-        OtherCheck = b => JobGauge.Addersgall > 0 && HealHelper.SingleHeal(b, 600, 0.9, 0.85),
+        OtherCheck = b => JobGauge.Addersgall > 0,
     };
 
     /// <summary>
@@ -178,7 +170,10 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
     /// <summary>
     /// 箭毒
     /// </summary>
-    public static BaseAction Toxikon { get; } = new(ActionID.Toxikon);
+    public static BaseAction Toxikon { get; } = new(ActionID.Toxikon)
+    {
+        OtherCheck = b => JobGauge.Addersting > 0,
+    };
 
     /// <summary>
     /// 输血
@@ -207,7 +202,10 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
     /// <summary>
     /// 根素
     /// </summary>
-    public static BaseAction Rhizomata { get; } = new(ActionID.Rhizomata);
+    public static BaseAction Rhizomata { get; } = new(ActionID.Rhizomata)
+    {
+        OtherCheck = b => JobGauge.Addersgall < 3 && JobGauge.AddersgallTimer < 10000,
+    };
 
     /// <summary>
     /// 整体论

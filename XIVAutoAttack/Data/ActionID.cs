@@ -2410,6 +2410,11 @@ namespace XIVAutoAttack.Data
         RuinIV = 7426,
 
         /// <summary>
+        /// 星极超流
+        /// </summary>
+        AstralFlow = 25822,
+
+        /// <summary>
         /// 龙神迸发
         /// </summary>
         EnkindleBahamut = 7429,

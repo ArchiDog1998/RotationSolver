@@ -12,7 +12,6 @@ internal abstract class WHMCombo_Base<TCmd> : JobGaugeCombo<WHMGauge, TCmd> wher
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.WhiteMage, ClassJobID.Conjurer };
     private sealed protected override BaseAction Raise => Raise1;
 
-
     #region 治疗
     /// <summary>
     /// 治疗
@@ -111,27 +110,27 @@ internal abstract class WHMCombo_Base<TCmd> : JobGaugeCombo<WHMGauge, TCmd> wher
     #endregion
     #region 输出
     /// <summary>
-    /// 飞石 
+    /// 飞石 坚石 垒石 崩石 闪耀 闪灼
     /// </summary>
-    public static BaseAction Stone { get; } = new(ActionID.Stone);//坚石127 垒石3568 崩石7431 闪耀16533 闪灼25859
+    public static BaseAction Stone { get; } = new(ActionID.Stone);
 
     /// <summary>
-    /// 疾风 Dot
+    /// 疾风 烈风 天辉
     /// </summary>
-    public static BaseAction Aero { get; } = new(ActionID.Aero, isEot: true)//烈风132 天辉16532
+    public static BaseAction Aero { get; } = new(ActionID.Aero, isEot: true)
     {
         TargetStatus = new StatusID[]
-      {
+        {
             StatusID.Aero,
             StatusID.Aero2,
             StatusID.Dia,
-      }
+        }
     };
 
     /// <summary>
-    /// 神圣
+    /// 神圣 豪圣
     /// </summary>
-    public static BaseAction Holy { get; } = new(ActionID.Holy);//豪圣 25860
+    public static BaseAction Holy { get; } = new(ActionID.Holy);
 
     /// <summary>
     /// 法令

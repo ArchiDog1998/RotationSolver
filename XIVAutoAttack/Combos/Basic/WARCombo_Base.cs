@@ -88,7 +88,8 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     /// </summary>
     public static BaseAction InnerBeast { get; } = new(ActionID.InnerBeast)
     {
-        OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatus(true, StatusID.InnerRelease)),
+        //!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) &&
+        OtherCheck = b =>  (JobGauge.BeastGauge >= 50 || Player.HaveStatus(true, StatusID.InnerRelease)),
     };
 
     /// <summary>
@@ -105,25 +106,26 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     public static BaseAction Infuriate { get; } = new(ActionID.Infuriate)
     {
         BuffsProvide = new[] { StatusID.InnerRelease },
-        OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0 && JobGauge.BeastGauge < 50,
+        OtherCheck = b => HaveHostileInRange && JobGauge.BeastGauge < 50,
     };
+
     /// <summary>
     /// 狂暴
     /// </summary>
     public static BaseAction Berserk { get; } = new(ActionID.Berserk)
     {
-        OtherCheck = b => TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length > 0,
+        OtherCheck = b => HaveHostileInRange,
     };
 
     /// <summary>
     /// 战栗
     /// </summary>
-    public static BaseAction ThrillofBattle { get; } = new(ActionID.ThrillofBattle);
+    public static BaseAction ThrillofBattle { get; } = new(ActionID.ThrillofBattle, true);
 
     /// <summary>
     /// 泰然自若
     /// </summary>
-    public static BaseAction Equilibrium { get; } = new(ActionID.Equilibrium);
+    public static BaseAction Equilibrium { get; } = new(ActionID.Equilibrium, true);
 
     /// <summary>
     /// 原初的勇猛
@@ -147,7 +149,6 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     /// </summary>
     public static BaseAction RawIntuition { get; } = new(ActionID.RawIntuition)
     {
-        BuffsProvide = Rampart.BuffsProvide,
         OtherCheck = BaseAction.TankDefenseSelf,
     };
 

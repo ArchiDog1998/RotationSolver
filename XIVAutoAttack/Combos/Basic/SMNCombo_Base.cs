@@ -13,8 +13,8 @@ internal abstract class SMNCombo_Base<TCmd> : JobGaugeCombo<SMNGauge, TCmd> wher
     protected override bool CanHealSingleSpell => false;
     private sealed protected override BaseAction Raise => Resurrection;
 
-    protected static bool InBahamut => Service.IconReplacer.OriginalHook(25822) == Deathflare.ID;
-    protected static bool InPhoenix => Service.IconReplacer.OriginalHook(25822) == Rekindle.ID;
+    protected static bool InBahamut => Service.IconReplacer.OriginalHook(ActionID.AstralFlow) == ActionID.Deathflare;
+    protected static bool InPhoenix => Service.IconReplacer.OriginalHook(ActionID.AstralFlow) == ActionID.Rekindle;
     protected static bool InBreak => InBahamut || InPhoenix || !SummonBahamut.EnoughLevel;
 
     //宝石耀
@@ -42,13 +42,13 @@ internal abstract class SMNCombo_Base<TCmd> : JobGaugeCombo<SMNGauge, TCmd> wher
     };
 
     //灼热之光 团辅
-    public static BaseAction SearingLight { get; } = new(ActionID.SearingLight)
+    public static BaseAction SearingLight { get; } = new(ActionID.SearingLight, true)
     {
         OtherCheck = b => InCombat && !InBahamut && !InPhoenix
     };
 
     //守护之光 给自己戴套
-    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis);
+    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis, true);
 
     //医术
     public static BaseAction Physick { get; } = new(ActionID.Physick, true);
