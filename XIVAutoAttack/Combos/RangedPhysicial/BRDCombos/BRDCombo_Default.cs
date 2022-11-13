@@ -159,7 +159,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         {
             if (Player.HaveStatus(true, StatusID.BattleVoice) && (Player.HaveStatus(true, StatusID.RadiantFinale) || !RadiantFinale.EnoughLevel)) return true;
 
-            if (!BattleVoice.WillHaveOneCharge(10, false) && !RadiantFinale.WillHaveOneCharge(10, false)) return true;
+            if (!BattleVoice.WillHaveOneCharge(10) && !RadiantFinale.WillHaveOneCharge(10)) return true;
 
             if (RagingStrikes.IsCoolDown && !Player.HaveStatus(true, StatusID.RagingStrikes)) return true;
         }

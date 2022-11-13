@@ -14,30 +14,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 {
     internal partial class BaseAction 
     {
-        internal float Range => ActionManager.GetActionRange(ID);
-
-
-        internal virtual EnemyLocation EnermyLocation
-        {
-            get
-            {
-                if (StatusHelper.ActionLocations.TryGetValue((ActionID)ID, out var location))
-                {
-                    return location.Loc;
-                }
-                return EnemyLocation.None;
-            }
-        }
-        internal virtual unsafe uint MPNeed
-        {
-            get
-            {
-                var mp = (uint)ActionManager.GetActionCost(ActionType.Spell, AdjustedID, 0, 0, 0, 0);
-                if (mp < 100) return 0;
-                return mp;
-            }
-        }
-
+        private float Range => ActionManager.GetActionRange(ID);
 
         /// <summary>
         /// 如果之前是这些ID，那么就不会执行。
@@ -64,8 +41,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         internal Func<BattleChara, bool> OtherCheck { get; set; } = null;
 
-
-        internal bool WillCooldown
+        private bool WillCooldown
         {
             get
             {
@@ -96,16 +72,15 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// 判断是否需要使用这个技能
         /// </summary>
         /// <param name="act">返回的技能</param>
-        /// <param name="lastAct">上一个Combo技能的值，如果需要算Combo，请输入他！<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
         /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供，不判断AOE技能的敌人数量是否达标.</param>
         /// <param name="emptyOrSkipCombo">如果有层数，放完所有层数，不判断是否为Combo<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
         /// <returns>这个技能能不能用</returns>
-        public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+        public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
 
             //用户不让用！
-            if (!skipDisable && !IsEnabled) return false;
+            if (!IsEnabled) return false;
 
             //等级不够。
             if (!EnoughLevel) return false;

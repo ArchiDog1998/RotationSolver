@@ -56,11 +56,10 @@ namespace XIVAutoAttack.Helpers
         /// 这个技能已经进入冷却多少秒了
         /// </summary>
         /// <param name="gcdelapsed">已经进行了多少秒了</param>
-        /// <param name="addWeaponElapsed">是否要把<see cref="ActionUpdater.WeaponElapsed"/>加进去</param>
         /// <returns>是否已经冷却了这么久了</returns>
-        internal static bool ElapsedAfter(float elapsed, float gcdelapsed, bool addWeaponElapsed = true)
+        internal static bool ElapsedAfter(float elapsed, float gcdelapsed)
         {
-            if (addWeaponElapsed) gcdelapsed += ActionUpdater.WeaponElapsed;
+            gcdelapsed += ActionUpdater.WeaponElapsed;
             return IsLessThan(gcdelapsed, elapsed);
         }
 

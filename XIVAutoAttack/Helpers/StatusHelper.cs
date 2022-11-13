@@ -38,7 +38,6 @@ namespace XIVAutoAttack.Helpers
         /// </summary>
         /// <param name="gcdCount">要隔着多少个完整的GCD</param>
         /// <param name="abilityCount">再多少个能力技之后</param>
-        /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点状态是否已经消失</returns>
         internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool isFromSelf = true, params StatusID[] effectIDs)
         {
@@ -49,8 +48,7 @@ namespace XIVAutoAttack.Helpers
         /// <summary>
         /// 状态是否在几秒后消失。
         /// </summary>
-        /// <param name="remain">要多少秒呢</param>
-        /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
+        /// <param name="remainWant">要多少秒呢</param>
         /// <returns>这个时间点状态是否已经消失</returns>
         internal static bool WillStatusEnd(this BattleChara obj, float remainWant,  bool isFromSelf = true, params StatusID[] effectIDs)
         {
@@ -77,7 +75,7 @@ namespace XIVAutoAttack.Helpers
             return stacks.Max();
         }
 
-        internal static byte[] FindStatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+        private static byte[] FindStatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
             return obj.FindStatus(isFromSelf, effectIDs).Select(status => Math.Max(status.StackCount, (byte)1)).ToArray();
         }

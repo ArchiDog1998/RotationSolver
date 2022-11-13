@@ -77,7 +77,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
         //单体三连
         //如果烈牙剩0.5秒冷却好,不释放基础连击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-        if (GnashingFang.IsCoolDown && GnashingFang.WillHaveOneCharge((float)0.5, false) && GnashingFang.EnoughLevel) return false;
+        if (GnashingFang.IsCoolDown && GnashingFang.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;
         if (SolidBarrel.ShouldUse(out act)) return true;
         if (BrutalShell.ShouldUse(out act)) return true;
         if (KeenEdge.ShouldUse(out act)) return true;
@@ -104,13 +104,13 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             if (InDungeonsMiddle) return true;
 
             //等级小于烈牙,
-            if (!GnashingFang.EnoughLevel && (Player.HaveStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(15, false))) return true;
+            if (!GnashingFang.EnoughLevel && (Player.HaveStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(15))) return true;
 
             //爆发期,烈牙之后
             if (Player.HaveStatus(true, StatusID.NoMercy) && GnashingFang.IsCoolDown) return true;
 
             //非爆发期
-            if (!Player.HaveStatus(true, StatusID.NoMercy) && !GnashingFang.WillHaveOneCharge(20, false)) return true;
+            if (!Player.HaveStatus(true, StatusID.NoMercy) && !GnashingFang.WillHaveOneCharge(20)) return true;
         }
 
         //弓形冲波
@@ -216,19 +216,19 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             if (InDungeonsMiddle) return true;
 
             //无情中3弹烈牙
-            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (Player.HaveStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(55, false))) return true;
+            if (JobGauge.Ammo == (Level >= 88 ? 3 : 2) && (Player.HaveStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(55))) return true;
 
             //无情外烈牙
-            if (JobGauge.Ammo > 0 && !NoMercy.WillHaveOneCharge(17, false) && NoMercy.WillHaveOneCharge(35, false)) return true;
+            if (JobGauge.Ammo > 0 && !NoMercy.WillHaveOneCharge(17) && NoMercy.WillHaveOneCharge(35)) return true;
 
             //3弹且将会溢出子弹的情况,提前在无情前进烈牙
-            if (JobGauge.Ammo == 3 && IsLastWeaponSkill(BrutalShell.ID) && NoMercy.WillHaveOneCharge(3, false)) return true;
+            if (JobGauge.Ammo == 3 && IsLastWeaponSkill(BrutalShell.ID) && NoMercy.WillHaveOneCharge(3)) return true;
 
             //1弹且血壤快冷却好了
-            if (JobGauge.Ammo == 1 && !NoMercy.WillHaveOneCharge(55, false) && Bloodfest.WillHaveOneCharge(5, false)) return true;
+            if (JobGauge.Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && Bloodfest.WillHaveOneCharge(5)) return true;
 
             //4GCD起手烈牙判断
-            if (JobGauge.Ammo == 1 && !NoMercy.WillHaveOneCharge(55, false) && (!Bloodfest.IsCoolDown && Bloodfest.EnoughLevel || !Bloodfest.EnoughLevel)) return true;
+            if (JobGauge.Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && (!Bloodfest.IsCoolDown && Bloodfest.EnoughLevel || !Bloodfest.EnoughLevel)) return true;
         }
         return false;
     }
@@ -282,7 +282,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             if (SonicBreak.IsCoolDown && Player.HaveStatus(true, StatusID.NoMercy)) return true;
 
             //2弹无情的特殊判断,提前使用倍攻
-            if (Player.HaveStatus(true, StatusID.NoMercy) && !NoMercy.WillHaveOneCharge(55, false) && Bloodfest.WillHaveOneCharge(5, false)) return true;
+            if (Player.HaveStatus(true, StatusID.NoMercy) && !NoMercy.WillHaveOneCharge(55) && Bloodfest.WillHaveOneCharge(5)) return true;
 
         }
         return false;
@@ -301,17 +301,17 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             if (InDungeonsMiddle && DemonSlice.ShouldUse(out _)) return false;
 
             //如果烈牙剩0.5秒冷却好,不释放爆发击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-            if (SonicBreak.IsCoolDown && SonicBreak.WillHaveOneCharge((float)0.5, false) && GnashingFang.EnoughLevel) return false;
+            if (SonicBreak.IsCoolDown && SonicBreak.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;
 
             //无情中爆发击判定
             if (Player.HaveStatus(true, StatusID.NoMercy) &&
                 JobGauge.AmmoComboStep == 0 &&
-                !GnashingFang.WillHaveOneCharge(1, false)) return true;
+                !GnashingFang.WillHaveOneCharge(1)) return true;
             if (Level < 88 && JobGauge.Ammo == 2) return true;
             //无情外防止溢出
             if (IsLastWeaponSkill(BrutalShell.ID) &&
                 (JobGauge.Ammo == (Level >= 88 ? 3 : 2) ||
-                Bloodfest.WillHaveOneCharge(6, false) && JobGauge.Ammo <= 2 && !NoMercy.WillHaveOneCharge(10, false) && Bloodfest.EnoughLevel)) return true;
+                Bloodfest.WillHaveOneCharge(6) && JobGauge.Ammo <= 2 && !NoMercy.WillHaveOneCharge(10) && Bloodfest.EnoughLevel)) return true;
 
         }
         return false;

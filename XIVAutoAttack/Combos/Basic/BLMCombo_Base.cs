@@ -32,14 +32,14 @@ namespace XIVAutoAttack.Combos.Basic
             {
             }
 
-            public override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+            public override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false)
             {
                 if (CastTime - 0.5f > JobGauge.ElementTimeRemaining / 1000f)
                 {
                     act = null;
                     return false;
                 }
-                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
+                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo);
             }
         }
 

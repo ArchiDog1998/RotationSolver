@@ -31,14 +31,14 @@ namespace XIVAutoAttack.Combos.Basic
             {
             }
 
-            public sealed override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipEnable = false)
+            public sealed override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false)
             {
                 if (!OnSlot)
                 {
                     act = null;
                     return false;
                 }
-                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo, skipEnable);
+                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo);
             }
         }
 

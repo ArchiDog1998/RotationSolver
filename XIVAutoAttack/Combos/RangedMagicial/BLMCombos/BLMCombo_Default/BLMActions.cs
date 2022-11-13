@@ -84,7 +84,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         }
 
         //星灵转冰
-        if (JobGauge.InAstralFire && abilityRemain == 2 && (Manafont.ElapsedAfter(3, false) || !Manafont.IsCoolDown))
+        if (JobGauge.InAstralFire && abilityRemain == 2 && (Manafont.ElapsedAfter(3) || !Manafont.IsCoolDown))
         {
             if (IsLastSpell(true, Despair) || IsOldSpell(1, Despair) && IsLastSpell(true, Xenoglossy, Thunder)) return true;
         }
@@ -165,7 +165,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         {
             if (fireOpener && Leylines.IsCoolDown && !Leylines.ElapsedAfterGCD(1) && !Manafont.IsCoolDown) return true;
 
-            if (F4RemainingNumber() == 3 && Triplecast.ChargesCount == 1 && Level == 90) return false;
+            if (F4RemainingNumber() == 3 && Triplecast.CurrentCharges == 1 && Level == 90) return false;
 
             if (Player.CurrentMp == 0) return false;
 
@@ -193,7 +193,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             return false;
         }
 
-        if (Triplecast.IsCoolDown && Triplecast.ChargesCount == 1 && Player.HaveStatus(true, StatusID.Triplecast)) return false;
+        if (Triplecast.IsCoolDown && Triplecast.CurrentCharges == 1 && Player.HaveStatus(true, StatusID.Triplecast)) return false;
         //if (!IsLastSpell(true, Actions.Thunder)) return true;
         return true;
 
@@ -340,7 +340,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (StandardLoop && (Player.CurrentMp == 0 || !CanUseFire4(out _) && !CanUseDespair(out _))) return true;
 
         //双星灵
-        if (JobGauge.InAstralFire && !CanUseFire4(out _) && !CanUseDespair(out _) && (JobGauge.ElementTimeRemaining < CooldownHelper.CalcSpellTime(3000) - 0.5 || Player.CurrentMp <= 1200) && !JobGauge.IsParadoxActive && (Manafont.ElapsedAfter(3, false) || !Manafont.IsCoolDown)) return true;
+        if (JobGauge.InAstralFire && !CanUseFire4(out _) && !CanUseDespair(out _) && (JobGauge.ElementTimeRemaining < CooldownHelper.CalcSpellTime(3000) - 0.5 || Player.CurrentMp <= 1200) && !JobGauge.IsParadoxActive && (Manafont.ElapsedAfter(3) || !Manafont.IsCoolDown)) return true;
 
         return false;
     }
@@ -386,7 +386,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //上个技能是异言pass
             if (IsLastSpell(true, Xenoglossy)) return false;
             //魔泉时
-            if (!Manafont.ElapsedAfter(3, false) && Manafont.IsCoolDown) return false;
+            if (!Manafont.ElapsedAfter(3) && Manafont.IsCoolDown) return false;
 
             if (TargetHasThunder && !TargetThunderWillEnd(8)) return false;
 
@@ -457,7 +457,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //起手
             if (iceOpener && !JobGauge.IsParadoxActive && Player.CurrentMp <= 1200) return true;
             //魔泉时
-            if (!Manafont.ElapsedAfter(3, false) && Manafont.IsCoolDown) return false;
+            if (!Manafont.ElapsedAfter(3) && Manafont.IsCoolDown) return false;
 
             //未来观测卡跳蓝(三连咏唱)
             if (BenignMp()) return true;

@@ -43,6 +43,7 @@ namespace XIVAutoAttack.SigReplacers
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static uint LastSpell { get; set; } = 0;
+
         internal static TimeSpan TimeSinceLastAction => DateTime.Now - _timeLastActionUsed;
 
         private static DateTime _timeLastActionUsed = DateTime.Now;

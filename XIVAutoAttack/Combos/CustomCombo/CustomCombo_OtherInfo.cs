@@ -71,6 +71,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static ActionRec[] RecordActions => Watcher.RecordActions;
 
         /// <summary>
+        /// 距离上一个技能释放完后过了多少时间。
+        /// </summary>
+        protected static TimeSpan TimeSinceLastAction => Watcher.TimeSinceLastAction;
+
+        /// <summary>
         /// 上一个魔法是否是<paramref name="actions"/>中的技能
         /// </summary>
         /// <param name="isAdjust">调整后ID</param>
@@ -156,7 +161,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="remainNeed">需要多少秒</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点是否已经结束,即(<paramref name="remain"/> 小于等于 <paramref name="remainNeed"/>)</returns>
-        protected static bool RemainAfter(float remain, float remainNeed, bool addWeaponRemain = true)
-            => CooldownHelper.RecastAfter(remain, remainNeed, addWeaponRemain);
+        protected static bool RemainAfter(float remain, float remainNeed)
+            => CooldownHelper.RecastAfter(remain, remainNeed);
     }
 }

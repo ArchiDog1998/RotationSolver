@@ -1,4 +1,5 @@
-﻿using ImGuiScene;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
 using System;
 using XIVAutoAttack.Data;
@@ -71,14 +72,40 @@ namespace XIVAutoAttack.Actions.BaseAction
         public uint AdjustedID => (uint)Service.IconReplacer.OriginalHook((ActionID)ID);
 
         public uint IconID { get; }
-        internal bool IsGeneralGCD { get; }
+
+        private bool IsGeneralGCD { get; }
+
         internal bool IsRealGCD { get; }
 
-        internal byte CoolDownGroup { get; }
+        private byte CoolDownGroup { get; }
 
-        private Action _action;
+        /// <summary>
+        /// 真实咏唱时间
+        /// </summary>
+        internal unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
 
+        internal virtual EnemyLocation EnermyLocation
+        {
+            get
+            {
+                if (StatusHelper.ActionLocations.TryGetValue((ActionID)ID, out var location))
+                {
+                    return location.Loc;
+                }
+                return EnemyLocation.None;
+            }
+        }
+        internal virtual unsafe uint MPNeed
+        {
+            get
+            {
+                var mp = (uint)ActionManager.GetActionCost(ActionType.Spell, AdjustedID, 0, 0, 0, 0);
+                if (mp < 100) return 0;
+                return mp;
+            }
+        }
 
+        Action _action;
         internal BaseAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false)
         {
             _action = Service.DataManager.GetExcelSheet<Action>().GetRow((uint)actionID);

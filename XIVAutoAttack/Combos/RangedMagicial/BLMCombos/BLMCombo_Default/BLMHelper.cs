@@ -142,7 +142,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     /// <returns></returns>
     internal static bool BenignMp()
     {
-        if (HaveSwift || HasFire || JobGauge.IsParadoxActive || Triplecast.ChargesCount == 0) return false;
+        if (HaveSwift || HasFire || JobGauge.IsParadoxActive || Triplecast.CurrentCharges == 0) return false;
 
         //双星灵时悖论后到星灵前时间
         if (MpBackGCDCanDouble(3) && F4RemainingNumber() == 1)
@@ -188,7 +188,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         //天语经过时间(秒)
         var gcdTime = GCDTime / 1000;
 
-        if (JobGauge.InAstralFire && Transpose.IsCoolDown && !Transpose.ElapsedAfter(0.1f, false))
+        if (JobGauge.InAstralFire && Transpose.IsCoolDown && !Transpose.ElapsedAfter(0.1f))
         {
             MPNextUpInCurrGCD = (3 - (ActionUpdater.MPUpdateElapsed - ActionUpdater.WeaponElapsed)) % 3;
             TsPointElapsed = ActionUpdater.WeaponElapsed - 0.1;// - (15000 - JobGauge.ElementTimeRemaining);

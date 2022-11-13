@@ -111,7 +111,7 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
         {
             if (Player.HaveStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
         }
-        if (Player.HaveStatus(true, StatusID.PowerSurge) && SpineshatterDive.ChargesCount != 1 && SpineshatterDive.ShouldUse(out act)) return true;
+        if (Player.HaveStatus(true, StatusID.PowerSurge) && SpineshatterDive.CurrentCharges != 1 && SpineshatterDive.ShouldUse(out act)) return true;
 
         //ª√œÛ≥Â
         if (MirageDive.ShouldUse(out act)) return true;

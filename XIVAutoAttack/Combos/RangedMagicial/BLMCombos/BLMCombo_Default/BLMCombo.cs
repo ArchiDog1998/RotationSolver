@@ -230,7 +230,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (iceOpener)
         {
             //三连
-            if (Triplecast.ShouldUse(out act, emptyOrSkipCombo: true) && Triplecast.ChargesCount == 2)
+            if (Triplecast.ShouldUse(out act, emptyOrSkipCombo: true) && Triplecast.CurrentCharges == 2)
             {
                 if (IsLastAction(true, Fire3) || IsLastSpell(true, Xenoglossy)) return true;
             }
@@ -239,7 +239,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (fireOpener)
         {
             //三连
-            if (IsLastAction(true, Fire4) && Triplecast.ShouldUse(out act, emptyOrSkipCombo: true) && Triplecast.ChargesCount == 2) return true;
+            if (IsLastAction(true, Fire4) && Triplecast.ShouldUse(out act, emptyOrSkipCombo: true) && Triplecast.CurrentCharges == 2) return true;
         }
 
         act = null;

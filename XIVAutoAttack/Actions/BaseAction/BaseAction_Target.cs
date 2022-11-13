@@ -20,6 +20,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 return Target.IsDying();
             }
         }
+
         internal bool IsTargetBoss
         {
             get

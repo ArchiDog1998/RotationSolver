@@ -142,8 +142,8 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (SettingBreak && CanUseWildfire(out act)) return true;
 
         //起手虹吸弹、弹射
-        if (Ricochet.ChargesCount == Ricochet.MaxCharges && Ricochet.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
-        if (GaussRound.ChargesCount == GaussRound.MaxCharges && GaussRound.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (Ricochet.CurrentCharges == Ricochet.MaxCharges && Ricochet.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (GaussRound.CurrentCharges == GaussRound.MaxCharges && GaussRound.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
         //枪管加热
         if (BarrelStabilizer.ShouldUse(out act)) return true;
@@ -154,7 +154,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         //超荷
         if (CanUseHypercharge(out act) && abilityRemain == 1) return true;
 
-        if (GaussRound.ChargesCount <= Ricochet.ChargesCount)
+        if (GaussRound.CurrentCharges <= Ricochet.CurrentCharges)
         {
             //弹射
             if (Ricochet.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
@@ -205,9 +205,9 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (isDyingNotBoss) return false;
 
         //在三大金刚还剩8秒冷却好时不释放超荷
-        if (Drill.EnoughLevel && Drill.WillHaveOneCharge(7.5f, false)) return false;
-        if (AirAnchor.EnoughLevel && AirAnchor.WillHaveOneCharge(7.5f, false)) return false;
-        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(7.5f, false) || !ChainSaw.IsCoolDown) && Config.GetBoolByName("MCH_Opener")) return false;
+        if (Drill.EnoughLevel && Drill.WillHaveOneCharge(7.5f)) return false;
+        if (AirAnchor.EnoughLevel && AirAnchor.WillHaveOneCharge(7.5f)) return false;
+        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(7.5f) || !ChainSaw.IsCoolDown) && Config.GetBoolByName("MCH_Opener")) return false;
 
         //小怪AOE和4人本超荷判断
         if (SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss())
