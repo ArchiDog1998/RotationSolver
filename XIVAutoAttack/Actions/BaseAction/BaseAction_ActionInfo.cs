@@ -42,12 +42,12 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 如果之前是这些ID，那么就不会执行。
         /// </summary>
-        internal uint[] OtherIDsNot { private get; set; } = null;
+        internal ActionID[] OtherIDsNot { private get; set; } = null;
 
         /// <summary>
         /// 如果之前不是这些ID中的某个，那么就不会执行。
         /// </summary>
-        internal uint[] OtherIDsCombo { private get; set; } = null;
+        internal ActionID[] OtherIDsCombo { private get; set; } = null;
 
         /// <summary>
         /// 使用了这个技能会得到的Buff，如果有这些Buff中的一种，那么就不会执行，这个buff是自己提供的。 
@@ -151,7 +151,9 @@ namespace XIVAutoAttack.Actions.BaseAction
                     }
 
                     //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
-                    uint[] comboActions = _action.ActionCombo?.Row != 0 ? new uint[] { _action.ActionCombo.Row } : new uint[0];
+                    var comboActions = _action.ActionCombo?.Row != 0
+                        ? new ActionID[] { (ActionID)_action.ActionCombo.Row }
+                        : new ActionID[0];
                     if (OtherIDsCombo != null) comboActions = comboActions.Union(OtherIDsCombo).ToArray();
 
                     if (comboActions.Length > 0)
