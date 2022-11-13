@@ -88,7 +88,6 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     /// </summary>
     public static BaseAction InnerBeast { get; } = new(ActionID.InnerBeast)
     {
-        //!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) &&
         OtherCheck = b =>  (JobGauge.BeastGauge >= 50 || Player.HaveStatus(true, StatusID.InnerRelease)),
     };
 

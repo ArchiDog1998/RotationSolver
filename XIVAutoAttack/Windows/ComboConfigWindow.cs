@@ -23,7 +23,7 @@ namespace XIVAutoAttack.Windows;
 
 internal class ComboConfigWindow : Window
 {
-    private static readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
+    //private static readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
 
     public ComboConfigWindow()
         : base("自动攻击设置 (开源免费) v"+ typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
@@ -1012,25 +1012,26 @@ internal class ComboConfigWindow : Window
 
         ImGui.SameLine();
 
-        if(authors == null || authors.Length < 2)
+        if(authors == null)
         {
-            ImGui.TextDisabled($" - {texture.Author}");
+            authors = new string[] { texture.Author };
         }
-        else
+
+        int i;
+        for (i = 0; i < authors.Length; i++)
         {
-            int i;
-            for (i = 0; i < authors.Length; i++)
+            if (authors[i] == texture.Author)
             {
-                if(authors[i] == texture.Author)
-                {
-                    break;
-                }
-            }
-            if(ImGui.Combo(texture.Name + "作者", ref i, authors, authors.Length))
-            {
-                Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
+                break;
             }
         }
+
+        ImGui.SetNextItemWidth(20);
+        if (ImGui.Combo("##" + texture.Name + "作者", ref i, authors, authors.Length))
+        {
+            Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
+        }
+
 
         if (attr is ComboDevInfoAttribute devAttr)
         {

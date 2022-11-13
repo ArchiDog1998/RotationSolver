@@ -34,6 +34,12 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
         {DescType.单体防御, $"{RawIntuition}, {Vengeance}"},
         {DescType.移动技能, $"GCD: {PrimalRend}，目标为面向夹角小于30°内最远目标。\n                     能力: {Onslaught}, "},
     };
+
+    static WARCombo_Default()
+    {
+        InnerBeast.AddOtherCheck(b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest));
+    }
+
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //摆脱 队友套盾
