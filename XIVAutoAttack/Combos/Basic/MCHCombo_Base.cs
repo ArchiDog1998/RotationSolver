@@ -84,7 +84,7 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
     public static BaseAction Reassemble { get; } = new(ActionID.Reassemble)
     {
         BuffsProvide = new StatusID[] { StatusID.Reassemble },
-        OtherCheck = b => HaveHostileInRange,
+        OtherCheck = b => HaveHostilesInRange,
     };
 
     /// <summary>

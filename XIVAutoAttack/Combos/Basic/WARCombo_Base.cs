@@ -113,7 +113,7 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     public static BaseAction Infuriate { get; } = new(ActionID.Infuriate)
     {
         BuffsProvide = new[] { StatusID.InnerRelease },
-        OtherCheck = b => HaveHostileInRange && JobGauge.BeastGauge < 50 && InCombat,
+        OtherCheck = b => HaveHostilesInRange && JobGauge.BeastGauge < 50 && InCombat,
     };
 
     /// <summary>
@@ -121,7 +121,7 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     /// </summary>
     public static BaseAction Berserk { get; } = new(ActionID.Berserk)
     {
-        OtherCheck = b => HaveHostileInRange,
+        OtherCheck = b => HaveHostilesInRange,
     };
 
     /// <summary>

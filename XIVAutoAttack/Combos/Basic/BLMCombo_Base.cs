@@ -85,7 +85,7 @@ namespace XIVAutoAttack.Combos.Basic
         public static BaseAction Sharpcast { get; } = new(ActionID.Sharpcast)
         {
             BuffsProvide = new[] { StatusID.Sharpcast },
-            OtherCheck = b => HaveHostileInRange,
+            OtherCheck = b => HaveHostilesInRange,
         };
 
         /// <summary>

@@ -102,7 +102,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         }
 
         //防御
-        if (HaveHostileInRange)
+        if (HaveHostilesInRange)
         {
             //防AOE
             if (helpDefenseAOE && !Service.Configuration.NoDefenceAbility)
@@ -190,7 +190,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         }
 
         if (GeneralAbility(abilityRemain, out act)) return true;
-        if (HaveHostileInRange && AttackAbility(abilityRemain, out act)) return true;
+        if (HaveHostilesInRange && AttackAbility(abilityRemain, out act)) return true;
         return false;
     }
 
@@ -209,7 +209,6 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     /// <summary>
     /// 覆盖写一些用于攻击的能力技，只有附近有敌人的时候才会有效。
     /// </summary>
-    /// <param name="level"></param>
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
@@ -217,7 +216,6 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     /// <summary>
     /// 覆盖写一些用于因为后面的GCD技能而要适应的能力技能
     /// </summary>
-    /// <param name="level"></param>
     /// <param name="abilityRemain"></param>
     /// <param name="nextGCD"></param>
     /// <param name="act"></param>
@@ -268,7 +266,6 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     /// <summary>
     /// 单体治疗的能力技
     /// </summary>
-    /// <param name="level"></param>
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
@@ -300,7 +297,6 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     /// <summary>
     /// 范围治疗的能力技
     /// </summary>
-    /// <param name="level"></param>
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>

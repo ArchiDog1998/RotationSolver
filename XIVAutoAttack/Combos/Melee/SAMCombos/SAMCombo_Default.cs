@@ -157,7 +157,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (HaveHostileInRange &&
+        if (HaveHostilesInRange &&
             !nextGCD.IsAnySameAction(false, Higanbana, OgiNamikiri, KaeshiNamikiri) &&
             MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 

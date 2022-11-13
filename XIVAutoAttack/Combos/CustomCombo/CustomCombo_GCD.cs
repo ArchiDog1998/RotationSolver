@@ -147,7 +147,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //硬拉或者开始奶人
             if (Service.Configuration.RaisePlayerBySwift && (HaveSwift || !Swiftcast.IsCoolDown) 
                 && EsunaRaise(out act, abilityRemain, true)) return act;
-            if (TargetUpdater.HPNotFull && HaveHostileInRange && ActionUpdater.InCombat)
+            if (TargetUpdater.HPNotFull && HaveHostilesInRange && ActionUpdater.InCombat)
             {
                 if (CanHealAreaSpell && HealAreaGCD(out act)) return act;
                 if (CanHealSingleSpell && HealSingleGCD(out act)) return act;
@@ -212,7 +212,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 常规GCD技能
         /// </summary>
-        /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
         private protected abstract bool GeneralGCD(out IAction act);

@@ -57,7 +57,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         if (Holy.ShouldUse(out act)) return true;
 
         //单体输出
-        if (Aero.ShouldUse(out act, mustUse: IsMoving && HaveHostileInRange)) return true;
+        if (Aero.ShouldUse(out act, mustUse: IsMoving && HaveHostilesInRange)) return true;
         if (Stone.ShouldUse(out act)) return true;
 
 

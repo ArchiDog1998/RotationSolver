@@ -29,7 +29,7 @@ namespace XIVAutoAttack.Updaters
         internal static BattleChara[] CanInterruptTargets { get; private set; } = new BattleChara[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static bool HaveHostileInRange { get; private set; } = false;
+        internal static bool HaveHostilesInRange { get; private set; } = false;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool IsHostileAOE { get; private set; } = false;
@@ -102,12 +102,12 @@ namespace XIVAutoAttack.Updaters
                         radius = 3;
                         break;
                 }
-                HaveHostileInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Length > 0;
+                HaveHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Length > 0;
             }
             else
             {
                 AllTargets = HostileTargets = CanInterruptTargets = new BattleChara[0];
-                HaveHostileInRange = false;
+                HaveHostilesInRange = false;
             }
 
             if (HostileTargets.Length == 1)

@@ -85,7 +85,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration()
-                    .SetCombo("UseLoop", 1, new string[] { "标准循环", "星灵循环", "压冰循环" }, "循环管理")
+                    .SetCombo("UseLoop", 1, "循环管理",  "标准循环", "星灵循环", "压冰循环")
                     .SetBool("AutoLeylines", true, "自动上黑魔纹");
     }
 
@@ -162,19 +162,19 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         //满级循环
         if (Level == 90 && UseLoopManager(out act)) return true;
 
-        if (IsMoving && InCombat && HaveHostileInRange)
+        if (IsMoving && InCombat && HaveHostilesInRange)
         {
             if (Xenoglossy.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             if (Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
-        if (!HaveHostileInRange && Maintence(out act)) return true;
+        if (!HaveHostilesInRange && Maintence(out act)) return true;
         //act = null;
         return false;
     }
 
     private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
     {
-        if (!HaveHostileInRange && Maintence(out act)) return true;
+        if (!HaveHostilesInRange && Maintence(out act)) return true;
         return base.GeneralAbility(abilityRemain, out act);
     }
 
@@ -225,7 +225,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (!InCombat)
         {
             //激情咏唱
-            if (Sharpcast.ShouldUse(out act) && HaveHostileInRange) return true;
+            if (Sharpcast.ShouldUse(out act) && HaveHostilesInRange) return true;
         }
         if (iceOpener)
         {

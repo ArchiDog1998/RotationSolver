@@ -81,7 +81,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         }
         internal static bool TankBreakOtherCheck(BattleChara chara)
         {
-            return TargetUpdater.HaveHostileInRange
+            return TargetUpdater.HaveHostilesInRange
                 && (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank
                 && TargetUpdater.PartyMembersAverHP > Service.Configuration.HealthForDyingTank + 0.1f;
         }

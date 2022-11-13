@@ -30,7 +30,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 攻击范围内是否有敌人
         /// </summary>
-        protected static bool HaveHostileInRange => TargetUpdater.HaveHostileInRange;
+        protected static bool HaveHostilesInRange => TargetUpdater.HaveHostilesInRange;
+
         private bool canUseHealAction => Role == Data.Role.治疗 || Service.Configuration.UseHealWhenNotAHealer;
 
         /// <summary>

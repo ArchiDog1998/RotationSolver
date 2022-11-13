@@ -139,11 +139,8 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
     }
     private protected override ActionConfiguration CreateConfiguration()
     {
-        return base.CreateConfiguration().SetCombo("SummonOrder", 0, new string[]
-        {
-            "ºì-»Æ-ÂÌ", "ºì-ÂÌ-»Æ", "»Æ-ÂÌ-ºì", "»Æ-ºì-ÂÌ", "ÂÌ-ºì-»Æ", "ÂÌ-»Æ-ºì",
-
-        }, "ÈıÉñÕÙ»½Ë³Ğò");
+        return base.CreateConfiguration().SetCombo("SummonOrder", 0, "ÈıÉñÕÙ»½Ë³Ğò",
+            "ºì-»Æ-ÂÌ", "ºì-ÂÌ-»Æ", "»Æ-ÂÌ-ºì", "»Æ-ºì-ÂÌ", "ÂÌ-ºì-»Æ", "ÂÌ-»Æ-ºì");
     }
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
