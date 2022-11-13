@@ -142,17 +142,17 @@ internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
             }
         }
         //ÓÐÕð½Å¾ÍÒõÑô
-        else if (Player.HaveStatus(StatusID.PerfectBalance))
+        else if (Player.HaveStatus(true, StatusID.PerfectBalance))
         {
             if (havesolar && LunarNadi(out act)) return true;
             if (SolarNadi(out act)) return true;
         }
 
-        if (Player.HaveStatus(StatusID.CoerlForm))
+        if (Player.HaveStatus(true, StatusID.CoerlForm))
         {
             if (CoerlForm(out act)) return true;
         }
-        else if (Player.HaveStatus(StatusID.RaptorForm))
+        else if (Player.HaveStatus(true, StatusID.RaptorForm))
         {
             if (RaptorForm(out act)) return true;
         }

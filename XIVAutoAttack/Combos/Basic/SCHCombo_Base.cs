@@ -107,7 +107,7 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
         //朝日召唤
         SummonEos = new(17215)//夕月召唤 17216
         {
-            OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatus(StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
+            OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
         },
 
         //仙光的低语/天使的低语
@@ -163,7 +163,7 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
             {
                 foreach (var friend in friends)
                 {
-                    if (friend.HaveStatus(StatusID.Galvanize)) return friend;
+                    if (friend.HaveStatus(true, StatusID.Galvanize)) return friend;
                 }
                 return null;
             },

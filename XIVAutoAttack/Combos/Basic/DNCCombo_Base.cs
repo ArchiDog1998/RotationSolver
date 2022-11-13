@@ -169,7 +169,7 @@ internal abstract class DNCCombo_Base<TCmd> : JobGaugeCombo<DNCGauge, TCmd> wher
             {
                 Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
                 //Remove Weak
-                !b.HaveStatus(StatusID.Weakness, StatusID.BrinkofDeath)
+                !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
                 //Remove other partner.
                 //&& !b.HaveStatusFromSelf(StatusID.ClosedPosition2)
                 ).ToArray();

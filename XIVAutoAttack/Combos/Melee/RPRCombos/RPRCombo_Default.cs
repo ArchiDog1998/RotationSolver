@@ -37,7 +37,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         if (Soulsow.ShouldUse(out act)) return true;
 
         //处于变身状态。
-        if (enshrouded)
+        if (Enshrouded)
         {
             if (ShadowofDeath.ShouldUse(out act)) return true;
 
@@ -104,7 +104,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
             if (Enshroud.ShouldUse(out act)) return true;
         }
 
-        if (enshrouded)
+        if (Enshrouded)
         {
             //夜游魂衣-夜游魂切割 夜游魂钐割
             if (LemuresSlice.ShouldUse(out act)) return true;
@@ -124,7 +124,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if (!enshrouded && !soulReaver)
+        if (!Enshrouded && !SoulReaver)
         {
             if (Feint.ShouldUse(out act)) return true;
         }

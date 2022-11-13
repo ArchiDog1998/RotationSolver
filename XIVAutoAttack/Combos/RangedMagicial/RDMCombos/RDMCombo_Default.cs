@@ -85,7 +85,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
             if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
             //即刻咏唱
-            if (!Player.HaveStatus(StatusID.Acceleration)
+            if (!Player.HaveStatus(true, StatusID.Acceleration)
                 && Swiftcast.ShouldUse(out act, mustUse: true)) return true;
         }
 
@@ -198,26 +198,23 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
             //要求较小的魔元不带触发，也可以强制要求跳过判断。
             if (JobGauge.WhiteMana < JobGauge.BlackMana)
             {
-                if (Player.HaveStatus(StatusID.VerstoneReady))
+                if (Player.HaveStatus(true, StatusID.VerstoneReady))
                 {
                     return false;
                 }
             }
             if (JobGauge.WhiteMana > JobGauge.BlackMana)
             {
-                if (Player.HaveStatus(StatusID.VerfireReady))
+                if (Player.HaveStatus(true, StatusID.VerfireReady))
                 {
                     return false;
                 }
             }
 
             //看看有没有即刻相关的技能。
-            foreach (var buff in Vercure.BuffsProvide)
+            if (Player.HaveStatus(true, Vercure.BuffsProvide))
             {
-                if (Player.HaveStatus(buff))
-                {
-                    return false;
-                }
+                return false;
             }
 
             //如果倍增的时间快到了，但还是没好。

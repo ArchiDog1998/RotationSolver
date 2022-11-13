@@ -9,7 +9,7 @@ namespace XIVAutoAttack.Combos.Basic;
 internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
-    internal sealed override bool HaveShield => Player.HaveStatus(StatusID.Grit);
+    internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.Grit);
     private sealed protected override BaseAction Shield => Grit;
 
 
@@ -87,7 +87,7 @@ internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> wher
         //血溅
         Bloodspiller = new(7392)
         {
-            OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatus(StatusID.Delirium),
+            OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatus(true, StatusID.Delirium),
         },
 
         //寂灭

@@ -15,8 +15,8 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
 
     protected static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
 
-    protected static bool HaveMoon => Player.HaveStatus(StatusID.Moon);
-    protected static bool HaveFlower => Player.HaveStatus(StatusID.Flower);
+    protected static bool HaveMoon => Player.HaveStatus(true, StatusID.Moon);
+    protected static bool HaveFlower => Player.HaveStatus(true, StatusID.Flower);
 
 
     public static readonly BaseAction

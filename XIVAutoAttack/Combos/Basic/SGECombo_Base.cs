@@ -62,7 +62,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
 
                 return targets[0];
             },
-            OtherCheck = b => !b.HaveStatus(StatusID.Kardion),
+            OtherCheck = b => !b.HaveStatus(true, StatusID.Kardion),
         },
 
         //Ô¤ºó
@@ -87,7 +87,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
             {
                 foreach (var friend in Targets)
                 {
-                    if (friend.HaveStatus(StatusID.Kardion))
+                    if (friend.HaveStatus(true, StatusID.Kardion))
                     {
                         return friend;
                     }
@@ -177,7 +177,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
             {
                 foreach (var chara in TargetUpdater.PartyMembers)
                 {
-                    if (chara.HaveStatus(StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
+                    if (chara.HaveStatus(true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
                     && b.WillStatusEndGCD(2, 0, true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
                     && chara.GetHealthRatio() < 0.9) return true;
                 }

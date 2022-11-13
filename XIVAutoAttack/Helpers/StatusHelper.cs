@@ -40,10 +40,10 @@ namespace XIVAutoAttack.Helpers
         /// <param name="abilityCount">再多少个能力技之后</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点状态是否已经消失</returns>
-        internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true, bool isFromSelf = true, params StatusID[] effectIDs)
+        internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool isFromSelf = true, params StatusID[] effectIDs)
         {
             var remain = obj.FindStatusTime(isFromSelf, effectIDs);
-            return CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount, addWeaponRemain);
+            return CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount);
         }
 
         /// <summary>
@@ -52,10 +52,10 @@ namespace XIVAutoAttack.Helpers
         /// <param name="remain">要多少秒呢</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点状态是否已经消失</returns>
-        internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool addWeaponRemain = true, bool isFromSelf = true, params StatusID[] effectIDs)
+        internal static bool WillStatusEnd(this BattleChara obj, float remainWant,  bool isFromSelf = true, params StatusID[] effectIDs)
         {
             var remain = obj.FindStatusTime(isFromSelf, effectIDs);
-            return CooldownHelper.RecastAfter(remain, remainWant, addWeaponRemain);
+            return CooldownHelper.RecastAfter(remain, remainWant);
         }
 
         internal static float FindStatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
@@ -114,7 +114,8 @@ namespace XIVAutoAttack.Helpers
         {
             if (obj == null) return new Status[0];
 
-            return obj.StatusList.Where(status => isFromSelf ? status.SourceID == Service.ClientState.LocalPlayer.ObjectId : true).ToArray();
+            return obj.StatusList.Where(status => isFromSelf ? status.SourceID == Service.ClientState.LocalPlayer.ObjectId 
+            || status.SourceObject?.OwnerId == Service.ClientState.LocalPlayer.ObjectId : true).ToArray();
         }
     }
 }

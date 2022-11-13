@@ -34,10 +34,10 @@ internal abstract class BRDCombo_Base<TCmd> : JobGaugeCombo<BRDGauge, TCmd> wher
             {
                 if (IsLastWeaponSkill(false, IronJaws)) return false;
 
-                if (Player.HaveStatus(StatusID.RagingStrikes) &&
+                if (Player.HaveStatus(true, StatusID.RagingStrikes) &&
                     Player.WillStatusEndGCD(1, 1, true, StatusID.RagingStrikes)) return true;
 
-                return b.HaveStatus(StatusID.VenomousBite, StatusID.CausticBite) & b.HaveStatus(StatusID.Windbite, StatusID.Stormbite)
+                return b.HaveStatus(true, StatusID.VenomousBite, StatusID.CausticBite) & b.HaveStatus(true, StatusID.Windbite, StatusID.Stormbite)
                 & (b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, StatusID.VenomousBite, StatusID.CausticBite)
                 | b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, StatusID.Windbite, StatusID.Stormbite));
             },

@@ -97,7 +97,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         //’Ô∂œ
         if (EukrasianDiagnosis.ShouldUse(out act))
         {
-            if (EukrasianDiagnosis.Target.HaveStatus(
+            if (EukrasianDiagnosis.Target.HaveStatus(true,
                 StatusID.EukrasianDiagnosis,
                 StatusID.EukrasianPrognosis,
                 StatusID.Galvanize
@@ -137,7 +137,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         //‘§∫Û
         if (EukrasianPrognosis.ShouldUse(out act))
         {
-            if (EukrasianDiagnosis.Target.HaveStatus(
+            if (EukrasianDiagnosis.Target.HaveStatus(true,
                 StatusID.EukrasianDiagnosis,
                 StatusID.EukrasianPrognosis,
                 StatusID.Galvanize
@@ -223,7 +223,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
             var tank = TargetUpdater.PartyTanks;
             if (tank.Length == 1 && EukrasianDiagnosis.Target == tank.First() && EukrasianDiagnosis.ShouldUse(out act))
             {
-                if (tank.First().HaveStatus(
+                if (tank.First().HaveStatus(true,
                     StatusID.EukrasianDiagnosis,
                     StatusID.EukrasianPrognosis,
                     StatusID.Galvanize
@@ -275,7 +275,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         //’Ô∂œ
         if (EukrasianDiagnosis.ShouldUse(out act))
         {
-            if (EukrasianDiagnosis.Target.HaveStatus(
+            if (EukrasianDiagnosis.Target.HaveStatus(true,
                 StatusID.EukrasianDiagnosis,
                 StatusID.EukrasianPrognosis,
                 StatusID.Galvanize
@@ -306,7 +306,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
 
         if (EukrasianPrognosis.ShouldUse(out act))
         {
-            if (EukrasianPrognosis.Target.HaveStatus(
+            if (EukrasianPrognosis.Target.HaveStatus(true,
                 StatusID.EukrasianDiagnosis,
                 StatusID.EukrasianPrognosis,
                 StatusID.Galvanize

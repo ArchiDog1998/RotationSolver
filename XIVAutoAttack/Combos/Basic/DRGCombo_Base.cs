@@ -84,7 +84,7 @@ internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> wher
         Jump = new(92)
         {
             BuffsProvide = new StatusID[] { StatusID.DiveReady },
-            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(StatusID.PowerSurge),
+            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(true, StatusID.PowerSurge),
         },
         //¸ßÌø
         HighJump = new(16478)
@@ -140,7 +140,7 @@ internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> wher
             ChoiceTarget = Targets =>
             {
                 Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
-                !b.HaveStatus(StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
+                !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
 
                 var targets = TargetFilter.GetJobCategory(Targets, Role.½üÕ½);
                 if (targets.Length > 0) return TargetFilter.RandomObject(targets);

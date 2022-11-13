@@ -13,7 +13,7 @@ internal abstract class PLDCombo_Base<TCmd> : JobGaugeCombo<PLDGauge, TCmd> wher
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Paladin, ClassJobID.Gladiator };
 
-    internal sealed override bool HaveShield => Player.HaveStatus(StatusID.IronWill);
+    internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.IronWill);
 
     private sealed protected override BaseAction Shield => IronWill;
 
