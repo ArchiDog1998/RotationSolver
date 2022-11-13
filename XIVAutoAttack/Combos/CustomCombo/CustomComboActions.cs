@@ -14,7 +14,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //昏乱
             Addle = new BaseAction(7560u)
             {
-                OtherCheck = b => !b.HaveStatus(StatusID.Addle),
+                OtherCheck = b => !b.HaveStatus(false, StatusID.Addle),
             },
 
             //即刻咏唱
@@ -118,7 +118,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //牵制
             Feint = new BaseAction(7549)
             {
-                OtherCheck = b => !b.HaveStatus(StatusID.Feint),
+                OtherCheck = b => !b.HaveStatus(false, StatusID.Feint),
             },
 
             //插言

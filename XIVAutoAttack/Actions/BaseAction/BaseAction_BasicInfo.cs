@@ -79,9 +79,9 @@ namespace XIVAutoAttack.Actions.BaseAction
         private Action _action;
 
 
-        internal BaseAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false)
+        internal BaseAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false)
         {
-            _action = Service.DataManager.GetExcelSheet<Action>().GetRow(actionID);
+            _action = Service.DataManager.GetExcelSheet<Action>().GetRow((uint)actionID);
             _shouldEndSpecial = shouldEndSpecial;
             _isFriendly = isFriendly;
             _isEot = isEot;

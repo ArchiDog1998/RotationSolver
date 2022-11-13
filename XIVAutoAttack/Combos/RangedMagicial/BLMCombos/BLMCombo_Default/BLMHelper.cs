@@ -12,7 +12,7 @@ using XIVAutoAttack.Helpers;
 using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default.BLMCombo_Default;
 
 using static XIVAutoAttack.SigReplacers.Watcher;
-using XIVAutoAttack.Combos.RangedMagicial.BLMCombos;
+using XIVAutoAttack.Combos.Basic;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
 
@@ -30,7 +30,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
     internal static float MpUpdateRemain => 3 - ActionUpdater.MPUpdateElapsed;
     internal static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? JobGauge.PolyglotStacks == 2 : JobGauge.PolyglotStacks == 1;
-    internal static bool TargetHasThunder => Target.HaveStatus(StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4);
+    internal static bool TargetHasThunder => Target.HaveStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4);
     /// <summary>
     /// GCD间隔总时间
     /// </summary>

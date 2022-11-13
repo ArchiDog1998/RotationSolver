@@ -1,15 +1,11 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using Lumina.Data.Parsing.Layer;
 using System;
-using System.Collections.Generic;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
 
-namespace XIVAutoAttack.Combos.Melee.SAMCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 //[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/SAMCombo.cs",
 //   ComboAuthor.fatinghenji)]
@@ -19,8 +15,8 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
 
     protected static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
 
-    protected static bool HaveMoon => Player.HaveStatusFromSelf(StatusID.Moon);
-    protected static bool HaveFlower => Player.HaveStatusFromSelf(StatusID.Flower);
+    protected static bool HaveMoon => Player.HaveStatus(true, StatusID.Moon);
+    protected static bool HaveFlower => Player.HaveStatus(true, StatusID.Flower);
 
 
     public static readonly BaseAction
@@ -43,7 +39,7 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
         Fuga = new(7483),
 
         //月光
-        Gekko = new(ActionIDs.Gekko),
+        Gekko = new(ActionID.Gekko),
 
         //彼岸花
         Higanbana = new(7489, isEot: true)
@@ -68,7 +64,7 @@ internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> wher
         Mangetsu = new(7484),
 
         //花车
-        Kasha = new(ActionIDs.Kasha),
+        Kasha = new(ActionID.Kasha),
 
         //樱花
         Oka = new(7485),

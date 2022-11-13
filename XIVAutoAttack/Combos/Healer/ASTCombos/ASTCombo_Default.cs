@@ -1,15 +1,11 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
-using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
+using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
@@ -162,7 +158,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         if (!IsMoving)
         {
             //如果没有地星也没有巨星，那就试试看能不能放个。
-            if (!Player.HaveStatusFromSelf(StatusID.EarthlyDominance, StatusID.GiantDominance))
+            if (!Player.HaveStatus(true, StatusID.EarthlyDominance, StatusID.GiantDominance))
             {
                 if (EarthlyStar.ShouldUse(out act, mustUse: true)) return true;
             }
@@ -225,7 +221,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
             if (CelestialOpposition.ShouldUse(out act)) return true;
 
             //如果有巨星主宰
-            if (Player.HaveStatusFromSelf(StatusID.GiantDominance))
+            if (Player.HaveStatus(true, StatusID.GiantDominance))
             {
                 //需要回血的时候炸了。
                 act = EarthlyStar;
@@ -233,9 +229,9 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
             }
 
             //天宫图
-            if (!Player.HaveStatusFromSelf(StatusID.HoroscopeHelios, StatusID.Horoscope) && Horoscope.ShouldUse(out act)) return true;
+            if (!Player.HaveStatus(true, StatusID.HoroscopeHelios, StatusID.Horoscope) && Horoscope.ShouldUse(out act)) return true;
             //阳星天宫图
-            if (Player.HaveStatusFromSelf(StatusID.HoroscopeHelios) && Horoscope.ShouldUse(out act)) return true;
+            if (Player.HaveStatus(true, StatusID.HoroscopeHelios) && Horoscope.ShouldUse(out act)) return true;
             //超紧急情况天宫图
             if (tank.Any(t => t.GetHealthRatio() < 0.3) && Horoscope.ShouldUse(out act)) return true;
         }
@@ -249,7 +245,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         if (CelestialOpposition.ShouldUse(out act)) return true;
 
         //如果有巨星主宰
-        if (Player.HaveStatusFromSelf(StatusID.GiantDominance))
+        if (Player.HaveStatus(true, StatusID.GiantDominance))
         {
             //需要回血的时候炸了。
             act = EarthlyStar;
@@ -257,7 +253,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         }
 
         //天宫图
-        if (Player.HaveStatusFromSelf(StatusID.HoroscopeHelios) && Horoscope.ShouldUse(out act)) return true;
+        if (Player.HaveStatus(true, StatusID.HoroscopeHelios) && Horoscope.ShouldUse(out act)) return true;
 
         //奶量牌，要看情况。
         if (JobGauge.DrawnCrownCard == CardType.LADY && CrownPlay.ShouldUse(out act)) return true;

@@ -142,7 +142,7 @@ namespace XIVAutoAttack.Updaters
                 StatusID.Paralysis2,
                 StatusID.Nightmare,
             };
-            DyingPeople = WeakenPeople.Where(p => p.HaveStatus(dangeriousStatus)).ToArray();
+            DyingPeople = WeakenPeople.Where(p => p.HaveStatus(false, dangeriousStatus)).ToArray();
             #endregion
 
             #region Health
@@ -214,7 +214,7 @@ namespace XIVAutoAttack.Updaters
 
         static float GetHealingOfTimeRatio(BattleChara target, params StatusID[] statusIds)
         {
-            var buffTime = target.FindStatusTime(statusIds);
+            var buffTime = target.FindStatusTime(false, statusIds);
 
             return Math.Min(1, buffTime / 15);
         }

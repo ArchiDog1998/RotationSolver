@@ -16,11 +16,11 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <param name="abilityCount">再多少个能力技之后</param>
         /// <param name="addWeaponElapsed">是否要把<see cref="ActionUpdater.WeaponElapsed"/>加进去</param>
         /// <returns>是否已经冷却了这么久了(不在冷却会返回false)</returns>
-        internal bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0, bool addWeaponElapsed = true)
+        internal bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0)
         {
             if (!IsCoolDown) return false;
             var elapsed = RecastTimeElapsedOneCharge;
-            return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, abilityCount, addWeaponElapsed);
+            return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, abilityCount);
         }
 
         /// <summary>
@@ -43,11 +43,11 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <param name="abilityCount">再多少个能力技之后</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点是否起码有一层可以用</returns>
-        internal bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true)
+        internal bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0)
         {
             if (HaveOneCharge) return true;
             var recast = RecastTimeRemainOneCharge;
-            return CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount, addWeaponRemain);
+            return CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount);
         }
 
         /// <summary>

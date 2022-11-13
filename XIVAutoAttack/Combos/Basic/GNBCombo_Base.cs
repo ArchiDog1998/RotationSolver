@@ -1,22 +1,17 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using Lumina.Excel.GeneratedSheets;
 using System;
-using System.Collections.Generic;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
 
-namespace XIVAutoAttack.Combos.Tank.GNBCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 
 internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
-    internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.RoyalGuard);
+    internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.RoyalGuard);
     private sealed protected override BaseAction Shield => RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;

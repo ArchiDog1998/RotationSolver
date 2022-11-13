@@ -1014,7 +1014,7 @@ internal class ComboConfigWindow : Window
 
         if(authors == null || authors.Length < 2)
         {
-            ImGui.TextColored(shadedColor, $" - {texture.Author}");
+            ImGui.TextDisabled($" - {texture.Author}");
         }
         else
         {
@@ -1062,7 +1062,6 @@ internal class ComboConfigWindow : Window
 
         ImGui.Text($"{type}: {action}");
 
-        action.Dispose();
     }
 #endif
 

@@ -1,13 +1,12 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
-namespace XIVAutoAttack.Combos.Melee.RPRCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCmd : Enum
 {
@@ -15,29 +14,28 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
 
     public class PRPAction : BaseAction
     {
-        internal override EnemyLocation EnermyLocation => Player.HaveStatusFromSelf(StatusID.Enshrouded)
+        internal override EnemyLocation EnermyLocation => Player.HaveStatus(true, StatusID.Enshrouded)
             ? EnemyLocation.None : base.EnermyLocation;
         internal PRPAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
         {
         }
     }
-    protected static byte LemureShroud => JobGauge.LemureShroud;
-    protected static bool enshrouded => Player.HaveStatusFromSelf(StatusID.Enshrouded);
-    protected static bool soulReaver => Player.HaveStatusFromSelf(StatusID.SoulReaver);
-    protected static bool enhancedGibbet => Player.HaveStatusFromSelf(StatusID.EnhancedGibbet);
-    protected static bool enhancedGallows => Player.HaveStatusFromSelf(StatusID.EnhancedGallows);
-    protected static bool enhancedCrossReaping => Player.HaveStatusFromSelf(StatusID.EnhancedCrossReaping);
-    protected static bool enhancedVoidReaping => Player.HaveStatusFromSelf(StatusID.EnhancedVoidReaping);
-    protected static bool plentifulReady => Player.HaveStatusFromSelf(StatusID.ImmortalSacrifice) && !Player.HaveStatusFromSelf(StatusID.BloodsownCircle);
-    protected static bool haveDeathsDesign => Target.HaveStatusFromSelf(StatusID.DeathsDesign);
+    protected static bool Enshrouded => Player.HaveStatus(true, StatusID.Enshrouded);
+    protected static bool SoulReaver => Player.HaveStatus(true, StatusID.SoulReaver);
+    protected static bool EnhancedGibbet => Player.HaveStatus(true, StatusID.EnhancedGibbet);
+    protected static bool EnhancedGallows => Player.HaveStatus(true, StatusID.EnhancedGallows);
+    protected static bool EnhancedCrossReaping => Player.HaveStatus(true, StatusID.EnhancedCrossReaping);
+    protected static bool EnhancedVoidReaping => Player.HaveStatus(true, StatusID.EnhancedVoidReaping);
+    protected static bool PlentifulReady => Player.HaveStatus(true, StatusID.ImmortalSacrifice) && !Player.HaveStatus(true, StatusID.BloodsownCircle);
+    protected static bool HaveDeathsDesign => Target.HaveStatus(true, StatusID.DeathsDesign);
 
     public static readonly BaseAction
     #region 单体
         //切割
         Slice = new(24373)
         {
-            OtherCheck = b => !enshrouded || !soulReaver,
+            OtherCheck = b => !Enshrouded || !SoulReaver,
         },
 
         //增盈切割
@@ -56,13 +54,13 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
         ShadowofDeath = new(24378, isEot: true)
         {
             TargetStatus = new[] { StatusID.DeathsDesign },
-            OtherCheck = b => !soulReaver,
+            OtherCheck = b => !SoulReaver,
         },
 
         //灵魂切割
         SoulSlice = new(24380)
         {
-            OtherCheck = b => !enshrouded && !soulReaver && JobGauge.Soul <= 50,
+            OtherCheck = b => !Enshrouded && !SoulReaver && JobGauge.Soul <= 50,
         },
     #endregion
     #region AoE
@@ -82,7 +80,7 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
         WhorlofDeath = new(24379, isEot: true)
         {
             TargetStatus = new[] { StatusID.DeathsDesign },
-            OtherCheck = b => !soulReaver
+            OtherCheck = b => !SoulReaver
         },
 
         //灵魂钐割
@@ -93,21 +91,21 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
     #endregion
     #region 妖异之镰状态
         //绞决
-        Gibbet = new PRPAction(ActionIDs.Gibbet)
+        Gibbet = new PRPAction(ActionID.Gibbet)
         {
-            OtherCheck = b => soulReaver && enhancedGibbet,
+            OtherCheck = b => SoulReaver && EnhancedGibbet,
         },
 
         //缢杀
-        Gallows = new PRPAction(ActionIDs.Gallows)
+        Gallows = new PRPAction(ActionID.Gallows)
         {
-            OtherCheck = b => soulReaver && (enhancedGallows || !enhancedGibbet),
+            OtherCheck = b => SoulReaver && (EnhancedGallows || !EnhancedGibbet),
         },
 
         //断首
         Guillotine = new(24384)
         {
-            OtherCheck = b => soulReaver,
+            OtherCheck = b => SoulReaver,
         },
     #endregion
     #region 红条50灵魂
@@ -115,8 +113,8 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
         BloodStalk = new(24389)
         {
             BuffsProvide = new[] { StatusID.SoulReaver },
-            OtherCheck = b => !soulReaver && !enshrouded &&
-                              JobGauge.Soul >= 50 && !plentifulReady &&
+            OtherCheck = b => !SoulReaver && !Enshrouded &&
+                              JobGauge.Soul >= 50 && !PlentifulReady &&
                               (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel),
         },
 
@@ -129,39 +127,39 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
         //暴食
         Gluttony = new(24393)
         {
-            OtherCheck = b => !soulReaver && !enshrouded && JobGauge.Soul >= 50,
+            OtherCheck = b => !SoulReaver && !Enshrouded && JobGauge.Soul >= 50,
         },
     #endregion
     #region 大爆发
         //神秘环
         ArcaneCircle = new(24405, true)
         {
-            OtherCheck = b => InCombat && haveDeathsDesign
+            OtherCheck = b => InCombat && HaveDeathsDesign
         },
 
         //大丰收
         PlentifulHarvest = new(24385)
         {
-            OtherCheck = b => JobGauge.Shroud <= 50 && !soulReaver && !enshrouded && plentifulReady
+            OtherCheck = b => JobGauge.Shroud <= 50 && !SoulReaver && !Enshrouded && PlentifulReady
         },
     #endregion
     #region 蓝条50附体
         //夜游魂衣
         Enshroud = new(24394)
         {
-            OtherCheck = b => !soulReaver && !enshrouded && JobGauge.Shroud >= 50,
+            OtherCheck = b => !SoulReaver && !Enshrouded && JobGauge.Shroud >= 50,
         },
 
         //团契
         Communio = new(24398)
         {
-            OtherCheck = b => enshrouded && JobGauge.LemureShroud == 1,
+            OtherCheck = b => Enshrouded && JobGauge.LemureShroud == 1,
         },
 
         //夜游魂切割
         LemuresSlice = new(24399)
         {
-            OtherCheck = b => enshrouded && JobGauge.VoidShroud >= 2,
+            OtherCheck = b => Enshrouded && JobGauge.VoidShroud >= 2,
         },
 
         //夜游魂钐割
@@ -173,7 +171,7 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
         //虚无收割
         VoidReaping = new(24395)
         {
-            OtherCheck = b => enshrouded && JobGauge.LemureShroud > 1 && enhancedVoidReaping,
+            OtherCheck = b => Enshrouded && JobGauge.LemureShroud > 1 && EnhancedVoidReaping,
         },
 
         //交错收割
@@ -181,13 +179,13 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
         {
             OtherCheck = b =>
             {
-                if (enshrouded)
+                if (Enshrouded)
                 {
-                    if (JobGauge.LemureShroud > 1 && (enhancedCrossReaping || !enhancedVoidReaping))
+                    if (JobGauge.LemureShroud > 1 && (EnhancedCrossReaping || !EnhancedVoidReaping))
                     {
                         return true;
                     }
-                    if (JobGauge.LemureShroud == 1 && !Communio.EnoughLevel && enhancedCrossReaping)
+                    if (JobGauge.LemureShroud == 1 && !Communio.EnoughLevel && EnhancedCrossReaping)
                     {
                         return true;
                     }
@@ -199,7 +197,7 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
         //阴冷收割
         GrimReaping = new(24397)
         {
-            OtherCheck = b => enshrouded,
+            OtherCheck = b => Enshrouded,
         },
     #endregion
     #region 杂项
@@ -223,7 +221,7 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
         //神秘纹 加盾
         ArcaneCrest = new(24404, true)
         {
-            OtherCheck = b => !enshrouded && !soulReaver
+            OtherCheck = b => !Enshrouded && !SoulReaver
         };
     #endregion
 

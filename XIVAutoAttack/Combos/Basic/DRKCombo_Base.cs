@@ -1,19 +1,15 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using System.Collections.Generic;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
 
-namespace XIVAutoAttack.Combos.Tank.DRKCombos;
+namespace XIVAutoAttack.Combos.Basic;
 internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> where TCmd : Enum
 {
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
-    internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.Grit);
+    internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.Grit);
     private sealed protected override BaseAction Shield => Grit;
 
 
@@ -91,7 +87,7 @@ internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> wher
         //血溅
         Bloodspiller = new(7392)
         {
-            OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatusFromSelf(StatusID.Delirium),
+            OtherCheck = b => JobGauge.Blood >= 50 || Player.HaveStatus(true, StatusID.Delirium),
         },
 
         //寂灭

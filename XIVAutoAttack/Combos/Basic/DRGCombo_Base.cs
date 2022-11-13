@@ -1,18 +1,12 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Healer;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
-namespace XIVAutoAttack.Combos.Melee.DRGCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCmd : Enum
 {
@@ -36,19 +30,19 @@ internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> wher
         Disembowel = new(87) { OtherIDsCombo = new[] { 16479u } },
 
         //樱花怒放
-        ChaosThrust = new(ActionIDs.ChaosThrust),
+        ChaosThrust = new(ActionID.ChaosThrust),
 
         //樱花怒放
         ChaoticSpring = new(25772),
 
         //龙牙龙爪
-        FangandClaw = new(ActionIDs.FangandClaw)
+        FangandClaw = new(ActionID.FangandClaw)
         {
             BuffsNeed = new StatusID[] { StatusID.SharperFangandClaw },
         },
 
         //龙尾大回旋
-        WheelingThrust = new(ActionIDs.WheelingThrust)
+        WheelingThrust = new(ActionID.WheelingThrust)
         {
             BuffsNeed = new StatusID[] { StatusID.EnhancedWheelingThrust },
         },
@@ -90,7 +84,7 @@ internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> wher
         Jump = new(92)
         {
             BuffsProvide = new StatusID[] { StatusID.DiveReady },
-            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatusFromSelf(StatusID.PowerSurge),
+            OtherCheck = b => (!safeMove || b.DistanceToPlayer() < 2) && Player.HaveStatus(true, StatusID.PowerSurge),
         },
         //高跳
         HighJump = new(16478)
@@ -146,7 +140,7 @@ internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> wher
             ChoiceTarget = Targets =>
             {
                 Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
-                !b.HaveStatus(StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
+                !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
 
                 var targets = TargetFilter.GetJobCategory(Targets, Role.近战);
                 if (targets.Length > 0) return TargetFilter.RandomObject(targets);

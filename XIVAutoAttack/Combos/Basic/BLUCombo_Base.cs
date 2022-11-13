@@ -1,13 +1,12 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 
-namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
+namespace XIVAutoAttack.Combos.Basic
 {
     internal abstract class BLUCombo_Base<TCmd> : OtherCombo<TCmd> where TCmd : Enum
     {
@@ -27,7 +26,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
                 }
             }
 
-            internal BLUAction(uint actionID, bool isFriendly = false, bool shouldEndSpecial = false)
+            internal BLUAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false)
                 : base(actionID, isFriendly, shouldEndSpecial)
             {
             }
@@ -43,9 +42,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             }
         }
 
-        public static readonly BLUAction
-            //水炮
-            WaterCannon = new(11385);
+        //水炮
+        public static BLUAction WaterCannon { get; } = new(ActionID.WaterCannon);
 
 
         protected static bool AllOnSlot(params BLUAction[] actions) => actions.All(a => a.OnSlot);

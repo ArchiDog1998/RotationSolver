@@ -1,15 +1,12 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
 
-namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
+namespace XIVAutoAttack.Combos.Basic;
 internal abstract class DNCCombo_Base<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCmd : Enum
 {
 
@@ -172,7 +169,7 @@ internal abstract class DNCCombo_Base<TCmd> : JobGaugeCombo<DNCGauge, TCmd> wher
             {
                 Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
                 //Remove Weak
-                !b.HaveStatus( StatusID.Weakness, StatusID.BrinkofDeath)
+                !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
                 //Remove other partner.
                 //&& !b.HaveStatusFromSelf(StatusID.ClosedPosition2)
                 ).ToArray();

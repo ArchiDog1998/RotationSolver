@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
+using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -35,7 +36,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        bool haveMeikyoShisui = Player.HaveStatusFromSelf(StatusID.MeikyoShisui);
+        bool haveMeikyoShisui = Player.HaveStatus(true, StatusID.MeikyoShisui);
 
         //¸Ï½ô»Ø·µ£¡
         if (Service.IconReplacer.OriginalHook(OgiNamikiri.ID) == KaeshiNamikiri.ID)

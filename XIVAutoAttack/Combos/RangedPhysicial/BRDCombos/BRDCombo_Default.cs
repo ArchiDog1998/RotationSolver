@@ -7,6 +7,7 @@ using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
+using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -86,8 +87,8 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             return base.EmergercyAbility(abilityRemain, nextGCD, out act);
         }
         else if (abilityRemain != 0 &&
-            (!RagingStrikes.EnoughLevel || Player.HaveStatusFromSelf(StatusID.RagingStrikes)) &&
-            (!BattleVoice.EnoughLevel || Player.HaveStatusFromSelf(StatusID.BattleVoice)))
+            (!RagingStrikes.EnoughLevel || Player.HaveStatus(true, StatusID.RagingStrikes)) &&
+            (!BattleVoice.EnoughLevel || Player.HaveStatus(true, StatusID.BattleVoice)))
         {
             if (EmpyrealArrow.IsCoolDown || !EmpyrealArrow.WillHaveOneChargeGCD() || JobGauge.Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
             {
@@ -113,13 +114,13 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             //光明神的最终乐章
             if (abilityRemain == 2 && RadiantFinale.ShouldUse(out act, mustUse: true))
             {
-                if (RagingStrikes.IsCoolDown && Player.HaveStatusFromSelf(StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
+                if (RagingStrikes.IsCoolDown && Player.HaveStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
             }
 
             //战斗之声
             if (abilityRemain == 1 && BattleVoice.ShouldUse(out act, mustUse: true))
             {
-                if (RagingStrikes.IsCoolDown && Player.HaveStatusFromSelf(StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
+                if (RagingStrikes.IsCoolDown && Player.HaveStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
             }
         }
 
@@ -129,7 +130,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             return false;
         }
         //放浪神的小步舞曲
-        if ((JobGauge.Song == Song.NONE || (JobGauge.Song != Song.NONE || Player.HaveStatusFromSelf(StatusID.ArmyEthos)) && abilityRemain == 1)
+        if ((JobGauge.Song == Song.NONE || (JobGauge.Song != Song.NONE || Player.HaveStatus(true, StatusID.ArmyEthos)) && abilityRemain == 1)
             && JobGauge.SongTimer < 3000)
         {
             if (WanderersMinuet.ShouldUse(out act)) return true;
@@ -156,16 +157,16 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         //测风诱导箭
         if (Sidewinder.ShouldUse(out act))
         {
-            if (Player.HaveStatusFromSelf(StatusID.BattleVoice) && (Player.HaveStatusFromSelf(StatusID.RadiantFinale) || !RadiantFinale.EnoughLevel)) return true;
+            if (Player.HaveStatus(true, StatusID.BattleVoice) && (Player.HaveStatus(true, StatusID.RadiantFinale) || !RadiantFinale.EnoughLevel)) return true;
 
             if (!BattleVoice.WillHaveOneCharge(10, false) && !RadiantFinale.WillHaveOneCharge(10, false)) return true;
 
-            if (RagingStrikes.IsCoolDown && !Player.HaveStatusFromSelf(StatusID.RagingStrikes)) return true;
+            if (RagingStrikes.IsCoolDown && !Player.HaveStatus(true, StatusID.RagingStrikes)) return true;
         }
 
         //看看现在有没有开猛者强击和战斗之声
-        bool empty = Player.HaveStatusFromSelf(StatusID.RagingStrikes)
-            && (Player.HaveStatusFromSelf(StatusID.BattleVoice)
+        bool empty = Player.HaveStatus(true, StatusID.RagingStrikes)
+            && (Player.HaveStatus(true, StatusID.BattleVoice)
             || !BattleVoice.EnoughLevel) || JobGauge.Song == Song.MAGE;
 
         if (EmpyrealArrow.IsCoolDown || !EmpyrealArrow.WillHaveOneChargeGCD() || JobGauge.Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
@@ -185,23 +186,23 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         //放大招！
         if (!ApexArrow.ShouldUse(out act, mustUse: true)) return false;
 
-        if (Player.HaveStatus(StatusID.BlastArrowReady) || (QuickNock.ShouldUse(out _) && JobGauge.SoulVoice == 100)) return true;
+        if (Player.HaveStatus(true, StatusID.BlastArrowReady) || (QuickNock.ShouldUse(out _) && JobGauge.SoulVoice == 100)) return true;
 
         //快爆发了,攒着等爆发
         if (JobGauge.SoulVoice == 100 && BattleVoice.WillHaveOneCharge(25)) return false;
 
         //爆发快过了,如果手里还有绝峰箭,就把绝峰箭打出去
-        if (JobGauge.SoulVoice >= 80 && Player.HaveStatus(StatusID.RagingStrikes) && Player.WillStatusEnd(10, false, StatusID.RagingStrikes)) return true;
+        if (JobGauge.SoulVoice >= 80 && Player.HaveStatus(true, StatusID.RagingStrikes) && Player.WillStatusEnd(10, false, StatusID.RagingStrikes)) return true;
 
         if (JobGauge.SoulVoice == 100
-            && Player.HaveStatus(StatusID.RagingStrikes)
-            && Player.HaveStatus(StatusID.BattleVoice)
-            && (Player.HaveStatus(StatusID.RadiantFinale) || !RadiantFinale.EnoughLevel)) return true;
+            && Player.HaveStatus(true, StatusID.RagingStrikes)
+            && Player.HaveStatus(true, StatusID.BattleVoice)
+            && (Player.HaveStatus(true, StatusID.RadiantFinale) || !RadiantFinale.EnoughLevel)) return true;
 
         if (JobGauge.Song == Song.MAGE && JobGauge.SoulVoice >= 80 && JobGauge.SongTimer < 22 && JobGauge.SongTimer > 18) return true;
 
         //能量之声等于100或者在爆发箭预备状态
-        if (!Player.HaveStatus(StatusID.RagingStrikes) && JobGauge.SoulVoice == 100) return true;
+        if (!Player.HaveStatus(true, StatusID.RagingStrikes) && JobGauge.SoulVoice == 100) return true;
 
         return false;
     }

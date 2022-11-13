@@ -6,6 +6,7 @@ using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
+using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -70,10 +71,10 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         //赎罪剑
         if (Atonement.ShouldUse(out act))
         {
-            if (!SlowLoop && Player.HaveStatusFromSelf(StatusID.FightOrFlight)
+            if (!SlowLoop && Player.HaveStatus(true, StatusID.FightOrFlight)
                    && IsLastWeaponSkill(true, Atonement, RoyalAuthority)
                    && !Player.WillStatusEndGCD(2, 0, true, StatusID.FightOrFlight)) return true;
-            if (!SlowLoop && Player.FindStatusStack(StatusID.SwordOath) > 1) return true;
+            if (!SlowLoop && Player.FindStatusStack(true, StatusID.SwordOath) > 1) return true;
 
             if (SlowLoop) return true;
         }
@@ -159,7 +160,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         }
 
         //调停
-        if (Intervene.Target.DistanceToPlayer() < 1 && !IsMoving && Target.HaveStatusFromSelf(StatusID.GoringBlade))
+        if (Intervene.Target.DistanceToPlayer() < 1 && !IsMoving && Target.HaveStatus(true, StatusID.GoringBlade))
         {
             if (FightorFlight.ElapsedAfterGCD(2) && Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
@@ -213,8 +214,8 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
             //在4人本道中
             if (InDungeonsMiddle)
             {
-                if (CanUseSpellInDungeonsMiddle && !Player.HaveStatusFromSelf(StatusID.Requiescat)
-                    && !Player.HaveStatusFromSelf(StatusID.ReadyForBladeofFaith)
+                if (CanUseSpellInDungeonsMiddle && !Player.HaveStatus(true, StatusID.Requiescat)
+                    && !Player.HaveStatus(true, StatusID.ReadyForBladeofFaith)
                     && Player.CurrentMp < 2000) return true;
 
                 return false;
@@ -267,7 +268,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
             else
             {
                 //在战逃buff时间剩17秒以下时释放
-                if (Player.HaveStatusFromSelf(StatusID.FightOrFlight) && Player.WillStatusEnd(17, false, StatusID.FightOrFlight) && Target.HaveStatusFromSelf(StatusID.GoringBlade))
+                if (Player.HaveStatus(true, StatusID.FightOrFlight) && Player.WillStatusEnd(17, false, StatusID.FightOrFlight) && Target.HaveStatus(true, StatusID.GoringBlade))
                 {
                     //在起手中时,王权剑后释放
                     return true;
@@ -289,15 +290,15 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
     private bool CanUseConfiteor(out IAction act)
     {
         act = null;
-        if (Player.HaveStatusFromSelf(StatusID.SwordOath)) return false;
+        if (Player.HaveStatus(true, StatusID.SwordOath)) return false;
 
         //有安魂祈祷buff,且没在战逃中
-        if (Player.HaveStatusFromSelf(StatusID.Requiescat) && !Player.HaveStatusFromSelf(StatusID.FightOrFlight))
+        if (Player.HaveStatus(true, StatusID.Requiescat) && !Player.HaveStatus(true, StatusID.FightOrFlight))
         {
             if (SlowLoop && !IsLastWeaponSkill(true, GoringBlade) && !IsLastWeaponSkill(true, Atonement)) return false;
 
-            var statusStack = Player.FindStatusStack(StatusID.Requiescat);
-            if (statusStack == 1 || Player.HaveStatusFromSelf(StatusID.Requiescat) && Player.WillStatusEnd(3, false, StatusID.Requiescat) || Player.CurrentMp <= 2000)
+            var statusStack = Player.FindStatusStack(true, StatusID.Requiescat);
+            if (statusStack == 1 || Player.HaveStatus(true, StatusID.Requiescat) && Player.WillStatusEnd(3, false, StatusID.Requiescat) || Player.CurrentMp <= 2000)
             {
                 if (Confiteor.ShouldUse(out act, mustUse: true)) return true;
             }

@@ -1,20 +1,18 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using System.Collections.Generic;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
-namespace XIVAutoAttack.Combos.Tank.WARCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCmd : Enum
 {
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
-    internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.Defiance);
+    internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.Defiance);
     private sealed protected override BaseAction Shield => Defiance;
 
     public static readonly BaseAction
@@ -66,7 +64,7 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
         //Ô­³õÖ®»ê
         InnerBeast = new(49)
         {
-            OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatusFromSelf(StatusID.InnerRelease)),
+            OtherCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) && (JobGauge.BeastGauge >= 50 || Player.HaveStatus(true, StatusID.InnerRelease)),
         },
 
         //¸ÖÌúÐý·ç

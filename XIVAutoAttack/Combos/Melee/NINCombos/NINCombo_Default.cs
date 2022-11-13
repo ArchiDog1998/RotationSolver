@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
+using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -57,7 +58,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
         if (_ninactionAim != null && ActionUpdater.WeaponRemain < 0.2) return false;
 
         //有生杀予夺
-        if (Player.HaveStatusFromSelf(StatusID.Kassatsu))
+        if (Player.HaveStatus(true, StatusID.Kassatsu))
         {
             if (GokaMekkyaku.ShouldUse(out _))
             {
@@ -85,7 +86,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
         else
         {
             bool empty = Ten.ShouldUse(out _, mustUse: true);
-            bool haveDoton = Player.HaveStatusFromSelf(StatusID.Doton);
+            bool haveDoton = Player.HaveStatus(true, StatusID.Doton);
 
             //加状态
             if (Huraijin.ShouldUse(out act)) return true;
@@ -152,7 +153,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
         act = null;
 
         //有天地人
-        if (Player.HaveStatusFromSelf(StatusID.TenChiJin))
+        if (Player.HaveStatus(true, StatusID.TenChiJin))
         {
             uint tenId = Service.IconReplacer.OriginalHook(Ten.ID);
             uint chiId = Service.IconReplacer.OriginalHook(Chi.ID);
@@ -198,7 +199,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
         if (id == 2260)
         {
             //重置
-            if (!Player.HaveStatusFromSelf(StatusID.Kassatsu, StatusID.TenChiJin)
+            if (!Player.HaveStatus(true, StatusID.Kassatsu, StatusID.TenChiJin)
                 && !Ten.ShouldUse(out _, mustUse: true))
             {
                 return false;
@@ -257,7 +258,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
         if (DoNinjutsus(out act)) return true;
 
         //用真北取消隐匿
-        if (Config.GetBoolByName("AutoUnhide") && Player.HaveStatusFromSelf(StatusID.Hidden))
+        if (Config.GetBoolByName("AutoUnhide") && Player.HaveStatus(true, StatusID.Hidden))
         {
             CommandController.SubmitToChat($"/statusoff {StatusHelper.GetStatusName(StatusID.Hidden)}");
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
+using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using static XIVAutoAttack.Combos.RangedMagicial.BLUCombos.BLUCombo_Default;
 

@@ -1,21 +1,19 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using System.Collections.Generic;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
-namespace XIVAutoAttack.Combos.Tank.PLDCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class PLDCombo_Base<TCmd> : JobGaugeCombo<PLDGauge, TCmd> where TCmd : Enum
 {
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Paladin, ClassJobID.Gladiator };
 
-    internal sealed override bool HaveShield => Player.HaveStatusFromSelf(StatusID.IronWill);
+    internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.IronWill);
 
     private sealed protected override BaseAction Shield => IronWill;
 

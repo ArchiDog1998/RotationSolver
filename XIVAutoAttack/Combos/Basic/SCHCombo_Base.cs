@@ -1,16 +1,12 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using System.Collections.Generic;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.RangedMagicial;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
-namespace XIVAutoAttack.Combos.Healer.SCHCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCmd : Enum
 {
@@ -111,7 +107,7 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
         //朝日召唤
         SummonEos = new(17215)//夕月召唤 17216
         {
-            OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatusFromSelf(StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
+            OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
         },
 
         //仙光的低语/天使的低语
@@ -161,13 +157,13 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
         },
 
         //展开战术
-        DeploymentTactics = new(ActionIDs.DeploymentTactics, true)
+        DeploymentTactics = new(ActionID.DeploymentTactics, true)
         {
             ChoiceTarget = friends =>
             {
                 foreach (var friend in friends)
                 {
-                    if (friend.HaveStatusFromSelf(StatusID.Galvanize)) return friend;
+                    if (friend.HaveStatus(true, StatusID.Galvanize)) return friend;
                 }
                 return null;
             },

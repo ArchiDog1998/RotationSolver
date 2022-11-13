@@ -1,17 +1,10 @@
-using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
-using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using System;
-using System.Collections.Generic;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
 
-namespace XIVAutoAttack.Combos.Melee.NINCombos;
+namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> where TCmd : Enum
 {
@@ -50,13 +43,13 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
         },
 
         //攻其不备
-        TrickAttack = new(ActionIDs.TrickAttack)
+        TrickAttack = new(ActionID.TrickAttack)
         {
             BuffsNeed = new StatusID[] { StatusID.Suiton, StatusID.Hidden },
         },
 
         //旋风刃
-        AeolianEdge = new(ActionIDs.AeolianEdge),
+        AeolianEdge = new(ActionID.AeolianEdge),
 
         //血雨飞花
         DeathBlossom = new(2254),
@@ -100,7 +93,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
         HakkeMujinsatsu = new(16488),
 
         //强甲破点突
-        ArmorCrush = new(ActionIDs.ArmorCrush)
+        ArmorCrush = new(ActionID.ArmorCrush)
         {
             OtherCheck = b => RemainAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
         },
@@ -189,7 +182,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
         },
 
         //水遁之术
-        Suiton = new(ActionIDs.Suiton, Ten, Chi, Jin)
+        Suiton = new(ActionID.Suiton, Ten, Chi, Jin)
         {
             BuffsProvide = new[] { StatusID.Suiton },
             OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),
