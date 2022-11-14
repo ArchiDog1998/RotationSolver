@@ -95,7 +95,7 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
     public static BaseAction WhorlofDeath { get; } = new(ActionID.WhorlofDeath, isEot: true)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
-        OtherCheck = b => !SoulReaver
+        OtherCheck = ShadowofDeath.OtherCheck,
     };
     
     /// <summary>
@@ -140,7 +140,7 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
         BuffsProvide = new[] { StatusID.SoulReaver },
         OtherCheck = b => !SoulReaver && !Enshrouded &&
                           JobGauge.Soul >= 50 && !PlentifulReady &&
-                          (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel),
+                          ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel),
     };
 
     /// <summary>
@@ -244,7 +244,20 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
     /// </summary>
     public static BaseAction GrimReaping { get; } = new(ActionID.GrimReaping)
     {
-        OtherCheck = b => Enshrouded,
+        OtherCheck = b => {
+            if (Enshrouded)
+            {
+                if (JobGauge.LemureShroud > 1)
+                {
+                    return true;
+                }
+                if (JobGauge.LemureShroud == 1 && !Communio.EnoughLevel)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     };
     #endregion
     #region 杂项
@@ -273,10 +286,7 @@ internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> wher
     /// <summary>
     /// 神秘纹 加盾
     /// </summary>
-    public static BaseAction ArcaneCrest { get; } = new(ActionID.ArcaneCrest, true)
-    {
-        OtherCheck = b => !Enshrouded && !SoulReaver
-    };
+    public static BaseAction ArcaneCrest { get; } = new(ActionID.ArcaneCrest, true);
     #endregion
 
 }

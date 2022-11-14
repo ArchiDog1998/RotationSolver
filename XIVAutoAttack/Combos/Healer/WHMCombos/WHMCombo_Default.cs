@@ -1,5 +1,3 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
@@ -7,9 +5,7 @@ using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
 using static XIVAutoAttack.Combos.Healer.WHMCombos.WHMCombo_Default;
 
 namespace XIVAutoAttack.Combos.Healer.WHMCombos;
@@ -17,7 +13,7 @@ namespace XIVAutoAttack.Combos.Healer.WHMCombos;
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/WHMCombos/WHMCombo_Default.cs")]
 internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
 {
-    public override string Author => "秋水";
+    public override string Author => "逆光";
 
     internal enum CommandType : byte
     {
@@ -130,7 +126,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         if (AfflatusRapture.ShouldUse(out act)) return true;
 
         //医济
-        if (Medica2.ShouldUse(out act)) return true;
+        if (Medica2.ShouldUse(out act) && !IsLastAction(true,Medica2)) return true;
 
         //医治
         if (Medica.ShouldUse(out act)) return true;
