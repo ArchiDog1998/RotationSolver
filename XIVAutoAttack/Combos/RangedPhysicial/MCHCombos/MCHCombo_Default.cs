@@ -124,7 +124,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
             if (Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //如果接下来要搞三大金刚了，整备吧！
-        if (nextGCD.IsAnySameAction(true, AirAnchor, Drill))
+        if (ChainSaw.EnoughLevel && nextGCD.IsAnySameAction(true, AirAnchor, Drill))
         {
             if (Reassemble.ShouldUse(out act)) return true;
         }
@@ -205,9 +205,9 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (isDyingNotBoss) return false;
 
         //在三大金刚还剩8秒冷却好时不释放超荷
-        if (Drill.EnoughLevel && Drill.WillHaveOneCharge(7.5f)) return false;
-        if (AirAnchor.EnoughLevel && AirAnchor.WillHaveOneCharge(7.5f)) return false;
-        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(7.5f) || !ChainSaw.IsCoolDown) && Config.GetBoolByName("MCH_Opener")) return false;
+        if (Drill.EnoughLevel && Drill.WillHaveOneChargeGCD(3)) return false;
+        if (AirAnchor.EnoughLevel && AirAnchor.WillHaveOneCharge(3)) return false;
+        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(3) || !ChainSaw.IsCoolDown) && Config.GetBoolByName("MCH_Opener")) return false;
 
         //小怪AOE和4人本超荷判断
         if (SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss())
@@ -253,7 +253,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
 
         //机器人吃团辅判断
         if (AirAnchor.IsCoolDown && AirAnchor.WillHaveOneChargeGCD() && JobGauge.Battery > 80) return true;
-        if (ChainSaw.WillHaveOneCharge(6) || ChainSaw.IsCoolDown && !ChainSaw.ElapsedAfterGCD(3) && JobGauge.Battery <= 60) return true;
+        if (ChainSaw.WillHaveOneChargeGCD(2) || ChainSaw.IsCoolDown && !ChainSaw.ElapsedAfterGCD(3) && JobGauge.Battery <= 60) return true;
 
         return false;
     }

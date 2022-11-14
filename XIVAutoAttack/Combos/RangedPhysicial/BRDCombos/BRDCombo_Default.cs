@@ -28,6 +28,8 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
 
+
+
     public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.范围防御, $"{Troubadour}"},
@@ -56,7 +58,15 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //伶牙俐齿
-        if (IronJaws.ShouldUse(out act)) return true;
+        if (IronJaws.ShouldUse(out act))
+        {
+            var b = IronJaws.Target;
+            if (b.HaveStatus(true, VenomousBite.TargetStatus) & b.HaveStatus(true, Windbite.TargetStatus)
+            & (b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, VenomousBite.TargetStatus)
+            | b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, Windbite.TargetStatus))) return true;
+
+            if (Player.HaveStatus(true, StatusID.RagingStrikes) && Player.WillStatusEndGCD(1, 0, true, StatusID.RagingStrikes)) return true;
+        }
 
         //放大招！
         if (CanUseApexArrow(out act)) return true;
@@ -65,12 +75,12 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         if (Shadowbite.ShouldUse(out act)) return true;
         if (QuickNock.ShouldUse(out act)) return true;
 
-        //直线射击
-        if (StraitShoot.ShouldUse(out act)) return true;
-
         //上毒
         if (VenomousBite.ShouldUse(out act)) return true;
         if (Windbite.ShouldUse(out act)) return true;
+
+        //直线射击
+        if (StraitShoot.ShouldUse(out act)) return true;
 
         //强力射击
         if (HeavyShoot.ShouldUse(out act)) return true;

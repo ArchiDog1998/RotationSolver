@@ -23,9 +23,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/tree/main/XIVAutoAttack/Combos/RangedMagicial/BLMComboDefault")]
 internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 {
-    /// <summary>
-    /// 作者
-    /// </summary>
     public override string Author => "汐ベMoon";
 
     internal enum CommandType : byte
@@ -151,24 +148,27 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        //起手
-        if (OpenerManager(out act)) return true;
-
         //AOE
         if (LoopManagerArea(out act)) return true;
 
         //低级适配
         if (Level < 90 && LoopManagerSingleNOMax(out act)) return true;
+
+        //起手
+        if (Level == 90 && OpenerManager(out act)) return true;
         //满级循环
         if (Level == 90 && UseLoopManager(out act)) return true;
 
+        //移动时
         if (IsMoving && InCombat && HaveHostilesInRange)
         {
             if (Xenoglossy.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             if (Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
+
+        //保持天语
         if (!HaveHostilesInRange && Maintence(out act)) return true;
-        //act = null;
+
         return false;
     }
 
@@ -399,7 +399,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     private bool Maintence(out IAction act)
     {
         if (UmbralSoul.ShouldUse(out act)) return true;
-        if (Transpose.ShouldUse(out act)) return true;
+        if (Transpose.ShouldUse(out act) && JobGauge.ElementTimeRemaining < 3000) return true;
 
         return false;
     }
