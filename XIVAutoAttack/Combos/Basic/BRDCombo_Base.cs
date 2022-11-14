@@ -45,17 +45,7 @@ internal abstract class BRDCombo_Base<TCmd> : JobGaugeCombo<BRDGauge, TCmd> wher
     /// <summary>
     /// 伶牙俐齿
     /// </summary>
-    public static BaseAction IronJaws { get; } = new(ActionID.IronJaws, isEot: true)
-    {
-        OtherCheck = b =>
-        {
-            return b.HaveStatus(true, VenomousBite.TargetStatus)
-                & b.HaveStatus(true, Windbite.TargetStatus)
-
-            & (b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, VenomousBite.TargetStatus)
-            | b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, Windbite.TargetStatus));
-        },
-    };
+    public static BaseAction IronJaws { get; } = new(ActionID.IronJaws, isEot: true);
 
     /// <summary>
     /// 放浪神的小步舞曲
@@ -154,7 +144,7 @@ internal abstract class BRDCombo_Base<TCmd> : JobGaugeCombo<BRDGauge, TCmd> wher
     /// </summary>
     public static BaseAction ApexArrow { get; } = new(ActionID.ApexArrow)
     {
-        OtherCheck = b => JobGauge.SoulVoice >= 20,
+        OtherCheck = b => JobGauge.SoulVoice >= 20 || Player.HaveStatus(true, StatusID.BlastArrowReady),
     };
 
     /// <summary>

@@ -44,7 +44,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
     /// </summary>
     private static bool InDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
 
-    private bool SlowLoop = false;
+    //private bool SlowLoop = false;
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
@@ -71,12 +71,11 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         //赎罪剑
         if (Atonement.ShouldUse(out act))
         {
-            if (!SlowLoop && Player.HaveStatus(true, StatusID.FightOrFlight)
+            if (Player.HaveStatus(true, StatusID.FightOrFlight)
                    && IsLastWeaponSkill(true, Atonement, RageofHalone)
                    && !Player.WillStatusEndGCD(2, 0, true, StatusID.FightOrFlight)) return true;
-            if (!SlowLoop && Player.FindStatusStack(true, StatusID.SwordOath) > 1) return true;
 
-            if (SlowLoop) return true;
+            if (Player.FindStatusStack(true, StatusID.SwordOath) > 1) return true;
         }
         //单体三连
         if (GoringBlade.ShouldUse(out act)) return true;
@@ -125,10 +124,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         if (SettingBreak)
         {
             //战逃反应 加Buff
-            if (abilityRemain == 1 && CanUseFightorFlight(out act))
-            {
-                return true;
-            }
+            if (abilityRemain == 1 && CanUseFightorFlight(out act)) return true;
 
             //安魂祈祷
             //if (SlowLoop && CanUseRequiescat(out act)) return true;
@@ -215,20 +211,8 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
                 return false;
             }
-
-            if (SlowLoop)
-            {
-                //if (openerFinished && Actions.Requiescat.ElapsedAfterGCD(12)) return true;
-
-            }
-            else
-            {
-                //起手在先锋剑后
-                return true;
-
-            }
-
-
+            //起手在先锋剑后
+            return true;
         }
 
         act = null;
@@ -253,21 +237,11 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
                 return false;
             }
 
-            //长循环
-            if (SlowLoop)
+            //在战逃buff时间剩17秒以下时释放
+            if (Player.HaveStatus(true, StatusID.FightOrFlight) && Player.WillStatusEnd(17, true, StatusID.FightOrFlight) && Target.HaveStatus(true, StatusID.GoringBlade))
             {
-                //if (inOpener && IsLastWeaponSkill(true, Actions.FastBlade)) return true;
-
-                //if (openerFinished && Actions.FightorFlight.ElapsedAfterGCD(12)) return true;
-            }
-            else
-            {
-                //在战逃buff时间剩17秒以下时释放
-                if (Player.HaveStatus(true, StatusID.FightOrFlight) && Player.WillStatusEnd(17, false, StatusID.FightOrFlight) && Target.HaveStatus(true, StatusID.GoringBlade))
-                {
-                    //在起手中时,王权剑后释放
-                    return true;
-                }
+                //在起手中时,王权剑后释放
+                return true;
             }
 
         }
@@ -290,7 +264,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         //有安魂祈祷buff,且没在战逃中
         if (Player.HaveStatus(true, StatusID.Requiescat) && !Player.HaveStatus(true, StatusID.FightOrFlight))
         {
-            if (SlowLoop && !IsLastWeaponSkill(true, GoringBlade) && !IsLastWeaponSkill(true, Atonement)) return false;
+            //if (SlowLoop && !IsLastWeaponSkill(true, GoringBlade) && !IsLastWeaponSkill(true, Atonement)) return false;
 
             var statusStack = Player.FindStatusStack(true, StatusID.Requiescat);
             if (statusStack == 1 || Player.HaveStatus(true, StatusID.Requiescat) && Player.WillStatusEnd(3, false, StatusID.Requiescat) || Player.CurrentMp <= 2000)

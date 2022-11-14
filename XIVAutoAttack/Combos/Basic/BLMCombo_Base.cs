@@ -34,7 +34,7 @@ namespace XIVAutoAttack.Combos.Basic
 
             public override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false)
             {
-                if (CastTime - 0.5f > JobGauge.ElementTimeRemaining / 1000f)
+                if (JobGauge.IsEnochianActive && CastTime - 0.5f > JobGauge.ElementTimeRemaining / 1000f)
                 {
                     act = null;
                     return false;
