@@ -172,7 +172,10 @@ internal abstract class ASTCombo_Base<TCmd> : JobGaugeCombo<ASTGauge, TCmd> wher
     /// <summary>
     /// 小奥秘卡
     /// </summary>
-    public static BaseAction MinorArcana { get; } = new(ActionID.MinorArcana);
+    public static BaseAction MinorArcana { get; } = new(ActionID.MinorArcana)
+    {
+        OtherCheck = b => InCombat,
+    };
 
     /// <summary>
     /// 出王冠卡

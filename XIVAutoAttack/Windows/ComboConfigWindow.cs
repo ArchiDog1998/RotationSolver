@@ -1107,7 +1107,6 @@ internal class ComboConfigWindow : Window
 
             ImGui.Text(act.ToString());
             ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());
-            ImGui.Text("Is General GCD: " + act.IsGeneralGCD.ToString());
             ImGui.Text("Is Real GCD: " + act.IsRealGCD.ToString());
             ImGui.Text("Recast One: " + act.RecastTimeOneChargeDEBUG.ToString());
             ImGui.Text("Recast Elapsed: " + act.RecastTimeElapsedDEBUG.ToString());

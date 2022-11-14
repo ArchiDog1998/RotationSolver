@@ -37,7 +37,8 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
     /// </summary>
     public static BaseAction HeatBlast { get; } = new(ActionID.HeatBlast)
     {
-        OtherCheck = b => JobGauge.IsOverheated,
+        OtherCheck = b => JobGauge.IsOverheated 
+        && !EndAfterGCD(JobGauge.OverheatTimeRemaining /1000f),
     };
 
     /// <summary>

@@ -18,7 +18,7 @@ changelog: |-
   - 可以同一个职业多个不同Combo
   - 不同职业可以单独设置敌对目标筛选条件
   ## API
-  - 改框架
+  - 改大框架，可能会有很多bug
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

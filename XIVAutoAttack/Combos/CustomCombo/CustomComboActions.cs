@@ -59,7 +59,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 沉静
         /// </summary>
-        public static BaseAction Repose { get; } = new BaseAction(ActionID.Rescue);
+        public static BaseAction Repose { get; } = new BaseAction(ActionID.Repose);
 
         /// <summary>
         /// 醒梦（如果MP低于6000那么使用）

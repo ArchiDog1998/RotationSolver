@@ -67,7 +67,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
             if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolDown || !Drill.IsCoolDown) && Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
-        if (!JobGauge.IsOverheated || JobGauge.IsOverheated && RemainAfterGCD(JobGauge.OverheatTimeRemaining, 0))
+        if (!JobGauge.IsOverheated || JobGauge.IsOverheated && EndAfterGCD(JobGauge.OverheatTimeRemaining, 0))
         {
             //AOE,毒菌冲击
             if (Bioblaster.ShouldUse(out act)) return true;

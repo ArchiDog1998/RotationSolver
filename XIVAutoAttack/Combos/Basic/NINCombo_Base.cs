@@ -131,7 +131,7 @@ internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> wher
     /// </summary>
     public static BaseAction ArmorCrush { get; } = new(ActionID.ArmorCrush)
     {
-        OtherCheck = b => RemainAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
+        OtherCheck = b => EndAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
     };
 
     /// <summary>

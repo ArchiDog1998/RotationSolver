@@ -152,7 +152,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="abilityCount">再多少个能力技之后</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点是否已经结束</returns>
-        protected static bool RemainAfterGCD(float remain, uint gcdCount = 0, uint abilityCount = 0)
+        protected static bool EndAfterGCD(float remain, uint gcdCount = 0, uint abilityCount = 0)
             => CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount);
 
         /// <summary>
@@ -160,9 +160,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         /// <param name="remain">剩余时间(职业量谱等的剩余时间,单位必须是秒)</param>
         /// <param name="remainNeed">需要多少秒</param>
-        /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点是否已经结束,即(<paramref name="remain"/> 小于等于 <paramref name="remainNeed"/>)</returns>
-        protected static bool RemainAfter(float remain, float remainNeed)
+        protected static bool EndAfter(float remain, float remainNeed)
             => CooldownHelper.RecastAfter(remain, remainNeed);
     }
 }
