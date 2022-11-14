@@ -9,12 +9,118 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic
 {
-    internal abstract partial class BLMCombo_Base<TCmd> : JobGaugeCombo<BLMGauge, TCmd> where TCmd : Enum
+    internal abstract partial class BLMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
     {
+        private static BLMGauge JobGauge => Service.JobGauges.Get<BLMGauge>();
+
+        /// <summary>
+        /// 在冰状态
+        /// </summary>
+        protected static bool InUmbralIce => JobGauge.InUmbralIce;
+
+        /// <summary>
+        /// 在火状态
+        /// </summary>
+        protected static bool InAstralFire => JobGauge.InAstralFire;
+
+        /// <summary>
+        /// 是否有天语状态
+        /// </summary>
+        protected static bool IsEnochianActive => JobGauge.IsEnochianActive;
+
+        /// <summary>
+        /// 冰状态层数
+        /// </summary>
+        protected static byte UmbralIceStacks => JobGauge.UmbralIceStacks;
+
+        /// <summary>
+        /// 火状态层数
+        /// </summary>
+        protected static byte AstralFireStacks => JobGauge.AstralFireStacks;
+
+        /// <summary>
+        /// 通晓层数
+        /// </summary>
+        protected static byte PolyglotStacks => JobGauge.PolyglotStacks;
+
+        /// <summary>
+        /// 灵极心层数
+        /// </summary>
+        protected static byte UmbralHearts => JobGauge.UmbralHearts;
+
+        /// <summary>
+        /// 是否有悖论
+        /// </summary>
+        protected static bool IsParadoxActive => JobGauge.IsParadoxActive;
+
+        /// <summary>
+        /// 下一个通晓还剩多少时间好
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected static bool EnchinaEndAfter(float time)
+        {
+            return EndAfter(JobGauge.EnochianTimer / 1000f, time);
+        }
+
+        /// <summary>
+        /// 下一个通晓还剩多少时间好
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected static bool EnchinaEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+        {
+            return EndAfterGCD(JobGauge.EnochianTimer / 1000f, gctCount, abilityCount);
+        }
+
+        /// <summary>
+        /// 天语剩余时间
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected static bool ElementTimeEndAfter(float time)
+        {
+            return EndAfter(JobGauge.ElementTimeRemaining / 1000f, time);
+        }
+
+        /// <summary>
+        /// 天语剩余时间
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected static bool ElementTimeEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+        {
+            return EndAfterGCD(JobGauge.ElementTimeRemaining / 1000f, gctCount, abilityCount);
+        }
+
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
 
-        protected static bool HasFire => Player.HaveStatus(true, StatusID.Firestarter);
-        protected static bool HasThunder => Player.HaveStatus(true, StatusID.Thundercloud);
+        /// <summary>
+        /// 有火苗
+        /// </summary>
+        protected static bool HasFire => Player.HasStatus(true, StatusID.Firestarter);
+        /// <summary>
+        /// 有雷云
+        /// </summary>
+        protected static bool HasThunder => Player.HasStatus(true, StatusID.Thundercloud);
+        /// <summary>
+        /// 通晓是否已经达到当前等级下的最大层数
+        /// </summary>
+        protected static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? JobGauge.PolyglotStacks == 2 : JobGauge.PolyglotStacks == 1;
+
+        /// <summary>
+        /// 当前火状态还能打几个火4
+        /// </summary>
+        /// <returns></returns>
+        protected static byte F4RemainingNumber()
+        {
+            if (!InAstralFire) return 0;
+            var mpCount = (byte)((Player.CurrentMp - 800) / Fire4.MPNeed);
+            var timeCountDe = (byte)((JobGauge.ElementTimeRemaining - CooldownHelper.CalcSpellTime(3000)) / CooldownHelper.CalcSpellTime(2800));
+            var timeCountPe = (byte)((JobGauge.ElementTimeRemaining - CooldownHelper.CalcSpellTime(2500)) / CooldownHelper.CalcSpellTime(2800));
+            if (IsParadoxActive) return Math.Min(mpCount, timeCountPe);
+            else return Math.Min(mpCount, timeCountDe);
+        }
 
         public class ThunderAction : BaseAction
         {

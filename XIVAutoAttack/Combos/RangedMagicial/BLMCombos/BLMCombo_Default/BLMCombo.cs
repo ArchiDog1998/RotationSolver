@@ -23,9 +23,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/tree/main/XIVAutoAttack/Combos/RangedMagicial/BLMComboDefault")]
 internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 {
-    /// <summary>
-    /// 作者
-    /// </summary>
     public override string Author => "汐ベMoon";
 
     internal enum CommandType : byte
@@ -166,6 +163,8 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         {
             if (Xenoglossy.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             if (Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (HasThunder && Thunder.ShouldUse(out act)) return true;
+            if (HasFire && Fire3.ShouldUse(out act)) return true;
         }
         if (!HaveHostilesInRange && Maintence(out act)) return true;
         //act = null;
@@ -184,7 +183,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (CanUseTriplecast(out act)) return true;
 
         //魔泉
-        if (Manafont.ShouldUse(out act) && IsLastSpell(true, Despair, Xenoglossy) && Player.CurrentMp == 0 && JobGauge.InAstralFire) return true;
+        if (Manafont.ShouldUse(out act) && IsLastSpell(true, Despair, Xenoglossy) && Player.CurrentMp == 0 && InAstralFire) return true;
 
         //星灵移位
         if (CanUseTranspose(abilityRemain, out act)) return true;
@@ -203,9 +202,9 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         {
             if (Player.HaveStatus(true, StatusID.Triplecast) && Player.FindStatusStack(true, StatusID.Triplecast) <= 1) return true;
 
-            if (!Player.HaveStatus(true, StatusID.Triplecast) && JobGauge.InUmbralIce && IsLastSpell(true, Thunder, Xenoglossy)) return true;
+            if (!Player.HasStatus(true, StatusID.Triplecast) && InUmbralIce && IsLastSpell(true, Thunder, Xenoglossy)) return true;
 
-            if (!Player.HaveStatus(true, StatusID.Triplecast) && JobGauge.InAstralFire) return true;
+            if (!Player.HasStatus(true, StatusID.Triplecast) && InAstralFire) return true;
         }
 
         //详述
@@ -253,12 +252,12 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     /// <returns></returns>
     private bool UseLoopManager(out IAction act)
     {
-        if (JobGauge.InUmbralIce)
+        if (InUmbralIce)
         {
             //雷
             if (CanUseThunder(out act)) return true;
             //冰阶段
-            if (JobGauge.UmbralIceStacks == 3 && Blizzard4.ShouldUse(out act)) return true;
+            if (UmbralIceStacks == 3 && Blizzard4.ShouldUse(out act)) return true;
             //异言
             if (CanUseXenoglossy(out act)) return true;
             //悖论
@@ -267,7 +266,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             if (CanUseFire3(out act)) return true;
 
         }
-        else if (JobGauge.InAstralFire)
+        else if (InAstralFire)
         {
             //悖论
             if (CanUseParadox(out act)) return true;
@@ -297,17 +296,23 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
     private bool LoopManagerSingleNOMax(out IAction act)
     {
-        if (JobGauge.InUmbralIce)
+
+        if (InUmbralIce)
         {
             if (Transpose.ShouldUse(out act))
             {
                 if (!Fire4.EnoughLevel && Player.CurrentMp >= 9600) return true;
             }
             //雷
-            if (CanUseThunder(out act)) return true;
+            if (Thunder.ShouldUse(out act) && Thunder.Target.IsBoss())
+            {
+                //没雷dot
+                if (!TargetHasThunder || TargetThunderWillEnd(3)) return true;
+                if (HasThunder && Player.WillStatusEnd(3, true, StatusID.Thundercloud)) return true;
+            }
             //冰阶段
-            if (!Fire3.EnoughLevel && Blizzard.ShouldUse(out act)) return true;
-            if (JobGauge.UmbralIceStacks == 3 && Blizzard4.ShouldUse(out act)) return true;
+            if (!Blizzard4.EnoughLevel && Player.CurrentMp < 9600 && Blizzard.ShouldUse(out act)) return true;
+            if (UmbralIceStacks == 3 && UmbralHearts != 3 && Blizzard4.ShouldUse(out act)) return true;
             //异言
             if (CanUseXenoglossy(out act)) return true;
             //悖论
@@ -315,16 +320,21 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //火3
             if (CanUseFire3(out act)) return true;
         }
-        else if (JobGauge.InAstralFire)
+        else if (InAstralFire)
         {
             //火3
             if (CanUseFire3(out act)) return true;
             //雷
-            if (CanUseThunder(out act)) return true;
+            if (Thunder.ShouldUse(out act) && Thunder.Target.IsBoss())
+            {
+                //没雷dot
+                if (!TargetHasThunder || TargetThunderWillEnd(3)) return true;
+                if (HasThunder && Player.WillStatusEnd(3, true, StatusID.Thundercloud)) return true;
+            }
             //火1
             if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
             {
-                if (JobGauge.ElementTimeRemaining <= CalcSpellTime(2500) * 2) return true;
+                if (Level >= 60 && ElementTimeEndAfter((float)(CalcSpellTime(2500) * 2))) return true;
                 if (Level < 60) return true;
             }
             //异言
@@ -340,13 +350,10 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
                 if (!Fire3.EnoughLevel && Player.CurrentMp < 1600) return true;
             }
         }
-        else
+        else if (!IsEnochianActive)
         {
-            if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
-            {
-                if (JobGauge.ElementTimeRemaining <= CalcSpellTime(2500) * 2) return true;
-                if (Level < 60) return true;
-            }
+            //火3
+            if (Player.CurrentMp >= 6000 && Fire3.ShouldUse(out act)) return true;
             //冰3
             if (Blizzard3.ShouldUse(out act)) return true;
             if (Blizzard.ShouldUse(out act)) return true;
@@ -366,7 +373,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
         if (Freeze.ShouldUse(out act) && !IsLastSpell(true, Freeze))
         {
-            if (JobGauge.UmbralIceStacks == 3 && JobGauge.UmbralHearts != 3) return true;
+            if (UmbralIceStacks == 3 && UmbralHearts != 3) return true;
         }
         if (Thunder2.ShouldUse(out act) && !IsLastSpell(true, Thunder2))
         {
@@ -375,18 +382,18 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
         if (Fire2.ShouldUse(out act) && Level >= 20)
         {
-            if (!JobGauge.InUmbralIce && !Freeze.EnoughLevel) return true;
+            if (!InUmbralIce && !Freeze.EnoughLevel) return true;
 
-            if (JobGauge.InUmbralIce && ((!Freeze.EnoughLevel && Player.CurrentMp >= 9000) || JobGauge.UmbralHearts == 3)) return true;
+            if (InUmbralIce && ((!Freeze.EnoughLevel && Player.CurrentMp >= 9000) || UmbralHearts == 3)) return true;
 
-            if (JobGauge.InAstralFire && (!Player.HaveStatus(true, StatusID.EnhancedFlare) || JobGauge.UmbralHearts > 1)) return true;
+            if (InAstralFire && (!Player.HasStatus(true, StatusID.EnhancedFlare) || UmbralHearts > 1)) return true;
         }
         if (Flare.ShouldUse(out act))
         {
-            if (JobGauge.InAstralFire && Player.HaveStatus(true, StatusID.EnhancedFlare)) return true;
+            if (InAstralFire && Player.HasStatus(true, StatusID.EnhancedFlare)) return true;
             //return true;
         }
-        if (Blizzard2.ShouldUse(out act) && JobGauge.UmbralIceStacks != 3)
+        if (Blizzard2.ShouldUse(out act) && UmbralIceStacks != 3)
         {
             //if (!JobGauge.IsEnochianActive) return true;
             //if (JobGauge.InAstralFire) return true;
@@ -399,7 +406,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     private bool Maintence(out IAction act)
     {
         if (UmbralSoul.ShouldUse(out act)) return true;
-        if (Transpose.ShouldUse(out act)) return true;
+        if (Transpose.ShouldUse(out act) && ElementTimeEndAfterGCD(1) && Foul.EnoughLevel) return true;
 
         return false;
     }
