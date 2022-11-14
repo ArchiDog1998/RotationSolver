@@ -1,15 +1,10 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
-using FFXIVClientStructs.FFXIV.Common.Lua;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.RangedMagicial;
 using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 using static XIVAutoAttack.Combos.Healer.SCHCombos.SCHCombo_Default;
@@ -19,7 +14,7 @@ namespace XIVAutoAttack.Combos.Healer.SCHCombos;
 [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SCHCombos/SCHCombo_Default.cs")]
 internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
 {
-    public override string Author => "Ana Amari";
+    public override string Author => "逆光 & Ana Amari";
 
     internal enum CommandType : byte
     {
@@ -204,8 +199,11 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
             if (ChainStratagem.ShouldUse(out act)) return true;
         }
 
-        //能量吸收
-        if (EnergyDrain.ShouldUse(out act)) return true;
+        if((Dissipation.EnoughLevel && Dissipation.WillHaveOneChargeGCD(3)) || Aetherflow.WillHaveOneChargeGCD(3))
+        {
+            //能量吸收
+            if (EnergyDrain.ShouldUse(out act,emptyOrSkipCombo:true)) return true;
+        }
 
         //转化
         if (Dissipation.ShouldUse(out act)) return true;

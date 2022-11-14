@@ -115,7 +115,7 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
     /// </summary>
     public static BaseAction EnergyDrain { get; } = new(ActionID.EnergyDrain)
     {
-        OtherCheck = b => HasAetherflow && (Dissipation.EnoughLevel && Dissipation.WillHaveOneChargeGCD(3) || Aetherflow.WillHaveOneChargeGCD(3))
+        OtherCheck = b => HasAetherflow
     };
 
     /// <summary>

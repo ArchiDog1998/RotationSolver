@@ -1,12 +1,8 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
 using static XIVAutoAttack.Combos.Melee.RPRCombos.RPRCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.RPRCombos;
@@ -29,7 +25,12 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     {
         {DescType.单体防御, $"{ArcaneCrest}"},
     };
-
+    private protected override IAction CountDownAction(float remainTime)
+    {
+        //提前2s勾刃
+        if (remainTime <= 2 && Harpe.ShouldUse(out _)) return Harpe;
+        return base.CountDownAction(remainTime);
+    }
 
     private protected override bool GeneralGCD(out IAction act)
     {
@@ -42,9 +43,9 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
             if (ShadowofDeath.ShouldUse(out act)) return true;
 
             //夜游魂衣-虚无/交错收割 阴冷收割
+            if (GrimReaping.ShouldUse(out act)) return true;
             if (CrossReaping.ShouldUse(out act)) return true;
             if (VoidReaping.ShouldUse(out act)) return true;
-            if (GrimReaping.ShouldUse(out act)) return true;
 
             if (JobGauge.LemureShroud == 1 && Communio.EnoughLevel)
             {
@@ -55,8 +56,8 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
                 //跑机制来不及读条？补个buff混一下
                 else
                 {
-                    if (ShadowofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
                     if (WhorlofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
+                    if (ShadowofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
                 }
             }
         }
@@ -73,10 +74,10 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         //大丰收
         if (PlentifulHarvest.ShouldUse(out act, mustUse: true)) return true;
 
-        //灵魂切割
-        if (SoulSlice.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         //灵魂钐割
         if (SoulScythe.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        //灵魂切割
+        if (SoulSlice.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //群体二连
         if (NightmareScythe.ShouldUse(out act)) return true;
@@ -107,8 +108,8 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         if (Enshrouded)
         {
             //夜游魂衣-夜游魂切割 夜游魂钐割
-            if (LemuresSlice.ShouldUse(out act)) return true;
-            if (LemuresScythe.ShouldUse(out act)) return true;
+            if (LemuresScythe.ShouldUse(out act,emptyOrSkipCombo:true)) return true;
+            if (LemuresSlice.ShouldUse(out act,emptyOrSkipCombo:true)) return true;
         }
 
         //暴食
@@ -124,10 +125,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if (!Enshrouded && !SoulReaver)
-        {
-            if (Feint.ShouldUse(out act)) return true;
-        }
+        if (Feint.ShouldUse(out act)) return true;
         act = null;
         return false;
     }

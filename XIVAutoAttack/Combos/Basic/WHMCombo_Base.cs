@@ -3,7 +3,6 @@ using System;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
-using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
