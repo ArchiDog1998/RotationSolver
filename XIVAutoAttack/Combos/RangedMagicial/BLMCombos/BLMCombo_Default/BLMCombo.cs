@@ -247,7 +247,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     }
 
     /// <summary>
-    /// 循环管理
+    /// 满级循环管理
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
@@ -295,19 +295,25 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         return false;
     }
 
+    /// <summary>
+    /// 低级循环
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private bool LoopManagerSingleNOMax(out IAction act)
     {
         if (JobGauge.InUmbralIce)
         {
+            //星灵
             if (Transpose.ShouldUse(out act))
             {
-                if (!Fire4.EnoughLevel && Player.CurrentMp >= 9600) return true;
+                if (!Fire3.EnoughLevel && Player.CurrentMp >= 9600) return true;
             }
             //雷
             if (CanUseThunder(out act)) return true;
             //冰阶段
-            if (!Fire3.EnoughLevel && Blizzard.ShouldUse(out act)) return true;
-            if (JobGauge.UmbralIceStacks == 3 && Blizzard4.ShouldUse(out act)) return true;
+            if (!Blizzard4.EnoughLevel && Player.CurrentMp < 9600 && Blizzard.ShouldUse(out act)) return true;
+            if (JobGauge.UmbralIceStacks == 3 && JobGauge.UmbralHearts != 3 && Blizzard4.ShouldUse(out act)) return true;
             //异言
             if (CanUseXenoglossy(out act)) return true;
             //悖论
@@ -324,7 +330,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //火1
             if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
             {
-                if (JobGauge.ElementTimeRemaining <= CalcSpellTime(2500) * 2) return true;
+                if (Level >= 60 && JobGauge.ElementTimeRemaining <= CalcSpellTime(2500) * 2) return true;
                 if (Level < 60) return true;
             }
             //异言
@@ -335,28 +341,34 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             if (CanUseDespair(out act)) return true;
             //冰3转冰
             if (CanUseBlizzard3(out act)) return true;
+            //星灵
             if (Transpose.ShouldUse(out act))
             {
                 if (!Fire3.EnoughLevel && Player.CurrentMp < 1600) return true;
             }
         }
-        else
+        else if (!JobGauge.IsEnochianActive)
         {
-            if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
-            {
-                if (JobGauge.ElementTimeRemaining <= CalcSpellTime(2500) * 2) return true;
-                if (Level < 60) return true;
-            }
+            //火3
+            if (Player.CurrentMp >= 6000 && Fire3.ShouldUse(out act)) return true;
             //冰3
             if (Blizzard3.ShouldUse(out act)) return true;
-            if (Blizzard.ShouldUse(out act)) return true;
-            //火3
-            if (CanUseFire3(out act)) return true;
+
+            //火1
+            if (Level < 60 && Player.CurrentMp >= 6000 && Fire.ShouldUse(out act)) return true;
+            //冰1
+            if (Level < 60 && Blizzard.ShouldUse(out act)) return true;
+
         }
         act = null;
         return false;
     }
 
+    /// <summary>
+    /// 范围技能循环
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private bool LoopManagerArea(out IAction act)
     {
         //if (!Blizzard2.ShouldUse(out _)) return false;
@@ -396,10 +408,15 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         return false;
     }
 
+    /// <summary>
+    /// 保持天语状态
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private bool Maintence(out IAction act)
     {
         if (UmbralSoul.ShouldUse(out act)) return true;
-        if (Transpose.ShouldUse(out act) && JobGauge.ElementTimeRemaining < 3000) return true;
+        if (Transpose.ShouldUse(out act) && JobGauge.ElementTimeRemaining < 3000 && Foul.EnoughLevel) return true;
 
         return false;
     }

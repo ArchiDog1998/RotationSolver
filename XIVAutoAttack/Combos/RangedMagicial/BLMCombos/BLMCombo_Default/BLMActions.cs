@@ -244,7 +244,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         //冰阶段进火
         if (JobGauge.InUmbralIce)
         {
-            if (JobGauge.IsParadoxActive) return false;
+            if (Paradox.EnoughLevel && JobGauge.IsParadoxActive) return false;
 
             if (!Fire4.EnoughLevel && Player.CurrentMp == 10000) return true;
 
@@ -274,12 +274,13 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
         if (JobGauge.InAstralFire)
         {
+            if (Level < 90 && HasFire) return true;
             //进火后火3
             if (IsLastAction(true, Transpose) || JobGauge.AstralFireStacks < 3) return true;
         }
 
         //火起手
-        if (fireOpener && !JobGauge.IsEnochianActive && !JobGauge.InUmbralIce) return true;
+        if (Level == 90 && fireOpener && !JobGauge.IsEnochianActive && !JobGauge.InUmbralIce) return true;
 
         return false;
     }

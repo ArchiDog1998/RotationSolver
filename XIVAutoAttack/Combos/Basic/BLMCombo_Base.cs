@@ -13,14 +13,34 @@ namespace XIVAutoAttack.Combos.Basic
     {
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
 
+        /// <summary>
+        /// 有火苗
+        /// </summary>
         protected static bool HasFire => Player.HaveStatus(true, StatusID.Firestarter);
+        /// <summary>
+        /// 有雷云
+        /// </summary>
         protected static bool HasThunder => Player.HaveStatus(true, StatusID.Thundercloud);
+        /// <summary>
+        /// 通晓是否已经达到当前等级下的最大层数
+        /// </summary>
+        protected static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? JobGauge.PolyglotStacks == 2 : JobGauge.PolyglotStacks == 1;
 
         public class ThunderAction : BaseAction
         {
             internal override uint MPNeed => HasThunder ? 0 : base.MPNeed;
 
             internal ThunderAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
+                : base(actionID, isFriendly, shouldEndSpecial, isDot)
+            {
+            }
+        }
+
+        public class Fire3Action : ElementAction
+        {
+            internal override uint MPNeed => HasFire ? 0 : base.MPNeed;
+
+            internal Fire3Action(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
                 : base(actionID, isFriendly, shouldEndSpecial, isDot)
             {
             }
@@ -171,7 +191,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 火3
         /// </summary>
-        public static BaseAction Fire3 { get; } = new ElementAction(ActionID.Fire3);
+        public static BaseAction Fire3 { get; } = new Fire3Action(ActionID.Fire3);
 
         /// <summary>
         /// 火4
