@@ -29,9 +29,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
 
     internal static float MpUpdateRemain => 3 - ActionUpdater.MPUpdateElapsed;
-    internal static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? JobGauge.PolyglotStacks == 2 : JobGauge.PolyglotStacks == 1;
     internal static bool TargetHasThunder => Target.HasStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4);
-    internal static bool TargetHasThunder => Target.HaveStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4);
     /// <summary>
     /// GCD间隔总时间
     /// </summary>
@@ -109,13 +107,13 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     /// </summary>
     /// <param name="isInIce"></param>
     /// <returns></returns>      
-    internal static int HaveXeCounts(int GCDcount)
+    internal static int HaveXeCounts(uint GCDcount)
     {
         var count = 0;
         //当前异言数量
-        count += JobGauge.PolyglotStacks;
+        count += PolyglotStacks;
         //冰阶段可用异言数量
-        if (JobGauge.EnochianTimer < GCDTime * GCDcount - 1)
+        if (EnchinaEndAfter(GCDcount * GCDTimes - 1))
         {
             count++;
         }
@@ -143,7 +141,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     /// <returns></returns>
     internal static bool BenignMp()
     {
-        if (HaveSwift || HasFire || JobGauge.IsParadoxActive || Triplecast.CurrentCharges == 0) return false;
+        if (HaveSwift || HasFire || IsParadoxActive || Triplecast.CurrentCharges == 0) return false;
 
         //双星灵时悖论后到星灵前时间
         if (MpBackGCDCanDouble(3) && F4RemainingNumber() == 1)
@@ -174,22 +172,34 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     /// 当前火状态还能打几个火4
     /// </summary>
     /// <returns></returns>
-    internal static byte F4RemainingNumber()
-    {
-        if (!JobGauge.InAstralFire) return 0;
-        var mpCount = (byte)((Player.CurrentMp - 800) / Fire4.MPNeed);
-        var timeCountDe = (byte)((JobGauge.ElementTimeRemaining - CalcSpellTime(3000)) / CalcSpellTime(2800));
-        var timeCountPe = (byte)((JobGauge.ElementTimeRemaining - CalcSpellTime(2500)) / CalcSpellTime(2800));
-        if (JobGauge.IsParadoxActive) return Math.Min(mpCount, timeCountPe);
-        else return Math.Min(mpCount, timeCountDe);
-    }
+    //internal static byte F4RemainingNumber(int count)
+    //{
+    //    if (!InAstralFire) return 0;
+    //    var mpCount = (byte)((Player.CurrentMp - 800) / Fire4.MPNeed);
+    //    var timeCountDe = (byte)((ElementTimeRemaining - CalcSpellTime(3000)) / CalcSpellTime(2800));
+    //    var timeCountPe = (byte)((ElementTimeRemaining - CalcSpellTime(2500)) / CalcSpellTime(2800));
+    //    if (IsParadoxActive) return Math.Min(mpCount, timeCountPe);
+    //    else return Math.Min(mpCount, timeCountDe);
+    //}
+
+    //internal static bool F4RemainingNumber(int count)
+    //{
+    //    if (!InAstralFire) return false;
+    //    var mpCount = (Player.CurrentMp - 800) / Fire4.MPNeed >= count;
+
+    //    var timeCountDe = !ElementTimeEndAfter((float)(CalcSpellTime(2800) * count + CalcSpellTime(3000)) / 1000);
+    //    var timeCountPe = !ElementTimeEndAfter((float)(CalcSpellTime(2800) * count + CalcSpellTime(2500)) / 1000);
+
+    //    if (IsParadoxActive) return mpCount && timeCountPe;
+    //    else return mpCount && timeCountDe;
+    //}
 
     private static double MPYuCe(int count = 2)
     {
         //天语经过时间(秒)
         var gcdTime = GCDTime / 1000;
 
-        if (JobGauge.InAstralFire && Transpose.IsCoolDown && !Transpose.ElapsedAfter(0.1f))
+        if (InAstralFire && Transpose.IsCoolDown && (DateTime.Now - RecordActions[0].UsedTime).Milliseconds < 100)
         {
             MPNextUpInCurrGCD = (3 - (ActionUpdater.MPUpdateElapsed - ActionUpdater.WeaponElapsed)) % 3;
             TsPointElapsed = ActionUpdater.WeaponElapsed - 0.1;// - (15000 - JobGauge.ElementTimeRemaining);
