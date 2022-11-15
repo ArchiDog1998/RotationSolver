@@ -29,8 +29,8 @@ namespace XIVAutoAttack.Helpers
         /// <param name="abilityCount">已经过去多少个能力技了</param>
         /// <param name="addWeaponElapsed">是否要把<see cref="ActionUpdater.WeaponElapsed"/>加进去</param>
         /// <returns>算出总时间</returns>
-        internal static float WeaponElapsed(uint gcdCount = 0, uint abilityCount = 0)
-            =>WeaponTime(gcdCount, abilityCount) + ActionUpdater.WeaponElapsed ;
+        private static float WeaponElapsed(uint gcdCount = 0, uint abilityCount = 0)
+            => WeaponTime(gcdCount, abilityCount) + ActionUpdater.WeaponElapsed;
 
 
         private static float WeaponTime(uint gcdCount = 0, uint abilityCount = 0)
@@ -90,7 +90,7 @@ namespace XIVAutoAttack.Helpers
             return IsLessThan(recast, remain);
         }
 
-        private static bool IsLessThan(float a, float b)
+        internal static bool IsLessThan(this float a, float b)
         {
             if (a <= b) return true;
 
@@ -123,7 +123,7 @@ namespace XIVAutoAttack.Helpers
             //判定点
             var spellPoint = 500d;
             //有否黑魔纹Buff
-            var multiSpeed = Service.ClientState.LocalPlayer.HaveStatus(true, StatusID.LeyLines) ? 0.85 : 1;
+            var multiSpeed = Service.ClientState.LocalPlayer.HasStatus(true, StatusID.LeyLines) ? 0.85 : 1;
 
             //计算值
             var val = Math.Floor(GCDTime * multiSpeed * (1000d + Math.Ceiling(130d * (levelModifier.Sub - speed) / levelModifier.Div)) / 10000d) / 100d * 1000;

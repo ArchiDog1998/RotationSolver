@@ -8,8 +8,10 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCmd : Enum
+internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Scholar };
 
     private sealed protected override BaseAction Raise => Resurrection;
@@ -27,7 +29,7 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
     /// </summary>
     public static BaseAction Adloquium { get; } = new(ActionID.Adloquium, true)
     {
-        OtherCheck = b => !b.HaveStatus(false, StatusID.EukrasianDiagnosis,
+        OtherCheck = b => !b.HasStatus(false, StatusID.EukrasianDiagnosis,
             StatusID.EukrasianPrognosis,
             StatusID.Galvanize),
     };
@@ -137,7 +139,7 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
     /// </summary>
     public static BaseAction SummonEos { get; } = new(ActionID.SummonEos)//夕月召唤 17216
     {
-        OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
+        OtherCheck = b => !TargetUpdater.HavePet && (!Player.HasStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
     };
 
     /// <summary>
@@ -211,7 +213,7 @@ internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> wher
         {
             foreach (var friend in friends)
             {
-                if (friend.HaveStatus(true, StatusID.Galvanize)) return friend;
+                if (friend.HasStatus(true, StatusID.Galvanize)) return friend;
             }
             return null;
         },

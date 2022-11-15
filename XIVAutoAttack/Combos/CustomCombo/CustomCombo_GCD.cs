@@ -48,7 +48,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //防单体
             bool helpDefenseSingle = false;
             //是个骑士或者奶妈
-            if (Role == Role.治疗 || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
+            if (Job.GetJobRole() == JobRole.Healer || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
             {
                 if (Service.Configuration.AutoDefenseForTank && TargetUpdater.PartyTanks.Any((tank) =>
                 {
@@ -66,7 +66,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             {
                 //Sayout!
                 if (GCDaction.EnermyLocation != EnemyLocation.None && GCDaction.Target.HasLocationSide()
-                     && !Player.HaveStatus(true, StatusID.TrueNorth))
+                     && !Player.HasStatus(true, StatusID.TrueNorth))
                 {
                     if (CheckAction(GCDaction.ID))
                     {
@@ -167,7 +167,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //有某些非常危险的状态。
             if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
-                if (Role == Role.治疗 && Esuna.ShouldUse(out act, mustUse: true)) return true;
+                if (Job.GetJobRole() == JobRole.Healer && Esuna.ShouldUse(out act, mustUse: true)) return true;
 
             }
 

@@ -201,11 +201,11 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         //黑魔纹
         if (Config.GetBoolByName("AutoLeylines") && Leylines.ShouldUse(out act))
         {
-            if (Player.HaveStatus(true, StatusID.Triplecast) && Player.FindStatusStack(true, StatusID.Triplecast) <= 1) return true;
+            if (Player.HasStatus(true, StatusID.Triplecast) && Player.StatusStack(true, StatusID.Triplecast) <= 1) return true;
 
-            if (!Player.HaveStatus(true, StatusID.Triplecast) && JobGauge.InUmbralIce && IsLastSpell(true, Thunder, Xenoglossy)) return true;
+            if (!Player.HasStatus(true, StatusID.Triplecast) && JobGauge.InUmbralIce && IsLastSpell(true, Thunder, Xenoglossy)) return true;
 
-            if (!Player.HaveStatus(true, StatusID.Triplecast) && JobGauge.InAstralFire) return true;
+            if (!Player.HasStatus(true, StatusID.Triplecast) && JobGauge.InAstralFire) return true;
         }
 
         //详述
@@ -382,7 +382,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         }
         if (Thunder2.ShouldUse(out act) && !IsLastSpell(true, Thunder2))
         {
-            if (HasThunder || !Thunder2.Target.HaveStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4)) return true;
+            if (HasThunder || !Thunder2.Target.HasStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4)) return true;
         }
 
         if (Fire2.ShouldUse(out act) && Level >= 20)
@@ -391,11 +391,11 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
             if (JobGauge.InUmbralIce && ((!Freeze.EnoughLevel && Player.CurrentMp >= 9000) || JobGauge.UmbralHearts == 3)) return true;
 
-            if (JobGauge.InAstralFire && (!Player.HaveStatus(true, StatusID.EnhancedFlare) || JobGauge.UmbralHearts > 1)) return true;
+            if (JobGauge.InAstralFire && (!Player.HasStatus(true, StatusID.EnhancedFlare) || JobGauge.UmbralHearts > 1)) return true;
         }
         if (Flare.ShouldUse(out act))
         {
-            if (JobGauge.InAstralFire && Player.HaveStatus(true, StatusID.EnhancedFlare)) return true;
+            if (JobGauge.InAstralFire && Player.HasStatus(true, StatusID.EnhancedFlare)) return true;
             //return true;
         }
         if (Blizzard2.ShouldUse(out act) && JobGauge.UmbralIceStacks != 3)

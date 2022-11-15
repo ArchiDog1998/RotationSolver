@@ -6,8 +6,10 @@ using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class NINCombo_Base<TCmd> : JobGaugeCombo<NINGauge, TCmd> where TCmd : Enum
+internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static NINGauge JobGauge => Service.JobGauges.Get<NINGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Ninja, ClassJobID.Rogue };
     public class NinAction : BaseAction
     {

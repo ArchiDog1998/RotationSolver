@@ -14,7 +14,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static BaseAction Addle { get; } = new BaseAction(ActionID.Addle)
         {
-            OtherCheck = b => !b.HaveStatus(false, StatusID.Addle),
+            OtherCheck = b => !b.HasStatus(false, StatusID.Addle),
         };
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         {
             ChoiceTarget = friends =>
             {
-                var tanks = TargetFilter.GetJobCategory(friends, Role.防护);
+                var tanks = TargetFilter.GetJobCategory(friends, JobRole.Tank);
                 if (tanks == null || tanks.Length == 0) return null;
                 return tanks[0];
             },
@@ -144,7 +144,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static BaseAction Feint { get; } = new BaseAction(ActionID.Feint)
         {
-            OtherCheck = b => !b.HaveStatus(false, StatusID.Feint),
+            OtherCheck = b => !b.HasStatus(false, StatusID.Feint),
         };
 
         /// <summary>

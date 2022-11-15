@@ -3,6 +3,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Data;
@@ -149,7 +150,7 @@ namespace XIVAutoAttack.Helpers
         /// <returns></returns>
         internal static BattleChara[] ProvokeTarget(BattleChara[] inputCharas, bool needDistance = false)
         {
-            var tankIDS = GetJobCategory(TargetUpdater.AllianceMembers, Role.防护).Select(member => member.ObjectId);
+            var tankIDS = GetJobCategory(TargetUpdater.AllianceMembers, JobRole.Tank).Select(member => member.ObjectId);
             var loc = Service.ClientState.LocalPlayer.Position;
             var id = Service.ClientState.LocalPlayer.ObjectId;
 
@@ -184,7 +185,7 @@ namespace XIVAutoAttack.Helpers
             {
                 //确认一下死了的T有哪些。
 
-                var deathT = GetJobCategory(deathParty, Role.防护);
+                var deathT = GetJobCategory(deathParty, JobRole.Tank);
                 int TCount = TargetUpdater.PartyTanks.Length;
 
                 //如果全死了，赶紧复活啊。
@@ -194,7 +195,7 @@ namespace XIVAutoAttack.Helpers
                 }
 
                 //确认一下死了的H有哪些。
-                var deathH = GetJobCategory(deathParty, Role.治疗);
+                var deathH = GetJobCategory(deathParty, JobRole.Healer);
 
                 //如果H死了，就先救他。
                 if (deathH.Length != 0) return deathH[0];
@@ -210,11 +211,11 @@ namespace XIVAutoAttack.Helpers
             if (deathAll.Length == 0) return null;
 
             //确认一下死了的H有哪些。
-            var deathAllH = GetJobCategory(deathAll, Role.治疗);
+            var deathAllH = GetJobCategory(deathAll, JobRole.Healer);
             if (deathAllH.Length != 0) return deathAllH[0];
 
             //确认一下死了的T有哪些。
-            var deathAllT = GetJobCategory(deathAll, Role.防护);
+            var deathAllT = GetJobCategory(deathAll, JobRole.Tank);
             if (deathAllT.Length != 0) return deathAllT[0];
 
             return deathAll[0];
@@ -225,7 +226,7 @@ namespace XIVAutoAttack.Helpers
             return charas.Where(item => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)item.Address)->GetIsTargetable()).ToArray();
         }
 
-        internal unsafe static BattleChara[] GetDeath(BattleChara[] charas)
+        internal unsafe static BattleChara[] GetDeath(this BattleChara[] charas)
         {
             charas = GetTargetable(charas);
 
@@ -236,7 +237,7 @@ namespace XIVAutoAttack.Helpers
                 if (item.CurrentHp != 0) continue;
 
                 //如果已经有复活的Buff了，那就算了。
-                if (item.HaveStatus(false, StatusID.Raise)) continue;
+                if (item.HasStatus(false, StatusID.Raise)) continue;
 
                 //如果有人在对着他咏唱，那就算了。
                 bool isCasting = false;
@@ -260,11 +261,13 @@ namespace XIVAutoAttack.Helpers
         }
 
 
-        internal static BattleChara[] GetJobCategory(BattleChara[] objects, Role role)
+        internal static BattleChara[] GetJobCategory(this BattleChara[] objects, JobRole role)
         {
             List<BattleChara> result = new(objects.Length);
 
-            SortedSet<byte> validJobs = new(XIVAutoAttackPlugin.AllJobs.Where(job => job.Role == (byte)role).Select(job => (byte)job.RowId));
+            SortedSet<byte> validJobs = new(Service.DataManager.GetExcelSheet<ClassJob>()
+                .Where(job => job.GetJobRole() == role)
+                .Select(job => (byte)job.RowId));
 
             foreach (var obj in objects)
             {
@@ -280,38 +283,35 @@ namespace XIVAutoAttack.Helpers
 
         internal static BattleChara ASTRangeTarget(BattleChara[] ASTTargets)
         {
-            ASTTargets = ASTTargets.Where(b => !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
+            ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
 
-
-            var targets = GetASTTargets(GetJobCategory(ASTTargets, Role.远程));
-            if (targets.Length > 0) return RandomObject(targets);
-
-            targets = GetASTTargets(GetJobCategory(ASTTargets, Role.近战));
-            if (targets.Length > 0) return RandomObject(targets);
-
-            targets = GetASTTargets(ASTTargets);
-            if (targets.Length > 0) return RandomObject(targets);
-
-            return null;
+            return GetTargetByRole(ASTTargets, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Melee);
         }
+
+
 
         internal static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
         {
-            ASTTargets = ASTTargets.Where(b => !b.HaveStatus(false, StatusID.Weakness,StatusID.BrinkofDeath)).ToArray();
+            ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness,StatusID.BrinkofDeath)).ToArray();
 
-            var targets = GetASTTargets(GetJobCategory(ASTTargets, Role.近战));
-            if (targets.Length > 0) return RandomObject(targets);
 
-            targets = GetASTTargets(GetJobCategory(ASTTargets, Role.远程));
-            if (targets.Length > 0) return RandomObject(targets);
+            return GetTargetByRole(ASTTargets, JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical);
+        }
 
-            targets = GetASTTargets(ASTTargets);
-            if (targets.Length > 0) return RandomObject(targets);
+        internal static BattleChara GetTargetByRole(this BattleChara[] tars, params JobRole[] roles)
+        {
+            foreach (var role in roles)
+            {
+                var targets = GetASTCardTargets(GetJobCategory(tars, role));
+                if (targets.Length > 0) return RandomObject(targets);
+            }
+            var ts = GetASTCardTargets(tars);
+            if (ts.Length > 0) return RandomObject(ts);
 
             return null;
         }
 
-        internal static BattleChara[] GetASTTargets(BattleChara[] sources)
+        internal static BattleChara[] GetASTCardTargets(BattleChara[] sources)
         {
             var allStatus = new StatusID[]
             {
@@ -322,7 +322,7 @@ namespace XIVAutoAttack.Helpers
             StatusID.TheSpear,
             StatusID.TheSpire,
             };
-            return sources.Where((t) => !t.HaveStatus(true, allStatus)).ToArray();
+            return sources.Where((t) => !t.HasStatus(true, allStatus)).ToArray();
         }
 
         internal static BattleChara RandomObject(BattleChara[] objs)
@@ -341,7 +341,7 @@ namespace XIVAutoAttack.Helpers
         /// <param name="objects"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        internal static T[] GetObjectInRadius<T>(T[] objects, float radius) where T : GameObject
+        internal static T[] GetObjectInRadius<T>(this T[] objects, float radius) where T : GameObject
         {
             return objects.Where(o => DistanceToPlayer(o) <= radius).ToArray();
         }

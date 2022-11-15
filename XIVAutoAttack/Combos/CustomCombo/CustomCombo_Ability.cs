@@ -21,28 +21,26 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         }
 
         if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
-        Role role = Role;
+        var role = Job.GetJobRole();
 
         if (TargetUpdater.CanInterruptTargets.Length > 0)
         {
             switch (role)
             {
-                case Role.防护:
+                case JobRole.Tank:
                     if (Interject.ShouldUse(out act)) return true;
                     break;
 
-                case Role.近战:
+                case JobRole.Melee:
                     if (LegSweep.ShouldUse(out act)) return true;
                     break;
-                case Role.远程:
-                    if (RangePhysicial.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id))
-                    {
-                        if (HeadGraze.ShouldUse(out act)) return true;
-                    }
+
+                case JobRole.RangedPhysical:
+                    if (HeadGraze.ShouldUse(out act)) return true;
                     break;
             }
         }
-        if (role == Role.防护)
+        if (role == JobRole.Tank)
         {
             if (CommandController.RaiseOrShirk)
             {
@@ -56,7 +54,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
             {
                 var defenses = new StatusID[] { StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance };
                 //Alive Tanks with shield.
-                var defensesTanks = TargetUpdater.AllianceTanks.Where(t => t.CurrentHp != 0 && t.HaveStatus(true, defenses));
+                var defensesTanks = TargetUpdater.AllianceTanks.Where(t => t.CurrentHp != 0 && t.HasStatus(true, defenses));
                 if (defensesTanks == null || defensesTanks.Count() == 0)
                 {
                     if (!HaveShield && Shield.ShouldUse(out act)) return true;
@@ -68,26 +66,22 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         {
             switch (role)
             {
-                case Role.防护:
-                case Role.近战:
+                case JobRole.Tank:
+                case JobRole.Melee:
                     if (ArmsLength.ShouldUse(out act)) return true;
                     break;
-                case Role.治疗:
+                case JobRole.Healer:
                     if (Surecast.ShouldUse(out act)) return true;
                     break;
-                case Role.远程:
-                    if (RangePhysicial.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id))
-                    {
-                        if (ArmsLength.ShouldUse(out act)) return true;
-                    }
-                    else
-                    {
-                        if (Surecast.ShouldUse(out act)) return true;
-                    }
+                case JobRole.RangedPhysical:
+                    if (ArmsLength.ShouldUse(out act)) return true;
+                    break;
+                case JobRole.RangedMagicial:
+                    if (Surecast.ShouldUse(out act)) return true;
                     break;
             }
         }
-        if (CommandController.EsunaOrShield && role == Role.近战)
+        if (CommandController.EsunaOrShield && role == JobRole.Melee)
         {
             if (TrueNorth.ShouldUse(out act)) return true;
         }
@@ -108,7 +102,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
             if (helpDefenseAOE && !Service.Configuration.NoDefenceAbility)
             {
                 if (DefenceAreaAbility(abilityRemain, out act)) return true;
-                if (role == Role.近战 || role == Role.远程)
+                if (role is JobRole.Melee or JobRole.RangedPhysical or JobRole.RangedMagicial)
                 {
                     //防卫
                     if (DefenceSingleAbility(abilityRemain, out act)) return true;
@@ -116,7 +110,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
             }
 
             //防单体
-            if (role == Role.防护)
+            if (role == JobRole.Tank)
             {
                 var haveTargets = TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets);
                 if ((Service.Configuration.AutoProvokeForTank || TargetUpdater.AllianceTanks.Length < 2) 
@@ -165,27 +159,23 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         //恢复/下踢
         switch (role)
         {
-            case Role.防护:
-                if (Service.Configuration.AlwaysLowBlow &&
-                    LowBlow.ShouldUse(out act)) return true;
+            case JobRole.Tank:
+                if (LowBlow.ShouldUse(out act)) return true;
                 break;
-            case Role.近战:
+
+            case JobRole.Melee:
                 if (SecondWind.ShouldUse(out act)) return true;
                 if (Bloodbath.ShouldUse(out act)) return true;
                 break;
-            case Role.治疗:
+
+            case JobRole.Healer:
+            case JobRole.RangedMagicial:
+                if (JobIDs[0] == ClassJobID.BlackMage) break;
                 if (LucidDreaming.ShouldUse(out act)) return true;
                 break;
-            case Role.远程:
-                if (RangePhysicial.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id))
-                {
-                    if (SecondWind.ShouldUse(out act)) return true;
-                }
-                else
-                {
-                    if (Service.ClientState.LocalPlayer.ClassJob.Id != 25
-                        && LucidDreaming.ShouldUse(out act)) return true;
-                }
+
+            case JobRole.RangedPhysical:
+                if (SecondWind.ShouldUse(out act)) return true;
                 break;
         }
 
@@ -224,7 +214,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {
         if (nextGCD is BaseAction action)
         {
-            if (Role != Role.近战 &&
+            if (Job.GetJobRole() is JobRole.Healer or JobRole.RangedMagicial &&
             action.CastTime >= 5 && Swiftcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
             if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)

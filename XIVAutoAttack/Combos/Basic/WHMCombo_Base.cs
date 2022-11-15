@@ -6,8 +6,10 @@ using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class WHMCombo_Base<TCmd> : JobGaugeCombo<WHMGauge, TCmd> where TCmd : Enum
+internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static WHMGauge JobGauge => Service.JobGauges.Get<WHMGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.WhiteMage, ClassJobID.Conjurer };
     private sealed protected override BaseAction Raise => Raise1;
 
@@ -134,7 +136,7 @@ internal abstract class WHMCombo_Base<TCmd> : JobGaugeCombo<WHMGauge, TCmd> wher
     /// <summary>
     /// 法令
     /// </summary>
-    public static BaseAction Assize { get; } = new(ActionID.Assize, true);
+    public static BaseAction Assize { get; } = new(ActionID.Assize);
 
     /// <summary>
     /// 苦难之心

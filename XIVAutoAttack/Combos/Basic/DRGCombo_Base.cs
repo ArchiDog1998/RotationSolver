@@ -8,8 +8,10 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCmd : Enum
+internal abstract class DRGCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static DRGGauge JobGauge => Service.JobGauges.Get<DRGGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dragoon, ClassJobID.Lancer };
 
     /// <summary>
@@ -168,18 +170,9 @@ internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> wher
         ChoiceTarget = Targets =>
         {
             Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
-            !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
+            !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
 
-            var targets = TargetFilter.GetJobCategory(Targets, Role.½üÕ½);
-            if (targets.Length > 0) return TargetFilter.RandomObject(targets);
-
-            targets = TargetFilter.GetJobCategory(Targets, Role.Ô¶³Ì);
-            if (targets.Length > 0) return TargetFilter.RandomObject(targets);
-
-            targets = Targets;
-            if (targets.Length > 0) return TargetFilter.RandomObject(targets);
-
-            return Player;
+            return Targets.GetTargetByRole(JobRole.Tank, JobRole.RangedMagicial, JobRole.RangedPhysical);
         },
     };
 

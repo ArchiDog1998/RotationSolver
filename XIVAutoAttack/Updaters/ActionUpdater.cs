@@ -104,7 +104,7 @@ namespace XIVAutoAttack.Updaters
             var interval = Service.Configuration.WeaponInterval;
             if (WeaponRemain < interval || WeaponElapsed == 0)
             {
-                AbilityRemain = WeaponRemain + interval;
+                AbilityRemain = WeaponRemain /* + interval */;
                 AbilityRemainCount = 0;
             }
             else if (WeaponRemain < 2 * interval)
@@ -138,7 +138,7 @@ namespace XIVAutoAttack.Updaters
             if (player.ClassJob.Id != 25) return;
 
             //有醒梦，就算了啊
-            if (player.HaveStatus(true, StatusID.LucidDreaming)) return;
+            if (player.HasStatus(true, StatusID.LucidDreaming)) return;
 
             if(_lastMP < player.CurrentMp)
             {

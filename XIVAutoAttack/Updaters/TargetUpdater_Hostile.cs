@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -95,10 +96,11 @@ namespace XIVAutoAttack.Updaters
                 TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId).ToArray();
 
                 float radius = 25;
-                switch (XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role)
+                switch (Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
+                    Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole())
                 {
-                    case (byte)Role.防护:
-                    case (byte)Role.近战:
+                    case JobRole.Tank:
+                    case JobRole.Melee:
                         radius = 3;
                         break;
                 }

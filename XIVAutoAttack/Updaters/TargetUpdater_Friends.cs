@@ -101,12 +101,12 @@ namespace XIVAutoAttack.Updaters
 
             AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
 
-            PartyTanks = TargetFilter.GetJobCategory(PartyMembers, Role.防护);
-            PartyHealers = TargetFilter.GetJobCategory(TargetFilter.GetObjectInRadius(PartyMembers, 30), Role.治疗);
-            AllianceTanks = TargetFilter.GetJobCategory(TargetFilter.GetObjectInRadius(AllianceMembers, 30), Role.防护);
+            PartyTanks = PartyMembers.GetJobCategory(JobRole.Tank);
+            PartyHealers = PartyMembers.GetObjectInRadius(30).GetJobCategory(JobRole.Healer);
+            AllianceTanks = AllianceMembers.GetObjectInRadius(30).GetJobCategory(JobRole.Tank);
 
-            DeathPeopleAll = TargetFilter.GetObjectInRadius(TargetFilter.GetDeath(AllianceMembers), 30);
-            DeathPeopleParty = TargetFilter.GetObjectInRadius(TargetFilter.GetDeath(PartyMembers), 30);
+            DeathPeopleAll = AllianceMembers.GetDeath().GetObjectInRadius(30);
+            DeathPeopleParty = PartyMembers.GetDeath().GetObjectInRadius(30);
             MaintainDeathPeople();
 
             WeakenPeople = TargetFilter.GetObjectInRadius(PartyMembers, 30).Where(p =>
@@ -142,7 +142,7 @@ namespace XIVAutoAttack.Updaters
                 StatusID.Paralysis2,
                 StatusID.Nightmare,
             };
-            DyingPeople = WeakenPeople.Where(p => p.HaveStatus(false, dangeriousStatus)).ToArray();
+            DyingPeople = WeakenPeople.Where(p => p.HasStatus(false, dangeriousStatus)).ToArray();
             #endregion
 
             #region Health
@@ -214,7 +214,7 @@ namespace XIVAutoAttack.Updaters
 
         static float GetHealingOfTimeRatio(BattleChara target, params StatusID[] statusIds)
         {
-            var buffTime = target.FindStatusTime(false, statusIds);
+            var buffTime = target.StatusTime(false, statusIds);
 
             return Math.Min(1, buffTime / 15);
         }

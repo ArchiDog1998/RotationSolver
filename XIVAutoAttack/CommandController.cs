@@ -148,8 +148,10 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
-                string speak = role == Role.防护 ? "Shield" : "Esuna";
+                var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
+                    Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
+
+                string speak = role == JobRole.Tank ? "Shield" : "Esuna";
                 if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
                 _specialString = speak;
                 EsunaOrShield = true;
@@ -165,8 +167,10 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
-                string speak = role == Role.防护 ? "Shirk" : "Raise";
+                var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
+                    Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
+
+                string speak = role == JobRole.Tank ? "Shirk" : "Raise";
                 if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
                 _specialString = speak;
 
@@ -183,8 +187,10 @@ namespace XIVAutoAttack
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
-                string speak = role == Role.防护 ? "Provoke" : "Break";
+                var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
+                    Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
+
+                string speak = role == JobRole.Tank ? "Provoke" : "Break";
                 if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
                 _specialString = speak;
                 BreakorProvoke = true;

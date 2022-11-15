@@ -7,14 +7,16 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> where TCmd : Enum
+internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
 
     protected static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
 
-    protected static bool HaveMoon => Player.HaveStatus(true, StatusID.Moon);
-    protected static bool HaveFlower => Player.HaveStatus(true, StatusID.Flower);
+    protected static bool HaveMoon => Player.HasStatus(true, StatusID.Moon);
+    protected static bool HaveFlower => Player.HasStatus(true, StatusID.Flower);
 
     /// <summary>
     /// ÈÐ·ç

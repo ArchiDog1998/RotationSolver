@@ -3,6 +3,7 @@ using Dalamud.Hooking;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Data.Parsing;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -39,8 +40,8 @@ internal sealed class IconReplacer : IDisposable
                 return type;
             }
 
-            var role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => id == job.RowId).Role;
-            return role == Role.·À»¤ ? (byte)1 : (byte)2;
+            var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(id).GetJobRole();
+            return role == JobRole.Tank ? (byte)1 : (byte)2;
         }
         set
         {
@@ -121,8 +122,8 @@ internal sealed class IconReplacer : IDisposable
                 select act).ToArray();
     }
 
-    private static SortedList<Role, CustomComboGroup[]> _customCombosDict;
-    internal static SortedList<Role, CustomComboGroup[]> CustomCombosDict
+    private static SortedList<JobRole, CustomComboGroup[]> _customCombosDict;
+    internal static SortedList<JobRole, CustomComboGroup[]> CustomCombosDict
     {
         get
         {
@@ -177,8 +178,8 @@ internal sealed class IconReplacer : IDisposable
                          select new CustomComboGroup(comboGrp.Key, comboGrp.First().JobIDs, SetCombos(comboGrp.ToArray())))
                          .ToArray();
 
-        _customCombosDict = new SortedList<Role, CustomComboGroup[]>
-            (_customCombos.GroupBy(g => g.combos[0].Role).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
+        _customCombosDict = new SortedList<JobRole, CustomComboGroup[]>
+            (_customCombos.GroupBy(g => g.combos[0].Job.GetJobRole()).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
     }
 
     private static ICustomCombo[] SetCombos(ICustomCombo[] combos)

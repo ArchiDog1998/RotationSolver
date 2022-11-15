@@ -9,11 +9,12 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCmd : Enum
+internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
-    internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.Defiance);
+    internal sealed override bool HaveShield => Player.HasStatus(true, StatusID.Defiance);
     private sealed protected override BaseAction Shield => Defiance;
 
     /// <summary>
@@ -88,7 +89,7 @@ internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> wher
     /// </summary>
     public static BaseAction InnerBeast { get; } = new(ActionID.InnerBeast)
     {
-        OtherCheck = b => JobGauge.BeastGauge >= 50 || Player.HaveStatus(true, StatusID.InnerRelease), 
+        OtherCheck = b => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease), 
     };
 
     /// <summary>

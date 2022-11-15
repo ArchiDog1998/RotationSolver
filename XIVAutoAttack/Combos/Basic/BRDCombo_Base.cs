@@ -11,8 +11,10 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class BRDCombo_Base<TCmd> : JobGaugeCombo<BRDGauge, TCmd> where TCmd : Enum
+internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static BRDGauge JobGauge => Service.JobGauges.Get<BRDGauge>();
+
     public sealed override ClassJobID[] JobIDs => new [] { ClassJobID.Bard, ClassJobID.Archer };
 
 
@@ -144,7 +146,7 @@ internal abstract class BRDCombo_Base<TCmd> : JobGaugeCombo<BRDGauge, TCmd> wher
     /// </summary>
     public static BaseAction ApexArrow { get; } = new(ActionID.ApexArrow)
     {
-        OtherCheck = b => JobGauge.SoulVoice >= 20 || Player.HaveStatus(true, StatusID.BlastArrowReady),
+        OtherCheck = b => JobGauge.SoulVoice >= 20 || Player.HasStatus(true, StatusID.BlastArrowReady),
     };
 
     /// <summary>
@@ -152,7 +154,7 @@ internal abstract class BRDCombo_Base<TCmd> : JobGaugeCombo<BRDGauge, TCmd> wher
     /// </summary>
     public static BaseAction Troubadour { get; } = new(ActionID.Troubadour, true)
     {
-        OtherCheck = b => !Player.HaveStatus(false, StatusID.Troubadour,
+        OtherCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
             StatusID.Tactician2,
             StatusID.ShieldSamba),

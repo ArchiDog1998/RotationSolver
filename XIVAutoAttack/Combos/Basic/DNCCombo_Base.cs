@@ -7,8 +7,10 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
-internal abstract class DNCCombo_Base<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCmd : Enum
+internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static DNCGauge JobGauge => Service.JobGauges.Get<DNCGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dancer };
 
     /// <summary>
@@ -191,7 +193,7 @@ internal abstract class DNCCombo_Base<TCmd> : JobGaugeCombo<DNCGauge, TCmd> wher
     /// </summary>
     public static BaseAction ShieldSamba { get; } = new(ActionID.ShieldSamba, true)
     {
-        OtherCheck = b => !Player.HaveStatus(false, StatusID.Troubadour,
+        OtherCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
             StatusID.Tactician2,
             StatusID.ShieldSamba),
@@ -211,21 +213,12 @@ internal abstract class DNCCombo_Base<TCmd> : JobGaugeCombo<DNCGauge, TCmd> wher
         {
             Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
             //Remove Weak
-            !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
+            !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
             //Remove other partner.
-            && (!b.HaveStatus(false, StatusID.ClosedPosition2) | b.HaveStatus(true, StatusID.ClosedPosition2)) 
+            && (!b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2)) 
             ).ToArray();
 
-            var targets = TargetFilter.GetJobCategory(Targets, Role.½üÕ½);
-            if (targets.Length > 0) return targets[0];
-
-            targets = TargetFilter.GetJobCategory(Targets, Role.Ô¶³Ì);
-            if (targets.Length > 0) return targets[0];
-
-            targets = Targets;
-            if (targets.Length > 0) return targets[0];
-
-            return null;
+            return Targets.GetTargetByRole(JobRole.Tank, JobRole.RangedMagicial, JobRole.RangedPhysical);
         },
     };
 

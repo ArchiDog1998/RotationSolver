@@ -8,8 +8,10 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCmd : Enum
+internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static SGEGauge JobGauge => Service.JobGauges.Get<SGEGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
     private sealed protected override BaseAction Raise => Egeiro;
 
@@ -64,14 +66,14 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
         BuffsProvide = new StatusID[] { StatusID.Kardia },
         ChoiceTarget = Targets =>
         {
-            var targets = TargetFilter.GetJobCategory(Targets, Role.·À»¤);
+            var targets = Targets.GetJobCategory(JobRole.Tank);
             targets = targets.Length == 0 ? Targets : targets;
 
             if (targets.Length == 0) return null;
 
             return TargetFilter.FindAttackedTarget(targets);
         },
-        OtherCheck = b => !b.HaveStatus(true, StatusID.Kardion),
+        OtherCheck = b => !b.HasStatus(true, StatusID.Kardion),
     };
 
     /// <summary>
@@ -106,7 +108,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
         {
             foreach (var friend in Targets)
             {
-                if (friend.HaveStatus(true, StatusID.Kardion))
+                if (friend.HasStatus(true, StatusID.Kardion))
                 {
                     return friend;
                 }
@@ -236,7 +238,7 @@ internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> wher
         {
             foreach (var chara in TargetUpdater.PartyMembers)
             {
-                if (chara.HaveStatus(true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
+                if (chara.HasStatus(true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
                 && b.WillStatusEndGCD(2, 0, true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
                 && chara.GetHealthRatio() < 0.9) return true;
             }

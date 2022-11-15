@@ -8,8 +8,9 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class RDMCombo_Base<TCmd> : JobGaugeCombo<RDMGauge, TCmd> where TCmd : Enum
+internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static RDMGauge JobGauge => Service.JobGauges.Get<RDMGauge>();
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.RedMage };
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Length == 1 && base.CanHealSingleSpell;

@@ -8,7 +8,7 @@ using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.Basic
 {
-    internal abstract class BLUCombo_Base<TCmd> : OtherCombo<TCmd> where TCmd : Enum
+    internal abstract class BLUCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
     {
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlueMage };
 

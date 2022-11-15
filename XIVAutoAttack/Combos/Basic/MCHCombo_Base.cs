@@ -7,8 +7,10 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> where TCmd : Enum
+internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static MCHGauge JobGauge => Service.JobGauges.Get<MCHGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Machinist };
 
     /// <summary>
@@ -132,7 +134,7 @@ internal abstract class MCHCombo_Base<TCmd> : JobGaugeCombo<MCHGauge, TCmd> wher
     /// </summary>
     public static BaseAction Tactician { get; } = new(ActionID.Tactician, true)
     {
-        OtherCheck = b => !Player.HaveStatus(false, StatusID.Troubadour,
+        OtherCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
             StatusID.Tactician2,
             StatusID.ShieldSamba),

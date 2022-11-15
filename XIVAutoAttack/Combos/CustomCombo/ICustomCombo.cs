@@ -1,4 +1,5 @@
 ﻿using ImGuiScene;
+using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Configuration;
@@ -8,7 +9,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 {
     internal interface ICustomCombo : ITexture
     {
-        Role Role { get; }
+        ClassJob Job { get; }
         ClassJobID[] JobIDs { get; }
 
         ActionConfiguration Config { get; }

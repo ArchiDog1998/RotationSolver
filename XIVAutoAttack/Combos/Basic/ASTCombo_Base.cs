@@ -9,8 +9,10 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class ASTCombo_Base<TCmd> : JobGaugeCombo<ASTGauge, TCmd> where TCmd : Enum
+internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Astrologian };
 
     private sealed protected override BaseAction Raise => Ascend;

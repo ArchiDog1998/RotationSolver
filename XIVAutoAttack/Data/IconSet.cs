@@ -160,19 +160,17 @@ namespace XIVAutoAttack.Data
         internal static uint GetJobIcon(ICustomCombo combo)
         {
             IconType type = IconType.Gold;
-            switch (combo.Role)
+            switch (combo.Job.GetJobRole())
             {
-                case Role.采集:
-                    type = IconType.Yellow;
-                    break;
-                case Role.防护:
+                case JobRole.Tank:
                     type = IconType.Blue;
                     break;
-                case Role.远程:
-                case Role.近战:
+                case JobRole.RangedPhysical:
+                case JobRole.RangedMagicial:
+                case JobRole.Melee:
                     type = IconType.Red;
                     break;
-                case Role.治疗:
+                case JobRole.Healer:
                     type = IconType.Green;
                     break;
 
