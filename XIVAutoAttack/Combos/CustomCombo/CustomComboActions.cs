@@ -183,6 +183,14 @@ namespace XIVAutoAttack.Combos.CustomCombo
             BuffsProvide = new StatusID[] { StatusID.TrueNorth },
         };
 
+        /// <summary>
+        /// 速行
+        /// </summary>
+        public static BaseAction Peloton { get; } = new BaseAction(ActionID.Peloton, shouldEndSpecial: true)
+        {
+            BuffsProvide = new StatusID[] { StatusID.Peloton },
+        };
+
         private protected virtual BaseAction Raise => null;
         private protected virtual BaseAction Shield => null;
     }
