@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
@@ -32,7 +33,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         protected static bool HaveHostilesInRange => TargetUpdater.HaveHostilesInRange;
 
-        private bool canUseHealAction => Role == Data.Role.治疗 || Service.Configuration.UseHealWhenNotAHealer;
+        private bool canUseHealAction => Job.GetJobRole() == JobRole.Healer || Service.Configuration.UseHealWhenNotAHealer;
 
         /// <summary>
         /// 是否可以使用范围治疗能力技

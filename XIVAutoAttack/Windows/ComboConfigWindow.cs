@@ -33,11 +33,11 @@ internal class ComboConfigWindow : Window
         SizeCondition = (ImGuiCond)4;
         Size = new Vector2(740f, 490f);
     }
-    private static readonly Dictionary<Role, string> _roleDescriptionValue = new Dictionary<Role, string>()
+    private static readonly Dictionary<JobRole, string> _roleDescriptionValue = new Dictionary<JobRole, string>()
     {
-        {Role.防护, $"{DescType.单体防御} → {CustomComboActions.Rampart}, {CustomComboActions.Reprisal}" },
-        {Role.近战, $"{DescType.范围防御} → {CustomComboActions.Feint}" },
-        {Role.远程, $"法系{DescType.范围防御} → {CustomComboActions.Addle}" },
+        {JobRole.Tank, $"{DescType.单体防御} → {CustomComboActions.Rampart}, {CustomComboActions.Reprisal}" },
+        {JobRole.Melee, $"{DescType.范围防御} → {CustomComboActions.Feint}" },
+        {JobRole.RangedMagicial, $"法系{DescType.范围防御} → {CustomComboActions.Addle}" },
     };
 
     private static string ToName(VirtualKey k)
@@ -136,7 +136,7 @@ internal class ComboConfigWindow : Window
                 int num = 1;
 
 
-                foreach (Role key in IconReplacer.CustomCombosDict.Keys)
+                foreach (var key in IconReplacer.CustomCombosDict.Keys)
                 {
                     var combos = IconReplacer.CustomCombosDict[key];
                     if (combos == null || combos.Length == 0) continue;
@@ -552,14 +552,6 @@ internal class ComboConfigWindow : Window
                             if (ImGui.IsItemHovered())
                             {
                                 ImGui.SetTooltip("当有怪物在打非T的时候，会自动挑衅。");
-                            }
-
-                            Spacing();
-                            bool alwaysLowBlow = Service.Configuration.AlwaysLowBlow;
-                            if (ImGui.Checkbox("T永远下踢", ref alwaysLowBlow))
-                            {
-                                Service.Configuration.AlwaysLowBlow = alwaysLowBlow;
-                                Service.Configuration.Save();
                             }
 
                             Spacing();

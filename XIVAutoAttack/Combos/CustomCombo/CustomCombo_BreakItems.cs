@@ -10,18 +10,15 @@ namespace XIVAutoAttack.Combos.CustomCombo
 {
     internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {
-        private struct BreakItems
-        {
-            internal static readonly BaseItem
-                //刚力
-                TinctureofStrength6 = new BaseItem(36109, 196625),
-                //巧力
-                TinctureofDexterity6 = new BaseItem(36110, 65535),
-                //意力
-                TinctureofMind6 = new BaseItem(36113, 65535),
-                //意力
-                TinctureofIntelligence6 = new BaseItem(36112, 65535);
-        }
+        private static readonly BaseItem
+            //刚力
+            TinctureofStrength6 = new BaseItem(36109, 196625),
+            //巧力
+            TinctureofDexterity6 = new BaseItem(36110, 65535),
+            //意力
+            TinctureofMind6 = new BaseItem(36113, 65535),
+            //意力
+            TinctureofIntelligence6 = new BaseItem(36112, 65535);
 
         /// <summary>
         /// 是否使用爆发药
@@ -34,25 +31,24 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (Service.PartyList.Count() < 8) return false;
             if (Service.ClientState.LocalPlayer.Level < 90) return false;
 
-            Role role = (Role)XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role;
+            var role = Job.GetJobRole();
             switch (role)
             {
-                case Role.近战:
-                case Role.防护:
-                    if (BreakItems.TinctureofStrength6.ShoudUseItem(out act)) return true;
+                case JobRole.Tank:
+                case JobRole.Melee:
+                    if (TinctureofStrength6.ShoudUseItem(out act)) return true;
                     break;
-                case Role.远程:
-                    if (RangePhysicial.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id))
-                    {
-                        if (BreakItems.TinctureofDexterity6.ShoudUseItem(out act)) return true;
-                    }
-                    else
-                    {
-                        if (BreakItems.TinctureofIntelligence6.ShoudUseItem(out act)) return true;
-                    }
+
+                case JobRole.RangedPhysical:
+                    if (TinctureofDexterity6.ShoudUseItem(out act)) return true;
                     break;
-                case Role.治疗:
-                    if (BreakItems.TinctureofMind6.ShoudUseItem(out act)) return true;
+
+                case JobRole.RangedMagicial:
+                    if (TinctureofIntelligence6.ShoudUseItem(out act)) return true;
+                    break;
+
+                case JobRole.Healer:
+                    if (TinctureofMind6.ShoudUseItem(out act)) return true;
                     break;
             }
             return false;

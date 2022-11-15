@@ -34,8 +34,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     //private readonly SystemSound sound;
     public string Name => "XIV Auto Attack";
 
-    internal static readonly ClassJob[] AllJobs = Service.DataManager.GetExcelSheet<ClassJob>().ToArray();
-
     public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, CommandManager commandManager)
     {
         commandManager.AddHandler(_command, new CommandInfo(OnCommand)

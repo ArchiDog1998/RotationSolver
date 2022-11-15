@@ -88,7 +88,9 @@ namespace XIVAutoAttack.Helpers
         {
             if (Service.ClientState.LocalPlayer == null) return 0;
 
-            var multi = TargetFilter.GetJobCategory(new BattleChara[] { Service.ClientState.LocalPlayer }, Role.防护).Length == 0 ? mult : mult * 1.5f;
+            var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
+                    Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
+            var multi = role == JobRole.Tank ? mult : mult * 1.5f;
             if (TargetUpdater.PartyMembers.Length > 4)
             {
                 multi *= 2;

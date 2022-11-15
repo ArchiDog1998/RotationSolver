@@ -1,5 +1,6 @@
 ﻿using ImGuiScene;
 using Lumina.Data.Parsing;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,12 @@ namespace XIVAutoAttack.Combos.CustomCombo
 {
     internal abstract partial class CustomCombo<TCmd> : CustomComboActions, ICustomCombo where TCmd : Enum
     {
-        internal static readonly ClassJobID[] RangePhysicial = new ClassJobID[] { ClassJobID.Machinist, ClassJobID.Archer, ClassJobID.Dancer, ClassJobID.Bard };
         public abstract ClassJobID[] JobIDs { get; }
-        public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => (uint)JobIDs[0] == job.RowId).Role;
 
-        public string Name => XIVAutoAttackPlugin.AllJobs.First(job => (uint)JobIDs[0] == job.RowId).Name;
+        public ClassJob Job => Service.DataManager.GetExcelSheet<ClassJob>().GetRow((uint)JobIDs[0]);
+
+        public string Name => Job.Name;
+
         /// <summary>
         /// 作者
         /// </summary>

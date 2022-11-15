@@ -125,7 +125,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         {
             ChoiceTarget = friends =>
             {
-                var tanks = TargetFilter.GetJobCategory(friends, Role.防护);
+                var tanks = TargetFilter.GetJobCategory(friends, JobRole.Tank);
                 if (tanks == null || tanks.Length == 0) return null;
                 return tanks[0];
             },

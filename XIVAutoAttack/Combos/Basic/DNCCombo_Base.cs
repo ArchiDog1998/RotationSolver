@@ -218,16 +218,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
             && (!b.HaveStatus(false, StatusID.ClosedPosition2) | b.HaveStatus(true, StatusID.ClosedPosition2)) 
             ).ToArray();
 
-            var targets = TargetFilter.GetJobCategory(Targets, Role.½üÕ½);
-            if (targets.Length > 0) return targets[0];
-
-            targets = TargetFilter.GetJobCategory(Targets, Role.Ô¶³Ì);
-            if (targets.Length > 0) return targets[0];
-
-            targets = Targets;
-            if (targets.Length > 0) return targets[0];
-
-            return null;
+            return Targets.GetTargetByRole(JobRole.Tank, JobRole.RangedMagicial, JobRole.RangedPhysical);
         },
     };
 

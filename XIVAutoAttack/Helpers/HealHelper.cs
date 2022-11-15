@@ -82,7 +82,7 @@ namespace XIVAutoAttack.Helpers
             var healthRatio = chara.GetHealthRatio();
 
             if (Service.ClientState.LocalPlayer!.Level == 90 && shouldHeal >= CalcNormalHeal(strength)) return true;
-            if (healthRatio < isTank && TargetFilter.GetJobCategory(new BattleChara[] { chara }, Role.防护).Length == 1) return true;
+            if (healthRatio < isTank && new BattleChara[] { chara }.GetJobCategory(JobRole.Tank).Length == 1) return true;
             if (healthRatio < notTank) return true;
 
             return false;

@@ -66,7 +66,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         BuffsProvide = new StatusID[] { StatusID.Kardia },
         ChoiceTarget = Targets =>
         {
-            var targets = TargetFilter.GetJobCategory(Targets, Role.·À»¤);
+            var targets = Targets.GetJobCategory(JobRole.Tank);
             targets = targets.Length == 0 ? Targets : targets;
 
             if (targets.Length == 0) return null;
