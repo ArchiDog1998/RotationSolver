@@ -8,8 +8,10 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class DRGCombo_Base<TCmd> : JobGaugeCombo<DRGGauge, TCmd> where TCmd : Enum
+internal abstract class DRGCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static DRGGauge JobGauge => Service.JobGauges.Get<DRGGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dragoon, ClassJobID.Lancer };
 
     /// <summary>

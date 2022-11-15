@@ -8,8 +8,10 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class RPRCombo_Base<TCmd> : JobGaugeCombo<RPRGauge, TCmd> where TCmd : Enum
+internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static RPRGauge JobGauge => Service.JobGauges.Get<RPRGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
 
     public class PRPAction : BaseAction

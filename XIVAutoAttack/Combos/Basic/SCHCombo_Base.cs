@@ -8,8 +8,10 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SCHCombo_Base<TCmd> : JobGaugeCombo<SCHGauge, TCmd> where TCmd : Enum
+internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Scholar };
 
     private sealed protected override BaseAction Raise => Resurrection;

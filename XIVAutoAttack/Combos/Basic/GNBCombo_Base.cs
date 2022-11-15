@@ -9,8 +9,10 @@ using XIVAutoAttack.Helpers;
 namespace XIVAutoAttack.Combos.Basic;
 
 
-internal abstract class GNBCombo_Base<TCmd> : JobGaugeCombo<GNBGauge, TCmd> where TCmd : Enum
+internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static GNBGauge JobGauge => Service.JobGauges.Get<GNBGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
     internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.RoyalGuard);
     private sealed protected override BaseAction Shield => RoyalGuard;

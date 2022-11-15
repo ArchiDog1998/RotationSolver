@@ -9,8 +9,9 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class PLDCombo_Base<TCmd> : JobGaugeCombo<PLDGauge, TCmd> where TCmd : Enum
+internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static PLDGauge JobGauge => Service.JobGauges.Get<PLDGauge>();
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Paladin, ClassJobID.Gladiator };
 

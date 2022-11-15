@@ -7,8 +7,10 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SAMCombo_Base<TCmd> : JobGaugeCombo<SAMGauge, TCmd> where TCmd : Enum
+internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
 
     protected static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));

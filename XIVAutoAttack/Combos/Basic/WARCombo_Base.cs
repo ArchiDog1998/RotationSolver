@@ -9,8 +9,9 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class WARCombo_Base<TCmd> : JobGaugeCombo<WARGauge, TCmd> where TCmd : Enum
+internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
     internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.Defiance);

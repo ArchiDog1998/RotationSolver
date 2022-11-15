@@ -8,8 +8,10 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SGECombo_Base<TCmd> : JobGaugeCombo<SGEGauge, TCmd> where TCmd : Enum
+internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static SGEGauge JobGauge => Service.JobGauges.Get<SGEGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
     private sealed protected override BaseAction Raise => Egeiro;
 

@@ -1,31 +1,16 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract class JobGaugeCombo<T, TCmd> : CustomCombo<TCmd> where T : JobGaugeBase where TCmd : Enum
+    internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {
-        private static T _gauge;
-
-        /// <summary>
-        /// 职业量谱
-        /// </summary>
-        public static T JobGauge
-        {
-            get
-            {
-                if (_gauge == null)
-                {
-                    _gauge = Service.JobGauges.Get<T>();
-                }
-                return _gauge;
-            }
-        }
-
-        internal struct BreakItems
+        private struct BreakItems
         {
             internal static readonly BaseItem
                 //刚力
@@ -36,7 +21,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 TinctureofMind6 = new BaseItem(36113, 65535),
                 //意力
                 TinctureofIntelligence6 = new BaseItem(36112, 65535);
-
         }
 
         /// <summary>

@@ -7,8 +7,10 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SMNCombo_Base<TCmd> : JobGaugeCombo<SMNGauge, TCmd> where TCmd : Enum
+internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static SMNGauge JobGauge => Service.JobGauges.Get<SMNGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Summoner, ClassJobID.Arcanist };
     protected override bool CanHealSingleSpell => false;
     private sealed protected override BaseAction Raise => Resurrection;

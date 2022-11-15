@@ -7,8 +7,10 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
-internal abstract class DRKCombo_Base<TCmd> : JobGaugeCombo<DRKGauge, TCmd> where TCmd : Enum
+internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
     internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.Grit);
     private sealed protected override BaseAction Shield => Grit;

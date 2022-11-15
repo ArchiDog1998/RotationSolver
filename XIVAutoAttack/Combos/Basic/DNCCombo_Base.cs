@@ -7,8 +7,10 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
-internal abstract class DNCCombo_Base<TCmd> : JobGaugeCombo<DNCGauge, TCmd> where TCmd : Enum
+internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static DNCGauge JobGauge => Service.JobGauges.Get<DNCGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dancer };
 
     /// <summary>

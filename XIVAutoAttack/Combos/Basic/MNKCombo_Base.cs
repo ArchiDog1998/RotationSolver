@@ -7,8 +7,10 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class MNKCombo_Base<TCmd> : JobGaugeCombo<MNKGauge, TCmd> where TCmd : Enum
+internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
+    protected static MNKGauge JobGauge => Service.JobGauges.Get<MNKGauge>();
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
 
     /// <summary>

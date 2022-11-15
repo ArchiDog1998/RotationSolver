@@ -9,8 +9,10 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic
 {
-    internal abstract partial class BLMCombo_Base<TCmd> : JobGaugeCombo<BLMGauge, TCmd> where TCmd : Enum
+    internal abstract partial class BLMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
     {
+        protected static BLMGauge JobGauge => Service.JobGauges.Get<BLMGauge>();
+
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
 
         protected static bool HasFire => Player.HaveStatus(true, StatusID.Firestarter);
