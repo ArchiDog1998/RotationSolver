@@ -182,16 +182,10 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //箭毒
-        if (JobGauge.Addersting == 3 && Toxikon.ShouldUse(out act, mustUse: true)) return true;
+        //三层时并不需要使用，溢出不亏
+        //if (JobGauge.Addersting == 3 && Toxikon.ShouldUse(out act, mustUse: true)) return true;
 
         var level = Level;
-        //发炎
-        if (Phlegma3.ShouldUse(out act, mustUse: Phlegma3.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
-        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: Phlegma2.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
-        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: Phlegma.WillHaveOneChargeGCD(2), emptyOrSkipCombo: true)) return true;
-
-        //失衡
-        if (Dyskrasia.ShouldUse(out act)) return true;
 
         if (EukrasianDosis.ShouldUse(out var enAct))
         {
@@ -205,6 +199,15 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
             if (DefenseAreaGCD(out act)) return true;
             if (DefenseSingleGCD(out act)) return true;
         }
+
+        //发炎
+        //留一层走位
+        if (Phlegma3.ShouldUse(out act, mustUse: Phlegma3.MaxCharges == Phlegma3.ChargesCount)) return true;
+        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: Phlegma2.MaxCharges == Phlegma2.ChargesCount)) return true;
+        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: Phlegma.MaxCharges == Phlegma.ChargesCount)) return true;
+
+        //失衡
+        if (Dyskrasia.ShouldUse(out act)) return true;
 
         //注药
         if (Dosis.ShouldUse(out act)) return true;
