@@ -104,7 +104,7 @@ namespace XIVAutoAttack.Updaters
             var interval = Service.Configuration.WeaponInterval;
             if (WeaponRemain < interval || WeaponElapsed == 0)
             {
-                AbilityRemain = WeaponRemain + interval;
+                AbilityRemain = WeaponRemain /* + interval */;
                 AbilityRemainCount = 0;
             }
             else if (WeaponRemain < 2 * interval)

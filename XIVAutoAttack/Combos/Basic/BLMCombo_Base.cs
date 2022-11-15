@@ -5,13 +5,78 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic
 {
     internal abstract partial class BLMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
     {
-        protected static BLMGauge JobGauge => Service.JobGauges.Get<BLMGauge>();
+        private static BLMGauge JobGauge => Service.JobGauges.Get<BLMGauge>();
+
+        /// <summary>
+        /// 冰状态层数
+        /// </summary>
+        protected static byte UmbralIceStacks => JobGauge.UmbralIceStacks;
+
+        /// <summary>
+        /// 火状态层数
+        /// </summary>
+        protected static byte AstralFireStacks => JobGauge.AstralFireStacks;
+
+        /// <summary>
+        /// 通晓层数
+        /// </summary>
+        protected static byte PolyglotStacks => JobGauge.PolyglotStacks;
+
+        /// <summary>
+        /// 灵极心层数
+        /// </summary>
+        protected static byte UmbralHearts => JobGauge.UmbralHearts;
+
+        /// <summary>
+        /// 是否有悖论
+        /// </summary>
+        protected static bool IsParadoxActive => JobGauge.IsParadoxActive;
+
+        /// <summary>
+        /// 下一个通晓还剩多少时间好
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected static bool EnchinaEndAfter(float time)
+        {
+            return EndAfter(JobGauge.EnochianTimer / 1000f, time);
+        }
+
+        /// <summary>
+        /// 下一个通晓还剩多少时间好
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected static bool EnchinaEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+        {
+            return EndAfterGCD(JobGauge.EnochianTimer / 1000f, gctCount, abilityCount);
+        }
+
+        /// <summary>
+        /// 元素剩余时间
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected static bool ElementTimeEndAfter(float time)
+        {
+            return EndAfter(JobGauge.ElementTimeRemaining / 1000f, time);
+        }
+
+        /// <summary>
+        /// 元素剩余时间
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected static bool ElementTimeEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+        {
+            return EndAfterGCD(JobGauge.ElementTimeRemaining / 1000f, gctCount, abilityCount);
+        }
 
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
 
@@ -64,12 +129,12 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 星灵移位
         /// </summary>
-        public static BaseAction Transpose { get; } = new(ActionID.Transpose) { OtherCheck = b => JobGauge.InUmbralIce || JobGauge.InAstralFire };
+        public static BaseAction Transpose { get; } = new(ActionID.Transpose) { OtherCheck = b => ActionUpdater.AbilityRemain.IsLessThan(JobGauge.ElementTimeRemaining / 1000f) };
 
         /// <summary>
         /// 灵极魂
         /// </summary>
-        public static BaseAction UmbralSoul { get; } = new(ActionID.UmbralSoul) { OtherCheck = b => JobGauge.InUmbralIce };
+        public static BaseAction UmbralSoul { get; } = new(ActionID.UmbralSoul) { OtherCheck = b => JobGauge.InUmbralIce && Transpose.OtherCheck(b) };
 
         /// <summary>
         /// 魔罩

@@ -90,7 +90,7 @@ namespace XIVAutoAttack.Helpers
             return IsLessThan(recast, remain);
         }
 
-        private static bool IsLessThan(float a, float b)
+        internal static bool IsLessThan(this float a, float b)
         {
             if (a <= b) return true;
 
