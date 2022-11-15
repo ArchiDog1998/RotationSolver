@@ -14,6 +14,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
@@ -32,8 +33,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     private static ComboConfigWindow _comboConfigWindow;
     //private readonly SystemSound sound;
     public string Name => "XIV Auto Attack";
-
-    internal static readonly ClassJob[] AllJobs = Service.DataManager.GetExcelSheet<ClassJob>().ToArray();
 
     public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, CommandManager commandManager)
     {
@@ -93,6 +92,8 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Dispose();
         Watcher.Dispose();
         CountDown.Dispose();
+
+        IconSet.Dispose();
     }
 
     private void OnOpenConfigUi()

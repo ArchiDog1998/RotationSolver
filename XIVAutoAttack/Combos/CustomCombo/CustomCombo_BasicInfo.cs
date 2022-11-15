@@ -1,5 +1,6 @@
 ﻿using ImGuiScene;
 using Lumina.Data.Parsing;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,22 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract partial class CustomCombo<TCmd> : CustomComboActions, ICustomCombo, IDisposable where TCmd : Enum
+    internal abstract partial class CustomCombo<TCmd> : CustomComboActions, ICustomCombo where TCmd : Enum
     {
-        internal static readonly uint[] RangePhysicial = new uint[] { 23, 31, 38, 5 };
-        public abstract uint[] JobIDs { get; }
-        public Role Role => (Role)XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Role;
+        public abstract ClassJobID[] JobIDs { get; }
 
-        public string Name => XIVAutoAttackPlugin.AllJobs.First(job => JobIDs[0] == job.RowId).Name;
-        public virtual string Author => "未知作者，可能是秋水吧";
+        public ClassJob Job => Service.DataManager.GetExcelSheet<ClassJob>().GetRow((uint)JobIDs[0]);
 
+        public string Name => Job.Name;
+
+        /// <summary>
+        /// 作者
+        /// </summary>
+        public abstract string Author { get; }
+
+        /// <summary>
+        /// 目标是否将要死亡
+        /// </summary>
         internal static bool IsTargetDying
         {
             get
@@ -30,6 +38,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
         }
 
+        /// <summary>
+        /// 目标是否是Boss
+        /// </summary>
         internal static bool IsTargetBoss
         {
             get
@@ -56,18 +67,23 @@ namespace XIVAutoAttack.Combos.CustomCombo
         }
         public string Description => string.Join('\n', DescriptionDict.Select(pair => pair.Key.ToString() + " → " + pair.Value));
 
+        /// <summary>
+        /// 说明字典
+        /// </summary>
         public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
 
-
-        internal static bool HaveSwift => Player.HaveStatus(Swiftcast.BuffsProvide);
+        /// <summary>
+        /// 有即刻相关Buff
+        /// </summary>
+        internal static bool HaveSwift => Player.HasStatus(true, Swiftcast.BuffsProvide);
 
         internal virtual bool HaveShield => true;
 
 
-        public TextureWrap Texture { get; }
+        public uint IconID { get; }
         private protected CustomCombo()
         {
-            Texture = Service.DataManager.GetImGuiTextureIcon(IconSet.GetJobIcon(this));
+            IconID = IconSet.GetJobIcon(this);
         }
 
         public ActionConfiguration Config
@@ -75,15 +91,18 @@ namespace XIVAutoAttack.Combos.CustomCombo
             get
             {
                 var con = CreateConfiguration();
-                if (Service.Configuration.CombosConfigurations.TryGetValue(JobIDs[0], out var lastcom))
+                if (Service.Configuration.CombosConfigurations.TryGetValue((uint)JobIDs[0], out var lastcom))
                 {
                     if(lastcom.TryGetValue(Author, out var lastCon))
                     {
                         if (con.IsTheSame(lastCon)) return lastCon;
                     }
+                    lastcom[Author] = con;
                 }
-                //con.Supply(lastcom);
-                Service.Configuration.CombosConfigurations[JobIDs[0]][Author] = con;
+                else
+                {
+					Service.Configuration.CombosConfigurations.Add((uint)JobIDs[0], new Dictionary<string, ActionConfiguration>() { {Author,con } });
+				}
                 Service.Configuration.Save();
                 return con;
             }
@@ -92,16 +111,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         private protected virtual ActionConfiguration CreateConfiguration()
         {
             return new ActionConfiguration();
-        }
-
-        public void Dispose()
-        {
-            Texture.Dispose();
-        }
-
-        ~CustomCombo()
-        {
-            Dispose();
         }
     }
 }

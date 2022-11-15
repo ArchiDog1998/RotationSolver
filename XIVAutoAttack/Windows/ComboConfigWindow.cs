@@ -23,7 +23,7 @@ namespace XIVAutoAttack.Windows;
 
 internal class ComboConfigWindow : Window
 {
-    private static readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
+    //private static readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
 
     public ComboConfigWindow()
         : base("自动攻击设置 (开源免费) v"+ typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
@@ -33,11 +33,11 @@ internal class ComboConfigWindow : Window
         SizeCondition = (ImGuiCond)4;
         Size = new Vector2(740f, 490f);
     }
-    private static readonly Dictionary<Role, string> _roleDescriptionValue = new Dictionary<Role, string>()
+    private static readonly Dictionary<JobRole, string> _roleDescriptionValue = new Dictionary<JobRole, string>()
     {
-        {Role.防护, $"{DescType.单体防御} → {CustomComboActions.Rampart}, {CustomComboActions.Reprisal}" },
-        {Role.近战, $"{DescType.范围防御} → {CustomComboActions.Feint}" },
-        {Role.远程, $"法系{DescType.范围防御} → {CustomComboActions.Addle}" },
+        {JobRole.Tank, $"{DescType.单体防御} → {CustomComboActions.Rampart}, {CustomComboActions.Reprisal}" },
+        {JobRole.Melee, $"{DescType.范围防御} → {CustomComboActions.Feint}" },
+        {JobRole.RangedMagicial, $"法系{DescType.范围防御} → {CustomComboActions.Addle}" },
     };
 
     private static string ToName(VirtualKey k)
@@ -110,7 +110,7 @@ internal class ComboConfigWindow : Window
                     DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
                     DrawAction(Watcher.LastSpell, nameof(Watcher.LastSpell));
                     DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
-                    DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
+                    DrawAction((uint)Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
                 }
 
                 if (ImGui.CollapsingHeader("倒计时、按键"))
@@ -136,7 +136,7 @@ internal class ComboConfigWindow : Window
                 int num = 1;
 
 
-                foreach (Role key in IconReplacer.CustomCombosDict.Keys)
+                foreach (var key in IconReplacer.CustomCombosDict.Keys)
                 {
                     var combos = IconReplacer.CustomCombosDict[key];
                     if (combos == null || combos.Length == 0) continue;
@@ -151,7 +151,7 @@ internal class ComboConfigWindow : Window
                         {
                             if (i > 0) ImGui.Separator();
                             var combo = IconReplacer.GetChooseCombo(combos[i]);
-                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains(Service.ClientState.LocalPlayer.ClassJob.Id);
+                            var canAddButton = Service.ClientState.LocalPlayer != null && combo.JobIDs.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id);
 
                             DrawTexture(combo, () =>
                             {
@@ -555,14 +555,6 @@ internal class ComboConfigWindow : Window
                             }
 
                             Spacing();
-                            bool alwaysLowBlow = Service.Configuration.AlwaysLowBlow;
-                            if (ImGui.Checkbox("T永远下踢", ref alwaysLowBlow))
-                            {
-                                Service.Configuration.AlwaysLowBlow = alwaysLowBlow;
-                                Service.Configuration.Save();
-                            }
-
-                            Spacing();
                             bool autoUseTrueNorth = Service.Configuration.AutoUseTrueNorth;
                             if (ImGui.Checkbox("近战自动上真北", ref autoUseTrueNorth))
                             {
@@ -646,6 +638,13 @@ internal class ComboConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        float healingOfTimeSubstactArea = Service.Configuration.HealingOfTimeSubstactArea;
+                        if (ImGui.DragFloat("如果使用群体Hot技能，阈值下降多少", ref healingOfTimeSubstactArea, speed, 0, 1))
+                        {
+                            Service.Configuration.HealingOfTimeSubstactArea = healingOfTimeSubstactArea;
+                            Service.Configuration.Save();
+                        }
+
                         float healthSingleA = Service.Configuration.HealthSingleAbility;
                         if (ImGui.DragFloat("多少的HP，可以用能力技单奶", ref healthSingleA, speed, 0, 1))
                         {
@@ -660,6 +659,14 @@ internal class ComboConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        float healingOfTimeSubstact = Service.Configuration.HealingOfTimeSubstactSingle;
+                        if (ImGui.DragFloat("如果使用单体Hot技能，阈值下降多少", ref healingOfTimeSubstact, speed, 0, 1))
+                        {
+                            Service.Configuration.HealingOfTimeSubstactSingle = healingOfTimeSubstact;
+                            Service.Configuration.Save();
+                        }
+
+
                         float healthTank = Service.Configuration.HealthForDyingTank;
                         if (ImGui.DragFloat("低于多少的HP，坦克要放大招了", ref healthTank, speed, 0, 1))
                         {
@@ -672,7 +679,7 @@ internal class ComboConfigWindow : Window
 
                     if (ImGui.CollapsingHeader("目标选择"))
                     {
-                        int isAllTargetAsHostile = Service.Configuration.TargetToHostileType;
+                        int isAllTargetAsHostile = IconReplacer.RightNowTargetToHostileType;
                         if (ImGui.Combo("敌对目标筛选条件", ref isAllTargetAsHostile, new string[]
                         {
                                 "所有能打的目标都是敌对的目标",
@@ -680,7 +687,7 @@ internal class ComboConfigWindow : Window
                                 "只有打人的目标才是敌对的目标",
                         }, 3))
                         {
-                            Service.Configuration.TargetToHostileType = isAllTargetAsHostile;
+                            IconReplacer.RightNowTargetToHostileType = (byte)isAllTargetAsHostile;
                             Service.Configuration.Save();
                         }
 
@@ -961,17 +968,19 @@ internal class ComboConfigWindow : Window
 
 
 
-    internal static void DrawTexture<T>(T texture, Action otherThing, uint jobId = 0, string[] authors = null) where T : class, ITexture
+    internal static void DrawTexture<T>(T texture, Action otherThing, ClassJobID jobId = 0, string[] authors = null) where T : class, ITexture
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
         ImGui.Columns(2, texture.Name, false);
 
-        ImGui.SetColumnWidth(0, texture.Texture.Width + 5);
+        var t = texture.GetTexture();
+
+        ImGui.SetColumnWidth(0, t.Width + 5);
 
         var str = texture.Description;
 
-        ImGui.Image(texture.Texture.ImGuiHandle, new Vector2(texture.Texture.Width, texture.Texture.Height));
+        ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
         if (ImGui.IsItemHovered())
         {
             if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
@@ -995,34 +1004,35 @@ internal class ComboConfigWindow : Window
 
         ImGui.SameLine();
 
-        if(authors == null || authors.Length < 2)
+        if (!string.IsNullOrEmpty(texture.Author))
         {
-            ImGui.TextColored(shadedColor, $" - {texture.Author}");
-        }
-        else
-        {
+            authors ??= new string[] { texture.Author };
+
             int i;
             for (i = 0; i < authors.Length; i++)
             {
-                if(authors[i] == texture.Author)
+                if (authors[i] == texture.Author)
                 {
                     break;
                 }
             }
-            if(ImGui.Combo(texture.Name + "作者", ref i, authors, authors.Length))
+
+            Spacing();
+            ImGui.TextDisabled("-  ");
+            ImGui.SameLine();
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(authors[i]).X + 30);
+            if (ImGui.Combo("##" + texture.Name + "作者", ref i, authors, authors.Length))
             {
-                Service.Configuration.ComboChoices[jobId] = authors[i];
+                Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
             }
         }
 
         if (attr is ComboDevInfoAttribute devAttr)
         {
-
-
             ImGui.SameLine();
             Spacing();
 
-            if (ImGui.Button($"{texture.Name}源码"))
+            if (ImGui.Button($"源码##{texture.Name}"))
             {
                 System.Diagnostics.Process.Start("cmd", $"/C start {devAttr.URL}");
             }
@@ -1041,11 +1051,10 @@ internal class ComboConfigWindow : Window
 #if DEBUG
     private static void DrawAction(uint id, string type)
     {
-        var action = new BaseAction(id);
+        var action = new BaseAction((ActionID)id);
 
         ImGui.Text($"{type}: {action}");
 
-        action.Dispose();
     }
 #endif
 
@@ -1090,7 +1099,6 @@ internal class ComboConfigWindow : Window
 
             ImGui.Text(act.ToString());
             ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());
-            ImGui.Text("Is General GCD: " + act.IsGeneralGCD.ToString());
             ImGui.Text("Is Real GCD: " + act.IsRealGCD.ToString());
             ImGui.Text("Recast One: " + act.RecastTimeOneChargeDEBUG.ToString());
             ImGui.Text("Recast Elapsed: " + act.RecastTimeElapsedDEBUG.ToString());

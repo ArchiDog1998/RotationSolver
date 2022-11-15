@@ -6,6 +6,10 @@
 [![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/XIVAutoAttack?label=总行数&style=for-the-badge)]()
 [![Github License](https://img.shields.io/github/license/ArchiDog1998/XIVAutoAttack.svg?label=开源协议&style=for-the-badge)]()
 
+Talk about it on [Discord](https://discord.gg/nfzmJ6ujDP) For Player not in Chinese Server.
+
+中文玩家可以加入[Discord](https://discord.gg/awuCKbxR6q)参与讨论。
+
 如果你喜欢这个插件，可以在这个目录中下载它: 
 
 `https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/pluginmaster.json`
@@ -14,17 +18,23 @@ QQ交流群：`913297282`，注意，入群问题中的下载量并非上方标�
 
 ## 插件概况
 
-本插件提供全职业的自动攻击，可以自动找最优目标，并提供循环教育模式。
+本插件提供全职业的PVE的自动攻击，可以自动找最优目标，并提供循环教育模式。
+
+**不**包含未来也**不**会提供任何PVP功能。
 
 ![案例](gifs/ExampleDNC.gif)
 
 ## 设计原则
 
 > 不降低任何玩家群体的游戏体验。
+>
+> 不能让服务器看到任何异常。
 
 为达到上述目标最需要保证会因为自动循环而降低游戏体验的群体：`手打玩家`。
 
 手打玩家中会有一部分重视自己在游戏中的各方面表现，如果自动循环能够非常轻易的超过手打玩家的游戏表现，那么就会让一部分纯手打玩家失去手打的乐趣，这不是本插件所期望达到的。 
+
+其次，本插件能做到的功能手动操作`均可复现`。
 
 ### 设计宗旨
 
@@ -47,6 +57,8 @@ QQ交流群：`913297282`，注意，入群问题中的下载量并非上方标�
 
   需要一定的模糊度以区分出自动的整体表现不如手动
 
+本插件几乎所有循环都是按照[NGA-职业攻略](https://nga.178.com/thread.php?fid=-362960)种的循环设计的，能基本做到输出无压力。如果还觉得输出有困难，那多半是在玩`零式`或`绝本`。那么作者非常建议手打，总需要有副本给予FF14`原本的体验`。
+
 ### 适用人群
 - 不想自己打循环，但是想要`体验副本机制`的玩家。
   - 日常刷日随、幻化的玩家
@@ -57,9 +69,7 @@ QQ交流群：`913297282`，注意，入群问题中的下载量并非上方标�
 
 
 
-## 插件设计
+## 循环开发
 
-插件对所有技能进行了细分
-
-- 所有判断主要以自身或敌人状态（buff）、技能冷却时间（cooldown）、职业量谱（gauge）来判断接下来要用什么技能。尽可能少用之前技能的记录、自定义字段等。
+如果您对本插件的循环不是很满意或者想要写出自己的循环，可以参考[Wiki](https://github.com/ArchiDog1998/XIVAutoAttack/wiki)学习如何开发。
 

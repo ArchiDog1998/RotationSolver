@@ -4,6 +4,7 @@ using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Linq;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
@@ -13,58 +14,34 @@ namespace XIVAutoAttack.Actions.BaseAction
 {
     internal partial class BaseAction 
     {
-        internal float Range => ActionManager.GetActionRange(ID);
-
-
-        internal virtual EnemyLocation EnermyLocation
-        {
-            get
-            {
-                if (StatusHelper.ActionLocations.TryGetValue(ID, out var location))
-                {
-                    return location.Loc;
-                }
-                return EnemyLocation.None;
-            }
-        }
-        internal virtual unsafe uint MPNeed
-        {
-            get
-            {
-                var mp = (uint)ActionManager.GetActionCost(ActionType.Spell, AdjustedID, 0, 0, 0, 0);
-                if (mp < 100) return 0;
-                return mp;
-            }
-        }
-
+        private float Range => ActionManager.GetActionRange(ID);
 
         /// <summary>
         /// 如果之前是这些ID，那么就不会执行。
         /// </summary>
-        internal uint[] OtherIDsNot { private get; set; } = null;
+        internal ActionID[] OtherIDsNot { private get; set; } = null;
 
         /// <summary>
         /// 如果之前不是这些ID中的某个，那么就不会执行。
         /// </summary>
-        internal uint[] OtherIDsCombo { private get; set; } = null;
+        internal ActionID[] OtherIDsCombo { private get; set; } = null;
 
         /// <summary>
-        /// 使用了这个技能会得到的Buff，如果有这些Buff中的一种，那么就不会执行。 
+        /// 使用了这个技能会得到的Buff，如果有这些Buff中的一种，那么就不会执行，这个buff是自己提供的。 
         /// </summary>
-        internal ushort[] BuffsProvide { get; set; } = null;
+        internal StatusID[] BuffsProvide { get; set; } = null;
 
         /// <summary>
         /// 使用这个技能需要的前置Buff，有任何一个就好。
         /// </summary>
-        internal virtual ushort[] BuffsNeed { get; set; } = null;
+        internal virtual StatusID[] BuffsNeed { get; set; } = null;
 
         /// <summary>
         /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
         /// </summary>
         internal Func<BattleChara, bool> OtherCheck { get; set; } = null;
 
-
-        internal bool WillCooldown
+        private bool WillCooldown
         {
             get
             {
@@ -95,16 +72,15 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// 判断是否需要使用这个技能
         /// </summary>
         /// <param name="act">返回的技能</param>
-        /// <param name="lastAct">上一个Combo技能的值，如果需要算Combo，请输入他！<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
-        /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供，不判断AOE技能的敌人数量是否达标，并且如果有层数，放完所有层数。</param>
+        /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供，不判断AOE技能的敌人数量是否达标.</param>
         /// <param name="emptyOrSkipCombo">如果有层数，放完所有层数，不判断是否为Combo<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
         /// <returns>这个技能能不能用</returns>
-        public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+        public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false)
         {
             act = this;
 
             //用户不让用！
-            if (!skipDisable && !IsEnabled) return false;
+            if (!IsEnabled) return false;
 
             //等级不够。
             if (!EnoughLevel) return false;
@@ -115,16 +91,19 @@ namespace XIVAutoAttack.Actions.BaseAction
             //没有前置Buff
             if (BuffsNeed != null)
             {
-                if (!Service.ClientState.LocalPlayer.HaveStatus(BuffsNeed)) return false;
+                if (!Service.ClientState.LocalPlayer.HasStatus(true, BuffsNeed)) return false;
             }
 
-            if (!mustUse)
+            //防止友方类技能连续使用
+            if(_isEot)
             {
-                //已有提供的Buff的任何一种
-                if (BuffsProvide != null)
-                {
-                    if (Service.ClientState.LocalPlayer.StatusList.Select(s => (ushort)s.StatusId).Intersect(BuffsProvide).Count() > 0) return false;
-                }
+                if (IActionHelper.IsLastAction(true, this)) return false;
+            }
+
+            //已有提供的Buff的任何一种
+            if (BuffsProvide != null && !mustUse)
+            {
+                if (Service.ClientState.LocalPlayer.HasStatus(true, BuffsProvide)) return false;
             }
 
             //还冷却不下来呢，来不及。
@@ -135,6 +114,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             //用于自定义的要求没达到
             if (OtherCheck != null && !OtherCheck(Target)) return false;
+            if (_otherCheckEvent != null && !_otherCheckEvent(Target)) return false;
 
             if (IsGeneralGCD)
             {
@@ -147,7 +127,9 @@ namespace XIVAutoAttack.Actions.BaseAction
                     }
 
                     //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
-                    uint[] comboActions = _action.ActionCombo?.Row != 0 ? new uint[] { _action.ActionCombo.Row } : new uint[0];
+                    var comboActions = _action.ActionCombo?.Row != 0
+                        ? new ActionID[] { (ActionID)_action.ActionCombo.Row }
+                        : new ActionID[0];
                     if (OtherIDsCombo != null) comboActions = comboActions.Union(OtherIDsCombo).ToArray();
 
                     if (comboActions.Length > 0)
@@ -174,7 +156,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (CastTime > 0 && MovingUpdater.IsMoving)
                 {
-                    if (!Service.ClientState.LocalPlayer.HaveStatus(CustomComboActions.Swiftcast.BuffsProvide))
+                    if (!Service.ClientState.LocalPlayer.HasStatus(true, CustomComboActions.Swiftcast.BuffsProvide))
                     {
                         return false;
                     }
@@ -183,12 +165,13 @@ namespace XIVAutoAttack.Actions.BaseAction
             else
             {
                 //如果是能力技能，还没填满。
-                if (!(mustUse || emptyOrSkipCombo) && RecastTimeRemain > ActionUpdater.WeaponRemain + ActionUpdater.WeaponTotal) return false;
+                if (!emptyOrSkipCombo && RecastTimeRemain > ActionUpdater.WeaponRemain + ActionUpdater.WeaponTotal)
+                    return false;
             }
 
             return true;
         }
-
+        
         public virtual unsafe bool Use()
         {
             var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
@@ -199,6 +182,12 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (_shouldEndSpecial) CommandController.ResetSpecial(false);
 
             return result;
+        }
+
+        private event Func<BattleChara, bool> _otherCheckEvent;
+        public void AddOtherCheck(Func<BattleChara, bool> other)
+        {
+            _otherCheckEvent += other;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //防单体
             bool helpDefenseSingle = false;
             //是个骑士或者奶妈
-            if (Role == Role.治疗 || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
+            if (Job.GetJobRole() == JobRole.Healer || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
             {
                 if (Service.Configuration.AutoDefenseForTank && TargetUpdater.PartyTanks.Any((tank) =>
                 {
@@ -66,7 +66,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             {
                 //Sayout!
                 if (GCDaction.EnermyLocation != EnemyLocation.None && GCDaction.Target.HasLocationSide()
-                     && !Player.HaveStatus(StatusIDs.TrueNorth))
+                     && !Player.HasStatus(true, StatusID.TrueNorth))
                 {
                     if (CheckAction(GCDaction.ID))
                     {
@@ -75,7 +75,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                         if (Service.Configuration.TextLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                         {
                             IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
-                                Service.IconReplacer.OriginalHook(GCDaction.ID)).Icon,
+                                (uint)Service.IconReplacer.OriginalHook((ActionID)GCDaction.ID)).Icon,
                         });
                         OverlayWindow.EnemyLocationTarget = GCDaction.Target;
                         OverlayWindow.ShouldLocation = GCDaction.EnermyLocation;
@@ -147,7 +147,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //硬拉或者开始奶人
             if (Service.Configuration.RaisePlayerBySwift && (HaveSwift || !Swiftcast.IsCoolDown) 
                 && EsunaRaise(out act, abilityRemain, true)) return act;
-            if (TargetUpdater.HPNotFull && HaveHostileInRange && ActionUpdater.InCombat)
+            if (TargetUpdater.HPNotFull && HaveHostilesInRange && ActionUpdater.InCombat)
             {
                 if (CanHealAreaSpell && HealAreaGCD(out act)) return act;
                 if (CanHealSingleSpell && HealSingleGCD(out act)) return act;
@@ -167,7 +167,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //有某些非常危险的状态。
             if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
-                if (Role == Role.治疗 && Esuna.ShouldUse(out act, mustUse: true)) return true;
+                if (Job.GetJobRole() == JobRole.Healer && Esuna.ShouldUse(out act, mustUse: true)) return true;
 
             }
 
@@ -212,11 +212,15 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 常规GCD技能
         /// </summary>
-        /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
         private protected abstract bool GeneralGCD(out IAction act);
 
+        /// <summary>
+        /// 移动GCD技能
+        /// </summary>
+        /// <param name="act"></param>
+        /// <returns></returns>
         private protected virtual bool MoveGCD(out IAction act)
         {
             act = null; return false;
@@ -245,10 +249,20 @@ namespace XIVAutoAttack.Combos.CustomCombo
             act = null; return false;
         }
 
+        /// <summary>
+        /// 单体防御GCD
+        /// </summary>
+        /// <param name="act"></param>
+        /// <returns></returns>
         private protected virtual bool DefenseSingleGCD(out IAction act)
         {
             act = null; return false;
         }
+        /// <summary>
+        /// 范围防御GCD
+        /// </summary>
+        /// <param name="act"></param>
+        /// <returns></returns>
         private protected virtual bool DefenseAreaGCD(out IAction act)
         {
             act = null; return false;

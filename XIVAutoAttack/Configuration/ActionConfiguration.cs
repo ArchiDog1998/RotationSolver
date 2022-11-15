@@ -8,7 +8,7 @@ namespace XIVAutoAttack.Configuration
         public List<BooleanConfiguration> bools { get; set; } = new List<BooleanConfiguration>();
         public List<TextConfiguration> texts { get; set; } = new List<TextConfiguration>();
         public List<ComboConfiguration> combos { get; set; } = new List<ComboConfiguration>();
-        public ActionConfiguration SetFloat(string name, float value, float min = 0, float max = 1, string des = "", float speed = 0.002f)
+        public ActionConfiguration SetFloat(string name, float value, string des, float min = 0, float max = 1, float speed = 0.002f)
         {
             foreach (var item in doubles)
             {
@@ -40,7 +40,7 @@ namespace XIVAutoAttack.Configuration
             }
             return 0;
         }
-        public ActionConfiguration SetBool(string name, bool value, string des = "")
+        public ActionConfiguration SetBool(string name, bool value, string des)
         {
             foreach (var item in bools)
             {
@@ -64,7 +64,7 @@ namespace XIVAutoAttack.Configuration
             }
             return false;
         }
-        public ActionConfiguration SetText(string name, string value, string des = "")
+        public ActionConfiguration SetText(string name, string value, string des)
         {
             foreach (var item in texts)
             {
@@ -89,7 +89,7 @@ namespace XIVAutoAttack.Configuration
             return "";
         }
 
-        public ActionConfiguration SetCombo(string name, int value, string[] items = null, string des = "")
+        public ActionConfiguration SetCombo(string name, int value, string des, params string[] items)
         {
             foreach (var item in combos)
             {
@@ -114,7 +114,7 @@ namespace XIVAutoAttack.Configuration
             return 0;
         }
 
-        public bool IsTheSame(ActionConfiguration other)
+        internal bool IsTheSame(ActionConfiguration other)
         {
             if (this.texts.Count != other.texts.Count) return false;
             for (int i = 0; i < this.texts.Count; i++)

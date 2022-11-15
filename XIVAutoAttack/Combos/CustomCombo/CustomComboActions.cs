@@ -9,141 +9,179 @@ namespace XIVAutoAttack.Combos.CustomCombo
 {
     internal class CustomComboActions
     {
+        /// <summary>
+        /// 昏乱
+        /// </summary>
+        public static BaseAction Addle { get; } = new BaseAction(ActionID.Addle)
+        {
+            OtherCheck = b => !b.HasStatus(false, StatusID.Addle),
+        };
 
-        public static readonly BaseAction
-            //昏乱
-            Addle = new BaseAction(7560u)
-            {
-                TargetStatus = new ushort[] { 1203 },
-            },
-
-            //即刻咏唱
-            Swiftcast = new BaseAction(7561u)
-            {
-                BuffsProvide = new ushort[]
+        /// <summary>
+        /// 即刻咏唱
+        /// </summary>
+        public static BaseAction Swiftcast { get; } = new BaseAction(ActionID.Swiftcast)
+        {
+            BuffsProvide = new StatusID[]
                 {
-                    StatusIDs.Swiftcast1,
-                    StatusIDs.Swiftcast2,
-                    StatusIDs.Swiftcast3,
-                    StatusIDs.Triplecast,
-                    StatusIDs.Dualcast,
+                    StatusID.Swiftcast1,
+                    StatusID.Swiftcast2,
+                    StatusID.Swiftcast3,
+                    StatusID.Triplecast,
+                    StatusID.Dualcast,
                 }
-            },
+        };
 
-            //康复
-            Esuna = new BaseAction(7568)
+        /// <summary>
+        /// 康复
+        /// </summary>
+        public static BaseAction Esuna { get; } = new BaseAction(ActionID.Esuna)
+        {
+            ChoiceTarget = (tars) =>
             {
-                ChoiceTarget = (tars) =>
+                if (TargetUpdater.DyingPeople.Length > 0)
                 {
-                    if (TargetUpdater.DyingPeople.Length > 0)
-                    {
-                        return TargetUpdater.DyingPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
-                    }
-                    else if (TargetUpdater.WeakenPeople.Length > 0)
-                    {
-                        return TargetUpdater.WeakenPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
-                    }
-                    return null;
-                },
-            },
-
-            //营救
-            Rescue = new BaseAction(7571),
-
-            //沉静
-            Repose = new BaseAction(16560),
-
-            //醒梦（如果MP低于6000那么使用）
-            LucidDreaming = new BaseAction(7562u)
-            {
-                OtherCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000,
-            },
-
-            //内丹
-            SecondWind = new BaseAction(7541)
-            {
-                OtherCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility,
-            },
-
-            //亲疏自行
-            ArmsLength = new BaseAction(7548, shouldEndSpecial: true),
-
-            //铁壁
-            Rampart = new BaseAction(7531, true)
-            {
-                BuffsProvide = new ushort[]
+                    return TargetUpdater.DyingPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
+                }
+                else if (TargetUpdater.WeakenPeople.Length > 0)
                 {
-                    StatusIDs.Holmgang, StatusIDs.WillDead, StatusIDs.WalkingDead, StatusIDs.Superbolide, StatusIDs.HallowedGround,
-                    StatusIDs.Rampart1, StatusIDs.Rampart2, StatusIDs.Rampart3,
+                    return TargetUpdater.WeakenPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
+                }
+                return null;
+            },
+        };
+
+        /// <summary>
+        /// 营救
+        /// </summary>
+        public static BaseAction Rescue { get; } = new BaseAction(ActionID.Rescue);
+
+        /// <summary>
+        /// 沉静
+        /// </summary>
+        public static BaseAction Repose { get; } = new BaseAction(ActionID.Repose);
+
+        /// <summary>
+        /// 醒梦（如果MP低于6000那么使用）
+        /// </summary>
+        public static BaseAction LucidDreaming { get; } = new BaseAction(ActionID.LucidDreaming)
+        {
+            OtherCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000,
+        };
+
+        /// <summary>
+        /// 内丹
+        /// </summary>
+        public static BaseAction SecondWind { get; } = new BaseAction(ActionID.SecondWind)
+        {
+            OtherCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility,
+        };
+
+        /// <summary>
+        /// 亲疏自行
+        /// </summary>
+        public static BaseAction ArmsLength { get; } = new BaseAction(ActionID.ArmsLength, shouldEndSpecial: true);
+
+        /// <summary>
+        /// 铁壁
+        /// </summary>
+        public static BaseAction Rampart { get; } = new BaseAction(ActionID.Rampart, true)
+        {
+            BuffsProvide = new StatusID[]
+              {
+                    StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead, StatusID.Superbolide, StatusID.HallowedGround,
+                    StatusID.Rampart1, StatusID.Rampart2, StatusID.Rampart3,
                     //原初的直觉和血气
-                    StatusIDs.RawIntuition, StatusIDs.Bloodwhetting,
+                    StatusID.RawIntuition, StatusID.Bloodwhetting,
                     //复仇
-                    StatusIDs.Vengeance,
+                    StatusID.Vengeance,
                     //预警
-                    StatusIDs.Sentinel,
+                    StatusID.Sentinel,
                     //暗影墙
-                    StatusIDs.ShadowWall, StatusIDs.DarkMind,
-                    //伪装
-                    StatusIDs.Camouflage, StatusIDs.Nebula, StatusIDs.HeartofStone,
-                },
-                OtherCheck = BaseAction.TankDefenseSelf,
-            },
+                    StatusID.ShadowWall,
+                    //星云
+                    StatusID.Nebula,
+              },
+            OtherCheck = BaseAction.TankDefenseSelf,
+        };
 
-            //挑衅
-            Provoke = new BaseAction(7533)
+        /// <summary>
+        /// 挑衅
+        /// </summary>
+        public static BaseAction Provoke { get; } = new BaseAction(ActionID.Provoke)
+        {
+            FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+        };
+
+        /// <summary>
+        /// 雪仇
+        /// </summary>
+        public static BaseAction Reprisal { get; } = new BaseAction(ActionID.Reprisal);
+
+        /// <summary>
+        /// 退避
+        /// </summary>
+        public static BaseAction Shirk { get; } = new BaseAction(ActionID.Shirk, true)
+        {
+            ChoiceTarget = friends =>
             {
-                FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+                var tanks = TargetFilter.GetJobCategory(friends, JobRole.Tank);
+                if (tanks == null || tanks.Length == 0) return null;
+                return tanks[0];
             },
+        };
 
-            //雪仇
-            Reprisal = new BaseAction(7535),
+        /// <summary>
+        /// 浴血
+        /// </summary>
+        public static BaseAction Bloodbath { get; } = new BaseAction(ActionID.Bloodbath)
+        {
+            OtherCheck = SecondWind.OtherCheck,
+        };
 
-            //退避
-            Shirk = new BaseAction(7537, true)
-            {
-                ChoiceTarget = friends =>
-                {
-                    var tanks = TargetFilter.GetJobCategory(friends, Role.防护);
-                    if (tanks == null || tanks.Length == 0) return null;
-                    return tanks[0];
-                },
-            },
+        /// <summary>
+        /// 牵制
+        /// </summary>
+        public static BaseAction Feint { get; } = new BaseAction(ActionID.Feint)
+        {
+            OtherCheck = b => !b.HasStatus(false, StatusID.Feint),
+        };
 
-            //浴血
-            Bloodbath = new BaseAction(7542)
-            {
-                OtherCheck = SecondWind.OtherCheck,
-            },
+        /// <summary>
+        /// 插言
+        /// </summary>
+        public static BaseAction Interject { get; } = new BaseAction(ActionID.Interject);
 
-            //牵制
-            Feint = new BaseAction(7549)
-            {
-                TargetStatus = new ushort[] { 1195 },
-            },
+        /// <summary>
+        /// 下踢
+        /// </summary>
+        public static BaseAction LowBlow { get; } = new BaseAction(ActionID.LowBlow)
+        {
+            OtherCheck = b => !b.IsBoss() && !MovingUpdater.IsMoving,
+        };
 
-            //插言
-            Interject = new BaseAction(7538),
+        /// <summary>
+        /// 扫腿
+        /// </summary>
+        public static BaseAction LegSweep { get; } = new BaseAction(ActionID.LegSweep);
 
-            //下踢
-            LowBlow = new BaseAction(7540)
-            {
-                OtherCheck = b => !b.IsBoss(),
-            },
+        /// <summary>
+        /// 伤头
+        /// </summary>
+        public static BaseAction HeadGraze { get; } = new BaseAction(ActionID.HeadGraze);
 
-            //扫腿
-            LegSweep = new BaseAction(7863),
+        /// <summary>
+        /// 沉稳咏唱
+        /// </summary>
+        public static BaseAction Surecast { get; } = new BaseAction(ActionID.Surecast, shouldEndSpecial: true);
 
-            //伤头
-            HeadGraze = new BaseAction(7551),
-
-            //沉稳咏唱
-            Surecast = new BaseAction(7559, shouldEndSpecial: true),
-
-            //真北
-            TrueNorth = new BaseAction(7546, shouldEndSpecial: true)
-            {
-                BuffsProvide = new ushort[] { StatusIDs.TrueNorth },
-            };
+        /// <summary>
+        /// 真北
+        /// </summary>
+        public static BaseAction TrueNorth { get; } = new BaseAction(ActionID.TrueNorth, shouldEndSpecial: true)
+        {
+            BuffsProvide = new StatusID[] { StatusID.TrueNorth },
+        };
 
         private protected virtual BaseAction Raise => null;
         private protected virtual BaseAction Shield => null;

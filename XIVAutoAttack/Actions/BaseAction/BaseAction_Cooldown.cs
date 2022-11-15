@@ -14,26 +14,24 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         /// <param name="gcdCount">已经运转了多少个完整的GCD</param>
         /// <param name="abilityCount">再多少个能力技之后</param>
-        /// <param name="addWeaponElapsed">是否要把<see cref="ActionUpdater.WeaponElapsed"/>加进去</param>
-        /// <returns>是否已经冷却了这么久了</returns>
-        internal bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0, bool addWeaponElapsed = true)
+        /// <returns>是否已经冷却了这么久了(不在冷却会返回false)</returns>
+        internal bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0)
         {
             if (!IsCoolDown) return false;
             var elapsed = RecastTimeElapsedOneCharge;
-            return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, abilityCount, addWeaponElapsed);
+            return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, abilityCount);
         }
 
         /// <summary>
         /// 这个技能已经进入冷却多少秒了
         /// </summary>
         /// <param name="gcdelapsed">已经进行了多少秒了</param>
-        /// <param name="addWeaponElapsed">是否要把<see cref="ActionUpdater.WeaponElapsed"/>加进去</param>
-        /// <returns>是否已经冷却了这么久了</returns>
-        internal bool ElapsedAfter(float gcdelapsed, bool addWeaponElapsed = true)
+        /// <returns>是否已经冷却了这么久了(不在冷却会返回false)</returns>
+        internal bool ElapsedAfter(float gcdelapsed)
         {
             if (!IsCoolDown) return false;
             var elapsed = RecastTimeElapsedOneCharge;
-            return CooldownHelper.ElapsedAfter(elapsed, gcdelapsed, addWeaponElapsed);
+            return CooldownHelper.ElapsedAfter(elapsed, gcdelapsed);
         }
 
         /// <summary>
@@ -41,22 +39,25 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         /// <param name="gcdCount">要隔着多少个完整的GCD</param>
         /// <param name="abilityCount">再多少个能力技之后</param>
-        /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点是否起码有一层可以用</returns>
-        internal bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0, bool addWeaponRemain = true)
+        internal bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0)
         {
             if (HaveOneCharge) return true;
             var recast = RecastTimeRemainOneCharge;
-            return CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount, addWeaponRemain);
+            return CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount);
         }
 
         /// <summary>
         /// 几秒钟以后能转好嘛
         /// </summary>
         /// <param name="remain">要多少秒呢</param>
-        /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点是否起码有一层可以用</returns>
-        internal bool WillHaveOneCharge(float remain, bool addWeaponRemain = true)
+        internal bool WillHaveOneCharge(float remain)
+        {
+            return WillHaveOneCharge(remain, true);
+        }
+
+        private bool WillHaveOneCharge(float remain, bool addWeaponRemain)
         {
             if (HaveOneCharge) return true;
             var recast = RecastTimeRemainOneCharge;
@@ -70,25 +71,33 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         private unsafe float RecastTime => CoolDownDetail->Total;
 
+        /// <summary>
+        /// 复唱经过时间
+        /// </summary>
         private unsafe float RecastTimeElapsed => CoolDownDetail->Elapsed;
 
-
+        /// <summary>
+        /// 是否正在冷却中
+        /// </summary>
         internal unsafe bool IsCoolDown => CoolDownDetail->IsActive != 0;
 
         /// <summary>
-        /// 咏唱时间
+        /// 复唱剩余时间
         /// </summary>
-        internal unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
-
         private float RecastTimeRemain => RecastTime - RecastTimeElapsed;
 
-        internal  unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(AdjustedID, Service.ClientState.LocalPlayer.Level), (ushort)1);
+        /// <summary>
+        /// 技能的最大层数
+        /// </summary>
+        internal unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(AdjustedID, Service.ClientState.LocalPlayer.Level), (ushort)1);
         /// <summary>
         /// 是否起码有一层技能
         /// </summary>
         private bool HaveOneCharge => IsCoolDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
-
-        internal ushort ChargesCount => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
+        /// <summary>
+        /// 当前技能层数
+        /// </summary>
+        internal ushort CurrentCharges => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
 
         private float RecastTimeOneCharge => ActionManager.GetAdjustedRecastTime(ActionType.Spell, AdjustedID) / 1000f;
 

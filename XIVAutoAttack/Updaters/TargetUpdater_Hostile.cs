@@ -2,12 +2,14 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Updaters
@@ -16,6 +18,9 @@ namespace XIVAutoAttack.Updaters
     {
         private static BattleChara[] AllTargets { get; set; } = new BattleChara[0];
 
+        /// <summary>
+        /// 敌人
+        /// </summary>
         internal static BattleChara[] HostileTargets { get; private set; } = new BattleChara[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -25,7 +30,7 @@ namespace XIVAutoAttack.Updaters
         internal static BattleChara[] CanInterruptTargets { get; private set; } = new BattleChara[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static bool HaveHostileInRange { get; private set; } = false;
+        internal static bool HaveHostilesInRange { get; private set; } = false;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool IsHostileAOE { get; private set; } = false;
@@ -69,7 +74,7 @@ namespace XIVAutoAttack.Updaters
             {
                 HostileTargets = AllTargets.Where(t => t.TargetObject is PlayerCharacter || ids.Contains(t.ObjectId)).ToArray();
 
-                switch (Service.Configuration.TargetToHostileType)
+                switch (IconReplacer.RightNowTargetToHostileType)
                 {
                     case 0:
                         HostileTargets = AllTargets;
@@ -91,19 +96,20 @@ namespace XIVAutoAttack.Updaters
                 TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId).ToArray();
 
                 float radius = 25;
-                switch (XIVAutoAttackPlugin.AllJobs.First(job => job.RowId == Service.ClientState.LocalPlayer.ClassJob.Id).Role)
+                switch (Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
+                    Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole())
                 {
-                    case (byte)Role.防护:
-                    case (byte)Role.近战:
+                    case JobRole.Tank:
+                    case JobRole.Melee:
                         radius = 3;
                         break;
                 }
-                HaveHostileInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Length > 0;
+                HaveHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Length > 0;
             }
             else
             {
                 AllTargets = HostileTargets = CanInterruptTargets = new BattleChara[0];
-                HaveHostileInRange = false;
+                HaveHostilesInRange = false;
             }
 
             if (HostileTargets.Length == 1)

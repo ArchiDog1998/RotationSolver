@@ -37,7 +37,6 @@ namespace XIVAutoAttack.Updaters
             PreviewUpdater.UpdatePreview();
 
             ActionUpdater.UpdateActionInfo();
-            CommandController.UpdateAutoAttack();
 
             TargetUpdater.UpdateHostileTargets();
             TargetUpdater.UpdateFriends();
@@ -45,6 +44,8 @@ namespace XIVAutoAttack.Updaters
             MovingUpdater.UpdateLocation();
 
             ActionUpdater.DoAction();
+
+            CommandController.UpdateAutoAttack();
             ActionUpdater.UpdateNextAction();
             MacroUpdater.UpdateMacro();
         }

@@ -20,6 +20,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 return Target.IsDying();
             }
         }
+
         internal bool IsTargetBoss
         {
             get
@@ -53,14 +54,14 @@ namespace XIVAutoAttack.Actions.BaseAction
                 {
                     if (TargetStatus == null) return tars;
 
-                    if (_isDot)
+                    if (_isEot)
                     {
                         tars = TargetFilter.GetTargetCanDot(tars);
                     }
 
                     if (!MovingUpdater.IsMoving) return tars;
 
-                    var ts = tars.Where(t => !t.HaveStatus(TargetStatus)).ToArray();
+                    var ts = tars.Where(t => !t.HasStatus(true, TargetStatus)).ToArray();
 
                     if (ts.Length == 0) return tars;
                     return ts;
@@ -70,9 +71,9 @@ namespace XIVAutoAttack.Actions.BaseAction
         }
 
         /// <summary>
-        /// 给敌人造成的Debuff,如果有这些Debuff，那么不会执行。
+        /// 给敌人造成的Debuff,如果有这些Debuff，那么不会执行，这个status是玩家赋予的。
         /// </summary>
-        internal ushort[] TargetStatus { get; set; } = null;
+        internal StatusID[] TargetStatus { get; set; } = null;
 
         internal static bool TankDefenseSelf(BattleChara chara)
         {
@@ -80,7 +81,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         }
         internal static bool TankBreakOtherCheck(BattleChara chara)
         {
-            return TargetUpdater.HaveHostileInRange
+            return TargetUpdater.HaveHostilesInRange
                 && (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank
                 && TargetUpdater.PartyMembersAverHP > Service.Configuration.HealthForDyingTank + 0.1f;
         }
@@ -199,12 +200,13 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (availableCharas.Length == 0) return false;
 
                 //判断是否是范围。
-                if (_action.CastType > 1 && ID != SCHCombo.DeploymentTactics.ID)
+                if (_action.CastType > 1 && (ActionID)ID != ActionID.DeploymentTactics)
                 {
                     //找到能覆盖最多的位置，并且选血最少的来。
                     Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, _action.EffectRange, true, mustUse, true)
                         .OrderBy(p => p.GetHealthRatio()).FirstOrDefault();
                     if (Target == null) return false;
+
                     return true;
                 }
                 else

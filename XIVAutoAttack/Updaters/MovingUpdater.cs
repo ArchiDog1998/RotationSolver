@@ -40,17 +40,20 @@ namespace XIVAutoAttack.Updaters
             _moving = _lastPosition != p;
             _lastPosition = p;
 
-            if (Service.ClientState.LocalPlayer.HaveStatus(StatusIDs.TenChiJin)) MovingUpdater.IsMoving = false;
+            if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TenChiJin)) MovingUpdater.IsMoving = false;
 
         }
 
         private static bool MovingDetour(IntPtr ptr)
         {
+            if (Service.Conditions[ConditionFlag.OccupiedInEvent])
+                return movingHook.Original(ptr);
+
             if (Service.Configuration.PoslockCasting && _posLocker)
             {
                 //没有键盘取消
-                if(!Service.KeyState[Service.Configuration.PoslockModifier]
-                    //也没有手柄取消
+                if (!Service.KeyState[Service.Configuration.PoslockModifier]
+                  //也没有手柄取消
                   && !(Service.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) > 0.5f
                   && Service.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.R2) > 0.5f)) return false;
             }

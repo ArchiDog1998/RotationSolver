@@ -14,14 +14,27 @@ namespace XIVAutoAttack.Updaters
 {
     internal static partial class TargetUpdater
     {
+        /// <summary>
+        /// 小队成员们
+        /// </summary>
         public static BattleChara[] PartyMembers { get; private set; } = new PlayerCharacter[0];
         /// <summary>
-        /// 玩家们
+        /// 团队成员们
         /// </summary>
         internal static BattleChara[] AllianceMembers { get; private set; } = new PlayerCharacter[0];
+
+        /// <summary>
+        /// 小队坦克们
+        /// </summary>
         internal static BattleChara[] PartyTanks { get; private set; } = new PlayerCharacter[0];
+        /// <summary>
+        /// 小队治疗们
+        /// </summary>
         internal static BattleChara[] PartyHealers { get; private set; } = new PlayerCharacter[0];
 
+        /// <summary>
+        /// 团队坦克们
+        /// </summary>
         internal static BattleChara[] AllianceTanks { get; private set; } = new PlayerCharacter[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -35,9 +48,21 @@ namespace XIVAutoAttack.Updaters
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static BattleChara[] DyingPeople { get; private set; } = new PlayerCharacter[0];
+        /// <summary>
+        /// 小队成员HP
+        /// </summary>
         internal static float[] PartyMembersHP { get; private set; } = new float[0];
+        /// <summary>
+        /// 小队成员最小的HP
+        /// </summary>
         internal static float PartyMembersMinHP { get; private set; } = 0;
+        /// <summary>
+        /// 小队成员平均HP
+        /// </summary>
         internal static float PartyMembersAverHP { get; private set; } = 0;
+        /// <summary>
+        /// 小队成员HP差值
+        /// </summary>
         internal static float PartyMembersDifferHP { get; private set; } = 0;
 
 
@@ -52,7 +77,14 @@ namespace XIVAutoAttack.Updaters
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool CanHealSingleSpell { get; private set; } = false;
+
+        /// <summary>
+        /// 有宠物
+        /// </summary>
         internal static bool HavePet { get; private set; } = false;
+        /// <summary>
+        /// 血量没有满
+        /// </summary>
         internal static bool HPNotFull { get; private set; } = false;
 
         internal unsafe static void UpdateFriends()
@@ -69,12 +101,12 @@ namespace XIVAutoAttack.Updaters
 
             AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
 
-            PartyTanks = TargetFilter.GetJobCategory(PartyMembers, Role.防护);
-            PartyHealers = TargetFilter.GetJobCategory(TargetFilter.GetObjectInRadius(PartyMembers, 30), Role.治疗);
-            AllianceTanks = TargetFilter.GetJobCategory(TargetFilter.GetObjectInRadius(AllianceMembers, 30), Role.防护);
+            PartyTanks = PartyMembers.GetJobCategory(JobRole.Tank);
+            PartyHealers = PartyMembers.GetObjectInRadius(30).GetJobCategory(JobRole.Healer);
+            AllianceTanks = AllianceMembers.GetObjectInRadius(30).GetJobCategory(JobRole.Tank);
 
-            DeathPeopleAll = TargetFilter.GetObjectInRadius(TargetFilter.GetDeath(AllianceMembers), 30);
-            DeathPeopleParty = TargetFilter.GetObjectInRadius(TargetFilter.GetDeath(PartyMembers), 30);
+            DeathPeopleAll = AllianceMembers.GetDeath().GetObjectInRadius(30);
+            DeathPeopleParty = PartyMembers.GetDeath().GetObjectInRadius(30);
             MaintainDeathPeople();
 
             WeakenPeople = TargetFilter.GetObjectInRadius(PartyMembers, 30).Where(p =>
@@ -86,39 +118,31 @@ namespace XIVAutoAttack.Updaters
                 return false;
             }).ToArray();
 
-            uint[] dangeriousStatus = new uint[]
+            var dangeriousStatus = new StatusID[]
             {
-                StatusIDs.Doom,
-                StatusIDs.Amnesia,
-                StatusIDs.Stun,
-                StatusIDs.Stun2,
-                StatusIDs.Sleep,
-                StatusIDs.Sleep2,
-                StatusIDs.Sleep3,
-                StatusIDs.Pacification,
-                StatusIDs.Pacification2,
-                StatusIDs.Silence,
-                StatusIDs.Slow,
-                StatusIDs.Slow2,
-                StatusIDs.Slow3,
-                StatusIDs.Slow4,
-                StatusIDs.Slow5,
-                StatusIDs.Blind,
-                StatusIDs.Blind2,
-                StatusIDs.Blind3,
-                StatusIDs.Paralysis,
-                StatusIDs.Paralysis2,
-                StatusIDs.Nightmare,
+                StatusID.Doom,
+                StatusID.Amnesia,
+                StatusID.Stun,
+                StatusID.Stun2,
+                StatusID.Sleep,
+                StatusID.Sleep2,
+                StatusID.Sleep3,
+                StatusID.Pacification,
+                StatusID.Pacification2,
+                StatusID.Silence,
+                StatusID.Slow,
+                StatusID.Slow2,
+                StatusID.Slow3,
+                StatusID.Slow4,
+                StatusID.Slow5,
+                StatusID.Blind,
+                StatusID.Blind2,
+                StatusID.Blind3,
+                StatusID.Paralysis,
+                StatusID.Paralysis2,
+                StatusID.Nightmare,
             };
-            DyingPeople = WeakenPeople.Where(p =>
-            {
-                foreach (var status in p.StatusList)
-                {
-                    if (dangeriousStatus.Contains(status.StatusId)) return true;
-                    //if (status.StackCount > 2) return true;
-                }
-                return false;
-            }).ToArray();
+            DyingPeople = WeakenPeople.Where(p => p.HasStatus(false, dangeriousStatus)).ToArray();
             #endregion
 
             #region Health
@@ -143,24 +167,56 @@ namespace XIVAutoAttack.Updaters
 
             if (PartyMembers.Length >= Service.Configuration.PartyCount)
             {
-                CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility;
-                CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell;
+                //TODO:少了所有罩子类技能
+                var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, 
+                    StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2)
+                    * Service.Configuration.HealingOfTimeSubstactArea;
+
+                CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility
+                    -  ratio;
+
+                CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell
+                    -  ratio;
             }
             else
             {
                 CanHealAreaAbility = CanHealAreaSpell = false;
             }
-            var abilityCount = PartyMembersHP.Count(p => p < Service.Configuration.HealthSingleAbility);
+
+            var singleHots = new StatusID[] {StatusID.AspectedBenefic, StatusID.Regen1,
+                StatusID.Regen2,
+                StatusID.Regen3};
+
+            //Hot衰减
+            var abilityCount = PartyMembers.Count(p =>
+            {
+                var ratio = GetHealingOfTimeRatio(p, singleHots);
+                return p.GetHealthRatio() < Service.Configuration.HealthSingleAbility -
+                    Service.Configuration.HealingOfTimeSubstactSingle * ratio;
+            });
             CanHealSingleAbility = abilityCount > 0;
             if (abilityCount >= Service.Configuration.PartyCount) CanHealAreaAbility = true;
 
-            var gcdCount = PartyMembersHP.Count(p => p < Service.Configuration.HealthSingleSpell);
+
+            var gcdCount = PartyMembers.Count(p =>
+            {
+                var ratio = GetHealingOfTimeRatio(p, singleHots);
+                return p.GetHealthRatio() < Service.Configuration.HealthSingleSpell - 
+                    Service.Configuration.HealingOfTimeSubstactSingle * ratio;
+            });
             CanHealSingleSpell = gcdCount > 0;
             if (gcdCount >= Service.Configuration.PartyCount) CanHealAreaSpell = true;
 
             PartyMembersMinHP = PartyMembersHP.Min();
             HPNotFull = PartyMembersMinHP < 1;
             #endregion
+        }
+
+        static float GetHealingOfTimeRatio(BattleChara target, params StatusID[] statusIds)
+        {
+            var buffTime = target.StatusTime(false, statusIds);
+
+            return Math.Min(1, buffTime / 15);
         }
 
         static SortedDictionary<uint, Vector3> _locations = new SortedDictionary<uint, Vector3>();

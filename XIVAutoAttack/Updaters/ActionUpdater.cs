@@ -46,7 +46,6 @@ namespace XIVAutoAttack.Updaters
         internal static void UpdateNextAction()
         {
 
-
             PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer == null) return;
 
@@ -56,6 +55,8 @@ namespace XIVAutoAttack.Updaters
 
                 if (customCombo?.TryInvoke(out var newAction) ?? false)
                 {
+                    //Service.ChatGui.Print("Hello");
+
                     NextAction = newAction;
                     return;
                 }
@@ -103,7 +104,7 @@ namespace XIVAutoAttack.Updaters
             var interval = Service.Configuration.WeaponInterval;
             if (WeaponRemain < interval || WeaponElapsed == 0)
             {
-                AbilityRemain = WeaponRemain + interval;
+                AbilityRemain = WeaponRemain /* + interval */;
                 AbilityRemainCount = 0;
             }
             else if (WeaponRemain < 2 * interval)
@@ -123,6 +124,9 @@ namespace XIVAutoAttack.Updaters
 
         static uint _lastMP = 0;
         static DateTime _lastMPUpdate = DateTime.Now;
+        /// <summary>
+        /// 跳蓝经过时间
+        /// </summary>
         internal static float MPUpdateElapsed => (float)(DateTime.Now - _lastMPUpdate).TotalSeconds % 3;
 
         private static void UPdateMPTimer()
@@ -134,7 +138,7 @@ namespace XIVAutoAttack.Updaters
             if (player.ClassJob.Id != 25) return;
 
             //有醒梦，就算了啊
-            if (player.HaveStatus(StatusIDs.LucidDreaming)) return;
+            if (player.HasStatus(true, StatusID.LucidDreaming)) return;
 
             if(_lastMP < player.CurrentMp)
             {

@@ -2,6 +2,8 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Hooking;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Data.Parsing;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,13 +21,35 @@ namespace XIVAutoAttack.SigReplacers;
 
 internal sealed class IconReplacer : IDisposable
 {
-    public record CustomComboGroup(uint jobId, uint[] classJobIds, ICustomCombo[] combos);
+    public record CustomComboGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomCombo[] combos);
 
     private delegate ulong IsIconReplaceableDelegate(uint actionID);
 
     private delegate uint GetIconDelegate(IntPtr actionManager, uint actionID);
 
     private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
+
+    public static byte RightNowTargetToHostileType
+    {
+        get
+        {
+            if (Service.ClientState.LocalPlayer == null) return 0;
+            var id = Service.ClientState.LocalPlayer.ClassJob.Id;
+            if (Service.Configuration.TargetToHostileTypes.TryGetValue(id, out var type))
+            {
+                return type;
+            }
+
+            var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(id).GetJobRole();
+            return role == JobRole.Tank ? (byte)1 : (byte)2;
+        }
+        set
+        {
+            if (Service.ClientState.LocalPlayer == null) return;
+            var id = Service.ClientState.LocalPlayer.ClassJob.Id;
+            Service.Configuration.TargetToHostileTypes[id] = value;
+        }
+    }
 
     public static ICustomCombo RightNowCombo
     {
@@ -35,7 +59,7 @@ internal sealed class IconReplacer : IDisposable
 
             foreach (var combos in CustomCombos)
             {
-                if (!combos.classJobIds.Contains(Service.ClientState.LocalPlayer.ClassJob.Id)) continue;
+                if (!combos.classJobIds.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id)) continue;
                 return GetChooseCombo(combos);
             }
 
@@ -46,7 +70,7 @@ internal sealed class IconReplacer : IDisposable
     internal static ICustomCombo GetChooseCombo(CustomComboGroup group)
     {
         var id = group.jobId;
-        if(Service.Configuration.ComboChoices.TryGetValue(id, out var choice))
+        if(Service.Configuration.ComboChoices.TryGetValue((uint)id, out var choice))
         {
             foreach (var combo in group.combos)
             {
@@ -54,6 +78,14 @@ internal sealed class IconReplacer : IDisposable
                 {
                     return combo;
                 }
+            }
+        }
+
+        foreach (var item in group.combos)
+        {
+            if (item.GetType().Name.Contains("Default"))
+            {
+                return item;
             }
         }
         return group.combos[0];
@@ -67,7 +99,7 @@ internal sealed class IconReplacer : IDisposable
         {
             var combo = RightNowCombo;
             if (combo == null) return new BaseAction[0];
-            return GetActions(combo, combo.GetType());
+            return GetActions(combo, combo.GetType().BaseType);
         }
     }
 
@@ -83,15 +115,15 @@ internal sealed class IconReplacer : IDisposable
 
     private static BaseAction[] GetActions(ICustomCombo combo, Type type)
     {
-        return (from field in type.GetFields()
-                where field.IsStatic && typeof(BaseAction).IsAssignableFrom(field.FieldType)
-                select (BaseAction)field.GetValue(combo) into act
+        return (from prop in type.GetProperties()
+                where typeof(BaseAction).IsAssignableFrom(prop.PropertyType)
+                select (BaseAction)prop.GetValue(combo) into act
                 orderby act.ID
                 select act).ToArray();
     }
 
-    private static SortedList<Role, CustomComboGroup[]> _customCombosDict;
-    internal static SortedList<Role, CustomComboGroup[]> CustomCombosDict
+    private static SortedList<JobRole, CustomComboGroup[]> _customCombosDict;
+    internal static SortedList<JobRole, CustomComboGroup[]> CustomCombosDict
     {
         get
         {
@@ -146,8 +178,8 @@ internal sealed class IconReplacer : IDisposable
                          select new CustomComboGroup(comboGrp.Key, comboGrp.First().JobIDs, SetCombos(comboGrp.ToArray())))
                          .ToArray();
 
-        _customCombosDict = new SortedList<Role, CustomComboGroup[]>
-            (_customCombos.GroupBy(g => g.combos[0].Role).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
+        _customCombosDict = new SortedList<JobRole, CustomComboGroup[]>
+            (_customCombos.GroupBy(g => g.combos[0].Job.GetJobRole()).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
     }
 
     private static ICustomCombo[] SetCombos(ICustomCombo[] combos)
@@ -170,6 +202,11 @@ internal sealed class IconReplacer : IDisposable
         isIconReplaceableHook.Dispose();
     }
 
+    internal ActionID OriginalHook(ActionID actionID)
+    {
+        return (ActionID)getIconHook.Original.Invoke(actionManager, (uint)actionID);
+    }
+
     internal uint OriginalHook(uint actionID)
     {
         return getIconHook.Original.Invoke(actionManager, actionID);
@@ -181,13 +218,13 @@ internal sealed class IconReplacer : IDisposable
         return RemapActionID(actionID);
     }
 
-    internal static BaseAction KeyActionID => CustomComboActions.Repose;
+    internal static ActionID KeyActionID => ActionID.Repose;
 
     private uint RemapActionID(uint actionID)
     {
         PlayerCharacter localPlayer = Service.ClientState.LocalPlayer;
 
-        if (localPlayer == null || actionID != KeyActionID.ID || Service.Configuration.NeverReplaceIcon)
+        if (localPlayer == null || actionID != (uint)KeyActionID || Service.Configuration.NeverReplaceIcon)
             return OriginalHook(actionID);
 
         return ActionUpdater.NextAction?.AdjustedID ?? OriginalHook(actionID);
