@@ -15,8 +15,8 @@ namespace XIVAutoAttack.Combos.Basic
 
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
 
-        protected static bool HasFire => Player.HaveStatus(true, StatusID.Firestarter);
-        protected static bool HasThunder => Player.HaveStatus(true, StatusID.Thundercloud);
+        protected static bool HasFire => Player.HasStatus(true, StatusID.Firestarter);
+        protected static bool HasThunder => Player.HasStatus(true, StatusID.Thundercloud);
 
         public class ThunderAction : BaseAction
         {

@@ -237,7 +237,7 @@ namespace XIVAutoAttack.Helpers
                 if (item.CurrentHp != 0) continue;
 
                 //如果已经有复活的Buff了，那就算了。
-                if (item.HaveStatus(false, StatusID.Raise)) continue;
+                if (item.HasStatus(false, StatusID.Raise)) continue;
 
                 //如果有人在对着他咏唱，那就算了。
                 bool isCasting = false;
@@ -283,7 +283,7 @@ namespace XIVAutoAttack.Helpers
 
         internal static BattleChara ASTRangeTarget(BattleChara[] ASTTargets)
         {
-            ASTTargets = ASTTargets.Where(b => !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
+            ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
 
             return GetTargetByRole(ASTTargets, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Melee);
         }
@@ -292,7 +292,7 @@ namespace XIVAutoAttack.Helpers
 
         internal static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
         {
-            ASTTargets = ASTTargets.Where(b => !b.HaveStatus(false, StatusID.Weakness,StatusID.BrinkofDeath)).ToArray();
+            ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness,StatusID.BrinkofDeath)).ToArray();
 
 
             return GetTargetByRole(ASTTargets, JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical);
@@ -322,7 +322,7 @@ namespace XIVAutoAttack.Helpers
             StatusID.TheSpear,
             StatusID.TheSpire,
             };
-            return sources.Where((t) => !t.HaveStatus(true, allStatus)).ToArray();
+            return sources.Where((t) => !t.HasStatus(true, allStatus)).ToArray();
         }
 
         internal static BattleChara RandomObject(BattleChara[] objs)

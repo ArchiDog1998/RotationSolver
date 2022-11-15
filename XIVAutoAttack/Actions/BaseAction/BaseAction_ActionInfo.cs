@@ -91,7 +91,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             //没有前置Buff
             if (BuffsNeed != null)
             {
-                if (!Service.ClientState.LocalPlayer.HaveStatus(true, BuffsNeed)) return false;
+                if (!Service.ClientState.LocalPlayer.HasStatus(true, BuffsNeed)) return false;
             }
 
             //防止友方类技能连续使用
@@ -103,7 +103,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             //已有提供的Buff的任何一种
             if (BuffsProvide != null && !mustUse)
             {
-                if (Service.ClientState.LocalPlayer.HaveStatus(true, BuffsProvide)) return false;
+                if (Service.ClientState.LocalPlayer.HasStatus(true, BuffsProvide)) return false;
             }
 
             //还冷却不下来呢，来不及。
@@ -156,7 +156,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (CastTime > 0 && MovingUpdater.IsMoving)
                 {
-                    if (!Service.ClientState.LocalPlayer.HaveStatus(true, CustomComboActions.Swiftcast.BuffsProvide))
+                    if (!Service.ClientState.LocalPlayer.HasStatus(true, CustomComboActions.Swiftcast.BuffsProvide))
                     {
                         return false;
                     }

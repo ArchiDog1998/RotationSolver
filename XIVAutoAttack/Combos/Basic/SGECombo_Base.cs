@@ -73,7 +73,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
 
             return TargetFilter.FindAttackedTarget(targets);
         },
-        OtherCheck = b => !b.HaveStatus(true, StatusID.Kardion),
+        OtherCheck = b => !b.HasStatus(true, StatusID.Kardion),
     };
 
     /// <summary>
@@ -108,7 +108,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         {
             foreach (var friend in Targets)
             {
-                if (friend.HaveStatus(true, StatusID.Kardion))
+                if (friend.HasStatus(true, StatusID.Kardion))
                 {
                     return friend;
                 }
@@ -238,7 +238,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         {
             foreach (var chara in TargetUpdater.PartyMembers)
             {
-                if (chara.HaveStatus(true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
+                if (chara.HasStatus(true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
                 && b.WillStatusEndGCD(2, 0, true, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis)
                 && chara.GetHealthRatio() < 0.9) return true;
             }

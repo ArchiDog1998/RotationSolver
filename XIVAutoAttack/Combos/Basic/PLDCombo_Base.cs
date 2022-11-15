@@ -15,7 +15,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Paladin, ClassJobID.Gladiator };
 
-    internal sealed override bool HaveShield => Player.HaveStatus(true, StatusID.IronWill);
+    internal sealed override bool HaveShield => Player.HasStatus(true, StatusID.IronWill);
 
     private sealed protected override BaseAction Shield => IronWill;
 

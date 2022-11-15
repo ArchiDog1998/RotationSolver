@@ -60,7 +60,7 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (nextGCD.IsAnySameAction(true, FullThrust, CoerthanTorment)
-            || Player.HaveStatus(true, StatusID.LanceCharge) && nextGCD.IsAnySameAction(false, FangandClaw))
+            || Player.HasStatus(true, StatusID.LanceCharge) && nextGCD.IsAnySameAction(false, FangandClaw))
         {
             //¡˙Ω£
             if (abilityRemain == 1 && LifeSurge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -76,8 +76,8 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
             //√Õ«π
             if (LanceCharge.ShouldUse(out act, mustUse: true))
             {
-                if (abilityRemain == 1 && !Player.HaveStatus(true, StatusID.PowerSurge)) return true;
-                if (Player.HaveStatus(true, StatusID.PowerSurge)) return true;
+                if (abilityRemain == 1 && !Player.HasStatus(true, StatusID.PowerSurge)) return true;
+                if (Player.HasStatus(true, StatusID.PowerSurge)) return true;
             }
 
             //æﬁ¡˙ ”œﬂ
@@ -109,9 +109,9 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
         //∆∆ÀÈ≥Â
         if (SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true))
         {
-            if (Player.HaveStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
+            if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
         }
-        if (Player.HaveStatus(true, StatusID.PowerSurge) && SpineshatterDive.CurrentCharges != 1 && SpineshatterDive.ShouldUse(out act)) return true;
+        if (Player.HasStatus(true, StatusID.PowerSurge) && SpineshatterDive.CurrentCharges != 1 && SpineshatterDive.ShouldUse(out act)) return true;
 
         //ª√œÛ≥Â
         if (MirageDive.ShouldUse(out act)) return true;
@@ -119,7 +119,7 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
         //¡˙—◊≥Â
         if (DragonfireDive.ShouldUse(out act, mustUse: true))
         {
-            if (Player.HaveStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
+            if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
         }
 
         //ÃÏ¡˙µ„æ¶

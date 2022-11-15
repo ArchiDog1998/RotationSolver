@@ -41,7 +41,7 @@ namespace XIVAutoAttack.Helpers
         /// <returns>这个时间点状态是否已经消失</returns>
         internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool isFromSelf = true, params StatusID[] effectIDs)
         {
-            var remain = obj.FindStatusTime(isFromSelf, effectIDs);
+            var remain = obj.StatusTime(isFromSelf, effectIDs);
             return CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount);
         }
 
@@ -52,32 +52,32 @@ namespace XIVAutoAttack.Helpers
         /// <returns>这个时间点状态是否已经消失</returns>
         internal static bool WillStatusEnd(this BattleChara obj, float remainWant,  bool isFromSelf = true, params StatusID[] effectIDs)
         {
-            var remain = obj.FindStatusTime(isFromSelf, effectIDs);
+            var remain = obj.StatusTime(isFromSelf, effectIDs);
             return CooldownHelper.RecastAfter(remain, remainWant);
         }
 
-        internal static float FindStatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+        internal static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            var times = obj.FindStatusTimes(isFromSelf, effectIDs);
+            var times = obj.StatusTimes(isFromSelf, effectIDs);
             if (times == null || times.Length == 0) return 0;
             return times.Max();
         }
 
-        private static float[] FindStatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+        private static float[] StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.FindStatus(isFromSelf, effectIDs).Select(status => status.RemainingTime).ToArray();
+            return obj.GetStatus(isFromSelf, effectIDs).Select(status => status.RemainingTime).ToArray();
         }
 
-        internal static byte FindStatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+        internal static byte StatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            var stacks = obj.FindStatusStacks(isFromSelf, effectIDs);
+            var stacks = obj.StatusStacks(isFromSelf, effectIDs);
             if (stacks == null || stacks.Length == 0) return 0;
             return stacks.Max();
         }
 
-        private static byte[] FindStatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+        private static byte[] StatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.FindStatus(isFromSelf, effectIDs).Select(status => Math.Max(status.StackCount, (byte)1)).ToArray();
+            return obj.GetStatus(isFromSelf, effectIDs).Select(status => Math.Max(status.StackCount, (byte)1)).ToArray();
         }
 
         /// <summary>
@@ -86,11 +86,10 @@ namespace XIVAutoAttack.Helpers
         /// <param name="obj">检查对象</param>
         /// <param name="effectIDs">状态</param>
         /// <returns>是否拥有任何一个状态</returns>
-        internal static bool HaveStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+        internal static bool HasStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.FindStatus(isFromSelf, effectIDs).Length > 0;
+            return obj.GetStatus(isFromSelf, effectIDs).Length > 0;
         }
-
 
         /// <summary>
         /// 获得状态的名字
@@ -102,13 +101,13 @@ namespace XIVAutoAttack.Helpers
             return Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow((uint)id).Name.ToString();
         }
 
-        private static Status[] FindStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+        private static Status[] GetStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
             uint[] newEffects = effectIDs.Select(a => (uint)a).ToArray();
-            return obj.FindAllStatus(isFromSelf).Where(status => newEffects.Contains(status.StatusId)).ToArray();
+            return obj.GetAllStatus(isFromSelf).Where(status => newEffects.Contains(status.StatusId)).ToArray();
         }
 
-        private static Status[] FindAllStatus(this BattleChara obj, bool isFromSelf)
+        private static Status[] GetAllStatus(this BattleChara obj, bool isFromSelf)
         {
             if (obj == null) return new Status[0];
 

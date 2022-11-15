@@ -50,7 +50,7 @@ namespace XIVAutoAttack.Windows
             const int COUNT = 20;
 
             if (EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
-            if (Service.ClientState.LocalPlayer.HaveStatus(true, StatusID.TrueNorth)) return;
+            if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth)) return;
             if (ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
 
             float radius = EnemyLocationTarget.HitboxRadius + 3.5f;

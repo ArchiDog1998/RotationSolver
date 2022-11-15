@@ -73,7 +73,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //寂灭
-        if (JobGauge.Blood >= 80 || Player.HaveStatus(true, StatusID.Delirium))
+        if (JobGauge.Blood >= 80 || Player.HasStatus(true, StatusID.Delirium))
         {
             if (Quietus.ShouldUse(out act)) return true;
         }
@@ -81,9 +81,9 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         //血溅
         if (Bloodspiller.ShouldUse(out act))
         {
-            if (Player.HaveStatus(true, StatusID.Delirium) && Player.FindStatusStack(true, StatusID.BloodWeapon) <= 3) return true;
+            if (Player.HasStatus(true, StatusID.Delirium) && Player.StatusStack(true, StatusID.BloodWeapon) <= 3) return true;
 
-            if (JobGauge.Blood >= 50 && BloodWeapon.WillHaveOneChargeGCD(1) || JobGauge.Blood >= 90 && !Player.HaveStatus(true, StatusID.Delirium)) return true;
+            if (JobGauge.Blood >= 50 && BloodWeapon.WillHaveOneChargeGCD(1) || JobGauge.Blood >= 90 && !Player.HasStatus(true, StatusID.Delirium)) return true;
 
             if (!Delirium.EnoughLevel) return true;
 

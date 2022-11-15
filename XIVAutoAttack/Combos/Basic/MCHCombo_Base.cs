@@ -134,7 +134,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Tactician { get; } = new(ActionID.Tactician, true)
     {
-        OtherCheck = b => !Player.HaveStatus(false, StatusID.Troubadour,
+        OtherCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
             StatusID.Tactician2,
             StatusID.ShieldSamba),

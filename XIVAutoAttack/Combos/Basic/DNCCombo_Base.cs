@@ -193,7 +193,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ShieldSamba { get; } = new(ActionID.ShieldSamba, true)
     {
-        OtherCheck = b => !Player.HaveStatus(false, StatusID.Troubadour,
+        OtherCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
             StatusID.Tactician2,
             StatusID.ShieldSamba),
@@ -213,9 +213,9 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         {
             Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
             //Remove Weak
-            !b.HaveStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
+            !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
             //Remove other partner.
-            && (!b.HaveStatus(false, StatusID.ClosedPosition2) | b.HaveStatus(true, StatusID.ClosedPosition2)) 
+            && (!b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2)) 
             ).ToArray();
 
             return Targets.GetTargetByRole(JobRole.Tank, JobRole.RangedMagicial, JobRole.RangedPhysical);

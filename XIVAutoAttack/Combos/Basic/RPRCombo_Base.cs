@@ -16,21 +16,21 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
 
     public class PRPAction : BaseAction
     {
-        internal override EnemyLocation EnermyLocation => Player.HaveStatus(true, StatusID.Enshrouded)
+        internal override EnemyLocation EnermyLocation => Player.HasStatus(true, StatusID.Enshrouded)
             ? EnemyLocation.None : base.EnermyLocation;
         internal PRPAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
         {
         }
     }
-    protected static bool Enshrouded => Player.HaveStatus(true, StatusID.Enshrouded);
-    protected static bool SoulReaver => Player.HaveStatus(true, StatusID.SoulReaver);
-    protected static bool EnhancedGibbet => Player.HaveStatus(true, StatusID.EnhancedGibbet);
-    protected static bool EnhancedGallows => Player.HaveStatus(true, StatusID.EnhancedGallows);
-    protected static bool EnhancedCrossReaping => Player.HaveStatus(true, StatusID.EnhancedCrossReaping);
-    protected static bool EnhancedVoidReaping => Player.HaveStatus(true, StatusID.EnhancedVoidReaping);
-    protected static bool PlentifulReady => Player.HaveStatus(true, StatusID.ImmortalSacrifice) && !Player.HaveStatus(true, StatusID.BloodsownCircle);
-    protected static bool HaveDeathsDesign => Target.HaveStatus(true, StatusID.DeathsDesign);
+    protected static bool Enshrouded => Player.HasStatus(true, StatusID.Enshrouded);
+    protected static bool SoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
+    protected static bool EnhancedGibbet => Player.HasStatus(true, StatusID.EnhancedGibbet);
+    protected static bool EnhancedGallows => Player.HasStatus(true, StatusID.EnhancedGallows);
+    protected static bool EnhancedCrossReaping => Player.HasStatus(true, StatusID.EnhancedCrossReaping);
+    protected static bool EnhancedVoidReaping => Player.HasStatus(true, StatusID.EnhancedVoidReaping);
+    protected static bool PlentifulReady => Player.HasStatus(true, StatusID.ImmortalSacrifice) && !Player.HasStatus(true, StatusID.BloodsownCircle);
+    protected static bool HaveDeathsDesign => Target.HasStatus(true, StatusID.DeathsDesign);
 
     #region 单体
     /// <summary>

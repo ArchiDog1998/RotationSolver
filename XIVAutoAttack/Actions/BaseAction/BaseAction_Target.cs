@@ -61,7 +61,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
                     if (!MovingUpdater.IsMoving) return tars;
 
-                    var ts = tars.Where(t => !t.HaveStatus(true, TargetStatus)).ToArray();
+                    var ts = tars.Where(t => !t.HasStatus(true, TargetStatus)).ToArray();
 
                     if (ts.Length == 0) return tars;
                     return ts;

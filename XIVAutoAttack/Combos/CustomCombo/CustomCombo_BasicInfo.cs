@@ -75,7 +75,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 有即刻相关Buff
         /// </summary>
-        internal static bool HaveSwift => Player.HaveStatus(true, Swiftcast.BuffsProvide);
+        internal static bool HaveSwift => Player.HasStatus(true, Swiftcast.BuffsProvide);
 
         internal virtual bool HaveShield => true;
 

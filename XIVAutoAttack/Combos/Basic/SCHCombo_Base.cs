@@ -29,7 +29,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Adloquium { get; } = new(ActionID.Adloquium, true)
     {
-        OtherCheck = b => !b.HaveStatus(false, StatusID.EukrasianDiagnosis,
+        OtherCheck = b => !b.HasStatus(false, StatusID.EukrasianDiagnosis,
             StatusID.EukrasianPrognosis,
             StatusID.Galvanize),
     };
@@ -139,7 +139,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SummonEos { get; } = new(ActionID.SummonEos)//夕月召唤 17216
     {
-        OtherCheck = b => !TargetUpdater.HavePet && (!Player.HaveStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
+        OtherCheck = b => !TargetUpdater.HavePet && (!Player.HasStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
     };
 
     /// <summary>
@@ -213,7 +213,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         {
             foreach (var friend in friends)
             {
-                if (friend.HaveStatus(true, StatusID.Galvanize)) return friend;
+                if (friend.HasStatus(true, StatusID.Galvanize)) return friend;
             }
             return null;
         },

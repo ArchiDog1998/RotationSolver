@@ -107,7 +107,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         {
             //if (IsLastSpell(true, Actions.Thunder) || IsOldSpell(1, Actions.Thunder3)) return false;
 
-            if (HasFire || Player.HaveStatus(true, StatusID.LeyLines)) return false;
+            if (HasFire || Player.HasStatus(true, StatusID.LeyLines)) return false;
             if (Transpose.IsCoolDown && MPYuPanDouble >= 7900) return true;
             if (Transpose.IsCoolDown) return true;
         }
@@ -130,7 +130,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         {
             if (HasFire) return false;
             //if (IsOldSpell(1, Actions.Thunder3)) return false;
-            if (Player.HaveStatus(true, StatusID.LucidDreaming)) return true;
+            if (Player.HasStatus(true, StatusID.LucidDreaming)) return true;
             if (MPYuPanDouble >= 9400) return true;
         }
 
@@ -193,7 +193,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             return false;
         }
 
-        if (Triplecast.IsCoolDown && Triplecast.CurrentCharges == 1 && Player.HaveStatus(true, StatusID.Triplecast)) return false;
+        if (Triplecast.IsCoolDown && Triplecast.CurrentCharges == 1 && Player.HasStatus(true, StatusID.Triplecast)) return false;
         //if (!IsLastSpell(true, Actions.Thunder)) return true;
         return true;
 
@@ -400,7 +400,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //    return true;
             //}
 
-            if (FewBlizzard && IsLastSpell(true, Despair) && Player.HaveStatus(true, StatusID.Sharpcast) && HasThunder && !MpBackGCDCanDouble(1) && HaveXeCounts(2) <= 1)
+            if (FewBlizzard && IsLastSpell(true, Despair) && Player.HasStatus(true, StatusID.Sharpcast) && HasThunder && !MpBackGCDCanDouble(1) && HaveXeCounts(2) <= 1)
             {
                 return true;
             }
@@ -447,7 +447,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             if (IsOldSpell(1, Thunder3)) return false;
             if (JobGauge.PolyglotStacks == 2) return true;
             if (HasFire && !IsLastSpell(true, Thunder, Xenoglossy)) return true;
-            if (!HasFire && (HaveSwift || !Swiftcast.IsCoolDown) && !Player.HaveStatus(true, StatusID.LeyLines)) return true;
+            if (!HasFire && (HaveSwift || !Swiftcast.IsCoolDown) && !Player.HasStatus(true, StatusID.LeyLines)) return true;
         }
 
         //在火
