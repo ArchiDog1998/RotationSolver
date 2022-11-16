@@ -261,12 +261,12 @@ namespace XIVAutoAttack.Helpers
         }
 
 
-        internal static BattleChara[] GetJobCategory(this BattleChara[] objects, JobRole role)
+        internal static BattleChara[] GetJobCategory(this BattleChara[] objects, params JobRole[] roles)
         {
             List<BattleChara> result = new(objects.Length);
 
             SortedSet<byte> validJobs = new(Service.DataManager.GetExcelSheet<ClassJob>()
-                .Where(job => job.GetJobRole() == role)
+                .Where(job => roles.Contains(job.GetJobRole()))
                 .Select(job => (byte)job.RowId));
 
             foreach (var obj in objects)
@@ -285,7 +285,7 @@ namespace XIVAutoAttack.Helpers
         {
             ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
 
-            return GetTargetByRole(ASTTargets, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Melee);
+            return GetTargetByJobs(ASTTargets, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Melee);
         }
 
 
@@ -295,10 +295,10 @@ namespace XIVAutoAttack.Helpers
             ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness,StatusID.BrinkofDeath)).ToArray();
 
 
-            return GetTargetByRole(ASTTargets, JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical);
+            return GetTargetByJobs(ASTTargets, JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical);
         }
 
-        internal static BattleChara GetTargetByRole(this BattleChara[] tars, params JobRole[] roles)
+        private static BattleChara GetTargetByJobs(this BattleChara[] tars, params JobRole[] roles)
         {
             foreach (var role in roles)
             {
