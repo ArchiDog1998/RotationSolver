@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -13,8 +12,6 @@ using XIVAutoAttack.Helpers;
 using static XIVAutoAttack.Combos.Melee.MNKCombos.MNKCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.MNKCombos;
-
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/MNKCombos/MNKCombo_Default.cs")]
 internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
 {
     public override string Author => "ÇïË®";

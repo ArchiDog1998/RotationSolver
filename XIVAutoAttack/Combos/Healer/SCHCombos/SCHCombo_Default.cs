@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -11,7 +10,6 @@ using static XIVAutoAttack.Combos.Healer.SCHCombos.SCHCombo_Default;
 
 namespace XIVAutoAttack.Combos.Healer.SCHCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SCHCombos/SCHCombo_Default.cs")]
 internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
 {
     public override string Author => "逆光 & Ana Amari";

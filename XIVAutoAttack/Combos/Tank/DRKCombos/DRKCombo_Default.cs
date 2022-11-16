@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -14,7 +13,6 @@ using static XIVAutoAttack.Combos.Tank.DRKCombos.DRKCombo_Default;
 
 namespace XIVAutoAttack.Combos.Tank.DRKCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/DRKCombos/DRKCombo_Default.cs")]
 internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
 {
     internal enum CommandType : byte

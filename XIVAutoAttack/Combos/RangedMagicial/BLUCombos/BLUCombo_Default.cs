@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using static XIVAutoAttack.Combos.RangedMagicial.BLUCombos.BLUCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
 {
-    [ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedMagicial/BLUCombos/BLUCombo_Default.cs")]
     internal sealed class BLUCombo_Default : BLUCombo_Base<CommandType>
     {
         public override string Author => "秋水";

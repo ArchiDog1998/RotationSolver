@@ -3,7 +3,6 @@ using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -14,7 +13,6 @@ using static XIVAutoAttack.Combos.RangedMagicial.SMNCombos.SMNCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.SMNCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedMagicial/SMNCombos/SMNCombo_Default.cs")]
 internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 {
     public override string Author => "ÇïË®";

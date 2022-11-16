@@ -7,7 +7,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -19,8 +18,6 @@ using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default.BLMCombo_Defau
 
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
-
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/tree/main/XIVAutoAttack/Combos/RangedMagicial/BLMComboDefault")]
 internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 {
     public override string Author => "汐ベMoon";

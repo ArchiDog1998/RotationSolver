@@ -3,7 +3,6 @@ using Lumina.Data.Parsing.Layer;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -13,7 +12,6 @@ using static XIVAutoAttack.Combos.Melee.SAMCombos.SAMCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.SAMCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/SAMCombos/SAMCombo_Default.cs")]
 internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
 {
     public override string Author => "¾ÁÆî";
