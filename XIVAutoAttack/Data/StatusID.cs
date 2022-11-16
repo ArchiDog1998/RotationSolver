@@ -953,5 +953,10 @@
         /// 醒梦
         /// </summary>
         LucidDreaming = 1204,
+
+        /// <summary>
+        /// 速行
+        /// </summary>
+        Peloton = 1199,
     }
 }
