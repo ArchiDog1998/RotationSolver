@@ -189,6 +189,8 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     {
         if (!Sharpcast.ShouldUse(out act, emptyOrSkipCombo: true)) return false;
 
+        if (Level != 90) return true;
+
         if (StandardLoop)
         {
             if (InUmbralIce && !TargetThunderWillEnd(20)) return true;
