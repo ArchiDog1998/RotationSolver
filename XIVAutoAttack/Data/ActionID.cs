@@ -2799,6 +2799,11 @@ namespace XIVAutoAttack.Data
         /// 真北
         /// </summary>
         TrueNorth = 7546,
+
+        /// <summary>
+        /// 速行
+        /// </summary>
+        Peloton = 7557,
         #endregion
     }
 }

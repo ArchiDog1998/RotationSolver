@@ -39,6 +39,21 @@ namespace XIVAutoAttack.Combos.Basic
         protected static bool IsParadoxActive => JobGauge.IsParadoxActive;
 
         /// <summary>
+        /// 在冰状态
+        /// </summary>
+        protected static bool InUmbralIce => JobGauge.InUmbralIce;
+
+        /// <summary>
+        /// 在火状态
+        /// </summary>
+        protected static bool InAstralFire => JobGauge.InAstralFire;
+
+        /// <summary>
+        /// 是否有天语状态
+        /// </summary>
+        protected static bool IsEnochianActive => JobGauge.IsEnochianActive;      
+
+        /// <summary>
         /// 下一个通晓还剩多少时间好
         /// </summary>
         /// <param name="time"></param>
@@ -59,7 +74,7 @@ namespace XIVAutoAttack.Combos.Basic
         }
 
         /// <summary>
-        /// 元素剩余时间
+        /// 天语剩余时间
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
@@ -69,7 +84,7 @@ namespace XIVAutoAttack.Combos.Basic
         }
 
         /// <summary>
-        /// 元素剩余时间
+        /// 天语剩余时间
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
@@ -80,14 +95,48 @@ namespace XIVAutoAttack.Combos.Basic
 
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
 
+        /// <summary>
+        /// 有火苗
+        /// </summary>
         protected static bool HasFire => Player.HasStatus(true, StatusID.Firestarter);
+        /// <summary>
+        /// 有雷云
+        /// </summary>
         protected static bool HasThunder => Player.HasStatus(true, StatusID.Thundercloud);
+        /// <summary>
+        /// 通晓是否已经达到当前等级下的最大层数
+        /// </summary>
+        protected static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? JobGauge.PolyglotStacks == 2 : JobGauge.PolyglotStacks == 1;
+
+        /// <summary>
+        /// 当前火状态还能打几个火4
+        /// </summary>
+        /// <returns></returns>
+        protected static byte F4RemainingNumber()
+        {
+            if (!InAstralFire) return 0;
+            var mpCount = (byte)((Player.CurrentMp - 800) / Fire4.MPNeed);
+            var timeCountDe = (byte)((JobGauge.ElementTimeRemaining - CooldownHelper.CalcSpellTime(3000)) / CooldownHelper.CalcSpellTime(2800));
+            var timeCountPe = (byte)((JobGauge.ElementTimeRemaining - CooldownHelper.CalcSpellTime(2500)) / CooldownHelper.CalcSpellTime(2800));
+            if (IsParadoxActive) return Math.Min(mpCount, timeCountPe);
+            else return Math.Min(mpCount, timeCountDe);
+        }
 
         public class ThunderAction : BaseAction
         {
             internal override uint MPNeed => HasThunder ? 0 : base.MPNeed;
 
             internal ThunderAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
+                : base(actionID, isFriendly, shouldEndSpecial, isDot)
+            {
+            }
+        }
+
+        public class Fire3Action : ElementAction
+        {
+            internal override uint MPNeed => HasFire ? 0 : base.MPNeed;
+
+            internal Fire3Action(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
                 : base(actionID, isFriendly, shouldEndSpecial, isDot)
             {
             }
@@ -238,7 +287,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 火3
         /// </summary>
-        public static BaseAction Fire3 { get; } = new (ActionID.Fire3);
+        public static BaseAction Fire3 { get; } = new Fire3Action(ActionID.Fire3);
 
         /// <summary>
         /// 火4

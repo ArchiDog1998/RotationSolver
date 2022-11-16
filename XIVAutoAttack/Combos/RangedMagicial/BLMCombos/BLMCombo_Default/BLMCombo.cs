@@ -159,12 +159,14 @@
 //        //满级循环
 //        if (Level == 90 && UseLoopManager(out act)) return true;
 
-//        //移动时
-//        if (IsMoving && InCombat && HaveHostilesInRange)
-//        {
-//            if (Xenoglossy.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-//            if (Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-//        }
+        //移动时
+        if (IsMoving && InCombat && HaveHostilesInRange)
+        {
+            if (Xenoglossy.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (HasThunder && Thunder.ShouldUse(out act)) return true;
+            if (HasFire && Fire3.ShouldUse(out act)) return true;
+        }
 
 //        //保持天语
 //        if (!HaveHostilesInRange && Maintence(out act)) return true;
@@ -183,8 +185,8 @@
 //        //三连咏唱
 //        if (CanUseTriplecast(out act)) return true;
 
-//        //魔泉
-//        if (Manafont.ShouldUse(out act) && IsLastSpell(true, Despair, Xenoglossy) && Player.CurrentMp == 0 && JobGauge.InAstralFire) return true;
+        //魔泉
+        if (Manafont.ShouldUse(out act) && IsLastSpell(true, Despair, Xenoglossy) && Player.CurrentMp == 0 && InAstralFire) return true;
 
 //        //星灵移位
 //        if (CanUseTranspose(abilityRemain, out act)) return true;
@@ -203,10 +205,10 @@
 //        {
 //            if (Player.HasStatus(true, StatusID.Triplecast) && Player.StatusStack(true, StatusID.Triplecast) <= 1) return true;
 
-//            if (!Player.HasStatus(true, StatusID.Triplecast) && JobGauge.InUmbralIce && IsLastSpell(true, Thunder, Xenoglossy)) return true;
+            if (!Player.HasStatus(true, StatusID.Triplecast) && InUmbralIce && IsLastSpell(true, Thunder, Xenoglossy)) return true;
 
-//            if (!Player.HasStatus(true, StatusID.Triplecast) && JobGauge.InAstralFire) return true;
-//        }
+            if (!Player.HasStatus(true, StatusID.Triplecast) && InAstralFire) return true;
+        }
 
 //        //详述
 //        if (Amplifier.ShouldUse(out act)) return true;
@@ -246,160 +248,188 @@
 //        return false;
 //    }
 
-//    /// <summary>
-//    /// 循环管理
-//    /// </summary>
-//    /// <param name="act"></param>
-//    /// <returns></returns>
-//    private bool UseLoopManager(out IAction act)
-//    {
-//        if (JobGauge.InUmbralIce)
-//        {
-//            //雷
-//            if (CanUseThunder(out act)) return true;
-//            //冰阶段
-//            if (JobGauge.UmbralIceStacks == 3 && Blizzard4.ShouldUse(out act)) return true;
-//            //异言
-//            if (CanUseXenoglossy(out act)) return true;
-//            //悖论
-//            if (CanUseParadox(out act)) return true;
-//            //火3
-//            if (CanUseFire3(out act)) return true;
+    /// <summary>
+    /// 满级循环管理
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    private bool UseLoopManager(out IAction act)
+    {
+        if (InUmbralIce)
+        {
+            //雷
+            if (CanUseThunder(out act)) return true;
+            //冰阶段
+            if (UmbralIceStacks == 3 && Blizzard4.ShouldUse(out act)) return true;
+            //异言
+            if (CanUseXenoglossy(out act)) return true;
+            //悖论
+            if (CanUseParadox(out act)) return true;
+            //火3
+            if (CanUseFire3(out act)) return true;
 
-//        }
-//        else if (JobGauge.InAstralFire)
-//        {
-//            //悖论
-//            if (CanUseParadox(out act)) return true;
-//            //火3
-//            if (CanUseFire3(out act)) return true;
-//            //雷
-//            if (CanUseThunder(out act)) return true;
-//            //异言
-//            if (CanUseXenoglossy(out act)) return true;
-//            //火4
-//            if (CanUseFire4(out act)) return true;
-//            //绝望
-//            if (CanUseDespair(out act)) return true;
-//            //冰3转冰
-//            if (CanUseBlizzard3(out act)) return true;
-//        }
-//        else
-//        {
-//            //火3
-//            if (CanUseFire3(out act)) return true;
-//            //冰3
-//            if (Blizzard3.ShouldUse(out act)) return true;
-//        }
-//        act = null;
-//        return false;
-//    }
+        }
+        else if (InAstralFire)
+        {
+            //悖论
+            if (CanUseParadox(out act)) return true;
+            //火3
+            if (CanUseFire3(out act)) return true;
+            //雷
+            if (CanUseThunder(out act)) return true;
+            //异言
+            if (CanUseXenoglossy(out act)) return true;
+            //火4
+            if (CanUseFire4(out act)) return true;
+            //绝望
+            if (CanUseDespair(out act)) return true;
+            //冰3转冰
+            if (CanUseBlizzard3(out act)) return true;
+        }
+        else
+        {
+            //火3
+            if (CanUseFire3(out act)) return true;
+            //冰3
+            if (Blizzard3.ShouldUse(out act)) return true;
+        }
+        act = null;
+        return false;
+    }
 
-//    private bool LoopManagerSingleNOMax(out IAction act)
-//    {
-//        if (JobGauge.InUmbralIce)
-//        {
-//            if (Transpose.ShouldUse(out act))
-//            {
-//                if (!Fire4.EnoughLevel && Player.CurrentMp >= 9600) return true;
-//            }
-//            //雷
-//            if (CanUseThunder(out act)) return true;
-//            //冰阶段
-//            if (!Fire3.EnoughLevel && Blizzard.ShouldUse(out act)) return true;
-//            if (JobGauge.UmbralIceStacks == 3 && Blizzard4.ShouldUse(out act)) return true;
-//            //异言
-//            if (CanUseXenoglossy(out act)) return true;
-//            //悖论
-//            if (CanUseParadox(out act)) return true;
-//            //火3
-//            if (CanUseFire3(out act)) return true;
-//        }
-//        else if (JobGauge.InAstralFire)
-//        {
-//            //火3
-//            if (CanUseFire3(out act)) return true;
-//            //雷
-//            if (CanUseThunder(out act)) return true;
-//            //火1
-//            if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
-//            {
-//                if (JobGauge.ElementTimeRemaining <= CalcSpellTime(2500) * 2) return true;
-//                if (Level < 60) return true;
-//            }
-//            //异言
-//            if (CanUseXenoglossy(out act)) return true;
-//            //火4
-//            if (CanUseFire4(out act)) return true;
-//            //绝望
-//            if (CanUseDespair(out act)) return true;
-//            //冰3转冰
-//            if (CanUseBlizzard3(out act)) return true;
-//            if (Transpose.ShouldUse(out act))
-//            {
-//                if (!Fire3.EnoughLevel && Player.CurrentMp < 1600) return true;
-//            }
-//        }
-//        else
-//        {
-//            if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
-//            {
-//                if (JobGauge.ElementTimeRemaining <= CalcSpellTime(2500) * 2) return true;
-//                if (Level < 60) return true;
-//            }
-//            //冰3
-//            if (Blizzard3.ShouldUse(out act)) return true;
-//            if (Blizzard.ShouldUse(out act)) return true;
-//            //火3
-//            if (CanUseFire3(out act)) return true;
-//        }
-//        act = null;
-//        return false;
-//    }
+    /// <summary>
+    /// 低级循环
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    private bool LoopManagerSingleNOMax(out IAction act)
+    {
 
-//    private bool LoopManagerArea(out IAction act)
-//    {
-//        //if (!Blizzard2.ShouldUse(out _)) return false;
+        if (InUmbralIce)
+        {
+            //星灵
+            if (Transpose.ShouldUse(out act))
+            {
+                if (!Fire3.EnoughLevel && Player.CurrentMp >= 9600) return true;
+            }
+            //雷
+            if (Thunder.ShouldUse(out act) && Thunder.Target.IsBoss())
+            {
+                //没雷dot
+                if (!TargetHasThunder || TargetThunderWillEnd(3)) return true;
+                if (HasThunder && Player.WillStatusEnd(3, true, StatusID.Thundercloud)) return true;
+            }
+            //冰阶段
+            if (!Blizzard4.EnoughLevel && Player.CurrentMp < 9600 && Blizzard.ShouldUse(out act)) return true;
+            if (UmbralIceStacks == 3 && UmbralHearts != 3 && Blizzard4.ShouldUse(out act)) return true;
+            //异言
+            if (CanUseXenoglossy(out act)) return true;
+            //悖论
+            if (CanUseParadox(out act)) return true;
+            //火3
+            if (CanUseFire3(out act)) return true;
+        }
+        else if (InAstralFire)
+        {
+            //火3
+            if (CanUseFire3(out act)) return true;
+            //雷
+            if (Thunder.ShouldUse(out act) && Thunder.Target.IsBoss())
+            {
+                //没雷dot
+                if (!TargetHasThunder || TargetThunderWillEnd(3)) return true;
+                if (HasThunder && Player.WillStatusEnd(3, true, StatusID.Thundercloud)) return true;
+            }
+            //火1
+            if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
+            {
+                if (Level >= 60 && ElementTimeEndAfter((float)(CalcSpellTime(2500) * 2))) return true;
+                if (Level < 60) return true;
+            }
+            //异言
+            if (CanUseXenoglossy(out act)) return true;
+            //火4
+            if (CanUseFire4(out act)) return true;
+            //绝望
+            if (CanUseDespair(out act)) return true;
+            //冰3转冰
+            if (CanUseBlizzard3(out act)) return true;
+            //星灵
+            if (Transpose.ShouldUse(out act))
+            {
+                if (!Fire3.EnoughLevel && Player.CurrentMp < 1600) return true;
+            }
+        }
+        else if (!IsEnochianActive)
+        {
+            //火3
+            if (Player.CurrentMp >= 6000 && Fire3.ShouldUse(out act)) return true;
+            //冰3
+            if (Blizzard3.ShouldUse(out act)) return true;
+
+            //火1
+            if (Level < 60 && Player.CurrentMp >= 6000 && Fire.ShouldUse(out act)) return true;
+            //冰1
+            if (Level < 60 && Blizzard.ShouldUse(out act)) return true;
+
+        }
+        act = null;
+        return false;
+    }
+
+    /// <summary>
+    /// 范围技能循环
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    private bool LoopManagerArea(out IAction act)
+    {
+        //if (!Blizzard2.ShouldUse(out _)) return false;
 
 //        if (Foul.ShouldUse(out act) && IsPolyglotStacksMaxed) return true;
 
 
-//        if (Freeze.ShouldUse(out act) && !IsLastSpell(true, Freeze))
-//        {
-//            if (JobGauge.UmbralIceStacks == 3 && JobGauge.UmbralHearts != 3) return true;
-//        }
-//        if (Thunder2.ShouldUse(out act) && !IsLastSpell(true, Thunder2))
-//        {
-//            if (HasThunder || !Thunder2.Target.HasStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4)) return true;
-//        }
+        if (Freeze.ShouldUse(out act) && !IsLastSpell(true, Freeze))
+        {
+            if (UmbralIceStacks == 3 && UmbralHearts != 3) return true;
+        }
+        if (Thunder2.ShouldUse(out act) && !IsLastSpell(true, Thunder2))
+        {
+            if (HasThunder || !Thunder2.Target.HasStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4)) return true;
+        }
 
-//        if (Fire2.ShouldUse(out act) && Level >= 20)
-//        {
-//            if (!JobGauge.InUmbralIce && !Freeze.EnoughLevel) return true;
+        if (Fire2.ShouldUse(out act) && Level >= 20)
+        {
+            if (!InUmbralIce && !Freeze.EnoughLevel) return true;
 
-//            if (JobGauge.InUmbralIce && ((!Freeze.EnoughLevel && Player.CurrentMp >= 9000) || JobGauge.UmbralHearts == 3)) return true;
+            if (InUmbralIce && ((!Freeze.EnoughLevel && Player.CurrentMp >= 9000) || UmbralHearts == 3)) return true;
 
-//            if (JobGauge.InAstralFire && (!Player.HasStatus(true, StatusID.EnhancedFlare) || JobGauge.UmbralHearts > 1)) return true;
-//        }
-//        if (Flare.ShouldUse(out act))
-//        {
-//            if (JobGauge.InAstralFire && Player.HasStatus(true, StatusID.EnhancedFlare)) return true;
-//            //return true;
-//        }
-//        if (Blizzard2.ShouldUse(out act) && JobGauge.UmbralIceStacks != 3)
-//        {
-//            //if (!JobGauge.IsEnochianActive) return true;
-//            //if (JobGauge.InAstralFire) return true;
-//            return true;
-//        }
-//        act = null;
-//        return false;
-//    }
+            if (InAstralFire && (!Player.HasStatus(true, StatusID.EnhancedFlare) || UmbralHearts > 1)) return true;
+        }
+        if (Flare.ShouldUse(out act))
+        {
+            if (InAstralFire && Player.HasStatus(true, StatusID.EnhancedFlare)) return true;
+            //return true;
+        }
+        if (Blizzard2.ShouldUse(out act) && UmbralIceStacks != 3)
+        {
+            //if (!JobGauge.IsEnochianActive) return true;
+            //if (JobGauge.InAstralFire) return true;
+            return true;
+        }
+        act = null;
+        return false;
+    }
 
-//    private bool Maintence(out IAction act)
-//    {
-//        if (UmbralSoul.ShouldUse(out act)) return true;
-//        if (Transpose.ShouldUse(out act) && JobGauge.ElementTimeRemaining < 3000) return true;
+    /// <summary>
+    /// 保持天语状态
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    private bool Maintence(out IAction act)
+    {
+        if (UmbralSoul.ShouldUse(out act)) return true;
+        if (Transpose.ShouldUse(out act) && ElementTimeEndAfterGCD(1) && Foul.EnoughLevel) return true;
 
 //        return false;
 //    }
