@@ -69,7 +69,7 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
         if (FanDance3.ShouldUse(out act, mustUse: true)) return true;
 
         //…»ŒË
-        if (Player.HasStatus(true, StatusID.Devilment) || JobGauge.Feathers > 3 || !TechnicalStep.EnoughLevel)
+        if (Player.HasStatus(true, StatusID.Devilment) || Feathers > 3 || !TechnicalStep.EnoughLevel)
         {
             if (FanDance2.ShouldUse(out act)) return true;
             if (FanDance.ShouldUse(out act)) return true;
@@ -102,7 +102,7 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
         if (!InCombat && !Player.HasStatus(true, StatusID.ClosedPosition1)
             && ClosedPosition.ShouldUse(out act)) return true;
 
-        if (StepGCD(out act)) return true;
+        if (FinishStepGCD(out act)) return true;
 
         if (SettingBreak)
         {
@@ -114,44 +114,20 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
         return false;
     }
 
-    private bool StepGCD(out IAction act)
-    {
-        act = null;
-        if (!Player.HasStatus(true, StatusID.StandardStep, StatusID.TechnicalStep)) return false;
 
-        if (Player.HasStatus(true, StatusID.StandardStep) && JobGauge.CompletedSteps == 2)
-        {
-            act = StandardStep;
-            return true;
-        }
-        else if (Player.HasStatus(true, StatusID.TechnicalStep) && JobGauge.CompletedSteps == 4)
-        {
-            act = TechnicalStep;
-            return true;
-        }
-        else
-        {
-            if (Emboite.ShouldUse(out act)) return true;
-            if (Entrechat.ShouldUse(out act)) return true;
-            if (Jete.ShouldUse(out act)) return true;
-            if (Pirouette.ShouldUse(out act)) return true;
-        }
-
-        return false;
-    }
 
     private bool AttackGCD(out IAction act, bool breaking)
     {
 
         //Ω£ŒË
-        if ((breaking || JobGauge.Esprit >= 80) &&
+        if ((breaking || Esprit >= 80) &&
             SaberDance.ShouldUse(out act, mustUse: true)) return true;
 
         //Ã·ƒ…¿≠
         if (Tillana.ShouldUse(out act, mustUse: true)) return true;
         if (StarfallDance.ShouldUse(out act, mustUse: true)) return true;
 
-        if (JobGauge.IsDancing) return false;
+        if (IsDancing) return false;
 
         bool canstandard = !TechnicalStep.WillHaveOneChargeGCD(2);
 

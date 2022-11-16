@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -9,7 +10,22 @@ using XIVAutoAttack.Helpers;
 namespace XIVAutoAttack.Combos.Basic;
 internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static DNCGauge JobGauge => Service.JobGauges.Get<DNCGauge>();
+    private static DNCGauge JobGauge => Service.JobGauges.Get<DNCGauge>();
+
+    /// <summary>
+    /// ÕýÔÚÌøÎè
+    /// </summary>
+    protected static bool IsDancing => JobGauge.IsDancing;
+
+    /// <summary>
+    /// ÁæÀþ
+    /// </summary>
+    protected static byte Esprit => JobGauge.Esprit;
+
+    /// <summary>
+    /// »ÃÉÈÊý
+    /// </summary>
+    protected static byte Feathers => JobGauge.Feathers;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dancer };
 
@@ -91,7 +107,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction FanDance2 { get; } = new(ActionID.FanDance2)
     {
-        OtherCheck = b => JobGauge.Feathers > 0,
+        OtherCheck = b => Feathers > 0,
         BuffsProvide = new[] { StatusID.ThreefoldFanDance },
     };
 
@@ -116,7 +132,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SaberDance { get; } = new(ActionID.SaberDance)
     {
-        OtherCheck = b => JobGauge.Esprit >= 50,
+        OtherCheck = b => Esprit >= 50,
     };
 
     /// <summary>
@@ -254,4 +270,29 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         BuffsNeed = new[] { StatusID.FlourishingFinish },
     };
 
+    protected bool FinishStepGCD(out IAction act)
+    {
+        act = null;
+        if (!Player.HasStatus(true, StatusID.StandardStep, StatusID.TechnicalStep)) return false;
+
+        if (Player.HasStatus(true, StatusID.StandardStep) && JobGauge.CompletedSteps == 2)
+        {
+            act = StandardStep;
+            return true;
+        }
+        else if (Player.HasStatus(true, StatusID.TechnicalStep) && JobGauge.CompletedSteps == 4)
+        {
+            act = TechnicalStep;
+            return true;
+        }
+        else
+        {
+            if (Emboite.ShouldUse(out act)) return true;
+            if (Entrechat.ShouldUse(out act)) return true;
+            if (Jete.ShouldUse(out act)) return true;
+            if (Pirouette.ShouldUse(out act)) return true;
+        }
+
+        return false;
+    }
 }

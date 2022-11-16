@@ -25,6 +25,32 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     protected static Song Song => JobGauge.Song;
 
+    /// <summary>
+    /// 灵魂之声
+    /// </summary>
+    protected static byte SoulVoice => JobGauge.SoulVoice;
+
+    /// <summary>
+    /// 这首歌啊在多久后还在唱嘛
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    protected static bool SongEndAfter(float time)
+    {
+        return EndAfter(JobGauge.SongTimer / 1000f, time);
+    }
+
+    /// <summary>
+    /// 这首歌啊在多久后还在唱嘛
+    /// </summary>
+    /// <param name="abilityCount"></param>
+    /// <param name="gctCount"></param>
+    /// <returns></returns>
+    protected static bool SongEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    {
+        return EndAfterGCD(JobGauge.SongTimer / 1000f, gctCount, abilityCount);
+    }
+
     public sealed override ClassJobID[] JobIDs => new [] { ClassJobID.Bard, ClassJobID.Archer };
 
 
