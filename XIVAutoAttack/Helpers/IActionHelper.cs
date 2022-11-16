@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Helpers
@@ -14,7 +15,7 @@ namespace XIVAutoAttack.Helpers
         {
             return IsLastSpell(GetIDFromActions(isAdjust, actions));
         }
-        internal static bool IsLastSpell(params uint[] ids)
+        internal static bool IsLastSpell(params ActionID[] ids)
         {
             return IsActionID(Watcher.LastSpell, ids);
         }
@@ -24,7 +25,7 @@ namespace XIVAutoAttack.Helpers
         {
             return IsLastAbility(GetIDFromActions(isAdjust, actions));
         }
-        internal static bool IsLastAbility(params uint[] ids)
+        internal static bool IsLastAbility(params ActionID[] ids)
         {
             return IsActionID(Watcher.LastAbility, ids);
         }
@@ -33,7 +34,7 @@ namespace XIVAutoAttack.Helpers
         {
             return IsLastWeaponSkill(GetIDFromActions(isAdjust, actions));
         }
-        internal static bool IsLastWeaponSkill(params uint[] ids)
+        internal static bool IsLastWeaponSkill(params ActionID[] ids)
         {
             return IsActionID(Watcher.LastWeaponskill, ids);
         }
@@ -42,17 +43,17 @@ namespace XIVAutoAttack.Helpers
         {
             return IsLastAction(GetIDFromActions(isAdjust, actions));
         }
-        internal static bool IsLastAction(params uint[] ids)
+        internal static bool IsLastAction(params ActionID[] ids)
         {
             return IsActionID(Watcher.LastAction, ids);
         }
 
         internal static bool IsAnySameAction(this IAction action, bool isAdjust, params IAction[] actions)
         {
-            return IsActionID(isAdjust ? action.AdjustedID : action.ID, GetIDFromActions(isAdjust, actions));
+            return IsActionID(isAdjust ? (ActionID)action.AdjustedID : (ActionID)action.ID, GetIDFromActions(isAdjust, actions));
         }
 
-        private static bool IsActionID(uint id, params uint[] ids)
+        private static bool IsActionID(ActionID id, params ActionID[] ids)
         {
             foreach (var i in ids)
             {
@@ -61,9 +62,9 @@ namespace XIVAutoAttack.Helpers
             return false;
         }
 
-        private static uint[] GetIDFromActions(bool isAdjust, params IAction[] actions)
+        private static ActionID[] GetIDFromActions(bool isAdjust, params IAction[] actions)
         {
-            return actions.Select(a => isAdjust ? a.AdjustedID : a.ID).ToArray();
+            return actions.Select(a => isAdjust ? (ActionID)a.AdjustedID : (ActionID)a.ID).ToArray();
         }
     }
 }

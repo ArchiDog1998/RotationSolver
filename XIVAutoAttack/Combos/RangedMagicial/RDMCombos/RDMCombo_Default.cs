@@ -38,7 +38,8 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("UseVercure", true, "使用赤治疗获得即刻");
+            .SetBool("UseVercure", true, "使用赤治疗获得即刻")
+            .SetBool("UseCorpsAcorps", false, "近战范围内使用短兵相接");
     }
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
@@ -58,7 +59,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         //倍增要放到魔连攻击之后
         if (ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Zwerchhau, Riposte))
         {
-            if (!canUseMagic( act) && Manafication.ShouldUse(out act) ) return true;
+            if (!canUseMagic(act) && Manafication.ShouldUse(out act) ) return true;
         }
 
         act = null;
@@ -104,6 +105,15 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
                 return true;
             }
         }
+
+        if (Config.GetBoolByName("UseCorpsAcorps"))
+        {
+            if (Target.DistanceToPlayer() < 3)
+            {
+                if (CorpsAcorps.ShouldUse(out act)) return true;
+            }
+        }
+
 
         return false;
     }
@@ -194,7 +204,8 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         if (Redoublement.ShouldUse(out act)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
-        bool mustStart = /*Player.HaveStatus(1971)|| */ BlackMana == 100 || WhiteMana == 100 || !Embolden.IsCoolDown;
+        bool mustStart = Player.HasStatus(true, StatusID.Manafication) || 
+                         BlackMana == 100 || WhiteMana == 100 || !Embolden.IsCoolDown;
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
         if (!mustStart)

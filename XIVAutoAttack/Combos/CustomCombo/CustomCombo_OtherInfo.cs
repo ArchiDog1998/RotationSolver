@@ -91,7 +91,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         /// <param name="ids">技能ID</param>
         /// <returns></returns>
-        protected static bool IsLastSpell(params uint[] ids)
+        protected static bool IsLastSpell(params ActionID[] ids)
             => IActionHelper.IsLastSpell(ids);
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         /// <param name="ids">技能ID</param>
         /// <returns></returns>
-        protected static bool IsLastAbility(params uint[] ids)
+        protected static bool IsLastAbility(params ActionID[] ids)
             => IActionHelper.IsLastAbility(ids);
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         /// <param name="ids">技能ID</param>
         /// <returns></returns>
-        protected static bool IsLastWeaponSkill(params uint[] ids)
+        protected static bool IsLastWeaponSkill(params ActionID[] ids)
             => IActionHelper.IsLastWeaponSkill(ids);
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         /// <param name="ids">技能ID</param>
         /// <returns></returns>
-        protected static bool IsLastAction(params uint[] ids)
+        protected static bool IsLastAction(params ActionID[] ids)
             => IActionHelper.IsLastAction(ids);
 
         /// <summary>

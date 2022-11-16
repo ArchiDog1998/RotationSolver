@@ -234,7 +234,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
             && (!b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2)) 
             ).ToArray();
 
-            return Targets.GetTargetByRole(JobRole.Tank, JobRole.RangedMagicial, JobRole.RangedPhysical);
+            return Targets.GetJobCategory(JobRole.Tank, JobRole.RangedMagicial, JobRole.RangedPhysical).FirstOrDefault();
         },
     };
 
@@ -260,7 +260,18 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 即兴表演
     /// </summary>
-    public static BaseAction Improvisation { get; } = new(ActionID.Improvisation, true);
+    public static BaseAction Improvisation { get; } = new(ActionID.Improvisation, true)
+    {
+        BuffsNeed = new[] { StatusID.Rising_Rhythm, StatusID.Improvisation },
+    };
+
+    /// <summary>
+    /// 结束即兴表演
+    /// </summary>
+    public static BaseAction Improvised_Finish { get; } = new(ActionID.Improvised)
+    {
+        BuffsNeed = new[] { StatusID.Improvised_Finish,  },
+    };
 
     /// <summary>
     /// 提拉纳

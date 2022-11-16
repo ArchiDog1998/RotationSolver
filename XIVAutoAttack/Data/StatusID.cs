@@ -958,5 +958,78 @@
         /// 速行
         /// </summary>
         Peloton = 1199,
+
+        /// <summary>
+
+        /// 即兴表演
+        /// </summary>
+        Improvisation = 1827,
+
+        /// <summary>
+        /// 享受即兴表演
+        /// </summary>
+        _Improvisation = 2695,
+
+
+        /// <summary>
+        /// 即兴表演结束
+        /// </summary>
+        Improvised_Finish = 2697,
+
+        /// <summary>
+        /// 舞动的热情
+        /// </summary>
+        Rising_Rhythm = 2696,
+
+
+        /// <summary>
+        /// 魔元化
+        /// </summary>
+        Manafication = 1971,
+
+
+        /// <summary>
+        /// 鼓励
+        /// </summary>
+        Embolden = 2282,
+
+        /// 以太复制：防护
+        /// </summary>
+        AethericMimicryTank = 2124,
+
+        /// <summary>
+        /// 以太复制：进攻
+        /// </summary>
+        AethericMimicryDPS = 2125,
+
+        /// <summary>
+        /// 以太复制：治疗
+        /// </summary>
+        AethericMimicryHealer = 2126,
+
+        /// <summary>
+        /// 狂战士化
+        /// </summary>
+        WaxingNocturne = 1718,
+
+        /// <summary>
+        /// 狂战士化的副作用
+        /// </summary>
+        WaningNocturne = 1727,
+
+        /// <summary>
+        /// 意志薄弱
+        /// </summary>
+        BrushwithDeath = 2127,
+
+        /// <summary>
+        /// 蓄力
+        /// </summary>
+        Boost = 1716,
+
+        /// <summary>
+        /// 攻击准备
+        /// </summary>
+        Harmonized = 2118,
     }
 }

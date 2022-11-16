@@ -33,16 +33,16 @@ namespace XIVAutoAttack.SigReplacers
         private static Hook<ReceiveAbiltyDelegate> _receivAbilityHook;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static uint LastAction { get; set; } = 0;
+        internal static ActionID LastAction { get; set; } = 0;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static uint LastWeaponskill { get; set; } = 0;
+        internal static ActionID LastWeaponskill { get; set; } = 0;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static uint LastAbility { get; set; } = 0;
+        internal static ActionID LastAbility { get; set; } = 0;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static uint LastSpell { get; set; } = 0;
+        internal static ActionID LastSpell { get; set; } = 0;
 
         internal static TimeSpan TimeSinceLastAction => DateTime.Now - _timeLastActionUsed;
 
@@ -85,7 +85,7 @@ namespace XIVAutoAttack.SigReplacers
 
         private static unsafe void RecordAction(GameObject tar, Action action, byte flag)
         {
-            var id = action.RowId;
+            var id = (ActionID)action.RowId;
 
             //Record
             switch (action.GetActinoType())

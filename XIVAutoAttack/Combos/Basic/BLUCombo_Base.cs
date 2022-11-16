@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Linq;
 using XIVAutoAttack.Actions;
@@ -9,8 +10,22 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic
 {
+    internal enum BLUID : byte
+    {
+        Tank,
+        Healer,
+        DPS,
+    }
+
     internal abstract class BLUCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
     {
+        internal enum BLUAttackType : byte
+        {
+            Magical,
+            Physical,
+            Both,
+        }
+
         internal enum BLUActionType : byte
         {
             None,
@@ -20,7 +35,9 @@ namespace XIVAutoAttack.Combos.Basic
 
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlueMage };
 
-        protected static bool IsOnPhysical { get; set; } = true;
+        protected static BLUAttackType AttackType { get; set; } = BLUAttackType.Magical;
+
+        protected static BLUID BlueId { get; set; } = BLUID.DPS;
 
         public class BLUAction : BaseAction
         {
@@ -51,8 +68,8 @@ namespace XIVAutoAttack.Combos.Basic
                 if (!OnSlot) return false;
 
                 //排除其他类型的魔法。
-                if(IsOnPhysical && Type == BLUActionType.Magical) return false;
-                if(!IsOnPhysical && Type == BLUActionType.Physical) return false;
+                if(AttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
+                if(AttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
 
                 return base.ShouldUse(out act, mustUse, emptyOrSkipCombo);
             }
@@ -318,7 +335,10 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 终极针
         /// </summary>
-        public static BLUAction FinalSting { get; } = new(ActionID.FinalSting, BLUActionType.Physical);
+        public static BLUAction FinalSting { get; } = new(ActionID.FinalSting, BLUActionType.Physical)
+        {
+            OtherCheck = b => !Player.HasStatus(true, StatusID.BrushwithDeath),
+        };
 
         /// <summary>
         /// 锋利菜刀
@@ -445,7 +465,10 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 自爆
         /// </summary>
-        public static BLUAction Selfdestruct { get; } = new(ActionID.Selfdestruct, BLUActionType.None);
+        public static BLUAction Selfdestruct { get; } = new(ActionID.Selfdestruct, BLUActionType.None)
+        {
+            OtherCheck = b => !Player.HasStatus(true, StatusID.BrushwithDeath),
+        };
 
         /// <summary>
         /// 拍掌
@@ -541,7 +564,10 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 怒发冲冠
         /// </summary>
-        public static BLUAction Bristle { get; } = new(ActionID.Bristle, BLUActionType.Magical, true);
+        public static BLUAction Bristle { get; } = new(ActionID.Bristle, BLUActionType.Magical, true)
+        {
+            BuffsProvide = new StatusID[] { StatusID.Boost, StatusID.Harmonized },
+        };
 
         /// <summary>
         /// 破防
@@ -556,7 +582,10 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 月之笛
         /// </summary>
-        public static BLUAction MoonFlute { get; } = new(ActionID.MoonFlute, BLUActionType.None, true);
+        public static BLUAction MoonFlute { get; } = new(ActionID.MoonFlute, BLUActionType.None, true)
+        {
+            BuffsProvide = new StatusID[] { StatusID.WaxingNocturne },
+        };
 
         /// <summary>
         /// 惊奇光
@@ -571,7 +600,10 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 口笛
         /// </summary>
-        public static BLUAction Whistle { get; } = new(ActionID.Whistle, BLUActionType.Physical, true);
+        public static BLUAction Whistle { get; } = new(ActionID.Whistle, BLUActionType.Physical, true)
+        {
+            BuffsProvide = new StatusID[] { StatusID.Boost, StatusID.Harmonized },
+        };
 
 
         /// <summary>
@@ -616,13 +648,49 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 以太复制
         /// </summary>
-        public static BLUAction AetherialMimicry { get; } = new(ActionID.AetherialMimicry, BLUActionType.None);
+        private static BLUAction AetherialMimicry { get; } = new(ActionID.AetherialMimicry, BLUActionType.None, true)
+        {
+            ChoiceTarget = charas =>
+            {
+                switch (BlueId)
+                {
+                    case BLUID.DPS:
+                        if (!Player.HasStatus(true, StatusID.AethericMimicryDPS))
+                        {
+                            return charas.GetJobCategory(JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical).FirstOrDefault();
+                        }
+                        break;
+
+                    case BLUID.Tank:
+                        if (!Player.HasStatus(true, StatusID.AethericMimicryTank))
+                        {
+                            return charas.GetJobCategory(JobRole.Tank).FirstOrDefault();
+                        }
+                        break;
+
+                    case BLUID.Healer:
+                        if (!Player.HasStatus(true, StatusID.AethericMimicryHealer))
+                        {
+                            return charas.GetJobCategory(JobRole.Healer).FirstOrDefault();
+                        }
+                        break;
+                }
+                return null;
+            },
+        };
 
         /// <summary>
         /// 斗争本能
         /// </summary>
         public static BLUAction BasicInstinct { get; } = new(ActionID.BasicInstinct, BLUActionType.None);
         #endregion
+
+
+        private protected override bool EmergercyGCD(out IAction act)
+        {
+            if (AetherialMimicry.ShouldUse(out act)) return true;
+            return base.EmergercyGCD(out act);
+        }
 
         protected static bool AllOnSlot(params BLUAction[] actions) => actions.All(a => a.OnSlot);
     }
