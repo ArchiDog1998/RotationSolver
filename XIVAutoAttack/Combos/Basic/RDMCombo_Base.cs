@@ -4,6 +4,7 @@ using System.Linq;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
@@ -217,7 +218,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Manafication { get; } = new(ActionID.Manafication)
     {
-        OtherCheck = b => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0,
+        OtherCheck = b => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0 ,
         OtherIDsNot = new [] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
     };
 }

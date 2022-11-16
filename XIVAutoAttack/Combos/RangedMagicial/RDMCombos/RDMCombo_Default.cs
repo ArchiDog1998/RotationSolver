@@ -43,6 +43,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
+        act = null;
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
         if (nextGCD.IsAnySameAction(true, Zwerchhau, Redoublement, Moulinet))
         {
@@ -51,13 +52,13 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         //开场爆发的时候释放。
         if (Service.Configuration.AutoBreak && GetRightValue(WhiteMana) && GetRightValue(BlackMana))
         {
-            if (Manafication.ShouldUse(out act)) return true;
+            if (!canUseMagic( act) && Manafication.ShouldUse(out act) ) return true;
             if (Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
         //倍增要放到魔连攻击之后
         if (ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Zwerchhau, Riposte))
         {
-            if (Manafication.ShouldUse(out act)) return true;
+            if (!canUseMagic( act) && Manafication.ShouldUse(out act) ) return true;
         }
 
         act = null;
@@ -71,20 +72,23 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        act = null;
         if (SettingBreak)
         {
-            if (Manafication.ShouldUse(out act)) return true;
+            if (!canUseMagic(act) && Manafication.ShouldUse(out act) ) return true;
             if (Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
 
         if (ManaStacks == 0 && (BlackMana < 50 || WhiteMana < 50) && !Manafication.WillHaveOneChargeGCD(1, 1))
         {
-            //促进满了就用。 
-            if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            //促进满了且预备buff没满就用。 
+            if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true) 
+                && (!Player.HasStatus(true, StatusID.VerfireReady) || !Player.HasStatus(true, StatusID.VerstoneReady))) return true;
 
             //即刻咏唱
             if (!Player.HasStatus(true, StatusID.Acceleration)
-                && Swiftcast.ShouldUse(out act, mustUse: true)) return true;
+                && Swiftcast.ShouldUse(out act, mustUse: true)
+                && (!Player.HasStatus(true, StatusID.VerfireReady) || !Player.HasStatus(true, StatusID.VerstoneReady))) return true;
         }
 
         //攻击四个能力技。
@@ -132,8 +136,12 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         if (Jolt.ShouldUse(out act)) return true;
         #endregion
 
-        //赤治疗，加即刻。
-        if (Config.GetBoolByName("UseVercure") && Vercure.ShouldUse(out act)) return true;
+        //震荡刷火炎和飞石
+
+
+        //赤治疗，加即刻，有连续咏唱或者即刻的话就不放了
+        if (Config.GetBoolByName("UseVercure") && Vercure.ShouldUse(out act) 
+            ) return true;
 
         return false;
     }
@@ -238,4 +246,12 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 
         return false;
     }
+
+    //判定焦热决断能不能使用
+    private bool canUseMagic(IAction act)
+    {
+        //return IsLastAction(true, Scorch) || IsLastAction(true, Resolution) || IsLastAction(true, Verholy) || IsLastAction(true, Verflare);
+        return Scorch.ShouldUse(out act) || Resolution.ShouldUse(out act);
+    }
 }
+
