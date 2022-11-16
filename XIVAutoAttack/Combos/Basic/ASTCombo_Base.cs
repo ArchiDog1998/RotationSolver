@@ -11,7 +11,22 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
+    private static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
+
+    /// <summary>
+    /// 抽出来的卡是啥。
+    /// </summary>
+    protected static CardType DrawnCard => JobGauge.DrawnCard;
+
+    /// <summary>
+    /// 抽出来的王卡是啥
+    /// </summary>
+    protected static CardType DrawnCrownCard => JobGauge.DrawnCrownCard;
+
+    /// <summary>
+    /// 已经有的星象
+    /// </summary>
+    protected static SealType[] Seals => JobGauge.Seals;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Astrologian };
 
@@ -161,7 +176,10 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 抽卡
     /// </summary>
-    public static BaseAction Draw { get; } = new(ActionID.Draw);
+    public static BaseAction Draw { get; } = new(ActionID.Draw)
+    {
+        OtherCheck = b => DrawnCard == CardType.NONE,
+    };
 
     /// <summary>
     /// 重抽
@@ -169,6 +187,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Redraw { get; } = new(ActionID.Redraw)
     {
         BuffsNeed = new[] { StatusID.ClarifyingDraw },
+        OtherCheck = b => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)),
     };
 
     /// <summary>
@@ -182,7 +201,10 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 出王冠卡
     /// </summary>
-    public static BaseAction CrownPlay { get; } = new(ActionID.CrownPlay);
+    public static BaseAction CrownPlay { get; } = new(ActionID.CrownPlay)
+    {
+        OtherCheck= b => DrawnCrownCard is CardType.LADY or CardType.LORD,
+    };
 
     /// <summary>
     /// 太阳神之衡
@@ -190,6 +212,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Balance { get; } = new(ActionID.Balance)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
+        OtherCheck = b => DrawnCard == CardType.BALANCE,
     };
 
     /// <summary>
@@ -198,6 +221,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Arrow { get; } = new(ActionID.Arrow)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
+        OtherCheck = b => DrawnCard == CardType.ARROW,
     };
 
     /// <summary>
@@ -206,6 +230,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Spear { get; } = new(ActionID.Spear)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
+        OtherCheck = b => DrawnCard == CardType.SPEAR,
     };
 
     /// <summary>
@@ -214,6 +239,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Bole { get; } = new(ActionID.Bole)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
+        OtherCheck = b => DrawnCard == CardType.BOLE,
     };
 
     /// <summary>
@@ -222,6 +248,8 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Ewer { get; } = new(ActionID.Ewer)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
+        OtherCheck = b => DrawnCard == CardType.EWER,
+
     };
 
     /// <summary>
@@ -230,6 +258,26 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Spire { get; } = new(ActionID.Spire)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
+        OtherCheck = b => DrawnCard == CardType.SPIRE,
     };
 
+    private static SealType GetCardSeal(CardType card)
+    {
+        switch (card)
+        {
+            default: return SealType.NONE;
+
+            case CardType.BALANCE:
+            case CardType.BOLE:
+                return SealType.SUN;
+
+            case CardType.ARROW:
+            case CardType.EWER:
+                return SealType.MOON;
+
+            case CardType.SPEAR:
+            case CardType.SPIRE:
+                return SealType.CELESTIAL;
+        }
+    }
 }

@@ -202,9 +202,9 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
 
         //发炎
         //留一层走位
-        if (Phlegma3.ShouldUse(out act, mustUse: Phlegma3.MaxCharges == Phlegma3.ChargesCount)) return true;
-        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: Phlegma2.MaxCharges == Phlegma2.ChargesCount)) return true;
-        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: Phlegma.MaxCharges == Phlegma.ChargesCount)) return true;
+        if (Phlegma3.ShouldUse(out act, mustUse: Phlegma3.MaxCharges == Phlegma3.CurrentCharges)) return true;
+        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: Phlegma2.MaxCharges == Phlegma2.CurrentCharges)) return true;
+        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: Phlegma.MaxCharges == Phlegma.CurrentCharges)) return true;
 
         //失衡
         if (Dyskrasia.ShouldUse(out act)) return true;

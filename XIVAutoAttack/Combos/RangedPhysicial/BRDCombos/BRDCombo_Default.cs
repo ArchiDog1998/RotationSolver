@@ -100,7 +100,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             (!RagingStrikes.EnoughLevel || Player.HasStatus(true, StatusID.RagingStrikes)) &&
             (!BattleVoice.EnoughLevel || Player.HasStatus(true, StatusID.BattleVoice)))
         {
-            if (EmpyrealArrow.IsCoolDown || !EmpyrealArrow.WillHaveOneChargeGCD() || JobGauge.Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
+            if (EmpyrealArrow.IsCoolDown || !EmpyrealArrow.WillHaveOneChargeGCD() || Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
             {
                 //纷乱箭
                 if (Barrage.ShouldUse(out act)) return true;
@@ -112,13 +112,13 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
-        if (SettingBreak && JobGauge.Song != Song.NONE && MagesBallad.EnoughLevel)
+        if (SettingBreak && Song != Song.NONE && MagesBallad.EnoughLevel)
         {
 
             //猛者强击
             if (RagingStrikes.ShouldUse(out act))
             {
-                if (JobGauge.Song != Song.NONE) return true;
+                if (Song != Song.NONE) return true;
             }
 
             //光明神的最终乐章
@@ -140,7 +140,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             return false;
         }
         //放浪神的小步舞曲
-        if ((JobGauge.Song == Song.NONE || (JobGauge.Song != Song.NONE || Player.HasStatus(true, StatusID.ArmyEthos)) && abilityRemain == 1)
+        if ((Song == Song.NONE || (Song != Song.NONE || Player.HasStatus(true, StatusID.ArmyEthos)) && abilityRemain == 1)
             && JobGauge.SongTimer < 3000)
         {
             if (WanderersMinuet.ShouldUse(out act)) return true;

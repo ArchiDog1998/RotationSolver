@@ -111,14 +111,12 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
     private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
     {
         //如果当前还没有卡牌，那就抽一张
-        if (JobGauge.DrawnCard == CardType.NONE
-            && Draw.ShouldUse(out act)) return true;
+        if (Draw.ShouldUse(out act)) return true;
 
         bool canUse = Astrodyne.OtherCheck(Service.ClientState.LocalPlayer);
 
         //如果当前卡牌已经拥有了，就重抽
-        if (!canUse && JobGauge.DrawnCard != CardType.NONE && JobGauge.Seals.Contains(GetCardSeal(JobGauge.DrawnCard))
-            && Redraw.ShouldUse(out act)) return true;
+        if (!canUse && Redraw.ShouldUse(out act)) return true;
 
         act = null;
         return false;
@@ -148,8 +146,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         if (MinorArcana.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //如果当前还没有卡牌，那就抽一张
-        if (JobGauge.DrawnCard == CardType.NONE
-            && Draw.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Draw.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //光速，创造更多的内插能力技的机会。
         if (IsMoving && Lightspeed.ShouldUse(out act)) return true;
@@ -166,36 +163,21 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
             if (Astrodyne.ShouldUse(out act)) return true;
         }
 
-        if (JobGauge.DrawnCrownCard == CardType.LORD || MinorArcana.WillHaveOneChargeGCD(1))
+        if (DrawnCrownCard == CardType.LORD || MinorArcana.WillHaveOneChargeGCD(1))
         {
             //进攻牌，随便发。或者CD要转好了，赶紧发掉。
             if (CrownPlay.ShouldUse(out act)) return true;
         }
 
         //发牌
-        if (abilityRemain == 1 && JobGauge.DrawnCard != CardType.NONE && JobGauge.Seals.Contains(SealType.NONE))
+        if (abilityRemain == 1 && DrawnCard != CardType.NONE && Seals.Contains(SealType.NONE))
         {
-            switch (JobGauge.DrawnCard)
-            {
-                case CardType.BALANCE:
-                    if (Balance.ShouldUse(out act)) return true;
-                    break;
-                case CardType.ARROW:
-                    if (Arrow.ShouldUse(out act)) return true;
-                    break;
-                case CardType.SPEAR:
-                    if (Spear.ShouldUse(out act)) return true;
-                    break;
-                case CardType.BOLE:
-                    if (Bole.ShouldUse(out act)) return true;
-                    break;
-                case CardType.EWER:
-                    if (Ewer.ShouldUse(out act)) return true;
-                    break;
-                case CardType.SPIRE:
-                    if (Spire.ShouldUse(out act)) return true;
-                    break;
-            }
+            if (Balance.ShouldUse(out act)) return true;
+            if (Arrow.ShouldUse(out act)) return true;
+            if (Spear.ShouldUse(out act)) return true;
+            if (Bole.ShouldUse(out act)) return true;
+            if (Ewer.ShouldUse(out act)) return true;
+            if (Spire.ShouldUse(out act)) return true;
         }
 
         return false;
@@ -211,7 +193,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         if (CelestialIntersection.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //奶量牌，要看情况。
-        if (JobGauge.DrawnCrownCard == CardType.LADY && CrownPlay.ShouldUse(out act)) return true;
+        if (DrawnCrownCard == CardType.LADY && CrownPlay.ShouldUse(out act)) return true;
 
         var tank = TargetUpdater.PartyTanks;
         var isBoss = Malefic.IsTargetBoss;
@@ -256,28 +238,10 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         if (Player.HasStatus(true, StatusID.HoroscopeHelios) && Horoscope.ShouldUse(out act)) return true;
 
         //奶量牌，要看情况。
-        if (JobGauge.DrawnCrownCard == CardType.LADY && CrownPlay.ShouldUse(out act)) return true;
+        if (DrawnCrownCard == CardType.LADY && CrownPlay.ShouldUse(out act)) return true;
 
         return false;
     }
 
-    private static SealType GetCardSeal(CardType card)
-    {
-        switch (card)
-        {
-            default: return SealType.NONE;
 
-            case CardType.BALANCE:
-            case CardType.BOLE:
-                return SealType.SUN;
-
-            case CardType.ARROW:
-            case CardType.EWER:
-                return SealType.MOON;
-
-            case CardType.SPEAR:
-            case CardType.SPIRE:
-                return SealType.CELESTIAL;
-        }
-    }
 }

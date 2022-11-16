@@ -13,7 +13,17 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static BRDGauge JobGauge => Service.JobGauges.Get<BRDGauge>();
+    private static BRDGauge JobGauge => Service.JobGauges.Get<BRDGauge>();
+
+    /// <summary>
+    /// 诗心数量
+    /// </summary>
+    protected static byte Repertoire => JobGauge.Repertoire;
+
+    /// <summary>
+    /// 当前正在唱的歌
+    /// </summary>
+    protected static Song Song => JobGauge.Song;
 
     public sealed override ClassJobID[] JobIDs => new [] { ClassJobID.Bard, ClassJobID.Archer };
 
