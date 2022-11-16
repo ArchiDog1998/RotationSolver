@@ -105,7 +105,7 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
             && status.SourceObject.OwnerId == Service.ClientState.LocalPlayer.ObjectId)
         );
         //以太契约
-        if (Aetherpact.ShouldUse(out act) && JobGauge.FairyGauge >= 70 && !haveLink) return true;
+        if (Aetherpact.ShouldUse(out act) && FairyGauge >= 70 && !haveLink) return true;
 
         //生命回生法
         if (Protraction.ShouldUse(out act)) return true;

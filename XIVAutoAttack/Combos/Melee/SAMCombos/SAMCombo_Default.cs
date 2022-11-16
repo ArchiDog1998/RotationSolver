@@ -62,12 +62,12 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         {
             if (MidareSetsugekka.ShouldUse(out act)) return true;
             //更改了彼岸花逻辑，应当在拥有雪闪的时候打出
-            if (Higanbana.ShouldUse(out act) && JobGauge.HasSetsu) return true;
+            if (Higanbana.ShouldUse(out act) && HasSetsu) return true;
         }
 
         //123
         //如果是单体，且明镜止水的冷却时间小于3秒。
-        if (!JobGauge.HasSetsu && !Fuga.ShouldUse(out _))
+        if (!HasSetsu && !Fuga.ShouldUse(out _))
         {
             if (Yukikaze.ShouldUse(out act)) return true;
         }
@@ -79,11 +79,11 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         {
             if (KaGCD(out act, haveMeikyoShisui)) return true;
         }
-        if (!JobGauge.HasGetsu) //月闪
+        if (!HasGetsu) //月闪
         {
             if (GetsuGCD(out act, haveMeikyoShisui)) return true;
         }
-        if (!JobGauge.HasKa) //花闪
+        if (!HasKa) //花闪
         {
             if (KaGCD(out act, haveMeikyoShisui)) return true;
         }
@@ -127,20 +127,20 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.Kenki >= 30 && HissatsuGyoten.ShouldUse(out act)) return true;
+        if (Kenki >= 30 && HissatsuGyoten.ShouldUse(out act)) return true;
         act = null;
         return false;
     }
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
-        if (JobGauge.MeditationStacks == 3)
+        if (MeditationStacks == 3)
         {
             if (Shoha2.ShouldUse(out act)) return true;
             if (Shoha.ShouldUse(out act)) return true;
         }
 
-        if (JobGauge.Kenki >= 25)
+        if (Kenki >= 25)
         {
             if (HissatsuGuren.ShouldUse(out act)) return true;
             if (HissatsuKyuten.ShouldUse(out act)) return true;

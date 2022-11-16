@@ -9,7 +9,43 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static SMNGauge JobGauge => Service.JobGauges.Get<SMNGauge>();
+    private static SMNGauge JobGauge => Service.JobGauges.Get<SMNGauge>();
+
+    /// <summary>
+    /// 有没有能量吸收？那是啥？
+    /// </summary>
+    protected static bool HasAetherflowStacks => JobGauge.HasAetherflowStacks;
+
+    /// <summary>
+    /// 那啥层数啊
+    /// </summary>
+    protected static byte Attunement => JobGauge.Attunement;
+
+    /// <summary>
+    /// 所有都可以召唤？
+    /// </summary>
+    protected static bool AllReady => JobGauge.IsIfritReady && JobGauge.IsGarudaReady && JobGauge.IsTitanReady;
+
+    /// <summary>
+    /// 召唤多久会消失啊
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    protected static bool SummonTimeEndAfter(float time)
+    {
+        return EndAfter(JobGauge.SummonTimerRemaining / 1000f, time);
+    }
+
+    /// <summary>
+    /// 召唤多久会消失啊
+    /// </summary>
+    /// <param name="abilityCount"></param>
+    /// <param name="gctCount"></param>
+    /// <returns></returns>
+    protected static bool SummonTimeEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    {
+        return EndAfterGCD(JobGauge.SummonTimerRemaining / 1000f, gctCount, abilityCount);
+    }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Summoner, ClassJobID.Arcanist };
     protected override bool CanHealSingleSpell => false;

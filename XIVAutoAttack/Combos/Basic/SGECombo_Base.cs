@@ -10,7 +10,43 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static SGEGauge JobGauge => Service.JobGauges.Get<SGEGauge>();
+    private static SGEGauge JobGauge => Service.JobGauges.Get<SGEGauge>();
+
+    /// <summary>
+    /// 是否有均匀？
+    /// </summary>
+    protected static bool HasEukrasia => JobGauge.Eukrasia;
+
+    /// <summary>
+    /// 豆子数量啊，叫啥我忘了。
+    /// </summary>
+    protected static byte Addersgall => JobGauge.Addersgall;
+
+    /// <summary>
+    /// 毒箭用豆子数量啊，叫啥我忘了。
+    /// </summary>
+    protected static byte Addersting => JobGauge.Addersting;
+
+    /// <summary>
+    /// 豆子倒计时还有多久能来一颗啊
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    protected static bool AddersgallEndAfter(float time)
+    {
+        return EndAfter(JobGauge.AddersgallTimer / 1000f, time);
+    }
+
+    /// <summary>
+    /// 豆子倒计时还有多久能来一颗啊
+    /// </summary>
+    /// <param name="abilityCount"></param>
+    /// <param name="gctCount"></param>
+    /// <returns></returns>
+    protected static bool AddersgallEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    {
+        return EndAfterGCD(JobGauge.AddersgallTimer / 1000f, gctCount, abilityCount);
+    }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
     private sealed protected override BaseAction Raise => Egeiro;
@@ -206,7 +242,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Rhizomata { get; } = new(ActionID.Rhizomata)
     {
-        OtherCheck = b => JobGauge.Addersgall < 3 && JobGauge.AddersgallTimer < 10000,
+        OtherCheck = b => JobGauge.Addersgall < 3 && AddersgallEndAfter(10),
     };
 
     /// <summary>

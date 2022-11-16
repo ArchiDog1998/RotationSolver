@@ -8,7 +8,38 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static WHMGauge JobGauge => Service.JobGauges.Get<WHMGauge>();
+    private static WHMGauge JobGauge => Service.JobGauges.Get<WHMGauge>();
+
+    /// <summary>
+    /// 百合花的数量
+    /// </summary>
+    protected static byte Lily => JobGauge.Lily;
+
+    /// <summary>
+    /// 血百合花的数量
+    /// </summary>
+    protected static byte BloodLily => JobGauge.BloodLily;
+
+    /// <summary>
+    /// 百合花多久后
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    protected static bool LilyAfter(float time)
+    {
+        return EndAfter(JobGauge.LilyTimer / 1000f, time);
+    }
+
+    /// <summary>
+    /// 这首歌啊在多久后还在唱嘛
+    /// </summary>
+    /// <param name="abilityCount"></param>
+    /// <param name="gctCount"></param>
+    /// <returns></returns>
+    protected static bool LilyAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    {
+        return EndAfterGCD(JobGauge.LilyTimer / 1000f, gctCount, abilityCount);
+    }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.WhiteMage, ClassJobID.Conjurer };
     private sealed protected override BaseAction Raise => Raise1;

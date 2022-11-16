@@ -79,7 +79,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
 
-        if (JobGauge.Addersgall == 0)
+        if (Addersgall == 0)
         {
             //输血
             if (Haima.ShouldUse(out act)) return true;
@@ -117,7 +117,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //泛输血
-        if (JobGauge.Addersgall == 0 && TargetUpdater.PartyMembersAverHP < 0.7)
+        if (Addersgall == 0 && TargetUpdater.PartyMembersAverHP < 0.7)
         {
             if (Panhaima.ShouldUse(out act)) return true;
         }
@@ -167,7 +167,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         if (Kardia.ShouldUse(out act)) return true;
 
         //根素
-        if (JobGauge.Addersgall == 0 && Rhizomata.ShouldUse(out act)) return true;
+        if (Addersgall == 0 && Rhizomata.ShouldUse(out act)) return true;
 
         //拯救
         if (Soteria.ShouldUse(out act)) return true;
@@ -194,7 +194,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
             act = enAct;
             return true;
         }
-        else if (JobGauge.Eukrasia)
+        else if (HasEukrasia)
         {
             if (DefenseAreaGCD(out act)) return true;
             if (DefenseSingleGCD(out act)) return true;
@@ -218,7 +218,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: true)) return true;
 
         //箭毒
-        if (JobGauge.Addersting > 0 && Toxikon.ShouldUse(out act, mustUse: true)) return true;
+        if (Addersting > 0 && Toxikon.ShouldUse(out act, mustUse: true)) return true;
 
         //脱战给T刷单盾嫖豆子
         if (!InCombat)
@@ -255,7 +255,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         //当资源不足时加入范围治疗缓解压力
         var tank = TargetUpdater.PartyTanks;
         var isBoss = Dosis.Target.IsBoss();
-        if (JobGauge.Addersgall == 0 && tank.Length == 1 && tank.Any(t => t.GetHealthRatio() < 0.6f) && !isBoss)
+        if (Addersgall == 0 && tank.Length == 1 && tank.Any(t => t.GetHealthRatio() < 0.6f) && !isBoss)
         {
             //整体论
             if (Holos.ShouldUse(out act)) return true;

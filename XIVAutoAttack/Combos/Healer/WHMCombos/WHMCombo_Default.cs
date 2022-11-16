@@ -42,8 +42,8 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         if (AfflatusMisery.ShouldUse(out act, mustUse: true)) return true;
 
         //泄蓝花 狂喜之心
-        bool liliesNearlyFull = JobGauge.Lily == 2 && JobGauge.LilyTimer >= 17000;
-        bool liliesFullNoBlood = JobGauge.Lily == 3 && JobGauge.BloodLily < 3;
+        bool liliesNearlyFull = Lily == 2 && LilyAfter(17);
+        bool liliesFullNoBlood = Lily == 3 && BloodLily < 3;
         if (Config.GetBoolByName("UseLilyWhenFull") && (liliesNearlyFull || liliesFullNoBlood))
         {
             if (AfflatusRapture.ShouldUse(out act)) return true;

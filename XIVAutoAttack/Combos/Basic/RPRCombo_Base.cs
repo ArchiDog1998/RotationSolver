@@ -10,7 +10,12 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static RPRGauge JobGauge => Service.JobGauges.Get<RPRGauge>();
+    private static RPRGauge JobGauge => Service.JobGauges.Get<RPRGauge>();
+
+    /// <summary>
+    /// 这个是啥啊？RPR帮个忙吧！
+    /// </summary>
+    protected static byte LemureShroud => JobGauge.LemureShroud;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
 

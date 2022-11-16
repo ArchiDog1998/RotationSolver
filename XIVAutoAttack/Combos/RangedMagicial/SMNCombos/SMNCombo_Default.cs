@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
@@ -63,7 +64,7 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 
 
         //’ŸªΩ
-        if (JobGauge.Attunement == 0)
+        if (Attunement == 0)
         {
             if (SummonBahamut.ShouldUse(out act))
             {
@@ -72,7 +73,7 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
             }
             else if (Aethercharge.ShouldUse(out act)) return true;
 
-            if (JobGauge.IsIfritReady && JobGauge.IsGarudaReady && JobGauge.IsTitanReady ? JobGauge.SummonTimerRemaining == 0 : true)
+            if (AllReady ? SummonTimeEndAfterGCD() : true)
             {
                 switch (Config.GetComboByName("SummonOrder"))
                 {
@@ -157,7 +158,7 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 
 
         //ƒ‹¡øŒ¸ ’
-        if (JobGauge.HasAetherflowStacks && InBreak)
+        if (HasAetherflowStacks && InBreak)
         {
             if (Painflare.ShouldUse(out act)) return true;
             if (Fester.ShouldUse(out act)) return true;

@@ -9,11 +9,37 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
+    private static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
+
+    /// <summary>
+    /// 雪闪
+    /// </summary>
+    protected static bool HasSetsu => JobGauge.HasSetsu;
+
+    /// <summary>
+    /// 月闪
+    /// </summary>
+    protected static bool HasGetsu => JobGauge.HasGetsu;
+
+
+    /// <summary>
+    /// 花闪
+    /// </summary>
+    protected static bool HasKa => JobGauge.HasKa;
+
+    /// <summary>
+    /// 什么气？
+    /// </summary>
+    protected static byte Kenki => JobGauge.Kenki;
+
+    /// <summary>
+    /// 剑压
+    /// </summary>
+    protected static byte MeditationStacks => JobGauge.MeditationStacks;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
 
-    protected static byte SenCount => (byte)((JobGauge.HasGetsu ? 1 : 0) + (JobGauge.HasSetsu ? 1 : 0) + (JobGauge.HasKa ? 1 : 0));
+    protected static byte SenCount => (byte)((HasGetsu ? 1 : 0) + (HasSetsu ? 1 : 0) + (HasKa ? 1 : 0));
 
     protected static bool HaveMoon => Player.HasStatus(true, StatusID.Moon);
     protected static bool HaveFlower => Player.HasStatus(true, StatusID.Flower);

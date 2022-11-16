@@ -47,7 +47,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
             if (CrossReaping.ShouldUse(out act)) return true;
             if (VoidReaping.ShouldUse(out act)) return true;
 
-            if (JobGauge.LemureShroud == 1 && Communio.EnoughLevel)
+            if (LemureShroud == 1 && Communio.EnoughLevel)
             {
                 if (!IsMoving && Communio.ShouldUse(out act, mustUse: true))
                 {

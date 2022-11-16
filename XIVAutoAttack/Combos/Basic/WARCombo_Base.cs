@@ -11,7 +11,7 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
+    private static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
     internal sealed override bool HaveShield => Player.HasStatus(true, StatusID.Defiance);

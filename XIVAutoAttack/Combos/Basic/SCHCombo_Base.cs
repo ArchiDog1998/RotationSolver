@@ -10,7 +10,12 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
+    private static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
+
+    /// <summary>
+    /// 契约槽
+    /// </summary>
+    protected static byte FairyGauge => JobGauge.FairyGauge;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Scholar };
 
