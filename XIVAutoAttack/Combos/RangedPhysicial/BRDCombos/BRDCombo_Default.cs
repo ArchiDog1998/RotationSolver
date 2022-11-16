@@ -18,7 +18,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.BRDCombos;
 
 internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 {
-    public override string Author => "Ï«¥ÙMoon";
+    public override string Author => "æ±ãƒ™Moon";
 
     internal enum CommandType : byte
     {
@@ -27,23 +27,23 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
     protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
     {
-        //{CommandType.None, "" }, //Ğ´ºÃ×¢ÊÍ°¡£¡ÓÃÀ´ÌáÊ¾ÓÃ»§µÄ¡£
+        //{CommandType.None, "" }, //å†™å¥½æ³¨é‡Šå•Šï¼ç”¨æ¥æç¤ºç”¨æˆ·çš„ã€‚
     };
 
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetCombo("FirstSong", 0, "µÚÒ»Ê×¸è", "ÂÃÉñ¸è", "ÏÍÕß¸è", "¾üÉñ¸è")
-            .SetFloat("WANDTime", 43, "ÂÃÉñ¸èÊ±¼ä", min: 0, max: 45, speed: 1)
-            .SetFloat("MAGETime", 34, "ÏÍÕß¸èÊ±¼ä", min: 0, max: 45, speed: 1)
-            .SetFloat("ARMYTime", 43, "ÏÍÕß¸èÊ±¼ä", min: 0, max: 45, speed: 1);
+            .SetCombo("FirstSong", 0, "ç¬¬ä¸€é¦–æ­Œ", "æ—…ç¥æ­Œ", "è´¤è€…æ­Œ", "å†›ç¥æ­Œ")
+            .SetFloat("WANDTime", 43, "æ—…ç¥æ­Œæ—¶é—´", min: 0, max: 45, speed: 1)
+            .SetFloat("MAGETime", 34, "è´¤è€…æ­Œæ—¶é—´", min: 0, max: 45, speed: 1)
+            .SetFloat("ARMYTime", 43, "å†›ç¥æ­Œæ—¶é—´", min: 0, max: 45, speed: 1);
     }
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.Ñ­»·ËµÃ÷, $"ÇëÈ·±£ÈıÊ×¸èÊ±¼ä¼ÓÔÚÒ»ÆğµÈÓÚ120Ãë!"},
-        {DescType.·¶Î§·ÀÓù, $"{Troubadour}"},
-        {DescType.µ¥ÌåÖÎÁÆ, $"{NaturesMinne}"},
+        {DescType.å¾ªç¯è¯´æ˜, $"è¯·ç¡®ä¿ä¸‰é¦–æ­Œæ—¶é—´åŠ åœ¨ä¸€èµ·ç­‰äº120ç§’!"},
+        {DescType.èŒƒå›´é˜²å¾¡, $"{Troubadour}"},
+        {DescType.å•ä½“æ²»ç–—, $"{NaturesMinne}"},
     };
 
     private int FirstSong => Config.GetComboByName("FirstSong");
@@ -53,7 +53,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        //ĞĞÒ÷
+        //è¡ŒåŸ
         if (Troubadour.ShouldUse(out act)) return true;
 
         return false;
@@ -61,7 +61,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        //´óµØÉñµÄÊãÇéÁµ¸è
+        //å¤§åœ°ç¥çš„æŠ’æƒ…æ‹æ­Œ
         if (NaturesMinne.ShouldUse(out act)) return true;
 
         return false;
@@ -69,7 +69,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        //ÁæÑÀÀş³İ
+        //ä¼¶ç‰™ä¿é½¿
         if (IronJaws.ShouldUse(out act))
         {
             var b = IronJaws.Target;
@@ -80,21 +80,21 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             if (Player.HasStatus(true, StatusID.RagingStrikes) && Player.WillStatusEndGCD(1, 0, true, StatusID.RagingStrikes)) return true;
         }
 
-        //·Å´óÕĞ£¡
+        //æ”¾å¤§æ‹›ï¼
         if (CanUseApexArrow(out act)) return true;
 
-        //ÈºÌåGCD
+        //ç¾¤ä½“GCD
         if (Shadowbite.ShouldUse(out act)) return true;
         if (QuickNock.ShouldUse(out act)) return true;
 
-        //ÉÏ¶¾
+        //ä¸Šæ¯’
         if (VenomousBite.ShouldUse(out act)) return true;
         if (Windbite.ShouldUse(out act)) return true;
 
-        //Ö±ÏßÉä»÷
+        //ç›´çº¿å°„å‡»
         if (StraitShoot.ShouldUse(out act)) return true;
 
-        //Ç¿Á¦Éä»÷
+        //å¼ºåŠ›å°„å‡»
         if (HeavyShoot.ShouldUse(out act)) return true;
 
         return false;
@@ -102,14 +102,14 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
     private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
     {
-        //ÍÑÕ½ËÙĞĞ
+        //è„±æˆ˜é€Ÿè¡Œ
         if (!InCombat && Player.WillStatusEndGCD(1) && Peloton.ShouldUse(out act)) return true;
         return base.GeneralAbility(abilityRemain, out act);
     }
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        //Èç¹û½ÓÏÂÀ´ÒªÉÏ¶¾»òÕßÒªÖ±ÏßÉä»÷£¬ÄÇËãÁË¡£
+        //å¦‚æœæ¥ä¸‹æ¥è¦ä¸Šæ¯’æˆ–è€…è¦ç›´çº¿å°„å‡»ï¼Œé‚£ç®—äº†ã€‚
         if (nextGCD.IsAnySameAction(true, StraitShoot, VenomousBite,
             Windbite, IronJaws))
         {
@@ -121,7 +121,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         {
             if (EmpyrealArrow.IsCoolDown || !EmpyrealArrow.WillHaveOneChargeGCD() || Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
             {
-                //·×ÂÒ¼ı
+                //çº·ä¹±ç®­
                 if (Barrage.ShouldUse(out act)) return true;
             }
         }
@@ -134,19 +134,19 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         if (SettingBreak && Song != Song.NONE && MagesBallad.EnoughLevel)
         {
 
-            //ÃÍÕßÇ¿»÷
+            //çŒ›è€…å¼ºå‡»
             if (RagingStrikes.ShouldUse(out act))
             {
                 if (Song != Song.NONE) return true;
             }
 
-            //¹âÃ÷ÉñµÄ×îÖÕÀÖÕÂ
+            //å…‰æ˜ç¥çš„æœ€ç»ˆä¹ç« 
             if (abilityRemain == 2 && RadiantFinale.ShouldUse(out act, mustUse: true))
             {
                 if (RagingStrikes.IsCoolDown && Player.HasStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
             }
 
-            //Õ½¶·Ö®Éù
+            //æˆ˜æ–—ä¹‹å£°
             if (abilityRemain == 1 && BattleVoice.ShouldUse(out act, mustUse: true))
             {
                 if (RagingStrikes.IsCoolDown && Player.HasStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
@@ -167,22 +167,22 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
         }
 
-        //·ÅÀËÉñµÄĞ¡²½ÎèÇú
+        //æ”¾æµªç¥çš„å°æ­¥èˆæ›²
         if ((Song != Song.NONE || Player.HasStatus(true, StatusID.ArmyEthos)) && abilityRemain == 1 && SongEndAfter(ARMYRemainTime))
         {
             if (WanderersMinuet.ShouldUse(out act)) return true;
         }
 
-        //ÏÍÕßµÄĞğÊÂÒ¥
+        //è´¤è€…çš„å™äº‹è°£
         if (SongEndAfter(WANDRemainTime) && MagesBallad.ShouldUse(out act)) return true;
 
-        //¾üÉñµÄÔŞÃÀ¸è
+        //å†›ç¥çš„èµç¾æ­Œ
         if (SongEndAfter(MAGERemainTime) && (Song == Song.MAGE || Song == Song.NONE) && ArmysPaeon.ShouldUse(out act)) return true;
 
-        //¾ÅÌìÁ¬¼ı
+        //ä¹å¤©è¿ç®­
         if (Song != Song.NONE && EmpyrealArrow.ShouldUse(out act)) return true;
 
-        //ÍêÃÀÒôµ÷
+        //å®Œç¾éŸ³è°ƒ
         if (PitchPerfect.ShouldUse(out act))
         {
             if (SongEndAfter(3) && Repertoire > 0) return true;
@@ -190,7 +190,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             if (Repertoire == 3 || Repertoire == 2 && EmpyrealArrow.WillHaveOneChargeGCD(1)) return true;
         }
 
-        //²â·çÓÕµ¼¼ı
+        //æµ‹é£è¯±å¯¼ç®­
         if (Sidewinder.ShouldUse(out act))
         {
             if (Player.HasStatus(true, StatusID.BattleVoice) && (Player.HasStatus(true, StatusID.RadiantFinale) || !RadiantFinale.EnoughLevel)) return true;
@@ -200,17 +200,17 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             if (RagingStrikes.IsCoolDown && !Player.HasStatus(true, StatusID.RagingStrikes)) return true;
         }
 
-        //¿´¿´ÏÖÔÚÓĞÃ»ÓĞ¿ªÃÍÕßÇ¿»÷ºÍÕ½¶·Ö®Éù
+        //çœ‹çœ‹ç°åœ¨æœ‰æ²¡æœ‰å¼€çŒ›è€…å¼ºå‡»å’Œæˆ˜æ–—ä¹‹å£°
         bool empty = Player.HasStatus(true, StatusID.RagingStrikes)
             && (Player.HasStatus(true, StatusID.BattleVoice)
             || !BattleVoice.EnoughLevel) || Song == Song.MAGE;
 
         if (EmpyrealArrow.IsCoolDown || !EmpyrealArrow.WillHaveOneChargeGCD() || Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
         {
-            //ËÀÍö½£Óê
+            //æ­»äº¡å‰‘é›¨
             if (RainofDeath.ShouldUse(out act, emptyOrSkipCombo: empty)) return true;
 
-            //Ê§Ñª¼ı
+            //å¤±è¡€ç®­
             if (Bloodletter.ShouldUse(out act, emptyOrSkipCombo: empty)) return true;
         }
 
@@ -219,15 +219,15 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
     private bool CanUseApexArrow(out IAction act)
     {
-        //·Å´óÕĞ£¡
+        //æ”¾å¤§æ‹›ï¼
         if (!ApexArrow.ShouldUse(out act, mustUse: true)) return false;
 
         if (Player.HasStatus(true, StatusID.BlastArrowReady) || (QuickNock.ShouldUse(out _) && SoulVoice == 100)) return true;
 
-        //¿ì±¬·¢ÁË,ÔÜ×ÅµÈ±¬·¢
+        //å¿«çˆ†å‘äº†,æ”’ç€ç­‰çˆ†å‘
         if (SoulVoice == 100 && BattleVoice.WillHaveOneCharge(25)) return false;
 
-        //±¬·¢¿ì¹ıÁË,Èç¹ûÊÖÀï»¹ÓĞ¾ø·å¼ı,¾Í°Ñ¾ø·å¼ı´ò³öÈ¥
+        //çˆ†å‘å¿«è¿‡äº†,å¦‚æœæ‰‹é‡Œè¿˜æœ‰ç»å³°ç®­,å°±æŠŠç»å³°ç®­æ‰“å‡ºå»
         if (SoulVoice >= 80 && Player.HasStatus(true, StatusID.RagingStrikes) && Player.WillStatusEnd(10, false, StatusID.RagingStrikes)) return true;
 
         if (SoulVoice == 100
@@ -237,7 +237,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
         if (Song == Song.MAGE && SoulVoice >= 80 && SongEndAfter(22) && SongEndAfter(18)) return true;
 
-        //ÄÜÁ¿Ö®ÉùµÈÓÚ100»òÕßÔÚ±¬·¢¼ıÔ¤±¸×´Ì¬
+        //èƒ½é‡ä¹‹å£°ç­‰äº100æˆ–è€…åœ¨çˆ†å‘ç®­é¢„å¤‡çŠ¶æ€
         if (!Player.HasStatus(true, StatusID.RagingStrikes) && SoulVoice == 100) return true;
 
         return false;
