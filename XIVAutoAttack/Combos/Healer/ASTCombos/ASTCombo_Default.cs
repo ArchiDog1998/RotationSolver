@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -13,7 +12,6 @@ using static XIVAutoAttack.Combos.Healer.ASTCombos.ASTCombo_Default;
 
 namespace XIVAutoAttack.Combos.Healer.ASTCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/ASTCombos/ASTCombo_Default.cs")]
 internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
 {
     public override string Author => "汐ベMoon";

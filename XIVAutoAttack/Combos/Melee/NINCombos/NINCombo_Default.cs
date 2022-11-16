@@ -4,7 +4,6 @@ using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -15,7 +14,6 @@ using static XIVAutoAttack.Combos.Melee.NINCombos.NINCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.NINCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/NINCombos/NINCombo_Default.cs")]
 internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
 {
     public override string Author => "秋水";

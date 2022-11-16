@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -17,7 +16,6 @@ using static XIVAutoAttack.Combos.Healer.SGECombos.SGECombo_Default;
 
 namespace XIVAutoAttack.Combos.Healer.SGECombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/SGECombos/SGECombo_Default.cs")]
 internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
 {
     public override string Author => "Ï«¥ÙMoon";

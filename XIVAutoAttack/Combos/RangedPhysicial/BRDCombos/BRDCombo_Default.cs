@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -15,7 +14,6 @@ using static XIVAutoAttack.Combos.RangedPhysicial.BRDCombos.BRDCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial.BRDCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/BRDCombos/BRDCombo_Default.cs")]
 internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 {
     internal enum CommandType : byte

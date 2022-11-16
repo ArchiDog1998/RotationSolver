@@ -10,7 +10,6 @@ using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -1000,7 +999,6 @@ internal class ComboConfigWindow : Window
             if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
         }
 
-        var attr = Attribute.GetCustomAttribute(texture.GetType(), typeof(ComboDevInfoAttribute));
 
         ImGui.SameLine();
 
@@ -1027,15 +1025,13 @@ internal class ComboConfigWindow : Window
             }
         }
 
-        if (attr is ComboDevInfoAttribute devAttr)
-        {
-            ImGui.SameLine();
-            Spacing();
+        ImGui.SameLine();
+        Spacing();
 
-            if (ImGui.Button($"ิดย๋##{texture.Name}"))
-            {
-                System.Diagnostics.Process.Start("cmd", $"/C start {devAttr.URL}");
-            }
+        if (ImGui.Button($"ิดย๋##{texture.Name}"))
+        {
+            var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
+            System.Diagnostics.Process.Start("cmd", $"/C start {url}");
         }
 
         if (enable)

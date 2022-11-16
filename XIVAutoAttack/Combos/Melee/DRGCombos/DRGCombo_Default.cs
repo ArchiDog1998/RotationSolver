@@ -6,7 +6,6 @@ using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Healer;
@@ -17,7 +16,6 @@ using static XIVAutoAttack.Combos.Melee.DRGCombos.DRGCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.DRGCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Melee/DRGCombos/DRGCombo_Default.cs")]
 internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
 {
     public override string Author => "Ï«¥ÙMoon";

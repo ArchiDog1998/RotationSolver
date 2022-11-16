@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -15,7 +14,6 @@ using static XIVAutoAttack.Combos.Tank.PLDCombos.PLDCombo_Default;
 
 namespace XIVAutoAttack.Combos.Tank.PLDCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Tank/PLDCombos/PLDCombo_Default.cs")]
 internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 {
     public override string Author => "Ï«¥ÙMoon";

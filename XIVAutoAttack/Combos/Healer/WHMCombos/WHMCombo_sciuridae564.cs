@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
@@ -12,8 +11,6 @@ using XIVAutoAttack.Updaters;
 using static XIVAutoAttack.Combos.Healer.WHMCombos.WHMCombo_Default;
 
 namespace XIVAutoAttack.Combos.Healer.WHMCombos;
-
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/Healer/WHMCombos/WHMCombo_sciuridae564.cs")]
 internal sealed class WHMCombo_sciuridae564 : WHMCombo_Base<CommandType>
 {
     public override string Author => "sciuridae564";

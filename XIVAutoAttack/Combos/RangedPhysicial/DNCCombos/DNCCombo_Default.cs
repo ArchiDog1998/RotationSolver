@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Attributes;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -13,7 +12,6 @@ using static XIVAutoAttack.Combos.RangedPhysicial.DNCCombos.DNCCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
 
-[ComboDevInfo(@"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/XIVAutoAttack/Combos/RangedPhysicial/DNCCombos/DNCCombo_Default.cs")]
 internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
 {
     internal enum CommandType : byte
