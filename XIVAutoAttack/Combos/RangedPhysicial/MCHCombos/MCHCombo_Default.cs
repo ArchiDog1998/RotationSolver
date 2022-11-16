@@ -79,8 +79,8 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
             {
                 if (Player.HasStatus(true, StatusID.Reassemble)) return true;
                 if (!Config.GetBoolByName("MCH_Opener") || Wildfire.IsCoolDown) return true;
-                if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(4)) return true;
-                if (Drill.IsCoolDown && Drill.ElapsedAfterGCD(3)) return true;
+                if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(4) && Drill.IsCoolDown && Drill.ElapsedAfterGCD(3)) return true;
+                if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(3) && Drill.IsCoolDown && Drill.ElapsedAfterGCD(4)) return true;
             }
         }
 

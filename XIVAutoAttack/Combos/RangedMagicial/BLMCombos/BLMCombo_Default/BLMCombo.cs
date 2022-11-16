@@ -169,14 +169,16 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         }
 
         //保持天语
-        if (!HaveHostilesInRange && Maintence(out act)) return true;
+        if ((!HaveHostilesInRange || !InCombat) && Maintence(out act)) return true;
+
 
         return false;
     }
 
     private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
     {
-        if (!HaveHostilesInRange && Maintence(out act)) return true;
+        if ((!HaveHostilesInRange || !InCombat) && Maintence(out act)) return true;
+
         return base.GeneralAbility(abilityRemain, out act);
     }
 
@@ -343,8 +345,8 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //火1
             if (!Paradox.EnoughLevel && Fire.ShouldUse(out act))
             {
-                if (Level >= 60 && ElementTimeEndAfter((float)(CalcSpellTime(2500) * 2))) return true;
-                if (Level < 60) return true;
+                if (Fire4.EnoughLevel && ElementTimeEndAfterGCD(2)) return true;
+                if (!Fire4.EnoughLevel) return true;
             }
             //异言
             if (CanUseXenoglossy(out act)) return true;
@@ -430,6 +432,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     {
         if (UmbralSoul.ShouldUse(out act)) return true;
         if (Transpose.ShouldUse(out act) && ElementTimeEndAfterGCD(1) && Foul.EnoughLevel) return true;
+        if (Transpose.ShouldUse(out act) && ElementTimeEndAfterGCD(1) && InAstralFire && !Foul.EnoughLevel) return true;
 
         return false;
     }
