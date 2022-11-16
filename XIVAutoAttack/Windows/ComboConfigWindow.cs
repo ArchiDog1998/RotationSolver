@@ -109,7 +109,7 @@ internal class ComboConfigWindow : Window
                     DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
                     DrawAction(Watcher.LastSpell, nameof(Watcher.LastSpell));
                     DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
-                    DrawAction((uint)Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
+                    DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
                 }
 
                 if (ImGui.CollapsingHeader("µ¹¼ÆÊ±¡¢°´¼ü"))
@@ -140,7 +140,7 @@ internal class ComboConfigWindow : Window
                     var combos = IconReplacer.CustomCombosDict[key];
                     if (combos == null || combos.Length == 0) continue;
 
-                    if (ImGui.CollapsingHeader(key.ToString()))
+                    if (ImGui.CollapsingHeader(key.ToName()))
                     {
                         if (ImGui.IsItemHovered() && _roleDescriptionValue.TryGetValue(key, out string roleDesc))
                         {
@@ -1045,9 +1045,9 @@ internal class ComboConfigWindow : Window
     }
 
 #if DEBUG
-    private static void DrawAction(uint id, string type)
+    private static void DrawAction(ActionID id, string type)
     {
-        var action = new BaseAction((ActionID)id);
+        var action = new BaseAction(id);
 
         ImGui.Text($"{type}: {action}");
 

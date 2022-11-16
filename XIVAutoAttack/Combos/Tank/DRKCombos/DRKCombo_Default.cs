@@ -205,7 +205,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         if (Delirium.IsCoolDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7)) return true;
 
         //非爆发期防止溢出+续buff
-        if (HasDarkArts || Player.CurrentMp > 8500 || DarksideTimeRemaining < 10) return true;
+        if (HasDarkArts || Player.CurrentMp > 8500 || DarkSideEndAfterGCD(3)) return true;
 
         return false;
     }

@@ -182,7 +182,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (ChainSaw.EnoughLevel && !ChainSaw.IsCoolDown) return false;
 
         //当上一个技能不是链锯且是钻头,空气锚,热冲击时不释放野火
-        if (!IsLastWeaponSkill(ChainSaw.ID) && IsLastWeaponSkill(true, Drill, HeatBlast, AirAnchor)) return false;
+        if (!IsLastWeaponSkill((ActionID)ChainSaw.ID) && IsLastWeaponSkill(true, Drill, HeatBlast, AirAnchor)) return false;
 
         return true;
     }
@@ -221,7 +221,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (!Wildfire.WillHaveOneChargeGCD(5) && Wildfire.WillHaveOneChargeGCD(18))
         {
             //如果期间热量溢出超过5,就释放一次超荷
-            if (IsLastWeaponSkill(Drill.ID) && Heat >= 85) return true;
+            if (IsLastWeaponSkill((ActionID)Drill.ID) && Heat >= 85) return true;
             return false;
         }
         else return true;
@@ -240,7 +240,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (isDyingNotBoss) return false;
 
         //如果上一个技能是野火不释放
-        if (IsLastAction(Wildfire.ID)) return false;
+        if (IsLastAction((ActionID)Wildfire.ID)) return false;
 
         //电量等于100,强制释放
         if (Battery == 100) return true;

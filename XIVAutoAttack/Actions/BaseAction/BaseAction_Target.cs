@@ -173,6 +173,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             {
                 BattleChara[] availableCharas = TargetUpdater.PartyMembers.Union(TargetUpdater.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
                 availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
+
                 //特殊选队友的方法。
                 Target = ChoiceTarget(availableCharas);
                 if (Target == null) return false;
@@ -193,6 +194,10 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //找到没死的队友们。
                 BattleChara[] availableCharas = TargetUpdater.PartyMembers.Where(player => player.CurrentHp != 0).ToArray();
 
+                if ((ActionID)ID == ActionID.AetherialMimicry)
+                {
+                    availableCharas = availableCharas.Union(TargetUpdater.AllianceMembers).ToArray();
+                }
                 if (!_action.CanTargetSelf)
                 {
                     availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
@@ -211,6 +216,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
                 else
                 {
+
                     availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
                     //特殊选队友的方法。
                     Target = ChoiceTarget(availableCharas);
