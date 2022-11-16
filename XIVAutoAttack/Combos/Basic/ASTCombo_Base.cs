@@ -160,7 +160,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Astrodyne { get; } = new(ActionID.Astrodyne)
     {
-        OtherCheck = b =>
+        ActionCheck = b =>
         {
             if (JobGauge.Seals.Length != 3) return false;
             if (JobGauge.Seals.Contains(SealType.NONE)) return false;
@@ -178,7 +178,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Draw { get; } = new(ActionID.Draw)
     {
-        OtherCheck = b => DrawnCard == CardType.NONE,
+        ActionCheck = b => DrawnCard == CardType.NONE,
     };
 
     /// <summary>
@@ -187,7 +187,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Redraw { get; } = new(ActionID.Redraw)
     {
         BuffsNeed = new[] { StatusID.ClarifyingDraw },
-        OtherCheck = b => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)),
+        ActionCheck = b => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)),
     };
 
     /// <summary>
@@ -195,7 +195,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction MinorArcana { get; } = new(ActionID.MinorArcana)
     {
-        OtherCheck = b => InCombat,
+        ActionCheck = b => InCombat,
     };
 
     /// <summary>
@@ -203,7 +203,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction CrownPlay { get; } = new(ActionID.CrownPlay)
     {
-        OtherCheck= b => DrawnCrownCard is CardType.LADY or CardType.LORD,
+        ActionCheck= b => DrawnCrownCard is CardType.LADY or CardType.LORD,
     };
 
     /// <summary>
@@ -212,7 +212,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Balance { get; } = new(ActionID.Balance)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
-        OtherCheck = b => DrawnCard == CardType.BALANCE,
+        ActionCheck = b => DrawnCard == CardType.BALANCE,
     };
 
     /// <summary>
@@ -221,7 +221,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Arrow { get; } = new(ActionID.Arrow)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
-        OtherCheck = b => DrawnCard == CardType.ARROW,
+        ActionCheck = b => DrawnCard == CardType.ARROW,
     };
 
     /// <summary>
@@ -230,7 +230,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Spear { get; } = new(ActionID.Spear)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
-        OtherCheck = b => DrawnCard == CardType.SPEAR,
+        ActionCheck = b => DrawnCard == CardType.SPEAR,
     };
 
     /// <summary>
@@ -239,7 +239,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Bole { get; } = new(ActionID.Bole)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
-        OtherCheck = b => DrawnCard == CardType.BOLE,
+        ActionCheck = b => DrawnCard == CardType.BOLE,
     };
 
     /// <summary>
@@ -248,7 +248,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Ewer { get; } = new(ActionID.Ewer)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
-        OtherCheck = b => DrawnCard == CardType.EWER,
+        ActionCheck = b => DrawnCard == CardType.EWER,
 
     };
 
@@ -258,7 +258,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Spire { get; } = new(ActionID.Spire)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
-        OtherCheck = b => DrawnCard == CardType.SPIRE,
+        ActionCheck = b => DrawnCard == CardType.SPIRE,
     };
 
     private static SealType GetCardSeal(CardType card)

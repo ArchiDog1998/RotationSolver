@@ -178,12 +178,12 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 星灵移位
         /// </summary>
-        public static BaseAction Transpose { get; } = new(ActionID.Transpose) { OtherCheck = b => ActionUpdater.AbilityRemain.IsLessThan(JobGauge.ElementTimeRemaining / 1000f) };
+        public static BaseAction Transpose { get; } = new(ActionID.Transpose) { ActionCheck = b => ActionUpdater.AbilityRemain.IsLessThan(JobGauge.ElementTimeRemaining / 1000f) };
 
         /// <summary>
         /// 灵极魂
         /// </summary>
-        public static BaseAction UmbralSoul { get; } = new(ActionID.UmbralSoul) { OtherCheck = b => JobGauge.InUmbralIce && Transpose.OtherCheck(b) };
+        public static BaseAction UmbralSoul { get; } = new(ActionID.UmbralSoul) { ActionCheck = b => JobGauge.InUmbralIce && Transpose.ActionCheck(b) };
 
         /// <summary>
         /// 魔罩
@@ -201,7 +201,7 @@ namespace XIVAutoAttack.Combos.Basic
         public static BaseAction Sharpcast { get; } = new(ActionID.Sharpcast)
         {
             BuffsProvide = new[] { StatusID.Sharpcast },
-            OtherCheck = b => HaveHostilesInRange,
+            ActionCheck = b => HaveHostilesInRange,
         };
 
         /// <summary>
@@ -239,27 +239,27 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 详述
         /// </summary>
-        public static BaseAction Amplifier { get; } = new(ActionID.Amplifier) { OtherCheck = b => JobGauge.EnochianTimer > 10000 && JobGauge.PolyglotStacks < 2 };
+        public static BaseAction Amplifier { get; } = new(ActionID.Amplifier) { ActionCheck = b => JobGauge.EnochianTimer > 10000 && JobGauge.PolyglotStacks < 2 };
 
         /// <summary>
         /// 核爆
         /// </summary>
-        public static BaseAction Flare { get; } = new ElementAction(ActionID.Flare) { OtherCheck = b => JobGauge.InAstralFire };
+        public static BaseAction Flare { get; } = new ElementAction(ActionID.Flare) { ActionCheck = b => JobGauge.InAstralFire };
 
         /// <summary>
         /// 绝望
         /// </summary>
-        public static BaseAction Despair { get; } = new ElementAction(ActionID.Despair) { OtherCheck = b => JobGauge.InAstralFire };
+        public static BaseAction Despair { get; } = new ElementAction(ActionID.Despair) { ActionCheck = b => JobGauge.InAstralFire };
 
         /// <summary>
         /// 秽浊
         /// </summary>
-        public static BaseAction Foul { get; } = new(ActionID.Foul) { OtherCheck = b => JobGauge.PolyglotStacks != 0 };
+        public static BaseAction Foul { get; } = new(ActionID.Foul) { ActionCheck = b => JobGauge.PolyglotStacks != 0 };
 
         /// <summary>
         /// 异言
         /// </summary>
-        public static BaseAction Xenoglossy { get; } = new(ActionID.Xenoglossy) { OtherCheck = b => JobGauge.PolyglotStacks != 0 };
+        public static BaseAction Xenoglossy { get; } = new(ActionID.Xenoglossy) { ActionCheck = b => JobGauge.PolyglotStacks != 0 };
 
         /// <summary>
         /// 崩溃
@@ -271,7 +271,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// </summary>
         public static BaseAction Paradox { get; } = new(ActionID.Paradox)
         {
-            OtherCheck = b => JobGauge.IsParadoxActive,
+            ActionCheck = b => JobGauge.IsParadoxActive,
         };
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// </summary>
         public static BaseAction Fire4 { get; } = new ElementAction(ActionID.Fire4)
         {
-            OtherCheck = b => JobGauge.InAstralFire,
+            ActionCheck = b => JobGauge.InAstralFire,
         };
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// </summary>
         public static BaseAction Blizzard4 { get; } = new ElementAction(ActionID.Blizzard4)
         {
-            OtherCheck = b =>
+            ActionCheck = b =>
             {
                 if (IsLastSpell(true, Blizzard4)) return false;
 
@@ -332,7 +332,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// </summary>
         public static BaseAction Freeze { get; } = new ElementAction(ActionID.Freeze)
         {
-            OtherCheck = b => JobGauge.InUmbralIce,
+            ActionCheck = b => JobGauge.InUmbralIce,
         };
     }
 }

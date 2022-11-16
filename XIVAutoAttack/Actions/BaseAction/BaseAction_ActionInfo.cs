@@ -39,7 +39,12 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <summary>
         /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
         /// </summary>
-        internal Func<BattleChara, bool> OtherCheck { get; set; } = null;
+        internal Func<BattleChara, bool> ActionCheck { get; set; } = null;
+
+        /// <summary>
+        /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
+        /// </summary>
+        internal Func<BattleChara, bool> ComboCheck { get; set; } = null;
 
         private bool WillCooldown
         {
@@ -113,8 +118,8 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (!FindTarget(mustUse)) return false;
 
             //用于自定义的要求没达到
-            if (OtherCheck != null && !OtherCheck(Target)) return false;
-            if (_otherCheckEvent != null && !_otherCheckEvent(Target)) return false;
+            if (ActionCheck != null && !ActionCheck(Target)) return false;
+            if (ComboCheck != null && !ComboCheck(Target)) return false;
 
             if (IsGeneralGCD)
             {
@@ -182,12 +187,6 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (ShouldEndSpecial) CommandController.ResetSpecial(false);
 
             return result;
-        }
-
-        private event Func<BattleChara, bool> _otherCheckEvent;
-        public void AddOtherCheck(Func<BattleChara, bool> other)
-        {
-            _otherCheckEvent += other;
         }
     }
 }

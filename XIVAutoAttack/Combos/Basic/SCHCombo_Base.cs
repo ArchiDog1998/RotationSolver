@@ -34,7 +34,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Adloquium { get; } = new(ActionID.Adloquium, true)
     {
-        OtherCheck = b => !b.HasStatus(false, StatusID.EukrasianDiagnosis,
+        ActionCheck = b => !b.HasStatus(false, StatusID.EukrasianDiagnosis,
             StatusID.EukrasianPrognosis,
             StatusID.Galvanize),
     };
@@ -58,7 +58,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Lustrate { get; } = new(ActionID.Lustrate, true)
     {
-        OtherCheck = b => HasAetherflow
+        ActionCheck = b => HasAetherflow
     };
 
     /// <summary>
@@ -66,7 +66,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SacredSoil { get; } = new(ActionID.SacredSoil, true)
     {
-        OtherCheck = b => HasAetherflow && !IsMoving,
+        ActionCheck = b => HasAetherflow && !IsMoving,
     };
 
     /// <summary>
@@ -74,7 +74,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Indomitability { get; } = new(ActionID.Indomitability, true)
     {
-        OtherCheck = b => HasAetherflow
+        ActionCheck = b => HasAetherflow
     };
 
     /// <summary>
@@ -82,7 +82,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Excogitation { get; } = new(ActionID.Excogitation, true)
     {
-        OtherCheck = b => HasAetherflow
+        ActionCheck = b => HasAetherflow
     };
 
     /// <summary>
@@ -90,7 +90,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Consolation { get; } = new(ActionID.Consolation)
     {
-        OtherCheck = b => HasSeraph,
+        ActionCheck = b => HasSeraph,
     };
 
     /// <summary>
@@ -122,7 +122,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction EnergyDrain { get; } = new(ActionID.EnergyDrain)
     {
-        OtherCheck = b => HasAetherflow
+        ActionCheck = b => HasAetherflow
     };
 
     /// <summary>
@@ -136,7 +136,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SummonSeraph { get; } = new(ActionID.SummonSeraph)
     {
-        OtherCheck = b => TargetUpdater.HavePet,
+        ActionCheck = b => TargetUpdater.HavePet,
     };
 
     /// <summary>
@@ -144,7 +144,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SummonEos { get; } = new(ActionID.SummonEos)//夕月召唤 17216
     {
-        OtherCheck = b => !TargetUpdater.HavePet && (!Player.HasStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
+        ActionCheck = b => !TargetUpdater.HavePet && (!Player.HasStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
     };
 
     /// <summary>
@@ -152,7 +152,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction WhisperingDawn { get; } = new(ActionID.WhisperingDawn)
     {
-        OtherCheck = b => TargetUpdater.HavePet,
+        ActionCheck = b => TargetUpdater.HavePet,
     };
 
     /// <summary>
@@ -160,7 +160,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction FeyIllumination { get; } = new(ActionID.FeyIllumination)
     {
-        OtherCheck = b => TargetUpdater.HavePet,
+        ActionCheck = b => TargetUpdater.HavePet,
     };
 
     /// <summary>
@@ -168,7 +168,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Dissipation { get; } = new(ActionID.Dissipation)
     {
-        OtherCheck = b => !HasAetherflow && !HasSeraph && InCombat && TargetUpdater.HavePet,
+        ActionCheck = b => !HasAetherflow && !HasSeraph && InCombat && TargetUpdater.HavePet,
     };
 
     /// <summary>
@@ -176,7 +176,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Aetherpact { get; } = new(ActionID.Aetherpact, true)
     {
-        OtherCheck = b => JobGauge.FairyGauge >= 10 && TargetUpdater.HavePet && !HasSeraph
+        ActionCheck = b => JobGauge.FairyGauge >= 10 && TargetUpdater.HavePet && !HasSeraph
     };
 
     /// <summary>
@@ -184,7 +184,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction FeyBlessing { get; } = new(ActionID.FeyBlessing)
     {
-        OtherCheck = b => !HasSeraph && TargetUpdater.HavePet,
+        ActionCheck = b => !HasSeraph && TargetUpdater.HavePet,
     };
     #endregion
     #region 其他
@@ -193,7 +193,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Aetherflow { get; } = new(ActionID.Aetherflow)
     {
-        OtherCheck = b => InCombat && !HasAetherflow
+        ActionCheck = b => InCombat && !HasAetherflow
     };
 
     /// <summary>
@@ -206,7 +206,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ChainStratagem { get; } = new(ActionID.ChainStratagem)
     {
-        OtherCheck = b => InCombat && IsTargetBoss
+        ActionCheck = b => InCombat && IsTargetBoss
     };
 
     /// <summary>

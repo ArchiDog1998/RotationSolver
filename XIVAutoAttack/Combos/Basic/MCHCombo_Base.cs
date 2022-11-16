@@ -75,7 +75,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction HeatBlast { get; } = new(ActionID.HeatBlast)
     {
-        OtherCheck = b => JobGauge.IsOverheated 
+        ActionCheck = b => JobGauge.IsOverheated 
         && !OverheatedEndAfterGCD(),
     };
 
@@ -89,7 +89,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction AutoCrossbow { get; } = new(ActionID.AutoCrossbow)
     {
-        OtherCheck = HeatBlast.OtherCheck,
+        ActionCheck = HeatBlast.ActionCheck,
     };
 
     /// <summary>
@@ -123,7 +123,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Reassemble { get; } = new(ActionID.Reassemble)
     {
         BuffsProvide = new StatusID[] { StatusID.Reassemble },
-        OtherCheck = b => HaveHostilesInRange,
+        ActionCheck = b => HaveHostilesInRange,
     };
 
     /// <summary>
@@ -131,7 +131,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Hypercharge { get; } = new(ActionID.Hypercharge)
     {
-        OtherCheck = b => !JobGauge.IsOverheated && JobGauge.Heat >= 50,
+        ActionCheck = b => !JobGauge.IsOverheated && JobGauge.Heat >= 50,
     };
 
     /// <summary>
@@ -154,7 +154,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction BarrelStabilizer { get; } = new(ActionID.BarrelStabilizer)
     {
-        OtherCheck = b => JobGauge.Heat <= 50,
+        ActionCheck = b => JobGauge.Heat <= 50,
     };
 
     /// <summary>
@@ -162,7 +162,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction RookAutoturret { get; } = new(ActionID.RookAutoturret)
     {
-        OtherCheck = b => JobGauge.Battery >= 50 && !JobGauge.IsRobotActive,
+        ActionCheck = b => JobGauge.Battery >= 50 && !JobGauge.IsRobotActive,
     };
 
     /// <summary>
@@ -170,7 +170,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Tactician { get; } = new(ActionID.Tactician, true)
     {
-        OtherCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
+        ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
             StatusID.Tactician2,
             StatusID.ShieldSamba),

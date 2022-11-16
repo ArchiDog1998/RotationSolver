@@ -90,7 +90,7 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SteelPeak { get; } = new(ActionID.SteelPeak)
     {
-        OtherCheck = b => InCombat && Chakra == 5,
+        ActionCheck = b => InCombat && Chakra == 5,
     };
 
     /// <summary>
@@ -98,7 +98,7 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction HowlingFist { get; } = new(ActionID.HowlingFist)
     {
-        OtherCheck = SteelPeak.OtherCheck,
+        ActionCheck = SteelPeak.ActionCheck,
     };
 
     /// <summary>
@@ -130,7 +130,7 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction PerfectBalance { get; } = new(ActionID.PerfectBalance)
     {
         BuffsNeed = new StatusID[] { StatusID.RaptorForm },
-        OtherCheck = b => InCombat,
+        ActionCheck = b => InCombat,
     };
 
     /// <summary>

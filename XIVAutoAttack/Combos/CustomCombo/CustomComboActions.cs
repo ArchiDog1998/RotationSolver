@@ -14,7 +14,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static BaseAction Addle { get; } = new BaseAction(ActionID.Addle)
         {
-            OtherCheck = b => !b.HasStatus(false, StatusID.Addle),
+            ActionCheck = b => !b.HasStatus(false, StatusID.Addle),
         };
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static BaseAction LucidDreaming { get; } = new BaseAction(ActionID.LucidDreaming)
         {
-            OtherCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000,
+            ActionCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000,
         };
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static BaseAction SecondWind { get; } = new BaseAction(ActionID.SecondWind)
         {
-            OtherCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility,
+            ActionCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility,
         };
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     //星云
                     StatusID.Nebula,
               },
-            OtherCheck = BaseAction.TankDefenseSelf,
+            ActionCheck = BaseAction.TankDefenseSelf,
         };
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static BaseAction Bloodbath { get; } = new BaseAction(ActionID.Bloodbath)
         {
-            OtherCheck = SecondWind.OtherCheck,
+            ActionCheck = SecondWind.ActionCheck,
         };
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static BaseAction Feint { get; } = new BaseAction(ActionID.Feint)
         {
-            OtherCheck = b => !b.HasStatus(false, StatusID.Feint),
+            ActionCheck = b => !b.HasStatus(false, StatusID.Feint),
         };
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static BaseAction LowBlow { get; } = new BaseAction(ActionID.LowBlow)
         {
-            OtherCheck = b => !b.IsBoss() && !MovingUpdater.IsMoving,
+            ActionCheck = b => !b.IsBoss() && !MovingUpdater.IsMoving,
         };
 
         /// <summary>

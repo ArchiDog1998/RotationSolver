@@ -66,7 +66,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction FanDance { get; } = new(ActionID.FanDance)
     {
-        OtherCheck = b => JobGauge.Feathers > 0,
+        ActionCheck = b => JobGauge.Feathers > 0,
         BuffsProvide = new[] { StatusID.ThreefoldFanDance },
     };
 
@@ -107,7 +107,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction FanDance2 { get; } = new(ActionID.FanDance2)
     {
-        OtherCheck = b => Feathers > 0,
+        ActionCheck = b => Feathers > 0,
         BuffsProvide = new[] { StatusID.ThreefoldFanDance },
     };
 
@@ -132,7 +132,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SaberDance { get; } = new(ActionID.SaberDance)
     {
-        OtherCheck = b => Esprit >= 50,
+        ActionCheck = b => Esprit >= 50,
     };
 
     /// <summary>
@@ -153,7 +153,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Emboite { get; } = new(ActionID.Emboite, true)
     {
-        OtherCheck = b => (ActionID)JobGauge.NextStep == ActionID.Emboite,
+        ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Emboite,
     };
 
     /// <summary>
@@ -161,7 +161,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Entrechat { get; } = new(ActionID.Entrechat, true)
     {
-        OtherCheck = b => (ActionID)JobGauge.NextStep == ActionID.Entrechat,
+        ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Entrechat,
     };
 
     /// <summary>
@@ -169,7 +169,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Jete { get; } = new(ActionID.Jete, true)
     {
-        OtherCheck = b => (ActionID)JobGauge.NextStep == ActionID.Jete,
+        ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Jete,
     };
 
     /// <summary>
@@ -177,7 +177,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Pirouette { get; } = new(ActionID.Pirouette, true)
     {
-        OtherCheck = b => (ActionID)JobGauge.NextStep == ActionID.Pirouette,
+        ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Pirouette,
     };
 
     /// <summary>
@@ -209,7 +209,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ShieldSamba { get; } = new(ActionID.ShieldSamba, true)
     {
-        OtherCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
+        ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
             StatusID.Tactician2,
             StatusID.ShieldSamba),
@@ -254,24 +254,13 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
                  StatusID.ThreefoldFanDance,
                  StatusID.FourfoldFanDance,
             },
-        OtherCheck = b => InCombat,
+        ActionCheck = b => InCombat,
     };
 
     /// <summary>
     /// 即兴表演
     /// </summary>
-    public static BaseAction Improvisation { get; } = new(ActionID.Improvisation, true)
-    {
-        BuffsNeed = new[] { StatusID.Rising_Rhythm, StatusID.Improvisation },
-    };
-
-    /// <summary>
-    /// 结束即兴表演
-    /// </summary>
-    public static BaseAction Improvised_Finish { get; } = new(ActionID.Improvised)
-    {
-        BuffsNeed = new[] { StatusID.Improvised_Finish,  },
-    };
+    public static BaseAction Improvisation { get; } = new(ActionID.Improvisation, true);
 
     /// <summary>
     /// 提拉纳

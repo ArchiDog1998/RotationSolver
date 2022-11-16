@@ -61,7 +61,7 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Mug { get; } = new(ActionID.Mug)
     {
-        OtherCheck = b => JobGauge.Ninki <= 50,
+        ActionCheck = b => JobGauge.Ninki <= 50,
     };
 
     /// <summary>
@@ -103,7 +103,7 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction TenChiJin { get; } = new(ActionID.TenChiJin, true)
     {
         BuffsProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
-        OtherCheck = b => JobGauge.HutonTimer > 0,
+        ActionCheck = b => JobGauge.HutonTimer > 0,
     };
 
     /// <summary>
@@ -122,7 +122,7 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Meisui { get; } = new(ActionID.Meisui, true)
     {
         BuffsNeed = new[] { StatusID.Suiton },
-        OtherCheck = b => JobGauge.Ninki <= 50,
+        ActionCheck = b => JobGauge.Ninki <= 50,
     };
 
     /// <summary>
@@ -143,7 +143,7 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ArmorCrush { get; } = new(ActionID.ArmorCrush)
     {
-        OtherCheck = b => EndAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
+        ActionCheck = b => EndAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
     };
 
     /// <summary>
@@ -151,7 +151,7 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Bunshin { get; } = new(ActionID.Bunshin, true)
     {
-        OtherCheck = b => Ninki >= 50,
+        ActionCheck = b => Ninki >= 50,
     };
 
     /// <summary>
@@ -159,7 +159,7 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction HellfrogMedium { get; } = new(ActionID.HellfrogMedium)
     {
-        OtherCheck = Bunshin.OtherCheck,
+        ActionCheck = Bunshin.ActionCheck,
     };
 
     /// <summary>
@@ -167,7 +167,7 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Bhavacakra { get; } = new(ActionID.Bhavacakra)
     {
-        OtherCheck = Bunshin.OtherCheck,
+        ActionCheck = Bunshin.ActionCheck,
     };
 
 
@@ -201,7 +201,7 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Huraijin { get; } = new(ActionID.Huraijin)
     {
-        OtherCheck = b => JobGauge.HutonTimer == 0,
+        ActionCheck = b => JobGauge.HutonTimer == 0,
     };
 
     /// <summary>
@@ -270,7 +270,7 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static NinAction Huton { get; } = new(ActionID.Huton, Jin, Chi, Ten)
     {
-        OtherCheck = b => JobGauge.HutonTimer == 0,
+        ActionCheck = b => JobGauge.HutonTimer == 0,
     };
 
     /// <summary>
@@ -287,7 +287,7 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static NinAction Suiton { get; } = new(ActionID.Suiton, Ten, Chi, Jin)
     {
         BuffsProvide = new[] { StatusID.Suiton },
-        OtherCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),
+        ActionCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),
     };
 
     /// <summary>

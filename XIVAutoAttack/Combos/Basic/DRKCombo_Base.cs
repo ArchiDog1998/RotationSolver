@@ -101,7 +101,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction ShadowWall { get; } = new(ActionID.ShadowWall, true)
     {
         BuffsProvide = Rampart.BuffsProvide,
-        OtherCheck = BaseAction.TankDefenseSelf,
+        ActionCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>
@@ -109,7 +109,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction DarkMind { get; } = new(ActionID.DarkMind, true)
     {
-        OtherCheck = BaseAction.TankDefenseSelf,
+        ActionCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>
@@ -145,7 +145,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Bloodspiller { get; } = new(ActionID.Bloodspiller)
     {
-        OtherCheck = b => JobGauge.Blood >= 50 || Player.HasStatus(true, StatusID.Delirium),
+        ActionCheck = b => JobGauge.Blood >= 50 || Player.HasStatus(true, StatusID.Delirium),
     };
 
     /// <summary>
@@ -153,7 +153,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Quietus { get; } = new(ActionID.Quietus)
     {
-        OtherCheck = Bloodspiller.OtherCheck,
+        ActionCheck = Bloodspiller.ActionCheck,
     };
 
     /// <summary>
@@ -184,7 +184,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction LivingShadow { get; } = new(ActionID.LivingShadow)
     {
-        OtherCheck = b => JobGauge.Blood >= 50,
+        ActionCheck = b => JobGauge.Blood >= 50,
     };
 
     /// <summary>
@@ -200,7 +200,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Shadowbringer { get; } = new(ActionID.Shadowbringer)
     {
-        OtherCheck = b => JobGauge.DarksideTimeRemaining > 0,
+        ActionCheck = b => JobGauge.DarksideTimeRemaining > 0,
     };
 
     /// <summary>

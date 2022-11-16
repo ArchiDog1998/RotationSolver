@@ -128,7 +128,7 @@ internal abstract class DRGCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Nastrond { get; } = new(ActionID.Nastrond)
     {
-        OtherCheck = b => JobGauge.IsLOTDActive,
+        ActionCheck = b => JobGauge.IsLOTDActive,
     };
 
     /// <summary>
@@ -136,7 +136,7 @@ internal abstract class DRGCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Stardiver { get; } = new(ActionID.Stardiver)
     {
-        OtherCheck = b => JobGauge.IsLOTDActive,
+        ActionCheck = b => JobGauge.IsLOTDActive,
     };
 
     /// <summary>
@@ -144,7 +144,7 @@ internal abstract class DRGCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction WyrmwindThrust { get; } = new(ActionID.WyrmwindThrust)
     {
-        OtherCheck = b => JobGauge.FirstmindsFocusCount == 2,
+        ActionCheck = b => JobGauge.FirstmindsFocusCount == 2,
     };
 
     /// <summary>
@@ -154,7 +154,7 @@ internal abstract class DRGCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     {
         BuffsProvide = new[] { StatusID.LifeSurge },
 
-        OtherCheck = b => !IsLastAbility(true, LifeSurge),
+        ActionCheck = b => !IsLastAbility(true, LifeSurge),
     };
 
     /// <summary>

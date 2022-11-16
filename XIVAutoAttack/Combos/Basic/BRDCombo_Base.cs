@@ -115,7 +115,7 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction RadiantFinale { get; } = new(ActionID.RadiantFinale, true)
     {
-        OtherCheck = b => JobGauge.Coda.Any(s => s != Song.NONE),
+        ActionCheck = b => JobGauge.Coda.Any(s => s != Song.NONE),
     };
 
     /// <summary>
@@ -133,7 +133,7 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction PitchPerfect { get; } = new(ActionID.PitchPerfect)
     {
-        OtherCheck = b => JobGauge.Song == Song.WANDERER,
+        ActionCheck = b => JobGauge.Song == Song.WANDERER,
     };
 
     /// <summary>
@@ -182,7 +182,7 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ApexArrow { get; } = new(ActionID.ApexArrow)
     {
-        OtherCheck = b => JobGauge.SoulVoice >= 20 || Player.HasStatus(true, StatusID.BlastArrowReady),
+        ActionCheck = b => JobGauge.SoulVoice >= 20 || Player.HasStatus(true, StatusID.BlastArrowReady),
     };
 
     /// <summary>
@@ -190,7 +190,7 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Troubadour { get; } = new(ActionID.Troubadour, true)
     {
-        OtherCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
+        ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
             StatusID.Tactician2,
             StatusID.ShieldSamba),

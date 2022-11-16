@@ -111,7 +111,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         //如果当前还没有卡牌，那就抽一张
         if (Draw.ShouldUse(out act)) return true;
 
-        bool canUse = Astrodyne.OtherCheck(Service.ClientState.LocalPlayer);
+        bool canUse = Astrodyne.ActionCheck(Service.ClientState.LocalPlayer);
 
         //如果当前卡牌已经拥有了，就重抽
         if (!canUse && Redraw.ShouldUse(out act)) return true;

@@ -109,7 +109,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
 
             return TargetFilter.FindAttackedTarget(targets);
         },
-        OtherCheck = b => !b.HasStatus(true, StatusID.Kardion),
+        ActionCheck = b => !b.HasStatus(true, StatusID.Kardion),
     };
 
     /// <summary>
@@ -132,7 +132,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Eukrasia { get; } = new(ActionID.Eukrasia, true)
     {
-        OtherCheck = b => !JobGauge.Eukrasia,
+        ActionCheck = b => !JobGauge.Eukrasia,
     };
 
     /// <summary>
@@ -151,7 +151,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
             }
             return null;
         },
-        OtherCheck = b => b.GetHealthRatio() < 0.7,
+        ActionCheck = b => b.GetHealthRatio() < 0.7,
     };
 
     /// <summary>
@@ -167,7 +167,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Druochole { get; } = new(ActionID.Druochole, true)
     {
-        OtherCheck = b => JobGauge.Addersgall > 0,
+        ActionCheck = b => JobGauge.Addersgall > 0,
     };
 
     /// <summary>
@@ -180,7 +180,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Kerachole { get; } = new(ActionID.Kerachole, true)
     {
-        OtherCheck = b => JobGauge.Addersgall > 0,
+        ActionCheck = b => JobGauge.Addersgall > 0,
     };
 
     /// <summary>
@@ -188,7 +188,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Ixochole { get; } = new(ActionID.Ixochole, true)
     {
-        OtherCheck = b => JobGauge.Addersgall > 0,
+        ActionCheck = b => JobGauge.Addersgall > 0,
     };
 
     /// <summary>
@@ -202,7 +202,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Taurochole { get; } = new(ActionID.Taurochole, true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
-        OtherCheck = b => JobGauge.Addersgall > 0,
+        ActionCheck = b => JobGauge.Addersgall > 0,
     };
 
     /// <summary>
@@ -210,7 +210,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Toxikon { get; } = new(ActionID.Toxikon)
     {
-        OtherCheck = b => JobGauge.Addersting > 0,
+        ActionCheck = b => JobGauge.Addersting > 0,
     };
 
     /// <summary>
@@ -242,7 +242,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Rhizomata { get; } = new(ActionID.Rhizomata)
     {
-        OtherCheck = b => JobGauge.Addersgall < 3 && AddersgallEndAfter(10),
+        ActionCheck = b => JobGauge.Addersgall < 3 && AddersgallEndAfter(10),
     };
 
     /// <summary>
@@ -270,7 +270,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Pepsis { get; } = new(ActionID.Pepsis, true)
     {
-        OtherCheck = b =>
+        ActionCheck = b =>
         {
             foreach (var chara in TargetUpdater.PartyMembers)
             {

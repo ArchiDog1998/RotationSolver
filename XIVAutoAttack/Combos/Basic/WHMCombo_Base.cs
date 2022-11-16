@@ -101,7 +101,7 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Asylum { get; } = new(ActionID.Asylum, true)
     {
-        OtherCheck = b => !IsMoving
+        ActionCheck = b => !IsMoving
     };
 
     /// <summary>
@@ -109,7 +109,7 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction AfflatusSolace { get; } = new(ActionID.AfflatusSolace, true)
     {
-        OtherCheck = b => JobGauge.Lily > 0,
+        ActionCheck = b => JobGauge.Lily > 0,
     };
 
     /// <summary>
@@ -127,7 +127,7 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction AfflatusRapture { get; } = new(ActionID.AfflatusRapture, true)
     {
-        OtherCheck = b => JobGauge.Lily > 0,
+        ActionCheck = b => JobGauge.Lily > 0,
     };
 
     /// <summary>
@@ -174,7 +174,7 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction AfflatusMisery { get; } = new(ActionID.AfflatusMisery)
     {
-        OtherCheck = b => JobGauge.BloodLily == 3,
+        ActionCheck = b => JobGauge.BloodLily == 3,
     };
     #endregion
     #region buff
@@ -183,7 +183,7 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction PresenseOfMind { get; } = new(ActionID.PresenseOfMind, true)
     {
-        OtherCheck = b => !IsMoving
+        ActionCheck = b => !IsMoving
     };
 
     /// <summary>

@@ -84,7 +84,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Higanbana { get; } = new(ActionID.Higanbana, isEot: true)
     {
-        OtherCheck = b => !IsMoving && SenCount == 1,
+        ActionCheck = b => !IsMoving && SenCount == 1,
         TargetStatus = new[] { StatusID.Higanbana },
     };
 
@@ -93,7 +93,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction TenkaGoken { get; } = new(ActionID.TenkaGoken)
     {
-        OtherCheck = b => !IsMoving && SenCount == 2,
+        ActionCheck = b => !IsMoving && SenCount == 2,
     };
 
     /// <summary>
@@ -101,7 +101,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction MidareSetsugekka { get; } = new(ActionID.MidareSetsugekka)
     {
-        OtherCheck = b => !IsMoving && SenCount == 3,
+        ActionCheck = b => !IsMoving && SenCount == 3,
     };
 
     /// <summary>
@@ -187,7 +187,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction OgiNamikiri { get; } = new(ActionID.OgiNamikiri)
     {
-        OtherCheck = b => HaveFlower && HaveMoon,
+        ActionCheck = b => HaveFlower && HaveMoon,
         BuffsNeed = new[] { StatusID.OgiNamikiriReady },
     };
 

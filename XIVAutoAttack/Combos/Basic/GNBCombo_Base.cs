@@ -57,7 +57,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Camouflage { get; } = new(ActionID.Camouflage, true)
     {
-        OtherCheck = BaseAction.TankDefenseSelf,
+        ActionCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>
@@ -85,7 +85,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction BurstStrike { get; } = new(ActionID.BurstStrike)
     {
-        OtherCheck = b => JobGauge.Ammo > 0,
+        ActionCheck = b => JobGauge.Ammo > 0,
     };
 
     /// <summary>
@@ -94,7 +94,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Nebula { get; } = new(ActionID.Nebula, true)
     {
         BuffsProvide = Rampart.BuffsProvide,
-        OtherCheck = BaseAction.TankDefenseSelf,
+        ActionCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>
@@ -130,7 +130,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction GnashingFang { get; } = new(ActionID.GnashingFang)
     {
-        OtherCheck = b => JobGauge.AmmoComboStep == 0 && JobGauge.Ammo > 0,
+        ActionCheck = b => JobGauge.AmmoComboStep == 0 && JobGauge.Ammo > 0,
     };
 
     /// <summary>
@@ -156,7 +156,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction FatedCircle { get; } = new(ActionID.FatedCircle)
     {
-        OtherCheck = b => JobGauge.Ammo > 0,
+        ActionCheck = b => JobGauge.Ammo > 0,
     };
 
     /// <summary>
@@ -164,7 +164,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Bloodfest { get; } = new(ActionID.Bloodfest, true)
     {
-        OtherCheck = b =>¡¡MaxAmmo - JobGauge.Ammo > 1,
+        ActionCheck = b =>¡¡MaxAmmo - JobGauge.Ammo > 1,
     };
 
     /// <summary>
@@ -172,7 +172,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction DoubleDown { get; } = new(ActionID.DoubleDown)
     {
-        OtherCheck = b => JobGauge.Ammo > 1,
+        ActionCheck = b => JobGauge.Ammo > 1,
     };
 
     /// <summary>
@@ -180,7 +180,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SavageClaw { get; } = new(ActionID.SavageClaw)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang) == ActionID.SavageClaw,
+        ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang) == ActionID.SavageClaw,
     };
 
     /// <summary>
@@ -188,7 +188,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction WickedTalon { get; } = new(ActionID.WickedTalon)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang)  == ActionID.WickedTalon,
+        ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang)  == ActionID.WickedTalon,
     };
 
     /// <summary>
@@ -196,7 +196,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction JugularRip { get; } = new(ActionID.JugularRip)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)  == ActionID.JugularRip,
+        ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)  == ActionID.JugularRip,
     };
 
     /// <summary>
@@ -204,7 +204,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction AbdomenTear { get; } = new(ActionID.AbdomenTear)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation) == ActionID.AbdomenTear,
+        ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation) == ActionID.AbdomenTear,
     };
 
     /// <summary>
@@ -212,7 +212,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction EyeGouge { get; } = new(ActionID.EyeGouge)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation) == ActionID.EyeGouge,
+        ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation) == ActionID.EyeGouge,
     };
 
     /// <summary>
@@ -220,7 +220,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Hypervelocity { get; } = new(ActionID.Hypervelocity)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)
+        ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)
         == ActionID.Hypervelocity,
     };
 

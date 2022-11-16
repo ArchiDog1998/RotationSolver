@@ -92,7 +92,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// </summary>
         public static BLUAction BloodDrain { get; } = new (ActionID.BloodDrain, BLUActionType.Magical)
         {
-            OtherCheck = b => Player.CurrentMp <= 9500,
+            ActionCheck = b => Player.CurrentMp <= 9500,
         };
 
         /// <summary>
@@ -337,7 +337,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// </summary>
         public static BLUAction FinalSting { get; } = new(ActionID.FinalSting, BLUActionType.Physical)
         {
-            OtherCheck = b => !Player.HasStatus(true, StatusID.BrushwithDeath),
+            ActionCheck = b => !Player.HasStatus(true, StatusID.BrushwithDeath),
         };
 
         /// <summary>
@@ -365,7 +365,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// </summary>
         public static BLUAction RevengeBlast { get; } = new(ActionID.RevengeBlast, BLUActionType.Physical)
         {
-            OtherCheck = b => b.GetHealthRatio() < 0.2f,
+            ActionCheck = b => b.GetHealthRatio() < 0.2f,
         };
 
         #endregion
@@ -467,7 +467,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// </summary>
         public static BLUAction Selfdestruct { get; } = new(ActionID.Selfdestruct, BLUActionType.None)
         {
-            OtherCheck = b => !Player.HasStatus(true, StatusID.BrushwithDeath),
+            ActionCheck = b => !Player.HasStatus(true, StatusID.BrushwithDeath),
         };
 
         /// <summary>

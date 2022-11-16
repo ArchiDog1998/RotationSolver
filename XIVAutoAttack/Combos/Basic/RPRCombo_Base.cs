@@ -43,7 +43,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Slice { get; } = new(ActionID.Slice)
     {
-        OtherCheck = b => !Enshrouded || !SoulReaver,
+        ActionCheck = b => !Enshrouded || !SoulReaver,
     };
 
     /// <summary>
@@ -51,7 +51,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction WaxingSlice { get; } = new(ActionID.WaxingSlice)
     {
-        OtherCheck = Slice.OtherCheck,
+        ActionCheck = Slice.ActionCheck,
     };
 
     /// <summary>
@@ -59,7 +59,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction InfernalSlice { get; } = new(ActionID.InfernalSlice)
     {
-        OtherCheck = Slice.OtherCheck,
+        ActionCheck = Slice.ActionCheck,
     };
 
     /// <summary>
@@ -68,7 +68,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction ShadowofDeath { get; } = new(ActionID.ShadowofDeath, isEot: true)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
-        OtherCheck = b => !SoulReaver,
+        ActionCheck = b => !SoulReaver,
     };
 
     /// <summary>
@@ -76,7 +76,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SoulSlice { get; } = new(ActionID.SoulSlice)
     {
-        OtherCheck = b => !Enshrouded && !SoulReaver && JobGauge.Soul <= 50,
+        ActionCheck = b => !Enshrouded && !SoulReaver && JobGauge.Soul <= 50,
     };
     #endregion
     #region AoE
@@ -85,7 +85,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SpinningScythe { get; } = new(ActionID.SpinningScythe)
     {
-        OtherCheck = Slice.OtherCheck,
+        ActionCheck = Slice.ActionCheck,
     };
 
     /// <summary>
@@ -93,7 +93,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction NightmareScythe { get; } = new(ActionID.NightmareScythe)
     {
-        OtherCheck = Slice.OtherCheck,
+        ActionCheck = Slice.ActionCheck,
     };
 
     /// <summary>
@@ -102,7 +102,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction WhorlofDeath { get; } = new(ActionID.WhorlofDeath, isEot: true)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
-        OtherCheck = ShadowofDeath.OtherCheck,
+        ActionCheck = ShadowofDeath.ActionCheck,
     };
     
     /// <summary>
@@ -110,7 +110,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SoulScythe { get; } = new(ActionID.SoulScythe)
     {
-        OtherCheck = SoulSlice.OtherCheck,
+        ActionCheck = SoulSlice.ActionCheck,
     };
     #endregion
     #region 妖异之镰状态
@@ -119,7 +119,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Gibbet { get; } = new(ActionID.Gibbet)
     {
-        OtherCheck = b => SoulReaver && EnhancedGibbet,
+        ActionCheck = b => SoulReaver && EnhancedGibbet,
     };
 
     /// <summary>
@@ -127,7 +127,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Gallows { get; } = new(ActionID.Gallows)
     {
-        OtherCheck = b => SoulReaver && (EnhancedGallows || !EnhancedGibbet),
+        ActionCheck = b => SoulReaver && (EnhancedGallows || !EnhancedGibbet),
     };
 
     /// <summary>
@@ -135,7 +135,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Guillotine { get; } = new(ActionID.Guillotine)
     {
-        OtherCheck = b => SoulReaver,
+        ActionCheck = b => SoulReaver,
     };
     #endregion
     #region 红条50灵魂
@@ -145,7 +145,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction BloodStalk { get; } = new(ActionID.BloodStalk)
     {
         BuffsProvide = new[] { StatusID.SoulReaver },
-        OtherCheck = b => !SoulReaver && !Enshrouded &&
+        ActionCheck = b => !SoulReaver && !Enshrouded &&
                           JobGauge.Soul >= 50 && !PlentifulReady &&
                           ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel),
     };
@@ -155,7 +155,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction GrimSwathe { get; } = new(ActionID.GrimSwathe)
     {
-        OtherCheck = BloodStalk.OtherCheck,
+        ActionCheck = BloodStalk.ActionCheck,
     };
 
     /// <summary>
@@ -163,7 +163,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Gluttony { get; } = new(ActionID.Gluttony)
     {
-        OtherCheck = b => !SoulReaver && !Enshrouded && JobGauge.Soul >= 50,
+        ActionCheck = b => !SoulReaver && !Enshrouded && JobGauge.Soul >= 50,
     };
     #endregion
     #region 大爆发
@@ -172,7 +172,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ArcaneCircle { get; } = new(ActionID.ArcaneCircle, true)
     {
-        OtherCheck = b => InCombat && HaveDeathsDesign
+        ActionCheck = b => InCombat && HaveDeathsDesign
     };
 
     /// <summary>
@@ -180,7 +180,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction PlentifulHarvest { get; } = new(ActionID.PlentifulHarvest)
     {
-        OtherCheck = b => JobGauge.Shroud <= 50 && !SoulReaver && !Enshrouded && PlentifulReady
+        ActionCheck = b => JobGauge.Shroud <= 50 && !SoulReaver && !Enshrouded && PlentifulReady
     };
     #endregion
     #region 蓝条50附体
@@ -189,7 +189,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Enshroud { get; } = new(ActionID.Enshroud)
     {
-        OtherCheck = b => !SoulReaver && !Enshrouded && JobGauge.Shroud >= 50,
+        ActionCheck = b => !SoulReaver && !Enshrouded && JobGauge.Shroud >= 50,
     };
 
     /// <summary>
@@ -197,7 +197,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Communio { get; } = new(ActionID.Communio)
     {
-        OtherCheck = b => Enshrouded && JobGauge.LemureShroud == 1,
+        ActionCheck = b => Enshrouded && JobGauge.LemureShroud == 1,
     };
 
     /// <summary>
@@ -205,7 +205,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction LemuresSlice { get; } = new(ActionID.LemuresSlice)
     {
-        OtherCheck = b => Enshrouded && JobGauge.VoidShroud >= 2,
+        ActionCheck = b => Enshrouded && JobGauge.VoidShroud >= 2,
     };
 
     /// <summary>
@@ -213,7 +213,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction LemuresScythe { get; } = new(ActionID.LemuresScythe)
     {
-        OtherCheck = LemuresSlice.OtherCheck,
+        ActionCheck = LemuresSlice.ActionCheck,
     };
 
     /// <summary>
@@ -221,7 +221,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction VoidReaping { get; } = new(ActionID.VoidReaping)
     {
-        OtherCheck = b => Enshrouded && JobGauge.LemureShroud > 1 && EnhancedVoidReaping,
+        ActionCheck = b => Enshrouded && JobGauge.LemureShroud > 1 && EnhancedVoidReaping,
     };
 
     /// <summary>
@@ -229,7 +229,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction CrossReaping { get; } = new(ActionID.CrossReaping)
     {
-        OtherCheck = b =>
+        ActionCheck = b =>
         {
             if (Enshrouded)
             {
@@ -251,7 +251,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction GrimReaping { get; } = new(ActionID.GrimReaping)
     {
-        OtherCheck = b => {
+        ActionCheck = b => {
             if (Enshrouded)
             {
                 if (JobGauge.LemureShroud > 1)
@@ -278,7 +278,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Soulsow { get; } = new(ActionID.Soulsow)
     {
         BuffsProvide = new[] { StatusID.Soulsow },
-        OtherCheck = b => !InCombat,
+        ActionCheck = b => !InCombat,
     };
 
     /// <summary>
@@ -287,7 +287,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction HarvestMoon { get; } = new(ActionID.HarvestMoon)
     {
         BuffsNeed = new[] { StatusID.Soulsow },
-        OtherCheck = b => InCombat,
+        ActionCheck = b => InCombat,
     };
 
     /// <summary>

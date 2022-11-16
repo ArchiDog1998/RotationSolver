@@ -87,7 +87,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Sentinel { get; } = new(ActionID.Sentinel)
     {
         BuffsProvide = Rampart.BuffsProvide,
-        OtherCheck = BaseAction.TankDefenseSelf,
+        ActionCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>
@@ -193,7 +193,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Cover { get; } = new(ActionID.Cover, true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
-        OtherCheck = b => OathGauge >= 50,
+        ActionCheck = b => OathGauge >= 50,
     };
 
     /// <summary>
@@ -201,7 +201,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Sheltron { get; } = new(ActionID.Sheltron)
     {
-        OtherCheck = Cover.OtherCheck,
+        ActionCheck = Cover.ActionCheck,
     };
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)

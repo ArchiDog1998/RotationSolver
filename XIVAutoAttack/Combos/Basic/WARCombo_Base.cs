@@ -42,7 +42,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction StormsEye { get; } = new(ActionID.StormsEye)
     {
-        OtherCheck = b => Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest),
+        ActionCheck = b => Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest),
     };
 
     /// <summary>
@@ -89,7 +89,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction InnerBeast { get; } = new(ActionID.InnerBeast)
     {
-        OtherCheck = b => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease), 
+        ActionCheck = b => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease), 
     };
 
     /// <summary>
@@ -97,7 +97,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction InnerRelease { get; } = new(ActionID.InnerRelease)
     {
-        OtherCheck = InnerBeast.OtherCheck,
+        ActionCheck = InnerBeast.ActionCheck,
     };
 
     /// <summary>
@@ -105,7 +105,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SteelCyclone { get; } = new(ActionID.SteelCyclone)
     {
-        OtherCheck = InnerBeast.OtherCheck,
+        ActionCheck = InnerBeast.ActionCheck,
     };
 
     /// <summary>
@@ -114,7 +114,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Infuriate { get; } = new(ActionID.Infuriate)
     {
         BuffsProvide = new[] { StatusID.InnerRelease },
-        OtherCheck = b => HaveHostilesInRange && JobGauge.BeastGauge < 50 && InCombat,
+        ActionCheck = b => HaveHostilesInRange && JobGauge.BeastGauge < 50 && InCombat,
     };
 
     /// <summary>
@@ -122,7 +122,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Berserk { get; } = new(ActionID.Berserk)
     {
-        OtherCheck = b => HaveHostilesInRange,
+        ActionCheck = b => HaveHostilesInRange,
     };
 
     /// <summary>
@@ -149,7 +149,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Vengeance { get; } = new(ActionID.Vengeance)
     {
         BuffsProvide = Rampart.BuffsProvide,
-        OtherCheck = BaseAction.TankDefenseSelf,
+        ActionCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>
@@ -157,7 +157,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction RawIntuition { get; } = new(ActionID.RawIntuition)
     {
-        OtherCheck = BaseAction.TankDefenseSelf,
+        ActionCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>

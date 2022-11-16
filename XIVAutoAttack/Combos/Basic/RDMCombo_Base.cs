@@ -53,7 +53,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Riposte { get; } = new(ActionID.Riposte)
     {
-        OtherCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
+        ActionCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
     };
 
     /// <summary>
@@ -124,7 +124,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Zwerchhau { get; } = new(ActionID.Zwerchhau)
     {
-        OtherCheck = b => BlackMana >= 15 && WhiteMana >= 15,
+        ActionCheck = b => BlackMana >= 15 && WhiteMana >= 15,
     };
 
     /// <summary>
@@ -142,7 +142,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Redoublement { get; } = new(ActionID.Redoublement)
     {
-        OtherCheck = b => BlackMana >= 15 && WhiteMana >= 15,
+        ActionCheck = b => BlackMana >= 15 && WhiteMana >= 15,
     };
 
 
@@ -159,7 +159,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Moulinet { get; } = new(ActionID.Moulinet)
     {
-        OtherCheck = b => BlackMana >= 20 && WhiteMana >= 20,
+        ActionCheck = b => BlackMana >= 20 && WhiteMana >= 20,
     };
 
     /// <summary>
@@ -218,7 +218,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Manafication { get; } = new(ActionID.Manafication)
     {
-        OtherCheck = b => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0 ,
+        ActionCheck = b => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0 ,
         OtherIDsNot = new [] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
     };
 }

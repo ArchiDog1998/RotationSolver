@@ -58,13 +58,13 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     //宝石耀
     public static BaseAction Gemshine { get; } = new(ActionID.Gemshine)
     {
-        OtherCheck = b => JobGauge.Attunement > 0,
+        ActionCheck = b => JobGauge.Attunement > 0,
     };
 
     //宝石辉
     public static BaseAction PreciousBrilliance { get; } = new(ActionID.PreciousBrilliance)
     {
-        OtherCheck = b => JobGauge.Attunement > 0,
+        ActionCheck = b => JobGauge.Attunement > 0,
     };
 
     //毁灭 单体攻击
@@ -76,13 +76,13 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     //宝石兽召唤
     public static BaseAction SummonCarbuncle { get; } = new(ActionID.SummonCarbuncle)
     {
-        OtherCheck = b => !TargetUpdater.HavePet,
+        ActionCheck = b => !TargetUpdater.HavePet,
     };
 
     //灼热之光 团辅
     public static BaseAction SearingLight { get; } = new(ActionID.SearingLight, true)
     {
-        OtherCheck = b => InCombat && !InBahamut && !InPhoenix
+        ActionCheck = b => InCombat && !InBahamut && !InPhoenix
     };
 
     //守护之光 给自己戴套
@@ -94,7 +94,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     //以太蓄能 
     public static BaseAction Aethercharge { get; } = new(ActionID.Aethercharge)
     {
-        OtherCheck = b => InCombat,
+        ActionCheck = b => InCombat,
     };
 
     //龙神召唤
@@ -103,19 +103,19 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     //红宝石召唤
     public static BaseAction SummonRuby { get; } = new(ActionID.SummonRuby)
     {
-        OtherCheck = b => JobGauge.IsIfritReady && !IsMoving,
+        ActionCheck = b => JobGauge.IsIfritReady && !IsMoving,
     };
 
     //黄宝石召唤
     public static BaseAction SummonTopaz { get; } = new(ActionID.SummonTopaz)
     {
-        OtherCheck = b => JobGauge.IsTitanReady,
+        ActionCheck = b => JobGauge.IsTitanReady,
     };
 
     //绿宝石召唤
     public static BaseAction SummonEmerald { get; } = new(ActionID.SummonEmerald)
     {
-        OtherCheck = b => JobGauge.IsGarudaReady,
+        ActionCheck = b => JobGauge.IsGarudaReady,
     };
 
 
@@ -143,19 +143,19 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     //龙神迸发
     public static BaseAction EnkindleBahamut { get; } = new(ActionID.EnkindleBahamut)
     {
-        OtherCheck = b => InBahamut || InPhoenix,
+        ActionCheck = b => InBahamut || InPhoenix,
     };
 
     //死星核爆
     public static BaseAction Deathflare { get; } = new(ActionID.Deathflare)
     {
-        OtherCheck = b => InBahamut,
+        ActionCheck = b => InBahamut,
     };
 
     //苏生之炎
     public static BaseAction Rekindle { get; } = new(ActionID.Rekindle, true)
     {
-        OtherCheck = b => InPhoenix,
+        ActionCheck = b => InPhoenix,
     };
 
     //深红旋风
