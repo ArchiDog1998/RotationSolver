@@ -89,23 +89,23 @@
         /// </summary>
         Dia = 1871,
         #endregion
-        /// <summary>
-        /// 即刻咏唱
-        /// </summary>
-        Swiftcast1 = 1325,
+        ///// <summary>
+        ///// 即刻咏唱
+        ///// </summary>
+        //Swiftcast1 = 1325,
+
+        ///// <summary>
+        ///// 即刻咏唱
+        ///// </summary>
+        //Swiftcast2 = 1987,
 
         /// <summary>
         /// 即刻咏唱
         /// </summary>
-        Swiftcast2 = 1987,
+        Swiftcast = 167,
 
         /// <summary>
-        /// 即刻咏唱
-        /// </summary>
-        Swiftcast3 = 167,
-
-        /// <summary>
-        /// 即刻咏唱
+        /// 连续咏唱
         /// </summary>
         Dualcast = 1249,
 

@@ -164,14 +164,14 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (Level == 90 && UseLoopManager(out act)) return true;
 
         //移动时
-        if (IsMoving && InCombat && HaveHostilesInRange && !IsLastAction())
+        if (IsMoving && InCombat && HaveHostilesInRange)
         {
             if (Xenoglossy.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             if (HasThunder && Thunder2.ShouldUse(out act)) return true;
             if (HasThunder && Thunder.ShouldUse(out act)) return true;
             if (HasFire && Fire3.ShouldUse(out act)) return true;
-            if (Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-            if (!Player.HasStatus(true, StatusID.Triplecast) && Swiftcast.ShouldUse(out act)) return true;
+            if (!IsLastAction(true, AetherialManipulation) && Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (!IsLastAction(true, AetherialManipulation) && !Player.HasStatus(true, StatusID.Triplecast) && Swiftcast.ShouldUse(out act)) return true;
         }
 
         //保持天语
