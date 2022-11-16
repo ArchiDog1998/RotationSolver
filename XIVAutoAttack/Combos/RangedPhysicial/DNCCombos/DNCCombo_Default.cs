@@ -5,6 +5,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
@@ -155,6 +156,18 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
         if (Fountain.ShouldUse(out act)) return true;
         if (Cascade.ShouldUse(out act)) return true;
 
+        return false;
+    }
+
+    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    {
+        //¥ÛŒË«∞’˚ÃΩ∏Í
+        if(nextGCD.IsAnySameAction(true, TechnicalStep))
+        {
+            if (Devilment.ShouldUse(out act)) return true;
+        }
+
+        act = null!;
         return false;
     }
 }

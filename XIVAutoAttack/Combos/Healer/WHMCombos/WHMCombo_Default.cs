@@ -1,14 +1,16 @@
 using System.Collections.Generic;
+using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Updaters;
 using static XIVAutoAttack.Combos.Healer.WHMCombos.WHMCombo_Default;
 
 namespace XIVAutoAttack.Combos.Healer.WHMCombos;
-
 internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
 {
     public override string Author => "逆光";
@@ -17,11 +19,6 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
     {
         None,
     }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     private protected override ActionConfiguration CreateConfiguration()
     {
@@ -39,12 +36,17 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         //苦难之心
         if (AfflatusMisery.ShouldUse(out act, mustUse: true)) return true;
 
-        //泄蓝花 狂喜之心
+        //泄蓝花 团队缺血时优先狂喜之心
         bool liliesNearlyFull = Lily == 2 && LilyAfter(17);
         bool liliesFullNoBlood = Lily == 3 && BloodLily < 3;
         if (Config.GetBoolByName("UseLilyWhenFull") && (liliesNearlyFull || liliesFullNoBlood))
         {
-            if (AfflatusRapture.ShouldUse(out act)) return true;
+            if (TargetUpdater.PartyMembersAverHP < 0.7)
+            {
+                if (AfflatusRapture.ShouldUse(out act)) return true;
+            }
+            if (AfflatusSolace.ShouldUse(out act)) return true;
+
         }
 
         //群体输出
@@ -76,8 +78,8 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         if (nextGCD is BaseAction action && action.MPNeed >= 1000 &&
             ThinAir.ShouldUse(out act)) return true;
 
-        //加个全大赦
-        if (nextGCD.IsAnySameAction(true, Medica, Medica2, Cure3))
+        //加个全大赦,狂喜之心 医济医治愈疗
+        if (nextGCD.IsAnySameAction(true, AfflatusRapture, Medica, Medica2, Cure3))
         {
             if (PlenaryIndulgence.ShouldUse(out act)) return true;
         }
@@ -104,8 +106,9 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        //神祝祷
-        if (DivineBenison.ShouldUse(out act)) return true;
+        //天赐 大资源救急用
+        if (Benediction.Target.GetHealthRatio() < 0.3
+            && Benediction.ShouldUse(out act)) return true;
 
         //神名
         if (Tetragrammaton.ShouldUse(out act)) return true;
@@ -115,6 +118,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
 
         //天赐
         if (Benediction.ShouldUse(out act)) return true;
+
         return false;
     }
 
@@ -123,8 +127,15 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         //狂喜之心
         if (AfflatusRapture.ShouldUse(out act)) return true;
 
-        //医济
-        if (Medica2.ShouldUse(out act) && !IsLastAction(true,Medica2)) return true;
+        var PartyMembers = TargetUpdater.PartyMembers;
+        int hasMedica2 = PartyMembers.Count((n) => n.HasStatus(true, StatusID.Medica2));
+  
+        //!Player.HaveStatus(true, StatusID.Medica2)
+        //医济 在小队半数人都没有医济buff and 上次没放医济时使用
+        if (Medica2.ShouldUse(out act) && !(hasMedica2 < PartyMembers.Length / 2) && !IsLastAction(true, Medica2)) return true;
+
+        //愈疗
+        if (Cure3.ShouldUse(out act)) return true;
 
         //医治
         if (Medica.ShouldUse(out act)) return true;

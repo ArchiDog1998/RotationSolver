@@ -958,5 +958,39 @@
         /// 速行
         /// </summary>
         Peloton = 1199,
+
+        /// <summary>
+        /// 即兴表演
+        /// </summary>
+        Improvisation = 1827,
+
+        /// <summary>
+        /// 享受即兴表演
+        /// </summary>
+        _Improvisation = 2695,
+
+
+        /// <summary>
+        /// 即兴表演结束
+        /// </summary>
+        Improvised_Finish = 2697,
+
+        /// <summary>
+        /// 舞动的热情
+        /// </summary>
+        Rising_Rhythm = 2696,
+
+
+        /// <summary>
+        /// 魔元化
+        /// </summary>
+        Manafication = 1971,
+
+
+        /// <summary>
+        /// 鼓励
+        /// </summary>
+        Embolden = 2282,
+
     }
 }
