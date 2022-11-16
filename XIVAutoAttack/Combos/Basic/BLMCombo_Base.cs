@@ -228,17 +228,17 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 火1
         /// </summary>
-        public static BaseAction Fire { get; } = new ElementAction(ActionID.Fire);
+        public static BaseAction Fire { get; } = new (ActionID.Fire);
 
         /// <summary>
         /// 火2
         /// </summary>
-        public static BaseAction Fire2 { get; } = new ElementAction(ActionID.Fire2);
+        public static BaseAction Fire2 { get; } = new (ActionID.Fire2);
 
         /// <summary>
         /// 火3
         /// </summary>
-        public static BaseAction Fire3 { get; } = new ElementAction(ActionID.Fire3);
+        public static BaseAction Fire3 { get; } = new (ActionID.Fire3);
 
         /// <summary>
         /// 火4
@@ -251,17 +251,17 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 冰1
         /// </summary>
-        public static BaseAction Blizzard { get; } = new ElementAction(ActionID.Blizzard);
+        public static BaseAction Blizzard { get; } = new (ActionID.Blizzard);
 
         /// <summary>
         /// 冰2
         /// </summary>
-        public static BaseAction Blizzard2 { get; } = new ElementAction(ActionID.Blizzard2);
+        public static BaseAction Blizzard2 { get; } = new (ActionID.Blizzard2);
 
         /// <summary>
         /// 冰3
         /// </summary>
-        public static BaseAction Blizzard3 { get; } = new ElementAction(ActionID.Blizzard3);
+        public static BaseAction Blizzard3 { get; } = new (ActionID.Blizzard3);
 
         /// <summary>
         /// 冰4

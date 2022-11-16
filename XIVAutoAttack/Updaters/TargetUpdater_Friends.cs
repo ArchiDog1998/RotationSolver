@@ -191,7 +191,11 @@ namespace XIVAutoAttack.Updaters
             var abilityCount = PartyMembers.Count(p =>
             {
                 var ratio = GetHealingOfTimeRatio(p, singleHots);
-                return p.GetHealthRatio() < Service.Configuration.HealthSingleAbility -
+
+                var h = p.GetHealthRatio();
+                if (h == 0) return false;
+
+                return h < Service.Configuration.HealthSingleAbility -
                     Service.Configuration.HealingOfTimeSubstactSingle * ratio;
             });
             CanHealSingleAbility = abilityCount > 0;
@@ -201,7 +205,10 @@ namespace XIVAutoAttack.Updaters
             var gcdCount = PartyMembers.Count(p =>
             {
                 var ratio = GetHealingOfTimeRatio(p, singleHots);
-                return p.GetHealthRatio() < Service.Configuration.HealthSingleSpell - 
+                var h = p.GetHealthRatio();
+                if (h == 0) return false;
+
+                return h < Service.Configuration.HealthSingleSpell - 
                     Service.Configuration.HealingOfTimeSubstactSingle * ratio;
             });
             CanHealSingleSpell = gcdCount > 0;

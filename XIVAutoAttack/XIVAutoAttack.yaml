@@ -10,6 +10,9 @@ punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
   - 特职分类可以细分魔法和远程。
+  - 修复了治疗认为死了的人可以奶的问题。
+  - 调整白魔释放技能的优先级。
+  - 贤者毒箭三层时不强制用，发炎走位留一层。 
   ## 功能删除
   - 去除永远下踢选项，自行禁用相应技能。
   ## API
