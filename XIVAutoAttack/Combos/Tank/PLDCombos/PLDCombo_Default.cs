@@ -164,7 +164,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         }
 
         //Special Defense.
-        if (JobGauge.OathGauge == 100 && Defense(out act) && Player.CurrentHp < Player.MaxHp) return true;
+        if (OathGauge == 100 && OathDefense(out act) && Player.CurrentHp < Player.MaxHp) return true;
 
         act = null;
         return false;
@@ -172,7 +172,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (Defense(out act)) return true;
+        if (OathDefense(out act)) return true;
 
         if (abilityRemain == 1)
         {
@@ -282,11 +282,9 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         return false;
     }
 
-    private bool Defense(out IAction act)
-    {
-        act = null;
-        if (JobGauge.OathGauge < 50) return false;
 
+    private bool OathDefense(out IAction act)
+    {
         if (HaveShield)
         {
             //¶ÜÕó

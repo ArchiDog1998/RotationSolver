@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.JobGauge.Enums;
 using System;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -9,7 +10,22 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static MNKGauge JobGauge => Service.JobGauges.Get<MNKGauge>();
+    private static MNKGauge JobGauge => Service.JobGauges.Get<MNKGauge>();
+
+    /// <summary>
+    /// 查克拉们
+    /// </summary>
+    protected static BeastChakra[] BeastChakras => JobGauge.BeastChakra;
+
+    /// <summary>
+    /// 查克拉数量
+    /// </summary>
+    protected static byte Chakra => JobGauge.Chakra;
+
+    /// <summary>
+    /// 阴阳必杀
+    /// </summary>
+    protected static Nadi Nadi => JobGauge.Nadi;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
 
@@ -74,7 +90,7 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SteelPeak { get; } = new(ActionID.SteelPeak)
     {
-        OtherCheck = b => InCombat,
+        OtherCheck = b => InCombat && Chakra == 5,
     };
 
     /// <summary>
@@ -82,7 +98,7 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction HowlingFist { get; } = new(ActionID.HowlingFist)
     {
-        OtherCheck = b => InCombat,
+        OtherCheck = SteelPeak.OtherCheck,
     };
 
     /// <summary>

@@ -67,7 +67,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
             if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolDown || !Drill.IsCoolDown) && Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
-        if (!JobGauge.IsOverheated || JobGauge.IsOverheated && EndAfterGCD(JobGauge.OverheatTimeRemaining, 0))
+        if (!IsOverheated || IsOverheated && OverheatedEndAfterGCD())
         {
             //AOE,毒菌冲击
             if (Bioblaster.ShouldUse(out act)) return true;
@@ -85,11 +85,11 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         }
 
         //群体常规GCD
-        if (JobGauge.IsOverheated && AutoCrossbow.ShouldUse(out act)) return true;
+        if (IsOverheated && AutoCrossbow.ShouldUse(out act)) return true;
         if (SpreadShot.ShouldUse(out act)) return true;
 
         //过热状态
-        if (JobGauge.IsOverheated && HeatBlast.ShouldUse(out act)) return true;
+        if (IsOverheated && HeatBlast.ShouldUse(out act)) return true;
 
         //单体常规GCD
         if (CleanShot.ShouldUse(out act)) return true;
@@ -223,7 +223,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (!Wildfire.WillHaveOneChargeGCD(5) && Wildfire.WillHaveOneChargeGCD(18))
         {
             //如果期间热量溢出超过5,就释放一次超荷
-            if (IsLastWeaponSkill(Drill.ID) && JobGauge.Heat >= 85) return true;
+            if (IsLastWeaponSkill(Drill.ID) && Heat >= 85) return true;
             return false;
         }
         else return true;
@@ -245,15 +245,15 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (IsLastAction(Wildfire.ID)) return false;
 
         //电量等于100,强制释放
-        if (JobGauge.Battery == 100) return true;
+        if (Battery == 100) return true;
 
         //小怪,AOE,不吃团辅判断
         if (!Config.GetBoolByName("MCH_Automaton") || !Target.IsBoss() && !IsMoving || Level < Wildfire.ID) return true;
         if ((SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()) && IsMoving) return false;
 
         //机器人吃团辅判断
-        if (AirAnchor.IsCoolDown && AirAnchor.WillHaveOneChargeGCD() && JobGauge.Battery > 80) return true;
-        if (ChainSaw.WillHaveOneChargeGCD(2) || ChainSaw.IsCoolDown && !ChainSaw.ElapsedAfterGCD(3) && JobGauge.Battery <= 60) return true;
+        if (AirAnchor.IsCoolDown && AirAnchor.WillHaveOneChargeGCD() && Battery > 80) return true;
+        if (ChainSaw.WillHaveOneChargeGCD(2) || ChainSaw.IsCoolDown && !ChainSaw.ElapsedAfterGCD(3) && Battery <= 60) return true;
 
         return false;
     }

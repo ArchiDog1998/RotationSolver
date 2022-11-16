@@ -11,7 +11,12 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static PLDGauge JobGauge => Service.JobGauges.Get<PLDGauge>();
+    private static PLDGauge JobGauge => Service.JobGauges.Get<PLDGauge>();
+
+    /// <summary>
+    /// 忠义度
+    /// </summary>
+    protected static byte OathGauge => JobGauge.OathGauge;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Paladin, ClassJobID.Gladiator };
 
@@ -188,12 +193,16 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Cover { get; } = new(ActionID.Cover, true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
+        OtherCheck = b => OathGauge >= 50,
     };
 
     /// <summary>
     /// 盾阵
     /// </summary>
-    public static BaseAction Sheltron { get; } = new(ActionID.Sheltron);
+    public static BaseAction Sheltron { get; } = new(ActionID.Sheltron)
+    {
+        OtherCheck = Cover.OtherCheck,
+    };
 
     private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
@@ -201,4 +210,6 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         //神圣领域 如果谢不够了。
         return base.EmergercyAbility(abilityRemain, nextGCD, out act);
     }
+
+
 }

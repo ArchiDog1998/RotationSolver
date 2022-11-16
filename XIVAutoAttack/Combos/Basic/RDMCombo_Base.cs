@@ -10,7 +10,23 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static RDMGauge JobGauge => Service.JobGauges.Get<RDMGauge>();
+    private static RDMGauge JobGauge => Service.JobGauges.Get<RDMGauge>();
+
+    /// <summary>
+    /// °×Ä§Ôª
+    /// </summary>
+    protected static byte WhiteMana => JobGauge.WhiteMana;
+
+    /// <summary>
+    /// ºÚÄ§Ôª
+    /// </summary>
+    protected static byte BlackMana => JobGauge.BlackMana;
+
+
+    /// <summary>
+    /// Ä§¾§Êý
+    /// </summary>
+    protected static byte ManaStacks => JobGauge.ManaStacks;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.RedMage };
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Length == 1 && base.CanHealSingleSpell;
@@ -107,7 +123,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Zwerchhau { get; } = new(ActionID.Zwerchhau)
     {
-        OtherCheck = b => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
+        OtherCheck = b => BlackMana >= 15 && WhiteMana >= 15,
     };
 
     /// <summary>
@@ -125,7 +141,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Redoublement { get; } = new(ActionID.Redoublement)
     {
-        OtherCheck = b => JobGauge.BlackMana >= 15 && JobGauge.WhiteMana >= 15,
+        OtherCheck = b => BlackMana >= 15 && WhiteMana >= 15,
     };
 
 
@@ -142,7 +158,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Moulinet { get; } = new(ActionID.Moulinet)
     {
-        OtherCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
+        OtherCheck = b => BlackMana >= 20 && WhiteMana >= 20,
     };
 
     /// <summary>
@@ -201,7 +217,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Manafication { get; } = new(ActionID.Manafication)
     {
-        OtherCheck = b => JobGauge.WhiteMana <= 50 && JobGauge.BlackMana <= 50 && InCombat && JobGauge.ManaStacks == 0,
+        OtherCheck = b => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0,
         OtherIDsNot = new [] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
     };
 }

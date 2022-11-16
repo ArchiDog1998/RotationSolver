@@ -91,7 +91,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
             //加状态
             if (Huraijin.ShouldUse(out act)) return true;
 
-            if (JobGauge.HutonTimer > 0 && _ninactionAim?.ID == Huton.ID)
+            if (InHuton && _ninactionAim?.ID == Huton.ID)
             {
                 ClearNinjutsus();
                 return false;
@@ -333,12 +333,9 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
         if (Kassatsu.ShouldUse(out act)) return true;
         if (UseBreakItem(out act)) return true;
 
-        if (JobGauge.Ninki >= 50)
-        {
-            if (Bunshin.ShouldUse(out act)) return true;
-            if (HellfrogMedium.ShouldUse(out act)) return true;
-            if (Bhavacakra.ShouldUse(out act)) return true;
-        }
+        if (Bunshin.ShouldUse(out act)) return true;
+        if (HellfrogMedium.ShouldUse(out act)) return true;
+        if (Bhavacakra.ShouldUse(out act)) return true;
 
         if (!DreamWithinaDream.EnoughLevel)
         {

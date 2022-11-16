@@ -11,7 +11,17 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static GNBGauge JobGauge => Service.JobGauges.Get<GNBGauge>();
+    private static GNBGauge JobGauge => Service.JobGauges.Get<GNBGauge>();
+
+    /// <summary>
+    /// 晶囊数量
+    /// </summary>
+    protected static byte Ammo => JobGauge.Ammo;
+
+    /// <summary>
+    /// 烈牙的第几个combo
+    /// </summary>
+    protected static byte AmmoComboStep => JobGauge.AmmoComboStep;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
     internal sealed override bool HaveShield => Player.HasStatus(true, StatusID.RoyalGuard);
@@ -178,8 +188,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction WickedTalon { get; } = new(ActionID.WickedTalon)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang) 
-        == ActionID.WickedTalon,
+        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang)  == ActionID.WickedTalon,
     };
 
     /// <summary>
@@ -187,8 +196,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction JugularRip { get; } = new(ActionID.JugularRip)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)
-        == ActionID.JugularRip,
+        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)  == ActionID.JugularRip,
     };
 
     /// <summary>
@@ -196,8 +204,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction AbdomenTear { get; } = new(ActionID.AbdomenTear)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)
-        == ActionID.AbdomenTear,
+        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation) == ActionID.AbdomenTear,
     };
 
     /// <summary>
@@ -205,8 +212,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction EyeGouge { get; } = new(ActionID.EyeGouge)
     {
-        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)
-        == ActionID.EyeGouge,
+        OtherCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation) == ActionID.EyeGouge,
     };
 
     /// <summary>

@@ -8,7 +8,17 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static NINGauge JobGauge => Service.JobGauges.Get<NINGauge>();
+    private static NINGauge JobGauge => Service.JobGauges.Get<NINGauge>();
+
+    /// <summary>
+    /// 在风buff中
+    /// </summary>
+    protected static bool InHuton => JobGauge.HutonTimer > 0;
+
+    /// <summary>
+    /// 忍术点数
+    /// </summary>
+    protected static byte Ninki => JobGauge.Ninki;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Ninja, ClassJobID.Rogue };
     public class NinAction : BaseAction
@@ -137,19 +147,30 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
+    /// 分身之术
+    /// </summary>
+    public static BaseAction Bunshin { get; } = new(ActionID.Bunshin, true)
+    {
+        OtherCheck = b => Ninki >= 50,
+    };
+
+    /// <summary>
     /// 通灵之术·大虾蟆
     /// </summary>
-    public static BaseAction HellfrogMedium { get; } = new(ActionID.HellfrogMedium);
+    public static BaseAction HellfrogMedium { get; } = new(ActionID.HellfrogMedium)
+    {
+        OtherCheck = Bunshin.OtherCheck,
+    };
 
     /// <summary>
     /// 六道轮回
     /// </summary>
-    public static BaseAction Bhavacakra { get; } = new(ActionID.Bhavacakra);
+    public static BaseAction Bhavacakra { get; } = new(ActionID.Bhavacakra)
+    {
+        OtherCheck = Bunshin.OtherCheck,
+    };
 
-    /// <summary>
-    /// 分身之术
-    /// </summary>
-    public static BaseAction Bunshin { get; } = new(ActionID.Bunshin, true);
+
 
     /// <summary>
     /// 残影镰鼬

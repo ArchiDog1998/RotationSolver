@@ -1,4 +1,4 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.JobGauge.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,11 +102,11 @@ internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
 
     private bool SolarNadi(out IAction act)
     {
-        if (!JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.RAPTOR))
+        if (!BeastChakras.Contains(BeastChakra.RAPTOR))
         {
             if (RaptorForm(out act)) return true;
         }
-        else if (!JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.OPOOPO))
+        else if (!BeastChakras.Contains(BeastChakra.OPOOPO))
         {
             if (OpoOpoForm(out act)) return true;
         }
@@ -120,18 +120,18 @@ internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        bool havesolar = (JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.SOLAR) != 0;
-        bool havelunar = (JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.LUNAR) != 0;
+        bool havesolar = (Nadi & Nadi.SOLAR) != 0;
+        bool havelunar = (Nadi & Nadi.LUNAR) != 0;
 
         //满了的话，放三个大招
-        if (!JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.NONE))
+        if (!BeastChakras.Contains(BeastChakra.NONE))
         {
             if (havesolar && havelunar)
             {
                 if (PhantomRush.ShouldUse(out act, mustUse: true)) return true;
                 if (TornadoKick.ShouldUse(out act, mustUse: true)) return true;
             }
-            if (JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.RAPTOR))
+            if (BeastChakras.Contains(BeastChakra.RAPTOR))
             {
                 if (RisingPhoenix.ShouldUse(out act, mustUse: true)) return true;
                 if (FlintStrike.ShouldUse(out act, mustUse: true)) return true;
@@ -162,7 +162,7 @@ internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
         }
 
         if (CommandController.Move && MoveAbility(1, out act)) return true;
-        if (JobGauge.Chakra < 5 && Meditation.ShouldUse(out act)) return true;
+        if (Chakra < 5 && Meditation.ShouldUse(out act)) return true;
         if (Config.GetBoolByName("AutoFormShift") && FormShift.ShouldUse(out act)) return true;
 
         return false;
@@ -177,10 +177,10 @@ internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
         }
 
         //震脚
-        if (JobGauge.BeastChakra.Contains(Dalamud.Game.ClientState.JobGauge.Enums.BeastChakra.NONE))
+        if (BeastChakras.Contains(BeastChakra.NONE))
         {
             //有阳斗气
-            if ((JobGauge.Nadi & Dalamud.Game.ClientState.JobGauge.Enums.Nadi.SOLAR) != 0)
+            if ((Nadi & Nadi.SOLAR) != 0)
             {
                 //两种Buff都在6s以上
                 var dis = Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist);
@@ -201,12 +201,9 @@ internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
 
         if (RiddleofWind.ShouldUse(out act)) return true;
 
-        if (JobGauge.Chakra == 5)
-        {
-            if (HowlingFist.ShouldUse(out act)) return true;
-            if (SteelPeak.ShouldUse(out act)) return true;
-            if (HowlingFist.ShouldUse(out act, mustUse: true)) return true;
-        }
+        if (HowlingFist.ShouldUse(out act)) return true;
+        if (SteelPeak.ShouldUse(out act)) return true;
+        if (HowlingFist.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }

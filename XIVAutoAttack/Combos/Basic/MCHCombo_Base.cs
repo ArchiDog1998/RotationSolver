@@ -9,7 +9,43 @@ namespace XIVAutoAttack.Combos.Basic;
 
 internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static MCHGauge JobGauge => Service.JobGauges.Get<MCHGauge>();
+    private static MCHGauge JobGauge => Service.JobGauges.Get<MCHGauge>();
+
+    /// <summary>
+    /// 处于过热中
+    /// </summary>
+    protected static bool IsOverheated => JobGauge.IsOverheated;
+
+    /// <summary>
+    /// 热量还有多少
+    /// </summary>
+    protected static byte Heat => JobGauge.Heat;
+
+    /// <summary>
+    /// 点量还有多少
+    /// </summary>
+    protected static byte Battery => JobGauge.Battery;
+
+    /// <summary>
+    /// 过热在这么久后，还有吗
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    protected static bool OverheatedEndAfter(float time)
+    {
+        return EndAfter(JobGauge.OverheatTimeRemaining / 1000f, time);
+    }
+
+    /// <summary>
+    /// 过热在这么久后，还有吗
+    /// </summary>
+    /// <param name="abilityCount"></param>
+    /// <param name="gctCount"></param>
+    /// <returns></returns>
+    protected static bool OverheatedEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    {
+        return EndAfterGCD(JobGauge.OverheatTimeRemaining / 1000f, gctCount, abilityCount);
+    }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Machinist };
 
@@ -40,7 +76,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction HeatBlast { get; } = new(ActionID.HeatBlast)
     {
         OtherCheck = b => JobGauge.IsOverheated 
-        && !EndAfterGCD(JobGauge.OverheatTimeRemaining /1000f),
+        && !OverheatedEndAfterGCD(),
     };
 
     /// <summary>

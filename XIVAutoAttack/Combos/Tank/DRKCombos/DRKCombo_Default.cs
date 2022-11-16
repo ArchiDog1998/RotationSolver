@@ -73,7 +73,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //寂灭
-        if (JobGauge.Blood >= 80 || Player.HasStatus(true, StatusID.Delirium))
+        if (Blood >= 80 || Player.HasStatus(true, StatusID.Delirium))
         {
             if (Quietus.ShouldUse(out act)) return true;
         }
@@ -83,7 +83,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         {
             if (Player.HasStatus(true, StatusID.Delirium) && Player.StatusStack(true, StatusID.BloodWeapon) <= 3) return true;
 
-            if (JobGauge.Blood >= 50 && BloodWeapon.WillHaveOneChargeGCD(1) || JobGauge.Blood >= 90 && !Player.HasStatus(true, StatusID.Delirium)) return true;
+            if (Blood >= 50 && BloodWeapon.WillHaveOneChargeGCD(1) || Blood >= 90 && !Player.HasStatus(true, StatusID.Delirium)) return true;
 
             if (!Delirium.EnoughLevel) return true;
 
@@ -124,7 +124,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         //暗黑波动
         if (FloodofDarkness.ShouldUse(out act))
         {
-            if ((Player.CurrentMp >= 6000 || JobGauge.HasDarkArts) && Unleash.ShouldUse(out _)) return true;
+            if ((Player.CurrentMp >= 6000 || HasDarkArts) && Unleash.ShouldUse(out _)) return true;
         }
 
         //暗黑锋
@@ -207,7 +207,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         if (Delirium.IsCoolDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7)) return true;
 
         //非爆发期防止溢出+续buff
-        if (JobGauge.HasDarkArts || Player.CurrentMp > 8500 || JobGauge.DarksideTimeRemaining < 10) return true;
+        if (HasDarkArts || Player.CurrentMp > 8500 || JobGauge.DarksideTimeRemaining < 10) return true;
 
         return false;
     }

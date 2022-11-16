@@ -9,7 +9,38 @@ using XIVAutoAttack.Helpers;
 namespace XIVAutoAttack.Combos.Basic;
 internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {
-    protected static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();
+    private static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();
+
+    /// <summary>
+    /// 暗血
+    /// </summary>
+    protected static byte Blood => JobGauge.Blood;
+
+    /// <summary>
+    /// 有黑心心
+    /// </summary>
+    protected static bool HasDarkArts => JobGauge.HasDarkArts;
+
+    /// <summary>
+    /// 这个buff还剩多久就要没了啊
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    protected static bool DarkSideEndAfter(float time)
+    {
+        return EndAfter(JobGauge.DarksideTimeRemaining / 1000f, time);
+    }
+
+    /// <summary>
+    /// 这个buff还剩多久就要没了啊
+    /// </summary>
+    /// <param name="abilityCount"></param>
+    /// <param name="gctCount"></param>
+    /// <returns></returns>
+    protected static bool DarkSideEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    {
+        return EndAfterGCD(JobGauge.DarksideTimeRemaining / 1000f, gctCount, abilityCount);
+    }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
     internal sealed override bool HaveShield => Player.HasStatus(true, StatusID.Grit);
@@ -52,6 +83,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// 暗黑波动
     /// </summary>
     public static BaseAction FloodofDarkness { get; } = new(ActionID.FloodofDarkness);
+
 
     /// <summary>
     /// 暗黑锋

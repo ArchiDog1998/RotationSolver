@@ -51,13 +51,13 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
             if (Service.Configuration.AutoBreak && Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
         //开场爆发的时候释放。
-        if (Service.Configuration.AutoBreak && GetRightValue(JobGauge.WhiteMana) && GetRightValue(JobGauge.BlackMana))
+        if (Service.Configuration.AutoBreak && GetRightValue(WhiteMana) && GetRightValue(BlackMana))
         {
             if (Manafication.ShouldUse(out act)) return true;
             if (Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
         //倍增要放到魔连攻击之后
-        if (JobGauge.ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Zwerchhau, Riposte))
+        if (ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Zwerchhau, Riposte))
         {
             if (Manafication.ShouldUse(out act)) return true;
         }
@@ -79,7 +79,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
             if (Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
 
-        if (JobGauge.ManaStacks == 0 && (JobGauge.BlackMana < 50 || JobGauge.WhiteMana < 50) && !Manafication.WillHaveOneChargeGCD(1, 1))
+        if (ManaStacks == 0 && (BlackMana < 50 || WhiteMana < 50) && !Manafication.WillHaveOneChargeGCD(1, 1))
         {
             //促进满了就用。 
             if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -109,7 +109,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         act = null;
-        if (JobGauge.ManaStacks == 3) return false;
+        if (ManaStacks == 3) return false;
 
         #region 常规输出
         if (!Verthunder2.ShouldUse(out _))
@@ -121,7 +121,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         //试试看散碎
         if (Scatter.ShouldUse(out act)) return true;
         //平衡魔元
-        if (JobGauge.WhiteMana < JobGauge.BlackMana)
+        if (WhiteMana < BlackMana)
         {
             if (Veraero2.ShouldUse(out act)) return true;
             if (Veraero.ShouldUse(out act)) return true;
@@ -164,9 +164,9 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         byte level = Level;
         #region 远程三连
         //如果魔元结晶满了。
-        if (JobGauge.ManaStacks == 3)
+        if (ManaStacks == 3)
         {
-            if (JobGauge.BlackMana > JobGauge.WhiteMana && level >= 70)
+            if (BlackMana > WhiteMana && level >= 70)
             {
                 if (Verholy.ShouldUse(out act, mustUse: true)) return true;
             }
@@ -188,22 +188,22 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         if (Redoublement.ShouldUse(out act)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
-        bool mustStart = /*Player.HaveStatus(1971)|| */ JobGauge.BlackMana == 100 || JobGauge.WhiteMana == 100 || !Embolden.IsCoolDown;
+        bool mustStart = /*Player.HaveStatus(1971)|| */ BlackMana == 100 || WhiteMana == 100 || !Embolden.IsCoolDown;
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
         if (!mustStart)
         {
-            if (JobGauge.BlackMana == JobGauge.WhiteMana) return false;
+            if (BlackMana == WhiteMana) return false;
 
             //要求较小的魔元不带触发，也可以强制要求跳过判断。
-            if (JobGauge.WhiteMana < JobGauge.BlackMana)
+            if (WhiteMana < BlackMana)
             {
                 if (Player.HasStatus(true, StatusID.VerstoneReady))
                 {
                     return false;
                 }
             }
-            if (JobGauge.WhiteMana > JobGauge.BlackMana)
+            if (WhiteMana > BlackMana)
             {
                 if (Player.HasStatus(true, StatusID.VerfireReady))
                 {
@@ -229,13 +229,13 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         //要来可以使用近战三连了。
         if (Moulinet.ShouldUse(out act))
         {
-            if (JobGauge.BlackMana >= 60 && JobGauge.WhiteMana >= 60) return true;
+            if (BlackMana >= 60 && WhiteMana >= 60) return true;
         }
         else
         {
-            if (JobGauge.BlackMana >= 50 && JobGauge.WhiteMana >= 50 && Riposte.ShouldUse(out act)) return true;
+            if (BlackMana >= 50 && WhiteMana >= 50 && Riposte.ShouldUse(out act)) return true;
         }
-        if (JobGauge.ManaStacks > 0 && Riposte.ShouldUse(out act)) return true;
+        if (ManaStacks > 0 && Riposte.ShouldUse(out act)) return true;
         #endregion
 
         return false;
