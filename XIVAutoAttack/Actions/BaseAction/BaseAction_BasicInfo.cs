@@ -10,7 +10,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 {
     internal partial class BaseAction : IAction
     {
-        private bool _shouldEndSpecial;
+        public  bool ShouldEndSpecial { private get; set; }
         private bool _isFriendly;
         private bool _isEot;
         /// <summary>
@@ -109,7 +109,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         internal BaseAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false)
         {
             _action = Service.DataManager.GetExcelSheet<Action>().GetRow((uint)actionID);
-            _shouldEndSpecial = shouldEndSpecial;
+            ShouldEndSpecial = shouldEndSpecial;
             _isFriendly = isFriendly;
             _isEot = isEot;
 

@@ -179,7 +179,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             bool result = _action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
              ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, Target.ObjectId);
 
-            if (_shouldEndSpecial) CommandController.ResetSpecial(false);
+            if (ShouldEndSpecial) CommandController.ResetSpecial(false);
 
             return result;
         }

@@ -237,6 +237,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                         {
                             switch (_action.CastType)
                             {
+                                case 10: //环形范围攻击也就这么判断吧，我烦了。
                                 case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
                                     if(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, false, mustUse, false)
                                         .Contains(b))
@@ -293,7 +294,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                         Target = ChoiceTarget(canReachTars);
                         if (Target == null) return false;
                         return true;
-
+                    case 10: //环形范围攻击也就这么判断吧，我烦了。
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
                         Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, false, mustUse, true));
                         if (Target == null) return false;

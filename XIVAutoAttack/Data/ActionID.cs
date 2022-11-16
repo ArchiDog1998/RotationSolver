@@ -313,13 +313,538 @@ namespace XIVAutoAttack.Data
         /// 水炮
         /// </summary>
         WaterCannon = 11385,
+
+        /// <summary>
+        /// 火炎放射
+        /// </summary>
+        FlameThrower = 11402,
+
+        /// <summary>
+        /// 水流吐息
+        /// </summary>
+        AquaBreath = 11390,
+
+        /// <summary>
+        /// 狂乱
+        /// </summary>
+        FlyingFrenzy = 11389,
+
+        /// <summary>
+        /// 钻头炮
+        /// </summary>
+        DrillCannons = 11398,
+
+        /// <summary>
+        /// 高压电流
+        /// </summary>
+        HighVoltage = 11387,
+
+        /// <summary>
+        /// 若隐若现
+        /// </summary>
+        Loom = 11401,
+
+        /// <summary>
+        /// 终极针
+        /// </summary>
+        FinalSting = 11407,
+
+        /// <summary>
+        /// 苦闷之歌
+        /// </summary>
+        SongofTorment = 11386,
+
+        /// <summary>
+        /// 怒视
+        /// </summary>
+        Glower = 11404,
+
+        /// <summary>
+        /// 平原震裂
+        /// </summary>
+        Plaincracker = 11391,
+
+        /// <summary>
+        /// 怒发冲冠
+        /// </summary>
+        Bristle = 11393,
+
+        /// <summary>
+        /// 白风
+        /// </summary>
+        WhiteWind = 11406,
+
+        /// <summary>
+        /// 5级石化
+        /// </summary>
+        Level5Petrify = 11414,
+
+        /// <summary>
+        /// 锋利菜刀
+        /// </summary>
+        SharpenedKnife = 11400,
+
+        /// <summary>
+        /// 冰棘屏障
+        /// </summary>
+        IceSpikes = 11418,
+
+        /// <summary>
+        /// 吸血
+        /// </summary>
+        BloodDrain = 11395,
+
+        /// <summary>
+        /// 橡果炸弹
+        /// </summary>
+        AcornBomb = 11392,
+
+        /// <summary>
+        /// 投弹
+        /// </summary>
+        BombToss = 11396,
+
+        /// <summary>
+        /// 破防
+        /// </summary>
+        Offguard = 11411,
+
+        /// <summary>
+        /// 自爆
+        /// </summary>
+        Selfdestruct = 11408,
+
+        /// <summary>
+        /// 拍掌
+        /// </summary>
+        Faze = 11403,
+
+        /// <summary>
+        /// 投掷沙丁鱼
+        /// </summary>
+        FlyingSardine = 11423,
+
+        /// <summary>
+        /// 鼻息
+        /// </summary>
+        Snort = 11383,
+
+        /// <summary>
+        /// 4星吨
+        /// </summary>
+        Weight4tonze = 11384,
+
+        /// <summary>
+        /// 诡异视线
+        /// </summary>
+        TheLook = 11399,
+
+        /// <summary>
+        /// 臭气
+        /// </summary>
+        BadBreath = 11388,
+
+        /// <summary>
+        /// 超硬化
+        /// </summary>
+        Diamondback = 11424,
+
+        /// <summary>
+        /// 强力守护
+        /// </summary>
+        MightyGuard = 11417,
+
+        /// <summary>
+        /// 滑舌
+        /// </summary>
+        StickyTongue = 11412,
+
+        /// <summary>
+        /// 油性分泌物
+        /// </summary>
+        ToadOil = 11410,
+
+        /// <summary>
+        /// 寒冰咆哮
+        /// </summary>
+        TheRamVoice = 11419,
+
+        /// <summary>
+        /// 雷电咆哮
+        /// </summary>
+        TheDragonVoice = 11420,
+
+        /// <summary>
+        /// 导弹
+        /// </summary>
+        Missile = 11405,
+
+        /// <summary>
+        /// 千针刺
+        /// </summary>
+        Needles1000 = 11397,
+
+        /// <summary>
+        /// 喷墨
+        /// </summary>
+        InkJet = 11422,
+
+        /// <summary>
+        /// 火投枪
+        /// </summary>
+        FireAngon = 11425,
+
+        /// <summary>
+        /// 月之笛
+        /// </summary>
+        MoonFlute = 11415,
+
+        /// <summary>
+        /// 螺旋尾
+        /// </summary>
+        TailScrew = 11413,
+
+        /// <summary>
+        /// 精神冲击
+        /// </summary>
+        MindBlast = 11394,
+
+        /// <summary>
+        /// 死亡宣告
+        /// </summary>
+        Doom = 11416,
+
+        /// <summary>
+        /// 惊奇光
+        /// </summary>
+        PeculiarLight = 11421,
+
+        /// <summary>
+        /// 飞翎雨
+        /// </summary>
+        FeatherRain = 11426,
+
+        /// <summary>
+        /// 地火喷发
+        /// </summary>
+        Eruption = 11427,
+
+        /// <summary>
+        /// 山崩
+        /// </summary>
+        MountainBusterBLU = 11428,
+
+        /// <summary>
+        /// 轰雷
+        /// </summary>
+        ShockStrike = 11429,
+
+        /// <summary>
+        /// 冰雪乱舞
+        /// </summary>
+        GlassDance = 11430,
+
+        /// <summary>
+        /// 水神的面纱
+        /// </summary>
+        VeiloftheWhorl = 11431,
+
+        /// <summary>
+        /// 高山气流
+        /// </summary>
+        AlpineDraft = 18295,
+
+        /// <summary>
+        /// 万变水波
+        /// </summary>
+        ProteanWave = 18296,
+
+        /// <summary>
+        /// 狂风暴雪
+        /// </summary>
+        Northerlies = 18297,
+
+        /// <summary>
+        /// 生物电
+        /// </summary>
+        Electrogenesis = 18298,
+
+        /// <summary>
+        /// 寒光
+        /// </summary>
+        Kaltstrahl = 18299,
+
+        /// <summary>
+        /// 深渊贯穿
+        /// </summary>
+        AbyssalTransfixion = 18300,
+
+        /// <summary>
+        /// 唧唧咋咋
+        /// </summary>
+        Chirp = 18301,
+
+        /// <summary>
+        /// 怪音波
+        /// </summary>
+        EerieSoundwave = 18302,
+
+        /// <summary>
+        /// 绒绒治疗
+        /// </summary>
+        PomCure = 18303,
+
+        /// <summary>
+        /// 哥布防御
+        /// </summary>
+        Gobskin = 18304,
+
+        /// <summary>
+        /// 魔法锤
+        /// </summary>
+        MagicHammer = 18305,
+
+        /// <summary>
+        /// 防御指示
+        /// </summary>
+        Avail = 18306,
+
+        /// <summary>
+        /// 蛙腿
+        /// </summary>
+        FrogLegs = 18307,
+
+        /// <summary>
+        /// 音爆
+        /// </summary>
+        SonicBoom = 18308,
+
+        /// <summary>
+        /// 口笛
+        /// </summary>
+        Whistle = 18309,
+
+        /// <summary>
+        /// 白骑士之旅
+        /// </summary>
+        WhiteKnightsTour = 18310,
+
+        /// <summary>
+        /// 黑骑士之旅
+        /// </summary>
+        BlackKnightsTour = 18311,
+
+        /// <summary>
+        /// 5级即死
+        /// </summary>
+        Level5Death = 18312,
+
+        /// <summary>
+        /// 火箭炮
+        /// </summary>
+        Launcher = 18313,
+
+        /// <summary>
+        /// 永恒射线
+        /// </summary>
+        PerpetualRay = 18314,
+
+        /// <summary>
+        /// 仙人盾
+        /// </summary>
+        Cactguard = 18315,
+
+        /// <summary>
+        /// 复仇冲击
+        /// </summary>
+        RevengeBlast = 18316,
+
+        /// <summary>
+        /// 天使低语
+        /// </summary>
+        AngelWhisper = 18317,
+
+        /// <summary>
+        /// 蜕皮
+        /// </summary>
+        Exuviation = 18318,
+
+        /// <summary>
+        /// 逆流
+        /// </summary>
+        Reflux = 18319,
+
+        /// <summary>
+        /// 捕食
+        /// </summary>
+        Devour = 18320,
+
+        /// <summary>
+        /// 小侦测
+        /// </summary>
+        CondensedLibra = 18321,
+
+        /// <summary>
+        /// 以太复制
+        /// </summary>
+        AetherialMimicry = 18322,
+
+        /// <summary>
+        /// 穿甲散弹
+        /// </summary>
+        Surpanakha = 18323,
+
+        /// <summary>
+        /// 类星体
+        /// </summary>
+        Quasar = 18324,
+
+        /// <summary>
+        /// 正义飞踢
+        /// </summary>
+        JKick = 18325,
+
+        /// <summary>
+        /// 渔叉三段
+        /// </summary>
+        TripleTrident = 23264,
+
+        /// <summary>
+        /// 哔哩哔哩
+        /// </summary>
+        Tingle = 23265,
+
+        /// <summary>
+        /// 掀地板之术
+        /// </summary>
+        Tatamigaeshi = 23266,
+
+        /// <summary>
+        /// 彻骨雾寒
+        /// </summary>
+        ColdFog = 23267,
+
+        /// <summary>
+        /// 赞歌
+        /// </summary>
+        Stotram = 23269,
+
+        /// <summary>
+        /// 圣光射线
+        /// </summary>
+        SaintlyBeam = 23270,
+
+        /// <summary>
+        /// 污泥泼洒
+        /// </summary>
+        FeculentFlood = 23271,
+
+        /// <summary>
+        /// 天使的点心
+        /// </summary>
+        AngelsSnack = 23272,
+
+        /// <summary>
+        /// 玄结界
+        /// </summary>
+        ChelonianGate = 23273,
+
+        /// <summary>
+        /// 斗灵弹
+        /// </summary>
+        TheRoseofDestruction = 23275,
+
+        /// <summary>
+        /// 斗争本能
+        /// </summary>
+        BasicInstinct = 23276,
+
+        /// <summary>
+        /// 超振动
+        /// </summary>
+        Ultravibration = 23277,
+
+        /// <summary>
+        /// 冰焰
+        /// </summary>
+        Blaze = 23278,
+
+        /// <summary>
+        /// 芥末爆弹
+        /// </summary>
+        MustardBomb = 23279,
+
+        /// <summary>
+        /// 龙之力
+        /// </summary>
+        DragonForce = 23280,
+
+        /// <summary>
+        /// 以太火花
+        /// </summary>
+        AetherialSpark = 23281,
+
+        /// <summary>
+        /// 水力吸引
+        /// </summary>
+        HydroPull = 23282,
+
+        /// <summary>
+        /// 水脉诅咒
+        /// </summary>
+        MaledictionofWater = 23283,
+
+        /// <summary>
+        /// 陆行鸟陨石
+        /// </summary>
+        ChocoMeteor = 23284,
+
+        /// <summary>
+        /// 马特拉魔术
+        /// </summary>
+        MatraMagic = 23285,
+
+        /// <summary>
+        /// 生成外设
+        /// </summary>
+        PeripheralSynthesis = 23286,
+
+        /// <summary>
+        /// 如意大旋风
+        /// </summary>
+        BothEnds = 23287,
+
+        /// <summary>
+        /// 鬼宿脚
+        /// </summary>
+        PhantomFlurry = 23288,
+
+        /// <summary>
+        /// 月下彼岸花
+        /// </summary>
+        Nightbloom = 23290,
+
+        /// <summary>
+        /// 冰雾
+        /// </summary>
+        WhiteDeath = 23268,
+
+        /// <summary>
+        /// 玄天武水壁
+        /// </summary>
+        DivineCataract = 23274,
+
+        /// <summary>
+        /// 鬼宿脚(需要buff版本）
+        /// </summary>
+        PhantomFlurry2 = 23289,
         #endregion
 
         #region Bard
         /// <summary>
         /// 强力射击
         /// </summary>
-        HeavyShoot = 97,
+HeavyShoot = 97,
 
         /// <summary>
         /// 直线射击
