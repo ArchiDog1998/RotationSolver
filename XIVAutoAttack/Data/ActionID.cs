@@ -1094,6 +1094,11 @@ HeavyShoot = 97,
         Improvisation = 16014,
 
         /// <summary>
+        /// 即兴表演结束
+        /// </summary>
+        Improvised = 25789,
+
+        /// <summary>
         /// 提拉纳
         /// </summary>
         Tillana = 25790,
