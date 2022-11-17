@@ -8,6 +8,7 @@ using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Updaters;
 using static XIVAutoAttack.Combos.RangedMagicial.BLUCombos.BLUCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
@@ -25,6 +26,9 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
         {
             //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
         };
+
+        protected override bool CanHealAreaSpell => base.CanHealAreaSpell && BlueId == BLUID.Healer;
+        protected override bool CanHealSingleSpell => base.CanHealSingleSpell && BlueId == BLUID.Healer;
 
         private protected override ActionConfiguration CreateConfiguration()
         {
@@ -70,6 +74,27 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
 
             act = null;
             return false;
+        }
+
+        private protected override bool HealAreaGCD(out IAction act)
+        {
+            if (BlueId == BLUID.Healer)
+            {
+                //有某些非常危险的状态。
+                if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
+                {
+                    if (Exuviation.ShouldUse(out act, mustUse: true)) return true;
+                }
+                if (AngelsSnack.ShouldUse(out act)) return true;
+                if (Stotram.ShouldUse(out act)) return true;
+                if (PomCure.ShouldUse(out act)) return true;
+            }
+            else
+            {
+                if (WhiteWind.ShouldUse(out act)) return true;
+            }
+
+            return base.HealAreaGCD(out act);
         }
     }
 }

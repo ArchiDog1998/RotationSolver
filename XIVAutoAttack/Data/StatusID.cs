@@ -1031,5 +1031,10 @@
         /// 攻击准备
         /// </summary>
         Harmonized = 2118,
+
+        /// <summary>
+        /// 斗争本能
+        /// </summary>
+        BasicInstinct = 2498,
     }
 }
