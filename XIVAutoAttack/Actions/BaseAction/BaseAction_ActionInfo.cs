@@ -60,8 +60,9 @@ namespace XIVAutoAttack.Actions.BaseAction
                     }
                     else
                     {
-                        //不能连续使用
-                        if (Watcher.LastAction == (ActionID)AdjustedID) return false;
+                        //不是青魔，不能连续使用
+                        if ((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id != ClassJobID.BlueMage 
+                            &&  Watcher.LastAction == (ActionID)AdjustedID) return false;
 
                         //冷却时间没超过一成且下一个Ability前不能转好
                         if (!HaveOneCharge && !WillHaveOneCharge(ActionUpdater.AbilityRemain, false))
