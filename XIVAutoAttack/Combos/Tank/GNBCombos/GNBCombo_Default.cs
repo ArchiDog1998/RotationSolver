@@ -150,7 +150,6 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     {
         if (abilityRemain == 2)
         {
-
             //ºı…À10%£©
             if (HeartofStone.ShouldUse(out act)) return true;
 

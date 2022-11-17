@@ -164,14 +164,14 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (Level == 90 && UseLoopManager(out act)) return true;
 
         //移动时
-        if (IsMoving && InCombat && HaveHostilesInRange)
+        if (IsMoving && InCombat && HaveHostilesInRange && !IsLastAction(true, AetherialManipulation))
         {
             if (Xenoglossy.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
             if (HasThunder && Thunder2.ShouldUse(out act)) return true;
             if (HasThunder && Thunder.ShouldUse(out act)) return true;
             if (HasFire && Fire3.ShouldUse(out act)) return true;
-            if (!IsLastAction(true, AetherialManipulation) && Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-            if (!IsLastAction(true, AetherialManipulation) && !Player.HasStatus(true, StatusID.Triplecast) && Swiftcast.ShouldUse(out act)) return true;
+            if (Triplecast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            //if (!Player.HasStatus(true, StatusID.Triplecast) && Swiftcast.ShouldUse(out act)) return true;
         }
 
         //保持天语
@@ -314,7 +314,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
                 if (!Fire3.EnoughLevel && Player.CurrentMp >= 9600) return true;
             }
             //雷
-            if (Thunder.ShouldUse(out act) && Thunder.Target.IsBoss())
+            if (Thunder.ShouldUse(out act) && Target.IsBoss() && !Target.IsDying())
             {
                 //没雷dot
                 if (!TargetHasThunder || TargetThunderWillEnd(3)) return true;
@@ -335,7 +335,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //火3
             if (CanUseFire3(out act)) return true;
             //雷
-            if (Thunder.ShouldUse(out act) && Thunder.Target.IsBoss())
+            if (Thunder.ShouldUse(out act) && Target.IsBoss() && Target.IsDying())
             {
                 //没雷dot
                 if (!TargetHasThunder || TargetThunderWillEnd(3)) return true;
@@ -369,9 +369,9 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             if (Blizzard3.ShouldUse(out act)) return true;
 
             //火1
-            if (Level < 60 && Player.CurrentMp >= 6000 && Fire.ShouldUse(out act)) return true;
+            if (Level < 60 && Player.CurrentMp >= 6800 && Fire.ShouldUse(out act)) return true;
             //冰1
-            if (Level < 60 && Blizzard.ShouldUse(out act)) return true;
+            if (Player.CurrentMp < 6800 && Level < 60 && Blizzard.ShouldUse(out act)) return true;
 
         }
         act = null;
@@ -433,7 +433,8 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     /// <returns></returns>
     private bool Maintence(out IAction act)
     { 
-        if (UmbralSoul.ShouldUse(out act) && ElementTimeEndAfterGCD(2)) return true;
+        if (UmbralSoul.ShouldUse(out act) && UmbralIceStacks == 3 && ElementTimeEndAfterGCD(2)) return true;
+        if (UmbralSoul.ShouldUse(out act) && UmbralIceStacks != 3) return true;
         if (Transpose.ShouldUse(out act) && ElementTimeEndAfterGCD(1) && Foul.EnoughLevel) return true;
         if (Transpose.ShouldUse(out act) && ElementTimeEndAfterGCD(1) && InAstralFire && !Foul.EnoughLevel) return true;
 

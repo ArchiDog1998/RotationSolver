@@ -134,13 +134,13 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         if (Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(8))
         {
             //暗影使者
-            if (Shadowbringer.ShouldUse(out act)) return true;
+            if (Shadowbringer.ShouldUse(out act, mustUse: true)) return true;
 
             //吸血深渊+精雕怒斩
             if (AbyssalDrain.ShouldUse(out act)) return true;
             if (CarveandSpit.ShouldUse(out act)) return true;
 
-            if (Shadowbringer.ShouldUse(out act, mustUse: true)) return true;
+            if (Shadowbringer.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
         }
         //吸血深渊+精雕怒斩
