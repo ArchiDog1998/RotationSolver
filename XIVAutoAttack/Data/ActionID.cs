@@ -1136,7 +1136,7 @@ HeavyShoot = 97,
         Disembowel = 87,
 
         /// <summary>
-        /// 樱花怒放
+        /// 樱花缭乱
         /// </summary>
         ChaosThrust = 88,
 

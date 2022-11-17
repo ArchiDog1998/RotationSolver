@@ -19,6 +19,7 @@ changelog: |-
   ## 功能新增
   - 可以选择不复活濒死的黑头们
   - 可以选择蓝量过低的时候不复活憨憨们
+  - 添加远敏脱战自动速行
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

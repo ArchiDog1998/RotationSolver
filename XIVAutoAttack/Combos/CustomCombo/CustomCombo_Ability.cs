@@ -179,6 +179,10 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
                 break;
         }
 
+        if (!InCombat && IsMoving && role == JobRole.RangedPhysical 
+            && !Service.ClientState.LocalPlayer.HasStatus(false, StatusID.Peloton)
+            && Peloton.ShouldUse(out act, mustUse: true)) return true;
+
         if (GeneralAbility(abilityRemain, out act)) return true;
         if (HaveHostilesInRange && AttackAbility(abilityRemain, out act)) return true;
         return false;

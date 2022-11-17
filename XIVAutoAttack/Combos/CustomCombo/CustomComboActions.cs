@@ -184,7 +184,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 速行
         /// </summary>
-        public static BaseAction Peloton { get; } = new BaseAction(ActionID.Peloton, shouldEndSpecial: true)
+        public static BaseAction Peloton { get; } = new BaseAction(ActionID.Peloton, true)
         {
             BuffsProvide = new StatusID[] { StatusID.Peloton },
         };
