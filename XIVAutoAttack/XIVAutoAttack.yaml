@@ -10,6 +10,7 @@ punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
   - 修复黑骑暗影使者只会使用一层的问题
+  - 增加了奶青的逻辑，D青啊我还不知道怎么搞
   ## 功能新增
   - 可以选择不复活濒死的黑头们
   - 可以选择蓝量过低的时候不复活憨憨们

@@ -94,7 +94,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 {
                     if(lastcom.TryGetValue(Author, out var lastCon))
                     {
-                        if (con.IsTheSame(lastCon)) return lastCon;
+                        if (con.IsTheSame(lastCon))
+                        {
+                            return con;
+                        }
                     }
                     lastcom[Author] = con;
                 }

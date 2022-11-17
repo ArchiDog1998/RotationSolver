@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace XIVAutoAttack.Configuration
 {
@@ -120,21 +121,28 @@ namespace XIVAutoAttack.Configuration
             for (int i = 0; i < this.texts.Count; i++)
             {
                 if (this.texts[i].name != other.texts[i].name) return false;
+                this.texts[i].value = other.texts[i].value;
             }
+
             if (this.doubles.Count != other.doubles.Count) return false;
             for (int i = 0; i < this.doubles.Count; i++)
             {
                 if (this.doubles[i].name != other.doubles[i].name) return false;
+                this.doubles[i].value = other.doubles[i].value;
             }
+
             if (this.bools.Count != other.bools.Count) return false;
             for (int i = 0; i < this.bools.Count; i++)
             {
                 if (this.bools[i].name != other.bools[i].name) return false;
+                this.bools[i].value = other.bools[i].value;
             }
+
             if (this.combos.Count != other.combos.Count) return false;
             for (int i = 0; i < this.combos.Count; i++)
             {
                 if (this.combos[i].name != other.combos[i].name) return false;
+                this.combos[i].value = other.combos[i].value;
             }
             return true;
         }
@@ -143,24 +151,39 @@ namespace XIVAutoAttack.Configuration
     public class FloatConfiguration
     {
         public string name;
-        public string description;
+
         public float value;
+
+        [NonSerialized]
+        public string description;
+
+        [NonSerialized]
         public float min;
+
+        [NonSerialized]
         public float max;
+
+        [NonSerialized]
         public float speed;
     }
 
     public class BooleanConfiguration
     {
         public string name;
-        public string description;
+
         public bool value;
+
+        [NonSerialized]
+        public string description;
+
     }
 
     public class TextConfiguration
     {
         public string name;
         public string description;
+
+        [NonSerialized]
         public string value;
     }
 
@@ -168,7 +191,11 @@ namespace XIVAutoAttack.Configuration
     {
         public string name;
         public string description;
+
+        [NonSerialized]
         public int value;
+
+        [NonSerialized]
         public string[] items;
     }
 }
