@@ -154,7 +154,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction BarrelStabilizer { get; } = new(ActionID.BarrelStabilizer)
     {
-        ActionCheck = b => JobGauge.Heat <= 50,
+        ActionCheck = b => JobGauge.Heat <= 50 && InCombat,
     };
 
     /// <summary>

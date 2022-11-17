@@ -21,7 +21,6 @@ using Dalamud.Interface;
 using XIVAutoAttack.Combos.Script;
 using System.Diagnostics;
 using System.Reflection;
-
 namespace XIVAutoAttack.Windows;
 
 internal class ComboConfigWindow : Window
@@ -1047,6 +1046,7 @@ internal class ComboConfigWindow : Window
 
         if(texture is IScriptCombo script)
         {
+#if DEBUG
             if (ImGui.Button($"{FontAwesomeIcon.Folder.ToIconString()}##文件{texture.Name}"))
             {
                 Process p = new Process();
@@ -1054,14 +1054,18 @@ internal class ComboConfigWindow : Window
                 p.StartInfo.Arguments = $" /select, {script.FilePath}";
                 p.Start();
             }
+#endif
         }
         else
         {
-            if (ImGui.Button($"{FontAwesomeIcon.InternetExplorer.ToIconString()}##源码{texture.Name}"))
+            //ImGui.PushFont(UiBuilder.IconFont);
+            //ImGui.SetNextItemWidth(32);
+            if (ImGui.Button($"源码##源码{texture.Name}"))
             {
                 var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
                 Process.Start("cmd", $"/C start {url}");
             }
+            //ImGui.PopFont();
         }
 
 
@@ -1140,5 +1144,4 @@ internal class ComboConfigWindow : Window
 #endif
         });
     }
-
 }

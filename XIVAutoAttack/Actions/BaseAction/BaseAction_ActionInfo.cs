@@ -8,7 +8,6 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
-using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Actions.BaseAction
 {
