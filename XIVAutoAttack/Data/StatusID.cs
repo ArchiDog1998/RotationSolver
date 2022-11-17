@@ -1036,5 +1036,10 @@
         /// 斗争本能
         /// </summary>
         BasicInstinct = 2498,
+
+        /// <summary>
+        /// 哔哩哔哩
+        /// </summary>
+        Tingling = 2492,
     }
 }
