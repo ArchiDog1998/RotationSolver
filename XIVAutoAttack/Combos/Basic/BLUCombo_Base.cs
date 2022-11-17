@@ -661,7 +661,8 @@ namespace XIVAutoAttack.Combos.Basic
             ActionCheck = b =>
             {
                 //TODO: 还需要判断是否为多人本
-                return TargetUpdater.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1;
+                return Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56] 
+                    && TargetUpdater.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1;
             },
         };
 

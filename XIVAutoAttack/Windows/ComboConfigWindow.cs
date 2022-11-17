@@ -1044,29 +1044,33 @@ internal class ComboConfigWindow : Window
         ImGui.SameLine();
         Spacing();
 
-        if(texture is IScriptCombo script)
+        if(texture is ICustomCombo)
         {
+            if (texture is IScriptCombo script)
+            {
 #if DEBUG
-            if (ImGui.Button($"{FontAwesomeIcon.Folder.ToIconString()}##文件{texture.Name}"))
-            {
-                Process p = new Process();
-                p.StartInfo.FileName = "explorer.exe";
-                p.StartInfo.Arguments = $" /select, {script.FilePath}";
-                p.Start();
-            }
+                if (ImGui.Button($"{FontAwesomeIcon.Folder.ToIconString()}##文件{texture.Name}"))
+                {
+                    Process p = new Process();
+                    p.StartInfo.FileName = "explorer.exe";
+                    p.StartInfo.Arguments = $" /select, {script.FilePath}";
+                    p.Start();
+                }
 #endif
-        }
-        else
-        {
-            //ImGui.PushFont(UiBuilder.IconFont);
-            //ImGui.SetNextItemWidth(32);
-            if (ImGui.Button($"源码##源码{texture.Name}"))
-            {
-                var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
-                Process.Start("cmd", $"/C start {url}");
             }
-            //ImGui.PopFont();
+            else
+            {
+                //ImGui.PushFont(UiBuilder.IconFont);
+                //ImGui.SetNextItemWidth(32);
+                if (ImGui.Button($"源码##源码{texture.Name}"))
+                {
+                    var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
+                    Process.Start("cmd", $"/C start {url}");
+                }
+                //ImGui.PopFont();
+            }
         }
+
 
 
         if (enable)
@@ -1128,7 +1132,7 @@ internal class ComboConfigWindow : Window
             //CommandHelp("Disable" + act.Name, $"关闭{act}");
             //CommandHelp($"Insert{act}-{5}", $"5s内最高优先插入{act}");
 
-            ImGui.Text(act.ToString());
+            ImGui.NewLine();
             ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());
             ImGui.Text("Is Real GCD: " + act.IsRealGCD.ToString());
             ImGui.Text("Recast One: " + act.RecastTimeOneChargeDEBUG.ToString());
