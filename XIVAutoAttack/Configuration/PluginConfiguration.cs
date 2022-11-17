@@ -43,6 +43,8 @@ public class PluginConfiguration : IPluginConfiguration
     public VirtualKey PoslockModifier { get; set; } = VirtualKey.CONTROL;
     public bool RaisePlayerByCasting { get; set; } = true;
     public bool RaisePlayerBySwift { get; set; } = true;
+    public bool RaiseBrinkofDeath { get; set; } = true;
+    public int LessMPNoRaise { get; set; } = 0;
     public bool AutoShield { get; set; } = true;
     public bool AddEnemyListToHostile { get; set; } = false;
     public bool UseAOEWhenManual { get; set; } = false;

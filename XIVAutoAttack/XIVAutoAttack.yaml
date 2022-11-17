@@ -9,18 +9,10 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 特职分类可以细分魔法和远程。
-  - 修复了治疗认为死了的人可以奶的问题。
-  - 调整白魔释放技能的优先级。
-  - 贤者毒箭三层时不强制用，发炎走位留一层。 
-  - 调整了白魔释放技能的优先级
-  - 调整了赤魔和舞者
-  - 青魔现在只会吸人和终极针
-  - 修改了源代码按钮的逻辑
-  ## 功能删除
-  - 去除永远下踢选项，自行禁用相应技能。
-  ## API
-  - 去除JobgaugeCombo和OtherCombo。
+  - 修复黑骑暗影使者只会使用一层的问题
+  ## 功能新增
+  - 可以选择不复活濒死的黑头们
+  - 可以选择蓝量过低的时候不复活憨憨们
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png

@@ -592,6 +592,13 @@ internal class ComboConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        int lessMPNoRaise = Service.Configuration.LessMPNoRaise;
+                        if (ImGui.DragInt("小于多少蓝就不复活了", ref lessMPNoRaise, 200, 0, 10000))
+                        {
+                            Service.Configuration.LessMPNoRaise = lessMPNoRaise;
+                            Service.Configuration.Save();
+                        }
+
                         bool useItem = Service.Configuration.UseItem;
                         if (ImGui.Checkbox("使用道具", ref useItem))
                         {
@@ -770,6 +777,13 @@ internal class ComboConfigWindow : Window
                         if (ImGui.Checkbox("复活所有能复活的人，而非小队", ref raiseAll))
                         {
                             Service.Configuration.RaiseAll = raiseAll;
+                            Service.Configuration.Save();
+                        }
+
+                        bool raiseBrinkofDeath = Service.Configuration.RaiseBrinkofDeath;
+                        if (ImGui.Checkbox("复活濒死（黑头）之人", ref raiseBrinkofDeath))
+                        {
+                            Service.Configuration.RaiseBrinkofDeath = raiseBrinkofDeath;
                             Service.Configuration.Save();
                         }
                     }

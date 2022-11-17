@@ -579,12 +579,12 @@
         FlourishingFinish = 2698,
 
         /// <summary>
-        /// 要死了
+        /// 虚弱
         /// </summary>
         Weakness = 43,
 
         /// <summary>
-        /// 要死了
+        /// 濒死
         /// </summary>
         BrinkofDeath = 44,
 
