@@ -85,9 +85,9 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
+        if (base.EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //如果要群奶了，先上个天宫图！
         if (nextGCD.IsAnySameAction(true, AspectedHelios, Helios))

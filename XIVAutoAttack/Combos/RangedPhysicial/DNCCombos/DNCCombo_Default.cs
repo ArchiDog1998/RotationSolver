@@ -37,7 +37,7 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         if (SettingBreak && !TechnicalStep.EnoughLevel
-    && Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            && Devilment.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //”¶º±ªªŒË∞È
         if (Player.HasStatus(true, StatusID.ClosedPosition1))
@@ -117,7 +117,6 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
 
     private bool AttackGCD(out IAction act, bool breaking)
     {
-
         //Ω£ŒË
         if ((breaking || Esprit >= 80) &&
             SaberDance.ShouldUse(out act, mustUse: true)) return true;
@@ -156,18 +155,6 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
         if (Fountain.ShouldUse(out act)) return true;
         if (Cascade.ShouldUse(out act)) return true;
 
-        return false;
-    }
-
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
-    {
-        //¥ÛŒË«∞’˚ÃΩ∏Í
-        if(nextGCD.IsAnySameAction(true, TechnicalStep))
-        {
-            if (Devilment.ShouldUse(out act)) return true;
-        }
-
-        act = null!;
         return false;
     }
 }

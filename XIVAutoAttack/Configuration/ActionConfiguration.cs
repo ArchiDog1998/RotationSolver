@@ -151,7 +151,6 @@ namespace XIVAutoAttack.Configuration
     public class FloatConfiguration
     {
         public string name;
-
         public float value;
 
         [NonSerialized]
@@ -170,7 +169,6 @@ namespace XIVAutoAttack.Configuration
     public class BooleanConfiguration
     {
         public string name;
-
         public bool value;
 
         [NonSerialized]

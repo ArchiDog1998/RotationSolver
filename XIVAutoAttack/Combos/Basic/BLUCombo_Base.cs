@@ -708,11 +708,11 @@ namespace XIVAutoAttack.Combos.Basic
         }
 
 
-        private protected override bool EmergercyGCD(out IAction act)
+        private protected override bool EmergencyGCD(out IAction act)
         {
             if (AetherialMimicry.ShouldUse(out act)) return true;
             if (BasicInstinct.ShouldUse(out act)) return true;
-            return base.EmergercyGCD(out act);
+            return base.EmergencyGCD(out act);
         }
 
         protected static bool AllOnSlot(params BLUAction[] actions) => actions.All(a => a.OnSlot);

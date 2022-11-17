@@ -38,7 +38,7 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
         {DescType.单体防御, $"{Adloquium}"},
     };
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //秘策绑定单盾群盾
         if (nextGCD.IsAnySameAction(true, Succor, Adloquium))
@@ -61,7 +61,7 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
             }
         }
 
-        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool GeneralGCD(out IAction act)

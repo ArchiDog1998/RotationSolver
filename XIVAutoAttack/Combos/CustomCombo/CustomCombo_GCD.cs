@@ -121,7 +121,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
         {
-            if (EmergercyGCD(out var act)) return act;
+            if (EmergencyGCD(out var act)) return act;
 
             if (EsunaRaise(out act, abilityRemain, false)) return act;
             if (CommandController.Move && MoveGCD( out act))
@@ -206,7 +206,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
-        private protected virtual bool EmergercyGCD(out IAction act)
+        private protected virtual bool EmergencyGCD(out IAction act)
         {
             act = null; return false;
         }

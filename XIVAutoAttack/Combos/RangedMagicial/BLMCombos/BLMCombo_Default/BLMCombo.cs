@@ -143,7 +143,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         return base.MoveAbility(abilityRemain, out act);
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
 
         act = null;

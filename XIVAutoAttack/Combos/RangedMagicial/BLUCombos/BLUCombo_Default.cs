@@ -49,13 +49,13 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             return false;
         }
 
-        private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+        private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
         {
             if(nextGCD.IsAnySameAction(false, Selfdestruct, FinalSting))
             {
                 if (Swiftcast.ShouldUse(out act)) return true;
             }
-            return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+            return base.EmergencyAbility(abilityRemain, nextGCD, out act);
         }
 
         private protected override bool GeneralGCD(out IAction act)

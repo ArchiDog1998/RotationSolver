@@ -107,13 +107,13 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         return base.GeneralAbility(abilityRemain, out act);
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //如果接下来要上毒或者要直线射击，那算了。
         if (nextGCD.IsAnySameAction(true, StraitShoot, VenomousBite,
             Windbite, IronJaws))
         {
-            return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+            return base.EmergencyAbility(abilityRemain, nextGCD, out act);
         }
         else if (abilityRemain != 0 &&
             (!RagingStrikes.EnoughLevel || Player.HasStatus(true, StatusID.RagingStrikes)) &&
@@ -126,7 +126,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             }
         }
 
-        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
