@@ -1041,5 +1041,15 @@
         /// 哔哩哔哩
         /// </summary>
         Tingling = 2492,
+
+        /// <summary>
+        /// 鬼宿脚
+        /// </summary>
+        PhantomFlurry = 2502,
+
+        /// <summary>
+        /// 穿甲散弹强化
+        /// </summary>
+        SurpanakhaFury = 2130,
     }
 }

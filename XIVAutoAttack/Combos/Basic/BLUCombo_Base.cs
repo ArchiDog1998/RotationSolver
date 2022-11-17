@@ -36,7 +36,7 @@ namespace XIVAutoAttack.Combos.Basic
 
         public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlueMage };
 
-        protected static BLUAttackType AttackType { get; set; } = BLUAttackType.Magical;
+        protected static BLUAttackType AttackType { get; set; } = BLUAttackType.Both;
 
         protected static BLUID BlueId { get; set; } = BLUID.DPS;
 

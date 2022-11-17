@@ -69,6 +69,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
+        if (!InCombat && Peloton.ShouldUse(out act, mustUse:true)) return true;
         //伶牙俐齿
         if (IronJaws.ShouldUse(out act))
         {
@@ -103,7 +104,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
     private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
     {
         //脱战速行
-        if (!InCombat && Player.WillStatusEndGCD(1) && Peloton.ShouldUse(out act)) return true;
+        if (!InCombat && Peloton.ShouldUse(out act)) return true;
         return base.GeneralAbility(abilityRemain, out act);
     }
 
