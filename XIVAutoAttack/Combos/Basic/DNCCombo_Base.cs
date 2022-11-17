@@ -251,9 +251,9 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         BuffsNeed = new[] { StatusID.StandardFinish },
         BuffsProvide = new[]
         {
-                 StatusID.ThreefoldFanDance,
-                 StatusID.FourfoldFanDance,
-            },
+            StatusID.ThreefoldFanDance,
+            StatusID.FourfoldFanDance,
+        },
         ActionCheck = b => InCombat,
     };
 

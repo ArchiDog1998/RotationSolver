@@ -52,9 +52,9 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (base.EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
+        if (base.EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //下个技能是
         if (nextGCD.IsAnySameAction(false, Pneuma, EukrasianDiagnosis,

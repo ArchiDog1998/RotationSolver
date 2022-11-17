@@ -224,11 +224,11 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         == ActionID.Hypervelocity,
     };
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //超火流星 如果谢不够了。
         if (Superbolide.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(Superbolide.Target)) return true;
-        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 }
 

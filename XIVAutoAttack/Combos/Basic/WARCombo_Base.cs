@@ -178,10 +178,10 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         BuffsNeed = new[] { StatusID.PrimalRendReady }
     };
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //死斗 如果血不够了。
         if (Holmgang.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(Holmgang.Target)) return true;
-        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 }

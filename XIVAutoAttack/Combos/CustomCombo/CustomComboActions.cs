@@ -23,13 +23,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public static BaseAction Swiftcast { get; } = new BaseAction(ActionID.Swiftcast)
         {
             BuffsProvide = new StatusID[]
-                {
-                    //StatusID.Swiftcast1,
-                    //StatusID.Swiftcast2,
-                    StatusID.Swiftcast,
-                    //StatusID.Triplecast,
-                    //StatusID.Dualcast,
-                }
+            {
+                StatusID.Swiftcast,
+                StatusID.Triplecast,
+                StatusID.Dualcast,
+            }
         };
 
         /// <summary>

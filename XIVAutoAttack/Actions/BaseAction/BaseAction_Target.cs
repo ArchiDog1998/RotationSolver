@@ -104,15 +104,14 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             if (_action.TargetArea)
             {
-                //缩地
-                if (_action.EffectRange == 1 && _action.Range == 20)
+                //移动
+                if (_action.EffectRange == 1 && _action.Range >= 15)
                 {
                     BattleChara[] availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b is BattleChara)
                         .Select(b => (BattleChara)b).ToArray();
 
                     Target = TargetFilter.FindTargetForMoving(TargetFilter.GetObjectInRadius(availableCharas, 20));
                     _position = Target.Position;
-
                 }
                 else
                 {
@@ -184,7 +183,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             else if (_action.CanTargetParty)
             {
                 //还消耗2400的蓝，那肯定是复活的。
-                if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24)
+                if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24 || (ActionID)ID == ActionID.AngelWhisper)
                 {
                     Target = TargetFilter.GetDeathPeople(TargetUpdater.DeathPeopleAll, TargetUpdater.DeathPeopleParty);
                     if (Target == null) return false;

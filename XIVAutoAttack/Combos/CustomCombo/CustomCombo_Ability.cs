@@ -20,7 +20,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
             return false;
         }
 
-        if (EmergercyAbility(abilityRemain, nextGCD, out act)) return true;
+        if (EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
         var role = Job.GetJobRole();
 
         if (TargetUpdater.CanInterruptTargets.Length > 0)
@@ -210,7 +210,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     /// <param name="nextGCD"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected virtual bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (nextGCD is BaseAction action)
         {

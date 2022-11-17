@@ -13,9 +13,29 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     private static RPRGauge JobGauge => Service.JobGauges.Get<RPRGauge>();
 
     /// <summary>
-    /// 这个是啥啊？RPR帮个忙吧！
+    /// 红色灵魂
+    /// </summary>
+    protected static byte Soul => JobGauge.Soul;
+    /// <summary>
+    /// 蓝色灵魂
+    /// </summary>
+    protected static byte Shroud => JobGauge.Shroud;
+    /// <summary>
+    /// 夜游魂
     /// </summary>
     protected static byte LemureShroud => JobGauge.LemureShroud;
+    /// <summary>
+    /// 虚无魂
+    /// </summary>
+    protected static byte VoidShroud => JobGauge.VoidShroud;
+    /// <summary>
+    /// 夜游魂附体
+    /// </summary>
+    protected static bool Enshrouded => Player.HasStatus(true, StatusID.Enshrouded);
+    /// <summary>
+    /// 妖异之镰状态
+    /// </summary>
+    protected static bool SoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
 
@@ -28,14 +48,6 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         {
         }
     }
-    protected static bool Enshrouded => Player.HasStatus(true, StatusID.Enshrouded);
-    protected static bool SoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
-    protected static bool EnhancedGibbet => Player.HasStatus(true, StatusID.EnhancedGibbet);
-    protected static bool EnhancedGallows => Player.HasStatus(true, StatusID.EnhancedGallows);
-    protected static bool EnhancedCrossReaping => Player.HasStatus(true, StatusID.EnhancedCrossReaping);
-    protected static bool EnhancedVoidReaping => Player.HasStatus(true, StatusID.EnhancedVoidReaping);
-    protected static bool PlentifulReady => Player.HasStatus(true, StatusID.ImmortalSacrifice) && !Player.HasStatus(true, StatusID.BloodsownCircle);
-    protected static bool HaveDeathsDesign => Target.HasStatus(true, StatusID.DeathsDesign);
 
     #region 单体
     /// <summary>
@@ -119,7 +131,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Gibbet { get; } = new(ActionID.Gibbet)
     {
-        ActionCheck = b => SoulReaver && EnhancedGibbet,
+        BuffsNeed = new[] {StatusID.SoulReaver}
     };
 
     /// <summary>
@@ -127,7 +139,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Gallows { get; } = new(ActionID.Gallows)
     {
-        ActionCheck = b => SoulReaver && (EnhancedGallows || !EnhancedGibbet),
+        BuffsNeed = new[] { StatusID.SoulReaver }
     };
 
     /// <summary>
@@ -135,7 +147,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Guillotine { get; } = new(ActionID.Guillotine)
     {
-        ActionCheck = b => SoulReaver,
+        BuffsNeed = new[] { StatusID.SoulReaver }
     };
     #endregion
     #region 红条50灵魂
@@ -145,9 +157,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction BloodStalk { get; } = new(ActionID.BloodStalk)
     {
         BuffsProvide = new[] { StatusID.SoulReaver },
-        ActionCheck = b => !SoulReaver && !Enshrouded &&
-                          JobGauge.Soul >= 50 && !PlentifulReady &&
-                          ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel),
+        ActionCheck = b => !SoulReaver && !Enshrouded && JobGauge.Soul >= 50
     };
 
     /// <summary>
@@ -155,6 +165,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction GrimSwathe { get; } = new(ActionID.GrimSwathe)
     {
+        BuffsProvide = new[] { StatusID.SoulReaver },
         ActionCheck = BloodStalk.ActionCheck,
     };
 
@@ -163,7 +174,8 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Gluttony { get; } = new(ActionID.Gluttony)
     {
-        ActionCheck = b => !SoulReaver && !Enshrouded && JobGauge.Soul >= 50,
+        BuffsProvide = new[] { StatusID.SoulReaver },
+        ActionCheck = BloodStalk.ActionCheck,
     };
     #endregion
     #region 大爆发
@@ -172,7 +184,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ArcaneCircle { get; } = new(ActionID.ArcaneCircle, true)
     {
-        ActionCheck = b => InCombat && HaveDeathsDesign
+        BuffsProvide = new[] {StatusID.CircleofSacrifice,StatusID.BloodsownCircle}
     };
 
     /// <summary>
@@ -180,7 +192,8 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction PlentifulHarvest { get; } = new(ActionID.PlentifulHarvest)
     {
-        ActionCheck = b => JobGauge.Shroud <= 50 && !SoulReaver && !Enshrouded && PlentifulReady
+        BuffsNeed = new[] {StatusID.ImmortalSacrifice},
+        ActionCheck = b => !Player.HasStatus(true, StatusID.BloodsownCircle)
     };
     #endregion
     #region 蓝条50附体
@@ -189,7 +202,8 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Enshroud { get; } = new(ActionID.Enshroud)
     {
-        ActionCheck = b => !SoulReaver && !Enshrouded && JobGauge.Shroud >= 50,
+        BuffsProvide = new[] { StatusID.Enshrouded },
+        ActionCheck = b => Shroud >= 50 && !SoulReaver && !Enshrouded
     };
 
     /// <summary>
@@ -197,7 +211,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Communio { get; } = new(ActionID.Communio)
     {
-        ActionCheck = b => Enshrouded && JobGauge.LemureShroud == 1,
+        BuffsNeed = new[] { StatusID.Enshrouded },
     };
 
     /// <summary>
@@ -205,7 +219,8 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction LemuresSlice { get; } = new(ActionID.LemuresSlice)
     {
-        ActionCheck = b => Enshrouded && JobGauge.VoidShroud >= 2,
+        BuffsNeed = new[] { StatusID.Enshrouded },
+        ActionCheck = b => VoidShroud >= 2,
     };
 
     /// <summary>
@@ -213,7 +228,8 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction LemuresScythe { get; } = new(ActionID.LemuresScythe)
     {
-        ActionCheck = LemuresSlice.ActionCheck,
+        BuffsNeed = new[] { StatusID.Enshrouded },
+        ActionCheck = b => VoidShroud >= 2,
     };
 
     /// <summary>
@@ -221,7 +237,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction VoidReaping { get; } = new(ActionID.VoidReaping)
     {
-        ActionCheck = b => Enshrouded && JobGauge.LemureShroud > 1 && EnhancedVoidReaping,
+        BuffsNeed = new[] { StatusID.Enshrouded },
     };
 
     /// <summary>
@@ -229,21 +245,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction CrossReaping { get; } = new(ActionID.CrossReaping)
     {
-        ActionCheck = b =>
-        {
-            if (Enshrouded)
-            {
-                if (JobGauge.LemureShroud > 1 && (EnhancedCrossReaping || !EnhancedVoidReaping))
-                {
-                    return true;
-                }
-                if (JobGauge.LemureShroud == 1 && !Communio.EnoughLevel && EnhancedCrossReaping)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        BuffsNeed = new[] { StatusID.Enshrouded },
     };
 
     /// <summary>
@@ -251,20 +253,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction GrimReaping { get; } = new(ActionID.GrimReaping)
     {
-        ActionCheck = b => {
-            if (Enshrouded)
-            {
-                if (JobGauge.LemureShroud > 1)
-                {
-                    return true;
-                }
-                if (JobGauge.LemureShroud == 1 && !Communio.EnoughLevel)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        BuffsNeed = new[] { StatusID.Enshrouded },
     };
     #endregion
     #region 杂项
@@ -287,7 +276,6 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction HarvestMoon { get; } = new(ActionID.HarvestMoon)
     {
         BuffsNeed = new[] { StatusID.Soulsow },
-        ActionCheck = b => InCombat,
     };
 
     /// <summary>

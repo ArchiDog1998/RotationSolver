@@ -239,17 +239,11 @@ namespace XIVAutoAttack.Helpers
                 //如果已经有复活的Buff了，那就算了。
                 if (item.HasStatus(false, StatusID.Raise)) continue;
 
+                //如果濒死了，那给我TMD冷静冷静！等着另一个奶大发慈悲吧。
+                if (!Service.Configuration.RaiseBrinkofDeath && item.HasStatus(false, StatusID.BrinkofDeath)) continue;
+
                 //如果有人在对着他咏唱，那就算了。
-                bool isCasting = false;
-                foreach (var character in TargetUpdater.AllianceMembers)
-                {
-                    if (character.CastTargetObjectId == item.ObjectId)
-                    {
-                        isCasting = true;
-                        break;
-                    }
-                }
-                if (isCasting) continue;
+                if (TargetUpdater.AllianceMembers.Any(c => c.CastTargetObjectId == item.ObjectId)) continue;
 
                 list.Add(item);
             }

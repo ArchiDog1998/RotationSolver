@@ -103,7 +103,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (remainTime <= 5 && Reassemble.ShouldUse(out _, emptyOrSkipCombo: true)) return Reassemble;
         return base.CountDownAction(remainTime);
     }
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //等级小于钻头时,绑定狙击弹
         if (!Drill.EnoughLevel && nextGCD.IsAnySameAction(true, CleanShot))
@@ -131,7 +131,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         {
             if (SettingBreak && Config.GetBoolByName("MCH_Opener") && Wildfire.ShouldUse(out act)) return true;
         }
-        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)

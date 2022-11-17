@@ -2,6 +2,9 @@
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 using static XIVAutoAttack.Combos.Melee.RPRCombos.RPRCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.RPRCombos;
@@ -13,6 +16,32 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     internal enum CommandType : byte
     {
         None,
+    }
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetBool("EnshroudPooling", false, "双附体循环爆发(低于88级不会生效)**推荐**");
+    }
+        public RPRCombo_Default()
+    {
+        bool PlentifulReady = Player.HasStatus(true, StatusID.ImmortalSacrifice) && !Player.HasStatus(true, StatusID.BloodsownCircle);
+
+        //bool EnhancedGibbet = Player.HasStatus(true, StatusID.EnhancedGibbet);
+        //bool EnhancedGallows = Player.HasStatus(true, StatusID.EnhancedGallows);
+        //Gibbet.ComboCheck = b => EnhancedGibbet;
+        //Gallows.ComboCheck = b => EnhancedGallows || !EnhancedGibbet;
+
+        //快死的不上Dot
+        ShadowofDeath.ComboCheck = b => !IsTargetDying;
+
+        //保留红条不第一时间打出去,保证暴食不空转
+        BloodStalk.ComboCheck = b => !PlentifulReady && ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel || Soul == 100);
+        GrimSwathe.ComboCheck = b => !PlentifulReady && ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel || Soul == 100);
+
+        //必须有dot
+        ArcaneCircle.ComboCheck = b => Target.HasStatus(true, StatusID.DeathsDesign);
+        
+        //必须进战
+        HarvestMoon.ComboCheck = b => InCombat;
     }
 
     protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
@@ -32,42 +61,87 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        //开场获得收获月
+        //非战斗收获月
         if (Soulsow.ShouldUse(out act)) return true;
-
-        //处于变身状态。
-        if (Enshrouded)
-        {
-            if (ShadowofDeath.ShouldUse(out act)) return true;
-
-            //夜游魂衣-虚无/交错收割 阴冷收割
-            if (GrimReaping.ShouldUse(out act)) return true;
-            if (CrossReaping.ShouldUse(out act)) return true;
-            if (VoidReaping.ShouldUse(out act)) return true;
-
-            if (LemureShroud == 1 && Communio.EnoughLevel)
-            {
-                if (!IsMoving && Communio.ShouldUse(out act, mustUse: true))
-                {
-                    return true;
-                }
-                //跑机制来不及读条？补个buff混一下
-                else
-                {
-                    if (WhorlofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
-                    if (ShadowofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
-                }
-            }
-        }
-
-        //处于补蓝状态，赶紧补蓝条。
-        if (Guillotine.ShouldUse(out act)) return true;
-        if (Gibbet.ShouldUse(out act)) return true;
-        if (Gallows.ShouldUse(out act)) return true;
 
         //上Debuff
         if (WhorlofDeath.ShouldUse(out act)) return true;
         if (ShadowofDeath.ShouldUse(out act)) return true;
+
+        //补蓝
+        if (SoulReaver)
+        {
+            if (Guillotine.ShouldUse(out act)) return true;
+            if (Player.HasStatus(true, StatusID.EnhancedGibbet))
+            {
+                if (Gibbet.ShouldUse(out act)) return true;
+            }
+            else
+            {
+                if (Gallows.ShouldUse(out act)) return true;
+            }
+        }
+
+        ////补蓝
+        //if (Guillotine.ShouldUse(out act)) return true;
+        //if (Gallows.ShouldUse(out act)) return true;
+        //if (Gibbet.ShouldUse(out act)) return true;
+
+
+        //夜游魂变身状态
+        if (Enshrouded)
+        {
+            //补DoT
+            if (ShadowofDeath.ShouldUse(out act)) return true;
+
+            if (LemureShroud > 1)
+            {
+                if (Config.GetBoolByName("EnshroudPooling") && PlentifulHarvest.EnoughLevel && ArcaneCircle.WillHaveOneCharge(9) &&
+                   ((LemureShroud == 4 && Target.WillStatusEnd(30, true, StatusID.DeathsDesign)) || (LemureShroud == 3 && Target.WillStatusEnd(50, true, StatusID.DeathsDesign)))) //双附体窗口期 
+                {
+                    if (ShadowofDeath.ShouldUse(out act, mustUse: true)) return true;
+                }
+
+                //夜游魂衣-虚无/交错收割 阴冷收割
+                if (GrimReaping.ShouldUse(out act)) return true;
+                if(Player.HasStatus(true,StatusID.EnhancedCrossReaping) || !Player.HasStatus(true, StatusID.EnhancedVoidReaping))
+                {
+                    if (CrossReaping.ShouldUse(out act)) return true;
+                }
+                else
+                {
+                    if (VoidReaping.ShouldUse(out act)) return true;
+                }
+            }
+            if (LemureShroud == 1)
+            {
+                if (Communio.EnoughLevel)
+                {
+                    if (!IsMoving && Communio.ShouldUse(out act, mustUse: true))
+                    {
+                        return true;
+                    }
+                    //跑机制来不及读条？补个buff混一下
+                    else
+                    {
+                        if (ShadowofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
+                    }
+                }
+                else
+                {
+                    //夜游魂衣-虚无/交错收割 阴冷收割
+                    if (GrimReaping.ShouldUse(out act)) return true;
+                    if (Player.HasStatus(true, StatusID.EnhancedCrossReaping) || !Player.HasStatus(true, StatusID.EnhancedVoidReaping))
+                    {
+                        if (CrossReaping.ShouldUse(out act)) return true;
+                    }
+                    else
+                    {
+                        if (VoidReaping.ShouldUse(out act)) return true;
+                    }
+                }
+            }
+        }
 
         //大丰收
         if (PlentifulHarvest.ShouldUse(out act, mustUse: true)) return true;
@@ -87,7 +161,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         if (Slice.ShouldUse(out act)) return true;
 
         //摸不到怪 先花掉收获月
-        if (HarvestMoon.ShouldUse(out act, mustUse: true)) return true;
+        if (HarvestMoon.ShouldUse(out act,mustUse:true)) return true;
         if (Harpe.ShouldUse(out act)) return true;
 
         return false;
@@ -99,31 +173,48 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         {
             //神秘环
             if (ArcaneCircle.ShouldUse(out act)) return true;
-            //夜游魂衣
-            if (Enshroud.ShouldUse(out act)) return true;
-        }
 
+            if((!Config.GetBoolByName("EnshroudPooling") && Shroud >= 50) ||//未开启双附体
+               (Config.GetBoolByName("EnshroudPooling") && Shroud >= 50 &&
+               (!PlentifulHarvest.EnoughLevel || //等级不足以双附体
+               Player.HasStatus(true,StatusID.ArcaneCircle) || //在神秘环期间附体
+               ArcaneCircle.WillHaveOneCharge(8) || //双附体起手
+               (!Player.HasStatus(true, StatusID.ArcaneCircle) && ArcaneCircle.WillHaveOneCharge(65) && !ArcaneCircle.WillHaveOneCharge(50)) || //奇数分钟不用攒附体
+               (!Player.HasStatus(true, StatusID.ArcaneCircle) && Shroud >= 90)))) //攒蓝条为双附体
+            {
+                //夜游魂衣
+                if (Enshroud.ShouldUse(out act)) return true;
+            }
+        }
         if (Enshrouded)
         {
             //夜游魂衣-夜游魂切割 夜游魂钐割
-            if (LemuresScythe.ShouldUse(out act,emptyOrSkipCombo:true)) return true;
-            if (LemuresSlice.ShouldUse(out act,emptyOrSkipCombo:true)) return true;
+            if (LemuresScythe.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (LemuresSlice.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         //暴食
-        if (Gluttony.ShouldUse(out act, mustUse: true)) return true;
+        //大丰收期间延后暴食
+        if ((PlentifulHarvest.EnoughLevel && !Player.HasStatus(true, StatusID.BloodsownCircle)) || !PlentifulHarvest.EnoughLevel)
+        {
+            if (Gluttony.ShouldUse(out act, mustUse: true)) return true;
+        }
+
         //AOE
         if (GrimSwathe.ShouldUse(out act)) return true;
         //单体
         if (BloodStalk.ShouldUse(out act)) return true;
-        act = null;
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if (Feint.ShouldUse(out act)) return true;
+        if(abilityRemain == 2)
+        {
+            if (Feint.ShouldUse(out act)) return true;
+        }
+
         act = null;
         return false;
     }
@@ -131,7 +222,12 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //神秘纹
-        if (ArcaneCrest.ShouldUse(out act)) return true;
+        if(abilityRemain == 2)
+        {
+            if (ArcaneCrest.ShouldUse(out act)) return true;
+        }
+
+        act = null;
         return false;
     }
 }

@@ -121,7 +121,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
         {
-            if (EmergercyGCD(out var act)) return act;
+            if (EmergencyGCD(out var act)) return act;
 
             if (EsunaRaise(out act, abilityRemain, false)) return act;
             if (CommandController.Move && MoveGCD( out act))
@@ -159,17 +159,18 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         private bool EsunaRaise(out IAction act, byte actabilityRemain, bool mustUse)
         {
-            if (Raise == null)
-            {
-                act = null;
-                return false;
-            }
+            act = null;
+
+            if (Raise == null) return false;
+
             //有某些非常危险的状态。
             if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
                 if (Job.GetJobRole() == JobRole.Healer && Esuna.ShouldUse(out act, mustUse: true)) return true;
-
             }
+
+            //蓝量不足，就不复活了。
+            if (Player.CurrentMp <= Service.Configuration.LessMPNoRaise) return false;
 
             //有人死了，看看能不能救。
             if (Service.Configuration.RaiseAll ? TargetUpdater.DeathPeopleAll.Length > 0 : TargetUpdater.DeathPeopleParty.Length > 0)
@@ -205,7 +206,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
-        private protected virtual bool EmergercyGCD(out IAction act)
+        private protected virtual bool EmergencyGCD(out IAction act)
         {
             act = null; return false;
         }

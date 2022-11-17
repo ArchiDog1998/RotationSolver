@@ -7,6 +7,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic
 {
@@ -38,6 +39,8 @@ namespace XIVAutoAttack.Combos.Basic
         protected static BLUAttackType AttackType { get; set; } = BLUAttackType.Magical;
 
         protected static BLUID BlueId { get; set; } = BLUID.DPS;
+
+        private protected sealed override BaseAction Raise => AngelWhisper;
 
         public class BLUAction : BaseAction
         {
@@ -268,11 +271,6 @@ namespace XIVAutoAttack.Combos.Basic
         /// 掀地板之术
         /// </summary>
         public static BLUAction Tatamigaeshi { get; } = new(ActionID.Tatamigaeshi, BLUActionType.Magical);
-
-        /// <summary>
-        /// 赞歌
-        /// </summary>
-        public static BLUAction Stotram { get; } = new(ActionID.Stotram, BLUActionType.Magical);
 
         /// <summary>
         /// 圣光射线
@@ -616,7 +614,16 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 白风
         /// </summary>
-        public static BLUAction WhiteWind { get; } = new(ActionID.WhiteWind, BLUActionType.None, true);
+        public static BLUAction WhiteWind { get; } = new(ActionID.WhiteWind, BLUActionType.None, true)
+        {
+            ActionCheck = b => Player.GetHealthRatio() is > 0.3f and < 0.5f,
+        };
+
+        /// <summary>
+        /// 赞歌
+        /// </summary>
+        public static BLUAction Stotram { get; } = new(ActionID.Stotram, BLUActionType.Magical, true);
+
 
         /// <summary>
         /// 绒绒治疗
@@ -643,7 +650,20 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 若隐若现
         /// </summary>
-        public static BLUAction Loom { get; } = new(ActionID.Loom, BLUActionType.None);
+        private static BLUAction Loom { get; } = new(ActionID.Loom, BLUActionType.None);
+
+        /// <summary>
+        /// 斗争本能
+        /// </summary>
+        private static BLUAction BasicInstinct { get; } = new(ActionID.BasicInstinct, BLUActionType.None)
+        {
+            BuffsProvide = new StatusID[] {StatusID.BasicInstinct },
+            ActionCheck = b =>
+            {
+                //TODO: 还需要判断是否为多人本
+                return TargetUpdater.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1;
+            },
+        };
 
         /// <summary>
         /// 以太复制
@@ -679,17 +699,20 @@ namespace XIVAutoAttack.Combos.Basic
             },
         };
 
-        /// <summary>
-        /// 斗争本能
-        /// </summary>
-        public static BLUAction BasicInstinct { get; } = new(ActionID.BasicInstinct, BLUActionType.None);
         #endregion
 
+        private protected override bool MoveGCD(out IAction act)
+        {
+            if (Loom.ShouldUse(out act)) return true;
+            return base.MoveGCD(out act);
+        }
 
-        private protected override bool EmergercyGCD(out IAction act)
+
+        private protected override bool EmergencyGCD(out IAction act)
         {
             if (AetherialMimicry.ShouldUse(out act)) return true;
-            return base.EmergercyGCD(out act);
+            if (BasicInstinct.ShouldUse(out act)) return true;
+            return base.EmergencyGCD(out act);
         }
 
         protected static bool AllOnSlot(params BLUAction[] actions) => actions.All(a => a.OnSlot);

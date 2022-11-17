@@ -17,6 +17,10 @@ using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 using Lumina.Data.Parsing;
+using Dalamud.Interface;
+using XIVAutoAttack.Combos.Script;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace XIVAutoAttack.Windows;
 
@@ -27,10 +31,9 @@ internal class ComboConfigWindow : Window
     public ComboConfigWindow()
         : base("自动攻击设置 (开源免费) v"+ typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
     {
-        RespectCloseHotkey = true;
-
-        SizeCondition = (ImGuiCond)4;
+        SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
+        RespectCloseHotkey = true;
     }
     private static readonly Dictionary<JobRole, string> _roleDescriptionValue = new Dictionary<JobRole, string>()
     {
@@ -592,6 +595,13 @@ internal class ComboConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
+                        int lessMPNoRaise = Service.Configuration.LessMPNoRaise;
+                        if (ImGui.DragInt("小于多少蓝就不复活了", ref lessMPNoRaise, 200, 0, 10000))
+                        {
+                            Service.Configuration.LessMPNoRaise = lessMPNoRaise;
+                            Service.Configuration.Save();
+                        }
+
                         bool useItem = Service.Configuration.UseItem;
                         if (ImGui.Checkbox("使用道具", ref useItem))
                         {
@@ -770,6 +780,13 @@ internal class ComboConfigWindow : Window
                         if (ImGui.Checkbox("复活所有能复活的人，而非小队", ref raiseAll))
                         {
                             Service.Configuration.RaiseAll = raiseAll;
+                            Service.Configuration.Save();
+                        }
+
+                        bool raiseBrinkofDeath = Service.Configuration.RaiseBrinkofDeath;
+                        if (ImGui.Checkbox("复活濒死（黑头）之人", ref raiseBrinkofDeath))
+                        {
+                            Service.Configuration.RaiseBrinkofDeath = raiseBrinkofDeath;
                             Service.Configuration.Save();
                         }
                     }
@@ -1028,11 +1045,25 @@ internal class ComboConfigWindow : Window
         ImGui.SameLine();
         Spacing();
 
-        if (ImGui.Button($"源码##{texture.Name}"))
+        if(texture is IScriptCombo script)
         {
-            var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
-            System.Diagnostics.Process.Start("cmd", $"/C start {url}");
+            if (ImGui.Button($"{FontAwesomeIcon.Folder.ToIconString()}##文件{texture.Name}"))
+            {
+                Process p = new Process();
+                p.StartInfo.FileName = "explorer.exe";
+                p.StartInfo.Arguments = $" /select, {script.FilePath}";
+                p.Start();
+            }
         }
+        else
+        {
+            if (ImGui.Button($"{FontAwesomeIcon.InternetExplorer.ToIconString()}##源码{texture.Name}"))
+            {
+                var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
+                Process.Start("cmd", $"/C start {url}");
+            }
+        }
+
 
         if (enable)
         {

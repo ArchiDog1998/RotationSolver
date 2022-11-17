@@ -72,7 +72,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //加个无中生有
         if (nextGCD is BaseAction action && action.MPNeed >= 1000 &&
@@ -84,7 +84,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
             if (PlenaryIndulgence.ShouldUse(out act)) return true;
         }
 
-        return base.EmergercyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool HealSingleGCD(out IAction act)

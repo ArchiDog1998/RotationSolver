@@ -42,7 +42,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
             .SetBool("UseCorpsAcorps", false, "近战范围内使用短兵相接");
     }
 
-    private protected override bool EmergercyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         act = null;
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
@@ -175,7 +175,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool EmergercyGCD(out IAction act)
+    private protected override bool EmergencyGCD(out IAction act)
     {
         byte level = Level;
         #region 远程三连
