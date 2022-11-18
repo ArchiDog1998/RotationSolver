@@ -188,10 +188,10 @@ namespace XIVAutoAttack.Configuration
     public class ComboConfiguration
     {
         public string name;
-        public string description;
+        public int value;
 
         [NonSerialized]
-        public int value;
+        public string description;
 
         [NonSerialized]
         public string[] items;

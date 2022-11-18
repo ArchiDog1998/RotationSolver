@@ -76,7 +76,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float WeaponFaster { get; set; } = 0.08f;
     public float WeaponDelay { get; set; } = 0;
     public string LocationText { get; set; } = string.Empty;
-    public string ScriptComboFolder { get; set; }
+    public string ScriptComboFolder { get; set; } = string.Empty;
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
