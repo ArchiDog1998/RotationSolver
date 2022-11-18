@@ -20,13 +20,13 @@ namespace XIVAutoAttack.Combos.Script.Actions
     {
         private BaseAction _action { get; set; }
 
-        public ActionID ID { get; set; }
-        public ConditionSet Set { get; set; }
+        public ActionID ID { get; set; } = ActionID.None;
+        public ConditionSet Set { get; set; } = new ConditionSet();
 
         public bool MustUse { get; set; }
         public bool Empty { get; set; }
 
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         public void DrawHeader()
         {

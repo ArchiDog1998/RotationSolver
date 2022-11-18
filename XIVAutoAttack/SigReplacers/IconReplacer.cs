@@ -157,7 +157,8 @@ internal sealed class IconReplacer : IDisposable
     private static void GetAllCombos()
     {
         _combos = (from t in Assembly.GetAssembly(typeof(ICustomCombo)).GetTypes()
-        where t.GetInterfaces().Contains(typeof(ICustomCombo)) && !t.IsAbstract && !t.IsInterface
+        where t.GetInterfaces().Contains(typeof(ICustomCombo)) && 
+             !t.GetInterfaces().Contains(typeof(IScriptCombo)) && !t.IsAbstract && !t.IsInterface
         select (ICustomCombo)Activator.CreateInstance(t)).ToList();
     }
 
@@ -177,7 +178,9 @@ internal sealed class IconReplacer : IDisposable
         if(_customScriptCombos.TryGetValue(id, out var value))
         {
             var add = (IScriptCombo)Activator.CreateInstance(value);
+            add.Set.JobID = id;
             _combos.Add(add);
+
             if (update) MaintenceCombos();
             return add;
         }

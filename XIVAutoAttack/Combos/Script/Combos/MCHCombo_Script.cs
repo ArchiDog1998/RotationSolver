@@ -14,10 +14,7 @@ namespace XIVAutoAttack.Combos.Script.Combos
     {
         public override string Author => Set.GetAuthor();
 
-        public string AuthorName { get; set; }
-        public ComboSet Set { get ; set ; }
-
-
+        public ComboSet Set { get ; set ; } = new ComboSet();
 
         private protected override bool EmergencyGCD(out IAction act)
             => Set.EmergencyGCDSet.ShouldUse(this, out act);

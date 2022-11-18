@@ -18,10 +18,8 @@ namespace XIVAutoAttack.Combos.Script.Actions
 {
     internal class ActionsSet : IDraw
     {
-        [JsonIgnore]
         public string Name { get; set; }
 
-        [JsonIgnore]
         public string Description { get; set; }
 
         private bool _openPopup = false;
