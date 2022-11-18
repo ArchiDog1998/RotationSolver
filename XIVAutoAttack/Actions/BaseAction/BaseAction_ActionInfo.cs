@@ -161,7 +161,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (CastTime > 0 && MovingUpdater.IsMoving)
                 {
-                    if (!Service.ClientState.LocalPlayer.HasStatus(true, CustomComboActions.Swiftcast.BuffsProvide))
+                    if (!Service.ClientState.LocalPlayer.HasStatus(true, CustomCombo<Enum>.Swiftcast.BuffsProvide))
                     {
                         return false;
                     }
