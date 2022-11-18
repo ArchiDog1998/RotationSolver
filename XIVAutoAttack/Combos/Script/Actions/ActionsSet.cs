@@ -1,7 +1,9 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using ImGuiNET;
+using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
+using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Windows;
@@ -43,50 +45,74 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
         public void Draw(IScriptCombo combo)
         {
-            ImGui.TextWrapped(Description);
-
             AddButton(combo);
 
-            foreach (var item in ActionsCondition)
+            ImGui.SameLine();
+            ComboConfigWindow.Spacing();
+
+            ImGui.TextWrapped(Description);
+
+            if (ImGui.BeginChild($"##技能使用列表", new Vector2(-5f, -1f), true))
             {
-                item.DrawHeader();
-
-                ImGui.SameLine();
-                ComboConfigWindow.Spacing();
-
-                if (ImGuiComponents.IconButton(FontAwesomeIcon.Cross))
+                int index = -1;
+                for (int i = 0; i < ActionsCondition.Count; i++)
                 {
-                    ActionsCondition.Remove(item);
+                    var item = ActionsCondition[i];
+
+                    if (ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.Minus))
+                    {
+                        index = i;
+                    }
+
+                    ImGui.SameLine();
+                    ComboConfigWindow.Spacing();
+
+                    item.DrawHeader();
+
+                    ImGui.Separator();
                 }
+
+                if (index != -1) ActionsCondition.RemoveAt(index);
+                ImGui.EndChild();
             }
         }
 
         private void AddButton(IScriptCombo combo)
         {
+            var popId = "Popup" + GetHashCode().ToString();
+
             if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
             {
-                _openPopup = true;
+                ImGui.OpenPopup(popId);
             }
 
-            if (_openPopup && ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
+
+
+            if (ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
             {
                 if (ImGui.Selectable("守卫"))
                 {
-                    ActionsCondition.Add(new ActionConditions()
-                    {
-                        ID = ActionID.None,
-                    });
+                    ActionsCondition.Add(new ActionConditions());
+
+                    ImGui.CloseCurrentPopup();
                 }
 
-                foreach (var item in combo.AllActions)
+                if (ImGui.BeginChild($"##技能候选列表", new Vector2(150, 500), true))
                 {
-                    if (ImGui.Selectable(item.Name))
+                    foreach (var item in combo.AllActions)
                     {
-                        ActionsCondition.Add(new ActionConditions()
+                        ImGui.Image(item.GetTexture().ImGuiHandle,
+                            new Vector2(24, 24));
+
+                        ImGui.SameLine();
+                        if (ImGui.Selectable(item.Name))
                         {
-                            ID = (ActionID)item.ID,
-                        });
+                            ActionsCondition.Add(new ActionConditions(item));
+
+                            ImGui.CloseCurrentPopup();
+                        }
                     }
+                    ImGui.EndChild();
                 }
 
 

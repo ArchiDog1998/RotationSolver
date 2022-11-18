@@ -1,3 +1,4 @@
+using Dalamud.Configuration;
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface;
@@ -151,6 +152,10 @@ internal class ComboConfigWindow : Window
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.FolderOpen))
                 {
                     IconReplacer.LoadFromFolder();
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("点击以载入自定义循环");
                 }
 #endif
 
@@ -714,7 +719,7 @@ internal class ComboConfigWindow : Window
                         {
                                 "所有能打的目标都是敌对的目标",
                                 "如果处于打人的目标数量为零，所有能打的都是敌对的",
-                                "只有打人的目标才是敌对的目标",
+                                "只有有目标的目标才是敌对的目标",
                         }, 3))
                         {
                             IconReplacer.RightNowTargetToHostileType = (byte)isAllTargetAsHostile;
@@ -1052,6 +1057,10 @@ internal class ComboConfigWindow : Window
             {
                 Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
             }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("点击以切换作者");
+            }
         }
 
         ImGui.SameLine();
@@ -1099,8 +1108,6 @@ internal class ComboConfigWindow : Window
             }
 #endif
         }
-
-
 
         if (enable)
         {

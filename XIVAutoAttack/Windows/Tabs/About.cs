@@ -17,7 +17,7 @@ namespace XIVAutoAttack.Windows.Tabs
             ImGui.Spacing();
             ImGui.Spacing();
             ImGui.TextWrapped("插件作者：ArchiDog1998（秋水）保留最终解释权");
-            ImGui.TextWrapped("联合开发者：汐ベMoon, gamous, 逆光, 玖祁, 牙刷play");
+            ImGui.TextWrapped("联合开发者：汐ベMoon, gamous, 逆光, sciuridae564, 玖祁, 牙刷play");
             ImGui.TextColored(ImGuiColors.ParsedGreen, "本插件版本更新发布于Github");
             ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.ParsedPurple);
             if (ImGui.Button("点击加入Discord进行讨论"))

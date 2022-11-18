@@ -169,6 +169,11 @@ internal sealed class IconReplacer : IDisposable
 
     public static IScriptCombo AddScripCombo(ClassJobID id, bool update = true)
     {
+        if (!Directory.Exists(Service.Configuration.ScriptComboFolder))
+        {
+            return null;
+        }
+
         if (_customScriptCombos.TryGetValue(id, out var value))
         {
             var add = (IScriptCombo)Activator.CreateInstance(value);

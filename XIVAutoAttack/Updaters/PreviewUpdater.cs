@@ -10,6 +10,8 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using System;
 using System.Runtime.InteropServices;
+using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Updaters
@@ -59,7 +61,9 @@ namespace XIVAutoAttack.Updaters
             {
                 isTarDead = true;
             }
-            MovingUpdater.IsMoving = canMove || isTarDead;
+
+            var specialStatus = Service.ClientState.LocalPlayer.HasStatus(true, StatusID.PhantomFlurry);
+            MovingUpdater.IsMoving = specialStatus ? false : canMove || isTarDead;
 
             var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);
             if (castBar == IntPtr.Zero) return;

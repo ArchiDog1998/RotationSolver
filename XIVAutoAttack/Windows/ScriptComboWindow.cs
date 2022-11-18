@@ -29,7 +29,7 @@ namespace XIVAutoAttack.Windows
         public override void Draw()
         {
             ImGui.Columns(3);
-
+            //ImGui.SetColumnWidth(0, 260);
             this.DisplayFunctionList();
 
             ImGui.NextColumn();
@@ -47,39 +47,59 @@ namespace XIVAutoAttack.Windows
         {
             if (TargetCombo == null) return;
 
-            ImGui.Columns(2);
-
-            var text = TargetCombo.GetTexture();
-
-            ImGui.SetColumnWidth(0, text.Width + 5);
-
-            ImGui.Image(text.ImGuiHandle, new Vector2(text.Width, text.Height));
-
-            ImGui.NextColumn();
-
-            string authorName = TargetCombo.Set.AuthorName;
-            if (ImGui.InputText("作者:", ref authorName, 64))
+            if (ImGui.BeginTable("MyTable", 2))
             {
-                TargetCombo.Set.AuthorName = authorName;
+                ImGui.TableNextColumn();
+
+                var text = TargetCombo.GetTexture();
+
+                ImGui.Image(text.ImGuiHandle, new Vector2(text.Width, text.Height));
+
+                ImGui.TableNextColumn();
+
+                ImGui.Text("作者:  ");
+                ImGui.SameLine();
+
+
+                string authorName = TargetCombo.Set.AuthorName;
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(authorName).X + 10);
+                if (ImGui.InputText($"##{TargetCombo.Name}作者", ref authorName, 32))
+                {
+                    TargetCombo.Set.AuthorName = authorName;
+                }
+
+                ImGui.Text("描述:");
+
+                ImGui.SameLine();
+                ComboConfigWindow.Spacing();
+
+                if (ImGuiComponents.IconButton(FontAwesomeIcon.Folder))
+                {
+                    Process p = new Process();
+                    p.StartInfo.FileName = "explorer.exe";
+                    p.StartInfo.Arguments = $" /select, {TargetCombo.Set.GetFolder()}";
+                    p.Start();
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("打开源文件");
+                }
+
+                ImGui.SameLine();
+                ComboConfigWindow.Spacing();
+
+                if (ImGuiComponents.IconButton(FontAwesomeIcon.Save))
+                {
+                    File.WriteAllText(TargetCombo.Set.GetFolder(), JsonConvert.SerializeObject(TargetCombo.Set));
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("保存修改");
+                }
+
+
+                ImGui.EndTable();
             }
-
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.Folder))
-            {
-                Process p = new Process();
-                p.StartInfo.FileName = "explorer.exe";
-                p.StartInfo.Arguments = $" /select, {TargetCombo.Set.GetFolder()}";
-                p.Start();
-            }
-
-            ImGui.SameLine();
-            ComboConfigWindow.Spacing();
-
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.Save))
-            {
-                File.WriteAllText(TargetCombo.Set.GetFolder(), JsonConvert.SerializeObject(TargetCombo.Set));
-            }
-
-            ImGui.Columns(1);
 
             TargetCombo.Set.Draw(TargetCombo);
         }
