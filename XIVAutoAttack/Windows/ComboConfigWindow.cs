@@ -28,8 +28,6 @@ namespace XIVAutoAttack.Windows;
 
 internal class ComboConfigWindow : Window
 {
-    //private static readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
-
     public ComboConfigWindow()
         : base("自动攻击设置 (开源免费) v"+ typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
     {
