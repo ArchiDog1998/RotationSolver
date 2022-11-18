@@ -91,36 +91,17 @@ internal sealed class IconReplacer : IDisposable
         return group.combos[0];
     }
 
-    internal static BaseAction[] AllBaseActions => RightComboBaseActions.Union(GeneralBaseAction).ToArray();
-
     internal static BaseAction[] RightComboBaseActions
     {
         get
         {
             var combo = RightNowCombo;
             if (combo == null) return new BaseAction[0];
-            return GetActions(combo, combo.GetType().BaseType);
+            return combo.AllActions;
         }
     }
 
-    internal static BaseAction[] GeneralBaseAction
-    {
-        get
-        {
-            var combo = RightNowCombo;
-            if (combo == null) return new BaseAction[0];
-            return GetActions(combo, typeof(CustomComboActions));
-        }
-    }
 
-    private static BaseAction[] GetActions(ICustomCombo combo, Type type)
-    {
-        return (from prop in type.GetProperties()
-                where typeof(BaseAction).IsAssignableFrom(prop.PropertyType)
-                select (BaseAction)prop.GetValue(combo) into act
-                orderby act.ID
-                select act).ToArray();
-    }
 
     private static SortedList<JobRole, CustomComboGroup[]> _customCombosDict;
     internal static SortedList<JobRole, CustomComboGroup[]> CustomCombosDict
@@ -170,7 +151,6 @@ internal sealed class IconReplacer : IDisposable
 
     private static void SetStaticValues()
     {
-        
         _customCombos = (from t in Assembly.GetAssembly(typeof(ICustomCombo)).GetTypes()
                          where t.GetInterfaces().Contains(typeof(ICustomCombo)) && !t.IsAbstract && !t.IsInterface
                          select (ICustomCombo)Activator.CreateInstance(t) into combo

@@ -12,7 +12,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract partial class CustomCombo<TCmd> : CustomComboActions, ICustomCombo where TCmd : Enum
+    internal abstract partial class CustomCombo<TCmd> : ICustomCombo where TCmd : Enum
     {
         public abstract ClassJobID[] JobIDs { get; }
 

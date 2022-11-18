@@ -6,16 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
+using XIVAutoAttack.Combos.Script.Actions;
 
 namespace XIVAutoAttack.Combos.Script.Combos
 {
     internal class MCHCombo_Script : MCHCombo_Base<Enum>, IScriptCombo
     {
-        public override string Author => AuthorName + "-Script";
+        public override string Author => this.GetAuthor();
 
         public string AuthorName { get; set; }
-        public string FilePath { get; set; }
-        public ComboPart GeneralGCDPart { get; set; }
+        public ActionsSet GeneralGCDSet { get; set; }
 
         private protected override bool AttackAbility(byte abilityRemain, out IAction act)
         {
@@ -27,16 +27,6 @@ namespace XIVAutoAttack.Combos.Script.Combos
             return false;
         }
 
-        private protected override bool GeneralGCD(out IAction act)
-        {
-            if(GeneralGCDPart.Part(out var action))
-            {
-                act = action;
-                return true;
-            }
-
-            act = null;
-            return false;
-        }
+        private protected override bool GeneralGCD(out IAction act) => GeneralGCDSet.ShouldUse(this, out act);
     }
 }

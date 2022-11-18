@@ -3,6 +3,11 @@ namespace XIVAutoAttack.Data
 {
     public enum ActionID : uint
     {
+        /// <summary>
+        /// 无技能
+        /// </summary>
+        None = 0,
+
         #region Astrologian
 
         /// <summary>
