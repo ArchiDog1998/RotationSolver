@@ -34,7 +34,7 @@ namespace XIVAutoAttack.Configuration
         {
             foreach (var item in doubles)
             {
-                if(item.name == name)
+                if (item.name == name)
                 {
                     return item.value;
                 }

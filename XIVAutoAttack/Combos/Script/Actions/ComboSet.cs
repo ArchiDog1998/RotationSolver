@@ -1,19 +1,15 @@
 ﻿using ImGuiNET;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.Script.Actions
 {
     internal class ComboSet : IDraw
     {
-        public ClassJobID JobID { get; set; }
-        public string AuthorName { get; set; }
-        public string Description { get; set; }
+        public ClassJobID JobID { get; set; } = ClassJobID.Adventurer;
+        public string AuthorName { get; set; } = "神秘作者";
+        public string Description { get; set; } = String.Empty;
 
         public ActionsSet EmergencyGCDSet { get; set; } = new ActionsSet()
         {

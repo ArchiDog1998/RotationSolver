@@ -51,7 +51,7 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         return EndAfterGCD(JobGauge.SongTimer / 1000f, gctCount, abilityCount);
     }
 
-    public sealed override ClassJobID[] JobIDs => new [] { ClassJobID.Bard, ClassJobID.Archer };
+    public sealed override ClassJobID[] JobIDs => new[] { ClassJobID.Bard, ClassJobID.Archer };
 
 
     /// <summary>
@@ -71,7 +71,7 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     {
         TargetStatus = new[] { StatusID.VenomousBite, StatusID.CausticBite }
     };
-    
+
     /// <summary>
     /// ·çÊ´¼ý
     /// </summary>

@@ -197,10 +197,10 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
             if (ChainStratagem.ShouldUse(out act)) return true;
         }
 
-        if((Dissipation.EnoughLevel && Dissipation.WillHaveOneChargeGCD(3)) || Aetherflow.WillHaveOneChargeGCD(3))
+        if ((Dissipation.EnoughLevel && Dissipation.WillHaveOneChargeGCD(3)) || Aetherflow.WillHaveOneChargeGCD(3))
         {
             //能量吸收
-            if (EnergyDrain.ShouldUse(out act,emptyOrSkipCombo:true)) return true;
+            if (EnergyDrain.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         //转化

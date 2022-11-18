@@ -3,7 +3,6 @@ using System.Data;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.RangedPhysicial;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
@@ -113,7 +112,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
             if (role == JobRole.Tank)
             {
                 var haveTargets = TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets);
-                if ((Service.Configuration.AutoProvokeForTank || TargetUpdater.AllianceTanks.Length < 2) 
+                if ((Service.Configuration.AutoProvokeForTank || TargetUpdater.AllianceTanks.Length < 2)
                     && haveTargets.Length != TargetUpdater.HostileTargets.Length
                     || CommandController.BreakorProvoke)
 
@@ -179,7 +178,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
                 break;
         }
 
-        if (!InCombat && IsMoving && role == JobRole.RangedPhysical 
+        if (!InCombat && IsMoving && role == JobRole.RangedPhysical
             && !Service.ClientState.LocalPlayer.HasStatus(false, StatusID.Peloton)
             && Peloton.ShouldUse(out act, mustUse: true)) return true;
 

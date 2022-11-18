@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.Script.Actions;
@@ -14,15 +9,12 @@ namespace XIVAutoAttack.Combos.Script.Combos
     {
         public override string Author => Set.GetAuthor();
 
-        public string AuthorName { get; set; }
-        public ComboSet Set { get ; set ; }
-
-
+        public ComboSet Set { get; set; } = new ComboSet();
 
         private protected override bool EmergencyGCD(out IAction act)
             => Set.EmergencyGCDSet.ShouldUse(this, out act);
 
-        private protected override bool GeneralGCD(out IAction act) 
+        private protected override bool GeneralGCD(out IAction act)
             => Set.GeneralGCDSet.ShouldUse(this, out act);
 
         private protected override bool DefenseAreaGCD(out IAction act)

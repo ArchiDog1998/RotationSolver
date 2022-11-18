@@ -1,35 +1,32 @@
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Interface;
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
-using Lumina.Data.Parsing;
-using Dalamud.Interface;
-using XIVAutoAttack.Combos.Script;
-using System.Diagnostics;
-using System.Reflection;
-using Dalamud.Interface.Components;
-using Newtonsoft.Json;
 
 namespace XIVAutoAttack.Windows;
 
 internal class ComboConfigWindow : Window
 {
     public ComboConfigWindow()
-        : base("自动攻击设置 (开源免费) v"+ typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
+        : base("自动攻击设置 (开源免费) v" + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
     {
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
@@ -135,7 +132,7 @@ internal class ComboConfigWindow : Window
 
 #if DEBUG
                 string folderLocation = Service.Configuration.ScriptComboFolder;
-                if(ImGui.InputText("自定义循环路径", ref folderLocation, 256))
+                if (ImGui.InputText("自定义循环路径", ref folderLocation, 256))
                 {
                     Service.Configuration.ScriptComboFolder = folderLocation;
                     Service.Configuration.Save();
@@ -370,19 +367,19 @@ internal class ComboConfigWindow : Window
                             Service.Configuration.Save();
                         }
 
-                        var modifierChoices = new VirtualKey[]{ VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
-                        if(poslockCasting && ImGui.BeginCombo("无视咏唱锁热键", ToName(poslockModifier)))
-                         {
-                             foreach (VirtualKey k in modifierChoices)
-                             {
-                                 if (ImGui.Selectable(ToName(k)))
-                                 {
-                                     Service.Configuration.PoslockModifier = k;
-                                     Service.Configuration.Save();
-                                 }
-                             }
+                        var modifierChoices = new VirtualKey[] { VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
+                        if (poslockCasting && ImGui.BeginCombo("无视咏唱锁热键", ToName(poslockModifier)))
+                        {
+                            foreach (VirtualKey k in modifierChoices)
+                            {
+                                if (ImGui.Selectable(ToName(k)))
+                                {
+                                    Service.Configuration.PoslockModifier = k;
+                                    Service.Configuration.Save();
+                                }
+                            }
                             ImGui.EndCombo();
-                         }
+                        }
                         if (ImGui.IsItemHovered())
                         {
                             ImGui.SetTooltip("手柄玩家为按下LT+RT无视咏唱锁");
@@ -408,7 +405,7 @@ internal class ComboConfigWindow : Window
 
                             var teachingColor = Service.Configuration.TeachingModeColor;
 
-                            if(ImGui.ColorEdit3("教育模式颜色", ref teachingColor))
+                            if (ImGui.ColorEdit3("教育模式颜色", ref teachingColor))
                             {
                                 Service.Configuration.TeachingModeColor = teachingColor;
                                 Service.Configuration.Save();
@@ -1053,7 +1050,7 @@ internal class ComboConfigWindow : Window
         ImGui.SameLine();
         Spacing();
 
-        if(texture is ICustomCombo com)
+        if (texture is ICustomCombo com)
         {
             if (texture is IScriptCombo script)
             {

@@ -1,11 +1,7 @@
-﻿using ImGuiScene;
-using Lumina.Data.Parsing;
-using Lumina.Excel.GeneratedSheets;
+﻿using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -92,7 +88,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 var con = CreateConfiguration();
                 if (Service.Configuration.CombosConfigurations.TryGetValue((uint)JobIDs[0], out var lastcom))
                 {
-                    if(lastcom.TryGetValue(Author, out var lastCon))
+                    if (lastcom.TryGetValue(Author, out var lastCon))
                     {
                         if (con.IsTheSame(lastCon))
                         {
@@ -104,8 +100,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 }
                 else
                 {
-					Service.Configuration.CombosConfigurations.Add((uint)JobIDs[0], new Dictionary<string, ActionConfiguration>() { {Author,con } });
-				}
+                    Service.Configuration.CombosConfigurations.Add((uint)JobIDs[0], new Dictionary<string, ActionConfiguration>() { { Author, con } });
+                }
                 Service.Configuration.Save();
                 return con;
             }

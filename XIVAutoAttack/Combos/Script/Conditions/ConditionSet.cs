@@ -5,10 +5,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Windows;
 
 namespace XIVAutoAttack.Combos.Script.Conditions
@@ -16,7 +12,7 @@ namespace XIVAutoAttack.Combos.Script.Conditions
     internal class ConditionSet : ICondition
     {
         [JsonIgnore]
-        public bool IsTrue => Conditions.Count == 0 ? true:
+        public bool IsTrue => Conditions.Count == 0 ? true :
                               IsAnd ? Conditions.All(c => c.IsTrue)
                                     : Conditions.Any(c => c.IsTrue);
 
@@ -31,7 +27,7 @@ namespace XIVAutoAttack.Combos.Script.Conditions
             ImGui.Columns(2);
 
             int isAnd = IsAnd ? 1 : 0;
-            if(ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
+            if (ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
             {
                 "OR (一个条件满足即可)",
                 "AND (所有条件均要满足)",

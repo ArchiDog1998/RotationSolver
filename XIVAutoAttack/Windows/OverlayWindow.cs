@@ -1,22 +1,12 @@
-﻿using Dalamud.Interface;
-using Dalamud.Interface.Windowing;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Interface;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Data;
-using System.Xml.Linq;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Component.GUI;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
-using Dalamud.Game.ClientState.Objects.Types;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Windows
 {

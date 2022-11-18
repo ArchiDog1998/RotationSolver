@@ -75,7 +75,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction HeatBlast { get; } = new(ActionID.HeatBlast)
     {
-        ActionCheck = b => JobGauge.IsOverheated 
+        ActionCheck = b => JobGauge.IsOverheated
         && !OverheatedEndAfterGCD(),
     };
 

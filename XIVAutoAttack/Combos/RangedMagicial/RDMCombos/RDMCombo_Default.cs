@@ -1,15 +1,10 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
 using static XIVAutoAttack.Combos.RangedMagicial.RDMCombos.RDMCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.RDMCombos;
@@ -53,13 +48,13 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         //开场爆发的时候释放。
         if (Service.Configuration.AutoBreak && GetRightValue(WhiteMana) && GetRightValue(BlackMana))
         {
-            if (!canUseMagic( act) && Manafication.ShouldUse(out act) ) return true;
+            if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
             if (Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
         //倍增要放到魔连攻击之后
         if (ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Zwerchhau, Riposte))
         {
-            if (!canUseMagic(act) && Manafication.ShouldUse(out act) ) return true;
+            if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
         }
 
         act = null;
@@ -76,14 +71,14 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         act = null;
         if (SettingBreak)
         {
-            if (!canUseMagic(act) && Manafication.ShouldUse(out act) ) return true;
+            if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
             if (Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
 
         if (ManaStacks == 0 && (BlackMana < 50 || WhiteMana < 50) && !Manafication.WillHaveOneChargeGCD(1, 1))
         {
             //促进满了且预备buff没满就用。 
-            if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true) 
+            if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)
                 && (!Player.HasStatus(true, StatusID.VerfireReady) || !Player.HasStatus(true, StatusID.VerstoneReady))) return true;
 
             //即刻咏唱
@@ -150,7 +145,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 
 
         //赤治疗，加即刻，有连续咏唱或者即刻的话就不放了
-        if (Config.GetBoolByName("UseVercure") && Vercure.ShouldUse(out act) 
+        if (Config.GetBoolByName("UseVercure") && Vercure.ShouldUse(out act)
             ) return true;
 
         return false;
@@ -204,7 +199,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         if (Redoublement.ShouldUse(out act)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
-        bool mustStart = Player.HasStatus(true, StatusID.Manafication) || 
+        bool mustStart = Player.HasStatus(true, StatusID.Manafication) ||
                          BlackMana == 100 || WhiteMana == 100 || !Embolden.IsCoolDown;
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。

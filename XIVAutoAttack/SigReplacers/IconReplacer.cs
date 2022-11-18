@@ -1,24 +1,18 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Hooking;
-using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using Lumina.Data.Parsing;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.SigReplacers;
@@ -74,11 +68,11 @@ internal sealed class IconReplacer : IDisposable
     internal static ICustomCombo GetChooseCombo(CustomComboGroup group)
     {
         var id = group.jobId;
-        if(Service.Configuration.ComboChoices.TryGetValue((uint)id, out var choice))
+        if (Service.Configuration.ComboChoices.TryGetValue((uint)id, out var choice))
         {
             foreach (var combo in group.combos)
             {
-                if( combo.Author == choice)
+                if (combo.Author == choice)
                 {
                     return combo;
                 }
@@ -157,8 +151,9 @@ internal sealed class IconReplacer : IDisposable
     private static void GetAllCombos()
     {
         _combos = (from t in Assembly.GetAssembly(typeof(ICustomCombo)).GetTypes()
-        where t.GetInterfaces().Contains(typeof(ICustomCombo)) && !t.IsAbstract && !t.IsInterface
-        select (ICustomCombo)Activator.CreateInstance(t)).ToList();
+                   where t.GetInterfaces().Contains(typeof(ICustomCombo)) &&
+                        !t.GetInterfaces().Contains(typeof(IScriptCombo)) && !t.IsAbstract && !t.IsInterface
+                   select (ICustomCombo)Activator.CreateInstance(t)).ToList();
     }
 
     private static void MaintenceCombos()
@@ -174,10 +169,12 @@ internal sealed class IconReplacer : IDisposable
 
     public static IScriptCombo AddScripCombo(ClassJobID id, bool update = true)
     {
-        if(_customScriptCombos.TryGetValue(id, out var value))
+        if (_customScriptCombos.TryGetValue(id, out var value))
         {
             var add = (IScriptCombo)Activator.CreateInstance(value);
+            add.Set.JobID = id;
             _combos.Add(add);
+
             if (update) MaintenceCombos();
             return add;
         }
@@ -218,7 +215,7 @@ internal sealed class IconReplacer : IDisposable
 
         foreach (var combo in combos)
         {
-            if(!result.Any(c => c.Author == combo.Author))
+            if (!result.Any(c => c.Author == combo.Author))
             {
                 result.Add(combo);
             }

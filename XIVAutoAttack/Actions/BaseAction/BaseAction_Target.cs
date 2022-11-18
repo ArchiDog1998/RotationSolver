@@ -1,16 +1,14 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
-using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Combos.Healer;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Actions.BaseAction
 {
-    internal partial class BaseAction 
+    internal partial class BaseAction
     {
         internal bool IsTargetDying
         {
@@ -88,7 +86,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         private bool FindTarget(bool mustUse)
         {
-            if(Service.Configuration.AttackSafeMode) mustUse = false;
+            if (Service.Configuration.AttackSafeMode) mustUse = false;
 
             _position = Service.ClientState.LocalPlayer.Position;
             var player = Service.ClientState.LocalPlayer;
@@ -121,7 +119,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                         if (!Service.Configuration.UseAreaAbilityFriendly) return false;
 
                         //如果当前目标是Boss且有身位，放他身上。
-                        if(Service.TargetManager.Target is BattleChara b && b.IsBoss() && b.HasLocationSide())
+                        if (Service.TargetManager.Target is BattleChara b && b.IsBoss() && b.HasLocationSide())
                         {
                             Target = b;
                             _position = Target.Position;
@@ -142,8 +140,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                             {
                                 var disToTankRound = Vector3.Distance(Target.Position, attackT.Position) + attackT.HitboxRadius;
 
-                                if(disToTankRound  < _action.EffectRange 
-                                    || disToTankRound > 2 * _action.EffectRange - Target.HitboxRadius 
+                                if (disToTankRound < _action.EffectRange
+                                    || disToTankRound > 2 * _action.EffectRange - Target.HitboxRadius
                                     || disToTankRound > range)
                                 {
                                     _position = Target.Position;
@@ -244,7 +242,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                             {
                                 case 10: //环形范围攻击也就这么判断吧，我烦了。
                                 case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                                    if(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, false, mustUse, false)
+                                    if (TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, false, mustUse, false)
                                         .Contains(b))
                                     {
                                         Target = b;
@@ -260,7 +258,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                                     }
                                     break;
                                 case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                                    if(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, mustUse, false)
+                                    if (TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, mustUse, false)
                                         .Contains(b))
                                     {
                                         Target = b;
@@ -321,12 +319,12 @@ namespace XIVAutoAttack.Actions.BaseAction
 
                 if (_action.EffectRange > 0 && !_isFriendly)
                 {
-                    if(NoAOEForAttackMark)
+                    if (NoAOEForAttackMark)
                     {
                         if (mustUse)
                         {
                             Target = TargetFilter.GetAttackMarkChara(TargetUpdater.HostileTargets);
-                            if(Target == null) return false;
+                            if (Target == null) return false;
                             return true;
                         }
                         else
@@ -351,7 +349,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// 开启攻击标记且有攻击标记目标且不开AOE。
         /// </summary>
         private static bool NoAOEForAttackMark =>
-            Service.Configuration.ChooseAttackMark && !Service.Configuration.AttackMarkAOE 
+            Service.Configuration.ChooseAttackMark && !Service.Configuration.AttackMarkAOE
             && MarkingController.HaveAttackChara(TargetUpdater.HostileTargets);
     }
 }

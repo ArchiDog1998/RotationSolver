@@ -1,10 +1,4 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XIVAutoAttack.Data;
+﻿using XIVAutoAttack.Data;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 

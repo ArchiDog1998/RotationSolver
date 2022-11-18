@@ -27,7 +27,7 @@ namespace XIVAutoAttack.Data
         public static TextureWrap GetTexture(this ITexture text)
         {
             var id = text.IconID;
-            if(!_textures.TryGetValue(id, out var texture))
+            if (!_textures.TryGetValue(id, out var texture))
             {
                 texture = Service.DataManager.GetImGuiTextureIcon(id);
                 _textures.Add(id, texture);

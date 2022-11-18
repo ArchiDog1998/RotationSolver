@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Linq;
 using XIVAutoAttack.Actions;
@@ -71,8 +70,8 @@ namespace XIVAutoAttack.Combos.Basic
                 if (!OnSlot) return false;
 
                 //排除其他类型的魔法。
-                if(AttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
-                if(AttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
+                if (AttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
+                if (AttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
 
                 return base.ShouldUse(out act, mustUse, emptyOrSkipCombo);
             }
@@ -96,7 +95,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 吸血
         /// </summary>
-        public static BLUAction BloodDrain { get; } = new (ActionID.BloodDrain, BLUActionType.Magical)
+        public static BLUAction BloodDrain { get; } = new(ActionID.BloodDrain, BLUActionType.Magical)
         {
             ActionCheck = b => Player.CurrentMp <= 9500,
         };
@@ -298,7 +297,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 以太火花
         /// </summary>
-        public static BLUAction AetherialSpark { get; } = new(ActionID.AetherialSpark, BLUActionType.Magical, isEot:true);
+        public static BLUAction AetherialSpark { get; } = new(ActionID.AetherialSpark, BLUActionType.Magical, isEot: true);
 
         /// <summary>
         /// 水力吸引
@@ -660,11 +659,11 @@ namespace XIVAutoAttack.Combos.Basic
         /// </summary>
         public static BLUAction BasicInstinct { get; } = new(ActionID.BasicInstinct, BLUActionType.None)
         {
-            BuffsProvide = new StatusID[] {StatusID.BasicInstinct },
+            BuffsProvide = new StatusID[] { StatusID.BasicInstinct },
             ActionCheck = b =>
             {
                 //TODO: 还需要判断是否为多人本
-                return Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56] 
+                return Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56]
                     && TargetUpdater.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1;
             },
         };

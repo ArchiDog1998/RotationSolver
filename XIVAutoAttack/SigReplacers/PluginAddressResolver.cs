@@ -1,13 +1,8 @@
 using Dalamud.Game;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Hooking;
 using Dalamud.Logging;
-using Dalamud.Utility.Signatures;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using XIVAutoAttack.Data;
-using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 namespace XIVAutoAttack.SigReplacers;
 
@@ -45,7 +40,7 @@ internal class PluginAddressResolver : BaseAddressResolver
         CanAttackFunction = scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
         MovingController = scanner.ScanText("40 55 53 48 8D 6C 24 ?? 48 81 EC ?? ?? ?? ?? 48 83 79 ?? ??");
         ReceiveAbilty = scanner.ScanText("4C 89 44 24 ?? 55 56 57 41 54 41 55 41 56 48 8D 6C 24 ??");
-        CountdownTimerAdress=scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 40 8B 41");
+        CountdownTimerAdress = scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 40 8B 41");
 
         GetChatBox = Marshal.GetDelegateForFunctionPointer<GetChatBoxModuleDelegate>(
             scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9"));

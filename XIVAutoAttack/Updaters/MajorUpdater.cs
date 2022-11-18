@@ -1,8 +1,6 @@
 ﻿using Dalamud.Game;
 using System;
 using System.Collections.Generic;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Updaters
 {

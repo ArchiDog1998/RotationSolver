@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -50,7 +47,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
                 if (string.IsNullOrEmpty(name)) continue;
 
-                if(name == args)
+                if (name == args)
                 {
                     LastCommand = value;
                     _lactCommandTime = DateTime.Now;

@@ -1,12 +1,9 @@
-﻿using ImGuiScene;
-using XIVAutoAttack.Data;
-
-namespace XIVAutoAttack.Actions
+﻿namespace XIVAutoAttack.Actions
 {
     public interface IAction : ITexture
     {
-       bool Use();
-       uint ID { get; }
-       uint AdjustedID { get; }
+        bool Use();
+        uint ID { get; }
+        uint AdjustedID { get; }
     }
 }

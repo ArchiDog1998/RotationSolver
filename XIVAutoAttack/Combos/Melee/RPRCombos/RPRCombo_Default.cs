@@ -21,7 +21,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     {
         return base.CreateConfiguration().SetBool("EnshroudPooling", false, "双附体循环爆发(低于88级不会生效)**推荐**");
     }
-        public RPRCombo_Default()
+    public RPRCombo_Default()
     {
         bool PlentifulReady = Player.HasStatus(true, StatusID.ImmortalSacrifice) && !Player.HasStatus(true, StatusID.BloodsownCircle);
 
@@ -39,7 +39,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
 
         //必须有dot
         ArcaneCircle.ComboCheck = b => Target.HasStatus(true, StatusID.DeathsDesign);
-        
+
         //必须进战
         HarvestMoon.ComboCheck = b => InCombat;
     }
@@ -104,7 +104,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
 
                 //夜游魂衣-虚无/交错收割 阴冷收割
                 if (GrimReaping.ShouldUse(out act)) return true;
-                if(Player.HasStatus(true,StatusID.EnhancedCrossReaping) || !Player.HasStatus(true, StatusID.EnhancedVoidReaping))
+                if (Player.HasStatus(true, StatusID.EnhancedCrossReaping) || !Player.HasStatus(true, StatusID.EnhancedVoidReaping))
                 {
                     if (CrossReaping.ShouldUse(out act)) return true;
                 }
@@ -161,7 +161,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         if (Slice.ShouldUse(out act)) return true;
 
         //摸不到怪 先花掉收获月
-        if (HarvestMoon.ShouldUse(out act,mustUse:true)) return true;
+        if (HarvestMoon.ShouldUse(out act, mustUse: true)) return true;
         if (Harpe.ShouldUse(out act)) return true;
 
         return false;
@@ -174,10 +174,10 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
             //神秘环
             if (ArcaneCircle.ShouldUse(out act)) return true;
 
-            if((!Config.GetBoolByName("EnshroudPooling") && Shroud >= 50) ||//未开启双附体
+            if ((!Config.GetBoolByName("EnshroudPooling") && Shroud >= 50) ||//未开启双附体
                (Config.GetBoolByName("EnshroudPooling") && Shroud >= 50 &&
                (!PlentifulHarvest.EnoughLevel || //等级不足以双附体
-               Player.HasStatus(true,StatusID.ArcaneCircle) || //在神秘环期间附体
+               Player.HasStatus(true, StatusID.ArcaneCircle) || //在神秘环期间附体
                ArcaneCircle.WillHaveOneCharge(8) || //双附体起手
                (!Player.HasStatus(true, StatusID.ArcaneCircle) && ArcaneCircle.WillHaveOneCharge(65) && !ArcaneCircle.WillHaveOneCharge(50)) || //奇数分钟不用攒附体
                (!Player.HasStatus(true, StatusID.ArcaneCircle) && Shroud >= 90)))) //攒蓝条为双附体
@@ -210,7 +210,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if(abilityRemain == 2)
+        if (abilityRemain == 2)
         {
             if (Feint.ShouldUse(out act)) return true;
         }
@@ -222,7 +222,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //神秘纹
-        if(abilityRemain == 2)
+        if (abilityRemain == 2)
         {
             if (ArcaneCrest.ShouldUse(out act)) return true;
         }

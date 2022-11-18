@@ -1,11 +1,6 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -71,7 +66,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
 
         private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
         {
-            if(nextGCD.IsAnySameAction(false, Selfdestruct, FinalSting))
+            if (nextGCD.IsAnySameAction(false, Selfdestruct, FinalSting))
             {
                 if (Swiftcast.ShouldUse(out act)) return true;
             }
@@ -87,7 +82,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
 
         private protected override bool GeneralGCD(out IAction act)
         {
-            act=null;
+            act = null;
             //狂战士副作用期间
             if (Player.HasStatus(true, StatusID.WaningNocturne)) return false;
             //鬼宿脚
@@ -135,7 +130,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             }
             else
             {
-                if (WhiteWind.ShouldUse(out act)) return true; 
+                if (WhiteWind.ShouldUse(out act)) return true;
             }
 
             return base.HealAreaGCD(out act);

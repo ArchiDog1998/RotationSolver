@@ -1,17 +1,7 @@
-﻿using Dalamud.Game.Gui;
+﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.Keys;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
 using System.Numerics;
-using Dalamud.Game.Gui.Toast;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
@@ -31,7 +21,7 @@ namespace XIVAutoAttack.Updaters
         {
             movingHook.Disable();
         }
-        
+
         internal static void UpdateLocation()
         {
             if (Service.ClientState.LocalPlayer == null) return;

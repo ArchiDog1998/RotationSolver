@@ -1,9 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System;
 using System.Linq;
-using System.Text;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
@@ -109,7 +105,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         DateTime lastTime;
         private bool CheckAction(uint actionID)
         {
-            if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0,0,3)) && CommandController.AutoAttack)
+            if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0, 0, 3)) && CommandController.AutoAttack)
             {
                 _lastSayingGCDAction = actionID;
                 lastTime = DateTime.Now;
@@ -124,9 +120,9 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (EmergencyGCD(out var act)) return act;
 
             if (EsunaRaise(out act, abilityRemain, false)) return act;
-            if (CommandController.Move && MoveGCD( out act))
+            if (CommandController.Move && MoveGCD(out act))
             {
-                if(act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
+                if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
             }
             if (TargetUpdater.HPNotFull && ActionUpdater.InCombat)
             {
@@ -145,7 +141,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (GeneralGCD(out var action)) return action;
 
             //硬拉或者开始奶人
-            if (Service.Configuration.RaisePlayerBySwift && (HaveSwift || !Swiftcast.IsCoolDown) 
+            if (Service.Configuration.RaisePlayerBySwift && (HaveSwift || !Swiftcast.IsCoolDown)
                 && EsunaRaise(out act, abilityRemain, true)) return act;
             if (TargetUpdater.HPNotFull && HaveHostilesInRange && ActionUpdater.InCombat)
             {

@@ -1,10 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Updaters;
 
@@ -20,7 +15,7 @@ namespace XIVAutoAttack.Helpers
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>还剩几秒</returns>
         private static float WeaponRemain(uint gcdCount = 0, uint abilityCount = 0)
-            =>  WeaponTime(gcdCount, abilityCount) + ActionUpdater.WeaponRemain;
+            => WeaponTime(gcdCount, abilityCount) + ActionUpdater.WeaponRemain;
 
         /// <summary>
         /// 距离上一次搞好GCD已经过去多少时间里
@@ -108,7 +103,7 @@ namespace XIVAutoAttack.Helpers
         /// <param name="isSpell">是否是需要咏唱的魔法</param>
         /// <param name="isSpellTime">是否是计算咏唱的真实消耗时间,否则计算到判定点的时间</param>
         /// <returns>返回真实消耗的时间(毫秒)</returns>
-        internal static unsafe double CalcSpellTime(double GCDTime, bool isSpell = true , bool isSpellTime = true)
+        internal static unsafe double CalcSpellTime(double GCDTime, bool isSpell = true, bool isSpellTime = true)
         {
             var uiState = UIState.Instance();
             //获得当前等级
