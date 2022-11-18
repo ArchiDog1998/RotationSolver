@@ -10,7 +10,7 @@ namespace XIVAutoAttack.Combos.Script
 {
     internal interface IScriptCombo : ICustomCombo
     {
-        public ActionsSet GeneralGCDSet { get; set; }
+        public ComboSet Set { get; set; }
         string AuthorName { get; set; }
     }
 

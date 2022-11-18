@@ -1046,7 +1046,7 @@ internal class ComboConfigWindow : Window
         ImGui.SameLine();
         Spacing();
 
-        if(texture is ICustomCombo)
+        if(texture is ICustomCombo com)
         {
             if (texture is IScriptCombo script)
             {
@@ -1075,6 +1075,7 @@ internal class ComboConfigWindow : Window
 
             if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
             {
+                IconReplacer.AddScripCombo(com.JobIDs[0]);
             }
 #endif
         }

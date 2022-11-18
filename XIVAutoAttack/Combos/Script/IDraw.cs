@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XIVAutoAttack.Combos.Script.Conditions
+namespace XIVAutoAttack.Combos.Script
 {
-    internal interface ICondition : IDraw
+    internal interface IDraw
     {
-        bool IsTrue { get; }
-
-
+        void Draw(IScriptCombo combo);
     }
 }

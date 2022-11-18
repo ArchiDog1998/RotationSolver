@@ -15,18 +15,14 @@ namespace XIVAutoAttack.Combos.Script.Combos
         public override string Author => this.GetAuthor();
 
         public string AuthorName { get; set; }
-        public ActionsSet GeneralGCDSet { get; set; }
+        public ComboSet Set { get ; set ; }
 
         private protected override bool AttackAbility(byte abilityRemain, out IAction act)
         {
-            new JsonSerializerSettings()
-            {
-                MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            };
             act = null;
             return false;
         }
 
-        private protected override bool GeneralGCD(out IAction act) => GeneralGCDSet.ShouldUse(this, out act);
+        private protected override bool GeneralGCD(out IAction act) => Set.GeneralGCDSet.ShouldUse(this, out act);
     }
 }

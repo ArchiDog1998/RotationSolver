@@ -16,14 +16,15 @@ namespace XIVAutoAttack.Combos.Script.Conditions
     internal class ConditionSet : ICondition
     {
         [JsonIgnore]
-        public bool IsTrue => IsAnd ? Conditions.All(c => c.IsTrue)
+        public bool IsTrue => Conditions.Count == 0 ? true:
+                              IsAnd ? Conditions.All(c => c.IsTrue)
                                     : Conditions.Any(c => c.IsTrue);
 
-        public List<ICondition> Conditions { get; set; }
+        public List<ICondition> Conditions { get; set; } = new List<ICondition>();
         public bool IsAnd { get; set; }
 
         private bool _openPopup = false;
-        public void Draw()
+        public void Draw(IScriptCombo combo)
         {
             ImGui.BeginGroup();
 
@@ -49,10 +50,11 @@ namespace XIVAutoAttack.Combos.Script.Conditions
             {
                 var condition = Conditions[i];
 
-                condition.Draw();
+                condition.Draw(combo);
 
                 ImGui.SameLine();
                 ComboConfigWindow.Spacing();
+
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.Cross))
                 {
                     Conditions.RemoveAt(i);

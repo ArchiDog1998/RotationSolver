@@ -10,12 +10,18 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using XIVAutoAttack.Combos.Script;
+using XIVAutoAttack.Combos.Script.Actions;
+using XIVAutoAttack.Data;
+using Lumina.Excel.GeneratedSheets;
 
 namespace XIVAutoAttack.Windows
 {
     internal class ScriptComboWindow : Window
     {
         public IScriptCombo TargetCombo { get; set; }
+
+        public ActionConditions ActiveAction { get; set; }
+        public ActionsSet ActiveSet { get; set; }
 
         public ScriptComboWindow()
             : base("自定义循环设置 v" + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString(), 0, false)
@@ -43,6 +49,18 @@ namespace XIVAutoAttack.Windows
 
         private void DisplayFunctionList()
         {
+            if (TargetCombo == null) return;
+
+            ImGui.Columns(2);
+
+            var text = TargetCombo.GetTexture();
+
+            ImGui.SetColumnWidth(0, text.Width + 5);
+
+            ImGui.Image(text.ImGuiHandle, new Vector2(text.Width, text.Height));
+
+            ImGui.NextColumn();
+
             string authorName = TargetCombo.AuthorName;
             if (ImGui.InputText("作者:", ref authorName, 64))
             {
@@ -59,14 +77,20 @@ namespace XIVAutoAttack.Windows
                 p.StartInfo.Arguments = $" /select, {TargetCombo.GetFolder()}";
                 p.Start();
             }
+
+            ImGui.Columns(1);
+
+            TargetCombo.Set.Draw(TargetCombo);
         }
 
         private void DisplayActionList()
         {
+            ActiveSet?.Draw(TargetCombo);
         }
 
         private void DisplayConditionList()
         {
+            ActiveAction?.Draw(TargetCombo);
         }
     }
 }

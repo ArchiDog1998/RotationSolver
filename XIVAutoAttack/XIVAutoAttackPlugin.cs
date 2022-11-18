@@ -32,7 +32,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     private readonly WindowSystem windowSystem;
 
     private static ComboConfigWindow _comboConfigWindow;
-    private static ScriptComboWindow _scriptComboWindow;
+    internal static ScriptComboWindow _scriptComboWindow;
     public string Name => "XIV Auto Attack";
 
     public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, CommandManager commandManager)
