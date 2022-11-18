@@ -841,6 +841,11 @@
         MeikyoShisui = 1233,
 
         /// <summary>
+        /// 燕飞效果提高
+        /// </summary>
+        Enhanced_Enpi = 1236,
+
+        /// <summary>
         /// 奥义斩浪预备
         /// </summary>
         OgiNamikiriReady = 2959,

@@ -75,9 +75,19 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Fuga { get; } = new(ActionID.Fuga);
 
     /// <summary>
+    /// 风光
+    /// </summary>
+    public static BaseAction Fuko { get; } = new(ActionID.Fuko);
+
+    /// <summary>
     /// 月光
     /// </summary>
     public static BaseAction Gekko { get; } = new(ActionID.Gekko);
+
+    /// <summary>
+    /// 叶隐
+    /// </summary>
+    public static BaseAction Hagakure { get; } = new(ActionID.Hagakure);
 
     /// <summary>
     /// 彼岸花
@@ -161,6 +171,11 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// 必杀剑·闪影
     /// </summary>
     public static BaseAction HissatsuSenei { get; } = new(ActionID.HissatsuSenei);
+
+    /// <summary>
+    /// 燕回返
+    /// </summary>
+    public static BaseAction Tsubame_gaeshi { get; } = new(ActionID.Tsubame_gaeshi);
 
     /// <summary>
     /// 回返五剑

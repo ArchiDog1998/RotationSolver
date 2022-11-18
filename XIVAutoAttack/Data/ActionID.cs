@@ -2446,7 +2446,17 @@ HeavyShoot = 97,
         /// <summary>
         /// 月光
         /// </summary>
+        Fuko = 25780,
+
+        /// <summary>
+        /// 月光
+        /// </summary>
         Gekko = 7481,
+
+        /// <summary>
+        /// 叶隐
+        /// </summary>
+        Hagakure = 7495,
 
         /// <summary>
         /// 彼岸花
@@ -2517,6 +2527,11 @@ HeavyShoot = 97,
         /// 必杀剑·闪影
         /// </summary>
         HissatsuSenei = 16481,
+
+        /// <summary>
+        /// 燕回返
+        /// </summary>
+        Tsubame_gaeshi = 16483,
 
         /// <summary>
         /// 回返五剑
