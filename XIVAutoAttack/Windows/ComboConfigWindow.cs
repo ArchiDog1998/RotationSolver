@@ -21,12 +21,13 @@ using Dalamud.Interface;
 using XIVAutoAttack.Combos.Script;
 using System.Diagnostics;
 using System.Reflection;
+using Dalamud.Interface.Components;
+using Newtonsoft.Json;
+
 namespace XIVAutoAttack.Windows;
 
 internal class ComboConfigWindow : Window
 {
-    //private static readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
-
     public ComboConfigWindow()
         : base("自动攻击设置 (开源免费) v"+ typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
     {
@@ -36,9 +37,9 @@ internal class ComboConfigWindow : Window
     }
     private static readonly Dictionary<JobRole, string> _roleDescriptionValue = new Dictionary<JobRole, string>()
     {
-        {JobRole.Tank, $"{DescType.单体防御} → {CustomComboActions.Rampart}, {CustomComboActions.Reprisal}" },
-        {JobRole.Melee, $"{DescType.范围防御} → {CustomComboActions.Feint}" },
-        {JobRole.RangedMagicial, $"法系{DescType.范围防御} → {CustomComboActions.Addle}" },
+        {JobRole.Tank, $"{DescType.单体防御} → {CustomCombo<Enum>.Rampart}, {CustomCombo<Enum>.Reprisal}" },
+        {JobRole.Melee, $"{DescType.范围防御} → {CustomCombo<Enum>.Feint}" },
+        {JobRole.RangedMagicial, $"法系{DescType.范围防御} → {CustomCombo<Enum>.Addle}" },
     };
 
     private static string ToName(VirtualKey k)
@@ -131,6 +132,23 @@ internal class ComboConfigWindow : Window
             if (ImGui.BeginTabItem("攻击设定"))
             {
                 ImGui.Text("你可以选择开启想要的职业的连续GCD战技、技能，若职业与当前职业相同则有命令宏提示。");
+
+#if DEBUG
+                string folderLocation = Service.Configuration.ScriptComboFolder;
+                if(ImGui.InputText("自定义循环路径", ref folderLocation, 256))
+                {
+                    Service.Configuration.ScriptComboFolder = folderLocation;
+                    Service.Configuration.Save();
+                }
+
+                ImGui.SameLine();
+                Spacing();
+
+                if (ImGuiComponents.IconButton(FontAwesomeIcon.FolderOpen))
+                {
+                    IconReplacer.LoadFromFolder();
+                }
+#endif
 
                 ImGui.BeginChild("攻击", new Vector2(0f, -1f), true);
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
@@ -924,15 +942,6 @@ internal class ComboConfigWindow : Window
                             }
                         }
                     }
-
-                    if (ImGui.CollapsingHeader("所有职能技能"))
-                    {
-                        foreach (var item in IconReplacer.GeneralBaseAction)
-                        {
-                            DrawAction(item);
-                            ImGui.Separator();
-                        }
-                    }
                     ImGui.EndChild();
                 }
                 ImGui.PopStyleVar();
@@ -1044,31 +1053,38 @@ internal class ComboConfigWindow : Window
         ImGui.SameLine();
         Spacing();
 
-        if(texture is ICustomCombo)
+        if(texture is ICustomCombo com)
         {
             if (texture is IScriptCombo script)
             {
 #if DEBUG
-                if (ImGui.Button($"{FontAwesomeIcon.Folder.ToIconString()}##文件{texture.Name}"))
+                if (ImGuiComponents.IconButton(FontAwesomeIcon.Edit))
                 {
-                    Process p = new Process();
-                    p.StartInfo.FileName = "explorer.exe";
-                    p.StartInfo.Arguments = $" /select, {script.FilePath}";
-                    p.Start();
+                    XIVAutoAttackPlugin.OpenScriptWindow(script);
                 }
 #endif
             }
             else
             {
                 //ImGui.PushFont(UiBuilder.IconFont);
-                //ImGui.SetNextItemWidth(32);
-                if (ImGui.Button($"源码##源码{texture.Name}"))
+                //ImGui.Button($"源码##源码{texture.Name}")
+                if (ImGuiComponents.IconButton(FontAwesomeIcon.InternetExplorer))
                 {
                     var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
                     Process.Start("cmd", $"/C start {url}");
                 }
                 //ImGui.PopFont();
             }
+
+#if DEBUG
+            ImGui.SameLine();
+            Spacing();
+
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
+            {
+                IconReplacer.AddScripCombo(com.JobIDs[0]);
+            }
+#endif
         }
 
 

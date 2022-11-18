@@ -108,9 +108,11 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             //爆发
             if (MoonFluteBreak && DBlueBreak(out act)) return true;
 
-
-
-            //填充
+            //高伤害
+            if (PrimalSpell(out act)) return true;
+            //群体
+            if (AreaGCD(out act)) return true;
+            //单体填充
             if (SingleGCD(out act)) return true;
             
             
@@ -348,16 +350,23 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
                 if (Level5Petrify.ShouldUse(out act, mustUse: true)) return true;
             }
 
+          
+
             //陆行鸟陨石
             if (ChocoMeteor.ShouldUse(out act)) return true;
 
-            //水力吸引
-            if (HydroPull.ShouldUse(out act)) return true;
+            if (TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 6).Length < 3)
+            {
+                //水力吸引
+                if (HydroPull.ShouldUse(out act)) return true;
+            }
 
             //寒冰咆哮
             if (TheRamVoice.ShouldUse(out act)) return true;
+
             //超振动
             if (!IsMoving && Target.HasStatus(false, StatusID.DeepFreeze) && TheRamVoice.ShouldUse(out act)) return true;
+
             //雷电咆哮
             if (TheDragonVoice.ShouldUse(out act)) return true;
 

@@ -4,15 +4,19 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Data.Parsing;
 using Lumina.Excel.GeneratedSheets;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Combos.Script;
+using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
@@ -91,37 +95,18 @@ internal sealed class IconReplacer : IDisposable
         return group.combos[0];
     }
 
-    internal static BaseAction[] AllBaseActions => RightComboBaseActions.Union(GeneralBaseAction).ToArray();
-
     internal static BaseAction[] RightComboBaseActions
     {
         get
         {
             var combo = RightNowCombo;
             if (combo == null) return new BaseAction[0];
-            return GetActions(combo, combo.GetType().BaseType);
+            return combo.AllActions;
         }
     }
 
-    internal static BaseAction[] GeneralBaseAction
-    {
-        get
-        {
-            var combo = RightNowCombo;
-            if (combo == null) return new BaseAction[0];
-            return GetActions(combo, typeof(CustomComboActions));
-        }
-    }
 
-    private static BaseAction[] GetActions(ICustomCombo combo, Type type)
-    {
-        return (from prop in type.GetProperties()
-                where typeof(BaseAction).IsAssignableFrom(prop.PropertyType)
-                select (BaseAction)prop.GetValue(combo) into act
-                orderby act.ID
-                select act).ToArray();
-    }
-
+    private static List<ICustomCombo> _combos = new List<ICustomCombo>();
     private static SortedList<JobRole, CustomComboGroup[]> _customCombosDict;
     internal static SortedList<JobRole, CustomComboGroup[]> CustomCombosDict
     {
@@ -147,6 +132,8 @@ internal sealed class IconReplacer : IDisposable
         }
     }
 
+    private static Dictionary<ClassJobID, Type> _customScriptCombos;
+
     private readonly Hook<IsIconReplaceableDelegate> isIconReplaceableHook;
 
     private readonly Hook<GetIconDelegate> getIconHook;
@@ -167,19 +154,62 @@ internal sealed class IconReplacer : IDisposable
     }
 
 
-
-    private static void SetStaticValues()
+    private static void GetAllCombos()
     {
-        
-        _customCombos = (from t in Assembly.GetAssembly(typeof(ICustomCombo)).GetTypes()
-                         where t.GetInterfaces().Contains(typeof(ICustomCombo)) && !t.IsAbstract && !t.IsInterface
-                         select (ICustomCombo)Activator.CreateInstance(t) into combo
+        _combos = (from t in Assembly.GetAssembly(typeof(ICustomCombo)).GetTypes()
+        where t.GetInterfaces().Contains(typeof(ICustomCombo)) && !t.IsAbstract && !t.IsInterface
+        select (ICustomCombo)Activator.CreateInstance(t)).ToList();
+    }
+
+    private static void MaintenceCombos()
+    {
+        _customCombos = (from combo in _combos
                          group combo by combo.JobIDs[0] into comboGrp
                          select new CustomComboGroup(comboGrp.Key, comboGrp.First().JobIDs, SetCombos(comboGrp.ToArray())))
-                         .ToArray();
+                        .ToArray();
 
         _customCombosDict = new SortedList<JobRole, CustomComboGroup[]>
             (_customCombos.GroupBy(g => g.combos[0].Job.GetJobRole()).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
+    }
+
+    public static IScriptCombo AddScripCombo(ClassJobID id, bool update = true)
+    {
+        if(_customScriptCombos.TryGetValue(id, out var value))
+        {
+            var add = (IScriptCombo)Activator.CreateInstance(value);
+            _combos.Add(add);
+            if (update) MaintenceCombos();
+            return add;
+        }
+        return null;
+    }
+
+    public static void LoadFromFolder()
+    {
+        if (!Directory.Exists(Service.Configuration.ScriptComboFolder)) return;
+
+        foreach (var path in Directory.EnumerateFiles(Service.Configuration.ScriptComboFolder, "*.json"))
+        {
+            var set = JsonConvert.DeserializeObject<ComboSet>(File.ReadAllText(path));
+
+            if (set == null) continue;
+
+            var combo = AddScripCombo(set.JobID, false);
+
+            combo.Set = set;
+        }
+
+        MaintenceCombos();
+    }
+
+    private static void SetStaticValues()
+    {
+        _customScriptCombos = (from t in Assembly.GetAssembly(typeof(IScriptCombo)).GetTypes()
+                               where t.GetInterfaces().Contains(typeof(IScriptCombo)) && !t.IsAbstract && !t.IsInterface
+                               select t).ToDictionary(t => ((IScriptCombo)Activator.CreateInstance(t)).JobIDs[0]);
+
+        GetAllCombos();
+        LoadFromFolder();
     }
 
     private static ICustomCombo[] SetCombos(ICustomCombo[] combos)

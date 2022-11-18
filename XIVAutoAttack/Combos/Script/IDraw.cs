@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace XIVAutoAttack.Combos.Script
 {
-    internal class ActionCheck
+    internal interface IDraw
     {
-        public bool IsAnd { get; set; }
-        public bool IsRight()
-        {
-            return true;
-        }
+        void Draw(IScriptCombo combo);
     }
 }

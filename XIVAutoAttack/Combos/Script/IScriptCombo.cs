@@ -4,15 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Combos.Script.Actions;
 
 namespace XIVAutoAttack.Combos.Script
 {
     internal interface IScriptCombo : ICustomCombo
     {
-        string AuthorName { get; set; }
+        public ComboSet Set { get; set; }
+    }
 
-        string FilePath { get; set; }
+    internal static class ScriptComboExtension
+    {
+        public static string GetFolder(this ComboSet set)
+           => $"{Service.Configuration.ScriptComboFolder}{(uint)set.JobID}_{set.AuthorName}.json";
 
-        public ComboPart GeneralGCDPart { get; set; }
+        public static string GetAuthor(this ComboSet set)
+           => set.AuthorName + "-Script";
     }
 }
