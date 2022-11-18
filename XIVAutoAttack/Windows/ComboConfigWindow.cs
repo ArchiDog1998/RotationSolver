@@ -21,6 +21,7 @@ using Dalamud.Interface;
 using XIVAutoAttack.Combos.Script;
 using System.Diagnostics;
 using System.Reflection;
+using XIVAutoAttack.Windows.Tabs;
 namespace XIVAutoAttack.Windows;
 
 internal class ComboConfigWindow : Window
@@ -28,7 +29,7 @@ internal class ComboConfigWindow : Window
     //private static readonly Vector4 shadedColor = new Vector4(0.68f, 0.68f, 0.68f, 1f);
 
     public ComboConfigWindow()
-        : base("×Ô¶¯¹¥»÷ÉèÖÃ (¿ªÔ´Ãâ·Ñ) v"+ typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
+        : base("è‡ªåŠ¨æ”»å‡»è®¾ç½® (å¼€æºå…è´¹) v"+ typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
     {
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
@@ -36,9 +37,9 @@ internal class ComboConfigWindow : Window
     }
     private static readonly Dictionary<JobRole, string> _roleDescriptionValue = new Dictionary<JobRole, string>()
     {
-        {JobRole.Tank, $"{DescType.µ¥Ìå·ÀÓù} ¡ú {CustomComboActions.Rampart}, {CustomComboActions.Reprisal}" },
-        {JobRole.Melee, $"{DescType.·¶Î§·ÀÓù} ¡ú {CustomComboActions.Feint}" },
-        {JobRole.RangedMagicial, $"·¨Ïµ{DescType.·¶Î§·ÀÓù} ¡ú {CustomComboActions.Addle}" },
+        {JobRole.Tank, $"{DescType.å•ä½“é˜²å¾¡} â†’ {CustomComboActions.Rampart}, {CustomComboActions.Reprisal}" },
+        {JobRole.Melee, $"{DescType.èŒƒå›´é˜²å¾¡} â†’ {CustomComboActions.Feint}" },
+        {JobRole.RangedMagicial, $"æ³•ç³»{DescType.èŒƒå›´é˜²å¾¡} â†’ {CustomComboActions.Addle}" },
     };
 
     private static string ToName(VirtualKey k)
@@ -57,9 +58,9 @@ internal class ComboConfigWindow : Window
         if (ImGui.BeginTabBar("AutoAttackSettings"))
         {
 #if DEBUG
-            if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem("Debug²é¿´"))
+            if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem("DebugæŸ¥çœ‹"))
             {
-                if (ImGui.CollapsingHeader("×ÔÉí¸½¼Ó¸ø×Ô¼ºµÄ×´Ì¬"))
+                if (ImGui.CollapsingHeader("è‡ªèº«é™„åŠ ç»™è‡ªå·±çš„çŠ¶æ€"))
                 {
                     foreach (var item in Service.ClientState.LocalPlayer.StatusList)
                     {
@@ -71,7 +72,7 @@ internal class ComboConfigWindow : Window
                     }
                 }
 
-                if (ImGui.CollapsingHeader("Ä¿±êĞÅÏ¢"))
+                if (ImGui.CollapsingHeader("ç›®æ ‡ä¿¡æ¯"))
                 {
                     if (Service.TargetManager.Target is BattleChara b)
                     {
@@ -94,7 +95,7 @@ internal class ComboConfigWindow : Window
                     }
                 }
 
-                if (ImGui.CollapsingHeader("ÏÂÒ»¸ö¼¼ÄÜ"))
+                if (ImGui.CollapsingHeader("ä¸‹ä¸€ä¸ªæŠ€èƒ½"))
                 {
                     BaseAction baseAction = null;
                     baseAction ??= ActionUpdater.NextAction as BaseAction;
@@ -105,7 +106,7 @@ internal class ComboConfigWindow : Window
 
                 }
 
-                if (ImGui.CollapsingHeader("ÉÏÒ»¸ö¼¼ÄÜ"))
+                if (ImGui.CollapsingHeader("ä¸Šä¸€ä¸ªæŠ€èƒ½"))
                 {
                     DrawAction(Watcher.LastAction, nameof(Watcher.LastAction));
                     DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
@@ -114,7 +115,7 @@ internal class ComboConfigWindow : Window
                     DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
                 }
 
-                if (ImGui.CollapsingHeader("µ¹¼ÆÊ±¡¢°´¼ü"))
+                if (ImGui.CollapsingHeader("å€’è®¡æ—¶ã€æŒ‰é”®"))
                 {
                     ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
 
@@ -127,12 +128,17 @@ internal class ComboConfigWindow : Window
                 ImGui.EndTabItem();
             }
 #endif
-
-            if (ImGui.BeginTabItem("¹¥»÷Éè¶¨"))
+            if (ImGui.BeginTabItem("å…³äº"))
             {
-                ImGui.Text("Äã¿ÉÒÔÑ¡Ôñ¿ªÆôÏëÒªµÄÖ°ÒµµÄÁ¬ĞøGCDÕ½¼¼¡¢¼¼ÄÜ£¬ÈôÖ°ÒµÓëµ±Ç°Ö°ÒµÏàÍ¬ÔòÓĞÃüÁîºêÌáÊ¾¡£");
+                About.Draw();
+                ImGui.EndTabItem();
+            }
 
-                ImGui.BeginChild("¹¥»÷", new Vector2(0f, -1f), true);
+            if (ImGui.BeginTabItem("æ”»å‡»è®¾å®š"))
+            {
+                ImGui.Text("ä½ å¯ä»¥é€‰æ‹©å¼€å¯æƒ³è¦çš„èŒä¸šçš„è¿ç»­GCDæˆ˜æŠ€ã€æŠ€èƒ½ï¼Œè‹¥èŒä¸šä¸å½“å‰èŒä¸šç›¸åŒåˆ™æœ‰å‘½ä»¤å®æç¤ºã€‚");
+
+                ImGui.BeginChild("æ”»å‡»", new Vector2(0f, -1f), true);
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
                 int num = 1;
 
@@ -168,10 +174,10 @@ internal class ComboConfigWindow : Window
                                     }
                                     if (ImGui.IsItemHovered())
                                     {
-                                        ImGui.SetTooltip("¹Ø¼üÃû³ÆÎª£º" + boolean.name);
+                                        ImGui.SetTooltip("å…³é”®åç§°ä¸ºï¼š" + boolean.name);
                                     }
 
-                                    //ÏÔÊ¾¿ÉÒÔÉèÖÃµÄ°¸¼ş
+                                    //æ˜¾ç¤ºå¯ä»¥è®¾ç½®çš„æ¡ˆä»¶
                                     if (canAddButton)
                                     {
                                         ImGui.SameLine();
@@ -223,10 +229,10 @@ internal class ComboConfigWindow : Window
                                     }
                                     if (ImGui.IsItemHovered())
                                     {
-                                        ImGui.SetTooltip("¹Ø¼üÃû³ÆÎª£º" + comboItem.name);
+                                        ImGui.SetTooltip("å…³é”®åç§°ä¸ºï¼š" + comboItem.name);
                                     }
 
-                                    //ÏÔÊ¾¿ÉÒÔÉèÖÃµÄ°¸¼ş
+                                    //æ˜¾ç¤ºå¯ä»¥è®¾ç½®çš„æ¡ˆä»¶
                                     if (canAddButton)
                                     {
                                         ImGui.SameLine();
@@ -267,73 +273,73 @@ internal class ComboConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("²ÎÊıÉè¶¨"))
+            if (ImGui.BeginTabItem("å‚æ•°è®¾å®š"))
             {
 
-                ImGui.Text("ÔÚÕâ¸ö´°¿Ú£¬Äã¿ÉÒÔÉè¶¨ÊÍ·Å¼¼ÄÜËùĞèµÄ²ÎÊı¡£");
+                ImGui.Text("åœ¨è¿™ä¸ªçª—å£ï¼Œä½ å¯ä»¥è®¾å®šé‡Šæ”¾æŠ€èƒ½æ‰€éœ€çš„å‚æ•°ã€‚");
 
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-                if (ImGui.BeginChild("²ÎÊı", new Vector2(0f, -1f), true))
+                if (ImGui.BeginChild("å‚æ•°", new Vector2(0f, -1f), true))
                 {
                     bool neverReplaceIcon = Service.Configuration.NeverReplaceIcon;
-                    if (ImGui.Checkbox("²»Ìæ»»Í¼±ê", ref neverReplaceIcon))
+                    if (ImGui.Checkbox("ä¸æ›¿æ¢å›¾æ ‡", ref neverReplaceIcon))
                     {
                         Service.Configuration.NeverReplaceIcon = neverReplaceIcon;
                         Service.Configuration.Save();
                     }
 
                     bool useOverlayWindow = Service.Configuration.UseOverlayWindow;
-                    if (ImGui.Checkbox("Ê¹ÓÃ×î¸ß´ó¸²¸Ç´°¿Ú", ref useOverlayWindow))
+                    if (ImGui.Checkbox("ä½¿ç”¨æœ€é«˜å¤§è¦†ç›–çª—å£", ref useOverlayWindow))
                     {
                         Service.Configuration.UseOverlayWindow = useOverlayWindow;
                         Service.Configuration.Save();
                     }
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("Õâ¸ö´°¿ÚÄ¿Ç°ÓÃÓÚÌáÇ°ÌáÊ¾ÉíÎ»¡£");
+                        ImGui.SetTooltip("è¿™ä¸ªçª—å£ç›®å‰ç”¨äºæå‰æç¤ºèº«ä½ã€‚");
                     }
 
-                    if (ImGui.CollapsingHeader("»ù´¡ÉèÖÃ"))
+                    if (ImGui.CollapsingHeader("åŸºç¡€è®¾ç½®"))
                     {
 
                         float weaponDelay = Service.Configuration.WeaponDelay;
-                        if (ImGui.DragFloat("ĞèÒªGCDËæ»úÊÖ²Ğ¶àÉÙÃë", ref weaponDelay, 0.002f, 0, 1))
+                        if (ImGui.DragFloat("éœ€è¦GCDéšæœºæ‰‹æ®‹å¤šå°‘ç§’", ref weaponDelay, 0.002f, 0, 1))
                         {
                             Service.Configuration.WeaponDelay = weaponDelay;
                             Service.Configuration.Save();
                         }
 
                         float weaponFaster = Service.Configuration.WeaponFaster;
-                        if (ImGui.DragFloat("ĞèÒªÌáÇ°¼¸Ãë°´ÏÂ¼¼ÄÜ", ref weaponFaster, 0.002f, 0, 0.1f))
+                        if (ImGui.DragFloat("éœ€è¦æå‰å‡ ç§’æŒ‰ä¸‹æŠ€èƒ½", ref weaponFaster, 0.002f, 0, 0.1f))
                         {
                             Service.Configuration.WeaponFaster = weaponFaster;
                             Service.Configuration.Save();
                         }
 
                         float weaponInterval = Service.Configuration.WeaponInterval;
-                        if (ImGui.DragFloat("¼ä¸ô¶à¾ÃÊÍ·ÅÄÜÁ¦¼¼", ref weaponInterval, 0.002f, 0.5f, 0.7f))
+                        if (ImGui.DragFloat("é—´éš”å¤šä¹…é‡Šæ”¾èƒ½åŠ›æŠ€", ref weaponInterval, 0.002f, 0.5f, 0.7f))
                         {
                             Service.Configuration.WeaponInterval = weaponInterval;
                             Service.Configuration.Save();
                         }
 
                         float interruptibleTime = Service.Configuration.InterruptibleTime;
-                        if (ImGui.DragFloat("´ò¶ÏÀà¼¼ÄÜÑÓ³Ù¶à¾ÃºóÊÍ·Å", ref interruptibleTime, 0.002f, 0, 2))
+                        if (ImGui.DragFloat("æ‰“æ–­ç±»æŠ€èƒ½å»¶è¿Ÿå¤šä¹…åé‡Šæ”¾", ref interruptibleTime, 0.002f, 0, 2))
                         {
                             Service.Configuration.InterruptibleTime = interruptibleTime;
                             Service.Configuration.Save();
                         }
 
                         float specialDuration = Service.Configuration.SpecialDuration;
-                        if (ImGui.DragFloat("ÌØÊâ×´Ì¬³ÖĞø¶à¾Ã", ref specialDuration, 0.02f, 1, 20))
+                        if (ImGui.DragFloat("ç‰¹æ®ŠçŠ¶æ€æŒç»­å¤šä¹…", ref specialDuration, 0.02f, 1, 20))
                         {
                             Service.Configuration.SpecialDuration = specialDuration;
                             Service.Configuration.Save();
                         }
 
                         int addDotGCDCount = Service.Configuration.AddDotGCDCount;
-                        if (ImGui.DragInt("»¹²î¼¸¸öGCD¾Í¿ÉÒÔ²¹DOTÁË", ref addDotGCDCount, 0.2f, 0, 3))
+                        if (ImGui.DragInt("è¿˜å·®å‡ ä¸ªGCDå°±å¯ä»¥è¡¥DOTäº†", ref addDotGCDCount, 0.2f, 0, 3))
                         {
                             Service.Configuration.AddDotGCDCount = addDotGCDCount;
                             Service.Configuration.Save();
@@ -342,18 +348,18 @@ internal class ComboConfigWindow : Window
 
                     ImGui.Separator();
 
-                    if (ImGui.CollapsingHeader("ÌáÊ¾ÔöÇ¿"))
+                    if (ImGui.CollapsingHeader("æç¤ºå¢å¼º"))
                     {
                         bool poslockCasting = Service.Configuration.PoslockCasting;
                         VirtualKey poslockModifier = Service.Configuration.PoslockModifier;
-                        if (ImGui.Checkbox("Ê¹ÓÃÓ½³ªÒÆ¶¯Ëø", ref poslockCasting))
+                        if (ImGui.Checkbox("ä½¿ç”¨å’å”±ç§»åŠ¨é”", ref poslockCasting))
                         {
                             Service.Configuration.PoslockCasting = poslockCasting;
                             Service.Configuration.Save();
                         }
 
                         var modifierChoices = new VirtualKey[]{ VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
-                        if(poslockCasting && ImGui.BeginCombo("ÎŞÊÓÓ½³ªËøÈÈ¼ü", ToName(poslockModifier)))
+                        if(poslockCasting && ImGui.BeginCombo("æ— è§†å’å”±é”çƒ­é”®", ToName(poslockModifier)))
                          {
                              foreach (VirtualKey k in modifierChoices)
                              {
@@ -367,18 +373,18 @@ internal class ComboConfigWindow : Window
                          }
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("ÊÖ±úÍæ¼ÒÎª°´ÏÂLT+RTÎŞÊÓÓ½³ªËø");
+                            ImGui.SetTooltip("æ‰‹æŸ„ç©å®¶ä¸ºæŒ‰ä¸‹LT+RTæ— è§†å’å”±é”");
                         }
 
                         bool usecheckCasting = Service.Configuration.CheckForCasting;
-                        if (ImGui.Checkbox("Ê¹ÓÃÓ½³ª½áÊøÏÔÊ¾", ref usecheckCasting))
+                        if (ImGui.Checkbox("ä½¿ç”¨å’å”±ç»“æŸæ˜¾ç¤º", ref usecheckCasting))
                         {
                             Service.Configuration.CheckForCasting = usecheckCasting;
                             Service.Configuration.Save();
                         }
 
                         bool teachingMode = Service.Configuration.TeachingMode;
-                        if (ImGui.Checkbox("Ñ­»·½ÌÓıÄ£Ê½", ref teachingMode))
+                        if (ImGui.Checkbox("å¾ªç¯æ•™è‚²æ¨¡å¼", ref teachingMode))
                         {
                             Service.Configuration.TeachingMode = teachingMode;
                             Service.Configuration.Save();
@@ -390,7 +396,7 @@ internal class ComboConfigWindow : Window
 
                             var teachingColor = Service.Configuration.TeachingModeColor;
 
-                            if(ImGui.ColorEdit3("½ÌÓıÄ£Ê½ÑÕÉ«", ref teachingColor))
+                            if(ImGui.ColorEdit3("æ•™è‚²æ¨¡å¼é¢œè‰²", ref teachingColor))
                             {
                                 Service.Configuration.TeachingModeColor = teachingColor;
                                 Service.Configuration.Save();
@@ -398,71 +404,71 @@ internal class ComboConfigWindow : Window
                         }
 
                         bool keyBoardNoise = Service.Configuration.KeyBoardNoise;
-                        if (ImGui.Checkbox("Ä£Äâ°´ÏÂ¼üÅÌĞ§¹û", ref keyBoardNoise))
+                        if (ImGui.Checkbox("æ¨¡æ‹ŸæŒ‰ä¸‹é”®ç›˜æ•ˆæœ", ref keyBoardNoise))
                         {
                             Service.Configuration.KeyBoardNoise = keyBoardNoise;
                             Service.Configuration.Save();
                         }
 
                         int voiceVolume = Service.Configuration.VoiceVolume;
-                        if (ImGui.DragInt("ÓïÒôÒôÁ¿", ref voiceVolume, 0.2f, 0, 100))
+                        if (ImGui.DragInt("è¯­éŸ³éŸ³é‡", ref voiceVolume, 0.2f, 0, 100))
                         {
                             Service.Configuration.VoiceVolume = voiceVolume;
                             Service.Configuration.Save();
                         }
 
                         bool textlocation = Service.Configuration.TextLocation;
-                        if (ImGui.Checkbox("Ğ´³öÕ½¼¼ÉíÎ»", ref textlocation))
+                        if (ImGui.Checkbox("å†™å‡ºæˆ˜æŠ€èº«ä½", ref textlocation))
                         {
                             Service.Configuration.TextLocation = textlocation;
                             Service.Configuration.Save();
                         }
 
                         bool sayingLocation = Service.Configuration.SayingLocation;
-                        if (ImGui.Checkbox("º°³öÕ½¼¼ÉíÎ»", ref sayingLocation))
+                        if (ImGui.Checkbox("å–Šå‡ºæˆ˜æŠ€èº«ä½", ref sayingLocation))
                         {
                             Service.Configuration.SayingLocation = sayingLocation;
                             Service.Configuration.Save();
                         }
 
                         bool sayoutLocationWrong = Service.Configuration.SayoutLocationWrong;
-                        if (useOverlayWindow && ImGui.Checkbox("ÏÔÊ¾ÉíÎ»´íÎó", ref sayoutLocationWrong))
+                        if (useOverlayWindow && ImGui.Checkbox("æ˜¾ç¤ºèº«ä½é”™è¯¯", ref sayoutLocationWrong))
                         {
                             Service.Configuration.SayoutLocationWrong = sayoutLocationWrong;
                             Service.Configuration.Save();
                         }
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("ÉíÎ»´íÎó²»ÊÇºÜ×¼£¬½ö¹©²Î¿¼¡£");
+                            ImGui.SetTooltip("èº«ä½é”™è¯¯ä¸æ˜¯å¾ˆå‡†ï¼Œä»…ä¾›å‚è€ƒã€‚");
                         }
 
                         var str = Service.Configuration.LocationText;
-                        if (ImGui.InputText("ÉíÎ»´íÎóÌáÊ¾Óï", ref str, 15))
+                        if (ImGui.InputText("èº«ä½é”™è¯¯æç¤ºè¯­", ref str, 15))
                         {
                             Service.Configuration.LocationText = str;
                             Service.Configuration.Save();
                         }
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("Èç¹ûÉíÎ»´íÎó£¬ÄãÏëÔõÃ´±»Âî!");
+                            ImGui.SetTooltip("å¦‚æœèº«ä½é”™è¯¯ï¼Œä½ æƒ³æ€ä¹ˆè¢«éª‚!");
                         }
 
                         bool autoSayingOut = Service.Configuration.AutoSayingOut;
-                        if (ImGui.Checkbox("×´Ì¬±ä»¯Ê±º°³ö", ref autoSayingOut))
+                        if (ImGui.Checkbox("çŠ¶æ€å˜åŒ–æ—¶å–Šå‡º", ref autoSayingOut))
                         {
                             Service.Configuration.AutoSayingOut = autoSayingOut;
                             Service.Configuration.Save();
                         }
 
                         bool useDtr = Service.Configuration.UseDtr;
-                        if (ImGui.Checkbox("×´Ì¬ÏÔÊ¾ÔÚÏµÍ³ĞÅÏ¢ÉÏ", ref useDtr))
+                        if (ImGui.Checkbox("çŠ¶æ€æ˜¾ç¤ºåœ¨ç³»ç»Ÿä¿¡æ¯ä¸Š", ref useDtr))
                         {
                             Service.Configuration.UseDtr = useDtr;
                             Service.Configuration.Save();
                         }
 
                         bool useToast = Service.Configuration.UseToast;
-                        if (ImGui.Checkbox("×´Ì¬ÏÔÊ¾ÔÚÆÁÄ»ÖĞÑë", ref useToast))
+                        if (ImGui.Checkbox("çŠ¶æ€æ˜¾ç¤ºåœ¨å±å¹•ä¸­å¤®", ref useToast))
                         {
                             Service.Configuration.UseToast = useToast;
                             Service.Configuration.Save();
@@ -471,17 +477,17 @@ internal class ComboConfigWindow : Window
 
                     ImGui.Separator();
 
-                    if (ImGui.CollapsingHeader("¼¼ÄÜÊ¹ÓÃ"))
+                    if (ImGui.CollapsingHeader("æŠ€èƒ½ä½¿ç”¨"))
                     {
                         bool useAOEWhenManual = Service.Configuration.UseAOEWhenManual;
-                        if (ImGui.Checkbox("ÔÚÊÖ¶¯Ñ¡ÔñµÄÊ±ºòÊ¹ÓÃAOE¼¼ÄÜ", ref useAOEWhenManual))
+                        if (ImGui.Checkbox("åœ¨æ‰‹åŠ¨é€‰æ‹©çš„æ—¶å€™ä½¿ç”¨AOEæŠ€èƒ½", ref useAOEWhenManual))
                         {
                             Service.Configuration.UseAOEWhenManual = useAOEWhenManual;
                             Service.Configuration.Save();
                         }
 
                         bool autoBreak = Service.Configuration.AutoBreak;
-                        if (ImGui.Checkbox("×Ô¶¯½øĞĞ±¬·¢", ref autoBreak))
+                        if (ImGui.Checkbox("è‡ªåŠ¨è¿›è¡Œçˆ†å‘", ref autoBreak))
                         {
                             Service.Configuration.AutoBreak = autoBreak;
                             Service.Configuration.Save();
@@ -492,52 +498,52 @@ internal class ComboConfigWindow : Window
 
 
                         bool isOnlyGCD = Service.Configuration.OnlyGCD;
-                        if (ImGui.Checkbox("Ö»Ê¹ÓÃGCDÑ­»·£¬³ıÈ¥ÄÜÁ¦¼¼", ref isOnlyGCD))
+                        if (ImGui.Checkbox("åªä½¿ç”¨GCDå¾ªç¯ï¼Œé™¤å»èƒ½åŠ›æŠ€", ref isOnlyGCD))
                         {
                             Service.Configuration.OnlyGCD = isOnlyGCD;
                             Service.Configuration.Save();
                         }
 
                         bool attackSafeMode = Service.Configuration.AttackSafeMode;
-                        if (ImGui.Checkbox("¹¥»÷°²È«Ä£Ê½", ref attackSafeMode))
+                        if (ImGui.Checkbox("æ”»å‡»å®‰å…¨æ¨¡å¼", ref attackSafeMode))
                         {
                             Service.Configuration.AttackSafeMode = attackSafeMode;
                             Service.Configuration.Save();
                         }
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("¾ø¶Ô±£Ö¤ÔÚµ¥Ä¿±êµÄÊ±ºò²»´òAOE£¬¾ÍËã´óÕĞÒ²ÊÇ¡£µ«ÊÇÈç¹û¹ÖµÄÊıÁ¿´ïµ½±ê×¼ÒÀÈ»»áÊ¹ÓÃAOE¡£");
+                            ImGui.SetTooltip("ç»å¯¹ä¿è¯åœ¨å•ç›®æ ‡çš„æ—¶å€™ä¸æ‰“AOEï¼Œå°±ç®—å¤§æ‹›ä¹Ÿæ˜¯ã€‚ä½†æ˜¯å¦‚æœæ€ªçš„æ•°é‡è¾¾åˆ°æ ‡å‡†ä¾ç„¶ä¼šä½¿ç”¨AOEã€‚");
                         }
 
                         if (!isOnlyGCD)
                         {
                             Spacing();
                             bool noHealOrDefenceAbility = Service.Configuration.NoDefenceAbility;
-                            if (ImGui.Checkbox("²»Ê¹ÓÃ·ÀÓùÄÜÁ¦¼¼", ref noHealOrDefenceAbility))
+                            if (ImGui.Checkbox("ä¸ä½¿ç”¨é˜²å¾¡èƒ½åŠ›æŠ€", ref noHealOrDefenceAbility))
                             {
                                 Service.Configuration.NoDefenceAbility = noHealOrDefenceAbility;
                                 Service.Configuration.Save();
                             }
                             if (ImGui.IsItemHovered())
                             {
-                                ImGui.SetTooltip("Èç¹ûÒª´ò¸ßÄÑ£¬½¨Òé¹´ÉÏÕâ¸ö£¬×Ô¼º°²ÅÅÖÎÁÆºÍÄÌÖá¡£");
+                                ImGui.SetTooltip("å¦‚æœè¦æ‰“é«˜éš¾ï¼Œå»ºè®®å‹¾ä¸Šè¿™ä¸ªï¼Œè‡ªå·±å®‰æ’æ²»ç–—å’Œå¥¶è½´ã€‚");
                             }
 
                             Spacing();
                             bool autoDefenseforTank = Service.Configuration.AutoDefenseForTank;
-                            if (ImGui.Checkbox("×Ô¶¯ÉÏ¼õÉË(²»Ì«×¼)", ref autoDefenseforTank))
+                            if (ImGui.Checkbox("è‡ªåŠ¨ä¸Šå‡ä¼¤(ä¸å¤ªå‡†)", ref autoDefenseforTank))
                             {
                                 Service.Configuration.AutoDefenseForTank = autoDefenseforTank;
                                 Service.Configuration.Save();
                             }
                             if (ImGui.IsItemHovered())
                             {
-                                ImGui.SetTooltip("×Ô¶¯µÄÕâ¸ö²»ÄÜÊ¶±ğÍşÁ¦Îª0µÄAOE¼¼ÄÜ£¬Çë×¢Òâ¡£");
+                                ImGui.SetTooltip("è‡ªåŠ¨çš„è¿™ä¸ªä¸èƒ½è¯†åˆ«å¨åŠ›ä¸º0çš„AOEæŠ€èƒ½ï¼Œè¯·æ³¨æ„ã€‚");
                             }
 
                             Spacing();
                             bool autoShieled = Service.Configuration.AutoShield;
-                            if (ImGui.Checkbox("T×Ô¶¯ÉÏ¶Ü", ref autoShieled))
+                            if (ImGui.Checkbox("Tè‡ªåŠ¨ä¸Šç›¾", ref autoShieled))
                             {
                                 Service.Configuration.AutoShield = autoShieled;
                                 Service.Configuration.Save();
@@ -545,19 +551,19 @@ internal class ComboConfigWindow : Window
 
                             Spacing();
                             bool autoProvokeforTank = Service.Configuration.AutoProvokeForTank;
-                            if (ImGui.Checkbox("T×Ô¶¯ÌôĞÆ", ref autoProvokeforTank))
+                            if (ImGui.Checkbox("Tè‡ªåŠ¨æŒ‘è¡…", ref autoProvokeforTank))
                             {
                                 Service.Configuration.AutoProvokeForTank = autoProvokeforTank;
                                 Service.Configuration.Save();
                             }
                             if (ImGui.IsItemHovered())
                             {
-                                ImGui.SetTooltip("µ±ÓĞ¹ÖÎïÔÚ´ò·ÇTµÄÊ±ºò£¬»á×Ô¶¯ÌôĞÆ¡£");
+                                ImGui.SetTooltip("å½“æœ‰æ€ªç‰©åœ¨æ‰“éTçš„æ—¶å€™ï¼Œä¼šè‡ªåŠ¨æŒ‘è¡…ã€‚");
                             }
 
                             Spacing();
                             bool autoUseTrueNorth = Service.Configuration.AutoUseTrueNorth;
-                            if (ImGui.Checkbox("½üÕ½×Ô¶¯ÉÏÕæ±±", ref autoUseTrueNorth))
+                            if (ImGui.Checkbox("è¿‘æˆ˜è‡ªåŠ¨ä¸ŠçœŸåŒ—", ref autoUseTrueNorth))
                             {
                                 Service.Configuration.AutoUseTrueNorth = autoUseTrueNorth;
                                 Service.Configuration.Save();
@@ -565,7 +571,7 @@ internal class ComboConfigWindow : Window
 
                             Spacing();
                             bool raiseSwift = Service.Configuration.RaisePlayerBySwift;
-                            if (ImGui.Checkbox("¼´¿ÌÀ­ÈË", ref raiseSwift))
+                            if (ImGui.Checkbox("å³åˆ»æ‹‰äºº", ref raiseSwift))
                             {
                                 Service.Configuration.RaisePlayerBySwift = raiseSwift;
                                 Service.Configuration.Save();
@@ -573,7 +579,7 @@ internal class ComboConfigWindow : Window
 
                             Spacing();
                             bool useAreaAbilityFriendly = Service.Configuration.UseAreaAbilityFriendly;
-                            if (ImGui.Checkbox("Ê¹ÓÃÓÑ·½µØÃæ·ÅÖÃ¼¼ÄÜ", ref useAreaAbilityFriendly))
+                            if (ImGui.Checkbox("ä½¿ç”¨å‹æ–¹åœ°é¢æ”¾ç½®æŠ€èƒ½", ref useAreaAbilityFriendly))
                             {
                                 Service.Configuration.UseAreaAbilityFriendly = useAreaAbilityFriendly;
                                 Service.Configuration.Save();
@@ -581,44 +587,44 @@ internal class ComboConfigWindow : Window
                         }
 
                         bool raiseCasting = Service.Configuration.RaisePlayerByCasting;
-                        if (ImGui.Checkbox("ÎŞÄ¿±êÊ±Ó²¶ÁÌõÀ­ÈË", ref raiseCasting))
+                        if (ImGui.Checkbox("æ— ç›®æ ‡æ—¶ç¡¬è¯»æ¡æ‹‰äºº", ref raiseCasting))
                         {
                             Service.Configuration.RaisePlayerByCasting = raiseCasting;
                             Service.Configuration.Save();
                         }
 
                         bool useHealWhenNotAHealer = Service.Configuration.UseHealWhenNotAHealer;
-                        if (ImGui.Checkbox("·ÇÄÌÂèÓÃÄÌÈËµÄ¼¼ÄÜ", ref useHealWhenNotAHealer))
+                        if (ImGui.Checkbox("éå¥¶å¦ˆç”¨å¥¶äººçš„æŠ€èƒ½", ref useHealWhenNotAHealer))
                         {
                             Service.Configuration.UseHealWhenNotAHealer = useHealWhenNotAHealer;
                             Service.Configuration.Save();
                         }
 
                         int lessMPNoRaise = Service.Configuration.LessMPNoRaise;
-                        if (ImGui.DragInt("Ğ¡ÓÚ¶àÉÙÀ¶¾Í²»¸´»îÁË", ref lessMPNoRaise, 200, 0, 10000))
+                        if (ImGui.DragInt("å°äºå¤šå°‘è“å°±ä¸å¤æ´»äº†", ref lessMPNoRaise, 200, 0, 10000))
                         {
                             Service.Configuration.LessMPNoRaise = lessMPNoRaise;
                             Service.Configuration.Save();
                         }
 
                         bool useItem = Service.Configuration.UseItem;
-                        if (ImGui.Checkbox("Ê¹ÓÃµÀ¾ß", ref useItem))
+                        if (ImGui.Checkbox("ä½¿ç”¨é“å…·", ref useItem))
                         {
                             Service.Configuration.UseItem = useItem;
                             Service.Configuration.Save();
                         }
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("Ê¹ÓÃ±¬·¢Ò©£¬Ä¿Ç°»¹Î´Ğ´È«");
+                            ImGui.SetTooltip("ä½¿ç”¨çˆ†å‘è¯ï¼Œç›®å‰è¿˜æœªå†™å…¨");
                         }
                     }
 
                     ImGui.Separator();
 
-                    if (ImGui.CollapsingHeader("´¥·¢Ìõ¼ş"))
+                    if (ImGui.CollapsingHeader("è§¦å‘æ¡ä»¶"))
                     {
                         bool autoStartCountdown = Service.Configuration.AutoStartCountdown;
-                        if (ImGui.Checkbox("µ¹¼ÆÊ±Ê±×Ô¶¯´ò¿ª¹¥»÷", ref autoStartCountdown))
+                        if (ImGui.Checkbox("å€’è®¡æ—¶æ—¶è‡ªåŠ¨æ‰“å¼€æ”»å‡»", ref autoStartCountdown))
                         {
                             Service.Configuration.AutoStartCountdown = autoStartCountdown;
                             Service.Configuration.Save();
@@ -626,49 +632,49 @@ internal class ComboConfigWindow : Window
 
                         float speed = 0.005f;
                         float healthDiff = Service.Configuration.HealthDifference;
-                        if (ImGui.DragFloat("¶àÉÙµÄHP±ê×¼²îÒÔÏÂ£¬¿ÉÒÔÓÃÈºÁÆ", ref healthDiff, speed * 2, 0, 0.5f))
+                        if (ImGui.DragFloat("å¤šå°‘çš„HPæ ‡å‡†å·®ä»¥ä¸‹ï¼Œå¯ä»¥ç”¨ç¾¤ç–—", ref healthDiff, speed * 2, 0, 0.5f))
                         {
                             Service.Configuration.HealthDifference = healthDiff;
                             Service.Configuration.Save();
                         }
 
                         float healthAreaA = Service.Configuration.HealthAreaAbility;
-                        if (ImGui.DragFloat("¶àÉÙµÄHP£¬¿ÉÒÔÓÃÄÜÁ¦¼¼ÈºÁÆ", ref healthAreaA, speed, 0, 1))
+                        if (ImGui.DragFloat("å¤šå°‘çš„HPï¼Œå¯ä»¥ç”¨èƒ½åŠ›æŠ€ç¾¤ç–—", ref healthAreaA, speed, 0, 1))
                         {
                             Service.Configuration.HealthAreaAbility = healthAreaA;
                             Service.Configuration.Save();
                         }
 
                         float healthAreaS = Service.Configuration.HealthAreafSpell;
-                        if (ImGui.DragFloat("¶àÉÙµÄHP£¬¿ÉÒÔÓÃGCDÈºÁÆ", ref healthAreaS, speed, 0, 1))
+                        if (ImGui.DragFloat("å¤šå°‘çš„HPï¼Œå¯ä»¥ç”¨GCDç¾¤ç–—", ref healthAreaS, speed, 0, 1))
                         {
                             Service.Configuration.HealthAreafSpell = healthAreaS;
                             Service.Configuration.Save();
                         }
 
                         float healingOfTimeSubstactArea = Service.Configuration.HealingOfTimeSubstactArea;
-                        if (ImGui.DragFloat("Èç¹ûÊ¹ÓÃÈºÌåHot¼¼ÄÜ£¬ãĞÖµÏÂ½µ¶àÉÙ", ref healingOfTimeSubstactArea, speed, 0, 1))
+                        if (ImGui.DragFloat("å¦‚æœä½¿ç”¨ç¾¤ä½“HotæŠ€èƒ½ï¼Œé˜ˆå€¼ä¸‹é™å¤šå°‘", ref healingOfTimeSubstactArea, speed, 0, 1))
                         {
                             Service.Configuration.HealingOfTimeSubstactArea = healingOfTimeSubstactArea;
                             Service.Configuration.Save();
                         }
 
                         float healthSingleA = Service.Configuration.HealthSingleAbility;
-                        if (ImGui.DragFloat("¶àÉÙµÄHP£¬¿ÉÒÔÓÃÄÜÁ¦¼¼µ¥ÄÌ", ref healthSingleA, speed, 0, 1))
+                        if (ImGui.DragFloat("å¤šå°‘çš„HPï¼Œå¯ä»¥ç”¨èƒ½åŠ›æŠ€å•å¥¶", ref healthSingleA, speed, 0, 1))
                         {
                             Service.Configuration.HealthSingleAbility = healthSingleA;
                             Service.Configuration.Save();
                         }
 
                         float healthSingleS = Service.Configuration.HealthSingleSpell;
-                        if (ImGui.DragFloat("¶àÉÙµÄHP£¬¿ÉÒÔÓÃGCDµ¥ÄÌ", ref healthSingleS, speed, 0, 1))
+                        if (ImGui.DragFloat("å¤šå°‘çš„HPï¼Œå¯ä»¥ç”¨GCDå•å¥¶", ref healthSingleS, speed, 0, 1))
                         {
                             Service.Configuration.HealthSingleSpell = healthSingleS;
                             Service.Configuration.Save();
                         }
 
                         float healingOfTimeSubstact = Service.Configuration.HealingOfTimeSubstactSingle;
-                        if (ImGui.DragFloat("Èç¹ûÊ¹ÓÃµ¥ÌåHot¼¼ÄÜ£¬ãĞÖµÏÂ½µ¶àÉÙ", ref healingOfTimeSubstact, speed, 0, 1))
+                        if (ImGui.DragFloat("å¦‚æœä½¿ç”¨å•ä½“HotæŠ€èƒ½ï¼Œé˜ˆå€¼ä¸‹é™å¤šå°‘", ref healingOfTimeSubstact, speed, 0, 1))
                         {
                             Service.Configuration.HealingOfTimeSubstactSingle = healingOfTimeSubstact;
                             Service.Configuration.Save();
@@ -676,7 +682,7 @@ internal class ComboConfigWindow : Window
 
 
                         float healthTank = Service.Configuration.HealthForDyingTank;
-                        if (ImGui.DragFloat("µÍÓÚ¶àÉÙµÄHP£¬Ì¹¿ËÒª·Å´óÕĞÁË", ref healthTank, speed, 0, 1))
+                        if (ImGui.DragFloat("ä½äºå¤šå°‘çš„HPï¼Œå¦å…‹è¦æ”¾å¤§æ‹›äº†", ref healthTank, speed, 0, 1))
                         {
                             Service.Configuration.HealthForDyingTank = healthTank;
                             Service.Configuration.Save();
@@ -685,14 +691,14 @@ internal class ComboConfigWindow : Window
 
                     ImGui.Separator();
 
-                    if (ImGui.CollapsingHeader("Ä¿±êÑ¡Ôñ"))
+                    if (ImGui.CollapsingHeader("ç›®æ ‡é€‰æ‹©"))
                     {
                         int isAllTargetAsHostile = IconReplacer.RightNowTargetToHostileType;
-                        if (ImGui.Combo("µĞ¶ÔÄ¿±êÉ¸Ñ¡Ìõ¼ş", ref isAllTargetAsHostile, new string[]
+                        if (ImGui.Combo("æ•Œå¯¹ç›®æ ‡ç­›é€‰æ¡ä»¶", ref isAllTargetAsHostile, new string[]
                         {
-                                "ËùÓĞÄÜ´òµÄÄ¿±ê¶¼ÊÇµĞ¶ÔµÄÄ¿±ê",
-                                "Èç¹û´¦ÓÚ´òÈËµÄÄ¿±êÊıÁ¿ÎªÁã£¬ËùÓĞÄÜ´òµÄ¶¼ÊÇµĞ¶ÔµÄ",
-                                "Ö»ÓĞ´òÈËµÄÄ¿±ê²ÅÊÇµĞ¶ÔµÄÄ¿±ê",
+                                "æ‰€æœ‰èƒ½æ‰“çš„ç›®æ ‡éƒ½æ˜¯æ•Œå¯¹çš„ç›®æ ‡",
+                                "å¦‚æœå¤„äºæ‰“äººçš„ç›®æ ‡æ•°é‡ä¸ºé›¶ï¼Œæ‰€æœ‰èƒ½æ‰“çš„éƒ½æ˜¯æ•Œå¯¹çš„",
+                                "åªæœ‰æ‰“äººçš„ç›®æ ‡æ‰æ˜¯æ•Œå¯¹çš„ç›®æ ‡",
                         }, 3))
                         {
                             IconReplacer.RightNowTargetToHostileType = (byte)isAllTargetAsHostile;
@@ -700,14 +706,14 @@ internal class ComboConfigWindow : Window
                         }
 
                         bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;
-                        if (ImGui.Checkbox("½«µĞ¶ÔÁĞ±íµÄ¶ÔÏóÉèÎªµĞ¶Ô", ref addEnemyListToHostile))
+                        if (ImGui.Checkbox("å°†æ•Œå¯¹åˆ—è¡¨çš„å¯¹è±¡è®¾ä¸ºæ•Œå¯¹", ref addEnemyListToHostile))
                         {
                             Service.Configuration.AddEnemyListToHostile = addEnemyListToHostile;
                             Service.Configuration.Save();
                         }
 
                         bool chooseAttackMark = Service.Configuration.ChooseAttackMark;
-                        if (ImGui.Checkbox("ÓÅÏÈÑ¡ÖĞÓĞ¹¥»÷±ê¼ÇµÄÄ¿±ê", ref chooseAttackMark))
+                        if (ImGui.Checkbox("ä¼˜å…ˆé€‰ä¸­æœ‰æ”»å‡»æ ‡è®°çš„ç›®æ ‡", ref chooseAttackMark))
                         {
                             Service.Configuration.ChooseAttackMark = chooseAttackMark;
                             Service.Configuration.Save();
@@ -718,72 +724,72 @@ internal class ComboConfigWindow : Window
                             Spacing();
                             bool attackMarkAOE = Service.Configuration.AttackMarkAOE;
 
-                            if (ImGui.Checkbox("ÊÇ·ñ»¹ÒªÊ¹ÓÃAOE", ref attackMarkAOE))
+                            if (ImGui.Checkbox("æ˜¯å¦è¿˜è¦ä½¿ç”¨AOE", ref attackMarkAOE))
                             {
                                 Service.Configuration.AttackMarkAOE = attackMarkAOE;
                                 Service.Configuration.Save();
                             }
                             if (ImGui.IsItemHovered())
                             {
-                                ImGui.SetTooltip("Èç¹û¹´Ñ¡ÁË£¬ÄÇÃ´¿ÉÄÜÕâ¸öAOE´ò²»µ½¹¥»÷Ä¿±êµÄ¶ÔÏó£¬ÒòÎªÎªÁË×·Çó´òµ½¸ü¶àµÄÄ¿±ê¡£");
+                                ImGui.SetTooltip("å¦‚æœå‹¾é€‰äº†ï¼Œé‚£ä¹ˆå¯èƒ½è¿™ä¸ªAOEæ‰“ä¸åˆ°æ”»å‡»ç›®æ ‡çš„å¯¹è±¡ï¼Œå› ä¸ºä¸ºäº†è¿½æ±‚æ‰“åˆ°æ›´å¤šçš„ç›®æ ‡ã€‚");
                             }
                         }
 
                         bool filterStopMark = Service.Configuration.FilterStopMark;
-                        if (ImGui.Checkbox("È¥µôÓĞÍ£Ö¹±ê¼ÇµÄÄ¿±ê", ref filterStopMark))
+                        if (ImGui.Checkbox("å»æ‰æœ‰åœæ­¢æ ‡è®°çš„ç›®æ ‡", ref filterStopMark))
                         {
                             Service.Configuration.FilterStopMark = filterStopMark;
                             Service.Configuration.Save();
                         }
 
                         int multiCount = Service.Configuration.HostileCount;
-                        if (ImGui.DragInt("·¶Î§¹¥»÷×îÉÙĞèÒª¶àÉÙÈË", ref multiCount, 0.02f, 2, 5))
+                        if (ImGui.DragInt("èŒƒå›´æ”»å‡»æœ€å°‘éœ€è¦å¤šå°‘äºº", ref multiCount, 0.02f, 2, 5))
                         {
                             Service.Configuration.HostileCount = multiCount;
                             Service.Configuration.Save();
                         }
 
                         int partyCount = Service.Configuration.PartyCount;
-                        if (ImGui.DragInt("·¶Î§ÖÎÁÆ×îÉÙĞèÒª¶àÉÙÈË", ref partyCount, 0.02f, 2, 5))
+                        if (ImGui.DragInt("èŒƒå›´æ²»ç–—æœ€å°‘éœ€è¦å¤šå°‘äºº", ref partyCount, 0.02f, 2, 5))
                         {
                             Service.Configuration.PartyCount = partyCount;
                             Service.Configuration.Save();
                         }
 
                         float minradius = Service.Configuration.ObjectMinRadius;
-                        if (ImGui.DragFloat("¹¥»÷¶ÔÏó×îĞ¡µ×È¦´óĞ¡", ref minradius, 0.02f, 0, 10))
+                        if (ImGui.DragFloat("æ”»å‡»å¯¹è±¡æœ€å°åº•åœˆå¤§å°", ref minradius, 0.02f, 0, 10))
                         {
                             Service.Configuration.ObjectMinRadius = minradius;
                             Service.Configuration.Save();
                         }
 
                         bool changeTargetForFate = Service.Configuration.ChangeTargetForFate;
-                        if (ImGui.Checkbox("ÔÚFateÖĞÖ»Ñ¡ÔñFate¹Ö", ref changeTargetForFate))
+                        if (ImGui.Checkbox("åœ¨Fateä¸­åªé€‰æ‹©Fateæ€ª", ref changeTargetForFate))
                         {
                             Service.Configuration.ChangeTargetForFate = changeTargetForFate;
                             Service.Configuration.Save();
                         }
 
                         bool moveToScreen = Service.Configuration.MoveTowardsScreen;
-                        if (ImGui.Checkbox("ÒÆ¶¯¼¼ÄÜÑ¡ÆÁÄ»ÖĞĞÄµÄ¶ÔÏó", ref moveToScreen))
+                        if (ImGui.Checkbox("ç§»åŠ¨æŠ€èƒ½é€‰å±å¹•ä¸­å¿ƒçš„å¯¹è±¡", ref moveToScreen))
                         {
                             Service.Configuration.MoveTowardsScreen = moveToScreen;
                             Service.Configuration.Save();
                         }
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("ÉèÎªÊÇÊ±ÒÆ¶¯µÄ¶ÔÏóÎªÆÁÄ»ÖĞĞÄµÄÄÇ¸ö£¬·ñÎªÓÎÏ·½ÇÉ«Ãæ³¯µÄ¶ÔÏó¡£");
+                            ImGui.SetTooltip("è®¾ä¸ºæ˜¯æ—¶ç§»åŠ¨çš„å¯¹è±¡ä¸ºå±å¹•ä¸­å¿ƒçš„é‚£ä¸ªï¼Œå¦ä¸ºæ¸¸æˆè§’è‰²é¢æœçš„å¯¹è±¡ã€‚");
                         }
 
                         bool raiseAll = Service.Configuration.RaiseAll;
-                        if (ImGui.Checkbox("¸´»îËùÓĞÄÜ¸´»îµÄÈË£¬¶ø·ÇĞ¡¶Ó", ref raiseAll))
+                        if (ImGui.Checkbox("å¤æ´»æ‰€æœ‰èƒ½å¤æ´»çš„äººï¼Œè€Œéå°é˜Ÿ", ref raiseAll))
                         {
                             Service.Configuration.RaiseAll = raiseAll;
                             Service.Configuration.Save();
                         }
 
                         bool raiseBrinkofDeath = Service.Configuration.RaiseBrinkofDeath;
-                        if (ImGui.Checkbox("¸´»î±ôËÀ£¨ºÚÍ·£©Ö®ÈË", ref raiseBrinkofDeath))
+                        if (ImGui.Checkbox("å¤æ´»æ¿’æ­»ï¼ˆé»‘å¤´ï¼‰ä¹‹äºº", ref raiseBrinkofDeath))
                         {
                             Service.Configuration.RaiseBrinkofDeath = raiseBrinkofDeath;
                             Service.Configuration.Save();
@@ -792,15 +798,15 @@ internal class ComboConfigWindow : Window
 
                     ImGui.Separator();
 
-                    if (ImGui.CollapsingHeader("µĞ¶ÔÑ¡Ôñ"))
+                    if (ImGui.CollapsingHeader("æ•Œå¯¹é€‰æ‹©"))
                     {
-                        if (ImGui.Button("Ìí¼ÓÑ¡ÔñÌõ¼ş"))
+                        if (ImGui.Button("æ·»åŠ é€‰æ‹©æ¡ä»¶"))
                         {
                             Service.Configuration.TargetingTypes.Add(TargetingType.Big);
                         }
                         ImGui.SameLine();
                         Spacing();
-                        ImGui.Text("Äã¿ÉÒÔÉè¶¨µĞ¶ÔµÄÑ¡Ôñ£¬ÒÔ±ãÓÚÔÚÕ½¶·ÖĞÁé»îÇĞ»»Ñ¡ÔñµĞ¶ÔµÄÂß¼­¡£");
+                        ImGui.Text("ä½ å¯ä»¥è®¾å®šæ•Œå¯¹çš„é€‰æ‹©ï¼Œä»¥ä¾¿äºåœ¨æˆ˜æ–—ä¸­çµæ´»åˆ‡æ¢é€‰æ‹©æ•Œå¯¹çš„é€»è¾‘ã€‚");
                         for (int i = 0; i < Service.Configuration.TargetingTypes.Count; i++)
                         {
 
@@ -808,13 +814,13 @@ internal class ComboConfigWindow : Window
 
                             var names = Enum.GetNames(typeof(TargetingType));
                             var targingType = (int)Service.Configuration.TargetingTypes[i];
-                            if (ImGui.Combo("µĞ¶ÔÄ¿±êÑ¡ÔñÌõ¼ş" + i.ToString(), ref targingType, names, names.Length))
+                            if (ImGui.Combo("æ•Œå¯¹ç›®æ ‡é€‰æ‹©æ¡ä»¶" + i.ToString(), ref targingType, names, names.Length))
                             {
                                 Service.Configuration.TargetingTypes[i] = (TargetingType)targingType;
                                 Service.Configuration.Save();
                             }
 
-                            if (ImGui.Button("ÉÏÒÆÌõ¼ş" + i.ToString()))
+                            if (ImGui.Button("ä¸Šç§»æ¡ä»¶" + i.ToString()))
                             {
                                 if (i != 0)
                                 {
@@ -825,7 +831,7 @@ internal class ComboConfigWindow : Window
                             }
                             ImGui.SameLine();
                             Spacing();
-                            if (ImGui.Button("ÏÂÒÆÌõ¼ş" + i.ToString()))
+                            if (ImGui.Button("ä¸‹ç§»æ¡ä»¶" + i.ToString()))
                             {
                                 if (i < Service.Configuration.TargetingTypes.Count - 1)
                                 {
@@ -838,7 +844,7 @@ internal class ComboConfigWindow : Window
                             ImGui.SameLine();
                             Spacing();
 
-                            if (ImGui.Button("É¾³ıÌõ¼ş" + i.ToString()))
+                            if (ImGui.Button("åˆ é™¤æ¡ä»¶" + i.ToString()))
                             {
                                 Service.Configuration.TargetingTypes.RemoveAt(i);
                             }
@@ -851,40 +857,40 @@ internal class ComboConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("¼¼ÄÜÊÍ·ÅÊÂ¼ş"))
+            if (ImGui.BeginTabItem("æŠ€èƒ½é‡Šæ”¾äº‹ä»¶"))
             {
 
-                if (ImGui.Button("Ìí¼ÓÊÂ¼ş"))
+                if (ImGui.Button("æ·»åŠ äº‹ä»¶"))
                 {
                     Service.Configuration.Events.Add(new ActionEventInfo());
                 }
                 ImGui.SameLine();
                 Spacing();
-                ImGui.Text("ÔÚÕâ¸ö´°¿Ú£¬Äã¿ÉÒÔÉè¶¨Ò»Ğ©¼¼ÄÜÊÍ·Åºó£¬Ê¹ÓÃÊ²Ã´ºê¡£");
+                ImGui.Text("åœ¨è¿™ä¸ªçª—å£ï¼Œä½ å¯ä»¥è®¾å®šä¸€äº›æŠ€èƒ½é‡Šæ”¾åï¼Œä½¿ç”¨ä»€ä¹ˆå®ã€‚");
 
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
 
-                if (ImGui.BeginChild("ÊÂ¼şÁĞ±í", new Vector2(0f, -1f), true))
+                if (ImGui.BeginChild("äº‹ä»¶åˆ—è¡¨", new Vector2(0f, -1f), true))
                 {
                     for (int i = 0; i < Service.Configuration.Events.Count; i++)
                     {
                         string name = Service.Configuration.Events[i].Name;
-                        if (ImGui.InputText("¼¼ÄÜÃû³Æ" + i.ToString(), ref name, 50))
+                        if (ImGui.InputText("æŠ€èƒ½åç§°" + i.ToString(), ref name, 50))
                         {
                             Service.Configuration.Events[i].Name = name;
                             Service.Configuration.Save();
                         }
 
                         int macroindex = Service.Configuration.Events[i].MacroIndex;
-                        if (ImGui.DragInt("ºê±àºÅ" + i.ToString(), ref macroindex, 1, 0, 99))
+                        if (ImGui.DragInt("å®ç¼–å·" + i.ToString(), ref macroindex, 1, 0, 99))
                         {
                             Service.Configuration.Events[i].MacroIndex = macroindex;
                         }
 
 
                         bool isShared = Service.Configuration.Events[i].IsShared;
-                        if (ImGui.Checkbox("¹²Ïíºê" + i.ToString(), ref isShared))
+                        if (ImGui.Checkbox("å…±äº«å®" + i.ToString(), ref isShared))
                         {
                             Service.Configuration.Events[i].IsShared = isShared;
                             Service.Configuration.Save();
@@ -892,7 +898,7 @@ internal class ComboConfigWindow : Window
 
                         ImGui.SameLine();
                         ComboConfigWindow.Spacing();
-                        if (ImGui.Button("É¾³ıÊÂ¼ş" + i.ToString()))
+                        if (ImGui.Button("åˆ é™¤äº‹ä»¶" + i.ToString()))
                         {
                             Service.Configuration.Events.RemoveAt(i);
                         }
@@ -904,14 +910,14 @@ internal class ComboConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("¼¼ÄÜÊÍ·ÅÌõ¼ş"))
+            if (ImGui.BeginTabItem("æŠ€èƒ½é‡Šæ”¾æ¡ä»¶"))
             {
-                ImGui.Text("ÔÚÕâ¸ö´°¿Ú£¬Äã¿ÉÒÔÉè¶¨Ã¿¸ö¼¼ÄÜµÄÊÍ·ÅÌõ¼ş¡£");
+                ImGui.Text("åœ¨è¿™ä¸ªçª—å£ï¼Œä½ å¯ä»¥è®¾å®šæ¯ä¸ªæŠ€èƒ½çš„é‡Šæ”¾æ¡ä»¶ã€‚");
 
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
 
-                if (ImGui.BeginChild("Ìõ¼şÁĞ±í", new Vector2(0f, -1f), true))
+                if (ImGui.BeginChild("æ¡ä»¶åˆ—è¡¨", new Vector2(0f, -1f), true))
                 {
                     foreach (var pair in IconReplacer.RightComboBaseActions.GroupBy(a => a.CateName).OrderBy(g => g.Key))
                     {
@@ -925,7 +931,7 @@ internal class ComboConfigWindow : Window
                         }
                     }
 
-                    if (ImGui.CollapsingHeader("ËùÓĞÖ°ÄÜ¼¼ÄÜ"))
+                    if (ImGui.CollapsingHeader("æ‰€æœ‰èŒèƒ½æŠ€èƒ½"))
                     {
                         foreach (var item in IconReplacer.GeneralBaseAction)
                         {
@@ -939,36 +945,36 @@ internal class ComboConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("°ïÖúÎÄµµ"))
+            if (ImGui.BeginTabItem("å¸®åŠ©æ–‡æ¡£"))
             {
-                ImGui.Text("ÔÚÕâ¸ö´°¿Ú£¬Äã¿ÉÒÔ¿´µ½Õ½¶·ÓÃºê£¬ÉèÖÃÓÃÇëÔÚÉèÖÃÃæ°åÖĞ²é¿´¡£");
+                ImGui.Text("åœ¨è¿™ä¸ªçª—å£ï¼Œä½ å¯ä»¥çœ‹åˆ°æˆ˜æ–—ç”¨å®ï¼Œè®¾ç½®ç”¨è¯·åœ¨è®¾ç½®é¢æ¿ä¸­æŸ¥çœ‹ã€‚");
 
-                if (ImGui.BeginChild("°ïÖú", new Vector2(0f, -1f), true))
+                if (ImGui.BeginChild("å¸®åŠ©", new Vector2(0f, -1f), true))
                 {
                     ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
-                    CommandHelp("AttackSmart", "Èç¹û²»ÔÚ½ø¹¥ÖĞ¾Í¿ªÊ¼½ø¹¥£¬Èç¹ûÔÚ½ø¹¥¾ÍÇĞ»»Ñ¡ÔñµĞ¶ÔÄ¿±êÌõ¼ş¡£");
+                    CommandHelp("AttackSmart", "å¦‚æœä¸åœ¨è¿›æ”»ä¸­å°±å¼€å§‹è¿›æ”»ï¼Œå¦‚æœåœ¨è¿›æ”»å°±åˆ‡æ¢é€‰æ‹©æ•Œå¯¹ç›®æ ‡æ¡ä»¶ã€‚");
                     ImGui.Separator();
-                    CommandHelp("AttackManual", "¿ªÊ¼½ø¹¥£¬½ø¹¥¶ÔÏóÎªÊÖ¶¯Ñ¡Ôñ£¬´ËÊ±²»»áÊÍ·ÅAOE¡£");
+                    CommandHelp("AttackManual", "å¼€å§‹è¿›æ”»ï¼Œè¿›æ”»å¯¹è±¡ä¸ºæ‰‹åŠ¨é€‰æ‹©ï¼Œæ­¤æ—¶ä¸ä¼šé‡Šæ”¾AOEã€‚");
                     ImGui.Separator();
-                    CommandHelp("AttackCancel", "Í£Ö¹½ø¹¥£¬¼ÇµÃÒ»¶¨Òª¾­³£¹Øµô£¡");
+                    CommandHelp("AttackCancel", "åœæ­¢è¿›æ”»ï¼Œè®°å¾—ä¸€å®šè¦ç»å¸¸å…³æ‰ï¼");
                     ImGui.Separator();
-                    CommandHelp("HealArea", "¿ªÆôÒ»¶Î·¶Î§ÖÎÁÆµÄ´°¿ÚÆÚ¡£");
+                    CommandHelp("HealArea", "å¼€å¯ä¸€æ®µèŒƒå›´æ²»ç–—çš„çª—å£æœŸã€‚");
                     ImGui.Separator();
-                    CommandHelp("HealSingle", "¿ªÆôÒ»¶Îµ¥ÌåÖÎÁÆµÄ´°¿ÚÆÚ¡£");
+                    CommandHelp("HealSingle", "å¼€å¯ä¸€æ®µå•ä½“æ²»ç–—çš„çª—å£æœŸã€‚");
                     ImGui.Separator();
-                    CommandHelp("DefenseArea", "¿ªÆôÒ»¶Î·¶Î§·ÀÓùµÄ´°¿ÚÆÚ¡£");
+                    CommandHelp("DefenseArea", "å¼€å¯ä¸€æ®µèŒƒå›´é˜²å¾¡çš„çª—å£æœŸã€‚");
                     ImGui.Separator();
-                    CommandHelp("DefenseSingle", "¿ªÆôÒ»¶Îµ¥Ìå·ÀÓùµÄ´°¿ÚÆÚ¡£");
+                    CommandHelp("DefenseSingle", "å¼€å¯ä¸€æ®µå•ä½“é˜²å¾¡çš„çª—å£æœŸã€‚");
                     ImGui.Separator();
-                    CommandHelp("EsunaShield", "¿ªÆôÒ»¶Î¿µ¸´»òÕß¶Ü×Ë»òÕßÕæ±±µÄ´°¿ÚÆÚ¡£");
+                    CommandHelp("EsunaShield", "å¼€å¯ä¸€æ®µåº·å¤æˆ–è€…ç›¾å§¿æˆ–è€…çœŸåŒ—çš„çª—å£æœŸã€‚");
                     ImGui.Separator();
-                    CommandHelp("RaiseShirk", "¿ªÆôÇ¿ÖÆ¾ÈÈË»òÍË±ÜµÄ´°¿ÚÆÚ¡£");
+                    CommandHelp("RaiseShirk", "å¼€å¯å¼ºåˆ¶æ•‘äººæˆ–é€€é¿çš„çª—å£æœŸã€‚");
                     ImGui.Separator();
-                    CommandHelp("AntiRepulsion", "¿ªÆôÒ»¶Î·À»÷ÍËµÄ´°¿ÚÆÚ¡£");
+                    CommandHelp("AntiRepulsion", "å¼€å¯ä¸€æ®µé˜²å‡»é€€çš„çª—å£æœŸã€‚");
                     ImGui.Separator();
-                    CommandHelp("BreakProvoke", "¿ªÆôÒ»¶Î±¬·¢»òÌôĞÆµÄ´°¿ÚÆÚ¡£");
+                    CommandHelp("BreakProvoke", "å¼€å¯ä¸€æ®µçˆ†å‘æˆ–æŒ‘è¡…çš„çª—å£æœŸã€‚");
                     ImGui.Separator();
-                    CommandHelp("Move", "¿ªÆôÒ»¶ÎÎ»ÒÆµÄ´°¿ÚÆÚ¡£");
+                    CommandHelp("Move", "å¼€å¯ä¸€æ®µä½ç§»çš„çª—å£æœŸã€‚");
                     ImGui.Separator();
                 }
                 ImGui.PopStyleVar();
@@ -1035,7 +1041,7 @@ internal class ComboConfigWindow : Window
             ImGui.TextDisabled("-  ");
             ImGui.SameLine();
             ImGui.SetNextItemWidth(ImGui.CalcTextSize(authors[i]).X + 30);
-            if (ImGui.Combo("##" + texture.Name + "×÷Õß", ref i, authors, authors.Length))
+            if (ImGui.Combo("##" + texture.Name + "ä½œè€…", ref i, authors, authors.Length))
             {
                 Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
             }
@@ -1049,7 +1055,7 @@ internal class ComboConfigWindow : Window
             if (texture is IScriptCombo script)
             {
 #if DEBUG
-                if (ImGui.Button($"{FontAwesomeIcon.Folder.ToIconString()}##ÎÄ¼ş{texture.Name}"))
+                if (ImGui.Button($"{FontAwesomeIcon.Folder.ToIconString()}##æ–‡ä»¶{texture.Name}"))
                 {
                     Process p = new Process();
                     p.StartInfo.FileName = "explorer.exe";
@@ -1062,7 +1068,7 @@ internal class ComboConfigWindow : Window
             {
                 //ImGui.PushFont(UiBuilder.IconFont);
                 //ImGui.SetNextItemWidth(32);
-                if (ImGui.Button($"Ô´Âë##Ô´Âë{texture.Name}"))
+                if (ImGui.Button($"æºç ##æºç {texture.Name}"))
                 {
                     var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
                     Process.Start("cmd", $"/C start {url}");
@@ -1112,13 +1118,13 @@ internal class ComboConfigWindow : Window
         }
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip($"µ¥»÷ÒÔÖ´ĞĞÃüÁî: {command}");
+            ImGui.SetTooltip($"å•å‡»ä»¥æ‰§è¡Œå‘½ä»¤: {command}");
         }
 
         if (!string.IsNullOrEmpty(help))
         {
             ImGui.SameLine();
-            ImGui.Text(" ¡ú " + help);
+            ImGui.Text(" â†’ " + help);
         }
     }
     private unsafe static void DrawAction(BaseAction act)
@@ -1128,9 +1134,9 @@ internal class ComboConfigWindow : Window
         DrawTexture(act, () =>
         {
 #if DEBUG
-            //CommandHelp("Enable" + act.Name, $"Ê¹ÓÃ{act}");
-            //CommandHelp("Disable" + act.Name, $"¹Ø±Õ{act}");
-            //CommandHelp($"Insert{act}-{5}", $"5sÄÚ×î¸ßÓÅÏÈ²åÈë{act}");
+            //CommandHelp("Enable" + act.Name, $"ä½¿ç”¨{act}");
+            //CommandHelp("Disable" + act.Name, $"å…³é—­{act}");
+            //CommandHelp($"Insert{act}-{5}", $"5så†…æœ€é«˜ä¼˜å…ˆæ’å…¥{act}");
 
             ImGui.NewLine();
             ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());
