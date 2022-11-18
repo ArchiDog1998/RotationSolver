@@ -20,6 +20,7 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
+using XIVAutoAttack.Windows.Tabs;
 
 namespace XIVAutoAttack.Windows;
 
@@ -125,6 +126,12 @@ internal class ComboConfigWindow : Window
                 ImGui.EndTabItem();
             }
 #endif
+
+            if (ImGui.BeginTabItem("关于"))
+            {
+                About.Draw();
+                ImGui.EndTabItem();
+            }
 
             if (ImGui.BeginTabItem("攻击设定"))
             {
