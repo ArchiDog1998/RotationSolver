@@ -116,7 +116,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = ShadowofDeath.ActionCheck,
     };
-    
+
     /// <summary>
     /// 灵魂钐割
     /// </summary>
@@ -131,7 +131,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Gibbet { get; } = new(ActionID.Gibbet)
     {
-        BuffsNeed = new[] {StatusID.SoulReaver}
+        BuffsNeed = new[] { StatusID.SoulReaver }
     };
 
     /// <summary>
@@ -184,7 +184,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ArcaneCircle { get; } = new(ActionID.ArcaneCircle, true)
     {
-        BuffsProvide = new[] {StatusID.CircleofSacrifice,StatusID.BloodsownCircle}
+        BuffsProvide = new[] { StatusID.CircleofSacrifice, StatusID.BloodsownCircle }
     };
 
     /// <summary>
@@ -192,7 +192,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction PlentifulHarvest { get; } = new(ActionID.PlentifulHarvest)
     {
-        BuffsNeed = new[] {StatusID.ImmortalSacrifice},
+        BuffsNeed = new[] { StatusID.ImmortalSacrifice },
         ActionCheck = b => !Player.HasStatus(true, StatusID.BloodsownCircle)
     };
     #endregion

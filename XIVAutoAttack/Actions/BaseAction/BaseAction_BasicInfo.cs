@@ -1,7 +1,4 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiScene;
-using Lumina.Excel.GeneratedSheets;
-using System;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -10,7 +7,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 {
     internal partial class BaseAction : IAction
     {
-        public  bool ShouldEndSpecial { private get; set; }
+        public bool ShouldEndSpecial { private get; set; }
         private bool _isFriendly;
         private bool _isEot;
         /// <summary>
@@ -113,7 +110,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             _isFriendly = isFriendly;
             _isEot = isEot;
 
-            IconID =_action.Icon;
+            IconID = _action.Icon;
             IsGeneralGCD = _action.IsGeneralGCD();
             IsRealGCD = _action.IsRealGCD();
             CoolDownGroup = _action.GetCoolDownGroup();

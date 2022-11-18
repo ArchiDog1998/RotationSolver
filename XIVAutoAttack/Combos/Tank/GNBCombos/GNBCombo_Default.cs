@@ -1,11 +1,7 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
-using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;

@@ -1,14 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Helpers

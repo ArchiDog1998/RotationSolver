@@ -1,5 +1,4 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
 using System;
 

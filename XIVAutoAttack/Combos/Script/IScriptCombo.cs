@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XIVAutoAttack.Combos.CustomCombo;
+﻿using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Script.Actions;
 
 namespace XIVAutoAttack.Combos.Script

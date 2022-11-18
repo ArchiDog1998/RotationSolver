@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Data;
-using XIVAutoAttack.Updaters;
 
 
 namespace XIVAutoAttack.Helpers
@@ -50,7 +48,7 @@ namespace XIVAutoAttack.Helpers
         /// </summary>
         /// <param name="remainWant">要多少秒呢</param>
         /// <returns>这个时间点状态是否已经消失</returns>
-        internal static bool WillStatusEnd(this BattleChara obj, float remainWant,  bool isFromSelf = true, params StatusID[] effectIDs)
+        internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool isFromSelf = true, params StatusID[] effectIDs)
         {
             var remain = obj.StatusTime(isFromSelf, effectIDs);
             return CooldownHelper.RecastAfter(remain, remainWant);
@@ -111,7 +109,7 @@ namespace XIVAutoAttack.Helpers
         {
             if (obj == null) return new Status[0];
 
-            return obj.StatusList.Where(status => isFromSelf ? status.SourceID == Service.ClientState.LocalPlayer.ObjectId 
+            return obj.StatusList.Where(status => isFromSelf ? status.SourceID == Service.ClientState.LocalPlayer.ObjectId
             || status.SourceObject?.OwnerId == Service.ClientState.LocalPlayer.ObjectId : true).ToArray();
         }
     }

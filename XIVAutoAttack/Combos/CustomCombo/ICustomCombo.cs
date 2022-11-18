@@ -1,5 +1,4 @@
-﻿using ImGuiScene;
-using Lumina.Excel.GeneratedSheets;
+﻿using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using System.Reflection;
 using XIVAutoAttack.Actions;

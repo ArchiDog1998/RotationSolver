@@ -1,10 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
-using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,8 +12,6 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Melee;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
@@ -105,7 +100,7 @@ namespace XIVAutoAttack.SigReplacers
             _timeLastActionUsed = DateTime.Now;
             LastAction = id;
 
-            if(_actions.Count >= QUEUECAPACITY)
+            if (_actions.Count >= QUEUECAPACITY)
             {
                 _actions.Dequeue();
             }

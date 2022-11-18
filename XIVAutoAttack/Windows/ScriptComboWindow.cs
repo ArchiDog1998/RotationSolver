@@ -1,20 +1,14 @@
-﻿using Dalamud.Interface.Components;
-using Dalamud.Interface;
+﻿using Dalamud.Interface;
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
-using System;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Data;
-using Lumina.Excel.GeneratedSheets;
-using Newtonsoft.Json;
-using System.IO;
 
 namespace XIVAutoAttack.Windows
 {

@@ -54,7 +54,7 @@ namespace XIVAutoAttack.Updaters
 
             ByteColor c = canMove && Service.Configuration.CheckForCasting ? greenColor : redColor;
             var isTarDead = false;
-            if(Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId) is BattleChara b
+            if (Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId) is BattleChara b
                 && b.CurrentHp == 0)
             {
                 isTarDead = true;

@@ -164,7 +164,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Bloodfest { get; } = new(ActionID.Bloodfest, true)
     {
-        ActionCheck = b =>¡¡MaxAmmo - JobGauge.Ammo > 1,
+        ActionCheck = b => MaxAmmo - JobGauge.Ammo > 1,
     };
 
     /// <summary>
@@ -188,7 +188,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction WickedTalon { get; } = new(ActionID.WickedTalon)
     {
-        ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang)  == ActionID.WickedTalon,
+        ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang) == ActionID.WickedTalon,
     };
 
     /// <summary>
@@ -196,7 +196,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction JugularRip { get; } = new(ActionID.JugularRip)
     {
-        ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)  == ActionID.JugularRip,
+        ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation) == ActionID.JugularRip,
     };
 
     /// <summary>

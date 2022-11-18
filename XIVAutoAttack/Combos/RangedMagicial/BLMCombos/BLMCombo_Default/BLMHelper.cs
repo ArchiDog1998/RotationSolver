@@ -1,18 +1,12 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
 using System.Linq;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
-using System.Threading;
-using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default.BLMCombo_Default;
-
-using static XIVAutoAttack.SigReplacers.Watcher;
 using XIVAutoAttack.Combos.Basic;
+using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Updaters;
+using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default.BLMCombo_Default;
+using static XIVAutoAttack.SigReplacers.Watcher;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
 

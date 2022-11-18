@@ -1,9 +1,4 @@
 ﻿using Lumina.Excel.GeneratedSheets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XIVAutoAttack.Data
 {
@@ -26,7 +21,7 @@ namespace XIVAutoAttack.Data
         {
             var role = (JobRole)job.Role;
 
-            if(role is JobRole.Ranged or JobRole.None)
+            if (role is JobRole.Ranged or JobRole.None)
             {
                 role = job.ClassJobCategory.Row switch
                 {

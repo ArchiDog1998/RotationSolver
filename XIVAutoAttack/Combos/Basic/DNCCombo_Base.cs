@@ -231,7 +231,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
             //Remove Weak
             !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
             //Remove other partner.
-            && (!b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2)) 
+            && (!b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2))
             ).ToArray();
 
             return Targets.GetJobCategory(JobRole.Tank, JobRole.RangedMagicial, JobRole.RangedPhysical).FirstOrDefault();

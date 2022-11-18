@@ -104,7 +104,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// …Ò •¡Ï”Ú
     /// </summary>
     public static BaseAction HallowedGround { get; } = new(ActionID.HallowedGround);
-    
+
     /// <summary>
     ///  •π‚ƒª¡±
     /// </summary>

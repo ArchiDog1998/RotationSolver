@@ -129,7 +129,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
 
         var PartyMembers = TargetUpdater.PartyMembers;
         int hasMedica2 = PartyMembers.Count((n) => n.HasStatus(true, StatusID.Medica2));
-  
+
         //!Player.HaveStatus(true, StatusID.Medica2)
         //医济 在小队半数人都没有医济buff and 上次没放医济时使用
         if (Medica2.ShouldUse(out act) && !(hasMedica2 < PartyMembers.Length / 2) && !IsLastAction(true, Medica2)) return true;

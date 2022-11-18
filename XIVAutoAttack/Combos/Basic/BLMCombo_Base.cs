@@ -51,7 +51,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 是否有天语状态
         /// </summary>
-        protected static bool IsEnochianActive => JobGauge.IsEnochianActive;      
+        protected static bool IsEnochianActive => JobGauge.IsEnochianActive;
 
         /// <summary>
         /// 下一个通晓还剩多少时间好
@@ -277,12 +277,12 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 火1
         /// </summary>
-        public static BaseAction Fire { get; } = new (ActionID.Fire);
+        public static BaseAction Fire { get; } = new(ActionID.Fire);
 
         /// <summary>
         /// 火2
         /// </summary>
-        public static BaseAction Fire2 { get; } = new (ActionID.Fire2);
+        public static BaseAction Fire2 { get; } = new(ActionID.Fire2);
 
         /// <summary>
         /// 火3
@@ -300,17 +300,17 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 冰1
         /// </summary>
-        public static BaseAction Blizzard { get; } = new (ActionID.Blizzard);
+        public static BaseAction Blizzard { get; } = new(ActionID.Blizzard);
 
         /// <summary>
         /// 冰2
         /// </summary>
-        public static BaseAction Blizzard2 { get; } = new (ActionID.Blizzard2);
+        public static BaseAction Blizzard2 { get; } = new(ActionID.Blizzard2);
 
         /// <summary>
         /// 冰3
         /// </summary>
-        public static BaseAction Blizzard3 { get; } = new (ActionID.Blizzard3);
+        public static BaseAction Blizzard3 { get; } = new(ActionID.Blizzard3);
 
         /// <summary>
         /// 冰4

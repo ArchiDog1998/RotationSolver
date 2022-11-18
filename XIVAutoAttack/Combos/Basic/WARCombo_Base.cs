@@ -5,7 +5,6 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
@@ -89,7 +88,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction InnerBeast { get; } = new(ActionID.InnerBeast)
     {
-        ActionCheck = b => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease), 
+        ActionCheck = b => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease),
     };
 
     /// <summary>
@@ -164,7 +163,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// °ÚÍÑ
     /// </summary>
     public static BaseAction ShakeItOff { get; } = new(ActionID.ShakeItOff, true);
-    
+
     /// <summary>
     /// ËÀ¶·
     /// </summary>

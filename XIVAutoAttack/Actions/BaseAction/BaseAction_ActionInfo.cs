@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Linq;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -11,7 +10,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Actions.BaseAction
 {
-    internal partial class BaseAction 
+    internal partial class BaseAction
     {
         private float Range => ActionManager.GetActionRange(ID);
 
@@ -60,8 +59,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                     else
                     {
                         //不是青魔，不能连续使用
-                        if ((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id != ClassJobID.BlueMage 
-                            &&  Watcher.LastAction == (ActionID)AdjustedID) return false;
+                        if ((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id != ClassJobID.BlueMage
+                            && Watcher.LastAction == (ActionID)AdjustedID) return false;
 
                         //冷却时间没超过一成且下一个Ability前不能转好
                         if (!HaveOneCharge && !WillHaveOneCharge(ActionUpdater.AbilityRemain, false))
@@ -100,7 +99,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             }
 
             //防止友方类技能连续使用
-            if(_isEot)
+            if (_isEot)
             {
                 if (IActionHelper.IsLastAction(true, this)) return false;
             }
@@ -128,7 +127,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                     //如果有输入上次的数据，那么上次不能是上述的ID。
                     if (OtherIDsNot != null)
                     {
-                        if(OtherIDsNot.Contains(Service.Address.LastComboAction)) return false;
+                        if (OtherIDsNot.Contains(Service.Address.LastComboAction)) return false;
                     }
 
                     //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
@@ -176,7 +175,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             return true;
         }
-        
+
         public virtual unsafe bool Use()
         {
             var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };

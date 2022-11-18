@@ -2,10 +2,11 @@ using Dalamud.Data;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Game.ClientState.JobGauge;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Party;
-using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
@@ -15,7 +16,6 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.SigReplacers;
-using Dalamud.Game.ClientState.GamePad;
 
 namespace XIVAutoAttack;
 

@@ -1,7 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
-using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -168,15 +167,15 @@ namespace XIVAutoAttack.Updaters
             if (PartyMembers.Length >= Service.Configuration.PartyCount)
             {
                 //TODO:少了所有罩子类技能
-                var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, 
+                var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer,
                     StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2)
                     * Service.Configuration.HealingOfTimeSubstactArea;
 
                 CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility
-                    -  ratio;
+                    - ratio;
 
                 CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell
-                    -  ratio;
+                    - ratio;
             }
             else
             {
@@ -208,7 +207,7 @@ namespace XIVAutoAttack.Updaters
                 var h = p.GetHealthRatio();
                 if (h == 0) return false;
 
-                return h < Service.Configuration.HealthSingleSpell - 
+                return h < Service.Configuration.HealthSingleSpell -
                     Service.Configuration.HealingOfTimeSubstactSingle * ratio;
             });
             CanHealSingleSpell = gcdCount > 0;

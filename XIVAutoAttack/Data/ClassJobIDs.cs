@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XIVAutoAttack.Data
+﻿namespace XIVAutoAttack.Data
 {
     internal enum ClassJobID : uint
     {
@@ -21,7 +15,7 @@ namespace XIVAutoAttack.Data
         /// <summary>
         /// 格斗家
         /// </summary>
-        Pugilist= 2,
+        Pugilist = 2,
 
         /// <summary>
         /// 斧术师

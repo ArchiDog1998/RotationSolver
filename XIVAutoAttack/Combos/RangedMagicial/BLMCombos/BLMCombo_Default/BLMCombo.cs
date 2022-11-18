@@ -1,19 +1,10 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Types;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
 using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default.BLMCombo_Default;
 
 
@@ -386,7 +377,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     private bool LoopManagerArea(out IAction act)
     {
         //if (!Blizzard2.ShouldUse(out _)) return false;
-        
+
         if (Foul.ShouldUse(out act) && IsPolyglotStacksMaxed) return true;
 
 
@@ -432,7 +423,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     /// <param name="act"></param>
     /// <returns></returns>
     private bool Maintence(out IAction act)
-    { 
+    {
         if (UmbralSoul.ShouldUse(out act) && UmbralIceStacks == 3 && ElementTimeEndAfterGCD(2)) return true;
         if (UmbralSoul.ShouldUse(out act) && UmbralIceStacks != 3) return true;
         if (Transpose.ShouldUse(out act) && ElementTimeEndAfterGCD(1) && Foul.EnoughLevel) return true;

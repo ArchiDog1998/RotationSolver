@@ -19,7 +19,7 @@ public class PluginConfiguration : IPluginConfiguration
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
     public Dictionary<uint, Dictionary<string, ActionConfiguration>> CombosConfigurations { get; private set; } = new Dictionary<uint, Dictionary<string, ActionConfiguration>>();
     public Dictionary<uint, string> ComboChoices { get; private set; } = new Dictionary<uint, string>();
-    public Dictionary<uint, byte> TargetToHostileTypes { get; set; } = 
+    public Dictionary<uint, byte> TargetToHostileTypes { get; set; } =
         new Dictionary<uint, byte>();
     public int AddDotGCDCount { get; set; } = 2;
 
@@ -55,7 +55,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool FilterStopMark { get; set; } = true;
     public bool UseOverlayWindow { get; set; } = true;
     public bool TeachingMode { get; set; } = true;
-    public Vector3 TeachingModeColor { get; set; } = new (0f, 1f, 0.8f);
+    public Vector3 TeachingModeColor { get; set; } = new(0f, 1f, 0.8f);
     public bool KeyBoardNoise { get; set; } = true;
     public bool UseAreaAbilityFriendly { get; set; } = true;
     public bool AutoStartCountdown { get; set; } = true;

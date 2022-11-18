@@ -1,19 +1,9 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Logging;
-using Dalamud.Utility;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
@@ -37,7 +27,7 @@ namespace XIVAutoAttack.Updaters
 
         internal static float AbilityRemain { get; private set; } = 0;
 
-        internal unsafe static IAction NextAction {  get ; private set; }
+        internal unsafe static IAction NextAction { get; private set; }
 
 #if DEBUG
         internal static Exception exception;
@@ -61,7 +51,7 @@ namespace XIVAutoAttack.Updaters
                     return;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 #if DEBUG
                 exception = ex;
@@ -105,7 +95,7 @@ namespace XIVAutoAttack.Updaters
             if (WeaponRemain < interval || WeaponElapsed == 0)
             {
                 AbilityRemain = 0;
-                if(WeaponRemain > 0)
+                if (WeaponRemain > 0)
                 {
                     AbilityRemain = WeaponRemain + interval;
                 }
@@ -144,7 +134,7 @@ namespace XIVAutoAttack.Updaters
             //有醒梦，就算了啊
             if (player.HasStatus(true, StatusID.LucidDreaming)) return;
 
-            if(_lastMP < player.CurrentMp)
+            if (_lastMP < player.CurrentMp)
             {
                 _lastMPUpdate = DateTime.Now;
             }

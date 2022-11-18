@@ -1,22 +1,13 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Lumina.Data.Parsing;
-using Lumina.Excel.GeneratedSheets;
+﻿using Lumina.Excel.GeneratedSheets;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 using XIVAutoAttack.Windows;
-using static XIVAutoAttack.SigReplacers.PluginAddressResolver;
 
 namespace XIVAutoAttack
 {
@@ -242,7 +233,7 @@ namespace XIVAutoAttack
         {
             get
             {
-                if(Service.Configuration.TargetingTypes.Count == 0)
+                if (Service.Configuration.TargetingTypes.Count == 0)
                 {
                     Service.Configuration.TargetingTypes.Add(TargetingType.Big);
                     Service.Configuration.Save();
@@ -302,13 +293,13 @@ namespace XIVAutoAttack
             //if(nextAction is BaseAction acti)
             //Service.ChatGui.Print($"Will Do {acti} {ActionUpdater.WeaponElapsed}");
 #endif
-            if(nextAction == null) return;
+            if (nextAction == null) return;
             if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
 
 
             if (nextAction.Use())
             {
-                if(Service.Configuration.KeyBoardNoise) PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);
+                if (Service.Configuration.KeyBoardNoise) PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);
                 if (nextAction is BaseAction act)
                 {
 #if DEBUG
@@ -393,7 +384,7 @@ namespace XIVAutoAttack
                 default:
 
                     var customCombo = IconReplacer.RightNowCombo;
-                    if(customCombo != null)
+                    if (customCombo != null)
                     {
                         foreach (var boolean in customCombo.Config.bools)
                         {
@@ -413,7 +404,7 @@ namespace XIVAutoAttack
                             {
                                 var numStr = str.Substring(combo.name.Length);
 
-                                if(string.IsNullOrEmpty(numStr) || str.Length == 0)
+                                if (string.IsNullOrEmpty(numStr) || str.Length == 0)
                                 {
                                     combo.value = (combo.value + 1) % combo.items.Length;
 

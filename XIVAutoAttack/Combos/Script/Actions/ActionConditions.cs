@@ -1,10 +1,5 @@
 ﻿using ImGuiNET;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Script.Conditions;
@@ -30,7 +25,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
         public void DrawHeader()
         {
-            if(_action != null)
+            if (_action != null)
             {
                 ImGui.Columns(2);
 
@@ -84,7 +79,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
         public void Draw(IScriptCombo combo)
         {
             var desc = Description;
-            if(ImGui.InputTextMultiline("描述", ref desc, 1024, new System.Numerics.Vector2(250, 250)))
+            if (ImGui.InputTextMultiline("描述", ref desc, 1024, new System.Numerics.Vector2(250, 250)))
             {
                 Description = desc;
             }
@@ -94,7 +89,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
         public bool? ShouldUse(IScriptCombo owner, out IAction act)
         {
-            if(ID != ActionID.None && _action == null)
+            if (ID != ActionID.None && _action == null)
             {
                 _action = owner.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
             }
