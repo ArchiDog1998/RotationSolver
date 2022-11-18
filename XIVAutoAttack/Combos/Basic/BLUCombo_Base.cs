@@ -324,7 +324,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 鬼宿脚(需要buff版本）
         /// </summary>
-        public static BLUAction PhantomFlurry2 { get; } = new(ActionID.PhantomFlurry2, BLUActionType.Magical);
+        public static BaseAction PhantomFlurry2 { get; } = new(ActionID.PhantomFlurry2);
         #endregion
 
         #region 物理单体

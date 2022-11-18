@@ -719,7 +719,7 @@ internal class ComboConfigWindow : Window
                         {
                                 "所有能打的目标都是敌对的目标",
                                 "如果处于打人的目标数量为零，所有能打的都是敌对的",
-                                "只有打人的目标才是敌对的目标",
+                                "只有有目标的目标才是敌对的目标",
                         }, 3))
                         {
                             IconReplacer.RightNowTargetToHostileType = (byte)isAllTargetAsHostile;

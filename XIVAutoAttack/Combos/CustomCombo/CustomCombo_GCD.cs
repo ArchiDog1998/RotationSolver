@@ -148,7 +148,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 if (CanHealAreaSpell && HealAreaGCD(out act)) return act;
                 if (CanHealSingleSpell && HealSingleGCD(out act)) return act;
             }
-            if (Service.Configuration.RaisePlayerByCasting && ActionUpdater.InCombat && EsunaRaise(out act, abilityRemain, true)) return act;
+            if (Service.Configuration.RaisePlayerByCasting && EsunaRaise(out act, abilityRemain, true)) return act;
 
             return null;
         }

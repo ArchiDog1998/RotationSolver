@@ -1,5 +1,5 @@
 name: XIV Auto Attack
-author: 秋水, 汐ベMoon, gamous, 逆光, 玖祁, 牙刷play
+author: 秋水, 汐ベMoon, gamous, 逆光, sciuridae564, 玖祁, 牙刷play
 description: |-
   本插件开源免费！
   让自动攻击成为可能，请合理使用！此插件非常刺激！目前主要用于刷幻化和日随打本。
@@ -10,7 +10,12 @@ punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
   - 调整了武士的循环
-  - 修复了combo保存的问题。
+  - 修复了配置文件中combo保存的问题。
+  - 修改打人的目标为有目标的
+  - 取消了硬读条复活必须在战斗中的设定
+  ## 功能增加
+  - Moon版的青魔，据说又有很多bug
+
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
