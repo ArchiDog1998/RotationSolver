@@ -1066,5 +1066,16 @@
         /// 冻结
         /// </summary>
         DeepFreeze = 1731,
+
+        /// <summary>
+        /// 冰雾
+        /// </summary>
+        TouchofFrost = 2994,
+
+        /// <summary>
+        /// 玄天武水壁
+        /// </summary>
+        AuspiciousTrance = 2497,
+
     }
 }

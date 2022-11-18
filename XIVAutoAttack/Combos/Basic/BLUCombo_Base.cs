@@ -134,7 +134,10 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 冰雾
         /// </summary>
-        public static BLUAction WhiteDeath { get; } = new(ActionID.WhiteDeath, BLUActionType.Magical);
+        public static BaseAction WhiteDeath { get; } = new(ActionID.WhiteDeath)
+        {
+            ActionCheck = b => Player.HasStatus(true, StatusID.TouchofFrost)
+        };
         #endregion
 
         #region 魔法群体
@@ -322,12 +325,18 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 玄天武水壁
         /// </summary>
-        public static BLUAction DivineCataract { get; } = new(ActionID.DivineCataract, BLUActionType.Magical);
+        public static BaseAction DivineCataract { get; } = new(ActionID.DivineCataract)
+        {
+            ActionCheck = b => Player.HasStatus(true, StatusID.AuspiciousTrance)
+        };
 
         /// <summary>
         /// 鬼宿脚(需要buff版本）
         /// </summary>
-        public static BLUAction PhantomFlurry2 { get; } = new(ActionID.PhantomFlurry2, BLUActionType.Magical);
+        public static BaseAction PhantomFlurry2 { get; } = new(ActionID.PhantomFlurry2)
+        {
+            ActionCheck = b => Player.HasStatus(true, StatusID.PhantomFlurry)
+        };
         #endregion
 
         #region 物理单体

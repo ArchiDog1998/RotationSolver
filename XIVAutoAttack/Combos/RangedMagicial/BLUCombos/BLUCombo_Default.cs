@@ -31,7 +31,9 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             return base.CreateConfiguration()
                 .SetCombo("BlueId", 2, "职能", "防护", "治疗", "进攻")
                 .SetCombo("AttackType", 2, "攻击方式", "魔法", "物理", "我全都要")
-                .SetBool("MoonFluteBreak", false, "D青月笛爆发")
+                .SetBool("MoonFluteBreak", false, "月笛爆发")
+                .SetBool("SingleAOE", true, "单目标释放高伤害AOE技能")
+                .SetBool("GamblerKill", false, "可以释放赌徒秒杀技能")
                 .SetBool("UseFinalSting", false, "终极针收尾")
                 .SetFloat("FinalStingHP", 0, "开始使用终极针的Hp");
         }
@@ -46,11 +48,11 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
         /// <summary>
         /// 赌几率秒杀
         /// </summary>
-        private bool GamblerKill => false;
+        private bool GamblerKill => Config.GetBoolByName("GamblerKill");
         /// <summary>
         /// 单体时是否释放高伤害AOE
         /// </summary>
-        private bool SingleAOE => true;
+        private bool SingleAOE => Config.GetBoolByName("SingleAOE");
 
         private protected override void UpdateInfo()
         {
@@ -81,14 +83,14 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
         }
 
         private protected override bool GeneralGCD(out IAction act)
-        {
+        { 
             act = null;
             //狂战士副作用期间
             if (Player.HasStatus(true, StatusID.WaningNocturne)) return false;
             //鬼宿脚
-            if (IsLastAction(false, PhantomFlurry) || Player.HasStatus(true, StatusID.PhantomFlurry))
+            if (PhantomFlurry.IsCoolDown && !PhantomFlurry.ElapsedAfter(1) || Player.HasStatus(true, StatusID.PhantomFlurry))
             {
-                //if (Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.ShouldUse(out act, mustUse: true)) return true;
+                if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.ShouldUse(out act, mustUse: true)) return true;
                 return false;
             } 
             //穿甲散弹
@@ -96,6 +98,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             {
                 if (Surpanakha.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
             }
+            if (PhantomFlurry.ShouldUse(out act, mustUse: true)) return true;
 
             //终极针组合
             if (UseFinalSting && CanUseFinalSting(out act)) return true;
@@ -144,11 +147,11 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
         private bool DBlueBreak(out IAction act)
         {
             act = null;
-            if (BlueId == BLUID.Healer && BlueId == BLUID.Tank) return false;
+            //if (BlueId == BLUID.Healer && BlueId == BLUID.Tank) return false;
 
             if (!AllOnSlot(MoonFlute)) return false;
 
-            if (AllOnSlot(Whistle, Tingle, TripleTrident) && !Nightbloom.IsCoolDown && !TripleTrident.IsCoolDown)
+            if (AllOnSlot(Whistle, Tingle, TripleTrident) && !TripleTrident.IsCoolDown)
             {
                 //口笛
                 if (Whistle.ShouldUse(out act)) return true;
@@ -192,6 +195,19 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             if (Surpanakha.CurrentCharges >= 3 && Surpanakha.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
             //鬼宿脚
             if (PhantomFlurry.ShouldUse(out act, mustUse: true)) return true;
+
+            //冰雾
+            if (WhiteDeath.ShouldUse(out act)) return true;
+            //如意大旋风
+            if (SettingBreak && !MoonFluteBreak && BothEnds.ShouldUse(out act, mustUse: true)) return true;
+            //类星体
+            if (Quasar.ShouldUse(out act, mustUse: true)) return true;
+            //飞翎雨
+            if (FeatherRain.ShouldUse(out act, mustUse: true)) return true;
+            //山崩
+            if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
+            //冰雪乱舞
+            if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
 
             //音爆
             if (SonicBoom.ShouldUse(out act)) return true;
@@ -462,7 +478,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             //冰雪乱舞
             if (MountainBuster.ShouldUse(out act, mustUse: SingleAOE)) return true;
 
-            if (MountainBuster.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            //if (MountainBuster.ShouldUse(out act, mustUse: SingleAOE)) return true;
 
 
             return false;
