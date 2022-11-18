@@ -14,7 +14,7 @@ changelog: |-
   - 修改打人的目标为有目标的
   - 取消了硬读条复活必须在战斗中的设定
   ## 功能增加
-  - Moon版的青魔，据说又有很多bug
+  - Moon版的青魔，据说又有很多bug，想要打某种特定循环，请尽量只带那几个技能
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
