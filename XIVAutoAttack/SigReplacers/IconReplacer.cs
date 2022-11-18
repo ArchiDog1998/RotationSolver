@@ -179,7 +179,7 @@ internal sealed class IconReplacer : IDisposable
         if(update) MaintenceCombos();
     }
 
-    private static void LoadFromFolder()
+    public static void LoadFromFolder()
     {
         if (Directory.Exists(Service.Configuration.ScriptComboFolder))
         {
@@ -188,6 +188,8 @@ internal sealed class IconReplacer : IDisposable
 
             }
         }
+
+        MaintenceCombos();
     }
 
     private static void SetStaticValues()
@@ -198,8 +200,6 @@ internal sealed class IconReplacer : IDisposable
 
         GetAllCombos();
         LoadFromFolder();
-
-        MaintenceCombos();
     }
 
     private static ICustomCombo[] SetCombos(ICustomCombo[] combos)
