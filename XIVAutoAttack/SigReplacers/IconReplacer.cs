@@ -126,7 +126,7 @@ internal sealed class IconReplacer : IDisposable
         }
     }
 
-    private static Dictionary<ClassJobID, Type> _customScriptCombos;
+    internal static Dictionary<ClassJobID, Type> _customScriptCombos;
 
     private readonly Hook<IsIconReplaceableDelegate> isIconReplaceableHook;
 
@@ -183,17 +183,18 @@ internal sealed class IconReplacer : IDisposable
 
     public static void LoadFromFolder()
     {
-        if (!Directory.Exists(Service.Configuration.ScriptComboFolder)) return;
-
-        foreach (var path in Directory.EnumerateFiles(Service.Configuration.ScriptComboFolder, "*.json"))
+        if (Directory.Exists(Service.Configuration.ScriptComboFolder))
         {
-            var set = JsonConvert.DeserializeObject<ComboSet>(File.ReadAllText(path));
+            foreach (var path in Directory.EnumerateFiles(Service.Configuration.ScriptComboFolder, "*.json"))
+            {
+                var set = JsonConvert.DeserializeObject<ComboSet>(File.ReadAllText(path));
 
-            if (set == null) continue;
+                if (set == null) continue;
 
-            var combo = AddScripCombo(set.JobID, false);
+                var combo = AddScripCombo(set.JobID, false);
 
-            combo.Set = set;
+                combo.Set = set;
+            }
         }
 
         MaintenceCombos();

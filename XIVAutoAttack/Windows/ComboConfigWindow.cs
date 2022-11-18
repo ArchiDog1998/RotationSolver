@@ -20,6 +20,7 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
+using XIVAutoAttack.Windows.Tabs;
 
 namespace XIVAutoAttack.Windows;
 
@@ -125,6 +126,12 @@ internal class ComboConfigWindow : Window
                 ImGui.EndTabItem();
             }
 #endif
+
+            if (ImGui.BeginTabItem("关于"))
+            {
+                About.Draw();
+                ImGui.EndTabItem();
+            }
 
             if (ImGui.BeginTabItem("攻击设定"))
             {
@@ -1059,27 +1066,36 @@ internal class ComboConfigWindow : Window
                 {
                     XIVAutoAttackPlugin.OpenScriptWindow(script);
                 }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("点击以编辑该自定义Combo");
+                }
 #endif
             }
             else
             {
-                //ImGui.PushFont(UiBuilder.IconFont);
-                //ImGui.Button($"源码##源码{texture.Name}")
-                if (ImGuiComponents.IconButton(FontAwesomeIcon.InternetExplorer))
+                if (ImGuiComponents.IconButton(texture.GetHashCode(), FontAwesomeIcon.Globe))
                 {
                     var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
                     Process.Start("cmd", $"/C start {url}");
                 }
-                //ImGui.PopFont();
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("打开源码网址");
+                }
             }
 
 #if DEBUG
             ImGui.SameLine();
             Spacing();
 
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
+            if (ImGuiComponents.IconButton(texture.GetHashCode() + 1, FontAwesomeIcon.Plus))
             {
                 IconReplacer.AddScripCombo(com.JobIDs[0]);
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("添加一个自定义Combo");
             }
 #endif
         }
