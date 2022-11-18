@@ -88,7 +88,10 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 苦闷之歌
         /// </summary>
-        public static BLUAction SongofTorment { get; } = new(ActionID.SongofTorment, BLUActionType.Magical, isEot: true);
+        public static BLUAction SongofTorment { get; } = new(ActionID.SongofTorment, BLUActionType.Magical, isEot: true)
+        {
+            TargetStatus = new[] { StatusID.Bleeding }
+        };
 
         /// <summary>
         /// 吸血
@@ -655,7 +658,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 斗争本能
         /// </summary>
-        private static BLUAction BasicInstinct { get; } = new(ActionID.BasicInstinct, BLUActionType.None)
+        public static BLUAction BasicInstinct { get; } = new(ActionID.BasicInstinct, BLUActionType.None)
         {
             BuffsProvide = new StatusID[] {StatusID.BasicInstinct },
             ActionCheck = b =>

@@ -321,8 +321,13 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
                 if (HasThunder && Player.WillStatusEnd(3, true, StatusID.Thundercloud)) return true;
             }
             //冰阶段
-            if (!Blizzard4.EnoughLevel && (Player.CurrentMp < 9600 || UmbralIceStacks != 3) && Blizzard.ShouldUse(out act)) return true;
-            if (UmbralIceStacks == 3 && UmbralHearts != 3 && Blizzard4.ShouldUse(out act)) return true;
+            if (Blizzard.ShouldUse(out act))
+            {
+                if (!Blizzard4.EnoughLevel && (Player.CurrentMp < 9600 || UmbralIceStacks != 3)) return true;
+
+                if (ElementTimeEndAfterGCD(1) && UmbralIceStacks != 3) return true;
+            }
+            if (UmbralHearts != 3 && Blizzard4.ShouldUse(out act)) return true;
             //异言
             if (CanUseXenoglossy(out act)) return true;
             //悖论

@@ -1051,5 +1051,15 @@
         /// 穿甲散弹强化
         /// </summary>
         SurpanakhaFury = 2130,
+
+        /// <summary>
+        /// 出血
+        /// </summary>
+        Bleeding = 1714,
+
+        /// <summary>
+        /// 冻结
+        /// </summary>
+        DeepFreeze = 1731,
     }
 }

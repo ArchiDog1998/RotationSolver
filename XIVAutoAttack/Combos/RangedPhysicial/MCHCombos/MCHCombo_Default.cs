@@ -173,6 +173,8 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
     {
         if (!Wildfire.ShouldUse(out act)) return false;
 
+        if (Heat < 50 && !IsOverheated) return false;
+
         //小怪和AOE期间不打野火
         if (SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()) return false;
 
@@ -181,8 +183,10 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
 
         if (ChainSaw.EnoughLevel && !ChainSaw.IsCoolDown) return false;
 
-        //当上一个技能不是链锯且是钻头,空气锚,热冲击时不释放野火
-        if (!IsLastWeaponSkill((ActionID)ChainSaw.ID) && IsLastWeaponSkill(true, Drill, HeatBlast, AirAnchor)) return false;
+        //当上一个技能是钻头,空气锚,热冲击时不释放野火
+        if (IsLastWeaponSkill(true, Drill, HeatBlast, AirAnchor)) return false;
+
+        //if (IsLastWeaponSkill(true, ChainSaw)) return true;
 
         return true;
     }
