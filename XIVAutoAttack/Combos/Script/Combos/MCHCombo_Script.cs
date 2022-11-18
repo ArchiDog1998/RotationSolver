@@ -12,7 +12,7 @@ namespace XIVAutoAttack.Combos.Script.Combos
 {
     internal class MCHCombo_Script : MCHCombo_Base<Enum>, IScriptCombo
     {
-        public override string Author => this.GetAuthor();
+        public override string Author => Set.GetAuthor();
 
         public string AuthorName { get; set; }
         public ComboSet Set { get ; set ; }

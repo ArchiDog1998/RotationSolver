@@ -22,6 +22,7 @@ using XIVAutoAttack.Combos.Script;
 using System.Diagnostics;
 using System.Reflection;
 using Dalamud.Interface.Components;
+using Newtonsoft.Json;
 
 namespace XIVAutoAttack.Windows;
 
@@ -140,6 +141,14 @@ internal class ComboConfigWindow : Window
                 {
                     Service.Configuration.ScriptComboFolder = folderLocation;
                     Service.Configuration.Save();
+                }
+
+                ImGui.SameLine();
+                Spacing();
+
+                if (ImGuiComponents.IconButton(FontAwesomeIcon.FolderOpen))
+                {
+                    IconReplacer.LoadFromFolder();
                 }
 #endif
 

@@ -11,15 +11,14 @@ namespace XIVAutoAttack.Combos.Script
     internal interface IScriptCombo : ICustomCombo
     {
         public ComboSet Set { get; set; }
-        string AuthorName { get; set; }
     }
 
     internal static class ScriptComboExtension
     {
-        public static string GetFolder(this IScriptCombo combo)
-           => $"{Service.Configuration.ScriptComboFolder}{combo.Job.RowId}_{combo.AuthorName}.json";
+        public static string GetFolder(this ComboSet set)
+           => $"{Service.Configuration.ScriptComboFolder}{(uint)set.JobID}_{set.AuthorName}.json";
 
-        public static string GetAuthor(this IScriptCombo combo)
-           => combo.AuthorName + "-Script";
+        public static string GetAuthor(this ComboSet set)
+           => set.AuthorName + "-Script";
     }
 }

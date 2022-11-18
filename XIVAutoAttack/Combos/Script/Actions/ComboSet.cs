@@ -5,11 +5,14 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.Script.Actions
 {
     internal class ComboSet : IDraw
     {
+        public ClassJobID JobID { get; set; }
+        public string AuthorName { get; set; }
         public string Description { get; set; }
         public ActionsSet GeneralGCDSet { get; set; } = new ActionsSet()
         {

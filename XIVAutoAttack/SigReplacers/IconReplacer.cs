@@ -4,6 +4,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Data.Parsing;
 using Lumina.Excel.GeneratedSheets;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Script;
+using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
@@ -170,23 +172,31 @@ internal sealed class IconReplacer : IDisposable
             (_customCombos.GroupBy(g => g.combos[0].Job.GetJobRole()).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
     }
 
-    public static void AddScripCombo(ClassJobID id, bool update = true)
+    public static IScriptCombo AddScripCombo(ClassJobID id, bool update = true)
     {
         if(_customScriptCombos.TryGetValue(id, out var value))
         {
-            _combos.Add((ICustomCombo)Activator.CreateInstance(value));
+            var add = (IScriptCombo)Activator.CreateInstance(value);
+            _combos.Add(add);
+            if (update) MaintenceCombos();
+            return add;
         }
-        if(update) MaintenceCombos();
+        return null;
     }
 
     public static void LoadFromFolder()
     {
-        if (Directory.Exists(Service.Configuration.ScriptComboFolder))
-        {
-            foreach (var path in Directory.EnumerateFiles(Service.Configuration.ScriptComboFolder, "*.json"))
-            {
+        if (!Directory.Exists(Service.Configuration.ScriptComboFolder)) return;
 
-            }
+        foreach (var path in Directory.EnumerateFiles(Service.Configuration.ScriptComboFolder, "*.json"))
+        {
+            var set = JsonConvert.DeserializeObject<ComboSet>(File.ReadAllText(path));
+
+            if (set == null) continue;
+
+            var combo = AddScripCombo(set.JobID, false);
+
+            combo.Set = set;
         }
 
         MaintenceCombos();
