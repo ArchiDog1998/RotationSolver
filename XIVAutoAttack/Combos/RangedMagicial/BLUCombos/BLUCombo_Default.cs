@@ -98,7 +98,6 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             {
                 if (Surpanakha.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
             }
-            if (PhantomFlurry.ShouldUse(out act, mustUse: true)) return true;
 
             //终极针组合
             if (UseFinalSting && CanUseFinalSting(out act)) return true;
