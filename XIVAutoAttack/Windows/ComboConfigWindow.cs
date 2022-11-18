@@ -1,3 +1,4 @@
+using Dalamud.Configuration;
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface;
@@ -151,6 +152,10 @@ internal class ComboConfigWindow : Window
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.FolderOpen))
                 {
                     IconReplacer.LoadFromFolder();
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("点击以载入自定义循环");
                 }
 #endif
 
@@ -1052,6 +1057,10 @@ internal class ComboConfigWindow : Window
             {
                 Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
             }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("点击以切换作者");
+            }
         }
 
         ImGui.SameLine();
@@ -1099,8 +1108,6 @@ internal class ComboConfigWindow : Window
             }
 #endif
         }
-
-
 
         if (enable)
         {

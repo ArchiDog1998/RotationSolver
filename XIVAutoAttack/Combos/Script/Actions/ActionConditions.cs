@@ -23,25 +23,33 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
         public string Description { get; set; } = string.Empty;
 
+        public ActionConditions()
+        {
+
+        }
+
+        public ActionConditions(BaseAction act)
+        {
+            _action = act;
+            ID = (ActionID)act.ID;
+        }
+
         public void DrawHeader()
         {
             if (_action != null)
             {
-                ImGui.Columns(2);
+                ImGui.Image(_action.GetTexture().ImGuiHandle,
+                    new System.Numerics.Vector2(30, 30));
 
-                var text = _action.GetTexture();
-
-                ImGui.SetColumnWidth(0, text.Width + 5);
-
-                ImGui.Image(text.ImGuiHandle, new System.Numerics.Vector2(text.Width, text.Height));
-
-                ImGui.NextColumn();
+                ImGui.SameLine();
+                ComboConfigWindow.Spacing();
 
                 if (ImGui.Selectable(_action.Name))
                 {
                     XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
                 }
 
+                ComboConfigWindow.Spacing(3);
                 var mustUse = MustUse;
                 if (ImGui.Checkbox("必须使用", ref mustUse))
                 {
@@ -64,8 +72,6 @@ namespace XIVAutoAttack.Combos.Script.Actions
                 {
                     ImGui.SetTooltip("用完所有层数或者跳过连击判断。");
                 }
-
-                ImGui.Columns(1);
             }
             else
             {

@@ -103,12 +103,30 @@ namespace XIVAutoAttack.Combos.Script.Actions
         public void Draw(IScriptCombo combo)
         {
             var desc = Description;
-            if (ImGui.InputTextMultiline("描述:", ref desc, 1024, new Vector2(250, 250)))
+            if (ImGui.InputTextMultiline($"##{AuthorName}的{JobID}描述", ref desc, 1024, new Vector2(250, 150), ImGuiInputTextFlags.None))
             {
                 Description = desc;
             }
 
-            GeneralGCDSet.DrawHeader();
+            if (ImGui.BeginChild($"##{AuthorName}的{JobID}技能描述", new Vector2(-5f, -1f), true))
+            {
+                EmergencyGCDSet.DrawHeader();
+                GeneralGCDSet.DrawHeader();
+                DefenceAreaGCDSet.DrawHeader();
+                DefenceSingleGCDSet.DrawHeader();
+                HealAreaGCDSet.DrawHeader();
+                HealSingleGCDSet.DrawHeader();
+                MoveGCDSet.DrawHeader();
+                EmergencyAbilitySet.DrawHeader();
+                GeneralAbilitySet.DrawHeader();
+                AttackAbilitySet.DrawHeader();
+                DefenceAreaAbilitySet.DrawHeader();
+                DefenceSingleAbilitySet.DrawHeader();
+                HealAreaAbilitySet.DrawHeader();
+                HealSingleAbilitySet.DrawHeader();
+                MoveAbilitySet.DrawHeader();
+                ImGui.EndChild();
+            }
         }
     }
 }
