@@ -20,7 +20,13 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Scholar };
 
     private sealed protected override BaseAction Raise => Resurrection;
+    /// <summary>
+    /// 有豆子
+    /// </summary>
     protected static bool HasAetherflow => JobGauge.Aetherflow > 0;
+    /// <summary>
+    /// 有大天使
+    /// </summary>
     protected static bool HasSeraph => JobGauge.SeraphTimer > 0;
 
     #region 治疗
@@ -88,7 +94,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 慰藉
     /// </summary>
-    public static BaseAction Consolation { get; } = new(ActionID.Consolation)
+    public static BaseAction Consolation { get; } = new(ActionID.Consolation, true)
     {
         ActionCheck = b => HasSeraph,
     };
@@ -134,7 +140,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 炽天召唤
     /// </summary>
-    public static BaseAction SummonSeraph { get; } = new(ActionID.SummonSeraph)
+    public static BaseAction SummonSeraph { get; } = new(ActionID.SummonSeraph, true)
     {
         ActionCheck = b => TargetUpdater.HavePet,
     };
@@ -168,6 +174,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Dissipation { get; } = new(ActionID.Dissipation)
     {
+        BuffsProvide = new[] { StatusID.Dissipation },
         ActionCheck = b => !HasAetherflow && !HasSeraph && InCombat && TargetUpdater.HavePet,
     };
 

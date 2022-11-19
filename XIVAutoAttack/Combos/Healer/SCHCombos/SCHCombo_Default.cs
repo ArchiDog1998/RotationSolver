@@ -22,11 +22,11 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
     {
         None,
     }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    public SCHCombo_Default()
     {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
+        //防止大仙女吞技能
+        SummonSeraph.ComboCheck = b => WhisperingDawn.ElapsedAfterGCD(1) || FeyIllumination.ElapsedAfterGCD(1) || FeyBlessing.ElapsedAfterGCD(1);
+    }
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
     protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
 
@@ -203,7 +203,7 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
             if (ChainStratagem.ShouldUse(out act)) return true;
         }
 
-        if ((Dissipation.EnoughLevel && Dissipation.WillHaveOneChargeGCD(3)) || Aetherflow.WillHaveOneChargeGCD(3))
+        if ((Dissipation.EnoughLevel && Dissipation.WillHaveOneChargeGCD(3) && Dissipation.IsEnabled) || Aetherflow.WillHaveOneChargeGCD(3))
         {
             //能量吸收
             if (EnergyDrain.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
