@@ -1,9 +1,13 @@
+using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 using static XIVAutoAttack.Combos.Healer.SCHCombos.SCHCombo_Default;
@@ -28,7 +32,9 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
 
     private protected override ActionConfiguration CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
+        return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶")
+                                            .SetBool("prevDUN", false, "开局15秒开扩散盾")
+                                            .SetBool("GiveT", false, "开局扩散盾给t（不勾和t跑的超远的时候给自己）");
     }
     public override SortedList<DescType, string> DescriptionDict => new()
     {
@@ -211,5 +217,39 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
 
         act = null;
         return false;
+    }
+
+    //15秒秘策单盾扩散
+    private protected override IAction CountDownAction(float remainTime)
+    {
+        if (Config.GetBoolByName("prevDUN") && remainTime <= 15 && !DeploymentTactics.IsCoolDown && TargetUpdater.PartyMembers.Length > 1)
+        {
+
+            if (!Recitation.IsCoolDown) return Recitation;
+            if (!TargetUpdater.PartyMembers.Any((n) => n.HasStatus(true, StatusID.Galvanize)))
+            {
+                //如果还没上激励就给t一个激励
+                if (Config.GetBoolByName("GiveT"))
+                {
+                    BattleChara[] PartyTanks = TargetUpdater.PartyTanks;
+                    BattleChara mt = Player;
+                    foreach (BattleChara t in PartyTanks)
+                    {
+                        if (t.HasStatus(true, StatusID.Defiance) || t.HasStatus(true, StatusID.IronWill) || t.HasStatus(true, StatusID.RoyalGuard)
+                            || t.HasStatus(true, StatusID.Grit)&&t.DistanceToPlayer() < 30)
+                        {
+                            mt = t; break;
+                        }
+                    }
+                    Adloquium.Target = mt;
+                    return Adloquium;
+                }
+            }
+            else
+            {
+                return DeploymentTactics;
+            }
+        }
+        return base.CountDownAction(remainTime);
     }
 }

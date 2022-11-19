@@ -1,3 +1,4 @@
+using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
@@ -22,7 +23,8 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
 
     private protected override ActionConfiguration CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("UseLilyWhenFull", true, "蓝花集满时自动释放蓝花");
+        return base.CreateConfiguration().SetBool("UseLilyWhenFull", true, "蓝花集满时自动释放蓝花")
+                                            .SetBool("UsePreRegen", false, "开始5秒时给t上盾和再生");
     }
     public override SortedList<DescType, string> DescriptionDict => new()
     {
@@ -170,5 +172,30 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         //礼仪之铃
         if (LiturgyoftheBell.ShouldUse(out act)) return true;
         return false;
+    }
+    //开局5s使用再生和盾给开了盾姿的t
+    private protected override IAction CountDownAction(float remainTime)
+    {
+        if (Config.GetBoolByName("UsePreRegen") && remainTime <= 5 && remainTime > 3 && DivineBenison.ShouldUse(out _))
+        {
+            BattleChara mt = Player;
+            foreach (BattleChara t in TargetUpdater.PartyTanks)
+            {
+                if(t.HasStatus(true,StatusID.Defiance)|| t.HasStatus(true, StatusID.IronWill) ||
+                    t.HasStatus(true, StatusID.Grit) || t.HasStatus(true, StatusID.RoyalGuard)) mt = t;
+            }
+            if (DivineBenison.ShouldUse(out _))
+            {
+                DivineBenison.Target = mt;
+                return DivineBenison;
+            }
+            if (Regen.ShouldUse(out _))
+            {
+                Regen.Target = mt;
+                return Regen;
+            }
+
+        }
+        return base.CountDownAction(remainTime);
     }
 }

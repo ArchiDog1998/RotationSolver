@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
 using System;
 using System.Linq;
 using XIVAutoAttack.Actions;
@@ -6,6 +7,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Combos.Basic;
 internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
@@ -26,6 +28,8 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// ª√…» ˝
     /// </summary>
     protected static byte Feathers => JobGauge.Feathers;
+
+    protected static byte CompletedSteps => JobGauge.CompletedSteps;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dancer };
 
@@ -287,12 +291,19 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         }
         else
         {
-            if (Emboite.ShouldUse(out act)) return true;
-            if (Entrechat.ShouldUse(out act)) return true;
-            if (Jete.ShouldUse(out act)) return true;
-            if (Pirouette.ShouldUse(out act)) return true;
+            excutionStepGCD(out act);
         }
 
+        return false;
+    }
+
+    protected bool excutionStepGCD(out IAction act)
+    {
+        act = null;
+        if (Emboite.ShouldUse(out act)) return true;
+        if (Entrechat.ShouldUse(out act)) return true;
+        if (Jete.ShouldUse(out act)) return true;
+        if (Pirouette.ShouldUse(out act)) return true;
         return false;
     }
 }
