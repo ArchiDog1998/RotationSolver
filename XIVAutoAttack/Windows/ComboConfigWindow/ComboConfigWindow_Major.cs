@@ -1,8 +1,4 @@
-using Dalamud.Configuration;
-using Dalamud.Game.ClientState.Keys;
-using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface;
-using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -14,15 +10,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Script;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Windows.ComboConfigWindow;
 

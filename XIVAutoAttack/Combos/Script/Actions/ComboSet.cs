@@ -1,7 +1,4 @@
 ﻿using ImGuiNET;
-using Newtonsoft.Json;
-using System;
-using System.IO;
 using System.Numerics;
 using XIVAutoAttack.Data;
 

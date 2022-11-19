@@ -1,6 +1,6 @@
 ﻿namespace XIVAutoAttack.Data
 {
-    internal enum ClassJobID : uint
+    public enum ClassJobID : uint
     {
         /// <summary>
         /// 冒险者

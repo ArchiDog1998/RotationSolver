@@ -1,10 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using ImGuiNET;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;

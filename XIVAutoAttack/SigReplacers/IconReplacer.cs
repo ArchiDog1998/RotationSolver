@@ -196,7 +196,7 @@ internal sealed class IconReplacer : IDisposable
                 {
                     var set = JsonConvert.DeserializeObject<ComboSet>(File.ReadAllText(path), new JsonSerializerSettings()
                     {
-                        TypeNameHandling = TypeNameHandling.All,
+                        TypeNameHandling = TypeNameHandling.Auto,
                     });
 
                     if (set == null) continue;

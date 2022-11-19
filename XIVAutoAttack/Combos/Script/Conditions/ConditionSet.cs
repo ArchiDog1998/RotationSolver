@@ -1,14 +1,11 @@
 ﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Windows;
-using XIVAutoAttack.Windows.ComboConfigWindow;
 
 namespace XIVAutoAttack.Combos.Script.Conditions
 {
@@ -23,7 +20,7 @@ namespace XIVAutoAttack.Combos.Script.Conditions
 
         public void Draw(IScriptCombo combo)
         {
-            if(ImGui.BeginChild(this.GetHashCode().ToString(), new System.Numerics.Vector2(0, 0), true))
+            if (ImGui.BeginChild(this.GetHashCode().ToString(), new System.Numerics.Vector2(0, 0), true))
             {
                 AddButton();
 

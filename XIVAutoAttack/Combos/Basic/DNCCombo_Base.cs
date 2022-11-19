@@ -1,5 +1,4 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
 using System;
 using System.Linq;
 using XIVAutoAttack.Actions;
@@ -7,7 +6,6 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Combos.Basic;
 internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum

@@ -75,7 +75,7 @@ namespace XIVAutoAttack.Windows
                 ImGui.Text("描述:");
 
                 ImGui.SameLine();
-                
+
                 ComboConfigWindow.ComboConfigWindow.Spacing();
 
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.Folder))
@@ -97,7 +97,7 @@ namespace XIVAutoAttack.Windows
                 {
                     File.WriteAllText(TargetCombo.Set.GetFolder(), JsonConvert.SerializeObject(TargetCombo.Set, Formatting.Indented, new JsonSerializerSettings()
                     {
-                         TypeNameHandling = TypeNameHandling.All,
+                        TypeNameHandling = TypeNameHandling.Auto,
                     }));
                 }
                 if (ImGui.IsItemHovered())
@@ -172,7 +172,7 @@ namespace XIVAutoAttack.Windows
                         index = i;
                     }
 
-                    if( (ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
+                    if ((ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
                         && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
                         && ImGui.IsMouseReleased(ImGuiMouseButton.Middle))
                     {

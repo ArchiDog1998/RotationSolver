@@ -1,17 +1,10 @@
-﻿using Dalamud.Interface.Colors;
-using ImGuiNET;
+﻿using ImGuiNET;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Windows;
-using XIVAutoAttack.Windows.ComboConfigWindow;
 
 namespace XIVAutoAttack.Combos.Script.Conditions;
 
@@ -102,7 +95,7 @@ internal class ActionCondition : ICondition
         ImGui.SameLine();
         ImGui.SetNextItemWidth(60);
 
-        if (ImGui.Combo($"##大小情况{GetHashCode()}", ref condition, new string[] {"大于", "小于"}, 2))
+        if (ImGui.Combo($"##大小情况{GetHashCode()}", ref condition, new string[] { "大于", "小于" }, 2))
         {
             Condition = condition > 0;
         }
@@ -115,7 +108,7 @@ internal class ActionCondition : ICondition
             case ActionConditonType.Remain:
                 ImGui.SetNextItemWidth(50);
                 var time = Time;
-                if(ImGui.DragFloat($"时间##时间{GetHashCode()}", ref time))
+                if (ImGui.DragFloat($"时间##时间{GetHashCode()}", ref time))
                 {
                     Time = time;
                 }
@@ -142,7 +135,7 @@ internal class ActionCondition : ICondition
     }
 }
 
-internal enum ActionConditonType : int
+public enum ActionConditonType : int
 {
     Elapsed,
     ElapsedGCD,

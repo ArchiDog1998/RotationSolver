@@ -181,7 +181,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
             BattleChara mt = Player;
             foreach (BattleChara t in TargetUpdater.PartyTanks)
             {
-                if(t.HasStatus(true,StatusID.Defiance)|| t.HasStatus(true, StatusID.IronWill) ||
+                if (t.HasStatus(true, StatusID.Defiance) || t.HasStatus(true, StatusID.IronWill) ||
                     t.HasStatus(true, StatusID.Grit) || t.HasStatus(true, StatusID.RoyalGuard)) mt = t;
             }
             if (DivineBenison.ShouldUse(out _))

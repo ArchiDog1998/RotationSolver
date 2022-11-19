@@ -140,6 +140,7 @@ namespace XIVAutoAttack.Updaters
                 StatusID.Paralysis,
                 StatusID.Paralysis2,
                 StatusID.Nightmare,
+                StatusID.Necrosis,
             };
             DyingPeople = WeakenPeople.Where(p => p.HasStatus(false, dangeriousStatus)).ToArray();
             #endregion

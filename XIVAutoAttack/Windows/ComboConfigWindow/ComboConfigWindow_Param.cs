@@ -1,11 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using ImGuiNET;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;

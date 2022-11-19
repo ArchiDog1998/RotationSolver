@@ -1,14 +1,11 @@
-﻿using Dalamud.Interface.Colors;
+﻿using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
-using Dalamud.Interface;
 using ImGuiNET;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.SigReplacers;
 

@@ -1,6 +1,4 @@
-﻿using Dalamud.Interface.Colors;
-using ImGuiNET;
-using System.Globalization;
+﻿using ImGuiNET;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;

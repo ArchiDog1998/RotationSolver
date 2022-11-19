@@ -83,7 +83,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
         }
 
         private protected override bool GeneralGCD(out IAction act)
-        { 
+        {
             act = null;
             //狂战士副作用期间
             if (Player.HasStatus(true, StatusID.WaningNocturne)) return false;
@@ -92,7 +92,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             {
                 if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.ShouldUse(out act, mustUse: true)) return true;
                 return false;
-            } 
+            }
             //穿甲散弹
             if (Player.HasStatus(true, StatusID.SurpanakhaFury))
             {
@@ -111,8 +111,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             if (AreaGCD(out act)) return true;
             //单体填充
             if (SingleGCD(out act)) return true;
-            
-            
+
+
             act = null;
             return false;
         }
@@ -237,7 +237,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
         /// <param name="act"></param>
         /// <returns></returns>
         private bool CanUseFinalSting(out IAction act)
-        { 
+        {
             act = null;
             if (!UseFinalSting) return false;
             if (!FinalSting.ShouldUse(out _)) return false;
@@ -360,7 +360,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
                 if (Level5Petrify.ShouldUse(out act, mustUse: true)) return true;
             }
 
-          
+
 
             //陆行鸟陨石
             if (ChocoMeteor.ShouldUse(out act)) return true;
@@ -398,7 +398,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             //喷墨
             if (InkJet.ShouldUse(out act)) return true;
             if (FireAngon.ShouldUse(out act)) return true;
-            if (MindBlast.ShouldUse(out act)) return true;      
+            if (MindBlast.ShouldUse(out act)) return true;
             if (AlpineDraft.ShouldUse(out act)) return true;
             if (ProteanWave.ShouldUse(out act)) return true;
             if (Northerlies.ShouldUse(out act)) return true;
@@ -455,7 +455,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             if (SettingBreak && !MoonFluteBreak && Nightbloom.ShouldUse(out act, mustUse: SingleAOE)) return true;
             //如意大旋风
             if (SettingBreak && !MoonFluteBreak && BothEnds.ShouldUse(out act, mustUse: SingleAOE)) return true;
-            
+
             //穿甲散弹
             if (SettingBreak && !MoonFluteBreak && Surpanakha.CurrentCharges >= 3 && Surpanakha.ShouldUse(out act, mustUse: SingleAOE, emptyOrSkipCombo: true)) return true;
 

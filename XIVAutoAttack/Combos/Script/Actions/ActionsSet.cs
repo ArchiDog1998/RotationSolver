@@ -1,18 +1,9 @@
-﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
-using Dalamud.Interface.Components;
-using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
-using System;
+﻿using ImGuiNET;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Script.Conditions;
-using XIVAutoAttack.Data;
 using XIVAutoAttack.Windows;
 using XIVAutoAttack.Windows.ComboConfigWindow;
-using Action = System.Action;
 
 namespace XIVAutoAttack.Combos.Script.Actions
 {
@@ -71,7 +62,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
         {
             var popId = "Popup" + GetHashCode().ToString();
 
-            ScriptComboWindow.AddPopup(popId, "技能卫士",  () =>
+            ScriptComboWindow.AddPopup(popId, "技能卫士", () =>
             {
                 ActionsCondition.Add(new ActionConditions());
             }, ref search, combo.AllActions, item =>

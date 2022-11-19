@@ -1,8 +1,6 @@
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Logging;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -236,7 +234,7 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
                     foreach (BattleChara t in PartyTanks)
                     {
                         if (t.HasStatus(true, StatusID.Defiance) || t.HasStatus(true, StatusID.IronWill) || t.HasStatus(true, StatusID.RoyalGuard)
-                            || t.HasStatus(true, StatusID.Grit)&&t.DistanceToPlayer() < 30)
+                            || t.HasStatus(true, StatusID.Grit) && t.DistanceToPlayer() < 30)
                         {
                             mt = t; break;
                         }

@@ -1,14 +1,9 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
-using Lumina.Data.Parsing.Layer;
 using System.Collections.Generic;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
 using static XIVAutoAttack.Combos.Melee.SAMCombos.SAMCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.SAMCombos;

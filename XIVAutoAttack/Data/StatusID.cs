@@ -1077,5 +1077,10 @@
         /// </summary>
         AuspiciousTrance = 2497,
 
+
+        /// <summary>
+        /// 致死腐烂毒素
+        /// </summary>
+        Necrosis = 2965,
     }
 }
