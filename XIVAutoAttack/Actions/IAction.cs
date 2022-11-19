@@ -1,6 +1,6 @@
 ﻿namespace XIVAutoAttack.Actions
 {
-    public interface IAction : ITexture
+    public interface IAction : IEnableTexture
     {
         bool Use();
         uint ID { get; }

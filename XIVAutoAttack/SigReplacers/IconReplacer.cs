@@ -199,6 +199,8 @@ internal sealed class IconReplacer : IDisposable
                 var combo = AddScripCombo(set.JobID, false);
 
                 combo.Set = set;
+
+                _combos.Add(combo);
             }
         }
 

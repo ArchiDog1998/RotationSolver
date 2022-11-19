@@ -6,6 +6,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic
@@ -51,7 +52,7 @@ namespace XIVAutoAttack.Combos.Basic
                 {
                     for (int i = 0; i < 24; i++)
                     {
-                        if (ID == ActionManager.Instance()->GetActiveBlueMageActionInSlot(i)) return true;
+                        if (AdjustedID == Service.IconReplacer.OriginalHook(ActionManager.Instance()->GetActiveBlueMageActionInSlot(i))) return true;
                     }
                     return false;
                 }
@@ -134,7 +135,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 冰雾
         /// </summary>
-        public static BaseAction WhiteDeath { get; } = new(ActionID.WhiteDeath)
+        public static BLUAction WhiteDeath { get; } = new(ActionID.WhiteDeath, BLUActionType.Magical)
         {
             ActionCheck = b => Player.HasStatus(true, StatusID.TouchofFrost)
         };
@@ -325,7 +326,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 玄天武水壁
         /// </summary>
-        public static BaseAction DivineCataract { get; } = new(ActionID.DivineCataract)
+        public static BLUAction DivineCataract { get; } = new(ActionID.DivineCataract, BLUActionType.Magical)
         {
             ActionCheck = b => Player.HasStatus(true, StatusID.AuspiciousTrance)
         };
@@ -333,7 +334,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 鬼宿脚(需要buff版本）
         /// </summary>
-        public static BaseAction PhantomFlurry2 { get; } = new(ActionID.PhantomFlurry2)
+        public static BLUAction PhantomFlurry2 { get; } = new(ActionID.PhantomFlurry2, BLUActionType.Magical)
         {
             ActionCheck = b => Player.HasStatus(true, StatusID.PhantomFlurry)
         };

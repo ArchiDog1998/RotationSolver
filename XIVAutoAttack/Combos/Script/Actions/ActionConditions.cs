@@ -4,7 +4,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Script.Conditions;
 using XIVAutoAttack.Data;
-using XIVAutoAttack.Windows;
+using XIVAutoAttack.Windows.ComboConfigWindow;
 
 namespace XIVAutoAttack.Combos.Script.Actions
 {
@@ -44,7 +44,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
                 ImGui.SameLine();
                 ComboConfigWindow.Spacing();
 
-                if (ImGui.Selectable(_action.Name))
+                if (ImGui.Selectable(_action.Name, this == XIVAutoAttackPlugin._scriptComboWindow.ActiveAction))
                 {
                     XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
                 }
@@ -84,8 +84,10 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
         public void Draw(IScriptCombo combo)
         {
+            ImGui.Text("描述");
+
             var desc = Description;
-            if (ImGui.InputTextMultiline("描述", ref desc, 1024, new System.Numerics.Vector2(250, 250)))
+            if (ImGui.InputTextMultiline($"##{_action.Name}的描述", ref desc, 1024, new System.Numerics.Vector2(250, 150)))
             {
                 Description = desc;
             }

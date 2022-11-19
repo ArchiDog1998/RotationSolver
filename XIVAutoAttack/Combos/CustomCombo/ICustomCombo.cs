@@ -8,7 +8,7 @@ using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal interface ICustomCombo : ITexture
+    internal interface ICustomCombo : IEnableTexture
     {
         ClassJob Job { get; }
         ClassJobID[] JobIDs { get; }

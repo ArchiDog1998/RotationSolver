@@ -1,4 +1,5 @@
-﻿using XIVAutoAttack.Combos.CustomCombo;
+﻿using System.IO;
+using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Script.Actions;
 
 namespace XIVAutoAttack.Combos.Script
@@ -11,7 +12,9 @@ namespace XIVAutoAttack.Combos.Script
     internal static class ScriptComboExtension
     {
         public static string GetFolder(this ComboSet set)
-           => $"{Service.Configuration.ScriptComboFolder}{(uint)set.JobID}_{set.AuthorName}.json";
+        {
+            return Path.Combine(Service.Configuration.ScriptComboFolder, $"{(uint)set.JobID}_{set.AuthorName}.json");
+        }
 
         public static string GetAuthor(this ComboSet set)
            => set.AuthorName + "-Script";

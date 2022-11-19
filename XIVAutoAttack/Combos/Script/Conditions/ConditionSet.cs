@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Windows;
+using XIVAutoAttack.Windows.ComboConfigWindow;
 
 namespace XIVAutoAttack.Combos.Script.Conditions
 {
@@ -19,55 +19,52 @@ namespace XIVAutoAttack.Combos.Script.Conditions
         public List<ICondition> Conditions { get; set; } = new List<ICondition>();
         public bool IsAnd { get; set; }
 
-        private bool _openPopup = false;
         public void Draw(IScriptCombo combo)
         {
-            ImGui.BeginGroup();
-
-            ImGui.Columns(2);
-
-            int isAnd = IsAnd ? 1 : 0;
-            if (ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
+            if(ImGui.BeginChild(this.GetHashCode().ToString(), new System.Numerics.Vector2(0, 0), true))
             {
+                int isAnd = IsAnd ? 1 : 0;
+                if (ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
+                {
                 "OR (一个条件满足即可)",
                 "AND (所有条件均要满足)",
-            }, 2))
-            {
-                IsAnd = isAnd != 0;
-            }
-
-            ImGui.NextColumn();
-
-            AddButton();
-
-            ImGui.Columns(1);
-
-            for (int i = 0; i < Conditions.Count; i++)
-            {
-                var condition = Conditions[i];
-
-                condition.Draw(combo);
+                }, 2))
+                {
+                    IsAnd = isAnd != 0;
+                }
 
                 ImGui.SameLine();
                 ComboConfigWindow.Spacing();
 
-                if (ImGuiComponents.IconButton(FontAwesomeIcon.Cross))
-                {
-                    Conditions.RemoveAt(i);
-                }
-            }
+                AddButton();
 
-            ImGui.EndGroup();
+                for (int i = 0; i < Conditions.Count; i++)
+                {
+                    var condition = Conditions[i];
+
+                    condition.Draw(combo);
+
+                    ImGui.SameLine();
+                    ComboConfigWindow.Spacing();
+
+                    if (ImGuiComponents.IconButton(FontAwesomeIcon.Cross))
+                    {
+                        Conditions.RemoveAt(i);
+                    }
+                }
+
+                ImGui.EndChild();
+            }
         }
 
         private void AddButton()
         {
             if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
             {
-                _openPopup = true;
+                ImGui.OpenPopup("Popup" + GetHashCode().ToString());
             }
 
-            if (_openPopup && ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
+            if (ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
             {
                 AddOneCondition<ConditionSet>("添加组合");
 
@@ -80,7 +77,7 @@ namespace XIVAutoAttack.Combos.Script.Conditions
             if (ImGui.Selectable(name))
             {
                 Conditions.Add(Activator.CreateInstance<T>());
-                _openPopup = false;
+                ImGui.CloseCurrentPopup();
             }
         }
     }

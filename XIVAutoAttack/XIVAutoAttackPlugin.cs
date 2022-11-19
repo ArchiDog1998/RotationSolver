@@ -8,6 +8,7 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 using XIVAutoAttack.Windows;
+using XIVAutoAttack.Windows.ComboConfigWindow;
 
 namespace XIVAutoAttack;
 

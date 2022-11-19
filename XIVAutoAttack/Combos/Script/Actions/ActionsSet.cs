@@ -1,4 +1,5 @@
 ﻿using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
-using XIVAutoAttack.Windows;
+using XIVAutoAttack.Windows.ComboConfigWindow;
 
 namespace XIVAutoAttack.Combos.Script.Actions
 {
@@ -15,8 +16,6 @@ namespace XIVAutoAttack.Combos.Script.Actions
         public string Name { get; set; }
 
         public string Description { get; set; }
-
-        private bool _openPopup = false;
 
         public List<ActionConditions> ActionsCondition { get; set; } = new List<ActionConditions>();
 
@@ -37,7 +36,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
         public void DrawHeader()
         {
-            if (ImGui.Selectable(Name))
+            if (ImGui.Selectable(Name, this == XIVAutoAttackPlugin._scriptComboWindow.ActiveSet))
             {
                 XIVAutoAttackPlugin._scriptComboWindow.ActiveSet = this;
             }
@@ -85,8 +84,6 @@ namespace XIVAutoAttack.Combos.Script.Actions
             {
                 ImGui.OpenPopup(popId);
             }
-
-
 
             if (ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
             {

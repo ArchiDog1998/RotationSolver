@@ -151,7 +151,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Ç¾Þ±Çú½Å²½
     /// </summary>
-    public static BaseAction Emboite { get; } = new(ActionID.Emboite, true)
+    private static BaseAction Emboite { get; } = new(ActionID.Emboite, true)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Emboite,
     };
@@ -159,7 +159,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Ð¡Äñ½»µþÌø
     /// </summary>
-    public static BaseAction Entrechat { get; } = new(ActionID.Entrechat, true)
+    private static BaseAction Entrechat { get; } = new(ActionID.Entrechat, true)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Entrechat,
     };
@@ -167,7 +167,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ÂÌÒ¶Ð¡ÌßÍÈ
     /// </summary>
-    public static BaseAction Jete { get; } = new(ActionID.Jete, true)
+    private static BaseAction Jete { get; } = new(ActionID.Jete, true)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Jete,
     };
@@ -175,7 +175,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ½ð¹ÚÖº¼â×ª
     /// </summary>
-    public static BaseAction Pirouette { get; } = new(ActionID.Pirouette, true)
+    private static BaseAction Pirouette { get; } = new(ActionID.Pirouette, true)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Pirouette,
     };
@@ -186,10 +186,10 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction StandardStep { get; } = new(ActionID.StandardStep)
     {
         BuffsProvide = new[]
-         {
-                StatusID.StandardStep,
-                StatusID.TechnicalStep,
-            },
+        {
+            StatusID.StandardStep,
+            StatusID.TechnicalStep,
+        },
     };
 
     /// <summary>
@@ -198,9 +198,9 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction TechnicalStep { get; } = new(ActionID.TechnicalStep)
     {
         BuffsNeed = new[]
-         {
-                StatusID.StandardFinish,
-            },
+        {
+            StatusID.StandardFinish,
+        },
         BuffsProvide = StandardStep.BuffsProvide,
     };
 

@@ -67,7 +67,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         if (PresenseOfMind.ShouldUse(out act)) return true;
 
         //加个法令
-        if (Assize.ShouldUse(out act)) return true;
+        if (Assize.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }

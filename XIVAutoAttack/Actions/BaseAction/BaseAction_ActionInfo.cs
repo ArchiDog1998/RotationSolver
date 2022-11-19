@@ -98,8 +98,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (!Service.ClientState.LocalPlayer.HasStatus(true, BuffsNeed)) return false;
             }
 
-            //防止友方类技能连续使用
-            if (_isEot)
+            //防止Effect of time类技能连续使用
+            if (_isEot && (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id != ClassJobID.Sage)
             {
                 if (IActionHelper.IsLastAction(true, this)) return false;
             }
