@@ -1,9 +1,11 @@
 ﻿using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -93,7 +95,10 @@ namespace XIVAutoAttack.Windows
 
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.Save))
                 {
-                    File.WriteAllText(TargetCombo.Set.GetFolder(), JsonConvert.SerializeObject(TargetCombo.Set));
+                    File.WriteAllText(TargetCombo.Set.GetFolder(), JsonConvert.SerializeObject(TargetCombo.Set, Formatting.Indented, new JsonSerializerSettings()
+                    {
+                         TypeNameHandling = TypeNameHandling.All,
+                    }));
                 }
                 if (ImGui.IsItemHovered())
                 {
@@ -143,6 +148,73 @@ namespace XIVAutoAttack.Windows
             }
         }
 
+        internal static bool DrawEditorList<T>(List<T> items, Action<T> draw)
+        {
+            int index = -1;
+            int type = -1;
+            for (int i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+
+                if (ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV))
+                {
+                    type = 0;
+                    index = i;
+                }
+
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("左键上移，右键下移动，ctrl + alt + 中键删除。");
+
+                    if (ImGui.IsMouseReleased(ImGuiMouseButton.Right))
+                    {
+                        type = 1;
+                        index = i;
+                    }
+
+                    if( (ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
+                        && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
+                        && ImGui.IsMouseReleased(ImGuiMouseButton.Middle))
+                    {
+                        type = 2;
+                        index = i;
+                    }
+                }
+
+                ImGui.SameLine();
+
+                draw?.Invoke(item);
+
+                ImGui.Separator();
+            }
+            switch (type)
+            {
+                case 0:
+                    if (index > 0)
+                    {
+                        var item = items[index];
+                        items.RemoveAt(index);
+                        items.Insert(index - 1, item);
+                    }
+                    break;
+
+                case 1:
+
+                    if (index < items.Count - 1)
+                    {
+                        var item = items[index];
+                        items.RemoveAt(index);
+                        items.Insert(index + 1, item);
+                    }
+                    break;
+
+                case 2:
+                    items.RemoveAt(index);
+                    break;
+            }
+            return index != -1;
+        }
+
         internal static void SearchItems<T>(ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
         {
             ImGui.Text("搜索框：");
@@ -171,6 +243,22 @@ namespace XIVAutoAttack.Windows
                     }
                 }
                 ImGui.EndChild();
+            }
+        }
+
+        internal static void DrawCondition(bool? tag)
+        {
+            if (!tag.HasValue)
+            {
+                ImGui.TextColored(ImGuiColors.DalamudGrey3, "Null");
+            }
+            else if (tag.Value)
+            {
+                ImGui.TextColored(ImGuiColors.HealerGreen, "True");
+            }
+            else
+            {
+                ImGui.TextColored(ImGuiColors.DalamudRed, "False");
             }
         }
     }

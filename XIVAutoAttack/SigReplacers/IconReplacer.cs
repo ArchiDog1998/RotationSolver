@@ -194,7 +194,10 @@ internal sealed class IconReplacer : IDisposable
             {
                 try
                 {
-                    var set = JsonConvert.DeserializeObject<ComboSet>(File.ReadAllText(path));
+                    var set = JsonConvert.DeserializeObject<ComboSet>(File.ReadAllText(path), new JsonSerializerSettings()
+                    {
+                        TypeNameHandling = TypeNameHandling.All,
+                    });
 
                     if (set == null) continue;
 
@@ -237,13 +240,13 @@ internal sealed class IconReplacer : IDisposable
 
     public void Dispose()
     {
-        foreach (var item in _combos)
-        {
-            if (item is IScriptCombo com)
-            {
-                File.WriteAllText(com.Set.GetFolder(), JsonConvert.SerializeObject(com.Set));
-            }
-        }
+        //foreach (var item in _combos)
+        //{
+        //    if (item is IScriptCombo com)
+        //    {
+        //        File.WriteAllText(com.Set.GetFolder(), JsonConvert.SerializeObject(com.Set));
+        //    }
+        //}
         getIconHook.Dispose();
         isIconReplaceableHook.Dispose();
     }

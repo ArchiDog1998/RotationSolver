@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Combos.Script.Conditions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Windows;
 using XIVAutoAttack.Windows.ComboConfigWindow;
@@ -57,25 +58,10 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
             if (ImGui.BeginChild($"##技能使用列表", new Vector2(-5f, -1f), true))
             {
-                int index = -1;
-                for (int i = 0; i < ActionsCondition.Count; i++)
-                {
-                    var item = ActionsCondition[i];
+                var relay = ActionsCondition;
+                if (ScriptComboWindow.DrawEditorList(relay, i => i.DrawHeader(combo)))
+                    ActionsCondition = relay;
 
-                    if (ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.Minus))
-                    {
-                        index = i;
-                    }
-
-                    ImGui.SameLine();
-                    ComboConfigWindow.Spacing();
-
-                    item.DrawHeader();
-
-                    ImGui.Separator();
-                }
-
-                if (index != -1) ActionsCondition.RemoveAt(index);
                 ImGui.EndChild();
             }
         }

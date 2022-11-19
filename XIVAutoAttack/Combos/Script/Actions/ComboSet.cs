@@ -105,7 +105,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
         public void Draw(IScriptCombo combo)
         {
             var desc = Description;
-            if (ImGui.InputTextMultiline($"##{AuthorName}的{JobID}描述", ref desc, 1024, new Vector2(250, 150), ImGuiInputTextFlags.None))
+            if (ImGui.InputTextMultiline($"##{AuthorName}的{JobID}描述", ref desc, 1024, new Vector2(300, 100), ImGuiInputTextFlags.None))
             {
                 Description = desc;
             }

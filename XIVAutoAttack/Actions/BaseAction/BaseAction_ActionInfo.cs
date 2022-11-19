@@ -83,6 +83,9 @@ namespace XIVAutoAttack.Actions.BaseAction
         {
             act = this;
 
+            //玩家都没有。。。
+            if (Service.ClientState.LocalPlayer == null) return false;
+
             //用户不让用！
             if (!IsEnabled) return false;
 

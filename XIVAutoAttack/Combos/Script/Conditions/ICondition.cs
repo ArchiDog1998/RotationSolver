@@ -3,7 +3,5 @@
     internal interface ICondition : IDraw
     {
         bool IsTrue { get; }
-
-
     }
 }

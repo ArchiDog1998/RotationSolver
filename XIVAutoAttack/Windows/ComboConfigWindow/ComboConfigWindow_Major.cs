@@ -206,6 +206,7 @@ internal partial class ComboConfigWindow : Window
             if (ImGui.Combo("##" + texture.Name + "зїеп", ref i, authors, authors.Length))
             {
                 Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
+                Service.Configuration.Save();
             }
             if (ImGui.IsItemHovered())
             {

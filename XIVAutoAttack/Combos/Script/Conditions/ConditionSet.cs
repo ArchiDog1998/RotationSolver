@@ -1,10 +1,13 @@
 ﻿using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using XIVAutoAttack.Combos.Script.Actions;
+using XIVAutoAttack.Windows;
 using XIVAutoAttack.Windows.ComboConfigWindow;
 
 namespace XIVAutoAttack.Combos.Script.Conditions
@@ -15,7 +18,6 @@ namespace XIVAutoAttack.Combos.Script.Conditions
         public bool IsTrue => Conditions.Count == 0 ? true :
                               IsAnd ? Conditions.All(c => c.IsTrue)
                                     : Conditions.Any(c => c.IsTrue);
-
         public List<ICondition> Conditions { get; set; } = new List<ICondition>();
         public bool IsAnd { get; set; }
 
@@ -26,7 +28,10 @@ namespace XIVAutoAttack.Combos.Script.Conditions
                 AddButton();
 
                 ImGui.SameLine();
-                ComboConfigWindow.Spacing();
+
+                ScriptComboWindow.DrawCondition(IsTrue);
+
+                ImGui.SameLine();
 
                 int isAnd = IsAnd ? 1 : 0;
                 if (ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
@@ -40,20 +45,9 @@ namespace XIVAutoAttack.Combos.Script.Conditions
 
                 ImGui.Separator();
 
-                for (int i = 0; i < Conditions.Count; i++)
-                {
-                    if (ImGuiComponents.IconButton(FontAwesomeIcon.Minus))
-                    {
-                        Conditions.RemoveAt(i);
-                    }
-
-                    ImGui.SameLine();
-                    ComboConfigWindow.Spacing();
-
-                    var condition = Conditions[i];
-
-                    condition.Draw(combo);
-                }
+                var relay = Conditions;
+                if (ScriptComboWindow.DrawEditorList(relay, i => i.Draw(combo)))
+                    Conditions = relay;
 
                 ImGui.EndChild();
             }
