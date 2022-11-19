@@ -3,11 +3,15 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Windows;
 using XIVAutoAttack.Windows.ComboConfigWindow;
+using Action = System.Action;
 
 namespace XIVAutoAttack.Combos.Script.Actions
 {
@@ -76,45 +80,19 @@ namespace XIVAutoAttack.Combos.Script.Actions
             }
         }
 
+        string search = string.Empty;
         private void AddButton(IScriptCombo combo)
         {
             var popId = "Popup" + GetHashCode().ToString();
 
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
+            ScriptComboWindow.AddPopup(popId, "技能卫士",  () =>
             {
-                ImGui.OpenPopup(popId);
-            }
-
-            if (ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
+                ActionsCondition.Add(new ActionConditions());
+            }, ref search, combo.AllActions, item =>
             {
-                if (ImGui.Selectable("守卫"))
-                {
-                    ActionsCondition.Add(new ActionConditions());
+                ActionsCondition.Add(new ActionConditions(item));
+            });
 
-                    ImGui.CloseCurrentPopup();
-                }
-
-                if (ImGui.BeginChild($"##技能候选列表", new Vector2(150, 500), true))
-                {
-                    foreach (var item in combo.AllActions)
-                    {
-                        ImGui.Image(item.GetTexture().ImGuiHandle,
-                            new Vector2(24, 24));
-
-                        ImGui.SameLine();
-                        if (ImGui.Selectable(item.Name))
-                        {
-                            ActionsCondition.Add(new ActionConditions(item));
-
-                            ImGui.CloseCurrentPopup();
-                        }
-                    }
-                    ImGui.EndChild();
-                }
-
-
-                ImGui.EndPopup();
-            }
         }
     }
 }

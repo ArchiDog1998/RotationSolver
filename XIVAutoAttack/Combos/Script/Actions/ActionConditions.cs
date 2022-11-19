@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using System.Globalization;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
@@ -87,7 +88,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
             ImGui.Text("描述");
 
             var desc = Description;
-            if (ImGui.InputTextMultiline($"##{_action.Name}的描述", ref desc, 1024, new System.Numerics.Vector2(250, 150)))
+            if (ImGui.InputTextMultiline($"##{_action?.Name}的描述", ref desc, 1024, new System.Numerics.Vector2(250, 150)))
             {
                 Description = desc;
             }

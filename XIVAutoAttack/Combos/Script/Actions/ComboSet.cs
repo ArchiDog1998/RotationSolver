@@ -1,5 +1,7 @@
 ﻿using ImGuiNET;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Numerics;
 using XIVAutoAttack.Data;
 
@@ -9,7 +11,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
     {
         public ClassJobID JobID { get; set; } = ClassJobID.Adventurer;
         public string AuthorName { get; set; } = "神秘作者";
-        public string Description { get; set; } = String.Empty;
+        public string Description { get; set; } = string.Empty;
 
         public ActionsSet EmergencyGCDSet { get; set; } = new ActionsSet()
         {

@@ -23,6 +23,11 @@ namespace XIVAutoAttack.Combos.Script.Conditions
         {
             if(ImGui.BeginChild(this.GetHashCode().ToString(), new System.Numerics.Vector2(0, 0), true))
             {
+                AddButton();
+
+                ImGui.SameLine();
+                ComboConfigWindow.Spacing();
+
                 int isAnd = IsAnd ? 1 : 0;
                 if (ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
                 {
@@ -33,24 +38,21 @@ namespace XIVAutoAttack.Combos.Script.Conditions
                     IsAnd = isAnd != 0;
                 }
 
-                ImGui.SameLine();
-                ComboConfigWindow.Spacing();
-
-                AddButton();
+                ImGui.Separator();
 
                 for (int i = 0; i < Conditions.Count; i++)
                 {
-                    var condition = Conditions[i];
-
-                    condition.Draw(combo);
+                    if (ImGuiComponents.IconButton(FontAwesomeIcon.Minus))
+                    {
+                        Conditions.RemoveAt(i);
+                    }
 
                     ImGui.SameLine();
                     ComboConfigWindow.Spacing();
 
-                    if (ImGuiComponents.IconButton(FontAwesomeIcon.Cross))
-                    {
-                        Conditions.RemoveAt(i);
-                    }
+                    var condition = Conditions[i];
+
+                    condition.Draw(combo);
                 }
 
                 ImGui.EndChild();
@@ -66,7 +68,8 @@ namespace XIVAutoAttack.Combos.Script.Conditions
 
             if (ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
             {
-                AddOneCondition<ConditionSet>("添加组合");
+                AddOneCondition<ConditionSet>("条件组合");
+                AddOneCondition<ActionCondition>("技能条件");
 
                 ImGui.EndPopup();
             }

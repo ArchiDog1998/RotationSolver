@@ -113,7 +113,7 @@ internal partial class ComboConfigWindow
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("手柄玩家为按下LT+RT无视咏唱锁");
+                    ImGui.SetTooltip("手柄玩家为按下LT无视咏唱锁");
                 }
 
                 bool usecheckCasting = Service.Configuration.CheckForCasting;
