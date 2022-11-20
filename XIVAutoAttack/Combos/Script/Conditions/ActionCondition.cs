@@ -60,8 +60,16 @@ internal class ActionCondition : ICondition
                 case ActionConditonType.IsCoolDown:
                     result = _action.IsCoolDown;
                     break;
-            }
 
+                case ActionConditonType.CurrentCharges:
+                    result = _action.CurrentCharges > Param1;
+                    break;
+
+                case ActionConditonType.MaxCharges:
+                    result = _action.MaxCharges > Param1;
+                    break;
+            }
+            
             return Condition ? !result : result;
         }
     }
@@ -111,7 +119,9 @@ internal class ActionCondition : ICondition
             case ActionConditonType.RemainGCD:
             case ActionConditonType.Elapsed:
             case ActionConditonType.Remain:
-                combos = new string[] { "大于", "小于" };
+            case ActionConditonType.CurrentCharges:
+            case ActionConditonType.MaxCharges:
+                combos = new string[] { ">", "<=" };
                 break;
 
             case ActionConditonType.ShouldUse:
@@ -175,6 +185,16 @@ internal class ActionCondition : ICondition
                     Param2 = empty ? 1 : 0;
                 }
                 break;
+
+            case ActionConditonType.CurrentCharges:
+            case ActionConditonType.MaxCharges:
+                ImGui.SetNextItemWidth(50);
+                var charge = Param1;
+                if (ImGui.DragInt($"层##层{GetHashCode()}", ref charge))
+                {
+                    Param1 = Math.Max(0, charge);
+                }
+                break;
         }
     }
 }
@@ -188,6 +208,8 @@ public enum ActionConditonType : int
     ShouldUse,
     EnoughLevel,
     IsCoolDown,
+    CurrentCharges,
+    MaxCharges,
 }
 
 internal static class ActionConditionTypeExtension
@@ -201,6 +223,8 @@ internal static class ActionConditionTypeExtension
         ActionConditonType.ShouldUse => "能否被使用",
         ActionConditonType.EnoughLevel => "等级足够",
         ActionConditonType.IsCoolDown => "正在冷却",
+        ActionConditonType.CurrentCharges => "当前层数",
+        ActionConditonType.MaxCharges => "最大层数",
         _ => string.Empty,
     };
 }
