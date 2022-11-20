@@ -36,6 +36,8 @@ namespace XIVAutoAttack.Windows
         {
             ImGui.Columns(3);
 
+            ImGui.TextColored(ImGuiColors.DalamudRed, "目前该功能还处于研发阶段，很可能上个版本的文件下个版本就打不开了，目前仅供测试使用！");
+
             this.DisplayFunctionList();
 
             ImGui.NextColumn();

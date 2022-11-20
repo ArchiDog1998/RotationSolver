@@ -238,13 +238,13 @@ internal sealed class IconReplacer : IDisposable
 
     public void Dispose()
     {
-        //foreach (var item in _combos)
-        //{
-        //    if (item is IScriptCombo com)
-        //    {
-        //        File.WriteAllText(com.Set.GetFolder(), JsonConvert.SerializeObject(com.Set));
-        //    }
-        //}
+        foreach (var item in _combos)
+        {
+            if (item is IScriptCombo com)
+            {
+                File.WriteAllText(com.Set.GetFolder(), JsonConvert.SerializeObject(com.Set, Formatting.Indented));
+            }
+        }
         getIconHook.Dispose();
         isIconReplaceableHook.Dispose();
     }
