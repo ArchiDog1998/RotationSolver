@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -211,17 +212,28 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 当前这个类所有的BaseAction
         /// </summary>
-        public BaseAction[] AllActions => GetBaseActions(this.GetType());
+        public BaseAction[] AllActions => GetBaseActions(GetType());
 
         /// <summary>
         /// 这个类所有的公开bool值
         /// </summary>
-        public PropertyInfo[] AllBools => GetProperties<bool>(this.GetType());
+        public PropertyInfo[] AllBools => GetProperties<bool>();
 
         /// <summary>
         /// 这个类所有的公开float值
         /// </summary>
-        public PropertyInfo[] AllFloats => GetProperties<float>(this.GetType());
+        public PropertyInfo[] AllBytes => GetProperties<byte>();
+
+       public MethodInfo[] Alltimes => GetMethodInfo(m =>
+       {
+           var types = m.GetGenericArguments();
+           return types.Length == 1 && types[0] == typeof(float);
+       });
+       public MethodInfo[] AllGCDs => GetMethodInfo(m =>
+       {
+           var types = m.GetGenericArguments();
+           return types.Length == 2 && types[0] == typeof(uint) && types[1] == typeof(uint);
+       });
 
         private BaseAction[] GetBaseActions(Type type)
         {
@@ -237,17 +249,23 @@ namespace XIVAutoAttack.Combos.CustomCombo
             return acts.Union(GetBaseActions(type.BaseType)).ToArray();
         }
 
-        private PropertyInfo[] GetProperties<T>(Type type)
+        private PropertyInfo[] GetProperties<T>()
         {
-            if (type == null) return new PropertyInfo[0];
 
-            var acts = from prop in type.GetProperties()
-                       where typeof(T).IsAssignableFrom(prop.PropertyType)
-                               && prop.GetMethod is MethodInfo info
-                               && info.IsPublic
-                       select prop;
+            return (from prop in GetType().BaseType.GetProperties()
+                    where typeof(T).IsAssignableFrom(prop.PropertyType)
+                            && prop.GetMethod is MethodInfo info
+                            && info.IsPublic
+                    select prop).ToArray();
 
-            return acts.Union(GetProperties<T>(type.BaseType)).ToArray();
+        }
+
+        private MethodInfo[] GetMethodInfo(Func<MethodInfo, bool> checks)
+        {
+            return (from method in GetType().BaseType.GetRuntimeMethods()
+                    where method.IsStatic && !method.IsConstructor && method.ReflectedType == typeof(bool)
+                    && checks(method)
+                    select method).ToArray();
         }
     }
 }

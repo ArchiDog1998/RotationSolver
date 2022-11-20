@@ -7,124 +7,123 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Windows;
 using XIVAutoAttack.Windows.ComboConfigWindow;
 
-namespace XIVAutoAttack.Combos.Script.Actions
+namespace XIVAutoAttack.Combos.Script.Actions;
+
+/// <summary>
+/// 最右边那栏用来渲染的
+/// </summary>
+internal class ActionConditions : IDraw
 {
-    /// <summary>
-    /// 最右边那栏用来渲染的
-    /// </summary>
-    internal class ActionConditions : IDraw
+    private BaseAction _action { get; set; }
+
+    public ActionID ID { get; set; } = ActionID.None;
+    public ConditionSet Set { get; set; } = new ConditionSet();
+
+    public bool MustUse { get; set; }
+    public bool Empty { get; set; }
+
+    public string Description { get; set; } = string.Empty;
+
+    public ActionConditions()
     {
-        private BaseAction _action { get; set; }
 
-        public ActionID ID { get; set; } = ActionID.None;
-        public ConditionSet Set { get; set; } = new ConditionSet();
+    }
 
-        public bool MustUse { get; set; }
-        public bool Empty { get; set; }
+    public ActionConditions(BaseAction act)
+    {
+        _action = act;
+        ID = (ActionID)act.ID;
+    }
 
-        public string Description { get; set; } = string.Empty;
-
-        public ActionConditions()
+    public void DrawHeader(IScriptCombo combo)
+    {
+        if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
-
+            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
         }
 
-        public ActionConditions(BaseAction act)
-        {
-            _action = act;
-            ID = (ActionID)act.ID;
-        }
+        var tag = ShouldUse(combo, out _);
+        ScriptComboWindow.DrawCondition(tag);
+        ImGui.SameLine();
 
-        public void DrawHeader(IScriptCombo combo)
+
+        if (_action != null)
         {
-            if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
+
+            ImGui.Image(_action.GetTexture().ImGuiHandle,
+                new System.Numerics.Vector2(30, 30));
+
+            ImGui.SameLine();
+            ComboConfigWindow.Spacing();
+
+            var mustUse = MustUse;
+            if (ImGui.Checkbox($"必须##必须{GetHashCode()}", ref mustUse))
             {
-                _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+                MustUse = mustUse;
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("跳过AOE判断，跳过提供的Buff判断。");
             }
 
-            var tag = ShouldUse(combo, out _);
-            ScriptComboWindow.DrawCondition(tag);
             ImGui.SameLine();
 
-
-            if (_action != null)
+            var empty = Empty;
+            if (ImGui.Checkbox($"用光##用光{GetHashCode()}", ref empty))
             {
-
-                ImGui.Image(_action.GetTexture().ImGuiHandle,
-                    new System.Numerics.Vector2(30, 30));
-
-                ImGui.SameLine();
-                ComboConfigWindow.Spacing();
-
-                var mustUse = MustUse;
-                if (ImGui.Checkbox("必须", ref mustUse))
-                {
-                    MustUse = mustUse;
-                }
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip("跳过AOE判断，跳过提供的Buff判断。");
-                }
-
-                ImGui.SameLine();
-
-                var empty = Empty;
-                if (ImGui.Checkbox("用光", ref empty))
-                {
-                    Empty = empty;
-                }
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip("用完所有层数或者跳过连击判断。");
-                }
-
-                ImGui.SameLine();
-                ComboConfigWindow.Spacing();
-
-                if (ImGui.Selectable(_action.Name, this == XIVAutoAttackPlugin._scriptComboWindow.ActiveAction))
-                {
-                    XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
-                }
+                Empty = empty;
             }
-            else
+            if (ImGui.IsItemHovered())
             {
-                if (ImGui.Selectable("返回条件"))
-                {
-                    XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
-                }
+                ImGui.SetTooltip("用完所有层数或者跳过连击判断。");
+            }
+
+            ImGui.SameLine();
+            ComboConfigWindow.Spacing();
+
+            if (ImGui.Selectable(_action.Name, this == XIVAutoAttackPlugin._scriptComboWindow.ActiveAction))
+            {
+                XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
             }
         }
-
-        public void Draw(IScriptCombo combo)
+        else
         {
-            ImGui.Text("描述");
-
-            var desc = Description;
-            if (ImGui.InputTextMultiline($"##{_action?.Name}的描述", ref desc, 1024, new System.Numerics.Vector2(0, 100)))
+            if (ImGui.Selectable("返回条件"))
             {
-                Description = desc;
+                XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
             }
+        }
+    }
 
-            Set.Draw(combo);
+    public void Draw(IScriptCombo combo)
+    {
+        ImGui.Text("描述");
+
+        var desc = Description;
+        if (ImGui.InputTextMultiline($"##{_action?.Name}的描述", ref desc, 1024, new System.Numerics.Vector2(0, 100)))
+        {
+            Description = desc;
         }
 
-        public bool? ShouldUse(IScriptCombo owner, out IAction act)
+        Set.Draw(combo);
+    }
+
+    public bool? ShouldUse(IScriptCombo owner, out IAction act)
+    {
+        if (ID != ActionID.None && _action == null)
         {
-            if (ID != ActionID.None && _action == null)
-            {
-                _action = owner.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
-            }
+            _action = owner.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+        }
 
-            act = _action;
+        act = _action;
 
-            if (_action != null)
-            {
-                return _action.ShouldUse(out act, MustUse, Empty) && Set.IsTrue;
-            }
-            else
-            {
-                return Set.IsTrue ? null : false;
-            }
+        if (_action != null)
+        {
+            return _action.ShouldUse(out act, MustUse, Empty) && Set.IsTrue(owner);
+        }
+        else
+        {
+            return Set.IsTrue(owner) ? null : false;
         }
     }
 }

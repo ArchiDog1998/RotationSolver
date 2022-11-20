@@ -95,7 +95,7 @@ internal partial class ComboConfigWindow
                         {
                             Spacing();
                             float val = doubles.value;
-                            if (ImGui.DragFloat($"#{num}: {doubles.description}", ref val, doubles.speed, doubles.min, doubles.max))
+                            if (ImGui.DragFloat($"{doubles.description}##{num}_{doubles.description}", ref val, doubles.speed, doubles.min, doubles.max))
                             {
                                 doubles.value = val;
                                 Service.Configuration.Save();
@@ -105,7 +105,7 @@ internal partial class ComboConfigWindow
                         {
                             Spacing();
                             string val = textItem.value;
-                            if (ImGui.InputText($"#{num}: {textItem.description}", ref val, 15))
+                            if (ImGui.InputText($"{textItem.description}##{num}_{textItem.description}", ref val, 15))
                             {
                                 textItem.value = val;
                                 Service.Configuration.Save();
@@ -114,7 +114,7 @@ internal partial class ComboConfigWindow
                         foreach (var comboItem in actions.combos)
                         {
                             Spacing();
-                            if (ImGui.BeginCombo($"#{num}: {comboItem.description}", comboItem.items[comboItem.value]))
+                            if (ImGui.BeginCombo($"{comboItem.description}##{num}_{comboItem.description}", comboItem.items[comboItem.value]))
                             {
                                 for (int comboIndex = 0; comboIndex < comboItem.items.Length; comboIndex++)
                                 {

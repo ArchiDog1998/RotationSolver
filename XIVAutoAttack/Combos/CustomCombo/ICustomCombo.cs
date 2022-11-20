@@ -19,7 +19,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
         Dictionary<string, string> CommandShow { get; }
         BaseAction[] AllActions { get; }
         PropertyInfo[] AllBools { get; }
-        PropertyInfo[] AllFloats { get; }
+        PropertyInfo[] AllBytes { get; }
+
+        MethodInfo[] Alltimes { get; }
+        MethodInfo[] AllGCDs { get; }
         string OnCommand(string args);
         bool TryInvoke(out IAction newAction);
     }

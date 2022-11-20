@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Data;
@@ -214,6 +215,16 @@ namespace XIVAutoAttack.Windows
 
         internal static void SearchItems<T>(ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
         {
+            SearchItems(ref searchTxt, actions, i => i.Name, selectAction, i => ImGui.Image(i.GetTexture().ImGuiHandle, new Vector2(24, 24)));
+        }
+
+        internal static void SearchItemsReflection<T>(ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
+        {
+            SearchItems(ref searchTxt, actions, i => i.Name, selectAction);
+        }
+
+        internal static void SearchItems<T>(ref string searchTxt, T[] actions, Func<T, string> getName, Action<T> selectAction, Action<T> extraDraw = null)
+        {
             ImGui.Text("搜索框：");
             ImGui.SetNextItemWidth(150);
             ImGui.InputText("##搜索框", ref searchTxt, 16);
@@ -221,18 +232,20 @@ namespace XIVAutoAttack.Windows
             if (!string.IsNullOrWhiteSpace(searchTxt))
             {
                 var src = searchTxt;
-                actions = actions.OrderBy(a => !a.Name.Contains(src)).ToArray();
+                actions = actions.OrderBy(a => !getName(a).Contains(src)).ToArray();
             }
 
             if (ImGui.BeginChild($"##技能候选列表", new Vector2(150, 400), true))
             {
                 foreach (var item in actions)
                 {
-                    ImGui.Image(item.GetTexture().ImGuiHandle,
-                        new Vector2(24, 24));
+                    if(extraDraw!= null)
+                    {
+                        extraDraw(item);
+                        ImGui.SameLine();
+                    }
 
-                    ImGui.SameLine();
-                    if (ImGui.Selectable(item.Name))
+                    if (ImGui.Selectable(getName(item)))
                     {
                         selectAction?.Invoke(item);
 

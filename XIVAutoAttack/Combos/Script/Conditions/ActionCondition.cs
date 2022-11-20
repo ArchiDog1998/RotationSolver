@@ -22,11 +22,9 @@ internal class ActionCondition : ICondition
     public int Param2 { get; set; }
     public float Time { get; set; }
 
-    [JsonIgnore]
-    public bool IsTrue
+    public bool IsTrue(IScriptCombo combo)
     {
-        get
-        {
+
             if (_action == null || Service.ClientState.LocalPlayer == null) return false;
 
             var result = false;
@@ -71,7 +69,6 @@ internal class ActionCondition : ICondition
             }
             
             return Condition ? !result : result;
-        }
     }
 
     [JsonIgnore]
@@ -85,7 +82,7 @@ internal class ActionCondition : ICondition
             _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
         }
 
-        ScriptComboWindow.DrawCondition(IsTrue);
+        ScriptComboWindow.DrawCondition(IsTrue(combo));
         ImGui.SameLine();
 
         var name = _action?.Name ?? string.Empty;
