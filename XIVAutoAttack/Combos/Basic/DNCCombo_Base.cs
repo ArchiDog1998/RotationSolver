@@ -272,6 +272,11 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         BuffsNeed = new[] { StatusID.FlourishingFinish },
     };
 
+    /// <summary>
+    /// 结束舞步
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     protected bool FinishStepGCD(out IAction act)
     {
         act = null;
@@ -282,19 +287,30 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
             act = StandardStep;
             return true;
         }
-        else if (Player.HasStatus(true, StatusID.TechnicalStep) && JobGauge.CompletedSteps == 4)
+
+        if (Player.HasStatus(true, StatusID.TechnicalStep) && JobGauge.CompletedSteps == 4)
         {
             act = TechnicalStep;
             return true;
         }
-        else
-        {
-            if (Emboite.ShouldUse(out act)) return true;
-            if (Entrechat.ShouldUse(out act)) return true;
-            if (Jete.ShouldUse(out act)) return true;
-            if (Pirouette.ShouldUse(out act)) return true;
-        }
 
+        return false;
+    }
+
+    /// <summary>
+    /// 执行舞步
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    protected bool ExcutionStepGCD(out IAction act)
+    {
+        act = null;
+        if (!Player.HasStatus(true, StatusID.StandardStep, StatusID.TechnicalStep)) return false;
+
+        if (Emboite.ShouldUse(out act)) return true;
+        if (Entrechat.ShouldUse(out act)) return true;
+        if (Jete.ShouldUse(out act)) return true;
+        if (Pirouette.ShouldUse(out act)) return true;
         return false;
     }
 }
