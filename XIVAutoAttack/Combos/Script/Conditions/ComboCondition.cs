@@ -204,8 +204,6 @@ internal class ComboCondition : ICondition
                         MethodName = i.Name;
                     });
 
-
-
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
                 compare = Condition;

@@ -17,7 +17,6 @@ internal partial class ComboConfigWindow
     {
         ImGui.Text("你可以选择开启想要的职业的连续GCD战技、技能，若职业与当前职业相同则有命令宏提示。");
 
-#if DEBUG
         string folderLocation = Service.Configuration.ScriptComboFolder;
         if (ImGui.InputText("自定义循环路径", ref folderLocation, 256))
         {
@@ -41,7 +40,6 @@ internal partial class ComboConfigWindow
         {
             ImGui.TextColored(ImGuiColors.DalamudRed, "请设定一个路径以正常使用自定义循环！");
         }
-#endif
 
         ImGui.BeginChild("攻击", new Vector2(0f, -1f), true);
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));

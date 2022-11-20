@@ -213,7 +213,6 @@ internal partial class ComboConfigWindow : Window
         {
             if (texture is IScriptCombo script)
             {
-#if DEBUG
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.Edit))
                 {
                     XIVAutoAttackPlugin.OpenScriptWindow(script);
@@ -222,7 +221,6 @@ internal partial class ComboConfigWindow : Window
                 {
                     ImGui.SetTooltip("点击以编辑该自定义Combo");
                 }
-#endif
             }
             else
             {

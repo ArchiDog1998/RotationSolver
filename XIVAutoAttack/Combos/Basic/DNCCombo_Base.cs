@@ -289,19 +289,12 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         }
         else
         {
-            excutionStepGCD(out act);
+            if (Emboite.ShouldUse(out act)) return true;
+            if (Entrechat.ShouldUse(out act)) return true;
+            if (Jete.ShouldUse(out act)) return true;
+            if (Pirouette.ShouldUse(out act)) return true;
         }
 
-        return false;
-    }
-
-    protected bool excutionStepGCD(out IAction act)
-    {
-        act = null;
-        if (Emboite.ShouldUse(out act)) return true;
-        if (Entrechat.ShouldUse(out act)) return true;
-        if (Jete.ShouldUse(out act)) return true;
-        if (Pirouette.ShouldUse(out act)) return true;
         return false;
     }
 }
