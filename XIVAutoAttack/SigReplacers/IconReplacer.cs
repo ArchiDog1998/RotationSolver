@@ -12,6 +12,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Combos.Script.Actions;
+using XIVAutoAttack.Combos.Script.Conditions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Updaters;
 
@@ -194,10 +195,7 @@ internal sealed class IconReplacer : IDisposable
             {
                 try
                 {
-                    var set = JsonConvert.DeserializeObject<ComboSet>(File.ReadAllText(path), new JsonSerializerSettings()
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto,
-                    });
+                    var set = JsonConvert.DeserializeObject<ComboSet>(File.ReadAllText(path), new IConditionConverter());
 
                     if (set == null) continue;
 

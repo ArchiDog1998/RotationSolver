@@ -95,10 +95,7 @@ namespace XIVAutoAttack.Windows
 
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.Save))
                 {
-                    File.WriteAllText(TargetCombo.Set.GetFolder(), JsonConvert.SerializeObject(TargetCombo.Set, Formatting.Indented, new JsonSerializerSettings()
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto,
-                    }));
+                    File.WriteAllText(TargetCombo.Set.GetFolder(), JsonConvert.SerializeObject(TargetCombo.Set, Formatting.Indented));
                 }
                 if (ImGui.IsItemHovered())
                 {

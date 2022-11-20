@@ -1,7 +1,65 @@
-﻿namespace XIVAutoAttack.Combos.Script.Conditions
+﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System;
+
+namespace XIVAutoAttack.Combos.Script.Conditions
 {
     internal interface ICondition : IDraw
     {
         bool IsTrue { get; }
+    }
+
+    internal class IConditionConverter : JsonCreationConverter<ICondition>
+    {
+        protected override ICondition Create(JObject jObject)
+        {
+            if (FieldExists("Conditions", jObject))
+            {
+                return new ConditionSet();
+            }
+            else if (FieldExists("Param1", jObject) && FieldExists("Param2", jObject))
+            {
+                return new ActionCondition();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private bool FieldExists(string fieldName, JObject jObject)
+        {
+            return jObject[fieldName] != null;
+        }
+    }
+
+    public abstract class JsonCreationConverter<T> : JsonConverter
+    {
+        protected abstract T Create(JObject jObject);
+
+        public override bool CanConvert(Type objectType)
+        {
+            return typeof(T).IsAssignableFrom(objectType);
+        }
+
+        public override bool CanWrite => false;
+
+        public sealed override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+        }
+
+        public sealed override object ReadJson(JsonReader reader, Type objectType,  object existingValue,  JsonSerializer serializer)
+        {
+            // Load JObject from stream
+            JObject jObject = JObject.Load(reader);
+
+            // Create target object based on JObject
+            T target = Create(jObject);
+
+            // Populate the object properties
+            serializer.Populate(jObject.CreateReader(), target);
+
+            return target;
+        }
     }
 }
