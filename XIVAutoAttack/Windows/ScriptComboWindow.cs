@@ -33,7 +33,7 @@ namespace XIVAutoAttack.Windows
         public override void Draw()
         {
             ImGui.Columns(3);
-            //ImGui.SetColumnWidth(0, 260);
+
             this.DisplayFunctionList();
 
             ImGui.NextColumn();
@@ -182,7 +182,7 @@ namespace XIVAutoAttack.Windows
 
                 draw?.Invoke(item);
 
-                ImGui.Separator();
+                //if(i < items.Count -1) ImGui.Separator();
             }
             switch (type)
             {

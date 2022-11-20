@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Statuses;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
@@ -54,6 +55,7 @@ namespace XIVAutoAttack.Helpers
             return CooldownHelper.RecastAfter(remain, remainWant);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
             var times = obj.StatusTimes(isFromSelf, effectIDs);

@@ -59,7 +59,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
                 var mustUse = MustUse;
                 if (ImGui.Checkbox("必须", ref mustUse))
                 {
-                    mustUse = MustUse;
+                    MustUse = mustUse;
                 }
                 if (ImGui.IsItemHovered())
                 {
@@ -71,7 +71,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
                 var empty = Empty;
                 if (ImGui.Checkbox("用光", ref empty))
                 {
-                    mustUse = Empty;
+                    Empty = empty;
                 }
                 if (ImGui.IsItemHovered())
                 {
@@ -100,7 +100,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
             ImGui.Text("描述");
 
             var desc = Description;
-            if (ImGui.InputTextMultiline($"##{_action?.Name}的描述", ref desc, 1024, new System.Numerics.Vector2(400, 100)))
+            if (ImGui.InputTextMultiline($"##{_action?.Name}的描述", ref desc, 1024, new System.Numerics.Vector2(0, 100)))
             {
                 Description = desc;
             }

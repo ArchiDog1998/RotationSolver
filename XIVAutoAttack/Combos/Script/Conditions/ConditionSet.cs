@@ -18,9 +18,11 @@ namespace XIVAutoAttack.Combos.Script.Conditions
         public List<ICondition> Conditions { get; set; } = new List<ICondition>();
         public bool IsAnd { get; set; }
 
+        [JsonIgnore]
+        public float Height => Conditions.Sum(c => c is ConditionSet ? c.Height + 10 : c.Height) + ICondition.DefaultHeight + 12;
         public void Draw(IScriptCombo combo)
         {
-            if (ImGui.BeginChild(this.GetHashCode().ToString(), new System.Numerics.Vector2(0, 0), true))
+            if (ImGui.BeginChild(this.GetHashCode().ToString(), new System.Numerics.Vector2(-1f, Height), true))
             {
                 AddButton();
 

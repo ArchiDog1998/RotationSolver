@@ -39,7 +39,10 @@ namespace XIVAutoAttack.Combos.Script.Conditions
         public bool IsTarget { get; set; }
         public TargetConditionType TargetConditionType { get; set; }
 
-        public float Distance { get; set; }
+        public float DistanceOrTime { get; set; }
+
+        public int GCD { get; set; }
+        public int Ability { get; set; }
 
         [JsonIgnore]
         public bool IsTrue
@@ -66,7 +69,7 @@ namespace XIVAutoAttack.Combos.Script.Conditions
 
                 switch (TargetConditionType)
                 {
-                    case TargetConditionType.Status:
+                    case TargetConditionType.HaveStatus:
                         result = tar.HasStatus(FromSelf, Status);
                         break;
 
@@ -79,13 +82,24 @@ namespace XIVAutoAttack.Combos.Script.Conditions
                         break;
 
                     case TargetConditionType.Distance:
-                        result = tar.DistanceToPlayer() > Distance;
+                        result = tar.DistanceToPlayer() > DistanceOrTime;
+                        break;
+
+                    case TargetConditionType.StatusEnd:
+                        result = !tar.WillStatusEnd(DistanceOrTime, FromSelf, Status);
+                        break;
+
+                    case TargetConditionType.StatusEndGCD:
+                        result = !tar.WillStatusEndGCD((uint)GCD, (uint)Ability, FromSelf, Status);
                         break;
                 }
 
                 return Condition ? !result : result;
             }
         }
+
+        [JsonIgnore]
+        public float Height => ICondition.DefaultHeight;
 
         string searchTxt = string.Empty;
         public void Draw(IScriptCombo combo)
@@ -102,7 +116,7 @@ namespace XIVAutoAttack.Combos.Script.Conditions
             ScriptComboWindow.DrawCondition(IsTrue);
             ImGui.SameLine();
 
-            var name = _action?.Name ?? (IsTarget ? "目标" : "玩家");
+            var name = _action != null ? _action.Name + "的目标" : IsTarget ? "目标" : "玩家";
             ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
             if (ImGui.BeginCombo($"##技能选择{GetHashCode()}", name))
             {
@@ -144,7 +158,7 @@ namespace XIVAutoAttack.Combos.Script.Conditions
             var combos = new string[0];
             switch (TargetConditionType)
             {
-                case TargetConditionType.Status:
+                case TargetConditionType.HaveStatus:
                     combos = new string[] { "有", "没有" };
                     break;
                 case TargetConditionType.IsDying:
@@ -153,6 +167,7 @@ namespace XIVAutoAttack.Combos.Script.Conditions
                     break;
 
                 case TargetConditionType.Distance:
+                case TargetConditionType.StatusEnd:
                     combos = new string[] { ">", "<=" };
                     break;
             }
@@ -166,7 +181,7 @@ namespace XIVAutoAttack.Combos.Script.Conditions
 
             switch (TargetConditionType)
             {
-                case TargetConditionType.Status:
+                case TargetConditionType.HaveStatus:
                     ImGui.SameLine();
                     ImGui.SetNextItemWidth(50);
 
@@ -194,17 +209,97 @@ namespace XIVAutoAttack.Combos.Script.Conditions
                     }
                     break;
 
-                case TargetConditionType.Distance:
+                case TargetConditionType.StatusEnd:
                     ImGui.SameLine();
                     ImGui.SetNextItemWidth(50);
-                    var distance = Distance;
-                    if (ImGui.DragFloat($"距离##距离{GetHashCode()}", ref distance))
+
+                    if (ImGui.BeginCombo($"##状态{GetHashCode()}", _status?.Name))
                     {
-                        Distance = Math.Max(0, distance);
+                        ScriptComboWindow.SearchItems(ref searchTxt, AllStatus, i =>
+                        {
+                            _status = i;
+                            Status = _status.ID;
+                        });
+
+                        ImGui.EndCombo();
+                    }
+
+                    ImGui.SameLine();
+
+                    self = FromSelf;
+                    if (ImGui.Checkbox($"自身##自身{GetHashCode()}", ref self))
+                    {
+                        FromSelf = self;
+                    }
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip("该状态是否是自己赋予的");
+                    }
+
+                    ImGui.SameLine();
+                    ImGui.SetNextItemWidth(50);
+                    var time = DistanceOrTime;
+                    if (ImGui.DragFloat($"秒##秒{GetHashCode()}", ref time))
+                    {
+                        DistanceOrTime = Math.Max(0, time);
+                    }
+                    break;
+
+
+                case TargetConditionType.StatusEndGCD:
+                    ImGui.SameLine();
+                    ImGui.SetNextItemWidth(50);
+
+                    if (ImGui.BeginCombo($"##状态{GetHashCode()}", _status?.Name))
+                    {
+                        ScriptComboWindow.SearchItems(ref searchTxt, AllStatus, i =>
+                        {
+                            _status = i;
+                            Status = _status.ID;
+                        });
+
+                        ImGui.EndCombo();
+                    }
+
+                    ImGui.SameLine();
+
+                    self = FromSelf;
+                    if (ImGui.Checkbox($"自身##自身{GetHashCode()}", ref self))
+                    {
+                        FromSelf = self;
+                    }
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip("该状态是否是自己赋予的");
                     }
                     ImGui.SameLine();
 
+                    ImGui.SetNextItemWidth(50);
+                    var gcd = GCD;
+                    if (ImGui.DragInt($"GCD##GCD{GetHashCode()}", ref gcd))
+                    {
+                        GCD = Math.Max(0, gcd);
+                    }
+                    ImGui.SameLine();
+
+                    ImGui.SetNextItemWidth(50);
+                    var ability = Ability;
+                    if (ImGui.DragInt($"能力##AbilityD{GetHashCode()}", ref ability))
+                    {
+                        Ability = Math.Max(0, ability);
+                    }
                     break;
+
+                case TargetConditionType.Distance:
+                    ImGui.SameLine();
+                    ImGui.SetNextItemWidth(50);
+                    var distance = DistanceOrTime;
+                    if (ImGui.DragFloat($"米##米{GetHashCode()}", ref distance))
+                    {
+                        DistanceOrTime = Math.Max(0, distance);
+                    }
+                    break;
+
 
             }
 
@@ -213,20 +308,24 @@ namespace XIVAutoAttack.Combos.Script.Conditions
 
     public enum TargetConditionType : int
     {
-        Status,
+        HaveStatus,
         IsDying,
         IsBoss,
         Distance,
+        StatusEnd,
+        StatusEndGCD,
     }
 
     internal static class TargetConditionTypeExtension
     {
         internal static string ToName(this TargetConditionType type) => type switch
         {
-            TargetConditionType.Status => "状态",
+            TargetConditionType.HaveStatus => "有状态",
             TargetConditionType.IsDying => "要死了",
             TargetConditionType.IsBoss => "是Boss",
             TargetConditionType.Distance => "距离",
+            TargetConditionType.StatusEnd => "状态结束",
+            TargetConditionType.StatusEndGCD => "状态结束GCD",
             _ => string.Empty,
         };
 

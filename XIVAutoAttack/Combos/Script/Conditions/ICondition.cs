@@ -6,7 +6,10 @@ namespace XIVAutoAttack.Combos.Script.Conditions
 {
     internal interface ICondition : IDraw
     {
+        const float DefaultHeight = 33;
         bool IsTrue { get; }
+
+        float Height { get; }
     }
 
     internal class IConditionConverter : JsonCreationConverter<ICondition>

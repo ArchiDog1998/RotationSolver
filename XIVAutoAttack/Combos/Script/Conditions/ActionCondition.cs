@@ -27,7 +27,7 @@ internal class ActionCondition : ICondition
     {
         get
         {
-            if (_action == null) return false;
+            if (_action == null || Service.ClientState.LocalPlayer == null) return false;
 
             var result = false;
 
@@ -73,6 +73,9 @@ internal class ActionCondition : ICondition
             return Condition ? !result : result;
         }
     }
+
+    [JsonIgnore]
+    public float Height => ICondition.DefaultHeight;
 
     string searchTxt = string.Empty;
     public void Draw(IScriptCombo combo)
@@ -127,6 +130,7 @@ internal class ActionCondition : ICondition
                 break;
 
             case ActionConditonType.EnoughLevel:
+            case ActionConditonType.IsCoolDown:
                 combos = new string[] { "是", "不是" };
                 break;
         }
@@ -137,15 +141,16 @@ internal class ActionCondition : ICondition
             Condition = condition > 0;
         }
 
-        ImGui.SameLine();
 
         switch (ActionConditonType)
         {
             case ActionConditonType.Elapsed:
             case ActionConditonType.Remain:
+                ImGui.SameLine();
+
                 ImGui.SetNextItemWidth(50);
                 var time = Time;
-                if (ImGui.DragFloat($"时间##时间{GetHashCode()}", ref time))
+                if (ImGui.DragFloat($"秒##秒{GetHashCode()}", ref time))
                 {
                     Time = time;
                 }
@@ -153,6 +158,8 @@ internal class ActionCondition : ICondition
 
             case ActionConditonType.ElapsedGCD:
             case ActionConditonType.RemainGCD:
+                ImGui.SameLine();
+
                 ImGui.SetNextItemWidth(50);
                 var gcd = Param1;
                 if (ImGui.DragInt($"GCD##GCD{GetHashCode()}", ref gcd))
@@ -170,6 +177,8 @@ internal class ActionCondition : ICondition
                 break;
 
             case ActionConditonType.ShouldUse:
+                ImGui.SameLine();
+
                 var must = Param1 > 0;
                 if (ImGui.Checkbox($"必须##必须{GetHashCode()}", ref must))
                 {
@@ -186,6 +195,8 @@ internal class ActionCondition : ICondition
 
             case ActionConditonType.CurrentCharges:
             case ActionConditonType.MaxCharges:
+                ImGui.SameLine();
+
                 ImGui.SetNextItemWidth(50);
                 var charge = Param1;
                 if (ImGui.DragInt($"层##层{GetHashCode()}", ref charge))
