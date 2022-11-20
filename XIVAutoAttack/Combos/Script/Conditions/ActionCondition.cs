@@ -18,8 +18,8 @@ internal class ActionCondition : ICondition
 
     public bool Condition { get; set; }
 
-    public int GCD { get; set; }
-    public int Ability { get; set; }
+    public int Param1 { get; set; }
+    public int Param2 { get; set; }
     public float Time { get; set; }
 
     [JsonIgnore]
@@ -38,7 +38,7 @@ internal class ActionCondition : ICondition
                     break;
 
                 case ActionConditonType.ElapsedGCD:
-                    result = _action.ElapsedAfterGCD((uint)GCD, (uint)Ability); // 大于
+                    result = _action.ElapsedAfterGCD((uint)Param1, (uint)Param2); // 大于
                     break;
 
                 case ActionConditonType.Remain:
@@ -46,7 +46,19 @@ internal class ActionCondition : ICondition
                     break;
 
                 case ActionConditonType.RemainGCD:
-                    result = !_action.WillHaveOneChargeGCD((uint)GCD, (uint)Ability); // 小于
+                    result = !_action.WillHaveOneChargeGCD((uint)Param1, (uint)Param2); // 小于
+                    break;
+
+                case ActionConditonType.ShouldUse:
+                    result = _action.ShouldUse(out _, Param1 > 0, Param2 > 0);
+                    break;
+
+                case ActionConditonType.EnoughLevel:
+                    result = _action.EnoughLevel;
+                    break;
+
+                case ActionConditonType.IsCoolDown:
+                    result = _action.IsCoolDown;
                     break;
             }
 
@@ -92,10 +104,27 @@ internal class ActionCondition : ICondition
 
         var condition = Condition ? 1 : 0;
 
+        var combos = new string[0];
+        switch (Type)
+        {
+            case ActionConditonType.ElapsedGCD:
+            case ActionConditonType.RemainGCD:
+            case ActionConditonType.Elapsed:
+            case ActionConditonType.Remain:
+                combos = new string[] { "大于", "小于" };
+                break;
+
+            case ActionConditonType.ShouldUse:
+                combos = new string[] { "能", "不能" };
+                break;
+
+            case ActionConditonType.EnoughLevel:
+                combos = new string[] { "是", "不是" };
+                break;
+        }
         ImGui.SameLine();
         ImGui.SetNextItemWidth(60);
-
-        if (ImGui.Combo($"##大小情况{GetHashCode()}", ref condition, new string[] { "大于", "小于" }, 2))
+        if (ImGui.Combo($"##大小情况{GetHashCode()}", ref condition, combos, combos.Length))
         {
             Condition = condition > 0;
         }
@@ -117,18 +146,33 @@ internal class ActionCondition : ICondition
             case ActionConditonType.ElapsedGCD:
             case ActionConditonType.RemainGCD:
                 ImGui.SetNextItemWidth(50);
-                var gcd = GCD;
+                var gcd = Param1;
                 if (ImGui.DragInt($"GCD##GCD{GetHashCode()}", ref gcd))
                 {
-                    GCD = Math.Max(0, gcd);
+                    Param1 = Math.Max(0, gcd);
                 }
                 ImGui.SameLine();
 
                 ImGui.SetNextItemWidth(50);
-                var ability = Ability;
+                var ability = Param2;
                 if (ImGui.DragInt($"能力##AbilityD{GetHashCode()}", ref ability))
                 {
-                    Ability = Math.Max(0, ability);
+                    Param2 = Math.Max(0, ability);
+                }
+                break;
+
+            case ActionConditonType.ShouldUse:
+                var must = Param1 > 0;
+                if (ImGui.Checkbox($"必须##必须{GetHashCode()}", ref must))
+                {
+                    Param1 = must ? 1 : 0;
+                }
+                ImGui.SameLine();
+
+                var empty = Param2 > 0;
+                if (ImGui.Checkbox($"用光##用光{GetHashCode()}", ref empty))
+                {
+                    Param2 = empty ? 1 : 0;
                 }
                 break;
         }
@@ -141,6 +185,9 @@ public enum ActionConditonType : int
     ElapsedGCD,
     Remain,
     RemainGCD,
+    ShouldUse,
+    EnoughLevel,
+    IsCoolDown,
 }
 
 internal static class ActionConditionTypeExtension
@@ -151,6 +198,9 @@ internal static class ActionConditionTypeExtension
         ActionConditonType.ElapsedGCD => "冷却时长GCD",
         ActionConditonType.Remain => "剩余时间",
         ActionConditonType.RemainGCD => "剩余时间GCD",
+        ActionConditonType.ShouldUse => "能否被使用",
+        ActionConditonType.EnoughLevel => "等级足够",
+        ActionConditonType.IsCoolDown => "正在冷却",
         _ => string.Empty,
     };
 }
