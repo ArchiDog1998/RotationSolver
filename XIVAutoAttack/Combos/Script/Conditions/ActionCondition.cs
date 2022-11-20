@@ -87,16 +87,13 @@ internal class ActionCondition : ICondition
 
         var name = _action?.Name ?? string.Empty;
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
-        if (ImGui.BeginCombo($"##技能选择{GetHashCode()}", name))
-        {
-            ScriptComboWindow.SearchItems(ref searchTxt, combo.AllActions, i =>
-            {
-                _action = i;
-                ID = (ActionID)_action.ID;
-            });
 
-            ImGui.EndCombo();
-        }
+        ScriptComboWindow.SearchItems($"##技能选择{GetHashCode()}", name, ref searchTxt, combo.AllActions, i =>
+        {
+            _action = i;
+            ID = (ActionID)_action.ID;
+        });
+
 
         ImGui.SameLine();
 

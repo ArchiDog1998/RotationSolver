@@ -114,7 +114,7 @@ internal class TargetCondition : ICondition
 
         var name = _action != null ? _action.Name + "的目标" : IsTarget ? "目标" : "玩家";
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
-        if (ImGui.BeginCombo($"##技能选择{GetHashCode()}", name))
+        if (ImGui.BeginCombo($"##技能选择{GetHashCode()}", name, ImGuiComboFlags.HeightLargest))
         {
             if (ImGui.Selectable("目标"))
             {
@@ -181,16 +181,11 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                if (ImGui.BeginCombo($"##状态{GetHashCode()}", _status?.Name))
+                ScriptComboWindow.SearchItems($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
-                    ScriptComboWindow.SearchItems(ref searchTxt, AllStatus, i =>
-                    {
-                        _status = i;
-                        Status = _status.ID;
-                    });
-
-                    ImGui.EndCombo();
-                }
+                    _status = i;
+                    Status = _status.ID;
+                });
 
                 ImGui.SameLine();
 
@@ -209,16 +204,11 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                if (ImGui.BeginCombo($"##状态{GetHashCode()}", _status?.Name))
+                ScriptComboWindow.SearchItems($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
-                    ScriptComboWindow.SearchItems(ref searchTxt, AllStatus, i =>
-                    {
-                        _status = i;
-                        Status = _status.ID;
-                    });
-
-                    ImGui.EndCombo();
-                }
+                    _status = i;
+                    Status = _status.ID;
+                });
 
                 ImGui.SameLine();
 
@@ -246,16 +236,11 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                if (ImGui.BeginCombo($"##状态{GetHashCode()}", _status?.Name))
+                ScriptComboWindow.SearchItems($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
-                    ScriptComboWindow.SearchItems(ref searchTxt, AllStatus, i =>
-                    {
-                        _status = i;
-                        Status = _status.ID;
-                    });
-
-                    ImGui.EndCombo();
-                }
+                    _status = i;
+                    Status = _status.ID;
+                });
 
                 ImGui.SameLine();
 

@@ -122,16 +122,12 @@ internal class ComboCondition : ICondition
             case ComboConditionType.Bool:
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(PropertyName).X + 30));
-                if (ImGui.BeginCombo($"##布尔选择{GetHashCode()}", PropertyName))
-                {
-                    ScriptComboWindow.SearchItemsReflection(ref searchTxt, combo.AllBools, i =>
-                    {
-                        _info = i;
-                        PropertyName = i.Name;
-                    });
 
-                    ImGui.EndCombo();
-                }
+                ScriptComboWindow.SearchItemsReflection($"##布尔选择{GetHashCode()}", PropertyName, ref searchTxt, combo.AllBools, i =>
+                {
+                    _info = i;
+                    PropertyName = i.Name;
+                });
 
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
@@ -145,16 +141,13 @@ internal class ComboCondition : ICondition
             case ComboConditionType.Byte:
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(PropertyName).X + 30));
-                if (ImGui.BeginCombo($"##字节选择{GetHashCode()}", PropertyName))
-                {
-                    ScriptComboWindow.SearchItemsReflection(ref searchTxt, combo.AllBytes, i =>
-                    {
-                        _info = i;
-                        PropertyName = i.Name;
-                    });
 
-                    ImGui.EndCombo();
-                }
+                ScriptComboWindow.SearchItemsReflection($"##字节选择{GetHashCode()}", PropertyName, ref searchTxt, combo.AllBytes, i =>
+                {
+                    _info = i;
+                    PropertyName = i.Name;
+                });
+
 
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
@@ -177,17 +170,12 @@ internal class ComboCondition : ICondition
             case ComboConditionType.Time:
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(MethodName).X + 30));
-                if (ImGui.BeginCombo($"##时间{GetHashCode()}", MethodName))
+
+                ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", MethodName, ref searchTxt, combo.Alltimes, i =>
                 {
-                    ScriptComboWindow.SearchItemsReflection(ref searchTxt, combo.Alltimes, i =>
-                    {
-                        _method = i;
-                        MethodName = i.Name;
-                    });
-
-                    ImGui.EndCombo();
-                }
-
+                    _method = i;
+                    MethodName = i.Name;
+                });
 
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
@@ -209,16 +197,13 @@ internal class ComboCondition : ICondition
             case ComboConditionType.TimeGCD:
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(MethodName).X + 30));
-                if (ImGui.BeginCombo($"##时间{GetHashCode()}", MethodName))
-                {
-                    ScriptComboWindow.SearchItemsReflection(ref searchTxt, combo.Alltimes, i =>
+
+                    ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", MethodName, ref searchTxt, combo.AllGCDs, i =>
                     {
                         _method = i;
                         MethodName = i.Name;
                     });
 
-                    ImGui.EndCombo();
-                }
 
 
                 ImGui.SameLine();

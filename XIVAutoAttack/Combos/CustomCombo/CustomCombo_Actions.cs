@@ -226,13 +226,13 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
        public MethodInfo[] Alltimes => GetMethodInfo(m =>
        {
-           var types = m.GetGenericArguments();
-           return types.Length == 1 && types[0] == typeof(float);
+           var types = m.GetParameters();
+           return types.Length == 1 && types[0].ParameterType == typeof(float);
        });
        public MethodInfo[] AllGCDs => GetMethodInfo(m =>
        {
-           var types = m.GetGenericArguments();
-           return types.Length == 2 && types[0] == typeof(uint) && types[1] == typeof(uint);
+           var types = m.GetParameters();
+           return types.Length == 2 && types[0].ParameterType == typeof(uint) && types[1].ParameterType == typeof(uint);
        });
 
         private BaseAction[] GetBaseActions(Type type)
@@ -252,10 +252,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
         private PropertyInfo[] GetProperties<T>()
         {
 
-            return (from prop in GetType().BaseType.GetProperties()
+            return (from prop in GetType().BaseType.GetRuntimeProperties()
                     where typeof(T).IsAssignableFrom(prop.PropertyType)
                             && prop.GetMethod is MethodInfo info
-                            && info.IsPublic
+                            && info.IsStatic
                     select prop).ToArray();
 
         }
@@ -263,7 +263,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         private MethodInfo[] GetMethodInfo(Func<MethodInfo, bool> checks)
         {
             return (from method in GetType().BaseType.GetRuntimeMethods()
-                    where method.IsStatic && !method.IsConstructor && method.ReflectedType == typeof(bool)
+                    where method.IsStatic && !method.IsConstructor && method.ReturnType == typeof(bool)
                     && checks(method)
                     select method).ToArray();
         }

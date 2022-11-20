@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Security.Cryptography;
 using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Data;
@@ -120,32 +121,6 @@ namespace XIVAutoAttack.Windows
             ActiveAction?.Draw(TargetCombo);
         }
 
-        internal static void AddPopup<T>(string popId, string special, Action act, ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
-        {
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
-            {
-                ImGui.OpenPopup(popId);
-            }
-
-            if (ImGui.BeginPopup(popId))
-            {
-                if (!string.IsNullOrWhiteSpace(special))
-                {
-                    if (ImGui.Selectable(special))
-                    {
-                        act?.Invoke();
-                        ImGui.CloseCurrentPopup();
-                    }
-
-                    ImGui.Separator();
-                }
-
-                SearchItems(ref searchTxt, actions, selectAction);
-
-                ImGui.EndPopup();
-            }
-        }
-
         internal static bool DrawEditorList<T>(List<T> items, Action<T> draw)
         {
             int index = -1;
@@ -213,14 +188,55 @@ namespace XIVAutoAttack.Windows
             return index != -1;
         }
 
+        internal static void AddPopup<T>(string popId, string special, Action act, ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
+        {
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
+            {
+                ImGui.OpenPopup(popId);
+            }
+
+            if (ImGui.BeginPopup(popId))
+            {
+                if (!string.IsNullOrWhiteSpace(special))
+                {
+                    if (ImGui.Selectable(special))
+                    {
+                        act?.Invoke();
+                        ImGui.CloseCurrentPopup();
+                    }
+
+                    ImGui.Separator();
+                }
+
+                SearchItems(ref searchTxt, actions, selectAction);
+
+                ImGui.EndPopup();
+            }
+        }
+
+        internal static void SearchItems<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
+        {
+            if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
+            {
+                SearchItems(ref searchTxt, actions, selectAction);
+
+                ImGui.EndCombo();
+            }
+        }
+
         internal static void SearchItems<T>(ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
         {
             SearchItems(ref searchTxt, actions, i => i.Name, selectAction, i => ImGui.Image(i.GetTexture().ImGuiHandle, new Vector2(24, 24)));
         }
 
-        internal static void SearchItemsReflection<T>(ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
+        internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
         {
-            SearchItems(ref searchTxt, actions, i => i.Name, selectAction);
+            if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
+            {
+                SearchItems(ref searchTxt, actions, i => i.Name, selectAction);
+
+                ImGui.EndCombo();
+            }
         }
 
         internal static void SearchItems<T>(ref string searchTxt, T[] actions, Func<T, string> getName, Action<T> selectAction, Action<T> extraDraw = null)
