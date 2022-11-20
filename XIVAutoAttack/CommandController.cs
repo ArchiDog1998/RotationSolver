@@ -248,7 +248,7 @@ namespace XIVAutoAttack
             {
                 AutoAttack = true;
             }
-            else
+            else if(!AutoTarget)
             {
                 Service.Configuration.TargetingIndex += 1;
                 Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count;
@@ -303,7 +303,7 @@ namespace XIVAutoAttack
                 if (nextAction is BaseAction act)
                 {
 #if DEBUG
-                    Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
+                    //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
                     if (act.Target?.CanAttack() ?? false)
@@ -324,7 +324,10 @@ namespace XIVAutoAttack
         {
             //结束战斗，那就关闭。
             if (Service.ClientState.LocalPlayer.CurrentHp == 0
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut])
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51])
                 AttackCancel();
 
             //Auto start at count Down.

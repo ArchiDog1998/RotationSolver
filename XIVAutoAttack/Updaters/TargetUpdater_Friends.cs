@@ -81,6 +81,11 @@ namespace XIVAutoAttack.Updaters
         /// 有宠物
         /// </summary>
         internal static bool HavePet { get; private set; } = false;
+
+        /// <summary>
+        /// 有陆行鸟
+        /// </summary>
+        internal static bool HaveChocobo { get; private set; } = false;
         /// <summary>
         /// 血量没有满
         /// </summary>
@@ -96,7 +101,13 @@ namespace XIVAutoAttack.Updaters
             //添加亲信
             PartyMembers = PartyMembers.Union(Service.ObjectTable.Where(obj => obj.SubKind == 9 && obj is BattleChara).Cast<BattleChara>()).ToArray();
 
-            HavePet = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc && npc.BattleNpcKind == BattleNpcSubKind.Pet && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
+            HavePet = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc 
+                    && npc.BattleNpcKind == BattleNpcSubKind.Pet 
+                    && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
+
+            HaveChocobo = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc
+                    && npc.BattleNpcKind == BattleNpcSubKind.Chocobo
+                    && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
 
             AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
 

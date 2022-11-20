@@ -77,6 +77,8 @@ internal partial class ComboConfigWindow
                 ImGui.Text(ActionUpdater.exception.StackTrace);
             }
         }
+
+        ImGui.Text(TargetUpdater.HaveChocobo.ToString());
     }
 
     private static void DrawAction(ActionID id, string type)
