@@ -311,6 +311,8 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
                 if (!TargetHasThunder || TargetThunderWillEnd(3)) return true;
                 if (HasThunder && Player.WillStatusEnd(3, true, StatusID.Thundercloud)) return true;
             }
+            //冰3
+            if (UmbralIceStacks != 3 && Blizzard3.ShouldUse(out act)) return true;
             //冰阶段
             if (Blizzard.ShouldUse(out act))
             {

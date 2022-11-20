@@ -101,6 +101,7 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
             && ClosedPosition.ShouldUse(out act)) return true;
 
         if (FinishStepGCD(out act)) return true;
+        if (ExcutionStepGCD(out act)) return true;
 
         if (SettingBreak)
         {

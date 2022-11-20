@@ -242,7 +242,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         {
             if (Paradox.EnoughLevel && IsParadoxActive) return false;
 
-            if (!Fire4.EnoughLevel && Player.CurrentMp == 10000) return true;
+            if (!Fire4.EnoughLevel && Player.CurrentMp >= 9600) return true;
 
             //标准循环
             if (UmbralHearts == 3) return true;
