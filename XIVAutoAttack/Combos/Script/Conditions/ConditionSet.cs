@@ -61,6 +61,7 @@ namespace XIVAutoAttack.Combos.Script.Conditions
             {
                 AddOneCondition<ConditionSet>("条件组合");
                 AddOneCondition<ActionCondition>("技能条件");
+                AddOneCondition<TargetCondition>("目标条件");
 
                 ImGui.EndPopup();
             }

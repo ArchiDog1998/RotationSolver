@@ -17,9 +17,13 @@ namespace XIVAutoAttack.Combos.Script.Conditions
             {
                 return new ConditionSet();
             }
-            else if (FieldExists("Param1", jObject) && FieldExists("Param2", jObject))
+            else if (FieldExists("ActionConditonType", jObject))
             {
                 return new ActionCondition();
+            }
+            else if (FieldExists("TargetConditionType", jObject))
+            {
+                return new TargetCondition();
             }
             else
             {

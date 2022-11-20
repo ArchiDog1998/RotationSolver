@@ -37,7 +37,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
         public void DrawHeader(IScriptCombo combo)
         {
-            if (ID != ActionID.None && _action == null)
+            if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
             {
                 _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
             }

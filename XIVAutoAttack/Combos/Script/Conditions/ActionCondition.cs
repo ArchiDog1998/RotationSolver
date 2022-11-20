@@ -14,7 +14,7 @@ internal class ActionCondition : ICondition
 
     public ActionID ID { get; set; } = ActionID.None;
 
-    public ActionConditonType Type { get; set; } = ActionConditonType.Elapsed;
+    public ActionConditonType ActionConditonType { get; set; } = ActionConditonType.Elapsed;
 
     public bool Condition { get; set; }
 
@@ -31,7 +31,7 @@ internal class ActionCondition : ICondition
 
             var result = false;
 
-            switch (Type)
+            switch (ActionConditonType)
             {
                 case ActionConditonType.Elapsed:
                     result = _action.ElapsedAfter(Time); // 大于
@@ -77,13 +77,12 @@ internal class ActionCondition : ICondition
     string searchTxt = string.Empty;
     public void Draw(IScriptCombo combo)
     {
-        if (ID != ActionID.None && _action == null)
+        if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
             _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
         }
 
         ScriptComboWindow.DrawCondition(IsTrue);
-
         ImGui.SameLine();
 
         var name = _action?.Name ?? string.Empty;
@@ -101,19 +100,18 @@ internal class ActionCondition : ICondition
 
         ImGui.SameLine();
 
-        var type = (int)Type;
+        var type = (int)ActionConditonType;
         var names = Enum.GetValues<ActionConditonType>().Select(e => e.ToName()).ToArray();
         ImGui.SetNextItemWidth(100);
 
         if (ImGui.Combo($"##类型{GetHashCode()}", ref type, names, names.Length))
         {
-            Type = (ActionConditonType)type;
+            ActionConditonType = (ActionConditonType)type;
         }
 
         var condition = Condition ? 1 : 0;
-
-        var combos = new string[0];
-        switch (Type)
+                var combos = new string[0];
+        switch (ActionConditonType)
         {
             case ActionConditonType.ElapsedGCD:
             case ActionConditonType.RemainGCD:
@@ -141,7 +139,7 @@ internal class ActionCondition : ICondition
 
         ImGui.SameLine();
 
-        switch (Type)
+        switch (ActionConditonType)
         {
             case ActionConditonType.Elapsed:
             case ActionConditonType.Remain:

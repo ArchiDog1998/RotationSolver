@@ -3,6 +3,11 @@
     internal enum StatusID : ushort
     {
         /// <summary>
+        /// 空值
+        /// </summary>
+        None = 0,
+
+        /// <summary>
         /// 雷1
         /// </summary>
         Thunder = 161,

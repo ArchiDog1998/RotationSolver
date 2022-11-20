@@ -68,7 +68,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         public uint AdjustedID => (uint)Service.IconReplacer.OriginalHook((ActionID)ID);
 
-        public uint IconID { get; }
+        public uint IconID => _action.Icon;
 
         private bool IsGeneralGCD { get; }
 
@@ -110,7 +110,6 @@ namespace XIVAutoAttack.Actions.BaseAction
             _isFriendly = isFriendly;
             _isEot = isEot;
 
-            IconID = _action.Icon;
             IsGeneralGCD = _action.IsGeneralGCD();
             IsRealGCD = _action.IsRealGCD();
             CoolDownGroup = _action.GetCoolDownGroup();
