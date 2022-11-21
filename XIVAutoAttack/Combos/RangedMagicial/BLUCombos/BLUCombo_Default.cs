@@ -132,7 +132,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             }
             else
             {
-                if (WhiteWind.ShouldUse(out act)) return true;
+                if (WhiteWind.ShouldUse(out act, mustUse: true)) return true;
             }
 
             return base.HealAreaGCD(out act);
@@ -360,10 +360,8 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
                 if (Level5Petrify.ShouldUse(out act, mustUse: true)) return true;
             }
 
-
-
             //陆行鸟陨石
-            if (ChocoMeteor.ShouldUse(out act)) return true;
+            if (TargetUpdater.HaveChocobo && ChocoMeteor.ShouldUse(out act, mustUse: true)) return true;
 
             if (TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 6).Length < 3)
             {

@@ -116,9 +116,12 @@ internal class ActionConditions : IDraw
             _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
         }
 
-        ImGui.Text("描述");
+        ImGui.Text("描述:");
 
         var desc = Description;
+
+        ImGui.SetNextItemWidth(ImGui.GetColumnWidth(2) - 20);
+
         if (ImGui.InputTextMultiline($"##{_action?.Name}的描述", ref desc, 1024, new System.Numerics.Vector2(0, 100)))
         {
             Description = desc;
@@ -144,35 +147,41 @@ internal class ActionConditions : IDraw
                     _actions = combo.AllActions.Where(a => IDs.Contains((ActionID)a.ID)).ToList();
                 }
 
-                ImGui.SameLine();
 
                 var adj = IsAdjust;
                 if(ImGui.Checkbox("是否为调整后", ref adj))
                 {
                     IsAdjust = adj;
                 }
+                ImGui.SameLine();
+
+                ImGui.Text("下一个GCD是：");
 
                 ImGui.SameLine();
 
-                ScriptComboWindow.AddPopup("Popup" + GetHashCode().ToString(), string.Empty, null, ref search, combo.AllActions, item =>
+                ScriptComboWindow.AddPopup("Emergency" + GetHashCode().ToString(), string.Empty, null, ref search, combo.AllActions, item =>
                 {
                     _actions.Add(item);
                     IDs.Add((ActionID)item.ID);
                 });
 
                 var relay = _actions;
-                if (ScriptComboWindow.DrawEditorList(relay, i =>
+                if(relay.Count > 0 && ImGui.BeginChild($"##{_action?.Name}的下一个GCD是", new System.Numerics.Vector2(0, 100), true))
                 {
-                    ImGui.Image(i.GetTexture().ImGuiHandle, new System.Numerics.Vector2(30, 30));
+                    if (ScriptComboWindow.DrawEditorList(relay, i =>
+                    {
+                        ImGui.Image(i.GetTexture().ImGuiHandle, new System.Numerics.Vector2(30, 30));
 
-                    ImGui.SameLine();
-                    ComboConfigWindow.Spacing();
+                        ImGui.SameLine();
 
-                    ImGui.Text(i.Name);
-                }))
-                {
-                    _actions = relay;
-                    IDs = _actions.Select(i => (ActionID)i.ID).ToList();
+                        ImGui.Text(i.Name);
+                    }))
+                    {
+                        _actions = relay;
+                        IDs = _actions.Select(i => (ActionID)i.ID).ToList();
+                    }
+
+                    ImGui.EndChild();
                 }
             }
         }
@@ -200,9 +209,9 @@ internal class ActionConditions : IDraw
             {
                 _actions = owner.AllActions.Where(a => IDs.Contains((ActionID)a.ID)).ToList();
             }
-            if(nextGCD != null)
+            if(nextGCD != null && _actions.Count > 0)
             {
-                if (!nextGCD.IsAnySameAction(IsAdjust, _action)) return false;
+                if (!nextGCD.IsAnySameAction(IsAdjust, _actions.ToArray())) return false;
             }
         }
 

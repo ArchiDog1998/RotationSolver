@@ -194,7 +194,7 @@ namespace XIVAutoAttack.Windows
 
         internal static void AddPopup<T>(string popId, string special, Action act, ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
         {
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
+            if (ImGuiComponents.IconButton(popId.GetHashCode(), FontAwesomeIcon.Plus))
             {
                 ImGui.OpenPopup(popId);
             }

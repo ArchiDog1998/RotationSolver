@@ -56,6 +56,12 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected virtual bool CanHealSingleSpell => TargetUpdater.CanHealSingleSpell && _canUseHealAction;
 
         /// <summary>
+        /// 满编小队
+        /// </summary>
+        [DisplayName("满编小队")]
+        protected static bool IsFullParty => TargetUpdater.PartyMembers.Length is 8;
+
+        /// <summary>
         /// 是否处于爆发，自动爆发或者手动点击的爆发
         /// </summary>
         [DisplayName("处于爆发")]

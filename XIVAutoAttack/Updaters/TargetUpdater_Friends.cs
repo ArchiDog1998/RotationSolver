@@ -225,7 +225,7 @@ namespace XIVAutoAttack.Updaters
             CanHealSingleSpell = gcdCount > 0;
             if (gcdCount >= Service.Configuration.PartyCount) CanHealAreaSpell = true;
 
-            PartyMembersMinHP = PartyMembersHP.Min();
+            PartyMembersMinHP = PartyMembersHP.Length == 0 ? 0 : PartyMembersHP.Min();
             HPNotFull = PartyMembersMinHP < 1;
             #endregion
         }

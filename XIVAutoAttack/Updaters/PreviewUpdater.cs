@@ -99,7 +99,8 @@ namespace XIVAutoAttack.Updaters
             if (hot->IconTypeB != HotbarSlotType.Action) return false;
             if (slot->ActionId == (uint)IconReplacer.KeyActionID) return false;
 
-            return Service.IconReplacer.OriginalHook((uint)slot->ActionId) == actionID;
+            return Service.IconReplacer.OriginalHook((uint)slot->ActionId) 
+                == Service.IconReplacer.OriginalHook(actionID);
         }
 
         const int ActionBarSlotsCount = 12;

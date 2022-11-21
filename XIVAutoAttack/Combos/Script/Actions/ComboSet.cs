@@ -104,7 +104,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
         {
             var desc = Description;
 
-            ImGui.SetNextItemWidth(ImGui.GetColumnWidth());
+            ImGui.SetNextItemWidth(ImGui.GetColumnWidth() - 20);
             if (ImGui.InputTextMultiline($"##{AuthorName}的{JobID}描述", ref desc, 1024, new Vector2(0, 100)))
             {
                 Description = desc;

@@ -36,7 +36,6 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Events[i].MacroIndex = macroindex;
                 }
 
-
                 bool isShared = Service.Configuration.Events[i].IsShared;
                 if (ImGui.Checkbox("共享宏" + i.ToString(), ref isShared))
                 {

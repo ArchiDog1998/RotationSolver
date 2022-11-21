@@ -248,7 +248,8 @@ namespace XIVAutoAttack
             {
                 AutoAttack = true;
             }
-            else if(!AutoTarget)
+
+            if(AutoTarget)
             {
                 Service.Configuration.TargetingIndex += 1;
                 Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count;

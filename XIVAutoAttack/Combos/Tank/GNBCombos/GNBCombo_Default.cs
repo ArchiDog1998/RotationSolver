@@ -25,17 +25,6 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
 
-    /// <summary>
-    /// 在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
-    /// </summary>
-    private static bool CanUseSpellInDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss() && !IsMoving
-                                                    && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length >= 3;
-
-    /// <summary>
-    /// 在4人本的道中
-    /// </summary>
-    private static bool InDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
-
     public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.单体治疗, $"{Aurora}"},
@@ -80,7 +69,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
         if (LightningShot.ShouldUse(out act))
         {
-            if (InDungeonsMiddle && LightningShot.Target.DistanceToPlayer() > 3) return true;
+            if (!IsFullParty && LightningShot.Target.DistanceToPlayer() > 3) return true;
         }
         return false;
     }
@@ -95,7 +84,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         //危险领域
         if (DangerZone.ShouldUse(out act))
         {
-            if (InDungeonsMiddle) return true;
+            if (!IsFullParty) return true;
 
             //等级小于烈牙,
             if (!GnashingFang.EnoughLevel && (Player.HasStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(15))) return true;
@@ -175,11 +164,6 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
     private bool CanUseNoMercy(out IAction act)
     {
-        if (InDungeonsMiddle && NoMercy.ShouldUse(out act))
-        {
-            if (CanUseSpellInDungeonsMiddle) return true;
-            return false;
-        }
         //等级低于爆发击是判断
         if (!BurstStrike.EnoughLevel && NoMercy.ShouldUse(out act)) return true;
 
@@ -206,7 +190,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (GnashingFang.ShouldUse(out act))
         {
             //在4人本道中使用
-            if (InDungeonsMiddle) return true;
+            if (!IsFullParty) return true;
 
             //无情中3弹烈牙
             if (Ammo == (Level >= 88 ? 3 : 2) && (Player.HasStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(55))) return true;
@@ -237,7 +221,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (SonicBreak.ShouldUse(out act))
         {
             //在4人本道中不使用
-            if (InDungeonsMiddle) return false;
+            if (!IsFullParty) return false;
 
             if (!GnashingFang.EnoughLevel && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
@@ -263,7 +247,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (DoubleDown.ShouldUse(out act, mustUse: true))
         {
             //在4人本道中
-            if (InDungeonsMiddle)
+            if (IsFullParty)
             {
                 //在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪),有无情buff
                 if (Player.HasStatus(true, StatusID.NoMercy)) return true;
@@ -291,7 +275,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (BurstStrike.ShouldUse(out act))
         {
             //在4人本道中且AOE时不使用
-            if (InDungeonsMiddle && DemonSlice.ShouldUse(out _)) return false;
+            if (IsFullParty && DemonSlice.ShouldUse(out _)) return false;
 
             //如果烈牙剩0.5秒冷却好,不释放爆发击,主要因为技速不同可能会使烈牙延后太多所以判定一下
             if (SonicBreak.IsCoolDown && SonicBreak.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;
@@ -314,7 +298,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     {
         if (BowShock.ShouldUse(out act, mustUse: true))
         {
-            if (InDungeonsMiddle) return true;
+            if (!IsFullParty) return true;
 
             if (!SonicBreak.EnoughLevel && Player.HasStatus(true, StatusID.NoMercy)) return true;
 

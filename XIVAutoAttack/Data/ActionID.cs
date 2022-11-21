@@ -1141,12 +1141,12 @@ namespace XIVAutoAttack.Data
         Disembowel = 87,
 
         /// <summary>
-        /// 樱花缭乱
+        /// 樱花怒放
         /// </summary>
         ChaosThrust = 88,
 
         /// <summary>
-        /// 樱花怒放
+        /// 樱花缭乱
         /// </summary>
         ChaoticSpring = 25772,
 

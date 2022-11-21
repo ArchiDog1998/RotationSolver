@@ -15,9 +15,9 @@ namespace XIVAutoAttack.Helpers
         public record LocationInfo(EnemyLocation Loc, byte[] Tags);
         public static readonly SortedList<ActionID, LocationInfo> ActionLocations = new SortedList<ActionID, LocationInfo>()
         {
-            {ActionID.FangandClaw, new( EnemyLocation.Side, new byte[] { 13 })},
-            {ActionID.WheelingThrust, new(EnemyLocation.Back, new byte[] { 10 }) },
-            {ActionID.ChaosThrust, new(EnemyLocation.Back, new byte[] { 66, 28 }) }, //需要60级同步
+            {ActionID.FangandClaw, new( EnemyLocation.Side, new byte[] { 13, 10 })},
+            {ActionID.WheelingThrust, new(EnemyLocation.Back, new byte[] { 10, 13 }) },
+            {ActionID.ChaosThrust, new(EnemyLocation.Back, new byte[] { 61, 28 }) },
             {ActionID.ChaoticSpring, new(EnemyLocation.Back, new byte[] { 66, 28 }) },
             {ActionID.Demolish, new(EnemyLocation.Back, new byte[] { 49 }) },
             {ActionID.SnapPunch, new(EnemyLocation.Side, new byte[] { 19 }) },

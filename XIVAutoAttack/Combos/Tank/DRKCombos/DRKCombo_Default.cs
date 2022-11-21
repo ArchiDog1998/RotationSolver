@@ -29,11 +29,6 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
     private static bool CanUseSpellInDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss() && !IsMoving
                                                     && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length >= 3;
 
-    /// <summary>
-    /// 在4人本的道中
-    /// </summary>
-    private static bool InDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
-
     public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.单体治疗, $"{TheBlackestNight}，目标为被打的小可怜"},
@@ -96,7 +91,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         if (CommandController.Move && MoveAbility(1, out act)) return true;
         if (Unmend.ShouldUse(out act))
         {
-            if (InDungeonsMiddle && Target.DistanceToPlayer() < 5) return false;
+            if (!IsFullParty && Target.DistanceToPlayer() < 5) return false;
             return true;
         }
 
@@ -104,7 +99,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
     }
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
-        if (SettingBreak && (InDungeonsMiddle && CanUseSpellInDungeonsMiddle || !InDungeonsMiddle))
+        if (SettingBreak && (!IsFullParty && CanUseSpellInDungeonsMiddle || IsFullParty))
         {
             //嗜血
             if (BloodWeapon.ShouldUse(out act)) return true;
@@ -193,7 +188,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
     {
         if (!EdgeofDarkness.ShouldUse(out act)) return false;
 
-        if (InDungeonsMiddle && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) return false;
+        if (!IsFullParty && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) return false;
 
         //是否留3000蓝开黑盾
         if (Config.GetBoolByName("TheBlackestNight") && Player.CurrentMp < 6000) return false;

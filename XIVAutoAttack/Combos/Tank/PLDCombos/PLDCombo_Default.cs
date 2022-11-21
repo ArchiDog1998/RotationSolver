@@ -26,17 +26,6 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Length == 1 && base.CanHealSingleSpell;
 
-    /// <summary>
-    /// 在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
-    /// </summary>
-    private static bool CanUseSpellInDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss() && !IsMoving
-                                                    && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length >= 3;
-
-    /// <summary>
-    /// 在4人本的道中
-    /// </summary>
-    private static bool InDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss();
-
     //private bool SlowLoop = false;
 
     public override SortedList<DescType, string> DescriptionDict => new()
@@ -128,7 +117,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         //厄运流转
         if (CircleofScorn.ShouldUse(out act, mustUse: true))
         {
-            if (InDungeonsMiddle) return true;
+            if (!IsFullParty) return true;
 
             if (FightorFlight.ElapsedAfterGCD(2)) return true;
 
@@ -143,7 +132,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         {
             //if (SlowLoop && inOpener && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
 
-            if (InDungeonsMiddle) return true;
+            if (!IsFullParty) return true;
 
             if (FightorFlight.ElapsedAfterGCD(3)) return true;
         }
@@ -196,9 +185,9 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         if (FightorFlight.ShouldUse(out act))
         {
             //在4人本道中
-            if (InDungeonsMiddle)
+            if (!IsFullParty)
             {
-                if (CanUseSpellInDungeonsMiddle && !Player.HasStatus(true, StatusID.Requiescat)
+                if (!Player.HasStatus(true, StatusID.Requiescat)
                     && !Player.HasStatus(true, StatusID.ReadyForBladeofFaith)
                     && Player.CurrentMp < 2000) return true;
 
@@ -222,21 +211,12 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         //安魂祈祷
         if (Requiescat.ShouldUse(out act, mustUse: true))
         {
-            //在4人本道中
-            if (InDungeonsMiddle)
-            {
-                if (CanUseSpellInDungeonsMiddle) return true;
-
-                return false;
-            }
-
             //在战逃buff时间剩17秒以下时释放
             if (Player.HasStatus(true, StatusID.FightOrFlight) && Player.WillStatusEnd(17, true, StatusID.FightOrFlight) && Target.HasStatus(true, StatusID.GoringBlade))
             {
                 //在起手中时,王权剑后释放
                 return true;
             }
-
         }
 
         act = null;

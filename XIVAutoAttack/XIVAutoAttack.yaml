@@ -9,17 +9,14 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 修复白魔单目标下不会使用法令的bug
-  - 修复贤者不会上dot的bug
-  - 调整了舞者和学者
-  - 添加了90级某本即死的status到库中。
-  - 回退了武士和舞者，被某作者改的直接不会打了。
-  - 过场动画和切换地图会自动关闭自动攻击
-  - 在手动模式下切换为自动不会轮转自动目标选项
+  - 这次真的把Script给弄出来了
+  - 修改了Script的UI，支持NextGCD和AbilityCount
+  - 修改了龙骑的身位提示。
+  - 调整了四人本T的逻辑，一点点。
+  - 修复了Smart无法修改类型的bug
+  - 修改了高亮的逻辑
   ## 功能新增
-  - 添加了可视化编辑循环的Script模式，不过还在研发，不能保证存的文件未来也能正常使用。
-  ## API
-  - 添加是否有陆行鸟API
+  - 增加了Moon版舞者，据说更美。
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
