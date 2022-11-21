@@ -1,9 +1,13 @@
 ﻿using ImGuiNET;
+using Lumina.Data.Parsing.Layer;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Script.Conditions;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Windows;
 using XIVAutoAttack.Windows.ComboConfigWindow;
 
@@ -14,9 +18,18 @@ namespace XIVAutoAttack.Combos.Script.Actions;
 /// </summary>
 internal class ActionConditions : IDraw
 {
-    private BaseAction _action { get; set; }
+    public bool IsAbility { get; set; } = false;
+    public bool IsEmergency { get; set; } = false;
 
+    public int AbilityCount { get; set; }
+    private BaseAction _action { get; set; }
     public ActionID ID { get; set; } = ActionID.None;
+
+    private List<BaseAction> _actions { get; set; } = new List<BaseAction>();
+    public List<ActionID> IDs { get; set; } = new List<ActionID>();
+
+    public bool IsAdjust { get; set; }
+
     public ConditionSet Set { get; set; } = new ConditionSet();
 
     public bool MustUse { get; set; }
@@ -42,7 +55,7 @@ internal class ActionConditions : IDraw
             _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
         }
 
-        var tag = ShouldUse(combo, out _);
+        var tag = ShouldUse(combo, 0, null, out _);
         ScriptComboWindow.DrawCondition(tag);
         ImGui.SameLine();
 
@@ -95,8 +108,14 @@ internal class ActionConditions : IDraw
         }
     }
 
+    string search = string.Empty;
     public void Draw(IScriptCombo combo)
     {
+        if (ID != ActionID.None && _action == null)
+        {
+            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+        }
+
         ImGui.Text("描述");
 
         var desc = Description;
@@ -105,10 +124,63 @@ internal class ActionConditions : IDraw
             Description = desc;
         }
 
+        if (IsAbility)
+        {
+            ImGui.SetNextItemWidth(100);
+            int c = AbilityCount;
+            if(ImGui.DragInt("还剩第几个能力技", ref c))
+            {
+                AbilityCount = c;
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("当还剩下能插几个能力技的时候才能使用这个技能，设为0的时候忽略这个条件。");
+            }
+
+            if (IsEmergency)
+            {
+                if (_actions.Count != IDs.Count)
+                {
+                    _actions = combo.AllActions.Where(a => IDs.Contains((ActionID)a.ID)).ToList();
+                }
+
+                ImGui.SameLine();
+
+                var adj = IsAdjust;
+                if(ImGui.Checkbox("是否为调整后", ref adj))
+                {
+                    IsAdjust = adj;
+                }
+
+                ImGui.SameLine();
+
+                ScriptComboWindow.AddPopup("Popup" + GetHashCode().ToString(), string.Empty, null, ref search, combo.AllActions, item =>
+                {
+                    _actions.Add(item);
+                    IDs.Add((ActionID)item.ID);
+                });
+
+                var relay = _actions;
+                if (ScriptComboWindow.DrawEditorList(relay, i =>
+                {
+                    ImGui.Image(i.GetTexture().ImGuiHandle, new System.Numerics.Vector2(30, 30));
+
+                    ImGui.SameLine();
+                    ComboConfigWindow.Spacing();
+
+                    ImGui.Text(i.Name);
+                }))
+                {
+                    _actions = relay;
+                    IDs = _actions.Select(i => (ActionID)i.ID).ToList();
+                }
+            }
+        }
+
         Set.Draw(combo);
     }
 
-    public bool? ShouldUse(IScriptCombo owner, out IAction act)
+    public bool? ShouldUse(IScriptCombo owner, byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (ID != ActionID.None && _action == null)
         {
@@ -116,6 +188,23 @@ internal class ActionConditions : IDraw
         }
 
         act = _action;
+
+        if(AbilityCount != 0 && abilityRemain != 0)
+        {
+            if (abilityRemain != AbilityCount) return false;
+        }
+
+        if (IsEmergency)
+        {
+            if(_actions.Count != IDs.Count)
+            {
+                _actions = owner.AllActions.Where(a => IDs.Contains((ActionID)a.ID)).ToList();
+            }
+            if(nextGCD != null)
+            {
+                if (!nextGCD.IsAnySameAction(IsAdjust, _action)) return false;
+            }
+        }
 
         if (_action != null)
         {

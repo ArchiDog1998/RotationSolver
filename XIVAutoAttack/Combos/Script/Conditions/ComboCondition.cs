@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Windows;
 
 namespace XIVAutoAttack.Combos.Script.Conditions;
@@ -123,7 +124,7 @@ internal class ComboCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(PropertyName).X + 30));
 
-                ScriptComboWindow.SearchItemsReflection($"##布尔选择{GetHashCode()}", PropertyName, ref searchTxt, combo.AllBools, i =>
+                ScriptComboWindow.SearchItemsReflection($"##布尔选择{GetHashCode()}", _info?.GetMemberName(), ref searchTxt, combo.AllBools, i =>
                 {
                     _info = i;
                     PropertyName = i.Name;
@@ -142,7 +143,7 @@ internal class ComboCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(PropertyName).X + 30));
 
-                ScriptComboWindow.SearchItemsReflection($"##字节选择{GetHashCode()}", PropertyName, ref searchTxt, combo.AllBytes, i =>
+                ScriptComboWindow.SearchItemsReflection($"##字节选择{GetHashCode()}", _info?.GetMemberName(), ref searchTxt, combo.AllBytes, i =>
                 {
                     _info = i;
                     PropertyName = i.Name;
@@ -171,7 +172,7 @@ internal class ComboCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(MethodName).X + 30));
 
-                ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", MethodName, ref searchTxt, combo.Alltimes, i =>
+                ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, combo.Alltimes, i =>
                 {
                     _method = i;
                     MethodName = i.Name;
@@ -198,7 +199,7 @@ internal class ComboCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(MethodName).X + 30));
 
-                    ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", MethodName, ref searchTxt, combo.AllGCDs, i =>
+                    ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, combo.AllGCDs, i =>
                     {
                         _method = i;
                         MethodName = i.Name;

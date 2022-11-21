@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -217,20 +218,20 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 这个类所有的公开bool值
         /// </summary>
-        public PropertyInfo[] AllBools => GetProperties<bool>(GetType());
+        public PropertyInfo[] AllBools => GetType().GetStaticProperties<bool>();
 
         /// <summary>
         /// 这个类所有的公开float值
         /// </summary>
-        public PropertyInfo[] AllBytes => GetProperties<byte>(GetType());
+        public PropertyInfo[] AllBytes => GetType().GetStaticProperties<byte>();
 
-        public MethodInfo[] Alltimes => GetMethodInfo(GetType(), m =>
+        public MethodInfo[] Alltimes => GetType().GetStaticBoolMethodInfo(m =>
         {
             var types = m.GetParameters();
             return types.Length == 1 && types[0].ParameterType == typeof(float);
         });
 
-        public MethodInfo[] AllGCDs => GetMethodInfo(GetType(), m =>
+        public MethodInfo[] AllGCDs => GetType().GetStaticBoolMethodInfo(m =>
         {
             var types = m.GetParameters();
             return types.Length == 2 && types[0].ParameterType == typeof(uint) && types[1].ParameterType == typeof(uint);
@@ -248,31 +249,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
                        select act;
 
             return acts.Union(GetBaseActions(type.BaseType)).ToArray();
-        }
-
-        private PropertyInfo[] GetProperties<T>(Type type)
-        {
-            if (type == null) return new PropertyInfo[0];
-
-            var props = from prop in type.GetRuntimeProperties()
-                        where typeof(T).IsAssignableFrom(prop.PropertyType)
-                                && prop.GetMethod is MethodInfo info
-                                && info.IsStatic
-                        select prop;
-
-            return props.Union(GetProperties<T>(type.BaseType)).ToArray();
-        }
-
-        private MethodInfo[] GetMethodInfo(Type type, Func<MethodInfo, bool> checks)
-        {
-            if(type == null) return new MethodInfo[0];
-
-            var methods = from method in type.GetRuntimeMethods()
-                          where method.IsStatic && !method.IsConstructor && method.ReturnType == typeof(bool)
-                          && checks(method)
-                          select method;
-
-            return methods.Union(GetMethodInfo(type.BaseType, checks)).ToArray();
         }
     }
 }
