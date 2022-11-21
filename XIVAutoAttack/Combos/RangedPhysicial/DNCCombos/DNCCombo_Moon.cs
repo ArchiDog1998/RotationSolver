@@ -53,31 +53,6 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
-    {
-        //°ó¶¨Îè°é
-        if (!InCombat && !Player.HasStatus(true, StatusID.ClosedPosition1) && ClosedPosition.ShouldUse(out act)) return true;
-
-        //Ó¦¼±»»Îè°é
-        if (InCombat && Player.HasStatus(true, StatusID.ClosedPosition1))
-        {
-            foreach (var friend in TargetUpdater.PartyMembers)
-            {
-                if (friend.HasStatus(true, StatusID.ClosedPosition2))
-                {
-                    if (ClosedPosition.ShouldUse(out act) && ClosedPosition.Target != friend)
-                    {
-                        return true;
-                    }
-                    break;
-                }
-            }
-        }
-        else if (ClosedPosition.ShouldUse(out act)) return true;
-
-        return base.GeneralAbility(abilityRemain, out act);
-    }
-
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         //½ø¹¥Ö®Ì½¸ê
@@ -87,7 +62,10 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 
             if (Player.HasStatus(true, StatusID.TechnicalFinish)) return true;
         }
-    
+
+        //Ó¦¼±»»Îè°é
+        if (UseClosedPosition(out act)) return true;
+      
         //°Ù»¨
         if (Flourish.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
@@ -109,8 +87,12 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
+        //°ó¶¨Îè°é
+        if (!InCombat && !Player.HasStatus(true, StatusID.ClosedPosition1) && ClosedPosition.ShouldUse(out act)) return true;
+
         //½áÊøÎè²½
         if (FinishStepGCD(out act)) return true;
+
         //Ö´ÐÐÎè²½
         if (ExcutionStepGCD(out act)) return true;
 
@@ -200,6 +182,33 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 
         if (TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) return false;
 
+        return false;
+    }
+
+    /// <summary>
+    /// Ó¦¼±»»Îè°é
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    private bool UseClosedPosition(out IAction act)
+    { 
+        if (!ClosedPosition.ShouldUse(out act)) return false;
+
+        //Ó¦¼±»»Îè°é
+        if (InCombat && Player.HasStatus(true, StatusID.ClosedPosition1))
+        {
+            foreach (var friend in TargetUpdater.PartyMembers)
+            {
+                if (friend.HasStatus(true, StatusID.ClosedPosition2))
+                {
+                    if (ClosedPosition.Target != friend) return true;
+                    break;
+                }
+            }
+        }
+        else if (ClosedPosition.ShouldUse(out act)) return true;
+
+        act = null;
         return false;
     }
 }
