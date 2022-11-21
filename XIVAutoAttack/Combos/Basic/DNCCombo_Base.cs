@@ -83,7 +83,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 落刃雨
     /// </summary>
-    public static BaseAction Bladeshower { get; } = new(ActionID.Windmill)
+    public static BaseAction Bladeshower { get; } = new(ActionID.Bladeshower)
     {
         BuffsProvide = Fountain.BuffsProvide,
     };
@@ -207,6 +207,24 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
+    /// 标准舞步结束
+    /// </summary>
+    private static BaseAction StandardFinish { get; } = new(ActionID.StandardFinish)
+    {
+        BuffsNeed = new[] { StatusID.StandardStep },
+        ActionCheck = b => IsDancing && JobGauge.CompletedSteps == 2,
+    };
+
+    /// <summary>
+    /// 技巧舞步结束
+    /// </summary>
+    private static BaseAction TechnicalFinish { get; } = new(ActionID.TechnicalFinish)
+    {
+        BuffsNeed = new[] { StatusID.TechnicalStep },
+        ActionCheck = b => IsDancing && JobGauge.CompletedSteps == 4,
+    };
+
+    /// <summary>
     /// 防守之桑巴
     /// </summary>
     public static BaseAction ShieldSamba { get; } = new(ActionID.ShieldSamba, true)
@@ -236,7 +254,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
             && (!b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2))
             ).ToArray();
 
-            return Targets.GetJobCategory(JobRole.Tank, JobRole.RangedMagicial, JobRole.RangedPhysical).FirstOrDefault();
+            return Targets.GetJobCategory(JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Tank).FirstOrDefault();
         },
     };
 
@@ -277,20 +295,22 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    protected bool FinishStepGCD(out IAction act)
+    protected static bool FinishStepGCD(out IAction act)
     {
         act = null;
-        if (!Player.HasStatus(true, StatusID.StandardStep, StatusID.TechnicalStep)) return false;
+        if (!IsDancing) return false;
 
-        if (Player.HasStatus(true, StatusID.StandardStep) && JobGauge.CompletedSteps == 2)
+        //标准舞步结束
+        if (Player.HasStatus(true, StatusID.StandardStep) && Player.WillStatusEnd(1, true, StatusID.StandardStep) || StandardFinish.ShouldUse(out _, mustUse: true))
         {
-            act = StandardStep;
+            act = StandardFinish;
             return true;
         }
 
-        if (Player.HasStatus(true, StatusID.TechnicalStep) && JobGauge.CompletedSteps == 4)
+        //技巧舞步结束
+        if (Player.HasStatus(true, StatusID.TechnicalStep) && Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || TechnicalFinish.ShouldUse(out _, mustUse: true))
         {
-            act = TechnicalStep;
+            act = TechnicalFinish;
             return true;
         }
 
@@ -302,7 +322,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    protected bool ExcutionStepGCD(out IAction act)
+    protected static bool ExcutionStepGCD(out IAction act)
     {
         act = null;
         if (!Player.HasStatus(true, StatusID.StandardStep, StatusID.TechnicalStep)) return false;
