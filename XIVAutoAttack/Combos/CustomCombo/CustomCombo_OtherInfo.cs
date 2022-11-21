@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using System;
+using System.ComponentModel;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -24,44 +25,51 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 是否正在移动
         /// </summary>
+        [DisplayName("在移动")]
+        [Description("玩家正在位移")]
         protected static bool IsMoving => MovingUpdater.IsMoving;
         /// <summary>
         /// 攻击范围内是否有敌人
         /// </summary>
+        [DisplayName("范围内有敌人")]
+        [Description("近战3米内有敌人，远程25米内有敌人。")]
         protected static bool HaveHostilesInRange => TargetUpdater.HaveHostilesInRange;
 
-        private bool canUseHealAction => Job.GetJobRole() == JobRole.Healer || Service.Configuration.UseHealWhenNotAHealer;
+        private bool _canUseHealAction => Job.GetJobRole() == JobRole.Healer || Service.Configuration.UseHealWhenNotAHealer;
 
         /// <summary>
         /// 是否可以使用范围治疗能力技
         /// </summary>
-        protected virtual bool CanHealAreaAbility => TargetUpdater.CanHealAreaAbility && canUseHealAction;
+        protected virtual bool CanHealAreaAbility => TargetUpdater.CanHealAreaAbility && _canUseHealAction;
         /// <summary>
         /// 是否可以使用范围治疗魔法
         /// </summary>
-        protected virtual bool CanHealAreaSpell => TargetUpdater.CanHealAreaSpell && canUseHealAction;
+        protected virtual bool CanHealAreaSpell => TargetUpdater.CanHealAreaSpell && _canUseHealAction;
 
         /// <summary>
         /// 是否可以使用单体治疗能力技
         /// </summary>
-        protected virtual bool CanHealSingleAbility => TargetUpdater.CanHealSingleAbility && canUseHealAction;
+        protected virtual bool CanHealSingleAbility => TargetUpdater.CanHealSingleAbility && _canUseHealAction;
         /// <summary>
         /// 是否可以使用单体治疗魔法
         /// </summary>
-        protected virtual bool CanHealSingleSpell => TargetUpdater.CanHealSingleSpell && canUseHealAction;
+        protected virtual bool CanHealSingleSpell => TargetUpdater.CanHealSingleSpell && _canUseHealAction;
 
         /// <summary>
         /// 是否处于爆发，自动爆发或者手动点击的爆发
         /// </summary>
-        protected bool SettingBreak => CommandController.BreakorProvoke || Service.Configuration.AutoBreak;
+        [DisplayName("处于爆发")]
+        protected static bool SettingBreak => CommandController.BreakorProvoke || Service.Configuration.AutoBreak;
 
         /// <summary>
         /// 当前等级
         /// </summary>
+        [DisplayName("玩家等级")]
         protected static byte Level => Player?.Level ?? 0;
         /// <summary>
         /// 是否在战斗中
         /// </summary>
+        [DisplayName("在战斗中")]
         protected static bool InCombat => ActionUpdater.InCombat;
 
         /// <summary>

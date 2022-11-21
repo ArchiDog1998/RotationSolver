@@ -51,13 +51,14 @@ namespace XIVAutoAttack.Updaters
                     return;
                 }
             }
+#if DEBUG
             catch (Exception ex)
             {
-#if DEBUG
                 exception = ex;
-#endif
-
             }
+#else
+            catch { }
+#endif
 
             NextAction = null;
         }

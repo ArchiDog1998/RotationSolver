@@ -1,10 +1,12 @@
 ﻿using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using static XIVAutoAttack.Helpers.ReflectionHelper;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
@@ -21,6 +23,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public abstract string Author { get; }
 
+        [DisplayName("目标将要死亡")]
         /// <summary>
         /// 目标是否将要死亡
         /// </summary>
@@ -33,6 +36,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
         }
 
+        [DisplayName("目标为Boss")]
         /// <summary>
         /// 目标是否是Boss
         /// </summary>
@@ -66,12 +70,18 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 说明字典
         /// </summary>
         public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
-
+       
         /// <summary>
         /// 有即刻相关Buff
         /// </summary>
+        [DisplayName("有即刻")]
         internal static bool HaveSwift => Player.HasStatus(true, Swiftcast.BuffsProvide);
 
+        /// <summary>
+        /// 有盾姿，如果为非T那么始终为true
+        /// </summary>
+        [DisplayName("有盾姿")]
+        [ReflectableMember]
         internal virtual bool HaveShield => true;
 
 

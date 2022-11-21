@@ -235,7 +235,6 @@ internal partial class ComboConfigWindow : Window
                 }
             }
 
-#if DEBUG
             ImGui.SameLine();
             Spacing();
 
@@ -248,7 +247,6 @@ internal partial class ComboConfigWindow : Window
             {
                 ImGui.SetTooltip("添加一个自定义Combo");
             }
-#endif
         }
 
         if (enable)
