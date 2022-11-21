@@ -1069,6 +1069,16 @@ namespace XIVAutoAttack.Data
         TechnicalStep = 15998,
 
         /// <summary>
+        /// 标准舞步结束
+        /// </summary>
+        StandardFinish = 16003,
+
+        /// <summary>
+        /// 技巧舞步结束
+        /// </summary>
+        TechnicalFinish = 16004,
+
+        /// <summary>
         /// 防守之桑巴
         /// </summary>
         ShieldSamba = 16012,
