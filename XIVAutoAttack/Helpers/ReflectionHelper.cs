@@ -41,6 +41,32 @@ internal static class ReflectionHelper
         return methods.Union(GetStaticBoolMethodInfo(type.BaseType, checks)).ToArray();
     }
 
+    internal static PropertyInfo GetPropertyInfo(this Type type, string name)
+    {
+        if (type == null) return null;
+
+        foreach (var item in type.GetRuntimeProperties())
+        {
+            if (item.Name == name && item.GetMethod is MethodInfo info
+               && (info.IsStatic || info.GetCustomAttribute<ReflectableMemberAttribute>() != null)) return item;
+        }
+
+        return GetPropertyInfo(type.BaseType, name);
+    }
+
+    internal static MethodInfo GetMethodInfo(this Type type, string name)
+    {
+        if (type == null) return null;
+
+        foreach (var item in type.GetRuntimeMethods())
+        {
+            if(item.Name == name && (item.IsStatic || item.GetCustomAttribute<ReflectableMemberAttribute>() != null)
+                      && !item.IsConstructor && item.ReturnType == typeof(bool)) return item;
+        }
+
+        return GetMethodInfo(type.BaseType, name);
+    }
+
     internal static string GetMemberName(this MemberInfo info)
     {
         return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName 

@@ -23,6 +23,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         MethodInfo[] AllTimes { get; }
         MethodInfo[] AllLast { get; }
+        MethodInfo[] AllOther { get; }
         MethodInfo[] AllGCDs { get; }
         string OnCommand(string args);
         bool TryInvoke(out IAction newAction);

@@ -840,6 +840,12 @@
         /// </summary>
         ReadyToBlast = 2686,
 
+        #region SAM
+        /// <summary>
+        /// 彼岸花
+        /// </summary>
+        Higanbana = 1228,
+
         /// <summary>
         /// 明镜止水
         /// </summary>
@@ -851,14 +857,20 @@
         Enhanced_Enpi = 1236,
 
         /// <summary>
+        /// 风月
+        /// </summary>
+        Fugetsu = 1298,
+
+        /// <summary>
+        /// 风花
+        /// </summary>
+        Fuka = 1299,
+
+        /// <summary>
         /// 奥义斩浪预备
         /// </summary>
         OgiNamikiriReady = 2959,
-
-        /// <summary>
-        /// 彼岸花
-        /// </summary>
-        Higanbana = 1228,
+        #endregion
 
         /// <summary>
         /// 不能使用能力技
@@ -913,16 +925,6 @@
         /// 战斗连祷
         /// </summary>
         BattleLitany = 786,
-
-        /// <summary>
-        /// 风月
-        /// </summary>
-        Moon = 1298,
-
-        /// <summary>
-        /// 风花
-        /// </summary>
-        Flower = 1299,
 
         /// <summary>
         /// 真理之剑预备状态

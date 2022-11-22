@@ -233,6 +233,21 @@ namespace XIVAutoAttack.Windows
             SearchItems(ref searchTxt, actions, i => i.Name, selectAction, i => ImGui.Image(i.GetTexture().ImGuiHandle, new Vector2(24, 24)));
         }
 
+        internal static void AddPopup<T>(string popId, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
+        {
+            if (ImGuiComponents.IconButton(popId.GetHashCode(), FontAwesomeIcon.Plus))
+            {
+                ImGui.OpenPopup(popId);
+            }
+
+            if (ImGui.BeginPopup(popId))
+            {
+                SearchItems(ref searchTxt, actions, i => i.GetMemberName(), selectAction, getDesc: i => i.GetMemberDescription());
+
+                ImGui.EndPopup();
+            }
+        }
+
         internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
         {
             if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
