@@ -21,14 +21,13 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     protected static bool HasGetsu => JobGauge.HasGetsu;
 
-
     /// <summary>
     /// 花闪
     /// </summary>
     protected static bool HasKa => JobGauge.HasKa;
 
     /// <summary>
-    /// 什么气？
+    /// 剑气
     /// </summary>
     protected static byte Kenki => JobGauge.Kenki;
 
@@ -37,13 +36,22 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     protected static byte MeditationStacks => JobGauge.MeditationStacks;
 
+    /// <summary>
+    /// 明镜层数
+    /// </summary>
+    protected static byte MeikyoStacks = Player.StatusStack(true, StatusID.MeikyoShisui);
+
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
 
+    /// <summary>
+    /// 闪的数量
+    /// </summary>
     protected static byte SenCount => (byte)((HasGetsu ? 1 : 0) + (HasSetsu ? 1 : 0) + (HasKa ? 1 : 0));
 
-    protected static bool HaveMoon => Player.HasStatus(true, StatusID.Moon);
-    protected static bool HaveFlower => Player.HasStatus(true, StatusID.Flower);
+    protected static bool HaveMoon => Player.HasStatus(true, StatusID.Fugetsu);
+    protected static bool HaveFlower => Player.HasStatus(true, StatusID.Fuka);
 
+    #region 单体
     /// <summary>
     /// 刃风
     /// </summary>
@@ -55,14 +63,9 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Jinpu { get; } = new(ActionID.Jinpu);
 
     /// <summary>
-    /// 心眼
+    /// 月光
     /// </summary>
-    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye, true);
-
-    /// <summary>
-    /// 燕飞
-    /// </summary>
-    public static BaseAction Enpi { get; } = new(ActionID.Enpi);
+    public static BaseAction Gekko { get; } = new(ActionID.Gekko);
 
     /// <summary>
     /// 士风
@@ -70,9 +73,40 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Shifu { get; } = new(ActionID.Shifu);
 
     /// <summary>
-    /// 风雅
+    /// 花车
+    /// </summary>
+    public static BaseAction Kasha { get; } = new(ActionID.Kasha);
+
+    /// <summary>
+    /// 雪风
+    /// </summary>
+    public static BaseAction Yukikaze { get; } = new(ActionID.Yukikaze);
+
+    /// <summary>
+    /// 照破
+    /// </summary>
+    public static BaseAction Shoha { get; } = new(ActionID.Shoha)
+    {
+        ActionCheck = b => MeditationStacks == 3
+    };
+    #endregion
+
+    #region AoE
+
+    /// <summary>
+    /// 风雅 风光
     /// </summary>
     public static BaseAction Fuga { get; } = new(ActionID.Fuga);
+
+    /// <summary>
+    /// 满月
+    /// </summary>
+    public static BaseAction Mangetsu { get; } = new(ActionID.Mangetsu);
+
+    /// <summary>
+    /// 樱花
+    /// </summary>
+    public static BaseAction Oka { get; } = new(ActionID.Oka);
 
     /// <summary>
     /// 风光
@@ -80,15 +114,29 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Fuko { get; } = new(ActionID.Fuko);
 
     /// <summary>
-    /// 月光
+    /// 无明照破
     /// </summary>
-    public static BaseAction Gekko { get; } = new(ActionID.Gekko);
+    public static BaseAction Shoha2 { get; } = new(ActionID.Shoha2)
+    {
+        ActionCheck = b => MeditationStacks == 3
+    };
 
     /// <summary>
-    /// 叶隐
+    /// 奥义斩浪
     /// </summary>
-    public static BaseAction Hagakure { get; } = new(ActionID.Hagakure);
+    public static BaseAction OgiNamikiri { get; } = new(ActionID.OgiNamikiri)
+    {
+        BuffsNeed = new[] { StatusID.OgiNamikiriReady },
+        ActionCheck = b => !IsMoving
+    };
 
+    /// <summary>
+    /// 回返斩浪
+    /// </summary>
+    public static BaseAction KaeshiNamikiri { get; } = new(ActionID.KaeshiNamikiri);
+    #endregion
+
+    #region 居合术
     /// <summary>
     /// 彼岸花
     /// </summary>
@@ -115,64 +163,6 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
-    /// 满月
-    /// </summary>
-    public static BaseAction Mangetsu { get; } = new(ActionID.Mangetsu);
-
-    /// <summary>
-    /// 花车
-    /// </summary>
-    public static BaseAction Kasha { get; } = new(ActionID.Kasha);
-
-    /// <summary>
-    /// 樱花
-    /// </summary>
-    public static BaseAction Oka { get; } = new(ActionID.Oka);
-
-    /// <summary>
-    /// 明镜止水
-    /// </summary>
-    public static BaseAction MeikyoShisui { get; } = new(ActionID.MeikyoShisui)
-    {
-        BuffsProvide = new[] { StatusID.MeikyoShisui },
-    };
-
-    /// <summary>
-    /// 雪风
-    /// </summary>
-    public static BaseAction Yukikaze { get; } = new(ActionID.Yukikaze);
-
-    /// <summary>
-    /// 必杀剑·晓天
-    /// </summary>
-    public static BaseAction HissatsuGyoten { get; } = new(ActionID.HissatsuGyoten);
-
-    /// <summary>
-    /// 必杀剑·震天
-    /// </summary>
-    public static BaseAction HissatsuShinten { get; } = new(ActionID.HissatsuShinten);
-
-    /// <summary>
-    /// 必杀剑·九天
-    /// </summary>
-    public static BaseAction HissatsuKyuten { get; } = new(ActionID.HissatsuKyuten);
-
-    /// <summary>
-    /// 意气冲天
-    /// </summary>
-    public static BaseAction Ikishoten { get; } = new(ActionID.Ikishoten);
-
-    /// <summary>
-    /// 必杀剑·红莲
-    /// </summary>
-    public static BaseAction HissatsuGuren { get; } = new(ActionID.HissatsuGuren);
-
-    /// <summary>
-    /// 必杀剑·闪影
-    /// </summary>
-    public static BaseAction HissatsuSenei { get; } = new(ActionID.HissatsuSenei);
-
-    /// <summary>
     /// 燕回返
     /// </summary>
     public static BaseAction Tsubame_gaeshi { get; } = new(ActionID.Tsubame_gaeshi);
@@ -186,29 +176,85 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// 回返雪月花
     /// </summary>
     public static BaseAction KaeshiSetsugekka { get; } = new(ActionID.KaeshiSetsugekka);
+    #endregion
+
+    #region 其它
+    /// <summary>
+    /// 心眼
+    /// </summary>
+    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye, true);
 
     /// <summary>
-    /// 照破
+    /// 燕飞
     /// </summary>
-    public static BaseAction Shoha { get; } = new(ActionID.Shoha);
+    public static BaseAction Enpi { get; } = new(ActionID.Enpi);
 
     /// <summary>
-    /// 无明照破
+    /// 明镜止水
     /// </summary>
-    public static BaseAction Shoha2 { get; } = new(ActionID.Shoha2);
-
-    /// <summary>
-    /// 奥义斩浪
-    /// </summary>
-    public static BaseAction OgiNamikiri { get; } = new(ActionID.OgiNamikiri)
+    public static BaseAction MeikyoShisui { get; } = new(ActionID.MeikyoShisui)
     {
-        ActionCheck = b => HaveFlower && HaveMoon,
-        BuffsNeed = new[] { StatusID.OgiNamikiriReady },
+        BuffsProvide = new[] { StatusID.MeikyoShisui },
     };
 
     /// <summary>
-    /// 回返斩浪
+    /// 叶隐
     /// </summary>
-    public static BaseAction KaeshiNamikiri { get; } = new(ActionID.KaeshiNamikiri);
+    public static BaseAction Hagakure { get; } = new(ActionID.Hagakure)
+    {
+        ActionCheck = b => SenCount > 0
+    };
+
+    /// <summary>
+    /// 意气冲天
+    /// </summary>
+    public static BaseAction Ikishoten { get; } = new(ActionID.Ikishoten)
+    {
+        BuffsProvide = new[] {StatusID.OgiNamikiriReady},
+        ActionCheck = b => InCombat
+    };
+    #endregion
+
+    #region 必杀技
+    /// <summary>
+    /// 必杀剑·震天
+    /// </summary>
+    public static BaseAction HissatsuShinten { get; } = new(ActionID.HissatsuShinten)
+    {
+        ActionCheck = b => Kenki >= 25
+    };
+
+    /// <summary>
+    /// 必杀剑·晓天
+    /// </summary>
+    public static BaseAction HissatsuGyoten { get; } = new(ActionID.HissatsuGyoten)
+    {
+        ActionCheck = b => !Player.HasStatus(true,StatusID.Bind1,StatusID.Bind2)
+    };
+
+    /// <summary>
+    /// 必杀剑·九天
+    /// </summary>
+    public static BaseAction HissatsuKyuten { get; } = new(ActionID.HissatsuKyuten)
+    {
+        ActionCheck = b => Kenki >= 25
+    };
+
+    /// <summary>
+    /// 必杀剑·红莲
+    /// </summary>
+    public static BaseAction HissatsuGuren { get; } = new(ActionID.HissatsuGuren)
+    {
+        ActionCheck = b => Kenki >= 25
+    };
+
+    /// <summary>
+    /// 必杀剑·闪影
+    /// </summary>
+    public static BaseAction HissatsuSenei { get; } = new(ActionID.HissatsuSenei)
+    {
+        ActionCheck = b => Kenki >= 25
+    };
+    #endregion
 
 }
