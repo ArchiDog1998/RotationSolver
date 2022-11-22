@@ -26,7 +26,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 昏乱
         /// </summary>
-        public static RoleAction Addle { get; } = new(ActionID.Addle, new JobRole[] { JobRole.RangedMagicial })
+        public static RoleAction Addle { get; } = new(ActionID.Addle, new JobRole[] { JobRole.RangedMagicial }, isTimeline: true)
         {
             ActionCheck = b => !b.HasStatus(false, StatusID.Addle),
         };
@@ -47,7 +47,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 康复
         /// </summary>
-        public static RoleAction Esuna { get; } = new(ActionID.Esuna, new JobRole[] { JobRole.Healer }, true)
+        public static RoleAction Esuna { get; } = new(ActionID.Esuna, new JobRole[] { JobRole.Healer }, true, isTimeline: true)
         {
             ChoiceTarget = (tars) =>
             {
@@ -66,7 +66,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 营救
         /// </summary>
-        public static RoleAction Rescue { get; } = new(ActionID.Rescue, new JobRole[] { JobRole.Healer }, true);
+        public static RoleAction Rescue { get; } = new(ActionID.Rescue, new JobRole[] { JobRole.Healer }, true, isTimeline: true);
 
         /// <summary>
         /// 沉静
@@ -86,7 +86,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 内丹
         /// </summary>
         public static RoleAction SecondWind { get; } = new(ActionID.SecondWind,
-            new JobRole[] { JobRole.Tank, JobRole.RangedPhysical, JobRole.Melee }, true)
+            new JobRole[] { JobRole.Tank, JobRole.RangedPhysical, JobRole.Melee }, true, isTimeline: true)
         {
             ActionCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility,
         };
@@ -94,7 +94,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 亲疏自行
         /// </summary>
-        public static RoleAction ArmsLength { get; } = new(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee }, true, shouldEndSpecial: true);
+        public static RoleAction ArmsLength { get; } = new(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee }, true, shouldEndSpecial: true, isTimeline: true);
 
         /// <summary>
         /// 铁壁
@@ -122,7 +122,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 挑衅
         /// </summary>
-        public static RoleAction Provoke { get; } = new(ActionID.Provoke, new JobRole[] { JobRole.Tank })
+        public static RoleAction Provoke { get; } = new(ActionID.Provoke, new JobRole[] { JobRole.Tank }, isTimeline: true)
         {
             FilterForTarget = b => TargetFilter.ProvokeTarget(b),
         };
@@ -135,7 +135,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 退避
         /// </summary>
-        public static RoleAction Shirk { get; } = new(ActionID.Shirk, new JobRole[] { JobRole.Tank }, true)
+        public static RoleAction Shirk { get; } = new(ActionID.Shirk, new JobRole[] { JobRole.Tank }, true, isTimeline: true)
         {
             ChoiceTarget = friends =>
             {
@@ -148,7 +148,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 浴血
         /// </summary>
-        public static RoleAction Bloodbath { get; } = new(ActionID.Bloodbath, new JobRole[] { JobRole.Melee }, true)
+        public static RoleAction Bloodbath { get; } = new(ActionID.Bloodbath, new JobRole[] { JobRole.Melee }, true, isTimeline: true)
         {
             ActionCheck = SecondWind.ActionCheck,
         };
@@ -188,7 +188,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 沉稳咏唱
         /// </summary>
         public static RoleAction Surecast { get; } = new(ActionID.Surecast,
-            new JobRole[] { JobRole.RangedMagicial, JobRole.Healer }, true, shouldEndSpecial: true);
+            new JobRole[] { JobRole.RangedMagicial, JobRole.Healer }, true, shouldEndSpecial: true, isTimeline: true);
 
         /// <summary>
         /// 真北

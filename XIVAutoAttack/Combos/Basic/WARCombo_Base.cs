@@ -137,7 +137,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 原初的勇猛
     /// </summary>
-    public static BaseAction NascentFlash { get; } = new(ActionID.NascentFlash)
+    public static BaseAction NascentFlash { get; } = new(ActionID.NascentFlash, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -145,7 +145,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 复仇
     /// </summary>
-    public static BaseAction Vengeance { get; } = new(ActionID.Vengeance)
+    public static BaseAction Vengeance { get; } = new(ActionID.Vengeance, isTimeline: true)
     {
         BuffsProvide = Rampart.BuffsProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -154,7 +154,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 原初的直觉
     /// </summary>
-    public static BaseAction RawIntuition { get; } = new(ActionID.RawIntuition)
+    public static BaseAction RawIntuition { get; } = new(ActionID.RawIntuition, isTimeline: true)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };

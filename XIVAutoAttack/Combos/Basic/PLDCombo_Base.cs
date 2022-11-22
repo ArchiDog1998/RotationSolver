@@ -103,17 +103,17 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 神圣领域
     /// </summary>
-    public static BaseAction HallowedGround { get; } = new(ActionID.HallowedGround);
+    public static BaseAction HallowedGround { get; } = new(ActionID.HallowedGround, isTimeline: true);
 
     /// <summary>
     /// 圣光幕帘
     /// </summary>
-    public static BaseAction DivineVeil { get; } = new(ActionID.DivineVeil, true);
+    public static BaseAction DivineVeil { get; } = new(ActionID.DivineVeil, true, isTimeline: true);
 
     /// <summary>
     /// 深仁厚泽
     /// </summary>
-    public static BaseAction Clemency { get; } = new(ActionID.Clemency, true, true);
+    public static BaseAction Clemency { get; } = new(ActionID.Clemency, true, true, isTimeline: true);
 
     /// <summary>
     /// 干预
@@ -185,7 +185,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 武装戍卫
     /// </summary>
-    public static BaseAction PassageofArms { get; } = new(ActionID.PassageofArms, true);
+    public static BaseAction PassageofArms { get; } = new(ActionID.PassageofArms, true, isTimeline: true);
 
     /// <summary>
     /// 保护

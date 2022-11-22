@@ -179,7 +179,7 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 策动
     /// </summary>
-    public static BaseAction Tactician { get; } = new(ActionID.Tactician, true)
+    public static BaseAction Tactician { get; } = new(ActionID.Tactician, true, isTimeline: true)
     {
         ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,

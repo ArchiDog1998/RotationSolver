@@ -139,7 +139,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 天宫图
     /// </summary>
-    public static BaseAction Horoscope { get; } = new(ActionID.Horoscope, true);
+    public static BaseAction Horoscope { get; } = new(ActionID.Horoscope, true, isTimeline: true);
 
     /// <summary>
     /// 光速
@@ -149,12 +149,12 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 中间学派
     /// </summary>
-    public static BaseAction NeutralSect { get; } = new(ActionID.NeutralSect);
+    public static BaseAction NeutralSect { get; } = new(ActionID.NeutralSect, isTimeline: true);
 
     /// <summary>
     /// 大宇宙
     /// </summary>
-    public static BaseAction Macrocosmos { get; } = new(ActionID.Macrocosmos);
+    public static BaseAction Macrocosmos { get; } = new(ActionID.Macrocosmos, isTimeline: true);
 
     /// <summary>
     /// 星力

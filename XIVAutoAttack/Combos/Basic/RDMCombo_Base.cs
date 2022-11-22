@@ -187,7 +187,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// øπÀ¿
     /// </summary>
-    public static BaseAction MagickBarrier { get; } = new(ActionID.MagickBarrier, true);
+    public static BaseAction MagickBarrier { get; } = new(ActionID.MagickBarrier, true, isTimeline: true);
 
     /// <summary>
     /// ≥‡∫À±¨

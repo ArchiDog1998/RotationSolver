@@ -86,7 +86,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     //守护之光 给自己戴套
-    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis, true);
+    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis, true, isTimeline: true);
 
     //医术
     public static BaseAction Physick { get; } = new(ActionID.Physick, true);

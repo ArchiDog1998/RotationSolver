@@ -165,12 +165,12 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 光阴神的礼赞凯歌
     /// </summary>
-    public static BaseAction WardensPaean { get; } = new(ActionID.WardensPaean, true);
+    public static BaseAction WardensPaean { get; } = new(ActionID.WardensPaean, true, isTimeline: true);
 
     /// <summary>
     /// 大地神的抒情恋歌
     /// </summary>
-    public static BaseAction NaturesMinne { get; } = new(ActionID.NaturesMinne, true);
+    public static BaseAction NaturesMinne { get; } = new(ActionID.NaturesMinne, true, isTimeline: true);
 
     /// <summary>
     /// 侧风诱导箭
@@ -188,7 +188,7 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 行吟
     /// </summary>
-    public static BaseAction Troubadour { get; } = new(ActionID.Troubadour, true)
+    public static BaseAction Troubadour { get; } = new(ActionID.Troubadour, true, isTimeline: true)
     {
         ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,

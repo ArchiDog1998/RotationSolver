@@ -189,7 +189,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 献奉
     /// </summary>
-    public static BaseAction Oblation { get; } = new(ActionID.Oblation, true)
+    public static BaseAction Oblation { get; } = new(ActionID.Oblation, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };

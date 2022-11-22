@@ -227,7 +227,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ·ÀÊØÖ®É£°Í
     /// </summary>
-    public static BaseAction ShieldSamba { get; } = new(ActionID.ShieldSamba, true)
+    public static BaseAction ShieldSamba { get; } = new(ActionID.ShieldSamba, true, isTimeline: true)
     {
         ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
@@ -238,7 +238,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ÖÎÁÆÖ®»ª¶û×È
     /// </summary>
-    public static BaseAction CuringWaltz { get; } = new(ActionID.CuringWaltz, true);
+    public static BaseAction CuringWaltz { get; } = new(ActionID.CuringWaltz, true, isTimeline: true);
 
     /// <summary>
     /// ±ÕÊ½Îè×Ë
@@ -326,6 +326,8 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     {
         act = null;
         if (!Player.HasStatus(true, StatusID.StandardStep, StatusID.TechnicalStep)) return false;
+        if (Player.HasStatus(true, StatusID.StandardStep) && CompletedSteps == 2) return false;
+        if (Player.HasStatus(true, StatusID.TechnicalStep) && CompletedSteps == 4) return false;
 
         if (Emboite.ShouldUse(out act)) return true;
         if (Entrechat.ShouldUse(out act)) return true;

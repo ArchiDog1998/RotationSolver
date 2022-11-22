@@ -140,7 +140,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 炽天召唤
     /// </summary>
-    public static BaseAction SummonSeraph { get; } = new(ActionID.SummonSeraph, true)
+    public static BaseAction SummonSeraph { get; } = new(ActionID.SummonSeraph, true, isTimeline: true)
     {
         ActionCheck = b => TargetUpdater.HavePet,
     };
@@ -156,7 +156,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 仙光的低语/天使的低语
     /// </summary>
-    public static BaseAction WhisperingDawn { get; } = new(ActionID.WhisperingDawn)
+    public static BaseAction WhisperingDawn { get; } = new(ActionID.WhisperingDawn, isTimeline: true)
     {
         ActionCheck = b => TargetUpdater.HavePet,
     };
@@ -164,7 +164,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 异想的幻光/炽天的幻光
     /// </summary>
-    public static BaseAction FeyIllumination { get; } = new(ActionID.FeyIllumination)
+    public static BaseAction FeyIllumination { get; } = new(ActionID.FeyIllumination, isTimeline: true)
     {
         ActionCheck = b => TargetUpdater.HavePet,
     };
@@ -181,7 +181,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 以太契约-异想的融光
     /// </summary>
-    public static BaseAction Aetherpact { get; } = new(ActionID.Aetherpact, true)
+    public static BaseAction Aetherpact { get; } = new(ActionID.Aetherpact, true, isTimeline: true)
     {
         ActionCheck = b => JobGauge.FairyGauge >= 10 && TargetUpdater.HavePet && !HasSeraph
     };
@@ -189,7 +189,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 异想的祥光
     /// </summary>
-    public static BaseAction FeyBlessing { get; } = new(ActionID.FeyBlessing)
+    public static BaseAction FeyBlessing { get; } = new(ActionID.FeyBlessing, isTimeline: true)
     {
         ActionCheck = b => !HasSeraph && TargetUpdater.HavePet,
     };
@@ -206,7 +206,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 秘策
     /// </summary>
-    public static BaseAction Recitation { get; } = new(ActionID.Recitation);
+    public static BaseAction Recitation { get; } = new(ActionID.Recitation, isTimeline: true);
 
     /// <summary>
     /// 连环计
@@ -219,7 +219,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 展开战术
     /// </summary>
-    public static BaseAction DeploymentTactics { get; } = new(ActionID.DeploymentTactics, true)
+    public static BaseAction DeploymentTactics { get; } = new(ActionID.DeploymentTactics, true, isTimeline: true)
     {
         ChoiceTarget = friends =>
         {
@@ -234,11 +234,11 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 应急战术
     /// </summary>
-    public static BaseAction EmergencyTactics { get; } = new(ActionID.EmergencyTactics);
+    public static BaseAction EmergencyTactics { get; } = new(ActionID.EmergencyTactics, isTimeline: true);
 
     /// <summary>
     /// 疾风怒涛之计
     /// </summary>
-    public static BaseAction Expedient { get; } = new(ActionID.Expedient);
+    public static BaseAction Expedient { get; } = new(ActionID.Expedient, isTimeline: true);
     #endregion
 }

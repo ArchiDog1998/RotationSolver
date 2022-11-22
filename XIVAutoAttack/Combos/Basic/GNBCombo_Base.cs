@@ -141,7 +141,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 光之心
     /// </summary>
-    public static BaseAction HeartofLight { get; } = new(ActionID.HeartofLight, true);
+    public static BaseAction HeartofLight { get; } = new(ActionID.HeartofLight, true, isTimeline: true);
 
     /// <summary>
     /// 石之心

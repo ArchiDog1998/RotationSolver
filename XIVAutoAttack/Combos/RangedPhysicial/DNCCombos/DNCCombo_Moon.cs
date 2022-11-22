@@ -55,6 +55,10 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
+        act = null;
+        //跳舞状态禁止使用
+        if (IsDancing) return false;
+
         //进攻之探戈
         if (Devilment.ShouldUse(out act, emptyOrSkipCombo: true))
         {
@@ -69,8 +73,6 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         //百花
         if (Flourish.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-        //扇舞·终
-        if (FanDance4.ShouldUse(out act, mustUse: true)) return true;
         //扇舞·急
         if (FanDance3.ShouldUse(out act, mustUse: true)) return true;
 
@@ -81,6 +83,9 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
             //扇舞·序
             if (FanDance.ShouldUse(out act)) return true;
         }
+
+        //扇舞·终
+        if (FanDance4.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -118,9 +123,9 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         if (IsDancing) return false;
 
         //剑舞
-        if ((breaking || Esprit >= 80) && SaberDance.ShouldUse(out act, mustUse: true)) return true;
+        if ((breaking || Esprit >= 85) && SaberDance.ShouldUse(out act, mustUse: true)) return true;
 
-        //提纳拉
+        //提拉纳
         if (Tillana.ShouldUse(out act, mustUse: true)) return true;
 
         //流星舞
@@ -162,7 +167,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         if (!HaveHostilesInRange) return false;
 
         //技巧舞步状态和快冷却好时不释放
-        if (TechnicalStep.EnoughLevel && (Player.HasStatus(true, StatusID.TechnicalFinish) || TechnicalStep.WillHaveOneChargeGCD(2))) return false;
+        if (TechnicalStep.EnoughLevel && (Player.HasStatus(true, StatusID.TechnicalFinish) || TechnicalStep.IsCoolDown && TechnicalStep.WillHaveOneChargeGCD(2))) return false;
 
         return true;
     }

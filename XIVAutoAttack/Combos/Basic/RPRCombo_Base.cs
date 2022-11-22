@@ -281,7 +281,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 神秘纹 加盾
     /// </summary>
-    public static BaseAction ArcaneCrest { get; } = new(ActionID.ArcaneCrest, true);
+    public static BaseAction ArcaneCrest { get; } = new(ActionID.ArcaneCrest, true, isTimeline: true);
     #endregion
 
 }

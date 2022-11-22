@@ -148,14 +148,14 @@ namespace XIVAutoAttack.Combos.Basic
             {
             }
 
-            public override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false)
+            public override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
             {
                 if (JobGauge.IsEnochianActive && CastTime - 0.5f > JobGauge.ElementTimeRemaining / 1000f)
                 {
                     act = null;
                     return false;
                 }
-                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo);
+                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
             }
         }
 
@@ -188,7 +188,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 魔罩
         /// </summary>
-        public static BaseAction Manaward { get; } = new(ActionID.Manaward, true);
+        public static BaseAction Manaward { get; } = new(ActionID.Manaward, true, isTimeline: true);
 
         /// <summary>
         /// 魔泉

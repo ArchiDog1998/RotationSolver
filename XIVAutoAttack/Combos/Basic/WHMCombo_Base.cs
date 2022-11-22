@@ -194,12 +194,12 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 全大赦
     /// </summary>
-    public static BaseAction PlenaryIndulgence { get; } = new(ActionID.PlenaryIndulgence, true);
+    public static BaseAction PlenaryIndulgence { get; } = new(ActionID.PlenaryIndulgence, true, isTimeline: true);
 
     /// <summary>
     /// 节制
     /// </summary>
-    public static BaseAction Temperance { get; } = new(ActionID.Temperance, true);
+    public static BaseAction Temperance { get; } = new(ActionID.Temperance, true, isTimeline: true);
     #endregion
 
 }
