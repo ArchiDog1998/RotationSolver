@@ -24,51 +24,54 @@ internal class ActionCondition : ICondition
 
     public bool IsTrue(IScriptCombo combo)
     {
+        if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
+        {
+            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+        }
+        if (_action == null || Service.ClientState.LocalPlayer == null) return false;
 
-            if (_action == null || Service.ClientState.LocalPlayer == null) return false;
+        var result = false;
 
-            var result = false;
+        switch (ActionConditonType)
+        {
+            case ActionConditonType.Elapsed:
+                result = _action.ElapsedAfter(Time); // 大于
+                break;
 
-            switch (ActionConditonType)
-            {
-                case ActionConditonType.Elapsed:
-                    result = _action.ElapsedAfter(Time); // 大于
-                    break;
+            case ActionConditonType.ElapsedGCD:
+                result = _action.ElapsedAfterGCD((uint)Param1, (uint)Param2); // 大于
+                break;
 
-                case ActionConditonType.ElapsedGCD:
-                    result = _action.ElapsedAfterGCD((uint)Param1, (uint)Param2); // 大于
-                    break;
+            case ActionConditonType.Remain:
+                result = !_action.WillHaveOneCharge(Time); //小于
+                break;
 
-                case ActionConditonType.Remain:
-                    result = !_action.WillHaveOneCharge(Time); //小于
-                    break;
+            case ActionConditonType.RemainGCD:
+                result = !_action.WillHaveOneChargeGCD((uint)Param1, (uint)Param2); // 小于
+                break;
 
-                case ActionConditonType.RemainGCD:
-                    result = !_action.WillHaveOneChargeGCD((uint)Param1, (uint)Param2); // 小于
-                    break;
+            case ActionConditonType.ShouldUse:
+                result = _action.ShouldUse(out _, Param1 > 0, Param2 > 0);
+                break;
 
-                case ActionConditonType.ShouldUse:
-                    result = _action.ShouldUse(out _, Param1 > 0, Param2 > 0);
-                    break;
+            case ActionConditonType.EnoughLevel:
+                result = _action.EnoughLevel;
+                break;
 
-                case ActionConditonType.EnoughLevel:
-                    result = _action.EnoughLevel;
-                    break;
+            case ActionConditonType.IsCoolDown:
+                result = _action.IsCoolDown;
+                break;
 
-                case ActionConditonType.IsCoolDown:
-                    result = _action.IsCoolDown;
-                    break;
+            case ActionConditonType.CurrentCharges:
+                result = _action.CurrentCharges > Param1;
+                break;
 
-                case ActionConditonType.CurrentCharges:
-                    result = _action.CurrentCharges > Param1;
-                    break;
+            case ActionConditonType.MaxCharges:
+                result = _action.MaxCharges > Param1;
+                break;
+        }
 
-                case ActionConditonType.MaxCharges:
-                    result = _action.MaxCharges > Param1;
-                    break;
-            }
-            
-            return Condition ? !result : result;
+        return Condition ? !result : result;
     }
 
     [JsonIgnore]
@@ -88,7 +91,7 @@ internal class ActionCondition : ICondition
         var name = _action?.Name ?? string.Empty;
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
 
-        ScriptComboWindow.SearchItems($"##技能选择{GetHashCode()}", name, ref searchTxt, combo.AllActions, i =>
+        ScriptComboWindow.SearchCombo($"##技能选择{GetHashCode()}", name, ref searchTxt, combo.AllActions, i =>
         {
             _action = i;
             ID = (ActionID)_action.ID;

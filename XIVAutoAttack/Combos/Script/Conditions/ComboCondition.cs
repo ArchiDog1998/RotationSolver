@@ -7,6 +7,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Windows;
 
@@ -20,6 +23,10 @@ internal class ComboCondition : ICondition
 
     MethodInfo _method;
     public string MethodName { get; set; } = string.Empty;
+
+    BaseAction _action { get; set; }
+
+    public ActionID ID { get; set; } = ActionID.None;
 
     public int Condition { get; set; }
 
@@ -39,6 +46,10 @@ internal class ComboCondition : ICondition
         if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
         {
             _method = combo.GetType().BaseType.GetRuntimeMethods().FirstOrDefault(n => n.Name == MethodName);
+        }
+        if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
+        {
+            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
         }
 
         switch (ComboConditionType)
@@ -70,20 +81,51 @@ internal class ComboCondition : ICondition
             case ComboConditionType.Time:
                 if (_method == null) return false;
 
-                if (_method.Invoke(combo, new object[] { Time }) is bool bo)
+                try
                 {
-                    return Condition > 0 ? bo : !bo;
+                    if (_method.Invoke(combo, new object[] { Time }) is bool bo)
+                    {
+                        return Condition > 0 ? bo : !bo;
+                    }
+                    return false;
                 }
-                return false;
+                catch
+                {
+                    return false;
+                }
+
 
             case ComboConditionType.TimeGCD:
                 if (_method == null) return false;
 
-                if (_method.Invoke(combo, new object[] { (uint)Param1, (uint)Param2 }) is bool boo)
+                try
                 {
-                    return Condition > 0 ? boo : !boo;
+                    if (_method.Invoke(combo, new object[] { (uint)Param1, (uint)Param2 }) is bool boo)
+                    {
+                        return Condition > 0 ? boo : !boo;
+                    }
+                    return false;
                 }
-                return false;
+                catch
+                {
+                    return false;
+                }
+
+            case ComboConditionType.Last:
+                if (_method == null || _action == null) return false;
+
+                try
+                {
+                    if (_method.Invoke(combo, new object[] { Param1 > 0, new IAction[] { _action } }) is bool boo)
+                    {
+                        return Condition > 0 ? boo : !boo;
+                    }
+                    return false;
+                }
+                catch
+                {
+                    return false;
+                }
 
         }
 
@@ -104,6 +146,10 @@ internal class ComboCondition : ICondition
         if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
         {
             _method = combo.GetType().BaseType.GetRuntimeMethods().FirstOrDefault(n => n.Name == MethodName);
+        }
+        if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
+        {
+            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
         }
 
         ScriptComboWindow.DrawCondition(IsTrue(combo));
@@ -172,7 +218,7 @@ internal class ComboCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(MethodName).X + 30));
 
-                ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, combo.Alltimes, i =>
+                ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, combo.AllTimes, i =>
                 {
                     _method = i;
                     MethodName = i.Name;
@@ -199,11 +245,11 @@ internal class ComboCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(MethodName).X + 30));
 
-                    ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, combo.AllGCDs, i =>
-                    {
-                        _method = i;
-                        MethodName = i.Name;
-                    });
+                ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, combo.AllGCDs, i =>
+                {
+                    _method = i;
+                    MethodName = i.Name;
+                });
 
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
@@ -229,6 +275,45 @@ internal class ComboCondition : ICondition
                     Param2 = Math.Max(0, ability);
                 }
                 break;
+
+            case ComboConditionType.Last:
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(MethodName).X + 30));
+
+                ScriptComboWindow.SearchItemsReflection($"##时间{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, combo.AllLast, i =>
+                {
+                    _method = i;
+                    MethodName = i.Name;
+                });
+
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(50);
+                compare = Condition;
+                if (ImGui.Combo($"##是否{GetHashCode()}", ref compare, new string[] { "是", "不是" }, 2))
+                {
+                    Condition = compare;
+                }
+
+                ImGui.SameLine();
+
+                var name = _action?.Name ?? string.Empty;
+                ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
+
+                ScriptComboWindow.SearchCombo($"##技能选择{GetHashCode()}", name, ref searchTxt, combo.AllActions, i =>
+                {
+                    _action = i;
+                    ID = (ActionID)_action.ID;
+                });
+
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(50);
+                compare = Param1;
+                if (ImGui.Combo($"##调整{GetHashCode()}", ref compare, new string[] { "原始", "调整" }, 2))
+                {
+                    Param1 = compare;
+                }
+
+                break;
         }
     }
 }
@@ -239,6 +324,7 @@ public enum ComboConditionType : int
     Byte,
     Time,
     TimeGCD,
+    Last,
 }
 
 internal static class ComboConditionTypeExtension
@@ -249,6 +335,7 @@ internal static class ComboConditionTypeExtension
         ComboConditionType.Byte => "整数",
         ComboConditionType.Time => "时间",
         ComboConditionType.TimeGCD => "GCD",
+        ComboConditionType.Last => "上一个技能",
         _ => string.Empty,
     };
 }

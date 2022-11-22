@@ -21,7 +21,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
         PropertyInfo[] AllBools { get; }
         PropertyInfo[] AllBytes { get; }
 
-        MethodInfo[] Alltimes { get; }
+        MethodInfo[] AllTimes { get; }
+        MethodInfo[] AllLast { get; }
         MethodInfo[] AllGCDs { get; }
         string OnCommand(string args);
         bool TryInvoke(out IAction newAction);

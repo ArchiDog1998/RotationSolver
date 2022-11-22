@@ -181,7 +181,7 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                ScriptComboWindow.SearchItems($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ScriptComboWindow.SearchCombo($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
                     _status = i;
                     Status = _status.ID;
@@ -204,7 +204,7 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                ScriptComboWindow.SearchItems($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ScriptComboWindow.SearchCombo($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
                     _status = i;
                     Status = _status.ID;
@@ -236,7 +236,7 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                ScriptComboWindow.SearchItems($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ScriptComboWindow.SearchCombo($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
                     _status = i;
                     Status = _status.ID;

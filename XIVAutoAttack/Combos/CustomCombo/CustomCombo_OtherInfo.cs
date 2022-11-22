@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using System;
 using System.ComponentModel;
+using System.Reflection;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -94,6 +95,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="isAdjust">调整后ID</param>
         /// <param name="actions">技能</param>
         /// <returns></returns>
+        [DisplayName("上一个魔法")]
         protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastSpell(isAdjust, actions);
 
@@ -111,6 +113,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="isAdjust">调整后ID</param>
         /// <param name="actions">技能</param>
         /// <returns></returns>
+        [DisplayName("上一个能力技")]
         protected static bool IsLastAbility(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastAbility(isAdjust, actions);
 
@@ -128,6 +131,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="isAdjust">调整后ID</param>
         /// <param name="actions">技能</param>
         /// <returns></returns>
+        [DisplayName("上一个战技")]
         protected static bool IsLastWeaponSkill(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastWeaponSkill(isAdjust, actions);
 
@@ -145,6 +149,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="isAdjust">调整后ID</param>
         /// <param name="actions">技能</param>
         /// <returns></returns>
+        [DisplayName("上一个技能")]
         protected static bool IsLastAction(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastAction(isAdjust, actions);
 
@@ -175,5 +180,13 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <returns>这个时间点是否已经结束,即(<paramref name="remain"/> 小于等于 <paramref name="remainNeed"/>)</returns>
         protected static bool EndAfter(float remain, float remainNeed)
             => CooldownHelper.RecastAfter(remain, remainNeed);
+
+        public MethodInfo[] AllLast => GetType().GetStaticBoolMethodInfo(m =>
+        {
+            var types = m.GetParameters();
+            return types.Length == 2 
+                && types[0].ParameterType == typeof(bool) 
+                && types[1].ParameterType == typeof(IAction[]);
+        });
     }
 }

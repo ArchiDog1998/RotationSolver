@@ -225,7 +225,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public PropertyInfo[] AllBytes => GetType().GetStaticProperties<byte>();
 
-        public MethodInfo[] Alltimes => GetType().GetStaticBoolMethodInfo(m =>
+        public MethodInfo[] AllTimes => GetType().GetStaticBoolMethodInfo(m =>
         {
             var types = m.GetParameters();
             return types.Length == 1 && types[0].ParameterType == typeof(float);

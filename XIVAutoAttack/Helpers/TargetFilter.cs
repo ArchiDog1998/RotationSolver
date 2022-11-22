@@ -258,18 +258,28 @@ namespace XIVAutoAttack.Helpers
         {
             List<BattleChara> result = new(objects.Length);
 
-            SortedSet<byte> validJobs = new(Service.DataManager.GetExcelSheet<ClassJob>()
-                .Where(job => roles.Contains(job.GetJobRole()))
-                .Select(job => (byte)job.RowId));
-
-            foreach (var obj in objects)
+            foreach (var role in roles)
             {
-                if (GetJobCategory(obj, validJobs)) result.Add(obj);
+                foreach (var obj in objects)
+                {
+                    if (IsJobCategory(obj, role)) result.Add(obj);
+                }
             }
+
             return result.ToArray();
         }
 
-        private static bool GetJobCategory(BattleChara obj, SortedSet<byte> validJobs)
+        private static bool IsJobCategory(this BattleChara obj, JobRole role)
+        {
+            SortedSet<byte> validJobs = new(Service.DataManager.GetExcelSheet<ClassJob>()
+                .Where(job => role == job.GetJobRole())
+                .Select(job => (byte)job.RowId));
+
+            return IsJobCategory(obj, validJobs);
+        }
+
+
+        private static bool IsJobCategory(this BattleChara obj, SortedSet<byte> validJobs)
         {
             return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
         }
@@ -280,8 +290,6 @@ namespace XIVAutoAttack.Helpers
 
             return GetTargetByJobs(ASTTargets, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Melee);
         }
-
-
 
         internal static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
         {
@@ -304,7 +312,7 @@ namespace XIVAutoAttack.Helpers
             return null;
         }
 
-        internal static BattleChara[] GetASTCardTargets(BattleChara[] sources)
+        private static BattleChara[] GetASTCardTargets(BattleChara[] sources)
         {
             var allStatus = new StatusID[]
             {
@@ -318,7 +326,7 @@ namespace XIVAutoAttack.Helpers
             return sources.Where((t) => !t.HasStatus(true, allStatus)).ToArray();
         }
 
-        internal static BattleChara RandomObject(BattleChara[] objs)
+        private static BattleChara RandomObject(BattleChara[] objs)
         {
             Random ran = new Random(DateTime.Now.Millisecond);
             return objs[ran.Next(objs.Length)];

@@ -218,7 +218,7 @@ namespace XIVAutoAttack.Windows
             }
         }
 
-        internal static void SearchItems<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
+        internal static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
         {
             if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
             {
