@@ -188,5 +188,13 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 && types[0].ParameterType == typeof(bool) 
                 && types[1].ParameterType == typeof(IAction[]);
         });
+
+        public MethodInfo[] AllOther => GetType().GetStaticBoolMethodInfo(m =>
+        {
+            var types = m.GetParameters();
+            return types.Length == 1
+                && types[0].IsOut
+                && types[0].ParameterType == typeof(IAction);
+        });
     }
 }

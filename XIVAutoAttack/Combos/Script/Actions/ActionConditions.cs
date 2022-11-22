@@ -1,8 +1,10 @@
 ﻿using ImGuiNET;
+using Lumina.Data.Parsing;
 using Lumina.Data.Parsing.Layer;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Script.Conditions;
@@ -25,6 +27,8 @@ internal class ActionConditions : IDraw
     private BaseAction _action { get; set; }
     public ActionID ID { get; set; } = ActionID.None;
 
+    MethodInfo _method;
+    public string MethodName { get; set; } = string.Empty;
     private List<BaseAction> _actions { get; set; } = new List<BaseAction>();
     public List<ActionID> IDs { get; set; } = new List<ActionID>();
 
@@ -48,11 +52,21 @@ internal class ActionConditions : IDraw
         ID = (ActionID)act.ID;
     }
 
+    public ActionConditions(MethodInfo method)
+    {
+        _method = method;
+        MethodName = method.Name;
+    }
+
     public void DrawHeader(IScriptCombo combo)
     {
         if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
             _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+        }
+        if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
+        {
+            _method = combo.GetType().GetMethodInfo(MethodName);
         }
 
         var tag = ShouldUse(combo, 0, null, out _);
@@ -99,6 +113,19 @@ internal class ActionConditions : IDraw
                 XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
             }
         }
+        else if(_method != null)
+        {
+            if (ImGui.Selectable(_method.GetMemberName()))
+            {
+                XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
+            }
+
+            var desc = _method.GetMemberDescription();
+            if(ImGui.IsItemHovered() && !string.IsNullOrEmpty(desc))
+            {
+                ImGui.SetTooltip(desc);
+            }
+        }
         else
         {
             if (ImGui.Selectable("返回条件"))
@@ -114,6 +141,10 @@ internal class ActionConditions : IDraw
         if (ID != ActionID.None && _action == null)
         {
             _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+        }
+        if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
+        {
+            _method = combo.GetType().GetMethodInfo(MethodName);
         }
 
         ImGui.Text("描述:");
@@ -195,33 +226,49 @@ internal class ActionConditions : IDraw
         {
             _action = owner.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
         }
+        if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
+        {
+            _method = owner.GetType().GetMethodInfo(MethodName);
+        }
 
         act = _action;
 
-        if(AbilityCount != 0 && abilityRemain != 0)
-        {
-            if (abilityRemain != AbilityCount) return false;
-        }
-
-        if (IsEmergency)
-        {
-            if(_actions.Count != IDs.Count)
-            {
-                _actions = owner.AllActions.Where(a => IDs.Contains((ActionID)a.ID)).ToList();
-            }
-            if(nextGCD != null && _actions.Count > 0)
-            {
-                if (!nextGCD.IsAnySameAction(IsAdjust, _actions.ToArray())) return false;
-            }
-        }
+        var otherCheck = Set.IsTrue(owner);
 
         if (_action != null)
         {
-            return _action.ShouldUse(out act, MustUse, Empty) && Set.IsTrue(owner);
+            if (AbilityCount != 0 && abilityRemain != 0)
+            {
+                if (abilityRemain != AbilityCount) return false;
+            }
+
+            if (IsEmergency)
+            {
+                if (_actions.Count != IDs.Count)
+                {
+                    _actions = owner.AllActions.Where(a => IDs.Contains((ActionID)a.ID)).ToList();
+                }
+                if (nextGCD != null && _actions.Count > 0)
+                {
+                    if (!nextGCD.IsAnySameAction(IsAdjust, _actions.ToArray())) return false;
+                }
+            }
+
+            return _action.ShouldUse(out act, MustUse, Empty) && otherCheck;
+        }
+        else if(_method != null)
+        {
+            var param = new object[] { null };
+            if((bool)_method.Invoke(owner, param) && otherCheck)
+            {
+                act = (IAction)param[0];
+                return true;
+            }
+            return false;
         }
         else
         {
-            return Set.IsTrue(owner) ? null : false;
+            return otherCheck ? null : false;
         }
     }
 }

@@ -106,9 +106,9 @@ internal partial class ComboConfigWindow : Window
                 if (ImGui.BeginChild("帮助", new Vector2(0f, -1f), true))
                 {
                     ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
-                    CommandHelp("AttackSmart", "如果不在进攻中就开始进攻，如果在进攻就切换选择敌对目标条件。");
+                    CommandHelp("AttackSmart", "开始进攻，如果不在进攻中就开始进攻，如果在进攻就切换选择敌对目标条件。");
                     ImGui.Separator();
-                    CommandHelp("AttackManual", "开始进攻，进攻对象为手动选择，此时不会释放AOE。");
+                    CommandHelp("AttackManual", "开始进攻，进攻对象为手动选择，此时不会使用AOE循环。");
                     ImGui.Separator();
                     CommandHelp("AttackCancel", "停止进攻，记得一定要经常关掉！");
                     ImGui.Separator();

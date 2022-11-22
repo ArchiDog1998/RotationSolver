@@ -60,9 +60,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
         string search = string.Empty;
         private void AddButton(IScriptCombo combo)
         {
-            var popId = "Popup" + GetHashCode().ToString();
-
-            ScriptComboWindow.AddPopup(popId, "技能卫士", () =>
+            ScriptComboWindow.AddPopup("PopupAction" + GetHashCode().ToString(), "技能卫士", () =>
             {
                 ActionsCondition.Add(new ActionConditions()
                 {
@@ -77,6 +75,25 @@ namespace XIVAutoAttack.Combos.Script.Actions
                     IsEmergency = IsEmergency,
                 });
             });
+
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("添加技能使用");
+            }
+
+            ImGui.SameLine();
+            ComboConfigWindow.Spacing();
+
+            ScriptComboWindow.AddPopup("PopupAction" + GetHashCode().ToString(), 
+                ref search, combo.AllOther, item =>
+            {
+                ActionsCondition.Add(new ActionConditions(item));
+            });
+
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("添加技能函数");
+            }
         }
     }
 }

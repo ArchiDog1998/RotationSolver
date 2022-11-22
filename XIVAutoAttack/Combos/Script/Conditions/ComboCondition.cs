@@ -41,11 +41,11 @@ internal class ComboCondition : ICondition
 
         if (!string.IsNullOrEmpty(PropertyName) && (_info == null || _info.Name != PropertyName))
         {
-            _info = combo.GetType().BaseType.GetRuntimeProperties().FirstOrDefault(n => n.Name == PropertyName);
+            _info = combo.GetType().GetPropertyInfo(PropertyName);
         }
         if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
         {
-            _method = combo.GetType().BaseType.GetRuntimeMethods().FirstOrDefault(n => n.Name == MethodName);
+            _method = combo.GetType().GetMethodInfo(MethodName);
         }
         if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
@@ -141,11 +141,11 @@ internal class ComboCondition : ICondition
     {
         if (!string.IsNullOrEmpty(PropertyName) && (_info == null || _info.Name != PropertyName))
         {
-            _info = combo.GetType().BaseType.GetRuntimeProperties().FirstOrDefault(n => n.Name == PropertyName);
+            _info = combo.GetType().GetPropertyInfo(PropertyName);
         }
         if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
         {
-            _method = combo.GetType().BaseType.GetRuntimeMethods().FirstOrDefault(n => n.Name == MethodName);
+            _method = combo.GetType().GetMethodInfo(MethodName);
         }
         if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
