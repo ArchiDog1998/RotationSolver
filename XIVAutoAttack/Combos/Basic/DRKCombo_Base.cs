@@ -84,7 +84,6 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction FloodofDarkness { get; } = new(ActionID.FloodofDarkness);
 
-
     /// <summary>
     /// 暗黑锋
     /// </summary>
@@ -98,7 +97,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 暗影墙
     /// </summary>
-    public static BaseAction ShadowWall { get; } = new(ActionID.ShadowWall, true)
+    public static BaseAction ShadowWall { get; } = new(ActionID.ShadowWall, true, isTimeline: true)
     {
         BuffsProvide = Rampart.BuffsProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -107,7 +106,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 弃明投暗
     /// </summary>
-    public static BaseAction DarkMind { get; } = new(ActionID.DarkMind, true)
+    public static BaseAction DarkMind { get; } = new(ActionID.DarkMind, true, isTimeline: true)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };
@@ -115,7 +114,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 行尸走肉
     /// </summary>
-    public static BaseAction LivingDead { get; } = new(ActionID.LivingDead, true);
+    public static BaseAction LivingDead { get; } = new(ActionID.LivingDead, true, isTimeline: true);
 
     /// <summary>
     /// 腐秽大地
@@ -164,7 +163,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 至黑之夜
     /// </summary>
-    public static BaseAction TheBlackestNight { get; } = new(ActionID.TheBlackestNight)
+    public static BaseAction TheBlackestNight { get; } = new(ActionID.TheBlackestNight, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -177,7 +176,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 暗黑布道
     /// </summary>
-    public static BaseAction DarkMissionary { get; } = new(ActionID.DarkMissionary, true);
+    public static BaseAction DarkMissionary { get; } = new(ActionID.DarkMissionary, true, isTimeline: true);
 
     /// <summary>
     /// 掠影示现
@@ -210,7 +209,6 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     {
         BuffsNeed = new[] { StatusID.SaltedEarth },
     };
-
 
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {

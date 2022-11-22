@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -64,17 +65,17 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 吉星
     /// </summary>
-    public static BaseAction Benefic { get; } = new(ActionID.Benefic, true);
+    public static BaseAction Benefic { get; } = new(ActionID.Benefic, true, isTimeline: true);
 
     /// <summary>
     /// 福星
     /// </summary>
-    public static BaseAction Benefic2 { get; } = new(ActionID.Benefic2, true);
+    public static BaseAction Benefic2 { get; } = new(ActionID.Benefic2, true, isTimeline: true);
 
     /// <summary>
     /// 吉星相位
     /// </summary>
-    public static BaseAction AspectedBenefic { get; } = new(ActionID.AspectedBenefic, true, isEot: true)
+    public static BaseAction AspectedBenefic { get; } = new(ActionID.AspectedBenefic, true, isEot: true, isTimeline: true)
     {
         TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
     };
@@ -82,17 +83,17 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 先天禀赋
     /// </summary>
-    public static BaseAction EssentialDignity { get; } = new(ActionID.EssentialDignity, true);
+    public static BaseAction EssentialDignity { get; } = new(ActionID.EssentialDignity, true, isTimeline: true);
 
     /// <summary>
     /// 星位合图
     /// </summary>
-    public static BaseAction Synastry { get; } = new(ActionID.Synastry, true);
+    public static BaseAction Synastry { get; } = new(ActionID.Synastry, true, isTimeline: true);
 
     /// <summary>
     /// 天星交错
     /// </summary>
-    public static BaseAction CelestialIntersection { get; } = new(ActionID.CelestialIntersection, true)
+    public static BaseAction CelestialIntersection { get; } = new(ActionID.CelestialIntersection, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
 
@@ -102,7 +103,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 擢升
     /// </summary>
-    public static BaseAction Exaltation { get; } = new(ActionID.Exaltation, true)
+    public static BaseAction Exaltation { get; } = new(ActionID.Exaltation, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -110,12 +111,12 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 阳星
     /// </summary>
-    public static BaseAction Helios { get; } = new(ActionID.Helios, true);
+    public static BaseAction Helios { get; } = new(ActionID.Helios, true, isTimeline: true);
 
     /// <summary>
     /// 阳星相位
     /// </summary>
-    public static BaseAction AspectedHelios { get; } = new(ActionID.AspectedHelios, true, isEot: true)
+    public static BaseAction AspectedHelios { get; } = new(ActionID.AspectedHelios, true, isEot: true, isTimeline: true)
     {
         BuffsProvide = new StatusID[] { StatusID.AspectedHelios },
     };
@@ -123,17 +124,17 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 天星冲日
     /// </summary>
-    public static BaseAction CelestialOpposition { get; } = new(ActionID.CelestialOpposition, true);
+    public static BaseAction CelestialOpposition { get; } = new(ActionID.CelestialOpposition, true, isTimeline: true);
 
     /// <summary>
     /// 地星
     /// </summary>
-    public static BaseAction EarthlyStar { get; } = new(ActionID.EarthlyStar, true);
+    public static BaseAction EarthlyStar { get; } = new(ActionID.EarthlyStar, true, isTimeline: true);
 
     /// <summary>
     /// 命运之轮 减伤，手动放。
     /// </summary>
-    public static BaseAction CollectiveUnconscious { get; } = new(ActionID.CollectiveUnconscious, true);
+    public static BaseAction CollectiveUnconscious { get; } = new(ActionID.CollectiveUnconscious, true, isTimeline: true);
 
     /// <summary>
     /// 天宫图
@@ -209,7 +210,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 太阳神之衡
     /// </summary>
-    public static BaseAction Balance { get; } = new(ActionID.Balance)
+    private static BaseAction Balance { get; } = new(ActionID.Balance)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = b => DrawnCard == CardType.BALANCE,
@@ -218,7 +219,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 放浪神之箭
     /// </summary>
-    public static BaseAction Arrow { get; } = new(ActionID.Arrow)
+    private static BaseAction Arrow { get; } = new(ActionID.Arrow)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = b => DrawnCard == CardType.ARROW,
@@ -227,7 +228,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 战争神之枪
     /// </summary>
-    public static BaseAction Spear { get; } = new(ActionID.Spear)
+    private static BaseAction Spear { get; } = new(ActionID.Spear)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = b => DrawnCard == CardType.SPEAR,
@@ -236,7 +237,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 世界树之干
     /// </summary>
-    public static BaseAction Bole { get; } = new(ActionID.Bole)
+    private static BaseAction Bole { get; } = new(ActionID.Bole)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = b => DrawnCard == CardType.BOLE,
@@ -245,7 +246,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 河流神之瓶
     /// </summary>
-    public static BaseAction Ewer { get; } = new(ActionID.Ewer)
+    private static BaseAction Ewer { get; } = new(ActionID.Ewer)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = b => DrawnCard == CardType.EWER,
@@ -255,11 +256,23 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 建筑神之塔
     /// </summary>
-    public static BaseAction Spire { get; } = new(ActionID.Spire)
+    private static BaseAction Spire { get; } = new(ActionID.Spire)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = b => DrawnCard == CardType.SPIRE,
     };
+
+    protected static bool PlayCard(out IAction act)
+    {
+        if (Balance.ShouldUse(out act)) return true;
+        if (Arrow.ShouldUse(out act)) return true;
+        if (Spear.ShouldUse(out act)) return true;
+        if (Bole.ShouldUse(out act)) return true;
+        if (Ewer.ShouldUse(out act)) return true;
+        if (Spire.ShouldUse(out act)) return true;
+
+        return false;
+    }
 
     private static SealType GetCardSeal(CardType card)
     {

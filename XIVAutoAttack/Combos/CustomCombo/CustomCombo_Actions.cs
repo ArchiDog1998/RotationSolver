@@ -15,7 +15,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         internal class RoleAction : BaseAction
         {
             private JobRole[] _roles;
-            internal RoleAction(ActionID actionID, JobRole[] roles, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false) : base(actionID, isFriendly, shouldEndSpecial, isEot)
+            internal RoleAction(ActionID actionID, JobRole[] roles, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false, bool isTimeline = false) : base(actionID, isFriendly, shouldEndSpecial, isEot, isTimeline)
             {
                 _roles = roles;
             }
@@ -99,7 +99,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 铁壁
         /// </summary>
-        public static RoleAction Rampart { get; } = new(ActionID.Rampart, new JobRole[] { JobRole.Tank }, true)
+        public static RoleAction Rampart { get; } = new(ActionID.Rampart, new JobRole[] { JobRole.Tank }, true, isTimeline: true)
         {
             BuffsProvide = new StatusID[]
               {
@@ -130,7 +130,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 雪仇
         /// </summary>
-        public static RoleAction Reprisal { get; } = new(ActionID.Reprisal, new JobRole[] { JobRole.Tank });
+        public static RoleAction Reprisal { get; } = new(ActionID.Reprisal, new JobRole[] { JobRole.Tank }, isTimeline: true);
 
         /// <summary>
         /// 退避
@@ -156,7 +156,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 牵制
         /// </summary>
-        public static RoleAction Feint { get; } = new(ActionID.Feint, new JobRole[] { JobRole.Melee })
+        public static RoleAction Feint { get; } = new(ActionID.Feint, new JobRole[] { JobRole.Melee }, isTimeline: true)
         {
             ActionCheck = b => !b.HasStatus(false, StatusID.Feint),
         };

@@ -84,7 +84,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 预警
     /// </summary>
-    public static BaseAction Sentinel { get; } = new(ActionID.Sentinel)
+    public static BaseAction Sentinel { get; } = new(ActionID.Sentinel, isTimeline: true)
     {
         BuffsProvide = Rampart.BuffsProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -118,7 +118,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 干预
     /// </summary>
-    public static BaseAction Intervention { get; } = new(ActionID.Intervention, true)
+    public static BaseAction Intervention { get; } = new(ActionID.Intervention, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -126,7 +126,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 调停
     /// </summary>
-    public static BaseAction Intervene { get; } = new(ActionID.Intervene, shouldEndSpecial: true)
+    public static BaseAction Intervene { get; } = new(ActionID.Intervene, shouldEndSpecial: true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -190,7 +190,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 保护
     /// </summary>
-    public static BaseAction Cover { get; } = new(ActionID.Cover, true)
+    public static BaseAction Cover { get; } = new(ActionID.Cover, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = b => OathGauge >= 50,
@@ -199,7 +199,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 盾阵
     /// </summary>
-    public static BaseAction Sheltron { get; } = new(ActionID.Sheltron)
+    public static BaseAction Sheltron { get; } = new(ActionID.Sheltron, isTimeline: true)
     {
         ActionCheck = Cover.ActionCheck,
     };

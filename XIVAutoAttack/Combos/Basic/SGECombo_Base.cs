@@ -115,7 +115,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Ô¤ºó
     /// </summary>
-    public static BaseAction Prognosis { get; } = new(ActionID.Prognosis, true, shouldEndSpecial: true);
+    public static BaseAction Prognosis { get; } = new(ActionID.Prognosis, true, shouldEndSpecial: true, isTimeline: true);
 
     /// <summary>
     /// ×ÔÉú
@@ -138,7 +138,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Õü¾È
     /// </summary>
-    public static BaseAction Soteria { get; } = new(ActionID.Soteria, true)
+    public static BaseAction Soteria { get; } = new(ActionID.Soteria, true, isTimeline: true)
     {
         ChoiceTarget = Targets =>
         {

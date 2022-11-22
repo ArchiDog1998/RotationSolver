@@ -55,7 +55,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 伪装
     /// </summary>
-    public static BaseAction Camouflage { get; } = new(ActionID.Camouflage, true)
+    public static BaseAction Camouflage { get; } = new(ActionID.Camouflage, true, isTimeline: true)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };
@@ -91,7 +91,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 星云
     /// </summary>
-    public static BaseAction Nebula { get; } = new(ActionID.Nebula, true)
+    public static BaseAction Nebula { get; } = new(ActionID.Nebula, true, isTimeline: true)
     {
         BuffsProvide = Rampart.BuffsProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -105,12 +105,12 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 极光
     /// </summary>
-    public static BaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, true);
+    public static BaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, true, isTimeline: true);
 
     /// <summary>
     /// 超火流星
     /// </summary>
-    public static BaseAction Superbolide { get; } = new(ActionID.Superbolide, true);
+    public static BaseAction Superbolide { get; } = new(ActionID.Superbolide, true, isTimeline: true);
 
     /// <summary>
     /// 音速破
@@ -146,7 +146,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 石之心
     /// </summary>
-    public static BaseAction HeartofStone { get; } = new(ActionID.HeartofStone, true)
+    public static BaseAction HeartofStone { get; } = new(ActionID.HeartofStone, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };

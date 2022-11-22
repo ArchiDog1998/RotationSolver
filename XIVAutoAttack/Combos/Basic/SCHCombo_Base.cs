@@ -33,12 +33,12 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 医术
     /// </summary>
-    public static BaseAction Physick { get; } = new(ActionID.Physick, true);
+    public static BaseAction Physick { get; } = new(ActionID.Physick, true, isTimeline: true);
 
     /// <summary>
     /// 鼓舞激励之策
     /// </summary>
-    public static BaseAction Adloquium { get; } = new(ActionID.Adloquium, true)
+    public static BaseAction Adloquium { get; } = new(ActionID.Adloquium, true, isTimeline: true)
     {
         ActionCheck = b => !b.HasStatus(false, StatusID.EukrasianDiagnosis,
             StatusID.EukrasianPrognosis,
@@ -49,12 +49,12 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 复生
     /// </summary>
-    public static BaseAction Resurrection { get; } = new(ActionID.Resurrection, true);
+    public static BaseAction Resurrection { get; } = new(ActionID.Resurrection, true, isTimeline: true);
 
     /// <summary>
     /// 士气高扬之策
     /// </summary>
-    public static BaseAction Succor { get; } = new(ActionID.Succor, true)
+    public static BaseAction Succor { get; } = new(ActionID.Succor, true, isTimeline: true)
     {
         BuffsProvide = new[] { StatusID.Galvanize },
     };
@@ -62,7 +62,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 生命活性法
     /// </summary>
-    public static BaseAction Lustrate { get; } = new(ActionID.Lustrate, true)
+    public static BaseAction Lustrate { get; } = new(ActionID.Lustrate, true, isTimeline: true)
     {
         ActionCheck = b => HasAetherflow
     };
@@ -70,7 +70,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 野战治疗阵
     /// </summary>
-    public static BaseAction SacredSoil { get; } = new(ActionID.SacredSoil, true)
+    public static BaseAction SacredSoil { get; } = new(ActionID.SacredSoil, true, isTimeline: true)
     {
         ActionCheck = b => HasAetherflow && !IsMoving,
     };
@@ -78,7 +78,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 不屈不挠之策
     /// </summary>
-    public static BaseAction Indomitability { get; } = new(ActionID.Indomitability, true)
+    public static BaseAction Indomitability { get; } = new(ActionID.Indomitability, true, isTimeline: true)
     {
         ActionCheck = b => HasAetherflow
     };
@@ -86,7 +86,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 深谋远虑之策
     /// </summary>
-    public static BaseAction Excogitation { get; } = new(ActionID.Excogitation, true)
+    public static BaseAction Excogitation { get; } = new(ActionID.Excogitation, true, isTimeline: true)
     {
         ActionCheck = b => HasAetherflow
     };
@@ -94,7 +94,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 慰藉
     /// </summary>
-    public static BaseAction Consolation { get; } = new(ActionID.Consolation, true)
+    public static BaseAction Consolation { get; } = new(ActionID.Consolation, true, isTimeline: true)
     {
         ActionCheck = b => HasSeraph,
     };
@@ -102,7 +102,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 生命回生法
     /// </summary>
-    public static BaseAction Protraction { get; } = new(ActionID.Protraction, true);
+    public static BaseAction Protraction { get; } = new(ActionID.Protraction, true, isTimeline: true);
     #endregion
     #region 进攻
     /// <summary>

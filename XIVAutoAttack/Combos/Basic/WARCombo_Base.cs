@@ -127,12 +127,12 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Õ½Àõ
     /// </summary>
-    public static BaseAction ThrillofBattle { get; } = new(ActionID.ThrillofBattle, true);
+    public static BaseAction ThrillofBattle { get; } = new(ActionID.ThrillofBattle, true, isTimeline: true);
 
     /// <summary>
     /// Ì©È»×ÔÈô
     /// </summary>
-    public static BaseAction Equilibrium { get; } = new(ActionID.Equilibrium, true);
+    public static BaseAction Equilibrium { get; } = new(ActionID.Equilibrium, true, isTimeline: true);
 
     /// <summary>
     /// Ô­³õµÄÓÂÃÍ
@@ -162,12 +162,12 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// °ÚÍÑ
     /// </summary>
-    public static BaseAction ShakeItOff { get; } = new(ActionID.ShakeItOff, true);
+    public static BaseAction ShakeItOff { get; } = new(ActionID.ShakeItOff, true, isTimeline: true);
 
     /// <summary>
     /// ËÀ¶·
     /// </summary>
-    public static BaseAction Holmgang { get; } = new(ActionID.Holmgang);
+    public static BaseAction Holmgang { get; } = new(ActionID.Holmgang, isTimeline: true);
 
     /// <summary>
     /// Âù»Ä±ÀÁÑ

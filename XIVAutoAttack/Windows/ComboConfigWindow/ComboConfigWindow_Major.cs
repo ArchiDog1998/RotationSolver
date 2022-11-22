@@ -294,6 +294,7 @@ internal partial class ComboConfigWindow : Window
 
         DrawTexture(act, () =>
         {
+            if(act.IsTimeline) CommandHelp($"Insert{act}-{5}", $"5s内最高优先插入{act}");
 #if DEBUG
             ImGui.NewLine();
             ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());

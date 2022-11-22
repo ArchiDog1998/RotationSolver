@@ -170,12 +170,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         //发牌
         if (abilityRemain == 1 && DrawnCard != CardType.NONE && Seals.Contains(SealType.NONE))
         {
-            if (Balance.ShouldUse(out act)) return true;
-            if (Arrow.ShouldUse(out act)) return true;
-            if (Spear.ShouldUse(out act)) return true;
-            if (Bole.ShouldUse(out act)) return true;
-            if (Ewer.ShouldUse(out act)) return true;
-            if (Spire.ShouldUse(out act)) return true;
+            if (PlayCard(out act)) return true;
         }
 
         return false;

@@ -79,7 +79,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供，不判断AOE技能的敌人数量是否达标.</param>
         /// <param name="emptyOrSkipCombo">如果有层数，放完所有层数，不判断是否为Combo<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
         /// <returns>这个技能能不能用</returns>
-        public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false)
+        public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
         {
             act = this;
 
@@ -87,7 +87,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (Service.ClientState.LocalPlayer == null) return false;
 
             //用户不让用！
-            if (!IsEnabled) return false;
+            if (!skipDisable && !IsEnabled) return false;
 
             //等级不够。
             if (!EnoughLevel) return false;
