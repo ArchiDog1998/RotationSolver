@@ -35,32 +35,32 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
+        //倍攻
+        if (CanUseDoubleDown(out act)) return true;
+
+        //命运之环 AOE
+        if (FatedCircle.ShouldUse(out act)) return true;
+
+        //AOE
+        if (DemonSlaughter.ShouldUse(out act)) return true;
+        if (DemonSlice.ShouldUse(out act)) return true;
+
         //烈牙
         if (CanUseGnashingFang(out act)) return true;
 
         //音速破
         if (CanUseSonicBreak(out act)) return true;
 
-        //倍攻
-        if (CanUseDoubleDown(out act)) return true;
-
         //烈牙后二连
         if (WickedTalon.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         if (SavageClaw.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-        //命运之环 AOE
-        if (FatedCircle.ShouldUse(out act)) return true;
-
         //爆发击   
         if (CanUseBurstStrike(out act)) return true;
 
-        //AOE
-        if (DemonSlaughter.ShouldUse(out act)) return true;
-        if (DemonSlice.ShouldUse(out act)) return true;
-
         //单体三连
         //如果烈牙剩0.5秒冷却好,不释放基础连击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-        if (GnashingFang.IsCoolDown && GnashingFang.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;
+        //if (GnashingFang.IsCoolDown && GnashingFang.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;
         if (SolidBarrel.ShouldUse(out act)) return true;
         if (BrutalShell.ShouldUse(out act)) return true;
         if (KeenEdge.ShouldUse(out act)) return true;
@@ -164,10 +164,14 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
     private bool CanUseNoMercy(out IAction act)
     {
-        //等级低于爆发击是判断
-        if (!BurstStrike.EnoughLevel && NoMercy.ShouldUse(out act)) return true;
+        if (!NoMercy.ShouldUse(out act)) return false;
 
-        if (BurstStrike.EnoughLevel && NoMercy.ShouldUse(out act))
+        if (!IsFullParty && !IsTargetBoss && !IsMoving && DemonSlice.ShouldUse(out _)) return true;
+
+        //等级低于爆发击是判断
+        if (!BurstStrike.EnoughLevel) return true;
+
+        if (BurstStrike.EnoughLevel)
         {
             //4GCD起手判断
             if (IsLastWeaponSkill((ActionID)KeenEdge.ID) && Ammo == 1 && !GnashingFang.IsCoolDown && !Bloodfest.IsCoolDown) return true;
@@ -179,7 +183,6 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             else if (Ammo == 2 && GnashingFang.IsCoolDown) return true;
         }
 
-
         act = null;
         return false;
     }
@@ -190,7 +193,11 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (GnashingFang.ShouldUse(out act))
         {
             //在4人本道中使用
-            if (!IsFullParty) return true;
+            if (!IsFullParty && !GnashingFang.IsTargetBoss)
+            {
+                if (!DemonSlice.ShouldUse(out _) && !IsMoving) return true;
+                return false;
+            }
 
             //无情中3弹烈牙
             if (Ammo == (Level >= 88 ? 3 : 2) && (Player.HasStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(55))) return true;
@@ -221,7 +228,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (SonicBreak.ShouldUse(out act))
         {
             //在4人本道中不使用
-            if (!IsFullParty) return false;
+            if (!IsFullParty && !SonicBreak.IsTargetBoss) return false;
 
             if (!GnashingFang.EnoughLevel && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
@@ -247,7 +254,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (DoubleDown.ShouldUse(out act, mustUse: true))
         {
             //在4人本道中
-            if (IsFullParty)
+            if (IsFullParty && !SonicBreak.IsTargetBoss)
             {
                 //在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪),有无情buff
                 if (Player.HasStatus(true, StatusID.NoMercy)) return true;
@@ -275,7 +282,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (BurstStrike.ShouldUse(out act))
         {
             //在4人本道中且AOE时不使用
-            if (IsFullParty && DemonSlice.ShouldUse(out _)) return false;
+            if (!IsFullParty && DemonSlice.ShouldUse(out _)) return false;
 
             //如果烈牙剩0.5秒冷却好,不释放爆发击,主要因为技速不同可能会使烈牙延后太多所以判定一下
             if (SonicBreak.IsCoolDown && SonicBreak.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;

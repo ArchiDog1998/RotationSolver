@@ -65,7 +65,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 月光
     /// </summary>
-    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye, true, isTimeline: true);
+    public static BaseAction Gekko { get; } = new(ActionID.Gekko);
 
     /// <summary>
     /// 士风
@@ -182,7 +182,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 心眼
     /// </summary>
-    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye, true);
+    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye, true, isTimeline:true);
 
     /// <summary>
     /// 燕飞
@@ -210,7 +210,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Ikishoten { get; } = new(ActionID.Ikishoten)
     {
-        BuffsProvide = new[] {StatusID.OgiNamikiriReady},
+        BuffsProvide = new[] { StatusID.OgiNamikiriReady },
         ActionCheck = b => InCombat
     };
     #endregion
@@ -229,7 +229,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction HissatsuGyoten { get; } = new(ActionID.HissatsuGyoten)
     {
-        ActionCheck = b => !Player.HasStatus(true,StatusID.Bind1,StatusID.Bind2)
+        ActionCheck = b => !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
     };
 
     /// <summary>
