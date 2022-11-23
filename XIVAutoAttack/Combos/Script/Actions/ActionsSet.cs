@@ -92,7 +92,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("添加技能函数");
+                ImGui.SetTooltip($"添加技能函数，数量为{combo.AllOther}个");
             }
         }
     }
