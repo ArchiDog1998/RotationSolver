@@ -101,7 +101,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
             IsAbility = true,
         };
 
-        public CountDownActions CountDown { get; set; }
+        public CountDownSet CountDown { get; set; } = new CountDownSet();
 
 
         public void Draw(IScriptCombo combo)

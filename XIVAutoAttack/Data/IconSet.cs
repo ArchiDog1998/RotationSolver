@@ -24,9 +24,10 @@ namespace XIVAutoAttack.Data
     {
         private static readonly Dictionary<uint, TextureWrap> _textures = new Dictionary<uint, TextureWrap>();
 
-        public static TextureWrap GetTexture(this ITexture text)
+        public static TextureWrap GetTexture(this ITexture text) => GetTexture(text.IconID);
+
+        public static TextureWrap GetTexture(uint id)
         {
-            var id = text.IconID;
             if (!_textures.TryGetValue(id, out var texture))
             {
                 texture = Service.DataManager.GetImGuiTextureIcon(id);

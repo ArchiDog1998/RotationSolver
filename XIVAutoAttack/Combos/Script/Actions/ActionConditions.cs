@@ -60,6 +60,9 @@ internal class ActionConditions : IDraw
 
     public void DrawHeader(IScriptCombo combo)
     {
+        float iconSize = 30;
+        var size = new System.Numerics.Vector2(iconSize, iconSize);
+
         if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
             _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
@@ -76,9 +79,7 @@ internal class ActionConditions : IDraw
 
         if (_action != null)
         {
-
-            ImGui.Image(_action.GetTexture().ImGuiHandle,
-                new System.Numerics.Vector2(30, 30));
+            ImGui.Image(_action.GetTexture().ImGuiHandle, size);
 
             ImGui.SameLine();
             ComboConfigWindow.Spacing();
@@ -115,6 +116,11 @@ internal class ActionConditions : IDraw
         }
         else if(_method != null)
         {
+            ImGui.Image(IconSet.GetTexture(1).ImGuiHandle, size);
+
+            ImGui.SameLine();
+            ComboConfigWindow.Spacing();
+
             if (ImGui.Selectable(_method.GetMemberName()))
             {
                 XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;

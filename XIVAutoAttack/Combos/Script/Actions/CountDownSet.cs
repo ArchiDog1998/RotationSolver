@@ -12,7 +12,7 @@ using XIVAutoAttack.Actions;
 
 namespace XIVAutoAttack.Combos.Script.Actions
 {
-    internal class CountDownActions : IDraw
+    internal class CountDownSet : IDraw
     {
         public List<CountDownAction> ActionsCondition { get; set; } = new List<CountDownAction>();
 
@@ -23,7 +23,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
             ImGui.SameLine();
             ComboConfigWindow.Spacing();
 
-            ImGui.TextWrapped("在下面的框框中输入技能，越上面优先级越高。");
+            ImGui.TextWrapped("在下面的框框中输入倒计时技能。");
 
             if (ImGui.BeginChild($"##技能使用列表", new Vector2(-5f, -1f), true))
             {
@@ -49,7 +49,21 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("倒计时");
+                ImGui.SetTooltip("添加技能使用");
+            }
+
+            ImGui.SameLine();
+            ComboConfigWindow.Spacing();
+
+            ScriptComboWindow.AddPopup("PopupFunction" + GetHashCode().ToString(),
+                ref search, combo.AllOther, item =>
+                {
+                    ActionsCondition.Add(new CountDownAction(item));
+                });
+
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip($"添加技能函数，数量为{combo.AllOther.Length}个");
             }
         }
 

@@ -84,7 +84,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
             ImGui.SameLine();
             ComboConfigWindow.Spacing();
 
-            ScriptComboWindow.AddPopup("PopupAction" + GetHashCode().ToString(), 
+            ScriptComboWindow.AddPopup("PopupFunction" + GetHashCode().ToString(), 
                 ref search, combo.AllOther, item =>
             {
                 ActionsCondition.Add(new ActionConditions(item));
@@ -92,7 +92,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip($"添加技能函数，数量为{combo.AllOther}个");
+                ImGui.SetTooltip($"添加技能函数，数量为{combo.AllOther.Length}个");
             }
         }
     }

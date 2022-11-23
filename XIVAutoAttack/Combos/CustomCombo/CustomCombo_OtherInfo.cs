@@ -193,8 +193,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         {
             var types = m.GetParameters();
             return types.Length == 1
-                && types[0].IsOut
-                && types[0].ParameterType == typeof(IAction);
+                && types[0].IsOut;
         });
     }
 }

@@ -335,7 +335,7 @@ internal static class ComboConditionTypeExtension
         ComboConditionType.Byte => "整数",
         ComboConditionType.Time => "时间",
         ComboConditionType.TimeGCD => "GCD",
-        ComboConditionType.Last => "上一个技能",
+        ComboConditionType.Last => "技能",
         _ => string.Empty,
     };
 }
