@@ -71,7 +71,8 @@ namespace XIVAutoAttack.Updaters
 
             if (AllTargets != null)
             {
-                HostileTargets = AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId)).ToArray();
+                HostileTargets = CountDown.CountDownTime > 0 ? AllTargets:
+                    AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId)).ToArray();
 
                 switch (IconReplacer.RightNowTargetToHostileType)
                 {

@@ -40,7 +40,7 @@ internal sealed class IconReplacer : IDisposable
             }
 
             var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(id).GetJobRole();
-            return role == JobRole.Tank ? (byte)1 : (byte)2;
+            return role == JobRole.Tank ? (byte)0 : (byte)2;
         }
         set
         {

@@ -197,7 +197,12 @@ namespace XIVAutoAttack.Windows
             {
                 var item = items[i];
 
-                if (ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV)) ;
+                //if(ImGui.Begin(item.GetHashCode().ToString() + "Item"))
+                //{
+
+                //}
+
+                ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV);
 
                 if (ImGui.IsItemHovered())
                 {
@@ -217,8 +222,6 @@ namespace XIVAutoAttack.Windows
                                                                           //src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
                 if (ImGui.BeginDragDropSource(src_flags))
                 {
-                    if ((src_flags & ImGuiDragDropFlags.SourceNoPreviewTooltip) != 0)
-                        ImGui.Text($"Moving \"{item}\"");
                     ImGui.SetDragDropPayload("List Movement", (IntPtr)(&i), sizeof(int));
                     ImGui.EndDragDropSource();
                 }
@@ -250,7 +253,6 @@ namespace XIVAutoAttack.Windows
                 {
                     if(moveFrom != moveTo)
                     {
-                        if (moveFrom < moveTo) moveTo--;
                         var moveItem = items[moveFrom];
                         items.RemoveAt(moveFrom);
 
