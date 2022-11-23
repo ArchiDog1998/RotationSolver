@@ -195,20 +195,15 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
 
         //·¢Ñ×
         //ÁôÒ»²ã×ßÎ»
-        if (Phlegma3.ShouldUse(out act, mustUse: Phlegma3.MaxCharges == Phlegma3.CurrentCharges)) return true;
-        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: Phlegma2.MaxCharges == Phlegma2.CurrentCharges)) return true;
-        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: Phlegma.MaxCharges == Phlegma.CurrentCharges)) return true;
+        if (Phlegma3.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
+        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
+        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
 
         //Ê§ºâ
         if (Dyskrasia.ShouldUse(out act)) return true;
 
         //×¢Ò©
         if (Dosis.ShouldUse(out act)) return true;
-
-        //·¢Ñ×
-        if (Phlegma3.ShouldUse(out act, mustUse: true)) return true;
-        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: true)) return true;
-        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: true)) return true;
 
         //¼ý¶¾
         if (Addersting > 0 && Toxikon.ShouldUse(out act, mustUse: true)) return true;

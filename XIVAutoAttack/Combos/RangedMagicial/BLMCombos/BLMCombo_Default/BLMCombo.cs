@@ -178,7 +178,12 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (CanUseTriplecast(out act)) return true;
 
         //魔泉
-        if (Manafont.ShouldUse(out act) && IsLastSpell(true, Despair, Xenoglossy) && Player.CurrentMp == 0 && InAstralFire) return true;
+        if (Manafont.ShouldUse(out act))
+        {
+            if (IsLastSpell(true, Despair, Xenoglossy) && Player.CurrentMp == 0 && InAstralFire) return true;
+
+            if (!Paradox.EnoughLevel && Player.CurrentMp <= 7000 && InAstralFire) return true;
+        }
 
         //星灵移位
         if (CanUseTranspose(abilityRemain, out act)) return true;

@@ -89,12 +89,9 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         if (HardSlash.ShouldUse(out act)) return true;
 
         if (CommandController.Move && MoveAbility(1, out act)) return true;
-        if (Unmend.ShouldUse(out act))
-        {
-            if (!IsFullParty && Target.DistanceToPlayer() < 5) return false;
-            return true;
-        }
 
+        if (Unmend.ShouldUse(out act)) return true;
+        
         return false;
     }
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
@@ -188,7 +185,9 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
     {
         if (!EdgeofDarkness.ShouldUse(out act)) return false;
 
-        if (!IsFullParty && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) return false;
+        //if (!IsFullParty && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) return false;
+
+        if (HasDarkArts) return true;
 
         //是否留3000蓝开黑盾
         if (Config.GetBoolByName("TheBlackestNight") && Player.CurrentMp < 6000) return false;
@@ -197,7 +196,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         if (Delirium.IsCoolDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7)) return true;
 
         //非爆发期防止溢出+续buff
-        if (HasDarkArts || Player.CurrentMp > 8500 || DarkSideEndAfterGCD(3)) return true;
+        if (Player.CurrentMp > 8500 || DarkSideEndAfterGCD(3)) return true;
 
         return false;
     }

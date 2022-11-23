@@ -67,10 +67,8 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
         if (CommandController.Move && MoveAbility(1, out act)) return true;
 
-        if (LightningShot.ShouldUse(out act))
-        {
-            if (!IsFullParty && LightningShot.Target.DistanceToPlayer() > 3) return true;
-        }
+        if (LightningShot.ShouldUse(out act)) return true;
+
         return false;
     }
 
@@ -166,7 +164,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     {
         if (!NoMercy.ShouldUse(out act)) return false;
 
-        if (!IsFullParty && !IsTargetBoss && !IsMoving && DemonSlice.ShouldUse(out _)) return true;
+        if (!IsFullParty && !IsTargetBoss && !IsMoving) return true;
 
         //等级低于爆发击是判断
         if (!BurstStrike.EnoughLevel) return true;
@@ -254,7 +252,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (DoubleDown.ShouldUse(out act, mustUse: true))
         {
             //在4人本道中
-            if (IsFullParty && !SonicBreak.IsTargetBoss)
+            if (DemonSlice.ShouldUse(out _))
             {
                 //在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪),有无情buff
                 if (Player.HasStatus(true, StatusID.NoMercy)) return true;
@@ -282,7 +280,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (BurstStrike.ShouldUse(out act))
         {
             //在4人本道中且AOE时不使用
-            if (!IsFullParty && DemonSlice.ShouldUse(out _)) return false;
+            if (DemonSlice.ShouldUse(out _)) return false;
 
             //如果烈牙剩0.5秒冷却好,不释放爆发击,主要因为技速不同可能会使烈牙延后太多所以判定一下
             if (SonicBreak.IsCoolDown && SonicBreak.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;

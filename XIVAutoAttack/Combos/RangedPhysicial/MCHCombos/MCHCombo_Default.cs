@@ -41,7 +41,8 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         return base.CreateConfiguration()
             .SetBool("MCH_Opener", true, "标准起手")
             .SetBool("MCH_Automaton", true, "机器人吃团辅")
-            .SetBool("MCH_Reassemble", true, "整备优先链锯");
+            .SetBool("MCH_Reassemble", true, "整备优先链锯")
+            .SetBool("DelayHypercharge", false, "强制在GCD后半段使用");
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
@@ -146,7 +147,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (CanUseRookAutoturret(out act)) return true;
 
         //超荷
-        if (CanUseHypercharge(out act) && abilityRemain == 1) return true;
+        if (CanUseHypercharge(out act) && (Config.GetBoolByName("MCH_Opener") && abilityRemain == 1 || !Config.GetBoolByName("MCH_Opener"))) return true;
 
         if (GaussRound.CurrentCharges <= Ricochet.CurrentCharges)
         {
@@ -175,7 +176,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()) return false;
 
         //在过热时
-        if (IsLastAbility(true, Hypercharge)) return true;
+        if (IsLastAction(true, Hypercharge)) return true;
 
         if (ChainSaw.EnoughLevel && !ChainSaw.IsCoolDown) return false;
 
