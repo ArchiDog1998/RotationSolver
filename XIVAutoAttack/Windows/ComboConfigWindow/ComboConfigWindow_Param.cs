@@ -241,7 +241,7 @@ internal partial class ComboConfigWindow
                 }
 
                 bool attackSafeMode = Service.Configuration.AttackSafeMode;
-                if (ImGui.Checkbox("攻击安全模式", ref attackSafeMode))
+                if (ImGui.Checkbox("绝对单体模式", ref attackSafeMode))
                 {
                     Service.Configuration.AttackSafeMode = attackSafeMode;
                     Service.Configuration.Save();

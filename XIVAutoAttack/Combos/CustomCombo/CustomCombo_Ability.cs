@@ -47,7 +47,6 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
             if (CommandController.RaiseOrShirk)
             {
                 if (Shirk.ShouldUse(out act)) return true;
-                if (HaveShield && Shield.ShouldUse(out act)) return true;
             }
 
             if (CommandController.EsunaOrShield && Shield.ShouldUse(out act)) return true;
