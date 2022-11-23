@@ -197,23 +197,28 @@ namespace XIVAutoAttack.Windows
             {
                 var item = items[i];
 
-                //if(ImGui.Begin(item.GetHashCode().ToString() + "Item"))
-                //{
-
-                //}
-
-                ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV);
-
-                if (ImGui.IsItemHovered())
+                if (ImGui.Begin(item.GetHashCode().ToString() + "Item"))
                 {
-                    ImGui.SetTooltip("拖拽移动，ctrl + alt + 右键删除。");
+                    ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV);
 
-                    if ((ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
-                        && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
-                        && ImGui.IsMouseReleased(ImGuiMouseButton.Right))
+                    if (ImGui.IsItemHovered())
                     {
-                        moveFrom = i;
+                        ImGui.SetTooltip("拖拽移动，ctrl + alt + 右键删除。");
+
+                        if ((ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
+                            && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
+                            && ImGui.IsMouseReleased(ImGuiMouseButton.Right))
+                        {
+                            moveFrom = i;
+                        }
                     }
+
+
+                    ImGui.SameLine();
+
+                    draw?.Invoke(item);
+
+                    ImGui.End();
                 }
 
                 ImGuiDragDropFlags src_flags = 0;
@@ -240,9 +245,6 @@ namespace XIVAutoAttack.Windows
                     ImGui.EndDragDropTarget();
                 }
 
-                ImGui.SameLine();
-
-                draw?.Invoke(item);
             }
 
             bool result = false;
