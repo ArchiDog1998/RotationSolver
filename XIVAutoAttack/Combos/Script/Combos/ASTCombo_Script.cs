@@ -15,6 +15,9 @@ namespace XIVAutoAttack.Combos.Script.Combos
 
         public ComboSet Set { get; set; } = new ComboSet();
 
+        private protected override IAction CountDownAction(float remainTime)
+            => Set.CountDown.ShouldUse(this, remainTime);
+
         private protected override bool EmergencyGCD(out IAction act)
             => Set.EmergencyGCDSet.ShouldUse(this, 0, null, out act);
 

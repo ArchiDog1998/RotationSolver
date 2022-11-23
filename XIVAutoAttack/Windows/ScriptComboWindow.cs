@@ -26,8 +26,8 @@ namespace XIVAutoAttack.Windows
     {
         public IScriptCombo TargetCombo { get; set; }
 
-        public ActionConditions ActiveAction { get; set; }
-        public ActionsSet ActiveSet { get; set; }
+        public IDraw ActiveAction { get; set; }
+        public IDraw ActiveSet { get; set; }
 
         public ScriptComboWindow()
             : base("自定义循环设置 v" + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString(), 0, false)

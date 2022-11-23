@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
@@ -100,6 +101,9 @@ namespace XIVAutoAttack.Combos.Script.Actions
             IsAbility = true,
         };
 
+        public CountDownActions CountDown { get; set; }
+
+
         public void Draw(IScriptCombo combo)
         {
             var desc = Description;
@@ -112,6 +116,15 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
             if (ImGui.BeginChild($"##{AuthorName}的{JobID}技能描述", new Vector2(-5f, -1f), true))
             {
+                if (ImGui.Selectable("倒计时", CountDown == XIVAutoAttackPlugin._scriptComboWindow.ActiveSet))
+                {
+                    XIVAutoAttackPlugin._scriptComboWindow.ActiveSet = CountDown;
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("倒计时的时候需要释放什么技能。");
+                }
+
                 foreach (var p in from prop in GetType().GetRuntimeProperties()
                                   where prop.PropertyType == typeof(ActionsSet)
                                   select prop)
