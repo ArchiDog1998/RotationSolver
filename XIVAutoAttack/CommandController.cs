@@ -1,5 +1,7 @@
 ﻿using Lumina.Excel.GeneratedSheets;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
@@ -13,20 +15,24 @@ namespace XIVAutoAttack
 {
     internal static class CommandController
     {
+        internal record NextAct(BaseAction act, DateTime deadTime);
+
         private static DateTime _fastClickStopwatch = DateTime.Now;
         private static DateTime _specialStateStartTime = DateTime.MinValue;
 
-        private static BaseAction _nextAction;
-        private static TimeSpan _actionTime = TimeSpan.Zero;
-        private static DateTime _actionAddTime = DateTime.Now;
+        private static List<NextAct> NextActs = new List<NextAct>();
         internal static BaseAction NextAction
         {
             get
             {
-                var time = DateTime.Now - _actionAddTime;
-                if (time > _actionTime) _nextAction = null;
-                if (IActionHelper.IsLastAction(true, _nextAction)) _nextAction = null;
-                return _nextAction;
+                var next = NextActs.FirstOrDefault();
+
+                while (next != null && (next.deadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.act)))
+                {
+                    NextActs.RemoveAt(0);
+                    next = NextActs.FirstOrDefault();
+                }
+                return next?.act;
             }
         }
 
@@ -462,10 +468,20 @@ namespace XIVAutoAttack
 
                                     if (actName == act.Name)
                                     {
-                                        _actionTime = new TimeSpan(0, 0, 0, 0, (int)(time * 1000));
-                                        _actionAddTime = DateTime.Now;
-                                        _nextAction = act;
+                                        var index = NextActs.FindIndex(i => i.act.ID == act.ID);
+                                        var newItem = new NextAct(act, DateTime.Now.AddSeconds(time));
+                                        if (index < 0)
+                                        {
+                                            NextActs.Add(newItem);
+                                        }
+                                        else
+                                        {
+                                            NextActs[index] = newItem;
+                                        }
+                                        NextActs = NextActs.OrderBy(i => i.deadTime).ToList();
+
                                         Service.ChatGui.Print($"将在{time}s 内使用技能\"{act.Name}\"");
+                                        return;
                                     }
                                 }
                             }
