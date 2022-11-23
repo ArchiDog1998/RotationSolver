@@ -23,19 +23,13 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     }
     public RPRCombo_Default()
     {
-        bool PlentifulReady = Player.HasStatus(true, StatusID.ImmortalSacrifice) && !Player.HasStatus(true, StatusID.BloodsownCircle);
-
-        //bool EnhancedGibbet = Player.HasStatus(true, StatusID.EnhancedGibbet);
-        //bool EnhancedGallows = Player.HasStatus(true, StatusID.EnhancedGallows);
-        //Gibbet.ComboCheck = b => EnhancedGibbet;
-        //Gallows.ComboCheck = b => EnhancedGallows || !EnhancedGibbet;
 
         //快死的不上Dot
         ShadowofDeath.ComboCheck = b => !IsTargetDying;
 
-        //保留红条不第一时间打出去,保证暴食不空转
-        BloodStalk.ComboCheck = b => !PlentifulReady && ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel || Soul == 100);
-        GrimSwathe.ComboCheck = b => !PlentifulReady && ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel || Soul == 100);
+        //保留红条不第一时间打出去,保证暴食不空转 同时保证不延后大丰收
+        BloodStalk.ComboCheck = b => !Player.HasStatus(true,StatusID.BloodsownCircle) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel || Soul == 100);
+        GrimSwathe.ComboCheck = BloodStalk.ComboCheck;
 
         //必须有dot
         ArcaneCircle.ComboCheck = b => Target.HasStatus(true, StatusID.DeathsDesign);
@@ -54,6 +48,8 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     };
     private protected override IAction CountDownAction(float remainTime)
     {
+        //倒数收获月
+        if (remainTime <= 30 && Soulsow.ShouldUse(out _)) return Soulsow;
         //提前2s勾刃
         if (remainTime <= 2 && Harpe.ShouldUse(out _)) return Harpe;
         return base.CountDownAction(remainTime);
@@ -81,12 +77,6 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
                 if (Gallows.ShouldUse(out act)) return true;
             }
         }
-
-        ////补蓝
-        //if (Guillotine.ShouldUse(out act)) return true;
-        //if (Gallows.ShouldUse(out act)) return true;
-        //if (Gibbet.ShouldUse(out act)) return true;
-
 
         //夜游魂变身状态
         if (Enshrouded)
@@ -195,7 +185,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
 
         //暴食
         //大丰收期间延后暴食
-        if ((PlentifulHarvest.EnoughLevel && !Player.HasStatus(true, StatusID.BloodsownCircle)) || !PlentifulHarvest.EnoughLevel)
+        if ((PlentifulHarvest.EnoughLevel && !Player.HasStatus(true,StatusID.ImmortalSacrifice) && !Player.HasStatus(true,StatusID.BloodsownCircle)) || !PlentifulHarvest.EnoughLevel)
         {
             if (Gluttony.ShouldUse(out act, mustUse: true)) return true;
         }
@@ -210,7 +200,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //牵制
-        if (abilityRemain == 2)
+        if (!SoulReaver && !Enshrouded)
         {
             if (Feint.ShouldUse(out act)) return true;
         }
@@ -222,7 +212,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //神秘纹
-        if (abilityRemain == 2)
+        if (!SoulReaver && !Enshrouded)
         {
             if (ArcaneCrest.ShouldUse(out act)) return true;
         }
