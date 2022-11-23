@@ -213,7 +213,7 @@ internal partial class ComboConfigWindow : Window
         {
             if (texture is IScriptCombo script)
             {
-                if (ImGuiComponents.IconButton(FontAwesomeIcon.Edit))
+                if (ImGuiComponents.IconButton(texture.GetHashCode(), FontAwesomeIcon.Edit))
                 {
                     XIVAutoAttackPlugin.OpenScriptWindow(script);
                 }

@@ -19,15 +19,37 @@ using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
 
 namespace XIVAutoAttack.Windows
 {
     internal class ScriptComboWindow : Window
     {
-        public IScriptCombo TargetCombo { get; set; }
+        IScriptCombo _targetCombo;
+        public IScriptCombo TargetCombo 
+        {
+            get => _targetCombo;
+            set
+            {
+                _targetCombo = value;
+                ActiveSet = null;
+            }
+        }
+
+        IDraw _activeSet;
+        public IDraw ActiveSet
+        {
+            get => _activeSet;
+            set
+            {
+                _activeSet = value;
+                ActiveAction = null;
+            }
+        } 
 
         public IDraw ActiveAction { get; set; }
-        public IDraw ActiveSet { get; set; }
+
+
 
         public ScriptComboWindow()
             : base("自定义循环设置 v" + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString(), 0, false)
@@ -59,59 +81,48 @@ namespace XIVAutoAttack.Windows
         {
             if (TargetCombo == null) return;
 
-            if (ImGui.BeginTable("MyTable", 2))
+            var text = TargetCombo.GetTexture();
+
+            ImGui.Image(text.ImGuiHandle, new Vector2(text.Width, text.Height));
+
+            ImGui.SameLine();
+
+
+
+            string authorName = TargetCombo.Set.AuthorName;
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(authorName).X + 10);
+            if (ImGui.InputText($"##{TargetCombo.Name}作者", ref authorName, 32, ImGuiInputTextFlags.AutoSelectAll))
             {
-                ImGui.TableNextColumn();
+                TargetCombo.Set.AuthorName = authorName;
+            }
+            ImGui.SameLine();
 
-                var text = TargetCombo.GetTexture();
+            ImGui.Text("作者  ");
 
-                ImGui.Image(text.ImGuiHandle, new Vector2(text.Width, text.Height));
-
-                ImGui.TableNextColumn();
-
-                ImGui.Text("作者:  ");
-                ImGui.SameLine();
+            ImGui.SameLine();
 
 
-                string authorName = TargetCombo.Set.AuthorName;
-                ImGui.SetNextItemWidth(ImGui.CalcTextSize(authorName).X + 10);
-                if (ImGui.InputText($"##{TargetCombo.Name}作者", ref authorName, 32))
-                {
-                    TargetCombo.Set.AuthorName = authorName;
-                }
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.Folder))
+            {
+                Process p = new Process();
+                p.StartInfo.FileName = "explorer.exe";
+                p.StartInfo.Arguments = $" /select, {TargetCombo.Set.GetFolder()}";
+                p.Start();
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("打开源文件");
+            }
 
-                ImGui.Text("描述:");
+            ImGui.SameLine();
 
-                ImGui.SameLine();
-
-                ComboConfigWindow.ComboConfigWindow.Spacing();
-
-                if (ImGuiComponents.IconButton(FontAwesomeIcon.Folder))
-                {
-                    Process p = new Process();
-                    p.StartInfo.FileName = "explorer.exe";
-                    p.StartInfo.Arguments = $" /select, {TargetCombo.Set.GetFolder()}";
-                    p.Start();
-                }
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip("打开源文件");
-                }
-
-                ImGui.SameLine();
-                ComboConfigWindow.ComboConfigWindow.Spacing();
-
-                if (ImGuiComponents.IconButton(FontAwesomeIcon.Save))
-                {
-                    File.WriteAllText(TargetCombo.Set.GetFolder(), JsonConvert.SerializeObject(TargetCombo.Set, Formatting.Indented));
-                }
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip("保存修改");
-                }
-
-
-                ImGui.EndTable();
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.Save))
+            {
+                File.WriteAllText(TargetCombo.Set.GetFolder(), JsonConvert.SerializeObject(TargetCombo.Set, Formatting.Indented));
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("保存修改");
             }
 
             TargetCombo.Set.Draw(TargetCombo);
@@ -135,11 +146,22 @@ namespace XIVAutoAttack.Windows
             {
                 var item = items[i];
 
-                ImGui.BeginGroup();
-
                 ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV);
-
-                if (ImGui.IsItemHovered())
+                
+                ImGuiDragDropFlags src_flags = 0;
+                src_flags |= ImGuiDragDropFlags.SourceNoDisableHover;     // Keep the source displayed as hovered
+                src_flags |= ImGuiDragDropFlags.SourceNoHoldToOpenOthers; // Because our dragging is local, we disable the feature of opening foreign treenodes/tabs while dragging
+                                                                          //src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
+                if (ImGui.BeginDragDropSource(src_flags))
+                {
+                    if ((src_flags & ImGuiDragDropFlags.SourceNoPreviewTooltip) != 0)
+                    {
+                        ImGui.SetTooltip("正在拖拽...");
+                    }
+                    ImGui.SetDragDropPayload("List Movement", (IntPtr)(&i), sizeof(int));
+                    ImGui.EndDragDropSource();
+                }
+                else if (ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip("拖拽移动，ctrl + alt + 右键删除。");
 
@@ -151,33 +173,11 @@ namespace XIVAutoAttack.Windows
                     }
                 }
 
-
-                ImGui.SameLine();
-
-                draw?.Invoke(item);
-
-                ImGui.EndGroup();
-
-
-                ImGuiDragDropFlags src_flags = 0;
-                src_flags |= ImGuiDragDropFlags.SourceNoDisableHover;     // Keep the source displayed as hovered
-                src_flags |= ImGuiDragDropFlags.SourceNoHoldToOpenOthers; // Because our dragging is local, we disable the feature of opening foreign treenodes/tabs while dragging
-                                                                          //src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
-                if (ImGui.BeginDragDropSource(src_flags))
-                {
-                    if ((src_flags & ImGuiDragDropFlags.SourceNoPreviewTooltip) != 0)
-                    {
-                        draw?.Invoke(item);
-                    }
-                    ImGui.SetDragDropPayload("List Movement", (IntPtr)(&i), sizeof(int));
-                    ImGui.EndDragDropSource();
-                }
-
                 if (ImGui.BeginDragDropTarget())
                 {
                     ImGuiDragDropFlags target_flags = 0;
                     target_flags |= ImGuiDragDropFlags.AcceptBeforeDelivery;    // Don't wait until the delivery (release mouse button on a target) to do something
-                    target_flags |= ImGuiDragDropFlags.AcceptNoDrawDefaultRect; // Don't display the yellow rectangle
+                    //target_flags |= ImGuiDragDropFlags.AcceptNoDrawDefaultRect; // Don't display the yellow rectangle
                     var ptr = ImGui.AcceptDragDropPayload("List Movement", target_flags);
 
                     {
@@ -187,6 +187,9 @@ namespace XIVAutoAttack.Windows
                     ImGui.EndDragDropTarget();
                 }
 
+                ImGui.SameLine();
+
+                draw?.Invoke(item);
             }
 
             bool result = false;
