@@ -1,9 +1,11 @@
-﻿using Dalamud.Interface;
+﻿using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using ImGuiNET;
+using Lumina.Data.Parsing.Uld;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -125,71 +127,148 @@ namespace XIVAutoAttack.Windows
             ActiveAction?.Draw(TargetCombo);
         }
 
-        internal static bool DrawEditorList<T>(List<T> items, Action<T> draw)
+        internal unsafe static bool DrawEditorList<T>(List<T> items, Action<T> draw)
         {
-            int index = -1;
-            int type = -1;
+            //int index = -1;
+            //int type = -1;
+            //for (int i = 0; i < items.Count; i++)
+            //{
+            //    var item = items[i];
+
+            //    if (ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV))
+            //    {
+            //        type = 0;
+            //        index = i;
+            //    }
+
+            //    if (ImGui.IsItemHovered())
+            //    {
+            //        ImGui.SetTooltip("左键上移，右键下移动，ctrl + alt + 中键删除。");
+
+            //        if (ImGui.IsMouseReleased(ImGuiMouseButton.Right))
+            //        {
+            //            type = 1;
+            //            index = i;
+            //        }
+
+            //        if ((ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
+            //            && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
+            //            && ImGui.IsMouseReleased(ImGuiMouseButton.Middle))
+            //        {
+            //            type = 2;
+            //            index = i;
+            //        }
+            //    }
+
+            //    ImGui.SameLine();
+
+            //    draw?.Invoke(item);
+            //}
+            //switch (type)
+            //{
+            //    case 0:
+            //        if (index > 0)
+            //        {
+            //            var item = items[index];
+            //            items.RemoveAt(index);
+            //            items.Insert(index - 1, item);
+            //        }
+            //        break;
+
+            //    case 1:
+
+            //        if (index < items.Count - 1)
+            //        {
+            //            var item = items[index];
+            //            items.RemoveAt(index);
+            //            items.Insert(index + 1, item);
+            //        }
+            //        break;
+
+            //    case 2:
+            //        items.RemoveAt(index);
+            //        break;
+            //}
+            //return index != -1;
+
+            ImGui.Indent();
+            int moveFrom = -1, moveTo = -1;
             for (int i = 0; i < items.Count; i++)
             {
                 var item = items[i];
 
-                if (ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV))
-                {
-                    type = 0;
-                    index = i;
-                }
+                if (ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV)) ;
 
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("左键上移，右键下移动，ctrl + alt + 中键删除。");
-
-                    if (ImGui.IsMouseReleased(ImGuiMouseButton.Right))
-                    {
-                        type = 1;
-                        index = i;
-                    }
+                    ImGui.SetTooltip("拖拽移动，ctrl + alt + 右键删除。");
 
                     if ((ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
                         && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
-                        && ImGui.IsMouseReleased(ImGuiMouseButton.Middle))
+                        && ImGui.IsMouseReleased(ImGuiMouseButton.Right))
                     {
-                        type = 2;
-                        index = i;
+                        moveFrom = i;
                     }
+                }
+
+                ImGuiDragDropFlags src_flags = 0;
+                src_flags |= ImGuiDragDropFlags.SourceNoDisableHover;     // Keep the source displayed as hovered
+                src_flags |= ImGuiDragDropFlags.SourceNoHoldToOpenOthers; // Because our dragging is local, we disable the feature of opening foreign treenodes/tabs while dragging
+                                                                          //src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
+                if (ImGui.BeginDragDropSource(src_flags))
+                {
+                    if ((src_flags & ImGuiDragDropFlags.SourceNoPreviewTooltip) != 0)
+                        ImGui.Text($"Moving \"{item}\"");
+                    ImGui.SetDragDropPayload("List Movement", (IntPtr)(&i), sizeof(int));
+                    ImGui.EndDragDropSource();
+                }
+
+                if (ImGui.BeginDragDropTarget())
+                {
+                    ImGuiDragDropFlags target_flags = 0;
+                    target_flags |= ImGuiDragDropFlags.AcceptBeforeDelivery;    // Don't wait until the delivery (release mouse button on a target) to do something
+                    target_flags |= ImGuiDragDropFlags.AcceptNoDrawDefaultRect; // Don't display the yellow rectangle
+                    var ptr = ImGui.AcceptDragDropPayload("List Movement", target_flags);
+
+                    {
+                        moveFrom = *(int*)ptr.Data;
+                        moveTo = i;
+                    }
+                    ImGui.EndDragDropTarget();
                 }
 
                 ImGui.SameLine();
 
                 draw?.Invoke(item);
-
-                //if(i < items.Count -1) ImGui.Separator();
             }
-            switch (type)
+
+            bool result = false;
+            if(moveFrom > -1)
             {
-                case 0:
-                    if (index > 0)
+                //Move.
+                if (moveTo > -1)
+                {
+                    if(moveFrom != moveTo)
                     {
-                        var item = items[index];
-                        items.RemoveAt(index);
-                        items.Insert(index - 1, item);
+                        if (moveFrom < moveTo) moveTo--;
+                        var moveItem = items[moveFrom];
+                        items.RemoveAt(moveFrom);
+
+                        items.Insert(moveTo, moveItem);
+
+                        result = true;
                     }
-                    break;
-
-                case 1:
-
-                    if (index < items.Count - 1)
-                    {
-                        var item = items[index];
-                        items.RemoveAt(index);
-                        items.Insert(index + 1, item);
-                    }
-                    break;
-
-                case 2:
-                    items.RemoveAt(index);
-                    break;
+                }
+                //Remove.
+                else
+                {
+                    items.RemoveAt(moveFrom);
+                    result = true;
+                }
             }
-            return index != -1;
+
+            ImGui.Unindent();
+            return result;
         }
 
         internal static void AddPopup<T>(string popId, string special, Action act, ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture

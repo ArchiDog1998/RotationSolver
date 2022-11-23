@@ -241,7 +241,12 @@ internal partial class ComboConfigWindow : Window
             if (Directory.Exists(Service.Configuration.ScriptComboFolder)
                 && ImGuiComponents.IconButton(texture.GetHashCode() + 1, FontAwesomeIcon.Plus))
             {
-                IconReplacer.AddScripCombo(com.JobIDs[0]);
+                var newCom = IconReplacer.AddScripCombo(com.JobIDs[0]);
+                if(newCom != null)
+                {
+                    Service.Configuration.ComboChoices[(uint)jobId] = newCom.Author;
+                    Service.Configuration.Save();
+                }
             }
             if (ImGui.IsItemHovered())
             {

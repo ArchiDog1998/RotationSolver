@@ -11,6 +11,7 @@ changelog: |-
   ## 错误修复
   - 修复了龙骑、占星、舞者找对象的问题
   - 支持Tank和Healer单独控制部分技能
+  - 添加自定义的Combo后会自动切换到该Combo
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
