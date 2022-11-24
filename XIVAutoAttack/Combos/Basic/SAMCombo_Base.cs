@@ -165,7 +165,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Ñà»Ø·µ
     /// </summary>
-    public static BaseAction Tsubame_gaeshi { get; } = new(ActionID.Tsubame_gaeshi);
+    public static BaseAction TsubameGaeshi { get; } = new(ActionID.TsubameGaeshi);
 
     /// <summary>
     /// »Ø·µÎå½£

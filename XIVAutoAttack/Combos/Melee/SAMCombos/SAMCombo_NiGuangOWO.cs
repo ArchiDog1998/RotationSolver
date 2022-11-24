@@ -24,8 +24,10 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
         Hakaze.ComboCheck = b => !haveMeikyoShisui;
         Fuga.ComboCheck = b => !haveMeikyoShisui;
         Enpi.ComboCheck = b => !haveMeikyoShisui;
-        //奥义斩浪保证有双buff
-        OgiNamikiri.ComboCheck = b => HaveMoon && HaveFlower && Target.HasStatus(true,StatusID.Higanbana);
+        //保证有双buff加成
+        OgiNamikiri.ComboCheck = b => HaveMoon && HaveFlower && SenCount == 0;
+        HissatsuSenei.ComboCheck = b => HaveMoon && HaveFlower;
+        HissatsuGuren.ComboCheck = HissatsuSenei.ComboCheck;
         //明镜
         MeikyoShisui.ComboCheck = b => SenCount != 3;
     }
@@ -54,10 +56,10 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
         }
 
         //奥义斩浪
-        if (OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
+        if (((IsTargetBoss && Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(50, true, StatusID.Higanbana)) || !IsTargetBoss) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
 
         //处理居合术
-        if(SenCount == 1)
+        if(SenCount == 1 && IsTargetBoss && !IsTargetDying)
         {
             if (HaveMoon && HaveFlower && Higanbana.ShouldUse(out act)) return true;
         }
@@ -67,7 +69,15 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
         }
         if(SenCount == 3)
         {
-            if (MidareSetsugekka.ShouldUse(out act)) return true;
+            if (TsubameGaeshi.CurrentCharges == 0 && TsubameGaeshi.WillHaveOneChargeGCD(2) && !TsubameGaeshi.WillHaveOneChargeGCD(1))
+            {
+                if (Hakaze.ShouldUse(out act)) return true;
+            }
+            else 
+            {
+                if (MidareSetsugekka.ShouldUse(out act)) return true;
+            }
+
         }
 
         //雪
@@ -123,7 +133,7 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
         if (Kenki <= 50 && Ikishoten.ShouldUse(out act)) return true;
 
         //叶隐
-        if(Target.WillStatusEnd(8,true,StatusID.Higanbana) && SenCount == 2 && !haveMeikyoShisui && HaveMoon && HaveFlower)
+        if(Target.HasStatus(true,StatusID.Higanbana) && Target.WillStatusEnd(35,true,StatusID.Higanbana) && !Target.WillStatusEnd(27, true, StatusID.Higanbana) && SenCount == 1 && IsLastAction(true,Yukikaze) && !haveMeikyoShisui)
         {
             if (Hagakure.ShouldUse(out act)) return true;
         }
@@ -137,7 +147,7 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
         if (Shoha.ShouldUse(out act)) return true;
 
         //震天、红莲
-        if((Kenki > 50 && Ikishoten.WillHaveOneCharge(10)) || Kenki >= 85)
+        if(((Kenki > 50 && Ikishoten.WillHaveOneCharge(10)) || Kenki >= 85) || (IsTargetBoss && IsTargetDying))
         {
             if (HissatsuKyuten.ShouldUse(out act)) return true;
             if (HissatsuShinten.ShouldUse(out act)) return true;
@@ -149,7 +159,8 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //明镜止水
-        if(HaveHostilesInRange && ((!IsLastWeaponSkill(true, Shifu) && !IsLastWeaponSkill(true, Jinpu) && !IsLastWeaponSkill(true, Hakaze)) || IsLastWeaponSkill(true,Yukikaze)) && HasSetsu)
+        if(HaveHostilesInRange && ((!IsLastWeaponSkill(true, Shifu) && !IsLastWeaponSkill(true, Jinpu) && !IsLastWeaponSkill(true, Hakaze)) || IsLastWeaponSkill(true,Yukikaze)) && 
+            HasSetsu && ((IsTargetBoss && Target.HasStatus(true,StatusID.Higanbana) && !Target.WillStatusEnd(40,true,StatusID.Higanbana)) || !IsTargetBoss))
         {
             if(MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
@@ -174,6 +185,8 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
     {
         //开局使用明镜
         if (remainTime <= 5 && MeikyoShisui.ShouldUse(out _)) return MeikyoShisui;
+        //真北防止boss面向没到位
+        if (remainTime <= 2 && TrueNorth.ShouldUse(out _)) return TrueNorth;
         return base.CountDownAction(remainTime);
     }
 }
