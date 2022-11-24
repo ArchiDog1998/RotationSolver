@@ -15,12 +15,15 @@ using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Localization;
 using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack;
 
 internal class Service
 {
+    internal static LocalizationManager Localization { get; set; }
+
     internal static PluginConfiguration Configuration { get; set; }
 
     internal static IconReplacer IconReplacer { get; set; }

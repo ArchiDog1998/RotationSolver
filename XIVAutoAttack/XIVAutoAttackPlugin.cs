@@ -5,6 +5,7 @@ using System;
 using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Localization;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 using XIVAutoAttack.Windows;
@@ -45,6 +46,8 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         Service.IconReplacer = new IconReplacer();
 
+        Service.Localization = new LocalizationManager();
+
         _comboConfigWindow = new();
         _scriptComboWindow = new();
         windowSystem = new WindowSystem(Name);
@@ -80,6 +83,8 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.IconReplacer.Dispose();
 
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
+
+        Service.Localization.Dispose();
 
         MajorUpdater.Dispose();
         Watcher.Dispose();

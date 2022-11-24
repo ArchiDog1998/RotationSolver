@@ -12,8 +12,8 @@
   </PropertyGroup>
   <PropertyGroup />
 	<PropertyGroup>
-    <DalamudLibPath>E:\Software\Dalamud.Updater\addon\Hooks\dev\</DalamudLibPath>
-    <OutputPath>E:\Software\Dalamud.Updater\XIVLauncher\devPlugins\$(ProjectName)</OutputPath>
+    <DalamudLibPath>C:\Users\11239\Downloads\Dalamud.Updater.exe_v1.0.4.3\addon\Hooks\dev\</DalamudLibPath>
+    <OutputPath>C:\Users\11239\Downloads\Dalamud.Updater.exe_v1.0.4.3\XIVLauncher\devPlugins\$(ProjectName)</OutputPath>
 	</PropertyGroup>
   <ItemGroup>
 	  <PackageReference Include="DalamudPackager" Version="2.1.8" />
@@ -41,9 +41,17 @@
 		  <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
 		  <Private>False</Private>
 	  </Reference>
+	  <Reference Include="CheapLoc">
+		  <HintPath>$(DalamudLibPath)CheapLoc.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
 	  <Reference Include="Newtonsoft.Json">
 		  <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
 		  <Private>False</Private>
 	  </Reference>
   </ItemGroup>
+
+	<ItemGroup>
+		<Content Include="..\translations\**" Link="translations\%(RecursiveDir)\%(Filename)%(Extension)" CopyToOutputDirectory="Always" />
+	</ItemGroup>
 </Project>  

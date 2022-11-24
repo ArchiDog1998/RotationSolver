@@ -14,6 +14,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Localization;
 using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Windows.ComboConfigWindow;
@@ -21,7 +22,7 @@ namespace XIVAutoAttack.Windows.ComboConfigWindow;
 internal partial class ComboConfigWindow : Window
 {
     public ComboConfigWindow()
-        : base("自动攻击设置 (开源免费) v" + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
+        : base(Strings.ConfigWindow.Header + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
     {
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
