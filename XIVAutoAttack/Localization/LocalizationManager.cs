@@ -23,6 +23,7 @@ internal class LocalizationManager : IDisposable
         Service.Interface.LanguageChanged += OnLanguageChange;
     }
 
+#if DEBUG
     public void ExportLocalization()
     {
         try
@@ -34,6 +35,7 @@ internal class LocalizationManager : IDisposable
             PluginLog.Error(ex, "Error exporting localization files");
         }
     }
+#endif
 
     public void Dispose()
     {

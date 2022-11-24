@@ -25,7 +25,7 @@ namespace XIVAutoAttack.Helpers
         internal static bool IsBoss(this BattleChara obj)
         {
             if (obj == null) return false;
-            return obj.MaxHp >= GetHealthFromMulty(6.5f)
+            return obj.MaxHp >= GetHealthFromMulty(8)
                 || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
         }
 
@@ -43,7 +43,7 @@ namespace XIVAutoAttack.Helpers
         internal static bool IsDying(this BattleChara b)
         {
             if (b == null) return false;
-            return b.CurrentHp <= GetHealthFromMulty(2);
+            return b.CurrentHp <= GetHealthFromMulty(4) || b.GetHealthRatio() < 0.02f;
         }
 
         /// <summary>

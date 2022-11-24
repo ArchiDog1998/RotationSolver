@@ -120,6 +120,9 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         if (IconReplacer.AutoAttackConfig(array[0], array.Length > 1 ? array[1] : array[0]))
             OpenConfigWindow();
+#if DEBUG
+        Service.Localization.ExportLocalization();
+#endif
     }
 
     internal static void OpenConfigWindow()
