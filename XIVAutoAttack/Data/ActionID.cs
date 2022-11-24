@@ -2546,7 +2546,7 @@ namespace XIVAutoAttack.Data
         /// <summary>
         /// 燕回返
         /// </summary>
-        Tsubame_gaeshi = 16483,
+        TsubameGaeshi = 16483,
 
         /// <summary>
         /// 回返五剑
