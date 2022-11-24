@@ -139,14 +139,14 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
         }
 
         //闪影、红莲
-        if (HissatsuGuren.ShouldUse(out act)) return true;
+        if (HissatsuGuren.ShouldUse(out act, mustUse:!HissatsuSenei.EnoughLevel)) return true;
         if (HissatsuSenei.ShouldUse(out act)) return true;
 
         //照破、无明照破
         if (Shoha2.ShouldUse(out act)) return true;
         if (Shoha.ShouldUse(out act)) return true;
 
-        //震天、红莲
+        //震天、九天
         if(((Kenki > 50 && Ikishoten.WillHaveOneCharge(10)) || Kenki >= 85) || (IsTargetBoss && IsTargetDying))
         {
             if (HissatsuKyuten.ShouldUse(out act)) return true;
@@ -159,8 +159,8 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //明镜止水
-        if(HaveHostilesInRange && ((!IsLastWeaponSkill(true, Shifu) && !IsLastWeaponSkill(true, Jinpu) && !IsLastWeaponSkill(true, Hakaze)) || IsLastWeaponSkill(true,Yukikaze)) && 
-            HasSetsu && ((IsTargetBoss && Target.HasStatus(true,StatusID.Higanbana) && !Target.WillStatusEnd(40,true,StatusID.Higanbana)) || !IsTargetBoss))
+        if(HaveHostilesInRange && (!IsLastWeaponSkill(true, Shifu, Jinpu, Hakaze, Fuga) || IsLastWeaponSkill(true,Yukikaze, Mangetsu, Oka)) && 
+            HasSetsu && ((IsTargetBoss && ((Target.HasStatus(true,StatusID.Higanbana) && !Target.WillStatusEnd(40,true,StatusID.Higanbana)) || (!HaveMoon && !HaveFlower))) || !IsTargetBoss))
         {
             if(MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
