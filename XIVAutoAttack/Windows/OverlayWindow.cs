@@ -23,7 +23,11 @@ namespace XIVAutoAttack.Windows
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
 
             ImGuiHelpers.SetNextWindowPosRelativeMainViewport(new Vector2(0, 0));
-            ImGui.Begin("Ring", ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
+            ImGui.Begin("Ring",
+                  ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.NoBringToFrontOnFocus
+                | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoDocking
+                | ImGuiWindowFlags.NoFocusOnAppearing | ImGuiWindowFlags.NoInputs
+                );
 
             ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
 
