@@ -89,7 +89,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
                 if (Config.GetBoolByName("EnshroudPooling") && PlentifulHarvest.EnoughLevel && ArcaneCircle.WillHaveOneCharge(9) &&
                    ((LemureShroud == 4 && Target.WillStatusEnd(30, true, StatusID.DeathsDesign)) || (LemureShroud == 3 && Target.WillStatusEnd(50, true, StatusID.DeathsDesign)))) //双附体窗口期 
                 {
-                    if (ShadowofDeath.ShouldUse(out act, skipBuff: true)) return true;
+                    if (ShadowofDeath.ShouldUse(out act, mustUse: true)) return true;
                 }
 
                 //夜游魂衣-虚无/交错收割 阴冷收割
@@ -107,14 +107,14 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
             {
                 if (Communio.EnoughLevel)
                 {
-                    if (!IsMoving && Communio.ShouldUse(out act, skipBuff: true))
+                    if (!IsMoving && Communio.ShouldUse(out act, mustUse: true))
                     {
                         return true;
                     }
                     //跑机制来不及读条？补个buff混一下
                     else
                     {
-                        if (ShadowofDeath.ShouldUse(out act, skipBuff: IsMoving)) return true;
+                        if (ShadowofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
                     }
                 }
                 else
@@ -134,7 +134,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         }
 
         //大丰收
-        if (PlentifulHarvest.ShouldUse(out act, skipBuff: true)) return true;
+        if (PlentifulHarvest.ShouldUse(out act, mustUse: true)) return true;
 
         //灵魂钐割
         if (SoulScythe.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -151,7 +151,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         if (Slice.ShouldUse(out act)) return true;
 
         //摸不到怪 先花掉收获月
-        if (HarvestMoon.ShouldUse(out act, skipBuff: true)) return true;
+        if (HarvestMoon.ShouldUse(out act, mustUse: true)) return true;
         if (Harpe.ShouldUse(out act)) return true;
 
         return false;
@@ -187,7 +187,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         //大丰收期间延后暴食
         if ((PlentifulHarvest.EnoughLevel && !Player.HasStatus(true,StatusID.ImmortalSacrifice) && !Player.HasStatus(true,StatusID.BloodsownCircle)) || !PlentifulHarvest.EnoughLevel)
         {
-            if (Gluttony.ShouldUse(out act, skipBuff: true)) return true;
+            if (Gluttony.ShouldUse(out act, mustUse: true)) return true;
         }
 
         //AOE

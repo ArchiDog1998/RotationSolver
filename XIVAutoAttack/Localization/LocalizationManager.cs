@@ -18,14 +18,17 @@ internal class LocalizationManager : IDisposable
     private readonly Dictionary<string, Strings> _translations = new Dictionary<string, Strings>();
     public LocalizationManager()
     {
-        SetLanguage(Service.Interface.UiLanguage);
-
         var assembly = Assembly.GetCallingAssembly();
+
+#if DEBUG
+        Service.ChatGui.Print(string.Join(", ", assembly.GetManifestResourceNames()));
+#endif
         foreach (var lang in Dalamud.Localization.ApplicableLangCodes)
         {
             ReadFile(lang, assembly);
         }
-        
+
+        SetLanguage(Service.Interface.UiLanguage);
         Service.Interface.LanguageChanged += OnLanguageChange;
     }
 
@@ -35,6 +38,7 @@ internal class LocalizationManager : IDisposable
         if (manifestResourceStream == null) return;
         using StreamReader streamReader = new StreamReader(manifestResourceStream);
         _translations[lang] = JsonConvert.DeserializeObject<Strings>(streamReader.ReadToEnd());
+        Service.ChatGui.Print("Sucessed!");
     }
 
     private void SetLanguage(string lang)
@@ -57,7 +61,7 @@ internal class LocalizationManager : IDisposable
 
         //Default values.
         var path = Path.Combine(directory, "Localization.json");
-        File.WriteAllText(path, JsonConvert.SerializeObject(RightLang));
+        File.WriteAllText(path, JsonConvert.SerializeObject(RightLang, Formatting.Indented));
     }
 #endif
 

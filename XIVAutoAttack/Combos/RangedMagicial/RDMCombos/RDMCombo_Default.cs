@@ -43,13 +43,13 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
         if (nextGCD.IsAnySameAction(true, Zwerchhau, Redoublement, Moulinet))
         {
-            if (Service.Configuration.AutoBreak && Embolden.ShouldUse(out act, skipBuff: true)) return true;
+            if (Service.Configuration.AutoBreak && Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
         //开场爆发的时候释放。
         if (Service.Configuration.AutoBreak && GetRightValue(WhiteMana) && GetRightValue(BlackMana))
         {
             if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
-            if (Embolden.ShouldUse(out act, skipBuff: true)) return true;
+            if (Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
         //倍增要放到魔连攻击之后
         if (ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Zwerchhau, Riposte))
@@ -72,7 +72,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         if (SettingBreak)
         {
             if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
-            if (Embolden.ShouldUse(out act, skipBuff: true)) return true;
+            if (Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
 
         if (ManaStacks == 0 && (BlackMana < 50 || WhiteMana < 50) && !Manafication.WillHaveOneChargeGCD(1, 1))
@@ -83,12 +83,12 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 
             //即刻咏唱
             if (!Player.HasStatus(true, StatusID.Acceleration)
-                && Swiftcast.ShouldUse(out act, skipBuff: true)
+                && Swiftcast.ShouldUse(out act, mustUse: true)
                 && (!Player.HasStatus(true, StatusID.VerfireReady) || !Player.HasStatus(true, StatusID.VerstoneReady))) return true;
         }
 
         //攻击四个能力技。
-        if (ContreSixte.ShouldUse(out act, skipBuff: true)) return true;
+        if (ContreSixte.ShouldUse(out act, mustUse: true)) return true;
         if (Fleche.ShouldUse(out act)) return true;
         //Empty: BaseAction.HaveStatusSelfFromSelf(1239)
         if (Engagement.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -153,20 +153,20 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 
     private protected override bool HealSingleGCD(out IAction act)
     {
-        if (Vercure.ShouldUse(out act, skipBuff: true)) return true;
+        if (Vercure.ShouldUse(out act, mustUse: true)) return true;
         return false;
     }
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (CorpsAcorps.ShouldUse(out act, skipBuff: true)) return true;
+        if (CorpsAcorps.ShouldUse(out act, mustUse: true)) return true;
         return false;
     }
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //混乱
         if (Addle.ShouldUse(out act)) return true;
-        if (MagickBarrier.ShouldUse(out act, skipBuff: true)) return true;
+        if (MagickBarrier.ShouldUse(out act, mustUse: true)) return true;
         return false;
     }
 
@@ -179,16 +179,16 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         {
             if (BlackMana > WhiteMana && level >= 70)
             {
-                if (Verholy.ShouldUse(out act, skipBuff: true)) return true;
+                if (Verholy.ShouldUse(out act, mustUse: true)) return true;
             }
-            if (Verflare.ShouldUse(out act, skipBuff: true)) return true;
+            if (Verflare.ShouldUse(out act, mustUse: true)) return true;
         }
 
         //焦热
-        if (Scorch.ShouldUse(out act, skipBuff: true)) return true;
+        if (Scorch.ShouldUse(out act, mustUse: true)) return true;
 
         //决断
-        if (Resolution.ShouldUse(out act, skipBuff: true)) return true;
+        if (Resolution.ShouldUse(out act, mustUse: true)) return true;
         #endregion
 
         #region 近战三连

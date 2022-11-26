@@ -39,9 +39,9 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //°ÚÍÑ ¶ÓÓÑÌ×¶Ü
-        if (ShakeItOff.ShouldUse(out act, skipBuff: true)) return true;
+        if (ShakeItOff.ShouldUse(out act, mustUse: true)) return true;
 
-        if (Reprisal.ShouldUse(out act, skipBuff: true)) return true;
+        if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -49,7 +49,7 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
     private protected override bool MoveGCD(out IAction act)
     {
         //·Å¸ö´ó Âù»Ä±ÀÁÑ »áÍùÇ°·É
-        if (PrimalRend.ShouldUse(out act, skipBuff: true)) return true;
+        if (PrimalRend.ShouldUse(out act, mustUse: true)) return true;
         return false;
     }
 
@@ -64,7 +64,7 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
     {
 
         //¸ã¸ã¹¥»÷
-        if (PrimalRend.ShouldUse(out act, skipBuff: true) && !IsMoving)
+        if (PrimalRend.ShouldUse(out act, mustUse: true) && !IsMoving)
         {
             if (PrimalRend.Target.DistanceToPlayer() < 1)
             {

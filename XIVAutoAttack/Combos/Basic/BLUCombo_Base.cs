@@ -63,7 +63,7 @@ namespace XIVAutoAttack.Combos.Basic
                 Type = type;
             }
 
-            public override bool ShouldUse(out IAction act, bool skipBuff = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+            public override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
             {
                 act = null;
 
@@ -73,7 +73,7 @@ namespace XIVAutoAttack.Combos.Basic
                 if (AttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
                 if (AttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
 
-                return base.ShouldUse(out act, skipBuff, emptyOrSkipCombo, skipDisable);
+                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
             }
         }
 

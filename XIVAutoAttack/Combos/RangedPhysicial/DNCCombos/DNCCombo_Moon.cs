@@ -74,7 +74,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         if (Flourish.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //扇舞·急
-        if (FanDance3.ShouldUse(out act, skipBuff: true)) return true;
+        if (FanDance3.ShouldUse(out act, mustUse: true)) return true;
 
         if (Player.HasStatus(true, StatusID.Devilment) || Feathers > 3 || !TechnicalStep.EnoughLevel)
         {
@@ -85,7 +85,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         }
 
         //扇舞·终
-        if (FanDance4.ShouldUse(out act, skipBuff: true)) return true;
+        if (FanDance4.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -102,7 +102,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         if (ExcutionStepGCD(out act)) return true;
 
         //技巧舞步
-        if (SettingBreak && InCombat && TechnicalStep.ShouldUse(out act, skipBuff: true)) return true;
+        if (SettingBreak && InCombat && TechnicalStep.ShouldUse(out act, mustUse: true)) return true;
 
         //攻击GCD
         if (AttackGCD(out act, Player.HasStatus(true, StatusID.Devilment))) return true;
@@ -123,13 +123,13 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         if (IsDancing) return false;
 
         //剑舞
-        if ((breaking || Esprit >= 85) && SaberDance.ShouldUse(out act, skipBuff: true)) return true;
+        if ((breaking || Esprit >= 85) && SaberDance.ShouldUse(out act, mustUse: true)) return true;
 
         //提拉纳
-        if (Tillana.ShouldUse(out act, skipBuff: true)) return true;
+        if (Tillana.ShouldUse(out act, mustUse: true)) return true;
 
         //流星舞
-        if (StarfallDance.ShouldUse(out act, skipBuff: true)) return true;
+        if (StarfallDance.ShouldUse(out act, mustUse: true)) return true;
 
         //使用标准舞步
         if (UseStandardStep(out act)) return true;
@@ -158,7 +158,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
     /// <returns></returns>
     private bool UseStandardStep(out IAction act)
     {
-        if (!StandardStep.ShouldUse(out act, skipBuff: true)) return false;
+        if (!StandardStep.ShouldUse(out act, mustUse: true)) return false;
 
         //等级低于玩家太多不跳舞,都直接秒了还跳啥舞
         if (Level - Target.Level > 10) return false;

@@ -42,21 +42,21 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
         //奥义回返
         if (Service.IconReplacer.OriginalHook(OgiNamikiri.ID) == KaeshiNamikiri.ID)
         {
-            if (KaeshiNamikiri.ShouldUse(out act, skipBuff: true)) return true;
+            if (KaeshiNamikiri.ShouldUse(out act, mustUse: true)) return true;
         }
 
         //燕回返
         if (Service.IconReplacer.OriginalHook(16483) == KaeshiGoken.ID)
         {
-            if (KaeshiGoken.ShouldUse(out act, skipBuff: true)) return true;
+            if (KaeshiGoken.ShouldUse(out act, mustUse: true)) return true;
         }
         if (Service.IconReplacer.OriginalHook(16483) == KaeshiSetsugekka.ID)
         {
-            if (KaeshiSetsugekka.ShouldUse(out act, emptyOrSkipCombo:true, skipBuff: true)) return true;
+            if (KaeshiSetsugekka.ShouldUse(out act, emptyOrSkipCombo:true, mustUse: true)) return true;
         }
 
         //奥义斩浪
-        if (((IsTargetBoss && Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(50, true, StatusID.Higanbana)) || !IsTargetBoss) && OgiNamikiri.ShouldUse(out act, skipBuff: true)) return true;
+        if (((IsTargetBoss && Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(50, true, StatusID.Higanbana)) || !IsTargetBoss) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
 
         //处理居合术
         if(SenCount == 1 && IsTargetBoss && !IsTargetDying)
@@ -65,7 +65,7 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
         }
         if(SenCount == 2)
         {
-            if(TenkaGoken.ShouldUse(out act,skipBuff:!MidareSetsugekka.EnoughLevel)) return true;
+            if(TenkaGoken.ShouldUse(out act,mustUse:!MidareSetsugekka.EnoughLevel)) return true;
         }
         if(SenCount == 3)
         {

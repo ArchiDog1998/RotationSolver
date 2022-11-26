@@ -195,9 +195,9 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
 
         //发炎
         //留一层走位
-        if (Phlegma3.ShouldUse(out act, skipBuff: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
-        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, skipBuff: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
-        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, skipBuff: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
+        if (Phlegma3.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
+        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
+        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
 
         //失衡
         if (Dyskrasia.ShouldUse(out act)) return true;
@@ -206,7 +206,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         if (Dosis.ShouldUse(out act)) return true;
 
         //箭毒
-        if (Addersting > 0 && Toxikon.ShouldUse(out act, skipBuff: true)) return true;
+        if (Addersting > 0 && Toxikon.ShouldUse(out act, mustUse: true)) return true;
 
         //脱战给T刷单盾嫖豆子
         if (!InCombat)
@@ -292,7 +292,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         if (TargetUpdater.PartyMembersAverHP < 0.55f)
         {
             //魂灵风息
-            if (Pneuma.ShouldUse(out act, skipBuff: true)) return true;
+            if (Pneuma.ShouldUse(out act, mustUse: true)) return true;
         }
 
         if (EukrasianPrognosis.ShouldUse(out act))

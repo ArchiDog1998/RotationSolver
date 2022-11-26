@@ -118,7 +118,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
         {
             IAction act = CommandController.NextAction;
-            if (act is BaseAction a && a != null && a.IsRealGCD && a.ShouldUse(out _, skipBuff: true, skipDisable: true)) return act;
+            if (act is BaseAction a && a != null && a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return act;
 
             if (EmergencyGCD(out act)) return act;
 
@@ -165,7 +165,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             //有某些非常危险的状态。
             if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
             {
-                if (Job.GetJobRole() == JobRole.Healer && Esuna.ShouldUse(out act, skipBuff: true)) return true;
+                if (Job.GetJobRole() == JobRole.Healer && Esuna.ShouldUse(out act, mustUse: true)) return true;
             }
 
             //蓝量不足，就不复活了。

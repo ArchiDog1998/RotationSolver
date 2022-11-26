@@ -76,10 +76,10 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// 判断是否需要使用这个技能
         /// </summary>
         /// <param name="act">返回的技能</param>
-        /// <param name="skipBuff">不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供.</param>
+        /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>是否已提供，不判断AOE技能的敌人数量是否达标.</param>
         /// <param name="emptyOrSkipCombo">如果有层数，放完所有层数，不判断是否为Combo<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
         /// <returns>这个技能能不能用</returns>
-        public unsafe virtual bool ShouldUse(out IAction act, bool skipBuff = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+        public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
         {
             act = this;
 
@@ -108,7 +108,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             }
 
             //已有提供的Buff的任何一种
-            if (BuffsProvide != null && !skipBuff)
+            if (BuffsProvide != null && !mustUse)
             {
                 if (Service.ClientState.LocalPlayer.HasStatus(true, BuffsProvide)) return false;
             }
@@ -117,7 +117,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (!WillCooldown) return false;
 
             //看看有没有目标，如果没有，就说明不符合条件。
-            if (!FindTarget()) return false;
+            if (!FindTarget(mustUse)) return false;
 
             //用于自定义的要求没达到
             if (ActionCheck != null && !ActionCheck(Target)) return false;
@@ -153,7 +153,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
 
                 //目标已有充足的Debuff
-                if (!skipBuff && TargetStatus != null)
+                if (!mustUse && TargetStatus != null)
                 {
                     var tar = Target ?? Service.ClientState.LocalPlayer;
 

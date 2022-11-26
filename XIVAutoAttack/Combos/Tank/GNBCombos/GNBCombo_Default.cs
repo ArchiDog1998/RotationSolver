@@ -119,7 +119,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (HeartofLight.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-        if (Reprisal.ShouldUse(out act, skipBuff: true)) return true;
+        if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
         return false;
     }
 
@@ -249,7 +249,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     private bool CanUseDoubleDown(out IAction act)
     {
         //基本判断
-        if (DoubleDown.ShouldUse(out act, skipBuff: true))
+        if (DoubleDown.ShouldUse(out act, mustUse: true))
         {
             //在4人本道中
             if (DemonSlice.ShouldUse(out _))
@@ -301,7 +301,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
     private bool CanUseBowShock(out IAction act)
     {
-        if (BowShock.ShouldUse(out act, skipBuff: true))
+        if (BowShock.ShouldUse(out act, mustUse: true))
         {
             if (!IsFullParty) return true;
 

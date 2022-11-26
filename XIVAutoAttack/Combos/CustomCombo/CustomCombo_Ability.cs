@@ -14,7 +14,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         act = CommandController.NextAction;
-        if (act is BaseAction a && a != null && !a.IsRealGCD && a.ShouldUse(out _, skipBuff: true, skipDisable: true)) return true;
+        if (act is BaseAction a && a != null && !a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return true;
 
         if (Service.Configuration.OnlyGCD || Player.TotalCastTime - Player.CurrentCastTime > Service.Configuration.WeaponInterval)
         {
@@ -121,7 +121,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
                 {
                     //¿ª¶ÜÌôÐÆ
                     if (!HaveShield && Shield.ShouldUse(out act)) return true;
-                    if (Provoke.ShouldUse(out act, skipBuff: true)) return true;
+                    if (Provoke.ShouldUse(out act, mustUse: true)) return true;
                 }
 
                 if (Service.Configuration.AutoDefenseForTank && HaveShield
@@ -182,7 +182,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
 
         if (!InCombat && IsMoving && role == JobRole.RangedPhysical
             && !Service.ClientState.LocalPlayer.HasStatus(false, StatusID.Peloton)
-            && Peloton.ShouldUse(out act, skipBuff: true)) return true;
+            && Peloton.ShouldUse(out act, mustUse: true)) return true;
 
         if (GeneralAbility(abilityRemain, out act)) return true;
         if (HaveHostilesInRange && AttackAbility(abilityRemain, out act)) return true;

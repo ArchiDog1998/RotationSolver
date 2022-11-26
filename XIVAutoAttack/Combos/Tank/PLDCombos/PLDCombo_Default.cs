@@ -39,9 +39,9 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //三个大招
-        if (BladeofValor.ShouldUse(out act, skipBuff: true)) return true;
-        if (BladeofFaith.ShouldUse(out act, skipBuff: true)) return true;
-        if (BladeofTruth.ShouldUse(out act, skipBuff: true)) return true;
+        if (BladeofValor.ShouldUse(out act, mustUse: true)) return true;
+        if (BladeofFaith.ShouldUse(out act, mustUse: true)) return true;
+        if (BladeofTruth.ShouldUse(out act, mustUse: true)) return true;
 
         //魔法三种姿势
         if (CanUseConfiteor(out act)) return true;
@@ -96,7 +96,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         //武装戍卫
         if (PassageofArms.ShouldUse(out act)) return true;
 
-        if (Reprisal.ShouldUse(out act, skipBuff: true)) return true;
+        if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -115,7 +115,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
 
         //厄运流转
-        if (CircleofScorn.ShouldUse(out act, skipBuff: true))
+        if (CircleofScorn.ShouldUse(out act, mustUse: true))
         {
             if (!IsFullParty) return true;
 
@@ -128,7 +128,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         }
 
         //深奥之灵
-        if (SpiritsWithin.ShouldUse(out act, skipBuff: true))
+        if (SpiritsWithin.ShouldUse(out act, mustUse: true))
         {
             //if (SlowLoop && inOpener && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
 
@@ -209,7 +209,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
     private bool CanUseRequiescat(out IAction act)
     {
         //安魂祈祷
-        if (Requiescat.ShouldUse(out act, skipBuff: true))
+        if (Requiescat.ShouldUse(out act, mustUse: true))
         {
             //在战逃buff时间剩17秒以下时释放
             if (Player.HasStatus(true, StatusID.FightOrFlight) && Player.WillStatusEnd(17, true, StatusID.FightOrFlight) && Target.HasStatus(true, StatusID.GoringBlade))
@@ -242,7 +242,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
             var statusStack = Player.StatusStack(true, StatusID.Requiescat);
             if (statusStack == 1 || Player.HasStatus(true, StatusID.Requiescat) && Player.WillStatusEnd(3, false, StatusID.Requiescat) || Player.CurrentMp <= 2000)
             {
-                if (Confiteor.ShouldUse(out act, skipBuff: true)) return true;
+                if (Confiteor.ShouldUse(out act, mustUse: true)) return true;
             }
             else
             {

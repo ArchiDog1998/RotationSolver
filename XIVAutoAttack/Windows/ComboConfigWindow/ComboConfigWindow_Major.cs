@@ -43,7 +43,7 @@ internal partial class ComboConfigWindow : Window
         if (ImGui.BeginTabBar("AutoAttackSettings"))
         {
 #if DEBUG
-            if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem("Debug²é¿´"))
+            if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_DebugItem))
             {
                 DrawDebug();
                 ImGui.EndTabItem();
@@ -312,7 +312,7 @@ internal partial class ComboConfigWindow : Window
 
             ImGui.Text("Cast Time: " + act.CastTime.ToString());
             ImGui.Text("MP: " + act.MPNeed.ToString());
-            ImGui.Text($"Can Use: {act.ShouldUse(out _)} {act.ShouldUse(out _, skipBuff: true)}");
+            ImGui.Text($"Can Use: {act.ShouldUse(out _)} {act.ShouldUse(out _, mustUse: true)}");
 
             ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(act.AdjustedID).ToString());
 #endif

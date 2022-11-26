@@ -128,13 +128,13 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             }
 
             //光明神的最终乐章
-            if (abilityRemain == 2 && RadiantFinale.ShouldUse(out act, skipBuff: true))
+            if (abilityRemain == 2 && RadiantFinale.ShouldUse(out act, mustUse: true))
             {
                 if (RagingStrikes.IsCoolDown && Player.HasStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
             }
 
             //战斗之声
-            if (abilityRemain == 1 && BattleVoice.ShouldUse(out act, skipBuff: true))
+            if (abilityRemain == 1 && BattleVoice.ShouldUse(out act, mustUse: true))
             {
                 if (RagingStrikes.IsCoolDown && Player.HasStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
             }
@@ -207,7 +207,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
     private bool CanUseApexArrow(out IAction act)
     {
         //放大招！
-        if (!ApexArrow.ShouldUse(out act, skipBuff: true)) return false;
+        if (!ApexArrow.ShouldUse(out act, mustUse: true)) return false;
 
         if (Player.HasStatus(true, StatusID.BlastArrowReady) || (QuickNock.ShouldUse(out _) && SoulVoice == 100)) return true;
 

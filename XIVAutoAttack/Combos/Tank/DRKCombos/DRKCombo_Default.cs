@@ -55,7 +55,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (DarkMissionary.ShouldUse(out act)) return true;
-        if (Reprisal.ShouldUse(out act, skipBuff: true)) return true;
+        if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -118,18 +118,18 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         if (CanUseEdgeofDarkness(out act)) return true;
 
         //腐秽大地
-        if (!IsMoving && SaltedEarth.ShouldUse(out act, skipBuff: true)) return true;
+        if (!IsMoving && SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
 
         if (Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(8))
         {
             //暗影使者
-            if (Shadowbringer.ShouldUse(out act, skipBuff: true)) return true;
+            if (Shadowbringer.ShouldUse(out act, mustUse: true)) return true;
 
             //吸血深渊+精雕怒斩
             if (AbyssalDrain.ShouldUse(out act)) return true;
             if (CarveandSpit.ShouldUse(out act)) return true;
 
-            if (Shadowbringer.ShouldUse(out act, skipBuff: true, emptyOrSkipCombo: true)) return true;
+            if (Shadowbringer.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
         }
         //吸血深渊+精雕怒斩
