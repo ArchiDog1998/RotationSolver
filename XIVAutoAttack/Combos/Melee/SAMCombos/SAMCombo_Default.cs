@@ -39,18 +39,18 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         //¸Ï½ô»Ø·µ£¡
         if (Service.IconReplacer.OriginalHook(OgiNamikiri.ID) == KaeshiNamikiri.ID)
         {
-            if (KaeshiNamikiri.ShouldUse(out act, mustUse: true)) return true;
+            if (KaeshiNamikiri.ShouldUse(out act, skipBuff: true)) return true;
         }
         if (Service.IconReplacer.OriginalHook(16483) == KaeshiGoken.ID)
         {
-            if (KaeshiGoken.ShouldUse(out act, mustUse: true)) return true;
+            if (KaeshiGoken.ShouldUse(out act, skipBuff: true)) return true;
         }
         if (Service.IconReplacer.OriginalHook(16483) == KaeshiSetsugekka.ID)
         {
-            if (KaeshiSetsugekka.ShouldUse(out act, mustUse: true)) return true;
+            if (KaeshiSetsugekka.ShouldUse(out act, skipBuff: true)) return true;
         }
 
-        if (!haveMeikyoShisui && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
+        if (!haveMeikyoShisui && OgiNamikiri.ShouldUse(out act, skipBuff: true)) return true;
         if (TenkaGoken.ShouldUse(out act))
         {
             if (SenCount == 2) return true;

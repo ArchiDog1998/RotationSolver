@@ -63,8 +63,8 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
         if (Flourish.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //扇舞·急
-        if (FanDance4.ShouldUse(out act, mustUse: true)) return true;
-        if (FanDance3.ShouldUse(out act, mustUse: true)) return true;
+        if (FanDance4.ShouldUse(out act, skipBuff: true)) return true;
+        if (FanDance3.ShouldUse(out act, skipBuff: true)) return true;
 
         //扇舞
         if (Player.HasStatus(true, StatusID.Devilment) || Feathers > 3 || !TechnicalStep.EnoughLevel)
@@ -105,7 +105,7 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
 
         if (SettingBreak)
         {
-            if (TechnicalStep.ShouldUse(out act, mustUse: true)) return true;
+            if (TechnicalStep.ShouldUse(out act, skipBuff: true)) return true;
         }
 
         if (AttackGCD(out act, Player.HasStatus(true, StatusID.Devilment))) return true;
@@ -118,11 +118,11 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
 
         //剑舞
         if ((breaking || Esprit >= 80) &&
-            SaberDance.ShouldUse(out act, mustUse: true)) return true;
+            SaberDance.ShouldUse(out act, skipBuff: true)) return true;
 
         //提纳拉
-        if (Tillana.ShouldUse(out act, mustUse: true)) return true;
-        if (StarfallDance.ShouldUse(out act, mustUse: true)) return true;
+        if (Tillana.ShouldUse(out act, skipBuff: true)) return true;
+        if (StarfallDance.ShouldUse(out act, skipBuff: true)) return true;
 
         if (IsDancing) return false;
 
@@ -131,7 +131,7 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
         if (!Player.HasStatus(true, StatusID.TechnicalFinish))
         {
             //标准舞步
-            if (StandardStep.ShouldUse(out act, mustUse: true)) return true;
+            if (StandardStep.ShouldUse(out act, skipBuff: true)) return true;
         }
 
         //用掉Buff
@@ -143,7 +143,7 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
 
 
         //标准舞步
-        if (canstandard && StandardStep.ShouldUse(out act, mustUse: true)) return true;
+        if (canstandard && StandardStep.ShouldUse(out act, skipBuff: true)) return true;
 
 
         //aoe

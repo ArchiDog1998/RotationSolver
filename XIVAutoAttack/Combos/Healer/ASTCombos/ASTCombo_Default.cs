@@ -61,7 +61,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         //单体输出
         if (Combust.ShouldUse(out act)) return true;
         if (Malefic.ShouldUse(out act)) return true;
-        if (Combust.ShouldUse(out act, mustUse: IsMoving)) return true;
+        if (Combust.ShouldUse(out act, skipBuff: IsMoving)) return true;
         /*        var times = StatusHelper.FindStatusFromSelf(Actions.Combust.Target,
                     new ushort[] { ObjectStatus.Combust, ObjectStatus.Combust2, ObjectStatus.Combust3 });
                 if (times.Length == 0 || times.Max() < 25)
@@ -155,7 +155,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
             //如果没有地星也没有巨星，那就试试看能不能放个。
             if (!Player.HasStatus(true, StatusID.EarthlyDominance, StatusID.GiantDominance))
             {
-                if (EarthlyStar.ShouldUse(out act, mustUse: true)) return true;
+                if (EarthlyStar.ShouldUse(out act, skipBuff: true)) return true;
             }
             //加星星的进攻Buff
             if (Astrodyne.ShouldUse(out act)) return true;

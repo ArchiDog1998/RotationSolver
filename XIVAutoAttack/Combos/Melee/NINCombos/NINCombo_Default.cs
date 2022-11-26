@@ -79,7 +79,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
         }
         else
         {
-            bool empty = Ten.ShouldUse(out _, mustUse: true);
+            bool empty = Ten.ShouldUse(out _, skipBuff: true);
             bool haveDoton = Player.HasStatus(true, StatusID.Doton);
 
             //加状态
@@ -168,20 +168,20 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
             //第二击杀AOE
             else if (tenId == KatonTen.ID)
             {
-                if (KatonTen.ShouldUse(out act, mustUse: true)) return true;
+                if (KatonTen.ShouldUse(out act, skipBuff: true)) return true;
             }
             //其他几击
             else if (chiId == RaitonChi.ID)
             {
-                if (RaitonChi.ShouldUse(out act, mustUse: true)) return true;
+                if (RaitonChi.ShouldUse(out act, skipBuff: true)) return true;
             }
             else if (chiId == DotonChi.ID)
             {
-                if (DotonChi.ShouldUse(out act, mustUse: true)) return true;
+                if (DotonChi.ShouldUse(out act, skipBuff: true)) return true;
             }
             else if (jinId == SuitonJin.ID)
             {
-                if (SuitonJin.ShouldUse(out act, mustUse: true)) return true;
+                if (SuitonJin.ShouldUse(out act, skipBuff: true)) return true;
             }
         }
 
@@ -194,7 +194,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
         {
             //重置
             if (!Player.HasStatus(true, StatusID.Kassatsu, StatusID.TenChiJin)
-                && !Ten.ShouldUse(out _, mustUse: true))
+                && !Ten.ShouldUse(out _, skipBuff: true))
             {
                 return false;
             }
@@ -211,7 +211,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
         //结束了
         else if (id == _ninactionAim.ID)
         {
-            if (_ninactionAim.ShouldUse(out act, mustUse: true)) return true;
+            if (_ninactionAim.ShouldUse(out act, skipBuff: true)) return true;
             if (_ninactionAim.ID == Doton.ID && !InCombat)
             {
                 act = _ninactionAim;

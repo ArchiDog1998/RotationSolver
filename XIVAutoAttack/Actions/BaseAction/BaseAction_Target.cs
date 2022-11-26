@@ -84,10 +84,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 && TargetUpdater.PartyMembersAverHP > Service.Configuration.HealthForDyingTank + 0.1f;
         }
 
-        private bool FindTarget(bool mustUse)
+        private bool FindTarget()
         {
-            if (Service.Configuration.AttackSafeMode) mustUse = false;
-
             _position = Service.ClientState.LocalPlayer.Position;
             var player = Service.ClientState.LocalPlayer;
 
@@ -157,7 +155,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                     }
                     else
                     {
-                        var tars = TargetFilter.GetMostObjectInRadius(TargetUpdater.HostileTargets, range, _action.EffectRange, false, mustUse, true)
+                        var tars = TargetFilter.GetMostObjectInRadius(TargetUpdater.HostileTargets, range, _action.EffectRange, true, AOECount)
                             .OrderByDescending(p => p.GetHealthRatio());
                         Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
                         _position = Target.Position;
@@ -205,7 +203,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (_action.CastType > 1 && (ActionID)ID != ActionID.DeploymentTactics)
                 {
                     //找到能覆盖最多的位置，并且选血最少的来。
-                    Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, _action.EffectRange, true, mustUse, true)
+                    Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, _action.EffectRange, true, AOECount)
                         .OrderBy(p => p.GetHealthRatio()).FirstOrDefault();
                     if (Target == null) return false;
 
@@ -230,10 +228,14 @@ namespace XIVAutoAttack.Actions.BaseAction
                     if (Service.TargetManager.Target is BattleChara b && b.CanAttack() && b.DistanceToPlayer() <= range)
                     {
 
-                        if (_action.CastType == 1 || mustUse)
+                        if (_action.CastType == 1)
                         {
                             Target = b;
                             return true;
+                        }
+                        else if (Service.Configuration.AttackSafeMode)
+                        {
+                            return false;
                         }
 
                         if (Service.Configuration.UseAOEWhenManual)
@@ -242,7 +244,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                             {
                                 case 10: //环形范围攻击也就这么判断吧，我烦了。
                                 case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                                    if (TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, false, mustUse, false)
+                                    if (TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, false, AOECount)
                                         .Contains(b))
                                     {
                                         Target = b;
@@ -250,7 +252,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                                     }
                                     break;
                                 case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                                    if (TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange, mustUse, false)
+                                    if (TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange, false, AOECount)
                                         .Contains(b))
                                     {
                                         Target = b;
@@ -258,7 +260,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                                     }
                                     break;
                                 case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                                    if (TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, mustUse, false)
+                                    if (TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, false, AOECount)
                                         .Contains(b))
                                     {
                                         Target = b;
@@ -274,18 +276,9 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
 
                 //判断一下AOE攻击的时候如果有攻击目标标记目标
-                if (_action.CastType > 1 && NoAOEForAttackMark)
+                if (_action.CastType > 1 && (NoAOEForAttackMark || Service.Configuration.AttackSafeMode))
                 {
-                    if (mustUse)
-                    {
-                        Target = TargetFilter.GetAttackMarkChara(TargetUpdater.HostileTargets);
-                        if (Target == null) return false;
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
 
                 switch (_action.CastType)
@@ -299,15 +292,15 @@ namespace XIVAutoAttack.Actions.BaseAction
                         return true;
                     case 10: //环形范围攻击也就这么判断吧，我烦了。
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, false, mustUse, true));
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, true, AOECount));
                         if (Target == null) return false;
                         return true;
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        Target = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange, mustUse, true));
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange, true, AOECount));
                         if (Target == null) return false;
                         return true;
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        Target = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, mustUse, true));
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, true, AOECount));
                         if (Target == null) return false;
                         return true;
                 }
@@ -319,25 +312,16 @@ namespace XIVAutoAttack.Actions.BaseAction
 
                 if (_action.EffectRange > 0 && !_isFriendly)
                 {
-                    if (NoAOEForAttackMark)
+                    if (NoAOEForAttackMark || Service.Configuration.AttackSafeMode)
                     {
-                        if (mustUse)
-                        {
-                            Target = TargetFilter.GetAttackMarkChara(TargetUpdater.HostileTargets);
-                            if (Target == null) return false;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                        return false;
                     }
 
                     //如果不用自动找目标，那就不打AOE
-                    if (!mustUse && !CommandController.AutoTarget && !Service.Configuration.UseAOEWhenManual) return false;
+                    if (!CommandController.AutoTarget && !Service.Configuration.UseAOEWhenManual) return false;
 
                     var count = TargetFilter.GetObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange).Length;
-                    if (count < (mustUse ? 1 : Service.Configuration.HostileCount)) return false;
+                    if (count < AOECount) return false;
                 }
                 return true;
             }

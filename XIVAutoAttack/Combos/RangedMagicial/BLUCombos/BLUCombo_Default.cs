@@ -78,7 +78,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
         private protected override bool MoveGCD(out IAction act)
         {
             //正义飞踢
-            if (JKick.ShouldUse(out act, mustUse: true)) return true;
+            if (JKick.ShouldUse(out act, skipBuff: true)) return true;
             return base.MoveGCD(out act);
         }
 
@@ -90,13 +90,13 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             //鬼宿脚
             if (PhantomFlurry.IsCoolDown && !PhantomFlurry.ElapsedAfter(1) || Player.HasStatus(true, StatusID.PhantomFlurry))
             {
-                if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.ShouldUse(out act, mustUse: true)) return true;
+                if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.ShouldUse(out act, skipBuff: true)) return true;
                 return false;
             }
             //穿甲散弹
             if (Player.HasStatus(true, StatusID.SurpanakhaFury))
             {
-                if (Surpanakha.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+                if (Surpanakha.ShouldUse(out act, skipBuff: true, emptyOrSkipCombo: true)) return true;
             }
 
             //终极针组合
@@ -124,7 +124,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
                 //有某些非常危险的状态。
                 if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
                 {
-                    if (Exuviation.ShouldUse(out act, mustUse: true)) return true;
+                    if (Exuviation.ShouldUse(out act, skipBuff: true)) return true;
                 }
                 if (AngelsSnack.ShouldUse(out act)) return true;
                 if (Stotram.ShouldUse(out act)) return true;
@@ -132,7 +132,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             }
             else
             {
-                if (WhiteWind.ShouldUse(out act, mustUse: true)) return true;
+                if (WhiteWind.ShouldUse(out act, skipBuff: true)) return true;
             }
 
             return base.HealAreaGCD(out act);
@@ -155,9 +155,9 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
                 //口笛
                 if (Whistle.ShouldUse(out act)) return true;
                 //哔哩哔哩
-                if (!Player.HasStatus(true, StatusID.Tingling) && Player.HasStatus(true, StatusID.Harmonized) && Tingle.ShouldUse(out act, mustUse: true)) return true;
+                if (!Player.HasStatus(true, StatusID.Tingling) && Player.HasStatus(true, StatusID.Harmonized) && Tingle.ShouldUse(out act, skipBuff: true)) return true;
                 //鱼叉
-                if (Player.HasStatus(true, StatusID.WaxingNocturne) && TripleTrident.ShouldUse(out act, mustUse: true)) return true;
+                if (Player.HasStatus(true, StatusID.WaxingNocturne) && TripleTrident.ShouldUse(out act, skipBuff: true)) return true;
             }
 
             if (AllOnSlot(Whistle, FinalSting, BasicInstinct) && UseFinalSting)
@@ -175,38 +175,38 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             if (!Player.HasStatus(true, StatusID.WaxingNocturne)) return false;
 
             //月下彼岸花
-            if (Nightbloom.ShouldUse(out act, mustUse: true)) return true;
+            if (Nightbloom.ShouldUse(out act, skipBuff: true)) return true;
             //地火喷发
-            if (Eruption.ShouldUse(out act, mustUse: true)) return true;
+            if (Eruption.ShouldUse(out act, skipBuff: true)) return true;
             //马特拉魔术
-            if (MatraMagic.ShouldUse(out act, mustUse: true)) return true;
+            if (MatraMagic.ShouldUse(out act, skipBuff: true)) return true;
             //正义飞踢
-            if (JKick.ShouldUse(out act, mustUse: true)) return true;
+            if (JKick.ShouldUse(out act, skipBuff: true)) return true;
             //捕食
-            if (Devour.ShouldUse(out act, mustUse: true)) return true;
+            if (Devour.ShouldUse(out act, skipBuff: true)) return true;
             //轰雷
-            if (ShockStrike.ShouldUse(out act, mustUse: true)) return true;
+            if (ShockStrike.ShouldUse(out act, skipBuff: true)) return true;
             //冰雪乱舞
-            if (GlassDance.ShouldUse(out act, mustUse: true)) return true;
+            if (GlassDance.ShouldUse(out act, skipBuff: true)) return true;
             //魔法锤
-            if (MagicHammer.ShouldUse(out act, mustUse: true)) return true;
+            if (MagicHammer.ShouldUse(out act, skipBuff: true)) return true;
             //穿甲散弹
-            if (Surpanakha.CurrentCharges >= 3 && Surpanakha.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (Surpanakha.CurrentCharges >= 3 && Surpanakha.ShouldUse(out act, skipBuff: true, emptyOrSkipCombo: true)) return true;
             //鬼宿脚
-            if (PhantomFlurry.ShouldUse(out act, mustUse: true)) return true;
+            if (PhantomFlurry.ShouldUse(out act, skipBuff: true)) return true;
 
             //冰雾
             if (WhiteDeath.ShouldUse(out act)) return true;
             //如意大旋风
-            if (SettingBreak && !MoonFluteBreak && BothEnds.ShouldUse(out act, mustUse: true)) return true;
+            if (SettingBreak && !MoonFluteBreak && BothEnds.ShouldUse(out act, skipBuff: true)) return true;
             //类星体
-            if (Quasar.ShouldUse(out act, mustUse: true)) return true;
+            if (Quasar.ShouldUse(out act, skipBuff: true)) return true;
             //飞翎雨
-            if (FeatherRain.ShouldUse(out act, mustUse: true)) return true;
+            if (FeatherRain.ShouldUse(out act, skipBuff: true)) return true;
             //山崩
-            if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
+            if (MountainBuster.ShouldUse(out act, skipBuff: true)) return true;
             //冰雪乱舞
-            if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
+            if (MountainBuster.ShouldUse(out act, skipBuff: true)) return true;
 
             //音爆
             if (SonicBoom.ShouldUse(out act)) return true;
@@ -345,23 +345,23 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             if (GamblerKill)
             {
                 //火箭炮
-                if (Launcher.ShouldUse(out act, mustUse: true)) return true;
+                if (Launcher.ShouldUse(out act, skipBuff: true)) return true;
                 //5级即死
-                if (Level5Death.ShouldUse(out act, mustUse: true)) return true;
+                if (Level5Death.ShouldUse(out act, skipBuff: true)) return true;
             }
 
             if (false)
             {
-                if (AcornBomb.ShouldUse(out act, mustUse: true)) return true;
-                if (Faze.ShouldUse(out act, mustUse: true)) return true;
-                if (Snort.ShouldUse(out act, mustUse: true)) return true;
-                if (BadBreath.ShouldUse(out act, mustUse: true)) return true;
-                if (Chirp.ShouldUse(out act, mustUse: true)) return true;
-                if (Level5Petrify.ShouldUse(out act, mustUse: true)) return true;
+                if (AcornBomb.ShouldUse(out act, skipBuff: true)) return true;
+                if (Faze.ShouldUse(out act, skipBuff: true)) return true;
+                if (Snort.ShouldUse(out act, skipBuff: true)) return true;
+                if (BadBreath.ShouldUse(out act, skipBuff: true)) return true;
+                if (Chirp.ShouldUse(out act, skipBuff: true)) return true;
+                if (Level5Petrify.ShouldUse(out act, skipBuff: true)) return true;
             }
 
             //陆行鸟陨石
-            if (TargetUpdater.HaveChocobo && ChocoMeteor.ShouldUse(out act, mustUse: true)) return true;
+            if (TargetUpdater.HaveChocobo && ChocoMeteor.ShouldUse(out act, skipBuff: true)) return true;
 
             if (TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 6).Length < 3)
             {
@@ -450,30 +450,30 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             //if (MagicHammer.ShouldUse(out act)) return true;
 
             //月下彼岸花
-            if (SettingBreak && !MoonFluteBreak && Nightbloom.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (SettingBreak && !MoonFluteBreak && Nightbloom.ShouldUse(out act, skipBuff: SingleAOE)) return true;
             //如意大旋风
-            if (SettingBreak && !MoonFluteBreak && BothEnds.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (SettingBreak && !MoonFluteBreak && BothEnds.ShouldUse(out act, skipBuff: SingleAOE)) return true;
 
             //穿甲散弹
-            if (SettingBreak && !MoonFluteBreak && Surpanakha.CurrentCharges >= 3 && Surpanakha.ShouldUse(out act, mustUse: SingleAOE, emptyOrSkipCombo: true)) return true;
+            if (SettingBreak && !MoonFluteBreak && Surpanakha.CurrentCharges >= 3 && Surpanakha.ShouldUse(out act, skipBuff: SingleAOE, emptyOrSkipCombo: true)) return true;
 
             //类星体
-            if (Quasar.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (Quasar.ShouldUse(out act, skipBuff: SingleAOE)) return true;
             //正义飞踢
-            if (!IsMoving && JKick.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (!IsMoving && JKick.ShouldUse(out act, skipBuff: SingleAOE)) return true;
 
             //地火喷发
-            if (Eruption.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (Eruption.ShouldUse(out act, skipBuff: SingleAOE)) return true;
             //飞翎雨
-            if (FeatherRain.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (FeatherRain.ShouldUse(out act, skipBuff: SingleAOE)) return true;
 
             //轰雷
-            if (ShockStrike.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (ShockStrike.ShouldUse(out act, skipBuff: SingleAOE)) return true;
             //山崩
-            if (MountainBuster.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (MountainBuster.ShouldUse(out act, skipBuff: SingleAOE)) return true;
 
             //冰雪乱舞
-            if (MountainBuster.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (MountainBuster.ShouldUse(out act, skipBuff: SingleAOE)) return true;
 
             //if (MountainBuster.ShouldUse(out act, mustUse: SingleAOE)) return true;
 

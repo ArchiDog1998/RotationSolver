@@ -22,7 +22,7 @@ namespace XIVAutoAttack.Windows.ComboConfigWindow;
 internal partial class ComboConfigWindow : Window
 {
     public ComboConfigWindow()
-        : base(Strings.ConfigWindow.Header + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
+        : base(LocalizationManager.RightLang.ConfigWindow_Header + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
     {
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
@@ -312,7 +312,7 @@ internal partial class ComboConfigWindow : Window
 
             ImGui.Text("Cast Time: " + act.CastTime.ToString());
             ImGui.Text("MP: " + act.MPNeed.ToString());
-            ImGui.Text($"Can Use: {act.ShouldUse(out _)} {act.ShouldUse(out _, mustUse: true)}");
+            ImGui.Text($"Can Use: {act.ShouldUse(out _)} {act.ShouldUse(out _, skipBuff: true)}");
 
             ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(act.AdjustedID).ToString());
 #endif

@@ -42,7 +42,7 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
         if (abilityRemain > 1)
         {
             if (SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-            if (DragonfireDive.ShouldUse(out act, mustUse: true)) return true;
+            if (DragonfireDive.ShouldUse(out act, skipBuff: true)) return true;
         }
 
         act = null;
@@ -65,24 +65,24 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
         if (SettingBreak)
         {
             //ÃÍÇ¹
-            if (LanceCharge.ShouldUse(out act, mustUse: true))
+            if (LanceCharge.ShouldUse(out act, skipBuff: true))
             {
                 if (abilityRemain == 1 && !Player.HasStatus(true, StatusID.PowerSurge)) return true;
                 if (Player.HasStatus(true, StatusID.PowerSurge)) return true;
             }
 
             //¾ÞÁúÊÓÏß
-            if (DragonSight.ShouldUse(out act, mustUse: true)) return true;
+            if (DragonSight.ShouldUse(out act, skipBuff: true)) return true;
 
             //Õ½¶·Á¬µ»
-            if (BattleLitany.ShouldUse(out act, mustUse: true)) return true;
+            if (BattleLitany.ShouldUse(out act, skipBuff: true)) return true;
         }
 
         //ËÀÕßÖ®°¶
-        if (Nastrond.ShouldUse(out act, mustUse: true)) return true;
+        if (Nastrond.ShouldUse(out act, skipBuff: true)) return true;
 
         //×¹ÐÇ³å
-        if (Stardiver.ShouldUse(out act, mustUse: true)) return true;
+        if (Stardiver.ShouldUse(out act, skipBuff: true)) return true;
 
         //¸ßÌø
         if (HighJump.EnoughLevel)
@@ -95,7 +95,7 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
         }
 
         //³¢ÊÔ½øÈëºìÁúÑª
-        if (Geirskogul.ShouldUse(out act, mustUse: true)) return true;
+        if (Geirskogul.ShouldUse(out act, skipBuff: true)) return true;
 
         //ÆÆËé³å
         if (SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true))
@@ -108,13 +108,13 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
         if (MirageDive.ShouldUse(out act)) return true;
 
         //ÁúÑ×³å
-        if (DragonfireDive.ShouldUse(out act, mustUse: true))
+        if (DragonfireDive.ShouldUse(out act, skipBuff: true))
         {
             if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
         }
 
         //ÌìÁúµã¾¦
-        if (WyrmwindThrust.ShouldUse(out act, mustUse: true)) return true;
+        if (WyrmwindThrust.ShouldUse(out act, skipBuff: true)) return true;
 
         return false;
     }

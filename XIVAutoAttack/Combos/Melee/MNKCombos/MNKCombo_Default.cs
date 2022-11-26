@@ -124,17 +124,17 @@ internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
         {
             if (havesolar && havelunar)
             {
-                if (PhantomRush.ShouldUse(out act, mustUse: true)) return true;
-                if (TornadoKick.ShouldUse(out act, mustUse: true)) return true;
+                if (PhantomRush.ShouldUse(out act, skipBuff: true)) return true;
+                if (TornadoKick.ShouldUse(out act, skipBuff: true)) return true;
             }
             if (BeastChakras.Contains(BeastChakra.RAPTOR))
             {
-                if (RisingPhoenix.ShouldUse(out act, mustUse: true)) return true;
-                if (FlintStrike.ShouldUse(out act, mustUse: true)) return true;
+                if (RisingPhoenix.ShouldUse(out act, skipBuff: true)) return true;
+                if (FlintStrike.ShouldUse(out act, skipBuff: true)) return true;
             }
             else
             {
-                if (ElixirField.ShouldUse(out act, mustUse: true)) return true;
+                if (ElixirField.ShouldUse(out act, skipBuff: true)) return true;
             }
         }
         //ÓÐÕð½Å¾ÍÒõÑô
@@ -199,7 +199,7 @@ internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
 
         if (HowlingFist.ShouldUse(out act)) return true;
         if (SteelPeak.ShouldUse(out act)) return true;
-        if (HowlingFist.ShouldUse(out act, mustUse: true)) return true;
+        if (HowlingFist.ShouldUse(out act, skipBuff: true)) return true;
 
         return false;
     }

@@ -57,21 +57,21 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
         Service.Interface.UiBuilder.Draw += OverlayWindow.Draw;
-        Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
+        //Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
         MajorUpdater.Enable();
         Watcher.Enable();
         CountDown.Enable();
     }
 
-    private void ClientState_TerritoryChanged(object sender, ushort e)
-    {
-        if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty95]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundToDuty97]) return;
-        CommandController.AttackCancel();
-    }
+    //private void ClientState_TerritoryChanged(object sender, ushort e)
+    //{
+    //    if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty]
+    //        || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56]
+    //        || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty95]
+    //        || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundToDuty97]) return;
+    //    CommandController.AttackCancel();
+    //}
 
     public void Dispose()
     {
@@ -82,7 +82,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
         Service.IconReplacer.Dispose();
 
-        Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
+        //Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
 
         Service.Localization.Dispose();
 

@@ -81,6 +81,11 @@ namespace XIVAutoAttack.Actions.BaseAction
         private byte CoolDownGroup { get; }
 
         /// <summary>
+        /// 范围类技能至少需要多少个对象才释放
+        /// </summary>
+        public byte AOECount { private get; set; } = 3;
+
+        /// <summary>
         /// 真实咏唱时间
         /// </summary>
         internal unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;

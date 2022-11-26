@@ -99,7 +99,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         if (BetweenTheLines.ShouldUse(out act)) return true;
-        if (Leylines.ShouldUse(out act, mustUse: true)) return true;
+        if (Leylines.ShouldUse(out act, skipBuff: true)) return true;
 
         return base.HealSingleAbility(abilityRemain, out act);
     }
@@ -122,14 +122,14 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     private protected override bool MoveGCD(out IAction act)
     {
         //以太步
-        if (AetherialManipulation.ShouldUse(out act, mustUse: true)) return true;
+        if (AetherialManipulation.ShouldUse(out act, skipBuff: true)) return true;
         return base.MoveGCD(out act);
     }
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
         //以太步
-        if (AetherialManipulation.ShouldUse(out act, mustUse: true)) return true;
+        if (AetherialManipulation.ShouldUse(out act, skipBuff: true)) return true;
 
         return base.MoveAbility(abilityRemain, out act);
     }

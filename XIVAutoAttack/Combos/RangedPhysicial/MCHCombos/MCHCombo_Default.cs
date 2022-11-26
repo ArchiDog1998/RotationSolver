@@ -48,7 +48,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //策动
-        if (Tactician.ShouldUse(out act, mustUse: true)) return true;
+        if (Tactician.ShouldUse(out act, skipBuff: true)) return true;
 
         return false;
     }
@@ -70,7 +70,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
             if (AirAnchor.ShouldUse(out act)) return true;
             else if (!AirAnchor.EnoughLevel && HotShot.ShouldUse(out act)) return true;
             if (Drill.ShouldUse(out act)) return true;
-            if (ChainSaw.ShouldUse(out act, mustUse: true))
+            if (ChainSaw.ShouldUse(out act, skipBuff: true))
             {
                 if (Player.HasStatus(true, StatusID.Reassemble)) return true;
                 if (!Config.GetBoolByName("MCH_Opener") || Wildfire.IsCoolDown) return true;
@@ -137,8 +137,8 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (SettingBreak && CanUseWildfire(out act)) return true;
 
         //起手虹吸弹、弹射
-        if (Ricochet.CurrentCharges == Ricochet.MaxCharges && Ricochet.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
-        if (GaussRound.CurrentCharges == GaussRound.MaxCharges && GaussRound.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (Ricochet.CurrentCharges == Ricochet.MaxCharges && Ricochet.ShouldUse(out act, skipBuff: true, emptyOrSkipCombo: true)) return true;
+        if (GaussRound.CurrentCharges == GaussRound.MaxCharges && GaussRound.ShouldUse(out act, skipBuff: true, emptyOrSkipCombo: true)) return true;
 
         //枪管加热
         if (BarrelStabilizer.ShouldUse(out act)) return true;
@@ -152,10 +152,10 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (GaussRound.CurrentCharges <= Ricochet.CurrentCharges)
         {
             //弹射
-            if (Ricochet.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (Ricochet.ShouldUse(out act, skipBuff: true, emptyOrSkipCombo: true)) return true;
         }
         //虹吸弹
-        if (GaussRound.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (GaussRound.ShouldUse(out act, skipBuff: true, emptyOrSkipCombo: true)) return true;
 
         act = null!;
         return false;
@@ -235,7 +235,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
     /// <returns></returns>
     private bool CanUseRookAutoturret(out IAction act)
     {
-        if (!RookAutoturret.ShouldUse(out act, mustUse: true)) return false;
+        if (!RookAutoturret.ShouldUse(out act, skipBuff: true)) return false;
 
         //4人本小怪快死了不释放
         if (isDyingNotBoss) return false;

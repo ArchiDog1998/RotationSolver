@@ -1,8 +1,11 @@
-﻿using Dalamud.Logging;
+﻿using Dalamud;
+using Dalamud.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,30 +13,51 @@ namespace XIVAutoAttack.Localization;
 
 internal class LocalizationManager : IDisposable
 {
-    private readonly Dalamud.Localization localization;
+    public static Strings RightLang { get; private set; } = new Strings();
 
+    private readonly Dictionary<string, Strings> _translations = new Dictionary<string, Strings>();
     public LocalizationManager()
     {
-        var assemblyLocation = Service.Interface.AssemblyLocation.DirectoryName;
-        var filePath = Path.Combine(assemblyLocation, "translations");
+        SetLanguage(Service.Interface.UiLanguage);
 
-        localization = new Dalamud.Localization(filePath, "XIVAutoAttack_");
-        localization.SetupWithLangCode(Service.Interface.UiLanguage);
-
+        var assembly = Assembly.GetCallingAssembly();
+        foreach (var lang in Dalamud.Localization.ApplicableLangCodes)
+        {
+            ReadFile(lang, assembly);
+        }
+        
         Service.Interface.LanguageChanged += OnLanguageChange;
+    }
+
+    private void ReadFile(string lang, Assembly assembly)
+    {
+        Stream manifestResourceStream = assembly.GetManifestResourceStream("XIVAutoAttack.Localization." + lang + ".json");
+        if (manifestResourceStream == null) return;
+        using StreamReader streamReader = new StreamReader(manifestResourceStream);
+        _translations[lang] = JsonConvert.DeserializeObject<Strings>(streamReader.ReadToEnd());
+    }
+
+    private void SetLanguage(string lang)
+    {
+        if(_translations.TryGetValue(lang, out var value))
+        {
+            RightLang = value;
+        }
+        else
+        {
+            RightLang = new Strings();
+        }
     }
 
 #if DEBUG
     public void ExportLocalization()
     {
-        try
-        {
-            localization.ExportLocalizable();
-        }
-        catch (Exception ex)
-        {
-            PluginLog.Error(ex, "Error exporting localization files");
-        }
+        var directory = @"D:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\XIVAutoAttack\XIVAutoAttack\Localization";
+        if (!Directory.Exists(directory)) return;
+
+        //Default values.
+        var path = Path.Combine(directory, "Localization.json");
+        File.WriteAllText(path, JsonConvert.SerializeObject(RightLang));
     }
 #endif
 
@@ -47,7 +71,7 @@ internal class LocalizationManager : IDisposable
         try
         {
             PluginLog.Information($"Loading Localization for {languageCode}");
-            localization.SetupWithLangCode(languageCode);
+            SetLanguage(languageCode);
         }
         catch (Exception ex)
         {

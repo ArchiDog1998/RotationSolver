@@ -201,7 +201,7 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         //有某些非常危险的状态。
         if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
         {
-            if (WardensPaean.ShouldUse(out act, mustUse: true)) return true;
+            if (WardensPaean.ShouldUse(out act, skipBuff: true)) return true;
         }
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }

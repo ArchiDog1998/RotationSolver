@@ -36,7 +36,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //苦难之心
-        if (AfflatusMisery.ShouldUse(out act, mustUse: true)) return true;
+        if (AfflatusMisery.ShouldUse(out act, skipBuff: true)) return true;
 
         //泄蓝花 团队缺血时优先狂喜之心
         bool liliesNearlyFull = Lily == 2 && LilyAfter(17);
@@ -55,7 +55,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         if (Holy.ShouldUse(out act)) return true;
 
         //单体输出
-        if (Aero.ShouldUse(out act, mustUse: IsMoving && HaveHostilesInRange)) return true;
+        if (Aero.ShouldUse(out act, skipBuff: IsMoving && HaveHostilesInRange)) return true;
         if (Stone.ShouldUse(out act)) return true;
 
 
@@ -69,7 +69,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
         if (PresenseOfMind.ShouldUse(out act)) return true;
 
         //加个法令
-        if (Assize.ShouldUse(out act, mustUse: true)) return true;
+        if (Assize.ShouldUse(out act, skipBuff: true)) return true;
 
         return false;
     }

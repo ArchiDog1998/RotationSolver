@@ -302,14 +302,14 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         if (!IsDancing) return false;
 
         //标准舞步结束
-        if (Player.HasStatus(true, StatusID.StandardStep) && Player.WillStatusEnd(1, true, StatusID.StandardStep) || StandardFinish.ShouldUse(out _, mustUse: true))
+        if (Player.HasStatus(true, StatusID.StandardStep) && Player.WillStatusEnd(1, true, StatusID.StandardStep) || StandardFinish.ShouldUse(out _, skipBuff: true))
         {
             act = StandardStep;
             return true;
         }
 
         //技巧舞步结束
-        if (Player.HasStatus(true, StatusID.TechnicalStep) && Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || TechnicalFinish.ShouldUse(out _, mustUse: true))
+        if (Player.HasStatus(true, StatusID.TechnicalStep) && Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || TechnicalFinish.ShouldUse(out _, skipBuff: true))
         {
             act = TechnicalStep;
             return true;

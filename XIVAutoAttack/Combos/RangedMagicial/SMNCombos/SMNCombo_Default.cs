@@ -31,7 +31,7 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 
     private protected override bool MoveGCD(out IAction act)
     {
-        if (CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
+        if (CrimsonCyclone.ShouldUse(out act, skipBuff: true)) return true;
         return base.MoveGCD(out act);
     }
 
@@ -43,16 +43,16 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
         //大招
         if (!InBahamut && !InPhoenix)
         {
-            if (RuinIV.ShouldUse(out act, mustUse: true)) return true;
-            if (CrimsonStrike.ShouldUse(out act, mustUse: true)) return true;
-            if (CrimsonCyclone.ShouldUse(out act, mustUse: true))
+            if (RuinIV.ShouldUse(out act, skipBuff: true)) return true;
+            if (CrimsonStrike.ShouldUse(out act, skipBuff: true)) return true;
+            if (CrimsonCyclone.ShouldUse(out act, skipBuff: true))
             {
                 if (CrimsonCyclone.Target.DistanceToPlayer() < 2)
                 {
                     return true;
                 }
             }
-            if (Slipstream.ShouldUse(out act, mustUse: true)) return true;
+            if (Slipstream.ShouldUse(out act, skipBuff: true)) return true;
         }
 
 
@@ -141,13 +141,13 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
         if (SettingBreak)
         {
             //灼热之光
-            if (SearingLight.ShouldUse(out act, mustUse: true)) return true;
+            if (SearingLight.ShouldUse(out act, skipBuff: true)) return true;
         }
 
-        if (EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
-        if (Deathflare.ShouldUse(out act, mustUse: true)) return true;
-        if (Rekindle.ShouldUse(out act, mustUse: true)) return true;
-        if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
+        if (EnkindleBahamut.ShouldUse(out act, skipBuff: true)) return true;
+        if (Deathflare.ShouldUse(out act, skipBuff: true)) return true;
+        if (Rekindle.ShouldUse(out act, skipBuff: true)) return true;
+        if (MountainBuster.ShouldUse(out act, skipBuff: true)) return true;
 
 
         //能量吸收

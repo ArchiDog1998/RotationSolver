@@ -478,20 +478,6 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
-                int multiCount = Service.Configuration.HostileCount;
-                if (ImGui.DragInt("范围攻击最少需要多少人", ref multiCount, 0.02f, 2, 5))
-                {
-                    Service.Configuration.HostileCount = multiCount;
-                    Service.Configuration.Save();
-                }
-
-                int partyCount = Service.Configuration.PartyCount;
-                if (ImGui.DragInt("范围治疗最少需要多少人", ref partyCount, 0.02f, 2, 5))
-                {
-                    Service.Configuration.PartyCount = partyCount;
-                    Service.Configuration.Save();
-                }
-
                 float minradius = Service.Configuration.ObjectMinRadius;
                 if (ImGui.DragFloat("攻击对象最小底圈大小", ref minradius, 0.02f, 0, 10))
                 {

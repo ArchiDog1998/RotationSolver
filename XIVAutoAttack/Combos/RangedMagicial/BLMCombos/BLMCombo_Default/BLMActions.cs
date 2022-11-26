@@ -18,7 +18,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     /// <returns></returns>
     private bool CanUseTranspose(byte abilityRemain, out IAction act)
     {
-        if (!Transpose.ShouldUse(out act, mustUse: true)) return false;
+        if (!Transpose.ShouldUse(out act, skipBuff: true)) return false;
 
         //标准循环
         if (StandardLoop)

@@ -176,23 +176,16 @@ namespace XIVAutoAttack.Updaters
             }
             PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Length);
 
-            if (PartyMembers.Length >= Service.Configuration.PartyCount)
-            {
-                //TODO:少了所有罩子类技能
-                var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer,
-                    StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2)
-                    * Service.Configuration.HealingOfTimeSubstactArea;
+            //TODO:少了所有罩子类技能
+            var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer,
+                StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2)
+                * Service.Configuration.HealingOfTimeSubstactArea;
 
-                CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility
-                    - ratio;
+            CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility
+                - ratio;
 
-                CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell
-                    - ratio;
-            }
-            else
-            {
-                CanHealAreaAbility = CanHealAreaSpell = false;
-            }
+            CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell
+                - ratio;
 
             var singleHots = new StatusID[] {StatusID.AspectedBenefic, StatusID.Regen1,
                 StatusID.Regen2,
@@ -210,7 +203,6 @@ namespace XIVAutoAttack.Updaters
                     Service.Configuration.HealingOfTimeSubstactSingle * ratio;
             });
             CanHealSingleAbility = abilityCount > 0;
-            if (abilityCount >= Service.Configuration.PartyCount) CanHealAreaAbility = true;
 
 
             var gcdCount = PartyMembers.Count(p =>
@@ -223,7 +215,6 @@ namespace XIVAutoAttack.Updaters
                     Service.Configuration.HealingOfTimeSubstactSingle * ratio;
             });
             CanHealSingleSpell = gcdCount > 0;
-            if (gcdCount >= Service.Configuration.PartyCount) CanHealAreaSpell = true;
 
             PartyMembersMinHP = PartyMembersHP.Length == 0 ? 0 : PartyMembersHP.Min();
             HPNotFull = PartyMembersMinHP < 1;

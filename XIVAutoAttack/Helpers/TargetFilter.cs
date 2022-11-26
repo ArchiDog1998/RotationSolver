@@ -358,19 +358,17 @@ namespace XIVAutoAttack.Helpers
         //    }).ToArray();
         //}
 
-        private static T[] GetMostObject<T>(T[] canAttack, float radius, float range, Func<T, T[], float, byte> HowMany, bool isfriend, bool mustUse, bool mostCount) where T : BattleChara
+        private static T[] GetMostObject<T>(T[] canAttack, float radius, float range, Func<T, T[], float, byte> HowMany, bool mostCount, int maxCount) where T : BattleChara
         {
             //能够打到的所有怪。
             T[] canGetObj = GetObjectInRadius(canAttack, radius);
-            return GetMostObject(canAttack, canGetObj, range, HowMany, isfriend, mustUse, mostCount);
+            return GetMostObject(canAttack, canGetObj, range, HowMany, mostCount, maxCount);
         }
 
-        private static T[] GetMostObject<T>(T[] canAttack, T[] canGetObj, float range, Func<T, T[], float, byte> HowMany, bool isfriend, bool mustUse, bool mostCount) where T : BattleChara
+        private static T[] GetMostObject<T>(T[] canAttack, T[] canGetObj, float range, Func<T, T[], float, byte> HowMany, bool mostCount, int maxCount) where T : BattleChara
         {
             //能打到MaxCount以上数量的怪的怪。
             List<T> objectMax = new List<T>(canGetObj.Length);
-
-            int maxCount = mustUse ? 1 : isfriend ? Service.Configuration.PartyCount : Service.Configuration.HostileCount;
 
             //循环能打中的目标。
             foreach (var t in canGetObj)
@@ -396,22 +394,22 @@ namespace XIVAutoAttack.Helpers
             return objectMax.ToArray();
         }
 
-        internal static T[] GetMostObjectInRadius<T>(T[] objects, float radius, float range, bool isfriend, bool mustUse, bool mostCount) where T : BattleChara
+        internal static T[] GetMostObjectInRadius<T>(T[] objects, float radius, float range, bool mostCount, int maxCount) where T : BattleChara
         {
             //可能可以被打到的怪。
             var canAttach = GetObjectInRadius(objects, radius + range);
             //能够打到的所有怪。
             var canGet = GetObjectInRadius(objects, radius);
 
-            return GetMostObjectInRadius(canAttach, canGet, radius, range, isfriend, mustUse, mostCount);
+            return GetMostObjectInRadius(canAttach, canGet, radius, range, mostCount, maxCount);
 
         }
 
-        internal static T[] GetMostObjectInRadius<T>(T[] objects, T[] canGetObjects, float radius, float range, bool isfriend, bool mustUse, bool mostCount) where T : BattleChara
+        internal static T[] GetMostObjectInRadius<T>(T[] objects, T[] canGetObjects, float radius, float range, bool mostCount, int maxCount) where T : BattleChara
         {
             var canAttach = GetObjectInRadius(objects, radius + range);
 
-            return GetMostObject(canAttach, canGetObjects, range, CalculateCount, isfriend, mustUse, mostCount);
+            return GetMostObject(canAttach, canGetObjects, range, CalculateCount, mostCount, maxCount);
 
             //计算一下在这些可选目标中有多少个目标可以受到攻击。
             static byte CalculateCount(T t, T[] objects, float range)
@@ -428,12 +426,12 @@ namespace XIVAutoAttack.Helpers
             }
         }
 
-        internal static T[] GetMostObjectInArc<T>(T[] objects, float radius, bool mustUse, bool mostCount) where T : BattleChara
+        internal static T[] GetMostObjectInArc<T>(T[] objects, float radius, bool mostCount, int maxCount) where T : BattleChara
         {
             //能够打到的所有怪。
             var canGet = GetObjectInRadius(objects, radius);
 
-            return GetMostObject(canGet, radius, radius, CalculateCount, false, mustUse, mostCount);
+            return GetMostObject(canGet, radius, radius, CalculateCount, mostCount, maxCount);
 
             //计算一下在这些可选目标中有多少个目标可以受到攻击。
             static byte CalculateCount(T t, T[] objects, float _)
@@ -456,12 +454,12 @@ namespace XIVAutoAttack.Helpers
             }
         }
 
-        internal static T[] GetMostObjectInLine<T>(T[] objects, float radius, bool mustUse, bool mostCount) where T : BattleChara
+        internal static T[] GetMostObjectInLine<T>(T[] objects, float radius, bool mostCount, int maxCount) where T : BattleChara
         {
             //能够打到的所有怪。
             var canGet = GetObjectInRadius(objects, radius);
 
-            return GetMostObject(canGet, radius, radius, CalculateCount, false, mustUse, mostCount);
+            return GetMostObject(canGet, radius, radius, CalculateCount, mostCount, maxCount);
 
             //计算一下在这些可选目标中有多少个目标可以受到攻击。
             static byte CalculateCount(T t, T[] objects, float _)
