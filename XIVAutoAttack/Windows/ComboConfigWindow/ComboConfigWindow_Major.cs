@@ -50,31 +50,31 @@ internal partial class ComboConfigWindow : Window
             }
 #endif
 
-            if (ImGui.BeginTabItem("关于"))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_AboutItem))
             {
                 DrawAbout();
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("攻击设定"))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_AttackItem))
             {
                 DrawAttack();
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("参数设定"))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ParamItem))
             {
                 DrawParam();
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("技能释放事件"))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_EventsItem))
             {
                 DrawEvent();
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("技能释放条件"))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ActionsItem))
             {
                 ImGui.Text("在这个窗口，你可以设定每个技能的释放条件。");
 
@@ -100,7 +100,7 @@ internal partial class ComboConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("帮助文档"))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_HelpItem))
             {
                 ImGui.Text("在这个窗口，你可以看到战斗用宏，设置用请在设置面板中查看。");
 
@@ -196,7 +196,7 @@ internal partial class ComboConfigWindow : Window
             ImGui.TextDisabled("-  ");
             ImGui.SameLine();
             ImGui.SetNextItemWidth(ImGui.CalcTextSize(authors[i]).X + 30);
-            if (ImGui.Combo("##" + texture.Name + "作者", ref i, authors, authors.Length))
+            if (ImGui.Combo("##" + texture.Name + "Author", ref i, authors, authors.Length))
             {
                 Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
                 Service.Configuration.Save();
@@ -300,7 +300,7 @@ internal partial class ComboConfigWindow : Window
 
         DrawTexture(act, () =>
         {
-            if(act.IsTimeline) CommandHelp($"Insert{act}-{5}", $"5s内最高优先插入{act}");
+            if(act.IsTimeline) CommandHelp($"Insert{act}-{5}", string.Format("5s内最高优先插入\"{0}\"", act));
 #if DEBUG
             ImGui.NewLine();
             ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());
