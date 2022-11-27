@@ -45,7 +45,7 @@ internal partial class ComboConfigWindow : Window
         if (ImGui.BeginTabBar("AutoAttackSettings"))
         {
 #if DEBUG
-            if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_DebugItem))
+            if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem("Debug")
             {
                 DrawDebug();
                 ImGui.EndTabItem();

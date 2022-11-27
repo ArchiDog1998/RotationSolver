@@ -9,7 +9,6 @@ namespace XIVAutoAttack.Localization
     internal class Strings
     {
         public string ConfigWindow_Header { get; set; } = "Auto Attack Settings v";
-        public string ConfigWindow_DebugItem { get; set; } = "Debug";
         public string ConfigWindow_AboutItem { get; set; } = "About";
         public string ConfigWindow_AttackItem { get; set; } = "Attack";
         public string ConfigWindow_ParamItem { get; set; } = "Param";
