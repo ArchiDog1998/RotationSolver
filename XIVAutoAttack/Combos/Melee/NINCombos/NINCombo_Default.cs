@@ -254,7 +254,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
         //用真北取消隐匿
         if (Config.GetBoolByName("AutoUnhide") && Player.HasStatus(true, StatusID.Hidden))
         {
-            CommandController.SubmitToChat($"/statusoff {StatusHelper.GetStatusName(StatusID.Hidden)}");
+            StatusHelper.StatusOff(StatusID.Hidden);
         }
         //用隐匿恢复忍术数量
         if (!InCombat && _ninactionAim == null && Config.GetBoolByName("UseHide")

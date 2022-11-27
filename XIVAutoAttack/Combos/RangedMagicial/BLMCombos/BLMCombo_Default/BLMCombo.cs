@@ -157,7 +157,8 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         //移动时
         if (IsMoving && InCombat && HaveHostilesInRange && !IsLastAction(true, AetherialManipulation))
         {
-            if (Xenoglossy.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Foul.ShouldUse(out act)) return true;
+            if (Xenoglossy.ShouldUse(out act)) return true;
             if (HasThunder && Thunder2.ShouldUse(out act)) return true;
             if (HasThunder && Thunder.ShouldUse(out act)) return true;
             if (HasFire && Fire3.ShouldUse(out act)) return true;
@@ -437,7 +438,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     private bool Maintence(out IAction act)
     {
         if (UmbralSoul.ShouldUse(out act) && UmbralIceStacks == 3 && ElementTimeEndAfterGCD(2)) return true;
-        if (UmbralSoul.ShouldUse(out act) && UmbralIceStacks != 3) return true;
+        if (UmbralSoul.ShouldUse(out act) && (UmbralIceStacks != 3 || UmbralHearts != 3)) return true;
         if (Transpose.ShouldUse(out act) && ElementTimeEndAfterGCD(1) && Foul.EnoughLevel) return true;
         if (Transpose.ShouldUse(out act) && ElementTimeEndAfterGCD(1) && InAstralFire && !Foul.EnoughLevel) return true;
 

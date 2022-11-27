@@ -72,14 +72,14 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
 
-        if (Addersgall == 0)
+        if (Addersgall == 0 || Dyskrasia.ShouldUse(out _))
         {
             //输血
             if (Haima.ShouldUse(out act)) return true;
         }
 
         //白牛清汁
-        if (Taurochole.ShouldUse(out act)) return true;
+        if (Taurochole.ShouldUse(out act) && Taurochole.Target.GetHealthRatio() < 0.8) return true;
 
         act = null!;
         return false;
@@ -174,11 +174,19 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        //箭毒
-        //三层时并不需要使用，溢出不亏
-        //if (JobGauge.Addersting == 3 && Toxikon.ShouldUse(out act, mustUse: true)) return true;
+        if (HasEukrasia && InCombat && !EukrasianDosis.ShouldUse(out _))
+        {
+            if (DefenseAreaGCD(out act)) return true;
+            if (DefenseSingleGCD(out act)) return true;
+        }
 
-        var level = Level;
+        //发炎 留一层走位
+        if (Phlegma3.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
+        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
+        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
+
+        //失衡
+        if (Dyskrasia.ShouldUse(out act)) return true;
 
         if (EukrasianDosis.ShouldUse(out var enAct))
         {
@@ -187,32 +195,19 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
             act = enAct;
             return true;
         }
-        else if (HasEukrasia)
-        {
-            if (DefenseAreaGCD(out act)) return true;
-            if (DefenseSingleGCD(out act)) return true;
-        }
-
-        //发炎
-        //留一层走位
-        if (Phlegma3.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
-        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
-        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
-
-        //失衡
-        if (Dyskrasia.ShouldUse(out act)) return true;
 
         //注药
         if (Dosis.ShouldUse(out act)) return true;
 
         //箭毒
-        if (Addersting > 0 && Toxikon.ShouldUse(out act, mustUse: true)) return true;
+        if (Toxikon.ShouldUse(out act, mustUse: true)) return true;
+        //if (IsMoving && Dyskrasia.ShouldUse(out act, mustUse: true)) return true;
 
         //脱战给T刷单盾嫖豆子
         if (!InCombat)
         {
             var tank = TargetUpdater.PartyTanks;
-            if (tank.Length == 1 && EukrasianDiagnosis.Target == tank.First() && EukrasianDiagnosis.ShouldUse(out act))
+            if (tank.Length == 1 && EukrasianDiagnosis.ShouldUse(out act))
             {
                 if (tank.First().HasStatus(true,
                     StatusID.EukrasianDiagnosis,
@@ -264,48 +259,40 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
     private protected override bool HealSingleGCD(out IAction act)
     {
         //诊断
-        if (EukrasianDiagnosis.ShouldUse(out act))
+        if (EukrasianDiagnosis.Target.HasStatus(false, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis, StatusID.Galvanize))
         {
-            if (EukrasianDiagnosis.Target.HasStatus(true,
-                StatusID.EukrasianDiagnosis,
-                StatusID.EukrasianPrognosis,
-                StatusID.Galvanize
-            ))
-            {
-                if (Diagnosis.ShouldUse(out act)) return true;
-            }
-
+            if (Diagnosis.ShouldUse(out act)) return true;
+        }
+        //诊断
+        if (EukrasianDiagnosis.ShouldUse(out _))
+        {
             //均衡
             if (Eukrasia.ShouldUse(out act)) return true;
 
             act = EukrasianDiagnosis;
             return true;
         }
-
-        //诊断
-        if (Diagnosis.ShouldUse(out act)) return true;
+       
+        act = null;
         return false;
     }
 
     private protected override bool HealAreaGCD(out IAction act)
     {
-        if (TargetUpdater.PartyMembersAverHP < 0.55f)
+        if (TargetUpdater.PartyMembersAverHP < 0.6f || (Dyskrasia.ShouldUse(out _) && TargetUpdater.PartyTanks.Any(t => t.GetHealthRatio() < 0.6f)))
         {
             //魂灵风息
             if (Pneuma.ShouldUse(out act, mustUse: true)) return true;
         }
 
-        if (EukrasianPrognosis.ShouldUse(out act))
+        //预后
+        if (EukrasianPrognosis.Target.HasStatus(false, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis, StatusID.Galvanize))
         {
-            if (EukrasianPrognosis.Target.HasStatus(true,
-                StatusID.EukrasianDiagnosis,
-                StatusID.EukrasianPrognosis,
-                StatusID.Galvanize
-            ))
-            {
-                if (Prognosis.ShouldUse(out act)) return true;
-            }
+            if (Prognosis.ShouldUse(out act)) return true;
+        }
 
+        if (EukrasianPrognosis.ShouldUse(out _))
+        {
             //均衡
             if (Eukrasia.ShouldUse(out act)) return true;
 
@@ -313,14 +300,13 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
             return true;
         }
 
-        //预后
-        if (Prognosis.ShouldUse(out act)) return true;
+        act = null;
         return false;
     }
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //坚角清汁
-        if (Kerachole.ShouldUse(out act)) return true;
+        if (Kerachole.ShouldUse(out act) && Level >= 78) return true;
 
         //自生2
         if (Physis2.ShouldUse(out act)) return true;

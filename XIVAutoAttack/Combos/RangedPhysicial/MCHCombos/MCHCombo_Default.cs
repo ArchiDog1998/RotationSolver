@@ -62,10 +62,15 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
             if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolDown || !Drill.IsCoolDown) && Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
-        if (!IsOverheated || IsOverheated && OverheatedEndAfterGCD())
+        //群体常规GCD
+        //AOE,毒菌冲击
+        if (Bioblaster.ShouldUse(out act)) return true;
+        if (ChainSaw.ShouldUse(out act)) return true;
+        if (IsOverheated && AutoCrossbow.ShouldUse(out act)) return true;
+        if (SpreadShot.ShouldUse(out act)) return true;
+
+        if ((!IsOverheated || IsOverheated && OverheatedEndAfterGCD()))
         {
-            //AOE,毒菌冲击
-            if (Bioblaster.ShouldUse(out act)) return true;
             //单体,四个牛逼的技能。先空气锚再钻头
             if (AirAnchor.ShouldUse(out act)) return true;
             else if (!AirAnchor.EnoughLevel && HotShot.ShouldUse(out act)) return true;
@@ -78,10 +83,6 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
                 if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(3) && Drill.IsCoolDown && Drill.ElapsedAfterGCD(4)) return true;
             }
         }
-
-        //群体常规GCD
-        if (IsOverheated && AutoCrossbow.ShouldUse(out act)) return true;
-        if (SpreadShot.ShouldUse(out act)) return true;
 
         //过热状态
         if (IsOverheated && HeatBlast.ShouldUse(out act)) return true;

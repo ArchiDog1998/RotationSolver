@@ -91,6 +91,11 @@ namespace XIVAutoAttack.Helpers
             return obj.GetStatus(isFromSelf, effectIDs).Length > 0;
         }
 
+        internal static void StatusOff(StatusID status)
+        {
+            CommandController.SubmitToChat($"/statusoff {StatusHelper.GetStatusName(status)}");
+        }
+
         /// <summary>
         /// 获得状态的名字
         /// </summary>
