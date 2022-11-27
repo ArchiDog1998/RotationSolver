@@ -93,7 +93,7 @@ namespace XIVAutoAttack.Helpers
 
         internal static void StatusOff(StatusID status)
         {
-            CommandController.SubmitToChat($"/statusoff {StatusHelper.GetStatusName(status)}");
+            CommandController.SubmitToChat($"/statusoff {GetStatusName(status)}");
         }
 
         /// <summary>

@@ -33,7 +33,7 @@ internal partial class ComboConfigWindow : Window
     {
         {JobRole.Tank, $"{DescType.µ¥Ìå·ÀÓù} ¡ú {CustomCombo<Enum>.Rampart}, {CustomCombo<Enum>.Reprisal}" },
         {JobRole.Melee, $"{DescType.·¶Î§·ÀÓù} ¡ú {CustomCombo<Enum>.Feint}" },
-        {JobRole.RangedMagicial, $"·¨Ïµ{DescType.·¶Î§·ÀÓù} ¡ú {CustomCombo<Enum>.Addle}" },
+        {JobRole.RangedMagicial, $"{DescType.·¶Î§·ÀÓù} ¡ú {CustomCombo<Enum>.Addle}" },
     };
 
 

@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using static Lumina.Data.Parsing.Layer.LayerCommon;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -76,6 +78,8 @@ namespace XIVAutoAttack.Updaters
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool CanHealSingleSpell { get; private set; } = false;
+
+
 
         /// <summary>
         /// 有宠物
@@ -154,6 +158,8 @@ namespace XIVAutoAttack.Updaters
                 StatusID.Necrosis,
             };
             DyingPeople = WeakenPeople.Where(p => p.HasStatus(false, dangeriousStatus)).ToArray();
+
+            SayHelloToAuthor();
             #endregion
 
             #region Health
@@ -255,6 +261,56 @@ namespace XIVAutoAttack.Updaters
 
                 return loc == b.Position;
             }).ToArray();
+        }
+
+
+        /// <summary>
+        /// 作者本人
+        /// </summary>
+        static DateTime foundTime = DateTime.MaxValue;
+        static TimeSpan relayTime = TimeSpan.Zero;
+        static readonly Regex authorReg = new Regex("^秋水[a-zA-Z]{3}");
+        static List<string> macroToAuthor = new List<string>()
+        {
+            "slap",
+            "surprised",
+            "headache",
+            "facepalm",
+        };
+        private static void SayHelloToAuthor()
+        {
+            //只有任务中才能执行此操作
+            if (!Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty]) return;
+
+            //战斗中不执行
+            if (ActionUpdater.InCombat) return;
+
+            //已经敢作过此事，不执行
+            if (foundTime == DateTime.MinValue) return;
+
+            //找作者
+            var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorReg.IsMatch(player.Name.ToString())) as PlayerCharacter;
+
+            //没找到作者
+            if (author == null) return;
+
+            //别扇自己一巴掌
+            if (author.ObjectId == Service.ClientState.LocalPlayer.ObjectId) return;
+
+            //随机事件
+            foundTime = DateTime.Now;
+            if (relayTime == TimeSpan.Zero)
+            {
+                relayTime = new TimeSpan(new Random().Next(1, 50000));
+            }
+
+            if (DateTime.Now - foundTime > relayTime)
+            {
+                Service.TargetManager.SetTarget(author);
+                CommandController.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
+                Service.ChatGui.Print($"这位{author.Name}很可能就是本插件的作者，赶紧跟他打个招呼吧！");
+                foundTime = DateTime.MinValue;
+            }
         }
     }
 }

@@ -13,6 +13,9 @@ changelog: |-
   - 修改了武僧的身位提示ID
   - 目标为玩家就不会选择到攻击的目标
 
+  ## 新增功能
+  - 遇到作者本人，一个巴掌扇过去
+
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png
