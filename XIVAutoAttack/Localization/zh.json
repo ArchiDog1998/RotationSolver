@@ -7,7 +7,7 @@
   "ConfigWindow_EventsItem": "事件",
   "ConfigWindow_ActionsItem": "技能",
   "ConfigWindow_HelpItem": "帮助",
-  "ConfigWindow_ActionItem_Description": "In this panel, you can modify the use conditions for every action.",
+  "ConfigWindow_ActionItem_Description": "在本面板中，您可以修改每个动作的使用条件。",
   "ConfigWindow_HelpItem_Description": "In this panel, you can see all commands for combat that can use in for XIV Auto Attack",
   "Configwindow_HelpItem_AttackSmart": "Start Attacking in auto-target mode when not in combat. Switch the targeting condition in combat.",
   "Configwindow_HelpItem_AttackManual": "Start Attacking in manual mode.",
