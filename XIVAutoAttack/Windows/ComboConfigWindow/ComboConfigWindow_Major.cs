@@ -128,21 +128,36 @@ internal partial class ComboConfigWindow : Window
                     CommandHelp("HealArea", LocalizationManager.RightLang.Configwindow_HelpItem_HealArea);
                     ImGui.Separator();
 
-                    CommandHelp("HealSingle", "开启一段单体治疗的窗口期。");
+                    //开启一段单体治疗的窗口期
+                    CommandHelp("HealSingle", LocalizationManager.RightLang.Configwindow_HelpItem_HealSingle);
                     ImGui.Separator();
-                    CommandHelp("DefenseArea", "开启一段范围防御的窗口期。");
+
+                    //开启一段范围范围防御的窗口期。
+                    CommandHelp("DefenseArea", LocalizationManager.RightLang.Configwidow_HelpItem_DefenseArea);
                     ImGui.Separator();
-                    CommandHelp("DefenseSingle", "开启一段单体防御的窗口期。");
+
+                    //开启一段单体防御的窗口期
+                    CommandHelp("DefenseSingle", LocalizationManager.RightLang.Configwidow_HelpItem_DefenseSingle);
                     ImGui.Separator();
-                    CommandHelp("EsunaShield", "开启一段康复或者盾姿或者真北的窗口期。");
+
+                    //开启一段康复或者盾姿或者真北的窗口期
+                    CommandHelp("EsunaShield", LocalizationManager.RightLang.Configwidow_HelpItem_EsunaShield);
                     ImGui.Separator();
-                    CommandHelp("RaiseShirk", "开启强制救人或退避的窗口期。");
+
+                    //开启强制救人或退避的窗口期
+                    CommandHelp("RaiseShirk", LocalizationManager.RightLang.Configwidow_HelpItem_RaiseShirk);
                     ImGui.Separator();
-                    CommandHelp("AntiRepulsion", "开启一段防击退的窗口期。");
+
+                    //开启一段防击退的窗口期
+                    CommandHelp("AntiRepulsion", LocalizationManager.RightLang.Configwidow_HelpItem_AntiRepulsion);
                     ImGui.Separator();
-                    CommandHelp("BreakProvoke", "开启一段爆发或挑衅的窗口期。");
+
+                    //开启一段爆发或挑衅的窗口期
+                    CommandHelp("BreakProvoke", LocalizationManager.RightLang.Configwidow_HelpItem_BreakProvoke);
                     ImGui.Separator();
-                    CommandHelp("Move", "开启一段位移的窗口期。");
+
+                    //开启一段位移的窗口期
+                    CommandHelp("Move", LocalizationManager.RightLang.Configwidow_HelpItem_Move);
                     ImGui.Separator();
                 }
                 ImGui.PopStyleVar();
