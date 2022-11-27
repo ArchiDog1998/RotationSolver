@@ -310,7 +310,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     {
         if (!Despair.ShouldUse(out act)) return false;
         //有悖论不放
-        if (IsParadoxActive) return false;
+        if (IsParadoxActive || UmbralHearts > 0) return false;
         //能放火4时不放
         if (CanUseFire4(out _)) return false;
         //能瞬发时

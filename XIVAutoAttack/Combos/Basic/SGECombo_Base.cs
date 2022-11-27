@@ -151,7 +151,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
             }
             return null;
         },
-        ActionCheck = b => b.GetHealthRatio() < 0.7,
+        ActionCheck = b => b.GetHealthRatio() < 0.75,
     };
 
     /// <summary>
@@ -201,7 +201,6 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Taurochole { get; } = new(ActionID.Taurochole, true, isTimeline: true)
     {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
 
@@ -224,25 +223,19 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 均衡诊断
     /// </summary>
-    public static BaseAction EukrasianDiagnosis { get; } = new(ActionID.EukrasianDiagnosis, true, isTimeline: true)
-    {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
-    };
+    public static BaseAction EukrasianDiagnosis { get; } = new(ActionID.EukrasianDiagnosis, true, isTimeline: true);
 
     /// <summary>
     /// 均衡预后
     /// </summary>
-    public static BaseAction EukrasianPrognosis { get; } = new(ActionID.EukrasianPrognosis, true, isTimeline: true)
-    {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
-    };
+    public static BaseAction EukrasianPrognosis { get; } = new(ActionID.EukrasianPrognosis, true, isTimeline: true);
 
     /// <summary>
     /// 根素
     /// </summary>
     public static BaseAction Rhizomata { get; } = new(ActionID.Rhizomata, isTimeline: true)
     {
-        ActionCheck = b => JobGauge.Addersgall < 3 && AddersgallEndAfter(10),
+        ActionCheck = b => JobGauge.Addersgall < 3,
     };
 
     /// <summary>

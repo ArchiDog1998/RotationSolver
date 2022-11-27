@@ -82,7 +82,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         //危险领域
         if (DangerZone.ShouldUse(out act))
         {
-            if (!IsFullParty) return true;
+            if (!IsFullParty && !DangerZone.IsTargetBoss) return true;
 
             //等级小于烈牙,
             if (!GnashingFang.EnoughLevel && (Player.HasStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(15))) return true;
@@ -164,7 +164,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     {
         if (!NoMercy.ShouldUse(out act)) return false;
 
-        if (!IsFullParty && !IsTargetBoss && !IsMoving) return true;
+        if (!IsFullParty && !IsTargetBoss && !IsMoving && DemonSlice.ShouldUse(out _)) return true;
 
         //等级低于爆发击是判断
         if (!BurstStrike.EnoughLevel) return true;
@@ -191,11 +191,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (GnashingFang.ShouldUse(out act))
         {
             //在4人本道中使用
-            if (!IsFullParty && !GnashingFang.IsTargetBoss)
-            {
-                if (!DemonSlice.ShouldUse(out _) && !IsMoving) return true;
-                return false;
-            }
+            if (DemonSlice.ShouldUse(out _)) return false;
 
             //无情中3弹烈牙
             if (Ammo == (Level >= 88 ? 3 : 2) && (Player.HasStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(55))) return true;
@@ -226,7 +222,9 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (SonicBreak.ShouldUse(out act))
         {
             //在4人本道中不使用
-            if (!IsFullParty && !SonicBreak.IsTargetBoss) return false;
+            if (DemonSlice.ShouldUse(out _)) return false;
+
+            //if (!IsFullParty && !SonicBreak.IsTargetBoss) return false;
 
             if (!GnashingFang.EnoughLevel && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
@@ -252,13 +250,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (DoubleDown.ShouldUse(out act, mustUse: true))
         {
             //在4人本道中
-            if (DemonSlice.ShouldUse(out _))
-            {
-                //在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪),有无情buff
-                if (Player.HasStatus(true, StatusID.NoMercy)) return true;
-
-                return false;
-            }
+            if (DemonSlice.ShouldUse(out _) && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
             //在音速破后使用倍攻
             if (SonicBreak.IsCoolDown && Player.HasStatus(true, StatusID.NoMercy)) return true;
@@ -303,7 +295,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     {
         if (BowShock.ShouldUse(out act, mustUse: true))
         {
-            if (!IsFullParty) return true;
+            if (DemonSlice.ShouldUse(out _) && !IsFullParty) return true;
 
             if (!SonicBreak.EnoughLevel && Player.HasStatus(true, StatusID.NoMercy)) return true;
 

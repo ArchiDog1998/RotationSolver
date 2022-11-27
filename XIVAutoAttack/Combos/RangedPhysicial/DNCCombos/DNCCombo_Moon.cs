@@ -60,7 +60,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         if (IsDancing) return false;
 
         //进攻之探戈
-        if (Devilment.ShouldUse(out act, emptyOrSkipCombo: true))
+        if (Devilment.ShouldUse(out act))
         {
             if (SettingBreak && !TechnicalStep.EnoughLevel) return true;
 
@@ -71,7 +71,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         if (UseClosedPosition(out act)) return true;
       
         //百花
-        if (Flourish.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Flourish.ShouldUse(out act)) return true;
 
         //扇舞·急
         if (FanDance3.ShouldUse(out act, mustUse: true)) return true;

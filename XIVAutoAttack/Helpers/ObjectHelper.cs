@@ -29,6 +29,11 @@ namespace XIVAutoAttack.Helpers
                 || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
         }
 
+        /// <summary>
+        /// 获得目标的当前血量百分比
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
         internal static float GetHealthRatio(this BattleChara b)
         {
             if (b == null) return 0;

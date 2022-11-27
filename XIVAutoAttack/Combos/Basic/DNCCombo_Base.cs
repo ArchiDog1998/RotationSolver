@@ -102,6 +102,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Bloodshower { get; } = new(ActionID.Bloodshower)
     {
+        AOECount = 2,
         BuffsNeed = Fountainfall.BuffsNeed,
     };
 
@@ -111,6 +112,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction FanDance2 { get; } = new(ActionID.FanDance2)
     {
         ActionCheck = b => Feathers > 0,
+        AOECount = 2,
         BuffsProvide = new[] { StatusID.ThreefoldFanDance },
     };
 
