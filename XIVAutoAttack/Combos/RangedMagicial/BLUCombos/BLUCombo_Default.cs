@@ -150,7 +150,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
 
             if (!AllOnSlot(MoonFlute)) return false;
 
-            if (AllOnSlot(Whistle, Tingle, TripleTrident) && !TripleTrident.IsCoolDown)
+            if (AllOnSlot(TripleTrident) && !TripleTrident.IsCoolDown)
             {
                 //口笛
                 if (Whistle.ShouldUse(out act)) return true;

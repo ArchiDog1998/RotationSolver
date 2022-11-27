@@ -1,4 +1,5 @@
-﻿using Lumina.Excel.GeneratedSheets;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -301,9 +302,6 @@ namespace XIVAutoAttack
             var localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer == null) return;
 
-            //这个避让的功能，可以再斟酌一下
-            //if (Watcher.TimeSinceLastAction.TotalSeconds < 0.2) return;
-
             //0.2s内，不能重复按按钮。
             if (DateTime.Now - _fastClickStopwatch < new TimeSpan(0, 0, 0, 0, 200)) return;
             _fastClickStopwatch = DateTime.Now;
@@ -327,7 +325,7 @@ namespace XIVAutoAttack
                     //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if (act.Target?.CanAttack() ?? false)
+                    if (Service.TargetManager.Target is not PlayerCharacter && (act.Target?.CanAttack() ?? false))
                     {
                         Service.TargetManager.SetTarget(act.Target);
                     }

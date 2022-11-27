@@ -82,7 +82,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     OverlayWindow.ShouldLocation = EnemyLocation.None;
                 }
 
-                if (abilityRemain == 0 || ActionUpdater.WeaponElapsed < ActionUpdater._lastCastingTotal) return GCDaction;
+                if (abilityRemain == 0 || ActionUpdater.WeaponTotal < ActionUpdater._lastCastingTotal) return GCDaction;
 
                 if (Ability(abilityRemain, GCDaction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
 

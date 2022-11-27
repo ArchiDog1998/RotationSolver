@@ -148,12 +148,12 @@ namespace XIVAutoAttack.Updaters
         internal unsafe static void DoAction()
         {
             if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInQuestEvent]
-                //|| Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied33]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied38]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Jumping61]
-                //|| Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
-                //|| Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction2]
