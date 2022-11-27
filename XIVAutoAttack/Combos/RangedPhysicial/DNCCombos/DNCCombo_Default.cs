@@ -14,6 +14,8 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
 
 internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     internal enum CommandType : byte
     {
         None,

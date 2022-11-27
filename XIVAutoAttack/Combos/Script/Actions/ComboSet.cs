@@ -14,6 +14,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
     {
         public ClassJobID JobID { get; set; } = ClassJobID.Adventurer;
         public string AuthorName { get; set; } = "神秘作者";
+        public string GameVersion { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
         [DisplayName("紧急GCD")]

@@ -11,6 +11,8 @@ using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default.BLMCombo_Defau
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
 internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "汐ベMoon";
 
     internal enum CommandType : byte

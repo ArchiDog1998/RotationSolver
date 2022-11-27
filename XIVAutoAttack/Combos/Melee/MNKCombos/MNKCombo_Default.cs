@@ -13,6 +13,8 @@ using static XIVAutoAttack.Combos.Melee.MNKCombos.MNKCombo_Default;
 namespace XIVAutoAttack.Combos.Melee.MNKCombos;
 internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "ÇïË®";
 
     internal enum CommandType : byte

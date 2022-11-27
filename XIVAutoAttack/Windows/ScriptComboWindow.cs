@@ -19,7 +19,6 @@ using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
 
 namespace XIVAutoAttack.Windows
 {
@@ -87,17 +86,30 @@ namespace XIVAutoAttack.Windows
 
             ImGui.SameLine();
 
+            ImGui.Text("作者：");
 
+            ImGui.SameLine();
 
             string authorName = TargetCombo.Set.AuthorName;
             ImGui.SetNextItemWidth(ImGui.CalcTextSize(authorName).X + 10);
-            if (ImGui.InputText($"##{TargetCombo.Name}作者", ref authorName, 32, ImGuiInputTextFlags.AutoSelectAll))
+            if (ImGui.InputText($"##{TargetCombo.Name}_Author", ref authorName, 32, ImGuiInputTextFlags.AutoSelectAll))
             {
                 TargetCombo.Set.AuthorName = authorName;
             }
+
+
             ImGui.SameLine();
 
-            ImGui.Text("作者  ");
+            ImGui.Text("  游戏版本:");
+
+            ImGui.SameLine();
+
+            string gameVersion = TargetCombo.Set.GameVersion;
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(gameVersion).X + 10);
+            if (ImGui.InputText($"##{TargetCombo.Name}_Version", ref gameVersion, 32, ImGuiInputTextFlags.AutoSelectAll))
+            {
+                TargetCombo.Set.GameVersion = gameVersion;
+            }
 
             ImGui.SameLine();
 

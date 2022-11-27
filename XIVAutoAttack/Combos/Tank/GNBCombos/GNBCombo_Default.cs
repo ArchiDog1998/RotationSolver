@@ -11,6 +11,8 @@ namespace XIVAutoAttack.Combos.Tank.GNBCombos;
 
 internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "Ï«¥ÙMoon";
 
     internal enum CommandType : byte

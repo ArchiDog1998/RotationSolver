@@ -11,6 +11,8 @@ namespace XIVAutoAttack.Combos.Script.Combos;
 
 internal class BLUCombo_Script : BLUCombo_Base<Enum>, IScriptCombo
 {
+    public override string GameVersion => Set.GameVersion;
+
     public override string Author => Set.GetAuthor();
 
     public ComboSet Set { get; set; } = new ComboSet();

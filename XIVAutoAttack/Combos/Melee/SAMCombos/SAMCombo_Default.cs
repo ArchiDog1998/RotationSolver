@@ -14,6 +14,8 @@ namespace XIVAutoAttack.Combos.Melee.SAMCombos;
 
 internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "¾ÁÆî";
 
     internal enum CommandType : byte

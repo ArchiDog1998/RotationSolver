@@ -11,7 +11,9 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
 {
     internal sealed class BLUCombo_Default : BLUCombo_Base<CommandType>
     {
-        public override string Author => "秋水";
+        public override string GameVersion => "6.18";
+
+        public override string Author => "汐ベMoon";
 
         internal enum CommandType : byte
         {

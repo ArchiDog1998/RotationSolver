@@ -13,6 +13,8 @@ namespace XIVAutoAttack.Combos.Healer.SGECombos;
 
 internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "Ï«¥ÙMoon";
 
     internal enum CommandType : byte

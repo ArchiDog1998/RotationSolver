@@ -12,7 +12,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
     {
         ClassJob Job { get; }
         ClassJobID[] JobIDs { get; }
+        string Description { get; }
 
+        string GameVersion { get; }
+        string Author { get; }
         ActionConfiguration Config { get; }
 
         SortedList<DescType, string> DescriptionDict { get; }

@@ -15,6 +15,8 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
 
 internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "Ï«¥ÙMoon";
 
     internal enum CommandType : byte

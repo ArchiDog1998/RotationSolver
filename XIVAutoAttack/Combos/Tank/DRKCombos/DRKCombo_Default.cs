@@ -12,6 +12,8 @@ namespace XIVAutoAttack.Combos.Tank.DRKCombos;
 
 internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     internal enum CommandType : byte
     {
         None,

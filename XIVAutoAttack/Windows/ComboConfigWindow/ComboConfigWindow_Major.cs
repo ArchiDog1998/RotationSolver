@@ -45,7 +45,7 @@ internal partial class ComboConfigWindow : Window
         if (ImGui.BeginTabBar("AutoAttackSettings"))
         {
 #if DEBUG
-            if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem("Debug")
+            if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem("Debug"))
             {
                 DrawDebug();
                 ImGui.EndTabItem();
@@ -182,7 +182,9 @@ internal partial class ComboConfigWindow : Window
 
         ImGui.SetColumnWidth(0, t.Width + 5);
 
-        var str = texture.Description;
+        var com = texture as ICustomCombo;
+
+        var str = com?.Description;
 
         ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
         if (ImGui.IsItemHovered())
@@ -204,42 +206,42 @@ internal partial class ComboConfigWindow : Window
             if (!string.IsNullOrEmpty(str)) ImGui.SetTooltip(str);
         }
 
-
-        ImGui.SameLine();
-
-        if (!string.IsNullOrEmpty(texture.Author))
+        if (com != null)
         {
-            authors ??= new string[] { texture.Author };
+            ImGui.SameLine();
+            Spacing();
 
-            int i;
-            for (i = 0; i < authors.Length; i++)
+            if (!string.IsNullOrEmpty(com.Author))
             {
-                if (authors[i] == texture.Author)
+                authors ??= new string[] { com.Author };
+
+                int i;
+                for (i = 0; i < authors.Length; i++)
                 {
-                    break;
+                    if (authors[i] == com.Author)
+                    {
+                        break;
+                    }
+                }
+
+                Spacing();
+                ImGui.TextDisabled("-  ");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(authors[i]).X + 30);
+                if (ImGui.Combo("##" + com.Name + "Author", ref i, authors, authors.Length))
+                {
+                    Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
+                    Service.Configuration.Save();
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("点击以切换作者" + "\n- " + "游戏版本：" + com.GameVersion);
                 }
             }
 
-            Spacing();
-            ImGui.TextDisabled("-  ");
             ImGui.SameLine();
-            ImGui.SetNextItemWidth(ImGui.CalcTextSize(authors[i]).X + 30);
-            if (ImGui.Combo("##" + texture.Name + "Author", ref i, authors, authors.Length))
-            {
-                Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
-                Service.Configuration.Save();
-            }
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip("点击以切换作者");
-            }
-        }
+            Spacing();
 
-        ImGui.SameLine();
-        Spacing();
-
-        if (texture is ICustomCombo com)
-        {
             if (texture is IScriptCombo script)
             {
                 if (ImGuiComponents.IconButton(texture.GetHashCode(), FontAwesomeIcon.Edit))

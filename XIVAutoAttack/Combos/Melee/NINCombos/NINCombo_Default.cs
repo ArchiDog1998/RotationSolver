@@ -12,6 +12,8 @@ namespace XIVAutoAttack.Combos.Melee.NINCombos;
 
 internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "秋水";
 
     internal enum CommandType : byte

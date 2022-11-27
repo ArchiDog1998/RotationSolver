@@ -10,6 +10,8 @@ namespace XIVAutoAttack.Combos.Melee.SAMCombos;
 
 internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "逆光";
 
 

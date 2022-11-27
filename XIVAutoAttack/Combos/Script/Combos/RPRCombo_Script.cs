@@ -11,6 +11,8 @@ namespace XIVAutoAttack.Combos.Script.Combos;
 
 internal class RPRCombo_Script : RPRCombo_Base<Enum>, IScriptCombo
 {
+    public override string GameVersion => Set.GameVersion;
+
     public override string Author => Set.GetAuthor();
 
     public ComboSet Set { get; set; } = new ComboSet();

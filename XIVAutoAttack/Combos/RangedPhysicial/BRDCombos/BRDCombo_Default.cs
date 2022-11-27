@@ -12,6 +12,8 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.BRDCombos;
 
 internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "汐ベMoon";
 
     internal enum CommandType : byte

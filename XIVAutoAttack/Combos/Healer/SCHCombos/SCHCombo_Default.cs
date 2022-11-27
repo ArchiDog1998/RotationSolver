@@ -14,6 +14,8 @@ namespace XIVAutoAttack.Combos.Healer.SCHCombos;
 
 internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "逆光 & Ana Amari";
 
     internal enum CommandType : byte

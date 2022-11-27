@@ -14,6 +14,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
     {
         public abstract ClassJobID[] JobIDs { get; }
 
+        public abstract string GameVersion { get; }
+
         public ClassJob Job => Service.DataManager.GetExcelSheet<ClassJob>().GetRow((uint)JobIDs[0]);
 
         public string Name => Job.Name;

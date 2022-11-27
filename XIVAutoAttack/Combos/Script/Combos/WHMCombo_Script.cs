@@ -11,6 +11,8 @@ namespace XIVAutoAttack.Combos.Script.Combos;
 
 internal class WHMCombo_Script : WHMCombo_Base<Enum>, IScriptCombo
 {
+    public override string GameVersion => Set.GameVersion;
+
     public override string Author => Set.GetAuthor();
 
     public ComboSet Set { get; set; } = new ComboSet();

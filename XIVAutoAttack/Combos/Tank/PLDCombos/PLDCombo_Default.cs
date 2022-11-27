@@ -11,6 +11,8 @@ namespace XIVAutoAttack.Combos.Tank.PLDCombos;
 
 internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 {
+    public override string GameVersion => "6.18";
+
     public override string Author => "Ï«¥ÙMoon";
 
     internal enum CommandType : byte
