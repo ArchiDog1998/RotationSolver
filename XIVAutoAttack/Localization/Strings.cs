@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
+using Lumina.Excel.GeneratedSheets;
 
 namespace XIVAutoAttack.Localization
 {
@@ -32,6 +33,22 @@ namespace XIVAutoAttack.Localization
             = "Stop Attacking, please always do it!";
 
         public string Configwindow_HelpItem_HealArea { get; set; }
-            = "Use serveral healing area actions in the next seconds.";
+            = "Open one window period to use one or serveral range healing actions.";
+        public string Configwindow_HelpItem_HealSingle { get; set; }
+            = "Open one window period to use one or serveral single healing actions.";
+        public string Configwidow_HelpItem_DefenseArea { get; set; }
+            = "Open one window period to use one or serveral range defense actions.";
+        public string Configwidow_HelpItem_DefenseSingle { get; set; }
+            = "Open one window period to use one or serveral single defense actions.";
+        public string Configwidow_HelpItem_EsunaShield { get; set; }
+         = "Open one window period to use Esuna,tank stance skills or True North.";
+        public string Configwidow_HelpItem_RaiseShirk { get; set; }
+         = "Open one window period to use Raise or Shirk";
+        public string Configwidow_HelpItem_AntiRepulsion { get; set; }
+        = "Open one window period to use knockback-penalty skill";
+        public string Configwidow_HelpItem_BreakProvoke { get; set; }
+        = "Open one window period to use break-combo or provoke skill";
+        public string Configwidow_HelpItem_Move { get; set; }
+        = "Open one window period to use move skill";
     }
 }
