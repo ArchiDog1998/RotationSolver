@@ -29,9 +29,9 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.循环说明, $"标准循环会在野火前攒热量来打偶数分钟爆发.\n                     AOE和攻击小怪时不会释放野火"},
-        {DescType.爆发技能, $"{Wildfire}"},
-        {DescType.范围防御, $"{Tactician}"},
+        {DescType.Description, $"标准循环会在野火前攒热量来打偶数分钟爆发.\n                     AOE和攻击小怪时不会释放野火"},
+        {DescType.BreakingAction, $"{Wildfire}"},
+        {DescType.DefenseArea, $"{Tactician}"},
     };
 
     public override string Author => "汐ベMoon";

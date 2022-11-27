@@ -35,9 +35,9 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.循环说明, $"请确保三首歌时间加在一起等于120秒!"},
-        {DescType.范围防御, $"{Troubadour}"},
-        {DescType.单体治疗, $"{NaturesMinne}"},
+        {DescType.Description, $"请确保三首歌时间加在一起等于120秒!"},
+        {DescType.DefenseArea, $"{Troubadour}"},
+        {DescType.HealSingle, $"{NaturesMinne}"},
     };
 
     private int FirstSong => Config.GetComboByName("FirstSong");

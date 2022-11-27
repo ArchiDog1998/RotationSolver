@@ -28,10 +28,10 @@ internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
     }
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.范围治疗, $"GCD: {AfflatusRapture}, {Medica2}, {Cure3}, {Medica}\n                     能力: {Asylum}, {Assize}"},
-        {DescType.单体治疗, $"GCD: {AfflatusSolace}, {Regen}, {Cure2}, {Cure}\n                     能力: {Tetragrammaton}"},
-        {DescType.范围防御, $"{Temperance}, {LiturgyoftheBell}"},
-        {DescType.单体防御, $"{DivineBenison}, {Aquaveil}"},
+        {DescType.HealArea, $"GCD: {AfflatusRapture}, {Medica2}, {Cure3}, {Medica}\n                     能力: {Asylum}, {Assize}"},
+        {DescType.HealSingle, $"GCD: {AfflatusSolace}, {Regen}, {Cure2}, {Cure}\n                     能力: {Tetragrammaton}"},
+        {DescType.DefenseArea, $"{Temperance}, {LiturgyoftheBell}"},
+        {DescType.DefenseSingle, $"{DivineBenison}, {Aquaveil}"},
     };
     private protected override bool GeneralGCD(out IAction act)
     {

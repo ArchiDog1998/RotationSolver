@@ -28,11 +28,11 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.范围治疗, $"GCD: {AspectedHelios}, {Helios}\n                     能力: {EarthlyStar}, {CrownPlay}, {CelestialOpposition}"},
-        {DescType.单体治疗, $"GCD: {AspectedBenefic}, {Benefic2}, {Benefic}\n                     能力: {CelestialIntersection}, {EssentialDignity}"},
-        {DescType.范围防御, $"{CollectiveUnconscious}"},
-        {DescType.单体防御, $"{Exaltation}，给被挨打的T"},
-        {DescType.爆发技能, $"{Divination}"}
+        {DescType.HealArea, $"GCD: {AspectedHelios}, {Helios}\n                     能力: {EarthlyStar}, {CrownPlay}, {CelestialOpposition}"},
+        {DescType.HealSingle, $"GCD: {AspectedBenefic}, {Benefic2}, {Benefic}\n                     能力: {CelestialIntersection}, {EssentialDignity}"},
+        {DescType.DefenseArea, $"{CollectiveUnconscious}"},
+        {DescType.DefenseSingle, $"{Exaltation}，给被挨打的T"},
+        {DescType.BreakingAction, $"{Divination}"}
     };
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)

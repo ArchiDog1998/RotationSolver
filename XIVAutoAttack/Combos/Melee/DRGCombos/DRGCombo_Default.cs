@@ -34,7 +34,7 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new SortedList<DescType, string>()
     {
-        {DescType.ÒÆ¶¯¼¼ÄÜ, $"{SpineshatterDive}, {DragonfireDive}"},
+        {DescType.MoveAction, $"{SpineshatterDive}, {DragonfireDive}"},
     };
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)

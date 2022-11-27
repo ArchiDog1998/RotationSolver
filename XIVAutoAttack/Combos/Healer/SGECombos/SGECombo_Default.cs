@@ -35,11 +35,11 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.范围治疗, $"GCD: {Prognosis}\n                     能力: {Holos}, {Ixochole}, {Physis2}, {Physis}"},
-        {DescType.单体治疗, $"GCD: {Diagnosis}\n                     能力: {Druochole}"},
-        {DescType.范围防御, $"{Panhaima}, {Kerachole}, {Prognosis}"},
-        {DescType.单体防御, $"GCD: {Diagnosis}\n                     能力: {Haima}, {Taurochole}"},
-        {DescType.移动技能, $"{Icarus}，目标为面向夹角小于30°内最远目标。"},
+        {DescType.HealArea, $"GCD: {Prognosis}\n                     能力: {Holos}, {Ixochole}, {Physis2}, {Physis}"},
+        {DescType.HealSingle, $"GCD: {Diagnosis}\n                     能力: {Druochole}"},
+        {DescType.DefenseArea, $"{Panhaima}, {Kerachole}, {Prognosis}"},
+        {DescType.DefenseSingle, $"GCD: {Diagnosis}\n                     能力: {Haima}, {Taurochole}"},
+        {DescType.MoveAction, $"{Icarus}，目标为面向夹角小于30°内最远目标。"},
     };
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {

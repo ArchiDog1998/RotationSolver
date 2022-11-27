@@ -25,9 +25,9 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.单体治疗, $"{Vercure}"},
-        {DescType.范围防御, $"{MagickBarrier}"},
-        {DescType.移动技能, $"{CorpsAcorps}"},
+        {DescType.HealSingle, $"{Vercure}"},
+        {DescType.DefenseArea, $"{MagickBarrier}"},
+        {DescType.MoveAction, $"{CorpsAcorps}"},
     };
 
     private protected override ActionConfiguration CreateConfiguration()

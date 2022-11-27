@@ -29,9 +29,9 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.∑∂Œß∑¿”˘, $"{ShieldSamba}"},
-        {DescType.∑∂Œß÷Œ¡∆, $"{CuringWaltz}, {Improvisation}"},
-        {DescType.“∆∂Øººƒ‹, $"{EnAvant}"},
+        {DescType.DefenseArea, $"{ShieldSamba}"},
+        {DescType.HealArea, $"{CuringWaltz}, {Improvisation}"},
+        {DescType.MoveAction, $"{EnAvant}"},
     };
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)

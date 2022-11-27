@@ -64,7 +64,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 }
             }
         }
-        public string Description => string.Join('\n', DescriptionDict.Select(pair => pair.Key.ToString() + " → " + pair.Value));
+        public string Description => string.Join('\n', DescriptionDict.Select(pair => pair.Key.ToName() + " → " + pair.Value));
 
         /// <summary>
         /// 说明字典

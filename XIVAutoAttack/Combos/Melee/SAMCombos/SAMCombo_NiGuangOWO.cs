@@ -34,7 +34,7 @@ internal sealed class SAMCombo_NiGuangOWO : SAMCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.单体防御, $"{ThirdEye}"},
+        {DescType.DefenseSingle, $"{ThirdEye}"},
     };
 
     private protected override bool GeneralGCD(out IAction act)

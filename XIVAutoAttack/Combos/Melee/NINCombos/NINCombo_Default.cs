@@ -33,8 +33,8 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.单体防御, $"{ShadeShift}"},
-        {DescType.移动技能, $"{Shukuchi}，目标为面向夹角小于30°内最远目标。"},
+        {DescType.DefenseSingle, $"{ShadeShift}"},
+        {DescType.MoveAction, $"{Shukuchi}，目标为面向夹角小于30°内最远目标。"},
     };
 
     private static void SetNinjustus(NinAction act)

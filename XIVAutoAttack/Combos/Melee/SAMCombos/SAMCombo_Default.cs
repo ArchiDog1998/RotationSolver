@@ -28,8 +28,8 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.单体防御, $"{ThirdEye}"},
-        {DescType.移动技能, $"{HissatsuGyoten}"},
+        {DescType.DefenseSingle, $"{ThirdEye}"},
+        {DescType.MoveAction, $"{HissatsuGyoten}"},
     };
 
     private protected override bool GeneralGCD(out IAction act)

@@ -27,13 +27,15 @@ internal partial class ComboConfigWindow : Window
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
         RespectCloseHotkey = true;
+
+        this.WindowName = "Hello";
     }
 
     private static readonly Dictionary<JobRole, string> _roleDescriptionValue = new Dictionary<JobRole, string>()
     {
-        {JobRole.Tank, $"{DescType.单体防御} → {CustomCombo<Enum>.Rampart}, {CustomCombo<Enum>.Reprisal}" },
-        {JobRole.Melee, $"{DescType.范围防御} → {CustomCombo<Enum>.Feint}" },
-        {JobRole.RangedMagicial, $"{DescType.范围防御} → {CustomCombo<Enum>.Addle}" },
+        {JobRole.Tank, $"{DescType.DefenseSingle.ToName()} → {CustomCombo<Enum>.Rampart}, {CustomCombo<Enum>.Reprisal}" },
+        {JobRole.Melee, $"{DescType.DefenseArea.ToName()} → {CustomCombo<Enum>.Feint}" },
+        {JobRole.RangedMagicial, $"{DescType.DefenseArea.ToName()} → {CustomCombo<Enum>.Addle}" },
     };
 
 
@@ -76,12 +78,13 @@ internal partial class ComboConfigWindow : Window
 
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ActionsItem))
             {
-                ImGui.Text("在这个窗口，你可以设定每个技能的释放条件。");
+                // "在这个窗口，你可以设定每个技能的释放条件。"
+                ImGui.Text(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
 
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
 
-                if (ImGui.BeginChild("条件列表", new Vector2(0f, -1f), true))
+                if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
                 {
                     foreach (var pair in IconReplacer.RightComboBaseActions.GroupBy(a => a.CateName).OrderBy(g => g.Key))
                     {
@@ -102,19 +105,29 @@ internal partial class ComboConfigWindow : Window
 
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_HelpItem))
             {
-                ImGui.Text("在这个窗口，你可以看到战斗用宏，设置用请在设置面板中查看。");
+                //在这个窗口，你可以看到战斗用宏，设置用请在设置面板中查看。
+                ImGui.Text(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
 
-                if (ImGui.BeginChild("帮助", new Vector2(0f, -1f), true))
+                if (ImGui.BeginChild("Help Infomation", new Vector2(0f, -1f), true))
                 {
                     ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
-                    CommandHelp("AttackSmart", "开始进攻，如果不在进攻中就开始进攻，如果在进攻就切换选择敌对目标条件。");
+
+                    //开始进攻，如果不在进攻中就开始进攻，如果在进攻就切换选择敌对目标条件。
+                    CommandHelp("AttackSmart", LocalizationManager.RightLang.Configwindow_HelpItem_AttackSmart);
                     ImGui.Separator();
-                    CommandHelp("AttackManual", "开始进攻，进攻对象为手动选择，此时不会使用AOE循环。");
+
+                    //开始进攻，进攻对象为手动选择。
+                    CommandHelp("AttackManual", LocalizationManager.RightLang.Configwindow_HelpItem_AttackManual);
                     ImGui.Separator();
-                    CommandHelp("AttackCancel", "停止进攻，记得一定要经常关掉！");
+
+                    //停止进攻，记得一定要经常关掉！
+                    CommandHelp("AttackCancel", LocalizationManager.RightLang.Configwindow_HelpItem_AttackCancel);
                     ImGui.Separator();
-                    CommandHelp("HealArea", "开启一段范围治疗的窗口期。");
+
+                    //开启一段范围治疗的窗口期
+                    CommandHelp("HealArea", LocalizationManager.RightLang.Configwindow_HelpItem_HealArea);
                     ImGui.Separator();
+
                     CommandHelp("HealSingle", "开启一段单体治疗的窗口期。");
                     ImGui.Separator();
                     CommandHelp("DefenseArea", "开启一段范围防御的窗口期。");

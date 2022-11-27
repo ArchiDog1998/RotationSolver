@@ -36,10 +36,10 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
     }
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.范围治疗, $"GCD: {Succor}\n                     能力: {SacredSoil}, {SummonSeraph}, {WhisperingDawn}, {FeyBlessing}, {Indomitability}"},
-        {DescType.单体治疗, $"GCD: {Adloquium}, {Physick}\n                     能力: {SacredSoil}, {Aetherpact}, {Protraction}, {Excogitation}, {Lustrate}"},
-        {DescType.范围防御, $"GCD: {Succor}\n                     能力: {SacredSoil}, {Adloquium}, {SummonSeraph}, {FeyIllumination}, {Expedient}"},
-        {DescType.单体防御, $"{Adloquium}"},
+        {DescType.HealArea, $"GCD: {Succor}\n                     能力: {SacredSoil}, {SummonSeraph}, {WhisperingDawn}, {FeyBlessing}, {Indomitability}"},
+        {DescType.HealSingle, $"GCD: {Adloquium}, {Physick}\n                     能力: {SacredSoil}, {Aetherpact}, {Protraction}, {Excogitation}, {Lustrate}"},
+        {DescType.DefenseArea, $"GCD: {Succor}\n                     能力: {SacredSoil}, {Adloquium}, {SummonSeraph}, {FeyIllumination}, {Expedient}"},
+        {DescType.DefenseSingle, $"{Adloquium}"},
     };
 
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)

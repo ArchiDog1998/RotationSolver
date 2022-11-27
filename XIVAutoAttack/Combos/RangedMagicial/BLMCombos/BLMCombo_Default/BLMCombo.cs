@@ -62,9 +62,9 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        { DescType.单体治疗, $"{BetweenTheLines}, {Leylines}, 这个很特殊！" },
-        { DescType.单体防御, $"{Manaward}" },
-        { DescType.移动技能, $"{AetherialManipulation}，目标为面向夹角小于30°内最远目标。" },
+        { DescType.HealSingle, $"{BetweenTheLines}, {Leylines}, 这个很特殊！" },
+        { DescType.DefenseSingle, $"{Manaward}" },
+        { DescType.MoveAction, $"{AetherialManipulation}，目标为面向夹角小于30°内最远目标。" },
     };
 
     private protected override ActionConfiguration CreateConfiguration()

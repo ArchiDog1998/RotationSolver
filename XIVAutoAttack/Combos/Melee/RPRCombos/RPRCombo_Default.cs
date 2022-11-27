@@ -44,7 +44,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     };
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.单体防御, $"{ArcaneCrest}"},
+        {DescType.DefenseSingle, $"{ArcaneCrest}"},
     };
     private protected override IAction CountDownAction(float remainTime)
     {

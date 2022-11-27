@@ -25,8 +25,8 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.单体防御, $"{RadiantAegis}"},
-        {DescType.单体治疗, $"{Physick}"},
+        {DescType.DefenseSingle, $"{RadiantAegis}"},
+        {DescType.HealSingle, $"{Physick}"},
     };
 
     private protected override bool MoveGCD(out IAction act)

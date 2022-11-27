@@ -26,9 +26,9 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.范围防御, $"{ShieldSamba}"},
-        {DescType.范围治疗, $"{CuringWaltz}, {Improvisation}"},
-        {DescType.移动技能, $"{EnAvant}"},
+        {DescType.DefenseArea, $"{ShieldSamba}"},
+        {DescType.HealArea, $"{CuringWaltz}, {Improvisation}"},
+        {DescType.MoveAction, $"{EnAvant}"},
     };
 
     public override string Author => "秋水";

@@ -27,10 +27,10 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.单体治疗, $"{Clemency}"},
-        {DescType.范围防御, $"{DivineVeil}, {PassageofArms}"},
-        {DescType.单体防御, $"{Sentinel}, {Sheltron}"},
-        {DescType.移动技能, $"{Intervene}"},
+        {DescType.HealSingle, $"{Clemency}"},
+        {DescType.DefenseArea, $"{DivineVeil}, {PassageofArms}"},
+        {DescType.DefenseSingle, $"{Sentinel}, {Sheltron}"},
+        {DescType.MoveAction, $"{Intervene}"},
     };
 
     private protected override bool GeneralGCD(out IAction act)

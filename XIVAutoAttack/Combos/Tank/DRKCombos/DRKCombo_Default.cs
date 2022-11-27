@@ -31,10 +31,10 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.单体治疗, $"{TheBlackestNight}，目标为被打的小可怜"},
-        {DescType.范围防御, $"{DarkMissionary}"},
-        {DescType.单体防御, $"{Oblation}, {ShadowWall}, {DarkMind}"},
-        {DescType.移动技能, $"{Plunge}"},
+        {DescType.HealSingle, $"{TheBlackestNight}，目标为被打的小可怜"},
+        {DescType.DefenseArea, $"{DarkMissionary}"},
+        {DescType.DefenseSingle, $"{Oblation}, {ShadowWall}, {DarkMind}"},
+        {DescType.MoveAction, $"{Plunge}"},
     };
 
     public override string Author => "汐ベMoon";

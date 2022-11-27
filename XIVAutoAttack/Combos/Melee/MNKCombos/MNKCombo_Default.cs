@@ -27,9 +27,9 @@ internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.范围治疗, $"{Mantra}"},
-        {DescType.单体防御, $"{RiddleofEarth}"},
-        {DescType.移动技能, $"{Thunderclap}"},
+        {DescType.HealArea, $"{Mantra}"},
+        {DescType.DefenseSingle, $"{RiddleofEarth}"},
+        {DescType.MoveAction, $"{Thunderclap}"},
     };
 
     private protected override ActionConfiguration CreateConfiguration()

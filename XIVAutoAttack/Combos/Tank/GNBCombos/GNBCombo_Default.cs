@@ -27,10 +27,10 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.单体治疗, $"{Aurora}"},
-        {DescType.范围防御, $"{HeartofLight}"},
-        {DescType.单体防御, $"{HeartofStone}, {Nebula}, {Camouflage}"},
-        {DescType.移动技能, $"{RoughDivide}"},
+        {DescType.HealSingle, $"{Aurora}"},
+        {DescType.DefenseArea, $"{HeartofLight}"},
+        {DescType.DefenseSingle, $"{HeartofStone}, {Nebula}, {Camouflage}"},
+        {DescType.MoveAction, $"{RoughDivide}"},
     };
 
     private protected override bool GeneralGCD(out IAction act)

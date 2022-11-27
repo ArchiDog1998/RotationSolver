@@ -26,9 +26,9 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.范围防御, $"{ShakeItOff}"},
-        {DescType.单体防御, $"{RawIntuition}, {Vengeance}"},
-        {DescType.移动技能, $"GCD: {PrimalRend}，目标为面向夹角小于30°内最远目标。\n                     能力: {Onslaught}, "},
+        {DescType.DefenseArea, $"{ShakeItOff}"},
+        {DescType.DefenseSingle, $"{RawIntuition}, {Vengeance}"},
+        {DescType.MoveAction, $"GCD: {PrimalRend}，目标为面向夹角小于30°内最远目标。\n                     能力: {Onslaught}, "},
     };
 
     static WARCombo_Default()
