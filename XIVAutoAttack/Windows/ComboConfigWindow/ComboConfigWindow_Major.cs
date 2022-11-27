@@ -1,6 +1,7 @@
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
+using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
@@ -78,7 +79,6 @@ internal partial class ComboConfigWindow : Window
 
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ActionsItem))
             {
-                // "在这个窗口，你可以设定每个技能的释放条件。"
                 ImGui.Text(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
 
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
@@ -105,59 +105,46 @@ internal partial class ComboConfigWindow : Window
 
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_HelpItem))
             {
-                //在这个窗口，你可以看到战斗用宏，设置用请在设置面板中查看。
                 ImGui.Text(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
 
                 if (ImGui.BeginChild("Help Infomation", new Vector2(0f, -1f), true))
                 {
                     ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-                    //开始进攻，如果不在进攻中就开始进攻，如果在进攻就切换选择敌对目标条件。
                     CommandHelp("AttackSmart", LocalizationManager.RightLang.Configwindow_HelpItem_AttackSmart);
                     ImGui.Separator();
 
-                    //开始进攻，进攻对象为手动选择。
                     CommandHelp("AttackManual", LocalizationManager.RightLang.Configwindow_HelpItem_AttackManual);
                     ImGui.Separator();
 
-                    //停止进攻，记得一定要经常关掉！
                     CommandHelp("AttackCancel", LocalizationManager.RightLang.Configwindow_HelpItem_AttackCancel);
                     ImGui.Separator();
 
-                    //开启一段范围治疗的窗口期
                     CommandHelp("HealArea", LocalizationManager.RightLang.Configwindow_HelpItem_HealArea);
                     ImGui.Separator();
 
-                    //开启一段单体治疗的窗口期
                     CommandHelp("HealSingle", LocalizationManager.RightLang.Configwindow_HelpItem_HealSingle);
                     ImGui.Separator();
 
-                    //开启一段范围范围防御的窗口期。
-                    CommandHelp("DefenseArea", LocalizationManager.RightLang.Configwidow_HelpItem_DefenseArea);
+                    CommandHelp("DefenseArea", LocalizationManager.RightLang.Configwindow_HelpItem_DefenseArea);
                     ImGui.Separator();
 
-                    //开启一段单体防御的窗口期
-                    CommandHelp("DefenseSingle", LocalizationManager.RightLang.Configwidow_HelpItem_DefenseSingle);
+                    CommandHelp("DefenseSingle", LocalizationManager.RightLang.Configwindow_HelpItem_DefenseSingle);
                     ImGui.Separator();
 
-                    //开启一段康复或者盾姿或者真北的窗口期
-                    CommandHelp("EsunaShield", LocalizationManager.RightLang.Configwidow_HelpItem_EsunaShield);
+                    CommandHelp("EsunaShield", LocalizationManager.RightLang.Configwindow_HelpItem_EsunaShield);
                     ImGui.Separator();
 
-                    //开启强制救人或退避的窗口期
-                    CommandHelp("RaiseShirk", LocalizationManager.RightLang.Configwidow_HelpItem_RaiseShirk);
+                    CommandHelp("RaiseShirk", LocalizationManager.RightLang.Configwindow_HelpItem_RaiseShirk);
                     ImGui.Separator();
 
-                    //开启一段防击退的窗口期
-                    CommandHelp("AntiRepulsion", LocalizationManager.RightLang.Configwidow_HelpItem_AntiRepulsion);
+                    CommandHelp("AntiRepulsion", LocalizationManager.RightLang.Configwindow_HelpItem_AntiRepulsion);
                     ImGui.Separator();
 
-                    //开启一段爆发或挑衅的窗口期
-                    CommandHelp("BreakProvoke", LocalizationManager.RightLang.Configwidow_HelpItem_BreakProvoke);
+                    CommandHelp("BreakProvoke", LocalizationManager.RightLang.Configwindow_HelpItem_BreakProvoke);
                     ImGui.Separator();
 
-                    //开启一段位移的窗口期
-                    CommandHelp("Move", LocalizationManager.RightLang.Configwidow_HelpItem_Move);
+                    CommandHelp("Move", LocalizationManager.RightLang.Configwindow_HelpItem_Move);
                     ImGui.Separator();
                 }
                 ImGui.PopStyleVar();
@@ -235,7 +222,8 @@ internal partial class ComboConfigWindow : Window
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("点击以切换作者" + "\n- " + "游戏版本：" + com.GameVersion);
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_SwitchAuthor + "\n- " 
+                        + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ": " + com.GameVersion);
                 }
             }
 
@@ -250,7 +238,7 @@ internal partial class ComboConfigWindow : Window
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("点击以编辑该自定义Combo");
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_EditCombo);
                 }
             }
             else
@@ -258,11 +246,12 @@ internal partial class ComboConfigWindow : Window
                 if (ImGuiComponents.IconButton(texture.GetHashCode(), FontAwesomeIcon.Globe))
                 {
                     var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
-                    Process.Start("cmd", $"/C start {url}");
+
+                    Util.OpenLink(url);
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("打开源码网址");
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_OpenSource);
                 }
             }
 
@@ -281,7 +270,7 @@ internal partial class ComboConfigWindow : Window
             }
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("添加一个自定义Combo");
+                ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_AddCombo);
             }
         }
 
@@ -315,7 +304,7 @@ internal partial class ComboConfigWindow : Window
         }
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip($"单击以执行命令: {command}");
+            ImGui.SetTooltip($"{LocalizationManager.RightLang.Configwindow_Helper_RunCommand}: {command}");
         }
 
         if (!string.IsNullOrEmpty(help))
@@ -330,7 +319,8 @@ internal partial class ComboConfigWindow : Window
 
         DrawTexture(act, () =>
         {
-            if(act.IsTimeline) CommandHelp($"Insert{act}-{5}", string.Format("5s内最高优先插入\"{0}\"", act));
+            if(act.IsTimeline) CommandHelp($"Insert{act}-{5}", 
+                string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, act));
 #if DEBUG
             ImGui.NewLine();
             ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());

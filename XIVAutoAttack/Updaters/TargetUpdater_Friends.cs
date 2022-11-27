@@ -285,7 +285,7 @@ namespace XIVAutoAttack.Updaters
             //战斗中不执行
             if (ActionUpdater.InCombat) return;
 
-            //已经敢作过此事，不执行
+            //已经干过此事，不执行
             if (foundTime == DateTime.MinValue) return;
 
             //找作者
@@ -295,7 +295,7 @@ namespace XIVAutoAttack.Updaters
             if (author == null) return;
 
             //别扇自己一巴掌
-            //if (author.ObjectId == Service.ClientState.LocalPlayer.ObjectId) return;
+            if (author.ObjectId == Service.ClientState.LocalPlayer.ObjectId) return;
 
             //随机事件
             foundTime = DateTime.Now;

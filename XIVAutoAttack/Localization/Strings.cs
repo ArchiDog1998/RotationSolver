@@ -38,26 +38,34 @@ namespace XIVAutoAttack.Localization
         public string Configwindow_HelpItem_HealSingle { get; set; }
             = "Open one window period to use one or serveral single healing actions.";
 
-        public string Configwidow_HelpItem_DefenseArea { get; set; }
+        public string Configwindow_HelpItem_DefenseArea { get; set; }
             = "Open one window period to use one or serveral range defense actions.";
 
-        public string Configwidow_HelpItem_DefenseSingle { get; set; }
+        public string Configwindow_HelpItem_DefenseSingle { get; set; }
             = "Open one window period to use one or serveral single defense actions.";
 
-        public string Configwidow_HelpItem_EsunaShield { get; set; }
+        public string Configwindow_HelpItem_EsunaShield { get; set; }
             = "Open one window period to use Esuna,tank stance skills or True North.";
 
-        public string Configwidow_HelpItem_RaiseShirk { get; set; }
+        public string Configwindow_HelpItem_RaiseShirk { get; set; }
             = "Open one window period to use Raise or Shirk.";
 
-        public string Configwidow_HelpItem_AntiRepulsion { get; set; }
+        public string Configwindow_HelpItem_AntiRepulsion { get; set; }
             = "Open one window period to use knockback-penalty skill.";
 
-        public string Configwidow_HelpItem_BreakProvoke { get; set; }
+        public string Configwindow_HelpItem_BreakProvoke { get; set; }
             = "Open one window period to use break-combo or provoke skill.";
 
-        public string Configwidow_HelpItem_Move { get; set; }
+        public string Configwindow_HelpItem_Move { get; set; }
             = "Open one window period to use move skill.";
+
+        public string Configwindow_Helper_SwitchAuthor { get; set; } = "点击以切换作者";
+        public string Configwindow_Helper_GameVersion { get; set; } = "游戏版本";
+        public string Configwindow_Helper_EditCombo { get; set; } = "点击以编辑该自定义Combo。";
+        public string Configwindow_Helper_AddCombo { get; set; } = "添加一个自定义Combo。";
+        public string Configwindow_Helper_OpenSource { get; set; } = "打开源码网址";
+        public string Configwindow_Helper_RunCommand { get; set; } = "单击以执行命令";
+        public string Configwindow_Helper_InsertCommand { get; set; } = "5s内最高优先插入\"{0}\"";
 
     }
 }
