@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Objects.Types;
 using ImGuiNET;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
@@ -10,6 +11,7 @@ namespace XIVAutoAttack.Windows.ComboConfigWindow;
 #if DEBUG
 internal partial class ComboConfigWindow
 {
+    static ushort time = ushort.MaxValue;
     private void DrawDebug()
     {
         if (ImGui.CollapsingHeader("自身附加给自己的状态"))

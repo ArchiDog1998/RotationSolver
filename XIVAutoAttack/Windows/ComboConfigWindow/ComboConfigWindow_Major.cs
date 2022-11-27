@@ -28,8 +28,6 @@ internal partial class ComboConfigWindow : Window
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
         RespectCloseHotkey = true;
-
-        this.WindowName = "Hello";
     }
 
     private static readonly Dictionary<JobRole, string> _roleDescriptionValue = new Dictionary<JobRole, string>()

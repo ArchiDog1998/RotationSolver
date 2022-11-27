@@ -46,8 +46,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         Service.IconReplacer = new IconReplacer();
 
-        Service.Localization = new LocalizationManager();
-
         _comboConfigWindow = new();
         _scriptComboWindow = new();
         windowSystem = new WindowSystem(Name);
@@ -63,9 +61,18 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Watcher.Enable();
         CountDown.Enable();
 
+
+        Service.Localization = new LocalizationManager();
 #if DEBUG
         Service.Localization.ExportLocalization();
 #endif
+    }
+
+    public static void ChangeWindowHeader()
+    {
+        _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString();
+
+
     }
 
     //private void ClientState_TerritoryChanged(object sender, ushort e)

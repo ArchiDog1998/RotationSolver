@@ -82,11 +82,14 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     //灼热之光 团辅
     public static BaseAction SearingLight { get; } = new(ActionID.SearingLight, true)
     {
-        ActionCheck = b => InCombat && !InBahamut && !InPhoenix
+        ActionCheck = b => InCombat,
     };
 
     //守护之光 给自己戴套
-    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis, true, isTimeline: true);
+    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis, true, isTimeline: true)
+    {
+        ActionCheck = b => !InBahamut && !InPhoenix && SummonTimeEndAfter(25),
+    };
 
     //医术
     public static BaseAction Physick { get; } = new(ActionID.Physick, true);

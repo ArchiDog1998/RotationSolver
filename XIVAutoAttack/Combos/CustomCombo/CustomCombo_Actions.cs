@@ -79,7 +79,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public static RoleAction LucidDreaming { get; } = new(ActionID.LucidDreaming,
             new JobRole[] { JobRole.Healer, JobRole.RangedMagicial }, true)
         {
-            ActionCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000,
+            ActionCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000 && InCombat,
         };
 
         /// <summary>

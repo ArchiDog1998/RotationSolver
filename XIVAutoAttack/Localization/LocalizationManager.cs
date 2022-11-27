@@ -47,6 +47,8 @@ internal class LocalizationManager : IDisposable
         {
             RightLang = new Strings();
         }
+
+        XIVAutoAttackPlugin.ChangeWindowHeader();
     }
 
 #if DEBUG
@@ -57,7 +59,7 @@ internal class LocalizationManager : IDisposable
 
         //Default values.
         var path = Path.Combine(directory, "Localization.json");
-        File.WriteAllText(path, JsonConvert.SerializeObject(RightLang, Formatting.Indented));
+        File.WriteAllText(path, JsonConvert.SerializeObject(new Strings(), Formatting.Indented));
     }
 #endif
 

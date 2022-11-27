@@ -9,13 +9,9 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 调整了半咏唱提示插能力技的逻辑。
-  - 修改了武僧的身位提示ID
-  - 目标为玩家就不会选择到攻击的目标
-
-  ## 新增功能
-  - 遇到作者本人，一个巴掌扇过去
-  - 添加游戏写作时版本
+  - 醒梦只能在战斗中使用
+  - 调整守护之光的使用逻辑
+  - 修复部分翻译问题
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
