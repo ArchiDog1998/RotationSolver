@@ -295,7 +295,7 @@ namespace XIVAutoAttack.Updaters
             if (author == null) return;
 
             //别扇自己一巴掌
-            if (author.ObjectId == Service.ClientState.LocalPlayer.ObjectId) return;
+            //if (author.ObjectId == Service.ClientState.LocalPlayer.ObjectId) return;
 
             //随机事件
             foundTime = DateTime.Now;

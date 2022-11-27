@@ -1,0 +1,10 @@
+{
+  "ConfigWindow_Header": "自动攻击设置（开源免费） v",
+  "ConfigWindow_DebugItem": "测试",
+  "ConfigWindow_AboutItem": "关于",
+  "ConfigWindow_AttackItem": "攻击",
+  "ConfigWindow_ParamItem": "参数",
+  "ConfigWindow_EventsItem": "事件",
+  "ConfigWindow_ActionsItem": "技能",
+  "ConfigWindow_HelpItem": "帮助"
+}
