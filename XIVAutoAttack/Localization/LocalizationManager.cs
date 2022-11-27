@@ -20,9 +20,6 @@ internal class LocalizationManager : IDisposable
     {
         var assembly = Assembly.GetCallingAssembly();
 
-#if DEBUG
-        Service.ChatGui.Print(string.Join(", ", assembly.GetManifestResourceNames()));
-#endif
         foreach (var lang in Dalamud.Localization.ApplicableLangCodes)
         {
             ReadFile(lang, assembly);
@@ -38,7 +35,6 @@ internal class LocalizationManager : IDisposable
         if (manifestResourceStream == null) return;
         using StreamReader streamReader = new StreamReader(manifestResourceStream);
         _translations[lang] = JsonConvert.DeserializeObject<Strings>(streamReader.ReadToEnd());
-        Service.ChatGui.Print("Sucessed!");
     }
 
     private void SetLanguage(string lang)
