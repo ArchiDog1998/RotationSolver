@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Localization;
 using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Windows.ComboConfigWindow;
@@ -15,10 +16,10 @@ internal partial class ComboConfigWindow
 {
     private void DrawAttack()
     {
-        ImGui.Text("你可以选择开启想要的职业的连续GCD战技、技能，若职业与当前职业相同则有命令宏提示。");
+        ImGui.Text(LocalizationManager.RightLang.Configwindow_AttackItem_Description);
 
         string folderLocation = Service.Configuration.ScriptComboFolder;
-        if (ImGui.InputText("自定义循环路径", ref folderLocation, 256))
+        if (ImGui.InputText(LocalizationManager.RightLang.Configwindow_AttackItem_ScriptFolder, ref folderLocation, 256))
         {
             Service.Configuration.ScriptComboFolder = folderLocation;
             Service.Configuration.Save();
@@ -33,15 +34,16 @@ internal partial class ComboConfigWindow
         }
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip("点击以载入自定义循环");
+            ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_AttackItem_LoadScript);
         }
 
         if (!Directory.Exists(Service.Configuration.ScriptComboFolder))
         {
-            ImGui.TextColored(ImGuiColors.DalamudRed, "请设定一个路径以正常使用自定义循环！");
+            ImGui.TextColored(ImGuiColors.DalamudRed, 
+                LocalizationManager.RightLang.Configwindow_AttackItem_ScriptFolderError);
         }
 
-        ImGui.BeginChild("攻击", new Vector2(0f, -1f), true);
+        ImGui.BeginChild("Attack Items", new Vector2(0f, -1f), true);
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
         int num = 1;
 
@@ -77,7 +79,7 @@ internal partial class ComboConfigWindow
                             }
                             if (ImGui.IsItemHovered())
                             {
-                                ImGui.SetTooltip("关键名称为：" + boolean.name);
+                                ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_AttackItem_KeyName + ": " + boolean.name);
                             }
 
                             //显示可以设置的案件
@@ -132,7 +134,7 @@ internal partial class ComboConfigWindow
                             }
                             if (ImGui.IsItemHovered())
                             {
-                                ImGui.SetTooltip("关键名称为：" + comboItem.name);
+                                ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_AttackItem_KeyName + ": " + comboItem.name);
                             }
 
                             //显示可以设置的案件

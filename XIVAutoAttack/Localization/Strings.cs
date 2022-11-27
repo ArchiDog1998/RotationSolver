@@ -66,6 +66,17 @@ namespace XIVAutoAttack.Localization
         public string Configwindow_Helper_OpenSource { get; set; } = "打开源码网址";
         public string Configwindow_Helper_RunCommand { get; set; } = "单击以执行命令";
         public string Configwindow_Helper_InsertCommand { get; set; } = "5s内最高优先插入\"{0}\"";
+        public string Configwindow_AttackItem_Description { get; set; } = "你可以选择开启想要的职业的连续GCD战技、技能，若职业与当前职业相同则有命令宏提示。";
 
+        public string Configwindow_AttackItem_ScriptFolder { get; set; } = "自定义循环路径";
+        public string Configwindow_AttackItem_LoadScript { get; set; } = "点击以载入自定义循环";
+        public string Configwindow_AttackItem_ScriptFolderError { get; set; } = "请设定一个路径以正常使用自定义循环！";
+        public string Configwindow_AttackItem_KeyName { get; set; } = "关键名称为";
+        public string Configwindow_Events_AddEvent{ get; set; } = "添加事件";
+        public string Configwindow_Events_Description{ get; set; } = "在这个窗口，你可以设定一些技能释放后，使用什么宏。";
+        public string Configwindow_Events_ActionName{ get; set; } = "技能名称";
+        public string Configwindow_Events_MacroIndex{ get; set; } = "宏编号";
+        public string Configwindow_Events_ShareMacro{ get; set; } = "共享宏";
+        public string Configwindow_Events_RemoveEvent{ get; set; } = "删除事件";
     }
 }
