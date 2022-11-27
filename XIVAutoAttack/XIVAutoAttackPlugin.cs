@@ -62,6 +62,10 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Enable();
         Watcher.Enable();
         CountDown.Enable();
+
+#if DEBUG
+        Service.Localization.ExportLocalization();
+#endif
     }
 
     //private void ClientState_TerritoryChanged(object sender, ushort e)
@@ -120,9 +124,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
         if (IconReplacer.AutoAttackConfig(array[0], array.Length > 1 ? array[1] : array[0]))
             OpenConfigWindow();
-#if DEBUG
-        Service.Localization.ExportLocalization();
-#endif
     }
 
     internal static void OpenConfigWindow()
