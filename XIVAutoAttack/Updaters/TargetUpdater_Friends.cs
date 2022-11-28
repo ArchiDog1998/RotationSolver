@@ -273,16 +273,19 @@ namespace XIVAutoAttack.Updaters
         /// </summary>
         static DateTime foundTime = DateTime.Now;
         static TimeSpan relayTime = TimeSpan.Zero;
-        static readonly string[] authorKeys = new string[] { "LwA5GZE3hRgUtxmCB59xqQ==" };
+        static readonly string[] authorKeys = new string[] 
+        { 
+            "LwA5GZE3hRgUtxmCB59xqQ==",
+        };
         static List<string> macroToAuthor = new List<string>()
         {
-            "slap",
-            "headache",
-            "facepalm",
-            "doubt",
-            "shrug",
-            "shocked",
-            "no",
+            "blush",
+            "hug",
+            "thumbsup",
+            "yes",
+            "clap",
+            "cheer",
+            "stroke",
         };
         private static void SayHelloToAuthor()
         {
@@ -314,7 +317,7 @@ namespace XIVAutoAttack.Updaters
             if (relayTime == TimeSpan.Zero)
             {
                 foundTime = DateTime.Now;
-                relayTime = new TimeSpan(new Random().Next(1, 50000));
+                relayTime = new TimeSpan(new Random().Next(1, 80000));
             }
 
             if (DateTime.Now - foundTime > relayTime)

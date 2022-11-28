@@ -11,7 +11,9 @@ changelog: |-
   ## 错误修复
   - 修复了在fate中不会打正在打自己的非Fate怪的bug
   - 修复了赤魔的近战AOE三连bug
-  - 修复了不会扇作者巴掌的bug
+  - 修复了不会对作者做出行为的bug
+  - 调整上述行为为友善行为
+  - 调整了武士的循环
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack
