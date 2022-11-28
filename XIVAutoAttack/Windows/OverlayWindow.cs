@@ -43,7 +43,7 @@ namespace XIVAutoAttack.Windows
         {
             const int COUNT = 20;
 
-            if (EnemyLocationTarget == null || !Service.Configuration.SayoutLocationWrong) return;
+            if (EnemyLocationTarget == null || !Service.Configuration.ShowLocationWrong) return;
             if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth)) return;
             if (ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
 

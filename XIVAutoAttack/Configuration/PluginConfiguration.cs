@@ -35,7 +35,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AutoSayingOut { get; set; } = false;
     public bool UseDtr { get; set; } = true;
     public bool SayingLocation { get; set; } = true;
-    public bool TextLocation { get; set; } = true;
+    public bool ShowLocation { get; set; } = true;
     public bool UseToast { get; set; } = true;
     public bool RaiseAll { get; set; } = false;
     public bool CheckForCasting { get; set; } = true;
@@ -49,7 +49,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AddEnemyListToHostile { get; set; } = false;
     public bool UseAOEWhenManual { get; set; } = false;
     public bool UseItem { get; set; } = false;
-    public bool SayoutLocationWrong { get; set; } = true;
+    public bool ShowLocationWrong { get; set; } = true;
     public bool ChooseAttackMark { get; set; } = true;
     public bool AttackMarkAOE { get; set; } = true;
     public bool FilterStopMark { get; set; } = true;
@@ -75,7 +75,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float WeaponInterval { get; set; } = 0.67f;
     public float WeaponFaster { get; set; } = 0.08f;
     public float WeaponDelay { get; set; } = 0;
-    public string LocationText { get; set; } = string.Empty;
+    public string LocationWrongText { get; set; } = string.Empty;
     public string ScriptComboFolder { get; set; } = string.Empty;
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
