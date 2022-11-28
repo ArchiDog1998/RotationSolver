@@ -9,14 +9,9 @@ description: |-
 punchline: Teach you how to perform better in combat! -- gamous
 changelog: |-
   ## 错误修复
-  - 醒梦只能在战斗中使用
-  - 调整守护之光的使用逻辑
-  - 修复部分翻译问题
-  - 增加了翻译的内容
-  - 调整了UI中关于选目标的条件
-
-  ## 功能删除
-  - 删除了玖祁的武士
+  - 修复了在fate中不会打正在打自己的非Fate怪的bug
+  - 修复了赤魔的近战AOE三连bug
+  - 修复了不会扇作者巴掌的bug
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack

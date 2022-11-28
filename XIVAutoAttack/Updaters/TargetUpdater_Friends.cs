@@ -5,8 +5,11 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -106,8 +109,8 @@ namespace XIVAutoAttack.Updaters
             //添加亲信
             PartyMembers = PartyMembers.Union(Service.ObjectTable.Where(obj => obj.SubKind == 9 && obj is BattleChara).Cast<BattleChara>()).ToArray();
 
-            HavePet = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc 
-                    && npc.BattleNpcKind == BattleNpcSubKind.Pet 
+            HavePet = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc
+                    && npc.BattleNpcKind == BattleNpcSubKind.Pet
                     && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
 
             HaveChocobo = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc
@@ -268,20 +271,29 @@ namespace XIVAutoAttack.Updaters
         /// <summary>
         /// 作者本人
         /// </summary>
-        static DateTime foundTime = DateTime.MaxValue;
+        static DateTime foundTime = DateTime.Now;
         static TimeSpan relayTime = TimeSpan.Zero;
-        static readonly Regex authorReg = new Regex("^秋水[a-zA-Z]{3}");
+        static readonly string[] authorKeys = new string[] { "LwA5GZE3hRgUtxmCB59xqQ==" };
         static List<string> macroToAuthor = new List<string>()
         {
             "slap",
-            "surprised",
             "headache",
             "facepalm",
+            "doubt",
+            "shrug",
+            "shocked",
+            "no",
         };
         private static void SayHelloToAuthor()
         {
             //只有任务中才能执行此操作
-            if (!Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty]) return;
+            if (!Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInQuestEvent]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.WaitingForDuty]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.WaitingForDutyFinder]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]) return;
 
             //战斗中不执行
             if (ActionUpdater.InCombat) return;
@@ -290,7 +302,7 @@ namespace XIVAutoAttack.Updaters
             if (foundTime == DateTime.MinValue) return;
 
             //找作者
-            var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorReg.IsMatch(player.Name.ToString())) as PlayerCharacter;
+            var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorKeys.Contains(EncryptString(player.Name.ToString()))) as PlayerCharacter;
 
             //没找到作者
             if (author == null) return;
@@ -299,9 +311,9 @@ namespace XIVAutoAttack.Updaters
             if (author.ObjectId == Service.ClientState.LocalPlayer.ObjectId) return;
 
             //随机事件
-            foundTime = DateTime.Now;
             if (relayTime == TimeSpan.Zero)
             {
+                foundTime = DateTime.Now;
                 relayTime = new TimeSpan(new Random().Next(1, 50000));
             }
 
@@ -311,12 +323,20 @@ namespace XIVAutoAttack.Updaters
                 CommandController.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
                 Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
                 {
-                    Message = $"这位\"{author.Name}\"很可能就是XIV Auto Attack的作者，赶紧跟他打个招呼吧！",
+                    Message = $"这位\"{author.Name}\"大概是\"XIV Auto Attack\"的作者之一，赶紧跟他打个招呼吧！",
                     Type = Dalamud.Game.Text.XivChatType.Notice,
                 });
                 UIModule.PlaySound(20, 0, 0, 0);
                 foundTime = DateTime.MinValue;
             }
+        }
+
+        internal static string EncryptString(string str)
+        {
+            byte[] inputByteArray = Encoding.UTF8.GetBytes(Service.ClientState.LocalPlayer.HomeWorld.GameData.InternalName.ToString() + " - " + str + "U6Wy.zCG");
+            var tmpHash = new MD5CryptoServiceProvider().ComputeHash(inputByteArray);
+            var retB = Convert.ToBase64String(tmpHash.ToArray());
+            return retB;
         }
     }
 }

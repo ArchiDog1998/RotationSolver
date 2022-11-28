@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Objects.Types;
 using ImGuiNET;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
@@ -11,10 +10,14 @@ namespace XIVAutoAttack.Windows.ComboConfigWindow;
 #if DEBUG
 internal partial class ComboConfigWindow
 {
-    static ushort time = ushort.MaxValue;
+
+
     private void DrawDebug()
     {
-        if (ImGui.CollapsingHeader("自身附加给自己的状态"))
+        var str = TargetUpdater.EncryptString(Service.ClientState.LocalPlayer.Name.ToString());
+        ImGui.InputText("Your name HASH",ref str, 100);
+
+        if (ImGui.CollapsingHeader("Status from self."))
         {
             foreach (var item in Service.ClientState.LocalPlayer.StatusList)
             {
@@ -26,7 +29,7 @@ internal partial class ComboConfigWindow
             }
         }
 
-        if (ImGui.CollapsingHeader("目标信息"))
+        if (ImGui.CollapsingHeader("Target Data"))
         {
             if (Service.TargetManager.Target is BattleChara b)
             {
@@ -49,7 +52,7 @@ internal partial class ComboConfigWindow
             }
         }
 
-        if (ImGui.CollapsingHeader("下一个技能"))
+        if (ImGui.CollapsingHeader("Next Action"))
         {
             BaseAction baseAction = null;
             baseAction ??= ActionUpdater.NextAction as BaseAction;
@@ -60,7 +63,7 @@ internal partial class ComboConfigWindow
 
         }
 
-        if (ImGui.CollapsingHeader("上一个技能"))
+        if (ImGui.CollapsingHeader("Last Action"))
         {
             DrawAction(Watcher.LastAction, nameof(Watcher.LastAction));
             DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
@@ -69,7 +72,7 @@ internal partial class ComboConfigWindow
             DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
         }
 
-        if (ImGui.CollapsingHeader("倒计时、按键"))
+        if (ImGui.CollapsingHeader("Countdown, Exception"))
         {
             ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
 
@@ -79,8 +82,6 @@ internal partial class ComboConfigWindow
                 ImGui.Text(ActionUpdater.exception.StackTrace);
             }
         }
-
-        ImGui.Text(TargetUpdater.HaveChocobo.ToString());
     }
 
     private static void DrawAction(ActionID id, string type)

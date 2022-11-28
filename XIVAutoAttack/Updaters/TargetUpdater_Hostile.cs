@@ -55,24 +55,15 @@ namespace XIVAutoAttack.Updaters
             }).Cast<BattleChara>().ToArray());
 
             //Filter the fate objects.
-            if (Service.Configuration.ChangeTargetForFate && FateManager.Instance()->FateJoined > 0)
-            {
-                //Get fate objects.
-                var fateId = FateManager.Instance()->CurrentFate->FateId;
-
-                AllTargets = AllTargets.Where(t =>
-                {
-                    var objAdress = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address;
-                    return objAdress->FateId == fateId;
-                }).ToArray();
-            }
-
+            bool inFate = Service.Configuration.ChangeTargetForFate && FateManager.Instance()->FateJoined > 0;
             uint[] ids = GetEnemies() ?? new uint[0];
 
             if (AllTargets != null)
             {
                 HostileTargets = CountDown.CountDownTime > 0 ? AllTargets:
-                    AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId)).ToArray();
+                    AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId) ||
+                    inFate && ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId 
+                    == FateManager.Instance()->CurrentFate->FateId).ToArray();
 
                 switch (IconReplacer.RightNowTargetToHostileType)
                 {
