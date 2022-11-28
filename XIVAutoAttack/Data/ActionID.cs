@@ -2459,7 +2459,7 @@ namespace XIVAutoAttack.Data
         Fuga = 7483,
 
         /// <summary>
-        /// 月光
+        /// 风光
         /// </summary>
         Fuko = 25780,
 
