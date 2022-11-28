@@ -94,9 +94,14 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     #region AoE
 
     /// <summary>
-    /// 风雅 风光
+    /// 风雅
     /// </summary>
     public static BaseAction Fuga { get; } = new(ActionID.Fuga);
+
+    /// <summary>
+    /// 风光
+    /// </summary>
+    public static BaseAction Fuko { get; } = new(ActionID.Fuko);
 
     /// <summary>
     /// 满月
@@ -107,11 +112,6 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// 樱花
     /// </summary>
     public static BaseAction Oka { get; } = new(ActionID.Oka);
-
-    /// <summary>
-    /// 风光
-    /// </summary>
-    public static BaseAction Fuko { get; } = new(ActionID.Fuko);
 
     /// <summary>
     /// 无明照破

@@ -103,7 +103,8 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
             if (KaGCD(out act, haveMeikyoShisui)) return true;
         }
 
-        if (Fuga.ShouldUse(out act)) return true;
+        if (Fuko.ShouldUse(out act)) return true;
+        if (!Fuko.EnoughLevel && Fuga.ShouldUse(out act)) return true;
         if (Hakaze.ShouldUse(out act)) return true;
         if (Enpi.ShouldUse(out act)) return true;
         act = null;
@@ -113,7 +114,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     //月连击
     private bool GetsuGCD(out IAction act, bool haveMeikyoShisui)
     {
-        if (Mangetsu.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Mangetsu.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui || IsLastWeaponSkill(true,Fuga, Fuko))) return true;
         if (Gekko.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
         if (Jinpu.ShouldUse(out act)) return true;
 
@@ -124,7 +125,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     //花连击
     private bool KaGCD(out IAction act, bool haveMeikyoShisui)
     {
-        if (Oka.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Oka.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui || IsLastWeaponSkill(true, Fuga, Fuko))) return true;
         if (Kasha.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
         if (Shifu.ShouldUse(out act)) return true;
 
