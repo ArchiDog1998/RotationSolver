@@ -67,6 +67,19 @@ internal partial class ComboConfigWindow
 
                     DrawTexture(combo, () =>
                     {
+                        int isAllTargetAsHostile = IconReplacer.GetTargetHostileType(combo.Job);
+                        ImGui.SetNextItemWidth(300);
+                        if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Params_RightNowTargetToHostileType + $"##HostileType{num}", ref isAllTargetAsHostile, new string[]
+                        {
+                            LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType1,
+                            LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType2,
+                            LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType3,
+                        }, 3))
+                        {
+                            Service.Configuration.TargetToHostileTypes[combo.Job.RowId] = (byte)isAllTargetAsHostile;
+                            Service.Configuration.Save();
+                        }
+
                         var actions = combo.Config;
                         foreach (var boolean in actions.bools)
                         {

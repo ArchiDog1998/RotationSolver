@@ -1,6 +1,7 @@
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
 using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Configuration;
@@ -66,6 +67,8 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         Service.Localization.ExportLocalization();
 #endif
+
+
     }
 
     public static void ChangeWindowHeader()

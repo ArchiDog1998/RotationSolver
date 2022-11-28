@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -308,7 +309,12 @@ namespace XIVAutoAttack.Updaters
             {
                 Service.TargetManager.SetTarget(author);
                 CommandController.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
-                Service.ChatGui.Print($"这位{author.Name}很可能就是本插件的作者，赶紧跟他打个招呼吧！");
+                Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+                {
+                    Message = $"这位\"{author.Name}\"很可能就是XIV Auto Attack的作者，赶紧跟他打个招呼吧！",
+                    Type = Dalamud.Game.Text.XivChatType.Notice,
+                });
+                UIModule.PlaySound(20, 0, 0, 0);
                 foundTime = DateTime.MinValue;
             }
         }

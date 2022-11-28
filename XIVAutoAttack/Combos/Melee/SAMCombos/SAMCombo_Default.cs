@@ -1,13 +1,9 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
-using Lumina.Data.Parsing.Layer;
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
 using static XIVAutoAttack.Combos.Melee.SAMCombos.SAMCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.SAMCombos;
@@ -16,105 +12,105 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
 {
     public override string GameVersion => "6.18";
 
-    public override string Author => "¾ÁÆî";
+    public override string Author => "é€†å…‰";
 
     internal enum CommandType : byte
     {
         None,
     }
+    /// <summary>
+    /// æ˜é•œæ­¢æ°´
+    /// </summary>
+    private static bool haveMeikyoShisui => Player.HasStatus(true, StatusID.MeikyoShisui);
 
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    public SAMCombo_Default()
     {
-        //{CommandType.None, "" }, //Ğ´ºÃ×¢ÊÍ°¡£¡ÓÃÀ´ÌáÊ¾ÓÃ»§µÄ¡£
-    };
+        //æ˜é•œé‡Œbanäº†æœ€åŸºç¡€æŠ€èƒ½
+        Hakaze.ComboCheck = b => !haveMeikyoShisui;
+        Fuga.ComboCheck = b => !haveMeikyoShisui;
+        Enpi.ComboCheck = b => !haveMeikyoShisui;
+        //ä¿è¯æœ‰åŒbuffåŠ æˆ
+        OgiNamikiri.ComboCheck = b => HaveMoon && HaveFlower && SenCount == 0;
+        HissatsuSenei.ComboCheck = b => HaveMoon && HaveFlower;
+        HissatsuGuren.ComboCheck = HissatsuSenei.ComboCheck;
+        //æ˜é•œ
+        MeikyoShisui.ComboCheck = b => SenCount != 3;
+    }
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.DefenseSingle, $"{ThirdEye}"},
-        {DescType.MoveAction, $"{HissatsuGyoten}"},
     };
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        bool haveMeikyoShisui = Player.HasStatus(true, StatusID.MeikyoShisui);
-
-        //¸Ï½ô»Ø·µ£¡
+        //å¥¥ä¹‰å›è¿”
         if (Service.IconReplacer.OriginalHook(OgiNamikiri.ID) == KaeshiNamikiri.ID)
         {
             if (KaeshiNamikiri.ShouldUse(out act, mustUse: true)) return true;
         }
+
+        //ç‡•å›è¿”
         if (Service.IconReplacer.OriginalHook(16483) == KaeshiGoken.ID)
         {
             if (KaeshiGoken.ShouldUse(out act, mustUse: true)) return true;
         }
         if (Service.IconReplacer.OriginalHook(16483) == KaeshiSetsugekka.ID)
         {
-            if (KaeshiSetsugekka.ShouldUse(out act, mustUse: true)) return true;
+            if (KaeshiSetsugekka.ShouldUse(out act, emptyOrSkipCombo:true, mustUse: true)) return true;
         }
 
-        if (!haveMeikyoShisui && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
-        if (TenkaGoken.ShouldUse(out act))
+        //å¥¥ä¹‰æ–©æµª
+        if (((IsTargetBoss && Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(50, true, StatusID.Higanbana)) || !IsTargetBoss) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
+
+        //å¤„ç†å±…åˆæœ¯
+        if(SenCount == 1 && IsTargetBoss && !IsTargetDying)
         {
-            if (SenCount == 2) return true;
-            if (MidareSetsugekka.ShouldUse(out act)) return true;
+            if (HaveMoon && HaveFlower && Higanbana.ShouldUse(out act)) return true;
         }
-        else
+        if(SenCount == 2)
         {
-            if (MidareSetsugekka.ShouldUse(out act)) return true;
-            //¸ü¸ÄÁË±Ë°¶»¨Âß¼­£¬Ó¦µ±ÔÚÓµÓĞÑ©ÉÁµÄÊ±ºò´ò³ö
-            if (Higanbana.ShouldUse(out act) && HasSetsu) return true;
+            if(TenkaGoken.ShouldUse(out act,mustUse:!MidareSetsugekka.EnoughLevel)) return true;
+        }
+        if(SenCount == 3)
+        {
+            if (TsubameGaeshi.CurrentCharges == 0 && TsubameGaeshi.WillHaveOneChargeGCD(2) && !TsubameGaeshi.WillHaveOneChargeGCD(1))
+            {
+                if (Hakaze.ShouldUse(out act)) return true;
+            }
+            else 
+            {
+                if (MidareSetsugekka.ShouldUse(out act)) return true;
+            }
+
         }
 
-        //123
-        //Èç¹ûÊÇµ¥Ìå£¬ÇÒÃ÷¾µÖ¹Ë®µÄÀäÈ´Ê±¼äĞ¡ÓÚ3Ãë¡£
+        //é›ª
         if (!HasSetsu && !Fuga.ShouldUse(out _))
         {
-            if (Yukikaze.ShouldUse(out act)) return true;
-        }
-        if (!HaveMoon)//ÅĞ¶Ï·çÔÂbuff£¬¸ÃbuffÌá¹©10%ÉËº¦¼Ó³É
-        {
-            if (GetsuGCD(out act, haveMeikyoShisui)) return true;
-        }
-        if (!HaveFlower)//ÅĞ¶Ï·ç»¨buff£¬¸ÃbuffÌá¹©10%¼¼ËÙ¼Ó³É
-        {
-            if (KaGCD(out act, haveMeikyoShisui)) return true;
-        }
-        if (!HasGetsu) //ÔÂÉÁ
-        {
-            if (GetsuGCD(out act, haveMeikyoShisui)) return true;
-        }
-        if (!HasKa) //»¨ÉÁ
-        {
-            if (KaGCD(out act, haveMeikyoShisui)) return true;
+            if (Yukikaze.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui && HasGetsu && HasKa)) return true;            
         }
 
-        //À´¸öÔÂ£¿
-        if (GetsuGCD(out act, haveMeikyoShisui)) return true;
-        if (Yukikaze.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        //æœˆ
+        if (!HasGetsu)
+        {
+            if (GetsuGCD(out act, haveMeikyoShisui)) return true;
+        }
+
+        //èŠ±
+        if (!HasKa)
+        {
+            if (KaGCD(out act, haveMeikyoShisui)) return true;
+        }
 
         if (Fuga.ShouldUse(out act)) return true;
         if (Hakaze.ShouldUse(out act)) return true;
-
-
-
-        if (CommandController.Move && MoveAbility(1, out act)) return true;
         if (Enpi.ShouldUse(out act)) return true;
-
-        return false;
-    }
-
-    //´¦ÀíÓ£»¨Á¬»÷
-    private bool KaGCD(out IAction act, bool haveMeikyoShisui)
-    {
-        if (Oka.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-        if (Kasha.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
-        if (Shifu.ShouldUse(out act)) return true;
-
         act = null;
         return false;
     }
 
-    //´¦ÀíÔÂ¹âÁ¬»÷
+    //æœˆè¿å‡»
     private bool GetsuGCD(out IAction act, bool haveMeikyoShisui)
     {
         if (Mangetsu.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
@@ -125,55 +121,77 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    //èŠ±è¿å‡»
+    private bool KaGCD(out IAction act, bool haveMeikyoShisui)
     {
-        if (Kenki >= 30 && HissatsuGyoten.ShouldUse(out act)) return true;
+        if (Oka.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Kasha.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
+        if (Shifu.ShouldUse(out act)) return true;
+
         act = null;
         return false;
     }
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
-        if (MeditationStacks == 3)
+        //æ„æ°”å†²å¤©
+        if (Kenki <= 50 && Ikishoten.ShouldUse(out act)) return true;
+
+        //å¶éš
+        if(Target.HasStatus(true,StatusID.Higanbana) && Target.WillStatusEnd(35,true,StatusID.Higanbana) && !Target.WillStatusEnd(27, true, StatusID.Higanbana) && SenCount == 1 && IsLastAction(true,Yukikaze) && !haveMeikyoShisui)
         {
-            if (Shoha2.ShouldUse(out act)) return true;
-            if (Shoha.ShouldUse(out act)) return true;
+            if (Hagakure.ShouldUse(out act)) return true;
         }
 
-        if (Kenki >= 25)
-        {
-            if (HissatsuGuren.ShouldUse(out act)) return true;
-            if (HissatsuKyuten.ShouldUse(out act)) return true;
+        //é—ªå½±ã€çº¢è²
+        if (HissatsuGuren.ShouldUse(out act, mustUse:!HissatsuSenei.EnoughLevel)) return true;
+        if (HissatsuSenei.ShouldUse(out act)) return true;
 
-            if (HissatsuSenei.ShouldUse(out act)) return true;
+        //ç…§ç ´ã€æ— æ˜ç…§ç ´
+        if (Shoha2.ShouldUse(out act)) return true;
+        if (Shoha.ShouldUse(out act)) return true;
+
+        //éœ‡å¤©ã€ä¹å¤©
+        if(((Kenki > 50 && Ikishoten.WillHaveOneCharge(10)) || Kenki >= 85) || (IsTargetBoss && IsTargetDying))
+        {
+            if (HissatsuKyuten.ShouldUse(out act)) return true;
             if (HissatsuShinten.ShouldUse(out act)) return true;
         }
-
-        if (InCombat && Ikishoten.ShouldUse(out act)) return true;
 
         act = null;
         return false;
     }
-
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (HaveHostilesInRange &&
-            !nextGCD.IsAnySameAction(false, Higanbana, OgiNamikiri, KaeshiNamikiri) &&
-            MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-
+        //æ˜é•œæ­¢æ°´
+        if(HaveHostilesInRange && (!IsLastWeaponSkill(true, Shifu, Jinpu, Hakaze, Fuga) || IsLastWeaponSkill(true,Yukikaze, Mangetsu, Oka)) && 
+            HasSetsu && ((IsTargetBoss && ((Target.HasStatus(true,StatusID.Higanbana) && !Target.WillStatusEnd(40,true,StatusID.Higanbana)) || (!HaveMoon && !HaveFlower))) || !IsTargetBoss))
+        {
+            if(MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        }
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
-
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
+        //å¿ƒçœ¼
         if (ThirdEye.ShouldUse(out act)) return true;
         return false;
     }
-
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        //Ç£ÖÆ
+        //å¿ƒçœ¼
+        if (ThirdEye.ShouldUse(out act)) return true;
+        //ç‰µåˆ¶
         if (Feint.ShouldUse(out act)) return true;
         return false;
+    }
+
+    private protected override IAction CountDownAction(float remainTime)
+    {
+        //å¼€å±€ä½¿ç”¨æ˜é•œ
+        if (remainTime <= 5 && MeikyoShisui.ShouldUse(out _)) return MeikyoShisui;
+        //çœŸåŒ—é˜²æ­¢bossé¢å‘æ²¡åˆ°ä½
+        if (remainTime <= 2 && TrueNorth.ShouldUse(out _)) return TrueNorth;
+        return base.CountDownAction(remainTime);
     }
 }

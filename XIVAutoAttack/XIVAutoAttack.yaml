@@ -12,6 +12,11 @@ changelog: |-
   - 醒梦只能在战斗中使用
   - 调整守护之光的使用逻辑
   - 修复部分翻译问题
+  - 增加了翻译的内容
+  - 调整了UI中关于选目标的条件
+
+  ## 功能删除
+  - 删除了玖祁的武士
 
 
 repo_url: https://github.com/ArchiDog1998/XIVAutoAttack

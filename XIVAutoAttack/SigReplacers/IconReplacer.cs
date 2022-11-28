@@ -34,13 +34,7 @@ internal sealed class IconReplacer : IDisposable
         {
             if (Service.ClientState.LocalPlayer == null) return 0;
             var id = Service.ClientState.LocalPlayer.ClassJob.Id;
-            if (Service.Configuration.TargetToHostileTypes.TryGetValue(id, out var type))
-            {
-                return type;
-            }
-
-            var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(id).GetJobRole();
-            return role == JobRole.Tank ? (byte)0 : (byte)2;
+            return GetTargetHostileType(Service.DataManager.GetExcelSheet<ClassJob>().GetRow(id));
         }
         set
         {
@@ -48,6 +42,16 @@ internal sealed class IconReplacer : IDisposable
             var id = Service.ClientState.LocalPlayer.ClassJob.Id;
             Service.Configuration.TargetToHostileTypes[id] = value;
         }
+    }
+
+    public static byte GetTargetHostileType(ClassJob classJob)
+    {
+        if (Service.Configuration.TargetToHostileTypes.TryGetValue(classJob.RowId, out var type))
+        {
+            return type;
+        }
+
+        return classJob.GetJobRole() == JobRole.Tank ? (byte)0 : (byte)2;
     }
 
     public static ICustomCombo RightNowCombo
