@@ -10,11 +10,9 @@ namespace XIVAutoAttack.Windows.ComboConfigWindow;
 #if DEBUG
 internal partial class ComboConfigWindow
 {
-
-
     private void DrawDebug()
     {
-        var str = TargetUpdater.EncryptString(Service.ClientState.LocalPlayer.Name.ToString());
+        var str = TargetUpdater.EncryptString(Service.ClientState.LocalPlayer);
         ImGui.InputText("Your name HASH",ref str, 100);
 
         if (ImGui.CollapsingHeader("Status from self."))

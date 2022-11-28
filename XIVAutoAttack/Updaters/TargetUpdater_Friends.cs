@@ -305,7 +305,7 @@ namespace XIVAutoAttack.Updaters
             if (foundTime == DateTime.MinValue) return;
 
             //找作者
-            var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorKeys.Contains(EncryptString(player.Name.ToString()))) as PlayerCharacter;
+            var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorKeys.Contains(EncryptString(player))) as PlayerCharacter;
 
             //没找到作者
             if (author == null) return;
@@ -334,9 +334,9 @@ namespace XIVAutoAttack.Updaters
             }
         }
 
-        internal static string EncryptString(string str)
+        internal static string EncryptString(PlayerCharacter player)
         {
-            byte[] inputByteArray = Encoding.UTF8.GetBytes(Service.ClientState.LocalPlayer.HomeWorld.GameData.InternalName.ToString() + " - " + str + "U6Wy.zCG");
+            byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString() + " - " + player.Name.ToString() + "U6Wy.zCG");
             var tmpHash = new MD5CryptoServiceProvider().ComputeHash(inputByteArray);
             var retB = Convert.ToBase64String(tmpHash.ToArray());
             return retB;
