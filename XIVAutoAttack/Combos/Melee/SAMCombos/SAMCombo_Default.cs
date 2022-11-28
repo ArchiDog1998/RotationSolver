@@ -27,6 +27,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     {
         //明镜里ban了最基础技能
         Hakaze.ComboCheck = b => !haveMeikyoShisui;
+        Fuko.ComboCheck = b => !haveMeikyoShisui;
         Fuga.ComboCheck = b => !haveMeikyoShisui;
         Enpi.ComboCheck = b => !haveMeikyoShisui;
         //保证有双buff加成
@@ -61,7 +62,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         }
 
         //奥义斩浪
-        if (((IsTargetBoss && Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(50, true, StatusID.Higanbana)) || !IsTargetBoss) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
+        if ((IsTargetBoss ? Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(10, true, StatusID.Higanbana) : true) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
 
         //处理居合术
         if(SenCount == 1 && IsTargetBoss && !IsTargetDying)
@@ -166,7 +167,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     {
         //明镜止水
         if(HaveHostilesInRange && (!IsLastWeaponSkill(true, Shifu, Jinpu, Hakaze, Fuga) || IsLastWeaponSkill(true,Yukikaze, Mangetsu, Oka)) && 
-            HasSetsu && ((IsTargetBoss && ((Target.HasStatus(true,StatusID.Higanbana) && !Target.WillStatusEnd(40,true,StatusID.Higanbana)) || (!HaveMoon && !HaveFlower))) || !IsTargetBoss))
+            HasSetsu && (IsTargetBoss ? ((Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana)) || (!HaveMoon && !HaveFlower)) : true))
         {
             if(MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
