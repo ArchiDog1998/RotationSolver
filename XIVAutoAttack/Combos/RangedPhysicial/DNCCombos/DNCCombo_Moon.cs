@@ -169,7 +169,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         if (!HaveHostilesInRange) return false;
 
         //技巧舞步状态和快冷却好时不释放
-        if (TechnicalStep.EnoughLevel && (Player.HasStatus(true, StatusID.TechnicalFinish) || TechnicalStep.IsCoolDown && TechnicalStep.WillHaveOneChargeGCD(2))) return false;
+        if (TechnicalStep.EnoughLevel && (Player.HasStatus(true, StatusID.TechnicalFinish) || TechnicalStep.IsCoolDown && TechnicalStep.WillHaveOneCharge(5))) return false;
 
         return true;
     }
