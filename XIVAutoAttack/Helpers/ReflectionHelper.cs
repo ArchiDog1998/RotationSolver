@@ -69,11 +69,15 @@ internal static class ReflectionHelper
 
     internal static string GetMemberName(this MemberInfo info)
     {
+        if (Localization.LocalizationManager.RightLang.MemberInfoName.TryGetValue(info.Name, out var memberName)) return memberName;
+
         return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName 
             ?? info.Name;
     }
     internal static string GetMemberDescription(this MemberInfo info)
     {
+        if (Localization.LocalizationManager.RightLang.MemberInfoDesc.TryGetValue(info.Name, out var memberDesc)) return memberDesc;
+
         return info.GetCustomAttribute<DescriptionAttribute>()?.Description
             ?? string.Empty;
     }

@@ -19,6 +19,7 @@ using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Localization;
 
 namespace XIVAutoAttack.Windows
 {
@@ -51,7 +52,7 @@ namespace XIVAutoAttack.Windows
 
 
         public ScriptComboWindow()
-            : base("自定义循环设置 v" + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString(), 0, false)
+            : base(LocalizationManager.RightLang.Scriptwindow_Header + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString(), 0, false)
         {
             Size = new Vector2(525, 600);
             SizeCondition = ImGuiCond.FirstUseEver;
@@ -60,8 +61,6 @@ namespace XIVAutoAttack.Windows
         public override void Draw()
         {
             ImGui.Columns(3);
-
-            ImGui.TextColored(ImGuiColors.DalamudRed, "目前该功能还处于研发阶段，很可能上个版本的文件下个版本就打不开了，目前仅供测试使用！");
 
             this.DisplayFunctionList();
 
@@ -86,7 +85,7 @@ namespace XIVAutoAttack.Windows
 
             ImGui.SameLine();
 
-            ImGui.Text("作者：");
+            ImGui.Text($"{LocalizationManager.RightLang.Scriptwindow_Author}: ");
 
             ImGui.SameLine();
 
@@ -100,7 +99,7 @@ namespace XIVAutoAttack.Windows
 
             ImGui.SameLine();
 
-            ImGui.Text("  游戏版本:");
+            ImGui.Text($"  {LocalizationManager.RightLang.Configwindow_Helper_GameVersion}: ");
 
             ImGui.SameLine();
 
@@ -123,7 +122,7 @@ namespace XIVAutoAttack.Windows
             }
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("打开源文件");
+                ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_OpenSourceFile);
             }
 
             ImGui.SameLine();
@@ -134,7 +133,7 @@ namespace XIVAutoAttack.Windows
             }
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("保存修改");
+                ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_Save);
             }
 
             TargetCombo.Set.Draw(TargetCombo);
@@ -163,19 +162,15 @@ namespace XIVAutoAttack.Windows
                 ImGuiDragDropFlags src_flags = 0;
                 src_flags |= ImGuiDragDropFlags.SourceNoDisableHover;     // Keep the source displayed as hovered
                 src_flags |= ImGuiDragDropFlags.SourceNoHoldToOpenOthers; // Because our dragging is local, we disable the feature of opening foreign treenodes/tabs while dragging
-                                                                          //src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
+                //src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
                 if (ImGui.BeginDragDropSource(src_flags))
                 {
-                    if ((src_flags & ImGuiDragDropFlags.SourceNoPreviewTooltip) != 0)
-                    {
-                        ImGui.SetTooltip("正在拖拽...");
-                    }
                     ImGui.SetDragDropPayload("List Movement", (IntPtr)(&i), sizeof(int));
                     ImGui.EndDragDropSource();
                 }
                 else if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("拖拽移动，ctrl + alt + 右键删除。");
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_DragdropDescription);
 
                     if ((ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
                         && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
@@ -300,9 +295,9 @@ namespace XIVAutoAttack.Windows
 
         internal static void SearchItems<T>(ref string searchTxt, T[] actions, Func<T, string> getName, Action<T> selectAction, Action<T> extraDraw = null, Func<T, string> getDesc = null)
         {
-            ImGui.Text("搜索框：");
+            ImGui.Text(LocalizationManager.RightLang.Scriptwindow_SearchBar + ": ");
             ImGui.SetNextItemWidth(150);
-            ImGui.InputText("##搜索框", ref searchTxt, 16);
+            ImGui.InputText("##SearchBar", ref searchTxt, 16);
 
             if (!string.IsNullOrWhiteSpace(searchTxt))
             {
@@ -310,7 +305,7 @@ namespace XIVAutoAttack.Windows
                 actions = actions.OrderBy(a => !getName(a).Contains(src)).ToArray();
             }
 
-            if (ImGui.BeginChild($"##技能候选列表", new Vector2(150, 400), true))
+            if (ImGui.BeginChild($"##ActionsCandidateList", new Vector2(150, 400), true))
             {
                 foreach (var item in actions)
                 {

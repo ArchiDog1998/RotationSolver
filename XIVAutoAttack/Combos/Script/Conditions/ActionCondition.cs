@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Localization;
 using XIVAutoAttack.Windows;
 
 namespace XIVAutoAttack.Combos.Script.Conditions;
@@ -91,7 +92,7 @@ internal class ActionCondition : ICondition
         var name = _action?.Name ?? string.Empty;
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
 
-        ScriptComboWindow.SearchCombo($"##技能选择{GetHashCode()}", name, ref searchTxt, combo.AllActions, i =>
+        ScriptComboWindow.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, combo.AllActions, i =>
         {
             _action = i;
             ID = (ActionID)_action.ID;
@@ -104,7 +105,7 @@ internal class ActionCondition : ICondition
         var names = Enum.GetValues<ActionConditonType>().Select(e => e.ToName()).ToArray();
         ImGui.SetNextItemWidth(100);
 
-        if (ImGui.Combo($"##类型{GetHashCode()}", ref type, names, names.Length))
+        if (ImGui.Combo($"##Category{GetHashCode()}", ref type, names, names.Length))
         {
             ActionConditonType = (ActionConditonType)type;
         }
@@ -123,17 +124,25 @@ internal class ActionCondition : ICondition
                 break;
 
             case ActionConditonType.ShouldUse:
-                combos = new string[] { "能", "不能" };
+                combos = new string[]
+                {
+                    LocalizationManager.RightLang.Scriptwindow_Can,
+                    LocalizationManager.RightLang.Scriptwindow_Cannot,
+                };
                 break;
 
             case ActionConditonType.EnoughLevel:
             case ActionConditonType.IsCoolDown:
-                combos = new string[] { "是", "不是" };
+                combos = new string[] 
+                {
+                    LocalizationManager.RightLang.Scriptwindow_Is,
+                    LocalizationManager.RightLang.Scriptwindow_Isnot,
+                };
                 break;
         }
         ImGui.SameLine();
         ImGui.SetNextItemWidth(60);
-        if (ImGui.Combo($"##大小情况{GetHashCode()}", ref condition, combos, combos.Length))
+        if (ImGui.Combo($"##Comparation{GetHashCode()}", ref condition, combos, combos.Length))
         {
             Condition = condition > 0;
         }
@@ -147,7 +156,7 @@ internal class ActionCondition : ICondition
 
                 ImGui.SetNextItemWidth(50);
                 var time = Time;
-                if (ImGui.DragFloat($"秒##秒{GetHashCode()}", ref time))
+                if (ImGui.DragFloat($"s##Seconds{GetHashCode()}", ref time))
                 {
                     Time = time;
                 }
@@ -167,7 +176,7 @@ internal class ActionCondition : ICondition
 
                 ImGui.SetNextItemWidth(50);
                 var ability = Param2;
-                if (ImGui.DragInt($"能力##AbilityD{GetHashCode()}", ref ability))
+                if (ImGui.DragInt($"{LocalizationManager.RightLang.Scriptwindow_Ability}##Ability{GetHashCode()}", ref ability))
                 {
                     Param2 = Math.Max(0, ability);
                 }
@@ -177,14 +186,14 @@ internal class ActionCondition : ICondition
                 ImGui.SameLine();
 
                 var must = Param1 > 0;
-                if (ImGui.Checkbox($"必须##必须{GetHashCode()}", ref must))
+                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_MustUse}##MustUse{GetHashCode()}", ref must))
                 {
                     Param1 = must ? 1 : 0;
                 }
                 ImGui.SameLine();
 
                 var empty = Param2 > 0;
-                if (ImGui.Checkbox($"用光##用光{GetHashCode()}", ref empty))
+                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_Empty}##Empty{GetHashCode()}", ref empty))
                 {
                     Param2 = empty ? 1 : 0;
                 }
@@ -196,7 +205,7 @@ internal class ActionCondition : ICondition
 
                 ImGui.SetNextItemWidth(50);
                 var charge = Param1;
-                if (ImGui.DragInt($"层##层{GetHashCode()}", ref charge))
+                if (ImGui.DragInt($"{LocalizationManager.RightLang.Scriptwindow_Charges}##Charges{GetHashCode()}", ref charge))
                 {
                     Param1 = Math.Max(0, charge);
                 }
@@ -222,15 +231,15 @@ internal static class ActionConditionTypeExtension
 {
     internal static string ToName(this ActionConditonType type) => type switch
     {
-        ActionConditonType.Elapsed => "冷却时长",
-        ActionConditonType.ElapsedGCD => "冷却时长GCD",
-        ActionConditonType.Remain => "剩余时间",
-        ActionConditonType.RemainGCD => "剩余时间GCD",
-        ActionConditonType.ShouldUse => "能否被使用",
-        ActionConditonType.EnoughLevel => "等级足够",
-        ActionConditonType.IsCoolDown => "正在冷却",
-        ActionConditonType.CurrentCharges => "当前层数",
-        ActionConditonType.MaxCharges => "最大层数",
+        ActionConditonType.Elapsed => LocalizationManager.RightLang.ActionConditionType_Elapsed,
+        ActionConditonType.ElapsedGCD => LocalizationManager.RightLang.ActionConditionType_ElapsedGCD,
+        ActionConditonType.Remain => LocalizationManager.RightLang.ActionConditionType_Remain,
+        ActionConditonType.RemainGCD => LocalizationManager.RightLang.ActionConditionType_RemainGCD,
+        ActionConditonType.ShouldUse => LocalizationManager.RightLang.ActionConditionType_ShouldUse,
+        ActionConditonType.EnoughLevel => LocalizationManager.RightLang.ActionConditionType_EnoughLevel,
+        ActionConditonType.IsCoolDown => LocalizationManager.RightLang.ActionConditionType_IsCoolDown,
+        ActionConditonType.CurrentCharges => LocalizationManager.RightLang.ActionConditionType_CurrentCharges,
+        ActionConditonType.MaxCharges => LocalizationManager.RightLang.ActionConditionType_MaxCharges,
         _ => string.Empty,
     };
 }

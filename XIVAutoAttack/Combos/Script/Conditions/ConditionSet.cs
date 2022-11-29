@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using XIVAutoAttack.Localization;
 using XIVAutoAttack.Windows;
 
 namespace XIVAutoAttack.Combos.Script.Conditions;
@@ -34,8 +35,8 @@ internal class ConditionSet : ICondition
             int isAnd = IsAnd ? 1 : 0;
             if (ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
             {
-            "OR (一个条件满足即可)",
-            "AND (所有条件均要满足)",
+                LocalizationManager.RightLang.Scriptwindow_OR,
+                LocalizationManager.RightLang.Scriptwindow_AND,
             }, 2))
             {
                 IsAnd = isAnd != 0;
@@ -60,10 +61,10 @@ internal class ConditionSet : ICondition
 
         if (ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
         {
-            AddOneCondition<ConditionSet>("条件组合");
-            AddOneCondition<ActionCondition>("技能条件");
-            AddOneCondition<TargetCondition>("目标条件");
-            AddOneCondition<ComboCondition>("循环条件");
+            AddOneCondition<ConditionSet>(LocalizationManager.RightLang.Scriptwindow_ConditionSet);
+            AddOneCondition<ActionCondition>(LocalizationManager.RightLang.Scriptwindow_ActionCondition);
+            AddOneCondition<TargetCondition>(LocalizationManager.RightLang.Scriptwindow_TargetCondition);
+            AddOneCondition<ComboCondition>(LocalizationManager.RightLang.Scriptwindow_ComboCondition);
 
             ImGui.EndPopup();
         }

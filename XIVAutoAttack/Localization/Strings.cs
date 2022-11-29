@@ -4,6 +4,8 @@ using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
 using Lumina.Excel.GeneratedSheets;
+using System.Collections.Generic;
+using XIVAutoAttack.Combos.Script.Actions;
 
 namespace XIVAutoAttack.Localization
 {
@@ -162,5 +164,111 @@ namespace XIVAutoAttack.Localization
         public string Configwindow_Params_ConditionDown { get; set; } = "下移条件";
         public string Configwindow_Params_ConditionDelete { get; set; } = "删除条件";
         #endregion
+
+        #region ScriptWindow
+        public string Scriptwindow_Header { get; set; } = "自定义循环设置 v";
+        public string Scriptwindow_Author { get; set; } = "作者";
+        public string Scriptwindow_OpenSourceFile { get; set; } = "打开源文件";
+        public string Scriptwindow_Save { get; set; } = "保存修改";
+        public string Scriptwindow_DragdropDescription { get; set; } = "拖拽移动，ctrl + alt + 右键删除。";
+        public string Scriptwindow_SearchBar { get; set; } = "搜索框";
+        public string Scriptwindow_MustUse { get; set; } = "必须";
+        public string Scriptwindow_MustUseDesc { get; set; } = "跳过AOE判断，跳过提供的Buff判断。";
+        public string Scriptwindow_Empty { get; set; } = "用光";
+        public string Scriptwindow_EmptyDesc { get; set; } = "用完所有层数或者跳过连击判断。";
+        public string Scriptwindow_Return { get; set; } = "返回条件";
+        public string Scriptwindow_ActionConditionsDescription { get; set; } = "描述";
+        public string Scriptwindow_AbilityRemain { get; set; } = "还剩第几个能力技";
+        public string Scriptwindow_AbilityRemainDesc { get; set; } = "当还剩下能插几个能力技的时候才能使用这个技能，设为0的时候忽略这个条件。";
+        public string Scriptwindow_AdjustID { get; set; } = "是否为调整后";
+        public string Scriptwindow_NextGCD { get; set; } = "下一个GCD是";
+        public string Scriptwindow_ActionSetDescription { get; set; } = "在下面的框框中输入技能，越上面优先级越高。";
+        public string Scriptwindow_ActionSetGaurd { get; set; } = "技能卫士";
+        public string Scriptwindow_AddActionDesc { get; set; } = "添加技能使用";
+        public string Scriptwindow_AddFunctionDesc { get; set; } = "添加技能函数，数量为{0}个";
+        public string Scriptwindow_ComboSetAuthorDefault { get; set; } = "神秘作者";
+        public string Scriptwindow_CountDown { get; set; } = "倒计时";
+        public string Scriptwindow_CountDownDesc { get; set; } = "倒计时的时候需要释放什么技能";
+        public string Scriptwindow_CountDownSetDesc { get; set; } = "在下面的框框中输入倒计时技能";
+        public string Scriptwindow_Can { get; set; } = "能";
+        public string Scriptwindow_Cannot { get; set; } = "不能";
+        public string Scriptwindow_Is { get; set; } = "是";
+        public string Scriptwindow_Isnot { get; set; } = "不是";
+        public string Scriptwindow_Have { get; set; } = "有";
+        public string Scriptwindow_Havenot { get; set; } = "没有";
+        public string Scriptwindow_Ability { get; set; } = "能力技";
+        public string Scriptwindow_Charges { get; set; } = "层";
+        public string Scriptwindow_OR { get; set; } = "OR (一个条件满足即可)";
+        public string Scriptwindow_AND { get; set; } = "AND (所有条件均要满足)";
+        public string Scriptwindow_ConditionSet { get; set; } = "条件组合";
+        public string Scriptwindow_ActionCondition { get; set; } = "技能条件";
+        public string Scriptwindow_TargetCondition { get; set; } = "目标条件";
+        public string Scriptwindow_ComboCondition { get; set; } = "循环条件";
+        public string Scriptwindow_ActionTarget { get; set; } = "{0}的目标";
+        public string Scriptwindow_Target { get; set; } = "目标";
+        public string Scriptwindow_Player { get; set; } = "玩家";
+        public string Scriptwindow_StatusSelf { get; set; } = "自身";
+        public string Scriptwindow_StatusSelfDesc { get; set; } = "该状态是否是自己赋予的";
+        #endregion
+
+        #region ActionConditionType
+        public string ActionConditionType_Elapsed { get; set; } = "冷却时长";
+        public string ActionConditionType_ElapsedGCD { get; set; } = "冷却时长GCD";
+        public string ActionConditionType_Remain { get; set; } = "剩余时间";
+        public string ActionConditionType_RemainGCD { get; set; } = "剩余时间";
+        public string ActionConditionType_ShouldUse { get; set; } = "能否被使用";
+        public string ActionConditionType_EnoughLevel { get; set; } = "等级足够";
+        public string ActionConditionType_IsCoolDown { get; set; } = "正在冷却";
+        public string ActionConditionType_CurrentCharges { get; set; } = "当前层数";
+        public string ActionConditionType_MaxCharges { get; set; } = "最大层数";
+        #endregion
+
+        #region TargetConditionType
+        public string TargetConditionType_HaveStatus { get; set; } = "有状态";
+        public string TargetConditionType_IsDying { get; set; } = "要死了";
+        public string TargetConditionType_IsBoss { get; set; } = "是Boss";
+        public string TargetConditionType_Distance { get; set; } = "距离";
+        public string TargetConditionType_StatusEnd { get; set; } = "状态结束";
+        public string TargetConditionType_StatusEndGCD { get; set; } = "状态结束GCD";
+
+        #endregion
+
+        public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
+        {
+            { nameof(ComboSet.EmergencyGCDSet), "紧急GCD"},
+            { nameof(ComboSet.GeneralGCDSet), "通用GCD"},
+            { nameof(ComboSet.DefenceAreaGCDSet), "范围防御GCD"},
+            { nameof(ComboSet.DefenceSingleGCDSet), "单体防御GCD"},
+            { nameof(ComboSet.HealAreaGCDSet), "范围治疗GCD"},
+            { nameof(ComboSet.HealSingleGCDSet), "单体治疗GCD"},
+            { nameof(ComboSet.MoveGCDSet), "移动GCD"},
+            { nameof(ComboSet.EmergencyAbilitySet), "紧急能力技"},
+            { nameof(ComboSet.GeneralAbilitySet), "通用能力技"},
+            { nameof(ComboSet.AttackAbilitySet), "攻击能力技"},
+            { nameof(ComboSet.DefenceAreaAbilitySet), "范围防御能力技"},
+            { nameof(ComboSet.DefenceSingleAbilitySet), "单体防御能力技"},
+            { nameof(ComboSet.HealAreaAbilitySet), "范围治疗能力技"},
+            { nameof(ComboSet.HealSingleAbilitySet), "单体治疗能力技"},
+            { nameof(ComboSet.MoveAbilitySet), "移动能力技"},
+        };
+
+        public Dictionary<string, string> MemberInfoDesc { get; set; } = new Dictionary<string, string>()
+        {
+            { nameof(ComboSet.EmergencyGCDSet), "用来放置最为重要的GCD"},
+            { nameof(ComboSet.GeneralGCDSet), "最常规的GCD技能放这里"},
+            { nameof(ComboSet.DefenceAreaGCDSet), "范围防御的GCD技能放这里"},
+            { nameof(ComboSet.DefenceSingleGCDSet), "单体防御的GCD技能放这里"},
+            { nameof(ComboSet.HealAreaGCDSet), "范围治疗的GCD技能放这里"},
+            { nameof(ComboSet.HealSingleGCDSet), "单体治疗的GCD技能放这里 "},
+            { nameof(ComboSet.MoveGCDSet), "移动的GCD技能放这里"},
+            { nameof(ComboSet.EmergencyAbilitySet), "紧急的能力技"},
+            { nameof(ComboSet.GeneralAbilitySet), "通用能力技"},
+            { nameof(ComboSet.AttackAbilitySet), "攻击用的能力技"},
+            { nameof(ComboSet.DefenceAreaAbilitySet), "范围防御能力技"},
+            { nameof(ComboSet.DefenceSingleAbilitySet), "单体防御能力技"},
+            { nameof(ComboSet.HealAreaAbilitySet), "范围治疗能力技"},
+            { nameof(ComboSet.HealSingleAbilitySet), "单体治疗能力技"},
+            { nameof(ComboSet.MoveAbilitySet), "移动能力技"},
+        };
     }
 }
