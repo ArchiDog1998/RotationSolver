@@ -52,6 +52,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 {
                     if (TargetStatus == null) return tars;
 
+                    var inputTars = tars;
+
                     if (_isEot)
                     {
                         tars = TargetFilter.GetTargetCanDot(tars);
@@ -60,9 +62,12 @@ namespace XIVAutoAttack.Actions.BaseAction
                     if (!MovingUpdater.IsMoving) return tars;
 
                     var ts = tars.Where(t => !t.HasStatus(true, TargetStatus)).ToArray();
+                    if (ts.Length > 0) return ts;
 
-                    if (ts.Length == 0) return tars;
-                    return ts;
+                    tars = inputTars.Where(t => !t.HasStatus(true, TargetStatus)).ToArray();
+                    if (tars.Length > 0) return tars;
+
+                    return inputTars;
                 };
             }
             set => _filterForTarget = value;
@@ -157,9 +162,13 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //敌方
                 else
                 {
-                    var tars = TargetFilter.GetMostObjectInRadius(TargetUpdater.HostileTargets, range, _action.EffectRange, true, aoeCount)
-                        .OrderByDescending(p => p.GetHealthRatio());
-                    Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
+                    Target = TargetFilter.GetMostObjectInRadius(TargetUpdater.HostileTargets, range, _action.EffectRange, true, aoeCount)
+                        .OrderByDescending(p => p.GetHealthRatio()).FirstOrDefault();
+                    if(Target == null)
+                    {
+                        Target = Service.ClientState.LocalPlayer;
+                        return false;
+                    }
                     _position = Target.Position;
                 }
                 return true;

@@ -43,7 +43,7 @@ namespace XIVAutoAttack.SigReplacers
 
         private static DateTime _timeLastActionUsed = DateTime.Now;
 
-        const int QUEUECAPACITY = 64;
+        const int QUEUECAPACITY = 32;
         private static Queue<ActionRec> _actions = new Queue<ActionRec>(QUEUECAPACITY);
 
         [EditorBrowsable(EditorBrowsableState.Never)]

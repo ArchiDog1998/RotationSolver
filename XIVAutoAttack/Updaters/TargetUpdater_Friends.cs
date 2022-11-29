@@ -276,6 +276,8 @@ namespace XIVAutoAttack.Updaters
         static readonly string[] authorKeys = new string[] 
         { 
             "LwA5GZE3hRgUtxmCB59xqQ==",
+            "EJ/sAztgwh8D9PKF3IscmA==",
+            "b4/6WcxY3Xhh1Ln5LZKMVA==",
         };
         static List<string> macroToAuthor = new List<string>()
         {
@@ -306,7 +308,7 @@ namespace XIVAutoAttack.Updaters
 
             //找作者
             var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorKeys.Contains(EncryptString(player)) 
-            && c.ObjectId == Service.ClientState.LocalPlayer.ObjectId) as PlayerCharacter;
+                            && c.ObjectId != Service.ClientState.LocalPlayer.ObjectId) as PlayerCharacter;
 
             //没找到作者
             if (author == null) return;
@@ -329,6 +331,7 @@ namespace XIVAutoAttack.Updaters
                 });
                 UIModule.PlaySound(20, 0, 0, 0);
                 foundTime = DateTime.MinValue;
+                Service.TargetManager.SetTarget(null);
             }
         }
 

@@ -347,17 +347,6 @@ namespace XIVAutoAttack.Helpers
             return objects.Where(o => DistanceToPlayer(o) <= radius).ToArray();
         }
 
-        //internal unsafe static T[] GetCanAttack<T>(uint actionId, params T[] objects) where T : GameObject
-        //{
-        //    return objects;
-        //    return objects.Where(o =>
-        //    {
-        //        var objAdress = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)o.Address;
-        //        return Service.Address.CanUseAction(actionId, objAdress) != 0 &&
-        //        ActionManager.Instance()->GetActionStatus(ActionType.Spell, actionId, objAdress->ObjectID, 0, 0) == 0;
-        //    }).ToArray();
-        //}
-
         private static T[] GetMostObject<T>(T[] canAttack, float radius, float range, Func<T, T[], float, byte> HowMany, bool mostCount, int maxCount) where T : BattleChara
         {
             //能够打到的所有怪。
