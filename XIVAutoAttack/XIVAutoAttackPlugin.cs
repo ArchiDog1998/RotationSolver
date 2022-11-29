@@ -73,9 +73,11 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     public static void ChangeWindowHeader()
     {
-        _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString();
+        _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header 
+            + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString();
 
-
+        _scriptComboWindow.WindowName = LocalizationManager.RightLang.Scriptwindow_Header 
+            + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString();
     }
 
     //private void ClientState_TerritoryChanged(object sender, ushort e)

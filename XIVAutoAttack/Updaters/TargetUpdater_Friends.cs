@@ -305,13 +305,11 @@ namespace XIVAutoAttack.Updaters
             if (foundTime == DateTime.MinValue) return;
 
             //找作者
-            var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorKeys.Contains(EncryptString(player))) as PlayerCharacter;
+            var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorKeys.Contains(EncryptString(player)) 
+            && c.ObjectId == Service.ClientState.LocalPlayer.ObjectId) as PlayerCharacter;
 
             //没找到作者
             if (author == null) return;
-
-            //别扇自己一巴掌
-            if (author.ObjectId == Service.ClientState.LocalPlayer.ObjectId) return;
 
             //随机事件
             if (relayTime == TimeSpan.Zero)

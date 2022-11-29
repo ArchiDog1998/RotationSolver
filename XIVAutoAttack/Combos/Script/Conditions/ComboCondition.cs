@@ -11,6 +11,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Localization;
 using XIVAutoAttack.Windows;
 
 namespace XIVAutoAttack.Combos.Script.Conditions;
@@ -159,7 +160,7 @@ internal class ComboCondition : ICondition
         var names = Enum.GetValues<ComboConditionType>().Select(e => e.ToName()).ToArray();
         ImGui.SetNextItemWidth(100);
 
-        if (ImGui.Combo($"##类型{GetHashCode()}", ref type, names, names.Length))
+        if (ImGui.Combo($"##Category{GetHashCode()}", ref type, names, names.Length))
         {
             ComboConditionType = (ComboConditionType)type;
         }
@@ -170,7 +171,7 @@ internal class ComboCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(PropertyName).X + 30));
 
-                ScriptComboWindow.SearchItemsReflection($"##布尔选择{GetHashCode()}", _info?.GetMemberName(), ref searchTxt, combo.AllBools, i =>
+                ScriptComboWindow.SearchItemsReflection($"##Comparation{GetHashCode()}", _info?.GetMemberName(), ref searchTxt, combo.AllBools, i =>
                 {
                     _info = i;
                     PropertyName = i.Name;
@@ -179,7 +180,11 @@ internal class ComboCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
                 var isTrue = Condition;
-                if (ImGui.Combo($"##是否{GetHashCode()}", ref isTrue, new string[] {"是", "不是"}, 2))
+                if (ImGui.Combo($"##IsOrNot{GetHashCode()}", ref isTrue, new string[] 
+                {
+                    LocalizationManager.RightLang.Scriptwindow_Is,
+                    LocalizationManager.RightLang.Scriptwindow_Isnot,
+                }, 2))
                 {
                     Condition = isTrue;
                 }

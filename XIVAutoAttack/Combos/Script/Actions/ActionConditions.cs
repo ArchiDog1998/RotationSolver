@@ -10,6 +10,7 @@ using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Script.Conditions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Localization;
 using XIVAutoAttack.Windows;
 using XIVAutoAttack.Windows.ComboConfigWindow;
 
@@ -85,25 +86,25 @@ internal class ActionConditions : IDraw
             ComboConfigWindow.Spacing();
 
             var mustUse = MustUse;
-            if (ImGui.Checkbox($"必须##必须{GetHashCode()}", ref mustUse))
+            if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_MustUse}##MustUse{GetHashCode()}", ref mustUse))
             {
                 MustUse = mustUse;
             }
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("跳过AOE判断，跳过提供的Buff判断。");
+                ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_MustUseDesc);
             }
 
             ImGui.SameLine();
 
             var empty = Empty;
-            if (ImGui.Checkbox($"用光##用光{GetHashCode()}", ref empty))
+            if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_Empty}##Empty{GetHashCode()}", ref empty))
             {
                 Empty = empty;
             }
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("用完所有层数或者跳过连击判断。");
+                ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_EmptyDesc);
             }
 
             ImGui.SameLine();
@@ -134,7 +135,7 @@ internal class ActionConditions : IDraw
         }
         else
         {
-            if (ImGui.Selectable("返回条件"))
+            if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_Return))
             {
                 XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
             }
@@ -153,13 +154,13 @@ internal class ActionConditions : IDraw
             _method = combo.GetType().GetMethodInfo(MethodName);
         }
 
-        ImGui.Text("描述:");
+        ImGui.Text($"{LocalizationManager.RightLang.Scriptwindow_ActionConditionsDescription}: ");
 
         var desc = Description;
 
         ImGui.SetNextItemWidth(ImGui.GetColumnWidth(2) - 20);
 
-        if (ImGui.InputTextMultiline($"##{_action?.Name}的描述", ref desc, 1024, new System.Numerics.Vector2(0, 100)))
+        if (ImGui.InputTextMultiline($"##DescriptionOf{_action?.Name}", ref desc, 1024, new System.Numerics.Vector2(0, 100)))
         {
             Description = desc;
         }
@@ -168,13 +169,13 @@ internal class ActionConditions : IDraw
         {
             ImGui.SetNextItemWidth(100);
             int c = AbilityCount;
-            if(ImGui.DragInt("还剩第几个能力技", ref c))
+            if(ImGui.DragInt(LocalizationManager.RightLang.Scriptwindow_AbilityRemain, ref c))
             {
                 AbilityCount = c;
             }
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("当还剩下能插几个能力技的时候才能使用这个技能，设为0的时候忽略这个条件。");
+                ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_AbilityRemainDesc);
             }
 
             if (IsEmergency)
@@ -186,13 +187,13 @@ internal class ActionConditions : IDraw
 
 
                 var adj = IsAdjust;
-                if(ImGui.Checkbox("是否为调整后", ref adj))
+                if(ImGui.Checkbox(LocalizationManager.RightLang.Scriptwindow_AdjustID, ref adj))
                 {
                     IsAdjust = adj;
                 }
                 ImGui.SameLine();
 
-                ImGui.Text("下一个GCD是：");
+                ImGui.Text($"{LocalizationManager.RightLang.Scriptwindow_NextGCD}: ");
 
                 ImGui.SameLine();
 
@@ -203,7 +204,7 @@ internal class ActionConditions : IDraw
                 });
 
                 var relay = _actions;
-                if(relay.Count > 0 && ImGui.BeginChild($"##{_action?.Name}的下一个GCD是", new System.Numerics.Vector2(0, 100), true))
+                if(relay.Count > 0 && ImGui.BeginChild($"##{_action?.Name}NextGCD", new System.Numerics.Vector2(0, 100), true))
                 {
                     if (ScriptComboWindow.DrawEditorList(relay, i =>
                     {

@@ -9,6 +9,7 @@ using XIVAutoAttack.Combos.Script.Conditions;
 using XIVAutoAttack.Windows.ComboConfigWindow;
 using XIVAutoAttack.Windows;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Localization;
 
 namespace XIVAutoAttack.Combos.Script.Actions
 {
@@ -23,9 +24,9 @@ namespace XIVAutoAttack.Combos.Script.Actions
             ImGui.SameLine();
             ComboConfigWindow.Spacing();
 
-            ImGui.TextWrapped("在下面的框框中输入倒计时技能。");
+            ImGui.TextWrapped(LocalizationManager.RightLang.Scriptwindow_CountDownSetDesc);
 
-            if (ImGui.BeginChild($"##技能使用列表", new Vector2(-5f, -1f), true))
+            if (ImGui.BeginChild($"##ActionUsageList", new Vector2(-5f, -1f), true))
             {
                 var relay = ActionsCondition;
                 if (ScriptComboWindow.DrawEditorList(relay, i =>
@@ -49,7 +50,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("添加技能使用");
+                ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_AddActionDesc);
             }
 
             ImGui.SameLine();
@@ -63,7 +64,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip($"添加技能函数，数量为{combo.AllOther.Length}个");
+                ImGui.SetTooltip(string.Format(LocalizationManager.RightLang.Scriptwindow_AddFunctionDesc, combo.AllOther.Length));
             }
         }
 

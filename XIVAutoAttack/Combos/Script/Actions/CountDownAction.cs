@@ -12,17 +12,21 @@ using XIVAutoAttack.Windows.ComboConfigWindow;
 using XIVAutoAttack.Windows;
 using XIVAutoAttack.Actions;
 using Lumina.Data.Parsing;
+using XIVAutoAttack.Localization;
 
 namespace XIVAutoAttack.Combos.Script.Actions
 {
     internal class CountDownAction
     {
         private BaseAction _action { get; set; }
+
         public ActionID ID { get; set; } = ActionID.None;
+
         MethodInfo _method;
         public string MethodName { get; set; } = string.Empty;
 
         public bool MustUse { get; set; }
+
         public bool Empty { get; set; }
 
         public float Time { get; set; }
@@ -67,7 +71,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
                 var time = Time;
                 ImGui.SetNextItemWidth(50);
-                if(ImGui.DragFloat($"s##倒计时{GetHashCode()}", ref time))
+                if(ImGui.DragFloat($"s##CountDown{GetHashCode()}", ref time))
                 {
                     Time = time;
                 }
@@ -76,25 +80,25 @@ namespace XIVAutoAttack.Combos.Script.Actions
                 ComboConfigWindow.Spacing();
 
                 var mustUse = MustUse;
-                if (ImGui.Checkbox($"必须##必须{GetHashCode()}", ref mustUse))
+                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_MustUse}##MustUse{GetHashCode()}", ref mustUse))
                 {
                     MustUse = mustUse;
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("跳过AOE判断，跳过提供的Buff判断。");
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_MustUseDesc);
                 }
 
                 ImGui.SameLine();
 
                 var empty = Empty;
-                if (ImGui.Checkbox($"用光##用光{GetHashCode()}", ref empty))
+                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_Empty}##Empty{GetHashCode()}", ref empty))
                 {
                     Empty = empty;
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("用完所有层数或者跳过连击判断。");
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_EmptyDesc);
                 }
 
                 ImGui.SameLine();
@@ -111,7 +115,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
                 var time = Time;
                 ImGui.SetNextItemWidth(50);
-                if (ImGui.DragFloat($"s##倒计时{GetHashCode()}", ref time))
+                if (ImGui.DragFloat($"s##CountDown{GetHashCode()}", ref time))
                 {
                     Time = time;
                 }

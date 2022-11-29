@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Localization;
 using XIVAutoAttack.Windows;
 
 namespace XIVAutoAttack.Combos.Script.Conditions;
@@ -112,18 +113,22 @@ internal class TargetCondition : ICondition
         ScriptComboWindow.DrawCondition(IsTrue(combo));
         ImGui.SameLine();
 
-        var name = _action != null ? _action.Name + "的目标" : IsTarget ? "目标" : "玩家";
+        var name = _action != null ? string.Format(LocalizationManager.RightLang.Scriptwindow_ActionTarget, _action.Name) 
+            : IsTarget 
+            ? LocalizationManager.RightLang.Scriptwindow_Target 
+            : LocalizationManager.RightLang.Scriptwindow_Player;
+
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
-        if (ImGui.BeginCombo($"##技能选择{GetHashCode()}", name, ImGuiComboFlags.HeightLargest))
+        if (ImGui.BeginCombo($"##ActionChoice{GetHashCode()}", name, ImGuiComboFlags.HeightLargest))
         {
-            if (ImGui.Selectable("目标"))
+            if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_Target))
             {
                 _action = null;
                 ID = ActionID.None;
                 IsTarget = true;
             }
 
-            if (ImGui.Selectable("玩家"))
+            if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_Player))
             {
                 _action = null;
                 ID = ActionID.None;
@@ -145,7 +150,7 @@ internal class TargetCondition : ICondition
         var names = Enum.GetValues<TargetConditionType>().Select(e => e.ToName()).ToArray();
         ImGui.SetNextItemWidth(100);
 
-        if (ImGui.Combo($"##类型{GetHashCode()}", ref type, names, names.Length))
+        if (ImGui.Combo($"##Category{GetHashCode()}", ref type, names, names.Length))
         {
             TargetConditionType = (TargetConditionType)type;
         }
@@ -155,11 +160,19 @@ internal class TargetCondition : ICondition
         switch (TargetConditionType)
         {
             case TargetConditionType.HaveStatus:
-                combos = new string[] { "有", "没有" };
+                combos = new string[]
+                {
+                    LocalizationManager.RightLang.Scriptwindow_Have,
+                    LocalizationManager.RightLang.Scriptwindow_Havenot,
+                };
                 break;
             case TargetConditionType.IsDying:
             case TargetConditionType.IsBoss:
-                combos = new string[] { "是", "不是" };
+                combos = new string[] 
+                {
+                    LocalizationManager.RightLang.Scriptwindow_Is,
+                    LocalizationManager.RightLang.Scriptwindow_Isnot,
+                };
                 break;
 
             case TargetConditionType.Distance:
@@ -170,7 +183,7 @@ internal class TargetCondition : ICondition
 
         ImGui.SameLine();
         ImGui.SetNextItemWidth(60);
-        if (ImGui.Combo($"##大小情况{GetHashCode()}", ref condition, combos, combos.Length))
+        if (ImGui.Combo($"##Comparation{GetHashCode()}", ref condition, combos, combos.Length))
         {
             Condition = condition > 0;
         }
@@ -181,7 +194,7 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                ScriptComboWindow.SearchCombo($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ScriptComboWindow.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
                     _status = i;
                     Status = _status.ID;
@@ -190,13 +203,13 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
 
                 var self = FromSelf;
-                if (ImGui.Checkbox($"自身##自身{GetHashCode()}", ref self))
+                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_StatusSelf}##Self{GetHashCode()}", ref self))
                 {
                     FromSelf = self;
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("该状态是否是自己赋予的");
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_StatusSelfDesc);
                 }
                 break;
 
@@ -204,7 +217,7 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                ScriptComboWindow.SearchCombo($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ScriptComboWindow.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
                     _status = i;
                     Status = _status.ID;
@@ -213,19 +226,19 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
 
                 self = FromSelf;
-                if (ImGui.Checkbox($"自身##自身{GetHashCode()}", ref self))
+                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_StatusSelf}##Self{GetHashCode()}", ref self))
                 {
                     FromSelf = self;
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("该状态是否是自己赋予的");
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_StatusSelfDesc);
                 }
 
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
                 var time = DistanceOrTime;
-                if (ImGui.DragFloat($"秒##秒{GetHashCode()}", ref time))
+                if (ImGui.DragFloat($"s##s{GetHashCode()}", ref time))
                 {
                     DistanceOrTime = Math.Max(0, time);
                 }
@@ -236,7 +249,7 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                ScriptComboWindow.SearchCombo($"##状态{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ScriptComboWindow.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
                     _status = i;
                     Status = _status.ID;
@@ -245,13 +258,13 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
 
                 self = FromSelf;
-                if (ImGui.Checkbox($"自身##自身{GetHashCode()}", ref self))
+                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_StatusSelf}##Self{GetHashCode()}", ref self))
                 {
                     FromSelf = self;
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("该状态是否是自己赋予的");
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_StatusSelfDesc);
                 }
                 ImGui.SameLine();
 
@@ -265,7 +278,7 @@ internal class TargetCondition : ICondition
 
                 ImGui.SetNextItemWidth(50);
                 var ability = Ability;
-                if (ImGui.DragInt($"能力##AbilityD{GetHashCode()}", ref ability))
+                if (ImGui.DragInt($"{LocalizationManager.RightLang.Scriptwindow_Ability}##Ability{GetHashCode()}", ref ability))
                 {
                     Ability = Math.Max(0, ability);
                 }
@@ -275,15 +288,12 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
                 var distance = DistanceOrTime;
-                if (ImGui.DragFloat($"米##米{GetHashCode()}", ref distance))
+                if (ImGui.DragFloat($"m##m{GetHashCode()}", ref distance))
                 {
                     DistanceOrTime = Math.Max(0, distance);
                 }
                 break;
-
-
         }
-
     }
 }
 
@@ -301,12 +311,12 @@ internal static class TargetConditionTypeExtension
 {
     internal static string ToName(this TargetConditionType type) => type switch
     {
-        TargetConditionType.HaveStatus => "有状态",
-        TargetConditionType.IsDying => "要死了",
-        TargetConditionType.IsBoss => "是Boss",
-        TargetConditionType.Distance => "距离",
-        TargetConditionType.StatusEnd => "状态结束",
-        TargetConditionType.StatusEndGCD => "状态结束GCD",
+        TargetConditionType.HaveStatus => LocalizationManager.RightLang.TargetConditionType_HaveStatus,
+        TargetConditionType.IsDying => LocalizationManager.RightLang.TargetConditionType_IsDying,
+        TargetConditionType.IsBoss => LocalizationManager.RightLang.TargetConditionType_IsBoss,
+        TargetConditionType.Distance => LocalizationManager.RightLang.TargetConditionType_Distance,
+        TargetConditionType.StatusEnd => LocalizationManager.RightLang.TargetConditionType_StatusEnd,
+        TargetConditionType.StatusEndGCD => LocalizationManager.RightLang.TargetConditionType_StatusEndGCD,
         _ => string.Empty,
     };
 
