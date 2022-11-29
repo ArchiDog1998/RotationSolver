@@ -103,7 +103,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (_action.TargetArea)
             {
                 //移动
-                if (_action.EffectRange == 1 && _action.Range >= 15)
+                if (_action.EffectRange == 1 && range >= 15)
                 {
                     BattleChara[] availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b is BattleChara)
                         .Select(b => (BattleChara)b).ToArray();
@@ -111,57 +111,56 @@ namespace XIVAutoAttack.Actions.BaseAction
                     Target = TargetFilter.FindTargetForMoving(TargetFilter.GetObjectInRadius(availableCharas, 20));
                     _position = Target.Position;
                 }
-                else
+                //其他友方
+                else if (_isFriendly)
                 {
-                    if (_isFriendly)
-                    {
-                        //如果用户不想使用自动友方地面放置功能
-                        if (!Service.Configuration.UseAreaAbilityFriendly) return false;
+                    //如果用户不想使用自动友方地面放置功能
+                    if (!Service.Configuration.UseAreaAbilityFriendly) return false;
 
-                        //如果当前目标是Boss且有身位，放他身上。
-                        if (Service.TargetManager.Target is BattleChara b && b.IsBoss() && b.HasLocationSide())
+                    //如果当前目标是Boss且有身位，放他身上。
+                    if (Service.TargetManager.Target is BattleChara b && b.IsBoss() && b.HasLocationSide())
+                    {
+                        Target = b;
+                        _position = Target.Position;
+                    }
+                    //计算玩家和被打的Ｔ之间的关系。
+                    else
+                    {
+                        var attackT = TargetFilter.FindAttackedTarget(TargetFilter.GetObjectInRadius(TargetUpdater.PartyTanks,
+                            range + _action.EffectRange));
+
+                        Target = Service.ClientState.LocalPlayer;
+
+                        if (attackT == null)
                         {
-                            Target = b;
                             _position = Target.Position;
                         }
-                        //计算玩家和被打的Ｔ之间的关系。
                         else
                         {
-                            var attackT = TargetFilter.FindAttackedTarget(TargetFilter.GetObjectInRadius(TargetUpdater.PartyTanks,
-                                range + _action.EffectRange));
+                            var disToTankRound = Vector3.Distance(Target.Position, attackT.Position) + attackT.HitboxRadius;
 
-                            Target = Service.ClientState.LocalPlayer;
-
-                            if (attackT == null)
+                            if (disToTankRound < _action.EffectRange
+                                || disToTankRound > 2 * _action.EffectRange - Target.HitboxRadius
+                                || disToTankRound > range)
                             {
                                 _position = Target.Position;
                             }
                             else
                             {
-                                var disToTankRound = Vector3.Distance(Target.Position, attackT.Position) + attackT.HitboxRadius;
-
-                                if (disToTankRound < _action.EffectRange
-                                    || disToTankRound > 2 * _action.EffectRange - Target.HitboxRadius
-                                    || disToTankRound > range)
-                                {
-                                    _position = Target.Position;
-                                }
-                                else
-                                {
-                                    Vector3 directionToTank = attackT.Position - Target.Position;
-                                    var MoveDirection = directionToTank / directionToTank.Length() * (disToTankRound - _action.EffectRange);
-                                    _position = Target.Position + MoveDirection;
-                                }
+                                Vector3 directionToTank = attackT.Position - Target.Position;
+                                var MoveDirection = directionToTank / directionToTank.Length() * (disToTankRound - _action.EffectRange);
+                                _position = Target.Position + MoveDirection;
                             }
                         }
                     }
-                    else
-                    {
-                        var tars = TargetFilter.GetMostObjectInRadius(TargetUpdater.HostileTargets, range, _action.EffectRange, true, aoeCount)
-                            .OrderByDescending(p => p.GetHealthRatio());
-                        Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
-                        _position = Target.Position;
-                    }
+                }
+                //敌方
+                else
+                {
+                    var tars = TargetFilter.GetMostObjectInRadius(TargetUpdater.HostileTargets, range, _action.EffectRange, true, aoeCount)
+                        .OrderByDescending(p => p.GetHealthRatio());
+                    Target = tars.Count() > 0 ? tars.First() : Service.ClientState.LocalPlayer;
+                    _position = Target.Position;
                 }
                 return true;
             }

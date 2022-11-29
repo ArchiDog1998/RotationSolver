@@ -25,6 +25,10 @@ internal partial class ComboConfigWindow
             {
                 Util.OpenLink("https://discord.gg/wJHTXxrEv7");
             }
+            if (ImGui.Button("点击查看Wiki"))
+            {
+                Util.OpenLink("https://archidog1998.github.io/XIVAutoAttack/");
+            }
             ImGui.PopStyleColor();
             ImGui.EndChild();
         }
