@@ -84,8 +84,8 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         if (QuickNock.ShouldUse(out act)) return true;
 
         //上毒
-        if (VenomousBite.ShouldUse(out act)) return true;
         if (Windbite.ShouldUse(out act)) return true;
+        if (VenomousBite.ShouldUse(out act)) return true;
 
         //直线射击
         if (StraitShoot.ShouldUse(out act)) return true;
