@@ -9,11 +9,11 @@ namespace XIVAutoAttack.Helpers
     {
         internal static bool IsLastSpell(bool isAdjust, params IAction[] actions)
         {
-            return IsLastSpell(GetIDFromActions(isAdjust, actions));
+            return IsLastGCD(GetIDFromActions(isAdjust, actions));
         }
-        internal static bool IsLastSpell(params ActionID[] ids)
+        internal static bool IsLastGCD(params ActionID[] ids)
         {
-            return IsActionID(Watcher.LastSpell, ids);
+            return IsActionID(Watcher.LastGCD, ids);
         }
 
 
@@ -24,15 +24,6 @@ namespace XIVAutoAttack.Helpers
         internal static bool IsLastAbility(params ActionID[] ids)
         {
             return IsActionID(Watcher.LastAbility, ids);
-        }
-
-        internal static bool IsLastWeaponSkill(bool isAdjust, params IAction[] actions)
-        {
-            return IsLastWeaponSkill(GetIDFromActions(isAdjust, actions));
-        }
-        internal static bool IsLastWeaponSkill(params ActionID[] ids)
-        {
-            return IsActionID(Watcher.LastWeaponskill, ids);
         }
 
         internal static bool IsLastAction(bool isAdjust, params IAction[] actions)

@@ -196,7 +196,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         #region 近战三连
 
 
-        if (IsLastWeaponSkill(true, Moulinet) && Moulinet.ShouldUse(out act, mustUse: true)) return true;
+        if (IsLastGCD(true, Moulinet) && Moulinet.ShouldUse(out act, mustUse: true)) return true;
         if (Zwerchhau.ShouldUse(out act)) return true;
         if (Redoublement.ShouldUse(out act)) return true;
 

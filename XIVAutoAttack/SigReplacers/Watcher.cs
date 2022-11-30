@@ -31,13 +31,10 @@ namespace XIVAutoAttack.SigReplacers
         internal static ActionID LastAction { get; set; } = 0;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static ActionID LastWeaponskill { get; set; } = 0;
+        internal static ActionID LastGCD { get; set; } = 0;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static ActionID LastAbility { get; set; } = 0;
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static ActionID LastSpell { get; set; } = 0;
 
         internal static TimeSpan TimeSinceLastAction => DateTime.Now - _timeLastActionUsed;
 
@@ -86,10 +83,8 @@ namespace XIVAutoAttack.SigReplacers
             switch (action.GetActinoType())
             {
                 case ActionCate.Spell: //魔法
-                    LastSpell = id;
-                    break;
                 case ActionCate.Weaponskill: //战技
-                    LastWeaponskill = id;
+                    LastGCD = id;
                     break;
                 case ActionCate.Ability: //能力
                     LastAbility = id;

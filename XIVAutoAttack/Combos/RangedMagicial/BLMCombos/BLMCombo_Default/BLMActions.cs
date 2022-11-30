@@ -55,7 +55,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
                     if (FewBlizzard && Player.CurrentMp > 6000) return true;
                 }
 
-                if (IsLastSpell(true, Paradox)) return false;
+                if (IsLastGCD(true, Paradox)) return false;
 
                 //火双3
                 if (Player.CurrentMp >= 5600 && HasFire && CanF4Number(3) && !CanF4Number(4) && !CanF4Number(5))
@@ -78,7 +78,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         //星灵转冰
         if (InAstralFire && abilityRemain == 2 && (Manafont.ElapsedAfter(3) || !Manafont.IsCoolDown))
         {
-            if (IsLastSpell(true, Despair) || IsOldSpell(1, Despair) && IsLastSpell(true, Xenoglossy, Thunder)) return true;
+            if (IsLastGCD(true, Despair) || IsOldSpell(1, Despair) && IsLastGCD(true, Xenoglossy, Thunder)) return true;
         }
 
         act = null;
@@ -143,7 +143,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
         if (StandardLoop)
         {
-            if (IsLastSpell(true, Xenoglossy, Thunder) && Triplecast.ShouldUse(out act)) return true;
+            if (IsLastGCD(true, Xenoglossy, Thunder) && Triplecast.ShouldUse(out act)) return true;
             return false;
         }
 
@@ -163,7 +163,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
             if (Player.CurrentMp == 0) return false;
 
-            if (IsLastSpell(true, Xenoglossy, Thunder) && F4RemainingNumber() < 2) return true;
+            if (IsLastGCD(true, Xenoglossy, Thunder) && F4RemainingNumber() < 2) return true;
         }
 
 
@@ -235,7 +235,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     private bool CanUseFire3(out IAction act)
     {
         if (!Fire3.ShouldUse(out act)) return false;
-        if (IsLastSpell(true, Fire3)) return false;
+        if (IsLastGCD(true, Fire3)) return false;
 
         //冰阶段进火
         if (InUmbralIce)
@@ -328,7 +328,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     private bool CanUseBlizzard3(out IAction act)
     {
         if (!Blizzard3.ShouldUse(out act)) return false;
-        if (IsLastSpell(true, Blizzard3)) return false;
+        if (IsLastGCD(true, Blizzard3)) return false;
 
         if (Level < 90 && Player.CurrentMp < 1600) return true;
 
@@ -350,7 +350,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
     {
         if (!Thunder.ShouldUse(out act)) return false;
 
-        if (IsLastSpell(true, Thunder)) return false;
+        if (IsLastGCD(true, Thunder)) return false;
 
         //在冰
         if (InUmbralIce)
@@ -367,7 +367,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //没雷dot
             if (!TargetHasThunder) return true;
 
-            if (IsLastSpell(true, Xenoglossy)) return false;
+            if (IsLastGCD(true, Xenoglossy)) return false;
             if (HasThunder) return true;
         }
 
@@ -380,7 +380,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
                 return false;
             }
             //上个技能是异言pass
-            if (IsLastSpell(true, Xenoglossy)) return false;
+            if (IsLastGCD(true, Xenoglossy)) return false;
             //魔泉时
             if (!Manafont.ElapsedAfter(3) && Manafont.IsCoolDown) return false;
 
@@ -396,7 +396,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //    return true;
             //}
 
-            if (FewBlizzard && IsLastSpell(true, Despair) && Player.HasStatus(true, StatusID.Sharpcast) && HasThunder && !MpBackGCDCanDouble(1) && HaveXeCounts(2) <= 1)
+            if (FewBlizzard && IsLastGCD(true, Despair) && Player.HasStatus(true, StatusID.Sharpcast) && HasThunder && !MpBackGCDCanDouble(1) && HaveXeCounts(2) <= 1)
             {
                 return true;
             }
@@ -426,9 +426,9 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (StandardLoop)
         {
             if (UmbralHearts != 3) return false;
-            if (IsLastSpell(true, Thunder, Xenoglossy)) return false;
+            if (IsLastGCD(true, Thunder, Xenoglossy)) return false;
             if (EnchinaEndAfterGCD(2) && IsPolyglotStacksMaxed) return true;
-            if (!Manafont.IsCoolDown && IsLastSpell(true, Despair)) return true;
+            if (!Manafont.IsCoolDown && IsLastGCD(true, Despair)) return true;
 
             return false;
         }
@@ -437,19 +437,19 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (InUmbralIce)
         {
             if (UmbralHearts == 3 || IsParadoxActive) return false;
-            if (IsLastSpell(true, Thunder, Xenoglossy)) return false;
+            if (IsLastGCD(true, Thunder, Xenoglossy)) return false;
 
             if (FewBlizzard && MpTwoInIce) return true;
             if (IsOldSpell(1, Thunder3)) return false;
             if (PolyglotStacks == 2) return true;
-            if (HasFire && !IsLastSpell(true, Thunder, Xenoglossy)) return true;
+            if (HasFire && !IsLastGCD(true, Thunder, Xenoglossy)) return true;
             if (!HasFire && (HaveSwift || !Swiftcast.IsCoolDown) && !Player.HasStatus(true, StatusID.LeyLines)) return true;
         }
 
         //在火
         if (InAstralFire)
         {
-            if (IsLastSpell(true, Xenoglossy) || HaveSwift) return false;
+            if (IsLastGCD(true, Xenoglossy) || HaveSwift) return false;
             //起手
             if (iceOpener && !IsParadoxActive && Player.CurrentMp <= 1200) return true;
             //魔泉时
@@ -458,7 +458,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //未来观测卡跳蓝(三连咏唱)
             if (BenignMp()) return true;
 
-            if (IsLastSpell(true, Despair))
+            if (IsLastGCD(true, Despair))
             {
                 //火双n
                 if (HasFire) return true;

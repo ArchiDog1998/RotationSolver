@@ -183,7 +183,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         //魔泉
         if (Manafont.ShouldUse(out act))
         {
-            if (IsLastSpell(true, Despair, Xenoglossy) && Player.CurrentMp == 0 && InAstralFire) return true;
+            if (IsLastGCD(true, Despair, Xenoglossy) && Player.CurrentMp == 0 && InAstralFire) return true;
 
             if (!Paradox.EnoughLevel && Player.CurrentMp <= 7000 && InAstralFire) return true;
         }
@@ -205,7 +205,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         {
             if (Player.HasStatus(true, StatusID.Triplecast) && Player.StatusStack(true, StatusID.Triplecast) <= 1) return true;
 
-            if (!Player.HasStatus(true, StatusID.Triplecast) && InUmbralIce && IsLastSpell(true, Thunder, Xenoglossy)) return true;
+            if (!Player.HasStatus(true, StatusID.Triplecast) && InUmbralIce && IsLastGCD(true, Thunder, Xenoglossy)) return true;
 
             if (!Player.HasStatus(true, StatusID.Triplecast) && InAstralFire) return true;
         }
@@ -234,7 +234,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             //三连
             if (Triplecast.ShouldUse(out act, emptyOrSkipCombo: true) && Triplecast.CurrentCharges == 2)
             {
-                if (IsLastAction(true, Fire3) || IsLastSpell(true, Xenoglossy)) return true;
+                if (IsLastAction(true, Fire3) || IsLastGCD(true, Xenoglossy)) return true;
             }
         }
 
@@ -396,12 +396,12 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         if (Foul.ShouldUse(out act) && IsPolyglotStacksMaxed) return true;
 
 
-        if (Freeze.ShouldUse(out act) && !IsLastSpell(true, Freeze))
+        if (Freeze.ShouldUse(out act) && !IsLastGCD(true, Freeze))
         {
             if (Blizzard4.EnoughLevel && UmbralIceStacks == 3 && UmbralHearts != 3) return true;
             if (!Blizzard4.EnoughLevel && Player.CurrentMp < 9000) return true;
         }
-        if (Thunder2.ShouldUse(out act) && !IsLastSpell(true, Thunder2))
+        if (Thunder2.ShouldUse(out act) && !IsLastGCD(true, Thunder2))
         {
             if (HasThunder || !Thunder2.Target.HasStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4)) return true;
         }

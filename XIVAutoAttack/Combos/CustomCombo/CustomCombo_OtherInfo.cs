@@ -96,8 +96,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="isAdjust">调整后ID</param>
         /// <param name="actions">技能</param>
         /// <returns></returns>
-        [DisplayName("上一个魔法")]
-        protected static bool IsLastSpell(bool isAdjust, params IAction[] actions)
+        [DisplayName("上一个GCD")]
+        protected static bool IsLastGCD(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastSpell(isAdjust, actions);
 
         /// <summary>
@@ -105,8 +105,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         /// <param name="ids">技能ID</param>
         /// <returns></returns>
-        protected static bool IsLastSpell(params ActionID[] ids)
-            => IActionHelper.IsLastSpell(ids);
+        protected static bool IsLastGCD(params ActionID[] ids)
+            => IActionHelper.IsLastGCD(ids);
 
         /// <summary>
         /// 上一个能力技是否是<paramref name="actions"/>中的技能
@@ -126,23 +126,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         protected static bool IsLastAbility(params ActionID[] ids)
             => IActionHelper.IsLastAbility(ids);
 
-        /// <summary>
-        /// 上一个战技是否是<paramref name="actions"/>中的技能
-        /// </summary>
-        /// <param name="isAdjust">调整后ID</param>
-        /// <param name="actions">技能</param>
-        /// <returns></returns>
-        [DisplayName("上一个战技")]
-        protected static bool IsLastWeaponSkill(bool isAdjust, params IAction[] actions)
-            => IActionHelper.IsLastWeaponSkill(isAdjust, actions);
-
-        /// <summary>
-        /// 上一个战技是否是<paramref name="ids"/>中的技能
-        /// </summary>
-        /// <param name="ids">技能ID</param>
-        /// <returns></returns>
-        protected static bool IsLastWeaponSkill(params ActionID[] ids)
-            => IActionHelper.IsLastWeaponSkill(ids);
 
         /// <summary>
         /// 上一个技能是否是<paramref name="actions"/>中的技能

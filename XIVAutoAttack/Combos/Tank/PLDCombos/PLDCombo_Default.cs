@@ -64,7 +64,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         //Êê×ï½£
         if (Atonement.ShouldUse(out act))
         {
-            if (Player.HasStatus(true, StatusID.FightOrFlight) && IsLastWeaponSkill(true, Atonement, RageofHalone) && !Player.WillStatusEndGCD(2, 0, true, StatusID.FightOrFlight)) return true;
+            if (Player.HasStatus(true, StatusID.FightOrFlight) && IsLastGCD(true, Atonement, RageofHalone) && !Player.WillStatusEndGCD(2, 0, true, StatusID.FightOrFlight)) return true;
 
             if (Player.StatusStack(true, StatusID.SwordOath) > 1) return true;
         }

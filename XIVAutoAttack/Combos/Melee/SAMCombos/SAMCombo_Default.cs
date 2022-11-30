@@ -115,7 +115,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     //月连击
     private bool GetsuGCD(out IAction act, bool haveMeikyoShisui)
     {
-        if (Mangetsu.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui || IsLastWeaponSkill(true,Fuga, Fuko))) return true;
+        if (Mangetsu.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui || IsLastGCD(true,Fuga, Fuko))) return true;
         if (Gekko.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
         if (Jinpu.ShouldUse(out act)) return true;
 
@@ -126,7 +126,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     //花连击
     private bool KaGCD(out IAction act, bool haveMeikyoShisui)
     {
-        if (Oka.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui || IsLastWeaponSkill(true, Fuga, Fuko))) return true;
+        if (Oka.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui || IsLastGCD(true, Fuga, Fuko))) return true;
         if (Kasha.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
         if (Shifu.ShouldUse(out act)) return true;
 
@@ -166,7 +166,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //明镜止水
-        if(HaveHostilesInRange && (!IsLastWeaponSkill(true, Shifu, Jinpu, Hakaze, Fuga) || IsLastWeaponSkill(true,Yukikaze, Mangetsu, Oka)) && 
+        if(HaveHostilesInRange && (!IsLastGCD(true, Shifu, Jinpu, Hakaze, Fuga) || IsLastGCD(true,Yukikaze, Mangetsu, Oka)) && 
             HasSetsu && (IsTargetBoss ? ((Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana)) || (!HaveMoon && !HaveFlower)) : true))
         {
             if(MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;

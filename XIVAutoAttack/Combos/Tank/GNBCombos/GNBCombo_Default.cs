@@ -174,7 +174,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (BurstStrike.EnoughLevel)
         {
             //4GCD起手判断
-            if (IsLastWeaponSkill((ActionID)KeenEdge.ID) && Ammo == 1 && !GnashingFang.IsCoolDown && !Bloodfest.IsCoolDown) return true;
+            if (IsLastGCD((ActionID)KeenEdge.ID) && Ammo == 1 && !GnashingFang.IsCoolDown && !Bloodfest.IsCoolDown) return true;
 
             //3弹进无情
             else if (Ammo == (Level >= 88 ? 3 : 2)) return true;
@@ -202,7 +202,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
             if (Ammo > 0 && !NoMercy.WillHaveOneCharge(17) && NoMercy.WillHaveOneCharge(35)) return true;
 
             //3弹且将会溢出子弹的情况,提前在无情前进烈牙
-            if (Ammo == 3 && IsLastWeaponSkill((ActionID)BrutalShell.ID) && NoMercy.WillHaveOneCharge(3)) return true;
+            if (Ammo == 3 && IsLastGCD((ActionID)BrutalShell.ID) && NoMercy.WillHaveOneCharge(3)) return true;
 
             //1弹且血壤快冷却好了
             if (Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && Bloodfest.WillHaveOneCharge(5)) return true;
@@ -285,7 +285,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
                 !GnashingFang.WillHaveOneCharge(1)) return true;
             if (Level < 88 && Ammo == 2) return true;
             //无情外防止溢出
-            if (IsLastWeaponSkill((ActionID)BrutalShell.ID) &&
+            if (IsLastGCD((ActionID)BrutalShell.ID) &&
                 (Ammo == (Level >= 88 ? 3 : 2) ||
                 Bloodfest.WillHaveOneCharge(6) && Ammo <= 2 && !NoMercy.WillHaveOneCharge(10) && Bloodfest.EnoughLevel)) return true;
 

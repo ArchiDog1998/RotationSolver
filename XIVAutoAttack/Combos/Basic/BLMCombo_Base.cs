@@ -319,7 +319,7 @@ namespace XIVAutoAttack.Combos.Basic
         {
             ActionCheck = b =>
             {
-                if (IsLastSpell(true, Blizzard4)) return false;
+                if (IsLastGCD(true, Blizzard4)) return false;
 
                 if (JobGauge.UmbralHearts == 3) return false;
 

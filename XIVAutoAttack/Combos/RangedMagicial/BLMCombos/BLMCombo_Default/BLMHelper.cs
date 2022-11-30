@@ -151,7 +151,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
             return true;
 
         }
-        if (MpBackGCDCanDouble(1) && IsLastSpell(true, Despair))
+        if (MpBackGCDCanDouble(1) && IsLastGCD(true, Despair))
         {
             if (HaveXeCounts(2) > 1 || HaveXeCounts(2) == 1 && HaveT3InIce(2)) return true;
             return true;

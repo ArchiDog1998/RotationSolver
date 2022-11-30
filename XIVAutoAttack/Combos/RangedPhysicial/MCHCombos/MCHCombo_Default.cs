@@ -128,7 +128,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
             if (Reassemble.ShouldUse(out act)) return true;
         }
         //起手在链锯前释放野火
-        if (nextGCD.IsAnySameAction(true, ChainSaw) && !IsLastWeaponSkill(true, HeatBlast))
+        if (nextGCD.IsAnySameAction(true, ChainSaw) && !IsLastGCD(true, HeatBlast))
         {
             if (SettingBreak && Config.GetBoolByName("MCH_Opener") && Wildfire.ShouldUse(out act)) return true;
         }
@@ -185,7 +185,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (ChainSaw.EnoughLevel && !ChainSaw.IsCoolDown) return false;
 
         //当上一个技能是钻头,空气锚,热冲击时不释放野火
-        if (IsLastWeaponSkill(true, Drill, HeatBlast, AirAnchor)) return false;
+        if (IsLastGCD(true, Drill, HeatBlast, AirAnchor)) return false;
 
         //if (IsLastWeaponSkill(true, ChainSaw)) return true;
 
@@ -226,7 +226,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (!Wildfire.WillHaveOneChargeGCD(5) && Wildfire.WillHaveOneChargeGCD(18))
         {
             //如果期间热量溢出超过5,就释放一次超荷
-            if (IsLastWeaponSkill((ActionID)Drill.ID) && Heat >= 85) return true;
+            if (IsLastGCD((ActionID)Drill.ID) && Heat >= 85) return true;
             return false;
         }
         else return true;
