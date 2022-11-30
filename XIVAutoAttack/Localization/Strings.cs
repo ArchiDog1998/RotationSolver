@@ -36,16 +36,16 @@ namespace XIVAutoAttack.Localization
             = "Stop attacking. Remember to turn it off when not in use!";
 
         public string Configwindow_HelpItem_HealArea { get; set; }
-            = "Open a window to use one or serveral AoE heal.";
+            = "Open a window to use one or more AoE heal.";
 
         public string Configwindow_HelpItem_HealSingle { get; set; }
-            = "Open a window to use one or serveral single heal.";
+            = "Open a window to use one or more single heal.";
 
         public string Configwindow_HelpItem_DefenseArea { get; set; }
-            = "Open a window to use one or serveral AoE defense.";
+            = "Open a window to use one or more AoE defense.";
 
         public string Configwindow_HelpItem_DefenseSingle { get; set; }
-            = "Open a window to use one or serveral single defense.";
+            = "Open a window to use one or more single defense.";
 
         public string Configwindow_HelpItem_EsunaShield { get; set; }
             = "Open a window to use Esuna,tank stance actions or True North.";
