@@ -248,7 +248,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                             return false;
                         }
 
-                        if (Service.Configuration.UseAOEWhenManual)
+                        if (Service.Configuration.UseAOEWhenManual || mustUse)
                         {
                             switch (_action.CastType)
                             {
@@ -328,8 +328,11 @@ namespace XIVAutoAttack.Actions.BaseAction
                     }
 
                     //如果不用自动找目标，那就不打AOE
-                    if (!CommandController.AutoTarget && !Service.Configuration.UseAOEWhenManual) return false;
-
+                    if (!CommandController.AutoTarget)
+                    {
+                        if (!Service.Configuration.UseAOEWhenManual && !mustUse)
+                            return false;
+                    }
                     var count = TargetFilter.GetObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange).Length;
                     if (count < aoeCount) return false;
                 }
