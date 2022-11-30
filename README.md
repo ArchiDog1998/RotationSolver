@@ -3,7 +3,7 @@
 
 [![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/latest/total.svg?label=最新版本下载量&style=for-the-badge)]()
 [![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/total.svg?label=总下载量&style=for-the-badge)]()
-[![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/XIVAutoAttack?label=总行数&style=for-the-badge)]()
+[![Github Lines](https://img.shields.io/badge/dynamic/json?label=总行数&query=%24.*&url=https%3A%2F%2Fapi.github.com%2Frepos%2FArchiDog1998%2FXIVAutoAttack%2Flanguages&style=for-the-badge)]()
 [![Github License](https://img.shields.io/github/license/ArchiDog1998/XIVAutoAttack.svg?label=开源协议&style=for-the-badge)]()
 
 Talk about it on [Discord](https://discord.gg/nfzmJ6ujDP) For Player not in Chinese Server.
