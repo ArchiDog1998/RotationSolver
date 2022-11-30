@@ -13,33 +13,23 @@ namespace XIVAutoAttack.Helpers
     internal static class TargetFilter
     {
         #region Find one target
-        internal static BattleChara DefaultChooseFriend(BattleChara[] availableCharas)
+        internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas)
         {
-            if (availableCharas == null || availableCharas.Length == 0) return null;
+            if (availableCharas == null || !availableCharas.Any()) return null;
 
             //根据默认设置排序怪
             availableCharas = DefaultTargetingType(availableCharas);
 
             //找到体积一样小的
-            List<BattleChara> canGet = new List<BattleChara>(availableCharas.Length) { availableCharas[0] };
+            float radius = availableCharas.FirstOrDefault().HitboxRadius;
 
-            float radius = availableCharas[0].HitboxRadius;
-            for (int i = 1; i < availableCharas.Length; i++)
-            {
-                if (availableCharas[i].HitboxRadius == radius)
-                {
-                    canGet.Add(availableCharas[i]);
-                }
-                else break;
-            }
-
-            return availableCharas.OrderBy(ObjectHelper.GetHealthRatio).First();
-
+            return availableCharas.Where(c => c.HitboxRadius == radius)
+                .OrderBy(ObjectHelper.GetHealthRatio).First();
         }
 
-        internal static BattleChara DefaultFindHostile(BattleChara[] availableCharas)
+        internal static BattleChara DefaultFindHostile(IEnumerable<BattleChara> availableCharas)
         {
-            if (availableCharas == null || availableCharas.Length == 0) return null;
+            if (availableCharas == null || !availableCharas.Any()) return null;
 
             //找到被标记攻击的怪
             if (GetAttackMarkChara(availableCharas) is BattleChara b && b != null) return b;
@@ -47,29 +37,22 @@ namespace XIVAutoAttack.Helpers
             //去掉停止标记的怪
             if (Service.Configuration.FilterStopMark)
             {
-                availableCharas = MarkingController.FilterStopCharaes(availableCharas);
+                var charas = MarkingController.FilterStopCharaes(availableCharas);
+                if (charas?.Any() ?? false) availableCharas = charas;
             }
 
             //根据默认设置排序怪
             availableCharas = DefaultTargetingType(availableCharas);
 
+
             //找到体积一样小的
-            List<BattleChara> canGet = new List<BattleChara>(availableCharas.Length) { availableCharas[0] };
+            float radius = availableCharas.FirstOrDefault().HitboxRadius;
 
-            float radius = availableCharas[0].HitboxRadius;
-            for (int i = 1; i < availableCharas.Length; i++)
-            {
-                if (availableCharas[i].HitboxRadius == radius)
-                {
-                    canGet.Add(availableCharas[i]);
-                }
-                else break;
-            }
-
-            return canGet.OrderBy(b => DistanceToPlayer(b)).First();
+            return availableCharas.Where(c => c.HitboxRadius == radius)
+                .OrderBy(DistanceToPlayer).First();
         }
 
-        internal static BattleChara FindTargetForMoving(BattleChara[] charas)
+        internal static BattleChara FindTargetForMoving(IEnumerable<BattleChara> charas)
         {
             if (Service.Configuration.MoveTowardsScreen)
             {
@@ -81,7 +64,7 @@ namespace XIVAutoAttack.Helpers
             }
         }
 
-        private static BattleChara FindMoveTargetFaceDirection(BattleChara[] charas)
+        private static BattleChara FindMoveTargetFaceDirection(IEnumerable<BattleChara> charas)
         {
             Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
             float rotation = Service.ClientState.LocalPlayer.Rotation;
@@ -95,12 +78,10 @@ namespace XIVAutoAttack.Helpers
                 return angle <= Math.PI / 6;
             }).OrderByDescending(t => Vector3.Distance(t.Position, pPosition));
 
-            if (tars.Count() == 0) return null;
-
-            return tars.ElementAt(0);
+            return tars.FirstOrDefault();
         }
 
-        private static BattleChara FindMoveTargetScreenCenter(BattleChara[] charas)
+        private static BattleChara FindMoveTargetScreenCenter(IEnumerable<BattleChara> charas)
         {
             var pPosition = Service.ClientState.LocalPlayer.Position;
             if (!Service.GameGui.WorldToScreen(pPosition, out var playerScrPos)) return null;
@@ -116,9 +97,7 @@ namespace XIVAutoAttack.Helpers
                 return Math.Abs(dir.X / dir.Y) < Math.Tan(Math.PI / 6);
             }).OrderByDescending(t => Vector3.Distance(t.Position, pPosition));
 
-            if (tars.Count() == 0) return null;
-
-            return tars.ElementAt(0);
+            return tars.FirstOrDefault();
         }
 
         /// <summary>
@@ -126,19 +105,12 @@ namespace XIVAutoAttack.Helpers
         /// </summary>
         /// <param name="charas"></param>
         /// <returns></returns>
-        internal static BattleChara FindAttackedTarget(BattleChara[] charas)
+        internal static BattleChara FindAttackedTarget(IEnumerable<BattleChara> charas)
         {
-            if (charas.Length == 0) return null;
-            List<BattleChara> attachedT = new List<BattleChara>(charas.Length);
-            foreach (var tank in charas)
-            {
-                if (tank.TargetObject?.TargetObject == tank)
-                {
-                    attachedT.Add(tank);
-                }
-            }
+            if (!charas.Any()) return null;
+            var attachedT = charas.Where(tank => tank.TargetObject?.TargetObject == tank);
 
-            return (attachedT.Count > 0 ? attachedT.ToArray() : charas).OrderBy(ObjectHelper.GetHealthRatio).First();
+            return (attachedT.Any() ? attachedT : charas).OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
         }
 
         /// <summary>
@@ -147,14 +119,13 @@ namespace XIVAutoAttack.Helpers
         /// <param name="inputCharas"></param>
         /// <param name="needDistance"></param>
         /// <returns></returns>
-        internal static BattleChara[] ProvokeTarget(BattleChara[] inputCharas, bool needDistance = false)
+        internal static IEnumerable<BattleChara> ProvokeTarget(IEnumerable<BattleChara> inputCharas, bool needDistance = false)
         {
             var tankIDS = GetJobCategory(TargetUpdater.AllianceMembers, JobRole.Tank).Select(member => member.ObjectId);
             var loc = Service.ClientState.LocalPlayer.Position;
             var id = Service.ClientState.LocalPlayer.ObjectId;
 
-            List<BattleChara> targets = new List<BattleChara>();
-            foreach (var target in inputCharas)
+            var targets = inputCharas.Where(target =>
             {
                 //有目标
                 if (target.TargetObject?.IsValid() ?? false)
@@ -162,14 +133,16 @@ namespace XIVAutoAttack.Helpers
                     //居然在打非T！
                     if (!tankIDS.Contains(target.TargetObjectId) && (!needDistance || Vector3.Distance(target.Position, loc) > 5))
                     {
-                        targets.Add(target);
+                        return true;
                     }
                 }
-            }
+                return false;
+            });
+
             //没有敌对势力，那随便用
-            if (targets.Count == 0) return inputCharas;
+            if (!targets.Any()) return inputCharas;
             //返回在打队友的讨厌鬼！
-            return targets.ToArray();
+            return targets;
         }
 
         /// <summary>
@@ -178,95 +151,91 @@ namespace XIVAutoAttack.Helpers
         /// <param name="deathAll"></param>
         /// <param name="deathParty"></param>
         /// <returns></returns>
-        internal static BattleChara GetDeathPeople(BattleChara[] deathAll, BattleChara[] deathParty)
+        internal static BattleChara GetDeathPeople(IEnumerable<BattleChara> deathAll, IEnumerable<BattleChara> deathParty)
         {
-            if (deathParty.Length != 0)
+            if (deathParty.Any())
             {
                 //确认一下死了的T有哪些。
 
                 var deathT = GetJobCategory(deathParty, JobRole.Tank);
-                int TCount = TargetUpdater.PartyTanks.Length;
+                int TCount = TargetUpdater.PartyTanks.Count();
 
                 //如果全死了，赶紧复活啊。
-                if (TCount > 0 && deathT.Length == TCount)
+                if (TCount > 0 && deathT.Count() == TCount)
                 {
-                    return deathT[0];
+                    return deathT.First();
                 }
 
                 //确认一下死了的H有哪些。
                 var deathH = GetJobCategory(deathParty, JobRole.Healer);
 
                 //如果H死了，就先救他。
-                if (deathH.Length != 0) return deathH[0];
+                if (deathH.Count() != 0) return deathH.First();
 
                 //如果T死了，就再救他。
-                if (deathT.Length != 0) return deathT[0];
+                if (deathT.Count() != 0) return deathT.First();
 
                 //T和H都还活着，那就随便救一个。
-                return deathParty[0];
+                return deathParty.First();
             }
 
-            //如果一个都没死，那为啥还要救呢？
-            if (deathAll.Length == 0) return null;
+            if (deathAll.Any())
+            {
+                //确认一下死了的H有哪些。
+                var deathAllH = GetJobCategory(deathAll, JobRole.Healer);
+                if (deathAllH.Count() != 0) return deathAllH.First();
 
-            //确认一下死了的H有哪些。
-            var deathAllH = GetJobCategory(deathAll, JobRole.Healer);
-            if (deathAllH.Length != 0) return deathAllH[0];
+                //确认一下死了的T有哪些。
+                var deathAllT = GetJobCategory(deathAll, JobRole.Tank);
+                if (deathAllT.Count() != 0) return deathAllT.First();
 
-            //确认一下死了的T有哪些。
-            var deathAllT = GetJobCategory(deathAll, JobRole.Tank);
-            if (deathAllT.Length != 0) return deathAllT[0];
+                return deathAll.First();
+            }
 
-            return deathAll[0];
+            return null;
         }
 
-        internal unsafe static BattleChara[] GetTargetable(BattleChara[] charas)
+        internal unsafe static IEnumerable<BattleChara> GetTargetable(IEnumerable<BattleChara> charas)
         {
-            return charas.Where(item => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)item.Address)->GetIsTargetable()).ToArray();
+            return charas.Where(item => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)item.Address)->GetIsTargetable());
         }
 
-        internal unsafe static BattleChara[] GetDeath(this BattleChara[] charas)
+        internal unsafe static IEnumerable<BattleChara> GetDeath(this IEnumerable<BattleChara> charas)
         {
             charas = GetTargetable(charas);
 
-            List<BattleChara> list = new List<BattleChara>(charas.Length);
-            foreach (var item in charas)
+            return charas.Where(item =>
             {
                 //如果还有血，就算了。
-                if (item.CurrentHp != 0) continue;
+                if (item.CurrentHp != 0) return false;
 
                 //如果已经有复活的Buff了，那就算了。
-                if (item.HasStatus(false, StatusID.Raise)) continue;
+                if (item.HasStatus(false, StatusID.Raise)) return false;
 
                 //如果濒死了，那给我TMD冷静冷静！等着另一个奶大发慈悲吧。
-                if (!Service.Configuration.RaiseBrinkofDeath && item.HasStatus(false, StatusID.BrinkofDeath)) continue;
+                if (!Service.Configuration.RaiseBrinkofDeath && item.HasStatus(false, StatusID.BrinkofDeath)) return false;
 
                 //如果有人在对着他咏唱，那就算了。
-                if (TargetUpdater.AllianceMembers.Any(c => c.CastTargetObjectId == item.ObjectId)) continue;
+                if (TargetUpdater.AllianceMembers.Any(c => c.CastTargetObjectId == item.ObjectId)) return false;
 
-                list.Add(item);
-            }
-            return list.ToArray();
+                return true;
+            });
         }
-        internal static BattleChara[] GetTargetCanDot(BattleChara[] objects)
+        internal static IEnumerable<BattleChara> GetTargetCanDot(IEnumerable<BattleChara> objects)
         {
-            return objects.Where(b => b.CanDot()).ToArray();
+            return objects.Where(b => b.CanDot());
         }
 
 
-        internal static BattleChara[] GetJobCategory(this BattleChara[] objects, params JobRole[] roles)
+        internal static IEnumerable<BattleChara> GetJobCategory(this IEnumerable<BattleChara> objects, params JobRole[] roles)
         {
-            List<BattleChara> result = new(objects.Length);
-
-            foreach (var role in roles)
+            return roles.SelectMany(role =>
             {
-                foreach (var obj in objects)
+                return objects.Where(obj =>
                 {
-                    if (IsJobCategory(obj, role)) result.Add(obj);
-                }
-            }
-
-            return result.ToArray();
+                    return IsJobCategory(obj, role);
+                });
+            });
         }
 
         private static bool IsJobCategory(this BattleChara obj, JobRole role)
@@ -284,35 +253,35 @@ namespace XIVAutoAttack.Helpers
             return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
         }
 
-        internal static BattleChara ASTRangeTarget(BattleChara[] ASTTargets)
+        internal static BattleChara ASTRangeTarget(IEnumerable<BattleChara> ASTTargets)
         {
-            ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
+            ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath));
 
             return GetTargetByJobs(ASTTargets, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Melee);
         }
 
-        internal static BattleChara ASTMeleeTarget(BattleChara[] ASTTargets)
+        internal static BattleChara ASTMeleeTarget(IEnumerable<BattleChara> ASTTargets)
         {
-            ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
+            ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath));
 
 
             return GetTargetByJobs(ASTTargets, JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical);
         }
 
-        private static BattleChara GetTargetByJobs(this BattleChara[] tars, params JobRole[] roles)
+        private static BattleChara GetTargetByJobs(this IEnumerable<BattleChara> tars, params JobRole[] roles)
         {
             foreach (var role in roles)
             {
                 var targets = GetASTCardTargets(GetJobCategory(tars, role));
-                if (targets.Length > 0) return RandomObject(targets);
+                if (targets.Count() > 0) return RandomObject(targets);
             }
             var ts = GetASTCardTargets(tars);
-            if (ts.Length > 0) return RandomObject(ts);
+            if (ts.Count() > 0) return RandomObject(ts);
 
             return null;
         }
 
-        private static BattleChara[] GetASTCardTargets(BattleChara[] sources)
+        private static IEnumerable<BattleChara> GetASTCardTargets(IEnumerable<BattleChara> sources)
         {
             var allStatus = new StatusID[]
             {
@@ -323,13 +292,13 @@ namespace XIVAutoAttack.Helpers
             StatusID.TheSpear,
             StatusID.TheSpire,
             };
-            return sources.Where((t) => !t.HasStatus(true, allStatus)).ToArray();
+            return sources.Where((t) => !t.HasStatus(true, allStatus));
         }
 
-        private static BattleChara RandomObject(BattleChara[] objs)
+        private static BattleChara RandomObject(IEnumerable<BattleChara> objs)
         {
             Random ran = new Random(DateTime.Now.Millisecond);
-            return objs[ran.Next(objs.Length)];
+            return objs.ElementAt(ran.Next(objs.Count()));
         }
 
         #endregion
@@ -342,22 +311,22 @@ namespace XIVAutoAttack.Helpers
         /// <param name="objects"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        internal static T[] GetObjectInRadius<T>(this T[] objects, float radius) where T : GameObject
+        internal static IEnumerable<T> GetObjectInRadius<T>(this IEnumerable<T> objects, float radius) where T : GameObject
         {
-            return objects.Where(o => DistanceToPlayer(o) <= radius).ToArray();
+            return objects.Where(o => DistanceToPlayer(o) <= radius);
         }
 
-        private static T[] GetMostObject<T>(T[] canAttack, float radius, float range, Func<T, T[], float, byte> HowMany, bool mostCount, int maxCount) where T : BattleChara
+        private static IEnumerable<T> GetMostObject<T>(IEnumerable<T> canAttack, float radius, float range, Func<T, IEnumerable<T>, float, byte> HowMany, bool mostCount, int maxCount) where T : BattleChara
         {
             //能够打到的所有怪。
-            T[] canGetObj = GetObjectInRadius(canAttack, radius);
+            IEnumerable<T> canGetObj = GetObjectInRadius(canAttack, radius);
             return GetMostObject(canAttack, canGetObj, range, HowMany, mostCount, maxCount);
         }
 
-        private static T[] GetMostObject<T>(T[] canAttack, T[] canGetObj, float range, Func<T, T[], float, byte> HowMany, bool mostCount, int maxCount) where T : BattleChara
+        private static IEnumerable<T> GetMostObject<T>(IEnumerable<T> canAttack, IEnumerable<T> canGetObj, float range, Func<T, IEnumerable<T>, float, byte> HowMany, bool mostCount, int maxCount) where T : BattleChara
         {
             //能打到MaxCount以上数量的怪的怪。
-            List<T> objectMax = new List<T>(canGetObj.Length);
+            List<T> objectMax = new List<T>(canGetObj.Count());
 
             //循环能打中的目标。
             foreach (var t in canGetObj)
@@ -380,10 +349,10 @@ namespace XIVAutoAttack.Helpers
                 }
             }
 
-            return objectMax.ToArray();
+            return objectMax;
         }
 
-        internal static T[] GetMostObjectInRadius<T>(T[] objects, float radius, float range, bool mostCount, int maxCount) where T : BattleChara
+        internal static IEnumerable<T> GetMostObjectInRadius<T>(IEnumerable<T> objects, float radius, float range, bool mostCount, int maxCount) where T : BattleChara
         {
             //可能可以被打到的怪。
             var canAttach = GetObjectInRadius(objects, radius + range);
@@ -394,14 +363,14 @@ namespace XIVAutoAttack.Helpers
 
         }
 
-        internal static T[] GetMostObjectInRadius<T>(T[] objects, T[] canGetObjects, float radius, float range, bool mostCount, int maxCount) where T : BattleChara
+        internal static IEnumerable<T> GetMostObjectInRadius<T>(IEnumerable<T> objects, IEnumerable<T> canGetObjects, float radius, float range, bool mostCount, int maxCount) where T : BattleChara
         {
             var canAttach = GetObjectInRadius(objects, radius + range);
 
             return GetMostObject(canAttach, canGetObjects, range, CalculateCount, mostCount, maxCount);
 
             //计算一下在这些可选目标中有多少个目标可以受到攻击。
-            static byte CalculateCount(T t, T[] objects, float range)
+            static byte CalculateCount(T t, IEnumerable<T> objects, float range)
             {
                 byte count = 0;
                 foreach (T obj in objects)
@@ -415,7 +384,7 @@ namespace XIVAutoAttack.Helpers
             }
         }
 
-        internal static T[] GetMostObjectInArc<T>(T[] objects, float radius, bool mostCount, int maxCount) where T : BattleChara
+        internal static IEnumerable<T> GetMostObjectInArc<T>(IEnumerable<T> objects, float radius, bool mostCount, int maxCount) where T : BattleChara
         {
             //能够打到的所有怪。
             var canGet = GetObjectInRadius(objects, radius);
@@ -423,7 +392,7 @@ namespace XIVAutoAttack.Helpers
             return GetMostObject(canGet, radius, radius, CalculateCount, mostCount, maxCount);
 
             //计算一下在这些可选目标中有多少个目标可以受到攻击。
-            static byte CalculateCount(T t, T[] objects, float _)
+            static byte CalculateCount(T t, IEnumerable<T> objects, float _)
             {
                 byte count = 0;
 
@@ -443,7 +412,7 @@ namespace XIVAutoAttack.Helpers
             }
         }
 
-        internal static T[] GetMostObjectInLine<T>(T[] objects, float radius, bool mostCount, int maxCount) where T : BattleChara
+        internal static IEnumerable<T> GetMostObjectInLine<T>(IEnumerable<T> objects, float radius, bool mostCount, int maxCount) where T : BattleChara
         {
             //能够打到的所有怪。
             var canGet = GetObjectInRadius(objects, radius);
@@ -451,7 +420,7 @@ namespace XIVAutoAttack.Helpers
             return GetMostObject(canGet, radius, radius, CalculateCount, mostCount, maxCount);
 
             //计算一下在这些可选目标中有多少个目标可以受到攻击。
-            static byte CalculateCount(T t, T[] objects, float _)
+            static byte CalculateCount(T t, IEnumerable<T> objects, float _)
             {
                 byte count = 0;
 
@@ -485,7 +454,7 @@ namespace XIVAutoAttack.Helpers
             return distance;
         }
 
-        internal static BattleChara GetAttackMarkChara(BattleChara[] charas)
+        internal static BattleChara GetAttackMarkChara(IEnumerable<BattleChara> charas)
         {
             if (!Service.Configuration.ChooseAttackMark) return null;
 
@@ -506,28 +475,28 @@ namespace XIVAutoAttack.Helpers
             return null;
         }
 
-        private static BattleChara[] DefaultTargetingType(BattleChara[] charas)
+        private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
         {
             switch (CommandController.RightTargetingType)
             {
                 default:
                 case TargetingType.Big:
-                    return charas.OrderByDescending(p => p.HitboxRadius).ToArray();
+                    return charas.OrderByDescending(p => p.HitboxRadius);
 
                 case TargetingType.Small:
-                    return charas.OrderBy(p => p.HitboxRadius).ToArray();
+                    return charas.OrderBy(p => p.HitboxRadius);
 
                 case TargetingType.HighHP:
-                    return charas.OrderByDescending(p => p.CurrentHp).ToArray();
+                    return charas.OrderByDescending(p => p.CurrentHp);
 
                 case TargetingType.LowHP:
-                    return charas.OrderBy(p => p.CurrentHp).ToArray();
+                    return charas.OrderBy(p => p.CurrentHp);
 
                 case TargetingType.HighMaxHP:
-                    return charas.OrderByDescending(p => p.MaxHp).ToArray();
+                    return charas.OrderByDescending(p => p.MaxHp);
 
                 case TargetingType.LowMaxHP:
-                    return charas.OrderBy(p => p.MaxHp).ToArray();
+                    return charas.OrderBy(p => p.MaxHp);
             }
         }
     }

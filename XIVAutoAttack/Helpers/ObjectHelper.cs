@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
 using System;
+using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
@@ -91,11 +92,12 @@ namespace XIVAutoAttack.Helpers
             var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
                     Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
             var multi = role == JobRole.Tank ? mult : mult * 1.5f;
-            if (TargetUpdater.PartyMembers.Length > 4)
+            var partyCount = TargetUpdater.PartyMembers.Count();
+            if (partyCount > 4)
             {
                 multi *= 2;
             }
-            else if (TargetUpdater.PartyMembers.Length == 1)
+            else if (partyCount == 1)
             {
                 multi = 0.5f;
             }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -101,7 +102,7 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
     {
         if (abilityRemain == 2)
         {
-            if (TargetUpdater.HostileTargets.Length == 1)
+            if (TargetUpdater.HostileTargets.Count() == 1)
             {
                 //¸´³ð£¨¼õÉË30%£©
                 if (Vengeance.ShouldUse(out act)) return true;

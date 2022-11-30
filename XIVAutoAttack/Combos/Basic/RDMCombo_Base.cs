@@ -29,7 +29,7 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     protected static byte ManaStacks => JobGauge.ManaStacks;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.RedMage };
-    protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Length == 1 && base.CanHealSingleSpell;
+    protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
     //看看现在有没有促进
 
     private sealed protected override BaseAction Raise => Verraise;

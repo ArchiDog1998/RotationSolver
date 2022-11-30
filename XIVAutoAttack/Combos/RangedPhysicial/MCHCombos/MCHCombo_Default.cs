@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -27,7 +28,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
     /// <summary>
     /// 4人本小怪快死了
     /// </summary>
-    private static bool isDyingNotBoss => !Target.IsBoss() && IsTargetDying && TargetUpdater.PartyMembers.Length is > 1 and <= 4;
+    private static bool isDyingNotBoss => !Target.IsBoss() && IsTargetDying && TargetUpdater.PartyMembers.Count() is > 1 and <= 4;
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
@@ -176,7 +177,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (Heat < 50 && !IsOverheated) return false;
 
         //小怪和AOE期间不打野火
-        if (SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()) return false;
+        if (SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Count() is > 1 and <= 4 && !Target.IsBoss()) return false;
 
         //在过热时
         if (IsLastAction(true, Hypercharge)) return true;
@@ -212,7 +213,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(3) || !ChainSaw.IsCoolDown) && Config.GetBoolByName("MCH_Opener")) return false;
 
         //小怪AOE和4人本超荷判断
-        if (SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss())
+        if (SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Count() is > 1 and <= 4 && !Target.IsBoss())
         {
             if (IsMoving) return false;
             if (!IsMoving) return true;
@@ -251,7 +252,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
 
         //小怪,AOE,不吃团辅判断
         if (!Config.GetBoolByName("MCH_Automaton") || !Target.IsBoss() && !IsMoving || Level < Wildfire.ID) return true;
-        if ((SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss()) && IsMoving) return false;
+        if ((SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Count() is > 1 and <= 4 && !Target.IsBoss()) && IsMoving) return false;
 
         //机器人吃团辅判断
         if (AirAnchor.IsCoolDown && AirAnchor.WillHaveOneChargeGCD() && Battery > 80) return true;

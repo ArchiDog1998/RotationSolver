@@ -22,41 +22,41 @@ namespace XIVAutoAttack.Updaters
         /// <summary>
         /// 小队成员们
         /// </summary>
-        public static BattleChara[] PartyMembers { get; private set; } = new PlayerCharacter[0];
+        public static IEnumerable<BattleChara> PartyMembers { get; private set; } = new PlayerCharacter[0];
         /// <summary>
         /// 团队成员们
         /// </summary>
-        internal static BattleChara[] AllianceMembers { get; private set; } = new PlayerCharacter[0];
+        internal static IEnumerable<BattleChara> AllianceMembers { get; private set; } = new PlayerCharacter[0];
 
         /// <summary>
         /// 小队坦克们
         /// </summary>
-        internal static BattleChara[] PartyTanks { get; private set; } = new PlayerCharacter[0];
+        internal static IEnumerable<BattleChara> PartyTanks { get; private set; } = new PlayerCharacter[0];
         /// <summary>
         /// 小队治疗们
         /// </summary>
-        internal static BattleChara[] PartyHealers { get; private set; } = new PlayerCharacter[0];
+        internal static IEnumerable<BattleChara> PartyHealers { get; private set; } = new PlayerCharacter[0];
 
         /// <summary>
         /// 团队坦克们
         /// </summary>
-        internal static BattleChara[] AllianceTanks { get; private set; } = new PlayerCharacter[0];
+        internal static IEnumerable<BattleChara> AllianceTanks { get; private set; } = new PlayerCharacter[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static BattleChara[] DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
+        internal static IEnumerable<BattleChara> DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static BattleChara[] DeathPeopleParty { get; private set; } = new PlayerCharacter[0];
+        internal static IEnumerable<BattleChara> DeathPeopleParty { get; private set; } = new PlayerCharacter[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static BattleChara[] WeakenPeople { get; private set; } = new PlayerCharacter[0];
+        internal static IEnumerable<BattleChara> WeakenPeople { get; private set; } = new PlayerCharacter[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static BattleChara[] DyingPeople { get; private set; } = new PlayerCharacter[0];
+        internal static IEnumerable<BattleChara> DyingPeople { get; private set; } = new PlayerCharacter[0];
         /// <summary>
         /// 小队成员HP
         /// </summary>
-        internal static float[] PartyMembersHP { get; private set; } = new float[0];
+        internal static IEnumerable<float> PartyMembersHP { get; private set; } = new float[0];
         /// <summary>
         /// 小队成员最小的HP
         /// </summary>
@@ -104,10 +104,10 @@ namespace XIVAutoAttack.Updaters
             #region Friend
             var party = Service.PartyList;
             PartyMembers = party.Length == 0 ? Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer } :
-                party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara).ToArray();
+                party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara);
 
             //添加亲信
-            PartyMembers = PartyMembers.Union(Service.ObjectTable.Where(obj => obj.SubKind == 9 && obj is BattleChara).Cast<BattleChara>()).ToArray();
+            PartyMembers = PartyMembers.Union(Service.ObjectTable.Where(obj => obj.SubKind == 9 && obj is BattleChara).Cast<BattleChara>());
 
             HavePet = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc
                     && npc.BattleNpcKind == BattleNpcSubKind.Pet
@@ -117,7 +117,7 @@ namespace XIVAutoAttack.Updaters
                     && npc.BattleNpcKind == BattleNpcSubKind.Chocobo
                     && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
 
-            AllianceMembers = Service.ObjectTable.Where(obj => obj is PlayerCharacter).Select(obj => (PlayerCharacter)obj).ToArray();
+            AllianceMembers = Service.ObjectTable.OfType<PlayerCharacter>();
 
             PartyTanks = PartyMembers.GetJobCategory(JobRole.Tank);
             PartyHealers = PartyMembers.GetObjectInRadius(30).GetJobCategory(JobRole.Healer);
@@ -134,7 +134,7 @@ namespace XIVAutoAttack.Updaters
                     if (status.GameData.CanDispel && status.RemainingTime > 2) return true;
                 }
                 return false;
-            }).ToArray();
+            });
 
             var dangeriousStatus = new StatusID[]
             {
@@ -161,7 +161,7 @@ namespace XIVAutoAttack.Updaters
                 StatusID.Nightmare,
                 StatusID.Necrosis,
             };
-            DyingPeople = WeakenPeople.Where(p => p.HasStatus(false, dangeriousStatus)).ToArray();
+            DyingPeople = WeakenPeople.Where(p => p.HasStatus(false, dangeriousStatus));
 
             SayHelloToAuthor();
             #endregion
@@ -169,14 +169,14 @@ namespace XIVAutoAttack.Updaters
             #region Health
             var members = PartyMembers;
 
-            PartyMembersHP = TargetFilter.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp).ToArray();
+            PartyMembersHP = TargetFilter.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp);
 
             float averHP = 0;
             foreach (var hp in PartyMembersHP)
             {
                 averHP += hp;
             }
-            PartyMembersAverHP = averHP / PartyMembersHP.Length;
+            PartyMembersAverHP = averHP / PartyMembersHP.Count();
 
             double differHP = 0;
             float average = PartyMembersAverHP;
@@ -184,7 +184,7 @@ namespace XIVAutoAttack.Updaters
             {
                 differHP += Math.Pow(hp - average, 2);
             }
-            PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Length);
+            PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Count());
 
             //TODO:少了所有罩子类技能
             var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer,
@@ -226,7 +226,7 @@ namespace XIVAutoAttack.Updaters
             });
             CanHealSingleSpell = gcdCount > 0;
 
-            PartyMembersMinHP = PartyMembersHP.Length == 0 ? 0 : PartyMembersHP.Min();
+            PartyMembersMinHP = PartyMembersHP.Count() == 0 ? 0 : PartyMembersHP.Min();
             HPNotFull = PartyMembersMinHP < 1;
             #endregion
         }
@@ -257,14 +257,14 @@ namespace XIVAutoAttack.Updaters
             _locations = locs;
         }
 
-        private static BattleChara[] FilterForDeath(BattleChara[] battleCharas)
+        private static IEnumerable<BattleChara> FilterForDeath(IEnumerable<BattleChara> battleCharas)
         {
             return battleCharas.Where(b =>
             {
                 if (!_locations.TryGetValue(b.ObjectId, out var loc)) return false;
 
                 return loc == b.Position;
-            }).ToArray();
+            });
         }
 
 

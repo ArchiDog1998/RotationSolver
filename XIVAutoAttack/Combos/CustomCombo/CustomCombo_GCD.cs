@@ -163,7 +163,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (Raise == null) return false;
 
             //有某些非常危险的状态。
-            if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
+            if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
             {
                 if (Job.GetJobRole() == JobRole.Healer && Esuna.ShouldUse(out act, mustUse: true)) return true;
             }
@@ -172,7 +172,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             if (Player.CurrentMp <= Service.Configuration.LessMPNoRaise) return false;
 
             //有人死了，看看能不能救。
-            if (Service.Configuration.RaiseAll ? TargetUpdater.DeathPeopleAll.Length > 0 : TargetUpdater.DeathPeopleParty.Length > 0)
+            if (Service.Configuration.RaiseAll ? TargetUpdater.DeathPeopleAll.Any() : TargetUpdater.DeathPeopleParty.Any())
             {
                 if (Service.ClientState.LocalPlayer.ClassJob.Id == 35)
                 {

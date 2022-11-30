@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using System.Linq;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -103,9 +104,9 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         ChoiceTarget = Targets =>
         {
             var targets = Targets.GetJobCategory(JobRole.Tank);
-            targets = targets.Length == 0 ? Targets : targets;
+            targets = targets.Any() ? targets : Targets;
 
-            if (targets.Length == 0) return null;
+            if (!targets.Any()) return null;
 
             return TargetFilter.FindAttackedTarget(targets);
         },

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -28,8 +29,8 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
     /// <summary>
     /// 在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
     /// </summary>
-    private static bool CanUseSpellInDungeonsMiddle => TargetUpdater.PartyMembers.Length is > 1 and <= 4 && !Target.IsBoss() && !IsMoving
-                                                    && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Length >= 3;
+    private static bool CanUseSpellInDungeonsMiddle => TargetUpdater.PartyMembers.Count() is > 1 and <= 4 && !Target.IsBoss() && !IsMoving
+                                                    && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 5).Count() >= 3;
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {

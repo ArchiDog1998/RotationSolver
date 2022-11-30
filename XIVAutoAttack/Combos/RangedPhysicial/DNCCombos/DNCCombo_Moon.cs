@@ -187,7 +187,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 
         if (Windmill.ShouldUse(out _)) return true;
 
-        if (TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) return false;
+        if (TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Count() >= 3) return false;
 
         return false;
     }

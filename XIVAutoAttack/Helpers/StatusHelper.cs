@@ -59,25 +59,25 @@ namespace XIVAutoAttack.Helpers
         internal static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
             var times = obj.StatusTimes(isFromSelf, effectIDs);
-            if (times == null || times.Length == 0) return 0;
+            if (times == null || !times.Any()) return 0;
             return times.Max();
         }
 
-        private static float[] StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+        private static IEnumerable<float> StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.GetStatus(isFromSelf, effectIDs).Select(status => status.RemainingTime == 0 ? float.MaxValue : status.RemainingTime).ToArray();
+            return obj.GetStatus(isFromSelf, effectIDs).Select(status => status.RemainingTime == 0 ? float.MaxValue : status.RemainingTime);
         }
 
         internal static byte StatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
             var stacks = obj.StatusStacks(isFromSelf, effectIDs);
-            if (stacks == null || stacks.Length == 0) return 0;
+            if (stacks == null || !stacks.Any()) return 0;
             return stacks.Max();
         }
 
-        private static byte[] StatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+        private static IEnumerable<byte> StatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.GetStatus(isFromSelf, effectIDs).Select(status => status.StackCount == 0 ? byte.MaxValue : status.StackCount).ToArray();
+            return obj.GetStatus(isFromSelf, effectIDs).Select(status => status.StackCount == 0 ? byte.MaxValue : status.StackCount);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace XIVAutoAttack.Helpers
         /// <returns>是否拥有任何一个状态</returns>
         internal static bool HasStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.GetStatus(isFromSelf, effectIDs).Length > 0;
+            return obj.GetStatus(isFromSelf, effectIDs).Any();
         }
 
         internal static void StatusOff(StatusID status)
@@ -106,18 +106,18 @@ namespace XIVAutoAttack.Helpers
             return Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow((uint)id).Name.ToString();
         }
 
-        private static Status[] GetStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+        private static IEnumerable<Status> GetStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            uint[] newEffects = effectIDs.Select(a => (uint)a).ToArray();
-            return obj.GetAllStatus(isFromSelf).Where(status => newEffects.Contains(status.StatusId)).ToArray();
+            var newEffects = effectIDs.Select(a => (uint)a);
+            return obj.GetAllStatus(isFromSelf).Where(status => newEffects.Contains(status.StatusId));
         }
 
-        private static Status[] GetAllStatus(this BattleChara obj, bool isFromSelf)
+        private static IEnumerable<Status> GetAllStatus(this BattleChara obj, bool isFromSelf)
         {
             if (obj == null) return new Status[0];
 
             return obj.StatusList.Where(status => isFromSelf ? status.SourceID == Service.ClientState.LocalPlayer.ObjectId
-            || status.SourceObject?.OwnerId == Service.ClientState.LocalPlayer.ObjectId : true).ToArray();
+            || status.SourceObject?.OwnerId == Service.ClientState.LocalPlayer.ObjectId : true);
         }
     }
 }

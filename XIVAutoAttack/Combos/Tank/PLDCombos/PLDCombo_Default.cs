@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -25,7 +26,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
 
-    protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Length == 1 && base.CanHealSingleSpell;
+    protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {

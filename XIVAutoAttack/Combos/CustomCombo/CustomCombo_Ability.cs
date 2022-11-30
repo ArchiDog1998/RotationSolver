@@ -25,7 +25,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         if (EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
         var role = Job.GetJobRole();
 
-        if (TargetUpdater.CanInterruptTargets.Length > 0)
+        if (TargetUpdater.CanInterruptTargets.Any())
         {
             switch (role)
             {
@@ -114,8 +114,8 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
             if (role == JobRole.Tank)
             {
                 var haveTargets = TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets);
-                if ((Service.Configuration.AutoProvokeForTank || TargetUpdater.AllianceTanks.Length < 2)
-                    && haveTargets.Length != TargetUpdater.HostileTargets.Length
+                if ((Service.Configuration.AutoProvokeForTank || TargetUpdater.AllianceTanks.Count() < 2)
+                    && haveTargets.Count() != TargetUpdater.HostileTargets.Count()
                     || CommandController.BreakorProvoke)
 
                 {
@@ -127,17 +127,19 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
                 if (Service.Configuration.AutoDefenseForTank && HaveShield
                     && !Service.Configuration.NoDefenceAbility)
                 {
+                    var tarOnmeCount = TargetUpdater.TarOnMeTargets.Count();
+
                     //被群殴呢
-                    if (TargetUpdater.TarOnMeTargets.Length > 1 && !IsMoving)
+                    if (tarOnmeCount > 1 && !IsMoving)
                     {
                         if (ArmsLength.ShouldUse(out act)) return true;
                         if (DefenceSingleAbility(abilityRemain, out act)) return true;
                     }
 
                     //就一个打我，需要正在对我搞事情。
-                    if (TargetUpdater.TarOnMeTargets.Length == 1)
+                    if (tarOnmeCount == 1)
                     {
-                        var tar = TargetUpdater.TarOnMeTargets[0];
+                        var tar = TargetUpdater.TarOnMeTargets.First();
                         if (TargetUpdater.IsHostileTank)
                         {
                             //防卫

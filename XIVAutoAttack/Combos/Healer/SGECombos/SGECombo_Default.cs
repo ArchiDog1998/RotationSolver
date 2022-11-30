@@ -27,8 +27,8 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
     };
 
-    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
-    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Length < 2);
+    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
+    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
 
     private protected override ActionConfiguration CreateConfiguration()
     {
@@ -209,7 +209,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         if (!InCombat)
         {
             var tank = TargetUpdater.PartyTanks;
-            if (tank.Length == 1 && EukrasianDiagnosis.ShouldUse(out act))
+            if (tank.Count() == 1 && EukrasianDiagnosis.ShouldUse(out act))
             {
                 if (tank.First().HasStatus(true,
                     StatusID.EukrasianDiagnosis,
@@ -240,7 +240,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         //当资源不足时加入范围治疗缓解压力
         var tank = TargetUpdater.PartyTanks;
         var isBoss = Dosis.Target.IsBoss();
-        if (Addersgall == 0 && tank.Length == 1 && tank.Any(t => t.GetHealthRatio() < 0.6f) && !isBoss)
+        if (Addersgall == 0 && tank.Count() == 1 && tank.Any(t => t.GetHealthRatio() < 0.6f) && !isBoss)
         {
             //整体论
             if (Holos.ShouldUse(out act)) return true;

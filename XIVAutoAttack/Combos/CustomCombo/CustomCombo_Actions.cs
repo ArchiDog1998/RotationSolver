@@ -51,11 +51,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
         {
             ChoiceTarget = (tars) =>
             {
-                if (TargetUpdater.DyingPeople.Length > 0)
+                if (TargetUpdater.DyingPeople.Any())
                 {
                     return TargetUpdater.DyingPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
                 }
-                else if (TargetUpdater.WeakenPeople.Length > 0)
+                else if (TargetUpdater.WeakenPeople.Any())
                 {
                     return TargetUpdater.WeakenPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
                 }
@@ -137,12 +137,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static RoleAction Shirk { get; } = new(ActionID.Shirk, new JobRole[] { JobRole.Tank }, true, isTimeline: true)
         {
-            ChoiceTarget = friends =>
-            {
-                var tanks = TargetFilter.GetJobCategory(friends, JobRole.Tank);
-                if (tanks == null || tanks.Length == 0) return null;
-                return tanks[0];
-            },
+            ChoiceTarget = friends => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault(),
         };
 
         /// <summary>

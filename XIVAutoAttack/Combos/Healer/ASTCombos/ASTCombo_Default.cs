@@ -192,7 +192,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
 
         var tank = TargetUpdater.PartyTanks;
         var isBoss = Malefic.IsTargetBoss;
-        if (EssentialDignity.IsCoolDown && tank.Length == 1 && tank.Any(t => t.GetHealthRatio() < 0.5) && !isBoss)
+        if (EssentialDignity.IsCoolDown && tank.Count() == 1 && tank.Any(t => t.GetHealthRatio() < 0.5) && !isBoss)
         {
             //群Hot
             if (CelestialOpposition.ShouldUse(out act)) return true;

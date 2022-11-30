@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Configuration;
@@ -124,7 +125,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             if (BlueId == BLUID.Healer)
             {
                 //有某些非常危险的状态。
-                if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Length > 0 || TargetUpdater.DyingPeople.Length > 0)
+                if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
                 {
                     if (Exuviation.ShouldUse(out act, mustUse: true)) return true;
                 }
@@ -365,7 +366,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             //陆行鸟陨石
             if (TargetUpdater.HaveChocobo && ChocoMeteor.ShouldUse(out act, mustUse: true)) return true;
 
-            if (TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 6).Length < 3)
+            if (TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 6).Count() < 3)
             {
                 //水力吸引
                 if (HydroPull.ShouldUse(out act)) return true;

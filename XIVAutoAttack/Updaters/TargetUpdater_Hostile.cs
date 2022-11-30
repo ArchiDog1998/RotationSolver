@@ -15,18 +15,18 @@ namespace XIVAutoAttack.Updaters
 {
     internal static partial class TargetUpdater
     {
-        private static BattleChara[] AllTargets { get; set; } = new BattleChara[0];
+        private static IEnumerable<BattleChara> AllTargets { get; set; } = new BattleChara[0];
 
         /// <summary>
         /// 敌人
         /// </summary>
-        internal static BattleChara[] HostileTargets { get; private set; } = new BattleChara[0];
+        internal static IEnumerable<BattleChara> HostileTargets { get; private set; } = new BattleChara[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static BattleChara[] TarOnMeTargets { get; private set; } = new BattleChara[0];
+        internal static IEnumerable<BattleChara> TarOnMeTargets { get; private set; } = new BattleChara[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static BattleChara[] CanInterruptTargets { get; private set; } = new BattleChara[0];
+        internal static IEnumerable<BattleChara> CanInterruptTargets { get; private set; } = new BattleChara[0];
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool HaveHostilesInRange { get; private set; } = false;
@@ -40,19 +40,19 @@ namespace XIVAutoAttack.Updaters
         internal unsafe static void UpdateHostileTargets()
         {
             //能打的目标
-            AllTargets = TargetFilter.GetTargetable(TargetFilter.GetObjectInRadius(Service.ObjectTable.ToArray(), 30).Where(obj =>
+            AllTargets = TargetFilter.GetTargetable(TargetFilter.GetObjectInRadius(Service.ObjectTable, 30).Where(obj =>
             {
                 if (obj is BattleChara c && c.CurrentHp != 0)
                 {
                     foreach (var status in c.StatusList)
                     {
-                        if (Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>()
+                        if (Service.DataManager.GetExcelSheet<Status>()
                         .GetRow(status.StatusId).Icon == 15024) return false;
                     }
                     if (obj.CanAttack()) return true;
                 }
                 return false;
-            }).Cast<BattleChara>().ToArray());
+            }).Cast<BattleChara>());
 
             //Filter the fate objects.
             bool inFate = Service.Configuration.ChangeTargetForFate && FateManager.Instance()->FateJoined > 0;
@@ -60,10 +60,10 @@ namespace XIVAutoAttack.Updaters
 
             if (AllTargets != null)
             {
-                HostileTargets = CountDown.CountDownTime > 0 ? AllTargets:
+                HostileTargets = CountDown.CountDownTime > 0 ? AllTargets :
                     AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId) ||
-                    inFate && ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId 
-                    == FateManager.Instance()->CurrentFate->FateId).ToArray();
+                    inFate && ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId
+                    == FateManager.Instance()->CurrentFate->FateId);
 
                 switch (IconReplacer.RightNowTargetToHostileType)
                 {
@@ -73,7 +73,7 @@ namespace XIVAutoAttack.Updaters
 
                     default:
                     case 1:
-                        if (HostileTargets.Length == 0)
+                        if (!HostileTargets.Any())
                             HostileTargets = AllTargets;
                         break;
 
@@ -82,9 +82,9 @@ namespace XIVAutoAttack.Updaters
                 }
 
                 CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2
-                && tar.CurrentCastTime >= Service.Configuration.InterruptibleTime).ToArray();
+                && tar.CurrentCastTime >= Service.Configuration.InterruptibleTime);
 
-                TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId).ToArray();
+                TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId);
 
                 float radius = 25;
                 switch (Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
@@ -95,7 +95,7 @@ namespace XIVAutoAttack.Updaters
                         radius = 3;
                         break;
                 }
-                HaveHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Length > 0;
+                HaveHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Any();
             }
             else
             {
@@ -103,9 +103,9 @@ namespace XIVAutoAttack.Updaters
                 HaveHostilesInRange = false;
             }
 
-            if (HostileTargets.Length == 1)
+            if (HostileTargets.Count() == 1)
             {
-                var tar = HostileTargets[0];
+                var tar = HostileTargets.FirstOrDefault();
 
                 IsHostileTank = IsHostileCastingTank(tar);
                 IsHostileAOE = IsHostileCastingArea(tar);

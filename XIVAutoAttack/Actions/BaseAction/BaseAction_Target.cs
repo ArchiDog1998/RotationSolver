@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Data;
@@ -31,8 +32,8 @@ namespace XIVAutoAttack.Actions.BaseAction
         internal BattleChara Target { get; set; } = Service.ClientState.LocalPlayer;
         private Vector3 _position = default;
 
-        private Func<BattleChara[], BattleChara> _choiceTarget = null;
-        internal Func<BattleChara[], BattleChara> ChoiceTarget
+        private Func<IEnumerable<BattleChara>, BattleChara> _choiceTarget = null;
+        internal Func<IEnumerable<BattleChara>, BattleChara> ChoiceTarget
         {
             private get
             {
@@ -42,8 +43,8 @@ namespace XIVAutoAttack.Actions.BaseAction
             set => _choiceTarget = value;
         }
 
-        private Func<BattleChara[], BattleChara[]> _filterForTarget = null;
-        internal Func<BattleChara[], BattleChara[]> FilterForTarget
+        private Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> _filterForTarget = null;
+        internal Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForTarget
         {
             private get
             {
@@ -61,11 +62,11 @@ namespace XIVAutoAttack.Actions.BaseAction
 
                     if (!MovingUpdater.IsMoving) return tars;
 
-                    var ts = tars.Where(t => !t.HasStatus(true, TargetStatus)).ToArray();
-                    if (ts.Length > 0) return ts;
+                    var ts = tars.Where(t => !t.HasStatus(true, TargetStatus));
+                    if (ts.Any()) return ts;
 
-                    tars = inputTars.Where(t => !t.HasStatus(true, TargetStatus)).ToArray();
-                    if (tars.Length > 0) return tars;
+                    tars = inputTars.Where(t => !t.HasStatus(true, TargetStatus));
+                    if (tars.Any()) return tars;
 
                     return inputTars;
                 };
@@ -80,7 +81,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         internal static bool TankDefenseSelf(BattleChara chara)
         {
-            return TargetUpdater.TarOnMeTargets.Length > 0;
+            return TargetUpdater.TarOnMeTargets.Any();
         }
         internal static bool TankBreakOtherCheck(BattleChara chara)
         {
@@ -110,8 +111,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //移动
                 if (_action.EffectRange == 1 && range >= 15)
                 {
-                    BattleChara[] availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b is BattleChara)
-                        .Select(b => (BattleChara)b).ToArray();
+                    var availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId && b is BattleChara)
+                        .Select(b => (BattleChara)b);
 
                     Target = TargetFilter.FindTargetForMoving(TargetFilter.GetObjectInRadius(availableCharas, 20));
                     _position = Target.Position;
@@ -176,7 +177,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             //如果能对友方和敌方都能选中
             else if (_action.CanTargetParty && _action.CanTargetHostile)
             {
-                BattleChara[] availableCharas = TargetUpdater.PartyMembers.Union(TargetUpdater.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+               var availableCharas = TargetUpdater.PartyMembers.Union(TargetUpdater.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId);
                 availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
 
                 //特殊选队友的方法。
@@ -197,17 +198,17 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
 
                 //找到没死的队友们。
-                BattleChara[] availableCharas = TargetUpdater.PartyMembers.Where(player => player.CurrentHp != 0).ToArray();
+                var availableCharas = TargetUpdater.PartyMembers.Where(player => player.CurrentHp != 0);
 
                 if ((ActionID)ID == ActionID.AetherialMimicry)
                 {
-                    availableCharas = availableCharas.Union(TargetUpdater.AllianceMembers).ToArray();
+                    availableCharas = availableCharas.Union(TargetUpdater.AllianceMembers);
                 }
                 if (!_action.CanTargetSelf)
                 {
-                    availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalPlayer.ObjectId).ToArray();
+                    availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalPlayer.ObjectId);
                 }
-                if (availableCharas.Length == 0) return false;
+                if (!availableCharas.Any()) return false;
 
                 //判断是否是范围。
                 if (_action.CastType > 1 && (ActionID)ID != ActionID.DeploymentTactics)
@@ -295,7 +296,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 {
                     case 1:
                     default:
-                        BattleChara[] canReachTars = FilterForTarget(TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, range));
+                        var canReachTars = FilterForTarget(TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, range));
 
                         Target = ChoiceTarget(canReachTars);
                         if (Target == null) return false;
@@ -333,7 +334,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                         if (!Service.Configuration.UseAOEWhenManual && !mustUse)
                             return false;
                     }
-                    var count = TargetFilter.GetObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange).Length;
+                    var count = TargetFilter.GetObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange).Count();
                     if (count < aoeCount) return false;
                 }
                 return true;

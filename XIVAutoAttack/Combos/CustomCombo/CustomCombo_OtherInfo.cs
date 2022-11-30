@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
@@ -60,7 +61,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 满编小队
         /// </summary>
         [DisplayName("满编小队")]
-        protected static bool IsFullParty => TargetUpdater.PartyMembers.Length is 8;
+        protected static bool IsFullParty => TargetUpdater.PartyMembers.Count() is 8;
 
         /// <summary>
         /// 是否处于爆发，自动爆发或者手动点击的爆发

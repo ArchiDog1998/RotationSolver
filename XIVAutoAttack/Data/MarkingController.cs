@@ -42,13 +42,13 @@ namespace XIVAutoAttack.Data
 
         private static unsafe MarkingController* Instance => (MarkingController*)Service.Address.MarkingController;
 
-        internal static unsafe BattleChara Attack1Chara(BattleChara[] charas) => GetChara(charas, Instance->Attack1);
-        internal static unsafe BattleChara Attack2Chara(BattleChara[] charas) => GetChara(charas, Instance->Attack2);
-        internal static unsafe BattleChara Attack3Chara(BattleChara[] charas) => GetChara(charas, Instance->Attack3);
-        internal static unsafe BattleChara Attack4Chara(BattleChara[] charas) => GetChara(charas, Instance->Attack4);
-        internal static unsafe BattleChara Attack5Chara(BattleChara[] charas) => GetChara(charas, Instance->Attack5);
+        internal static unsafe BattleChara Attack1Chara(IEnumerable<BattleChara> charas) => GetChara(charas, Instance->Attack1);
+        internal static unsafe BattleChara Attack2Chara(IEnumerable<BattleChara> charas) => GetChara(charas, Instance->Attack2);
+        internal static unsafe BattleChara Attack3Chara(IEnumerable<BattleChara> charas) => GetChara(charas, Instance->Attack3);
+        internal static unsafe BattleChara Attack4Chara(IEnumerable<BattleChara> charas) => GetChara(charas, Instance->Attack4);
+        internal static unsafe BattleChara Attack5Chara(IEnumerable<BattleChara> charas) => GetChara(charas, Instance->Attack5);
 
-        internal static bool HaveAttackChara(BattleChara[] charas)
+        internal static bool HaveAttackChara(IEnumerable<BattleChara> charas)
         {
             if (Attack1Chara(charas) != null) return true;
             if (Attack2Chara(charas) != null) return true;
@@ -59,21 +59,15 @@ namespace XIVAutoAttack.Data
         }
 
 
-        private static BattleChara GetChara(BattleChara[] charas, uint id)
+        private static BattleChara GetChara(IEnumerable<BattleChara> charas, uint id)
         {
             if (id == 0xE0000000) return null;
-            foreach (var item in charas)
-            {
-                if (item.ObjectId == id) return item;
-            }
-            return null;
+            return charas.FirstOrDefault(item => item.ObjectId == id);
         }
 
-        internal unsafe static BattleChara[] FilterStopCharaes(BattleChara[] charas)
+        internal unsafe static IEnumerable<BattleChara> FilterStopCharaes(IEnumerable<BattleChara> charas)
         {
-            //return charas;
-
-            List<uint> ids = new List<uint>();
+            List<uint> ids = new List<uint>(2);
             if (Instance->Stop1 != 0xE0000000)
             {
                 ids.Add(Instance->Stop1);
@@ -84,7 +78,7 @@ namespace XIVAutoAttack.Data
             }
             if (ids.Count == 0) return charas;
 
-            return charas.Where(b => !ids.Contains(b.ObjectId)).ToArray();
+            return charas.Where(b => !ids.Contains(b.ObjectId));
         }
     }
 }
