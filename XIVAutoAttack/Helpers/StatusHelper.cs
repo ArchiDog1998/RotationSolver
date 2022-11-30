@@ -65,7 +65,7 @@ namespace XIVAutoAttack.Helpers
 
         private static float[] StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.GetStatus(isFromSelf, effectIDs).Select(status => status.RemainingTime).ToArray();
+            return obj.GetStatus(isFromSelf, effectIDs).Select(status => status.RemainingTime == 0 ? float.MaxValue : status.RemainingTime).ToArray();
         }
 
         internal static byte StatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
@@ -77,7 +77,7 @@ namespace XIVAutoAttack.Helpers
 
         private static byte[] StatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
         {
-            return obj.GetStatus(isFromSelf, effectIDs).Select(status => Math.Max(status.StackCount, (byte)1)).ToArray();
+            return obj.GetStatus(isFromSelf, effectIDs).Select(status => status.StackCount == 0 ? byte.MaxValue : status.StackCount).ToArray();
         }
 
         /// <summary>
