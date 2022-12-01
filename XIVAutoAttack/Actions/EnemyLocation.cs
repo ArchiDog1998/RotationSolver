@@ -1,4 +1,6 @@
-﻿namespace XIVAutoAttack.Actions
+﻿using XIVAutoAttack.Localization;
+
+namespace XIVAutoAttack.Actions
 {
     public enum EnemyLocation : byte
     {
@@ -9,14 +11,13 @@
     }
     public static class EnemyLocationExtensions
     {
-        public static string ToName(this EnemyLocation value)
-            => value switch
-            {
-                EnemyLocation.None => "无",
-                EnemyLocation.Back => "背面",
-                EnemyLocation.Side => "侧面",
-                EnemyLocation.Front => "正面",
-                _ => "错误",
-            };
+        public static string ToName(this EnemyLocation value) => value switch
+        {
+            EnemyLocation.None => LocalizationManager.RightLang.EnemyLocation_None,
+            EnemyLocation.Back => LocalizationManager.RightLang.EnemyLocation_Back,
+            EnemyLocation.Side => LocalizationManager.RightLang.EnemyLocation_Side,
+            EnemyLocation.Front => LocalizationManager.RightLang.EnemyLocation_Front,
+            _ => string.Empty,
+        };
     }
 }

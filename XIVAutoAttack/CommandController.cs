@@ -364,40 +364,52 @@ namespace XIVAutoAttack
                 case "HealArea":
                     StartHealArea();
                     return;
+
                 case "HealSingle":
                     StartHealSingle();
                     return;
+
                 case "DefenseArea":
                     StartDefenseArea();
                     return;
+
                 case "DefenseSingle":
                     StartDefenseSingle();
                     return;
+
                 case "EsunaShield":
                     StartEsunaOrShield();
                     return;
+
                 case "RaiseShirk":
                     StartRaiseOrShirk();
                     return;
+
                 case "Move":
                     StartMove();
                     return;
+
                 case "AntiRepulsion":
                     StartAntiRepulsion();
                     return;
+
                 case "BreakProvoke":
                     StartBreakOrProvoke();
                     return;
+
                 case "AttackSmart":
                     StartAttackSmart();
                     return;
+
                 case "AttackManual":
                     AutoTarget = false;
                     AutoAttack = true;
                     return;
+
                 case "AttackCancel":
                     AttackCancel();
                     return;
+
                 case "AutoBreak":
                     Service.Configuration.AutoBreak = !Service.Configuration.AutoBreak;
                     Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeAutoBreak, Service.Configuration.AutoBreak));
@@ -405,7 +417,6 @@ namespace XIVAutoAttack
                     return;
 
                 default:
-
                     var customCombo = IconReplacer.RightNowCombo;
                     if (customCombo != null)
                     {
@@ -494,6 +505,7 @@ namespace XIVAutoAttack
                         }
                         break;
                     }
+
                     Service.ChatGui.PrintError(LocalizationManager.RightLang.Commands_CannotFind + ": " + str);
                     Service.ChatGui.PrintError(LocalizationManager.RightLang.Commands_OpenSettings);
                     XIVAutoAttackPlugin.OpenConfigWindow();

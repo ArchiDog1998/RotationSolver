@@ -276,6 +276,13 @@ internal class Strings
 
     #endregion
 
+    #region EnemyLocation
+    public string EnemyLocation_None { get; set; } = "无";
+    public string EnemyLocation_Back { get; set; } = "背面";
+    public string EnemyLocation_Side { get; set; } = "侧面";
+    public string EnemyLocation_Front { get; set; } = "正面";
+
+    #endregion
     public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
     {
         #region Combo
