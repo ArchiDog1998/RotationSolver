@@ -217,9 +217,11 @@ internal partial class ComboConfigWindow : Window
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_SwitchAuthor + "\n- "
-                        + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ": " + com.GameVersion);
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_SwitchAuthor);
                 }
+
+                ImGui.SameLine();
+                ImGui.Text(" -" + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ": " + com.GameVersion);
             }
 
             ImGui.SameLine();

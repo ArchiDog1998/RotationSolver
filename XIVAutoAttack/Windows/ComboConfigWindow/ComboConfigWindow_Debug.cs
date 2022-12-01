@@ -19,10 +19,21 @@ internal partial class ComboConfigWindow
         {
             foreach (var item in Service.ClientState.LocalPlayer.StatusList)
             {
-
                 if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
                 {
                     ImGui.Text(item.GameData.Name + item.StatusId);
+                }
+            }
+
+            if (Service.TargetManager.Target is BattleChara b)
+            {
+                ImGui.Separator();
+                foreach (var item in b.StatusList)
+                {
+                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    {
+                        ImGui.Text(item.GameData.Name + item.StatusId);
+                    }
                 }
             }
         }
@@ -65,8 +76,7 @@ internal partial class ComboConfigWindow
         {
             DrawAction(Watcher.LastAction, nameof(Watcher.LastAction));
             DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
-            DrawAction(Watcher.LastSpell, nameof(Watcher.LastSpell));
-            DrawAction(Watcher.LastWeaponskill, nameof(Watcher.LastWeaponskill));
+            DrawAction(Watcher.LastGCD, nameof(Watcher.LastGCD));
             DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
         }
 
