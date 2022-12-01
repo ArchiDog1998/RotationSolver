@@ -1,6 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Localization;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAutoAttack.Actions.BaseAction
@@ -29,7 +30,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
                 if (_isFriendly)
                 {
-                    result = "支援";
+                    result = LocalizationManager.RightLang.Action_Friendly;
                     if (_isEot)
                     {
                         result += "Hot";
@@ -37,14 +38,14 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
                 else
                 {
-                    result = "攻击";
+                    result = LocalizationManager.RightLang.Action_Attack;
 
                     if (_isEot)
                     {
                         result += "Dot";
                     }
                 }
-                result += IsRealGCD ? "-GCD" : "-能力技";
+                result += "-" + (IsRealGCD ? "GCD" : LocalizationManager.RightLang.Scriptwindow_Ability);
                 return result;
             }
         }

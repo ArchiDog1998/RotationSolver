@@ -165,6 +165,13 @@ internal class Strings
     public string Configwindow_Params_ConditionUp { get; set; } = "Up";
     public string Configwindow_Params_ConditionDown { get; set; } = "Down";
     public string Configwindow_Params_ConditionDelete { get; set; } = "Delete";
+    public string Configwindow_About_Declaration { get; set; } = "此插件开源免费，请勿从任何渠道付费购买此插件。\n如果已经从付费渠道获得此插件，请立即发起退款、提供差评并举报卖家";
+    public string Configwindow_About_XianYu { get; set; } = "包括但不限于以下闲鱼小店（排名不分先后）:";
+    public string Configwindow_About_Owner { get; set; } = "插件作者：ArchiDog1998（秋水）保留最终解释权";
+    public string Configwindow_About_Collaborators { get; set; } = "联合开发者：汐ベMoon, gamous, 逆光, sciuridae564, 玖祁, 牙刷play";
+    public string Configwindow_About_Github { get; set; } = "本插件版本更新发布于Github";
+    public string Configwindow_About_Discord { get; set; } = "点击加入Discord进行讨论";
+    public string Configwindow_About_Wiki { get; set; } = "点击查看Wiki";
     #endregion
 
     #region ScriptWindow
@@ -213,6 +220,12 @@ internal class Strings
     public string Scriptwindow_StatusSelfDesc { get; set; } = "StatusSelf";
     #endregion
 
+    #region Actions
+    public string Action_Friendly { get; set; } = "支援";
+    public string Action_Attack { get; set; } = "攻击";
+
+    #endregion
+
     #region ActionConditionType
     public string ActionConditionType_Elapsed { get; set; } = "Elapsed";
     public string ActionConditionType_ElapsedGCD { get; set; } = "ElapsedGCD ";
@@ -243,6 +256,19 @@ internal class Strings
     public string DescType_DefenseArea { get; set; } = "范围防御";
     public string DescType_DefenseSingle { get; set; } = "单体防御";
     public string DescType_MoveAction { get; set; } = "移动技能";
+
+    #endregion
+
+    #region JobRole
+    public string JobRole_None { get; set; } = "采集制作";
+    public string JobRole_Tank { get; set; } = "防护";
+    public string JobRole_Melee { get; set; } = "近战";
+    public string JobRole_Ranged { get; set; } = "远程";
+    public string JobRole_Healer { get; set; } = "治疗";
+    public string JobRole_RangedPhysical { get; set; } = "远敏";
+    public string JobRole_RangedMagicial { get; set; } = "魔法";
+    public string JobRole_DiscipleoftheLand { get; set; } = "大地使者";
+    public string JobRole_DiscipleoftheHand { get; set; } = "能工巧匠";
 
     #endregion
 

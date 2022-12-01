@@ -1,4 +1,5 @@
 ﻿using Lumina.Excel.GeneratedSheets;
+using XIVAutoAttack.Localization;
 
 namespace XIVAutoAttack.Data
 {
@@ -37,16 +38,16 @@ namespace XIVAutoAttack.Data
 
         public static string ToName(this JobRole role) => role switch
         {
-            JobRole.None => "采集制作",
-            JobRole.Tank => "防护",
-            JobRole.Melee => "近战",
-            JobRole.Ranged => "远程",
-            JobRole.Healer => "治疗",
-            JobRole.RangedPhysical => "远敏",
-            JobRole.RangedMagicial => "魔法",
-            JobRole.DiscipleoftheLand => "大地使者",
-            JobRole.DiscipleoftheHand => "能工巧匠",
-            _ => "Unknown",
+            JobRole.None => LocalizationManager.RightLang.JobRole_None,
+            JobRole.Tank => LocalizationManager.RightLang.JobRole_Tank,
+            JobRole.Melee => LocalizationManager.RightLang.JobRole_Melee,
+            JobRole.Ranged => LocalizationManager.RightLang.JobRole_Ranged,
+            JobRole.Healer => LocalizationManager.RightLang.JobRole_Healer,
+            JobRole.RangedPhysical => LocalizationManager.RightLang.JobRole_RangedPhysical,
+            JobRole.RangedMagicial => LocalizationManager.RightLang.JobRole_RangedMagicial,
+            JobRole.DiscipleoftheLand => LocalizationManager.RightLang.JobRole_DiscipleoftheLand,
+            JobRole.DiscipleoftheHand => LocalizationManager.RightLang.JobRole_DiscipleoftheHand,
+            _ => string.Empty,
         };
     }
 }
