@@ -7,7 +7,7 @@ namespace XIVAutoAttack.Helpers
 {
     internal static class IActionHelper
     {
-        internal static bool IsLastSpell(bool isAdjust, params IAction[] actions)
+        internal static bool IsLastGCD(bool isAdjust, params IAction[] actions)
         {
             return IsLastGCD(GetIDFromActions(isAdjust, actions));
         }

@@ -12,7 +12,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
 {
     internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {
-
         public bool TryInvoke(out IAction newAction)
         {
             newAction = null;
@@ -202,7 +201,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 一些非常紧急的GCD战技，优先级最高
         /// </summary>
-        /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
         private protected virtual bool EmergencyGCD(out IAction act)
@@ -229,7 +227,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 单体治疗GCD
         /// </summary>
-        /// <param name="lastComboActionID"></param>
         /// <param name="act"></param>
         /// <returns></returns>
         private protected virtual bool HealSingleGCD(out IAction act)

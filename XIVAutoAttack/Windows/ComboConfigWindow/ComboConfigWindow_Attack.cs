@@ -170,7 +170,7 @@ internal partial class ComboConfigWindow
                             }
                         }
 
-                    }, combo.JobIDs[0], combos[i].combos.Select(c => c.Author).ToArray());
+                    }, combo.JobIDs[0], combos[i].combos);
 
                     num++;
                 }

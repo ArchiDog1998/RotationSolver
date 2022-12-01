@@ -27,14 +27,10 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 是否正在移动
         /// </summary>
-        [DisplayName("在移动")]
-        [Description("玩家正在位移")]
         protected static bool IsMoving => MovingUpdater.IsMoving;
         /// <summary>
         /// 攻击范围内是否有敌人
         /// </summary>
-        [DisplayName("范围内有敌人")]
-        [Description("近战3米内有敌人，远程25米内有敌人。")]
         protected static bool HaveHostilesInRange => TargetUpdater.HaveHostilesInRange;
 
         private bool _canUseHealAction => Job.GetJobRole() == JobRole.Healer || Service.Configuration.UseHealWhenNotAHealer;
@@ -60,24 +56,20 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 满编小队
         /// </summary>
-        [DisplayName("满编小队")]
         protected static bool IsFullParty => TargetUpdater.PartyMembers.Count() is 8;
 
         /// <summary>
         /// 是否处于爆发，自动爆发或者手动点击的爆发
         /// </summary>
-        [DisplayName("处于爆发")]
         protected static bool SettingBreak => CommandController.BreakorProvoke || Service.Configuration.AutoBreak;
 
         /// <summary>
         /// 当前等级
         /// </summary>
-        [DisplayName("玩家等级")]
         protected static byte Level => Player?.Level ?? 0;
         /// <summary>
         /// 是否在战斗中
         /// </summary>
-        [DisplayName("在战斗中")]
         protected static bool InCombat => ActionUpdater.InCombat;
 
         /// <summary>
@@ -96,9 +88,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="isAdjust">调整后ID</param>
         /// <param name="actions">技能</param>
         /// <returns></returns>
-        [DisplayName("上一个GCD")]
         protected static bool IsLastGCD(bool isAdjust, params IAction[] actions)
-            => IActionHelper.IsLastSpell(isAdjust, actions);
+            => IActionHelper.IsLastGCD(isAdjust, actions);
 
         /// <summary>
         /// 上一个魔法是否是<paramref name="ids"/>中的技能
@@ -114,7 +105,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="isAdjust">调整后ID</param>
         /// <param name="actions">技能</param>
         /// <returns></returns>
-        [DisplayName("上一个能力技")]
         protected static bool IsLastAbility(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastAbility(isAdjust, actions);
 
@@ -133,7 +123,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <param name="isAdjust">调整后ID</param>
         /// <param name="actions">技能</param>
         /// <returns></returns>
-        [DisplayName("上一个技能")]
         protected static bool IsLastAction(bool isAdjust, params IAction[] actions)
             => IActionHelper.IsLastAction(isAdjust, actions);
 

@@ -25,7 +25,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public abstract string Author { get; }
 
-        [DisplayName("目标将要死亡")]
         /// <summary>
         /// 目标是否将要死亡
         /// </summary>
@@ -38,7 +37,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
         }
 
-        [DisplayName("目标为Boss")]
         /// <summary>
         /// 目标是否是Boss
         /// </summary>
@@ -76,13 +74,11 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 有即刻相关Buff
         /// </summary>
-        [DisplayName("有即刻")]
         internal static bool HaveSwift => Player.HasStatus(true, Swiftcast.BuffsProvide);
 
         /// <summary>
         /// 有盾姿，如果为非T那么始终为true
         /// </summary>
-        [DisplayName("有盾姿")]
         [ReflectableMember]
         internal virtual bool HaveShield => true;
 

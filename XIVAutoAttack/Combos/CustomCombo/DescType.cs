@@ -1,4 +1,6 @@
-﻿namespace XIVAutoAttack.Combos.CustomCombo
+﻿using XIVAutoAttack.Localization;
+
+namespace XIVAutoAttack.Combos.CustomCombo
 {
     public enum DescType : byte
     {
@@ -16,15 +18,14 @@
     {
         public static string ToName(this DescType type) => type switch
         {
-            DescType.Description => "循环说明",
-            DescType.BreakingAction => "爆发技能",
-            DescType.HealArea => "范围治疗",
-            DescType.HealSingle => "单体治疗",
-            DescType.DefenseArea => "范围防御",
-            DescType.DefenseSingle => "单体防御",
-            DescType.MoveAction => "移动技能",
-            DescType.OtherCommands => "命令说明",
-            _ => "Unknown",
+            DescType.Description => LocalizationManager.RightLang.DescType_Description,
+            DescType.BreakingAction => LocalizationManager.RightLang.DescType_BreakingAction,
+            DescType.HealArea => LocalizationManager.RightLang.DescType_HealArea,
+            DescType.HealSingle => LocalizationManager.RightLang.DescType_HealSingle,
+            DescType.DefenseArea => LocalizationManager.RightLang.DescType_DefenseArea,
+            DescType.DefenseSingle => LocalizationManager.RightLang.DescType_DefenseSingle,
+            DescType.MoveAction => LocalizationManager.RightLang.DescType_MoveAction,
+            _ => string.Empty,
         };
     }
 }

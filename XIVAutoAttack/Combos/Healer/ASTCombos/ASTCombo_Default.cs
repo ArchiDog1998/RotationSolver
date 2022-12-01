@@ -170,7 +170,7 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         }
 
         //发牌
-        if (abilityRemain == 1 && DrawnCard != CardType.NONE && Seals.Contains(SealType.NONE))
+        if (abilityRemain == 1)
         {
             if (PlayCard(out act)) return true;
         }

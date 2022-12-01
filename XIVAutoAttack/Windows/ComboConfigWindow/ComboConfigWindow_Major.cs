@@ -157,7 +157,7 @@ internal partial class ComboConfigWindow : Window
 
 
 
-    internal static void DrawTexture<T>(T texture, Action otherThing, ClassJobID jobId = 0, string[] authors = null) where T : class, IEnableTexture
+    internal static void DrawTexture<T>(T texture, Action otherThing, ClassJobID jobId = 0, ICustomCombo[] combos = null) where T : class, IEnableTexture
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
@@ -193,30 +193,28 @@ internal partial class ComboConfigWindow : Window
 
         if (com != null)
         {
-            ImGui.SameLine();
-            Spacing();
 
-            if (!string.IsNullOrEmpty(com.Author))
+            if (!string.IsNullOrEmpty(com.Author) && combos!= null)
             {
-                authors ??= new string[] { com.Author };
-
-                int i;
-                for (i = 0; i < authors.Length; i++)
-                {
-                    if (authors[i] == com.Author)
-                    {
-                        break;
-                    }
-                }
-
-                Spacing();
-                ImGui.TextDisabled("-  ");
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(ImGui.CalcTextSize(authors[i]).X + 30);
-                if (ImGui.Combo("##" + com.Name + "Author", ref i, authors, authors.Length))
+                ImGui.TextDisabled("    -  ");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(com.Author).X + 30);
+                if(ImGui.BeginCombo("##" + com.Name + "Author", com.Author))
                 {
-                    Service.Configuration.ComboChoices[(uint)jobId] = authors[i];
-                    Service.Configuration.Save();
+                    foreach (var c in combos)
+                    {
+                        if (ImGui.Selectable(c.Author))
+                        {
+                            Service.Configuration.ComboChoices[(uint)jobId] = c.Author;
+                            Service.Configuration.Save();
+                        }
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImGui.SetTooltip(c.Description);
+                        }
+                    }
+                    ImGui.EndCombo();
                 }
                 if (ImGui.IsItemHovered())
                 {

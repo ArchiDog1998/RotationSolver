@@ -17,7 +17,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 抽出来的卡是啥。
     /// </summary>
-    protected static CardType DrawnCard => JobGauge.DrawnCard;
+    private static CardType DrawnCard => JobGauge.DrawnCard;
 
     /// <summary>
     /// 抽出来的王卡是啥
@@ -264,6 +264,9 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
 
     protected static bool PlayCard(out IAction act)
     {
+        act = null;
+        if (!Seals.Contains(SealType.NONE)) return false;
+
         if (Balance.ShouldUse(out act)) return true;
         if (Arrow.ShouldUse(out act)) return true;
         if (Spear.ShouldUse(out act)) return true;
