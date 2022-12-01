@@ -1,13 +1,9 @@
-﻿using Dalamud;
-using Dalamud.Logging;
+﻿using Dalamud.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XIVAutoAttack.Localization;
 
@@ -39,7 +35,7 @@ internal class LocalizationManager : IDisposable
 
     private void SetLanguage(string lang)
     {
-        if(_translations.TryGetValue(lang, out var value))
+        if (_translations.TryGetValue(lang, out var value))
         {
             RightLang = value;
         }

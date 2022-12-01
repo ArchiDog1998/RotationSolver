@@ -1,7 +1,4 @@
 ﻿using ImGuiNET;
-using Lumina.Data.Parsing;
-using Lumina.Data.Parsing.Layer;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -115,7 +112,7 @@ internal class ActionConditions : IDraw
                 XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
             }
         }
-        else if(_method != null)
+        else if (_method != null)
         {
             ImGui.Image(IconSet.GetTexture(1).ImGuiHandle, size);
 
@@ -128,7 +125,7 @@ internal class ActionConditions : IDraw
             }
 
             var desc = _method.GetMemberDescription();
-            if(ImGui.IsItemHovered() && !string.IsNullOrEmpty(desc))
+            if (ImGui.IsItemHovered() && !string.IsNullOrEmpty(desc))
             {
                 ImGui.SetTooltip(desc);
             }
@@ -169,7 +166,7 @@ internal class ActionConditions : IDraw
         {
             ImGui.SetNextItemWidth(100);
             int c = AbilityCount;
-            if(ImGui.DragInt(LocalizationManager.RightLang.Scriptwindow_AbilityRemain, ref c))
+            if (ImGui.DragInt(LocalizationManager.RightLang.Scriptwindow_AbilityRemain, ref c))
             {
                 AbilityCount = c;
             }
@@ -187,7 +184,7 @@ internal class ActionConditions : IDraw
 
 
                 var adj = IsAdjust;
-                if(ImGui.Checkbox(LocalizationManager.RightLang.Scriptwindow_AdjustID, ref adj))
+                if (ImGui.Checkbox(LocalizationManager.RightLang.Scriptwindow_AdjustID, ref adj))
                 {
                     IsAdjust = adj;
                 }
@@ -204,7 +201,7 @@ internal class ActionConditions : IDraw
                 });
 
                 var relay = _actions;
-                if(relay.Count > 0 && ImGui.BeginChild($"##{_action?.Name}NextGCD", new System.Numerics.Vector2(0, 100), true))
+                if (relay.Count > 0 && ImGui.BeginChild($"##{_action?.Name}NextGCD", new System.Numerics.Vector2(0, 100), true))
                 {
                     if (ScriptComboWindow.DrawEditorList(relay, i =>
                     {
@@ -263,10 +260,10 @@ internal class ActionConditions : IDraw
 
             return _action.ShouldUse(out act, MustUse, Empty) && otherCheck;
         }
-        else if(_method != null)
+        else if (_method != null)
         {
             var param = new object[] { null };
-            if((bool)_method.Invoke(owner, param) && otherCheck)
+            if ((bool)_method.Invoke(owner, param) && otherCheck)
             {
                 act = (IAction)param[0];
                 return true;

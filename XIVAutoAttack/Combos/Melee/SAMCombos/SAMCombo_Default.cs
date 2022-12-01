@@ -58,28 +58,28 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         }
         if (Service.IconReplacer.OriginalHook(16483) == KaeshiSetsugekka.ID)
         {
-            if (KaeshiSetsugekka.ShouldUse(out act, emptyOrSkipCombo:true, mustUse: true)) return true;
+            if (KaeshiSetsugekka.ShouldUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
         }
 
         //奥义斩浪
         if ((IsTargetBoss ? Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(10, true, StatusID.Higanbana) : true) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
 
         //处理居合术
-        if(SenCount == 1 && IsTargetBoss && !IsTargetDying)
+        if (SenCount == 1 && IsTargetBoss && !IsTargetDying)
         {
             if (HaveMoon && HaveFlower && Higanbana.ShouldUse(out act)) return true;
         }
-        if(SenCount == 2)
+        if (SenCount == 2)
         {
-            if(TenkaGoken.ShouldUse(out act,mustUse:!MidareSetsugekka.EnoughLevel)) return true;
+            if (TenkaGoken.ShouldUse(out act, mustUse: !MidareSetsugekka.EnoughLevel)) return true;
         }
-        if(SenCount == 3)
+        if (SenCount == 3)
         {
             if (TsubameGaeshi.CurrentCharges == 0 && TsubameGaeshi.WillHaveOneChargeGCD(2) && !TsubameGaeshi.WillHaveOneChargeGCD(1))
             {
                 if (Hakaze.ShouldUse(out act)) return true;
             }
-            else 
+            else
             {
                 if (MidareSetsugekka.ShouldUse(out act)) return true;
             }
@@ -89,7 +89,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         //雪
         if (!HasSetsu && !Fuga.ShouldUse(out _))
         {
-            if (Yukikaze.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui && HasGetsu && HasKa)) return true;            
+            if (Yukikaze.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui && HasGetsu && HasKa)) return true;
         }
 
         //月
@@ -115,7 +115,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     //月连击
     private bool GetsuGCD(out IAction act, bool haveMeikyoShisui)
     {
-        if (Mangetsu.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui || IsLastGCD(true,Fuga, Fuko))) return true;
+        if (Mangetsu.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui || IsLastGCD(true, Fuga, Fuko))) return true;
         if (Gekko.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui)) return true;
         if (Jinpu.ShouldUse(out act)) return true;
 
@@ -140,13 +140,13 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         if (Kenki <= 50 && Ikishoten.ShouldUse(out act)) return true;
 
         //叶隐
-        if(Target.HasStatus(true,StatusID.Higanbana) && Target.WillStatusEnd(35,true,StatusID.Higanbana) && !Target.WillStatusEnd(27, true, StatusID.Higanbana) && SenCount == 1 && IsLastAction(true,Yukikaze) && !haveMeikyoShisui)
+        if (Target.HasStatus(true, StatusID.Higanbana) && Target.WillStatusEnd(35, true, StatusID.Higanbana) && !Target.WillStatusEnd(27, true, StatusID.Higanbana) && SenCount == 1 && IsLastAction(true, Yukikaze) && !haveMeikyoShisui)
         {
             if (Hagakure.ShouldUse(out act)) return true;
         }
 
         //闪影、红莲
-        if (HissatsuGuren.ShouldUse(out act, mustUse:!HissatsuSenei.EnoughLevel)) return true;
+        if (HissatsuGuren.ShouldUse(out act, mustUse: !HissatsuSenei.EnoughLevel)) return true;
         if (HissatsuSenei.ShouldUse(out act)) return true;
 
         //照破、无明照破
@@ -154,7 +154,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         if (Shoha.ShouldUse(out act)) return true;
 
         //震天、九天
-        if(((Kenki > 50 && Ikishoten.WillHaveOneCharge(10)) || Kenki >= 85) || (IsTargetBoss && IsTargetDying))
+        if (((Kenki > 50 && Ikishoten.WillHaveOneCharge(10)) || Kenki >= 85) || (IsTargetBoss && IsTargetDying))
         {
             if (HissatsuKyuten.ShouldUse(out act)) return true;
             if (HissatsuShinten.ShouldUse(out act)) return true;
@@ -166,10 +166,10 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //明镜止水
-        if(HaveHostilesInRange && (!IsLastGCD(true, Shifu, Jinpu, Hakaze, Fuga) || IsLastGCD(true,Yukikaze, Mangetsu, Oka)) && 
+        if (HaveHostilesInRange && (!IsLastGCD(true, Shifu, Jinpu, Hakaze, Fuga) || IsLastGCD(true, Yukikaze, Mangetsu, Oka)) &&
             HasSetsu && (IsTargetBoss ? ((Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana)) || (!HaveMoon && !HaveFlower)) : true))
         {
-            if(MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }

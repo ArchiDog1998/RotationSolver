@@ -1,11 +1,8 @@
-﻿using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Interface;
+﻿using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
-using Dalamud.Utility;
 using ImGuiNET;
-using Lumina.Data.Parsing.Uld;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,9 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using System.Security.Cryptography;
 using XIVAutoAttack.Combos.Script;
-using XIVAutoAttack.Combos.Script.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Localization;
@@ -26,7 +21,7 @@ namespace XIVAutoAttack.Windows
     internal class ScriptComboWindow : Window
     {
         IScriptCombo _targetCombo;
-        public IScriptCombo TargetCombo 
+        public IScriptCombo TargetCombo
         {
             get => _targetCombo;
             set
@@ -45,14 +40,14 @@ namespace XIVAutoAttack.Windows
                 _activeSet = value;
                 ActiveAction = null;
             }
-        } 
+        }
 
         public IDraw ActiveAction { get; set; }
 
 
 
         public ScriptComboWindow()
-            : base(LocalizationManager.RightLang.Scriptwindow_Header + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString(), 0, false)
+            : base(nameof(ScriptComboWindow), 0, false)
         {
             Size = new Vector2(525, 600);
             SizeCondition = ImGuiCond.FirstUseEver;
@@ -158,7 +153,7 @@ namespace XIVAutoAttack.Windows
                 var item = items[i];
 
                 ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV);
-                
+
                 ImGuiDragDropFlags src_flags = 0;
                 src_flags |= ImGuiDragDropFlags.SourceNoDisableHover;     // Keep the source displayed as hovered
                 src_flags |= ImGuiDragDropFlags.SourceNoHoldToOpenOthers; // Because our dragging is local, we disable the feature of opening foreign treenodes/tabs while dragging
@@ -200,12 +195,12 @@ namespace XIVAutoAttack.Windows
             }
 
             bool result = false;
-            if(moveFrom > -1)
+            if (moveFrom > -1)
             {
                 //Move.
                 if (moveTo > -1)
                 {
-                    if(moveFrom != moveTo)
+                    if (moveFrom != moveTo)
                     {
                         var moveItem = items[moveFrom];
                         items.RemoveAt(moveFrom);
@@ -309,7 +304,7 @@ namespace XIVAutoAttack.Windows
             {
                 foreach (var item in actions)
                 {
-                    if(extraDraw!= null)
+                    if (extraDraw != null)
                     {
                         extraDraw(item);
                         ImGui.SameLine();
@@ -322,7 +317,7 @@ namespace XIVAutoAttack.Windows
                         ImGui.CloseCurrentPopup();
                     }
 
-                    if(getDesc != null && ImGui.IsItemHovered())
+                    if (getDesc != null && ImGui.IsItemHovered())
                     {
                         var desc = getDesc(item);
                         if (!string.IsNullOrEmpty(desc))

@@ -89,7 +89,7 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 愈疗
     /// </summary>
-    public static BaseAction Cure3 { get; } = new(ActionID.Cure3, true, shouldEndSpecial:true, isTimeline: true);
+    public static BaseAction Cure3 { get; } = new(ActionID.Cure3, true, shouldEndSpecial: true, isTimeline: true);
 
     /// <summary>
     /// 天赐祝福

@@ -1,18 +1,12 @@
 ﻿using ImGuiNET;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Windows.ComboConfigWindow;
-using XIVAutoAttack.Windows;
-using XIVAutoAttack.Actions;
-using Lumina.Data.Parsing;
 using XIVAutoAttack.Localization;
+using XIVAutoAttack.Windows.ComboConfigWindow;
 
 namespace XIVAutoAttack.Combos.Script.Actions
 {
@@ -71,7 +65,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
                 var time = Time;
                 ImGui.SetNextItemWidth(50);
-                if(ImGui.DragFloat($"s##CountDown{GetHashCode()}", ref time))
+                if (ImGui.DragFloat($"s##CountDown{GetHashCode()}", ref time))
                 {
                     Time = time;
                 }

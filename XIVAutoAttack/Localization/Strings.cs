@@ -1,18 +1,22 @@
-using System.Resources;
-using System.Reflection;
-using System.Globalization;
-using System.IO;
-using Newtonsoft.Json;
-using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using XIVAutoAttack.Combos.Script.Actions;
-using XIVAutoAttack.Combos.CustomCombo;
-using System;
 
 namespace XIVAutoAttack.Localization;
 
 internal class Strings
 {
+    #region Commands
+    public string Commands_pattack { get; set; } = "打开一个设置各个职业是否启用自动攻击的窗口";
+    public string Commands_aauto { get; set; } = "设置攻击的模式";
+    public string Commands_ChangeAutoBreak { get; set; } = "修改自动爆发为{0}";
+    public string Commands_ChangeSettings { get; set; } = "修改{0}为{1}";
+    public string Commands_InsertAction { get; set; } = "将在{0}s 内使用技能\"{1}\"";
+    public string Commands_ChangeResult { get; set; } = "修改结果为";
+    public string Commands_CannotFind { get; set; } = "无法识别";
+    public string Commands_OpenSettings { get; set; } = "已开启设置界面";
+
+    #endregion
+
     #region ConfigWindow
     public string ConfigWindow_Header { get; set; } = "Auto Attack Settings v";
     public string ConfigWindow_AboutItem { get; set; } = "About";

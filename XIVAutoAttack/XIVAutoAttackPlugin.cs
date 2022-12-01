@@ -1,7 +1,6 @@
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
 using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Configuration;
@@ -28,17 +27,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, CommandManager commandManager)
     {
-        commandManager.AddHandler(_command, new CommandInfo(OnCommand)
-        {
-            HelpMessage = "打开一个设置各个职业是否启用自动攻击的窗口",
-            ShowInHelp = true,
-        });
 
-        commandManager.AddHandler(_autoCommand, new CommandInfo(AttackObject)
-        {
-            HelpMessage = "设置攻击的模式",
-            ShowInHelp = true,
-        });
 
         pluginInterface.Create<Service>();
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
@@ -68,16 +57,31 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Localization.ExportLocalization();
 #endif
 
-
+        ChangeWindowHeader();
     }
 
-    public static void ChangeWindowHeader()
+    internal static void ChangeWindowHeader()
     {
-        _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header 
+        _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
             + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString();
 
-        _scriptComboWindow.WindowName = LocalizationManager.RightLang.Scriptwindow_Header 
+        _scriptComboWindow.WindowName = LocalizationManager.RightLang.Scriptwindow_Header
             + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString();
+
+        Service.CommandManager.RemoveHandler(_command);
+        Service.CommandManager.RemoveHandler(_autoCommand);
+
+        Service.CommandManager.AddHandler(_command, new CommandInfo(OnCommand)
+        {
+            HelpMessage = LocalizationManager.RightLang.Commands_pattack,
+            ShowInHelp = true,
+        });
+
+        Service.CommandManager.AddHandler(_autoCommand, new CommandInfo(AttackObject)
+        {
+            HelpMessage = LocalizationManager.RightLang.Commands_aauto,
+            ShowInHelp = true,
+        });
     }
 
     //private void ClientState_TerritoryChanged(object sender, ushort e)
@@ -120,7 +124,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         _scriptComboWindow.IsOpen = true;
     }
 
-    private void AttackObject(string command, string arguments)
+    private static void AttackObject(string command, string arguments)
     {
         string[] array = arguments.Split();
 
@@ -130,7 +134,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         }
     }
 
-    private void OnCommand(string command, string arguments)
+    private static void OnCommand(string command, string arguments)
     {
         string[] array = arguments.Split();
 

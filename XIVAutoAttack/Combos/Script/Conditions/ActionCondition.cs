@@ -111,7 +111,7 @@ internal class ActionCondition : ICondition
         }
 
         var condition = Condition ? 1 : 0;
-                var combos = new string[0];
+        var combos = new string[0];
         switch (ActionConditonType)
         {
             case ActionConditonType.ElapsedGCD:
@@ -133,7 +133,7 @@ internal class ActionCondition : ICondition
 
             case ActionConditonType.EnoughLevel:
             case ActionConditonType.IsCoolDown:
-                combos = new string[] 
+                combos = new string[]
                 {
                     LocalizationManager.RightLang.Scriptwindow_Is,
                     LocalizationManager.RightLang.Scriptwindow_Isnot,

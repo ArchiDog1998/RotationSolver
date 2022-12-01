@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 
 namespace XIVAutoAttack.Combos.Script.Conditions;
@@ -59,7 +59,7 @@ public abstract class JsonCreationConverter<T> : JsonConverter
     {
     }
 
-    public sealed override object ReadJson(JsonReader reader, Type objectType,  object existingValue,  JsonSerializer serializer)
+    public sealed override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
         // Load JObject from stream
         JObject jObject = JObject.Load(reader);

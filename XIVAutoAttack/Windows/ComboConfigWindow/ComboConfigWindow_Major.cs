@@ -7,7 +7,6 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -23,7 +22,7 @@ namespace XIVAutoAttack.Windows.ComboConfigWindow;
 internal partial class ComboConfigWindow : Window
 {
     public ComboConfigWindow()
-        : base(LocalizationManager.RightLang.ConfigWindow_Header + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString(), 0, false)
+        : base(nameof(ComboConfigWindow), 0, false)
     {
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
@@ -194,13 +193,13 @@ internal partial class ComboConfigWindow : Window
         if (com != null)
         {
 
-            if (!string.IsNullOrEmpty(com.Author) && combos!= null)
+            if (!string.IsNullOrEmpty(com.Author) && combos != null)
             {
                 ImGui.SameLine();
                 ImGui.TextDisabled("    -  ");
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(ImGui.CalcTextSize(com.Author).X + 30);
-                if(ImGui.BeginCombo("##" + com.Name + "Author", com.Author))
+                if (ImGui.BeginCombo("##" + com.Name + "Author", com.Author))
                 {
                     foreach (var c in combos)
                     {
@@ -218,7 +217,7 @@ internal partial class ComboConfigWindow : Window
                 }
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_SwitchAuthor + "\n- " 
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_SwitchAuthor + "\n- "
                         + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ": " + com.GameVersion);
                 }
             }
@@ -258,7 +257,7 @@ internal partial class ComboConfigWindow : Window
                 && ImGuiComponents.IconButton(texture.GetHashCode() + 1, FontAwesomeIcon.Plus))
             {
                 var newCom = IconReplacer.AddScripCombo(com.JobIDs[0]);
-                if(newCom != null)
+                if (newCom != null)
                 {
                     Service.Configuration.ComboChoices[(uint)jobId] = newCom.Author;
                     Service.Configuration.Save();
@@ -315,7 +314,7 @@ internal partial class ComboConfigWindow : Window
 
         DrawTexture(act, () =>
         {
-            if(act.IsTimeline) CommandHelp($"Insert{act}-{5}", 
+            if (act.IsTimeline) CommandHelp($"Insert{act}-{5}",
                 string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, act));
 #if DEBUG
             ImGui.NewLine();

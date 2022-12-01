@@ -8,6 +8,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Localization;
 using XIVAutoAttack.SigReplacers;
 using XIVAutoAttack.Updaters;
 using XIVAutoAttack.Windows;
@@ -270,7 +271,7 @@ namespace XIVAutoAttack
                 AutoAttack = true;
             }
 
-            if(AutoTarget)
+            if (AutoTarget)
             {
                 Service.Configuration.TargetingIndex += 1;
                 Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count;
@@ -399,7 +400,7 @@ namespace XIVAutoAttack
                     return;
                 case "AutoBreak":
                     Service.Configuration.AutoBreak = !Service.Configuration.AutoBreak;
-                    Service.ChatGui.Print($"修改自动爆发为{Service.Configuration.AutoBreak}");
+                    Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeAutoBreak, Service.Configuration.AutoBreak));
 
                     return;
 
@@ -414,7 +415,7 @@ namespace XIVAutoAttack
                             {
                                 boolean.value = !boolean.value;
 
-                                Service.ChatGui.Print($"修改{boolean.description}为{boolean.value}");
+                                Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettings, boolean.description, boolean.value));
 
                                 return;
                             }
@@ -446,7 +447,7 @@ namespace XIVAutoAttack
                                     }
                                 }
 
-                                Service.ChatGui.Print($"修改{combo.description}为{combo.items[combo.value]}");
+                                Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettings, combo.description, combo.items[combo.value]));
 
                                 return;
                             }
@@ -478,7 +479,7 @@ namespace XIVAutoAttack
                                         }
                                         NextActs = NextActs.OrderBy(i => i.deadTime).ToList();
 
-                                        Service.ChatGui.Print($"将在{time}s 内使用技能\"{act.Name}\"");
+                                        Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time, act.Name));
                                         return;
                                     }
                                 }
@@ -488,13 +489,13 @@ namespace XIVAutoAttack
                         var result = customCombo.OnCommand(str);
                         if (!string.IsNullOrEmpty(result))
                         {
-                            Service.ChatGui.Print("修改结果为：" + result);
+                            Service.ChatGui.Print(LocalizationManager.RightLang.Commands_ChangeResult + ": " + result);
                             return;
                         }
                         break;
                     }
-                    Service.ChatGui.PrintError("无法识别：" + str);
-                    Service.ChatGui.PrintError("已开启设置界面");
+                    Service.ChatGui.PrintError(LocalizationManager.RightLang.Commands_CannotFind + ": " + str);
+                    Service.ChatGui.PrintError(LocalizationManager.RightLang.Commands_OpenSettings);
                     XIVAutoAttackPlugin.OpenConfigWindow();
                     return;
             }

@@ -26,7 +26,7 @@ internal partial class ComboConfigWindow
             for (int i = 0; i < Service.Configuration.Events.Count; i++)
             {
                 string name = Service.Configuration.Events[i].Name;
-                if (ImGui.InputText($"{LocalizationManager.RightLang.Configwindow_Events_ActionName}##ActionName{i}", 
+                if (ImGui.InputText($"{LocalizationManager.RightLang.Configwindow_Events_ActionName}##ActionName{i}",
                     ref name, 50))
                 {
                     Service.Configuration.Events[i].Name = name;
@@ -34,7 +34,7 @@ internal partial class ComboConfigWindow
                 }
 
                 int macroindex = Service.Configuration.Events[i].MacroIndex;
-                if (ImGui.DragInt($"{LocalizationManager.RightLang.Configwindow_Events_MacroIndex}##MacroIndex{i}", 
+                if (ImGui.DragInt($"{LocalizationManager.RightLang.Configwindow_Events_MacroIndex}##MacroIndex{i}",
                     ref macroindex, 1, 0, 99))
                 {
                     Service.Configuration.Events[i].MacroIndex = macroindex;

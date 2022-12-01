@@ -274,7 +274,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
             act = EukrasianDiagnosis;
             return true;
         }
-       
+
         act = null;
         return false;
     }

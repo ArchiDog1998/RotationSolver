@@ -1,10 +1,7 @@
 ﻿using ImGuiNET;
-using Newtonsoft.Json.Linq;
-using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using System.Xml.Linq;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Localization;

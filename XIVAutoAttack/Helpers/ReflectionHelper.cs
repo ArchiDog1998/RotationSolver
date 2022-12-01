@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using XIVAutoAttack.Actions.BaseAction;
 
 namespace XIVAutoAttack.Helpers;
 
@@ -60,7 +56,7 @@ internal static class ReflectionHelper
 
         foreach (var item in type.GetRuntimeMethods())
         {
-            if(item.Name == name && (item.IsStatic || item.GetCustomAttribute<ReflectableMemberAttribute>() != null)
+            if (item.Name == name && (item.IsStatic || item.GetCustomAttribute<ReflectableMemberAttribute>() != null)
                       && !item.IsConstructor && item.ReturnType == typeof(bool)) return item;
         }
 
@@ -71,7 +67,7 @@ internal static class ReflectionHelper
     {
         if (Localization.LocalizationManager.RightLang.MemberInfoName.TryGetValue(info.Name, out var memberName)) return memberName;
 
-        return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName 
+        return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName
             ?? info.Name;
     }
     internal static string GetMemberDescription(this MemberInfo info)

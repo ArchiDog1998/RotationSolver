@@ -94,7 +94,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         if (CommandController.Move && MoveAbility(1, out act)) return true;
 
         if (Unmend.ShouldUse(out act)) return true;
-        
+
         return false;
     }
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)

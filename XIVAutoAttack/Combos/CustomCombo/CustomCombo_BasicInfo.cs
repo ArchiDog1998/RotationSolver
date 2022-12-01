@@ -1,7 +1,6 @@
 ﻿using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
@@ -70,7 +69,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 说明字典
         /// </summary>
         public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
-       
+
         /// <summary>
         /// 有即刻相关Buff
         /// </summary>

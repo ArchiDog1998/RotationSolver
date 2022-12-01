@@ -5,15 +5,12 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static Lumina.Data.Parsing.Layer.LayerCommon;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -273,8 +270,8 @@ namespace XIVAutoAttack.Updaters
         /// </summary>
         static DateTime foundTime = DateTime.Now;
         static TimeSpan relayTime = TimeSpan.Zero;
-        static readonly string[] authorKeys = new string[] 
-        { 
+        static readonly string[] authorKeys = new string[]
+        {
             "LwA5GZE3hRgUtxmCB59xqQ==",
             "EJ/sAztgwh8D9PKF3IscmA==",
             "b4/6WcxY3Xhh1Ln5LZKMVA==",
@@ -307,7 +304,7 @@ namespace XIVAutoAttack.Updaters
             if (foundTime == DateTime.MinValue) return;
 
             //找作者
-            var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorKeys.Contains(EncryptString(player)) 
+            var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorKeys.Contains(EncryptString(player))
                             && c.ObjectId != Service.ClientState.LocalPlayer.ObjectId) as PlayerCharacter;
 
             //没找到作者

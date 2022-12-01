@@ -1,13 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using ImGuiNET;
-using Lumina.Data.Parsing;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -23,7 +19,7 @@ internal class TargetCondition : ICondition
     {
         get
         {
-            if( _allStatus == null)
+            if (_allStatus == null)
             {
                 _allStatus = Enum.GetValues<StatusID>().Select(id => new BaseStatus(id)).ToArray();
             }
@@ -47,52 +43,52 @@ internal class TargetCondition : ICondition
 
     public bool IsTrue(IScriptCombo combo)
     {
-            if (Service.ClientState.LocalPlayer == null) return false;
+        if (Service.ClientState.LocalPlayer == null) return false;
 
-            BattleChara tar = null;
-            if(_action != null)
-            {
-                _action.ShouldUse(out _, true);
-                tar = _action.Target;
-            }
-            else
-            {
-                tar = IsTarget ? (BattleChara)Service.TargetManager.Target : Service.ClientState.LocalPlayer;
-                tar ??= Service.ClientState.LocalPlayer;
-            }
+        BattleChara tar = null;
+        if (_action != null)
+        {
+            _action.ShouldUse(out _, true);
+            tar = _action.Target;
+        }
+        else
+        {
+            tar = IsTarget ? (BattleChara)Service.TargetManager.Target : Service.ClientState.LocalPlayer;
+            tar ??= Service.ClientState.LocalPlayer;
+        }
 
-            if (tar == null) return false;
+        if (tar == null) return false;
 
-            var result = false;
+        var result = false;
 
-            switch (TargetConditionType)
-            {
-                case TargetConditionType.HaveStatus:
-                    result = tar.HasStatus(FromSelf, Status);
-                    break;
+        switch (TargetConditionType)
+        {
+            case TargetConditionType.HaveStatus:
+                result = tar.HasStatus(FromSelf, Status);
+                break;
 
-                case TargetConditionType.IsBoss:
-                    result = tar.IsBoss();
-                    break;
+            case TargetConditionType.IsBoss:
+                result = tar.IsBoss();
+                break;
 
-                case TargetConditionType.IsDying:
-                    result = tar.IsDying();
-                    break;
+            case TargetConditionType.IsDying:
+                result = tar.IsDying();
+                break;
 
-                case TargetConditionType.Distance:
-                    result = tar.DistanceToPlayer() > DistanceOrTime;
-                    break;
+            case TargetConditionType.Distance:
+                result = tar.DistanceToPlayer() > DistanceOrTime;
+                break;
 
-                case TargetConditionType.StatusEnd:
-                    result = !tar.WillStatusEnd(DistanceOrTime, FromSelf, Status);
-                    break;
+            case TargetConditionType.StatusEnd:
+                result = !tar.WillStatusEnd(DistanceOrTime, FromSelf, Status);
+                break;
 
-                case TargetConditionType.StatusEndGCD:
-                    result = !tar.WillStatusEndGCD((uint)GCD, (uint)Ability, FromSelf, Status);
-                    break;
-            }
+            case TargetConditionType.StatusEndGCD:
+                result = !tar.WillStatusEndGCD((uint)GCD, (uint)Ability, FromSelf, Status);
+                break;
+        }
 
-            return Condition ? !result : result;
+        return Condition ? !result : result;
     }
 
     [JsonIgnore]
@@ -113,9 +109,9 @@ internal class TargetCondition : ICondition
         ScriptComboWindow.DrawCondition(IsTrue(combo));
         ImGui.SameLine();
 
-        var name = _action != null ? string.Format(LocalizationManager.RightLang.Scriptwindow_ActionTarget, _action.Name) 
-            : IsTarget 
-            ? LocalizationManager.RightLang.Scriptwindow_Target 
+        var name = _action != null ? string.Format(LocalizationManager.RightLang.Scriptwindow_ActionTarget, _action.Name)
+            : IsTarget
+            ? LocalizationManager.RightLang.Scriptwindow_Target
             : LocalizationManager.RightLang.Scriptwindow_Player;
 
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
@@ -168,7 +164,7 @@ internal class TargetCondition : ICondition
                 break;
             case TargetConditionType.IsDying:
             case TargetConditionType.IsBoss:
-                combos = new string[] 
+                combos = new string[]
                 {
                     LocalizationManager.RightLang.Scriptwindow_Is,
                     LocalizationManager.RightLang.Scriptwindow_Isnot,
@@ -325,7 +321,7 @@ internal static class TargetConditionTypeExtension
 internal class BaseStatus : ITexture
 {
     public Status _status;
-    public uint IconID  => _status.Icon;
+    public uint IconID => _status.Icon;
     public StatusID ID => (StatusID)_status.RowId;
     public string Name => $"{_status.Name}[{_status.RowId}]";
 

@@ -165,7 +165,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 {
                     Target = TargetFilter.GetMostObjectInRadius(TargetUpdater.HostileTargets, range, _action.EffectRange, true, aoeCount)
                         .OrderByDescending(p => p.GetHealthRatio()).FirstOrDefault();
-                    if(Target == null)
+                    if (Target == null)
                     {
                         Target = Service.ClientState.LocalPlayer;
                         return false;
@@ -177,7 +177,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             //如果能对友方和敌方都能选中
             else if (_action.CanTargetParty && _action.CanTargetHostile)
             {
-               var availableCharas = TargetUpdater.PartyMembers.Union(TargetUpdater.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId);
+                var availableCharas = TargetUpdater.PartyMembers.Union(TargetUpdater.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId);
                 availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
 
                 //特殊选队友的方法。

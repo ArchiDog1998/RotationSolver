@@ -1,7 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using XIVAutoAttack.Actions;
@@ -157,8 +156,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public MethodInfo[] AllLast => GetType().GetStaticBoolMethodInfo(m =>
         {
             var types = m.GetParameters();
-            return types.Length == 2 
-                && types[0].ParameterType == typeof(bool) 
+            return types.Length == 2
+                && types[0].ParameterType == typeof(bool)
                 && types[1].ParameterType == typeof(IAction[]);
         });
 

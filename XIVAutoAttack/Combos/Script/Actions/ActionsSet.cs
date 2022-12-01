@@ -85,7 +85,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
             ImGui.SameLine();
             ComboConfigWindow.Spacing();
 
-            ScriptComboWindow.AddPopup("PopupFunction" + GetHashCode().ToString(), 
+            ScriptComboWindow.AddPopup("PopupFunction" + GetHashCode().ToString(),
                 ref search, combo.AllOther, item =>
             {
                 ActionsCondition.Add(new ActionConditions(item));

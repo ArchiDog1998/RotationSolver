@@ -1,12 +1,8 @@
 ﻿using ImGuiNET;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
@@ -57,7 +53,7 @@ internal class ComboCondition : ICondition
         {
             case ComboConditionType.Bool:
                 if (_info == null) return false;
-                if(_info.GetValue(combo) is bool b)
+                if (_info.GetValue(combo) is bool b)
                 {
                     return Condition > 0 ? !b : b;
                 }
@@ -180,7 +176,7 @@ internal class ComboCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
                 var isTrue = Condition;
-                if (ImGui.Combo($"##IsOrNot{GetHashCode()}", ref isTrue, new string[] 
+                if (ImGui.Combo($"##IsOrNot{GetHashCode()}", ref isTrue, new string[]
                 {
                     LocalizationManager.RightLang.Scriptwindow_Is,
                     LocalizationManager.RightLang.Scriptwindow_Isnot,

@@ -30,7 +30,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         ShadowofDeath.ComboCheck = b => !IsTargetDying;
 
         //保留红条不第一时间打出去,保证暴食不空转 同时保证不延后大丰收
-        BloodStalk.ComboCheck = b => !Player.HasStatus(true,StatusID.BloodsownCircle) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel || Soul == 100);
+        BloodStalk.ComboCheck = b => !Player.HasStatus(true, StatusID.BloodsownCircle) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel || Soul == 100);
         GrimSwathe.ComboCheck = BloodStalk.ComboCheck;
 
         //必须有dot
@@ -187,7 +187,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
 
         //暴食
         //大丰收期间延后暴食
-        if ((PlentifulHarvest.EnoughLevel && !Player.HasStatus(true,StatusID.ImmortalSacrifice) && !Player.HasStatus(true,StatusID.BloodsownCircle)) || !PlentifulHarvest.EnoughLevel)
+        if ((PlentifulHarvest.EnoughLevel && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && !Player.HasStatus(true, StatusID.BloodsownCircle)) || !PlentifulHarvest.EnoughLevel)
         {
             if (Gluttony.ShouldUse(out act, mustUse: true)) return true;
         }

@@ -39,7 +39,7 @@ internal partial class ComboConfigWindow
 
         if (!Directory.Exists(Service.Configuration.ScriptComboFolder))
         {
-            ImGui.TextColored(ImGuiColors.DalamudRed, 
+            ImGui.TextColored(ImGuiColors.DalamudRed,
                 LocalizationManager.RightLang.Configwindow_AttackItem_ScriptFolderError);
         }
 

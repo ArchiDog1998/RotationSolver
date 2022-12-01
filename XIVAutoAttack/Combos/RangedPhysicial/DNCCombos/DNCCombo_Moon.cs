@@ -1,9 +1,6 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
-using ImGuiNET;
 using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -71,7 +68,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 
         //应急换舞伴
         if (UseClosedPosition(out act)) return true;
-      
+
         //百花
         if (Flourish.ShouldUse(out act)) return true;
 
@@ -152,7 +149,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 
         return false;
     }
-     
+
     /// <summary>
     /// 使用标准舞步
     /// </summary>
@@ -198,7 +195,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
     /// <param name="act"></param>
     /// <returns></returns>
     private bool UseClosedPosition(out IAction act)
-    { 
+    {
         if (!ClosedPosition.ShouldUse(out act)) return false;
 
         //应急换舞伴

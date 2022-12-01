@@ -10,7 +10,7 @@ internal partial class ComboConfigWindow
 {
     private void DrawAbout()
     {
-        if(ImGui.BeginChild("About", new Vector2(0, 0), true))
+        if (ImGui.BeginChild("About", new Vector2(0, 0), true))
         {
             ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager.RightLang.Configwindow_About_Declaration);
             ImGui.Spacing();
