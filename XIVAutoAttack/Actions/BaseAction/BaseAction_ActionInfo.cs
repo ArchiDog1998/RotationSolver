@@ -101,11 +101,11 @@ namespace XIVAutoAttack.Actions.BaseAction
                 if (!Service.ClientState.LocalPlayer.HasStatus(true, BuffsNeed)) return false;
             }
 
-            //防止Effect of time类技能连续使用
-            if (_isEot && (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id != ClassJobID.Sage)
-            {
-                if (IActionHelper.IsLastAction(true, this)) return false;
-            }
+            ////防止Effect of time类技能连续使用
+            //if (_isEot && (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id != ClassJobID.Sage)
+            //{
+            //    if (IActionHelper.IsLastAction(true, this)) return false;
+            //}
 
             //已有提供的Buff的任何一种
             if (BuffsProvide != null && !mustUse)
@@ -152,13 +152,13 @@ namespace XIVAutoAttack.Actions.BaseAction
                     }
                 }
 
-                //目标已有充足的Debuff
-                if (!mustUse && TargetStatus != null)
-                {
-                    var tar = Target ?? Service.ClientState.LocalPlayer;
+                ////目标已有充足的Debuff
+                //if (!mustUse && TargetStatus != null)
+                //{
+                //    var tar = Target ?? Service.ClientState.LocalPlayer;
 
-                    if (!tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus)) return false;
-                }
+                //    if (!tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus)) return false;
+                //}
 
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (CastTime > 0 && MovingUpdater.IsMoving)

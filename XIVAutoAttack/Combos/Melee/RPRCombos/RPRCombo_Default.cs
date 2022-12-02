@@ -91,7 +91,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
                 if (Config.GetBoolByName("EnshroudPooling") && PlentifulHarvest.EnoughLevel && ArcaneCircle.WillHaveOneCharge(9) &&
                    ((LemureShroud == 4 && Target.WillStatusEnd(30, true, StatusID.DeathsDesign)) || (LemureShroud == 3 && Target.WillStatusEnd(50, true, StatusID.DeathsDesign)))) //双附体窗口期 
                 {
-                    if (ShadowofDeath.ShouldUse(out act, mustUse: true)) return true;
+                    if (ShadowofDeath.ShouldUse(out act)) return true;
                 }
 
                 //夜游魂衣-虚无/交错收割 阴冷收割

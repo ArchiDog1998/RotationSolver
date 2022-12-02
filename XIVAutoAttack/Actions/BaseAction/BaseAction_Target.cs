@@ -43,35 +43,26 @@ namespace XIVAutoAttack.Actions.BaseAction
             set => _choiceTarget = value;
         }
 
-        private Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> _filterForTarget = null;
-        internal Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForTarget
+        internal Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForTarget { private get; set; } = null;
+
+        private IEnumerable<BattleChara> TargetFilterFunc(IEnumerable<BattleChara> tars, bool mustUse)
         {
-            private get
+            if (FilterForTarget != null) return FilterForTarget(tars);
+            if (TargetStatus == null ||　!_isEot) return tars;
+
+            var canDot = TargetFilter.GetTargetCanDot(tars);
+            var DontHave = canDot.Where(t => t.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus));
+
+            if (mustUse)
             {
-                if (_filterForTarget != null) return _filterForTarget;
-                return tars =>
-                {
-                    if (TargetStatus == null) return tars;
-
-                    var inputTars = tars;
-
-                    if (_isEot)
-                    {
-                        tars = TargetFilter.GetTargetCanDot(tars);
-                    }
-
-                    if (!MovingUpdater.IsMoving) return tars;
-
-                    var ts = tars.Where(t => !t.HasStatus(true, TargetStatus));
-                    if (ts.Any()) return ts;
-
-                    tars = inputTars.Where(t => !t.HasStatus(true, TargetStatus));
-                    if (tars.Any()) return tars;
-
-                    return inputTars;
-                };
+                if (DontHave.Any()) return DontHave;
+                if (canDot.Any()) return canDot;
+                return tars;
             }
-            set => _filterForTarget = value;
+            else
+            {
+                return DontHave;
+            }
         }
 
         /// <summary>
@@ -257,7 +248,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                             {
                                 case 10: //环形范围攻击也就这么判断吧，我烦了。
                                 case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                                    if (TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, false, aoeCount)
+                                    if (TargetFilter.GetMostObjectInRadius(TargetFilterFunc(TargetUpdater.HostileTargets, mustUse), range, _action.EffectRange, false, aoeCount)
                                         .Contains(b))
                                     {
                                         Target = b;
@@ -265,7 +256,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                                     }
                                     break;
                                 case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                                    if (TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange, false, aoeCount)
+                                    if (TargetFilter.GetMostObjectInArc(TargetFilterFunc(TargetUpdater.HostileTargets, mustUse), _action.EffectRange, false, aoeCount)
                                         .Contains(b))
                                     {
                                         Target = b;
@@ -273,7 +264,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                                     }
                                     break;
                                 case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                                    if (TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, false, aoeCount)
+                                    if (TargetFilter.GetMostObjectInLine(TargetFilterFunc(TargetUpdater.HostileTargets, mustUse), range, false, aoeCount)
                                         .Contains(b))
                                     {
                                         Target = b;
@@ -298,22 +289,22 @@ namespace XIVAutoAttack.Actions.BaseAction
                 {
                     case 1:
                     default:
-                        var canReachTars = FilterForTarget(TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, range));
+                        var canReachTars = TargetFilterFunc(TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, range), mustUse);
 
                         Target = ChoiceTarget(canReachTars);
                         if (Target == null) return false;
                         return true;
                     case 10: //环形范围攻击也就这么判断吧，我烦了。
                     case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), range, _action.EffectRange, true, aoeCount));
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(TargetFilterFunc(TargetUpdater.HostileTargets, mustUse), range, _action.EffectRange, true, aoeCount));
                         if (Target == null) return false;
                         return true;
                     case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        Target = ChoiceTarget(TargetFilter.GetMostObjectInArc(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange, true, aoeCount));
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInArc(TargetFilterFunc(TargetUpdater.HostileTargets, mustUse), _action.EffectRange, true, aoeCount));
                         if (Target == null) return false;
                         return true;
                     case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        Target = ChoiceTarget(TargetFilter.GetMostObjectInLine(FilterForTarget(TargetUpdater.HostileTargets), range, true, aoeCount));
+                        Target = ChoiceTarget(TargetFilter.GetMostObjectInLine(TargetFilterFunc(TargetUpdater.HostileTargets, mustUse), range, true, aoeCount));
                         if (Target == null) return false;
                         return true;
                 }
@@ -322,6 +313,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             else if (_action.CanTargetSelf)
             {
                 Target = player;
+
 
                 if (_action.EffectRange > 0 && !_isFriendly)
                 {
@@ -336,7 +328,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                         if (!Service.Configuration.UseAOEWhenManual && !mustUse)
                             return false;
                     }
-                    var count = TargetFilter.GetObjectInRadius(FilterForTarget(TargetUpdater.HostileTargets), _action.EffectRange).Count();
+                    var count = TargetFilter.GetObjectInRadius(TargetFilterFunc(TargetUpdater.HostileTargets, mustUse), _action.EffectRange).Count();
                     if (count < aoeCount) return false;
                 }
                 return true;

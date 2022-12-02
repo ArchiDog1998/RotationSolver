@@ -62,14 +62,8 @@ internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
         //单体输出
         if (Combust.ShouldUse(out act)) return true;
         if (Malefic.ShouldUse(out act)) return true;
-        if (Combust.ShouldUse(out act, mustUse: IsMoving)) return true;
-        /*        var times = StatusHelper.FindStatusFromSelf(Actions.Combust.Target,
-                    new ushort[] { ObjectStatus.Combust, ObjectStatus.Combust2, ObjectStatus.Combust3 });
-                if (times.Length == 0 || times.Max() < 25)
-                {
-                    if (Actions.Combust.ShouldUseAction(out act, mustUse: IsMoving && HaveTargetAngle)) return true;
-                }
-        */
+        if (Combust.ShouldUse(out act, mustUse: true)) return true;
+
         act = null!;
         return false;
     }
