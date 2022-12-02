@@ -29,7 +29,7 @@ namespace XIVAutoAttack
             {
                 var next = NextActs.FirstOrDefault();
 
-                while (next != null && (next.deadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.act)))
+                while (next != null && NextActs.Count > 0 && (next.deadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.act)))
                 {
                     NextActs.RemoveAt(0);
                     next = NextActs.FirstOrDefault();

@@ -84,7 +84,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 内丹
         /// </summary>
         public static RoleAction SecondWind { get; } = new(ActionID.SecondWind,
-            new JobRole[] { JobRole.Tank, JobRole.RangedPhysical, JobRole.Melee }, true, isTimeline: true)
+            new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, true, isTimeline: true)
         {
             ActionCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility,
         };
