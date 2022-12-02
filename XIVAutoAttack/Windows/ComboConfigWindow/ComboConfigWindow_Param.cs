@@ -415,14 +415,6 @@ internal partial class ComboConfigWindow
                     Service.Configuration.HealthSingleSpell = healthSingleS;
                     Service.Configuration.Save();
                 }
-
-                float healthTank = Service.Configuration.HealthForDyingTank;
-                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
-                if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthForDyingTank, ref healthTank, speed, 0, 1))
-                {
-                    Service.Configuration.HealthForDyingTank = healthTank;
-                    Service.Configuration.Save();
-                }
             }
 
             ImGui.Separator();

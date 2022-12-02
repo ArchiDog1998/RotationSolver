@@ -180,7 +180,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //死斗 如果血不够了。
-        if (Holmgang.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(Holmgang.Target)) return true;
+        if (Holmgang.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Holmgang.Target)) return true;
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 }

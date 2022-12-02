@@ -213,7 +213,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //行尸走肉
-        if (LivingDead.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(LivingDead.Target)) return true;
+        if (LivingDead.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], LivingDead.Target)) return true;
 
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }

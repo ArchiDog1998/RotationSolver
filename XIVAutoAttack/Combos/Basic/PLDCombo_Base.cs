@@ -207,7 +207,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
 
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (HallowedGround.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(HallowedGround.Target)) return true;
+        if (HallowedGround.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], HallowedGround.Target)) return true;
         //神圣领域 如果谢不够了。
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }

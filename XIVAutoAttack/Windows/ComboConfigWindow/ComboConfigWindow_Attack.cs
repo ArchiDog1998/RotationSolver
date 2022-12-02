@@ -81,10 +81,12 @@ internal partial class ComboConfigWindow
                             Service.Configuration.Save();
                         }
 
-                        if(combo.Job.GetJobRole() == JobRole.Healer)
+                        var role = combo.Job.GetJobRole();
+                        const float speed = 0.005f;
+                        var job = combo.JobIDs[0];
+
+                        if (role == JobRole.Healer)
                         {
-                            var job = combo.JobIDs[0];
-                            const float speed = 0.005f;
 
                             var healAreability = Service.Configuration.HealthAreaAbilitys.TryGetValue(job, out var value) ? value : Service.Configuration.HealthAreaAbility;
 
@@ -131,6 +133,16 @@ internal partial class ComboConfigWindow
                             if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubtractSingle + $"##{num}HealSingleSubtract", ref hotSubSingle, speed, 0, 1))
                             {
                                 Service.Configuration.HealingOfTimeSubtractSingles[job] = hotSubSingle;
+                                Service.Configuration.Save();
+                            }
+                        }
+                        else if(role == JobRole.Tank)
+                        {
+                            float healthTank = Service.Configuration.HealthForDyingTanks.TryGetValue(job, out var value) ? value : 0.15f;
+                            ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
+                            if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthForDyingTank + $"##{num}HealthForDyingTank", ref healthTank, speed, 0, 1))
+                            {
+                                Service.Configuration.HealthForDyingTanks[job] = healthTank;
                                 Service.Configuration.Save();
                             }
                         }

@@ -83,11 +83,13 @@ namespace XIVAutoAttack.Actions.BaseAction
         {
             return TargetUpdater.TarOnMeTargets.Any();
         }
-        internal static bool TankBreakOtherCheck(BattleChara chara)
+        internal static bool TankBreakOtherCheck(ClassJobID id, BattleChara chara)
         {
+            var tankHealth = Service.Configuration.HealthForDyingTanks.TryGetValue(id, out var value) ? value : 0.15f;
+
             return TargetUpdater.HaveHostilesInRange
-                && (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < Service.Configuration.HealthForDyingTank
-                && TargetUpdater.PartyMembersAverHP > Service.Configuration.HealthForDyingTank + 0.1f;
+                && (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < tankHealth
+                && TargetUpdater.PartyMembersAverHP > tankHealth + 0.1f;
         }
 
         private bool FindTarget(bool mustUse)

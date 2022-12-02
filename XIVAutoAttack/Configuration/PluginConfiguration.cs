@@ -78,7 +78,7 @@ public class PluginConfiguration : IPluginConfiguration
     public Dictionary<ClassJobID, float> HealthSingleSpells { get; set; } = new Dictionary<ClassJobID, float>();
     public float HealthSingleSpell { get; set; } = 0.55f;
 
-    public float HealthForDyingTank { get; set; } = 0.15f;
+    public Dictionary<ClassJobID, float> HealthForDyingTanks { get; set; } = new Dictionary<ClassJobID, float>();
     public float InterruptibleTime { get; set; } = 0.5f;
     public float SpecialDuration { get; set; } = 3;
     public float WeaponInterval { get; set; } = 0.67f;
