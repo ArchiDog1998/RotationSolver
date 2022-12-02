@@ -231,9 +231,16 @@ namespace XIVAutoAttack.Actions.BaseAction
                 {
                     if (Service.TargetManager.Target is BattleChara b && b.CanAttack() && b.DistanceToPlayer() <= range)
                     {
-
                         if (_action.CastType == 1)
                         {
+                            //目标已有充足的Debuff
+                            if (!mustUse && TargetStatus != null)
+                            {
+                                var tar = Target ?? Service.ClientState.LocalPlayer;
+
+                                if (!tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus)) return false;
+                            }
+
                             Target = b;
                             return true;
                         }

@@ -85,7 +85,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Ô¤¾¯
     /// </summary>
-    public static BaseAction Sentinel { get; } = new(ActionID.Sentinel, isTimeline: true)
+    public static BaseAction Sentinel { get; } = new(ActionID.Sentinel, isTimeline: true, isFriendly:true)
     {
         BuffsProvide = Rampart.BuffsProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
