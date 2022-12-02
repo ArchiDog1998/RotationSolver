@@ -2,6 +2,7 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Linq;
@@ -78,6 +79,65 @@ internal partial class ComboConfigWindow
                         {
                             Service.Configuration.TargetToHostileTypes[combo.Job.RowId] = (byte)isAllTargetAsHostile;
                             Service.Configuration.Save();
+                        }
+
+                        if(combo.Job.GetJobRole() == JobRole.Healer)
+                        {
+                            var job = combo.JobIDs[0];
+                            const float speed = 0.005f;
+                            const float width = 100;
+
+                            var healAreability = Service.Configuration.HealthAreaAbilitys.TryGetValue(job, out var value) ? value : Service.Configuration.HealthAreaAbility;
+
+                            ImGui.SetNextItemWidth(width);
+                            if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthAreaAbility, ref healAreability, speed, 0, 1))
+                            {
+                                Service.Configuration.HealthAreaAbilitys[job] = healAreability;
+                                Service.Configuration.Save();
+                            }
+
+                            ImGui.SameLine();
+                            ImGui.SetNextItemWidth(width);
+                            var healAreaspell = Service.Configuration.HealthAreafSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthAreafSpell; if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthAreafSpell, ref healAreaspell, speed, 0, 1))
+                            {
+                                Service.Configuration.HealthAreafSpells[job] = healAreaspell;
+                                Service.Configuration.Save();
+                            }
+
+                            ImGui.SameLine();
+                            ImGui.SetNextItemWidth(width);
+                            var hotSubArea = Service.Configuration.HealingOfTimeSubstactAreas.TryGetValue(job, out value) ? value : 0.3f;
+                            if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubstactArea, ref hotSubArea, speed, 0, 1))
+                            {
+                                Service.Configuration.HealingOfTimeSubstactAreas[job] = hotSubArea;
+                                Service.Configuration.Save();
+                            }
+
+                            ImGui.SetNextItemWidth(width);
+                            var healsingAbility = Service.Configuration.HealthSingleAbilitys.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleAbility;
+                            if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthSingleAbility, ref healsingAbility, speed, 0, 1))
+                            {
+                                Service.Configuration.HealthSingleAbilitys[job] = healsingAbility;
+                                Service.Configuration.Save();
+                            }
+
+                            ImGui.SameLine();
+                            ImGui.SetNextItemWidth(width);
+                            var healsingSpell = Service.Configuration.HealthSingleSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleSpell;
+                            if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthSingleSpell, ref healsingSpell, speed, 0, 1))
+                            {
+                                Service.Configuration.HealthSingleSpells[job] = healsingSpell;
+                                Service.Configuration.Save();
+                            }
+
+                            ImGui.SameLine();
+                            ImGui.SetNextItemWidth(width);
+                            var hotSubSingle = Service.Configuration.HealingOfTimeSubstactSingles.TryGetValue(job, out value) ? value : Service.Configuration.HealingOfTimeSubstactSingle;
+                            if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubstactSingle, ref hotSubSingle, speed, 0, 1))
+                            {
+                                Service.Configuration.HealingOfTimeSubstactSingles[job] = hotSubSingle;
+                                Service.Configuration.Save();
+                            }
                         }
 
                         var actions = combo.Config;

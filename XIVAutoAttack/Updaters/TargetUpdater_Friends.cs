@@ -183,21 +183,39 @@ namespace XIVAutoAttack.Updaters
             }
             PartyMembersDifferHP = (float)Math.Sqrt(differHP / PartyMembersHP.Count());
 
+            var job = (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id;
+
+            var hotSubArea = Service.Configuration.HealingOfTimeSubstactAreas.TryGetValue(job, out var value) ? value : 0.3f;
+
+            var areaHots = new StatusID[]
+            {
+                 StatusID.AspectedHelios,
+                 StatusID.Medica2,
+                 StatusID.TrueMedica2,
+            };
+
             //TODO:少了所有罩子类技能
-            var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer,
-                StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2)
-                * Service.Configuration.HealingOfTimeSubstactArea;
+            var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, areaHots) * hotSubArea;
 
-            CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreaAbility
-                - ratio;
+            var healAreability = Service.Configuration.HealthAreaAbilitys.TryGetValue(job, out value) ? value : Service.Configuration.HealthAreaAbility;
 
-            CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < Service.Configuration.HealthAreafSpell
-                - ratio;
+            var healAreaspell = Service.Configuration.HealthAreafSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthAreafSpell;
 
-            var singleHots = new StatusID[] {StatusID.AspectedBenefic, StatusID.Regen1,
+            CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreability - ratio;
+
+            CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreaspell - ratio;
+
+            var hotSubSingle = Service.Configuration.HealingOfTimeSubstactSingles.TryGetValue(job, out value) ? value : Service.Configuration.HealingOfTimeSubstactSingle;
+
+            var singleHots = new StatusID[] 
+            {
+                StatusID.AspectedBenefic, 
+                StatusID.Regen1,
                 StatusID.Regen2,
-                StatusID.Regen3};
+                StatusID.Regen3
+            };
 
+            var healsingAbility = Service.Configuration.HealthSingleAbilitys.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleAbility;
             //Hot衰减
             var abilityCount = PartyMembers.Count(p =>
             {
@@ -206,11 +224,11 @@ namespace XIVAutoAttack.Updaters
                 var h = p.GetHealthRatio();
                 if (h == 0) return false;
 
-                return h < Service.Configuration.HealthSingleAbility -
-                    Service.Configuration.HealingOfTimeSubstactSingle * ratio;
+                return h < healsingAbility - hotSubSingle * ratio;
             });
             CanHealSingleAbility = abilityCount > 0;
 
+            var healsingSpell = Service.Configuration.HealthSingleSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleSpell;
 
             var gcdCount = PartyMembers.Count(p =>
             {
@@ -218,12 +236,11 @@ namespace XIVAutoAttack.Updaters
                 var h = p.GetHealthRatio();
                 if (h == 0) return false;
 
-                return h < Service.Configuration.HealthSingleSpell -
-                    Service.Configuration.HealingOfTimeSubstactSingle * ratio;
+                return h < healsingSpell - hotSubSingle * ratio;
             });
             CanHealSingleSpell = gcdCount > 0;
 
-            PartyMembersMinHP = PartyMembersHP.Count() == 0 ? 0 : PartyMembersHP.Min();
+            PartyMembersMinHP = PartyMembersHP.Any() ? PartyMembersHP.Min() : 0;
             HPNotFull = PartyMembersMinHP < 1;
             #endregion
         }

@@ -192,7 +192,6 @@ internal partial class ComboConfigWindow : Window
 
         if (com != null)
         {
-
             if (!string.IsNullOrEmpty(com.Author) && combos != null)
             {
                 ImGui.SameLine();

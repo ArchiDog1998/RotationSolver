@@ -367,7 +367,7 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
-                float speed = 0.005f;
+                const float speed = 0.005f;
                 float healthDiff = Service.Configuration.HealthDifference;
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthDifference, ref healthDiff, speed * 2, 0, 0.5f))
                 {
@@ -389,13 +389,6 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
-                float healingOfTimeSubstactArea = Service.Configuration.HealingOfTimeSubstactArea;
-                if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubstactArea, ref healingOfTimeSubstactArea, speed, 0, 1))
-                {
-                    Service.Configuration.HealingOfTimeSubstactArea = healingOfTimeSubstactArea;
-                    Service.Configuration.Save();
-                }
-
                 float healthSingleA = Service.Configuration.HealthSingleAbility;
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthSingleAbility, ref healthSingleA, speed, 0, 1))
                 {
@@ -407,13 +400,6 @@ internal partial class ComboConfigWindow
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthSingleSpell, ref healthSingleS, speed, 0, 1))
                 {
                     Service.Configuration.HealthSingleSpell = healthSingleS;
-                    Service.Configuration.Save();
-                }
-
-                float healingOfTimeSubstact = Service.Configuration.HealingOfTimeSubstactSingle;
-                if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubstactSingle, ref healingOfTimeSubstact, speed, 0, 1))
-                {
-                    Service.Configuration.HealingOfTimeSubstactSingle = healingOfTimeSubstact;
                     Service.Configuration.Save();
                 }
 
@@ -429,17 +415,17 @@ internal partial class ComboConfigWindow
 
             if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Params_Targets))
             {
-                int isAllTargetAsHostile = IconReplacer.RightNowTargetToHostileType;
-                if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Params_RightNowTargetToHostileType, ref isAllTargetAsHostile, new string[]
-                {
-                     LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType1,
-                     LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType2,
-                     LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType3,
-                }, 3))
-                {
-                    IconReplacer.RightNowTargetToHostileType = (byte)isAllTargetAsHostile;
-                    Service.Configuration.Save();
-                }
+                //int isAllTargetAsHostile = IconReplacer.RightNowTargetToHostileType;
+                //if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Params_RightNowTargetToHostileType, ref isAllTargetAsHostile, new string[]
+                //{
+                //     LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType1,
+                //     LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType2,
+                //     LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType3,
+                //}, 3))
+                //{
+                //    IconReplacer.RightNowTargetToHostileType = (byte)isAllTargetAsHostile;
+                //    Service.Configuration.Save();
+                //}
 
                 bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AddEnemyListToHostile, ref addEnemyListToHostile))

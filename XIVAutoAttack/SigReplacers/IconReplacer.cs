@@ -36,12 +36,12 @@ internal sealed class IconReplacer : IDisposable
             var id = Service.ClientState.LocalPlayer.ClassJob.Id;
             return GetTargetHostileType(Service.DataManager.GetExcelSheet<ClassJob>().GetRow(id));
         }
-        set
-        {
-            if (Service.ClientState.LocalPlayer == null) return;
-            var id = Service.ClientState.LocalPlayer.ClassJob.Id;
-            Service.Configuration.TargetToHostileTypes[id] = value;
-        }
+        //set
+        //{
+        //    if (Service.ClientState.LocalPlayer == null) return;
+        //    var id = Service.ClientState.LocalPlayer.ClassJob.Id;
+        //    Service.Configuration.TargetToHostileTypes[id] = value;
+        //}
     }
 
     public static byte GetTargetHostileType(ClassJob classJob)
