@@ -34,6 +34,7 @@
   "Configwindow_Helper_AddCombo": "Add a custom Combo.",
   "Configwindow_Helper_OpenSource": "Open the source code URL",
   "Configwindow_Helper_RunCommand": "Click to execute the command",
+  "Configwindow_Helper_CopyCommand": "右键以复制命令",
   "Configwindow_Helper_InsertCommand": "Insert \"{0}\" first in 5s",
   "Configwindow_AttackItem_Description": "You can enable the function for each job you want and configure the setting about how to use actions.\nOnly player-current-job specific commands will be prompted.",
   "Configwindow_AttackItem_ScriptFolder": "Custom Opener Storage Path",
