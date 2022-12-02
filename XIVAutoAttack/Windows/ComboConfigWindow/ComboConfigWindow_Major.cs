@@ -220,7 +220,9 @@ internal partial class ComboConfigWindow : Window
                 }
 
                 ImGui.SameLine();
-                ImGui.Text(" -" + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ": " + com.GameVersion);
+                ImGui.TextDisabled("    -  " + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ":  ");
+                ImGui.SameLine();
+                ImGui.Text(com.GameVersion);
             }
 
             ImGui.SameLine();

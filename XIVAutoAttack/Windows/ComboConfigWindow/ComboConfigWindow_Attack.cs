@@ -96,7 +96,6 @@ internal partial class ComboConfigWindow
                                 Service.Configuration.Save();
                             }
 
-                            ImGui.SameLine();
                             ImGui.SetNextItemWidth(width);
                             var healAreaspell = Service.Configuration.HealthAreafSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthAreafSpell; if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthAreafSpell + $"##{num}HealAreaSpell", ref healAreaspell, speed, 0, 1))
                             {
@@ -104,7 +103,6 @@ internal partial class ComboConfigWindow
                                 Service.Configuration.Save();
                             }
 
-                            ImGui.SameLine();
                             ImGui.SetNextItemWidth(width);
                             var hotSubArea = Service.Configuration.HealingOfTimeSubtractAreas.TryGetValue(job, out value) ? value : 0.3f;
                             if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubtractArea + $"##{num}HealAreaSubtract", ref hotSubArea, speed, 0, 1))
@@ -121,7 +119,6 @@ internal partial class ComboConfigWindow
                                 Service.Configuration.Save();
                             }
 
-                            ImGui.SameLine();
                             ImGui.SetNextItemWidth(width);
                             var healsingSpell = Service.Configuration.HealthSingleSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleSpell;
                             if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthSingleSpell + $"##{num}HealSingleSpell", ref healsingSpell, speed, 0, 1))
@@ -130,7 +127,6 @@ internal partial class ComboConfigWindow
                                 Service.Configuration.Save();
                             }
 
-                            ImGui.SameLine();
                             ImGui.SetNextItemWidth(width);
                             var hotSubSingle = Service.Configuration.HealingOfTimeSubtractSingles.TryGetValue(job, out value) ? value : 0.3f;
                             if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubtractSingle + $"##{num}HealSingleSubtract", ref hotSubSingle, speed, 0, 1))
