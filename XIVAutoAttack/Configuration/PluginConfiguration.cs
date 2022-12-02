@@ -87,6 +87,7 @@ public class PluginConfiguration : IPluginConfiguration
     public string LocationWrongText { get; set; } = string.Empty;
     public string ScriptComboFolder { get; set; } = string.Empty;
 
+    public int MoveTargetAngle { get; set; } = 60;
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
     public void Save()

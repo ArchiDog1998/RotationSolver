@@ -41,6 +41,7 @@ internal partial class ComboConfigWindow
             {
 
                 float weaponDelay = Service.Configuration.WeaponDelay;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_WeaponDelay, ref weaponDelay, 0.002f, 0, 1))
                 {
                     Service.Configuration.WeaponDelay = weaponDelay;
@@ -48,6 +49,7 @@ internal partial class ComboConfigWindow
                 }
 
                 float weaponFaster = Service.Configuration.WeaponFaster;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_WeaponFaster, ref weaponFaster, 0.002f, 0, 0.1f))
                 {
                     Service.Configuration.WeaponFaster = weaponFaster;
@@ -55,6 +57,7 @@ internal partial class ComboConfigWindow
                 }
 
                 float weaponInterval = Service.Configuration.WeaponInterval;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_WeaponInterval, ref weaponInterval, 0.002f, 0.5f, 0.7f))
                 {
                     Service.Configuration.WeaponInterval = weaponInterval;
@@ -62,6 +65,7 @@ internal partial class ComboConfigWindow
                 }
 
                 float interruptibleTime = Service.Configuration.InterruptibleTime;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_InterruptibleTime, ref interruptibleTime, 0.002f, 0, 2))
                 {
                     Service.Configuration.InterruptibleTime = interruptibleTime;
@@ -69,6 +73,7 @@ internal partial class ComboConfigWindow
                 }
 
                 float specialDuration = Service.Configuration.SpecialDuration;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_SpecialDuration, ref specialDuration, 0.02f, 1, 20))
                 {
                     Service.Configuration.SpecialDuration = specialDuration;
@@ -76,6 +81,7 @@ internal partial class ComboConfigWindow
                 }
 
                 int addDotGCDCount = Service.Configuration.AddDotGCDCount;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragInt(LocalizationManager.RightLang.Configwindow_Params_AddDotGCDCount, ref addDotGCDCount, 0.2f, 0, 3))
                 {
                     Service.Configuration.AddDotGCDCount = addDotGCDCount;
@@ -148,6 +154,7 @@ internal partial class ComboConfigWindow
                 }
 
                 int voiceVolume = Service.Configuration.VoiceVolume;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragInt(LocalizationManager.RightLang.Configwindow_Params_VoiceVolume, ref voiceVolume, 0.2f, 0, 100))
                 {
                     Service.Configuration.VoiceVolume = voiceVolume;
@@ -338,6 +345,7 @@ internal partial class ComboConfigWindow
                 }
 
                 int lessMPNoRaise = Service.Configuration.LessMPNoRaise;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragInt(LocalizationManager.RightLang.Configwindow_Params_LessMPNoRaise, ref lessMPNoRaise, 200, 0, 10000))
                 {
                     Service.Configuration.LessMPNoRaise = lessMPNoRaise;
@@ -369,6 +377,7 @@ internal partial class ComboConfigWindow
 
                 const float speed = 0.005f;
                 float healthDiff = Service.Configuration.HealthDifference;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthDifference, ref healthDiff, speed * 2, 0, 0.5f))
                 {
                     Service.Configuration.HealthDifference = healthDiff;
@@ -376,6 +385,7 @@ internal partial class ComboConfigWindow
                 }
 
                 float healthAreaA = Service.Configuration.HealthAreaAbility;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthAreaAbility, ref healthAreaA, speed, 0, 1))
                 {
                     Service.Configuration.HealthAreaAbility = healthAreaA;
@@ -383,6 +393,7 @@ internal partial class ComboConfigWindow
                 }
 
                 float healthAreaS = Service.Configuration.HealthAreafSpell;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthAreafSpell, ref healthAreaS, speed, 0, 1))
                 {
                     Service.Configuration.HealthAreafSpell = healthAreaS;
@@ -390,6 +401,7 @@ internal partial class ComboConfigWindow
                 }
 
                 float healthSingleA = Service.Configuration.HealthSingleAbility;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthSingleAbility, ref healthSingleA, speed, 0, 1))
                 {
                     Service.Configuration.HealthSingleAbility = healthSingleA;
@@ -397,6 +409,7 @@ internal partial class ComboConfigWindow
                 }
 
                 float healthSingleS = Service.Configuration.HealthSingleSpell;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthSingleSpell, ref healthSingleS, speed, 0, 1))
                 {
                     Service.Configuration.HealthSingleSpell = healthSingleS;
@@ -404,6 +417,7 @@ internal partial class ComboConfigWindow
                 }
 
                 float healthTank = Service.Configuration.HealthForDyingTank;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                 if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthForDyingTank, ref healthTank, speed, 0, 1))
                 {
                     Service.Configuration.HealthForDyingTank = healthTank;
@@ -415,17 +429,15 @@ internal partial class ComboConfigWindow
 
             if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Params_Targets))
             {
-                //int isAllTargetAsHostile = IconReplacer.RightNowTargetToHostileType;
-                //if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Params_RightNowTargetToHostileType, ref isAllTargetAsHostile, new string[]
-                //{
-                //     LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType1,
-                //     LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType2,
-                //     LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType3,
-                //}, 3))
-                //{
-                //    IconReplacer.RightNowTargetToHostileType = (byte)isAllTargetAsHostile;
-                //    Service.Configuration.Save();
-                //}
+                float minradius = Service.Configuration.ObjectMinRadius;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
+                if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_ObjectMinRadius, ref minradius, 0.02f, 0, 10))
+                {
+                    Service.Configuration.ObjectMinRadius = minradius;
+                    Service.Configuration.Save();
+                }
+
+
 
                 bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AddEnemyListToHostile, ref addEnemyListToHostile))
@@ -464,13 +476,6 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
-                float minradius = Service.Configuration.ObjectMinRadius;
-                if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_ObjectMinRadius, ref minradius, 0.02f, 0, 10))
-                {
-                    Service.Configuration.ObjectMinRadius = minradius;
-                    Service.Configuration.Save();
-                }
-
                 bool changeTargetForFate = Service.Configuration.ChangeTargetForFate;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ChangeTargetForFate, ref changeTargetForFate))
                 {
@@ -487,6 +492,18 @@ internal partial class ComboConfigWindow
                 if (ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_MoveTowardsScreenDesc);
+                }
+
+                int moveTargetAngle = Service.Configuration.MoveTargetAngle;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
+                if (ImGui.DragInt(LocalizationManager.RightLang.Configwindow_Params_MoveTargetAngle, ref moveTargetAngle, 0.02f, 0, 10))
+                {
+                    Service.Configuration.MoveTargetAngle = moveTargetAngle;
+                    Service.Configuration.Save();
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_MoveTargetAngleDesc);
                 }
 
                 bool raiseAll = Service.Configuration.RaiseAll;

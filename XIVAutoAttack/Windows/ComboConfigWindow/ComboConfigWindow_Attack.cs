@@ -85,25 +85,24 @@ internal partial class ComboConfigWindow
                         {
                             var job = combo.JobIDs[0];
                             const float speed = 0.005f;
-                            const float width = 100;
 
                             var healAreability = Service.Configuration.HealthAreaAbilitys.TryGetValue(job, out var value) ? value : Service.Configuration.HealthAreaAbility;
 
-                            ImGui.SetNextItemWidth(width);
+                            ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                             if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthAreaAbility + $"##{num}HealAreaAbility", ref healAreability, speed, 0, 1))
                             {
                                 Service.Configuration.HealthAreaAbilitys[job] = healAreability;
                                 Service.Configuration.Save();
                             }
 
-                            ImGui.SetNextItemWidth(width);
+                            ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                             var healAreaspell = Service.Configuration.HealthAreafSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthAreafSpell; if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthAreafSpell + $"##{num}HealAreaSpell", ref healAreaspell, speed, 0, 1))
                             {
                                 Service.Configuration.HealthAreafSpells[job] = healAreaspell;
                                 Service.Configuration.Save();
                             }
 
-                            ImGui.SetNextItemWidth(width);
+                            ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                             var hotSubArea = Service.Configuration.HealingOfTimeSubtractAreas.TryGetValue(job, out value) ? value : 0.3f;
                             if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubtractArea + $"##{num}HealAreaSubtract", ref hotSubArea, speed, 0, 1))
                             {
@@ -111,7 +110,7 @@ internal partial class ComboConfigWindow
                                 Service.Configuration.Save();
                             }
 
-                            ImGui.SetNextItemWidth(width);
+                            ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                             var healsingAbility = Service.Configuration.HealthSingleAbilitys.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleAbility;
                             if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthSingleAbility + $"##{num}HealSingleAbility", ref healsingAbility, speed, 0, 1))
                             {
@@ -119,7 +118,7 @@ internal partial class ComboConfigWindow
                                 Service.Configuration.Save();
                             }
 
-                            ImGui.SetNextItemWidth(width);
+                            ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                             var healsingSpell = Service.Configuration.HealthSingleSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleSpell;
                             if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealthSingleSpell + $"##{num}HealSingleSpell", ref healsingSpell, speed, 0, 1))
                             {
@@ -127,7 +126,7 @@ internal partial class ComboConfigWindow
                                 Service.Configuration.Save();
                             }
 
-                            ImGui.SetNextItemWidth(width);
+                            ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                             var hotSubSingle = Service.Configuration.HealingOfTimeSubtractSingles.TryGetValue(job, out value) ? value : 0.3f;
                             if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubtractSingle + $"##{num}HealSingleSubtract", ref hotSubSingle, speed, 0, 1))
                             {

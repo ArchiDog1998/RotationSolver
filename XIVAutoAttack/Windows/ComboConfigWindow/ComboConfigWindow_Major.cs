@@ -21,6 +21,8 @@ namespace XIVAutoAttack.Windows.ComboConfigWindow;
 
 internal partial class ComboConfigWindow : Window
 {
+    const float DRAG_NUMBER_WIDTH = 100;
+
     public ComboConfigWindow()
         : base(nameof(ComboConfigWindow), 0, false)
     {

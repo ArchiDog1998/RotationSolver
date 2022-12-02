@@ -13,7 +13,8 @@ internal partial class ComboConfigWindow
     private void DrawDebug()
     {
         var str = TargetUpdater.EncryptString(Service.ClientState.LocalPlayer);
-        ImGui.InputText("Your name HASH", ref str, 100);
+        ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
+        ImGui.InputText("你的HASH! 发给秋水萌新吧！", ref str, 100);
 
         if (ImGui.CollapsingHeader("Status from self."))
         {
@@ -22,18 +23,6 @@ internal partial class ComboConfigWindow
                 if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
                 {
                     ImGui.Text(item.GameData.Name + item.StatusId);
-                }
-            }
-
-            if (Service.TargetManager.Target is BattleChara b)
-            {
-                ImGui.Separator();
-                foreach (var item in b.StatusList)
-                {
-                    if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text(item.GameData.Name + item.StatusId);
-                    }
                 }
             }
         }

@@ -117,6 +117,8 @@
   "Configwindow_Params_AttackMarkAOEDesc": "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.",
   "Configwindow_Params_FilterStopMark": "Never attack targets with stop markers",
   "Configwindow_Params_ObjectMinRadius": "Set the minimum target circle threshold possessed by the attack target",
+  "Configwindow_Params_MoveTargetAngle": "移动目标的夹角大小",
+  "Configwindow_Params_MoveTargetAngleDesc": "如果是角色面向的，即角色面前的视角范围内的目标均为可移动目标，如果是屏幕中心，则为角色点朝上画扇形范围内的目标为可移动目标。",
   "Configwindow_Params_ChangeTargetForFate": "Select only Fate targets in Fate",
   "Configwindow_Params_MoveTowardsScreen": "Using movement actions towards the object in the center of the screen",
   "Configwindow_Params_MoveTowardsScreenDesc": "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.",

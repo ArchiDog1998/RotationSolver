@@ -157,6 +157,8 @@ internal class Strings
     public string Configwindow_Params_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
     public string Configwindow_Params_FilterStopMark { get; set; } = "Never attack targets with stop markers";
     public string Configwindow_Params_ObjectMinRadius { get; set; } = "Set the minimum target circle threshold possessed by the attack target";
+    public string Configwindow_Params_MoveTargetAngle { get; set; } = "移动目标的夹角大小";
+    public string Configwindow_Params_MoveTargetAngleDesc { get; set; } = "如果是角色面向的，即角色面前的视角范围内的目标均为可移动目标，如果是屏幕中心，则为角色点朝上画扇形范围内的目标为可移动目标。";
     public string Configwindow_Params_ChangeTargetForFate { get; set; } = "Select only Fate targets in Fate";
     public string Configwindow_Params_MoveTowardsScreen { get; set; } = "Using movement actions towards the object in the center of the screen";
     public string Configwindow_Params_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";

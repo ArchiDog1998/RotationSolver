@@ -75,7 +75,7 @@ namespace XIVAutoAttack.Helpers
                 Vector3 dir = t.Position - pPosition;
                 Vector2 dirVec = new Vector2(dir.Z, dir.X);
                 double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
-                return angle <= Math.PI / 6;
+                return angle <= Math.PI * Service.Configuration.MoveTargetAngle / 360;
             }).OrderByDescending(t => Vector3.Distance(t.Position, pPosition));
 
             return tars.FirstOrDefault();
@@ -94,7 +94,7 @@ namespace XIVAutoAttack.Helpers
 
                 if (dir.Y > 0) return false;
 
-                return Math.Abs(dir.X / dir.Y) < Math.Tan(Math.PI / 6);
+                return Math.Abs(dir.X / dir.Y) < Math.Tan(Math.PI * Service.Configuration.MoveTargetAngle / 360);
             }).OrderByDescending(t => Vector3.Distance(t.Position, pPosition));
 
             return tars.FirstOrDefault();
