@@ -34,6 +34,7 @@
   "Configwindow_Helper_AddCombo": "添加一个自定义循环",
   "Configwindow_Helper_OpenSource": "打开源码网址",
   "Configwindow_Helper_RunCommand": "单击以执行命令",
+  "Configwindow_Helper_CopyCommand": "右键以复制命令",
   "Configwindow_Helper_InsertCommand": "在5s内优先插入\"{0}\"",
   "Configwindow_AttackItem_Description": "你可以按需启用你需要的职业并进行详细的技能使用设置。\n设置选项卡中仅显示当前特职的职业特定战斗指令，非当前特职的无效指令将被隐藏",
   "Configwindow_AttackItem_ScriptFolder": "自定义循环路径",
