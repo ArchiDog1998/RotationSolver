@@ -198,7 +198,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public static RoleAction Peloton { get; } = new(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, true)
         {
             BuffsProvide = new StatusID[] { StatusID.Peloton },
-            ActionCheck = b => !InCombat,
+            ActionCheck = b => !InCombat && !TargetUpdater.HostileTargets.Any(),
         };
 
         private protected virtual BaseAction Raise => null;
