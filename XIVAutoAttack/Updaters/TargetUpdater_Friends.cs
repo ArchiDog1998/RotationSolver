@@ -185,7 +185,7 @@ namespace XIVAutoAttack.Updaters
 
             var job = (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id;
 
-            var hotSubArea = Service.Configuration.HealingOfTimeSubstactAreas.TryGetValue(job, out var value) ? value : 0.3f;
+            var hotSubArea = Service.Configuration.HealingOfTimeSubtractAreas.TryGetValue(job, out var value) ? value : 0.3f;
 
             var areaHots = new StatusID[]
             {
@@ -205,7 +205,7 @@ namespace XIVAutoAttack.Updaters
 
             CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreaspell - ratio;
 
-            var hotSubSingle = Service.Configuration.HealingOfTimeSubstactSingles.TryGetValue(job, out value) ? value : Service.Configuration.HealingOfTimeSubstactSingle;
+            var hotSubSingle = Service.Configuration.HealingOfTimeSubtractSingles.TryGetValue(job, out value) ? value : 0.3f;
 
             var singleHots = new StatusID[] 
             {

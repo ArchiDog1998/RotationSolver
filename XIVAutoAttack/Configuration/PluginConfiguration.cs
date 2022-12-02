@@ -63,10 +63,9 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseHealWhenNotAHealer { get; set; } = true;
     public float ObjectMinRadius { get; set; } = 0f;
     public float HealthDifference { get; set; } = 0.25f;
-    public Dictionary<ClassJobID, float> HealingOfTimeSubstactSingles { get; set; } = new Dictionary<ClassJobID, float>();
-    public float HealingOfTimeSubstactSingle { get; set; } = 0.3f;
+    public Dictionary<ClassJobID, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<ClassJobID, float>();
 
-    public Dictionary<ClassJobID, float> HealingOfTimeSubstactAreas { get; set; } = new Dictionary<ClassJobID, float>();
+    public Dictionary<ClassJobID, float> HealingOfTimeSubtractAreas { get; set; } = new Dictionary<ClassJobID, float>();
     public Dictionary<ClassJobID, float> HealthAreaAbilitys { get; set; } = new Dictionary<ClassJobID, float>();
     public float HealthAreaAbility { get; set; } = 0.75f;
 

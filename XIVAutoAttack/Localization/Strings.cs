@@ -141,10 +141,10 @@ internal class Strings
     public string Configwindow_Params_HealthDifference { get; set; } = "Set the HP standard deviation threshold for using AOE heal (ability & spell)";
     public string Configwindow_Params_HealthAreaAbility { get; set; } = "Set the HP threshold for using AOE healing ability";
     public string Configwindow_Params_HealthAreafSpell { get; set; } = "Set the HP threshold for using AOE healing spell";
-    public string Configwindow_Params_HealingOfTimeSubstactArea { get; set; } = "Set the HP threshold reduce with hot effect(AOE)";
+    public string Configwindow_Params_HealingOfTimeSubtractArea { get; set; } = "Set the HP threshold reduce with hot effect(AOE)";
     public string Configwindow_Params_HealthSingleAbility { get; set; } = "Set the HP threshold for using single healing ability";
     public string Configwindow_Params_HealthSingleSpell { get; set; } = "Set the HP threshold for using single healing spell";
-    public string Configwindow_Params_HealingOfTimeSubstactSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
+    public string Configwindow_Params_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
     public string Configwindow_Params_HealthForDyingTank { get; set; } = "Set the HP threshold for tank to use invincibility";
     public string Configwindow_Params_Targets { get; set; } = "Target selection";
     public string Configwindow_Params_RightNowTargetToHostileType { get; set; } = "Hostile target filtering condition";
