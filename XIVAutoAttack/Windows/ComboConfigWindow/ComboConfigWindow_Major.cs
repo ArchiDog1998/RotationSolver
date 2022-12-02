@@ -304,7 +304,12 @@ internal partial class ComboConfigWindow : Window
         }
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip($"{LocalizationManager.RightLang.Configwindow_Helper_RunCommand}: {command}");
+            ImGui.SetTooltip($"{LocalizationManager.RightLang.Configwindow_Helper_RunCommand}: {command}\n{LocalizationManager.RightLang.Configwindow_Helper_CopyCommand}: {command}");
+
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
+            {
+                ImGui.SetClipboardText(command);
+            }
         }
 
         if (!string.IsNullOrEmpty(help))

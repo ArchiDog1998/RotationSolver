@@ -74,6 +74,7 @@ internal class Strings
     public string Configwindow_Helper_AddCombo { get; set; } = "Add a custom Combo.";
     public string Configwindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string Configwindow_Helper_RunCommand { get; set; } = "Click to execute the command";
+    public string Configwindow_Helper_CopyCommand { get; set; } = "右键以复制命令";
     public string Configwindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in 5s";
     public string Configwindow_AttackItem_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.\nOnly player-current-job specific commands will be prompted.";
     public string Configwindow_AttackItem_ScriptFolder { get; set; } = "Custom Opener Storage Path";
