@@ -31,6 +31,10 @@ namespace XIVAutoAttack.Helpers
             {ActionID.Kasha, new(EnemyLocation.Side, new byte[] { 29, 68 }) },
         };
 
+        public static readonly StatusID[] TankBreakStatus = new StatusID[]
+        {
+            StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead, StatusID.Superbolide, StatusID.HallowedGround,
+        };
 
         /// <summary>
         /// 状态是否在下几个GCD转好后消失。

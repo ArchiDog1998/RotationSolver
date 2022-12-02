@@ -101,7 +101,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
         {
             BuffsProvide = new StatusID[]
               {
-                    StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead, StatusID.Superbolide, StatusID.HallowedGround,
                     StatusID.Rampart1, StatusID.Rampart2, StatusID.Rampart3,
                     //原初的直觉和血气
                     StatusID.RawIntuition, StatusID.Bloodwhetting,
@@ -113,7 +112,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     StatusID.ShadowWall,
                     //星云
                     StatusID.Nebula,
-              },
+              }.Union(StatusHelper.TankBreakStatus).ToArray(),
             ActionCheck = BaseAction.TankDefenseSelf,
         };
 
