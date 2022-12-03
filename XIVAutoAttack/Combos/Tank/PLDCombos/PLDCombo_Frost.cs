@@ -85,7 +85,7 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
         if (!Player.HasStatus(true, StatusID.FightOrFlight)//没有战逃buff
             && Player.HasStatus(true, StatusID.Requiescat)//有安魂buff
             && HolySpirit.ShouldUse(out act)) return true;//圣灵
-        if (Atonement.ShouldUse(out act) && IsLastWeaponSkill(true, Atonement, RageofHalone))//赎罪剑
+        if (Atonement.ShouldUse(out act) && IsLastGCD(true, Atonement, RageofHalone))//赎罪剑
         {
             if (Player.HasStatus(true, StatusID.FightOrFlight)) return true;//战逃内打完
             if (Player.StatusStack(true, StatusID.SwordOath) != 1&& !Player.HasStatus(true, StatusID.FightOrFlight) )return true;//战逃外丢一个赎罪
