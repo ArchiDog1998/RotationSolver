@@ -121,7 +121,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             //用于自定义的要求没达到
             if (ActionCheck != null && !ActionCheck(Target)) return false;
-            if (ComboCheck != null && !ComboCheck(Target)) return false;
+            if (!skipDisable && ComboCheck != null && !ComboCheck(Target)) return false;
 
             if (IsGeneralGCD)
             {
