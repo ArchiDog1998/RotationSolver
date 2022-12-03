@@ -27,7 +27,7 @@
   "Configwindow_HelpItem_RaiseShirk": "开启一个自动使用复活或退避的窗口期。",
   "Configwindow_HelpItem_AntiRepulsion": "开启一个自动使用防击退的窗口期。",
   "Configwindow_HelpItem_BreakProvoke": "开启一个自动使用爆发或挑衅的窗口期。",
-  "Configwindow_HelpItem_Move": "开启一个允许移动的窗口期。",
+  "Configwindow_HelpItem_Move": "开启一个自动使用移动技能的窗口期。",
   "Configwindow_Helper_SwitchAuthor": "点击以切换作者",
   "Configwindow_Helper_GameVersion": "游戏版本",
   "Configwindow_Helper_EditCombo": "点击以编辑该自定义循环。",
