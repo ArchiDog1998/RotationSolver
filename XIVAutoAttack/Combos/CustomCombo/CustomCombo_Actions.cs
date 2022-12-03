@@ -24,7 +24,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 昏乱
         /// </summary>
-        public static RoleAction Addle { get; } = new(ActionID.Addle, new JobRole[] { JobRole.RangedMagicial }, isTimeline: true)
+        public static RoleAction Addle { get; } = new(ActionID.Addle, new JobRole[] { JobRole.RangedMagicial }, isFriendly:true, isTimeline: true)
         {
             ActionCheck = b => !b.HasStatus(false, StatusID.Addle),
         };
@@ -92,7 +92,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 亲疏自行
         /// </summary>
-        public static RoleAction ArmsLength { get; } = new(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee }, true, shouldEndSpecial: true, isTimeline: true);
+        public static RoleAction ArmsLength { get; } = new(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee, JobRole.RangedPhysical }, true, shouldEndSpecial: true);
 
         /// <summary>
         /// 铁壁
@@ -112,6 +112,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
                     StatusID.ShadowWall,
                     //星云
                     StatusID.Nebula,
+
+                    //TODO:BLU的减伤技能
               }.Union(StatusHelper.TankBreakStatus).ToArray(),
             ActionCheck = BaseAction.TankDefenseSelf,
         };
@@ -180,7 +182,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 沉稳咏唱
         /// </summary>
         public static RoleAction Surecast { get; } = new(ActionID.Surecast,
-            new JobRole[] { JobRole.RangedMagicial, JobRole.Healer }, true, shouldEndSpecial: true, isTimeline: true);
+            new JobRole[] { JobRole.RangedMagicial, JobRole.Healer }, true, shouldEndSpecial: true);
 
         /// <summary>
         /// 真北

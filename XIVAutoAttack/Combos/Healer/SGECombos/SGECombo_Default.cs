@@ -37,7 +37,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.HealArea, $"GCD: {Prognosis}\n                     能力: {Holos}, {Ixochole}, {Physis2}, {Physis}"},
+        {DescType.HealArea, $"GCD: {Prognosis}\n                     能力: {Holos}, {Ixochole}, {Physis}"},
         {DescType.HealSingle, $"GCD: {Diagnosis}\n                     能力: {Druochole}"},
         {DescType.DefenseArea, $"{Panhaima}, {Kerachole}, {Prognosis}"},
         {DescType.DefenseSingle, $"GCD: {Diagnosis}\n                     能力: {Haima}, {Taurochole}"},
@@ -245,10 +245,8 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
             //整体论
             if (Holos.ShouldUse(out act)) return true;
 
-            //自生2
-            if (Physis2.ShouldUse(out act)) return true;
             //自生
-            if (!Physis2.EnoughLevel && Physis.ShouldUse(out act)) return true;
+            if (Physis.ShouldUse(out act)) return true;
 
             //泛输血
             if (Panhaima.ShouldUse(out act)) return true;
@@ -310,10 +308,8 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
         //坚角清汁
         if (Kerachole.ShouldUse(out act) && Level >= 78) return true;
 
-        //自生2
-        if (Physis2.ShouldUse(out act)) return true;
         //自生
-        if (!Physis2.EnoughLevel && Physis.ShouldUse(out act)) return true;
+        if (Physis.ShouldUse(out act)) return true;
 
         //整体论
         if (Holos.ShouldUse(out act) && TargetUpdater.PartyMembersAverHP < 0.65f) return true;

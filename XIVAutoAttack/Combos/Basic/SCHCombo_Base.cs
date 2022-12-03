@@ -49,7 +49,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 复生
     /// </summary>
-    public static BaseAction Resurrection { get; } = new(ActionID.Resurrection, true, isTimeline: true);
+    public static BaseAction Resurrection { get; } = new(ActionID.Resurrection, true);
 
     /// <summary>
     /// 士气高扬之策

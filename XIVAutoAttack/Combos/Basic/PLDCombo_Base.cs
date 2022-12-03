@@ -127,7 +127,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// µ÷Í£
     /// </summary>
-    public static BaseAction Intervene { get; } = new(ActionID.Intervene, shouldEndSpecial: true, isTimeline: true)
+    public static BaseAction Intervene { get; } = new(ActionID.Intervene, shouldEndSpecial: true)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };

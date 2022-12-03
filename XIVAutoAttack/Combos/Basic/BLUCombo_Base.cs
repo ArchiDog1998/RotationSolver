@@ -57,8 +57,8 @@ namespace XIVAutoAttack.Combos.Basic
                 }
             }
 
-            internal BLUAction(ActionID actionID, BLUActionType type, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false)
-                : base(actionID, isFriendly, shouldEndSpecial, isEot)
+            internal BLUAction(ActionID actionID, BLUActionType type, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false, bool isTimeline = false)
+                : base(actionID, isFriendly, shouldEndSpecial, isEot, isTimeline)
             {
                 Type = type;
             }
@@ -119,7 +119,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 捕食
         /// </summary>
-        public static BLUAction Devour { get; } = new(ActionID.Devour, BLUActionType.Magical);
+        public static BLUAction Devour { get; } = new(ActionID.Devour, BLUActionType.Magical, isTimeline: true);
 
         /// <summary>
         /// 斗灵弹
@@ -245,7 +245,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 魔法锤
         /// </summary>
-        public static BLUAction MagicHammer { get; } = new(ActionID.MagicHammer, BLUActionType.Magical);
+        public static BLUAction MagicHammer { get; } = new(ActionID.MagicHammer, BLUActionType.Magical, isTimeline: true);
 
         /// <summary>
         /// 白骑士之旅
@@ -492,7 +492,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 臭气
         /// </summary>
-        public static BLUAction BadBreath { get; } = new(ActionID.BadBreath, BLUActionType.None);
+        public static BLUAction BadBreath { get; } = new(ActionID.BadBreath, BLUActionType.None, isTimeline: true);
 
         /// <summary>
         /// 唧唧咋咋
@@ -540,27 +540,46 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 超硬化
         /// </summary>
-        public static BLUAction Diamondback { get; } = new(ActionID.Diamondback, BLUActionType.None, true);
+        public static BLUAction Diamondback { get; } = new(ActionID.Diamondback, BLUActionType.None, true, isTimeline:true)
+        {
+            BuffsProvide = Rampart.BuffsProvide,
+            ActionCheck = BaseAction.TankDefenseSelf,
+        };
 
         /// <summary>
         /// 哥布防御
         /// </summary>
-        public static BLUAction Gobskin { get; } = new(ActionID.Gobskin, BLUActionType.None, true);
+        public static BLUAction Gobskin { get; } = new(ActionID.Gobskin, BLUActionType.None, true, isTimeline: true)    {
+        BuffsProvide = Rampart.BuffsProvide,
+        ActionCheck = BaseAction.TankDefenseSelf,
+    };
 
         /// <summary>
         /// 仙人盾
         /// </summary>
-        public static BLUAction Cactguard { get; } = new(ActionID.Cactguard, BLUActionType.None, true);
+        public static BLUAction Cactguard { get; } = new(ActionID.Cactguard, BLUActionType.None, true, isTimeline: true)
+        {
+            BuffsProvide = Rampart.BuffsProvide,
+            ActionCheck = BaseAction.TankDefenseSelf,
+        };
 
         /// <summary>
         /// 玄结界
         /// </summary>
-        public static BLUAction ChelonianGate { get; } = new(ActionID.ChelonianGate, BLUActionType.None, true);
+        public static BLUAction ChelonianGate { get; } = new(ActionID.ChelonianGate, BLUActionType.None, true, isTimeline: true)
+        {
+            BuffsProvide = Rampart.BuffsProvide,
+            ActionCheck = BaseAction.TankDefenseSelf,
+        };
 
         /// <summary>
         /// 龙之力
         /// </summary>
-        public static BLUAction DragonForce { get; } = new(ActionID.DragonForce, BLUActionType.None, true);
+        public static BLUAction DragonForce { get; } = new(ActionID.DragonForce, BLUActionType.None, true, isTimeline: true)
+        {
+            BuffsProvide = Rampart.BuffsProvide,
+            ActionCheck = BaseAction.TankDefenseSelf,
+        };
         #endregion
 
 

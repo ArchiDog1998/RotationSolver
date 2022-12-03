@@ -123,15 +123,15 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Physis { get; } = new(ActionID.Physis, true, isTimeline: true);
 
-    /// <summary>
-    /// 自生2
-    /// </summary>
-    public static BaseAction Physis2 { get; } = new(ActionID.Physis2, true, isTimeline: true);
+    ///// <summary>
+    ///// 自生2
+    ///// </summary>
+    //public static BaseAction Physis2 { get; } = new(ActionID.Physis2, true, isTimeline: true);
 
     /// <summary>
     /// 均衡
     /// </summary>
-    public static BaseAction Eukrasia { get; } = new(ActionID.Eukrasia, true)
+    public static BaseAction Eukrasia { get; } = new(ActionID.Eukrasia, true, isTimeline: true)
     {
         ActionCheck = b => !JobGauge.Eukrasia,
     };
