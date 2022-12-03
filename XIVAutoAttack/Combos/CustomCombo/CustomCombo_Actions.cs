@@ -45,7 +45,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 康复
         /// </summary>
-        public static RoleAction Esuna { get; } = new(ActionID.Esuna, new JobRole[] { JobRole.Healer }, true, isTimeline: true)
+        public static RoleAction Esuna { get; } = new(ActionID.Esuna, new JobRole[] { JobRole.Healer }, true)
         {
             ChoiceTarget = (tars) =>
             {
@@ -135,7 +135,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 退避
         /// </summary>
-        public static RoleAction Shirk { get; } = new(ActionID.Shirk, new JobRole[] { JobRole.Tank }, true, isTimeline: true)
+        public static RoleAction Shirk { get; } = new(ActionID.Shirk, new JobRole[] { JobRole.Tank }, true)
         {
             ChoiceTarget = friends => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault(),
         };
