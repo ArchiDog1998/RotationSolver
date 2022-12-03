@@ -2,6 +2,7 @@
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
@@ -19,15 +20,19 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
     public override string Author => "Frost";
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.Description, "远离且不移动时会读圣灵；aoe时优先安魂圣环；断gcd后优先续dot"},
+        {DescType.Description, "远离且不移动时会读圣灵；aoe时优先安魂圣环；战逃外弃打1赎罪（需求技速2.40-2.45）"},
     };
-
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration().SetBool("UseDivineVeilPre", false, "倒计时15s使用幕帘")
+                                            .SetBool("UseHolySpiritPre", true, "预读圣灵"); 
+    }
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (remainTime <= 15 && DivineVeil.ShouldUse(out _)) return DivineVeil;//提前15s幕帘
-        if (remainTime <= 2 && HolySpirit.ShouldUse(out _)) return HolySpirit;//提前2s圣灵
+        if (Config.GetBoolByName("UseDivineVeilPre") &&remainTime <= 15 && DivineVeil.ShouldUse(out _)) return DivineVeil;//提前15s幕帘
+        if (Config.GetBoolByName("UseHolySpiritPre") &&remainTime <= 2 && HolySpirit.ShouldUse(out _)) return HolySpirit;//提前2s圣灵
         return base.CountDownAction(remainTime);
-    }
+    }/*
     //紧急使用的GCD
     private protected override bool EmergencyGCD(out IAction act)
     {
@@ -36,16 +41,19 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
         {
              if (Confiteor.ShouldUse(out act, mustUse: true))return true;//安魂快无了赶紧悔罪
         }
-        if ((Target.HasStatus(true, StatusID.GoringBlade) && Target.WillStatusEndGCD(3, 0, true, StatusID.GoringBlade))//沥血快断了
+        /*if ((Target.HasStatus(true, StatusID.GoringBlade) && Target.WillStatusEndGCD(3, 0, true, StatusID.GoringBlade))//沥血快断了
             ||  (Target.HasStatus(true, StatusID.BladeofValor) && Target.WillStatusEndGCD(3, 0, true, StatusID.BladeofValor)))//英勇之剑快断了
         {
+            if (BladeofValor.ShouldUse(out act, mustUse: true)) return true;// 英勇之剑
+            if (BladeofTruth.ShouldUse(out act, mustUse: true)) return true;// 真理之剑
+            if (BladeofFaith.ShouldUse(out act, mustUse: true)) return true;// 信念之剑
             if (GoringBlade.ShouldUse(out act)) return true;// 沥血剑
             if (RiotBlade.ShouldUse(out act)) return true;// 暴乱剑
             if (FastBlade.ShouldUse(out act)) return true;// 先锋剑
-        }
+        
         act= null;
         return false;
-    }
+    }}*/
     //单体治疗GCD
     private protected override bool HealSingleGCD(out IAction act)
     {
@@ -68,8 +76,7 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
 
 
         //AOE
-        if (!Player.HasStatus(true, StatusID.FightOrFlight)//没有战逃buff
-            && Player.HasStatus(true, StatusID.Requiescat)//有安魂buff
+        if (Player.HasStatus(true, StatusID.Requiescat)//有安魂buff
             && HolyCircle.ShouldUse(out act)) return true;// 圣环
         if (Prominence.ShouldUse(out act)) return true;// 日珥斩
         if (TotalEclipse.ShouldUse(out act)) return true;// 全蚀斩
@@ -78,22 +85,20 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
         if (!Player.HasStatus(true, StatusID.FightOrFlight)//没有战逃buff
             && Player.HasStatus(true, StatusID.Requiescat)//有安魂buff
             && HolySpirit.ShouldUse(out act)) return true;//圣灵
-        if (Atonement.ShouldUse(out act))//赎罪剑
+        if (Atonement.ShouldUse(out act) && IsLastWeaponSkill(true, Atonement, RageofHalone))//赎罪剑
         {
-            if (Player.StatusStack(true, StatusID.SwordOath) == 1&& !Player.HasStatus(true, StatusID.FightOrFlight) )return false;//战逃外丢一个赎罪
-            return true;
+            if (Player.HasStatus(true, StatusID.FightOrFlight)) return true;//战逃内打完
+            if (Player.StatusStack(true, StatusID.SwordOath) != 1&& !Player.HasStatus(true, StatusID.FightOrFlight) )return true;//战逃外丢一个赎罪
         }
         if (GoringBlade.ShouldUse(out act)) return true;// 沥血剑
         if (RageofHalone.ShouldUse(out act)) return true;// 战女神之怒(王权剑)
         if (RiotBlade.ShouldUse(out act)) return true;// 暴乱剑
         if (FastBlade.ShouldUse(out act)) return true;// 先锋剑
+        
         //远程
-        if (Intervene.Target.DistanceToPlayer() > 3)//距离较远
-        {
-            if (IsMoving//移动中
-               && ShieldLob.ShouldUse(out act)) return true;//投盾
-            if (HolySpirit.ShouldUse(out act)) return true;//圣灵
-        }
+        if (IsMoving//移动中
+            && ShieldLob.ShouldUse(out act)) return true;//投盾
+        if (HolySpirit.ShouldUse(out act)) return true;//圣灵
 
         return false;
     }
@@ -123,12 +128,12 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
         if (Rampart.ShouldUse(out act)) return true;//铁壁（减伤20%）
         if (Sentinel.ShouldUse(out act)) return true; //预警（减伤30%）
         if (Reprisal.ShouldUse(out act)) return true;//雪仇
-        //if (Sheltron.ShouldUse(out act)) return true;// 盾阵
+        if (Sheltron.ShouldUse(out act)) return true;// 盾阵
 
-
+        /*
         if (Intervention.ShouldUse(out act)) return true;//干预
         if (Cover.ShouldUse(out act)) return true;//保护
-
+        */
         return false;
     }
     //紧急使用的能力
@@ -156,20 +161,20 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
         {
             if (FightorFlight.ElapsedAfterGCD(2)) return true; //开场延后
         }
-        if (Intervene.Target.DistanceToPlayer() <= 3 //距离不远
-                && !IsMoving) //不在移动中 
+        if (FastBlade.ShouldUse(out _))//距离不远
+                //&& !IsMoving) //不在移动中 
         {
             if (Player.HasStatus(true, StatusID.FightOrFlight)//有战逃buff
                 &&Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;//调停放空
-            if (!Player.HasStatus(true, StatusID.FightOrFlight)//没有战逃buff
-                && Intervene.CurrentCharges == 2//层数满了
-                && (Intervene.ShouldUse(out act))) return true;//调停
+            //if (Intervene.ShouldUse(out act)) return true;//调停
         }
 
         if (Requiescat.ShouldUse(out act))//安魂祈祷
         {
             if (Player.HasStatus(true, StatusID.FightOrFlight)//持有战逃buff
             && Player.WillStatusEnd(17, true, StatusID.FightOrFlight)) return true;//战逃buff时间小于17s
+            if (!Player.HasStatus(true, StatusID.FightOrFlight)//没有战逃buff
+            && !FightorFlight.WillHaveOneCharge(13)) return true;//战逃冷却在13s以上
         }
         if (OathGauge == 100 && Player.CurrentHp < Player.MaxHp)//忠义已满且不满血
         {
