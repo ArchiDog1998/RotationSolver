@@ -209,19 +209,17 @@ namespace XIVAutoAttack.Actions.BaseAction
                     //找到能覆盖最多的位置，并且选血最少的来。
                     Target = TargetFilter.GetMostObjectInRadius(availableCharas, range, _action.EffectRange, true, aoeCount)
                         .OrderBy(p => p.GetHealthRatio()).FirstOrDefault();
-                    if (Target == null) return false;
-
-                    return true;
                 }
                 else
                 {
-
                     availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
                     //特殊选队友的方法。
                     Target = ChoiceTarget(availableCharas);
-                    if (Target == null) return false;
-                    return true;
                 }
+
+                if (Target == null) return false;
+                if (TargetStatus != null && !Target.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus)) return false;
+                return true;
             }
             //再看看是否可以选中敌对的。
             else if (_action.CanTargetHostile)
