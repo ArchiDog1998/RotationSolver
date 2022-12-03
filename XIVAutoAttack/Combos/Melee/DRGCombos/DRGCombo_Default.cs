@@ -44,7 +44,7 @@ internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
         if (abilityRemain > 1)
         {
             if (SpineshatterDive.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-            if (DragonfireDive.ShouldUse(out act, mustUse: true)) return true;
+            if (DragonfireDive.ShouldUse(out act, mustUse: true, emptyOrSkipCombo:true)) return true;
         }
 
         act = null;
