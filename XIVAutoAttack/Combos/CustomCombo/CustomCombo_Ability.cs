@@ -115,8 +115,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
             {
                 var haveTargets = TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets);
                 if ((Service.Configuration.AutoProvokeForTank || TargetUpdater.AllianceTanks.Count() < 2)
-                    && haveTargets.Count() != TargetUpdater.HostileTargets.Count()
-                    || CommandController.BreakorProvoke)
+                    && haveTargets.Count() != TargetUpdater.HostileTargets.Count())
 
                 {
                     //¿ª¶ÜÌôÐÆ

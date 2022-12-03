@@ -60,7 +60,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 是否处于爆发，自动爆发或者手动点击的爆发
         /// </summary>
-        protected static bool SettingBreak => CommandController.BreakorProvoke || Service.Configuration.AutoBreak;
+        protected static bool SettingBreak => CommandController.Break || Service.Configuration.AutoBreak;
 
         /// <summary>
         /// 当前等级

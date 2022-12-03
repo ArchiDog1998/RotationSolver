@@ -192,23 +192,19 @@ namespace XIVAutoAttack
 
             }
         }
-        internal static bool BreakorProvoke { get; private set; } = false;
-        private static void StartBreakOrProvoke()
+        internal static bool Break { get; private set; } = false;
+        private static void StartBreak()
         {
-            bool last = BreakorProvoke;
+            bool last = Break;
             ResetSpecial(last);
             if (!last)
             {
                 _specialStateStartTime = DateTime.Now;
-                var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
-                    Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
 
-                string speak = role == JobRole.Tank ? "Provoke" : "Break";
-                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
-                _specialString = speak;
-                BreakorProvoke = true;
+                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Break");
+                _specialString = "Break";
+                Break = true;
                 UpdateToast();
-
             }
         }
         internal static bool AntiRepulsion { get; private set; } = false;
@@ -245,7 +241,7 @@ namespace XIVAutoAttack
         internal static void ResetSpecial(bool sayout)
         {
             _specialStateStartTime = DateTime.MinValue;
-            HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = BreakorProvoke
+            HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = Break
                 = AntiRepulsion = Move = false;
             if (sayout && Service.Configuration.AutoSayingOut) Watcher.Speak("End Special");
             _specialString = string.Empty;
@@ -393,8 +389,8 @@ namespace XIVAutoAttack
                     StartAntiRepulsion();
                     return;
 
-                case "BreakProvoke":
-                    StartBreakOrProvoke();
+                case "Break":
+                    StartBreak();
                     return;
 
                 case "AttackSmart":
