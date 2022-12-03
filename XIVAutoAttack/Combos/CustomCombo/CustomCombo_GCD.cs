@@ -128,10 +128,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
             }
             if (TargetUpdater.HPNotFull && ActionUpdater.InCombat)
             {
-                if ((CommandController.HealArea || CanHealAreaSpell) && !ShouldUseHealAreaAbility(1, out _)
-                    && HealAreaGCD(out act)) return act;
-                if ((CommandController.HealSingle || CanHealSingleSpell) && !ShouldUseHealSingleAbility(1, out _)
-                    && HealSingleGCD(out act)) return act;
+                if ((CommandController.HealArea || CanHealAreaSpell) && HealAreaGCD(out act)) return act;
+                if ((CommandController.HealSingle || CanHealSingleSpell) && HealSingleGCD(out act)) return act;
             }
             if (CommandController.DefenseArea && DefenseAreaGCD(out act)) return act;
             if (CommandController.DefenseSingle && DefenseSingleGCD(out act)) return act;

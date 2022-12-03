@@ -139,21 +139,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Õü¾È
     /// </summary>
-    public static BaseAction Soteria { get; } = new(ActionID.Soteria, true, isTimeline: true)
-    {
-        ChoiceTarget = Targets =>
-        {
-            foreach (var friend in Targets)
-            {
-                if (friend.HasStatus(true, StatusID.Kardion))
-                {
-                    return friend;
-                }
-            }
-            return null;
-        },
-        ActionCheck = b => b.GetHealthRatio() < 0.75,
-    };
+    public static BaseAction Soteria { get; } = new(ActionID.Soteria, true, isTimeline: true);
 
     /// <summary>
     /// ÉñÒí
@@ -202,6 +188,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Taurochole { get; } = new(ActionID.Taurochole, true, isTimeline: true)
     {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
 
@@ -224,7 +211,10 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ¾ùºâÕï¶Ï
     /// </summary>
-    public static BaseAction EukrasianDiagnosis { get; } = new(ActionID.EukrasianDiagnosis, true, isTimeline: true);
+    public static BaseAction EukrasianDiagnosis { get; } = new(ActionID.EukrasianDiagnosis, true, isTimeline: true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
 
     /// <summary>
     /// ¾ùºâÔ¤ºó
