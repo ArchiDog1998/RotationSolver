@@ -222,7 +222,7 @@ namespace XIVAutoAttack.Updaters
                 var ratio = GetHealingOfTimeRatio(p, singleHots);
 
                 var h = p.GetHealthRatio();
-                if (h == 0 || p.HasStatus(false, StatusHelper.TankBreakStatus)) return false;
+                if (h == 0 || StatusHelper.NeedHealing(p)) return false;
 
                 return h < healsingAbility - hotSubSingle * ratio;
             });
@@ -234,7 +234,7 @@ namespace XIVAutoAttack.Updaters
             {
                 var ratio = GetHealingOfTimeRatio(p, singleHots);
                 var h = p.GetHealthRatio();
-                if (h == 0 || p.HasStatus(false, StatusHelper.TankBreakStatus)) return false;
+                if (h == 0 || StatusHelper.NeedHealing(p)) return false;
 
                 return h < healsingSpell - hotSubSingle * ratio;
             });

@@ -31,10 +31,12 @@ namespace XIVAutoAttack.Helpers
             {ActionID.Kasha, new(EnemyLocation.Side, new byte[] { 29, 68 }) },
         };
 
-        public static readonly StatusID[] TankBreakStatus = new StatusID[]
+        public static StatusID[] NoNeedHealingStatus { get; } = new StatusID[]
         {
-            StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead, StatusID.Superbolide, StatusID.HallowedGround,
+            StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead, 
         };
+
+        public static bool NeedHealing(BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
 
         /// <summary>
         /// 状态是否在下几个GCD转好后消失。

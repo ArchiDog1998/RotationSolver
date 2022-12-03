@@ -18,7 +18,7 @@ namespace XIVAutoAttack.Helpers
             if (availableCharas == null || !availableCharas.Any()) return null;
 
             //根据默认设置排序怪且没有大招
-            availableCharas = DefaultTargetingType(availableCharas).Where(p => !p.HasStatus(false, StatusHelper.TankBreakStatus));
+            availableCharas = DefaultTargetingType(availableCharas).Where(StatusHelper.NeedHealing);
 
             //找到体积一样小的
             float radius = availableCharas.FirstOrDefault().HitboxRadius;

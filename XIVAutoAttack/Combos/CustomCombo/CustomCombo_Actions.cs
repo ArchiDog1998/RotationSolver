@@ -100,21 +100,22 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public static RoleAction Rampart { get; } = new(ActionID.Rampart, new JobRole[] { JobRole.Tank }, true, isTimeline: true)
         {
             BuffsProvide = new StatusID[]
-              {
-                    StatusID.Rampart1, StatusID.Rampart2, StatusID.Rampart3,
-                    //原初的直觉和血气
-                    StatusID.RawIntuition, StatusID.Bloodwhetting,
-                    //复仇
-                    StatusID.Vengeance,
-                    //预警
-                    StatusID.Sentinel,
-                    //暗影墙
-                    StatusID.ShadowWall,
-                    //星云
-                    StatusID.Nebula,
+            {
+                StatusID.Superbolide, StatusID.HallowedGround,
+                StatusID.Rampart1, StatusID.Rampart2, StatusID.Rampart3,
+                //原初的直觉和血气
+                StatusID.RawIntuition, StatusID.Bloodwhetting,
+                //复仇
+                StatusID.Vengeance,
+                //预警
+                StatusID.Sentinel,  
+                //暗影墙
+                StatusID.ShadowWall,
+                //星云
+                StatusID.Nebula,
 
-                    //TODO:BLU的减伤技能
-              }.Union(StatusHelper.TankBreakStatus).ToArray(),
+                //TODO:BLU的减伤技能
+            }.Union(StatusHelper.NoNeedHealingStatus).ToArray(),
             ActionCheck = BaseAction.TankDefenseSelf,
         };
 
