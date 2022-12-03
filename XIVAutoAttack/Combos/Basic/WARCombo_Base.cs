@@ -167,7 +167,10 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ËÀ¶·
     /// </summary>
-    public static BaseAction Holmgang { get; } = new(ActionID.Holmgang, isTimeline: true);
+    public static BaseAction Holmgang { get; } = new(ActionID.Holmgang, isTimeline: true)
+    {
+        ChoiceTarget = tars => Player,
+    };
 
     /// <summary>
     /// Âù»Ä±ÀÁÑ
