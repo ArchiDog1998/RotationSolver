@@ -79,7 +79,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             var tankHealth = Service.Configuration.HealthForDyingTanks.TryGetValue(id, out var value) ? value : 0.15f;
 
             return TargetUpdater.HaveHostilesInRange
-                && (float)Service.ClientState.LocalPlayer.CurrentHp / Service.ClientState.LocalPlayer.MaxHp < tankHealth
+                && Service.ClientState.LocalPlayer.GetHealthRatio() < tankHealth
                 && TargetUpdater.PartyMembersAverHP > tankHealth + 0.1f;
         }
 
@@ -320,7 +320,6 @@ namespace XIVAutoAttack.Actions.BaseAction
             else if (_action.CanTargetSelf)
             {
                 Target = player;
-
 
                 if (_action.EffectRange > 0 && !_isFriendly)
                 {
