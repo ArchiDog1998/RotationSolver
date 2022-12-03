@@ -32,6 +32,11 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         {DescType.MoveAction, $"{CorpsAcorps}"},
     };
 
+    static RDMCombo_Default()
+    {
+        Acceleration.ComboCheck = b => InCombat;
+    }
+
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration()
@@ -238,6 +243,8 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
             }
         }
         #endregion
+
+        if (Player.HasStatus(true, StatusID.Dualcast)) return false;
 
         #region 开启爆发
         //要来可以使用近战三连了。
