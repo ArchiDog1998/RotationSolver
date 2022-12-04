@@ -1,8 +1,10 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using System.Linq;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
@@ -99,10 +101,7 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 庇护所
     /// </summary>
-    public static BaseAction Asylum { get; } = new(ActionID.Asylum, true, isTimeline: true)
-    {
-        ActionCheck = b => !IsMoving
-    };
+    public static BaseAction Asylum { get; } = new(ActionID.Asylum, true, isTimeline: true);
 
     /// <summary>
     /// 安慰之心
@@ -120,7 +119,14 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 神祝祷
     /// </summary>
-    public static BaseAction DivineBenison { get; } = new(ActionID.DivineBenison, true, isTimeline: true);
+    public static BaseAction DivineBenison { get; } = new(ActionID.DivineBenison, true, isTimeline: true)
+    {
+        BuffsProvide = new StatusID[] {StatusID.DivineBenison},
+        ChoiceTarget = Targets =>
+        {
+            return TargetFilter.FindAttackedTarget(Targets.GetJobCategory(JobRole.Tank));
+        }
+    };
 
     /// <summary>
     /// 狂喜之心
