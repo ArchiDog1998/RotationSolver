@@ -172,7 +172,7 @@ internal abstract class DRGCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
             Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
             !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
 
-            return Targets.GetJobCategory(JobRole.Tank, JobRole.RangedMagicial, JobRole.RangedPhysical).FirstOrDefault();
+            return Targets.GetJobCategory(JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Tank).FirstOrDefault();
         },
     };
 

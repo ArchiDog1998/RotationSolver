@@ -629,6 +629,11 @@
         EukrasianPrognosis = 2609,
 
         /// <summary>
+        /// 坚角清汁
+        /// </summary>
+        Kerachole = 2618,
+
+        /// <summary>
         /// 钢铁信念 盾姿
         /// </summary>
         IronWill = 79,
