@@ -166,8 +166,8 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //明镜止水
-        if (HaveHostilesInRange && (!IsLastGCD(true, Shifu, Jinpu, Hakaze, Fuga) || IsLastGCD(true, Yukikaze, Mangetsu, Oka)) &&
-            HasSetsu && (IsTargetBoss ? ((Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana)) || (!HaveMoon && !HaveFlower)) : true))
+        if (HaveHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) && 
+            (IsTargetBoss ? ((Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana)) || (!HaveMoon && !HaveFlower)) : true))
         {
             if (MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
