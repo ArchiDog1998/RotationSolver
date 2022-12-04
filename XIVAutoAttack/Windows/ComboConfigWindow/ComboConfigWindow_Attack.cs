@@ -175,6 +175,7 @@ internal partial class ComboConfigWindow
                         {
                             Spacing();
                             float val = doubles.value;
+                            ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
                             if (ImGui.DragFloat($"{doubles.description}##{num}_{doubles.description}", ref val, doubles.speed, doubles.min, doubles.max))
                             {
                                 doubles.value = val;

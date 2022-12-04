@@ -331,7 +331,7 @@ namespace XIVAutoAttack.Updaters
             if (relayTime == TimeSpan.Zero)
             {
                 foundTime = DateTime.Now;
-                relayTime = new TimeSpan(new Random().Next(1, 80000));
+                relayTime = new TimeSpan(new Random().Next(30000, 80000));
             }
 
             if (DateTime.Now - foundTime > relayTime)
