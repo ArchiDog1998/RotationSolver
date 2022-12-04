@@ -84,8 +84,6 @@
   "Configwindow_Params_AttackSafeModeDesc": "绝对保证在单目标的时候不打AOE，就算大招也是。但是如果怪的数量达到标准依然会使用AOE。",
   "Configwindow_Params_NoDefenceAbility": "不使用防御能力技",
   "Configwindow_Params_NoDefenceAbilityDesc": "如果要打高难，建议勾上这个，自己安排治疗和奶轴。",
-  "Configwindow_Params_AutoDefenseForTank": "自动上减伤(不太准)",
-  "Configwindow_Params_AutoDefenseForTankDesc": "自动的这个不能识别威力为0的AOE技能，请注意。",
   "Configwindow_Params_AutoShield": "T自动上盾",
   "Configwindow_Params_AutoProvokeForTank": "T自动挑衅",
   "Configwindow_Params_AutoProvokeForTankDesc": "当有怪物在打非T的时候，会自动挑衅。",
