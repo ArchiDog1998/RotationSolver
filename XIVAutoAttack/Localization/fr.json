@@ -84,8 +84,6 @@
   "Configwindow_Params_AttackSafeModeDesc": "Nerver use any AOE action with single target./nBut if the number of hostile enough, AOE action will still be used.",
   "Configwindow_Params_NoDefenceAbility": "Nerver use defence abilities",
   "Configwindow_Params_NoDefenceAbilityDesc": "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.",
-  "Configwindow_Params_AutoDefenseForTank": "Auto tank defense (the timing of use is not quite accurate)",
-  "Configwindow_Params_AutoDefenseForTankDesc": "Maybe misled by fake aoe.",
   "Configwindow_Params_AutoShield": "Auto tank stance",
   "Configwindow_Params_AutoProvokeForTank": "Auto Provoke (Tank)",
   "Configwindow_Params_AutoProvokeForTankDesc": "When a hostile is hitting the non-Tank member of party, it will automatically use the Provoke.",
