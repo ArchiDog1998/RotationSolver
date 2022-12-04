@@ -124,8 +124,6 @@ internal class Strings
     public string Configwindow_Params_AttackSafeModeDesc { get; set; } = "Nerver use any AOE action with single target./nBut if the number of hostile enough, AOE action will still be used.";
     public string Configwindow_Params_NoDefenceAbility { get; set; } = "Nerver use defence abilities";
     public string Configwindow_Params_NoDefenceAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.";
-    public string Configwindow_Params_AutoDefenseForTank { get; set; } = "Auto tank defense (the timing of use is not quite accurate)";
-    public string Configwindow_Params_AutoDefenseForTankDesc { get; set; } = "Maybe misled by fake aoe.";
     public string Configwindow_Params_AutoShield { get; set; } = "Auto tank stance";
     public string Configwindow_Params_AutoProvokeForTank { get; set; } = "Auto Provoke (Tank)";
     public string Configwindow_Params_AutoProvokeForTankDesc { get; set; } = "When a hostile is hitting the non-Tank member of party, it will automatically use the Provoke.";

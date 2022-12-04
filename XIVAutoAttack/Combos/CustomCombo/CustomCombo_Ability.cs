@@ -123,8 +123,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
                     if (Provoke.ShouldUse(out act, mustUse: true)) return true;
                 }
 
-                if (Service.Configuration.AutoDefenseForTank && HaveShield
-                    && !Service.Configuration.NoDefenceAbility)
+                if (HaveShield && !Service.Configuration.NoDefenceAbility)
                 {
                     var tarOnmeCount = TargetUpdater.TarOnMeTargets.Count();
 

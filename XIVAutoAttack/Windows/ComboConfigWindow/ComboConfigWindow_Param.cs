@@ -240,14 +240,6 @@ internal partial class ComboConfigWindow
                 Spacing();
                 CommandHelp("AutoBreak");
 
-
-                bool isOnlyGCD = Service.Configuration.OnlyGCD;
-                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_OnlyGCD, ref isOnlyGCD))
-                {
-                    Service.Configuration.OnlyGCD = isOnlyGCD;
-                    Service.Configuration.Save();
-                }
-
                 bool attackSafeMode = Service.Configuration.AttackSafeMode;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AttackSafeMode, ref attackSafeMode))
                 {
@@ -257,6 +249,13 @@ internal partial class ComboConfigWindow
                 if (ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_AttackSafeModeDesc);
+                }
+
+                bool isOnlyGCD = Service.Configuration.OnlyGCD;
+                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_OnlyGCD, ref isOnlyGCD))
+                {
+                    Service.Configuration.OnlyGCD = isOnlyGCD;
+                    Service.Configuration.Save();
                 }
 
                 if (!isOnlyGCD)
@@ -271,18 +270,6 @@ internal partial class ComboConfigWindow
                     if (ImGui.IsItemHovered())
                     {
                         ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_NoDefenceAbilityDesc);
-                    }
-
-                    Spacing();
-                    bool autoDefenseforTank = Service.Configuration.AutoDefenseForTank;
-                    if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AutoDefenseForTank, ref autoDefenseforTank))
-                    {
-                        Service.Configuration.AutoDefenseForTank = autoDefenseforTank;
-                        Service.Configuration.Save();
-                    }
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_AutoDefenseForTankDesc);
                     }
 
                     Spacing();

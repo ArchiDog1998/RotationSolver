@@ -102,20 +102,22 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
     {
         if (abilityRemain == 2)
         {
-            if (TargetUpdater.HostileTargets.Count() == 1)
+            if (TargetUpdater.HostileTargets.Count() > 1)
             {
-                //¸´³ğ£¨¼õÉË30%£©
-                if (Vengeance.ShouldUse(out act)) return true;
+                //Ô­³õµÄÖ±¾õ£¨¼õÉË10%£©
+                if (RawIntuition.ShouldUse(out act)) return true;
             }
 
-            //Ô­³õµÄÖ±¾õ£¨¼õÉË10%£©
-            if (RawIntuition.ShouldUse(out act)) return true;
 
             //¸´³ğ£¨¼õÉË30%£©
             if (Vengeance.ShouldUse(out act)) return true;
 
             //Ìú±Ú£¨¼õÉË20%£©
             if (Rampart.ShouldUse(out act)) return true;
+
+
+            //Ô­³õµÄÖ±¾õ£¨¼õÉË10%£©
+            if (RawIntuition.ShouldUse(out act)) return true;
         }
         //½µµÍ¹¥»÷
         //Ñ©³ğ

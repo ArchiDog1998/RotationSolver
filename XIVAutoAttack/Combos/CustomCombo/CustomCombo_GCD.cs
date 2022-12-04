@@ -38,14 +38,14 @@ namespace XIVAutoAttack.Combos.CustomCombo
             byte abilityRemain = ActionUpdater.AbilityRemainCount;
 
             //防AOE
-            var helpDefenseAOE = Service.Configuration.AutoDefenseForTank && TargetUpdater.IsHostileAOE;
+            var helpDefenseAOE = !Service.Configuration.NoDefenceAbility && TargetUpdater.IsHostileAOE;
 
             //防单体
             bool helpDefenseSingle = false;
             //是个骑士或者奶妈
             if (Job.GetJobRole() == JobRole.Healer || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
             {
-                if (Service.Configuration.AutoDefenseForTank && TargetUpdater.PartyTanks.Any((tank) =>
+                if (TargetUpdater.PartyTanks.Any((tank) =>
                 {
                     var attackingTankObj = TargetUpdater.HostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
 
