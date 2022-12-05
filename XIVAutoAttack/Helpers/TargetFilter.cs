@@ -106,7 +106,17 @@ namespace XIVAutoAttack.Helpers
             if (!charas.Any()) return null;
             var attachedT = charas.Where(tank => tank.TargetObject?.TargetObject == tank);
 
-            return (attachedT.Any() ? attachedT : charas).OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
+            if (!attachedT.Any())
+            {
+                attachedT = charas.GetJobCategory(JobRole.Tank);
+            }
+
+            if (!attachedT.Any())
+            {
+                attachedT = charas;
+            }
+
+            return attachedT.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
         }
 
         /// <summary>
