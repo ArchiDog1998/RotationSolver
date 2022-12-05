@@ -125,11 +125,11 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         if ((TotalEclipse.ShouldUse(out _) || FightorFlight.ElapsedAfterGCD(3)) && SpiritsWithin.ShouldUse(out act, mustUse: true)) return true;
 
         //µ÷Í£
-        if (Intervene.Target.DistanceToPlayer() < 1 && Target.HasStatus(true, StatusID.GoringBlade))
+        if (Target.HasStatus(true, StatusID.GoringBlade))
         {
-            if (FightorFlight.ElapsedAfterGCD(2) && Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (FightorFlight.ElapsedAfterGCD(2) && Intervene.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
-            if (Intervene.ShouldUse(out act)) return true;
+            if (Intervene.ShouldUse(out act, mustUse: true) && !IsMoving) return true;
         }
 
         //¶ÜÕó,±£»¤

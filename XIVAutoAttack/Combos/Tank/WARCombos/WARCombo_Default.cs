@@ -158,13 +158,7 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
         if (Upheaval.ShouldUse(out act)) return true;
 
         //¸ã¸ã¹¥»÷
-        if (Onslaught.ShouldUse(out act) && !IsMoving)
-        {
-            if (Onslaught.Target.DistanceToPlayer() < 1)
-            {
-                return true;
-            }
-        }
+        if (Onslaught.ShouldUse(out act, mustUse: true) && !IsMoving) return true;
 
         return false;
     }

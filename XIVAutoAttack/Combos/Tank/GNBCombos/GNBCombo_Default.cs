@@ -108,11 +108,9 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         if (GnashingFang.IsCoolDown && Bloodfest.ShouldUse(out act)) return true;
 
         //¸ã¸ã¹¥»÷,´Ö·ÖÕ¶
-        if (RoughDivide.Target.DistanceToPlayer() < 1 && !IsMoving)
-        {
-            if (RoughDivide.ShouldUse(out act)) return true;
-            if (Player.HasStatus(true, StatusID.NoMercy) && RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-        }
+        if (RoughDivide.ShouldUse(out act, mustUse: true) && !IsMoving) return true;
+        if (Player.HasStatus(true, StatusID.NoMercy) && RoughDivide.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+
         act = null;
         return false;
     }

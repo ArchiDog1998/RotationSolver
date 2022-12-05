@@ -9,6 +9,7 @@ using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
+using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Windows
 {
@@ -44,27 +45,50 @@ namespace XIVAutoAttack.Windows
 
         private static void DrawMoveTarget()
         {
+            var c = Service.Configuration.TeachingModeColor;
+            var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+
+#if DEBUG
+            Service.GameGui.WorldToScreen(Service.ClientState.LocalPlayer.Position, out var plp);
+            foreach (var t in TargetUpdater.HostileTargets)
+            {
+                if (Service.GameGui.WorldToScreen(t.Position, out var p))
+                {
+                    var dir = p - plp;
+                    ImGui.GetWindowDrawList().AddText(p, color, $"X: {dir.X:F2}, Y: {dir.Y:F2}\nX / Y: {Math.Abs(dir.X / dir.Y)}\nTAN: {Math.Tan(Math.PI * Service.Configuration.MoveTargetAngle / 360)}");
+                }
+
+            }
+#endif
             var tar = IconReplacer.RightNowCombo.MoveTarget;
             if(tar == null) return;
 
-            if(Service.GameGui.WorldToScreen(tar.Position, out var scrPos))
+            if (Service.GameGui.WorldToScreen(tar.Position, out var scrPos))
             {
-                ImGui.GetWindowDrawList().AddCircle(scrPos, 3, ImGui.GetColorU32(ImGuiColors.DalamudOrange));
+                var radius = 8;
+                ImGui.GetWindowDrawList().AddCircle(scrPos, radius, color, COUNT, radius * 0.8f);
             }
 
             if (Service.GameGui.WorldToScreen(Service.ClientState.LocalPlayer.Position, out var plyPos))
             {
                 var dir = scrPos - plyPos;
-                dir /= dir.Length();
-                dir *= 100;
-                var end = dir + plyPos;
-                ImGui.GetWindowDrawList().AddLine(plyPos, end, ImGui.GetColorU32(ImGuiColors.DalamudOrange), 3);
-            }
-        }
 
+                dir /= dir.Length();
+                dir *= 50;
+                var end = dir + plyPos;
+                ImGui.GetWindowDrawList().AddLine(plyPos, end, color, 3);
+
+                var radius = 3;
+
+                ImGui.GetWindowDrawList().AddCircle(plyPos, radius, color, COUNT, radius * 2);
+            }
+
+
+        }
+        const int COUNT = 20;
         private static void DrawLocation()
         {
-            const int COUNT = 20;
+
 
             if (EnemyLocationTarget == null || !Service.Configuration.ShowLocationWrong) return;
             if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth)) return;

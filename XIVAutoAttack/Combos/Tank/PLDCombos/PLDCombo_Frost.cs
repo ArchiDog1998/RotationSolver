@@ -165,7 +165,7 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
                 //&& !IsMoving) //不在移动中 
         {
             if (Player.HasStatus(true, StatusID.FightOrFlight)//有战逃buff
-                &&Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;//调停放空
+                &&Intervene.ShouldUse(out act, mustUse:true, emptyOrSkipCombo: true)) return true;//调停放空
             //if (Intervene.ShouldUse(out act)) return true;//调停
         }
 

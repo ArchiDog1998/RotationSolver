@@ -143,10 +143,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         if (SaltandDarkness.ShouldUse(out act)) return true;
 
         //搞搞攻击
-        if (Plunge.ShouldUse(out act) && !IsMoving)
-        {
-            if (Plunge.Target.DistanceToPlayer() < 1) return true;
-        }
+        if (Plunge.ShouldUse(out act, mustUse: true) && !IsMoving) return true;
 
         return false;
     }
