@@ -251,20 +251,20 @@ internal partial class ComboConfigWindow
                     ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_AttackSafeModeDesc);
                 }
 
-                bool isOnlyGCD = Service.Configuration.OnlyGCD;
-                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_OnlyGCD, ref isOnlyGCD))
+                bool useAbility = Service.Configuration.UseAbility;
+                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseAbility, ref useAbility))
                 {
-                    Service.Configuration.OnlyGCD = isOnlyGCD;
+                    Service.Configuration.UseAbility = useAbility;
                     Service.Configuration.Save();
                 }
 
-                if (!isOnlyGCD)
+                if (useAbility)
                 {
                     Spacing();
-                    bool noHealOrDefenceAbility = Service.Configuration.NoDefenceAbility;
-                    if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_NoDefenceAbility, ref noHealOrDefenceAbility))
+                    bool useDefenceAbility = Service.Configuration.UseDefenceAbility;
+                    if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseDefenceAbility, ref useDefenceAbility))
                     {
-                        Service.Configuration.NoDefenceAbility = noHealOrDefenceAbility;
+                        Service.Configuration.UseDefenceAbility = useDefenceAbility;
                         Service.Configuration.Save();
                     }
                     if (ImGui.IsItemHovered())

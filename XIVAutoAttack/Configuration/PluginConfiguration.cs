@@ -24,8 +24,8 @@ public class PluginConfiguration : IPluginConfiguration
     public int AddDotGCDCount { get; set; } = 2;
 
     public bool AutoBreak { get; set; } = true;
-    public bool OnlyGCD { get; set; } = false;
-    public bool NoDefenceAbility { get; set; } = false;
+    public bool UseAbility { get; set; } = true;
+    public bool UseDefenceAbility { get; set; } = false;
     public bool NeverReplaceIcon { get; set; } = false;
     public bool AutoProvokeForTank { get; set; } = true;
     public bool AutoUseTrueNorth { get; set; } = true;

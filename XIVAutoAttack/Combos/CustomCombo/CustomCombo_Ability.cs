@@ -16,7 +16,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         act = CommandController.NextAction;
         if (act is BaseAction a && a != null && !a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return true;
 
-        if (Service.Configuration.OnlyGCD || Player.TotalCastTime - Player.CurrentCastTime > Service.Configuration.WeaponInterval)
+        if (!Service.Configuration.UseAbility || Player.TotalCastTime - Player.CurrentCastTime > Service.Configuration.WeaponInterval)
         {
             act = null;
             return false;
@@ -100,7 +100,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         if (HaveHostilesInRange)
         {
             //·ÀAOE
-            if (helpDefenseAOE && !Service.Configuration.NoDefenceAbility)
+            if (helpDefenseAOE && Service.Configuration.UseDefenceAbility)
             {
                 if (DefenceAreaAbility(abilityRemain, out act)) return true;
                 if (role is JobRole.Melee or JobRole.RangedPhysical or JobRole.RangedMagicial)
@@ -123,7 +123,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
                     if (Provoke.ShouldUse(out act, mustUse: true)) return true;
                 }
 
-                if (HaveShield && !Service.Configuration.NoDefenceAbility)
+                if (HaveShield && Service.Configuration.UseDefenceAbility)
                 {
                     var tarOnmeCount = TargetUpdater.TarOnMeTargets.Count();
 

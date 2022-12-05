@@ -119,10 +119,10 @@ internal class Strings
     public string Configwindow_Params_Actions { get; set; } = "Use of actions";
     public string Configwindow_Params_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Params_AutoBreak { get; set; } = "Automatic breaking";
-    public string Configwindow_Params_OnlyGCD { get; set; } = "Only use GCD action without abilities";
+    public string Configwindow_Params_UseAbility { get; set; } = "使用自动能力技";
     public string Configwindow_Params_AttackSafeMode { get; set; } = "Safe mode (absolute single target)";
     public string Configwindow_Params_AttackSafeModeDesc { get; set; } = "Nerver use any AOE action with single target./nBut if the number of hostile enough, AOE action will still be used.";
-    public string Configwindow_Params_NoDefenceAbility { get; set; } = "Nerver use defence abilities";
+    public string Configwindow_Params_UseDefenceAbility { get; set; } = "Use defence abilities";
     public string Configwindow_Params_NoDefenceAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.";
     public string Configwindow_Params_AutoShield { get; set; } = "Auto tank stance";
     public string Configwindow_Params_AutoProvokeForTank { get; set; } = "Auto Provoke (Tank)";

@@ -39,7 +39,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             byte abilityRemain = ActionUpdater.AbilityRemainCount;
 
             //防AOE
-            var helpDefenseAOE = !Service.Configuration.NoDefenceAbility && TargetUpdater.IsHostileAOE;
+            var helpDefenseAOE = Service.Configuration.UseDefenceAbility && TargetUpdater.IsHostileAOE;
 
             //防单体
             bool helpDefenseSingle = false;
