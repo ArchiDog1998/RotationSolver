@@ -201,7 +201,7 @@ namespace XIVAutoAttack.Updaters
                 highLightPtr->AtkResNode.AddBlue = 40;
 
                 //Change Color
-                var color = Service.Configuration.TeachingModeColor;
+                var color = Service.Configuration.TeachingModeMovingTargetColor;
                 highLightPtr->AtkResNode.MultiplyRed = (byte)(color.X * 100);
                 highLightPtr->AtkResNode.MultiplyGreen = (byte)(color.Y * 100);
                 highLightPtr->AtkResNode.MultiplyBlue = (byte)(color.Z * 100);

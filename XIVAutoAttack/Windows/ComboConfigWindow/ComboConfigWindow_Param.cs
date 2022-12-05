@@ -101,6 +101,7 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
+                ImGui.SetNextItemWidth(100);
                 var modifierChoices = new VirtualKey[] { VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
                 if (poslockCasting && ImGui.BeginCombo(LocalizationManager.RightLang.Configwindow_Params_PoslockModifier, poslockModifier.ToName()))
                 {
@@ -132,19 +133,26 @@ internal partial class ComboConfigWindow
                     Service.Configuration.TeachingMode = teachingMode;
                     Service.Configuration.Save();
                 }
-                if (teachingMode)
+
+                bool showMoveTarget = Service.Configuration.ShowMoveTarget;
+                if (useOverlayWindow && ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ShowMoveTarget, ref showMoveTarget))
                 {
-                    ImGui.SameLine();
-                    Spacing();
+                    Service.Configuration.ShowMoveTarget = showMoveTarget;
+                    Service.Configuration.Save();
+                }
 
-                    var teachingColor = Service.Configuration.TeachingModeColor;
+                if (teachingMode || showMoveTarget)
+                {
+                    var teachingColor = Service.Configuration.TeachingModeMovingTargetColor;
+                    ImGui.SetNextItemWidth(210);
 
-                    if (ImGui.ColorEdit3(LocalizationManager.RightLang.Configwindow_Params_TeachingModeColor, ref teachingColor))
+                    if (ImGui.ColorEdit3(LocalizationManager.RightLang.Configwindow_Params_TeachingModeMovingTargetColor, ref teachingColor))
                     {
-                        Service.Configuration.TeachingModeColor = teachingColor;
+                        Service.Configuration.TeachingModeMovingTargetColor = teachingColor;
                         Service.Configuration.Save();
                     }
                 }
+
 
                 bool keyBoardNoise = Service.Configuration.KeyBoardNoise;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_KeyBoardNoise, ref keyBoardNoise))
@@ -175,27 +183,16 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
-                if (useOverlayWindow)
+                bool showLocationWrong = Service.Configuration.ShowLocationWrong;
+                if (useOverlayWindow && ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ShowLocationWrong, ref showLocationWrong))
                 {
-                    bool showLocationWrong = Service.Configuration.ShowLocationWrong;
-                    if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ShowLocationWrong, ref showLocationWrong))
-                    {
-                        Service.Configuration.ShowLocationWrong = showLocationWrong;
-                        Service.Configuration.Save();
-                    }
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_ShowLocationWrongDesc);
-                    }
-
-                    bool showMoveTarget = Service.Configuration.ShowMoveTarget;
-                    if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ShowMoveTarget, ref showMoveTarget))
-                    {
-                        Service.Configuration.ShowMoveTarget = showMoveTarget;
-                        Service.Configuration.Save();
-                    }
+                    Service.Configuration.ShowLocationWrong = showLocationWrong;
+                    Service.Configuration.Save();
                 }
-
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_ShowLocationWrongDesc);
+                }
 
                 var locationWrongText = Service.Configuration.LocationWrongText;
                 if (ImGui.InputText(LocalizationManager.RightLang.Configwindow_Params_LocationWrongText, ref locationWrongText, 15))

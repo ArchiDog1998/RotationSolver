@@ -55,7 +55,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool FilterStopMark { get; set; } = true;
     public bool UseOverlayWindow { get; set; } = true;
     public bool TeachingMode { get; set; } = true;
-    public Vector3 TeachingModeColor { get; set; } = new(0f, 1f, 0.8f);
+    public Vector3 TeachingModeMovingTargetColor { get; set; } = new(0f, 1f, 0.8f);
     public bool KeyBoardNoise { get; set; } = true;
     public bool UseAreaAbilityFriendly { get; set; } = true;
     public bool AutoStartCountdown { get; set; } = true;

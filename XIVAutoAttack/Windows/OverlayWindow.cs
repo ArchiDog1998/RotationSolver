@@ -45,7 +45,7 @@ namespace XIVAutoAttack.Windows
 
         private static void DrawMoveTarget()
         {
-            var c = Service.Configuration.TeachingModeColor;
+            var c = Service.Configuration.TeachingModeMovingTargetColor;
             var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
 #if DEBUG
