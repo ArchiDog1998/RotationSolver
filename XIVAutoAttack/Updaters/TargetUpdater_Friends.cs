@@ -247,9 +247,11 @@ namespace XIVAutoAttack.Updaters
 
         static float GetHealingOfTimeRatio(BattleChara target, params StatusID[] statusIds)
         {
+            const float buffWholeTime = 15;
+
             var buffTime = target.StatusTime(false, statusIds);
 
-            return Math.Min(1, buffTime / 15);
+            return Math.Min(1, buffTime / buffWholeTime);
         }
 
         static SortedDictionary<uint, Vector3> _locations = new SortedDictionary<uint, Vector3>();

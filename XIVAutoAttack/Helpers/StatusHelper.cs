@@ -66,7 +66,7 @@ namespace XIVAutoAttack.Helpers
         {
             var times = obj.StatusTimes(isFromSelf, effectIDs);
             if (times == null || !times.Any()) return 0;
-            return times.Max();
+            return times.Min();
         }
 
         private static IEnumerable<float> StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
@@ -78,7 +78,7 @@ namespace XIVAutoAttack.Helpers
         {
             var stacks = obj.StatusStacks(isFromSelf, effectIDs);
             if (stacks == null || !stacks.Any()) return 0;
-            return stacks.Max();
+            return stacks.Min();
         }
 
         private static IEnumerable<byte> StatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)

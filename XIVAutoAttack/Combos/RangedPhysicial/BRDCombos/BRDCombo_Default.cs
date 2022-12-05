@@ -68,6 +68,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         //伶牙俐齿
         if (IronJaws.ShouldUse(out act))
         {
+            //TODO: 小姐姐给我把这段移走！放到Base里面！算Dot的通用逻辑。
             var b = IronJaws.Target;
             if (b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, Windbite.TargetStatus)
             & (b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, VenomousBite.TargetStatus)
