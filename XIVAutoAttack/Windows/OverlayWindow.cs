@@ -45,6 +45,11 @@ namespace XIVAutoAttack.Windows
 
         private static void DrawMoveTarget()
         {
+            //转场或者在看片片，不执行。
+            if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]) return;
+
             var c = Service.Configuration.TeachingModeMovingTargetColor;
             var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
@@ -60,7 +65,7 @@ namespace XIVAutoAttack.Windows
 
             }
 #endif
-            var tar = IconReplacer.RightNowCombo.MoveTarget;
+            var tar = IconReplacer.RightNowCombo?.MoveTarget;
             if(tar == null) return;
 
             if (Service.GameGui.WorldToScreen(tar.Position, out var scrPos))

@@ -277,7 +277,7 @@ internal partial class ComboConfigWindow
                     }
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_NoDefenceAbilityDesc);
+                        ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_UseDefenceAbilityDesc);
                     }
 
                     Spacing();
