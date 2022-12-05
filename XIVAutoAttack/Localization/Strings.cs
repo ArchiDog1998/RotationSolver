@@ -110,6 +110,7 @@ internal class Strings
     public string Configwindow_Params_ShowLocation { get; set; } = "Hint positional anticipation by flytext";
     public string Configwindow_Params_SayingLocation { get; set; } = "Hint positional anticipation by shouting";
     public string Configwindow_Params_ShowLocationWrong { get; set; } = "Positional error feedback";
+    public string Configwindow_Params_ShowMoveTarget { get; set; } = "显示移动的目标";
     public string Configwindow_Params_ShowLocationWrongDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
     public string Configwindow_Params_LocationWrongText { get; set; } = "Positional error prompt";
     public string Configwindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";

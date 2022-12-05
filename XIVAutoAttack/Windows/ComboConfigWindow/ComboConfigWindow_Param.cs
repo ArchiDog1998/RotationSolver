@@ -175,16 +175,27 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
-                bool showLocationWrong = Service.Configuration.ShowLocationWrong;
-                if (useOverlayWindow && ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ShowLocationWrong, ref showLocationWrong))
+                if (useOverlayWindow)
                 {
-                    Service.Configuration.ShowLocationWrong = showLocationWrong;
-                    Service.Configuration.Save();
+                    bool showLocationWrong = Service.Configuration.ShowLocationWrong;
+                    if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ShowLocationWrong, ref showLocationWrong))
+                    {
+                        Service.Configuration.ShowLocationWrong = showLocationWrong;
+                        Service.Configuration.Save();
+                    }
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_ShowLocationWrongDesc);
+                    }
+
+                    bool showMoveTarget = Service.Configuration.ShowMoveTarget;
+                    if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ShowMoveTarget, ref showMoveTarget))
+                    {
+                        Service.Configuration.ShowMoveTarget = showMoveTarget;
+                        Service.Configuration.Save();
+                    }
                 }
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_ShowLocationWrongDesc);
-                }
+
 
                 var locationWrongText = Service.Configuration.LocationWrongText;
                 if (ImGui.InputText(LocalizationManager.RightLang.Configwindow_Params_LocationWrongText, ref locationWrongText, 15))

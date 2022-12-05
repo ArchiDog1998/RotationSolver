@@ -1,4 +1,5 @@
-﻿using Lumina.Excel.GeneratedSheets;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using System.Reflection;
 using XIVAutoAttack.Actions;
@@ -17,6 +18,8 @@ namespace XIVAutoAttack.Combos.CustomCombo
         string GameVersion { get; }
         string Author { get; }
         ActionConfiguration Config { get; }
+
+        BattleChara MoveTarget { get; }
 
         SortedList<DescType, string> DescriptionDict { get; }
         Dictionary<string, string> CommandShow { get; }

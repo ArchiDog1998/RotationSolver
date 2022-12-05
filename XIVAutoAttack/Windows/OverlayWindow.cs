@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.SigReplacers;
 
 namespace XIVAutoAttack.Windows
 {
@@ -32,11 +34,32 @@ namespace XIVAutoAttack.Windows
             ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
 
             DrawLocation();
+            DrawMoveTarget();
 
             ImGui.PopStyleVar();
             ImGui.End();
 
             ImGui.PopID();
+        }
+
+        private static void DrawMoveTarget()
+        {
+            var tar = IconReplacer.RightNowCombo.MoveTarget;
+            if(tar == null) return;
+
+            if(Service.GameGui.WorldToScreen(tar.Position, out var scrPos))
+            {
+                ImGui.GetWindowDrawList().AddCircle(scrPos, 3, ImGui.GetColorU32(ImGuiColors.DalamudOrange));
+            }
+
+            if (Service.GameGui.WorldToScreen(Service.ClientState.LocalPlayer.Position, out var plyPos))
+            {
+                var dir = scrPos - plyPos;
+                dir /= dir.Length();
+                dir *= 100;
+                var end = dir + plyPos;
+                ImGui.GetWindowDrawList().AddLine(plyPos, end, ImGui.GetColorU32(ImGuiColors.DalamudOrange), 3);
+            }
         }
 
         private static void DrawLocation()

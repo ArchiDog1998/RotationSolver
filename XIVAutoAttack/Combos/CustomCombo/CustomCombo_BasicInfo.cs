@@ -1,7 +1,9 @@
-﻿using Lumina.Excel.GeneratedSheets;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -111,6 +113,15 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 }
                 Service.Configuration.Save();
                 return con;
+            }
+        }
+
+        public BattleChara MoveTarget
+        {
+            get
+            {
+                if (MoveAbility(1, out var act) && act is BaseAction a) return a.Target;
+                return null;
             }
         }
 

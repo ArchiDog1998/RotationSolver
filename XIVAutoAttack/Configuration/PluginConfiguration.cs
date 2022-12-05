@@ -49,6 +49,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseAOEWhenManual { get; set; } = false;
     public bool UseItem { get; set; } = false;
     public bool ShowLocationWrong { get; set; } = true;
+    public bool ShowMoveTarget { get; set; } = true;
     public bool ChooseAttackMark { get; set; } = true;
     public bool AttackMarkAOE { get; set; } = true;
     public bool FilterStopMark { get; set; } = true;
