@@ -167,7 +167,7 @@ internal abstract class DRGCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction DragonSight { get; } = new(ActionID.DragonSight, true)
     {
-        ChoiceTarget = Targets =>
+        ChoiceTarget = (Targets, mustUse) =>
         {
             Targets = Targets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
             !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();

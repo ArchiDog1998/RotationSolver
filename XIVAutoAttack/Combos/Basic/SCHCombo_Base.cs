@@ -221,7 +221,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction DeploymentTactics { get; } = new(ActionID.DeploymentTactics, true, isTimeline: true)
     {
-        ChoiceTarget = friends =>
+        ChoiceTarget = (friends, mustUse) =>
         {
             foreach (var friend in friends)
             {

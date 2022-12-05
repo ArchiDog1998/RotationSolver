@@ -47,7 +47,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static RoleAction Esuna { get; } = new(ActionID.Esuna, new JobRole[] { JobRole.Healer }, true)
         {
-            ChoiceTarget = (tars) =>
+            ChoiceTarget = (tars, mustUse) =>
             {
                 if (TargetUpdater.DyingPeople.Any())
                 {
@@ -137,7 +137,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// </summary>
         public static RoleAction Shirk { get; } = new(ActionID.Shirk, new JobRole[] { JobRole.Tank }, true)
         {
-            ChoiceTarget = friends => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault(),
+            ChoiceTarget = (friends, mustUse) => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault(),
         };
 
         /// <summary>

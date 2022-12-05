@@ -248,7 +248,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ClosedPosition { get; } = new(ActionID.ClosedPosition, true)
     {
-        ChoiceTarget = Targets =>
+        ChoiceTarget = (Targets, mustUse) =>
         {
             Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
             //Remove Weak

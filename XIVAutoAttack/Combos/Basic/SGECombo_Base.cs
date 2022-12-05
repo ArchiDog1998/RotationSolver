@@ -101,14 +101,14 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Kardia { get; } = new(ActionID.Kardia, true)
     {
         BuffsProvide = new StatusID[] { StatusID.Kardia },
-        ChoiceTarget = Targets =>
+        ChoiceTarget = (Targets, mustUse) =>
         {
             var targets = Targets.GetJobCategory(JobRole.Tank);
             targets = targets.Any() ? targets : Targets;
 
             if (!targets.Any()) return null;
 
-            return TargetFilter.FindAttackedTarget(targets);
+            return TargetFilter.FindAttackedTarget(targets, mustUse);
         },
         ActionCheck = b => !b.HasStatus(true, StatusID.Kardion),
     };

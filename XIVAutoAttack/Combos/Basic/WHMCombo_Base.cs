@@ -122,10 +122,7 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction DivineBenison { get; } = new(ActionID.DivineBenison, true, isTimeline: true)
     {
         BuffsProvide = new StatusID[] {StatusID.DivineBenison},
-        ChoiceTarget = Targets =>
-        {
-            return TargetFilter.FindAttackedTarget(Targets.GetJobCategory(JobRole.Tank));
-        }
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 
     /// <summary>

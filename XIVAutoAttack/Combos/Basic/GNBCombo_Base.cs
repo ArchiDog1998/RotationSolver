@@ -122,7 +122,7 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction RoughDivide { get; } = new(ActionID.RoughDivide, shouldEndSpecial: true)
     {
-        ChoiceTarget = TargetFilter.FindTargetForMoving
+        ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
 
     /// <summary>

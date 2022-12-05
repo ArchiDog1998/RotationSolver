@@ -701,7 +701,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// </summary>
         private static BLUAction AetherialMimicry { get; } = new(ActionID.AetherialMimicry, BLUActionType.None, true)
         {
-            ChoiceTarget = charas =>
+            ChoiceTarget = (charas, mustUse) =>
             {
                 switch (BlueId)
                 {

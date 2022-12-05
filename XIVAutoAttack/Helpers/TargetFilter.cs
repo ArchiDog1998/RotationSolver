@@ -13,7 +13,7 @@ namespace XIVAutoAttack.Helpers
     internal static class TargetFilter
     {
         #region Find one target
-        internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas)
+        internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas, bool mustUse)
         {
             if (availableCharas == null || !availableCharas.Any()) return null;
 
@@ -23,7 +23,7 @@ namespace XIVAutoAttack.Helpers
             return availableCharas.OrderBy(ObjectHelper.GetHealthRatio).First();
         }
 
-        internal static BattleChara DefaultFindHostile(IEnumerable<BattleChara> availableCharas)
+        internal static BattleChara DefaultFindHostile(IEnumerable<BattleChara> availableCharas, bool mustUse)
         {
             if (availableCharas == null || !availableCharas.Any()) return null;
 
@@ -48,8 +48,15 @@ namespace XIVAutoAttack.Helpers
                 .OrderBy(DistanceToPlayer).First();
         }
 
-        internal static BattleChara FindTargetForMoving(IEnumerable<BattleChara> charas)
+        internal static BattleChara FindTargetForMoving(IEnumerable<BattleChara> charas, bool mustUse)
         {
+            if (mustUse)
+            {
+                var tar = charas.OrderBy(DistanceToPlayer).FirstOrDefault();
+                if (tar?.DistanceToPlayer() < 1) return tar;
+                return null;
+            }
+
             if (Service.Configuration.MoveTowardsScreen)
             {
                 return FindMoveTargetScreenCenter(charas);
@@ -101,7 +108,7 @@ namespace XIVAutoAttack.Helpers
         /// </summary>
         /// <param name="charas"></param>
         /// <returns></returns>
-        internal static BattleChara FindAttackedTarget(IEnumerable<BattleChara> charas)
+        internal static BattleChara FindAttackedTarget(IEnumerable<BattleChara> charas, bool mustUse)
         {
             if (!charas.Any()) return null;
             var attachedT = charas.Where(tank => tank.TargetObject?.TargetObject == tank);
@@ -227,11 +234,6 @@ namespace XIVAutoAttack.Helpers
                 return true;
             });
         }
-        internal static IEnumerable<BattleChara> GetTargetCanDot(IEnumerable<BattleChara> objects)
-        {
-            return objects.Where(b => b.CanDot());
-        }
-
 
         internal static IEnumerable<BattleChara> GetJobCategory(this IEnumerable<BattleChara> objects, params JobRole[] roles)
         {
@@ -259,14 +261,14 @@ namespace XIVAutoAttack.Helpers
             return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
         }
 
-        internal static BattleChara ASTRangeTarget(IEnumerable<BattleChara> ASTTargets)
+        internal static BattleChara ASTRangeTarget(IEnumerable<BattleChara> ASTTargets, bool mustUse)
         {
             ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath));
 
             return GetTargetByJobs(ASTTargets, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Melee);
         }
 
-        internal static BattleChara ASTMeleeTarget(IEnumerable<BattleChara> ASTTargets)
+        internal static BattleChara ASTMeleeTarget(IEnumerable<BattleChara> ASTTargets, bool mustUse)
         {
             ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath));
 

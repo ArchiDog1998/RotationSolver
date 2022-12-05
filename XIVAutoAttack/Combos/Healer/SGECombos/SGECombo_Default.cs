@@ -34,7 +34,7 @@ internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
     /// </summary>
     private static BaseAction MEukrasianDiagnosis { get; } = new(ActionID.EukrasianDiagnosis, true)
     {
-        ChoiceTarget = Targets =>
+        ChoiceTarget = (Targets, mustUse) =>
         {
             var targets = Targets.GetJobCategory(JobRole.Tank);
             if (!targets.Any()) return null;
