@@ -91,7 +91,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             //首先看看是不是能对小队成员进行操作的。
             else if (_action.CanTargetParty)
             {
-                return TargetParty(range, aoeCount);
+                return TargetParty(range, aoeCount, mustUse);
             }
             //再看看是否可以选中敌对的。
             else if (_action.CanTargetHostile)
@@ -209,7 +209,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         }
 
         #region Target party
-        private bool TargetParty(float range, int aoeCount)
+        private bool TargetParty(float range, int aoeCount, bool mustUse)
         {
             //还消耗2400的蓝，那肯定是复活的。
             if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24 || (ActionID)ID == ActionID.AngelWhisper)
@@ -243,7 +243,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 Target = ChoiceTarget(availableCharas);
             }
 
-            return CheckStatus(Target);
+            return CheckStatus(Target, mustUse);
         }
 
         private bool TargetDeath()
@@ -307,10 +307,8 @@ namespace XIVAutoAttack.Actions.BaseAction
                 Target = b;
 
                 //目标已有充足的Debuff
-                if (!mustUse && TargetStatus != null)
-                {
-                    if (!CheckStatus(b ?? Service.ClientState.LocalPlayer)) return false;
-                }
+                if (!CheckStatus(b ?? Service.ClientState.LocalPlayer, mustUse)) return false;
+
 
                 return true;
             }
@@ -368,8 +366,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //如果不用自动找目标，那就不打AOE
                 if (!CommandController.AutoTarget)
                 {
-                    if (!Service.Configuration.UseAOEWhenManual && !mustUse)
-                        return false;
+                    if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
                 }
                 var count = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange).Count();
                 if (count < aoeCount) return false;
@@ -383,7 +380,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (TargetStatus == null || !_isEot) return tars;
 
             var canDot = TargetFilter.GetTargetCanDot(tars);
-            var DontHave = canDot.Where(CheckStatus);
+            var DontHave = canDot.Where(b => CheckStatus(b, mustUse));
 
             if (mustUse)
             {
@@ -402,11 +399,14 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         /// <param name="tar"></param>
         /// <returns>True for add Eot.</returns>
-        private bool CheckStatus(BattleChara tar)
+        private bool CheckStatus(BattleChara tar, bool mustUse)
         {
             if (tar == null) return false;
-            if (TargetStatus != null && !tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus)) return false;
-            return true;
+
+            if (mustUse) return true;
+            if(TargetStatus == null) return true;
+
+            return tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus);
         }
 
         /// <summary>

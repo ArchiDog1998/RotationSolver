@@ -83,7 +83,11 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 伶牙俐齿
     /// </summary>
-    public static BaseAction IronJaws { get; } = new(ActionID.IronJaws, isEot: true);
+    public static BaseAction IronJaws { get; } = new(ActionID.IronJaws, isEot: true)
+    {
+        TargetStatus = VenomousBite.TargetStatus.Union(Windbite.TargetStatus).ToArray(),
+        ActionCheck = b => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, Windbite.TargetStatus),
+    };
 
     /// <summary>
     /// 放浪神的小步舞曲

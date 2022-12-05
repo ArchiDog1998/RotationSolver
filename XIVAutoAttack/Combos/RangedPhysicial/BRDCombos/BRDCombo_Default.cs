@@ -66,16 +66,8 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //伶牙俐齿
-        if (IronJaws.ShouldUse(out act))
-        {
-            //TODO: 小姐姐给我把这段移走！放到Base里面！算Dot的通用逻辑。
-            var b = IronJaws.Target;
-            if (b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, Windbite.TargetStatus)
-            & (b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, VenomousBite.TargetStatus)
-            | b.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, Windbite.TargetStatus))) return true;
-
-            if (Player.HasStatus(true, StatusID.RagingStrikes) && Player.WillStatusEndGCD(1, 0, true, StatusID.RagingStrikes)) return true;
-        }
+        if (IronJaws.ShouldUse(out act)) return true;
+        if (IronJaws.ShouldUse(out act, mustUse: true) && Player.HasStatus(true, StatusID.RagingStrikes) && Player.WillStatusEndGCD(1, 0, true, StatusID.RagingStrikes)) return true;
 
         //放大招！
         if (CanUseApexArrow(out act)) return true;
