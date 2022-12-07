@@ -66,7 +66,7 @@ namespace XIVAutoAttack.Windows
             }
 #endif
             var tar = IconReplacer.RightNowCombo?.MoveTarget;
-            if(tar == null) return;
+            if(tar == null || tar == Service.ClientState.LocalPlayer) return;
 
             if (Service.GameGui.WorldToScreen(tar.Position, out var scrPos))
             {

@@ -67,6 +67,7 @@ namespace XIVAutoAttack.Helpers
             }
         }
 
+        const float DISTANCE_TO_MOVE = 3;
         private static BattleChara FindMoveTargetFaceDirection(IEnumerable<BattleChara> charas)
         {
             Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
@@ -75,11 +76,13 @@ namespace XIVAutoAttack.Helpers
 
             var tars = charas.Where(t =>
             {
+                if (t.DistanceToPlayer() < DISTANCE_TO_MOVE) return false;
+
                 Vector3 dir = t.Position - pPosition;
                 Vector2 dirVec = new Vector2(dir.Z, dir.X);
                 double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
                 return angle <= Math.PI * Service.Configuration.MoveTargetAngle / 360;
-            }).OrderByDescending(t => Vector3.Distance(t.Position, pPosition));
+            }).OrderByDescending(DistanceToPlayer);
 
             return tars.FirstOrDefault();
         }
@@ -91,6 +94,8 @@ namespace XIVAutoAttack.Helpers
 
             var tars = charas.Where(t =>
             {
+                if (t.DistanceToPlayer() < DISTANCE_TO_MOVE) return false;
+
                 if (!Service.GameGui.WorldToScreen(t.Position, out var scrPos)) return false;
 
                 var dir = scrPos - playerScrPos;
@@ -98,7 +103,7 @@ namespace XIVAutoAttack.Helpers
                 if (dir.Y > 0) return false;
 
                 return Math.Abs(dir.X / dir.Y) < Math.Tan(Math.PI * Service.Configuration.MoveTargetAngle / 360);
-            }).OrderByDescending(t => Vector3.Distance(t.Position, pPosition));
+            }).OrderByDescending(DistanceToPlayer);
 
             return tars.FirstOrDefault();
         }
