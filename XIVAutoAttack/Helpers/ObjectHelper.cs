@@ -26,7 +26,7 @@ namespace XIVAutoAttack.Helpers
         internal static bool IsBoss(this BattleChara obj)
         {
             if (obj == null) return false;
-            return obj.MaxHp >= GetHealthFromMulty(8)
+            return obj.MaxHp >= GetHealthFromMulty(20)
                 || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
         }
 
@@ -54,18 +54,18 @@ namespace XIVAutoAttack.Helpers
         internal static bool IsDying(this BattleChara b)
         {
             if (b == null) return false;
-            return b.CurrentHp <= GetHealthFromMulty(4) || b.GetHealthRatio() < 0.02f;
+            return b.CurrentHp <= GetHealthFromMulty(8) || b.GetHealthRatio() < 0.02f;
         }
 
         /// <summary>
-        /// 用于倾泻所有资源来收尾
+        /// 用于判断是否能上Dot
         /// </summary>
         /// <param name="b"></param>
         /// <returns></returns>
         internal static bool CanDot(this BattleChara b)
         {
             if (b == null) return false;
-            return b.CurrentHp >= GetHealthFromMulty(0.8f);
+            return b.CurrentHp >= GetHealthFromMulty(2);
         }
 
         internal static EnemyLocation FindEnemyLocation(this GameObject enemy)
@@ -90,21 +90,31 @@ namespace XIVAutoAttack.Helpers
             return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address) == 1;
         }
 
+#if DEBUG
+        internal static uint GetHealthFromMulty(float mult)
+#else
         private static uint GetHealthFromMulty(float mult)
+#endif
         {
             if (Service.ClientState.LocalPlayer == null) return 0;
 
             var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
                     Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
-            var multi = role == JobRole.Tank ? mult : mult * 1.5f;
+            float multi = mult * role switch
+            {
+                JobRole.Tank => 1,
+                JobRole.Healer =>  1.6f,
+                _ => 1.5f,
+            };
+
             var partyCount = TargetUpdater.PartyMembers.Count();
             if (partyCount > 4)
             {
-                multi *= 2;
+                multi *= 6.4f;
             }
-            else if (partyCount == 1)
+            else if (partyCount > 1)
             {
-                multi = 0.5f;
+                multi *= 3.5f;
             }
 
             return (uint)(multi * Service.ClientState.LocalPlayer.MaxHp);

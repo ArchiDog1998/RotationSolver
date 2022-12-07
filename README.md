@@ -8,6 +8,8 @@
 
 Talk about it on [Discord](https://discord.gg/nfzmJ6ujDP) For Player not in Chinese Server.
 
+Translation is on [Crowdin](https://crowdin.com/project/xivautoattack)
+
 中文玩家可以加入[Discord](https://discord.gg/awuCKbxR6q)参与讨论。
 
 如果你喜欢这个插件，可以在这个目录中下载它: 

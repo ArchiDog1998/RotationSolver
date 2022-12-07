@@ -15,7 +15,12 @@ namespace XIVAutoAttack.Updaters
 {
     internal static partial class TargetUpdater
     {
+#if DEBUG
+        internal static IEnumerable<BattleChara> AllTargets { get; set; } = new BattleChara[0];
+
+#else
         private static IEnumerable<BattleChara> AllTargets { get; set; } = new BattleChara[0];
+#endif
 
         /// <summary>
         /// 敌人
@@ -61,9 +66,9 @@ namespace XIVAutoAttack.Updaters
             if (AllTargets != null)
             {
                 HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate ?
-                    AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId)):
-                    AllTargets.Where(t => t.TargetObject == Service.ClientState.LocalPlayer ||
-                    ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId == FateManager.Instance()->CurrentFate->FateId);
+                     AllTargets.Where(t => t.TargetObject == Service.ClientState.LocalPlayer ||
+                    ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId == FateManager.Instance()->CurrentFate->FateId) :
+                    AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId));
 
                 switch (IconReplacer.RightNowTargetToHostileType)
                 {

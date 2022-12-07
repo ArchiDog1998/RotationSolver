@@ -55,14 +55,13 @@ namespace XIVAutoAttack.Windows
 
 #if DEBUG
             Service.GameGui.WorldToScreen(Service.ClientState.LocalPlayer.Position, out var plp);
-            foreach (var t in TargetUpdater.HostileTargets)
+            var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
+            foreach (var t in TargetUpdater.AllTargets)
             {
                 if (Service.GameGui.WorldToScreen(t.Position, out var p))
                 {
-                    var dir = p - plp;
-                    ImGui.GetWindowDrawList().AddText(p, color, $"X: {dir.X:F2}, Y: {dir.Y:F2}\nX / Y: {Math.Abs(dir.X / dir.Y)}\nTAN: {Math.Tan(Math.PI * Service.Configuration.MoveTargetAngle / 360)}");
+                    ImGui.GetWindowDrawList().AddText(p, color, $"Boss Ratio (Max): {t.MaxHp / calHealth :F2}\nDying Ratio (Current): {t.CurrentHp / calHealth:F2}");
                 }
-
             }
 #endif
             var tar = IconReplacer.RightNowCombo?.MoveTarget;
