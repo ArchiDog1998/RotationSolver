@@ -49,7 +49,9 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     protected static byte SenCount => (byte)((HasGetsu ? 1 : 0) + (HasSetsu ? 1 : 0) + (HasKa ? 1 : 0));
 
     protected static bool HaveMoon => Player.HasStatus(true, StatusID.Fugetsu);
+    protected static float MoonTime => Player.StatusTime(true, StatusID.Fugetsu);
     protected static bool HaveFlower => Player.HasStatus(true, StatusID.Fuka);
+    protected static float FlowerTime => Player.StatusTime(true, StatusID.Fuka);
 
     #region 单体
     /// <summary>
@@ -106,12 +108,23 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 满月
     /// </summary>
-    public static BaseAction Mangetsu { get; } = new(ActionID.Mangetsu);
-
+    public static BaseAction Mangetsu { get; } = new(ActionID.Mangetsu)
+    {
+        OtherIDsCombo = new[]
+        {
+            ActionID.Fuga,ActionID.Fuko
+        }
+    };
     /// <summary>
     /// 樱花
     /// </summary>
-    public static BaseAction Oka { get; } = new(ActionID.Oka);
+    public static BaseAction Oka { get; } = new(ActionID.Oka)
+    {
+        OtherIDsCombo = new[]
+        {
+            ActionID.Fuga,ActionID.Fuko
+        }
+    };
 
     /// <summary>
     /// 无明照破
@@ -229,7 +242,15 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction HissatsuGyoten { get; } = new(ActionID.HissatsuGyoten)
     {
-        ActionCheck = b => !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
+        ActionCheck = b => Kenki >=10 && !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
+    };
+
+    /// <summary>
+    /// 必杀剑·夜天
+    /// </summary>
+    public static BaseAction HissatsuYaten { get; } = new(ActionID.HissatsuYaten)
+    {
+        ActionCheck = HissatsuGyoten.ActionCheck
     };
 
     /// <summary>

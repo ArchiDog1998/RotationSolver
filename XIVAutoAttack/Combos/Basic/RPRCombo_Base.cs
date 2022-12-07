@@ -261,6 +261,25 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// 勾刃
     /// </summary>
     public static BaseAction Harpe { get; } = new(ActionID.Harpe);
+
+    /// <summary>
+    /// 地狱入境
+    /// </summary>
+    public static BaseAction HellsIngress { get; } = new(ActionID.HellsIngress)
+    {
+        BuffsProvide = new[] { StatusID.EnhancedHarpe },
+        ActionCheck = b => !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
+    };
+
+    /// <summary>
+    /// 地狱出境
+    /// </summary>
+    public static BaseAction HellsEgress { get; } = new(ActionID.HellsEgress)
+    {
+        BuffsProvide = HellsIngress.BuffsProvide,
+        ActionCheck = HellsIngress.ActionCheck
+    };
+
     /// <summary>
     /// 播魂种
     /// </summary>
