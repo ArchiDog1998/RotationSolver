@@ -62,7 +62,7 @@ internal partial class ComboConfigWindow : Window
             {
                 DrawAttack();
                 ImGui.EndTabItem();
-            }
+            }         
 
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ParamItem))
             {
@@ -71,33 +71,33 @@ internal partial class ComboConfigWindow : Window
             }
 
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_EventsItem))
-            {
-                DrawEvent();
+                {
+                    DrawEvent();
                 ImGui.EndTabItem();
-            }
+                }
 
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ActionsItem))
-            {
-                ImGui.Text(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
-
-                ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
-
-
-                if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
                 {
-                    foreach (var pair in IconReplacer.RightComboBaseActions.GroupBy(a => a.CateName).OrderBy(g => g.Key))
+                    ImGui.Text(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
+
+                    ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
+
+
+                    if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
                     {
-                        if (ImGui.CollapsingHeader(pair.Key))
+                        foreach (var pair in IconReplacer.RightComboBaseActions.GroupBy(a => a.CateName).OrderBy(g => g.Key))
                         {
-                            foreach (var item in pair)
+                            if (ImGui.CollapsingHeader(pair.Key))
                             {
-                                DrawAction(item);
-                                ImGui.Separator();
+                                foreach (var item in pair)
+                                {
+                                    DrawAction(item);
+                                    ImGui.Separator();
+                                }
                             }
                         }
+                        ImGui.EndChild();
                     }
-                    ImGui.EndChild();
-                }
                 ImGui.PopStyleVar();
                 ImGui.EndTabItem();
             }
@@ -182,7 +182,7 @@ internal partial class ComboConfigWindow : Window
 
         bool enable = texture.IsEnabled;
 
-        if (ImGui.Checkbox(texture.Name, ref enable))
+        if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_AttackItem_Loop + "##" + texture.Name, ref enable))
         {
             texture.IsEnabled = enable;
             Service.Configuration.Save();
@@ -197,7 +197,7 @@ internal partial class ComboConfigWindow : Window
             if (!string.IsNullOrEmpty(com.Author) && combos != null)
             {
                 ImGui.SameLine();
-                ImGui.TextDisabled("    -  ");
+                ImGui.TextDisabled("  -  ");
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(ImGui.CalcTextSize(com.Author).X + 30);
                 if (ImGui.BeginCombo("##" + com.Name + "Author", com.Author))
