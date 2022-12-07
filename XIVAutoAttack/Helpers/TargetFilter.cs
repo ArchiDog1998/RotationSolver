@@ -20,7 +20,7 @@ namespace XIVAutoAttack.Helpers
             //根据默认设置排序怪且没有大招
             availableCharas = DefaultTargetingType(availableCharas).Where(StatusHelper.NeedHealing);
 
-            return availableCharas.OrderBy(ObjectHelper.GetHealthRatio).First();
+            return availableCharas.OrderBy(ObjectHelper.GetHealingRatio).First();
         }
 
         internal static BattleChara DefaultFindHostile(IEnumerable<BattleChara> availableCharas, bool mustUse)

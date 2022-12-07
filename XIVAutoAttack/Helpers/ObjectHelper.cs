@@ -41,6 +41,11 @@ namespace XIVAutoAttack.Helpers
             return (float)b.CurrentHp / b.MaxHp;
         }
 
+        internal static float GetHealingRatio(this BattleChara b)
+        {
+            return b.GetHealthRatio();
+        }
+
         /// <summary>
         /// 用于倾泻所有资源来收尾
         /// </summary>
