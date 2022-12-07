@@ -81,6 +81,7 @@ internal class Strings
     public string Configwindow_AttackItem_LoadScript { get; set; } = "Click to load a custom opener";
     public string Configwindow_AttackItem_ScriptFolderError { get; set; } = "Please set a storage path to use the custom opener properly!";
     public string Configwindow_AttackItem_KeyName { get; set; } = "The key name is";
+    public string Configwindow_AttackItem_Loop { get; set; } = "启用循环";
     public string Configwindow_Events_AddEvent { get; set; } = "AddEvents";
     public string Configwindow_Events_Description { get; set; } = "In this window, you can set what macro will be trigger after using an action.";
     public string Configwindow_Events_ActionName { get; set; } = "Action Name";
@@ -89,6 +90,7 @@ internal class Strings
     public string Configwindow_Events_RemoveEvent { get; set; } = "Delete Event";
     public string Configwindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
     public string Configwindow_Params_NeverReplaceIcon { get; set; } = "Never Replace Icons";
+    public string Configwindow_Params_NeverReplaceIconDesc { get; set; } = "图标替换是替换沉静技能";
     public string Configwindow_Params_UseOverlayWindow { get; set; } = "Display top overlay";
     public string Configwindow_Params_UseOverlayWindowDesc { get; set; } = "This window is currently used to cue the body position in advance.";
     public string Configwindow_Params_BasicSettings { get; set; } = "Basic settings";
@@ -110,7 +112,7 @@ internal class Strings
     public string Configwindow_Params_ShowLocation { get; set; } = "Hint positional anticipation by flytext";
     public string Configwindow_Params_SayingLocation { get; set; } = "Hint positional anticipation by shouting";
     public string Configwindow_Params_ShowLocationWrong { get; set; } = "Positional error feedback";
-    public string Configwindow_Params_ShowMoveTarget { get; set; } = "显示移动的目标";
+    public string Configwindow_Params_ShowMoveTarget { get; set; } = "显示移动技能的目标";
     public string Configwindow_Params_ShowLocationWrongDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
     public string Configwindow_Params_LocationWrongText { get; set; } = "Positional error prompt";
     public string Configwindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";
@@ -120,7 +122,7 @@ internal class Strings
     public string Configwindow_Params_Actions { get; set; } = "Use of actions";
     public string Configwindow_Params_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Params_AutoBreak { get; set; } = "Automatic breaking";
-    public string Configwindow_Params_UseAbility { get; set; } = "使用自动能力技";
+    public string Configwindow_Params_UseAbility { get; set; } = "自动使用能力技";
     public string Configwindow_Params_AttackSafeMode { get; set; } = "Safe mode (absolute single target)";
     public string Configwindow_Params_AttackSafeModeDesc { get; set; } = "Nerver use any AOE action with single target./nBut if the number of hostile enough, AOE action will still be used.";
     public string Configwindow_Params_UseDefenceAbility { get; set; } = "Use defence abilities";

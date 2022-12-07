@@ -18,12 +18,16 @@ internal partial class ComboConfigWindow
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
         if (ImGui.BeginChild("Params", new Vector2(0f, -1f), true))
-        {
+        {           
             bool neverReplaceIcon = Service.Configuration.NeverReplaceIcon;
             if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_NeverReplaceIcon, ref neverReplaceIcon))
             {
                 Service.Configuration.NeverReplaceIcon = neverReplaceIcon;
                 Service.Configuration.Save();
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_NeverReplaceIconDesc);
             }
 
             bool useOverlayWindow = Service.Configuration.UseOverlayWindow;
@@ -93,40 +97,6 @@ internal partial class ComboConfigWindow
 
             if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Params_DisplayEnhancement))
             {
-                bool poslockCasting = Service.Configuration.PoslockCasting;
-                VirtualKey poslockModifier = Service.Configuration.PoslockModifier;
-                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_PoslockCasting, ref poslockCasting))
-                {
-                    Service.Configuration.PoslockCasting = poslockCasting;
-                    Service.Configuration.Save();
-                }
-
-                ImGui.SetNextItemWidth(100);
-                var modifierChoices = new VirtualKey[] { VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
-                if (poslockCasting && ImGui.BeginCombo(LocalizationManager.RightLang.Configwindow_Params_PoslockModifier, poslockModifier.ToName()))
-                {
-                    foreach (VirtualKey k in modifierChoices)
-                    {
-                        if (ImGui.Selectable(k.ToName()))
-                        {
-                            Service.Configuration.PoslockModifier = k;
-                            Service.Configuration.Save();
-                        }
-                    }
-                    ImGui.EndCombo();
-                }
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_PoslockDescription);
-                }
-
-                bool usecheckCasting = Service.Configuration.CheckForCasting;
-                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_CheckForCasting, ref usecheckCasting))
-                {
-                    Service.Configuration.CheckForCasting = usecheckCasting;
-                    Service.Configuration.Save();
-                }
-
                 bool teachingMode = Service.Configuration.TeachingMode;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_TeachingMode, ref teachingMode))
                 {
@@ -153,7 +123,6 @@ internal partial class ComboConfigWindow
                     }
                 }
 
-
                 bool keyBoardNoise = Service.Configuration.KeyBoardNoise;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_KeyBoardNoise, ref keyBoardNoise))
                 {
@@ -161,13 +130,68 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
-                int voiceVolume = Service.Configuration.VoiceVolume;
-                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
-                if (ImGui.DragInt(LocalizationManager.RightLang.Configwindow_Params_VoiceVolume, ref voiceVolume, 0.2f, 0, 100))
+                ImGui.Separator();
+
+                bool usecheckCasting = Service.Configuration.CheckForCasting;
+                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_CheckForCasting, ref usecheckCasting))
                 {
-                    Service.Configuration.VoiceVolume = voiceVolume;
+                    Service.Configuration.CheckForCasting = usecheckCasting;
                     Service.Configuration.Save();
                 }
+
+                bool poslockCasting = Service.Configuration.PoslockCasting;
+                VirtualKey poslockModifier = Service.Configuration.PoslockModifier;
+                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_PoslockCasting, ref poslockCasting))
+                {
+                    Service.Configuration.PoslockCasting = poslockCasting;
+                    Service.Configuration.Save();
+                }
+
+                ImGui.Indent();
+                ImGui.SetNextItemWidth(100);
+                var modifierChoices = new VirtualKey[] { VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
+                if (poslockCasting && ImGui.BeginCombo(LocalizationManager.RightLang.Configwindow_Params_PoslockModifier, poslockModifier.ToName()))
+                {
+                    foreach (VirtualKey k in modifierChoices)
+                    {
+                        if (ImGui.Selectable(k.ToName()))
+                        {
+                            Service.Configuration.PoslockModifier = k;
+                            Service.Configuration.Save();
+                        }
+                    }
+                    ImGui.EndCombo();
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_PoslockDescription);
+                }
+                ImGui.Unindent();
+
+                ImGui.Separator();
+
+                bool autoSayingOut = Service.Configuration.AutoSayingOut;
+                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AutoSayingOut, ref autoSayingOut))
+                {
+                    Service.Configuration.AutoSayingOut = autoSayingOut;
+                    Service.Configuration.Save();
+                }
+
+                bool useDtr = Service.Configuration.UseDtr;
+                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseDtr, ref useDtr))
+                {
+                    Service.Configuration.UseDtr = useDtr;
+                    Service.Configuration.Save();
+                }
+
+                bool useToast = Service.Configuration.UseToast;
+                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseToast, ref useToast))
+                {
+                    Service.Configuration.UseToast = useToast;
+                    Service.Configuration.Save();
+                }
+
+                ImGui.Spacing();
 
                 bool showlocation = Service.Configuration.ShowLocation;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ShowLocation, ref showlocation))
@@ -194,6 +218,14 @@ internal partial class ComboConfigWindow
                     ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_ShowLocationWrongDesc);
                 }
 
+                int voiceVolume = Service.Configuration.VoiceVolume;
+                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
+                if (ImGui.DragInt(LocalizationManager.RightLang.Configwindow_Params_VoiceVolume, ref voiceVolume, 0.2f, 0, 100))
+                {
+                    Service.Configuration.VoiceVolume = voiceVolume;
+                    Service.Configuration.Save();
+                }
+
                 var locationWrongText = Service.Configuration.LocationWrongText;
                 if (ImGui.InputText(LocalizationManager.RightLang.Configwindow_Params_LocationWrongText, ref locationWrongText, 15))
                 {
@@ -205,26 +237,6 @@ internal partial class ComboConfigWindow
                     ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_LocationWrongTextDesc);
                 }
 
-                bool autoSayingOut = Service.Configuration.AutoSayingOut;
-                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AutoSayingOut, ref autoSayingOut))
-                {
-                    Service.Configuration.AutoSayingOut = autoSayingOut;
-                    Service.Configuration.Save();
-                }
-
-                bool useDtr = Service.Configuration.UseDtr;
-                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseDtr, ref useDtr))
-                {
-                    Service.Configuration.UseDtr = useDtr;
-                    Service.Configuration.Save();
-                }
-
-                bool useToast = Service.Configuration.UseToast;
-                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseToast, ref useToast))
-                {
-                    Service.Configuration.UseToast = useToast;
-                    Service.Configuration.Save();
-                }
             }
 
             ImGui.Separator();
@@ -238,16 +250,6 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
-                bool autoBreak = Service.Configuration.AutoBreak;
-                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AutoBreak, ref autoBreak))
-                {
-                    Service.Configuration.AutoBreak = autoBreak;
-                    Service.Configuration.Save();
-                }
-                ImGui.SameLine();
-                Spacing();
-                CommandHelp("AutoBreak");
-
                 bool attackSafeMode = Service.Configuration.AttackSafeMode;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AttackSafeMode, ref attackSafeMode))
                 {
@@ -259,6 +261,29 @@ internal partial class ComboConfigWindow
                     ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_AttackSafeModeDesc);
                 }
 
+                ImGui.Separator();
+
+                bool autoBreak = Service.Configuration.AutoBreak;
+                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AutoBreak, ref autoBreak))
+                {
+                    Service.Configuration.AutoBreak = autoBreak;
+                    Service.Configuration.Save();
+                }
+                ImGui.SameLine();
+                Spacing();
+                CommandHelp("AutoBreak");
+
+                bool useItem = Service.Configuration.UseItem;
+                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseItem, ref useItem))
+                {
+                    Service.Configuration.UseItem = useItem;
+                    Service.Configuration.Save();
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_UseItemDesc);
+                }
+
                 bool useAbility = Service.Configuration.UseAbility;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseAbility, ref useAbility))
                 {
@@ -268,7 +293,7 @@ internal partial class ComboConfigWindow
 
                 if (useAbility)
                 {
-                    Spacing();
+                    ImGui.Indent();
                     bool useDefenceAbility = Service.Configuration.UseDefenceAbility;
                     if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseDefenceAbility, ref useDefenceAbility))
                     {
@@ -279,16 +304,18 @@ internal partial class ComboConfigWindow
                     {
                         ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_UseDefenceAbilityDesc);
                     }
+                    ImGui.Unindent();
 
-                    Spacing();
+                    ImGui.Indent();
                     bool autoShieled = Service.Configuration.AutoShield;
                     if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AutoShield, ref autoShieled))
                     {
                         Service.Configuration.AutoShield = autoShieled;
                         Service.Configuration.Save();
                     }
+                    ImGui.Unindent();
 
-                    Spacing();
+                    ImGui.Indent();
                     bool autoProvokeforTank = Service.Configuration.AutoProvokeForTank;
                     if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AutoProvokeForTank, ref autoProvokeforTank))
                     {
@@ -299,30 +326,34 @@ internal partial class ComboConfigWindow
                     {
                         ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_AutoProvokeForTankDesc);
                     }
+                    ImGui.Unindent();
 
-                    Spacing();
+                    ImGui.Indent();
                     bool autoUseTrueNorth = Service.Configuration.AutoUseTrueNorth;
                     if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AutoUseTrueNorth, ref autoUseTrueNorth))
                     {
                         Service.Configuration.AutoUseTrueNorth = autoUseTrueNorth;
                         Service.Configuration.Save();
                     }
+                    ImGui.Unindent();
 
-                    Spacing();
+                    ImGui.Indent();
                     bool raiseSwift = Service.Configuration.RaisePlayerBySwift;
                     if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_RaisePlayerBySwift, ref raiseSwift))
                     {
                         Service.Configuration.RaisePlayerBySwift = raiseSwift;
                         Service.Configuration.Save();
                     }
+                    ImGui.Unindent();
 
-                    Spacing();
+                    ImGui.Indent();
                     bool useAreaAbilityFriendly = Service.Configuration.UseAreaAbilityFriendly;
                     if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseAreaAbilityFriendly, ref useAreaAbilityFriendly))
                     {
                         Service.Configuration.UseAreaAbilityFriendly = useAreaAbilityFriendly;
                         Service.Configuration.Save();
                     }
+                    ImGui.Unindent();
                 }
 
                 bool raiseCasting = Service.Configuration.RaisePlayerByCasting;
@@ -347,16 +378,6 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
-                bool useItem = Service.Configuration.UseItem;
-                if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseItem, ref useItem))
-                {
-                    Service.Configuration.UseItem = useItem;
-                    Service.Configuration.Save();
-                }
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_UseItemDesc);
-                }
             }
 
             ImGui.Separator();
@@ -442,9 +463,9 @@ internal partial class ComboConfigWindow
 
                 if (chooseAttackMark)
                 {
-                    Spacing();
+                    
                     bool attackMarkAOE = Service.Configuration.AttackMarkAOE;
-
+                    ImGui.Indent();
                     if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AttackMarkAOE, ref attackMarkAOE))
                     {
                         Service.Configuration.AttackMarkAOE = attackMarkAOE;
@@ -454,6 +475,7 @@ internal partial class ComboConfigWindow
                     {
                         ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_AttackMarkAOEDesc);
                     }
+                    ImGui.Unindent();
                 }
 
                 bool filterStopMark = Service.Configuration.FilterStopMark;

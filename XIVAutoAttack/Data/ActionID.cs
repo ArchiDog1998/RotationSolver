@@ -2392,6 +2392,16 @@ namespace XIVAutoAttack.Data
         LemuresScythe = 24400,
 
         /// <summary>
+        /// 地狱入境
+        /// </summary>
+        HellsIngress = 24401,
+
+        /// <summary>
+        /// 地狱出境
+        /// </summary>
+        HellsEgress = 24402,
+
+        /// <summary>
         /// 虚无收割
         /// </summary>
         VoidReaping = 24395,
@@ -2517,6 +2527,11 @@ namespace XIVAutoAttack.Data
         /// 必杀剑·晓天
         /// </summary>
         HissatsuGyoten = 7492,
+
+        /// <summary>
+        /// 必杀剑·夜天
+        /// </summary>
+        HissatsuYaten = 7493,
 
         /// <summary>
         /// 必杀剑·震天

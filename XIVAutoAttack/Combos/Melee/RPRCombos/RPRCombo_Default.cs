@@ -46,7 +46,8 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     };
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.DefenseSingle, $"{ArcaneCrest}"},
+        {DescType.DefenseSingle, $"能力: {ArcaneCrest}"},
+        {DescType.MoveAction, $"能力: {HellsIngress}, "},
     };
     private protected override IAction CountDownAction(float remainTime)
     {
@@ -166,7 +167,8 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
             //神秘环
             if (ArcaneCircle.ShouldUse(out act)) return true;
 
-            if ((!Config.GetBoolByName("EnshroudPooling") && Shroud >= 50) ||//未开启双附体
+            if ((IsTargetBoss&& IsTargetDying) || //资源倾泻
+               (!Config.GetBoolByName("EnshroudPooling") && Shroud >= 50) ||//未开启双附体
                (Config.GetBoolByName("EnshroudPooling") && Shroud >= 50 &&
                (!PlentifulHarvest.EnoughLevel || //等级不足以双附体
                Player.HasStatus(true, StatusID.ArcaneCircle) || //在神秘环期间附体
@@ -196,6 +198,13 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         if (GrimSwathe.ShouldUse(out act)) return true;
         //单体
         if (BloodStalk.ShouldUse(out act)) return true;
+        return false;
+    }
+
+    private protected override bool MoveGCD(out IAction act)
+    {
+        //E上去
+        if (HellsIngress.ShouldUse(out act)) return true;
         return false;
     }
 
