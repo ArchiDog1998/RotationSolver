@@ -83,11 +83,11 @@ namespace XIVAutoAttack.Actions.BaseAction
                     {
                         //不是青魔，不能连续使用
                         if ((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id != ClassJobID.BlueMage
+                            && ChoiceTarget != TargetFilter.FindTargetForMoving
                             && Watcher.LastAction == (ActionID)AdjustedID) return false;
 
                         //冷却时间没超过一成且下一个Ability前不能转好
-                        if (!HaveOneCharge && !WillHaveOneCharge(ActionUpdater.AbilityRemain, false))
-                            return false;
+                        if (!WillHaveOneCharge(ActionUpdater.AbilityRemain, false)) return false;
                     }
                 }
 

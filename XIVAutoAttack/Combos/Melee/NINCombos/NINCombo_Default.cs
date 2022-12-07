@@ -346,7 +346,7 @@ internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        if (Shukuchi.ShouldUse(out act)) return true;
+        if (Shukuchi.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         return false;
     }

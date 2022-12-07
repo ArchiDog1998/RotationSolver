@@ -3,6 +3,7 @@ using System;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
@@ -109,7 +110,10 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 缩地
     /// </summary>
-    public static BaseAction Shukuchi { get; } = new(ActionID.Shukuchi, true);
+    public static BaseAction Shukuchi { get; } = new(ActionID.Shukuchi, true)
+    {
+        ChoiceTarget = TargetFilter.FindTargetForMoving,
+    };
 
     /// <summary>
     /// 断绝

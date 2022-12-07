@@ -146,7 +146,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         private bool TargetAreaMove(float range, bool mustUse)
         {
             var availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).OfType<BattleChara>();
-            Target = TargetFilter.FindTargetForMoving(TargetFilter.GetObjectInRadius(availableCharas, range), mustUse);
+            Target = ChoiceTarget(TargetFilter.GetObjectInRadius(availableCharas, range), mustUse);
             if (Target == null) return false;
             _position = Target.Position;
             return true;
