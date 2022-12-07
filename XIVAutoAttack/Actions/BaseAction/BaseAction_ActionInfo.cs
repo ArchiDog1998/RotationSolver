@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Linq;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -12,6 +13,21 @@ namespace XIVAutoAttack.Actions.BaseAction
 {
     internal partial class BaseAction
     {
+        static readonly StatusID[] SpellBan = new StatusID[]
+        {
+
+        };
+
+        static readonly StatusID[] WeaponskillBan = new StatusID[]
+        {
+        
+        };
+
+        static readonly StatusID[] AbilityBan = new StatusID[]
+        {
+        
+        };
+
         private float Range => ActionManager.GetActionRange(ID);
 
         /// <summary>
@@ -85,9 +101,24 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             //玩家都没有。。。
             if (Service.ClientState.LocalPlayer == null) return false;
+            var player = Service.ClientState.LocalPlayer;
 
             //用户不让用！
             if (!skipDisable && !IsEnabled) return false;
+
+            //有可恶的状态。
+            switch (_action.GetActinoType())
+            {
+                case ActionCate.Spell: //魔法
+                    if (!player.WillStatusEndGCD(0, 0, false, SpellBan)) return false;
+                    break;
+                case ActionCate.Weaponskill: //战技
+                    if (!player.WillStatusEndGCD(0, 0, false, WeaponskillBan)) return false;
+                    break;
+                case ActionCate.Ability: //能力
+                    if (!player.StatusTime(false, AbilityBan).IsLessThan(ActionUpdater.AbilityRemain)) return false;
+                    break;
+            }
 
             //等级不够。
             if (!EnoughLevel) return false;
