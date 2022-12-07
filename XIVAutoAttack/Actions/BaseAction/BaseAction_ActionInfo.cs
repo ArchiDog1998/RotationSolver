@@ -28,6 +28,11 @@ namespace XIVAutoAttack.Actions.BaseAction
         
         };
 
+        static readonly uint[] BadStatus = new uint[]
+        {
+            573,
+        };
+
         private float Range => ActionManager.GetActionRange(ID);
 
         /// <summary>
@@ -105,6 +110,10 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             //用户不让用！
             if (!skipDisable && !IsEnabled) return false;
+
+            //技能状态不对，可能是没学会或者等级不对。
+            if (BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID))) 
+                return false;
 
             //有可恶的状态。
             switch (_action.GetActinoType())
