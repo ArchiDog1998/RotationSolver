@@ -27,8 +27,8 @@ namespace XIVAutoAttack.Helpers
             {ActionID.Suiton, new(EnemyLocation.Back, new byte[] { }) },
             {ActionID.Gibbet, new(EnemyLocation.Side , new byte[] { 11 })},
             {ActionID.Gallows, new(EnemyLocation.Back, new byte[] { 11 }) },
-            {ActionID.Gekko, new(EnemyLocation.Back , new byte[] { 68, 29 })},
-            {ActionID.Kasha, new(EnemyLocation.Side, new byte[] { 29, 68 }) },
+            {ActionID.Gekko, new(EnemyLocation.Back , new byte[] { 68, 29, 72 })},
+            {ActionID.Kasha, new(EnemyLocation.Side, new byte[] { 29, 68, 72 }) },
         };
 
         public static StatusID[] NoNeedHealingStatus { get; } = new StatusID[]

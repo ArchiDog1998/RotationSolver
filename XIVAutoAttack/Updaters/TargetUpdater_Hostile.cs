@@ -60,10 +60,10 @@ namespace XIVAutoAttack.Updaters
 
             if (AllTargets != null)
             {
-                HostileTargets = CountDown.CountDownTime > 0 ? AllTargets :
-                    AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId) ||
-                    inFate && ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId
-                    == FateManager.Instance()->CurrentFate->FateId);
+                HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate ?
+                    AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId)):
+                    AllTargets.Where(t => t.TargetObject == Service.ClientState.LocalPlayer ||
+                    ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId == FateManager.Instance()->CurrentFate->FateId);
 
                 switch (IconReplacer.RightNowTargetToHostileType)
                 {
