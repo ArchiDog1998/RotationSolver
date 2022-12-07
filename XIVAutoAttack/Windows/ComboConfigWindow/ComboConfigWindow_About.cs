@@ -15,7 +15,7 @@ internal partial class ComboConfigWindow
             ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager.RightLang.Configwindow_About_Declaration);
             ImGui.Spacing();
             ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager.RightLang.Configwindow_About_XianYu);
-            ImGui.TextColored(ImGuiColors.DalamudYellow, "五颜六色的猪  小玉超可爱  纷乱雪月花  EmetSelch  麦麦麦麦  叶怀雨雨");
+            ImGui.TextColored(ImGuiColors.DalamudYellow, "五颜六色的猪  小玉超可爱  纷乱雪月花  叶怀雨雨\nff14最后一个机工士  用户_163750520");
             ImGui.Spacing();
             ImGui.Spacing();
             ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_About_Owner);
