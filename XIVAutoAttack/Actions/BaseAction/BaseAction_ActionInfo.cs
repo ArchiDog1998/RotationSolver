@@ -205,12 +205,17 @@ namespace XIVAutoAttack.Actions.BaseAction
         {
             var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
 
-            bool result = _action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
-             ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, Target.ObjectId);
-
             if (ShouldEndSpecial) CommandController.ResetSpecial(false);
 
-            return result;
+            if (_action.TargetArea)
+            {
+                return ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc);
+            }
+            else
+            {
+                if (Target == null) FindTarget(true);
+                return ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, Target.ObjectId);
+            }
         }
     }
 }

@@ -40,8 +40,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("UseVercure", true, "使用赤治疗获得即刻")
-            .SetBool("UseCorpsAcorps", false, "近战范围内使用短兵相接");
+            .SetBool("UseVercure", true, "使用赤治疗获得即刻");
     }
 
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
@@ -100,22 +99,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         //Empty: BaseAction.HaveStatusSelfFromSelf(1239)
         if (Engagement.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-        if (CorpsAcorps.ShouldUse(out act) && !IsMoving)
-        {
-            if (CorpsAcorps.Target.DistanceToPlayer() < 1)
-            {
-                return true;
-            }
-        }
-
-        if (Config.GetBoolByName("UseCorpsAcorps"))
-        {
-            if (Target.DistanceToPlayer() < 3)
-            {
-                if (CorpsAcorps.ShouldUse(out act)) return true;
-            }
-        }
-
+        if (CorpsAcorps.ShouldUse(out act, mustUse:true ) && !IsMoving) return true;
 
         return false;
     }

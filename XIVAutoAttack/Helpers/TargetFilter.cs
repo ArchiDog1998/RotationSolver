@@ -20,7 +20,14 @@ namespace XIVAutoAttack.Helpers
             //根据默认设置排序怪且没有大招
             availableCharas = DefaultTargetingType(availableCharas).Where(StatusHelper.NeedHealing);
 
-            return availableCharas.OrderBy(ObjectHelper.GetHealingRatio).First();
+            var tar = availableCharas.OrderBy(ObjectHelper.GetHealingRatio).First();
+
+            if (tar.GetHealingRatio() < 1) return tar;
+
+            availableCharas = availableCharas.GetJobCategory(JobRole.Tank);
+
+            return availableCharas.FirstOrDefault(t => t.HasStatus(true, StatusHelper.SheildStatus))
+               ?? availableCharas.FirstOrDefault();
         }
 
         internal static BattleChara DefaultFindHostile(IEnumerable<BattleChara> availableCharas, bool mustUse)
@@ -270,7 +277,7 @@ namespace XIVAutoAttack.Helpers
         {
             ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath));
 
-            return GetTargetByJobs(ASTTargets, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Melee);
+            return ASTGetTargetByJobs(ASTTargets, JobRole.RangedMagicial, JobRole.RangedPhysical, JobRole.Melee);
         }
 
         internal static BattleChara ASTMeleeTarget(IEnumerable<BattleChara> ASTTargets, bool mustUse)
@@ -278,10 +285,10 @@ namespace XIVAutoAttack.Helpers
             ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath));
 
 
-            return GetTargetByJobs(ASTTargets, JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical);
+            return ASTGetTargetByJobs(ASTTargets, JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical);
         }
 
-        private static BattleChara GetTargetByJobs(this IEnumerable<BattleChara> tars, params JobRole[] roles)
+        private static BattleChara ASTGetTargetByJobs(this IEnumerable<BattleChara> tars, params JobRole[] roles)
         {
             foreach (var role in roles)
             {

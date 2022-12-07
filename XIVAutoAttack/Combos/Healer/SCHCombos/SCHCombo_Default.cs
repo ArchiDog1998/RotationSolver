@@ -231,17 +231,6 @@ internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
                 //如果还没上激励就给t一个激励
                 if (Config.GetBoolByName("GiveT"))
                 {
-                    var PartyTanks = TargetUpdater.PartyTanks;
-                    BattleChara mt = Player;
-                    foreach (BattleChara t in PartyTanks)
-                    {
-                        if (t.HasStatus(true, StatusID.Defiance) || t.HasStatus(true, StatusID.IronWill) || t.HasStatus(true, StatusID.RoyalGuard)
-                            || t.HasStatus(true, StatusID.Grit) && t.DistanceToPlayer() < 30)
-                        {
-                            mt = t; break;
-                        }
-                    }
-                    Adloquium.Target = mt;
                     return Adloquium;
                 }
             }

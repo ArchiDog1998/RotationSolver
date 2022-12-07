@@ -24,7 +24,6 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     protected static byte AmmoComboStep => JobGauge.AmmoComboStep;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
-    internal sealed override bool HaveShield => Player.HasStatus(true, StatusID.RoyalGuard);
     private sealed protected override BaseAction Shield => RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;

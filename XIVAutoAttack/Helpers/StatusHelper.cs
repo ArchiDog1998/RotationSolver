@@ -31,6 +31,11 @@ namespace XIVAutoAttack.Helpers
             {ActionID.Kasha, new(EnemyLocation.Side, new byte[] { 29, 68, 72 }) },
         };
 
+        public static StatusID[] SheildStatus { get; } = new StatusID[]
+        {
+            StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance
+        };
+        
         public static StatusID[] NoNeedHealingStatus { get; } = new StatusID[]
         {
             StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead, 

@@ -43,7 +43,6 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
-    internal sealed override bool HaveShield => Player.HasStatus(true, StatusID.Grit);
     private sealed protected override BaseAction Shield => Grit;
 
     /// <summary>

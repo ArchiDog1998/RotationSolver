@@ -4,6 +4,7 @@ using System.Linq;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
+using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
@@ -65,7 +66,10 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ¶Ì±øÏà½Ó
     /// </summary>
-    public static BaseAction CorpsAcorps { get; } = new(ActionID.CorpsAcorps, shouldEndSpecial: true);
+    public static BaseAction CorpsAcorps { get; } = new(ActionID.CorpsAcorps, shouldEndSpecial: true)
+    {
+        ChoiceTarget = TargetFilter.FindTargetForMoving,
+    };
 
     /// <summary>
     /// ³à¼²·ç

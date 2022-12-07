@@ -337,9 +337,13 @@ internal partial class ComboConfigWindow : Window
             ImGui.Text("Cast Time: " + act.CastTime.ToString());
             ImGui.Text("MP: " + act.MPNeed.ToString());
             ImGui.Text($"Can Use: {act.ShouldUse(out _)} ");
-            ImGui.Text("     " + act.ShouldUse(out _, mustUse: true).ToString());
-            ImGui.Text("     " + act.ShouldUse(out _, emptyOrSkipCombo: true).ToString());
+            ImGui.Text("Must Use:" + act.ShouldUse(out _, mustUse: true).ToString());
+            ImGui.Text("Empty Use:" + act.ShouldUse(out _, emptyOrSkipCombo: true).ToString());
             ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(act.AdjustedID).ToString());
+            if(act.Target != null)
+            {
+                ImGui.Text("Target Name: " + act.Target.Name);
+            }
 #endif
         });
     }

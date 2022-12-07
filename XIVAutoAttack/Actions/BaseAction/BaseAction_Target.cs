@@ -30,7 +30,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             }
         }
 
-        internal BattleChara Target { get; set; } = Service.ClientState.LocalPlayer;
+        internal BattleChara Target { get; private set; } = Service.ClientState.LocalPlayer;
         private Vector3 _position = default;
 
         private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
@@ -158,7 +158,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (!Service.Configuration.UseAreaAbilityFriendly) return false;
 
             //如果当前目标是Boss且有身位，放他身上。
-            if (Service.TargetManager.Target is BattleChara b && b.IsBoss() && b.HasLocationSide())
+            if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && b.IsBoss() && b.HasLocationSide())
             {
                 Target = b;
                 _position = Target.Position;
@@ -178,7 +178,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 }
                 else
                 {
-                    var disToTankRound = Vector3.Distance(Target.Position, attackT.Position) + attackT.HitboxRadius;
+                    var disToTankRound = Math.Max(range, Vector3.Distance(Target.Position, attackT.Position) + attackT.HitboxRadius);
 
                     if (disToTankRound < _action.EffectRange
                         || disToTankRound > 2 * _action.EffectRange - Target.HitboxRadius
@@ -266,7 +266,6 @@ namespace XIVAutoAttack.Actions.BaseAction
                     return TargetHostileManual(b, mustUse, range, aoeCount);
                 }
 
-                Target = null;
                 return false;
             }
 

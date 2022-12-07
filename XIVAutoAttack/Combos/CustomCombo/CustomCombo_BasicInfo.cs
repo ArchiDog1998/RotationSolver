@@ -81,7 +81,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 有盾姿，如果为非T那么始终为true
         /// </summary>
         [ReflectableMember]
-        internal virtual bool HaveShield => true;
+        internal bool HaveShield => Player.HasStatus(true, StatusHelper.SheildStatus);
 
 
         public uint IconID { get; }

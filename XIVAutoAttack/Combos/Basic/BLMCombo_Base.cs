@@ -215,7 +215,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 黑魔纹
         /// </summary>
-        public static BaseAction Leylines { get; } = new(ActionID.Leylines, shouldEndSpecial: true)
+        public static BaseAction Leylines { get; } = new(ActionID.Leylines, true, shouldEndSpecial: true)
         {
             BuffsProvide = new[] { StatusID.LeyLines, },
         };

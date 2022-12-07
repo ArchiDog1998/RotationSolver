@@ -13,7 +13,6 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     private static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
-    internal sealed override bool HaveShield => Player.HasStatus(true, StatusID.Defiance);
     private sealed protected override BaseAction Shield => Defiance;
 
     /// <summary>
