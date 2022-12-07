@@ -30,7 +30,9 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         static readonly uint[] BadStatus = new uint[]
         {
-            573,
+            573, //没学会或者等级不够
+            572, //一些额外条件未满足
+            568, //没蓝
         };
 
         private float Range => ActionManager.GetActionRange(ID);
@@ -128,12 +130,6 @@ namespace XIVAutoAttack.Actions.BaseAction
                     if (!player.StatusTime(false, AbilityBan).IsLessThan(ActionUpdater.AbilityRemain)) return false;
                     break;
             }
-
-            //等级不够。
-            if (!EnoughLevel) return false;
-
-            //MP不够
-            if (Service.ClientState.LocalPlayer.CurrentMp < MPNeed) return false;
 
             //没有前置Buff
             if (BuffsNeed != null)
