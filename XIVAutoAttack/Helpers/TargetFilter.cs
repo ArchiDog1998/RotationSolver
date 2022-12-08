@@ -26,7 +26,7 @@ namespace XIVAutoAttack.Helpers
 
             availableCharas = availableCharas.GetJobCategory(JobRole.Tank);
 
-            return availableCharas.FirstOrDefault(t => t.HasStatus(true, StatusHelper.SheildStatus))
+            return availableCharas.FirstOrDefault(t => t.HasStatus(false, StatusHelper.SheildStatus))
                ?? availableCharas.FirstOrDefault();
         }
 
@@ -124,6 +124,11 @@ namespace XIVAutoAttack.Helpers
         {
             if (!charas.Any()) return null;
             var attachedT = charas.Where(tank => tank.TargetObject?.TargetObject == tank);
+
+            if (!attachedT.Any())
+            {
+                attachedT = charas.Where(tank => tank.HasStatus(false, StatusHelper.SheildStatus));
+            }
 
             if (!attachedT.Any())
             {

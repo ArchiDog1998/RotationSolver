@@ -185,7 +185,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
                 if (CastTime > 0 && MovingUpdater.IsMoving)
                 {
-                    if (!Service.ClientState.LocalPlayer.HasStatus(true, CustomCombo<Enum>.Swiftcast.BuffsProvide))
+                    if (!player.HasStatus(true, CustomCombo<Enum>.Swiftcast.BuffsProvide))
                     {
                         return false;
                     }
@@ -198,24 +198,24 @@ namespace XIVAutoAttack.Actions.BaseAction
                     return false;
             }
 
+            _targetId = Target.ObjectId;
             return true;
         }
 
-        public virtual unsafe bool Use()
+        uint _targetId = 0xE0000000;
+
+        public unsafe bool Use()
         {
             var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
 
             if (ShouldEndSpecial) CommandController.ResetSpecial(false);
 
-            if (_action.TargetArea)
-            {
-                return ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc);
-            }
-            else
-            {
-                if (Target == null) FindTarget(true);
-                return ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, Target.ObjectId);
-            }
+            #if DEBUG
+            if (_targetId == 0xE0000000) Service.ChatGui.Print(Name + " has no target.");
+            #endif
+
+            return _action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
+                ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, _targetId);
         }
     }
 }
