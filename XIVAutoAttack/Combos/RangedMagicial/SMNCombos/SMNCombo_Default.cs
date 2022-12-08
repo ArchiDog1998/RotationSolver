@@ -10,9 +10,9 @@ namespace XIVAutoAttack.Combos.RangedMagicial.SMNCombos;
 
 internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.0";
 
-    public override string Author => "ÇïË®";
+    public override string Author => "ÎÞ";
 
     internal enum CommandType : byte
     {

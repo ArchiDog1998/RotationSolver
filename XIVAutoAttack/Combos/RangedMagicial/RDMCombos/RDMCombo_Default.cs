@@ -11,9 +11,9 @@ namespace XIVAutoAttack.Combos.RangedMagicial.RDMCombos;
 
 internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.0";
 
-    public override string Author => "ÇïË®";
+    public override string Author => "ÎÞ";
 
     internal enum CommandType : byte
     {

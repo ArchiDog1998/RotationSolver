@@ -1,4 +1,5 @@
-﻿using XIVAutoAttack.Actions;
+﻿#if DEBUG
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -484,3 +485,4 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         return false;
     }
 }
+#endif

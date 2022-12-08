@@ -6,7 +6,6 @@ using System.Numerics;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static Lumina.Data.Parsing.Layer.LayerCommon;
 
 namespace XIVAutoAttack.Actions.BaseAction
 {

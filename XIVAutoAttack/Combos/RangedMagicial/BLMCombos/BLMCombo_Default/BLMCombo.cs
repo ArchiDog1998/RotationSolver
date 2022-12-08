@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#if DEBUG
+
+using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -447,3 +449,4 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
         return false;
     }
 }
+#endif

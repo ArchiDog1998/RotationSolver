@@ -12,6 +12,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
 internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
 {
     public override string GameVersion => "6.18";
+    public override string Author => "ÎÞ";
 
     internal enum CommandType : byte
     {
@@ -29,8 +30,6 @@ internal sealed class DNCCombo_Default : DNCCombo_Base<CommandType>
         {DescType.HealArea, $"{CuringWaltz}, {Improvisation}"},
         {DescType.MoveAction, $"{EnAvant}"},
     };
-
-    public override string Author => "ÇïË®";
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {

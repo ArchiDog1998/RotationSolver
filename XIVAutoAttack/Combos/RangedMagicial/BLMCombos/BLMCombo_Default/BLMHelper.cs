@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if DEBUG
+
+using System;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
@@ -228,3 +230,4 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 
     }
 }
+#endif

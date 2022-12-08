@@ -14,6 +14,7 @@ namespace XIVAutoAttack.Combos.Tank.DRKCombos;
 internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
 {
     public override string GameVersion => "6.18";
+    public override string Author => "汐ベMoon";
 
     internal enum CommandType : byte
     {
@@ -40,7 +41,6 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         {DescType.MoveAction, $"{Plunge}"},
     };
 
-    public override string Author => "汐ベMoon";
 
     private protected override ActionConfiguration CreateConfiguration()
     {

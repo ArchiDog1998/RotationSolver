@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if DEBUG
+using System.Collections.Generic;
 using System.Linq;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
@@ -485,3 +486,4 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
         }
     }
 }
+#endif
