@@ -50,6 +50,8 @@ namespace XIVAutoAttack.Windows
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]) return;
 
+            if(!Service.Configuration.ShowMoveTarget) return;
+
             var c = Service.Configuration.TeachingModeMovingTargetColor;
             var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
@@ -86,8 +88,6 @@ namespace XIVAutoAttack.Windows
 
                 ImGui.GetWindowDrawList().AddCircle(plyPos, radius, color, COUNT, radius * 2);
             }
-
-
         }
         const int COUNT = 20;
         private static void DrawLocation()
