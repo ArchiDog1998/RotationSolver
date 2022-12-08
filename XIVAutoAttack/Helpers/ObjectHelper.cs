@@ -26,7 +26,7 @@ namespace XIVAutoAttack.Helpers
         internal static bool IsBoss(this BattleChara obj)
         {
             if (obj == null) return false;
-            return obj.MaxHp >= GetHealthFromMulty(1.85)
+            return obj.MaxHp >= GetHealthFromMulty(1.85f)
                 || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
         }
 
