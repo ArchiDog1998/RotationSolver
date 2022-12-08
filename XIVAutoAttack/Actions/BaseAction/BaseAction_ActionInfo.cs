@@ -30,6 +30,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         static readonly uint[] BadStatus = new uint[]
         {
+            579, //状态限制
             573, //没学会或者等级不够
             572, //一些额外条件未满足
             568, //没蓝
