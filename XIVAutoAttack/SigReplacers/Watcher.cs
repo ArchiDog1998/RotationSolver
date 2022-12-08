@@ -112,7 +112,7 @@ namespace XIVAutoAttack.SigReplacers
             }
 
 #if DEBUG
-            Service.ChatGui.Print($"{action.Name}, {flag}");
+            if (flag != 0) Service.ChatGui.Print($"{action.Name}, {flag}");
 #endif
 
             //事后骂人！

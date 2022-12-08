@@ -26,7 +26,7 @@ namespace XIVAutoAttack.Helpers
         internal static bool IsBoss(this BattleChara obj)
         {
             if (obj == null) return false;
-            return obj.MaxHp >= GetHealthFromMulty(20)
+            return obj.MaxHp >= GetHealthFromMulty(10)
                 || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
         }
 
@@ -54,7 +54,7 @@ namespace XIVAutoAttack.Helpers
         internal static bool IsDying(this BattleChara b)
         {
             if (b == null) return false;
-            return b.CurrentHp <= GetHealthFromMulty(8) || b.GetHealthRatio() < 0.02f;
+            return b.CurrentHp <= GetHealthFromMulty(0.8f) || b.GetHealthRatio() < 0.02f;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace XIVAutoAttack.Helpers
         internal static bool CanDot(this BattleChara b)
         {
             if (b == null) return false;
-            return b.CurrentHp >= GetHealthFromMulty(2);
+            return b.CurrentHp >= GetHealthFromMulty(1.5f);
         }
 
         internal static EnemyLocation FindEnemyLocation(this GameObject enemy)

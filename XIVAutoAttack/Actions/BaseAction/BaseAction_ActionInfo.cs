@@ -209,7 +209,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         {
             var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
 
-            if (ShouldEndSpecial) CommandController.ResetSpecial(false);
+            if (ShouldEndSpecial) CommandController.ResetSpecial(true);
 
             #if DEBUG
             if (_targetId == 0xE0000000) Service.ChatGui.Print(Name + " has no target.");
