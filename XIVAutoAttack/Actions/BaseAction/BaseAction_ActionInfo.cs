@@ -204,11 +204,12 @@ namespace XIVAutoAttack.Actions.BaseAction
                     return false;
             }
 
-            _targetId = Target.ObjectId;
+            //看看这样能不能不会被清除。
+            Target = Target;
             return true;
         }
 
-        uint _targetId = 0xE0000000;
+        //internal uint TargetId { get; private set; } = 0xE0000000;
 
         public unsafe bool Use()
         {
@@ -216,12 +217,8 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             if (ShouldEndSpecial) CommandController.ResetSpecial(true);
 
-            #if DEBUG
-            if (_targetId == 0xE0000000) Service.ChatGui.Print(Name + " has no target.");
-            #endif
-
             return _action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
-                ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, _targetId);
+                ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, Target.ObjectId);
         }
     }
 }

@@ -50,6 +50,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseItem { get; set; } = false;
     public bool ShowLocationWrong { get; set; } = true;
     public bool ShowMoveTarget { get; set; } = true;
+    public bool ShowTarget { get; set; } = true;
     public bool ChooseAttackMark { get; set; } = true;
     public bool AttackMarkAOE { get; set; } = true;
     public bool FilterStopMark { get; set; } = true;
@@ -57,6 +58,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool TeachingMode { get; set; } = true;
     public Vector3 TeachingModeColor { get; set; } = new(0f, 1f, 0.8f);
     public Vector3 MovingTargetColor { get; set; } = new(0f, 1f, 0.8f);
+    public Vector3 TargetColor { get; set; } = new(1f, 0.2f, 0f);
+    public Vector3 SubTargetColor { get; set; } = new(1f, 1f, 0f);
     public bool KeyBoardNoise { get; set; } = true;
     public bool UseAreaAbilityFriendly { get; set; } = true;
     public bool AutoStartCountdown { get; set; } = true;

@@ -4,8 +4,10 @@ using Dalamud.Interface.Colors;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.SigReplacers;
@@ -21,6 +23,11 @@ namespace XIVAutoAttack.Windows
         {
             if (Service.GameGui == null || Service.ClientState.LocalPlayer == null || !Service.Configuration.UseOverlayWindow) return;
 
+            //转场或者在看片片，不执行。
+            if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]) return;
+
             ImGui.PushID("AutoAttackOverlay");
 
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
@@ -35,6 +42,7 @@ namespace XIVAutoAttack.Windows
             ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
 
             DrawLocation();
+            DrawTarget();
             DrawMoveTarget();
 
             ImGui.PopStyleVar();
@@ -43,13 +51,36 @@ namespace XIVAutoAttack.Windows
             ImGui.PopID();
         }
 
+        private static void DrawTarget()
+        {
+            if (!Service.Configuration.ShowTarget) return;
+
+            if (ActionUpdater.NextAction is not BaseAction act) return;
+
+            if (act.Target == null || act.Target == Service.ClientState.LocalPlayer) return;
+
+            var c = Service.Configuration.TargetColor;
+            var Tcolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+            DrawTarget(act.Target, Tcolor, 8, out _);
+
+            if (TargetUpdater.HostileTargets.Contains(act.Target))
+            {
+                c = Service.Configuration.SubTargetColor;
+                var Scolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+
+                foreach (var t in TargetUpdater.HostileTargets)
+                {
+                    if (t == act.Target) continue;
+                    if(act.CanGetTarget(act.Target, t))
+                    {
+                        DrawTarget(t, Scolor, 5, out _);
+                    }
+                }
+            }
+        }
+
         private static void DrawMoveTarget()
         {
-            //转场或者在看片片，不执行。
-            if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]) return;
-
             if(!Service.Configuration.ShowMoveTarget) return;
 
             var c = Service.Configuration.MovingTargetColor;
@@ -69,11 +100,7 @@ namespace XIVAutoAttack.Windows
             var tar = IconReplacer.RightNowCombo?.MoveTarget;
             if(tar == null || tar == Service.ClientState.LocalPlayer) return;
 
-            if (Service.GameGui.WorldToScreen(tar.Position, out var scrPos))
-            {
-                var radius = 8;
-                ImGui.GetWindowDrawList().AddCircle(scrPos, radius, color, COUNT, radius * 0.8f);
-            }
+            DrawTarget(tar, color, 8, out var scrPos);
 
             if (Service.GameGui.WorldToScreen(Service.ClientState.LocalPlayer.Position, out var plyPos))
             {
@@ -89,6 +116,15 @@ namespace XIVAutoAttack.Windows
                 ImGui.GetWindowDrawList().AddCircle(plyPos, radius, color, COUNT, radius * 2);
             }
         }
+
+        private static void DrawTarget(BattleChara tar, uint color, float radius, out Vector2 scrPos)
+        {
+            if (Service.GameGui.WorldToScreen(tar.Position, out scrPos))
+            {
+                ImGui.GetWindowDrawList().AddCircle(scrPos, radius, color, COUNT, radius * 0.8f);
+            }
+        }
+
         const int COUNT = 20;
         private static void DrawLocation()
         {

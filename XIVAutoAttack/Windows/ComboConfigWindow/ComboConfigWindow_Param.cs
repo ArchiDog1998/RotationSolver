@@ -140,6 +140,35 @@ internal partial class ComboConfigWindow
                     }
                 }
 
+                bool showTarget = Service.Configuration.ShowTarget;
+                if (useOverlayWindow && ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ShowTarget, ref showTarget))
+                {
+                    Service.Configuration.ShowTarget = showTarget;
+                    Service.Configuration.Save();
+                }
+                if (showTarget)
+                {
+                    ImGui.Spacing();
+                    var targetColor = Service.Configuration.TargetColor;
+                    ImGui.SetNextItemWidth(210);
+
+                    if (ImGui.ColorEdit3(LocalizationManager.RightLang.Configwindow_Params_TargetColor, ref targetColor))
+                    {
+                        Service.Configuration.TargetColor = targetColor;
+                        Service.Configuration.Save();
+                    }
+
+                    ImGui.Spacing();
+                    var subTargetColor = Service.Configuration.SubTargetColor;
+                    ImGui.SetNextItemWidth(210);
+
+                    if (ImGui.ColorEdit3(LocalizationManager.RightLang.Configwindow_Params_SubTargetColor, ref subTargetColor))
+                    {
+                        Service.Configuration.SubTargetColor = subTargetColor;
+                        Service.Configuration.Save();
+                    }
+                }
+
                 bool keyBoardNoise = Service.Configuration.KeyBoardNoise;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_KeyBoardNoise, ref keyBoardNoise))
                 {

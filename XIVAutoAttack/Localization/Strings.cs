@@ -107,13 +107,16 @@ internal class Strings
     public string Configwindow_Params_CheckForCasting { get; set; } = "Enhance castbar with casting status";
     public string Configwindow_Params_TeachingMode { get; set; } = "Teaching mode";
     public string Configwindow_Params_TeachingModeColor { get; set; } = "Prompt box color of teaching mode";
-    public string Configwindow_Params_MovingTargetColor { get; set; } = "Prompt box color of teaching mode";
+    public string Configwindow_Params_MovingTargetColor { get; set; } = "Prompt box color of moving target";
+    public string Configwindow_Params_TargetColor { get; set; } = "目标颜色";
+    public string Configwindow_Params_SubTargetColor { get; set; } = "子目标颜色";
     public string Configwindow_Params_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string Configwindow_Params_VoiceVolume { get; set; } = "Voice volume";
     public string Configwindow_Params_ShowLocation { get; set; } = "Hint positional anticipation by flytext";
     public string Configwindow_Params_SayingLocation { get; set; } = "Hint positional anticipation by shouting";
     public string Configwindow_Params_ShowLocationWrong { get; set; } = "Positional error feedback";
     public string Configwindow_Params_ShowMoveTarget { get; set; } = "显示移动技能的目标";
+    public string Configwindow_Params_ShowTarget { get; set; } = "显示目标";
     public string Configwindow_Params_ShowLocationWrongDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
     public string Configwindow_Params_LocationWrongText { get; set; } = "Positional error prompt";
     public string Configwindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";

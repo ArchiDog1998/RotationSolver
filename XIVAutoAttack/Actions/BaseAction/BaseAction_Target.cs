@@ -1,6 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Logging;
+using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Data;
@@ -131,8 +134,8 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         private bool TargetAreaHostile(float range, int aoeCount)
         {
-            Target = TargetFilter.GetMostObjectInRadius(TargetUpdater.HostileTargets, range, _action.EffectRange, true, aoeCount)
-                .OrderByDescending(p => p.GetHealthRatio()).FirstOrDefault();
+            Target = GetMostObjects(TargetUpdater.HostileTargets, aoeCount)
+                .OrderByDescending(ObjectHelper.GetHealthRatio).FirstOrDefault();
             if (Target == null)
             {
                 Target = Service.ClientState.LocalPlayer;
@@ -166,8 +169,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             //计算玩家和被打的Ｔ之间的关系。
             else
             {
-                var attackT = TargetFilter.FindAttackedTarget(TargetFilter.GetObjectInRadius(TargetUpdater.PartyTanks,
-                    range + _action.EffectRange), mustUse);
+                var attackT = TargetFilter.FindAttackedTarget(TargetUpdater.PartyTanks.GetObjectInRadius(range + _action.EffectRange), mustUse);
 
                 Target = Service.ClientState.LocalPlayer;
 
@@ -234,7 +236,8 @@ namespace XIVAutoAttack.Actions.BaseAction
             if (_action.CastType > 1 && (ActionID)ID != ActionID.DeploymentTactics)
             {
                 //找到能覆盖最多的位置，并且选血最少的来。
-                Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(availableCharas, range, _action.EffectRange, true, aoeCount), mustUse);
+                Target = ChoiceTarget(GetMostObjects(availableCharas, aoeCount), mustUse);
+
             }
             else
             {
@@ -274,31 +277,9 @@ namespace XIVAutoAttack.Actions.BaseAction
                 return false;
             }
 
-            switch (_action.CastType)
-            {
-                case 1:
-                default:
-                    var canReachTars = TargetFilterFuncEot(TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, range), mustUse);
-                    Target = ChoiceTarget(canReachTars, mustUse);
-                    if (Target == null) return false;
-                    return true;
-
-                case 10: //环形范围攻击也就这么判断吧，我烦了。
-                case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                    Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), range, _action.EffectRange, true, aoeCount), mustUse);
-                    if (Target == null) return false;
-                    return true;
-
-                case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                    Target = ChoiceTarget(TargetFilter.GetMostObjectInArc(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange, true, aoeCount), mustUse);
-                    if (Target == null) return false;
-                    return true;
-
-                case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                    Target = ChoiceTarget(TargetFilter.GetMostObjectInLine(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), range, true, aoeCount), mustUse);
-                    if (Target == null) return false;
-                    return true;
-            }
+            Target = ChoiceTarget(GetMostObjects(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount), mustUse);
+            if (Target == null) return false;
+            return true;
         }
 
         private bool TargetHostileManual(BattleChara b, bool mustUse, float range, int aoeCount)
@@ -319,38 +300,75 @@ namespace XIVAutoAttack.Actions.BaseAction
 
             if (Service.Configuration.UseAOEWhenManual || mustUse)
             {
-                switch (_action.CastType)
+                if(GetMostObjects(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount).Contains(b))
                 {
-                    case 10: //环形范围攻击也就这么判断吧，我烦了。
-                    case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
-                        if (TargetFilter.GetMostObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), range, _action.EffectRange, false, aoeCount)
-                            .Contains(b))
-                        {
-                            Target = b;
-                            return true;
-                        }
-                        break;
-                    case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        if (TargetFilter.GetMostObjectInArc(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange, false, aoeCount)
-                            .Contains(b))
-                        {
-                            Target = b;
-                            return true;
-                        }
-                        break;
-                    case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
-                        if (TargetFilter.GetMostObjectInLine(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), range, false, aoeCount)
-                            .Contains(b))
-                        {
-                            Target = b;
-                            return true;
-                        }
-                        break;
+                    Target = b;
+                    return true;
                 }
             }
             return false;
         }
         #endregion
+        private IEnumerable<BattleChara> GetMostObjects(IEnumerable<BattleChara> targets, int maxCount)
+        {
+            var range = Range;
+            var canAttack = targets.Where(t => t.DistanceToPlayer() <= range + _action.EffectRange);
+            var canGetObj = canAttack.Where(t => t.DistanceToPlayer() <= range);
+
+            //能打到MaxCount以上数量的怪的怪。
+            List<BattleChara> objectMax = new List<BattleChara>(canGetObj.Count());
+
+            //循环能打中的目标。
+            foreach (var t in canGetObj)
+            {
+                //计算能达到的所有怪的数量。
+                int count = CanGetTargetCount(t, canAttack);
+
+                if (count == maxCount)
+                {
+                    objectMax.Add(t);
+                }
+                else if (count > maxCount)
+                {
+                    maxCount = count;
+                    objectMax.Clear();
+                    objectMax.Add(t);
+                }
+            }
+
+            return objectMax;
+        }
+
+        private int CanGetTargetCount(BattleChara target, IEnumerable<BattleChara> canAttack)
+            => canAttack.Count(g => CanGetTarget(target, g));
+
+        internal bool CanGetTarget(BattleChara target, BattleChara subTarget)
+        {
+            if (target == null) return false;
+            if (_action.CastType == 1) return false;
+
+            var pPos = Service.ClientState.LocalPlayer.Position;
+            Vector3 dir = target.Position - pPos;
+            Vector3 tdir = subTarget.Position - pPos;
+
+            switch (_action.CastType)
+            {
+                case 10: //环形范围攻击也就这么判断吧，我烦了。
+                case 2: // 圆形范围攻击
+                    return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= _action.EffectRange;
+
+                case 3: // 扇形范围攻击
+                    double cos = Vector3.Dot(dir, tdir) / (dir.Length() * tdir.Length());
+                    return subTarget.DistanceToPlayer() <= _action.EffectRange && cos >= 0.5;
+
+                case 4: //直线范围攻击
+                    double distance = Vector3.Cross(dir, tdir).Length() / dir.Length();
+                    return subTarget.DistanceToPlayer() <= _action.EffectRange && distance <= 2;
+            }
+
+            PluginLog.LogDebug(Name + "'s CastType is not valid! The value is " + _action.CastType.ToString());
+            return false;
+        }
 
         private bool TargetSelf(BattleChara player, bool mustUse, int aoeCount)
         {
