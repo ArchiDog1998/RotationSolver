@@ -66,7 +66,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                 && TargetUpdater.PartyMembersAverHP > tankHealth + 0.1f;
         }
 
-        private bool FindTarget(bool mustUse)
+        private bool FindTarget(bool mustUse, out BattleChara target)
         {
             int aoeCount = mustUse ? 1 : AOECount;
 
@@ -78,92 +78,94 @@ namespace XIVAutoAttack.Actions.BaseAction
             //如果都没有距离，这个还需要选对象嘛？选自己啊！
             if (range == 0 && _action.EffectRange == 0)
             {
-                Target = player;
+                target = player;
                 return true;
             }
             else  if (_action.TargetArea)
             {
-                return TargetArea(range, mustUse, aoeCount);
+                return TargetArea(range, mustUse, aoeCount, out target);
             }
             //如果能对友方和敌方都能选中
             else if (_action.CanTargetParty && _action.CanTargetHostile)
             {
-                return TargetPartyAndHostile(range, mustUse);
+                return TargetPartyAndHostile(range, mustUse, out target);
             }
             //首先看看是不是能对小队成员进行操作的。
             else if (_action.CanTargetParty)
             {
-                return TargetParty(range, aoeCount, mustUse);
+                return TargetParty(range, aoeCount, mustUse, out target);
             }
             //再看看是否可以选中敌对的。
             else if (_action.CanTargetHostile)
             {
-                return TargetHostile(range, mustUse, aoeCount);
+                return TargetHostile(range, mustUse, aoeCount, out target);
             }
             //如果只能选自己，那就选自己吧。
             else if (_action.CanTargetSelf)
             {
-                return TargetSelf(player, mustUse, aoeCount);
+                target = player;
+                return TargetSelf(mustUse, aoeCount);
             }
             else
             {
-                Target = Service.TargetManager.Target is BattleChara battle ? battle : Service.ClientState.LocalPlayer;
+                target = Service.TargetManager.Target is BattleChara battle ? battle : Service.ClientState.LocalPlayer;
                 return true;
             }
         }
 
         #region TargetArea
-        private bool TargetArea(float range, bool mustUse, int aoeCount)
+        private bool TargetArea(float range, bool mustUse, int aoeCount, out BattleChara target)
         {
             //移动
             if (_action.EffectRange == 1 && range >= 15)
             {
-                return TargetAreaMove(range, mustUse);
+                return TargetAreaMove(range, mustUse, out target);
             }
             //其他友方
             else if (_isFriendly)
             {
-                return TargetAreaFriend(range, mustUse);
+                return TargetAreaFriend(range, mustUse, out target);
             }
             //敌方
             else
             {
-                return TargetAreaHostile(range, aoeCount);
+                return TargetAreaHostile(aoeCount, out target);
             }
         }
 
-        private bool TargetAreaHostile(float range, int aoeCount)
+        private bool TargetAreaHostile(int aoeCount, out BattleChara target)
         {
-            Target = GetMostObjects(TargetUpdater.HostileTargets, aoeCount)
+            target = GetMostObjects(TargetUpdater.HostileTargets, aoeCount)
                 .OrderByDescending(ObjectHelper.GetHealthRatio).FirstOrDefault();
-            if (Target == null)
+            if (target == null)
             {
-                Target = Service.ClientState.LocalPlayer;
+                target = Service.ClientState.LocalPlayer;
                 return false;
             }
-            _position = Target.Position;
+            _position = target.Position;
             return true;
         }
 
-        private bool TargetAreaMove(float range, bool mustUse)
+        private bool TargetAreaMove(float range, bool mustUse, out BattleChara target)
         {
             var availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).OfType<BattleChara>();
-            Target = ChoiceTarget(TargetFilter.GetObjectInRadius(availableCharas, range), mustUse);
-            if (Target == null) return false;
-            _position = Target.Position;
+            target = ChoiceTarget(TargetFilter.GetObjectInRadius(availableCharas, range), mustUse);
+            if (target == null) return false;
+            _position = target.Position;
             return true;
         }
 
-        private bool TargetAreaFriend(float range, bool mustUse)
+        private bool TargetAreaFriend(float range, bool mustUse, out BattleChara target)
         {
+            target = null;
             //如果用户不想使用自动友方地面放置功能
             if (!Service.Configuration.UseAreaAbilityFriendly) return false;
 
             //如果当前目标是Boss且有身位，放他身上。
             if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && b.IsBoss() && b.HasLocationSide())
             {
-                Target = b;
-                _position = Target.Position;
+                target = b;
+                _position = target.Position;
                 return true;
             }
             //计算玩家和被打的Ｔ之间的关系。
@@ -171,27 +173,27 @@ namespace XIVAutoAttack.Actions.BaseAction
             {
                 var attackT = TargetFilter.FindAttackedTarget(TargetUpdater.PartyTanks.GetObjectInRadius(range + _action.EffectRange), mustUse);
 
-                Target = Service.ClientState.LocalPlayer;
+                target = Service.ClientState.LocalPlayer;
 
                 if (attackT == null)
                 {
-                    _position = Target.Position;
+                    _position = target.Position;
                 }
                 else
                 {
-                    var disToTankRound = Math.Max(range, Vector3.Distance(Target.Position, attackT.Position) + attackT.HitboxRadius);
+                    var disToTankRound = Math.Max(range, Vector3.Distance(target.Position, attackT.Position) + attackT.HitboxRadius);
 
                     if (disToTankRound < _action.EffectRange
-                        || disToTankRound > 2 * _action.EffectRange - Target.HitboxRadius
+                        || disToTankRound > 2 * _action.EffectRange - target.HitboxRadius
                         || disToTankRound > range)
                     {
-                        _position = Target.Position;
+                        _position = target.Position;
                     }
                     else
                     {
-                        Vector3 directionToTank = attackT.Position - Target.Position;
+                        Vector3 directionToTank = attackT.Position - target.Position;
                         var MoveDirection = directionToTank / directionToTank.Length() * (disToTankRound - _action.EffectRange);
-                        _position = Target.Position + MoveDirection;
+                        _position = target.Position + MoveDirection;
                     }
                 }
                 return true;
@@ -199,24 +201,24 @@ namespace XIVAutoAttack.Actions.BaseAction
         }
         #endregion
 
-        private bool TargetPartyAndHostile(float range, bool mustUse)
+        private bool TargetPartyAndHostile(float range, bool mustUse, out BattleChara target)
         {
             var availableCharas = TargetUpdater.PartyMembers.Union(TargetUpdater.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId);
             availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
 
             //特殊选队友的方法。
-            Target = ChoiceTarget(availableCharas, mustUse);
-            if (Target == null) return false;
+            target = ChoiceTarget(availableCharas, mustUse);
+            if (target == null) return false;
             return true;
         }
 
         #region Target party
-        private bool TargetParty(float range, int aoeCount, bool mustUse)
+        private bool TargetParty(float range, int aoeCount, bool mustUse, out BattleChara target)
         {
             //还消耗2400的蓝，那肯定是复活的。
             if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24 || (ActionID)ID == ActionID.AngelWhisper)
             {
-                return TargetDeath();
+                return TargetDeath(out target);
             }
 
             //找到没死的队友们。
@@ -230,63 +232,69 @@ namespace XIVAutoAttack.Actions.BaseAction
             {
                 availableCharas = availableCharas.Where(p => p.ObjectId != Service.ClientState.LocalPlayer.ObjectId);
             }
-            if (!availableCharas.Any()) return false;
+            if (!availableCharas.Any())
+            {
+                target = null;
+                return false;
+            }
 
             //判断是否是范围。
             if (_action.CastType > 1 && (ActionID)ID != ActionID.DeploymentTactics)
             {
                 //找到能覆盖最多的位置，并且选血最少的来。
-                Target = ChoiceTarget(GetMostObjects(availableCharas, aoeCount), mustUse);
+                target = ChoiceTarget(GetMostObjects(availableCharas, aoeCount), mustUse);
 
             }
             else
             {
                 availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
                 //特殊选队友的方法。
-                Target = ChoiceTarget(availableCharas, mustUse);
+                target = ChoiceTarget(availableCharas, mustUse);
             }
 
-            return CheckStatus(Target, mustUse);
+            return CheckStatus(target, mustUse);
         }
 
-        private bool TargetDeath()
+        private bool TargetDeath(out BattleChara target)
         {
-            Target = TargetFilter.GetDeathPeople(TargetUpdater.DeathPeopleAll, TargetUpdater.DeathPeopleParty);
-            if (Target == null) return false;
+            target = TargetFilter.GetDeathPeople(TargetUpdater.DeathPeopleAll, TargetUpdater.DeathPeopleParty);
+            if (target == null) return false;
             return true;
         }
         #endregion
 
         #region Target Hostile
-        private bool TargetHostile(float range, bool mustUse, int aoeCount)
+        private bool TargetHostile(float range, bool mustUse, int aoeCount, out BattleChara target)
         {
             //如果不用自动找目标，那就直接返回。
             if (!CommandController.AutoTarget)
             {
                 if (Service.TargetManager.Target is BattleChara b && b.CanAttack() && b.DistanceToPlayer() <= range)
                 {
-                    return TargetHostileManual(b, mustUse, range, aoeCount);
+                    return TargetHostileManual(b, mustUse, aoeCount, out target);
                 }
 
+                target = null;
                 return false;
             }
 
             //判断一下AOE攻击的时候如果有攻击目标标记目标
             if (_action.CastType > 1 && (NoAOEForAttackMark || Service.Configuration.AttackSafeMode))
             {
+                target = null;
                 return false;
             }
 
-            Target = ChoiceTarget(GetMostObjects(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount), mustUse);
-            if (Target == null) return false;
+            target = ChoiceTarget(GetMostObjects(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount), mustUse);
+            if (target == null) return false;
             return true;
         }
 
-        private bool TargetHostileManual(BattleChara b, bool mustUse, float range, int aoeCount)
+        private bool TargetHostileManual(BattleChara b, bool mustUse, int aoeCount, out BattleChara target)
         {
             if (_action.CastType == 1)
             {
-                Target = b;
+                target = b;
 
                 //目标已有充足的Debuff
                 if (!CheckStatus(b ?? Service.ClientState.LocalPlayer, mustUse)) return false;
@@ -295,6 +303,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             }
             else if (Service.Configuration.AttackSafeMode)
             {
+                target = null;
                 return false;
             }
 
@@ -302,18 +311,43 @@ namespace XIVAutoAttack.Actions.BaseAction
             {
                 if(GetMostObjects(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount).Contains(b))
                 {
-                    Target = b;
+                    target = b;
                     return true;
                 }
             }
+            target = null;
             return false;
         }
         #endregion
+
+        private bool TargetSelf(bool mustUse, int aoeCount)
+        {
+            if (_action.EffectRange > 0 && !_isFriendly)
+            {
+                if (NoAOEForAttackMark || Service.Configuration.AttackSafeMode)
+                {
+                    return false;
+                }
+
+                //如果不用自动找目标，那就不打AOE
+                if (!CommandController.AutoTarget)
+                {
+                    if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
+                }
+                var count = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange).Count();
+                if (count < aoeCount) return false;
+            }
+            return true;
+        }
+
+        #region Get Most Target
         private IEnumerable<BattleChara> GetMostObjects(IEnumerable<BattleChara> targets, int maxCount)
         {
             var range = Range;
             var canAttack = targets.Where(t => t.DistanceToPlayer() <= range + _action.EffectRange);
             var canGetObj = canAttack.Where(t => t.DistanceToPlayer() <= range);
+
+            if (_action.CastType == 1) return canGetObj;
 
             //能打到MaxCount以上数量的怪的怪。
             List<BattleChara> objectMax = new List<BattleChara>(canGetObj.Count());
@@ -369,28 +403,7 @@ namespace XIVAutoAttack.Actions.BaseAction
             PluginLog.LogDebug(Name + "'s CastType is not valid! The value is " + _action.CastType.ToString());
             return false;
         }
-
-        private bool TargetSelf(BattleChara player, bool mustUse, int aoeCount)
-        {
-            Target = player;
-
-            if (_action.EffectRange > 0 && !_isFriendly)
-            {
-                if (NoAOEForAttackMark || Service.Configuration.AttackSafeMode)
-                {
-                    return false;
-                }
-
-                //如果不用自动找目标，那就不打AOE
-                if (!CommandController.AutoTarget)
-                {
-                    if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
-                }
-                var count = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange).Count();
-                if (count < aoeCount) return false;
-            }
-            return true;
-        }
+        #endregion
 
         private IEnumerable<BattleChara> TargetFilterFuncEot(IEnumerable<BattleChara> tars, bool mustUse)
         {
