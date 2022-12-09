@@ -97,7 +97,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         if (Kasha.ShouldUse(out act, emptyOrSkipCombo: haveMeikyoShisui && !HasKa)) return true;
 
         //连击2
-        if ((!HaveMoon || MoonTime < FlowerTime) && Jinpu.ShouldUse(out act)) return true;
+        if ((!HaveMoon || MoonTime < FlowerTime || !Shifu.EnoughLevel) && Jinpu.ShouldUse(out act)) return true;
         if ((!HaveFlower || FlowerTime < MoonTime) && Shifu.ShouldUse(out act)) return true;
 
         //连击1
