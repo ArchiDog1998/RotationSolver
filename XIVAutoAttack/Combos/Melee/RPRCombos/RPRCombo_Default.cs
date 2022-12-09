@@ -201,12 +201,6 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool MoveGCD(out IAction act)
-    {
-        //E上去
-        if (HellsIngress.ShouldUse(out act)) return true;
-        return false;
-    }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {

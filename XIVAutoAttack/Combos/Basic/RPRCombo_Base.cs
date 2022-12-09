@@ -303,4 +303,11 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction ArcaneCrest { get; } = new(ActionID.ArcaneCrest, true, isTimeline: true);
     #endregion
 
+
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    {
+        //E上去
+        if (HellsIngress.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
 }

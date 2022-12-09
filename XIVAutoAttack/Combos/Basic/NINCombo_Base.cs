@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -304,4 +305,10 @@ internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static NinAction HyoshoRanryu { get; } = new(ActionID.HyoshoRanryu, Ten, Jin);
 
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    {
+        if (Shukuchi.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+
+        return false;
+    }
 }

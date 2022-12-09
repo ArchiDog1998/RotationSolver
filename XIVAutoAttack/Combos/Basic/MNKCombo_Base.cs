@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -174,4 +175,10 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// ¼²·ç¼«Òâ
     /// </summary>
     public static BaseAction RiddleofWind { get; } = new(ActionID.RiddleofWind, true);
+
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    {
+        if (Thunderclap.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
 }

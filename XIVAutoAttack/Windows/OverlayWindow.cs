@@ -57,15 +57,19 @@ namespace XIVAutoAttack.Windows
 
             if (ActionUpdater.NextAction is not BaseAction act) return;
 
-            if (act.Target == null || act.Target == Service.ClientState.LocalPlayer) return;
+            if (act.Target == null ) return;
 
-            var c = Service.Configuration.TargetColor;
-            var Tcolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
-            DrawTarget(act.Target, Tcolor, 8, out _);
+            if(act.Target != Service.ClientState.LocalPlayer)
+            {
+                var c = Service.Configuration.TargetColor;
+                var Tcolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+                DrawTarget(act.Target, Tcolor, 8, out _);
+
+            }
 
             if (TargetUpdater.HostileTargets.Contains(act.Target))
             {
-                c = Service.Configuration.SubTargetColor;
+                var c = Service.Configuration.SubTargetColor;
                 var Scolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
                 foreach (var t in TargetUpdater.HostileTargets)

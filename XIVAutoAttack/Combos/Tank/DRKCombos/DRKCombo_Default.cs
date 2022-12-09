@@ -174,13 +174,6 @@ internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
-    {
-        if (Plunge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-
-        return false;
-    }
-
     private bool CanUseEdgeofDarkness(out IAction act)
     {
         if (!EdgeofDarkness.ShouldUse(out act)) return false;

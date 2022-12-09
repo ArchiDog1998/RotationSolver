@@ -54,13 +54,7 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
         act= null;
         return false;
     }}*/
-    //单体治疗GCD
-    private protected override bool HealSingleGCD(out IAction act)
-    {
-        if (Clemency.ShouldUse(out act)) return true;//深仁厚泽
 
-        return false;
-    }
 
     //通常GCD
     private protected override bool GeneralGCD(out IAction act)
@@ -99,14 +93,6 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
         if (IsMoving//移动中
             && ShieldLob.ShouldUse(out act)) return true;//投盾
         if (HolySpirit.ShouldUse(out act)) return true;//圣灵
-
-        return false;
-    }
-    //位移能力技
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
-    {
-
-        if (Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;//调停
 
         return false;
     }

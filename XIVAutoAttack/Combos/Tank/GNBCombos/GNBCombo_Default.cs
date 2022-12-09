@@ -122,12 +122,6 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
-    {
-        //Í»½ø
-        if (RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-        return false;
-    }
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (abilityRemain == 2)

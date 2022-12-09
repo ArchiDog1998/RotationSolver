@@ -57,12 +57,6 @@ internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
-    {
-        if (Thunderclap.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-        return false;
-    }
-
 
     private bool OpoOpoForm(out IAction act)
     {

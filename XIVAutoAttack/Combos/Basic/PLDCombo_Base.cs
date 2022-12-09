@@ -210,5 +210,17 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    {
+        //µ˜Õ£
+        if (Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
 
+    private protected override bool HealSingleGCD(out IAction act)
+    {
+        //…Ó» ∫Ò‘Û
+        if (Clemency.ShouldUse(out act)) return true;
+        return false;
+    }
 }

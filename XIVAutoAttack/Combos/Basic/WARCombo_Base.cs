@@ -185,4 +185,11 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         if (Holmgang.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Holmgang.Target)) return true;
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
+
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    {
+        //Í»½ø
+        if (Onslaught.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
 }

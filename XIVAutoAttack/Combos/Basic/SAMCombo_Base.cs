@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -278,4 +279,9 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
     #endregion
 
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    {
+        if (HissatsuGyoten.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
 }

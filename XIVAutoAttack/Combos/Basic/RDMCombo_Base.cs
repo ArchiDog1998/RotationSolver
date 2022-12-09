@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Data;
@@ -223,4 +224,16 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         ActionCheck = b => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0,
         OtherIDsNot = new[] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
     };
+
+    private protected override bool HealSingleGCD(out IAction act)
+    {
+        if (Vercure.ShouldUse(out act, mustUse: true)) return true;
+        return false;
+    }
+
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    {
+        if (CorpsAcorps.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
 }

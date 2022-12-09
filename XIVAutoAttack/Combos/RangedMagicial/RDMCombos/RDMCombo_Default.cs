@@ -142,17 +142,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool HealSingleGCD(out IAction act)
-    {
-        if (Vercure.ShouldUse(out act, mustUse: true)) return true;
-        return false;
-    }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
-    {
-        if (CorpsAcorps.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-        return false;
-    }
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //»ìÂÒ

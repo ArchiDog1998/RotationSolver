@@ -12,9 +12,9 @@ namespace XIVAutoAttack.Combos.Tank.WARCombos;
 
 internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.0";
 
-    public override string Author => "汐ベMoon";
+    public override string Author => "无";
 
     internal enum CommandType : byte
     {
@@ -53,13 +53,6 @@ internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
     {
         //放个大 蛮荒崩裂 会往前飞
         if (PrimalRend.ShouldUse(out act, mustUse: true)) return true;
-        return false;
-    }
-
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
-    {
-        //突进
-        if (Onslaught.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 

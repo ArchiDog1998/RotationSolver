@@ -216,4 +216,11 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
 
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
+
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    {
+        if (Plunge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+
+        return false;
+    }
 }

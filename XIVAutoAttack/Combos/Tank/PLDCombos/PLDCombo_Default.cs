@@ -80,20 +80,6 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
-    {
-        //µ˜Õ£
-        if (Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-        return false;
-    }
-
-    private protected override bool HealSingleGCD(out IAction act)
-    {
-        //…Ó» ∫Ò‘Û
-        if (Clemency.ShouldUse(out act)) return true;
-        return false;
-    }
-
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         // •π‚ƒª¡±

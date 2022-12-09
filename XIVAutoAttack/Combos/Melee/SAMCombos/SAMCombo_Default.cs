@@ -165,13 +165,6 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         return false;
     }
 
-    private protected override bool MoveGCD(out IAction act)
-    {
-        //E上去
-        if (HissatsuGyoten.ShouldUse(out act)) return true;
-        return false;
-    }
-
     private protected override IAction CountDownAction(float remainTime)
     {
         //开局使用明镜

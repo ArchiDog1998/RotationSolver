@@ -229,5 +229,12 @@ internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
         if (Superbolide.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Superbolide.Target)) return true;
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
+
+    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    {
+        //Í»½ø
+        if (RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
 }
 
