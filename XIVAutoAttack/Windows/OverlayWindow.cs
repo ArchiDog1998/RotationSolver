@@ -52,7 +52,7 @@ namespace XIVAutoAttack.Windows
 
             if(!Service.Configuration.ShowMoveTarget) return;
 
-            var c = Service.Configuration.TeachingModeMovingTargetColor;
+            var c = Service.Configuration.MovingTargetColor;
             var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
 #if DEBUG

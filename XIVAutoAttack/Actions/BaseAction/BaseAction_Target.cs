@@ -279,19 +279,21 @@ namespace XIVAutoAttack.Actions.BaseAction
                 case 1:
                 default:
                     var canReachTars = TargetFilterFuncEot(TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, range), mustUse);
-
                     Target = ChoiceTarget(canReachTars, mustUse);
                     if (Target == null) return false;
                     return true;
+
                 case 10: //环形范围攻击也就这么判断吧，我烦了。
                 case 2: // 圆形范围攻击。找到能覆盖最多的位置，并且选血最多的来。
                     Target = ChoiceTarget(TargetFilter.GetMostObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), range, _action.EffectRange, true, aoeCount), mustUse);
                     if (Target == null) return false;
                     return true;
+
                 case 3: // 扇形范围攻击。找到能覆盖最多的位置，并且选最远的来。
                     Target = ChoiceTarget(TargetFilter.GetMostObjectInArc(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange, true, aoeCount), mustUse);
                     if (Target == null) return false;
                     return true;
+
                 case 4: //直线范围攻击。找到能覆盖最多的位置，并且选最远的来。
                     Target = ChoiceTarget(TargetFilter.GetMostObjectInLine(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), range, true, aoeCount), mustUse);
                     if (Target == null) return false;

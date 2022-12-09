@@ -106,7 +106,8 @@ internal class Strings
     public string Configwindow_Params_PoslockDescription { get; set; } = "LT is for gamepad player";
     public string Configwindow_Params_CheckForCasting { get; set; } = "Enhance castbar with casting status";
     public string Configwindow_Params_TeachingMode { get; set; } = "Teaching mode";
-    public string Configwindow_Params_TeachingModeMovingTargetColor { get; set; } = "Prompt box color of teaching mode and moving target";
+    public string Configwindow_Params_TeachingModeColor { get; set; } = "Prompt box color of teaching mode";
+    public string Configwindow_Params_MovingTargetColor { get; set; } = "Prompt box color of teaching mode";
     public string Configwindow_Params_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string Configwindow_Params_VoiceVolume { get; set; } = "Voice volume";
     public string Configwindow_Params_ShowLocation { get; set; } = "Hint positional anticipation by flytext";

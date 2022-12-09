@@ -103,6 +103,20 @@ internal partial class ComboConfigWindow
                     Service.Configuration.TeachingMode = teachingMode;
                     Service.Configuration.Save();
                 }
+                if (teachingMode)
+                {
+                    ImGui.SameLine();
+                    ImGui.Spacing();
+
+                    var teachingColor = Service.Configuration.TeachingModeColor;
+                    ImGui.SetNextItemWidth(210);
+
+                    if (ImGui.ColorEdit3(LocalizationManager.RightLang.Configwindow_Params_TeachingModeColor, ref teachingColor))
+                    {
+                        Service.Configuration.TeachingModeColor = teachingColor;
+                        Service.Configuration.Save();
+                    }
+                }
 
                 bool showMoveTarget = Service.Configuration.ShowMoveTarget;
                 if (useOverlayWindow && ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_ShowMoveTarget, ref showMoveTarget))
@@ -111,14 +125,17 @@ internal partial class ComboConfigWindow
                     Service.Configuration.Save();
                 }
 
-                if (teachingMode || showMoveTarget)
+                if (showMoveTarget)
                 {
-                    var teachingColor = Service.Configuration.TeachingModeMovingTargetColor;
+                    ImGui.SameLine();
+                    ImGui.Spacing();
+
+                    var moveTargetColor = Service.Configuration.MovingTargetColor;
                     ImGui.SetNextItemWidth(210);
 
-                    if (ImGui.ColorEdit3(LocalizationManager.RightLang.Configwindow_Params_TeachingModeMovingTargetColor, ref teachingColor))
+                    if (ImGui.ColorEdit3(LocalizationManager.RightLang.Configwindow_Params_MovingTargetColor, ref moveTargetColor))
                     {
-                        Service.Configuration.TeachingModeMovingTargetColor = teachingColor;
+                        Service.Configuration.MovingTargetColor = moveTargetColor;
                         Service.Configuration.Save();
                     }
                 }
