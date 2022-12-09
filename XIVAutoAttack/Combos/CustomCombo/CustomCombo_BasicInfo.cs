@@ -19,7 +19,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         public ClassJob Job => Service.DataManager.GetExcelSheet<ClassJob>().GetRow((uint)JobIDs[0]);
 
-        public string Name => Job.Name;
+        public string Name => Job.Abbreviation + " - " +  Job.Name;
 
         /// <summary>
         /// 作者

@@ -59,7 +59,7 @@ public class PluginConfiguration : IPluginConfiguration
     public Vector3 TeachingModeColor { get; set; } = new(0f, 1f, 0.8f);
     public Vector3 MovingTargetColor { get; set; } = new(0f, 1f, 0.8f);
     public Vector3 TargetColor { get; set; } = new(1f, 0.2f, 0f);
-    public Vector3 SubTargetColor { get; set; } = new(1f, 1f, 0f);
+    public Vector3 SubTargetColor { get; set; } = new(1f, 0.9f, 0f);
     public bool KeyBoardNoise { get; set; } = true;
     public bool UseAreaAbilityFriendly { get; set; } = true;
     public bool AutoStartCountdown { get; set; } = true;

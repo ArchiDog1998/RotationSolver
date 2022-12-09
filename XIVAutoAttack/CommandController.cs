@@ -241,9 +241,13 @@ namespace XIVAutoAttack
         internal static void ResetSpecial(bool sayout)
         {
             _specialStateStartTime = DateTime.MinValue;
+
+            if (sayout && Service.Configuration.AutoSayingOut &&
+                (HealArea || HealSingle || DefenseArea || DefenseSingle || EsunaOrShield || RaiseOrShirk || Break
+                || AntiRepulsion || Move)) Watcher.Speak("End Special");
+
             HealArea = HealSingle = DefenseArea = DefenseSingle = EsunaOrShield = RaiseOrShirk = Break
                 = AntiRepulsion = Move = false;
-            if (sayout && Service.Configuration.AutoSayingOut) Watcher.Speak("End Special");
             _specialString = string.Empty;
         }
 
