@@ -105,8 +105,7 @@ internal partial class ComboConfigWindow
                 }
                 if (teachingMode)
                 {
-                    ImGui.SameLine();
-                    ImGui.Spacing();
+                    Spacing();
 
                     var teachingColor = Service.Configuration.TeachingModeColor;
                     ImGui.SetNextItemWidth(210);
@@ -127,8 +126,7 @@ internal partial class ComboConfigWindow
 
                 if (showMoveTarget)
                 {
-                    ImGui.SameLine();
-                    ImGui.Spacing();
+                    Spacing();
 
                     var moveTargetColor = Service.Configuration.MovingTargetColor;
                     ImGui.SetNextItemWidth(210);
@@ -148,7 +146,7 @@ internal partial class ComboConfigWindow
                 }
                 if (showTarget)
                 {
-                    ImGui.Spacing();
+                    Spacing();
                     var targetColor = Service.Configuration.TargetColor;
                     ImGui.SetNextItemWidth(210);
 
@@ -158,7 +156,7 @@ internal partial class ComboConfigWindow
                         Service.Configuration.Save();
                     }
 
-                    ImGui.Spacing();
+                    Spacing();
                     var subTargetColor = Service.Configuration.SubTargetColor;
                     ImGui.SetNextItemWidth(210);
 
