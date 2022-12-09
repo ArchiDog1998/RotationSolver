@@ -421,11 +421,13 @@ namespace XIVAutoAttack.Helpers
             {
                 byte count = 0;
 
-                Vector3 dir = t.Position - Service.ClientState.LocalPlayer.Position;
+                var pPos = Service.ClientState.LocalPlayer.Position;
+
+                Vector3 dir = t.Position - pPos;
 
                 foreach (T obj in objects)
                 {
-                    Vector3 tdir = obj.Position - Service.ClientState.LocalPlayer.Position;
+                    Vector3 tdir = obj.Position - pPos;
 
                     double cos = Vector3.Dot(dir, tdir) / (dir.Length() * tdir.Length());
                     if (cos >= 0.5)
