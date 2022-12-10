@@ -57,7 +57,7 @@ namespace XIVAutoAttack.Windows
 
             if (ActionUpdater.NextAction is not BaseAction act) return;
 
-            if (act.Target == null ) return;
+            if (act.Target == null) return;
 
             if(act.Target != Service.ClientState.LocalPlayer)
             {
