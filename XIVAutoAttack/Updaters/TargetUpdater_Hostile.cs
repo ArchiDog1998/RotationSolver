@@ -54,6 +54,10 @@ namespace XIVAutoAttack.Updaters
                         if (Service.DataManager.GetExcelSheet<Status>()
                         .GetRow(status.StatusId).Icon == 15024) return false;
                     }
+
+                    //不在fate中，不打fate怪。
+                    if (FateManager.Instance()->FateJoined == 0 
+                        && ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)c.Address)->FateId > 0) return false;
                     if (obj.CanAttack()) return true;
                 }
                 return false;

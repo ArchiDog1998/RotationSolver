@@ -25,7 +25,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool AutoBreak { get; set; } = true;
     public bool UseAbility { get; set; } = true;
-    public bool UseDefenceAbility { get; set; } = false;
+    public bool UseDefenceAbility { get; set; } = true;
     public bool NeverReplaceIcon { get; set; } = false;
     public bool AutoProvokeForTank { get; set; } = true;
     public bool AutoUseTrueNorth { get; set; } = true;
