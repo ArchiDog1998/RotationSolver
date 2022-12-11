@@ -15,7 +15,7 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
 {
     public override string GameVersion => "6.18";
 
-    public override string Author => "汐ベMoon";
+    public override string Author => "汐ベMoon_dev";
 
     internal enum CommandType : byte
     {
