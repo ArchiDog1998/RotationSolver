@@ -2970,6 +2970,11 @@ namespace XIVAutoAttack.Data
         EnergySiphon = 16510,
 
         /// <summary>
+        /// 灵泉之炎
+        /// </summary>
+        FountainofFire = 16514,
+
+        /// <summary>
         /// 溃烂爆发
         /// </summary>
         Fester = 181,
@@ -2985,6 +2990,11 @@ namespace XIVAutoAttack.Data
         RuinIV = 7426,
 
         /// <summary>
+        /// 星级脉冲
+        /// </summary>
+        AstralImpulse = 25820,
+
+        /// <summary>
         /// 星极超流
         /// </summary>
         AstralFlow = 25822,
@@ -2993,6 +3003,11 @@ namespace XIVAutoAttack.Data
         /// 龙神迸发
         /// </summary>
         EnkindleBahamut = 7429,
+
+        /// <summary>
+        /// 龙神附体
+        /// </summary>
+        DreadwyrmTrance = 3581,
 
         /// <summary>
         /// 死星核爆

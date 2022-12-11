@@ -1,8 +1,9 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
+using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using static XIVAutoAttack.Combos.RangedMagicial.SMNCombos.SMNCombo_Default;
 
@@ -10,19 +11,32 @@ namespace XIVAutoAttack.Combos.RangedMagicial.SMNCombos;
 
 internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.0";
+    public override string GameVersion => "6.18";
 
-    public override string Author => "ÎŞ";
+    public override string Author => "é€†å…‰";
 
     internal enum CommandType : byte
     {
         None,
     }
 
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
+    private protected override ActionConfiguration CreateConfiguration()
     {
-        //{CommandType.None, "" }, //Ğ´ºÃ×¢ÊÍ°¡£¡ÓÃÀ´ÌáÊ¾ÓÃ»§µÄ¡£
-    };
+        return base.CreateConfiguration()
+            .SetBool("addSwiftcast", false, "å°†å³åˆ»å’å”±åŠ å…¥å¾ªç¯ï¼Œé»˜è®¤ç»™èºæ—‹æ°”æµï¼Œæœªå­¦ä¹ æ—¶ç»™ç«ç¥è¯»æ¡")
+            .SetCombo("SummonOrder", 0, "ä¸‰ç¥å¬å”¤é¡ºåº", "åœŸç¥ä¼˜å…ˆï¼šåœŸ-é£-ç«", "é£ç¥ä¼˜å…ˆï¼šé£-åœŸ-ç«")
+            .SetFloat("CrimsonCycloneRange", 2, "å¤šè¿œè·ç¦»å†…å¯ä»¥ä½¿ç”¨ç«ç¥çªè¿›", min: 0, max: 25, speed: 1);
+    }
+
+    public SMNCombo_Default()
+    {
+        //å¿…é¡»ç©ºè±†å­
+        EnergySiphon.ComboCheck = b => !HasAetherflowStacks;
+        EnergyDrain.ComboCheck = b => !HasAetherflowStacks;
+        RuinIV.ComboCheck = b => !Player.HasStatus(true, StatusID.Swiftcast);
+
+    }
+    
     protected override bool CanHealSingleSpell => false;
 
     public override SortedList<DescType, string> DescriptionDict => new()
@@ -33,143 +47,132 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 
     private protected override bool MoveGCD(out IAction act)
     {
+        //ç«ç¥çªè¿›
         if (CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
         return base.MoveGCD(out act);
     }
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        //±¦Ê¯ÊŞÕÙ»½
+        //å®çŸ³å…½å¬å”¤
         if (SummonCarbuncle.ShouldUse(out act)) return true;
 
-        //´óÕĞ
-        if (!InBahamut && !InPhoenix)
-        {
-            if (RuinIV.ShouldUse(out act, mustUse: true)) return true;
-            if (CrimsonStrike.ShouldUse(out act, mustUse: true)) return true;
-            if (CrimsonCyclone.ShouldUse(out act, mustUse: true))
-            {
-                if (CrimsonCyclone.Target.DistanceToPlayer() < 2)
-                {
-                    return true;
-                }
-            }
-            if (Slipstream.ShouldUse(out act, mustUse: true)) return true;
-        }
-
-
-        //ÕÙ»½
-        if (Attunement == 0)
-        {
-            if (SummonBahamut.ShouldUse(out act))
-            {
-                if (SearingLight.IsCoolDown || !SearingLight.EnoughLevel)
-                    return true;
-            }
-            else if (Aethercharge.ShouldUse(out act)) return true;
-
-            if (AllReady ? SummonTimeEndAfterGCD() : true)
-            {
-                switch (Config.GetComboByName("SummonOrder"))
-                {
-                    default:
-                        //ºì »ğ
-                        if (SummonRuby.ShouldUse(out act)) return true;
-                        //»Æ ÍÁ
-                        if (SummonTopaz.ShouldUse(out act)) return true;
-                        //ÂÌ ·ç
-                        if (SummonEmerald.ShouldUse(out act)) return true;
-                        break;
-                    case 1:
-                        //ºì »ğ
-                        if (SummonRuby.ShouldUse(out act)) return true;
-                        //ÂÌ ·ç
-                        if (SummonEmerald.ShouldUse(out act)) return true;
-                        //»Æ ÍÁ
-                        if (SummonTopaz.ShouldUse(out act)) return true;
-                        break;
-                    case 2:
-                        //»Æ ÍÁ
-                        if (SummonTopaz.ShouldUse(out act)) return true;
-                        //ÂÌ ·ç
-                        if (SummonEmerald.ShouldUse(out act)) return true;
-                        //ºì »ğ
-                        if (SummonRuby.ShouldUse(out act)) return true;
-                        break;
-                    case 3:
-                        //»Æ ÍÁ
-                        if (SummonTopaz.ShouldUse(out act)) return true;
-                        //ºì »ğ
-                        if (SummonRuby.ShouldUse(out act)) return true;
-                        //ÂÌ ·ç
-                        if (SummonEmerald.ShouldUse(out act)) return true;
-                        break;
-                    case 4:
-                        //ÂÌ ·ç
-                        if (SummonEmerald.ShouldUse(out act)) return true;
-                        //ºì »ğ
-                        if (SummonRuby.ShouldUse(out act)) return true;
-                        //»Æ ÍÁ
-                        if (SummonTopaz.ShouldUse(out act)) return true;
-                        break;
-                    case 5:
-                        //ÂÌ ·ç
-                        if (SummonEmerald.ShouldUse(out act)) return true;
-                        //»Æ ÍÁ
-                        if (SummonTopaz.ShouldUse(out act)) return true;
-                        //ºì »ğ
-                        if (SummonRuby.ShouldUse(out act)) return true;
-                        break;
-                }
-            }
-        }
+        //é£ç¥è¯»æ¡
+        if (Slipstream.ShouldUse(out act, mustUse: true)) return true;
+        //ç«ç¥å†²é”‹
+        if (CrimsonStrike.ShouldUse(out act, mustUse: true)) return true;
+        float CrimsonCycloneRange = Config.GetFloatByName("CrimsonCycloneRange");
+        if (CrimsonCyclone.Target.DistanceToPlayer() < CrimsonCycloneRange && CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
 
         //AOE
         if (PreciousBrilliance.ShouldUse(out act)) return true;
+        //å•ä½“
+        if (Gemshine.ShouldUse(out act)) return true;
+
+        //å¬å”¤è›®ç¥
+        if (SummonTimerRemaining == 0 && Aethercharge.IsCoolDown && Attunement == 0)
+        {
+            switch (Config.GetComboByName("SummonOrder"))
+            {
+                default:
+                    //åœŸ
+                    if (SummonTopaz.ShouldUse(out act)) return true;
+                    //é£
+                    if (SummonEmerald.ShouldUse(out act)) return true;
+                    //ç«
+                    if (SummonRuby.ShouldUse(out act)) return true;
+                    break;
+
+                case 1:
+                    //é£
+                    if (SummonEmerald.ShouldUse(out act)) return true;
+                    //åœŸ
+                    if (SummonTopaz.ShouldUse(out act)) return true;
+                    //ç«
+                    if (SummonRuby.ShouldUse(out act)) return true;
+                    break;
+            }
+        }
+
+        //é¾™ç¥ä¸æ­»é¸Ÿ
+        if (SummonBahamut.ShouldUse(out act)) return true;
+        if (!SummonBahamut.EnoughLevel && HaveHostilesInRange && Aethercharge.ShouldUse(out act)) return true;
+
+        //è¿¸è£‚ä¸‰ç¾
         if (Outburst.ShouldUse(out act)) return true;
 
-        //µ¥Ìå
-        if (Gemshine.ShouldUse(out act)) return true;
+        //æ¯4
+        if ((IsMoving && ((Player.HasStatus(true, StatusID.GarudasFavor) && !InGaruda) || (InIfrit && !IsLastGCD(true, CrimsonCyclone)))) || 
+            (SummonTimerRemaining == 0 && AttunmentTimerRemaining == 0))
+        {
+            if (RuinIV.ShouldUse(out act, mustUse: true)) return true;
+        }
+        //æ¯123
         if (Ruin.ShouldUse(out act)) return true;
         return false;
     }
-    private protected override ActionConfiguration CreateConfiguration()
-    {
-        return base.CreateConfiguration().SetCombo("SummonOrder", 0, "ÈıÉñÕÙ»½Ë³Ğò",
-            "ºì-»Æ-ÂÌ", "ºì-ÂÌ-»Æ", "»Æ-ÂÌ-ºì", "»Æ-ºì-ÂÌ", "ÂÌ-ºì-»Æ", "ÂÌ-»Æ-ºì");
-    }
+
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
         if (SettingBreak)
         {
-            //×ÆÈÈÖ®¹â
-            if (SearingLight.ShouldUse(out act, mustUse: true)) return true;
+            //ç¼çƒ­ä¹‹å…‰
+            if (InBahamut && SearingLight.ShouldUse(out act)) return true;
         }
 
-        if (EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
-        if (Deathflare.ShouldUse(out act, mustUse: true)) return true;
-        if (Rekindle.ShouldUse(out act, mustUse: true)) return true;
-        if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
-
-
-        //ÄÜÁ¿ÎüÊÕ
-        if (HasAetherflowStacks && InBreak)
+        if((InBahamut && SummonTimeEndAfter(7)) || InPhoenix)
         {
+            //é¾™ç¥ä¸æ­»é¸Ÿè¿¸å‘
+            if (EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
+            //æ­»æ˜Ÿæ ¸çˆ†
+            if (Deathflare.ShouldUse(out act, mustUse: true)) return true;
+            //è‹ç”Ÿä¹‹ç‚
+            if (Rekindle.ShouldUse(out act, mustUse: true)) return true;
+        }
+        //å±±å´©
+        if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
+        
+        if((Player.HasStatus(true,StatusID.SearingLight) && ((InBahamut && SummonTimeEndAfter(7)) || !InBahamut)) || !SearingLight.EnoughLevel)
+        {
+            //ç—›è‹¦æ ¸çˆ†
             if (Painflare.ShouldUse(out act)) return true;
+            //æºƒçƒ‚çˆ†å‘
             if (Fester.ShouldUse(out act)) return true;
         }
-        else
+
+        if(SummonBahamut.EnoughLevel && (InBahamut || InPhoenix) || !SummonBahamut.EnoughLevel)
         {
+            //èƒ½é‡æŠ½å–
             if (EnergySiphon.ShouldUse(out act)) return true;
+            //èƒ½é‡å¸æ”¶
             if (EnergyDrain.ShouldUse(out act)) return true;
         }
 
         return false;
     }
+    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    {
+        //å³åˆ»è¿›å¾ªç¯
+        if (Config.GetBoolByName("addSwiftcast"))
+        {
+            if ((InGaruda && Player.HasStatus(true, StatusID.GarudasFavor) && nextGCD.IsAnySameAction(true, Slipstream)) || (InIfrit && nextGCD.IsAnySameAction(true, Gemshine) && !Slipstream.EnoughLevel))
+            {
+                if (Swiftcast.ShouldUse(out act, mustUse: true)) return true;
+            }
+        }
+        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+    }
+
+    private protected override IAction CountDownAction(float remainTime)
+    {
+        //1.5sé¢„è¯»æ¯3
+        if (remainTime <= 1.5f && Ruin.ShouldUse(out _)) return Ruin;
+        return base.CountDownAction(remainTime);
+    }
 
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        //ÊØ»¤Ö®¹â
+        //å®ˆæŠ¤ä¹‹å…‰
         if (RadiantAegis.ShouldUse(out act)) return true;
 
         return false;
@@ -177,7 +180,7 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 
     private protected override bool HealSingleGCD(out IAction act)
     {
-        //Ò½Êõ
+        //åŒ»æœ¯
         if (Physick.ShouldUse(out act)) return true;
 
         return false;
@@ -185,7 +188,10 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        //»ìÂÒ
+        //å®ˆæŠ¤ä¹‹å…‰
+        if (RadiantAegis.ShouldUse(out act)) return true;
+
+        //æ··ä¹±
         if (Addle.ShouldUse(out act)) return true;
         return false;
     }
