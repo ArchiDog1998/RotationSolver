@@ -27,7 +27,9 @@ namespace XIVAutoAttack.Updaters
 
         internal static float AbilityRemain { get; private set; } = 0;
 
-        internal unsafe static IAction NextAction { get; private set; }
+        internal static uint[] BluSlots { get; private set; } = new uint[24];
+
+        internal static IAction NextAction { get; private set; }
 
 #if DEBUG
         internal static Exception exception;
@@ -63,10 +65,14 @@ namespace XIVAutoAttack.Updaters
             NextAction = null;
         }
 
-        internal static void UpdateActionInfo()
+        internal unsafe static void UpdateActionInfo()
         {
             InCombat = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
 
+            for (int i = 0; i < BluSlots.Length; i++)
+            {
+                BluSlots[i] = ActionManager.Instance()->GetActiveBlueMageActionInSlot(i);
+            }
             UpdateWeaponTime();
             UPdateMPTimer();
         }

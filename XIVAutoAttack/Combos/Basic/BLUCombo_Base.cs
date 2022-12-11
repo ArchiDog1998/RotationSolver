@@ -45,17 +45,7 @@ namespace XIVAutoAttack.Combos.Basic
         {
             private BLUActionType Type;
 
-            public unsafe bool OnSlot
-            {
-                get
-                {
-                    for (int i = 0; i < 24; i++)
-                    {
-                        if (AdjustedID == Service.IconReplacer.OriginalHook(ActionManager.Instance()->GetActiveBlueMageActionInSlot(i))) return true;
-                    }
-                    return false;
-                }
-            }
+            public unsafe bool OnSlot => ActionUpdater.BluSlots.Any(i => AdjustedID == Service.IconReplacer.OriginalHook(i));
 
             internal BLUAction(ActionID actionID, BLUActionType type, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false, bool isTimeline = false)
                 : base(actionID, isFriendly, shouldEndSpecial, isEot, isTimeline)

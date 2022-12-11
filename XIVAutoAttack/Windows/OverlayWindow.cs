@@ -64,7 +64,6 @@ namespace XIVAutoAttack.Windows
                 var c = Service.Configuration.TargetColor;
                 var Tcolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
                 DrawTarget(act.Target, Tcolor, 8, out _);
-
             }
 
             if (TargetUpdater.HostileTargets.Contains(act.Target))
