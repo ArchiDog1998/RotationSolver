@@ -684,6 +684,11 @@
         FurtherRuin = 2701,
 
         /// <summary>
+        /// 灼热之光
+        /// </summary>
+        SearingLight = 2703,
+
+        /// <summary>
         /// 深红旋风预备
         /// </summary>
         IfritsFavor = 2724,
