@@ -1,4 +1,4 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
+ï»¿using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
@@ -12,22 +12,17 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     private static SMNGauge JobGauge => Service.JobGauges.Get<SMNGauge>();
 
     /// <summary>
-    /// ÓĞÃ»ÓĞÄÜÁ¿ÎüÊÕ£¿ÄÇÊÇÉ¶£¿
+    /// æœ‰ä»¥å¤ªè¶…æµ
     /// </summary>
     protected static bool HasAetherflowStacks => JobGauge.HasAetherflowStacks;
 
     /// <summary>
-    /// ÄÇÉ¶²ãÊı°¡
+    /// å±æ€§ä»¥å¤ª
     /// </summary>
     protected static byte Attunement => JobGauge.Attunement;
 
     /// <summary>
-    /// ËùÓĞ¶¼¿ÉÒÔÕÙ»½£¿
-    /// </summary>
-    protected static bool AllReady => JobGauge.IsIfritReady && JobGauge.IsGarudaReady && JobGauge.IsTitanReady;
-
-    /// <summary>
-    /// ÕÙ»½¶à¾Ã»áÏûÊ§°¡
+    /// è›®ç¥å¤šä¹…åä¼šæ¶ˆå¤±
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
@@ -37,148 +32,250 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     }
 
     /// <summary>
-    /// ÕÙ»½¶à¾Ã»áÏûÊ§°¡
+    /// è›®ç¥å‰©ä½™æ—¶é—´
     /// </summary>
-    /// <param name="abilityCount"></param>
-    /// <param name="gctCount"></param>
-    /// <returns></returns>
-    protected static bool SummonTimeEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
-    {
-        return EndAfterGCD(JobGauge.SummonTimerRemaining / 1000f, gctCount, abilityCount);
-    }
+    protected static ushort SummonTimerRemaining => JobGauge.SummonTimerRemaining;
+
+    /// <summary>
+    /// å±æ€§å‰©ä½™æ—¶é—´
+    /// </summary>
+    protected static ushort AttunmentTimerRemaining => JobGauge.AttunmentTimerRemaining;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Summoner, ClassJobID.Arcanist };
     protected override bool CanHealSingleSpell => false;
     private sealed protected override BaseAction Raise => Resurrection;
 
-    protected static bool InBahamut => Service.IconReplacer.OriginalHook(ActionID.AstralFlow) == ActionID.Deathflare;
-    protected static bool InPhoenix => Service.IconReplacer.OriginalHook(ActionID.AstralFlow) == ActionID.Rekindle;
-    protected static bool InBreak => InBahamut || InPhoenix || !SummonBahamut.EnoughLevel;
+    /// <summary>
+    /// å®çŸ³å…½å¤„äºåŒè¡ŒçŠ¶æ€
+    /// </summary>
+    protected static bool HaveSummon => TargetUpdater.HavePet && JobGauge.SummonTimerRemaining == 0;
 
-    //±¦Ê¯Ò«
+    /// <summary>
+    /// é¾™ç¥é™„ä½“çŠ¶æ€
+    /// </summary>
+    protected static bool InBahamut => Service.IconReplacer.OriginalHook(ActionID.AstralFlow) == ActionID.Deathflare;
+
+    /// <summary>
+    /// ä¸æ­»é¸Ÿé™„ä½“çŠ¶æ€
+    /// </summary>
+    protected static bool InPhoenix => Service.IconReplacer.OriginalHook(ActionID.AstralFlow) == ActionID.Rekindle;
+
+    /// <summary>
+    /// ç«ç¥é˜¶æ®µ
+    /// </summary>
+    protected static bool InIfrit => JobGauge.IsIfritAttuned;
+
+    /// <summary>
+    /// åœŸç¥é˜¶æ®µ
+    /// </summary>
+    protected static bool InTitan => JobGauge.IsTitanAttuned;
+
+    /// <summary>
+    /// é£ç¥é˜¶æ®µ
+    /// </summary>
+    protected static bool InGaruda => JobGauge.IsGarudaAttuned;
+
+    #region å¬å”¤å…½
+    /// <summary>
+    /// çº¢å®çŸ³å¬å”¤ ç«ç¥å¬å”¤
+    /// </summary>
+    public static BaseAction SummonRuby { get; } = new(ActionID.SummonRuby)
+    {
+        BuffsProvide = new[] { StatusID.IfritsFavor },
+        ActionCheck = b => HaveSummon && JobGauge.IsIfritReady
+    };
+
+    /// <summary>
+    /// é»„å®çŸ³å¬å”¤ åœŸç¥å¬å”¤
+    /// </summary>
+    public static BaseAction SummonTopaz { get; } = new(ActionID.SummonTopaz)
+    {
+        ActionCheck = b => HaveSummon && JobGauge.IsTitanReady,
+    };
+
+    /// <summary>
+    /// ç»¿å®çŸ³å¬å”¤ é£ç¥å¬å”¤
+    /// </summary>
+    public static BaseAction SummonEmerald { get; } = new(ActionID.SummonEmerald)
+    {
+        BuffsProvide = new[] { StatusID.GarudasFavor },
+        ActionCheck = b => HaveSummon && JobGauge.IsGarudaReady,
+    };
+
+    /// <summary>
+    /// å®çŸ³å…½å¬å”¤
+    /// </summary>
+    public static BaseAction SummonCarbuncle { get; } = new(ActionID.SummonCarbuncle)
+    {
+        ActionCheck = b => !TargetUpdater.HavePet,
+    };
+    #endregion
+    #region å¬å”¤å…½èƒ½åŠ›
+    /// <summary>
+    /// å®çŸ³è€€ å•ä½“
+    /// </summary>
     public static BaseAction Gemshine { get; } = new(ActionID.Gemshine)
     {
         ActionCheck = b => JobGauge.Attunement > 0,
     };
 
-    //±¦Ê¯»Ô
+    /// <summary>
+    /// å®çŸ³è¾‰ AoE
+    /// </summary>
     public static BaseAction PreciousBrilliance { get; } = new(ActionID.PreciousBrilliance)
     {
         ActionCheck = b => JobGauge.Attunement > 0,
     };
 
-    //»ÙÃğ µ¥Ìå¹¥»÷
-    public static BaseAction Ruin { get; } = new(ActionID.RuinSMN);
-
-    //±ÅÁÑ ·¶Î§ÉËº¦
-    public static BaseAction Outburst { get; } = new(ActionID.Outburst);
-
-    //±¦Ê¯ÊŞÕÙ»½
-    public static BaseAction SummonCarbuncle { get; } = new(ActionID.SummonCarbuncle)
-    {
-        ActionCheck = b => !TargetUpdater.HavePet,
-    };
-
-    //×ÆÈÈÖ®¹â ÍÅ¸¨
-    public static BaseAction SearingLight { get; } = new(ActionID.SearingLight, true)
-    {
-        ActionCheck = b => InCombat,
-    };
-
-    //ÊØ»¤Ö®¹â ¸ø×Ô¼º´÷Ì×
-    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis, true, isTimeline: true)
-    {
-        ActionCheck = b => !InBahamut && !InPhoenix && SummonTimeEndAfter(25),
-    };
-
-    //Ò½Êõ
-    public static BaseAction Physick { get; } = new(ActionID.Physick, true);
-
-    //ÒÔÌ«ĞîÄÜ 
+    /// <summary>
+    /// ä»¥å¤ªè“„èƒ½  é¾™ç¥é™„ä½“ 
+    /// </summary>
     public static BaseAction Aethercharge { get; } = new(ActionID.Aethercharge)
     {
-        ActionCheck = b => InCombat,
+        ActionCheck = b => InCombat && HaveSummon
     };
 
-    //ÁúÉñÕÙ»½
-    public static BaseAction SummonBahamut { get; } = new(ActionID.SummonBahamut);
-
-    //ºì±¦Ê¯ÕÙ»½
-    public static BaseAction SummonRuby { get; } = new(ActionID.SummonRuby)
+    /// <summary>
+    /// é¾™ç¥å¬å”¤ ä¸æ­»é¸Ÿå¬å”¤
+    /// </summary>
+    public static BaseAction SummonBahamut { get; } = new(ActionID.SummonBahamut)
     {
-        ActionCheck = b => JobGauge.IsIfritReady && !IsMoving,
+        ActionCheck = b => InCombat && HaveSummon
     };
-
-    //»Æ±¦Ê¯ÕÙ»½
-    public static BaseAction SummonTopaz { get; } = new(ActionID.SummonTopaz)
-    {
-        ActionCheck = b => JobGauge.IsTitanReady,
-    };
-
-    //ÂÌ±¦Ê¯ÕÙ»½
-    public static BaseAction SummonEmerald { get; } = new(ActionID.SummonEmerald)
-    {
-        ActionCheck = b => JobGauge.IsGarudaReady,
-    };
-
-
-    //¸´Éú
-    public static BaseAction Resurrection { get; } = new(ActionID.ResurrectionSMN, true);
-
-    //ÄÜÁ¿ÎüÊÕ
-    public static BaseAction EnergyDrain { get; } = new(ActionID.EnergyDrainSMN);
-
-    //ÄÜÁ¿³éÈ¡
-    public static BaseAction EnergySiphon { get; } = new(ActionID.EnergySiphon);
-
-    //À£ÀÃ±¬·¢
-    public static BaseAction Fester { get; } = new(ActionID.Fester);
-
-    //Í´¿àºË±¬
-    public static BaseAction Painflare { get; } = new(ActionID.Painflare);
-
-    //»Ù¾ø
-    public static BaseAction RuinIV { get; } = new(ActionID.RuinIV)
-    {
-        BuffsNeed = new[] { StatusID.FurtherRuin },
-    };
-
-    //ÁúÉñ±Å·¢
+    /// <summary>
+    /// é¾™ç¥è¿¸å‘ ä¸æ­»é¸Ÿè¿¸å‘
+    /// </summary>
     public static BaseAction EnkindleBahamut { get; } = new(ActionID.EnkindleBahamut)
     {
         ActionCheck = b => InBahamut || InPhoenix,
     };
 
-    //ËÀĞÇºË±¬
+    #endregion
+    #region å¬å”¤å…½æ˜Ÿæè¶…æµ
+    /// <summary>
+    /// æ­»æ˜Ÿæ ¸çˆ†
+    /// </summary>
     public static BaseAction Deathflare { get; } = new(ActionID.Deathflare)
     {
         ActionCheck = b => InBahamut,
     };
 
-    //ËÕÉúÖ®Ñ×
+    /// <summary>
+    /// è‹ç”Ÿä¹‹ç‚
+    /// </summary>
     public static BaseAction Rekindle { get; } = new(ActionID.Rekindle, true)
     {
         ActionCheck = b => InPhoenix,
     };
 
-    //ÉîºìĞı·ç
+    /// <summary>
+    /// æ·±çº¢æ—‹é£
+    /// </summary>
     public static BaseAction CrimsonCyclone { get; } = new(ActionID.CrimsonCyclone)
     {
         BuffsNeed = new[] { StatusID.IfritsFavor },
     };
 
-    //ÉîºìÇ¿Ï®
+    /// <summary>
+    /// æ·±çº¢å¼ºè¢­
+    /// </summary>
     public static BaseAction CrimsonStrike { get; } = new(ActionID.CrimsonStrike);
 
-    //É½±À
+    /// <summary>
+    /// å±±å´©
+    /// </summary>
     public static BaseAction MountainBuster { get; } = new(ActionID.MountainBuster)
     {
         BuffsNeed = new[] { StatusID.TitansFavor },
     };
 
-    //ÂİĞıÆøÁ÷
+    /// <summary>
+    /// èºæ—‹æ°”æµ
+    /// </summary>
     public static BaseAction Slipstream { get; } = new(ActionID.Slipstream)
     {
         BuffsNeed = new[] { StatusID.GarudasFavor },
     };
+
+    #endregion
+    #region åŸºç¡€æŠ€èƒ½
+    /// <summary>
+    /// æ¯ç­ æ¯å æ¯è¡
+    /// </summary>
+    public static BaseAction Ruin { get; } = new(ActionID.RuinSMN);
+
+    /// <summary>
+    /// æ¯ç»
+    /// </summary>
+    public static BaseAction RuinIV { get; } = new(ActionID.RuinIV)
+    {
+        BuffsNeed = new[] { StatusID.FurtherRuin },
+    };
+
+    /// <summary>
+    /// è¿¸è£‚ ä¸‰é‡ç¾ç¥¸
+    /// </summary>
+    public static BaseAction Outburst { get; } = new(ActionID.Outburst);
+
+    #endregion
+    #region èƒ½åŠ›æŠ€
+    /// <summary>
+    /// ç¼çƒ­ä¹‹å…‰ å›¢è¾…
+    /// </summary>
+    public static BaseAction SearingLight { get; } = new(ActionID.SearingLight, true)
+    {
+        BuffsProvide = new[] {StatusID.SearingLight},
+        ActionCheck = b => InCombat,
+    };
+
+    /// <summary>
+    /// å®ˆæŠ¤ä¹‹å…‰
+    /// </summary>
+    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis, true, isTimeline: true)
+    {
+        ActionCheck = b => HaveSummon
+    };
+
+    /// <summary>
+    /// èƒ½é‡å¸æ”¶
+    /// </summary>
+    public static BaseAction EnergyDrain { get; } = new(ActionID.EnergyDrainSMN)
+    {
+        BuffsProvide = new[] { StatusID.FurtherRuin }
+    };
+
+    /// <summary>
+    /// æºƒçƒ‚çˆ†å‘
+    /// </summary>
+    public static BaseAction Fester { get; } = new(ActionID.Fester)
+    {
+        ActionCheck = b => JobGauge.HasAetherflowStacks
+    };
+
+    /// <summary>
+    /// èƒ½é‡æŠ½å–
+    /// </summary>
+    public static BaseAction EnergySiphon { get; } = new(ActionID.EnergySiphon)
+    {
+        BuffsProvide = new[] { StatusID.FurtherRuin }
+    };
+
+    /// <summary>
+    /// ç—›è‹¦æ ¸çˆ†
+    /// </summary>
+    public static BaseAction Painflare { get; } = new(ActionID.Painflare)
+    {
+        ActionCheck = b => JobGauge.HasAetherflowStacks
+    };
+    #endregion
+
+    /// <summary>
+    /// å¤ç”Ÿ
+    /// </summary>
+    public static BaseAction Resurrection { get; } = new(ActionID.ResurrectionSMN, true);
+
+    /// <summary>
+    /// åŒ»æœ¯
+    /// </summary>
+    public static BaseAction Physick { get; } = new(ActionID.Physick, true);
 }
