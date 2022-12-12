@@ -1,0 +1,18 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/.idea.XIVAutoAttack.iml
+/modules.xml
+/projectSettingsUpdater.xml
+/vcs.xml
+/encodings.xml
+/indexLayout.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+

@@ -1669,6 +1669,11 @@ namespace XIVAutoAttack.Data
         ArmoftheDestroyer = 62,
 
         /// <summary>
+        /// 破坏神脚 aoe
+        /// </summary>
+        ShadowoftheDestroyer = 25767,
+
+        /// <summary>
         /// 双掌打 伤害提高
         /// </summary>
         TwinSnakes = 61,
@@ -1747,6 +1752,11 @@ namespace XIVAutoAttack.Data
         /// 爆裂脚 阳
         /// </summary>
         FlintStrike = 25882,
+        
+        /// <summary>
+        /// 翻天脚 兔
+        /// </summary>
+        CelestialRevolution = 25765,
 
         /// <summary>
         /// 凤凰舞
