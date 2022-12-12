@@ -23,8 +23,8 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("addSwiftcast", false, "将即刻咏唱加入循环，默认给螺旋气流，未学习时给火神读条")
-            .SetCombo("SummonOrder", 0, "三神召唤顺序", "土神优先：土-风-火", "风神优先：风-土-火")
+            .SetCombo("addSwiftcast", 0, "将即刻咏唱加入循环", "关（留着复活乱死的笨比）", "给风神", "给火神")
+            .SetCombo("SummonOrder", 0, "三神召唤顺序", "土神优先1：土-风-火", "土神优先2：土-火-风", "风神优先1：风-土-火")
             .SetFloat("CrimsonCycloneRange", 2, "多远距离内可以使用火神突进", min: 0, max: 25, speed: 1);
     }
 
@@ -69,34 +69,40 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
         //单体
         if (Gemshine.ShouldUse(out act)) return true;
 
-        //召唤蛮神
-        if (SummonTimerRemaining == 0 && Aethercharge.IsCoolDown && Attunement == 0)
-        {
-            switch (Config.GetComboByName("SummonOrder"))
-            {
-                default:
-                    //土
-                    if (SummonTopaz.ShouldUse(out act)) return true;
-                    //风
-                    if (SummonEmerald.ShouldUse(out act)) return true;
-                    //火
-                    if (SummonRuby.ShouldUse(out act)) return true;
-                    break;
-
-                case 1:
-                    //风
-                    if (SummonEmerald.ShouldUse(out act)) return true;
-                    //土
-                    if (SummonTopaz.ShouldUse(out act)) return true;
-                    //火
-                    if (SummonRuby.ShouldUse(out act)) return true;
-                    break;
-            }
-        }
-
         //龙神不死鸟
         if (SummonBahamut.ShouldUse(out act)) return true;
         if (!SummonBahamut.EnoughLevel && HaveHostilesInRange && Aethercharge.ShouldUse(out act)) return true;
+
+        //召唤蛮神
+        switch (Config.GetComboByName("SummonOrder"))
+        {
+            default:
+                //土
+                if (SummonTopaz.ShouldUse(out act)) return true;
+                //风
+                if (SummonEmerald.ShouldUse(out act)) return true;
+                //火
+                if (SummonRuby.ShouldUse(out act)) return true;
+                break;
+
+            case 1:
+                //土
+                if (SummonTopaz.ShouldUse(out act)) return true;
+                //火
+                if (SummonRuby.ShouldUse(out act)) return true;
+                //风
+                if (SummonEmerald.ShouldUse(out act)) return true;
+                break;
+
+            case 2:
+                //风
+                if (SummonEmerald.ShouldUse(out act)) return true;
+                //土
+                if (SummonTopaz.ShouldUse(out act)) return true;
+                //火
+                if (SummonRuby.ShouldUse(out act)) return true;
+                break;
+        }
 
         //迸裂三灾
         if (Outburst.ShouldUse(out act)) return true;
@@ -120,45 +126,46 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
             if (InBahamut && SearingLight.ShouldUse(out act)) return true;
         }
 
-        if((InBahamut && SummonTimeEndAfter(7)) || InPhoenix)
-        {
-            //龙神不死鸟迸发
-            if (EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
-            //死星核爆
-            if (Deathflare.ShouldUse(out act, mustUse: true)) return true;
-            //苏生之炎
-            if (Rekindle.ShouldUse(out act, mustUse: true)) return true;
-        }
+        //龙神不死鸟迸发
+        if (((InBahamut && SummonTimeEndAfter(7)) || InPhoenix) && EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
+        //死星核爆
+        if (SummonTimeEndAfter(7) && Deathflare.ShouldUse(out act, mustUse: true)) return true;
+        //苏生之炎
+        if (Rekindle.ShouldUse(out act, mustUse: true)) return true;
         //山崩
         if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
         
-        if((Player.HasStatus(true,StatusID.SearingLight) && ((InBahamut && SummonTimeEndAfter(7)) || !InBahamut)) || !SearingLight.EnoughLevel)
-        {
-            //痛苦核爆
-            if (Painflare.ShouldUse(out act)) return true;
-            //溃烂爆发
-            if (Fester.ShouldUse(out act)) return true;
-        }
+        //痛苦核爆
+        if (((Player.HasStatus(true, StatusID.SearingLight) && ((InBahamut && SummonTimeEndAfter(7)) || !InBahamut)) || !SearingLight.EnoughLevel) && Painflare.ShouldUse(out act)) return true;
+        //溃烂爆发
+        if (((Player.HasStatus(true, StatusID.SearingLight) && ((InBahamut && SummonTimeEndAfter(7)) || !InBahamut)) || !SearingLight.EnoughLevel) && Fester.ShouldUse(out act)) return true;
 
-        if(SummonBahamut.EnoughLevel && (InBahamut || InPhoenix) || !SummonBahamut.EnoughLevel)
-        {
-            //能量抽取
-            if (EnergySiphon.ShouldUse(out act)) return true;
-            //能量吸收
-            if (EnergyDrain.ShouldUse(out act)) return true;
-        }
+        //能量抽取
+        if (EnergySiphon.ShouldUse(out act)) return true;
+        //能量吸收
+        if (EnergyDrain.ShouldUse(out act)) return true;
 
         return false;
     }
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //即刻进循环
-        if (Config.GetBoolByName("addSwiftcast"))
+        switch (Config.GetComboByName("addSwiftcast"))
         {
-            if ((InGaruda && Player.HasStatus(true, StatusID.GarudasFavor) && nextGCD.IsAnySameAction(true, Slipstream)) || (InIfrit && nextGCD.IsAnySameAction(true, Gemshine) && !Slipstream.EnoughLevel))
-            {
-                if (Swiftcast.ShouldUse(out act, mustUse: true)) return true;
-            }
+            default:
+                break;
+            case 1:
+                if (InGaruda && Player.HasStatus(true, StatusID.GarudasFavor) && nextGCD.IsAnySameAction(true, Slipstream))
+                {
+                    if (Swiftcast.ShouldUse(out act, mustUse: true)) return true;
+                }
+                break;
+            case 2:
+                if (InIfrit && nextGCD.IsAnySameAction(true, Gemshine))
+                {
+                    if (Swiftcast.ShouldUse(out act, mustUse: true)) return true;
+                }
+                break;
         }
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
