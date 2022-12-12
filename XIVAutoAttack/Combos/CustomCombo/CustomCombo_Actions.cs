@@ -86,7 +86,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         public static RoleAction SecondWind { get; } = new(ActionID.SecondWind,
             new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, true, isTimeline: true)
         {
-            ActionCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility,
+            ActionCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility && InCombat,
         };
 
         /// <summary>
