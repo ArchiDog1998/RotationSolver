@@ -55,7 +55,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Slice { get; } = new(ActionID.Slice)
     {
-        ActionCheck = b => !Enshrouded || !SoulReaver,
+        ActionCheck = b => !Enshrouded && !SoulReaver,
     };
 
     /// <summary>
@@ -88,7 +88,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SoulSlice { get; } = new(ActionID.SoulSlice)
     {
-        ActionCheck = b => !Enshrouded && !SoulReaver && JobGauge.Soul <= 50,
+        ActionCheck = b => !Enshrouded && !SoulReaver && Soul <= 50,
     };
     #endregion
     #region AoE
@@ -157,7 +157,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction BloodStalk { get; } = new(ActionID.BloodStalk)
     {
         BuffsProvide = new[] { StatusID.SoulReaver },
-        ActionCheck = b => !SoulReaver && !Enshrouded && JobGauge.Soul >= 50
+        ActionCheck = b => !SoulReaver && !Enshrouded && Soul >= 50
     };
 
     /// <summary>
@@ -212,6 +212,7 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction Communio { get; } = new(ActionID.Communio)
     {
         BuffsNeed = new[] { StatusID.Enshrouded },
+        ActionCheck = b => LemureShroud == 1
     };
 
     /// <summary>
@@ -260,7 +261,10 @@ internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 勾刃
     /// </summary>
-    public static BaseAction Harpe { get; } = new(ActionID.Harpe);
+    public static BaseAction Harpe { get; } = new(ActionID.Harpe)
+    {
+        ActionCheck = b => !SoulReaver
+    };
 
     /// <summary>
     /// 地狱入境
