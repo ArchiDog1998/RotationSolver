@@ -26,7 +26,7 @@
   "Configwindow_HelpItem_EsunaShield": "Open a window to use Esuna,tank stance actions or True North.",
   "Configwindow_HelpItem_RaiseShirk": "Open a window to use Raise or Shirk.",
   "Configwindow_HelpItem_AntiRepulsion": "Open a window to use knockback-penalty actions.",
-  "Configwindow_HelpItem_BreakProvoke": "Open a window to use break-combo or provoke action.",
+  "Configwindow_HelpItem_Break": "Open a window to use break-combo.",
   "Configwindow_HelpItem_Move": "Open a window to move.",
   "Configwindow_Helper_SwitchAuthor": "Click to switch authors",
   "Configwindow_Helper_GameVersion": "Game Version",
