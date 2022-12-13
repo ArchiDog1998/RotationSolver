@@ -37,11 +37,6 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     protected static byte MeditationStacks => JobGauge.MeditationStacks;
 
-    /// <summary>
-    /// 明镜层数
-    /// </summary>
-    protected static byte MeikyoStacks = Player.StatusStack(true, StatusID.MeikyoShisui);
-
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
 
     /// <summary>
@@ -147,7 +142,10 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 回返斩浪
     /// </summary>
-    public static BaseAction KaeshiNamikiri { get; } = new(ActionID.KaeshiNamikiri);
+    public static BaseAction KaeshiNamikiri { get; } = new(ActionID.KaeshiNamikiri)
+    {
+        ActionCheck = b => JobGauge.Kaeshi == Dalamud.Game.ClientState.JobGauge.Enums.Kaeshi.NAMIKIRI
+    };
     #endregion
 
     #region 居合术
@@ -184,12 +182,18 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 回返五剑
     /// </summary>
-    public static BaseAction KaeshiGoken { get; } = new(ActionID.KaeshiGoken);
+    public static BaseAction KaeshiGoken { get; } = new(ActionID.KaeshiGoken)
+    {
+        ActionCheck = b => JobGauge.Kaeshi == Dalamud.Game.ClientState.JobGauge.Enums.Kaeshi.GOKEN
+    };
 
     /// <summary>
     /// 回返雪月花
     /// </summary>
-    public static BaseAction KaeshiSetsugekka { get; } = new(ActionID.KaeshiSetsugekka);
+    public static BaseAction KaeshiSetsugekka { get; } = new(ActionID.KaeshiSetsugekka)
+    {
+        ActionCheck = b => JobGauge.Kaeshi == Dalamud.Game.ClientState.JobGauge.Enums.Kaeshi.SETSUGEKKA
+    };
     #endregion
 
     #region 其它
@@ -243,7 +247,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction HissatsuGyoten { get; } = new(ActionID.HissatsuGyoten)
     {
-        ActionCheck = b => Kenki >=10 && !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
+        ActionCheck = b => Kenki >= 10 && !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
     };
 
     /// <summary>

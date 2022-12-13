@@ -47,20 +47,11 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //奥义回返
-        if (Service.IconReplacer.OriginalHook(OgiNamikiri.ID) == KaeshiNamikiri.ID)
-        {
-            if (KaeshiNamikiri.ShouldUse(out act, mustUse: true)) return true;
-        }
+        if (KaeshiNamikiri.ShouldUse(out act, mustUse: true)) return true;
 
         //燕回返
-        if (Service.IconReplacer.OriginalHook(16483) == KaeshiGoken.ID)
-        {
-            if (KaeshiGoken.ShouldUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
-        }
-        if (Service.IconReplacer.OriginalHook(16483) == KaeshiSetsugekka.ID)
-        {
-            if (KaeshiSetsugekka.ShouldUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
-        }
+        if (KaeshiGoken.ShouldUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
+        if (KaeshiSetsugekka.ShouldUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
 
         //奥义斩浪
         if ((!IsTargetBoss || (Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(10, true, StatusID.Higanbana))) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
@@ -143,7 +134,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //明镜止水
-        if (HaveHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) && 
+        if (HaveHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) &&
             (!IsTargetBoss || (Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana)) || (!HaveMoon && !HaveFlower) || (IsTargetBoss && IsTargetDying)))
         {
             if (MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;

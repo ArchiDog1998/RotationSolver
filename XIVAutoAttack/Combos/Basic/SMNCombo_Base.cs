@@ -61,6 +61,21 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     protected static bool InPhoenix => Service.IconReplacer.OriginalHook(ActionID.AstralFlow) == ActionID.Rekindle;
 
     /// <summary>
+    /// 火神可用
+    /// </summary>
+    protected static bool IsIfritReady => JobGauge.IsIfritReady;
+
+    /// <summary>
+    /// 土神可用
+    /// </summary>
+    protected static bool IsTitanReady => JobGauge.IsTitanReady;
+
+    /// <summary>
+    /// 风神可用
+    /// </summary>
+    protected static bool IsGarudaReady => JobGauge.IsGarudaReady;
+
+    /// <summary>
     /// 火神阶段
     /// </summary>
     protected static bool InIfrit => JobGauge.IsIfritAttuned;
@@ -82,7 +97,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction SummonRuby { get; } = new(ActionID.SummonRuby)
     {
         BuffsProvide = new[] { StatusID.IfritsFavor },
-        ActionCheck = b => HaveSummon && JobGauge.IsIfritReady
+        ActionCheck = b => HaveSummon && IsIfritReady
     };
 
     /// <summary>
@@ -90,7 +105,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SummonTopaz { get; } = new(ActionID.SummonTopaz)
     {
-        ActionCheck = b => HaveSummon && JobGauge.IsTitanReady,
+        ActionCheck = b => HaveSummon && IsTitanReady,
     };
 
     /// <summary>
@@ -99,7 +114,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     public static BaseAction SummonEmerald { get; } = new(ActionID.SummonEmerald)
     {
         BuffsProvide = new[] { StatusID.GarudasFavor },
-        ActionCheck = b => HaveSummon && JobGauge.IsGarudaReady,
+        ActionCheck = b => HaveSummon && IsGarudaReady,
     };
 
     /// <summary>
@@ -116,7 +131,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Gemshine { get; } = new(ActionID.Gemshine)
     {
-        ActionCheck = b => JobGauge.Attunement > 0,
+        ActionCheck = b => Attunement > 0,
     };
 
     /// <summary>
@@ -124,7 +139,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction PreciousBrilliance { get; } = new(ActionID.PreciousBrilliance)
     {
-        ActionCheck = b => JobGauge.Attunement > 0,
+        ActionCheck = b => Attunement > 0,
     };
 
     /// <summary>
@@ -224,7 +239,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction SearingLight { get; } = new(ActionID.SearingLight, true)
     {
-        BuffsProvide = new[] {StatusID.SearingLight},
+        BuffsProvide = new[] { StatusID.SearingLight },
         ActionCheck = b => InCombat,
     };
 
@@ -241,7 +256,8 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction EnergyDrain { get; } = new(ActionID.EnergyDrainSMN)
     {
-        BuffsProvide = new[] { StatusID.FurtherRuin }
+        BuffsProvide = new[] { StatusID.FurtherRuin },
+        ActionCheck = b => !HasAetherflowStacks
     };
 
     /// <summary>
@@ -249,7 +265,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Fester { get; } = new(ActionID.Fester)
     {
-        ActionCheck = b => JobGauge.HasAetherflowStacks
+        ActionCheck = b => HasAetherflowStacks
     };
 
     /// <summary>
@@ -257,7 +273,8 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction EnergySiphon { get; } = new(ActionID.EnergySiphon)
     {
-        BuffsProvide = new[] { StatusID.FurtherRuin }
+        BuffsProvide = new[] { StatusID.FurtherRuin },
+        ActionCheck = b => !HasAetherflowStacks
     };
 
     /// <summary>
@@ -265,7 +282,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Painflare { get; } = new(ActionID.Painflare)
     {
-        ActionCheck = b => JobGauge.HasAetherflowStacks
+        ActionCheck = b => HasAetherflowStacks
     };
     #endregion
 
