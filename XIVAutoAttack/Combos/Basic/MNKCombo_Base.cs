@@ -14,24 +14,24 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     private static MNKGauge JobGauge => Service.JobGauges.Get<MNKGauge>();
 
     /// <summary>
-    /// ²é¿ËÀ­ÃÇ
+    /// æŸ¥å…‹æ‹‰ä»¬
     /// </summary>
     protected static BeastChakra[] BeastChakras => JobGauge.BeastChakra;
 
     /// <summary>
-    /// ²é¿ËÀ­ÊıÁ¿
+    /// æŸ¥å…‹æ‹‰æ•°é‡
     /// </summary>
     protected static byte Chakra => JobGauge.Chakra;
 
     /// <summary>
-    /// ÒõÑô±ØÉ±
+    /// é˜´é˜³å¿…æ€
     /// </summary>
     protected static Nadi Nadi => JobGauge.Nadi;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
 
     /// <summary>
-    /// Ë«Áú½Å
+    /// åŒé¾™è„š
     /// </summary>
     public static BaseAction DragonKick { get; } = new(ActionID.DragonKick)
     {
@@ -39,32 +39,37 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
-    /// Á¬»÷
+    /// è¿å‡»
     /// </summary>
     public static BaseAction Bootshine { get; } = new(ActionID.Bootshine);
 
     /// <summary>
-    /// ÆÆ»µÉñ³å aoe
+    /// ç ´åç¥å†² aoe
     /// </summary>
     public static BaseAction ArmoftheDestroyer { get; } = new(ActionID.ArmoftheDestroyer);
 
     /// <summary>
-    /// Ë«ÕÆ´ò ÉËº¦Ìá¸ß
+    /// ç ´åç¥è„š aoe
+    /// </summary>
+    public static BaseAction ShadowoftheDestroyer { get; } = new(ActionID.ShadowoftheDestroyer);
+
+    /// <summary>
+    /// åŒæŒæ‰“ ä¼¤å®³æé«˜
     /// </summary>
     public static BaseAction TwinSnakes { get; } = new(ActionID.TwinSnakes, isEot: true);
 
     /// <summary>
-    /// ÕıÈ­
+    /// æ­£æ‹³
     /// </summary>
     public static BaseAction TrueStrike { get; } = new(ActionID.TrueStrike);
 
     /// <summary>
-    /// ËÄÃæ½Å aoe
+    /// å››é¢è„š aoe
     /// </summary>
     public static BaseAction FourpointFury { get; } = new(ActionID.FourpointFury);
 
     /// <summary>
-    /// ÆÆËéÈ­
+    /// ç ´ç¢æ‹³
     /// </summary>
     public static BaseAction Demolish { get; } = new(ActionID.Demolish, isEot: true)
     {
@@ -72,22 +77,22 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
-    /// ±ÀÈ­
+    /// å´©æ‹³
     /// </summary>
     public static BaseAction SnapPunch { get; } = new(ActionID.SnapPunch);
 
     /// <summary>
-    /// µØÁÒ¾¢ aoe
+    /// åœ°çƒˆåŠ² aoe
     /// </summary>
     public static BaseAction Rockbreaker { get; } = new(ActionID.Rockbreaker);
 
     /// <summary>
-    /// ¶·Æø
+    /// æ–—æ°”
     /// </summary>
     public static BaseAction Meditation { get; } = new(ActionID.Meditation, true);
 
     /// <summary>
-    /// ÌúÉ½¿¿
+    /// é“å±±é 
     /// </summary>
     public static BaseAction SteelPeak { get; } = new(ActionID.SteelPeak)
     {
@@ -95,7 +100,7 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
-    /// ¿ÕÃùÈ­
+    /// ç©ºé¸£æ‹³
     /// </summary>
     public static BaseAction HowlingFist { get; } = new(ActionID.HowlingFist)
     {
@@ -103,17 +108,17 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
-    /// Òå½á½ğÀ¼
+    /// ä¹‰ç»“é‡‘å…°
     /// </summary>
     public static BaseAction Brotherhood { get; } = new(ActionID.Brotherhood, true);
 
     /// <summary>
-    /// ºìÁ«¼«Òâ Ìá¸ßdps
+    /// çº¢è²ææ„ æé«˜dps
     /// </summary>
     public static BaseAction RiddleofFire { get; } = new(ActionID.RiddleofFire, true);
 
     /// <summary>
-    /// Í»½ø¼¼ÄÜ
+    /// çªè¿›æŠ€èƒ½
     /// </summary>
     public static BaseAction Thunderclap { get; } = new(ActionID.Thunderclap, shouldEndSpecial: true)
     {
@@ -121,12 +126,12 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
-    /// ÕæÑÔ
+    /// çœŸè¨€
     /// </summary>
     public static BaseAction Mantra { get; } = new(ActionID.Mantra, true, isTimeline: true);
 
     /// <summary>
-    /// Õğ½Å
+    /// éœ‡è„š
     /// </summary>
     public static BaseAction PerfectBalance { get; } = new(ActionID.PerfectBalance)
     {
@@ -135,28 +140,33 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
-    /// ²ÔÆøÅÚ Òõ
+    /// è‹æ°”ç‚® é˜´
     /// </summary>
     public static BaseAction ElixirField { get; } = new(ActionID.ElixirField);
 
     /// <summary>
-    /// ±¬ÁÑ½Å Ñô
+    /// çˆ†è£‚è„š é˜³
     /// </summary>
     public static BaseAction FlintStrike { get; } = new(ActionID.FlintStrike);
 
     /// <summary>
-    /// ·ï»ËÎè
+    /// ç¿»å¤©è„š å…”
+    /// </summary>
+    public static BaseAction CelestialRevolution { get; } = new(ActionID.CelestialRevolution);
+    
+    /// <summary>
+    /// å‡¤å‡°èˆ
     /// </summary>
     public static BaseAction RisingPhoenix { get; } = new(ActionID.RisingPhoenix);
 
     /// <summary>
-    /// ¶·»êĞı·ç½Å ÒõÑô
+    /// æ–—é­‚æ—‹é£è„š é˜´é˜³
     /// </summary>
     public static BaseAction TornadoKick { get; } = new(ActionID.TornadoKick);
     public static BaseAction PhantomRush { get; } = new(ActionID.PhantomRush);
 
     /// <summary>
-    /// ÑİÎä
+    /// æ¼”æ­¦
     /// </summary>
     public static BaseAction FormShift { get; } = new(ActionID.FormShift, true)
     {
@@ -164,7 +174,7 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
-    /// ½ğ¸Õ¼«Òâ ¶Ü
+    /// é‡‘åˆšææ„ ç›¾
     /// </summary>
     public static BaseAction RiddleofEarth { get; } = new(ActionID.RiddleofEarth, true, shouldEndSpecial: true, isTimeline: true)
     {
@@ -172,7 +182,7 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
-    /// ¼²·ç¼«Òâ
+    /// ç–¾é£ææ„
     /// </summary>
     public static BaseAction RiddleofWind { get; } = new(ActionID.RiddleofWind, true);
 
