@@ -184,10 +184,10 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
 
         if (ChainSaw.EnoughLevel && !ChainSaw.IsCoolDown) return false;
 
+        if (Hypercharge.IsCoolDown) return false;
+
         //当上一个技能是钻头,空气锚,热冲击时不释放野火
         if (IsLastGCD(true, Drill, HeatBlast, AirAnchor)) return false;
-
-        //if (IsLastWeaponSkill(true, ChainSaw)) return true;
 
         return true;
     }
