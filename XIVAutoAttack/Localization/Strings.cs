@@ -68,6 +68,8 @@ internal class Strings
     public string Configwindow_HelpItem_Move { get; set; }
         = "Open a window to move.";
 
+    public string Configwindow_HelpItem_EndSpecial { get; set; }
+    = "关闭特殊状态";
     public string Configwindow_Helper_SwitchAuthor { get; set; } = "Click to switch authors";
     public string Configwindow_Helper_GameVersion { get; set; } = "Game Version";
     public string Configwindow_Helper_EditCombo { get; set; } = "Click to edit this custom Combo.";
@@ -345,6 +347,49 @@ internal class Strings
         { "HasThunder", "有雷云"},
         { "IsPolyglotStacksMaxed", "通晓是否已经达到当前等级下的最大层数"}, //这玩意儿太长了！
         #endregion
+
+        #region BRD
+        { "SoulVoice", "SoulVoice"},
+        { "SongEndAfter", "SongEndAfter"},
+        { "SongEndAfterGCD", "SongEndAfterGCD"},
+        { "Repertoire", "诗心数量"},
+        #endregion
+
+        #region DNC
+        { "IsDancing", "正在跳舞"},
+        { "Esprit", "伶俐"},
+        { "Feathers", "幻扇数"},
+        { "CompletedSteps", "CompletedSteps"},
+        { "FinishStepGCD", "FinishStepGCD"},
+        { "ExcutionStepGCD", "执行舞步"},
+        #endregion
+
+        #region DRG
+        #endregion
+
+        #region DRK
+        { "Blood", "暗血"},
+        { "HasDarkArts", "有黑心心"},
+        { "DarkSideEndAfter", "DarkSideEndAfter"},
+        { "DarkSideEndAfterGCD", "DarkSideEndAfterGCD"},
+        #endregion
+
+        #region GNB
+        { "Ammo", "晶囊数量"},
+        { "AmmoComboStep", "烈牙的第几个combo"},
+        #endregion    
+
+        #region MCH
+        { "IsOverheated", "过热"},
+        { "Heat", "热量"},
+        { "Battery", "电量"},
+        { "OverheatedEndAfter", "过热剩余时间"},
+        { "OverheatedEndAfterGCD", "过热剩余时间GCD"},
+        #endregion
+
+        #region MNK
+        { "Chakra", "查克拉数量"},
+        #endregion        
     };
 
     public Dictionary<string, string> MemberInfoDesc { get; set; } = new Dictionary<string, string>()
@@ -401,5 +446,48 @@ internal class Strings
         { "HasThunder", "有雷云"},
         { "IsPolyglotStacksMaxed", "通晓是否已经达到当前等级下的最大层数"},
         #endregion
+
+        #region BRD
+        { "SoulVoice", "SoulVoice"},
+        { "SongEndAfter", "SongEndAfter"},
+        { "SongEndAfterGCD", "SongEndAfterGCD"},
+        { "Repertoire", "诗心数量"},
+        #endregion
+
+        #region DNC
+        { "IsDancing", "正在跳舞"},
+        { "Esprit", "伶俐"},
+        { "Feathers", "幻扇数"},
+        { "CompletedSteps", "CompletedSteps"},
+        { "FinishStepGCD", "FinishStepGCD"},
+        { "ExcutionStepGCD", "执行舞步"},
+        #endregion
+
+        #region DRG
+        #endregion
+
+        #region DRK
+        { "Blood", "暗血"},
+        { "HasDarkArts", "有黑心心"},
+        { "DarkSideEndAfter", "DarkSideEndAfter"},
+        { "DarkSideEndAfterGCD", "DarkSideEndAfterGCD"},
+        #endregion
+
+        #region GNB
+        { "Ammo", "晶囊数量"},
+        { "AmmoComboStep", "烈牙的第几个combo"},
+        #endregion
+
+        #region MCH
+        { "IsOverheated", "过热"},
+        { "Heat", "热量"},
+        { "Battery", "电量"},
+        { "OverheatedEndAfter", "过热剩余时间"},
+        { "OverheatedEndAfterGCD", "过热剩余时间GCD"},
+        #endregion
+
+        #region MNK
+        { "Chakra", "查克拉数量"},
+        #endregion        
     };
 }

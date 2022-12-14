@@ -41,7 +41,8 @@ namespace XIVAutoAttack
         #region UI
         private static string _stateString = "Off";
         private static string _specialString = string.Empty;
-        internal static string StateString => _stateString + (string.IsNullOrEmpty(_specialString) ? string.Empty : " - " + _specialString);
+        internal static string StateString => _stateString + (string.IsNullOrEmpty(_specialString) ? string.Empty : 
+            $" - {_specialString} - {Service.Configuration.SpecialDuration - (DateTime.Now - _specialStateStartTime).TotalSeconds :F2}s");
         private static void UpdateToast()
         {
             if (!Service.Configuration.UseToast) return;
@@ -96,146 +97,96 @@ namespace XIVAutoAttack
         internal static bool HealArea { get; private set; } = false;
         private static void StartHealArea()
         {
-            bool last = HealArea;
-            ResetSpecial(last);
-            if (!last)
-            {
-                _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Heal Area");
-                _specialString = "Heal Area";
-                HealArea = true;
-                UpdateToast();
-
-            }
+            _specialStateStartTime = DateTime.Now;
+            if (!HealArea && Service.Configuration.AutoSayingOut) Watcher.Speak("Start Heal Area");
+            _specialString = "Heal Area";
+            HealArea = true;
+            UpdateToast();
         }
+
         internal static bool HealSingle { get; private set; } = false;
         private static void StartHealSingle()
         {
-            bool last = HealSingle;
-            ResetSpecial(last);
-            if (!last)
-            {
-                _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Heal Single");
-                _specialString = "Heal Single";
-                HealSingle = true;
-                UpdateToast();
-
-            }
+            _specialStateStartTime = DateTime.Now;
+            if (!HealSingle && Service.Configuration.AutoSayingOut) Watcher.Speak("Start Heal Single");
+            _specialString = "Heal Single";
+            HealSingle = true;
+            UpdateToast();
         }
+
         internal static bool DefenseArea { get; private set; } = false;
         private static void StartDefenseArea()
         {
-            bool last = DefenseArea;
-            ResetSpecial(last);
-            if (!last)
-            {
-                _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Defense Area");
-                _specialString = "Defense Area";
-                DefenseArea = true;
-                UpdateToast();
-
-            }
+            _specialStateStartTime = DateTime.Now;
+            if (!DefenseArea && Service.Configuration.AutoSayingOut) Watcher.Speak("Start Defense Area");
+            _specialString = "Defense Area";
+            DefenseArea = true;
+            UpdateToast();
         }
         internal static bool DefenseSingle { get; private set; } = false;
         private static void StartDefenseSingle()
         {
-            bool last = DefenseSingle;
-            ResetSpecial(last);
-            if (!last)
-            {
-                _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Defense Single");
-                _specialString = "Defense Single";
-                DefenseSingle = true;
-                UpdateToast();
-
-            }
+            _specialStateStartTime = DateTime.Now;
+            if (!DefenseSingle && Service.Configuration.AutoSayingOut) Watcher.Speak("Start Defense Single");
+            _specialString = "Defense Single";
+            DefenseSingle = true;
+            UpdateToast();
         }
         internal static bool EsunaOrShield { get; private set; } = false;
         private static void StartEsunaOrShield()
         {
-            bool last = EsunaOrShield;
-            ResetSpecial(last);
-            if (!last)
-            {
                 _specialStateStartTime = DateTime.Now;
                 var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
                     Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
 
                 string speak = role == JobRole.Tank ? "Shield" : "Esuna";
-                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
+                if (!EsunaOrShield && Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
                 _specialString = speak;
                 EsunaOrShield = true;
                 UpdateToast();
-
-            }
         }
         internal static bool RaiseOrShirk { get; private set; } = false;
         private static void StartRaiseOrShirk()
         {
-            bool last = RaiseOrShirk;
-            ResetSpecial(last);
-            if (!last)
-            {
-                _specialStateStartTime = DateTime.Now;
-                var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
-                    Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
+            _specialStateStartTime = DateTime.Now;
+            var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
+                Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
 
-                string speak = role == JobRole.Tank ? "Shirk" : "Raise";
-                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
-                _specialString = speak;
+            string speak = role == JobRole.Tank ? "Shirk" : "Raise";
+            if (!RaiseOrShirk && Service.Configuration.AutoSayingOut) Watcher.Speak("Start " + speak);
+            _specialString = speak;
 
-                RaiseOrShirk = true;
-                UpdateToast();
-
-            }
+            RaiseOrShirk = true;
+            UpdateToast();
         }
         internal static bool Break { get; private set; } = false;
         private static void StartBreak()
         {
-            bool last = Break;
-            ResetSpecial(last);
-            if (!last)
-            {
-                _specialStateStartTime = DateTime.Now;
+            _specialStateStartTime = DateTime.Now;
 
-                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Break");
-                _specialString = "Break";
-                Break = true;
-                UpdateToast();
-            }
+            if (!Break && Service.Configuration.AutoSayingOut) Watcher.Speak("Start Break");
+            _specialString = "Break";
+            Break = true;
+            UpdateToast();
         }
         internal static bool AntiRepulsion { get; private set; } = false;
         private static void StartAntiRepulsion()
         {
-            bool last = AntiRepulsion;
-            ResetSpecial(last);
-            if (!last)
-            {
-                _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Anti repulsion");
-                _specialString = "Anti repulsion";
-                AntiRepulsion = true;
-                UpdateToast();
-
-            }
+            _specialStateStartTime = DateTime.Now;
+            if (!AntiRepulsion && Service.Configuration.AutoSayingOut) Watcher.Speak("Start Anti repulsion");
+            _specialString = "Anti repulsion";
+            AntiRepulsion = true;
+            UpdateToast();
         }
 
         internal static bool Move { get; private set; } = false;
         private static void StartMove()
         {
-            bool last = Move;
-            ResetSpecial(last);
-            if (!last)
-            {
-                _specialStateStartTime = DateTime.Now;
-                if (Service.Configuration.AutoSayingOut) Watcher.Speak("Start Move");
-                _specialString = "Move";
-                Move = true;
-                UpdateToast();
-            }
+            _specialStateStartTime = DateTime.Now;
+            if (!Move && Service.Configuration.AutoSayingOut) Watcher.Speak("Start Move");
+            _specialString = "Move";
+            Move = true;
+            UpdateToast();
         }
 
         internal static void ResetSpecial(bool sayout)
@@ -408,6 +359,10 @@ namespace XIVAutoAttack
 
                 case "AttackCancel":
                     AttackCancel();
+                    return;
+
+                case "EndSpecial":
+                    ResetSpecial(true);
                     return;
 
                 case "AutoBreak":

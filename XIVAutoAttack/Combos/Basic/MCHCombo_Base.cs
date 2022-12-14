@@ -15,22 +15,16 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 处于过热中
     /// </summary>
-    [DisplayName("过热")]
-    [Description("处于过热中")]
     protected static bool IsOverheated => JobGauge.IsOverheated;
 
     /// <summary>
     /// 热量还有多少
     /// </summary>
-    [DisplayName("热量")]
-    [Description("热量")]
     protected static byte Heat => JobGauge.Heat;
 
     /// <summary>
     /// 点量还有多少
     /// </summary>
-    [DisplayName("电量")]
-    [Description("电量")]
     protected static byte Battery => JobGauge.Battery;
 
     /// <summary>
@@ -38,8 +32,6 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-    [DisplayName("过热剩余时间")]
-    [Description("过热剩余时间")]
     protected static bool OverheatedEndAfter(float time)
     {
         return EndAfter(JobGauge.OverheatTimeRemaining / 1000f, time);
@@ -51,8 +43,6 @@ internal abstract class MCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <param name="abilityCount"></param>
     /// <param name="gctCount"></param>
     /// <returns></returns>
-    [DisplayName("过热剩余时间GCD")]
-    [Description("过热剩余时间GCD")]
     protected static bool OverheatedEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
     {
         return EndAfterGCD(JobGauge.OverheatTimeRemaining / 1000f, gctCount, abilityCount);

@@ -145,6 +145,9 @@ internal partial class ComboConfigWindow : Window
 
                     CommandHelp("Move", LocalizationManager.RightLang.Configwindow_HelpItem_Move);
                     ImGui.Separator();
+
+                    CommandHelp("EndSpecial", LocalizationManager.RightLang.Configwindow_HelpItem_EndSpecial);
+                    ImGui.Separator();
                 }
                 ImGui.PopStyleVar();
 

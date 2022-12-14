@@ -325,8 +325,6 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    [DisplayName("执行舞步")]
-    [Description("跳四种舞步")]
     protected static bool ExcutionStepGCD(out IAction act)
     {
         act = null;
