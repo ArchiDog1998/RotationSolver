@@ -140,7 +140,7 @@ internal partial class ComboConfigWindow : Window
                     CommandHelp("AntiRepulsion", LocalizationManager.RightLang.Configwindow_HelpItem_AntiRepulsion);
                     ImGui.Separator();
 
-                    CommandHelp("Break", LocalizationManager.RightLang.Configwindow_HelpItem_BreakProvoke);
+                    CommandHelp("Break", LocalizationManager.RightLang.Configwindow_HelpItem_Break);
                     ImGui.Separator();
 
                     CommandHelp("Move", LocalizationManager.RightLang.Configwindow_HelpItem_Move);

@@ -25,10 +25,6 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
     }
     public RPRCombo_Default()
     {
-
-        //快死的不上Dot
-        ShadowofDeath.ComboCheck = b => !IsTargetDying;
-
         //保留红条不第一时间打出去,保证暴食不空转 同时保证不延后大丰收
         BloodStalk.ComboCheck = b => !Player.HasStatus(true, StatusID.BloodsownCircle) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && ((Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4)) || !Gluttony.EnoughLevel || Soul == 100);
         GrimSwathe.ComboCheck = BloodStalk.ComboCheck;
@@ -167,7 +163,7 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
             //神秘环
             if (ArcaneCircle.ShouldUse(out act)) return true;
 
-            if ((IsTargetBoss&& IsTargetDying) || //资源倾泻
+            if ((IsTargetBoss && IsTargetDying) || //资源倾泻
                (!Config.GetBoolByName("EnshroudPooling") && Shroud >= 50) ||//未开启双附体
                (Config.GetBoolByName("EnshroudPooling") && Shroud >= 50 &&
                (!PlentifulHarvest.EnoughLevel || //等级不足以双附体

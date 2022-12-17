@@ -62,8 +62,8 @@ internal class Strings
     public string Configwindow_HelpItem_AntiRepulsion { get; set; }
         = "Open a window to use knockback-penalty actions.";
 
-    public string Configwindow_HelpItem_BreakProvoke { get; set; }
-        = "Open a window to use break-combo or provoke action.";
+    public string Configwindow_HelpItem_Break { get; set; }
+        = "Open a window to use break-combo.";
 
     public string Configwindow_HelpItem_Move { get; set; }
         = "Open a window to move.";

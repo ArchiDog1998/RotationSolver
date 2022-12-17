@@ -184,10 +184,10 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
 
         if (ChainSaw.EnoughLevel && !ChainSaw.IsCoolDown) return false;
 
+        if (Hypercharge.IsCoolDown) return false;
+
         //当上一个技能是钻头,空气锚,热冲击时不释放野火
         if (IsLastGCD(true, Drill, HeatBlast, AirAnchor)) return false;
-
-        //if (IsLastWeaponSkill(true, ChainSaw)) return true;
 
         return true;
     }
@@ -205,7 +205,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (Player.HasStatus(true, StatusID.Wildfire)) return true;
 
         //4人本小怪快死了不释放
-        if (isDyingNotBoss) return false;
+        //if (isDyingNotBoss) return false;
 
         //在三大金刚还剩8秒冷却好时不释放超荷
         if (Drill.EnoughLevel && Drill.WillHaveOneChargeGCD(3)) return false;
@@ -213,11 +213,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(3) || !ChainSaw.IsCoolDown) && Config.GetBoolByName("MCH_Opener")) return false;
 
         //小怪AOE和4人本超荷判断
-        if (SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Count() is > 1 and <= 4 && !Target.IsBoss())
-        {
-            if (IsMoving) return false;
-            if (!IsMoving) return true;
-        }
+        if (SpreadShot.ShouldUse(out _)) return true;
 
         //等级低于野火
         if (!Wildfire.EnoughLevel) return true;

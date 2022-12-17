@@ -476,6 +476,7 @@
         /// </summary>
         RightEye = 1910,
 
+        #region MNK
         /// <summary>
         /// 魔猿形
         /// </summary>
@@ -515,6 +516,17 @@
         /// 无相身形
         /// </summary>
         FormlessFist = 2513,
+        
+        /// <summary>
+        /// 红莲极意
+        /// </summary>
+        RiddleofFire = 1181,
+        
+        /// <summary>
+        /// 义结金兰：攻击
+        /// </summary>
+        Brotherhood = 1185,
+        #endregion
 
         /// <summary>
         /// 对称投掷

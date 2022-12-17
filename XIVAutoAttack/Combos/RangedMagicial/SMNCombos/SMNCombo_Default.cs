@@ -30,11 +30,7 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 
     public SMNCombo_Default()
     {
-        //必须空豆子
-        EnergySiphon.ComboCheck = b => !HasAetherflowStacks;
-        EnergyDrain.ComboCheck = b => !HasAetherflowStacks;
         RuinIV.ComboCheck = b => !Player.HasStatus(true, StatusID.Swiftcast);
-
     }
 
     protected override bool CanHealSingleSpell => false;
@@ -62,7 +58,7 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
         //火神冲锋
         if (CrimsonStrike.ShouldUse(out act, mustUse: true)) return true;
         float CrimsonCycloneRange = Config.GetFloatByName("CrimsonCycloneRange");
-        if (CrimsonCyclone.Target.DistanceToPlayer() < CrimsonCycloneRange && CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
+        if (CrimsonCyclone.Target.DistanceToPlayer() <= CrimsonCycloneRange && CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
 
         //AOE
         if (PreciousBrilliance.ShouldUse(out act)) return true;
@@ -135,12 +131,12 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
         //山崩
         if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
 
-        //痛苦核爆 Painflare
-        if (((Player.HasStatus(true, StatusID.SearingLight) && ((InBahamut && SummonTimeEndAfter(7)) || !InBahamut || !EnergyDrain.IsCoolDown)) ||
+        //痛苦核爆
+        if (((!SearingLight.WillHaveOneCharge(90) && ((InBahamut && SummonTimeEndAfter(7)) || !InBahamut || !EnergyDrain.IsCoolDown)) ||
             !SearingLight.EnoughLevel ||
             (IsTargetBoss && IsTargetDying)) && Painflare.ShouldUse(out act)) return true;
         //溃烂爆发
-        if (((Player.HasStatus(true, StatusID.SearingLight) && ((InBahamut && SummonTimeEndAfter(7)) || !InBahamut || !EnergyDrain.IsCoolDown)) ||
+        if (((!SearingLight.WillHaveOneCharge(90) && ((InBahamut && SummonTimeEndAfter(7)) || !InBahamut || !EnergyDrain.IsCoolDown)) ||
             !SearingLight.EnoughLevel ||
             (IsTargetBoss && IsTargetDying)) && Fester.ShouldUse(out act)) return true;
 
