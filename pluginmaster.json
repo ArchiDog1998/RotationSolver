@@ -6,7 +6,7 @@
     "Author": "秋水, 汐ベMoon, gamous, 逆光, 玖祁, 牙刷play",
     "Name": "XIV Auto Attack",
     "Punchline": "Teach you how to perform better in combat! -- gamous",
-    "Description": "本插件开源免费！\n让自动攻击成为可能，请合理使用！此插件非常刺激！目前主要用于刷幻化和日随打本。\n如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！\nQQ群：913297282 注意看下载量！\n输入/pattack以设置帮助菜单。",
+    "Description": "International Edition.\nThis plugin is for free for everyone.\nMake truly auto attack possible. Please use it carefully.\nIf this plugin does something wrong, please discuss about it on Discord.\n/pattack to open the settings window.",
     "Tags": [
       "Attack"
     ],
@@ -18,16 +18,16 @@
     ],
     "IsHide": false,
     "InternalName": "XIVAutoAttack",
-    "AssemblyVersion": "0.10.3.0",
+    "AssemblyVersion": "0.10.3.1",
     "IsTestingExclusive": false,
     "RepoUrl": "https://github.com/ArchiDog1998/XIVAutoAttack",
     "ApplicableVersion": "any",
-    "DalamudApiLevel": 6,
+    "DalamudApiLevel": 7,
     "DownloadCount": 1024,
     "LastUpdate": 0,
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest.zip",
-    "DownloadLinkTesting": "https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest.zip",
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest_INT.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest_INT.zip",
+    "DownloadLinkTesting": "https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest_INT.zip",
     "LoadPriority": 0,
     "ImageUrls": [
       "https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/gifs/ExampleDNC.gif"
