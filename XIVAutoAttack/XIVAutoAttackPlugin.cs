@@ -27,8 +27,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, CommandManager commandManager)
     {
-
-
         pluginInterface.Create<Service>();
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
         Service.Address = new PluginAddressResolver();
@@ -45,7 +43,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
         Service.Interface.UiBuilder.Draw += OverlayWindow.Draw;
-        //Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
         MajorUpdater.Enable();
         Watcher.Enable();
@@ -84,15 +81,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         });
     }
 
-    //private void ClientState_TerritoryChanged(object sender, ushort e)
-    //{
-    //    if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty]
-    //        || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56]
-    //        || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty95]
-    //        || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundToDuty97]) return;
-    //    CommandController.AttackCancel();
-    //}
-
     public void Dispose()
     {
         Service.CommandManager.RemoveHandler(_command);
@@ -101,8 +89,6 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
         Service.IconReplacer.Dispose();
-
-        //Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
 
         Service.Localization.Dispose();
 
