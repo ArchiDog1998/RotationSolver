@@ -577,7 +577,6 @@ internal partial class ComboConfigWindow
                 ImGui.Text(LocalizationManager.RightLang.Configwindow_Params_HostileDesc);
                 for (int i = 0; i < Service.Configuration.TargetingTypes.Count; i++)
                 {
-
                     ImGui.Separator();
 
                     var names = Enum.GetNames(typeof(TargetingType));

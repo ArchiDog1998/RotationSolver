@@ -92,7 +92,11 @@ public class PluginConfiguration : IPluginConfiguration
     public string ScriptComboFolder { get; set; } = string.Empty;
 
     public int MoveTargetAngle { get; set; } = 24;
-    public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
+    public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>()
+    {
+        TargetingType.Big,
+        TargetingType.Small,
+    };
     public int TargetingIndex { get; set; } = 0;
     public void Save()
     {
