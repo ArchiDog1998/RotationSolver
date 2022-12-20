@@ -8,13 +8,17 @@
 
 Talk about it on [Discord](https://discord.gg/nfzmJ6ujDP) For Player not in Chinese Server.
 
+Download this plugin on this url.
+
+`https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/pluginmaster.json`
+
 Translation is on [Crowdin](https://crowdin.com/project/xivautoattack)
 
 中文玩家可以加入[Discord](https://discord.gg/awuCKbxR6q)参与讨论。
 
 如果你喜欢这个插件，可以在这个目录中下载它: 
 
-`https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/pluginmaster.json`
+`https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/pluginmaster_CN.json`
 
 QQ交流群：`913297282`，注意，入群问题中的下载量并非上方标签的下载量，请看Dalamud中显示的数值
 

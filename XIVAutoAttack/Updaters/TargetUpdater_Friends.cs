@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
+using XIVAutoAttack.Localization;
 
 namespace XIVAutoAttack.Updaters
 {
@@ -101,7 +102,9 @@ namespace XIVAutoAttack.Updaters
             #region Friend
             var party = Service.PartyList;
             PartyMembers = party.Length == 0 ? Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer } :
-                party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara);
+                party.Where(obj => obj != null && obj.GameObject is BattleChara)
+                .Select(obj => obj.GameObject as BattleChara)
+                .Where(obj => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->GetIsTargetable());
 
             //添加亲信
             PartyMembers = PartyMembers.Union(Service.ObjectTable.Where(obj => obj.SubKind == 9 && obj is BattleChara).Cast<BattleChara>());
@@ -114,7 +117,8 @@ namespace XIVAutoAttack.Updaters
                     && npc.BattleNpcKind == BattleNpcSubKind.Chocobo
                     && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
 
-            AllianceMembers = Service.ObjectTable.OfType<PlayerCharacter>();
+            AllianceMembers = Service.ObjectTable.OfType<PlayerCharacter>()
+                                .Where(obj => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->GetIsTargetable());
 
             PartyTanks = PartyMembers.GetJobCategory(JobRole.Tank);
             PartyHealers = PartyMembers.GetObjectInRadius(30).GetJobCategory(JobRole.Healer);
@@ -342,7 +346,7 @@ namespace XIVAutoAttack.Updaters
                 CommandController.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
                 Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
                 {
-                    Message = $"这位\"{author.Name}\"大概是\"XIV Auto Attack\"的作者之一，赶紧跟他打个招呼吧！",
+                    Message = string.Format(LocalizationManager.RightLang.Commands_SayHelloToAuthor, author.Name),
                     Type = Dalamud.Game.Text.XivChatType.Notice,
                 });
                 UIModule.PlaySound(20, 0, 0, 0);

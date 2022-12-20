@@ -14,6 +14,7 @@ internal class Strings
     public string Commands_ChangeResult { get; set; } = "修改结果为";
     public string Commands_CannotFind { get; set; } = "无法识别";
     public string Commands_OpenSettings { get; set; } = "已开启设置界面";
+    public string Commands_SayHelloToAuthor { get; set; } = "这位\"{0}\"大概是\"XIV Auto Attack\"的作者之一，赶紧跟他打个招呼吧！";
 
     #endregion
 
@@ -83,7 +84,7 @@ internal class Strings
     public string Configwindow_AttackItem_LoadScript { get; set; } = "Click to load a custom opener";
     public string Configwindow_AttackItem_ScriptFolderError { get; set; } = "Please set a storage path to use the custom opener properly!";
     public string Configwindow_AttackItem_KeyName { get; set; } = "The key name is";
-    public string Configwindow_AttackItem_Loop { get; set; } = "启用循环";
+    public string Configwindow_AttackItem_Loop { get; set; } = "启用";
     public string Configwindow_Events_AddEvent { get; set; } = "AddEvents";
     public string Configwindow_Events_Description { get; set; } = "In this window, you can set what macro will be trigger after using an action.";
     public string Configwindow_Events_ActionName { get; set; } = "Action Name";
