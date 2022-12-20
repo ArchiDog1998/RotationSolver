@@ -354,7 +354,8 @@ namespace XIVAutoAttack.Updaters
         internal static string EncryptString(PlayerCharacter player)
         {
             byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString() + " - " + player.Name.ToString() + "U6Wy.zCG");
-            var tmpHash = new MD5CryptoServiceProvider().ComputeHash(inputByteArray);
+            
+            var tmpHash = MD5.Create().ComputeHash(inputByteArray);
             var retB = Convert.ToBase64String(tmpHash.ToArray());
             return retB;
         }

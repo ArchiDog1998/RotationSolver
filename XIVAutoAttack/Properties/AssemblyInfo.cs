@@ -6,8 +6,6 @@ using System.Runtime.Versioning;
 [assembly: AssemblyDescription("Teach you how to perform better in combat!")]
 [assembly: AssemblyFileVersion("0.10.3.0")]
 [assembly: AssemblyInformationalVersion("0.10.3.0")]
-[assembly: AssemblyProduct("XIVAutoAttack")]
-[assembly: AssemblyTitle("XIVAutoAttack")]
 [assembly: TargetPlatform("Windows7.0")]
 [assembly: SupportedOSPlatform("Windows7.0")]
 [assembly: AssemblyVersion("0.10.3.0")]

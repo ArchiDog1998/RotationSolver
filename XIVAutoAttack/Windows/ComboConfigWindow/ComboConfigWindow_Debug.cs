@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using ImGuiNET;
+using System.Linq;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -16,11 +17,14 @@ internal partial class ComboConfigWindow
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("你的HASH! 发给秋水萌新吧！", ref str, 100);
 
+        ImGui.Text("Hostile: " + TargetUpdater.HostileTargets.Count().ToString());
+        ImGui.Text("Friends: " + TargetUpdater.PartyMembers.Count().ToString());
+
         if (ImGui.CollapsingHeader("Status from self."))
         {
             foreach (var item in Service.ClientState.LocalPlayer.StatusList)
             {
-                if (item.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                if (item.SourceId == Service.ClientState.LocalPlayer.ObjectId)
                 {
                     ImGui.Text(item.GameData.Name + item.StatusId);
                 }
@@ -37,7 +41,7 @@ internal partial class ComboConfigWindow
 
                 foreach (var status in b.StatusList)
                 {
-                    if (status.SourceID == Service.ClientState.LocalPlayer.ObjectId)
+                    if (status.SourceId == Service.ClientState.LocalPlayer.ObjectId)
                     {
                         ImGui.Text(status.GameData.Name + status.StatusId);
                     }

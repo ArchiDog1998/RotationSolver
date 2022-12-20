@@ -127,7 +127,7 @@ namespace XIVAutoAttack.Helpers
         {
             if (obj == null) return new Status[0];
 
-            return obj.StatusList.Where(status => isFromSelf ? status.SourceID == Service.ClientState.LocalPlayer.ObjectId
+            return obj.StatusList.Where(status => isFromSelf ? status.SourceId == Service.ClientState.LocalPlayer.ObjectId
             || status.SourceObject?.OwnerId == Service.ClientState.LocalPlayer.ObjectId : true);
         }
     }
