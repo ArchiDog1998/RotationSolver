@@ -103,8 +103,7 @@ namespace XIVAutoAttack.Updaters
             var party = Service.PartyList;
             PartyMembers = party.Length == 0 ? Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer } :
                 party.Where(obj => obj != null && obj.GameObject is BattleChara)
-                .Select(obj => obj.GameObject as BattleChara)
-                .Where(obj => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->GetIsTargetable());
+                .Select(obj => obj.GameObject as BattleChara);
 
             //添加亲信
             PartyMembers = PartyMembers.Union(Service.ObjectTable.Where(obj => obj.SubKind == 9 && obj is BattleChara).Cast<BattleChara>());
@@ -117,8 +116,7 @@ namespace XIVAutoAttack.Updaters
                     && npc.BattleNpcKind == BattleNpcSubKind.Chocobo
                     && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
 
-            AllianceMembers = Service.ObjectTable.OfType<PlayerCharacter>()
-                                .Where(obj => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->GetIsTargetable());
+            AllianceMembers = Service.ObjectTable.OfType<PlayerCharacter>();
 
             PartyTanks = PartyMembers.GetJobCategory(JobRole.Tank);
             PartyHealers = PartyMembers.GetObjectInRadius(30).GetJobCategory(JobRole.Healer);
