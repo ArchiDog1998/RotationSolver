@@ -42,7 +42,7 @@ namespace XIVAutoAttack
         private static string _stateString = "Off";
         private static string _specialString = string.Empty;
         internal static string StateString => _stateString + (string.IsNullOrEmpty(_specialString) ? string.Empty : 
-            $" - {_specialString} - {Service.Configuration.SpecialDuration - (DateTime.Now - _specialStateStartTime).TotalSeconds :F2}s");
+            $" - {_specialString}: {Service.Configuration.SpecialDuration - (DateTime.Now - _specialStateStartTime).TotalSeconds :F2}s");
         private static void UpdateToast()
         {
             if (!Service.Configuration.UseToast) return;
