@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using XIVAutoAttack.Combos.Script.Actions;
 
 namespace XIVAutoAttack.Localization;
@@ -6,15 +6,15 @@ namespace XIVAutoAttack.Localization;
 internal class Strings
 {
     #region Commands
-    public string Commands_pattack { get; set; } = "打开一个设置各个职业是否启用自动攻击的窗口";
-    public string Commands_aauto { get; set; } = "设置攻击的模式";
-    public string Commands_ChangeAutoBreak { get; set; } = "修改自动爆发为{0}";
-    public string Commands_ChangeSettings { get; set; } = "修改{0}为{1}";
-    public string Commands_InsertAction { get; set; } = "将在{0}s 内使用技能\"{1}\"";
-    public string Commands_ChangeResult { get; set; } = "修改结果为";
-    public string Commands_CannotFind { get; set; } = "无法识别";
-    public string Commands_OpenSettings { get; set; } = "已开启设置界面";
-    public string Commands_SayHelloToAuthor { get; set; } = "这位\"{0}\"大概是\"XIV Auto Attack\"的作者之一，赶紧跟他打个招呼吧！";
+    public string Commands_pattack { get; set; } = "Open a window to set whether auto-attack is enabled for each profession";
+    public string Commands_aauto { get; set; } = "Set the mode of attack";
+    public string Commands_ChangeAutoBreak { get; set; } = "Modify automatic burst to{0}";
+    public string Commands_ChangeSettings { get; set; } = "Modify {0} to {1}";
+    public string Commands_InsertAction { get; set; } = "Will use skill \"{1}\" within {0}s";
+    public string Commands_ChangeResult { get; set; } = "The modified result is";
+    public string Commands_CannotFind { get; set; } = "Unrecognized";
+    public string Commands_OpenSettings { get; set; } = "The settings interface has been opened";
+    public string Commands_SayHelloToAuthor { get; set; } = "This \"{0}\" is probably one of the authors of the \"XIV Auto Attack\", so say hello to him!";
 
     #endregion
 
@@ -70,21 +70,21 @@ internal class Strings
         = "Open a window to move.";
 
     public string Configwindow_HelpItem_EndSpecial { get; set; }
-    = "关闭特殊状态";
+    = "Close special status";
     public string Configwindow_Helper_SwitchAuthor { get; set; } = "Click to switch authors";
     public string Configwindow_Helper_GameVersion { get; set; } = "Game Version";
     public string Configwindow_Helper_EditCombo { get; set; } = "Click to edit this custom Combo.";
     public string Configwindow_Helper_AddCombo { get; set; } = "Add a custom Combo.";
     public string Configwindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string Configwindow_Helper_RunCommand { get; set; } = "Click to execute the command";
-    public string Configwindow_Helper_CopyCommand { get; set; } = "右键以复制命令";
+    public string Configwindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
     public string Configwindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in 5s";
     public string Configwindow_AttackItem_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.\nOnly player-current-job specific commands will be prompted.";
-    public string Configwindow_AttackItem_ScriptFolder { get; set; } = "Custom Opener Storage Path";
-    public string Configwindow_AttackItem_LoadScript { get; set; } = "Click to load a custom opener";
-    public string Configwindow_AttackItem_ScriptFolderError { get; set; } = "Please set a storage path to use the custom opener properly!";
+    public string Configwindow_AttackItem_ScriptFolder { get; set; } = "Custom Loop Storage Path";
+    public string Configwindow_AttackItem_LoadScript { get; set; } = "Click to load a custom loop";
+    public string Configwindow_AttackItem_ScriptFolderError { get; set; } = "Please set a storage path to use the custom loop properly!";
     public string Configwindow_AttackItem_KeyName { get; set; } = "The key name is";
-    public string Configwindow_AttackItem_Loop { get; set; } = "启用";
+    public string Configwindow_AttackItem_Loop { get; set; } = "Enable";
     public string Configwindow_Events_AddEvent { get; set; } = "AddEvents";
     public string Configwindow_Events_Description { get; set; } = "In this window, you can set what macro will be trigger after using an action.";
     public string Configwindow_Events_ActionName { get; set; } = "Action Name";
@@ -93,7 +93,7 @@ internal class Strings
     public string Configwindow_Events_RemoveEvent { get; set; } = "Delete Event";
     public string Configwindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
     public string Configwindow_Params_NeverReplaceIcon { get; set; } = "Never Replace Icons";
-    public string Configwindow_Params_NeverReplaceIconDesc { get; set; } = "图标替换是替换沉静技能";
+    public string Configwindow_Params_NeverReplaceIconDesc { get; set; } = "Icon replacement: Repose is automatically displayed as the next skill to be used";
     public string Configwindow_Params_UseOverlayWindow { get; set; } = "Display top overlay";
     public string Configwindow_Params_UseOverlayWindowDesc { get; set; } = "This window is currently used to cue the body position in advance.";
     public string Configwindow_Params_BasicSettings { get; set; } = "Basic settings";
@@ -111,15 +111,15 @@ internal class Strings
     public string Configwindow_Params_TeachingMode { get; set; } = "Teaching mode";
     public string Configwindow_Params_TeachingModeColor { get; set; } = "Prompt box color of teaching mode";
     public string Configwindow_Params_MovingTargetColor { get; set; } = "Prompt box color of moving target";
-    public string Configwindow_Params_TargetColor { get; set; } = "目标颜色";
-    public string Configwindow_Params_SubTargetColor { get; set; } = "子目标颜色";
+    public string Configwindow_Params_TargetColor { get; set; } = "Target color";
+    public string Configwindow_Params_SubTargetColor { get; set; } = "Sub-target color";
     public string Configwindow_Params_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string Configwindow_Params_VoiceVolume { get; set; } = "Voice volume";
     public string Configwindow_Params_ShowLocation { get; set; } = "Hint positional anticipation by flytext";
     public string Configwindow_Params_SayingLocation { get; set; } = "Hint positional anticipation by shouting";
     public string Configwindow_Params_ShowLocationWrong { get; set; } = "Positional error feedback";
-    public string Configwindow_Params_ShowMoveTarget { get; set; } = "显示移动技能的目标";
-    public string Configwindow_Params_ShowTarget { get; set; } = "显示目标";
+    public string Configwindow_Params_ShowMoveTarget { get; set; } = "Show the pointing target of the move skill";
+    public string Configwindow_Params_ShowTarget { get; set; } = "Show Target";
     public string Configwindow_Params_ShowLocationWrongDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
     public string Configwindow_Params_LocationWrongText { get; set; } = "Positional error prompt";
     public string Configwindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";
@@ -129,7 +129,7 @@ internal class Strings
     public string Configwindow_Params_Actions { get; set; } = "Use of actions";
     public string Configwindow_Params_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Params_AutoBreak { get; set; } = "Automatic breaking";
-    public string Configwindow_Params_UseAbility { get; set; } = "自动使用能力技";
+    public string Configwindow_Params_UseAbility { get; set; } = "Auto-use 0GCD";
     public string Configwindow_Params_AttackSafeMode { get; set; } = "Safe mode (absolute single target)";
     public string Configwindow_Params_AttackSafeModeDesc { get; set; } = "Nerver use any AOE action with single target./nBut if the number of hostile enough, AOE action will still be used.";
     public string Configwindow_Params_UseDefenceAbility { get; set; } = "Use defence abilities";
@@ -166,8 +166,8 @@ internal class Strings
     public string Configwindow_Params_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
     public string Configwindow_Params_FilterStopMark { get; set; } = "Never attack targets with stop markers";
     public string Configwindow_Params_ObjectMinRadius { get; set; } = "Set the minimum target circle threshold possessed by the attack target";
-    public string Configwindow_Params_MoveTargetAngle { get; set; } = "移动目标的夹角大小";
-    public string Configwindow_Params_MoveTargetAngleDesc { get; set; } = "如果是角色面向的，即角色面前的视角范围内的目标均为可移动目标，如果是屏幕中心，则为角色点朝上画扇形范围内的目标为可移动目标。";
+    public string Configwindow_Params_MoveTargetAngle { get; set; } = "The size of the sector angle that can be selected as the moveable target";
+    public string Configwindow_Params_MoveTargetAngleDesc { get; set; } = "If the selection mode is based on character facing, i.e., targets within the character's viewpoint are movable targets. \nIf the selection mode is screen-centered, i.e., targets within a sector drawn upward from the character's point are movable targets.";
     public string Configwindow_Params_ChangeTargetForFate { get; set; } = "Select only Fate targets in Fate";
     public string Configwindow_Params_MoveTowardsScreen { get; set; } = "Using movement actions towards the object in the center of the screen";
     public string Configwindow_Params_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";
@@ -180,17 +180,17 @@ internal class Strings
     public string Configwindow_Params_ConditionUp { get; set; } = "Up";
     public string Configwindow_Params_ConditionDown { get; set; } = "Down";
     public string Configwindow_Params_ConditionDelete { get; set; } = "Delete";
-    public string Configwindow_About_Declaration { get; set; } = "此插件开源免费，请勿从任何渠道付费购买此插件。\n如果已经从付费渠道获得此插件，请立即发起退款、提供差评并举报卖家";
-    public string Configwindow_About_XianYu { get; set; } = "包括但不限于以下闲鱼小店（排名不分先后）:";
-    public string Configwindow_About_Owner { get; set; } = "插件作者：ArchiDog1998（秋水）保留最终解释权";
-    public string Configwindow_About_Collaborators { get; set; } = "联合开发者：汐ベMoon, gamous, 逆光, sciuridae564, 玖祁, 牙刷play";
-    public string Configwindow_About_Github { get; set; } = "本插件版本更新发布于Github";
-    public string Configwindow_About_Discord { get; set; } = "点击加入Discord进行讨论";
-    public string Configwindow_About_Wiki { get; set; } = "点击查看Wiki";
+    public string Configwindow_About_Declaration { get; set; } = "This plugin is open source and free, please do not pay for this plugin from any source. \nIf you have got this plugin from paid sources, please immediately initiate a refund, provide a bad review and report the seller";
+    public string Configwindow_About_XianYu { get; set; } = "Including but not limited to the following online sellers (in no particular order):";
+    public string Configwindow_About_Owner { get; set; } = "Plugin author: ArchiDog1998 (秋水) reserves the right of final interpretation";
+    public string Configwindow_About_Collaborators { get; set; } = "Co-developed by: 汐ベMoon, gamous, 逆光, sciuridae564, 玖祁, 牙刷play";
+    public string Configwindow_About_Github { get; set; } = "Version updates for this plugin are posted on Github";
+    public string Configwindow_About_Discord { get; set; } = "Click to join Discord for discussion";
+    public string Configwindow_About_Wiki { get; set; } = "Click to view Wiki";
     #endregion
 
     #region ScriptWindow
-    public string Scriptwindow_Header { get; set; } = "Custom Opener v";
+    public string Scriptwindow_Header { get; set; } = "Custom loop v";
     public string Scriptwindow_Author { get; set; } = "Author";
     public string Scriptwindow_OpenSourceFile { get; set; } = "Open Source File";
     public string Scriptwindow_Save { get; set; } = "Save";
@@ -236,8 +236,8 @@ internal class Strings
     #endregion
 
     #region Actions
-    public string Action_Friendly { get; set; } = "支援";
-    public string Action_Attack { get; set; } = "攻击";
+    public string Action_Friendly { get; set; } = "Support";
+    public string Action_Attack { get; set; } = "Attack";
 
     #endregion
 
@@ -264,132 +264,132 @@ internal class Strings
     #endregion
 
     #region DescType
-    public string DescType_Description { get; set; } = "循环说明";
-    public string DescType_BreakingAction { get; set; } = "爆发技能";
-    public string DescType_HealArea { get; set; } = "范围治疗";
-    public string DescType_HealSingle { get; set; } = "单体治疗";
-    public string DescType_DefenseArea { get; set; } = "范围防御";
-    public string DescType_DefenseSingle { get; set; } = "单体防御";
-    public string DescType_MoveAction { get; set; } = "移动技能";
+    public string DescType_Description { get; set; } = "Loop Description";
+    public string DescType_BreakingAction { get; set; } = "Burst Skills";
+    public string DescType_HealArea { get; set; } = "Range Healing";
+    public string DescType_HealSingle { get; set; } = "Mono Healing";
+    public string DescType_DefenseArea { get; set; } = "Range Defense";
+    public string DescType_DefenseSingle { get; set; } = "Mono Defense";
+    public string DescType_MoveAction { get; set; } = "Move Skills";
 
     #endregion
 
     #region JobRole
-    public string JobRole_None { get; set; } = "采集制作";
-    public string JobRole_Tank { get; set; } = "防护";
-    public string JobRole_Melee { get; set; } = "近战";
-    public string JobRole_Ranged { get; set; } = "远程";
-    public string JobRole_Healer { get; set; } = "治疗";
-    public string JobRole_RangedPhysical { get; set; } = "远敏";
-    public string JobRole_RangedMagicial { get; set; } = "魔法";
-    public string JobRole_DiscipleoftheLand { get; set; } = "大地使者";
-    public string JobRole_DiscipleoftheHand { get; set; } = "能工巧匠";
+    public string JobRole_None { get; set; } = "Gathering&Production";
+    public string JobRole_Tank { get; set; } = "Tank";
+    public string JobRole_Melee { get; set; } = "Melee";
+    public string JobRole_Ranged { get; set; } = "Ranged";
+    public string JobRole_Healer { get; set; } = "Healer";
+    public string JobRole_RangedPhysical { get; set; } = "Ranged Physical";
+    public string JobRole_RangedMagicial { get; set; } = "Ranged Magicial";
+    public string JobRole_DiscipleoftheLand { get; set; } = "Disciple of the Land";
+    public string JobRole_DiscipleoftheHand { get; set; } = "Disciple of the Hand";
 
     #endregion
 
     #region EnemyLocation
-    public string EnemyLocation_None { get; set; } = "无";
-    public string EnemyLocation_Back { get; set; } = "背面";
-    public string EnemyLocation_Side { get; set; } = "侧面";
-    public string EnemyLocation_Front { get; set; } = "正面";
+    public string EnemyLocation_None { get; set; } = "None";
+    public string EnemyLocation_Back { get; set; } = "Back";
+    public string EnemyLocation_Side { get; set; } = "Side";
+    public string EnemyLocation_Front { get; set; } = "Front";
 
     #endregion
     public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
     {
         #region Combo
-        { nameof(ComboSet.EmergencyGCDSet), "EmergencyGCD"},
-        { nameof(ComboSet.GeneralGCDSet), "GeneralGCD"},
-        { nameof(ComboSet.DefenceAreaGCDSet), "DefenceAreaGCD"},
-        { nameof(ComboSet.DefenceSingleGCDSet), "DefenceSingleGCD"},
-        { nameof(ComboSet.HealAreaGCDSet), "HealAreaGCD"},
-        { nameof(ComboSet.HealSingleGCDSet), "HealSingleGCD"},
-        { nameof(ComboSet.MoveGCDSet), "MoveGCD"},
-        { nameof(ComboSet.EmergencyAbilitySet), "EmergencyAbility"},
-        { nameof(ComboSet.GeneralAbilitySet), "GeneralAbility"},
-        { nameof(ComboSet.AttackAbilitySet), "AttackAbility"},
-        { nameof(ComboSet.DefenceAreaAbilitySet), "DefenceAreaAbility"},
-        { nameof(ComboSet.DefenceSingleAbilitySet), "DefenceSingleAbility"},
-        { nameof(ComboSet.HealAreaAbilitySet), "HealAreaAbility"},
-        { nameof(ComboSet.HealSingleAbilitySet), "HealSingleAbility"},
-        { nameof(ComboSet.MoveAbilitySet), "MoveAbility"},
-        { "IsMoving", "在移动"},
-        { "HaveHostilesInRange", "范围内有敌人"},
-        { "IsFullParty", "满编小队"},
-        { "SettingBreak", "处于爆发"},
-        { "Level", "玩家等级"},
-        { "InCombat", "在战斗中"},
-        { "IsLastGCD", "上一个GCD"},
-        { "IsLastAbility", "上一个能力技"},
-        { "IsLastAction", "上一个技能"},
-        { "IsTargetDying", "目标将要死亡"},
-        { "IsTargetBoss", "目标为Boss"},
-        { "HaveSwift", "有即刻"},
-        { "HaveShield", "有盾姿"},
+        { nameof(ComboSet.EmergencyGCDSet), "Emergency GCD"},
+        { nameof(ComboSet.GeneralGCDSet), "General GCD"},
+        { nameof(ComboSet.DefenceAreaGCDSet), "Defence Area GCD"},
+        { nameof(ComboSet.DefenceSingleGCDSet), "Defence Single GCD"},
+        { nameof(ComboSet.HealAreaGCDSet), "Heal Area GCD"},
+        { nameof(ComboSet.HealSingleGCDSet), "Heal Single GCD"},
+        { nameof(ComboSet.MoveGCDSet), "Move GCD"},
+        { nameof(ComboSet.EmergencyAbilitySet), "Emergency Ability"},
+        { nameof(ComboSet.GeneralAbilitySet), "General Ability"},
+        { nameof(ComboSet.AttackAbilitySet), "Attack Ability"},
+        { nameof(ComboSet.DefenceAreaAbilitySet), "Defence Area Ability"},
+        { nameof(ComboSet.DefenceSingleAbilitySet), "Defence Single Ability"},
+        { nameof(ComboSet.HealAreaAbilitySet), "Heal Area Ability"},
+        { nameof(ComboSet.HealSingleAbilitySet), "Heal Single Ability"},
+        { nameof(ComboSet.MoveAbilitySet), "Move Ability"},
+        { "IsMoving", "IsMoving"},
+        { "HaveHostilesInRange", "Have Hostiles InRange"},
+        { "IsFullParty", "Is Full Party"},
+        { "SettingBreak", "Breaking"},
+        { "Level", "Level"},
+        { "InCombat", "In Combat"},
+        { "IsLastGCD", "Just used GCD"},
+        { "IsLastAbility", "Just used Ability"},
+        { "IsLastAction", "Just used Action"},
+        { "IsTargetDying", "Target is dying"},
+        { "IsTargetBoss", "Target is Boss"},
+        { "HaveSwift", "Have Swift"},
+        { "HaveShield", "Have defensive stance"},
         #endregion
 
         #region AST
-        { "PlayCard", "发卡"},
+        { "PlayCard", "Play"},
         #endregion
 
         #region BLM
-        { "UmbralIceStacks", "冰状态层数"},
-        { "AstralFireStacks", "火状态层数"},
-        { "PolyglotStacks", "通晓层数"},
-        { "UmbralHearts", "灵极心层数"},
-        { "IsParadoxActive", "是否有悖论"},
-        { "InUmbralIce", "在冰状态"},
-        { "InAstralFire", "在火状态"},
-        { "IsEnochianActive", "是否有天语状态"},
-        { "EnchinaEndAfter", "下一个通晓还剩多少时间好"},
-        { "EnchinaEndAfterGCD", "下一个通晓还剩多少时间好"},
-        { "ElementTimeEndAfter", "天语剩余时间"},
-        { "ElementTimeEndAfterGCD", "天语剩余时间"},
-        { "HasFire", "有火苗"},
-        { "HasThunder", "有雷云"},
-        { "IsPolyglotStacksMaxed", "通晓是否已经达到当前等级下的最大层数"}, //这玩意儿太长了！
+        { "UmbralIceStacks", "Umbral Ice Stacks"},
+        { "AstralFireStacks", "Astral Fire Stacks"},
+        { "PolyglotStacks", "Polyglot Stacks"},
+        { "UmbralHearts", "Umbral Heart Stacks"},
+        { "IsParadoxActive", "Is Paradox Active ?"},
+        { "InUmbralIce", "In Umbral Ice"},
+        { "InAstralFire", "In Astral Fire"},
+        { "IsEnochianActive", "Is Enochian Active?"},
+        { "EnchinaEndAfter", "Enchina End After (s)"},
+        { "EnchinaEndAfterGCD", "Enchina End After (GCDs)"},
+        { "ElementTimeEndAfter", "Element Time End After (s)"},
+        { "ElementTimeEndAfterGCD", "Element Time End After (GCDs)"},
+        { "HasFire", "Has Firestarter"},
+        { "HasThunder", "Has Thunder"},
+        { "IsPolyglotStacksMaxed", "Whether Polyglot already has the maximum number of charge stacks at the current level"}, //这玩意儿太长了！
         #endregion
 
         #region BRD
-        { "SoulVoice", "SoulVoice"},
-        { "SongEndAfter", "SongEndAfter"},
-        { "SongEndAfterGCD", "SongEndAfterGCD"},
-        { "Repertoire", "诗心数量"},
+        { "SoulVoice", "Soul Voice"},
+        { "SongEndAfter", "Song End After (s)"},
+        { "SongEndAfterGCD", "Song End After (GCDs)"},
+        { "Repertoire", "Song Gauge Stacks"},
         #endregion
 
         #region DNC
-        { "IsDancing", "正在跳舞"},
-        { "Esprit", "伶俐"},
-        { "Feathers", "幻扇数"},
+        { "IsDancing", "Is Dancing"},
+        { "Esprit", "Esprit"},
+        { "Feathers", "Feathers"},
         { "CompletedSteps", "CompletedSteps"},
         { "FinishStepGCD", "FinishStepGCD"},
-        { "ExcutionStepGCD", "执行舞步"},
+        { "ExcutionStepGCD", "Excution Step GCD"},
         #endregion
 
         #region DRG
         #endregion
 
         #region DRK
-        { "Blood", "暗血"},
-        { "HasDarkArts", "有黑心心"},
+        { "Blood", "Blood"},
+        { "HasDarkArts", "Has Dark Arts"},
         { "DarkSideEndAfter", "DarkSideEndAfter"},
         { "DarkSideEndAfterGCD", "DarkSideEndAfterGCD"},
         #endregion
 
         #region GNB
-        { "Ammo", "晶囊数量"},
-        { "AmmoComboStep", "烈牙的第几个combo"},
+        { "Ammo", "Ammo"},
+        { "AmmoComboStep", "Ammo Combo Step"},
         #endregion    
 
         #region MCH
-        { "IsOverheated", "过热"},
-        { "Heat", "热量"},
-        { "Battery", "电量"},
-        { "OverheatedEndAfter", "过热剩余时间"},
-        { "OverheatedEndAfterGCD", "过热剩余时间GCD"},
+        { "IsOverheated", "Is Over heated"},
+        { "Heat", "Heat"},
+        { "Battery", "Battery"},
+        { "OverheatedEndAfter", "Over heated End After (s)"},
+        { "OverheatedEndAfterGCD", "Over heated End After(GCDs)"},
         #endregion
 
         #region MNK
-        { "Chakra", "查克拉数量"},
+        { "Chakra", "Chakra"},
         #endregion        
     };
 
@@ -411,84 +411,84 @@ internal class Strings
         { nameof(ComboSet.HealAreaAbilitySet), "HealAreaAbility"},
         { nameof(ComboSet.HealSingleAbilitySet), "HealSingleAbility"},
         { nameof(ComboSet.MoveAbilitySet), "MoveAbility"},
-        { "IsMoving", "玩家正在移动"},
-        { "HaveHostilesInRange", "近战3米内有敌人，远程25米内有敌人。"},
-        { "IsFullParty", "满编小队"},
-        { "SettingBreak", "处于爆发"},
-        { "Level", "玩家等级"},
-        { "InCombat", "在战斗中"},
-        { "IsLastGCD", "上一个GCD"},
-        { "IsLastAbility", "上一个能力技"},
-        { "IsLastAction", "上一个技能"},
-        { "IsTargetDying", "目标将要死亡"},
-        { "IsTargetBoss", "目标为Boss"},
-        { "HaveSwift", "有即刻"},
-        { "HaveShield", "有盾姿"},
+        { "IsMoving", "Player Is Moving"},
+        { "HaveHostilesInRange", "Have Hostiles In Range(Melee <3m,Ranged<25m)"},
+        { "IsFullParty", "Is Full Party"},
+        { "SettingBreak", "In break"},
+        { "Level", "Player level"},
+        { "InCombat", "In Combat"},
+        { "IsLastGCD", "Just used GCD"},
+        { "IsLastAbility", "Just used ability"},
+        { "IsLastAction", "Just used Action"},
+        { "IsTargetDying", "Target is Dying"},
+        { "IsTargetBoss", "Target is Boss"},
+        { "HaveSwift", "Have Swift"},
+        { "HaveShield", "Have defensive stance"},
         #endregion
 
         #region AST
-        { "PlayCard", "发卡"},
+        { "PlayCard", "Play"},
         #endregion
 
         #region BLM
-        { "UmbralIceStacks", "冰状态层数"},
-        { "AstralFireStacks", "火状态层数"},
-        { "PolyglotStacks", "通晓层数"},
-        { "UmbralHearts", "灵极心层数"},
-        { "IsParadoxActive", "是否有悖论"},
-        { "InUmbralIce", "在冰状态"},
-        { "InAstralFire", "在火状态"},
-        { "IsEnochianActive", "是否有天语状态"},
-        { "EnchinaEndAfter", "下一个通晓还剩多少时间好"},
-        { "EnchinaEndAfterGCD", "下一个通晓还剩多少时间好"},
-        { "ElementTimeEndAfter", "天语剩余时间"},
-        { "ElementTimeEndAfterGCD", "天语剩余时间"},
-        { "HasFire", "有火苗"},
-        { "HasThunder", "有雷云"},
-        { "IsPolyglotStacksMaxed", "通晓是否已经达到当前等级下的最大层数"},
+        { "UmbralIceStacks", "Umbral Ice Stacks"},
+        { "AstralFireStacks", "Astral Fire Stacks"},
+        { "PolyglotStacks", "Polyglot Stacks"},
+        { "UmbralHearts", "Umbral Heart Stacks"},
+        { "IsParadoxActive", "Is Paradox Active?"},
+        { "InUmbralIce", "In Umbral Ice"},
+        { "InAstralFire", "In Astral Fire"},
+        { "IsEnochianActive", "Is Enochian Active?"},
+        { "EnchinaEndAfter", "Enchina End After (s)"},
+        { "EnchinaEndAfterGCD", "Enchina End After (GCDs)"},
+        { "ElementTimeEndAfter", "Element remaining time"},
+        { "ElementTimeEndAfterGCD", "Element remaining time"},
+        { "HasFire", "Has Firestarter"},
+        { "HasThunder", "Has Thunder"},
+        { "IsPolyglotStacksMaxed", "Whether Polyglot already has the maximum number of charge stacks at the current level"},
         #endregion
 
         #region BRD
         { "SoulVoice", "SoulVoice"},
-        { "SongEndAfter", "SongEndAfter"},
-        { "SongEndAfterGCD", "SongEndAfterGCD"},
-        { "Repertoire", "诗心数量"},
+        { "SongEndAfter", "Song End After (s)"},
+        { "SongEndAfterGCD", "Song End After (GCDs)"},
+        { "Repertoire", "Song Gauge Stacks"},
         #endregion
 
         #region DNC
-        { "IsDancing", "正在跳舞"},
-        { "Esprit", "伶俐"},
-        { "Feathers", "幻扇数"},
-        { "CompletedSteps", "CompletedSteps"},
-        { "FinishStepGCD", "FinishStepGCD"},
-        { "ExcutionStepGCD", "执行舞步"},
+        { "IsDancing", "Is Dancing"},
+        { "Esprit", "Esprit"},
+        { "Feathers", "Feathers"},
+        { "CompletedSteps", "Completed Steps"},
+        { "FinishStepGCD", "Finish Step GCD"},
+        { "ExcutionStepGCD", "Excution Step GCD"},
         #endregion
 
         #region DRG
         #endregion
 
         #region DRK
-        { "Blood", "暗血"},
-        { "HasDarkArts", "有黑心心"},
-        { "DarkSideEndAfter", "DarkSideEndAfter"},
-        { "DarkSideEndAfterGCD", "DarkSideEndAfterGCD"},
+        { "Blood", "Blood"},
+        { "HasDarkArts", "Has Dark Arts"},
+        { "DarkSideEndAfter", "DarkSide End After (s)"},
+        { "DarkSideEndAfterGCD", "DarkSide End After (GCDs)"},
         #endregion
 
         #region GNB
-        { "Ammo", "晶囊数量"},
-        { "AmmoComboStep", "烈牙的第几个combo"},
+        { "Ammo", "Ammo"},
+        { "AmmoComboStep", "Ammo Combo Step"},
         #endregion
 
         #region MCH
-        { "IsOverheated", "过热"},
-        { "Heat", "热量"},
-        { "Battery", "电量"},
-        { "OverheatedEndAfter", "过热剩余时间"},
-        { "OverheatedEndAfterGCD", "过热剩余时间GCD"},
+        { "IsOverheated", "Is Over heated"},
+        { "Heat", "Heat"},
+        { "Battery", "Battery"},
+        { "OverheatedEndAfter", "OverheatedEndAfter"},
+        { "OverheatedEndAfterGCD", "OverheatedEndAfterGCD"},
         #endregion
 
         #region MNK
-        { "Chakra", "查克拉数量"},
+        { "Chakra", "Chakra"},
         #endregion        
     };
 }
