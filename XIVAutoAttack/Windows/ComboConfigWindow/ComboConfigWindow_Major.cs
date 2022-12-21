@@ -233,12 +233,17 @@ internal partial class ComboConfigWindow : Window
             ImGui.SameLine();
             Spacing();
 
+
             if (texture is IScriptCombo script)
             {
-                if (ImGuiComponents.IconButton(texture.GetHashCode(), FontAwesomeIcon.Edit))
+                ImGui.PushFont(UiBuilder.IconFont);
+
+                if (ImGui.Button($"{FontAwesomeIcon.Edit.ToIconString()}##{texture.GetHashCode()}"))
                 {
                     XIVAutoAttackPlugin.OpenScriptWindow(script);
                 }
+                ImGui.PopFont();
+
                 if (ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_EditCombo);
@@ -246,12 +251,16 @@ internal partial class ComboConfigWindow : Window
             }
             else
             {
-                if (ImGuiComponents.IconButton(texture.GetHashCode(), FontAwesomeIcon.Globe))
+                ImGui.PushFont(UiBuilder.IconFont);
+
+                if (ImGui.Button($"{FontAwesomeIcon.Globe.ToIconString()}##{texture.GetHashCode()}"))
                 {
                     var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
 
                     Util.OpenLink(url);
                 }
+                ImGui.PopFont();
+
                 if (ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_OpenSource);
@@ -260,9 +269,10 @@ internal partial class ComboConfigWindow : Window
 
             ImGui.SameLine();
             Spacing();
+            ImGui.PushFont(UiBuilder.IconFont);
 
             if (Directory.Exists(Service.Configuration.ScriptComboFolder)
-                && ImGuiComponents.IconButton(texture.GetHashCode() + 1, FontAwesomeIcon.Plus))
+                && ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{texture.GetHashCode() + 1}"))
             {
                 var newCom = IconReplacer.AddScripCombo(com.JobIDs[0]);
                 if (newCom != null)
@@ -271,10 +281,13 @@ internal partial class ComboConfigWindow : Window
                     Service.Configuration.Save();
                 }
             }
+            ImGui.PopFont();
+
             if (ImGui.IsItemHovered())
             {
                 ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_AddCombo);
             }
+
         }
 
         if (enable)

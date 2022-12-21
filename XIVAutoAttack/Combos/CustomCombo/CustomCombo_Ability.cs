@@ -42,6 +42,7 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
                     break;
             }
         }
+        
         if (role == JobRole.Tank)
         {
             if (CommandController.RaiseOrShirk)
@@ -85,7 +86,6 @@ internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
         {
             if (TrueNorth.ShouldUse(out act)) return true;
         }
-
 
         if (CommandController.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
         if (CommandController.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
