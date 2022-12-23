@@ -13,7 +13,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.MCHCombos;
 
 internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.2";
 
     internal enum CommandType : byte
     {
@@ -140,15 +140,15 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         //野火
         if (SettingBreak && CanUseWildfire(out act)) return true;
 
+        //车式浮空炮塔
+        if (CanUseRookAutoturret(out act)) return true;
+
         //起手虹吸弹、弹射
         if (Ricochet.CurrentCharges == Ricochet.MaxCharges && Ricochet.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
         if (GaussRound.CurrentCharges == GaussRound.MaxCharges && GaussRound.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
         //枪管加热
         if (BarrelStabilizer.ShouldUse(out act)) return true;
-
-        //车式浮空炮塔
-        if (CanUseRookAutoturret(out act)) return true;
 
         //超荷
         if (CanUseHypercharge(out act) && (Config.GetBoolByName("MCH_Opener") && abilityRemain == 1 || !Config.GetBoolByName("MCH_Opener"))) return true;
@@ -213,7 +213,11 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(3) || !ChainSaw.IsCoolDown) && Config.GetBoolByName("MCH_Opener")) return false;
 
         //小怪AOE和4人本超荷判断
-        if (SpreadShot.ShouldUse(out _)) return true;
+        if (SpreadShot.ShouldUse(out _))
+        {
+            if (!AutoCrossbow.EnoughLevel) return false;
+            return true;
+        }
 
         //等级低于野火
         if (!Wildfire.EnoughLevel) return true;
@@ -244,15 +248,15 @@ internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
         if (IsLastAction((ActionID)Wildfire.ID)) return false;
 
         //电量等于100,强制释放
-        if (Battery == 100) return true;
+        if (Battery == 100 && ChainSaw.EnoughLevel && !ChainSaw.WillHaveOneCharge(13)) return true;
 
         //小怪,AOE,不吃团辅判断
         if (!Config.GetBoolByName("MCH_Automaton") || !Target.IsBoss() && !IsMoving || Level < Wildfire.ID) return true;
-        if ((SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Count() is > 1 and <= 4 && !Target.IsBoss()) && IsMoving) return false;
+        if (SpreadShot.ShouldUse(out _) && !Target.IsBoss() && IsMoving) return false;
 
         //机器人吃团辅判断
         if (AirAnchor.IsCoolDown && AirAnchor.WillHaveOneChargeGCD() && Battery > 80) return true;
-        if (ChainSaw.WillHaveOneChargeGCD(2) || ChainSaw.IsCoolDown && !ChainSaw.ElapsedAfterGCD(3) && Battery <= 60) return true;
+        if (ChainSaw.WillHaveOneCharge(4) || ChainSaw.IsCoolDown && !ChainSaw.ElapsedAfterGCD(3) && Battery <= 60) return true;
 
         return false;
     }

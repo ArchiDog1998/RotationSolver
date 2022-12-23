@@ -12,7 +12,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
 
 internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.2";
 
     public override string Author => "Ï«¥ÙMoon";
 
@@ -50,6 +50,17 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
     {
         if (ShieldSamba.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
+    }
+
+    private protected override IAction CountDownAction(float remainTime)
+    {
+        if (remainTime <= 15)
+        {
+            if (StandardStep.ShouldUse(out _, mustUse: true)) return StandardStep;
+            IAction act;
+            if (ExcutionStepGCD(out act)) return act;
+        }
+        return base.CountDownAction(remainTime);
     }
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)

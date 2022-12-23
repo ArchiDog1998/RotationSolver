@@ -2,6 +2,7 @@
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Combos.CustomCombo;
+using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using static XIVAutoAttack.Combos.Melee.SAMCombos.SAMCombo_Default;
@@ -10,7 +11,7 @@ namespace XIVAutoAttack.Combos.Melee.SAMCombos;
 
 internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.28";
 
     public override string Author => "逆光";
 
@@ -18,6 +19,13 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     {
         None,
     }
+
+    private protected override ActionConfiguration CreateConfiguration()
+    {
+        return base.CreateConfiguration()
+            .SetFloat("addKenki", 50, "当剑气大于该值时将必杀技·震天/九天加入循环", min: 0, max: 85, speed: 5);
+    }
+
     /// <summary>
     /// 明镜止水
     /// </summary>
@@ -31,11 +39,10 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         Fuga.ComboCheck = b => !haveMeikyoShisui;
         Enpi.ComboCheck = b => !haveMeikyoShisui;
         //保证有buff加成
-        OgiNamikiri.ComboCheck = b => HaveMoon && HaveFlower && SenCount == 0;
-        HissatsuSenei.ComboCheck = b => HaveMoon;
-        HissatsuGuren.ComboCheck = b => HaveMoon;
-        //明镜
-        MeikyoShisui.ComboCheck = b => SenCount < 2;
+        Higanbana.ComboCheck = b => HaveMoon && HaveFlower;
+        OgiNamikiri.ComboCheck = b => HaveMoon && HaveFlower;
+        HissatsuSenei.ComboCheck = b => HaveMoon && HaveFlower;
+        HissatsuGuren.ComboCheck = b => HaveMoon && HaveFlower;
     }
 
     public override SortedList<DescType, string> DescriptionDict => new()
@@ -54,12 +61,12 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         if (KaeshiSetsugekka.ShouldUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
 
         //奥义斩浪
-        if ((!IsTargetBoss || (Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(10, true, StatusID.Higanbana))) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
+        if ((!IsTargetBoss || Target.HasStatus(true, StatusID.Higanbana)) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
 
         //处理居合术
         if (SenCount == 1 && IsTargetBoss && !IsTargetDying)
         {
-            if (HaveMoon && HaveFlower && Higanbana.ShouldUse(out act)) return true;
+            if (Higanbana.ShouldUse(out act)) return true;
         }
         if (SenCount == 2)
         {
@@ -67,15 +74,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         }
         if (SenCount == 3)
         {
-            if (TsubameGaeshi.CurrentCharges == 0 && TsubameGaeshi.WillHaveOneChargeGCD(2) && !TsubameGaeshi.WillHaveOneChargeGCD(1))
-            {
-                if (Hakaze.ShouldUse(out act)) return true;
-            }
-            else
-            {
-                if (MidareSetsugekka.ShouldUse(out act)) return true;
-            }
-
+            if (MidareSetsugekka.ShouldUse(out act)) return true;
         }
 
         //连击2
@@ -108,7 +107,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         if (Kenki <= 50 && Ikishoten.ShouldUse(out act)) return true;
 
         //叶隐
-        if (Target.HasStatus(true, StatusID.Higanbana) && Target.WillStatusEnd(32, true, StatusID.Higanbana) && !Target.WillStatusEnd(27, true, StatusID.Higanbana) && SenCount == 1 && IsLastAction(true, Yukikaze) && !haveMeikyoShisui)
+        if (Target.HasStatus(true, StatusID.Higanbana) && Target.WillStatusEnd(32, true, StatusID.Higanbana) && !Target.WillStatusEnd(28, true, StatusID.Higanbana) && SenCount == 1 && IsLastAction(true, Yukikaze) && !haveMeikyoShisui)
         {
             if (Hagakure.ShouldUse(out act)) return true;
         }
@@ -122,7 +121,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         if (Shoha.ShouldUse(out act)) return true;
 
         //震天、九天
-        if ((Kenki > 50 && Ikishoten.WillHaveOneCharge(10)) || Kenki >= 85 || (IsTargetBoss && IsTargetDying))
+        if ((Kenki >= 50 && Ikishoten.WillHaveOneCharge(10)) || Kenki >= Config.GetFloatByName("addKenki") || (IsTargetBoss && IsTargetDying))
         {
             if (HissatsuKyuten.ShouldUse(out act)) return true;
             if (HissatsuShinten.ShouldUse(out act)) return true;
@@ -143,15 +142,12 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     }
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
-        //心眼
         if (ThirdEye.ShouldUse(out act)) return true;
         return false;
     }
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        //心眼
         if (ThirdEye.ShouldUse(out act)) return true;
-        //牵制
         if (Feint.ShouldUse(out act)) return true;
         return false;
     }

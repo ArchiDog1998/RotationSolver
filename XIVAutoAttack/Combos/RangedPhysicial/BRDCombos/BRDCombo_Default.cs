@@ -12,7 +12,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.BRDCombos;
 
 internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.2";
 
     public override string Author => "汐ベMoon";
 
@@ -101,7 +101,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             (!RagingStrikes.EnoughLevel || Player.HasStatus(true, StatusID.RagingStrikes)) &&
             (!BattleVoice.EnoughLevel || Player.HasStatus(true, StatusID.BattleVoice)))
         {
-            if (EmpyrealArrow.IsCoolDown || !EmpyrealArrow.WillHaveOneChargeGCD() || Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
+            if ((EmpyrealArrow.IsCoolDown && !EmpyrealArrow.WillHaveOneChargeGCD() || !EmpyrealArrow.EnoughLevel) && Repertoire != 3)
             {
                 //纷乱箭
                 if (Barrage.ShouldUse(out act)) return true;

@@ -14,7 +14,7 @@ using static XIVAutoAttack.Combos.Healer.WHMCombos.WHMCombo_Default;
 namespace XIVAutoAttack.Combos.Healer.WHMCombos;
 internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.28";
 
     public override string Author => "逆光";
 

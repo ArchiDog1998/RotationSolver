@@ -11,7 +11,7 @@ namespace XIVAutoAttack.Combos.Melee.RPRCombos;
 
 internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.28";
 
     public override string Author => "逆光";
 
