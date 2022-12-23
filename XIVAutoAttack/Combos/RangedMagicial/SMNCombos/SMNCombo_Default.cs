@@ -11,7 +11,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.SMNCombos;
 
 internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.28";
 
     public override string Author => "逆光";
 
