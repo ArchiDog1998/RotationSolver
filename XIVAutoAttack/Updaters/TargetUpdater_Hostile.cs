@@ -52,14 +52,22 @@ namespace XIVAutoAttack.Updaters
                     if (c.StatusList.Any(status => Service.DataManager.GetExcelSheet<Status>()
                         .GetRow(status.StatusId).Icon == 15024)) return false;
 
-                    var gameObj = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)c.Address;
+                    try
+                    {
+                        var gameObj = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)c.Address;
 
-                    //不可选中
-                    if(!gameObj->GetIsTargetable()) return false;
+                        //不可选中
+                        if (!gameObj->GetIsTargetable()) return false;
 
-                    //不在fate中，不打fate怪。
-                    if (FateManager.Instance()->FateJoined == 0 
-                        && gameObj->FateId > 0) return false;
+                        //不在fate中，不打fate怪。
+                        if (FateManager.Instance()->FateJoined == 0
+                            && gameObj->FateId > 0) return false;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+
                     if (obj.CanAttack()) return true;
                 }
                 return false;
