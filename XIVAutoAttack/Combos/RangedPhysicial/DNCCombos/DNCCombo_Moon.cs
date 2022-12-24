@@ -12,7 +12,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
 
 internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.2";
+    public override string GameVersion => "6.28";
 
     public override string Author => "œ´•ŸMoon";
 
@@ -95,7 +95,11 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
         }
 
         //…»ŒË°§÷’
-        if (FanDance4.ShouldUse(out act, mustUse: true)) return true;
+        if (FanDance4.ShouldUse(out act, mustUse: true))
+        {
+            if (TechnicalStep.EnoughLevel && TechnicalStep.IsCoolDown && TechnicalStep.WillHaveOneChargeGCD()) return false;
+            return true;
+        }
 
         return false;
     }
@@ -221,7 +225,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
                 }
             }
         }
-        else if (ClosedPosition.ShouldUse(out act)) return true;
+        //else if (ClosedPosition.ShouldUse(out act)) return true;
 
         act = null;
         return false;
