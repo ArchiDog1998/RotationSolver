@@ -13,7 +13,7 @@ namespace XIVAutoAttack.Combos.Healer.ASTCombos;
 
 internal sealed class ASTCombo_Default : ASTCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.28";
 
     public override string Author => "汐ベMoon";
 

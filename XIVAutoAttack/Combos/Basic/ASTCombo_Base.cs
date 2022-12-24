@@ -196,7 +196,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction MinorArcana { get; } = new(ActionID.MinorArcana)
     {
-        ActionCheck = b => InCombat,
+        ActionCheck = b => InCombat && DrawnCrownCard == CardType.NONE,
     };
 
     /// <summary>
