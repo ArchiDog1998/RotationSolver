@@ -957,6 +957,11 @@ namespace XIVAutoAttack.Data
         ApexArrow = 16496,
 
         /// <summary>
+        /// 爆破箭
+        /// </summary>
+        BlastArrow = 25784,
+
+        /// <summary>
         /// 行吟
         /// </summary>
         Troubadour = 7405,

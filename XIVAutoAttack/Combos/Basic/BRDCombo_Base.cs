@@ -42,7 +42,7 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <returns></returns>
     protected static bool SongEndAfter(float time)
     {
-        return EndAfter(JobGauge.SongTimer / 1000f, time);
+        return EndAfter(JobGauge.SongTimer / 1000f, time) && JobGauge.SongTimer / 1000f <= time;
     }
 
     /// <summary>
@@ -191,7 +191,15 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ApexArrow { get; } = new(ActionID.ApexArrow)
     {
-        ActionCheck = b => JobGauge.SoulVoice >= 20 || Player.HasStatus(true, StatusID.BlastArrowReady),
+        ActionCheck = b => JobGauge.SoulVoice >= 20,
+    };
+
+    /// <summary>
+    /// ±¬ÆÆ¼ý
+    /// </summary>
+    public static BaseAction BlastArrow { get; } = new(ActionID.BlastArrow)
+    {
+        ActionCheck = b => Player.HasStatus(true, StatusID.BlastArrowReady),
     };
 
     /// <summary>

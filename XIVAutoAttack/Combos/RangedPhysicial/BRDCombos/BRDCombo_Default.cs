@@ -30,7 +30,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("RaidPattern", false, "Raid模式")
+            .SetBool("BindWAND", false, "猛者绑定旅神歌")
             .SetCombo("FirstSong", 0, "第一首歌", "旅神歌", "贤者歌", "军神歌")
             .SetFloat("WANDTime", 43, "旅神歌时间", min: 0, max: 45, speed: 1)
             .SetFloat("MAGETime", 34, "贤者歌时间", min: 0, max: 45, speed: 1)
@@ -44,7 +44,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         {DescType.HealSingle, $"{NaturesMinne}"},
     };
 
-    private bool RaidPattern => Config.GetBoolByName("RaidPattern") && Level == 90;
+    private bool RaidPattern => Config.GetBoolByName("RaidPattern") && WanderersMinuet.EnoughLevel;
     private int FirstSong => Config.GetComboByName("FirstSong");
     private float WANDRemainTime => 45 - Config.GetFloatByName("WANDTime");
     private float MAGERemainTime => 45 - Config.GetFloatByName("MAGETime");
@@ -70,14 +70,19 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
     {
         //伶牙俐齿
         if (IronJaws.ShouldUse(out act)) return true;
-        if (IronJaws.ShouldUse(out act, mustUse: true) && IronJaws.Target.WillStatusEnd(40, true, IronJaws.TargetStatus))
+        if (IronJaws.ShouldUse(out act, mustUse: true) && IronJaws.Target.WillStatusEnd(30, true, IronJaws.TargetStatus))
         {
-            if (Player.HasStatus(true, StatusID.RagingStrikes, StatusID.RadiantFinale, StatusID.BattleVoice) && 
-                Player.WillStatusEndGCD(1, 0, true, StatusID.RagingStrikes, StatusID.RadiantFinale, StatusID.BattleVoice)) return true;
-        } 
+            if (Player.HasStatus(true, StatusID.RagingStrikes) && Player.WillStatusEndGCD(1, 0, true, StatusID.RagingStrikes)) return true;
+        }
 
         //放大招！
         if (CanUseApexArrow(out act)) return true;
+        //爆破箭
+        if (BlastArrow.ShouldUse(out act, mustUse: true))
+        {
+            if (!Player.HasStatus(true, StatusID.RagingStrikes)) return true;
+            if (Player.HasStatus(true, StatusID.RagingStrikes) && Barrage.IsCoolDown) return true;
+        }
 
         //群体GCD
         if (Shadowbite.ShouldUse(out act)) return true;
@@ -105,7 +110,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         }
         else if ((!RagingStrikes.EnoughLevel || Player.HasStatus(true, StatusID.RagingStrikes)) && (!BattleVoice.EnoughLevel || Player.HasStatus(true, StatusID.BattleVoice)))
         {
-            if ((EmpyrealArrow.IsCoolDown && !EmpyrealArrow.WillHaveOneChargeGCD() || !EmpyrealArrow.EnoughLevel) && Repertoire != 3)
+            if ((EmpyrealArrow.IsCoolDown && !EmpyrealArrow.WillHaveOneChargeGCD(1) || !EmpyrealArrow.EnoughLevel) && Repertoire != 3)
             {
                 //纷乱箭
                 if (!Player.HasStatus(true, StatusID.StraightShotReady) && Barrage.ShouldUse(out act)) return true;
@@ -154,7 +159,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             }
         }
 
-        if (RadiantFinale.IsCoolDown && !BattleVoice.IsCoolDown && RaidPattern) return false;
+        if (RadiantFinale.EnoughLevel && RadiantFinale.IsCoolDown && BattleVoice.EnoughLevel && !BattleVoice.IsCoolDown) return false;
 
         //放浪神的小步舞曲
         if (WanderersMinuet.ShouldUse(out act))
@@ -170,13 +175,17 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         {
             if (SongEndAfter(3) && Repertoire > 0) return true;
 
-            if (Repertoire == 3 || Repertoire == 2 && EmpyrealArrow.WillHaveOneChargeGCD(1)) return true;
+            if (Repertoire == 3) return true;
+
+            if (Repertoire == 2 && EmpyrealArrow.WillHaveOneChargeGCD(1) && abilityRemain == 1) return true;
+
+            if (Repertoire == 2 && EmpyrealArrow.WillHaveOneChargeGCD() && abilityRemain == 2) return true;
         }
 
         //贤者的叙事谣
         if (MagesBallad.ShouldUse(out act))
         {
-            if (Song == Song.WANDERER && SongEndAfter(WANDRemainTime)) return true;
+            if (Song == Song.WANDERER && SongEndAfter(WANDRemainTime) && Repertoire == 0) return true;
             if (Song == Song.ARMY && SongEndAfterGCD(2) && WanderersMinuet.IsCoolDown ) return true;
         }
 
@@ -219,8 +228,8 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         //放大招！
         if (!ApexArrow.ShouldUse(out act, mustUse: true)) return false;
 
-        //在爆发箭预备状态或aoe期间
-        if (Player.HasStatus(true, StatusID.BlastArrowReady) || (QuickNock.ShouldUse(out _) && SoulVoice == 100)) return true;
+        //aoe期间
+        if (QuickNock.ShouldUse(out _) && SoulVoice == 100) return true;
 
         //快爆发了,攒着等爆发
         if (SoulVoice == 100 && BattleVoice.WillHaveOneCharge(25)) return false;
