@@ -191,6 +191,7 @@
   "Scriptwindow_StatusSelfDesc": "该状态是否是自己赋予的",
   "Action_Friendly": "Support",
   "Action_Attack": "Attack",
+  "Action_WrongLocation": "要打{0}!",
   "ActionConditionType_Elapsed": "冷却时长",
   "ActionConditionType_ElapsedGCD": "冷却时长GCD ",
   "ActionConditionType_Remain": "剩余时间",
