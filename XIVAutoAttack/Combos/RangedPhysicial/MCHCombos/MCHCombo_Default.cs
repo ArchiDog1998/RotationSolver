@@ -13,7 +13,7 @@ namespace XIVAutoAttack.Combos.RangedPhysicial.MCHCombos;
 
 internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.2";
+    public override string GameVersion => "6.28";
 
     internal enum CommandType : byte
     {

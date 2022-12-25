@@ -26,18 +26,23 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     protected static Song Song => JobGauge.Song;
 
     /// <summary>
+    /// 上一首唱的歌
+    /// </summary>
+    protected static Song LastSong => JobGauge.LastSong;
+
+    /// <summary>
     /// 灵魂之声
     /// </summary>
     protected static byte SoulVoice => JobGauge.SoulVoice;
 
     /// <summary>
-    /// 这首歌啊在多久后还在唱嘛
+    /// 这首歌啊在多久后还在唱嘛(是否已经结束)
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
     protected static bool SongEndAfter(float time)
     {
-        return EndAfter(JobGauge.SongTimer / 1000f, time);
+        return EndAfter(JobGauge.SongTimer / 1000f, time) && JobGauge.SongTimer / 1000f <= time;
     }
 
     /// <summary>
@@ -186,7 +191,15 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ApexArrow { get; } = new(ActionID.ApexArrow)
     {
-        ActionCheck = b => JobGauge.SoulVoice >= 20 || Player.HasStatus(true, StatusID.BlastArrowReady),
+        ActionCheck = b => JobGauge.SoulVoice >= 20,
+    };
+
+    /// <summary>
+    /// 爆破箭
+    /// </summary>
+    public static BaseAction BlastArrow { get; } = new(ActionID.BlastArrow)
+    {
+        ActionCheck = b => Player.HasStatus(true, StatusID.BlastArrowReady),
     };
 
     /// <summary>

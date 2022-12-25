@@ -44,7 +44,7 @@ namespace XIVAutoAttack.Helpers
         public static bool NeedHealing(BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
 
         /// <summary>
-        /// 状态是否在下几个GCD转好后消失。
+        /// 状态是否在下几个GCD转好后消失(列表中剩余时间最小的)。
         /// </summary>
         /// <param name="gcdCount">要隔着多少个完整的GCD</param>
         /// <param name="abilityCount">再多少个能力技之后</param>
