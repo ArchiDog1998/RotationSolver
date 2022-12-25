@@ -191,7 +191,7 @@ internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction ApexArrow { get; } = new(ActionID.ApexArrow)
     {
-        ActionCheck = b => JobGauge.SoulVoice >= 20,
+        ActionCheck = b => JobGauge.SoulVoice >= 20 && !Player.HasStatus(true, StatusID.BlastArrowReady),
     };
 
     /// <summary>
