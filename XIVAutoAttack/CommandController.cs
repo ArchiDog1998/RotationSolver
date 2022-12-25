@@ -209,6 +209,7 @@ namespace XIVAutoAttack
                 if (Service.Configuration.TargetingTypes.Count == 0)
                 {
                     Service.Configuration.TargetingTypes.Add(TargetingType.Big);
+                    Service.Configuration.TargetingTypes.Add(TargetingType.Small);
                     Service.Configuration.Save();
                 }
 

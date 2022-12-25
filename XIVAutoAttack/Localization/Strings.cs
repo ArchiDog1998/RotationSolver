@@ -238,6 +238,7 @@ internal class Strings
     #region Actions
     public string Action_Friendly { get; set; } = "Support";
     public string Action_Attack { get; set; } = "Attack";
+    public string Action_WrongLocation { get; set; } = "要打{0}!";
 
     #endregion
 

@@ -113,7 +113,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         //µ÷Í£
         if (Target.HasStatus(true, StatusID.GoringBlade))
         {
-            if (FightorFlight.ElapsedAfterGCD(2) && Intervene.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (FightorFlight.ElapsedAfterGCD(2) && Intervene.ShouldUse(out act, mustUse: true)) return true;
 
             if (Intervene.ShouldUse(out act, mustUse: true) && !IsMoving) return true;
         }
