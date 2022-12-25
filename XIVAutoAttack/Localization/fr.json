@@ -191,6 +191,7 @@
   "Scriptwindow_StatusSelfDesc": "StatusSelf",
   "Action_Friendly": "Support",
   "Action_Attack": "Attack",
+  "Action_WrongLocation": "要打{0}!",
   "ActionConditionType_Elapsed": "Elapsed",
   "ActionConditionType_ElapsedGCD": "ElapsedGCD ",
   "ActionConditionType_Remain": "RemainTime",
