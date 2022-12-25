@@ -380,6 +380,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         {
             if (target == null) return false;
             if (_action.CastType == 1) return false;
+            if(target.DistanceToPlayer() > Range) return false;
 
             var pPos = Service.ClientState.LocalPlayer.Position;
             Vector3 dir = target.Position - pPos;
