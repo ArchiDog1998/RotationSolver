@@ -44,7 +44,7 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
         {DescType.HealSingle, $"{NaturesMinne}"},
     };
 
-    private bool RaidPattern => Config.GetBoolByName("RaidPattern") && WanderersMinuet.EnoughLevel;
+    private bool BindWAND => Config.GetBoolByName("BindWAND") && WanderersMinuet.EnoughLevel;
     private int FirstSong => Config.GetComboByName("FirstSong");
     private float WANDRemainTime => 45 - Config.GetFloatByName("WANDTime");
     private float MAGERemainTime => 45 - Config.GetFloatByName("MAGETime");
@@ -140,8 +140,8 @@ internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
             //猛者强击
             if (RagingStrikes.ShouldUse(out act))
             {
-                if (RaidPattern && Song == Song.WANDERER) return true;
-                if (!RaidPattern) return true;
+                if (BindWAND && Song == Song.WANDERER) return true;
+                if (!BindWAND) return true;
             }
 
             //光明神的最终乐章
