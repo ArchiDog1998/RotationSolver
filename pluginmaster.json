@@ -4,7 +4,7 @@
     "Testing": false,
     "IsThirdParty": false,
     "Author": "秋水, 汐ベMoon, gamous, 逆光, 玖祁, 牙刷play",
-    "Name": "XIV Auto Attack",
+    "Name": "XIV Auto Action",
     "Punchline": "Teach you how to perform better in combat! -- gamous",
     "Description": "International Edition.\nThis plugin is for free for everyone.\nMake truly auto attack possible. Please use it carefully.\nIf this plugin does something wrong, please discuss about it on Discord.\n/pattack to open the settings window.",
     "Tags": [
@@ -17,22 +17,22 @@
       "https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/gifs/ExampleDNC.gif"
     ],
     "IsHide": false,
-    "InternalName": "XIVAutoAttack",
-    "AssemblyVersion": "0.10.3.4",
+    "InternalName": "XIVAutoAction",
+    "AssemblyVersion": "0.11.0.0",
     "IsTestingExclusive": false,
-    "RepoUrl": "https://github.com/ArchiDog1998/XIVAutoAttack",
+    "RepoUrl": "https://github.com/ArchiDog1998/XIVAutoAction",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 7,
     "DownloadCount": 1024,
     "LastUpdate": 0,
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest_INT.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest_INT.zip",
-    "DownloadLinkTesting": "https://github.com/ArchiDog1998/XIVAutoAttack/releases/latest/download/latest_INT.zip",
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/XIVAutoAction/releases/latest/download/latest_INT.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/XIVAutoAction/releases/latest/download/latest_INT.zip",
+    "DownloadLinkTesting": "https://github.com/ArchiDog1998/XIVAutoAction/releases/latest/download/latest_INT.zip",
     "LoadPriority": 0,
     "ImageUrls": [
-      "https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/gifs/ExampleDNC.gif"
+      "https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAction/master/gifs/ExampleDNC.gif"
     ],
-    "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png",
+    "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAction/master/XIVAutoAttackIcon.png",
     "AcceptsFeedback": true,
     "FeedbackMessage": null,
     "FeedbackWebhook": null
