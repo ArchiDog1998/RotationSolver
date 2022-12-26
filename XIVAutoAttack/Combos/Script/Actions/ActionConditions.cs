@@ -63,7 +63,7 @@ internal class ActionConditions : IDraw
 
         if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
-            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+            _action = combo.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
         }
         if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
         {
@@ -144,7 +144,7 @@ internal class ActionConditions : IDraw
     {
         if (ID != ActionID.None && _action == null)
         {
-            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+            _action = combo.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
         }
         if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
         {
@@ -179,7 +179,7 @@ internal class ActionConditions : IDraw
             {
                 if (_actions.Count != IDs.Count)
                 {
-                    _actions = combo.AllActions.Where(a => IDs.Contains((ActionID)a.ID)).ToList();
+                    _actions = combo.AllActions.Where(a => IDs.Contains((ActionID)a.ID)).OfType<BaseAction>().ToList();
                 }
 
 
@@ -194,7 +194,7 @@ internal class ActionConditions : IDraw
 
                 ImGui.SameLine();
 
-                ScriptComboWindow.AddPopup("Emergency" + GetHashCode().ToString(), string.Empty, null, ref search, combo.AllActions, item =>
+                ScriptComboWindow.AddPopup("Emergency" + GetHashCode().ToString(), string.Empty, null, ref search, combo.AllActions.OfType<BaseAction>(), item =>
                 {
                     _actions.Add(item);
                     IDs.Add((ActionID)item.ID);
@@ -228,7 +228,7 @@ internal class ActionConditions : IDraw
     {
         if (ID != ActionID.None && _action == null)
         {
-            _action = owner.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+            _action = owner.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
         }
         if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
         {
@@ -250,7 +250,7 @@ internal class ActionConditions : IDraw
             {
                 if (_actions.Count != IDs.Count)
                 {
-                    _actions = owner.AllActions.Where(a => IDs.Contains((ActionID)a.ID)).ToList();
+                    _actions = owner.AllActions.Where(a => IDs.Contains((ActionID)a.ID)).OfType<BaseAction>().ToList();
                 }
                 if (nextGCD != null && _actions.Count > 0)
                 {

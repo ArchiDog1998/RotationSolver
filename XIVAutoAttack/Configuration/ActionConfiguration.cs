@@ -146,6 +146,28 @@ namespace XIVAutoAttack.Configuration
             }
             return true;
         }
+
+        internal static ActionConfiguration GetConfig(uint jobid, string author, ActionConfiguration con)
+        {
+            if (Service.Configuration.CombosConfigurations.TryGetValue(jobid, out var lastcom))
+            {
+                if (lastcom.TryGetValue(author, out var lastCon))
+                {
+                    if (con.IsTheSame(lastCon))
+                    {
+                        lastcom[author] = con;
+                        return con;
+                    }
+                }
+                lastcom[author] = con;
+            }
+            else
+            {
+                Service.Configuration.CombosConfigurations.Add(jobid, new Dictionary<string, ActionConfiguration>() { { author, con } });
+            }
+            Service.Configuration.Save();
+            return con;
+        }
     }
 
     public class FloatConfiguration

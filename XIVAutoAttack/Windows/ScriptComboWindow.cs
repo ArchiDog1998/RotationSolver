@@ -222,7 +222,7 @@ namespace XIVAutoAttack.Windows
             return result;
         }
 
-        internal static void AddPopup<T>(string popId, string special, Action act, ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
+        internal static void AddPopup<T>(string popId, string special, Action act, ref string searchTxt, IEnumerable<T> actions, Action<T> selectAction) where T : ITexture
         {
             if (ImGuiComponents.IconButton(popId.GetHashCode(), FontAwesomeIcon.Plus))
             {
@@ -258,7 +258,7 @@ namespace XIVAutoAttack.Windows
             }
         }
 
-        internal static void SearchItems<T>(ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
+        internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> actions, Action<T> selectAction) where T : ITexture
         {
             SearchItems(ref searchTxt, actions, i => i.Name, selectAction, i => ImGui.Image(i.GetTexture().ImGuiHandle, new Vector2(24, 24)));
         }
@@ -288,7 +288,7 @@ namespace XIVAutoAttack.Windows
             }
         }
 
-        internal static void SearchItems<T>(ref string searchTxt, T[] actions, Func<T, string> getName, Action<T> selectAction, Action<T> extraDraw = null, Func<T, string> getDesc = null)
+        internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> actions, Func<T, string> getName, Action<T> selectAction, Action<T> extraDraw = null, Func<T, string> getDesc = null)
         {
             ImGui.Text(LocalizationManager.RightLang.Scriptwindow_SearchBar + ": ");
             ImGui.SetNextItemWidth(150);

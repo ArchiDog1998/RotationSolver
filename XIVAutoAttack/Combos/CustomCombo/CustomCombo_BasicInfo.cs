@@ -90,31 +90,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
             IconID = IconSet.GetJobIcon(this);
         }
 
-        public ActionConfiguration Config
-        {
-            get
-            {
-                var con = CreateConfiguration();
-                if (Service.Configuration.CombosConfigurations.TryGetValue((uint)JobIDs[0], out var lastcom))
-                {
-                    if (lastcom.TryGetValue(Author, out var lastCon))
-                    {
-                        if (con.IsTheSame(lastCon))
-                        {
-                            lastcom[Author] = con;
-                            return con;
-                        }
-                    }
-                    lastcom[Author] = con;
-                }
-                else
-                {
-                    Service.Configuration.CombosConfigurations.Add((uint)JobIDs[0], new Dictionary<string, ActionConfiguration>() { { Author, con } });
-                }
-                Service.Configuration.Save();
-                return con;
-            }
-        }
+        public ActionConfiguration Config => ActionConfiguration.GetConfig((uint)JobIDs[0], Author, CreateConfiguration());
 
         public BattleChara MoveTarget
         {

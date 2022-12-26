@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Script;
@@ -88,12 +89,12 @@ internal sealed class IconReplacer : IDisposable
         return group.combos[0];
     }
 
-    internal static BaseAction[] RightComboBaseActions
+    internal static IAction[] RightComboBaseActions
     {
         get
         {
             var combo = RightNowCombo;
-            if (combo == null) return new BaseAction[0];
+            if (combo == null) return new IAction[0];
             return combo.AllActions;
         }
     }

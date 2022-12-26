@@ -27,6 +27,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 是否正在移动
         /// </summary>
         protected static bool IsMoving => MovingUpdater.IsMoving;
+
         /// <summary>
         /// 攻击范围内是否有敌人
         /// </summary>

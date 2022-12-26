@@ -288,6 +288,9 @@ internal class Strings
 
     #endregion
 
+    public string CraftingCombo_Name { get; set; } = "Disciplines of Hands";
+
+
     #region EnemyLocation
     public string EnemyLocation_None { get; set; } = "None";
     public string EnemyLocation_Back { get; set; } = "Back";

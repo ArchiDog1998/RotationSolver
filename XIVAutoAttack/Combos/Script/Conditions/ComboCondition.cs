@@ -46,7 +46,7 @@ internal class ComboCondition : ICondition
         }
         if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
-            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+            _action = combo.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
         }
 
         switch (ComboConditionType)
@@ -146,7 +146,7 @@ internal class ComboCondition : ICondition
         }
         if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
-            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+            _action = combo.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
         }
 
         ScriptComboWindow.DrawCondition(IsTrue(combo));
@@ -302,7 +302,7 @@ internal class ComboCondition : ICondition
 
                 ScriptComboWindow.SearchCombo($"##技能选择{GetHashCode()}", name, ref searchTxt, combo.AllActions, i =>
                 {
-                    _action = i;
+                    _action = (BaseAction)i;
                     ID = (ActionID)_action.ID;
                 });
 

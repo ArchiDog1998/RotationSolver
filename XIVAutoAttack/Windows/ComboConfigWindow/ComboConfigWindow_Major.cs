@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Script;
@@ -334,33 +335,36 @@ internal partial class ComboConfigWindow : Window
             ImGui.Text(" ¡ú " + help);
         }
     }
-    private unsafe static void DrawAction(BaseAction act)
+    private unsafe static void DrawAction(IAction act)
     {
         if (act == null) return;
 
         DrawTexture(act, () =>
         {
-            if (act.IsTimeline) CommandHelp($"Insert{act}-{5}",
-                string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, act));
-#if DEBUG
-            ImGui.Text("Have One:" + act.HaveOneChargeDEBUG.ToString());
-            ImGui.Text("Is Real GCD: " + act.IsRealGCD.ToString());
-            ImGui.Text("Recast One: " + act.RecastTimeOneChargeDEBUG.ToString());
-            ImGui.Text("Recast Elapsed: " + act.RecastTimeElapsedDEBUG.ToString());
-            ImGui.Text("Recast Remain: " + act.RecastTimeRemainDEBUG.ToString());
-            ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, act.AdjustedID).ToString());
-
-            ImGui.Text("Cast Time: " + act.CastTime.ToString());
-            ImGui.Text("MP: " + act.MPNeed.ToString());
-            ImGui.Text($"Can Use: {act.ShouldUse(out _)} ");
-            ImGui.Text("Must Use:" + act.ShouldUse(out _, mustUse: true).ToString());
-            ImGui.Text("Empty Use:" + act.ShouldUse(out _, emptyOrSkipCombo: true).ToString());
-            ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(act.AdjustedID).ToString());
-            if(act.Target != null)
+            if(act is BaseAction baseAct)
             {
-                ImGui.Text("Target Name: " + act.Target.Name);
-            }
+                if (baseAct.IsTimeline) CommandHelp($"Insert{act}-{5}",
+                    string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, act));
+#if DEBUG
+                ImGui.Text("Have One:" + baseAct.HaveOneChargeDEBUG.ToString());
+                ImGui.Text("Is Real GCD: " + baseAct.IsRealGCD.ToString());
+                ImGui.Text("Recast One: " + baseAct.RecastTimeOneChargeDEBUG.ToString());
+                ImGui.Text("Recast Elapsed: " + baseAct.RecastTimeElapsedDEBUG.ToString());
+                ImGui.Text("Recast Remain: " + baseAct.RecastTimeRemainDEBUG.ToString());
+                ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, baseAct.AdjustedID).ToString());
+
+                ImGui.Text("Cast Time: " + baseAct.CastTime.ToString());
+                ImGui.Text("MP: " + baseAct.MPNeed.ToString());
+                ImGui.Text($"Can Use: {baseAct.ShouldUse(out _)} ");
+                ImGui.Text("Must Use:" + baseAct.ShouldUse(out _, mustUse: true).ToString());
+                ImGui.Text("Empty Use:" + baseAct.ShouldUse(out _, emptyOrSkipCombo: true).ToString());
+                ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(act.AdjustedID).ToString());
+                if (baseAct.Target != null)
+                {
+                    ImGui.Text("Target Name: " + baseAct.Target.Name);
+                }
 #endif
+            }
         });
     }
 }

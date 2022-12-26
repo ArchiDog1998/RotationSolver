@@ -49,7 +49,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
             if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
             {
-                _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+                _action = combo.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
             }
             if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
             {
@@ -132,7 +132,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
             act = null;
             if (ID != ActionID.None && _action == null)
             {
-                _action = owner.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+                _action = owner.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
             }
             if (!string.IsNullOrEmpty(MethodName) && (_method == null || _method.Name != MethodName))
             {

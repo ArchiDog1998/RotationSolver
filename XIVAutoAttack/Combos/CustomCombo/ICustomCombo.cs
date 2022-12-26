@@ -23,7 +23,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
 
         SortedList<DescType, string> DescriptionDict { get; }
         Dictionary<string, string> CommandShow { get; }
-        BaseAction[] AllActions { get; }
+        IAction[] AllActions { get; }
         PropertyInfo[] AllBools { get; }
         PropertyInfo[] AllBytes { get; }
 

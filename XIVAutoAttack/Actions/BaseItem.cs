@@ -23,6 +23,8 @@ namespace XIVAutoAttack.Actions
 
         public string Name => _item.Name;
 
+        public string CateName => "Item";
+
         public BaseItem(uint row, uint a4 = 0)
         {
             _item = Service.DataManager.GetExcelSheet<Item>().GetRow(row);

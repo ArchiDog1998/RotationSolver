@@ -174,7 +174,6 @@ namespace XIVAutoAttack.Data
                 case JobRole.Healer:
                     type = IconType.Green;
                     break;
-
             }
             return _icons[type][(uint)combo.JobIDs[0] - 1];
         }

@@ -20,9 +20,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// </summary>
         internal bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
         public string Name => _action.Name;
-        public string Description => string.Empty;
-        public string Author => string.Empty;
-        internal string CateName
+        public string CateName
         {
             get
             {

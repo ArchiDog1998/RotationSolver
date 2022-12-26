@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Localization;
 using XIVAutoAttack.Windows;
 using XIVAutoAttack.Windows.ComboConfigWindow;
@@ -39,7 +40,7 @@ namespace XIVAutoAttack.Combos.Script.Actions
         string search = string.Empty;
         private void AddButton(IScriptCombo combo)
         {
-            ScriptComboWindow.AddPopup("PopupAction" + GetHashCode().ToString(), string.Empty, null, ref search, combo.AllActions, item =>
+            ScriptComboWindow.AddPopup("PopupAction" + GetHashCode().ToString(), string.Empty, null, ref search, combo.AllActions.OfType<BaseAction>(), item =>
             {
                 ActionsCondition.Add(new CountDownAction(item));
             });

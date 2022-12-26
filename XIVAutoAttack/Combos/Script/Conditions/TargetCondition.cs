@@ -99,7 +99,7 @@ internal class TargetCondition : ICondition
     {
         if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
-            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+            _action = combo.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
         }
         if (Status != StatusID.None && (_status == null || _status.ID != Status))
         {
@@ -133,7 +133,7 @@ internal class TargetCondition : ICondition
 
             ScriptComboWindow.SearchItems(ref searchTxt, combo.AllActions, i =>
             {
-                _action = i;
+                _action = (BaseAction)i;
                 ID = (ActionID)_action.ID;
             });
 

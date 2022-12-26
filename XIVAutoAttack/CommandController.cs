@@ -428,8 +428,9 @@ namespace XIVAutoAttack
                             if (strs != null && strs.Length == 2 && double.TryParse(strs[1], out var time))
                             {
                                 var actName = strs[0];
-                                foreach (var act in IconReplacer.RightComboBaseActions)
+                                foreach (var iAct in IconReplacer.RightComboBaseActions)
                                 {
+                                    if (iAct is not BaseAction act) continue;
                                     if (!act.IsTimeline) continue;
 
                                     if (actName == act.Name)

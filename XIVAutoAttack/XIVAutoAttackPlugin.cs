@@ -25,7 +25,7 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
     internal static ScriptComboWindow _scriptComboWindow;
     public string Name => "XIV Auto Attack";
 
-    public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface, CommandManager commandManager)
+    public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();

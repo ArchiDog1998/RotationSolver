@@ -27,7 +27,7 @@ internal class ActionCondition : ICondition
     {
         if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
-            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+            _action = combo.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
         }
         if (_action == null || Service.ClientState.LocalPlayer == null) return false;
 
@@ -83,7 +83,7 @@ internal class ActionCondition : ICondition
     {
         if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
         {
-            _action = combo.AllActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+            _action = combo.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
         }
 
         ScriptComboWindow.DrawCondition(IsTrue(combo));
@@ -94,7 +94,7 @@ internal class ActionCondition : ICondition
 
         ScriptComboWindow.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, combo.AllActions, i =>
         {
-            _action = i;
+            _action = (BaseAction)i;
             ID = (ActionID)_action.ID;
         });
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using XIVAutoAttack.Actions;
+using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Localization;
 using XIVAutoAttack.Windows;
 using XIVAutoAttack.Windows.ComboConfigWindow;
@@ -70,7 +71,8 @@ namespace XIVAutoAttack.Combos.Script.Actions
                 });
             }, ref search, combo.AllActions, item =>
             {
-                ActionsCondition.Add(new ActionConditions(item)
+                if (item is not BaseAction act) return;
+                ActionsCondition.Add(new ActionConditions(act)
                 {
                     IsAbility = IsAbility,
                     IsEmergency = IsEmergency,

@@ -43,6 +43,46 @@
         Thaumaturge = 7,
 
         /// <summary>
+        /// 刻木匠
+        /// </summary>
+        Carpenter = 8,
+
+        /// <summary>
+        /// 锻铁匠
+        /// </summary>
+        Blacksmith = 9,
+
+        /// <summary>
+        /// 铸甲匠
+        /// </summary>
+        Armorer = 10,
+
+        /// <summary>
+        /// 雕金匠
+        /// </summary>
+        Goldsmith = 11,
+
+        /// <summary>
+        /// 制革匠
+        /// </summary>
+        Leatherworker = 12,
+
+        /// <summary>
+        /// 裁衣匠
+        /// </summary>
+        Weaver = 13,
+
+        /// <summary>
+        /// 炼金术士
+        /// </summary>
+        Alchemist = 14,
+
+        /// <summary>
+        /// 烹调师
+        /// </summary>
+        Culinarian = 15,
+
+        /// <summary>
         /// 骑士
         /// </summary>
         Paladin = 19,

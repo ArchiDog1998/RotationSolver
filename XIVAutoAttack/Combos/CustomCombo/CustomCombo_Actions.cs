@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
@@ -209,7 +210,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 当前这个类所有的BaseAction
         /// </summary>
-        public BaseAction[] AllActions => GetBaseActions(GetType());
+        public IAction[] AllActions => GetBaseActions(GetType());
 
         /// <summary>
         /// 这个类所有的公开bool值
@@ -233,13 +234,13 @@ namespace XIVAutoAttack.Combos.CustomCombo
             return types.Length == 2 && types[0].ParameterType == typeof(uint) && types[1].ParameterType == typeof(uint);
         });
 
-        private BaseAction[] GetBaseActions(Type type)
+        private IAction[] GetBaseActions(Type type)
         {
-            if (type == null) return new BaseAction[0];
+            if (type == null) return new IAction[0];
 
             var acts = from prop in type.GetProperties()
-                       where typeof(BaseAction).IsAssignableFrom(prop.PropertyType)
-                       select (BaseAction)prop.GetValue(this) into act
+                       where typeof(IAction).IsAssignableFrom(prop.PropertyType)
+                       select (IAction)prop.GetValue(this) into act
                        orderby act.ID
                        where act is RoleAction role ? role.InRole(Job.GetJobRole()) : true
                        select act;
