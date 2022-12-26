@@ -49,8 +49,9 @@ namespace XIVAutoAttack.Combos.Crafting
 
         private IAction[] GetBaseActions(Type type)
         {
-            if (type == null) return new BaseAction[0];
+            if (type == null) return new IAction[0];
 
+        
             var acts = from prop in type.GetProperties()
                        where typeof(IAction).IsAssignableFrom(prop.PropertyType)
                        select (IAction)prop.GetValue(this) into act

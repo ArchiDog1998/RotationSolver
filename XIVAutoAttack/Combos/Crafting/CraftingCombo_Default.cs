@@ -11,15 +11,11 @@ namespace XIVAutoAttack.Combos.Crafting
 {
     internal class CraftingCombo_Default : CraftingCombo
     {
-        public CraftingCombo_Default()
-        {
-        }
-
-        public override string Description => "测试";
+        public override string Description => "测试用代码，如果要使用记得点开AutoAttack";
 
         public override string GameVersion => "6.2";
 
-        public override string Author => "测试";
+        public override string Author => "秋水";
 
         public override bool TryInvoke(out IAction newAction)
         {
@@ -27,7 +23,7 @@ namespace XIVAutoAttack.Combos.Crafting
             if (CanHQ && MaxQuality != CurrentQuality)
             {
                 //第一步，直接闲静
-                if (StepNumber == 0 && Reflect.ShouldUse(out newAction)) return true;
+                if (StepNumber < 2 && Reflect.ShouldUse(out newAction)) return true;
 
                 bool highQuality = CraftCondition is Updaters.CraftCondition.Good or Updaters.CraftCondition.Excellent;
 
@@ -48,6 +44,11 @@ namespace XIVAutoAttack.Combos.Crafting
                 {
                     //弄点简约喽。这段还需要考量一下。
                     if (WasteNot2.ShouldUse(out newAction)) return true;
+                }
+                //精修一下
+                if(CurrentDurability <= 10)
+                {
+                    if (MastersMend.ShouldUse(out newAction)) return true;
                 }
 
                 //比尔格说可以直接带走
@@ -75,11 +76,14 @@ namespace XIVAutoAttack.Combos.Crafting
                 }
 
                 //能随便送走，但是质量还不行，普通推质量。
-
+                if (Innovation.ShouldUse(out newAction)) return true;
+                if (AdvancedTouch.ShouldUse(out newAction)) return true;
+                if (StandardTouch.ShouldUse(out newAction)) return true;
+                if (BasicTouch.ShouldUse(out newAction)) return true;
             }
 
             //第一步，直接坚信
-            if (StepNumber == 0 && MuscleMemory.ShouldUse(out newAction)) return true;
+            if (StepNumber < 2 && MuscleMemory.ShouldUse(out newAction)) return true;
 
             //好了，制作一下。
             if (BasicSynthesis.ShouldUse(out newAction)) return true;

@@ -288,6 +288,14 @@ internal class Strings
 
     #endregion
 
+    #region CraftActionType
+    public string CraftActionType_Progress { get; set; } = "Progress";
+    public string CraftActionType_Quality { get; set; } = "Quality";
+    public string CraftActionType_Status { get; set; } = "Status";
+    public string CraftActionType_Other { get; set; } = "Other";
+
+    #endregion
+
     public string CraftingCombo_Name { get; set; } = "Disciplines of Hands";
 
 

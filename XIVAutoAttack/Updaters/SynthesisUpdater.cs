@@ -68,18 +68,22 @@ namespace XIVAutoAttack.Updaters
         static readonly string[] _poorCondition = new string[]
         {
             "Poor",
+            "低品质",
         };
         static readonly string[] _normalCondition = new string[]
         {
             "Normal",
+            "通常",
         };
         static readonly string[] _goodCondition = new string[]
         {
             "Good",
+            "高品质",
         };
         static readonly string[] _excellentCondition = new string[]
         {
             "Excellent",
+            "最高品质",
         };
         static readonly string[] _centeredCondition = new string[]
         {

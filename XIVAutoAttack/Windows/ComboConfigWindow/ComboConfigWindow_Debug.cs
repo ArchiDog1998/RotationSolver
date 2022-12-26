@@ -56,9 +56,10 @@ internal partial class ComboConfigWindow
 
         if (ImGui.CollapsingHeader("Next Action"))
         {
-            BaseAction baseAction = null;
-            baseAction ??= ActionUpdater.NextAction as BaseAction;
-            DrawAction(baseAction);
+            if(ActionUpdater.NextAction != null)
+            {
+                DrawAction(ActionUpdater.NextAction);
+            }
 
             ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
             ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
@@ -83,6 +84,16 @@ internal partial class ComboConfigWindow
                 ImGui.Text(ActionUpdater.exception.StackTrace);
             }
         }
+
+        if (ImGui.CollapsingHeader("Crafting Debug"))
+        {
+            ImGui.Text($"Progress: {SynthesisUpdater.CurrentProgress} / {SynthesisUpdater.MaxProgress}");
+            ImGui.Text($"Quality: {SynthesisUpdater.CurrentQuality} / {SynthesisUpdater.MaxQuality}");
+            ImGui.Text($"Durability: {SynthesisUpdater.CurrentDurability} / {SynthesisUpdater.StartingDurability}");
+            ImGui.Text("Step Number: " + SynthesisUpdater.StepNumber.ToString());
+            ImGui.Text("Condition: " + SynthesisUpdater.CraftCondition.ToString());
+            ImGui.Text("LastCraft: " + ActionUpdater.LastCraftAction.ToString());
+        }
     }
 
     private static void DrawAction(ActionID id, string type)
@@ -90,7 +101,6 @@ internal partial class ComboConfigWindow
         var action = new BaseAction(id);
 
         ImGui.Text($"{type}: {action}");
-
     }
 }
 #endif

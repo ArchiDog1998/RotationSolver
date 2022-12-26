@@ -12,6 +12,7 @@ using System.Linq;
 using System.Numerics;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Actions.BaseCraftAction;
 using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Combos.Script;
 using XIVAutoAttack.Data;
@@ -363,6 +364,16 @@ internal partial class ComboConfigWindow : Window
                 {
                     ImGui.Text("Target Name: " + baseAct.Target.Name);
                 }
+#endif
+            }
+            else if (act is BaseCraftAction craft)
+            {
+#if DEBUG
+                ImGui.Text("Cost: " + craft.CPCost.ToString());
+                ImGui.Text("Progress: " + craft.Progress.ToString());
+                ImGui.Text("ProgressBase: " + craft.ProgressBase.ToString());
+                ImGui.Text("Quality: " + craft.Quality.ToString());
+                ImGui.Text("QualityBase: " + craft.QualityBase.ToString());
 #endif
             }
         });

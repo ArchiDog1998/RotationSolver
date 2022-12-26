@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using XIVAutoAttack.Actions;
 using XIVAutoAttack.Actions.BaseAction;
+using XIVAutoAttack.Actions.BaseCraftAction;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Localization;
@@ -282,6 +283,10 @@ namespace XIVAutoAttack
                     {
                         Service.TargetManager.SetTarget(act.Target);
                     }
+                }
+                if (nextAction is BaseCraftAction craft)
+                {
+                    ActionUpdater.LastCraftAction = craft.ID;
                 }
             }
             return;

@@ -95,8 +95,8 @@ namespace XIVAutoAttack.Updaters
 
         private unsafe static bool IsActionSlotRight(ActionBarSlot* slot, HotBarSlot* hot, uint actionID)
         {
-            if (hot->IconTypeA != HotbarSlotType.Action) return false;
-            if (hot->IconTypeB != HotbarSlotType.Action) return false;
+            if (hot->IconTypeA != HotbarSlotType.CraftAction && hot->IconTypeA != HotbarSlotType.Action) return false;
+            if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
             if (slot->ActionId == (uint)IconReplacer.KeyActionID) return false;
 
             return Service.IconReplacer.OriginalHook((uint)slot->ActionId) == actionID;
