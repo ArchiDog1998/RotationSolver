@@ -120,7 +120,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Berserk { get; } = new(ActionID.Berserk)
     {
-        ActionCheck = b => HaveHostilesInRange,
+        ActionCheck = b => HaveHostilesInRange && !InnerRelease.IsCoolDown,
     };
 
     /// <summary>
@@ -168,7 +168,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// </summary>
     public static BaseAction Holmgang { get; } = new(ActionID.Holmgang, isTimeline: true)
     {
-        ChoiceTarget =( tars, mustUse) => Player,
+        ChoiceTarget = (tars, mustUse) => Player,
     };
 
     /// <summary>
