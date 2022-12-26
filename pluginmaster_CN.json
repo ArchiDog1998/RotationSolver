@@ -13,9 +13,6 @@
     "CategoryTags": [
       "jobs"
     ],
-    "ImageUrls": [
-      "https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/gifs/ExampleDNC.gif"
-    ],
     "IsHide": false,
     "InternalName": "XIVAutoAction",
     "AssemblyVersion": "0.10.3.4",
