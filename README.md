@@ -1,16 +1,20 @@
 
-# XIVAutoAttack
+# AutoAction
 
-[![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/latest/total.svg?label=最新版本下载量&style=for-the-badge)]()
-[![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/total.svg?label=总下载量&style=for-the-badge)]()
-[![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/XIVAutoAttack?label=总行数&style=for-the-badge)]()
-[![Github License](https://img.shields.io/github/license/ArchiDog1998/XIVAutoAttack.svg?label=开源协议&style=for-the-badge)]()
+[![Github Latest Releases](https://img.shields.io/github/downloads/moewcorp/AutoAction/latest/total.svg?label=最新版本下载量&style=for-the-badge)]()
+[![Github All Releases](https://img.shields.io/github/downloads/moewcorp/AutoAction/total.svg?label=总下载量&style=for-the-badge)]()
+[![Github Lines](https://img.shields.io/tokei/lines/github/moewcorp/AutoAction?label=总行数&style=for-the-badge)]()
+[![Github License](https://img.shields.io/github/license/moewcorp/AutoAction.svg?label=开源协议&style=for-the-badge)]()
+
+本仓库为 [XIVAutoAction](https://github.com/ArchiDog1998/XIVAutoAction) 的一个Fork，通过社区的方式进行继续维护与开发。
+
+
 
 Talk about it on [Discord](https://discord.gg/nfzmJ6ujDP) For Player not in Chinese Server.
 
 Download this plugin on this url.
 
-`https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/pluginmaster.json`
+`https://raw.githubusercontent.com/moewcorp/AutoAction/master/pluginmaster.json`
 
 Translation is on [Crowdin](https://crowdin.com/project/xivautoattack)
 
@@ -18,7 +22,7 @@ Translation is on [Crowdin](https://crowdin.com/project/xivautoattack)
 
 如果你喜欢这个插件，可以在这个目录中下载它: 
 
-`https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/pluginmaster_CN.json`
+`https://raw.githubusercontent.com/moewcorp/AutoAction/master/pluginmaster_CN.json`
 
 QQ交流群：`913297282`，注意，入群问题中的下载量并非上方标签的下载量，请看Dalamud中显示的数值
 
@@ -77,5 +81,5 @@ QQ交流群：`913297282`，注意，入群问题中的下载量并非上方标�
 
 ## 循环开发
 
-如果您对本插件的循环不是很满意或者想要写出自己的循环，可以参考[Wiki](https://github.com/ArchiDog1998/XIVAutoAttack/wiki)学习如何开发。
+如果您对本插件的循环不是很满意或者想要写出自己的循环，可以参考[Wiki](https://github.com/moewcorp/AutoAction/wiki)学习如何开发。
 
