@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>XIVAutoAction</AssemblyName>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	  <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
     <Configurations>Debug;Release</Configurations>
@@ -12,8 +11,8 @@
   </PropertyGroup>
   <PropertyGroup />
 	<PropertyGroup>
-		<DalamudLibPath>..\..\DalamudDep\</DalamudLibPath>
-		<OutputPath>..\..\DevPlugins\$(ProjectName)</OutputPath>
+    <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+    <OutputPath>$(AppData)\XIVLauncher\devPlugins\$(ProjectName)</OutputPath>
 	</PropertyGroup>
   <ItemGroup>
 	  <Reference Include="Dalamud">
@@ -49,4 +48,5 @@
 <ItemGroup>
     <EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
 </ItemGroup>
+
 </Project>  

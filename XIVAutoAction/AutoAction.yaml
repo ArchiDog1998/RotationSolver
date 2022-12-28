@@ -1,0 +1,22 @@
+name: AutoAction
+author: 秋水, 汐ベMoon, gamous, 逆光, 玖祁, 牙刷play
+description: |-
+  International Edition.
+  This plugin is for free for everyone.
+  Make truly auto attack possible. Please use it carefully.
+  If this plugin does something wrong, please discuss about it on Discord.
+  /pattack to open the settings window.
+punchline: Teach you how to perform better in combat! -- gamous
+repo_url: https://github.com/moewcorp/AutoAction
+icon_url: https://raw.githubusercontent.com/moewcorp/AutoAction/master/XIVAutoAttackIcon.png
+dalamud_api_level: 7
+tags:
+  - Attack
+category_tags:
+  - jobs
+image_urls:
+  - https://raw.githubusercontent.com/moewcorp/AutoAction/master/gifs/ExampleDNC.gif
+download_count: 1024
+download_link_install: https://github.com/moewcorp/AutoAction/releases/latest/download/latest_INT.zip
+download_link_update: https://github.com/moewcorp/AutoAction/releases/latest/download/latest_INT.zip
+download_link_testing: https://github.com/moewcorp/AutoAction/releases/latest/download/latest_INT.zip

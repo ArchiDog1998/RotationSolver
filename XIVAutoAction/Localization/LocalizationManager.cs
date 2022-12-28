@@ -27,8 +27,8 @@ internal class LocalizationManager : IDisposable
 
     private void ReadFile(string lang, Assembly assembly)
     {
-        Stream manifestResourceStream = assembly.GetManifestResourceStream("XIVAutoAction.Localization." + lang + ".json")
-            ?? assembly.GetManifestResourceStream("XIVAutoAction_CN.Localization." + lang + ".json");
+        Stream manifestResourceStream = assembly.GetManifestResourceStream("AutoAction.Localization." + lang + ".json")
+            ?? assembly.GetManifestResourceStream("AutoAction_CN.Localization." + lang + ".json");
         if (manifestResourceStream == null) return;
         using StreamReader streamReader = new StreamReader(manifestResourceStream);
         _translations[lang] = JsonConvert.DeserializeObject<Strings>(streamReader.ReadToEnd());

@@ -10,7 +10,7 @@
     "Tags": ["Attack"],
     "CategoryTags": ["jobs"],
     "IsHide": false,
-    "InternalName": "XIVAutoAction",
+    "InternalName": "AutoAction_CN",
     "AssemblyVersion": "0.11.0.0",
     "IsTestingExclusive": false,
     "RepoUrl": "https://github.com/moewcorp/AutoAction",
@@ -23,9 +23,9 @@
     "DownloadLinkTesting": "https://github.com/moewcorp/AutoAction/releases/latest/download/latest_CN.zip",
     "LoadPriority": 0,
     "ImageUrls": [
-      "https://raw.githubusercontent.com/moewcorp/AutoAction/master/gifs/ExampleDNC.gif"
+      "https://raw.githubusercontent.com/moewcorp/AutoAction/main/gifs/ExampleDNC.gif"
     ],
-    "IconUrl": "https://raw.githubusercontent.com/moewcorp/AutoAction/master/XIVAutoAttackIcon.png",
+    "IconUrl": "https://raw.githubusercontent.com/moewcorp/AutoAction/main/XIVAutoAttackIcon.png",
     "AcceptsFeedback": true,
     "FeedbackMessage": null,
     "FeedbackWebhook": null
