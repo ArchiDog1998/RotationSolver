@@ -61,7 +61,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         if (KaeshiSetsugekka.ShouldUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
 
         //奥义斩浪
-        if ((!IsTargetBoss || Target.HasStatus(true, StatusID.Higanbana)) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
+        if ((!IsTargetBoss || (Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(20, true, StatusID.Higanbana))) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
 
         //处理居合术
         if (SenCount == 1 && IsTargetBoss && !IsTargetDying)
@@ -133,7 +133,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //明镜止水
-        if (HaveHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) &&
+        if (HaveHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) && SenCount == 1 &&
             (!IsTargetBoss || (Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana)) || (!HaveMoon && !HaveFlower) || (IsTargetBoss && IsTargetDying)))
         {
             if (MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -155,7 +155,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     private protected override IAction CountDownAction(float remainTime)
     {
         //开局使用明镜
-        if (remainTime <= 5 && MeikyoShisui.ShouldUse(out _)) return MeikyoShisui;
+        if (remainTime <= 10 && MeikyoShisui.ShouldUse(out _)) return MeikyoShisui;
         //真北防止boss面向没到位
         if (remainTime <= 2 && TrueNorth.ShouldUse(out _)) return TrueNorth;
         return base.CountDownAction(remainTime);

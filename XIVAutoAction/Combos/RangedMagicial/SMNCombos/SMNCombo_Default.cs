@@ -103,7 +103,9 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
                 if (SummonRuby.ShouldUse(out act)) return true;
                 break;
         }
+
         if (SummonTimerRemaining == 0 && AttunmentTimerRemaining == 0 && RuinIV.ShouldUse(out act, mustUse: true)) return true;
+
         //迸裂三灾
         if (Outburst.ShouldUse(out act)) return true;
 
@@ -121,19 +123,18 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
         }
 
         //龙神不死鸟迸发
-        if (((InBahamut && SummonBahamut.ElapsedAfterGCD(3)) || InPhoenix || (IsTargetBoss && IsTargetDying)) && EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
+        if (((InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !IsTargetBoss)) || InPhoenix || (IsTargetBoss && IsTargetDying)) && EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
         //死星核爆
-        if ((SummonBahamut.ElapsedAfterGCD(3) || (IsTargetBoss && IsTargetDying)) && Deathflare.ShouldUse(out act, mustUse: true)) return true;
+        if ((SummonBahamut.ElapsedAfterGCD(3) || !IsTargetBoss || (IsTargetBoss && IsTargetDying)) && Deathflare.ShouldUse(out act, mustUse: true)) return true;
         //苏生之炎
         if (Rekindle.ShouldUse(out act, mustUse: true)) return true;
         //山崩
         if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
 
         //痛苦核爆
-        if (((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolDown)) ||
-            !SearingLight.EnoughLevel || (IsTargetBoss && IsTargetDying)) && Painflare.ShouldUse(out act)) return true;
+        if (Painflare.ShouldUse(out act)) return true;
         //溃烂爆发
-        if (((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolDown)) ||
+        if (((InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolDown)) ||
             !SearingLight.EnoughLevel || (IsTargetBoss && IsTargetDying)) && Fester.ShouldUse(out act)) return true;
 
         //能量抽取
@@ -151,7 +152,7 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
             default:
                 break;
             case 1:
-                if (nextGCD.IsAnySameAction(true, Slipstream) || (Attunement == 0 && Player.HasStatus(true, StatusID.GarudasFavor)))
+                if (Player.HasStatus(true, StatusID.GarudasFavor))
                 {
                     if (Swiftcast.ShouldUse(out act, mustUse: true)) return true;
                 }
@@ -164,7 +165,7 @@ internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
                 break;
 
             case 3:
-                if (nextGCD.IsAnySameAction(true, Slipstream) || (Attunement == 0 && Player.HasStatus(true, StatusID.GarudasFavor)) ||
+                if (Player.HasStatus(true, StatusID.GarudasFavor) ||
                    (InIfrit && (nextGCD.IsAnySameAction(true, Gemshine, PreciousBrilliance) || IsMoving)))
                 {
                     if (Swiftcast.ShouldUse(out act, mustUse: true)) return true;
