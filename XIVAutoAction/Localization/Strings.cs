@@ -296,7 +296,7 @@ internal class Strings
 
     #endregion
 
-    public string CraftingCombo_Name { get; set; } = "Disciplines of Hands";
+    public string CraftingCombo_Name { get; set; } = "Disciples of the Hand";
 
 
     #region EnemyLocation
