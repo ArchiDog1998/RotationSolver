@@ -48,15 +48,16 @@ internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
     private protected override bool GeneralGCD(out IAction act)
     {
         //大招
-        if (SteelCyclone.ShouldUse(out act)) return true;//钢铁旋风
-        if (InnerBeast.ShouldUse(out act)) return true;//原初之魂
         if (PrimalRend.ShouldUse(out act, mustUse: true) && !IsMoving)//蛮荒崩裂
         {
-            if (PrimalRend.Target.DistanceToPlayer() < 1)
+            if (PrimalRend.Target.DistanceToPlayer() < 1 && Player.StatusStack(true, StatusID.InnerRelease) < 3)
             {
                 return true;
             }
         }
+        if (SteelCyclone.ShouldUse(out act)) return true;//钢铁旋风
+        if (InnerBeast.ShouldUse(out act)) return true;//原初之魂
+
 
 
         //aoe
@@ -148,16 +149,22 @@ internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //原初的勇猛
-        if (NascentFlash.ShouldUse(out act)) return true;//奶奶队友
+        if (NascentFlash.ShouldUse(out act))
+        {
+            if (!HaveShield)//不抗怪
+            {
+                return true;//奶奶队友
+            }
+        }
         if (Player.GetHealthRatio() < 0.4f//命不久矣
             && !Player.HasStatus(true, StatusID.Holmgang))//不在无敌中
         {
             //战栗
             if (ThrillofBattle.ShouldUse(out act)) return true;
-            //泰然自若
-            if (Equilibrium.ShouldUse(out act)) return true;
             //原初的直觉
             if (RawIntuition.ShouldUse(out act)) return true;
+            //泰然自若
+            if (Equilibrium.ShouldUse(out act)) return true;
         }
         return false;
     }
