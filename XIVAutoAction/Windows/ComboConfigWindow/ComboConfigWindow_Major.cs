@@ -256,7 +256,7 @@ internal partial class ComboConfigWindow : Window
 
                 if (ImGui.Button($"{FontAwesomeIcon.Globe.ToIconString()}##{texture.GetHashCode()}"))
                 {
-                    var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
+                    var url = @"https://github.com/moewcorp/AutoAction/blob/main/" + texture.GetType().FullName.Replace("XIVAutoAttack", "XIVAutoAction").Replace(".", @"/") + ".cs";
 
                     Util.OpenLink(url);
                 }
