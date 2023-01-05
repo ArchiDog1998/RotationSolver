@@ -84,16 +84,16 @@ internal partial class BaseCraftAction : IAction
     public string CateName => _craftType.ToName();
     CraftActionType _craftType;
     uint _last;
-    public BaseCraftAction(uint CRPActionId, CraftActionType type, Func<byte, double> baseMultiply = null, uint lastCraft = 0)
+    public BaseCraftAction(uint ActionId, CraftActionType type, Func<byte, double> baseMultiply = null, uint lastCraft = 0)
 
     {
         GetBaseMultiply = baseMultiply ?? (level => 0);
         _craftType = type;
         _last = lastCraft;
 
-        if (CRPActionId > 100000)
+        if (ActionId > 100000)
         {
-            var craftAction = Service.DataManager.GetExcelSheet<CraftAction>().GetRow(CRPActionId);
+            var craftAction = Service.DataManager.GetExcelSheet<CraftAction>().GetRow(ActionId);
             _crp = craftAction.CRP.Row;
             _bsm = craftAction.BSM.Row;
             _arm = craftAction.ARM.Row;
@@ -109,15 +109,15 @@ internal partial class BaseCraftAction : IAction
         }
         else
         {
-            var action = Service.DataManager.GetExcelSheet<Action>().GetRow(CRPActionId);
-            _crp = CRPActionId;
-            _bsm = CRPActionId + 1;
-            _arm = CRPActionId + 2;
-            _gsm = CRPActionId + 3;
-            _ltw = CRPActionId + 4;
-            _wvr = CRPActionId + 5;
-            _alc = CRPActionId + 6;
-            _cul = CRPActionId + 7;
+            var action = Service.DataManager.GetExcelSheet<Action>().GetRow(ActionId);
+            _crp = ActionId;
+            _bsm = ActionId + 1;
+            _arm = ActionId + 2;
+            _gsm = ActionId + 3;
+            _ltw = ActionId + 4;
+            _wvr = ActionId + 5;
+            _alc = ActionId + 6;
+            _cul = ActionId + 7;
 
             Name = action.Name;
             IconID = action.Icon;

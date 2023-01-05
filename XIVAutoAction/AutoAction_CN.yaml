@@ -1,11 +1,8 @@
 name: Auto Action
-author: 秋水, 汐ベMoon, gamous, 逆光, 玖祁, 牙刷play
+author: moewcorp
 description: |-
-  国服版
-  本插件开源免费！
-  让自动攻击成为可能，请合理使用！此插件非常刺激！目前主要用于刷幻化和日随打本。
+  本插件开源免费！请不要以【任何付费方式】获取本插件！
   如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！
-  QQ群：913297282 注意看下载量！
   输入/pattack以设置帮助菜单。
 punchline: Teach you how to perform better in combat! -- gamous
 repo_url: https://github.com/moewcorp/AutoAction

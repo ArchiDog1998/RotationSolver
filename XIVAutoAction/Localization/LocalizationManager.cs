@@ -51,7 +51,7 @@ internal class LocalizationManager : IDisposable
 #if DEBUG
     public void ExportLocalization()
     {
-        var directory = @"D:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\XIVAutoAction\XIVAutoAction\Localization";
+        var directory = @"E:\AutoAction\XIVAutoAction\Localization";
         if (!Directory.Exists(directory)) return;
 
         //Default values.
