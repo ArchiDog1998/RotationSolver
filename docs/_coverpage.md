@@ -4,5 +4,6 @@
 
 > Teach you how to perform better in combat! -- gamous
 > AutoAction
-> [Github](https://github.com/moewcorp/AutoAction) >
-> [Start](#/?id=autoaction⚔%ef%b8%8f)
+
+[Github](https://github.com/moewcorp/AutoAction)
+[Start](#/?id=autoaction⚔%ef%b8%8f)
