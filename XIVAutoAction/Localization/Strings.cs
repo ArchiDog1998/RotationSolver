@@ -92,6 +92,7 @@ internal class Strings
     public string Configwindow_Events_ShareMacro { get; set; } = "Shared Macro No.";
     public string Configwindow_Events_RemoveEvent { get; set; } = "Delete Event";
     public string Configwindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
+    public string Configwindow_Params_RestoreDefault { get; set; } = "Restore Default";
     public string Configwindow_Params_NeverReplaceIcon { get; set; } = "Never Replace Icons";
     public string Configwindow_Params_NeverReplaceIconDesc { get; set; } = "Icon replacement: Repose is automatically displayed as the next skill to be used";
     public string Configwindow_Params_UseOverlayWindow { get; set; } = "Display top overlay";

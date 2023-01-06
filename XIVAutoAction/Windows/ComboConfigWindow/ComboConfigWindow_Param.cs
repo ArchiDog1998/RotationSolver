@@ -42,6 +42,16 @@ internal partial class ComboConfigWindow
 
             if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Params_BasicSettings))
             {
+                if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Params_RestoreDefault))
+                {
+                    Service.Configuration.WeaponDelay = 0;
+                    Service.Configuration.WeaponFaster = 0.08f;
+                    Service.Configuration.WeaponInterval = 0.67f;
+                    Service.Configuration.SpecialDuration = 3;
+                    Service.Configuration.InterruptibleTime = 0.5f;
+                    Service.Configuration.AddDotGCDCount = 2;
+                    Service.Configuration.Save();
+                }
 
                 float weaponDelay = Service.Configuration.WeaponDelay;
                 ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
@@ -417,6 +427,16 @@ internal partial class ComboConfigWindow
 
             if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Params_Conditons))
             {
+                if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Params_RestoreDefault))
+                {
+                    Service.Configuration.HealthDifference = 0.25f;
+                    Service.Configuration.HealthAreaAbility = 0.75f;
+                    Service.Configuration.HealthAreafSpell = 0.65f;
+                    Service.Configuration.HealthSingleAbility = 0.7f;
+                    Service.Configuration.HealthSingleSpell = 0.55f;
+                    Service.Configuration.Save();
+                }
+
                 bool autoStartCountdown = Service.Configuration.AutoStartCountdown;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AutoStartCountdown, ref autoStartCountdown))
                 {
