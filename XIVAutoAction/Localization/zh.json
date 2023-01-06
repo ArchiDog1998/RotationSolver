@@ -57,8 +57,6 @@
   "Configwindow_Params_UseOverlayWindowDesc": "这个窗口目前用于提前提示身位。",
   "Configwindow_Params_BasicSettings": "基础设置",
   "Configwindow_Params_RestoreDefault": "恢复默认",
-  "Configwindow_Params_WeaponDelay": "GCD技能的随机间隔 （秒）",
-  "Configwindow_Params_WeaponFaster": "技能使用的提前量",
   "Configwindow_Params_WeaponInterval": "能力技的使用间隔",
   "Configwindow_Params_InterruptibleTime": "打断技能的使用延迟",
   "Configwindow_Params_SpecialDuration": "指令设定的特殊窗口期持续时长",

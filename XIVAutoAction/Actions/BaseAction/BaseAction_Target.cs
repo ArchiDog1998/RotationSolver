@@ -425,7 +425,7 @@ namespace XIVAutoAttack.Actions.BaseAction
         }
 
         /// <summary>
-        /// 
+        /// 检查状态Eot
         /// </summary>
         /// <param name="tar"></param>
         /// <returns>True for add Eot.</returns>

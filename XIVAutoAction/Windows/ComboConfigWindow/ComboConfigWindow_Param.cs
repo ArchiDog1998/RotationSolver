@@ -42,30 +42,13 @@ internal partial class ComboConfigWindow
 
             if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Params_BasicSettings))
             {
+
                 if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Params_RestoreDefault))
                 {
-                    Service.Configuration.WeaponDelay = 0;
-                    Service.Configuration.WeaponFaster = 0.08f;
                     Service.Configuration.WeaponInterval = 0.67f;
                     Service.Configuration.SpecialDuration = 3;
                     Service.Configuration.InterruptibleTime = 0.5f;
                     Service.Configuration.AddDotGCDCount = 2;
-                    Service.Configuration.Save();
-                }
-
-                float weaponDelay = Service.Configuration.WeaponDelay;
-                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
-                if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_WeaponDelay, ref weaponDelay, 0.002f, 0, 1))
-                {
-                    Service.Configuration.WeaponDelay = weaponDelay;
-                    Service.Configuration.Save();
-                }
-
-                float weaponFaster = Service.Configuration.WeaponFaster;
-                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
-                if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_WeaponFaster, ref weaponFaster, 0.002f, 0, 0.1f))
-                {
-                    Service.Configuration.WeaponFaster = weaponFaster;
                     Service.Configuration.Save();
                 }
 
@@ -95,7 +78,7 @@ internal partial class ComboConfigWindow
 
                 int addDotGCDCount = Service.Configuration.AddDotGCDCount;
                 ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
-                if (ImGui.DragInt(LocalizationManager.RightLang.Configwindow_Params_AddDotGCDCount, ref addDotGCDCount, 0.2f, 0, 3))
+                if (ImGui.DragInt(LocalizationManager.RightLang.Configwindow_Params_AddDotGCDCount, ref addDotGCDCount, 0.1f, 1, 3))
                 {
                     Service.Configuration.AddDotGCDCount = addDotGCDCount;
                     Service.Configuration.Save();

@@ -98,8 +98,6 @@ internal class Strings
     public string Configwindow_Params_UseOverlayWindow { get; set; } = "Display top overlay";
     public string Configwindow_Params_UseOverlayWindowDesc { get; set; } = "This window is currently used to cue the body position in advance.";
     public string Configwindow_Params_BasicSettings { get; set; } = "Basic settings";
-    public string Configwindow_Params_WeaponDelay { get; set; } = "Set the random interval between GCD (seconds)";
-    public string Configwindow_Params_WeaponFaster { get; set; } = "Set the time advance of use actions";
     public string Configwindow_Params_WeaponInterval { get; set; } = "Set the interval between abilities using";
     public string Configwindow_Params_InterruptibleTime { get; set; } = "Set the delay of interrupting";
     public string Configwindow_Params_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
