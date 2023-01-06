@@ -1,17 +1,15 @@
 # XIV Auto Attack⚔️
 
-本插件开源免费！
-让自动攻击成为可能，请合理使用！此插件非常刺激！目前主要用于刷幻化和日随打本。
-如果有不好用较高的地方或者循环不合理，或者某职业需要添加选项，请于Discord反馈，谢谢！
-QQ群：913297282，下载量请加载卫月第三方库之后自行查看。
-输入/pattack以设置帮助菜单。
+本插件开源免费！请不要以【任何付费方式】获取本插件！
+如果有不好用的地方或者循环不合理，或者某职业需要添加选项，请及时联系，谢谢！
+QQ群：488744911
 
 
 ![promotion](assets/promotion.png)
 ## 加载方法
 设置中添加自定义插件仓库，安装
 ```
-https://raw.githubusercontent.com/gamous/DalamudPluginsCN-Dev/main/MordionGaol.json
+https://raw.githubusercontent.com/moewcorp/AutoAction/main/pluginmaster_CN.json
 ```
 
 ## 基础使用
