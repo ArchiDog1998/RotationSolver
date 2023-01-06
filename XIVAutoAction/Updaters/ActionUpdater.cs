@@ -147,8 +147,6 @@ namespace XIVAutoAttack.Updaters
             _lastMP = player.CurrentMp;
         }
 
-        static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
-        static long _weaponRandomDelay = 0;
         internal static float _lastCastingTotal = 0;
         internal unsafe static void DoAction()
         {
@@ -178,25 +176,9 @@ namespace XIVAutoAttack.Updaters
                 || *(bool*)((IntPtr)ActionManager.Instance() + 0x68)) return;
 
             //GCD
-            if (WeaponRemain <= Service.Configuration.WeaponFaster)
+            if (WeaponRemain <= 0.1f)
             {
-                if (!_weaponDelayStopwatch.IsRunning)
-                {
-                    _weaponDelayStopwatch.Start();
-                    return;
-                }
-                else if (_weaponDelayStopwatch.ElapsedMilliseconds > _weaponRandomDelay)
-                {
-                    _weaponDelayStopwatch.Stop();
-                    _weaponDelayStopwatch.Reset();
-
-                    CommandController.DoAnAction(true);
-
-                    Random ran = new Random(DateTime.Now.Millisecond);
-                    _weaponRandomDelay = (long)(ran.NextDouble() * Service.Configuration.WeaponDelay * 1000);
-
-                    return;
-                }
+                CommandController.DoAnAction(true);
                 return;
             }
 
@@ -213,20 +195,15 @@ namespace XIVAutoAttack.Updaters
             //只剩下最后一个能力技了，然后卡最后！
             if (WeaponRemain < 2 * Service.Configuration.WeaponInterval)
             {
-                if (WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponFaster) return;
+                if (WeaponRemain > Service.Configuration.WeaponInterval + 0.1f) return;
                 CommandController.DoAnAction(false);
 
                 return;
             }
-            else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
+            else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= 0.1f)
             {
                 CommandController.DoAnAction(false);
             }
-        }
-
-        public static void Dispose()
-        {
-            _weaponDelayStopwatch?.Stop();
         }
     }
 }

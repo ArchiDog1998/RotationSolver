@@ -86,8 +86,6 @@ public class PluginConfiguration : IPluginConfiguration
     public float InterruptibleTime { get; set; } = 0.5f;
     public float SpecialDuration { get; set; } = 3;
     public float WeaponInterval { get; set; } = 0.67f;
-    public float WeaponFaster { get; set; } = 0.08f;
-    public float WeaponDelay { get; set; } = 0;
     public string LocationWrongText { get; set; } = string.Empty;
     public string ScriptComboFolder { get; set; } = string.Empty;
 
