@@ -25,16 +25,24 @@ internal partial class ComboConfigWindow
             {
                 Util.OpenLink("https://github.com/moewcorp/AutoAction");
             }
-            if (ImGui.Button(LocalizationManager.RightLang.Configwindow_About_Discord))
-            {
-                Util.OpenLink("https://discord.gg/wJHTXxrEv7");
-            }
+            //if (ImGui.Button(LocalizationManager.RightLang.Configwindow_About_Discord))
+            //{
+            //    Util.OpenLink("https://discord.gg/wJHTXxrEv7");
+            //}
             if (ImGui.Button(LocalizationManager.RightLang.Configwindow_About_Wiki))
             {
-                Util.OpenLink("https://moewcorp.github.io/AutoAction/");
+                Util.OpenLink("https://moewcorp.github.io/AutoAction/"+WikiLang(Service.Interface.UiLanguage));
             }
             ImGui.PopStyleColor();
             ImGui.EndChild();
         }
+    }
+
+    private string WikiLang(string lang){
+        return lang switch
+        {
+            "zh" => "#/zh-cn/",
+            _ => ""
+        };
     }
 }

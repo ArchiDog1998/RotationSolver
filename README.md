@@ -6,78 +6,49 @@
 [![Github Lines](https://img.shields.io/tokei/lines/github/moewcorp/AutoAction?label=总行数&style=for-the-badge)]()
 [![Github License](https://img.shields.io/github/license/moewcorp/AutoAction.svg?label=开源协议&style=for-the-badge)]()
 
-本仓库为 [XIVAutoAction](https://github.com/ArchiDog1998/XIVAutoAction) 的一个Fork，但和原库没有任何继承关系，本仓库由一些爱好者通过社区的方式自行进行继续维护与开发。
+本仓库为 [XIVAutoAction](https://github.com/ArchiDog1998/XIVAutoAction) 的一个Fork，由一些爱好者主动通过社区的方式通过GPL开源协议共同继承并使用了原仓库.git文件与代码文件在内的主要文件进行继续开发维护和使用，本仓库本身和原作者没有关系。
 
 **重要声明：**
 
-- 本仓库不是原AutoAction停更后,原作者<秋水>指定的后续维护仓库,只是一些使用者和爱好者为能继续使用而共同进行后续维护开发的仓库,和原作者没有任何关系，我们只是众多使用者的其中一部分，只为能继续使用AA。
-- 本仓库的理念可能和主仓库理念稍有差异，但我们尊重本插件的最主要作者和原插件拥有者-秋水！
+- 本仓库**并非**原AutoAction停更后, 原作者 **[ArchiDog1998 (秋水)](https://github.com/ArchiDog1998)** 指定的后续维护仓库, 只是一些使用者和爱好者为能继续使用而共同进行后续维护开发的仓库,和原作者没有任何关系，我们只是众多使用者的其中一部分，只为能继续使用AA。
+- 本仓库的理念与主仓库理念存在差异，更加开放包容，但我们尊重本插件的最主要作者和原插件拥有者-秋水！
 
 - 如果今后维护的有做的不符合原作者预期了，也和原作者没有任何关系，原作者不承担任何责任与义务，望周知。
-- 再次声明本仓库不是AutoAction原作者唯一指定的后续维护开发仓库!
+- 再次声明本仓库**不是AutoAction**原作者唯一指定的后续维护开发仓库!
 
+**Discord and Crowdin are no longer used !**
 
+There is no discord yet. But the [Discussions](https://github.com/moewcorp/AutoAction/discussions) is open.
 
-Talk about it on [Discord](https://discord.gg/nfzmJ6ujDP) For Player not in Chinese Server.
+~~Talk about it on [Discord](https://discord.gg/nfzmJ6ujDP) For Player not in Chinese Server.~~
 
-Download this plugin on this url.
+~~Translation is on [Crowdin](https://crowdin.com/project/xivautoattack)~~
 
-`https://raw.githubusercontent.com/moewcorp/AutoAction/main/pluginmaster.json`
+Repo url for global server player:
 
-Translation is on [Crowdin](https://crowdin.com/project/xivautoattack)
+ `https://raw.githubusercontent.com/moewcorp/AutoAction/main/pluginmaster.json`
 
-中文玩家可以加入[Discord](https://discord.gg/awuCKbxR6q)参与讨论。
-
-如果你喜欢这个插件，可以在这个目录中下载它: 
+中国服仓库链接: 
 
 `https://raw.githubusercontent.com/moewcorp/AutoAction/main/pluginmaster_CN.json`
 
-QQ交流群：`913297282`，注意，入群问题中的下载量并非上方标签的下载量，请看Dalamud中显示的数值
+## Localization 本地化
 
-## 插件概况
+Want to localize this plugin？
+
+Since crowdin is no longer used, plz PR to the json files in [Localization](https://github.com/moewcorp/AutoAction/tree/main/XIVAutoAction/Localization) directly now.
+
+[German](https://github.com/moewcorp/AutoAction/blob/main/XIVAutoAction/Localization/de.json) | [Spanish](https://github.com/moewcorp/AutoAction/blob/main/XIVAutoAction/Localization/es.json) | [French](https://github.com/moewcorp/AutoAction/blob/main/XIVAutoAction/Localization/fr.json) | [Japanese](https://github.com/moewcorp/AutoAction/blob/main/XIVAutoAction/Localization/ja.json) | [Chinese](https://github.com/moewcorp/AutoAction/blob/main/XIVAutoAction/Localization/zh.json)
+
+## Overview 插件概况
+
+This plugin provides full-class PVE automatic attack, can automatically find the optimal target, and provides opener teaching mode.
 
 本插件提供全职业的PVE的自动攻击，可以自动找最优目标，并提供循环教育模式。
 
-**不**包含未来也**不**会提供任何PVP功能。
-
 ![案例](gifs/ExampleDNC.gif)
 
-## 设计原则
-
-> 不降低任何玩家群体的游戏体验。
->
-> 不能让服务器看到任何异常。
-
-为达到上述目标最需要保证会因为自动循环而降低游戏体验的群体：`手打玩家`。
-
-手打玩家中会有一部分重视自己在游戏中的各方面表现，如果自动循环能够非常轻易的超过手打玩家的游戏表现，那么就会让一部分纯手打玩家失去手打的乐趣，这不是本插件所期望达到的。 
-
-其次，本插件能做到的功能手动操作`均可复现`。
-
-### 设计宗旨
-
-为此，需要保证所做的插件`不能超过`手打的表现，只能保证游戏表现的`兜底`。
-
-所以对于本插件的循环的要求，仅仅有以下指标：
-
-- 基本满足[警察网](https://xivanalysis.com/)对于循环的要求
-- 能打爆除了当前版本以外的`所有等级同步木桩`
-- 任何等级下，没有必要能力技`空转`
-- 会灵活`切换`AOE和单体攻击适应各种战斗环境
-- 能够一定程度上的`自动奶`和`自动上盾`，但不保证不溢出
-- 可以随时`调整战术`以及`屏蔽`自动循环
-
-为保证游戏表现不能过高，必须做到以下限制：
-
-- 不能为`任何副本`单独做轴
-
-- 不能精确到每个技能的单独控制
-
-  需要一定的模糊度以区分出自动的整体表现不如手动
-
-本插件几乎所有循环都是按照[NGA-职业攻略](https://nga.178.com/thread.php?fid=-362960)种的循环设计的，能基本做到输出无压力。如果还觉得输出有困难，那多半是在玩`零式`或`绝本`。那么作者非常建议手打，总需要有副本给予FF14`原本的体验`。
-
-### 适用人群
+### Target User  适用人群
 - 不想自己打循环，但是想要`体验副本机制`的玩家。
   - 日常刷日随、幻化的玩家
   - 每周清个CD摸摸鱼的玩家
@@ -87,7 +58,12 @@ QQ交流群：`913297282`，注意，入群问题中的下载量并非上方标�
 
 
 
-## 循环开发
+## 致谢
 
-如果您对本插件的循环不是很满意或者想要写出自己的循环，可以参考[Wiki](https://github.com/moewcorp/AutoAction/wiki)学习如何开发。
-
+- [attickdoor](https://github.com/attickdoor) 开发本插件的基础[XIVComboPlugin](https://github.com/attickdoor/XIVComboPlugin)
+- [daemitus](https://github.com/daemitus)、[Grammernatzi](https://github.com/Grammernatzi) 持续改进维护[XIVComboPlugin](https://github.com/daemitus/XIVComboPlugin)
+- [tssailzz8 (牙刷)](https://github.com/tssailzz8) 汉化并增强开发出[XIVComboPluginExpandedest](https://github.com/tssailzz8/XIVComboPluginExpandedest)
+- [ArchiDog1998 (秋水)](https://github.com/ArchiDog1998) 重构并增强开发[XIVAutoAction](https://github.com/ArchiDog1998/XIVAutoAction)的框架与基础循环
+- [Silempoleer (汐月)](https://github.com/Silempoleer)、[NiGuangOwO (逆光)](https://github.com/NiGuangOwO) 开发本插件大量循环
+- [fatinghenji (玖祁)](https://github.com/fatinghenji) 等玩家通过翻译的方式国际化本插件
+- [GoatCorp](https://github.com/goatcorp) 为本插件提供的基础框架

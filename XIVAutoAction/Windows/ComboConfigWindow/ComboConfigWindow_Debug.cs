@@ -15,7 +15,7 @@ internal partial class ComboConfigWindow
     {
         var str = TargetUpdater.EncryptString(Service.ClientState.LocalPlayer);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
-        ImGui.InputText("你的HASH! 发给秋水萌新吧！", ref str, 100);
+        ImGui.InputText("神秘HASH，用来挂友碰头", ref str, 100);
 
         ImGui.Text("Hostile: " + TargetUpdater.HostileTargets.Count().ToString());
         ImGui.Text("Friends: " + TargetUpdater.PartyMembers.Count().ToString());

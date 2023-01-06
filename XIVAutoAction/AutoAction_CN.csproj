@@ -12,7 +12,7 @@
   <PropertyGroup />
 	<PropertyGroup>
 		<DalamudLibPath>..\..\DalamudDep\</DalamudLibPath>
-		<OutputPath>..\..\DevPlugins\$(ProjectName)</OutputPath>
+		<OutputPath>..\..\DevPlugins\AutoAction_CN</OutputPath>
 	</PropertyGroup>
   <ItemGroup>
 	  <Reference Include="Dalamud">

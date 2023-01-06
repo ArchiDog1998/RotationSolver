@@ -11,8 +11,8 @@
   </PropertyGroup>
   <PropertyGroup />
 	<PropertyGroup>
-    <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-    <OutputPath>$(AppData)\XIVLauncher\devPlugins\$(ProjectName)</OutputPath>
+		<OutputPath>..\DevPlugins\AutoAction</OutputPath>
+		<DalamudLibPath>..\..\DalamudDep\</DalamudLibPath>
 	</PropertyGroup>
   <ItemGroup>
 	  <Reference Include="Dalamud">
@@ -47,6 +47,10 @@
 	
 <ItemGroup>
     <EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
+</ItemGroup>
+	
+<ItemGroup>
+  <PackageReference Include="DalamudPackager" Version="2.1.8" />
 </ItemGroup>
 
 </Project>  
