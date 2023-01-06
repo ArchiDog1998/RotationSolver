@@ -11,7 +11,7 @@
   </PropertyGroup>
   <PropertyGroup />
 	<PropertyGroup>
-		<OutputPath>..\DevPlugins\AutoAction</OutputPath>
+		<OutputPath>C:\Users\Administrator\Desktop\dalamud\addon\Hooks\dev\</OutputPath>
 		<DalamudLibPath>..\..\DalamudDep\</DalamudLibPath>
 	</PropertyGroup>
   <ItemGroup>
