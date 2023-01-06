@@ -51,6 +51,7 @@
   "Configwindow_Events_ShareMacro": "Shared Macro No.",
   "Configwindow_Events_RemoveEvent": "Delete Event",
   "Configwindow_Params_Description": "In this window, you can set the parameters about the using way of actions.",
+  "Configwindow_Params_RestoreDefault": "Restore Default",
   "Configwindow_Params_NeverReplaceIcon": "Never Replace Icons",
   "Configwindow_Params_NeverReplaceIconDesc": "Icon replacement: Repose is automatically displayed as the next skill to be used",
   "Configwindow_Params_UseOverlayWindow": "Display top overlay",
