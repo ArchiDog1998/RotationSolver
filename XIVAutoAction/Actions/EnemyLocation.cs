@@ -1,6 +1,6 @@
-﻿using XIVAutoAttack.Localization;
+﻿using AutoAction.Localization;
 
-namespace XIVAutoAttack.Actions
+namespace AutoAction.Actions
 {
     public enum EnemyLocation : byte
     {

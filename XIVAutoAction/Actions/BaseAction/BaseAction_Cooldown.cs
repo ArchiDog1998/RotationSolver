@@ -1,9 +1,9 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
-using XIVAutoAttack.Helpers;
+using AutoAction.Helpers;
 
 
-namespace XIVAutoAttack.Actions.BaseAction
+namespace AutoAction.Actions.BaseAction
 {
     internal partial class BaseAction
     {

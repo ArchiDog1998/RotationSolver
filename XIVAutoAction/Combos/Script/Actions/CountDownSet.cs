@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Windows;
-using XIVAutoAttack.Windows.ComboConfigWindow;
+using AutoAction.Actions;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Localization;
+using AutoAction.Windows;
+using AutoAction.Windows.ComboConfigWindow;
 
-namespace XIVAutoAttack.Combos.Script.Actions
+namespace AutoAction.Combos.Script.Actions
 {
     internal class CountDownSet : IDraw
     {

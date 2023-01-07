@@ -1,4 +1,4 @@
-﻿namespace XIVAutoAttack.Data
+﻿namespace AutoAction.Data
 {
     public enum ClassJobID : uint
     {

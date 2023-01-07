@@ -10,11 +10,11 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using System;
 using System.Runtime.InteropServices;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.SigReplacers;
 
-namespace XIVAutoAttack.Updaters
+namespace AutoAction.Updaters
 {
     internal static class PreviewUpdater
     {

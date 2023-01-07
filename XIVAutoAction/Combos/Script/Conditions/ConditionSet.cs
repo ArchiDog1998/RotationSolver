@@ -5,10 +5,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Windows;
+using AutoAction.Localization;
+using AutoAction.Windows;
 
-namespace XIVAutoAttack.Combos.Script.Conditions;
+namespace AutoAction.Combos.Script.Conditions;
 
 internal class ConditionSet : ICondition
 {

@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Melee.DRGCombos.DRGCombo_Default;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using static AutoAction.Combos.Melee.DRGCombos.DRGCombo_Default;
 
-namespace XIVAutoAttack.Combos.Melee.DRGCombos;
+namespace AutoAction.Combos.Melee.DRGCombos;
 
 internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
 {

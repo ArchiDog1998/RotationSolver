@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Localization;
 
-namespace XIVAutoAttack.Combos.Script.Actions
+namespace AutoAction.Combos.Script.Actions
 {
     internal class ComboSet : IDraw
     {
@@ -84,9 +84,9 @@ namespace XIVAutoAttack.Combos.Script.Actions
 
             if (ImGui.BeginChild($"##ActionDescOf{JobID}From{AuthorName}", new Vector2(-5f, -1f), true))
             {
-                if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_CountDown, CountDown == XIVAutoAttackPlugin._scriptComboWindow.ActiveSet))
+                if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_CountDown, CountDown == AutoActionPlugin._scriptComboWindow.ActiveSet))
                 {
-                    XIVAutoAttackPlugin._scriptComboWindow.ActiveSet = CountDown;
+                    AutoActionPlugin._scriptComboWindow.ActiveSet = CountDown;
                 }
                 if (ImGui.IsItemHovered())
                 {
@@ -98,9 +98,9 @@ namespace XIVAutoAttack.Combos.Script.Actions
                                   select prop)
                 {
                     var value = p.GetValue(this) as ActionsSet;
-                    if (ImGui.Selectable(p.GetMemberName(), value == XIVAutoAttackPlugin._scriptComboWindow.ActiveSet))
+                    if (ImGui.Selectable(p.GetMemberName(), value == AutoActionPlugin._scriptComboWindow.ActiveSet))
                     {
-                        XIVAutoAttackPlugin._scriptComboWindow.ActiveSet = value;
+                        AutoActionPlugin._scriptComboWindow.ActiveSet = value;
                     }
 
                     var d = p.GetMemberDescription();

@@ -1,6 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 
-namespace XIVAutoAttack.Helpers
+namespace AutoAction.Helpers
 {
     internal static class VirtualKeyHelper
     {

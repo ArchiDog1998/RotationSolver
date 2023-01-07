@@ -4,17 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Actions.BaseCraftAction;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
-using XIVAutoAttack.Windows;
+using AutoAction.Actions;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Actions.BaseCraftAction;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Localization;
+using AutoAction.SigReplacers;
+using AutoAction.Updaters;
+using AutoAction.Windows;
 
-namespace XIVAutoAttack
+namespace AutoAction
 {
     internal static class CommandController
     {
@@ -470,7 +470,7 @@ namespace XIVAutoAttack
 
                     Service.ChatGui.PrintError(LocalizationManager.RightLang.Commands_CannotFind + ": " + str);
                     Service.ChatGui.PrintError(LocalizationManager.RightLang.Commands_OpenSettings);
-                    XIVAutoAttackPlugin.OpenConfigWindow();
+                    AutoActionPlugin.OpenConfigWindow();
                     return;
             }
         }

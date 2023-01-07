@@ -9,11 +9,11 @@ using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Localization;
 
-namespace XIVAutoAttack.Updaters
+namespace AutoAction.Updaters
 {
     internal static partial class TargetUpdater
     {

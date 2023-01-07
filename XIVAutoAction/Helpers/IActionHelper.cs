@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.SigReplacers;
+using AutoAction.Actions;
+using AutoAction.Data;
+using AutoAction.SigReplacers;
 
-namespace XIVAutoAttack.Helpers
+namespace AutoAction.Helpers
 {
     internal static class IActionHelper
     {

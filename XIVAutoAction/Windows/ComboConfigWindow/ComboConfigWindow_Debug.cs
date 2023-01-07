@@ -1,13 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using ImGuiNET;
 using System.Linq;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.SigReplacers;
+using AutoAction.Updaters;
 
-namespace XIVAutoAttack.Windows.ComboConfigWindow;
+namespace AutoAction.Windows.ComboConfigWindow;
 #if DEBUG
 internal partial class ComboConfigWindow
 {

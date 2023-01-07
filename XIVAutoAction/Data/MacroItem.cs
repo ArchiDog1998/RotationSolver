@@ -2,7 +2,7 @@
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 
-namespace XIVAutoAttack.Data
+namespace AutoAction.Data
 {
     internal unsafe class MacroItem
     {

@@ -1,10 +1,10 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Localization;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace XIVAutoAttack.Actions.BaseAction
+namespace AutoAction.Actions.BaseAction
 {
     internal partial class BaseAction : IAction
     {

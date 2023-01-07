@@ -1,7 +1,7 @@
 ﻿using Lumina.Excel.GeneratedSheets;
-using XIVAutoAttack.Localization;
+using AutoAction.Localization;
 
-namespace XIVAutoAttack.Data
+namespace AutoAction.Data
 {
     public enum JobRole : byte
     {

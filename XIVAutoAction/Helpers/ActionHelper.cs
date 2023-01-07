@@ -1,8 +1,8 @@
-﻿using XIVAutoAttack.Data;
+﻿using AutoAction.Data;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 
-namespace XIVAutoAttack.Helpers
+namespace AutoAction.Helpers
 {
     internal static class ActionHelper
     {

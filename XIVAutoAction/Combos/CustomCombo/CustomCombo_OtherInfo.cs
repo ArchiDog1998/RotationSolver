@@ -3,14 +3,14 @@ using Dalamud.Game.ClientState.Objects.Types;
 using System;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.SigReplacers.Watcher;
+using AutoAction.Actions;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.SigReplacers;
+using AutoAction.Updaters;
+using static AutoAction.SigReplacers.Watcher;
 
-namespace XIVAutoAttack.Combos.CustomCombo
+namespace AutoAction.Combos.CustomCombo
 {
     internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {

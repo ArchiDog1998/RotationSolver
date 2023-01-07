@@ -1,13 +1,13 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
 
-namespace XIVAutoAttack.Combos.Basic;
+namespace AutoAction.Combos.Basic;
 
 internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
 {

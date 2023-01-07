@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.RangedPhysicial.MCHCombos.MCHCombo_Default;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
+using static AutoAction.Combos.RangedPhysicial.MCHCombos.MCHCombo_Default;
 
-namespace XIVAutoAttack.Combos.RangedPhysicial.MCHCombos;
+namespace AutoAction.Combos.RangedPhysicial.MCHCombos;
 
 internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
 {

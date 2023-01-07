@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.RangedPhysicial.DNCCombos.DNCCombo_Moon;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
+using static AutoAction.Combos.RangedPhysicial.DNCCombos.DNCCombo_Moon;
 
-namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
+namespace AutoAction.Combos.RangedPhysicial.DNCCombos;
 
 internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
 {

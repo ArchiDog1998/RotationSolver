@@ -2,7 +2,7 @@
 using Lumina.Excel.GeneratedSheets;
 using System;
 
-namespace XIVAutoAttack.Actions
+namespace AutoAction.Actions
 {
     internal class BaseItem : IAction
     {

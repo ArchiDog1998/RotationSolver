@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace XIVAutoAttack.Configuration
+namespace AutoAction.Configuration
 {
     public class ActionConfiguration
     {

@@ -1,8 +1,8 @@
 ﻿using ImGuiScene;
 using System.Collections.Generic;
-using XIVAutoAttack.Combos.CustomCombo;
+using AutoAction.Combos.CustomCombo;
 
-namespace XIVAutoAttack.Data
+namespace AutoAction.Data
 {
     public enum IconType : byte
     {

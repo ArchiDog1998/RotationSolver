@@ -14,11 +14,11 @@ using Dalamud.Game.Gui.FlyText;
 using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
 using Dalamud.Plugin;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.SigReplacers;
+using AutoAction.Configuration;
+using AutoAction.Localization;
+using AutoAction.SigReplacers;
 
-namespace XIVAutoAttack;
+namespace AutoAction;
 
 internal class Service
 {

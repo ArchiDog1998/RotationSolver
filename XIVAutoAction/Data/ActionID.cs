@@ -1,5 +1,5 @@
 ﻿
-namespace XIVAutoAttack.Data
+namespace AutoAction.Data
 {
     public enum ActionID : uint
     {

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.RangedMagicial.SMNCombos.SMNCombo_Default;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using static AutoAction.Combos.RangedMagicial.SMNCombos.SMNCombo_Default;
 
-namespace XIVAutoAttack.Combos.RangedMagicial.SMNCombos;
+namespace AutoAction.Combos.RangedMagicial.SMNCombos;
 
 internal sealed class SMNCombo_Default : SMNCombo_Base<CommandType>
 {

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace XIVAutoAttack.Updaters
+namespace AutoAction.Updaters
 {
     internal static class MajorUpdater
     {

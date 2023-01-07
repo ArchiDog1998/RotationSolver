@@ -1,14 +1,14 @@
 ﻿using ImGuiNET;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Windows.ComboConfigWindow;
+using AutoAction.Actions;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Localization;
+using AutoAction.Windows.ComboConfigWindow;
 
-namespace XIVAutoAttack.Combos.Script.Actions
+namespace AutoAction.Combos.Script.Actions
 {
     internal class CountDownAction
     {

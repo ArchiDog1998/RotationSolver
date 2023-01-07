@@ -5,14 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
+using AutoAction.Actions;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.SigReplacers;
+using AutoAction.Updaters;
 
-namespace XIVAutoAttack.Windows
+namespace AutoAction.Windows
 {
     internal static class OverlayWindow
     {

@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Moon;
-using static XIVAutoAttack.SigReplacers.Watcher;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
+using static AutoAction.Combos.RangedMagicial.BLMCombo_Moon;
+using static AutoAction.SigReplacers.Watcher;
 
-namespace XIVAutoAttack.Combos.RangedMagicial;
+namespace AutoAction.Combos.RangedMagicial;
 internal sealed partial class BLMCombo_Moon : BLMCombo_Base<CommandType>
 {
     public override string GameVersion => "6.18";

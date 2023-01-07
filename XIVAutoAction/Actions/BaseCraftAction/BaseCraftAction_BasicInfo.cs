@@ -1,13 +1,13 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using System;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Updaters;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Localization;
+using AutoAction.Updaters;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace XIVAutoAttack.Actions.BaseCraftAction;
+namespace AutoAction.Actions.BaseCraftAction;
 
 public enum CraftActionType : byte
 {

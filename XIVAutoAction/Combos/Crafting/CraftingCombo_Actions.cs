@@ -1,8 +1,8 @@
-﻿using XIVAutoAttack.Actions.BaseCraftAction;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+﻿using AutoAction.Actions.BaseCraftAction;
+using AutoAction.Data;
+using AutoAction.Helpers;
 
-namespace XIVAutoAttack.Combos.Crafting
+namespace AutoAction.Combos.Crafting
 {
     internal abstract partial class CraftingCombo
     {

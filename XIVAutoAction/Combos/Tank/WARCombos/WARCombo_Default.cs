@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Tank.WARCombos.WARCombo_Default;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
+using static AutoAction.Combos.Tank.WARCombos.WARCombo_Default;
 
-namespace XIVAutoAttack.Combos.Tank.WARCombos;
+namespace AutoAction.Combos.Tank.WARCombos;
 
 internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
 {

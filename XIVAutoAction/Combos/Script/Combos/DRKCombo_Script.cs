@@ -1,9 +1,9 @@
 ﻿using System;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.Script.Actions;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.Script.Actions;
 
-namespace XIVAutoAttack.Combos.Script.Combos;
+namespace AutoAction.Combos.Script.Combos;
 
 internal class DRKCombo_Script : DRKCombo_Base<Enum>, IScriptCombo
 {

@@ -2,9 +2,9 @@
 using Dalamud.Utility;
 using ImGuiNET;
 using System.Numerics;
-using XIVAutoAttack.Localization;
+using AutoAction.Localization;
 
-namespace XIVAutoAttack.Windows.ComboConfigWindow;
+namespace AutoAction.Windows.ComboConfigWindow;
 
 internal partial class ComboConfigWindow
 {

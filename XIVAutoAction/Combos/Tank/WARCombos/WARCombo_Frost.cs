@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Melee.NINCombos.WARCombo_Frost;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
+using static AutoAction.Combos.Melee.NINCombos.WARCombo_Frost;
 
-namespace XIVAutoAttack.Combos.Melee.NINCombos;
+namespace AutoAction.Combos.Melee.NINCombos;
 
 internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
 {

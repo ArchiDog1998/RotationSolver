@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
-using XIVAutoAttack.Windows;
+using AutoAction.Actions;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.SigReplacers;
+using AutoAction.Updaters;
+using AutoAction.Windows;
 
-namespace XIVAutoAttack.Combos.CustomCombo
+namespace AutoAction.Combos.CustomCombo
 {
     internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
     {

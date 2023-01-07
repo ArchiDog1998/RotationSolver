@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 
-namespace XIVAutoAttack.Combos.Script.Conditions;
+namespace AutoAction.Combos.Script.Conditions;
 
 internal interface ICondition : IDraw
 {

@@ -2,10 +2,10 @@
 using Dalamud.Hooking;
 using System;
 using System.Numerics;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using AutoAction.Data;
+using AutoAction.Helpers;
 
-namespace XIVAutoAttack.Updaters
+namespace AutoAction.Updaters
 {
     internal static class MovingUpdater
     {

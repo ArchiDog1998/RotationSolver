@@ -6,9 +6,9 @@ using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Data;
+using AutoAction.Data;
 
-namespace XIVAutoAttack.Helpers
+namespace AutoAction.Helpers
 {
     public record LevelModifier(int Main, int Sub, int Div);
     internal class HealHelper

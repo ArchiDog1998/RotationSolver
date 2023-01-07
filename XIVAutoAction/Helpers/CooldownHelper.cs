@@ -1,9 +1,9 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using System;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Updaters;
+using AutoAction.Data;
+using AutoAction.Updaters;
 
-namespace XIVAutoAttack.Helpers
+namespace AutoAction.Helpers
 {
     internal static class CooldownHelper
     {

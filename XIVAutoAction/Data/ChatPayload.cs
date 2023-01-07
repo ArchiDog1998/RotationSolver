@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace XIVAutoAttack.Data
+namespace AutoAction.Data
 {
     [StructLayout(LayoutKind.Explicit)]
     public readonly struct ChatPayload : IDisposable

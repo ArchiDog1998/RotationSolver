@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Script.Conditions;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Windows;
-using XIVAutoAttack.Windows.ComboConfigWindow;
+using AutoAction.Actions;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Combos.Script.Conditions;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Localization;
+using AutoAction.Windows;
+using AutoAction.Windows.ComboConfigWindow;
 
-namespace XIVAutoAttack.Combos.Script.Actions;
+namespace AutoAction.Combos.Script.Actions;
 
 /// <summary>
 /// 最右边那栏用来渲染的
@@ -107,9 +107,9 @@ internal class ActionConditions : IDraw
             ImGui.SameLine();
             ComboConfigWindow.Spacing();
 
-            if (ImGui.Selectable(_action.Name, this == XIVAutoAttackPlugin._scriptComboWindow.ActiveAction))
+            if (ImGui.Selectable(_action.Name, this == AutoActionPlugin._scriptComboWindow.ActiveAction))
             {
-                XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
+                AutoActionPlugin._scriptComboWindow.ActiveAction = this;
             }
         }
         else if (_method != null)
@@ -121,7 +121,7 @@ internal class ActionConditions : IDraw
 
             if (ImGui.Selectable(_method.GetMemberName()))
             {
-                XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
+                AutoActionPlugin._scriptComboWindow.ActiveAction = this;
             }
 
             var desc = _method.GetMemberDescription();
@@ -134,7 +134,7 @@ internal class ActionConditions : IDraw
         {
             if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_Return))
             {
-                XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
+                AutoActionPlugin._scriptComboWindow.ActiveAction = this;
             }
         }
     }

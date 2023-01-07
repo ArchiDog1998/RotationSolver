@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using XIVAutoAttack.Combos.Script.Actions;
+using AutoAction.Combos.Script.Actions;
 
-namespace XIVAutoAttack.Localization;
+namespace AutoAction.Localization;
 
 internal class Strings
 {
@@ -31,7 +31,7 @@ internal class Strings
         = "In this window, you can modify the conditions of use for each action.";
 
     public string ConfigWindow_HelpItem_Description { get; set; }
-        = "In this window, you can see all XIVAutoAttack built-in commands for combat. ";
+        = "In this window, you can see all AutoAction built-in commands for combat. ";
 
     public string Configwindow_HelpItem_AttackSmart { get; set; }
         = "Start attacking in smart mode(auto-targeting) when out of combat, otherwise switch the target according to the conditions.";

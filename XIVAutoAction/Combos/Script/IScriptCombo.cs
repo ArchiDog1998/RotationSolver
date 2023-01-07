@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Script.Actions;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Combos.Script.Actions;
 
-namespace XIVAutoAttack.Combos.Script
+namespace AutoAction.Combos.Script
 {
     internal interface IScriptCombo : ICustomCombo
     {

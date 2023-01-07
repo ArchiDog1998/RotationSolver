@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Data;
+using AutoAction.Actions;
+using AutoAction.Data;
 
 
-namespace XIVAutoAttack.Helpers
+namespace AutoAction.Helpers
 {
     internal static class StatusHelper
     {

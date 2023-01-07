@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Healer.SCHCombos.SCHCombo_Default;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
+using static AutoAction.Combos.Healer.SCHCombos.SCHCombo_Default;
 
-namespace XIVAutoAttack.Combos.Healer.SCHCombos;
+namespace AutoAction.Combos.Healer.SCHCombos;
 
 internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
 {

@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Tank.DRKCombos.DRKCombo_Default;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
+using static AutoAction.Combos.Tank.DRKCombos.DRKCombo_Default;
 
-namespace XIVAutoAttack.Combos.Tank.DRKCombos;
+namespace AutoAction.Combos.Tank.DRKCombos;
 
 internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
 {

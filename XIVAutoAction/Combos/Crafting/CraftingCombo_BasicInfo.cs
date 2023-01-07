@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Localization;
+using AutoAction.Actions;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Localization;
 
-namespace XIVAutoAttack.Combos.Crafting
+namespace AutoAction.Combos.Crafting
 {
     internal abstract partial class CraftingCombo : ICustomCombo
     {

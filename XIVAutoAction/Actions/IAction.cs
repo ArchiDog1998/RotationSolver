@@ -1,4 +1,4 @@
-﻿namespace XIVAutoAttack.Actions
+﻿namespace AutoAction.Actions
 {
     public interface IAction : IEnableTexture
     {

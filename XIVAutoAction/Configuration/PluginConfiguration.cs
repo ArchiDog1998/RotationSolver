@@ -3,9 +3,9 @@ using Dalamud.Game.ClientState.Keys;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using XIVAutoAttack.Data;
+using AutoAction.Data;
 
-namespace XIVAutoAttack.Configuration;
+namespace AutoAction.Configuration;
 
 [Serializable]
 public class PluginConfiguration : IPluginConfiguration

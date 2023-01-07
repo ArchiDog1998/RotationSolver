@@ -9,16 +9,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Actions.BaseCraftAction;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Script;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.SigReplacers;
+using AutoAction.Actions;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Actions.BaseCraftAction;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Combos.Script;
+using AutoAction.Data;
+using AutoAction.Localization;
+using AutoAction.SigReplacers;
 
-namespace XIVAutoAttack.Windows.ComboConfigWindow;
+namespace AutoAction.Windows.ComboConfigWindow;
 
 internal partial class ComboConfigWindow : Window
 {
@@ -241,7 +241,7 @@ internal partial class ComboConfigWindow : Window
 
                 if (ImGui.Button($"{FontAwesomeIcon.Edit.ToIconString()}##{texture.GetHashCode()}"))
                 {
-                    XIVAutoAttackPlugin.OpenScriptWindow(script);
+                    AutoActionPlugin.OpenScriptWindow(script);
                 }
                 ImGui.PopFont();
 
@@ -256,7 +256,7 @@ internal partial class ComboConfigWindow : Window
 
                 if (ImGui.Button($"{FontAwesomeIcon.Globe.ToIconString()}##{texture.GetHashCode()}"))
                 {
-                    var url = @"https://github.com/moewcorp/AutoAction/blob/main/" + texture.GetType().FullName.Replace("XIVAutoAttack", "XIVAutoAction").Replace(".", @"/") + ".cs";
+                    var url = @"https://github.com/moewcorp/AutoAction/blob/main/" + texture.GetType().FullName.Replace("AutoAction", "XIVAutoAction").Replace(".", @"/") + ".cs";
 
                     Util.OpenLink(url);
                 }
@@ -314,7 +314,7 @@ internal partial class ComboConfigWindow : Window
 
     private static void CommandHelp(string command, string help = null)
     {
-        command = XIVAutoAttackPlugin._autoCommand + " " + command;
+        command = AutoActionPlugin._autoCommand + " " + command;
         if (ImGui.Button(command))
         {
             Service.CommandManager.ProcessCommand(command);

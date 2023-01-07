@@ -1,9 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
 
-namespace XIVAutoAttack.Combos.Crafting
+namespace AutoAction.Combos.Crafting
 {
     internal abstract partial class CraftingCombo
     {

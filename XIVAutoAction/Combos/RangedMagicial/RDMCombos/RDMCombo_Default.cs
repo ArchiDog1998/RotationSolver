@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.RangedMagicial.RDMCombos.RDMCombo_Default;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using static AutoAction.Combos.RangedMagicial.RDMCombos.RDMCombo_Default;
 
-namespace XIVAutoAttack.Combos.RangedMagicial.RDMCombos;
+namespace AutoAction.Combos.RangedMagicial.RDMCombos;
 
 internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 {

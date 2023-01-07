@@ -11,14 +11,14 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Updaters;
+using AutoAction.Actions;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Localization;
+using AutoAction.Updaters;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace XIVAutoAttack.SigReplacers
+namespace AutoAction.SigReplacers
 {
     public static class Watcher
     {

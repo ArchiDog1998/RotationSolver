@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Updaters;
+using AutoAction.Data;
+using AutoAction.Updaters;
 
-namespace XIVAutoAttack.Helpers
+namespace AutoAction.Helpers
 {
     internal static class TargetFilter
     {

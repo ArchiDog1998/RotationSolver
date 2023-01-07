@@ -1,6 +1,6 @@
-﻿using XIVAutoAttack.Actions;
+﻿using AutoAction.Actions;
 
-namespace XIVAutoAttack.Combos.Crafting
+namespace AutoAction.Combos.Crafting
 {
     internal class CraftingCombo_Default : CraftingCombo
     {

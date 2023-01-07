@@ -1,14 +1,14 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.RangedPhysicial.BRDCombos.BRDCombo_Default;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using static AutoAction.Combos.RangedPhysicial.BRDCombos.BRDCombo_Default;
 
-namespace XIVAutoAttack.Combos.RangedPhysicial.BRDCombos;
+namespace AutoAction.Combos.RangedPhysicial.BRDCombos;
 
 internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
 {

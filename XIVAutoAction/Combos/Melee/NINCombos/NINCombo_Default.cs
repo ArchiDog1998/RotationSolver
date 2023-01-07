@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Melee.NINCombos.NINCombo_Default;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
+using static AutoAction.Combos.Melee.NINCombos.NINCombo_Default;
 
-namespace XIVAutoAttack.Combos.Melee.NINCombos;
+namespace AutoAction.Combos.Melee.NINCombos;
 
 internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
 {

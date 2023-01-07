@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Melee.SAMCombos.SAMCombo_Default;
+using AutoAction.Actions;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using static AutoAction.Combos.Melee.SAMCombos.SAMCombo_Default;
 
-namespace XIVAutoAttack.Combos.Melee.SAMCombos;
+namespace AutoAction.Combos.Melee.SAMCombos;
 
 internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
 {

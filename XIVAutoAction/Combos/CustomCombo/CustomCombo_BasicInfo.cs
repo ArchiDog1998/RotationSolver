@@ -3,13 +3,13 @@ using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Helpers.ReflectionHelper;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using static AutoAction.Helpers.ReflectionHelper;
 
-namespace XIVAutoAttack.Combos.CustomCombo
+namespace AutoAction.Combos.CustomCombo
 {
     internal abstract partial class CustomCombo<TCmd> : ICustomCombo where TCmd : Enum
     {

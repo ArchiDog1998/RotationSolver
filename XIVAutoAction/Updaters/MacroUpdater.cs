@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using XIVAutoAttack.Data;
+using AutoAction.Data;
 
-namespace XIVAutoAttack.Updaters
+namespace AutoAction.Updaters
 {
     internal static class MacroUpdater
     {

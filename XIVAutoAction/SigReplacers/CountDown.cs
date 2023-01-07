@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace XIVAutoAttack.SigReplacers
+namespace AutoAction.SigReplacers
 {
     internal static class CountDown
     {

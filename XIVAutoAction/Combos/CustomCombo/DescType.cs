@@ -1,6 +1,6 @@
-﻿using XIVAutoAttack.Localization;
+﻿using AutoAction.Localization;
 
-namespace XIVAutoAttack.Combos.CustomCombo
+namespace AutoAction.Combos.CustomCombo
 {
     public enum DescType : byte
     {

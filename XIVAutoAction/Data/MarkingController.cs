@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace XIVAutoAttack.Data
+namespace AutoAction.Data
 {
     [StructLayout(LayoutKind.Explicit, Size = 688)]
     public struct MarkingController

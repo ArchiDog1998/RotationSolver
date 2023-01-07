@@ -2,11 +2,11 @@
 using Lumina.Excel.GeneratedSheets;
 using System.Collections.Generic;
 using System.Reflection;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
+using AutoAction.Actions;
+using AutoAction.Configuration;
+using AutoAction.Data;
 
-namespace XIVAutoAttack.Combos.CustomCombo
+namespace AutoAction.Combos.CustomCombo
 {
     internal interface ICustomCombo : IEnableTexture
     {

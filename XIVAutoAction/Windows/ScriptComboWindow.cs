@@ -11,12 +11,12 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using XIVAutoAttack.Combos.Script;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
+using AutoAction.Combos.Script;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Localization;
 
-namespace XIVAutoAttack.Windows
+namespace AutoAction.Windows
 {
     internal class ScriptComboWindow : Window
     {

@@ -3,12 +3,12 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
+using AutoAction.Actions;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.SigReplacers;
 
-namespace XIVAutoAttack.Updaters
+namespace AutoAction.Updaters
 {
     internal static class ActionUpdater
     {

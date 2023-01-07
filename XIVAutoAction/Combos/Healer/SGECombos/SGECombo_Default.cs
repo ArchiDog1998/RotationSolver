@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Healer.SGECombos.SGECombo_Default;
+using AutoAction.Actions;
+using AutoAction.Actions.BaseAction;
+using AutoAction.Combos.Basic;
+using AutoAction.Combos.CustomCombo;
+using AutoAction.Configuration;
+using AutoAction.Data;
+using AutoAction.Helpers;
+using AutoAction.Updaters;
+using static AutoAction.Combos.Healer.SGECombos.SGECombo_Default;
 
-namespace XIVAutoAttack.Combos.Healer.SGECombos;
+namespace AutoAction.Combos.Healer.SGECombos;
 
 internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
 {
