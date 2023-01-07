@@ -93,7 +93,7 @@ namespace AutoAction.Combos.RangedMagicial.BLUCombos
             //鬼宿脚
             if (PhantomFlurry.IsCoolDown && !PhantomFlurry.ElapsedAfter(1) || Player.HasStatus(true, StatusID.PhantomFlurry))
             {
-                if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.ShouldUse(out act, mustUse: true)) return true;
+                if (!Player.WillStatusEnd(0.1f, true, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, true, StatusID.PhantomFlurry) && PhantomFlurry2.ShouldUse(out act, mustUse: true)) return true;
                 return false;
             }
             //穿甲散弹

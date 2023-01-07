@@ -52,9 +52,9 @@ namespace AutoAction.Helpers
         /// </summary>
         /// <param name="gcdelapsed">已经进行了多少秒了</param>
         /// <returns>是否已经冷却了这么久了</returns>
-        internal static bool ElapsedAfter(float elapsed, float gcdelapsed)
+        internal static bool ElapsedAfter(float elapsed, float gcdelapsed, bool addWeaponElapsed = true)
         {
-            //gcdelapsed += ActionUpdater.WeaponElapsed;
+            if (addWeaponElapsed) gcdelapsed += ActionUpdater.WeaponElapsed;
             return IsLessThan(gcdelapsed, elapsed);
         }
 
@@ -78,7 +78,7 @@ namespace AutoAction.Helpers
         /// <param name="remain">要多少秒呢</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点是否已经结束</returns>
-        internal static bool RecastAfter(float recast, float remain, bool addWeaponRemain = false)
+        internal static bool RecastAfter(float recast, float remain, bool addWeaponRemain = true)
         {
             if (addWeaponRemain) remain += ActionUpdater.WeaponRemain;
 

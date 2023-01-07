@@ -80,7 +80,7 @@ internal class TargetCondition : ICondition
                 break;
 
             case TargetConditionType.StatusEnd:
-                result = !tar.WillStatusEnd(DistanceOrTime, FromSelf, Status);
+                result = !tar.WillStatusEnd(DistanceOrTime, FromSelf, true, Status);
                 break;
 
             case TargetConditionType.StatusEndGCD:

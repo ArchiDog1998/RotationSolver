@@ -61,7 +61,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         if (KaeshiSetsugekka.ShouldUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
 
         //奥义斩浪
-        if ((!IsTargetBoss || (Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(20, true, StatusID.Higanbana))) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
+        if ((!IsTargetBoss || (Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(20, true, true, StatusID.Higanbana))) && OgiNamikiri.ShouldUse(out act, mustUse: true)) return true;
 
         //处理居合术
         if (SenCount == 1 && IsTargetBoss && !IsTargetDying)
@@ -107,7 +107,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
         if (Kenki <= 50 && Ikishoten.ShouldUse(out act)) return true;
 
         //叶隐
-        if (Target.HasStatus(true, StatusID.Higanbana) && Target.WillStatusEnd(32, true, StatusID.Higanbana) && !Target.WillStatusEnd(28, true, StatusID.Higanbana) && SenCount == 1 && IsLastAction(true, Yukikaze) && !haveMeikyoShisui)
+        if (Target.HasStatus(true, StatusID.Higanbana) && Target.WillStatusEnd(32, true, true, StatusID.Higanbana) && !Target.WillStatusEnd(28, true, true, StatusID.Higanbana) && SenCount == 1 && IsLastAction(true, Yukikaze) && !haveMeikyoShisui)
         {
             if (Hagakure.ShouldUse(out act)) return true;
         }
@@ -134,7 +134,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
     {
         //明镜止水
         if (HaveHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) && SenCount == 1 &&
-            (!IsTargetBoss || (Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana)) || (!HaveMoon && !HaveFlower) || (IsTargetBoss && IsTargetDying)))
+            (!IsTargetBoss || (Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, true, StatusID.Higanbana)) || (!HaveMoon && !HaveFlower) || (IsTargetBoss && IsTargetDying)))
         {
             if (MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }

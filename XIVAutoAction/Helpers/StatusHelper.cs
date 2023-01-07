@@ -59,11 +59,12 @@ namespace AutoAction.Helpers
         /// 状态是否在几秒后消失。
         /// </summary>
         /// <param name="remainWant">要多少秒呢</param>
+        /// <param name="addWeaponRemain">是否要把GCD剩余时间加上去</param>
         /// <returns>这个时间点状态是否已经消失</returns>
-        internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool isFromSelf = true, params StatusID[] effectIDs)
+        internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool isFromSelf = true, bool addWeaponRemain = true, params StatusID[] effectIDs)
         {
             var remain = obj.StatusTime(isFromSelf, effectIDs);
-            return CooldownHelper.RecastAfter(remain, remainWant);
+            return CooldownHelper.RecastAfter(remain, remainWant, addWeaponRemain);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

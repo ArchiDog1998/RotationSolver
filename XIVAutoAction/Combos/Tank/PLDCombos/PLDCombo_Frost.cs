@@ -157,7 +157,7 @@ internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
         if (Requiescat.ShouldUse(out act))//安魂祈祷
         {
             if (Player.HasStatus(true, StatusID.FightOrFlight)//持有战逃buff
-            && Player.WillStatusEnd(17, true, StatusID.FightOrFlight)) return true;//战逃buff时间小于17s
+            && Player.WillStatusEnd(17, true, true, StatusID.FightOrFlight)) return true;//战逃buff时间小于17s
             if (!Player.HasStatus(true, StatusID.FightOrFlight)//没有战逃buff
             && !FightorFlight.WillHaveOneCharge(13)) return true;//战逃冷却在13s以上
         }
