@@ -6,11 +6,16 @@
 [![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/XIVAutoAttack?label=总行数&style=for-the-badge)]()
 [![Github License](https://img.shields.io/github/license/ArchiDog1998/XIVAutoAttack.svg?label=开源协议&style=for-the-badge)]()
 
-这个库已经不再维护了。
-
-This repository is abandoned.
+> 这个库已经不再维护了。
+>
+> This repository is abandoned.
 
 本仓库虽然是从[XIVComboPluginExpandedest](https://github.com/tssailzz8/XIVComboPluginExpandedest/tree/master/XIVComboPlugin)中fork过来的，但是已经几乎没有任何一行是从原仓库中留下来的。我也不知道为什么当时没自己创建一个。
+
+## 声明
+本仓库使用的是[GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)协议，任何人均享有自由分发软件的自由。详看[原文](https://github.com/ArchiDog1998/XIVAutoAction/blob/main/LICENSE#L23-L27)。请所有使用本仓库的作者遵循此协议。
+
+> 不能限制任何人自由分发此软件，不论是否收费！如已有限制，请删除！
 
 ## 插件简要历程
 
