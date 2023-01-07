@@ -343,8 +343,7 @@ internal partial class ComboConfigWindow : Window
         {
             if (act is BaseAction baseAct)
             {
-                if (baseAct.IsTimeline) CommandHelp($"Insert{act}-{5}",
-                    string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, act));
+                CommandHelp($"Insert{act}-{5}", string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, act));
 #if DEBUG
                 ImGui.Text("Have One:" + baseAct.HaveOneChargeDEBUG.ToString());
                 ImGui.Text("Is Real GCD: " + baseAct.IsRealGCD.ToString());

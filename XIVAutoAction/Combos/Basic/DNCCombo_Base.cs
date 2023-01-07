@@ -229,7 +229,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ·ÀÊØÖ®É£°Í
     /// </summary>
-    public static BaseAction ShieldSamba { get; } = new(ActionID.ShieldSamba, true, isTimeline: true)
+    public static BaseAction ShieldSamba { get; } = new(ActionID.ShieldSamba, true)
     {
         ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
@@ -240,7 +240,7 @@ internal abstract class DNCCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ÖÎÁÆÖ®»ª¶û×È
     /// </summary>
-    public static BaseAction CuringWaltz { get; } = new(ActionID.CuringWaltz, true, isTimeline: true);
+    public static BaseAction CuringWaltz { get; } = new(ActionID.CuringWaltz, true);
 
     /// <summary>
     /// ±ÕÊ½Îè×Ë

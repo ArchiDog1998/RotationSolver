@@ -126,17 +126,17 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Õ½Àõ
     /// </summary>
-    public static BaseAction ThrillofBattle { get; } = new(ActionID.ThrillofBattle, true, isTimeline: true);
+    public static BaseAction ThrillofBattle { get; } = new(ActionID.ThrillofBattle, true);
 
     /// <summary>
     /// Ì©È»×ÔÈô
     /// </summary>
-    public static BaseAction Equilibrium { get; } = new(ActionID.Equilibrium, true, isTimeline: true);
+    public static BaseAction Equilibrium { get; } = new(ActionID.Equilibrium, true);
 
     /// <summary>
     /// Ô­³õµÄÓÂÃÍ
     /// </summary>
-    public static BaseAction NascentFlash { get; } = new(ActionID.NascentFlash, isTimeline: true)
+    public static BaseAction NascentFlash { get; } = new(ActionID.NascentFlash)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -144,7 +144,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ¸´³ð
     /// </summary>
-    public static BaseAction Vengeance { get; } = new(ActionID.Vengeance, isTimeline: true)
+    public static BaseAction Vengeance { get; } = new(ActionID.Vengeance)
     {
         BuffsProvide = Rampart.BuffsProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -153,7 +153,7 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Ô­³õµÄÖ±¾õ
     /// </summary>
-    public static BaseAction RawIntuition { get; } = new(ActionID.RawIntuition, isTimeline: true)
+    public static BaseAction RawIntuition { get; } = new(ActionID.RawIntuition)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };
@@ -161,12 +161,12 @@ internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// °ÚÍÑ
     /// </summary>
-    public static BaseAction ShakeItOff { get; } = new(ActionID.ShakeItOff, true, isTimeline: true);
+    public static BaseAction ShakeItOff { get; } = new(ActionID.ShakeItOff, true);
 
     /// <summary>
     /// ËÀ¶·
     /// </summary>
-    public static BaseAction Holmgang { get; } = new(ActionID.Holmgang, isTimeline: true)
+    public static BaseAction Holmgang { get; } = new(ActionID.Holmgang)
     {
         ChoiceTarget = (tars, mustUse) => Player,
     };

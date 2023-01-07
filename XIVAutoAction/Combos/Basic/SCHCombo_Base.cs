@@ -33,12 +33,12 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 医术
     /// </summary>
-    public static BaseAction Physick { get; } = new(ActionID.Physick, true, isTimeline: true);
+    public static BaseAction Physick { get; } = new(ActionID.Physick, true);
 
     /// <summary>
     /// 鼓舞激励之策
     /// </summary>
-    public static BaseAction Adloquium { get; } = new(ActionID.Adloquium, true, isTimeline: true)
+    public static BaseAction Adloquium { get; } = new(ActionID.Adloquium, true)
     {
         ActionCheck = b => !b.HasStatus(false, StatusID.EukrasianDiagnosis,
             StatusID.EukrasianPrognosis,
@@ -54,7 +54,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 士气高扬之策
     /// </summary>
-    public static BaseAction Succor { get; } = new(ActionID.Succor, true, isTimeline: true)
+    public static BaseAction Succor { get; } = new(ActionID.Succor, true)
     {
         BuffsProvide = new[] { StatusID.Galvanize },
     };
@@ -62,7 +62,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 生命活性法
     /// </summary>
-    public static BaseAction Lustrate { get; } = new(ActionID.Lustrate, true, isTimeline: true)
+    public static BaseAction Lustrate { get; } = new(ActionID.Lustrate, true)
     {
         ActionCheck = b => HasAetherflow
     };
@@ -70,7 +70,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 野战治疗阵
     /// </summary>
-    public static BaseAction SacredSoil { get; } = new(ActionID.SacredSoil, true, isTimeline: true)
+    public static BaseAction SacredSoil { get; } = new(ActionID.SacredSoil, true)
     {
         ActionCheck = b => HasAetherflow && !IsMoving,
     };
@@ -78,7 +78,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 不屈不挠之策
     /// </summary>
-    public static BaseAction Indomitability { get; } = new(ActionID.Indomitability, true, isTimeline: true)
+    public static BaseAction Indomitability { get; } = new(ActionID.Indomitability, true)
     {
         ActionCheck = b => HasAetherflow
     };
@@ -86,7 +86,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 深谋远虑之策
     /// </summary>
-    public static BaseAction Excogitation { get; } = new(ActionID.Excogitation, true, isTimeline: true)
+    public static BaseAction Excogitation { get; } = new(ActionID.Excogitation, true)
     {
         ActionCheck = b => HasAetherflow
     };
@@ -94,7 +94,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 慰藉
     /// </summary>
-    public static BaseAction Consolation { get; } = new(ActionID.Consolation, true, isTimeline: true)
+    public static BaseAction Consolation { get; } = new(ActionID.Consolation, true)
     {
         ActionCheck = b => HasSeraph,
     };
@@ -102,7 +102,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 生命回生法
     /// </summary>
-    public static BaseAction Protraction { get; } = new(ActionID.Protraction, true, isTimeline: true);
+    public static BaseAction Protraction { get; } = new(ActionID.Protraction, true);
     #endregion
     #region 进攻
     /// <summary>
@@ -140,7 +140,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 炽天召唤
     /// </summary>
-    public static BaseAction SummonSeraph { get; } = new(ActionID.SummonSeraph, true, isTimeline: true)
+    public static BaseAction SummonSeraph { get; } = new(ActionID.SummonSeraph, true)
     {
         ActionCheck = b => TargetUpdater.HavePet,
     };
@@ -156,7 +156,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 仙光的低语/天使的低语
     /// </summary>
-    public static BaseAction WhisperingDawn { get; } = new(ActionID.WhisperingDawn, isTimeline: true)
+    public static BaseAction WhisperingDawn { get; } = new(ActionID.WhisperingDawn)
     {
         ActionCheck = b => TargetUpdater.HavePet,
     };
@@ -164,7 +164,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 异想的幻光/炽天的幻光
     /// </summary>
-    public static BaseAction FeyIllumination { get; } = new(ActionID.FeyIllumination, isTimeline: true)
+    public static BaseAction FeyIllumination { get; } = new(ActionID.FeyIllumination)
     {
         ActionCheck = b => TargetUpdater.HavePet,
     };
@@ -181,7 +181,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 以太契约-异想的融光
     /// </summary>
-    public static BaseAction Aetherpact { get; } = new(ActionID.Aetherpact, true, isTimeline: true)
+    public static BaseAction Aetherpact { get; } = new(ActionID.Aetherpact, true)
     {
         ActionCheck = b => JobGauge.FairyGauge >= 10 && TargetUpdater.HavePet && !HasSeraph
     };
@@ -189,7 +189,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 异想的祥光
     /// </summary>
-    public static BaseAction FeyBlessing { get; } = new(ActionID.FeyBlessing, isTimeline: true)
+    public static BaseAction FeyBlessing { get; } = new(ActionID.FeyBlessing)
     {
         ActionCheck = b => !HasSeraph && TargetUpdater.HavePet,
     };
@@ -206,7 +206,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 秘策
     /// </summary>
-    public static BaseAction Recitation { get; } = new(ActionID.Recitation, isTimeline: true);
+    public static BaseAction Recitation { get; } = new(ActionID.Recitation);
 
     /// <summary>
     /// 连环计
@@ -219,7 +219,7 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 展开战术
     /// </summary>
-    public static BaseAction DeploymentTactics { get; } = new(ActionID.DeploymentTactics, true, isTimeline: true)
+    public static BaseAction DeploymentTactics { get; } = new(ActionID.DeploymentTactics, true)
     {
         ChoiceTarget = (friends, mustUse) =>
         {
@@ -234,11 +234,11 @@ internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 应急战术
     /// </summary>
-    public static BaseAction EmergencyTactics { get; } = new(ActionID.EmergencyTactics, isTimeline: true);
+    public static BaseAction EmergencyTactics { get; } = new(ActionID.EmergencyTactics);
 
     /// <summary>
     /// 疾风怒涛之计
     /// </summary>
-    public static BaseAction Expedient { get; } = new(ActionID.Expedient, isTimeline: true);
+    public static BaseAction Expedient { get; } = new(ActionID.Expedient);
     #endregion
 }

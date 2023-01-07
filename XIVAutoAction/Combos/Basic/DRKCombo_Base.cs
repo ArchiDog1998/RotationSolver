@@ -96,7 +96,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 暗影墙
     /// </summary>
-    public static BaseAction ShadowWall { get; } = new(ActionID.ShadowWall, true, isTimeline: true)
+    public static BaseAction ShadowWall { get; } = new(ActionID.ShadowWall, true)
     {
         BuffsProvide = Rampart.BuffsProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -105,7 +105,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 弃明投暗
     /// </summary>
-    public static BaseAction DarkMind { get; } = new(ActionID.DarkMind, true, isTimeline: true)
+    public static BaseAction DarkMind { get; } = new(ActionID.DarkMind, true)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };
@@ -113,7 +113,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 行尸走肉
     /// </summary>
-    public static BaseAction LivingDead { get; } = new(ActionID.LivingDead, true, isTimeline: true);
+    public static BaseAction LivingDead { get; } = new(ActionID.LivingDead, true);
 
     /// <summary>
     /// 腐秽大地
@@ -162,7 +162,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 至黑之夜
     /// </summary>
-    public static BaseAction TheBlackestNight { get; } = new(ActionID.TheBlackestNight, isTimeline: true)
+    public static BaseAction TheBlackestNight { get; } = new(ActionID.TheBlackestNight)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -175,7 +175,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 暗黑布道
     /// </summary>
-    public static BaseAction DarkMissionary { get; } = new(ActionID.DarkMissionary, true, isTimeline: true);
+    public static BaseAction DarkMissionary { get; } = new(ActionID.DarkMissionary, true);
 
     /// <summary>
     /// 掠影示现
@@ -188,7 +188,7 @@ internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 献奉
     /// </summary>
-    public static BaseAction Oblation { get; } = new(ActionID.Oblation, true, isTimeline: true)
+    public static BaseAction Oblation { get; } = new(ActionID.Oblation, true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };

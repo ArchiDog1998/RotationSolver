@@ -116,12 +116,12 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 预后
     /// </summary>
-    public static BaseAction Prognosis { get; } = new(ActionID.Prognosis, true, shouldEndSpecial: true, isTimeline: true);
+    public static BaseAction Prognosis { get; } = new(ActionID.Prognosis, true, shouldEndSpecial: true);
 
     /// <summary>
     /// 自生
     /// </summary>
-    public static BaseAction Physis { get; } = new(ActionID.Physis, true, isTimeline: true);
+    public static BaseAction Physis { get; } = new(ActionID.Physis, true);
 
     ///// <summary>
     ///// 自生2
@@ -131,7 +131,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 均衡
     /// </summary>
-    public static BaseAction Eukrasia { get; } = new(ActionID.Eukrasia, true, isTimeline: true)
+    public static BaseAction Eukrasia { get; } = new(ActionID.Eukrasia, true)
     {
         ActionCheck = b => !JobGauge.Eukrasia,
     };
@@ -139,7 +139,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 拯救
     /// </summary>
-    public static BaseAction Soteria { get; } = new(ActionID.Soteria, true, isTimeline: true);
+    public static BaseAction Soteria { get; } = new(ActionID.Soteria, true);
 
     /// <summary>
     /// 神翼
@@ -152,7 +152,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 灵橡清汁
     /// </summary>
-    public static BaseAction Druochole { get; } = new(ActionID.Druochole, true, isTimeline: true)
+    public static BaseAction Druochole { get; } = new(ActionID.Druochole, true)
     {
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
@@ -165,7 +165,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 坚角清汁
     /// </summary>
-    public static BaseAction Kerachole { get; } = new(ActionID.Kerachole, true, isTimeline: true)
+    public static BaseAction Kerachole { get; } = new(ActionID.Kerachole, true)
     {
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
@@ -173,7 +173,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 寄生清汁
     /// </summary>
-    public static BaseAction Ixochole { get; } = new(ActionID.Ixochole, true, isTimeline: true)
+    public static BaseAction Ixochole { get; } = new(ActionID.Ixochole, true)
     {
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
@@ -181,12 +181,12 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 活化
     /// </summary>
-    public static BaseAction Zoe { get; } = new(ActionID.Zoe, isTimeline: true);
+    public static BaseAction Zoe { get; } = new(ActionID.Zoe);
 
     /// <summary>
     /// 白牛清汁
     /// </summary>
-    public static BaseAction Taurochole { get; } = new(ActionID.Taurochole, true, isTimeline: true)
+    public static BaseAction Taurochole { get; } = new(ActionID.Taurochole)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = b => JobGauge.Addersgall > 0,
@@ -203,7 +203,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 输血
     /// </summary>
-    public static BaseAction Haima { get; } = new(ActionID.Haima, true, isTimeline: true)
+    public static BaseAction Haima { get; } = new(ActionID.Haima, true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -211,7 +211,7 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 均衡诊断
     /// </summary>
-    public static BaseAction EukrasianDiagnosis { get; } = new(ActionID.EukrasianDiagnosis, true, isTimeline: true)
+    public static BaseAction EukrasianDiagnosis { get; } = new(ActionID.EukrasianDiagnosis, true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -219,12 +219,12 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 均衡预后
     /// </summary>
-    public static BaseAction EukrasianPrognosis { get; } = new(ActionID.EukrasianPrognosis, true, isTimeline: true);
+    public static BaseAction EukrasianPrognosis { get; } = new(ActionID.EukrasianPrognosis, true);
 
     /// <summary>
     /// 根素
     /// </summary>
-    public static BaseAction Rhizomata { get; } = new(ActionID.Rhizomata, isTimeline: true)
+    public static BaseAction Rhizomata { get; } = new(ActionID.Rhizomata)
     {
         ActionCheck = b => JobGauge.Addersgall < 3,
     };
@@ -232,27 +232,27 @@ internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 整体论
     /// </summary>
-    public static BaseAction Holos { get; } = new(ActionID.Holos, true, isTimeline: true);
+    public static BaseAction Holos { get; } = new(ActionID.Holos, true);
 
     /// <summary>
     /// 泛输血
     /// </summary>
-    public static BaseAction Panhaima { get; } = new(ActionID.Panhaima, true, isTimeline: true);
+    public static BaseAction Panhaima { get; } = new(ActionID.Panhaima, true);
 
     /// <summary>
     /// 混合
     /// </summary>
-    public static BaseAction Krasis { get; } = new(ActionID.Krasis, true, isTimeline: true);
+    public static BaseAction Krasis { get; } = new(ActionID.Krasis, true);
 
     /// <summary>
     /// 魂灵风息
     /// </summary>
-    public static BaseAction Pneuma { get; } = new(ActionID.Pneuma, isTimeline: true);
+    public static BaseAction Pneuma { get; } = new(ActionID.Pneuma);
 
     /// <summary>
     /// 消化
     /// </summary>
-    public static BaseAction Pepsis { get; } = new(ActionID.Pepsis, true, isTimeline: true)
+    public static BaseAction Pepsis { get; } = new(ActionID.Pepsis, true)
     {
         ActionCheck = b =>
         {

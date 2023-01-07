@@ -83,7 +83,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ‘§æØ
     /// </summary>
-    public static BaseAction Sentinel { get; } = new(ActionID.Sentinel, isTimeline: true, isFriendly: true)
+    public static BaseAction Sentinel { get; } = new(ActionID.Sentinel, isFriendly: true)
     {
         BuffsProvide = Rampart.BuffsProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -102,22 +102,22 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// …Ò •¡Ï”Ú
     /// </summary>
-    public static BaseAction HallowedGround { get; } = new(ActionID.HallowedGround, isTimeline: true);
+    public static BaseAction HallowedGround { get; } = new(ActionID.HallowedGround);
 
     /// <summary>
     ///  •π‚ƒª¡±
     /// </summary>
-    public static BaseAction DivineVeil { get; } = new(ActionID.DivineVeil, true, isTimeline: true);
+    public static BaseAction DivineVeil { get; } = new(ActionID.DivineVeil, true);
 
     /// <summary>
     /// …Ó» ∫Ò‘Û
     /// </summary>
-    public static BaseAction Clemency { get; } = new(ActionID.Clemency, true, true, isTimeline: true);
+    public static BaseAction Clemency { get; } = new(ActionID.Clemency, true, true);
 
     /// <summary>
     /// ∏…‘§
     /// </summary>
-    public static BaseAction Intervention { get; } = new(ActionID.Intervention, true, isTimeline: true)
+    public static BaseAction Intervention { get; } = new(ActionID.Intervention, true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -184,12 +184,12 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// Œ‰◊∞ ˘Œ¿
     /// </summary>
-    public static BaseAction PassageofArms { get; } = new(ActionID.PassageofArms, true, isTimeline: true);
+    public static BaseAction PassageofArms { get; } = new(ActionID.PassageofArms, true);
 
     /// <summary>
     /// ±£ª§
     /// </summary>
-    public static BaseAction Cover { get; } = new(ActionID.Cover, true, isTimeline: true)
+    public static BaseAction Cover { get; } = new(ActionID.Cover, true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = b => OathGauge >= 50,
@@ -198,7 +198,7 @@ internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ∂‹’Û
     /// </summary>
-    public static BaseAction Sheltron { get; } = new(ActionID.Sheltron, isTimeline: true)
+    public static BaseAction Sheltron { get; } = new(ActionID.Sheltron)
     {
         ActionCheck = Cover.ActionCheck,
     };

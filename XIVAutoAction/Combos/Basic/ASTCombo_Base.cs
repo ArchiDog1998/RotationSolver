@@ -65,17 +65,17 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 吉星
     /// </summary>
-    public static BaseAction Benefic { get; } = new(ActionID.Benefic, true, isTimeline: true);
+    public static BaseAction Benefic { get; } = new(ActionID.Benefic, true);
 
     /// <summary>
     /// 福星
     /// </summary>
-    public static BaseAction Benefic2 { get; } = new(ActionID.Benefic2, true, isTimeline: true);
+    public static BaseAction Benefic2 { get; } = new(ActionID.Benefic2, true);
 
     /// <summary>
     /// 吉星相位
     /// </summary>
-    public static BaseAction AspectedBenefic { get; } = new(ActionID.AspectedBenefic, true, isEot: true, isTimeline: true)
+    public static BaseAction AspectedBenefic { get; } = new(ActionID.AspectedBenefic, true, isEot: true)
     {
         TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
     };
@@ -83,17 +83,17 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 先天禀赋
     /// </summary>
-    public static BaseAction EssentialDignity { get; } = new(ActionID.EssentialDignity, true, isTimeline: true);
+    public static BaseAction EssentialDignity { get; } = new(ActionID.EssentialDignity, true);
 
     /// <summary>
     /// 星位合图
     /// </summary>
-    public static BaseAction Synastry { get; } = new(ActionID.Synastry, true, isTimeline: true);
+    public static BaseAction Synastry { get; } = new(ActionID.Synastry, true);
 
     /// <summary>
     /// 天星交错
     /// </summary>
-    public static BaseAction CelestialIntersection { get; } = new(ActionID.CelestialIntersection, true, isTimeline: true)
+    public static BaseAction CelestialIntersection { get; } = new(ActionID.CelestialIntersection, true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
 
@@ -103,7 +103,7 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 擢升
     /// </summary>
-    public static BaseAction Exaltation { get; } = new(ActionID.Exaltation, true, isTimeline: true)
+    public static BaseAction Exaltation { get; } = new(ActionID.Exaltation, true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -111,12 +111,12 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 阳星
     /// </summary>
-    public static BaseAction Helios { get; } = new(ActionID.Helios, true, isTimeline: true);
+    public static BaseAction Helios { get; } = new(ActionID.Helios, true);
 
     /// <summary>
     /// 阳星相位
     /// </summary>
-    public static BaseAction AspectedHelios { get; } = new(ActionID.AspectedHelios, true, isEot: true, isTimeline: true)
+    public static BaseAction AspectedHelios { get; } = new(ActionID.AspectedHelios, true, isEot: true)
     {
         BuffsProvide = new StatusID[] { StatusID.AspectedHelios },
     };
@@ -124,22 +124,22 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 天星冲日
     /// </summary>
-    public static BaseAction CelestialOpposition { get; } = new(ActionID.CelestialOpposition, true, isTimeline: true);
+    public static BaseAction CelestialOpposition { get; } = new(ActionID.CelestialOpposition, true);
 
     /// <summary>
     /// 地星
     /// </summary>
-    public static BaseAction EarthlyStar { get; } = new(ActionID.EarthlyStar, true, isTimeline: true);
+    public static BaseAction EarthlyStar { get; } = new(ActionID.EarthlyStar, true);
 
     /// <summary>
     /// 命运之轮 减伤，手动放。
     /// </summary>
-    public static BaseAction CollectiveUnconscious { get; } = new(ActionID.CollectiveUnconscious, true, isTimeline: true);
+    public static BaseAction CollectiveUnconscious { get; } = new(ActionID.CollectiveUnconscious, true);
 
     /// <summary>
     /// 天宫图
     /// </summary>
-    public static BaseAction Horoscope { get; } = new(ActionID.Horoscope, true, isTimeline: true);
+    public static BaseAction Horoscope { get; } = new(ActionID.Horoscope, true);
 
     /// <summary>
     /// 光速
@@ -149,12 +149,12 @@ internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 中间学派
     /// </summary>
-    public static BaseAction NeutralSect { get; } = new(ActionID.NeutralSect, isTimeline: true);
+    public static BaseAction NeutralSect { get; } = new(ActionID.NeutralSect);
 
     /// <summary>
     /// 大宇宙
     /// </summary>
-    public static BaseAction Macrocosmos { get; } = new(ActionID.Macrocosmos, isTimeline: true);
+    public static BaseAction Macrocosmos { get; } = new(ActionID.Macrocosmos);
 
     /// <summary>
     /// 星力

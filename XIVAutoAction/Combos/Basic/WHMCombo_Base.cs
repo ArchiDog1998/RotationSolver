@@ -49,12 +49,12 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 治疗
     /// </summary>
-    public static BaseAction Cure { get; } = new(ActionID.Cure, true, isTimeline: true);
+    public static BaseAction Cure { get; } = new(ActionID.Cure, true);
 
     /// <summary>
     /// 医治
     /// </summary>
-    public static BaseAction Medica { get; } = new(ActionID.Medica, true, isTimeline: true);
+    public static BaseAction Medica { get; } = new(ActionID.Medica, true);
 
     /// <summary>
     /// 复活
@@ -64,12 +64,12 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 救疗
     /// </summary>
-    public static BaseAction Cure2 { get; } = new(ActionID.Cure2, true, isTimeline: true);
+    public static BaseAction Cure2 { get; } = new(ActionID.Cure2, true);
 
     /// <summary>
     /// 医济
     /// </summary>
-    public static BaseAction Medica2 { get; } = new(ActionID.Medica2, true, isEot: true, isTimeline: true)
+    public static BaseAction Medica2 { get; } = new(ActionID.Medica2, true, isEot: true)
     {
         BuffsProvide = new[] { StatusID.Medica2, StatusID.TrueMedica2 },
     };
@@ -77,7 +77,7 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 再生
     /// </summary>
-    public static BaseAction Regen { get; } = new(ActionID.Regen, true, isEot: true, isTimeline: true)
+    public static BaseAction Regen { get; } = new(ActionID.Regen, true, isEot: true)
     {
         TargetStatus = new[]
         {
@@ -90,22 +90,22 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 愈疗
     /// </summary>
-    public static BaseAction Cure3 { get; } = new(ActionID.Cure3, true, shouldEndSpecial: true, isTimeline: true);
+    public static BaseAction Cure3 { get; } = new(ActionID.Cure3, true, shouldEndSpecial: true);
 
     /// <summary>
     /// 天赐祝福
     /// </summary>
-    public static BaseAction Benediction { get; } = new(ActionID.Benediction, true, isTimeline: true);
+    public static BaseAction Benediction { get; } = new(ActionID.Benediction, true);
 
     /// <summary>
     /// 庇护所
     /// </summary>
-    public static BaseAction Asylum { get; } = new(ActionID.Asylum, true, isTimeline: true);
+    public static BaseAction Asylum { get; } = new(ActionID.Asylum, true);
 
     /// <summary>
     /// 安慰之心
     /// </summary>
-    public static BaseAction AfflatusSolace { get; } = new(ActionID.AfflatusSolace, true, isTimeline: true)
+    public static BaseAction AfflatusSolace { get; } = new(ActionID.AfflatusSolace, true)
     {
         ActionCheck = b => JobGauge.Lily > 0,
     };
@@ -113,12 +113,12 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 神名
     /// </summary>
-    public static BaseAction Tetragrammaton { get; } = new(ActionID.Tetragrammaton, true, isTimeline: true);
+    public static BaseAction Tetragrammaton { get; } = new(ActionID.Tetragrammaton, true);
 
     /// <summary>
     /// 神祝祷
     /// </summary>
-    public static BaseAction DivineBenison { get; } = new(ActionID.DivineBenison, true, isTimeline: true)
+    public static BaseAction DivineBenison { get; } = new(ActionID.DivineBenison, true)
     {
         BuffsProvide = new StatusID[] { StatusID.DivineBenison },
         ChoiceTarget = TargetFilter.FindAttackedTarget,
@@ -127,7 +127,7 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 狂喜之心
     /// </summary>
-    public static BaseAction AfflatusRapture { get; } = new(ActionID.AfflatusRapture, true, isTimeline: true)
+    public static BaseAction AfflatusRapture { get; } = new(ActionID.AfflatusRapture, true)
     {
         ActionCheck = b => JobGauge.Lily > 0,
     };
@@ -135,12 +135,12 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 水流幕
     /// </summary>
-    public static BaseAction Aquaveil { get; } = new(ActionID.Aquaveil, true, isTimeline: true);
+    public static BaseAction Aquaveil { get; } = new(ActionID.Aquaveil, true);
 
     /// <summary>
     /// 礼仪之铃
     /// </summary>
-    public static BaseAction LiturgyoftheBell { get; } = new(ActionID.LiturgyoftheBell, true, isTimeline: true);
+    public static BaseAction LiturgyoftheBell { get; } = new(ActionID.LiturgyoftheBell, true);
     #endregion
     #region 输出
     /// <summary>
@@ -196,12 +196,12 @@ internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 全大赦
     /// </summary>
-    public static BaseAction PlenaryIndulgence { get; } = new(ActionID.PlenaryIndulgence, true, isTimeline: true);
+    public static BaseAction PlenaryIndulgence { get; } = new(ActionID.PlenaryIndulgence, true);
 
     /// <summary>
     /// 节制
     /// </summary>
-    public static BaseAction Temperance { get; } = new(ActionID.Temperance, true, isTimeline: true);
+    public static BaseAction Temperance { get; } = new(ActionID.Temperance, true);
     #endregion
 
 }

@@ -246,7 +246,7 @@ internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 守护之光
     /// </summary>
-    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis, true, isTimeline: true)
+    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis, true)
     {
         ActionCheck = b => HaveSummon
     };

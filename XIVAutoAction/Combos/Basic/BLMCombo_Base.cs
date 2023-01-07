@@ -188,7 +188,7 @@ namespace XIVAutoAttack.Combos.Basic
         /// <summary>
         /// 魔罩
         /// </summary>
-        public static BaseAction Manaward { get; } = new(ActionID.Manaward, true, isTimeline: true);
+        public static BaseAction Manaward { get; } = new(ActionID.Manaward, true);
 
         /// <summary>
         /// 魔泉

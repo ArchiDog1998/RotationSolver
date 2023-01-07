@@ -200,7 +200,7 @@ internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// ÐÄÑÛ
     /// </summary>
-    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye, true, isTimeline: true);
+    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye, true);
 
     /// <summary>
     /// Ñà·É

@@ -14,7 +14,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         internal class RoleAction : BaseAction
         {
             private JobRole[] _roles;
-            internal RoleAction(ActionID actionID, JobRole[] roles, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false, bool isTimeline = false) : base(actionID, isFriendly, shouldEndSpecial, isEot, isTimeline)
+            internal RoleAction(ActionID actionID, JobRole[] roles, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false) : base(actionID, isFriendly, shouldEndSpecial, isEot)
             {
                 _roles = roles;
             }
@@ -25,7 +25,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 昏乱
         /// </summary>
-        public static RoleAction Addle { get; } = new(ActionID.Addle, new JobRole[] { JobRole.RangedMagicial }, isFriendly: true, isTimeline: true)
+        public static RoleAction Addle { get; } = new(ActionID.Addle, new JobRole[] { JobRole.RangedMagicial }, isFriendly: true)
         {
             ActionCheck = b => !b.HasStatus(false, StatusID.Addle),
         };
@@ -65,7 +65,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 营救
         /// </summary>
-        public static RoleAction Rescue { get; } = new(ActionID.Rescue, new JobRole[] { JobRole.Healer }, true, isTimeline: true);
+        public static RoleAction Rescue { get; } = new(ActionID.Rescue, new JobRole[] { JobRole.Healer }, true);
 
         /// <summary>
         /// 沉静
@@ -85,7 +85,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// 内丹
         /// </summary>
         public static RoleAction SecondWind { get; } = new(ActionID.SecondWind,
-            new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, true, isTimeline: true)
+            new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, true)
         {
             ActionCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility && InCombat,
         };
@@ -98,7 +98,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 铁壁
         /// </summary>
-        public static RoleAction Rampart { get; } = new(ActionID.Rampart, new JobRole[] { JobRole.Tank }, true, isTimeline: true)
+        public static RoleAction Rampart { get; } = new(ActionID.Rampart, new JobRole[] { JobRole.Tank }, true)
         {
             BuffsProvide = new StatusID[]
             {
@@ -123,7 +123,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 挑衅
         /// </summary>
-        public static RoleAction Provoke { get; } = new(ActionID.Provoke, new JobRole[] { JobRole.Tank }, isTimeline: true)
+        public static RoleAction Provoke { get; } = new(ActionID.Provoke, new JobRole[] { JobRole.Tank })
         {
             FilterForTarget = b => TargetFilter.ProvokeTarget(b),
         };
@@ -131,7 +131,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 雪仇
         /// </summary>
-        public static RoleAction Reprisal { get; } = new(ActionID.Reprisal, new JobRole[] { JobRole.Tank }, isTimeline: true);
+        public static RoleAction Reprisal { get; } = new(ActionID.Reprisal, new JobRole[] { JobRole.Tank });
 
         /// <summary>
         /// 退避
@@ -144,7 +144,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 浴血
         /// </summary>
-        public static RoleAction Bloodbath { get; } = new(ActionID.Bloodbath, new JobRole[] { JobRole.Melee }, true, isTimeline: true)
+        public static RoleAction Bloodbath { get; } = new(ActionID.Bloodbath, new JobRole[] { JobRole.Melee }, true)
         {
             ActionCheck = SecondWind.ActionCheck,
         };
@@ -152,7 +152,7 @@ namespace XIVAutoAttack.Combos.CustomCombo
         /// <summary>
         /// 牵制
         /// </summary>
-        public static RoleAction Feint { get; } = new(ActionID.Feint, new JobRole[] { JobRole.Melee }, isTimeline: true)
+        public static RoleAction Feint { get; } = new(ActionID.Feint, new JobRole[] { JobRole.Melee })
         {
             ActionCheck = b => !b.HasStatus(false, StatusID.Feint),
         };

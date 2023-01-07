@@ -436,7 +436,7 @@ namespace XIVAutoAttack
                                 foreach (var iAct in IconReplacer.RightComboBaseActions)
                                 {
                                     if (iAct is not BaseAction act) continue;
-                                    if (!act.IsTimeline) continue;
+                                    //if (!act.IsTimeline) continue;
 
                                     if (actName == act.Name)
                                     {

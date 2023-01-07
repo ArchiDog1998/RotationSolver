@@ -14,7 +14,7 @@ namespace XIVAutoAttack.Actions.BaseAction
 
         public bool ShouldEndSpecial { private get; set; }
 
-        public bool IsTimeline { get; } = false;
+        public bool IsTimeline { get; } = true;
         /// <summary>
         /// 玩家当前等级是否大于等于技能可用等级
         /// </summary>
@@ -111,13 +111,12 @@ namespace XIVAutoAttack.Actions.BaseAction
         }
 
         Action _action;
-        internal BaseAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false, bool isTimeline = false)
+        internal BaseAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false)
         {
             _action = Service.DataManager.GetExcelSheet<Action>().GetRow((uint)actionID);
             ShouldEndSpecial = shouldEndSpecial;
             _isFriendly = isFriendly;
             _isEot = isEot;
-            IsTimeline = isTimeline;
 
             IsGeneralGCD = _action.IsGeneralGCD();
             IsRealGCD = _action.IsRealGCD();

@@ -128,7 +128,7 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 真言
     /// </summary>
-    public static BaseAction Mantra { get; } = new(ActionID.Mantra, true, isTimeline: true);
+    public static BaseAction Mantra { get; } = new(ActionID.Mantra, true);
 
     /// <summary>
     /// 震脚
@@ -176,7 +176,7 @@ internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     /// <summary>
     /// 金刚极意 盾
     /// </summary>
-    public static BaseAction RiddleofEarth { get; } = new(ActionID.RiddleofEarth, true, shouldEndSpecial: true, isTimeline: true)
+    public static BaseAction RiddleofEarth { get; } = new(ActionID.RiddleofEarth, true, shouldEndSpecial: true)
     {
         BuffsProvide = new[] { StatusID.RiddleofEarth },
     };
