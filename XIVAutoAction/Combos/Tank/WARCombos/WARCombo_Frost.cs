@@ -116,6 +116,9 @@ internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
 
+        //满层战嚎
+        if (Infuriate.ShouldUse(out act) && Player.HasStatus(true, StatusID.SurgingTempest)) return true;
+
         if (Player.HasStatus(true, StatusID.SurgingTempest))
         {
             //狂暴
