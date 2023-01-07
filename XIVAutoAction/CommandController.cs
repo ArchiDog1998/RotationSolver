@@ -300,11 +300,13 @@ namespace AutoAction
         internal static void UpdateAutoAttack()
         {
             //结束战斗，那就关闭。
-            if (Service.ClientState.LocalPlayer.CurrentHp == 0
+            if (
+                Service.ClientState.LocalPlayer.CurrentHp == 0
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51])
+                || (Service.Configuration.AutoOffWhenChangeMap && (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas] 
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]))
+                )
                 AttackCancel();
 
             //Auto start at count Down.

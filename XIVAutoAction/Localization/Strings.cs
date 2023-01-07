@@ -97,6 +97,8 @@ internal class Strings
     public string Configwindow_Params_NeverReplaceIconDesc { get; set; } = "Icon replacement: Repose is automatically displayed as the next skill to be used";
     public string Configwindow_Params_UseOverlayWindow { get; set; } = "Display top overlay";
     public string Configwindow_Params_UseOverlayWindowDesc { get; set; } = "This window is currently used to cue the body position in advance.";
+    public string Configwindow_Params_AutoOffWhenChangeMap { get; set; } = "Auto Off when changing map";
+    public string Configwindow_Params_AutoOffWhenChangeMapDesc { get; set; } = "If disable, please make sure you manually AttackCancel after leaving the duty";
     public string Configwindow_Params_BasicSettings { get; set; } = "Basic settings";
     public string Configwindow_Params_WeaponInterval { get; set; } = "Set the interval between abilities using";
     public string Configwindow_Params_InterruptibleTime { get; set; } = "Set the delay of interrupting";

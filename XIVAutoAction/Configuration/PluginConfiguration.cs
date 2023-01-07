@@ -55,6 +55,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AttackMarkAOE { get; set; } = true;
     public bool FilterStopMark { get; set; } = true;
     public bool UseOverlayWindow { get; set; } = true;
+    public bool AutoOffWhenChangeMap { get; set; } = true;
     public bool TeachingMode { get; set; } = true;
     public Vector3 TeachingModeColor { get; set; } = new(0f, 1f, 0.8f);
     public Vector3 MovingTargetColor { get; set; } = new(0f, 1f, 0.8f);
