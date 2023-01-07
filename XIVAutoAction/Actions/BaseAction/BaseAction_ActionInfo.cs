@@ -86,7 +86,7 @@ namespace XIVAutoAttack.Actions.BaseAction
                             && Watcher.LastAction == (ActionID)AdjustedID) return false;
 
                         //冷却时间没超过一成且下一个Ability前不能转好
-                        if (!WillHaveOneCharge(ActionUpdater.AbilityRemain, false)) return false;
+                        if (!WillHaveOneCharge(ActionUpdater.AbilityRemain)) return false;
                     }
                 }
 

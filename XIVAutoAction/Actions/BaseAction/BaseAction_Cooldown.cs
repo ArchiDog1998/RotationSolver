@@ -49,18 +49,21 @@ namespace XIVAutoAttack.Actions.BaseAction
         /// 几秒钟以后能转好嘛
         /// </summary>
         /// <param name="remain">要多少秒呢</param>
+        /// <param name="addWeaponRemain">是否要把GCD剩余时间加进去</param>
         /// <returns>这个时间点是否起码有一层可以用</returns>
-        internal bool WillHaveOneCharge(float remain)
-        {
-            return WillHaveOneCharge(remain, true);
-        }
-
-        private bool WillHaveOneCharge(float remain, bool addWeaponRemain)
+        internal bool WillHaveOneCharge(float remain, bool addWeaponRemain = false)
         {
             if (HaveOneCharge) return true;
             var recast = RecastTimeRemainOneCharge;
             return CooldownHelper.RecastAfter(recast, remain, addWeaponRemain);
         }
+
+        //private bool WillHaveOneCharge(float remain, bool addWeaponRemain)
+        //{
+        //    if (HaveOneCharge) return true;
+        //    var recast = RecastTimeRemainOneCharge;
+        //    return CooldownHelper.RecastAfter(recast, remain);
+        //}
 
 
         private unsafe RecastDetail* CoolDownDetail => ActionManager.Instance()->GetRecastGroupDetail(CoolDownGroup - 1);

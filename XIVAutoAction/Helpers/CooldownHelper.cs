@@ -54,7 +54,7 @@ namespace XIVAutoAttack.Helpers
         /// <returns>是否已经冷却了这么久了</returns>
         internal static bool ElapsedAfter(float elapsed, float gcdelapsed)
         {
-            gcdelapsed += ActionUpdater.WeaponElapsed;
+            //gcdelapsed += ActionUpdater.WeaponElapsed;
             return IsLessThan(gcdelapsed, elapsed);
         }
 
@@ -78,7 +78,7 @@ namespace XIVAutoAttack.Helpers
         /// <param name="remain">要多少秒呢</param>
         /// <param name="addWeaponRemain">是否要把<see cref="ActionUpdater.WeaponRemain"/>加进去</param>
         /// <returns>这个时间点是否已经结束</returns>
-        internal static bool RecastAfter(float recast, float remain, bool addWeaponRemain = true)
+        internal static bool RecastAfter(float recast, float remain, bool addWeaponRemain = false)
         {
             if (addWeaponRemain) remain += ActionUpdater.WeaponRemain;
 
