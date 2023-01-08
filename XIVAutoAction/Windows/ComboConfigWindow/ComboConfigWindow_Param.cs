@@ -40,6 +40,17 @@ internal partial class ComboConfigWindow
                 ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_UseOverlayWindowDesc);
             }
 
+            bool autoOffWhenChangeMap = Service.Configuration.AutoOffWhenChangeMap;
+            if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AutoOffWhenChangeMap, ref autoOffWhenChangeMap))
+            {
+                Service.Configuration.AutoOffWhenChangeMap = autoOffWhenChangeMap;
+                Service.Configuration.Save();
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Params_AutoOffWhenChangeMapDesc);
+            }
+
             if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Params_BasicSettings))
             {
 

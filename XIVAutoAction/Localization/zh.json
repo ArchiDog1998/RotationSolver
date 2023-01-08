@@ -55,6 +55,8 @@
   "Configwindow_Params_NeverReplaceIconDesc": "图标替换：替换将自动显示为下一个技能",
   "Configwindow_Params_UseOverlayWindow": "显示置顶悬浮层",
   "Configwindow_Params_UseOverlayWindowDesc": "这个窗口目前用于提前提示身位。",
+  "Configwindow_Params_AutoOffWhenChangeMap": "切换地图时自动Off",
+  "Configwindow_Params_AutoOffWhenChangeMapDesc": "如果禁用，请确保在离开任务后手动AttackCancel关闭",
   "Configwindow_Params_BasicSettings": "基础设置",
   "Configwindow_Params_RestoreDefault": "恢复默认",
   "Configwindow_Params_WeaponInterval": "能力技的使用间隔",
