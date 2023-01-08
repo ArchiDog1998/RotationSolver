@@ -355,6 +355,12 @@
         TheEwer = 1886,
         TheSpire = 1887,
 
+
+        /// <summary>
+        /// 占卜
+        /// </summary>
+        Divination = 1878,
+
         /// <summary>
         /// 地星主宰
         /// </summary>
@@ -816,6 +822,11 @@
         /// 天地人
         /// </summary>
         TenChiJin = 1186,
+
+        /// <summary>
+        /// 夺取
+        /// </summary>
+        Mug = 3183,
 
         /// <summary>
         /// 极光
