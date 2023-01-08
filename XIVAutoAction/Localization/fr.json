@@ -7,7 +7,7 @@
   "Commands_ChangeResult": "The modified result is",
   "Commands_CannotFind": "Non reconnu",
   "Commands_OpenSettings": "L'interface de configuration a été ouverte",
-  "Commands_SayHelloToAuthor": "\"{0}\" est probablement l'un des auteurs de \"XIV Auto Attack\", alors dites lui bonjour !",
+  "Commands_SayHelloToAuthor": "\"{0}\" est probablement l'un des auteurs de \"Auto Action\", alors dites lui bonjour !",
   "ConfigWindow_Header": "Auto Attack Settings v",
   "ConfigWindow_AboutItem": "À propos",
   "ConfigWindow_AttackItem": "Attaques",
