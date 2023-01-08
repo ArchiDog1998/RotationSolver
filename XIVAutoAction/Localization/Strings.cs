@@ -14,7 +14,7 @@ internal class Strings
     public string Commands_ChangeResult { get; set; } = "The modified result is";
     public string Commands_CannotFind { get; set; } = "Unrecognized";
     public string Commands_OpenSettings { get; set; } = "The settings interface has been opened";
-    public string Commands_SayHelloToAuthor { get; set; } = "This \"{0}\" is probably one of the authors of the \"XIV Auto Attack\", so say hello to him!";
+    public string Commands_SayHelloToAuthor { get; set; } = "The \"{0}\" in the party is one of the developers of \"Auto Action\". If you think the plugin is awsome, just give him a commendation.0w0";
 
     #endregion
 

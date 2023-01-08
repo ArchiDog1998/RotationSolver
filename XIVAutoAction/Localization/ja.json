@@ -7,7 +7,7 @@
   "Commands_ChangeResult": "修正された結果は",
   "Commands_CannotFind": "未認識",
   "Commands_OpenSettings": "設定インターフェイスを開きました",
-  "Commands_SayHelloToAuthor": "この \"{0}\" はおそらく「XIV Auto Attack」の作者の一人なので、彼に挨拶してください!",
+  "Commands_SayHelloToAuthor": "この \"{0}\" はおそらく「Auto Action」の作者の一人なので、彼に挨拶してください!",
   "ConfigWindow_Header": "Auto Attack Settings v",
   "ConfigWindow_AboutItem": "概要",
   "ConfigWindow_AttackItem": "攻撃",
