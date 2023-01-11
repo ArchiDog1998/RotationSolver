@@ -1036,7 +1036,12 @@
         /// <summary>
         /// 鼓励
         /// </summary>
-        Embolden = 2282,
+        Embolden = 1239,
+
+        /// <summary>
+        /// 抗死
+        /// </summary>
+        MagickBarrier = 2707,
 
         /// 以太复制：防护
         /// </summary>

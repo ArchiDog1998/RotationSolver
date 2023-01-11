@@ -125,7 +125,6 @@
   "Configwindow_Params_AttackMarkAOE": "是否还要使用AOE",
   "Configwindow_Params_AttackMarkAOEDesc": "如果勾选了，那么可能这个AOE打不到攻击目标的对象，因为为了追求打到更多的目标。",
   "Configwindow_Params_FilterStopMark": "不再选中有禁止标记的目标",
-  "Configwindow_Params_ObjectMinRadius": "攻击目标的最小目标圈半径",
   "Configwindow_Params_MoveTargetAngle": "可选为移动目标的扇区角度的大小",
   "Configwindow_Params_MoveTargetAngleDesc": "如果选择模式基于角色正面，即角色视野中的目标是可移动目标。 \n如果选择模式以屏幕为中心，即从字符点向上绘制的扇区内目标是可移动目标。",
   "Configwindow_Params_ChangeTargetForFate": "在Fate中只选中Fate怪",

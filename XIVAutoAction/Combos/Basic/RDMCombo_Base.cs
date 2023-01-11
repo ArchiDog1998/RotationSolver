@@ -1,4 +1,4 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
+ï»¿using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
 using AutoAction.Actions;
@@ -15,142 +15,184 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     private static RDMGauge JobGauge => Service.JobGauges.Get<RDMGauge>();
 
     /// <summary>
-    /// °×Ä§Ôª
+    /// ç™½é­”å…ƒ
     /// </summary>
     protected static byte WhiteMana => JobGauge.WhiteMana;
 
     /// <summary>
-    /// ºÚÄ§Ôª
+    /// é»‘é­”å…ƒ
     /// </summary>
     protected static byte BlackMana => JobGauge.BlackMana;
 
 
     /// <summary>
-    /// Ä§¾§Êı
+    /// é­”å…ƒé›†
     /// </summary>
     protected static byte ManaStacks => JobGauge.ManaStacks;
 
+    /// <summary>
+    /// è¿ç»­å’å”±
+    /// </summary>
+    protected static bool Dualcast => Player.HasStatus(true, StatusID.Dualcast);
+
+    /// <summary>
+    /// èµ¤ç«ç‚é¢„å¤‡
+    /// </summary>
+    protected static bool VerfireReady => Player.HasStatus(true, StatusID.VerfireReady);
+
+    /// <summary>
+    /// èµ¤é£çŸ³é¢„å¤‡
+    /// </summary>
+    protected static bool VerstoneReady => Player.HasStatus(true, StatusID.VerstoneReady);
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.RedMage };
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
     private sealed protected override BaseAction Raise => Verraise;
 
+    #region å•ä½“
     /// <summary>
-    /// ³à¸´»î
-    /// </summary>
-    public static BaseAction Verraise { get; } = new(ActionID.Verraise, true);
-
-    /// <summary>
-    /// Õğµ´
+    /// æ‘‡è¡ éœ‡è¡
     /// </summary>
     public static BaseAction Jolt { get; } = new(ActionID.Jolt)
     {
-        BuffsProvide = Swiftcast.BuffsProvide.Union(new[] { StatusID.Acceleration }).ToArray(),
+        BuffsProvide = new[] { StatusID.Dualcast },
     };
 
     /// <summary>
-    /// »Ø´Ì
+    /// èµ¤é—ªé›· èµ¤æš´é›·
     /// </summary>
-    public static BaseAction Riposte { get; } = new(ActionID.Riposte)
-    {
-        ActionCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
-    };
+    public static BaseAction Verthunder { get; } = new(ActionID.Verthunder);
 
     /// <summary>
-    /// ³àÉÁÀ×
+    /// èµ¤ç–¾é£ èµ¤æš´é£
     /// </summary>
-    public static BaseAction Verthunder { get; } = new(ActionID.Verthunder)
-    {
-        BuffsNeed = Jolt.BuffsProvide,
-    };
+    public static BaseAction Veraero { get; } = new(ActionID.Veraero);
 
     /// <summary>
-    /// ¶Ì±øÏà½Ó
-    /// </summary>
-    public static BaseAction CorpsAcorps { get; } = new(ActionID.CorpsAcorps, shouldEndSpecial: true)
-    {
-        ChoiceTarget = TargetFilter.FindTargetForMoving,
-    };
-
-    /// <summary>
-    /// ³à¼²·ç
-    /// </summary>
-    public static BaseAction Veraero { get; } = new(ActionID.Veraero)
-    {
-        BuffsNeed = Jolt.BuffsProvide,
-    };
-
-    /// <summary>
-    /// É¢Ëé
-    /// </summary>
-    public static BaseAction Scatter { get; } = new(ActionID.Scatter)
-    {
-        BuffsNeed = Jolt.BuffsProvide,
-    };
-
-    /// <summary>
-    /// ³àÕğÀ×
-    /// </summary>
-    public static BaseAction Verthunder2 { get; } = new(ActionID.Verthunder2)
-    {
-        BuffsProvide = Jolt.BuffsProvide,
-    };
-
-    /// <summary>
-    /// ³àÁÒ·ç
-    /// </summary>
-    public static BaseAction Veraero2 { get; } = new(ActionID.Veraero2)
-    {
-        BuffsProvide = Jolt.BuffsProvide,
-    };
-
-    /// <summary>
-    /// ³à»ğÑ×
+    /// èµ¤ç«ç‚
     /// </summary>
     public static BaseAction Verfire { get; } = new(ActionID.Verfire)
     {
         BuffsNeed = new[] { StatusID.VerfireReady },
-        BuffsProvide = Jolt.BuffsProvide,
+        BuffsProvide = new[] { StatusID.Dualcast },
     };
 
     /// <summary>
-    /// ³à·ÉÊ¯
+    /// èµ¤é£çŸ³
     /// </summary>
     public static BaseAction Verstone { get; } = new(ActionID.Verstone)
     {
         BuffsNeed = new[] { StatusID.VerstoneReady },
-        BuffsProvide = Jolt.BuffsProvide,
+        BuffsProvide = new[] { StatusID.Dualcast },
+    };
+    #endregion
+    #region AoE
+    /// <summary>
+    /// èµ¤éœ‡é›·
+    /// </summary>
+    public static BaseAction Verthunder2 { get; } = new(ActionID.Verthunder2)
+    {
+        BuffsProvide = new[] { StatusID.Dualcast },
     };
 
     /// <summary>
-    /// ½»»÷Õ¶
+    /// èµ¤çƒˆé£
+    /// </summary>
+    public static BaseAction Veraero2 { get; } = new(ActionID.Veraero2)
+    {
+        BuffsProvide = new[] { StatusID.Dualcast },
+    };
+
+    /// <summary>
+    /// æ•£ç¢
+    /// </summary>
+    public static BaseAction Scatter { get; } = new(ActionID.Scatter);
+    #endregion
+    #region é­”å…­è¿
+    /// <summary>
+    /// å›åˆº é­”å›åˆº
+    /// </summary>
+    public static BaseAction Riposte { get; } = new(ActionID.Riposte)
+    {
+        ActionCheck = b => Math.Min(BlackMana, WhiteMana) >= 20,
+    };
+
+    /// <summary>
+    /// äº¤å‡»æ–© é­”äº¤å‡»æ–©
     /// </summary>
     public static BaseAction Zwerchhau { get; } = new(ActionID.Zwerchhau)
     {
-        ActionCheck = b => BlackMana >= 15 && WhiteMana >= 15,
+        ActionCheck = b => Math.Min(BlackMana, WhiteMana) >= 15,
     };
 
     /// <summary>
-    /// ½»½£
+    /// è¿æ”» é­”è¿æ”»
+    /// </summary>
+    public static BaseAction Redoublement { get; } = new(ActionID.Redoublement)
+    {
+        ActionCheck = b => Math.Min(BlackMana, WhiteMana) >= 15,
+    };
+
+    /// <summary>
+    /// åˆ’åœ†æ–©
+    /// </summary>
+    public static BaseAction Moulinet { get; } = new(ActionID.Moulinet)
+    {
+        ActionCheck = b => Math.Min(BlackMana, WhiteMana) >= 20,
+    };
+
+    /// <summary>
+    /// èµ¤æ ¸çˆ†
+    /// </summary>
+    public static BaseAction Verflare { get; } = new(ActionID.Verflare)
+    {
+        ActionCheck = b => ManaStacks >= 3,
+        BuffsProvide = new[] { StatusID.VerfireReady },
+    };
+
+    /// <summary>
+    /// èµ¤ç¥åœ£
+    /// </summary>
+    public static BaseAction Verholy { get; } = new(ActionID.Verholy)
+    {
+        ActionCheck = b => ManaStacks >= 3,
+        BuffsProvide = new[] { StatusID.VerstoneReady },
+    };
+
+    /// <summary>
+    /// ç„¦çƒ­
+    /// </summary>
+    public static BaseAction Scorch { get; } = new(ActionID.Scorch)
+    {
+        OtherIDsCombo = new[] { ActionID.Verflare, ActionID.Verholy },
+    };
+
+    /// <summary>
+    /// å†³æ–­
+    /// </summary>
+    public static BaseAction Resolution { get; } = new(ActionID.Resolution)
+    {
+        OtherIDsCombo = new[] { ActionID.Scorch },
+    };
+    #endregion
+    #region è¿›æ”»èƒ½åŠ›æŠ€
+    /// <summary>
+    /// çŸ­å…µç›¸æ¥
+    /// </summary>
+    public static BaseAction CorpsAcorps { get; } = new(ActionID.CorpsAcorps, shouldEndSpecial: true);
+
+    /// <summary>
+    /// äº¤å‰‘
     /// </summary>
     public static BaseAction Engagement { get; } = new(ActionID.Engagement);
 
     /// <summary>
-    /// ·É½£
+    /// é£åˆº
     /// </summary>
     public static BaseAction Fleche { get; } = new(ActionID.Fleche);
 
     /// <summary>
-    /// Á¬¹¥
-    /// </summary>
-    public static BaseAction Redoublement { get; } = new(ActionID.Redoublement)
-    {
-        ActionCheck = b => BlackMana >= 15 && WhiteMana >= 15,
-    };
-
-
-    /// <summary>
-    /// ´Ù½ø
+    /// ä¿ƒè¿›
     /// </summary>
     public static BaseAction Acceleration { get; } = new(ActionID.Acceleration, true)
     {
@@ -158,72 +200,52 @@ internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enu
     };
 
     /// <summary>
-    /// »®Ô²Õ¶
-    /// </summary>
-    public static BaseAction Moulinet { get; } = new(ActionID.Moulinet)
-    {
-        ActionCheck = b => BlackMana >= 20 && WhiteMana >= 20,
-    };
-
-    /// <summary>
-    /// ³àÖÎÁÆ
-    /// </summary>
-    public static BaseAction Vercure { get; } = new(ActionID.Vercure, true)
-    {
-        BuffsProvide = Swiftcast.BuffsProvide.Union(Acceleration.BuffsProvide).ToArray(),
-    };
-
-    /// <summary>
-    /// Áù·Ö·´»÷
+    /// å…­åˆ†åå‡»
     /// </summary>
     public static BaseAction ContreSixte { get; } = new(ActionID.ContreSixte);
 
     /// <summary>
-    /// ¹ÄÀø
+    /// é¼“åŠ±
     /// </summary>
-    public static BaseAction Embolden { get; } = new(ActionID.Embolden, true);
-
-    ///// <summary>
-    ///// ĞøÕ¶
-    ///// </summary>
-    //public static BaseAction Reprise { get; } = new(ActionID.Reprise);
-
-    /// <summary>
-    /// ¿¹ËÀ
-    /// </summary>
-    public static BaseAction MagickBarrier { get; } = new(ActionID.MagickBarrier, true);
-
-    /// <summary>
-    /// ³àºË±¬
-    /// </summary>
-    public static BaseAction Verflare { get; } = new(ActionID.Verflare);
-
-    /// <summary>
-    /// ³àÉñÊ¥
-    /// </summary>
-    public static BaseAction Verholy { get; } = new(ActionID.Verholy);
-
-    /// <summary>
-    /// ½¹ÈÈ
-    /// </summary>
-    public static BaseAction Scorch { get; } = new(ActionID.Scorch)
+    public static BaseAction Embolden { get; } = new(ActionID.Embolden, true)
     {
-        OtherIDsCombo = new[] { ActionID.Verholy },
+        BuffsProvide = new[] { StatusID.Embolden }
     };
 
     /// <summary>
-    /// ¾ö¶Ï
-    /// </summary>
-    public static BaseAction Resolution { get; } = new(ActionID.Resolution);
-
-    /// <summary>
-    /// Ä§Ôª»¯
+    /// é­”å…ƒåŒ–
     /// </summary>
     public static BaseAction Manafication { get; } = new(ActionID.Manafication)
     {
-        ActionCheck = b => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0,
-        OtherIDsNot = new[] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
+        ActionCheck = b => Math.Max(BlackMana, WhiteMana) <= 50 && InCombat,
+        OtherIDsNot = new[] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Verflare, ActionID.Verholy, ActionID.Scorch, ActionID.Resolution },
     };
+    #endregion
+    #region å…¶ä»–
+    /// <summary>
+    /// èµ¤å¤æ´»
+    /// </summary>
+    public static BaseAction Verraise { get; } = new(ActionID.Verraise, true)
+    {
+        BuffsNeed = new[] { StatusID.Dualcast , StatusID.Swiftcast},
+    };
+
+    /// <summary>
+    /// èµ¤æ²»ç–—
+    /// </summary>
+    public static BaseAction Vercure { get; } = new(ActionID.Vercure, true)
+    {
+        BuffsProvide = new[] { StatusID.Dualcast , StatusID.Swiftcast },
+    };
+
+    /// <summary>
+    /// æŠ—æ­»
+    /// </summary>
+    public static BaseAction MagickBarrier { get; } = new(ActionID.MagickBarrier, true)
+    {
+        BuffsProvide = new[] {StatusID.MagickBarrier },
+    };
+    #endregion
 
     private protected override bool HealSingleGCD(out IAction act)
     {

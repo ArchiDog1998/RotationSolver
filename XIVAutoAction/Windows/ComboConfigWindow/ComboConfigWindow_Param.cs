@@ -484,16 +484,6 @@ internal partial class ComboConfigWindow
 
             if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Params_Targets))
             {
-                float minradius = Service.Configuration.ObjectMinRadius;
-                ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
-                if (ImGui.DragFloat(LocalizationManager.RightLang.Configwindow_Params_ObjectMinRadius, ref minradius, 0.02f, 0, 10))
-                {
-                    Service.Configuration.ObjectMinRadius = minradius;
-                    Service.Configuration.Save();
-                }
-
-
-
                 bool addEnemyListToHostile = Service.Configuration.AddEnemyListToHostile;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_AddEnemyListToHostile, ref addEnemyListToHostile))
                 {

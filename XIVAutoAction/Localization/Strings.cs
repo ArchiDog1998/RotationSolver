@@ -166,7 +166,6 @@ internal class Strings
     public string Configwindow_Params_AttackMarkAOE { get; set; } = "Forced use of AOE";
     public string Configwindow_Params_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
     public string Configwindow_Params_FilterStopMark { get; set; } = "Never attack targets with stop markers";
-    public string Configwindow_Params_ObjectMinRadius { get; set; } = "Set the minimum target circle threshold possessed by the attack target";
     public string Configwindow_Params_MoveTargetAngle { get; set; } = "The size of the sector angle that can be selected as the moveable target";
     public string Configwindow_Params_MoveTargetAngleDesc { get; set; } = "If the selection mode is based on character facing, i.e., targets within the character's viewpoint are movable targets. \nIf the selection mode is screen-centered, i.e., targets within a sector drawn upward from the character's point are movable targets.";
     public string Configwindow_Params_ChangeTargetForFate { get; set; } = "Select only Fate targets in Fate";

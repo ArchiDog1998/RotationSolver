@@ -347,10 +347,10 @@ namespace AutoAction.Helpers
         /// <returns></returns>
         internal static float DistanceToPlayer(this GameObject obj)
         {
-            if (obj == null) return float.MaxValue;
-            var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
-            distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
-            return distance;
+            if (obj == null) return 0;
+            Vector3 objPosition = new(obj.Position.X, obj.Position.Y,obj.Position.Z);
+            Vector3 selfPosition = new(Service.ClientState.LocalPlayer.Position.X, Service.ClientState.LocalPlayer.Position.Y, Service.ClientState.LocalPlayer.Position.Z);
+            return Math.Max(0, Vector3.Distance(objPosition, selfPosition) - obj.HitboxRadius - Service.ClientState.LocalPlayer.HitboxRadius);
         }
 
         internal static BattleChara GetAttackMarkChara(IEnumerable<BattleChara> charas)

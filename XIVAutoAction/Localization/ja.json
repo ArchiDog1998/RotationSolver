@@ -122,7 +122,6 @@
   "Configwindow_Params_AttackMarkAOE": "AOEの強制使用",
   "Configwindow_Params_AttackMarkAOEDesc": "注意: このオプションをオンにすると、AA はできるだけ多くの敵対的なターゲットを攻撃しますが、攻撃がマークされたターゲットをカバーするかどうかは無視します。",
   "Configwindow_Params_FilterStopMark": "停止マーカーのターゲットを攻撃しない",
-  "Configwindow_Params_ObjectMinRadius": "攻撃対象が持つ最小目標サークルしきい値を設定する",
   "Configwindow_Params_MoveTargetAngle": "The size of the sector angle that can be selected as the moveable target",
   "Configwindow_Params_MoveTargetAngleDesc": "If the selection mode is based on character facing, i.e., targets within the character's viewpoint are movable targets. \nIf the selection mode is screen-centered, i.e., targets within a sector drawn upward from the character's point are movable targets.",
   "Configwindow_Params_ChangeTargetForFate": "FATEの対象のみを選択する",
