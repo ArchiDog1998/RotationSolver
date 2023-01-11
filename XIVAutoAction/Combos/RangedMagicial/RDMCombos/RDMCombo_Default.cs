@@ -1,3 +1,4 @@
+ï»¿using System;
 using System.Collections.Generic;
 using AutoAction.Actions;
 using AutoAction.Combos.Basic;
@@ -11,9 +12,9 @@ namespace AutoAction.Combos.RangedMagicial.RDMCombos;
 
 internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 {
-    public override string GameVersion => "6.0";
+    public override string GameVersion => "6.28";
 
-    public override string Author => "ÎŞ";
+    public override string Author => "é€†å…‰";
 
     internal enum CommandType : byte
     {
@@ -22,7 +23,7 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 
     protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
     {
-        //{CommandType.None, "" }, //Ğ´ºÃ×¢ÊÍ°¡£¡ÓÃÀ´ÌáÊ¾ÓÃ»§µÄ¡£
+        //{CommandType.None, "" }, //å†™å¥½æ³¨é‡Šå•Šï¼ç”¨æ¥æç¤ºç”¨æˆ·çš„ã€‚
     };
 
     public override SortedList<DescType, string> DescriptionDict => new()
@@ -34,213 +35,124 @@ internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
 
     static RDMCombo_Default()
     {
-        Acceleration.ComboCheck = b => InCombat;
+        Jolt.ComboCheck = b => !Player.HasStatus(true, StatusID.Swiftcast, StatusID.Dualcast ,StatusID.Acceleration);
+        Verfire.ComboCheck = Jolt.ComboCheck;
+        Verstone.ComboCheck = Jolt.ComboCheck;
+        Veraero2.ComboCheck = Jolt.ComboCheck;
+        Verthunder2.ComboCheck = Jolt.ComboCheck;
+        Embolden.ComboCheck = Jolt.ComboCheck;
+
+        Manafication.ComboCheck = b => ManaStacks == 0 || ManaStacks == 3 && !Player.HasStatus(true, StatusID.Swiftcast, StatusID.Dualcast, StatusID.Acceleration);
+        Riposte.ComboCheck = b => !Player.HasStatus(true, StatusID.Dualcast);
+        Moulinet.ComboCheck = Riposte.ComboCheck;
+
+        Acceleration.ComboCheck = b => !Player.HasStatus(true, StatusID.Swiftcast, StatusID.Dualcast);
     }
 
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("UseVercure", true, "Ê¹ÓÃ³àÖÎÁÆ»ñµÃ¼´¿Ì");
-    }
-
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
-    {
-        act = null;
-        //¹ÄÀøÒª·Åµ½Ä§»Ø´Ì»òÕßÄ§ZÕ¶»òÄ§»®Ô²Õ¶Ö®ºó
-        if (nextGCD.IsAnySameAction(true, Zwerchhau, Redoublement, Moulinet))
-        {
-            if (Service.Configuration.AutoBreak && Embolden.ShouldUse(out act, mustUse: true)) return true;
-        }
-        //¿ª³¡±¬·¢µÄÊ±ºòÊÍ·Å¡£
-        if (Service.Configuration.AutoBreak && GetRightValue(WhiteMana) && GetRightValue(BlackMana))
-        {
-            if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
-            if (Embolden.ShouldUse(out act, mustUse: true)) return true;
-        }
-        //±¶ÔöÒª·Åµ½Ä§Á¬¹¥»÷Ö®ºó
-        if (ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Zwerchhau, Riposte))
-        {
-            if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
-        }
-
-        act = null;
-        return false;
-    }
-
-    private bool GetRightValue(byte value)
-    {
-        return value >= 6 && value <= 12;
+            .SetBool("UseVercure", true, "ä½¿ç”¨èµ¤æ²»ç–—è·å¾—å³åˆ»");
     }
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
-        act = null;
         if (SettingBreak)
         {
-            if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
-            if (Embolden.ShouldUse(out act, mustUse: true)) return true;
+            if (((Math.Max(BlackMana, WhiteMana) <= 50 && !Manafication.IsCoolDown) || (!Manafication.EnoughLevel && Math.Min(BlackMana, WhiteMana) >= 50)) && Embolden.ShouldUse(out act)) return true;
+
+            if ((Player.HasStatus(true, StatusID.Embolden) || !Embolden.WillHaveOneCharge(100)) && Manafication.ShouldUse(out act)) return true;
+
         }
 
-        if (ManaStacks == 0 && (BlackMana < 50 || WhiteMana < 50) && !Manafication.WillHaveOneChargeGCD(1, 1))
-        {
-            //´Ù½øÂúÁËÇÒÔ¤±¸buffÃ»Âú¾ÍÓÃ¡£ 
-            if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)
-                && (!Player.HasStatus(true, StatusID.VerfireReady) || !Player.HasStatus(true, StatusID.VerstoneReady))) return true;
-
-            //¼´¿ÌÓ½³ª
-            if (!Player.HasStatus(true, StatusID.Acceleration)
-                && Swiftcast.ShouldUse(out act, mustUse: true)
-                && (!Player.HasStatus(true, StatusID.VerfireReady) || !Player.HasStatus(true, StatusID.VerstoneReady))) return true;
-        }
-
-        //¹¥»÷ËÄ¸öÄÜÁ¦¼¼¡£
-        if (ContreSixte.ShouldUse(out act, mustUse: true)) return true;
+        //é£åˆº
         if (Fleche.ShouldUse(out act)) return true;
-        //Empty: BaseAction.HaveStatusSelfFromSelf(1239)
+
+        //å…­åˆ†åå‡»
+        if (ContreSixte.ShouldUse(out act, mustUse: true)) return true;
+
+        //äº¤å‰‘
         if (Engagement.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-        if (CorpsAcorps.ShouldUse(out act, mustUse: true) && !IsMoving) return true;
+        //çªè¿›
+        if (!IsMoving && CorpsAcorps.Target.DistanceToPlayer() <= 3 && CorpsAcorps.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
+        //ä¿ƒè¿›
+        if (ManaStacks == 0 && 
+            ((!VerfireReady && !VerstoneReady) || !Acceleration.IsCoolDown) && 
+            Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+
+        //å³åˆ»å’å”±
+        if (ManaStacks == 0 &&
+            !VerfireReady && !VerstoneReady && Acceleration.CurrentCharges == 0 &&
+            Math.Min(BlackMana, WhiteMana) <= 50 && 
+            Swiftcast.ShouldUse(out act, mustUse: true)) return true;
+        act = null;
         return false;
     }
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        act = null;
-        if (ManaStacks == 3) return false;
+        //å†³æ–­
+        if (Resolution.ShouldUse(out act, mustUse: true)) return true;
+        //ç„¦çƒ­
+        if (Scorch.ShouldUse(out act, mustUse: true)) return true;
 
-        #region ³£¹æÊä³ö
-        if (!Verthunder2.ShouldUse(out _))
-        {
-            if (Verfire.ShouldUse(out act)) return true;
-            if (Verstone.ShouldUse(out act)) return true;
-        }
+        //èµ¤ç¥åœ£
+        if (((BlackMana >= WhiteMana) ||
+            !VerstoneReady && VerfireReady && !Player.WillStatusEnd(10, VerfireReady) && BlackMana - WhiteMana <= 18) &&
+            Verholy.ShouldUse(out act, mustUse: true)) return true;
+        //èµ¤æ ¸çˆ†
+        if (((BlackMana <= WhiteMana) ||
+            (!VerfireReady && VerstoneReady && !Player.WillStatusEnd(10, VerstoneReady) && BlackMana - WhiteMana <= 18) ||
+            !Verholy.EnoughLevel) &&
+            Verflare.ShouldUse(out act, mustUse: true)) return true;
 
-        //ÊÔÊÔ¿´É¢Ëé
-        if (Scatter.ShouldUse(out act)) return true;
-        //Æ½ºâÄ§Ôª
-        if (WhiteMana < BlackMana)
-        {
-            if (Veraero2.ShouldUse(out act)) return true;
-            if (Veraero.ShouldUse(out act)) return true;
-        }
-        else
-        {
-            if (Verthunder2.ShouldUse(out act)) return true;
-            if (Verthunder.ShouldUse(out act)) return true;
-        }
+        if (Verflare.EnoughLevel && IsLastGCD(true, Moulinet) && Moulinet.ShouldUse(out act, mustUse: true)) return true;
+        if (((Math.Min(BlackMana, WhiteMana) + (ManaStacks * 20) >= 60) || !Verflare.EnoughLevel) && Moulinet.ShouldUse(out act)) return true;
+
+        //é­”ä¸‰è¿
+        if (Redoublement.ShouldUse(out act)) return true;
+        if (Zwerchhau.ShouldUse(out act)) return true;
+        if (((Math.Min(BlackMana, WhiteMana) >= 50) || (!Redoublement.EnoughLevel && Math.Min(BlackMana, WhiteMana) >= 35) || (!Zwerchhau.EnoughLevel && Math.Min(BlackMana, WhiteMana) >= 20)) &&
+            IsTargetBoss && 
+            Riposte.ShouldUse(out act)) return true;
+
+        //æ•£ç¢
+        if (Player.HasStatus(true, StatusID.Dualcast, StatusID.Acceleration, StatusID.Swiftcast) && Scatter.ShouldUse(out act)) return true;
+        //Aoe
+        if (WhiteMana <= BlackMana && Veraero2.ShouldUse(out act)) return true;
+        if ((BlackMana <= WhiteMana || !Veraero2.EnoughLevel) && Verthunder2.ShouldUse(out act)) return true;
+
+        //èµ¤é£çŸ³
+        if ((WhiteMana <= BlackMana || BlackMana - WhiteMana <= 25) && Verstone.ShouldUse(out act)) return true;
+        //èµ¤ç«ç‚
+        if ((BlackMana<= WhiteMana || WhiteMana - BlackMana <= 25) && Verfire.ShouldUse(out act)) return true;
+
+        //å•ä½“
+        //ç™½
+        if ((WhiteMana <= BlackMana || (VerfireReady && WhiteMana - BlackMana <= 24)) && Player.HasStatus(true, StatusID.Dualcast, StatusID.Acceleration, StatusID.Swiftcast) && Veraero.ShouldUse(out act)) return true;
+        //é»‘
+        if ((BlackMana <= WhiteMana || (VerstoneReady && BlackMana - WhiteMana <= 24) || !Veraero.EnoughLevel) && Player.HasStatus(true, StatusID.Dualcast, StatusID.Acceleration, StatusID.Swiftcast) && Verthunder.ShouldUse(out act)) return true;
+        //éœ‡è¡
         if (Jolt.ShouldUse(out act)) return true;
-        #endregion
 
-        //Õğµ´Ë¢»ğÑ×ºÍ·ÉÊ¯
-
-
-        //³àÖÎÁÆ£¬¼Ó¼´¿Ì£¬ÓĞÁ¬ĞøÓ½³ª»òÕß¼´¿ÌµÄ»°¾Í²»·ÅÁË
-        if (Config.GetBoolByName("UseVercure") && Vercure.ShouldUse(out act)
-            ) return true;
-
+        //èµ¤æ²»ç–—åŠ å³åˆ»ï¼Œæœ‰è¿ç»­å’å”±æˆ–è€…å³åˆ»çš„è¯å°±ä¸æ”¾äº†
+        if (Config.GetBoolByName("UseVercure") && Vercure.ShouldUse(out act)) return true;
         return false;
     }
 
+    private protected override IAction CountDownAction(float remainTime)
+    {
+        //5sé¢„è¯»èµ¤æš´é›·
+        if (remainTime <= 5 && Verthunder.ShouldUse(out _)) return Verthunder;
+        return base.CountDownAction(remainTime);
+    }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        //»ìÂÒ
         if (Addle.ShouldUse(out act)) return true;
         if (MagickBarrier.ShouldUse(out act, mustUse: true)) return true;
         return false;
     }
-
-    private protected override bool EmergencyGCD(out IAction act)
-    {
-        byte level = Level;
-        #region Ô¶³ÌÈıÁ¬
-        //Èç¹ûÄ§Ôª½á¾§ÂúÁË¡£
-        if (ManaStacks == 3)
-        {
-            if (BlackMana > WhiteMana && level >= 70)
-            {
-                if (Verholy.ShouldUse(out act, mustUse: true)) return true;
-            }
-            if (Verflare.ShouldUse(out act, mustUse: true)) return true;
-        }
-
-        //½¹ÈÈ
-        if (Scorch.ShouldUse(out act, mustUse: true)) return true;
-
-        //¾ö¶Ï
-        if (Resolution.ShouldUse(out act, mustUse: true)) return true;
-        #endregion
-
-        #region ½üÕ½ÈıÁ¬
-
-
-        if (IsLastGCD(true, Moulinet) && Moulinet.ShouldUse(out act, mustUse: true)) return true;
-        if (Zwerchhau.ShouldUse(out act)) return true;
-        if (Redoublement.ShouldUse(out act)) return true;
-
-        //Èç¹û±¶ÔöºÃÁË£¬»òÕßÄ§ÔªÂúÁË£¬»òÕßÕıÔÚ±¬·¢£¬»òÕß´¦ÓÚ¿ª³¡±¬·¢×´Ì¬£¬¾ÍÂíÉÏÓÃ£¡
-        bool mustStart = Player.HasStatus(true, StatusID.Manafication) ||
-                         BlackMana == 100 || WhiteMana == 100 || !Embolden.IsCoolDown;
-
-        //ÔÚÄ§·¨ÔªÃ»ÓĞÒç³öµÄÇé¿öÏÂ£¬ÒªÇó½ÏĞ¡µÄÄ§Ôª²»´ø´¥·¢£¬Ò²¿ÉÒÔÇ¿ÖÆÒªÇóÌø¹ıÅĞ¶Ï¡£
-        if (!mustStart)
-        {
-            if (BlackMana == WhiteMana) return false;
-
-            //ÒªÇó½ÏĞ¡µÄÄ§Ôª²»´ø´¥·¢£¬Ò²¿ÉÒÔÇ¿ÖÆÒªÇóÌø¹ıÅĞ¶Ï¡£
-            if (WhiteMana < BlackMana)
-            {
-                if (Player.HasStatus(true, StatusID.VerstoneReady))
-                {
-                    return false;
-                }
-            }
-            if (WhiteMana > BlackMana)
-            {
-                if (Player.HasStatus(true, StatusID.VerfireReady))
-                {
-                    return false;
-                }
-            }
-
-            //¿´¿´ÓĞÃ»ÓĞ¼´¿ÌÏà¹ØµÄ¼¼ÄÜ¡£
-            if (Player.HasStatus(true, Vercure.BuffsProvide))
-            {
-                return false;
-            }
-
-            //Èç¹û±¶ÔöµÄÊ±¼ä¿ìµ½ÁË£¬µ«»¹ÊÇÃ»ºÃ¡£
-            if (Embolden.WillHaveOneChargeGCD(10))
-            {
-                return false;
-            }
-        }
-        #endregion
-
-        if (Player.HasStatus(true, StatusID.Dualcast)) return false;
-
-        #region ¿ªÆô±¬·¢
-        //ÒªÀ´¿ÉÒÔÊ¹ÓÃ½üÕ½ÈıÁ¬ÁË¡£
-        if (Moulinet.ShouldUse(out act))
-        {
-            if (BlackMana >= 60 && WhiteMana >= 60) return true;
-        }
-        else
-        {
-            if (BlackMana >= 50 && WhiteMana >= 50 && Riposte.ShouldUse(out act)) return true;
-        }
-        if (ManaStacks > 0 && Riposte.ShouldUse(out act)) return true;
-        #endregion
-
-        return false;
-    }
-
-    //ÅĞ¶¨½¹ÈÈ¾ö¶ÏÄÜ²»ÄÜÊ¹ÓÃ
-    private bool canUseMagic(IAction act)
-    {
-        //return IsLastAction(true, Scorch) || IsLastAction(true, Resolution) || IsLastAction(true, Verholy) || IsLastAction(true, Verflare);
-        return Scorch.ShouldUse(out act) || Resolution.ShouldUse(out act);
-    }
 }
-

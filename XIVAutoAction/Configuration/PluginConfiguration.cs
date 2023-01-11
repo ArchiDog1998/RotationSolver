@@ -66,7 +66,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AutoStartCountdown { get; set; } = true;
     public bool AttackSafeMode { get; set; } = false;
     public bool UseHealWhenNotAHealer { get; set; } = true;
-    public float ObjectMinRadius { get; set; } = 0f;
     public float HealthDifference { get; set; } = 0.25f;
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<ClassJobID, float>();
 
