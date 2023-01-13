@@ -8,7 +8,7 @@
 
 > 这个库已经不再维护了。
 >
-> This repository is abandoned.
+> This repository is abandoned. It may be restarted in game version 7.0. Only supports international servers.
 
 本仓库虽然是从[XIVComboPluginExpandedest](https://github.com/tssailzz8/XIVComboPluginExpandedest/tree/master/XIVComboPlugin)中fork过来的，但是已经几乎没有任何一行是从原仓库中留下来的。我也不知道为什么当时没自己创建一个。
 
