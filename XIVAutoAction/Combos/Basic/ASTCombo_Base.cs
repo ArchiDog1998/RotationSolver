@@ -2,15 +2,16 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using XIVAutoAction;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Combos.CustomCombo;
 
-namespace XIVAutoAttack.Combos.Basic;
+namespace XIVAutoAction.Combos.Basic;
 
-internal abstract class ASTCombo_Base: CustomCombo.CustomCombo
+internal abstract class ASTCombo_Base : CustomCombo.CustomCombo
 {
     private static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
 

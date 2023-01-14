@@ -1,13 +1,13 @@
 ﻿using ImGuiNET;
 using System.Collections.Generic;
 using System.Numerics;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Windows;
-using XIVAutoAttack.Windows.ComboConfigWindow;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Localization;
+using XIVAutoAction.Windows;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Windows.ComboConfigWindow;
 
-namespace XIVAutoAttack.Combos.Script.Actions
+namespace XIVAutoAction.Combos.Script.Actions
 {
     internal class ActionsSet : IDraw
     {

@@ -1,15 +1,15 @@
 ﻿#if DEBUG
 
 using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
 
 
-namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
+namespace XIVAutoAction.Combos.RangedMagicial.BLMCombo_Default;
 internal sealed partial class BLMCombo_Default : BLMCombo_Base
 {
     public override string GameVersion => "6.18";

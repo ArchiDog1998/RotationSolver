@@ -1,42 +1,42 @@
 ﻿using Dalamud.Hooking;
 using System;
 using System.Runtime.InteropServices;
+using XIVAutoAction;
 
-namespace XIVAutoAttack.SigReplacers
+namespace XIVAutoAction.SigReplacers;
+
+internal static class CountDown
 {
-    internal static class CountDown
+    private delegate IntPtr CountdownTimerDelegate(IntPtr p1);
+
+    private static Hook<CountdownTimerDelegate> _countdownTimerHook = null;
+
+    private static IntPtr _countDown = IntPtr.Zero;
+
+    internal static float CountDownTime
     {
-        private delegate IntPtr CountdownTimerDelegate(IntPtr p1);
-
-        private static Hook<CountdownTimerDelegate> _countdownTimerHook = null;
-
-        private static IntPtr _countDown = IntPtr.Zero;
-
-        internal static float CountDownTime
+        get
         {
-            get
-            {
-                if (_countDown == IntPtr.Zero) return 0;
-                return Math.Max(0, Marshal.PtrToStructure<float>(_countDown + 0x2c));
-            }
+            if (_countDown == IntPtr.Zero) return 0;
+            return Math.Max(0, Marshal.PtrToStructure<float>(_countDown + 0x2c));
         }
+    }
 
-        internal static unsafe void Enable()
-        {
-            _countdownTimerHook = Hook<CountdownTimerDelegate>.FromAddress(Service.Address.CountdownTimerAdress, CountdownTimerFunc);
+    internal static unsafe void Enable()
+    {
+        _countdownTimerHook = Hook<CountdownTimerDelegate>.FromAddress(Service.Address.CountdownTimerAdress, CountdownTimerFunc);
 
-            _countdownTimerHook?.Enable();
-        }
+        _countdownTimerHook?.Enable();
+    }
 
-        private static IntPtr CountdownTimerFunc(IntPtr value)
-        {
-            _countDown = value;
-            return _countdownTimerHook!.Original(value);
-        }
+    private static IntPtr CountdownTimerFunc(IntPtr value)
+    {
+        _countDown = value;
+        return _countdownTimerHook!.Original(value);
+    }
 
-        internal static void Dispose()
-        {
-            _countdownTimerHook?.Dispose();
-        }
+    internal static void Dispose()
+    {
+        _countdownTimerHook?.Dispose();
     }
 }

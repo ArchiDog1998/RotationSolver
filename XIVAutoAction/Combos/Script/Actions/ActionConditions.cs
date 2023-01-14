@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Script.Conditions;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Windows;
-using XIVAutoAttack.Windows.ComboConfigWindow;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Script.Conditions;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Localization;
+using XIVAutoAction.Windows;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Windows.ComboConfigWindow;
 
-namespace XIVAutoAttack.Combos.Script.Actions;
+namespace XIVAutoAction.Combos.Script.Actions;
 
 /// <summary>
 /// 最右边那栏用来渲染的

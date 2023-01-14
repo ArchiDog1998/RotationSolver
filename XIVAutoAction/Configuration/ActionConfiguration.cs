@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using XIVAutoAction;
 
-namespace XIVAutoAttack.Configuration
+namespace XIVAutoAction.Configuration
 {
     public class ActionConfiguration
     {
@@ -117,32 +118,32 @@ namespace XIVAutoAttack.Configuration
 
         internal bool IsTheSame(ActionConfiguration other)
         {
-            if (this.texts.Count != other.texts.Count) return false;
-            for (int i = 0; i < this.texts.Count; i++)
+            if (texts.Count != other.texts.Count) return false;
+            for (int i = 0; i < texts.Count; i++)
             {
-                if (this.texts[i].name != other.texts[i].name) return false;
-                this.texts[i].value = other.texts[i].value;
+                if (texts[i].name != other.texts[i].name) return false;
+                texts[i].value = other.texts[i].value;
             }
 
-            if (this.doubles.Count != other.doubles.Count) return false;
-            for (int i = 0; i < this.doubles.Count; i++)
+            if (doubles.Count != other.doubles.Count) return false;
+            for (int i = 0; i < doubles.Count; i++)
             {
-                if (this.doubles[i].name != other.doubles[i].name) return false;
-                this.doubles[i].value = other.doubles[i].value;
+                if (doubles[i].name != other.doubles[i].name) return false;
+                doubles[i].value = other.doubles[i].value;
             }
 
-            if (this.bools.Count != other.bools.Count) return false;
-            for (int i = 0; i < this.bools.Count; i++)
+            if (bools.Count != other.bools.Count) return false;
+            for (int i = 0; i < bools.Count; i++)
             {
-                if (this.bools[i].name != other.bools[i].name) return false;
-                this.bools[i].value = other.bools[i].value;
+                if (bools[i].name != other.bools[i].name) return false;
+                bools[i].value = other.bools[i].value;
             }
 
-            if (this.combos.Count != other.combos.Count) return false;
-            for (int i = 0; i < this.combos.Count; i++)
+            if (combos.Count != other.combos.Count) return false;
+            for (int i = 0; i < combos.Count; i++)
             {
-                if (this.combos[i].name != other.combos[i].name) return false;
-                this.combos[i].value = other.combos[i].value;
+                if (combos[i].name != other.combos[i].name) return false;
+                combos[i].value = other.combos[i].value;
             }
             return true;
         }

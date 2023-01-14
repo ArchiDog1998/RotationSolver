@@ -1,12 +1,10 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
 
-namespace XIVAutoAttack.Combos.Basic;
+namespace XIVAutoAction.Combos.Basic;
 internal abstract class DRKCombo_Base : CustomCombo.CustomCombo
 {
     private static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();

@@ -1,13 +1,14 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using XIVAutoAction;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Combos.CustomCombo;
 
-namespace XIVAutoAttack.Combos.Basic;
+namespace XIVAutoAction.Combos.Basic;
 internal abstract class DNCCombo_Base : CustomCombo.CustomCombo
 {
     private static DNCGauge JobGauge => Service.JobGauges.Get<DNCGauge>();
@@ -253,7 +254,7 @@ internal abstract class DNCCombo_Base : CustomCombo.CustomCombo
             //Remove Weak
             !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
             //Remove other partner.
-            && (!b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2))
+            && !b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2)
             ).ToArray();
 
             return Targets.GetJobCategory(JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical).FirstOrDefault();

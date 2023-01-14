@@ -2,41 +2,40 @@
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 
-namespace XIVAutoAttack.Data
+namespace XIVAutoAction.Data;
+
+internal unsafe class MacroItem
 {
-    internal unsafe class MacroItem
+    private GameObject _lastTarget;
+    public GameObject Target { get; }
+    public bool IsRunning { get; private set; }
+    public RaptureMacroModule.Macro* Macro { get; }
+
+    public MacroItem(GameObject target, RaptureMacroModule.Macro* macro)
     {
-        private GameObject _lastTarget;
-        public GameObject Target { get; }
-        public bool IsRunning { get; private set; }
-        public RaptureMacroModule.Macro* Macro { get; }
+        Macro = macro;
+        Target = target;
+    }
 
-        public MacroItem(GameObject target, RaptureMacroModule.Macro* macro)
-        {
-            Macro = macro;
-            Target = target;
-        }
+    public bool StartUseMacro()
+    {
+        if (RaptureShellModule.Instance->MacroCurrentLine > -1) return false;
 
-        public bool StartUseMacro()
-        {
-            if (RaptureShellModule.Instance->MacroCurrentLine > -1) return false;
+        _lastTarget = Service.TargetManager.Target;
+        Service.TargetManager.SetTarget(Target);
+        RaptureShellModule.Instance->ExecuteMacro(Macro);
 
-            _lastTarget = Service.TargetManager.Target;
-            Service.TargetManager.SetTarget(Target);
-            RaptureShellModule.Instance->ExecuteMacro(Macro);
+        IsRunning = true;
+        return true;
+    }
 
-            IsRunning = true;
-            return true;
-        }
+    public bool EndUseMacro()
+    {
+        if (RaptureShellModule.Instance->MacroCurrentLine > -1) return false;
 
-        public bool EndUseMacro()
-        {
-            if (RaptureShellModule.Instance->MacroCurrentLine > -1) return false;
+        Service.TargetManager.SetTarget(_lastTarget);
 
-            Service.TargetManager.SetTarget(_lastTarget);
-
-            IsRunning = false;
-            return true;
-        }
+        IsRunning = false;
+        return true;
     }
 }

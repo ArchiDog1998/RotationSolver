@@ -1,12 +1,12 @@
 ﻿#if DEBUG
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Data;
+using XIVAutoAction.Updaters;
+using XIVAutoAction.Helpers;
 
 
-namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
+namespace XIVAutoAction.Combos.RangedMagicial.BLMCombo_Default;
 
 internal sealed partial class BLMCombo_Default : BLMCombo_Base
 {

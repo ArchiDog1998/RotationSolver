@@ -2,12 +2,14 @@
 using Newtonsoft.Json;
 using System;
 using System.Linq;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Windows;
+using XIVAutoAction;
+using XIVAutoAction.Combos.Script;
+using XIVAutoAction.Data;
+using XIVAutoAction.Localization;
+using XIVAutoAction.Windows;
+using XIVAutoAction.Actions.BaseAction;
 
-namespace XIVAutoAttack.Combos.Script.Conditions;
+namespace XIVAutoAction.Combos.Script.Conditions;
 
 internal class ActionCondition : ICondition
 {

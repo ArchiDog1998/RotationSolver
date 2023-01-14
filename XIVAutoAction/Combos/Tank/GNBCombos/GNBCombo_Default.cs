@@ -1,15 +1,16 @@
 using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Tank.GNBCombos.GNBCombo_Default;
+using XIVAutoAction;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using static XIVAutoAction.Combos.Tank.GNBCombos.GNBCombo_Default;
 
-namespace XIVAutoAttack.Combos.Tank.GNBCombos;
+namespace XIVAutoAction.Combos.Tank.GNBCombos;
 
 internal sealed class GNBCombo_Default : GNBCombo_Base
-{ 
+{
     public override string GameVersion => "6.18";
 
     public override string Author => "Ï«¥ÙMoon";

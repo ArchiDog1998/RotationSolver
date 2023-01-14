@@ -1,4 +1,4 @@
-﻿namespace XIVAutoAttack.Combos.Script
+﻿namespace XIVAutoAction.Combos.Script
 {
     internal interface IDraw
     {

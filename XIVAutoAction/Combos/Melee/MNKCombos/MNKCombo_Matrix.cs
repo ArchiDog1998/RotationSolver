@@ -1,14 +1,15 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using XIVAutoAction;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
 
-namespace XIVAutoAttack.Combos.Melee.MNKCombos;
+namespace XIVAutoAction.Combos.Melee.MNKCombos;
 
 internal sealed class MNKCombo_Matrix : MNKCombo_Base
 {
@@ -428,7 +429,7 @@ internal sealed class MNKCombo_Matrix : MNKCombo_Base
 
         // 判断是否处于金兰或者即将有金兰
         if (Player.HasStatus(true, StatusID.Brotherhood)
-            || (!Player.HasStatus(true, StatusID.Brotherhood) && Brotherhood.WillHaveOneChargeGCD(3)))
+            || !Player.HasStatus(true, StatusID.Brotherhood) && Brotherhood.WillHaveOneChargeGCD(3))
         {
             if (PerfectBalanceFor120S(out act)) return true;
         }

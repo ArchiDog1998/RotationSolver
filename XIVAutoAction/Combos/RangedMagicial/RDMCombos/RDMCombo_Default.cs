@@ -1,15 +1,15 @@
 using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
 
-namespace XIVAutoAttack.Combos.RangedMagicial.RDMCombos;
+namespace XIVAutoAction.Combos.RangedMagicial.RDMCombos;
 
 internal sealed class RDMCombo_Default : RDMCombo_Base
-{ 
+{
     public override string GameVersion => "6.0";
 
     public override string Author => "нч";

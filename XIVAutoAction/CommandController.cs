@@ -4,17 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Actions.BaseCraftAction;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
-using XIVAutoAttack.Windows;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Localization;
+using XIVAutoAction.SigReplacers;
+using XIVAutoAction.Updaters;
+using XIVAutoAction.Windows;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Actions.BaseCraftAction;
 
-namespace XIVAutoAttack
+namespace XIVAutoAction
 {
     internal static class CommandController
     {

@@ -1,11 +1,11 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Updaters;
+using XIVAutoAction.Data;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Updaters;
 
-namespace XIVAutoAttack.Combos.Basic;
+namespace XIVAutoAction.Combos.Basic;
 
 internal abstract class SMNCombo_Base : CustomCombo.CustomCombo
 {

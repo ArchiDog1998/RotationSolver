@@ -1,31 +1,30 @@
-﻿using XIVAutoAttack.Localization;
+﻿using XIVAutoAction.Localization;
 
-namespace XIVAutoAttack.Combos.CustomCombo
+namespace XIVAutoAction.Combos.CustomCombo;
+
+public enum DescType : byte
 {
-    public enum DescType : byte
-    {
-        Description,
-        BreakingAction,
-        HealArea,
-        HealSingle,
-        DefenseArea,
-        DefenseSingle,
-        MoveAction,
-        OtherCommands,
-    }
+    Description,
+    BreakingAction,
+    HealArea,
+    HealSingle,
+    DefenseArea,
+    DefenseSingle,
+    MoveAction,
+    OtherCommands,
+}
 
-    internal static class DescTypeExtension
+internal static class DescTypeExtension
+{
+    public static string ToName(this DescType type) => type switch
     {
-        public static string ToName(this DescType type) => type switch
-        {
-            DescType.Description => LocalizationManager.RightLang.DescType_Description,
-            DescType.BreakingAction => LocalizationManager.RightLang.DescType_BreakingAction,
-            DescType.HealArea => LocalizationManager.RightLang.DescType_HealArea,
-            DescType.HealSingle => LocalizationManager.RightLang.DescType_HealSingle,
-            DescType.DefenseArea => LocalizationManager.RightLang.DescType_DefenseArea,
-            DescType.DefenseSingle => LocalizationManager.RightLang.DescType_DefenseSingle,
-            DescType.MoveAction => LocalizationManager.RightLang.DescType_MoveAction,
-            _ => string.Empty,
-        };
-    }
+        DescType.Description => LocalizationManager.RightLang.DescType_Description,
+        DescType.BreakingAction => LocalizationManager.RightLang.DescType_BreakingAction,
+        DescType.HealArea => LocalizationManager.RightLang.DescType_HealArea,
+        DescType.HealSingle => LocalizationManager.RightLang.DescType_HealSingle,
+        DescType.DefenseArea => LocalizationManager.RightLang.DescType_DefenseArea,
+        DescType.DefenseSingle => LocalizationManager.RightLang.DescType_DefenseSingle,
+        DescType.MoveAction => LocalizationManager.RightLang.DescType_MoveAction,
+        _ => string.Empty,
+    };
 }

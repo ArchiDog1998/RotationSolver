@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
 
-namespace XIVAutoAttack.Combos.RangedMagicial.SMNCombos;
+namespace XIVAutoAction.Combos.RangedMagicial.SMNCombos;
 
 internal sealed class SMNCombo_Default : SMNCombo_Base
 {
@@ -116,20 +116,20 @@ internal sealed class SMNCombo_Default : SMNCombo_Base
         }
 
         //龙神不死鸟迸发
-        if (((InBahamut && SummonBahamut.ElapsedAfterGCD(3)) || InPhoenix || (IsTargetBoss && IsTargetDying)) && EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
+        if ((InBahamut && SummonBahamut.ElapsedAfterGCD(3) || InPhoenix || IsTargetBoss && IsTargetDying) && EnkindleBahamut.ShouldUse(out act, mustUse: true)) return true;
         //死星核爆
-        if ((SummonBahamut.ElapsedAfterGCD(3) || (IsTargetBoss && IsTargetDying)) && Deathflare.ShouldUse(out act, mustUse: true)) return true;
+        if ((SummonBahamut.ElapsedAfterGCD(3) || IsTargetBoss && IsTargetDying) && Deathflare.ShouldUse(out act, mustUse: true)) return true;
         //苏生之炎
         if (Rekindle.ShouldUse(out act, mustUse: true)) return true;
         //山崩
         if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
 
         //痛苦核爆
-        if (((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolDown)) ||
-            !SearingLight.EnoughLevel || (IsTargetBoss && IsTargetDying)) && Painflare.ShouldUse(out act)) return true;
+        if ((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolDown) ||
+            !SearingLight.EnoughLevel || IsTargetBoss && IsTargetDying) && Painflare.ShouldUse(out act)) return true;
         //溃烂爆发
-        if (((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolDown)) ||
-            !SearingLight.EnoughLevel || (IsTargetBoss && IsTargetDying)) && Fester.ShouldUse(out act)) return true;
+        if ((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolDown) ||
+            !SearingLight.EnoughLevel || IsTargetBoss && IsTargetDying) && Fester.ShouldUse(out act)) return true;
 
         //能量抽取
         if (EnergySiphon.ShouldUse(out act)) return true;
@@ -146,7 +146,7 @@ internal sealed class SMNCombo_Default : SMNCombo_Base
             default:
                 break;
             case 1:
-                if (nextGCD.IsAnySameAction(true, Slipstream) || (Attunement == 0 && Player.HasStatus(true, StatusID.GarudasFavor)))
+                if (nextGCD.IsAnySameAction(true, Slipstream) || Attunement == 0 && Player.HasStatus(true, StatusID.GarudasFavor))
                 {
                     if (Swiftcast.ShouldUse(out act, mustUse: true)) return true;
                 }
@@ -159,8 +159,8 @@ internal sealed class SMNCombo_Default : SMNCombo_Base
                 break;
 
             case 3:
-                if (nextGCD.IsAnySameAction(true, Slipstream) || (Attunement == 0 && Player.HasStatus(true, StatusID.GarudasFavor)) ||
-                   (InIfrit && (nextGCD.IsAnySameAction(true, Gemshine, PreciousBrilliance) || IsMoving)))
+                if (nextGCD.IsAnySameAction(true, Slipstream) || Attunement == 0 && Player.HasStatus(true, StatusID.GarudasFavor) ||
+                   InIfrit && (nextGCD.IsAnySameAction(true, Gemshine, PreciousBrilliance) || IsMoving))
                 {
                     if (Swiftcast.ShouldUse(out act, mustUse: true)) return true;
                 }

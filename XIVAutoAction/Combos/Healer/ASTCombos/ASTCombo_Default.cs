@@ -1,15 +1,14 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Healer.ASTCombos.ASTCombo_Default;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Updaters;
 
-namespace XIVAutoAttack.Combos.Healer.ASTCombos;
+namespace XIVAutoAction.Combos.Healer.ASTCombos;
 
 internal sealed class ASTCombo_Default : ASTCombo_Base
 {

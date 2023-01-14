@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
+using XIVAutoAction;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Updaters;
 
-namespace XIVAutoAttack.Combos.Healer.SGECombos;
+namespace XIVAutoAction.Combos.Healer.SGECombos;
 
 internal sealed class SGECombo_Default : SGECombo_Base
 {
@@ -266,7 +267,7 @@ internal sealed class SGECombo_Default : SGECombo_Base
 
     private protected override bool HealAreaGCD(out IAction act)
     {
-        if (TargetUpdater.PartyMembersAverHP < 0.65f || (Dyskrasia.ShouldUse(out _) && TargetUpdater.PartyTanks.Any(t => t.GetHealthRatio() < 0.6f)))
+        if (TargetUpdater.PartyMembersAverHP < 0.65f || Dyskrasia.ShouldUse(out _) && TargetUpdater.PartyTanks.Any(t => t.GetHealthRatio() < 0.6f))
         {
             //»êÁé·çÏ¢
             if (Pneuma.ShouldUse(out act, mustUse: true)) return true;

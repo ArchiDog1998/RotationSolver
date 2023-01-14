@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Localization;
 
-namespace XIVAutoAttack.Combos.Script.Actions
+namespace XIVAutoAction.Combos.Script.Actions
 {
     internal class ComboSet : IDraw
     {

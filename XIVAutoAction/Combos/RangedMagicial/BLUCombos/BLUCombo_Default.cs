@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.RangedMagicial.BLUCombos.BLUCombo_Default;
+﻿using System.Linq;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Updaters;
 
-namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
+namespace XIVAutoAction.Combos.RangedMagicial.BLUCombos
 {
     internal sealed class BLUCombo_Default : BLUCombo_Base
     {
@@ -356,7 +354,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
             //陆行鸟陨石
             if (TargetUpdater.HaveChocobo && ChocoMeteor.ShouldUse(out act, mustUse: true)) return true;
 
-            if (TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 6).Count() < 3)
+            if (TargetUpdater.HostileTargets.GetObjectInRadius(6).Count() < 3)
             {
                 //水力吸引
                 if (HydroPull.ShouldUse(out act)) return true;

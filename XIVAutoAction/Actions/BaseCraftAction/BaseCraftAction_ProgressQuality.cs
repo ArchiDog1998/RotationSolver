@@ -1,9 +1,10 @@
 ﻿using System;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
+using XIVAutoAction;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Updaters;
 
-namespace XIVAutoAttack.Actions.BaseCraftAction;
+namespace XIVAutoAction.Actions.BaseCraftAction;
 
 internal partial class BaseCraftAction
 {

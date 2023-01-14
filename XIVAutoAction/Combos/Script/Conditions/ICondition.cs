@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using XIVAutoAction.Combos.Script.Conditions;
 
-namespace XIVAutoAttack.Combos.Script.Conditions;
+namespace XIVAutoAction.Combos.Script.Conditions;
 
 internal interface ICondition : IDraw
 {

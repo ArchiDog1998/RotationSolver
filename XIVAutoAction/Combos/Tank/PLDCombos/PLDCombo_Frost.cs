@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Tank.PLDCombos.PLDCombo_Frost;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
 
-namespace XIVAutoAttack.Combos.Tank.PLDCombos;
+namespace XIVAutoAction.Combos.Tank.PLDCombos;
 
 internal sealed class PLDCombo_Frost : PLDCombo_Base
 {

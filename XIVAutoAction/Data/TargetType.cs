@@ -1,12 +1,11 @@
-﻿namespace XIVAutoAttack.Data
+﻿namespace XIVAutoAction.Data;
+
+public enum TargetingType
 {
-    public enum TargetingType
-    {
-        Big,
-        Small,
-        HighHP,
-        LowHP,
-        HighMaxHP,
-        LowMaxHP,
-    }
+    Big,
+    Small,
+    HighHP,
+    LowHP,
+    HighMaxHP,
+    LowMaxHP,
 }

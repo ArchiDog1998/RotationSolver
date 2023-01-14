@@ -8,15 +8,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Script;
-using XIVAutoAttack.Combos.Script.Actions;
-using XIVAutoAttack.Combos.Script.Conditions;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Updaters;
+using XIVAutoAction;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Combos.Script;
+using XIVAutoAction.Combos.Script.Actions;
+using XIVAutoAction.Data;
+using XIVAutoAction.Updaters;
+using XIVAutoAction.Combos.Script.Conditions;
 
-namespace XIVAutoAttack.SigReplacers;
+namespace XIVAutoAction.SigReplacers;
 
 internal sealed class IconReplacer : IDisposable
 {

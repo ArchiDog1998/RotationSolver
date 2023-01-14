@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using XIVAutoAttack.Combos.Script.Actions;
+using XIVAutoAction.Combos.Script.Actions;
 
-namespace XIVAutoAttack.Localization;
+namespace XIVAutoAction.Localization;
 
 internal class Strings
 {

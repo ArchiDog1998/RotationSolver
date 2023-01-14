@@ -6,11 +6,12 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.SigReplacers;
+using XIVAutoAction;
+using XIVAutoAction.Data;
+using XIVAutoAction.Localization;
+using XIVAutoAction.SigReplacers;
 
-namespace XIVAutoAttack.Windows.ComboConfigWindow;
+namespace XIVAutoAction.Windows.ComboConfigWindow;
 
 internal partial class ComboConfigWindow
 {

@@ -2,16 +2,16 @@ using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using System;
-using XIVAutoAttack.Combos.Script;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
-using XIVAutoAttack.Windows;
-using XIVAutoAttack.Windows.ComboConfigWindow;
+using XIVAutoAction.Combos.Script;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Localization;
+using XIVAutoAction.SigReplacers;
+using XIVAutoAction.Updaters;
+using XIVAutoAction.Windows;
+using XIVAutoAction.Windows.ComboConfigWindow;
 
-namespace XIVAutoAttack;
+namespace XIVAutoAction;
 
 public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 {

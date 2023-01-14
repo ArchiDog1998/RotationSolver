@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.RangedPhysicial.MCHCombos.MCHCombo_Default;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Updaters;
 
-namespace XIVAutoAttack.Combos.RangedPhysicial.MCHCombos;
+namespace XIVAutoAction.Combos.RangedPhysicial.MCHCombos;
 
 internal sealed class MCHCombo_Default : MCHCombo_Base
 {
@@ -62,7 +61,7 @@ internal sealed class MCHCombo_Default : MCHCombo_Base
         if (IsOverheated && AutoCrossbow.ShouldUse(out act)) return true;
         if (SpreadShot.ShouldUse(out act)) return true;
 
-        if ((!IsOverheated || IsOverheated && OverheatedEndAfterGCD()))
+        if (!IsOverheated || IsOverheated && OverheatedEndAfterGCD())
         {
             //单体,四个牛逼的技能。先空气锚再钻头
             if (AirAnchor.ShouldUse(out act)) return true;

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
 
-namespace XIVAutoAttack.Combos.Melee.SAMCombos;
+namespace XIVAutoAction.Combos.Melee.SAMCombos;
 
 internal sealed class SAMCombo_Default : SAMCombo_Base
 {
@@ -116,7 +116,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base
         if (Shoha.ShouldUse(out act)) return true;
 
         //震天、九天
-        if ((Kenki >= 50 && Ikishoten.WillHaveOneCharge(10)) || Kenki >= Config.GetFloatByName("addKenki") || (IsTargetBoss && IsTargetDying))
+        if (Kenki >= 50 && Ikishoten.WillHaveOneCharge(10) || Kenki >= Config.GetFloatByName("addKenki") || IsTargetBoss && IsTargetDying)
         {
             if (HissatsuKyuten.ShouldUse(out act)) return true;
             if (HissatsuShinten.ShouldUse(out act)) return true;
@@ -129,7 +129,7 @@ internal sealed class SAMCombo_Default : SAMCombo_Base
     {
         //明镜止水
         if (HaveHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) &&
-            (!IsTargetBoss || (Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana)) || (!HaveMoon && !HaveFlower) || (IsTargetBoss && IsTargetDying)))
+            (!IsTargetBoss || Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana) || !HaveMoon && !HaveFlower || IsTargetBoss && IsTargetDying))
         {
             if (MeikyoShisui.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }

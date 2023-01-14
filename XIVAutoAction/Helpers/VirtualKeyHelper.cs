@@ -1,18 +1,17 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 
-namespace XIVAutoAttack.Helpers
+namespace XIVAutoAction.Helpers;
+
+internal static class VirtualKeyHelper
 {
-    internal static class VirtualKeyHelper
+    internal static string ToName(this VirtualKey k)
     {
-        internal static string ToName(this VirtualKey k)
+        return k switch
         {
-            return k switch
-            {
-                VirtualKey.SHIFT => "SHIFT",
-                VirtualKey.CONTROL => "CTRL",
-                VirtualKey.MENU => "ALT",
-                _ => k.ToString(),
-            };
-        }
+            VirtualKey.SHIFT => "SHIFT",
+            VirtualKey.CONTROL => "CTRL",
+            VirtualKey.MENU => "ALT",
+            _ => k.ToString(),
+        };
     }
 }

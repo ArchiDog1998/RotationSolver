@@ -2,14 +2,15 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
+using XIVAutoAction;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
 
-namespace XIVAutoAttack.Combos.Melee.MNKCombos;
+namespace XIVAutoAction.Combos.Melee.MNKCombos;
 internal sealed class MNKCombo_Default : MNKCombo_Base
 {
     public override string GameVersion => "6.0";

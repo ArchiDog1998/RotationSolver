@@ -2,13 +2,15 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Linq;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.SigReplacers;
-using XIVAutoAttack.Updaters;
+using XIVAutoAction;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.SigReplacers;
+using XIVAutoAction.Updaters;
+using XIVAutoAction.Combos.CustomCombo;
 
-namespace XIVAutoAttack.Actions.BaseAction
+namespace XIVAutoAction.Actions.BaseAction
 {
     internal partial class BaseAction
     {

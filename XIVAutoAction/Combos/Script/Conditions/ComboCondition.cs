@@ -3,14 +3,15 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Windows;
+using XIVAutoAction;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Localization;
+using XIVAutoAction.Windows;
+using XIVAutoAction.Actions.BaseAction;
 
-namespace XIVAutoAttack.Combos.Script.Conditions;
+namespace XIVAutoAction.Combos.Script.Conditions;
 
 internal class ComboCondition : ICondition
 {

@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Updaters;
 
-namespace XIVAutoAttack.Combos.Healer.WHMCombos;
+namespace XIVAutoAction.Combos.Healer.WHMCombos;
 internal sealed class WHMCombo_Default : WHMCombo_Base
 {
     public override string GameVersion => "6.28";
@@ -127,7 +127,7 @@ internal sealed class WHMCombo_Default : WHMCombo_Base
         int hasMedica2 = PartyMembers.Count((n) => n.HasStatus(true, StatusID.Medica2));
 
         //医济 在小队半数人都没有医济buff and 上次没放医济时使用
-        if (Medica2.ShouldUse(out act) && (hasMedica2 < PartyMembers.Count() / 2) && !IsLastAction(true, Medica2)) return true;
+        if (Medica2.ShouldUse(out act) && hasMedica2 < PartyMembers.Count() / 2 && !IsLastAction(true, Medica2)) return true;
 
         //愈疗
         if (Cure3.ShouldUse(out act)) return true;

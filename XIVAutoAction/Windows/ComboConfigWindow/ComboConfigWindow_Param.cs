@@ -2,11 +2,12 @@
 using ImGuiNET;
 using System;
 using System.Numerics;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Localization;
+using XIVAutoAction;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Localization;
 
-namespace XIVAutoAttack.Windows.ComboConfigWindow;
+namespace XIVAutoAction.Windows.ComboConfigWindow;
 
 internal partial class ComboConfigWindow
 {

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Updaters;
 
-namespace XIVAutoAttack.Combos.Healer.SCHCombos;
+namespace XIVAutoAction.Combos.Healer.SCHCombos;
 
 internal sealed class SCHCombo_Default : SCHCombo_Base
 {
@@ -197,7 +197,7 @@ internal sealed class SCHCombo_Default : SCHCombo_Base
             if (ChainStratagem.ShouldUse(out act)) return true;
         }
 
-        if ((Dissipation.EnoughLevel && Dissipation.WillHaveOneChargeGCD(3) && Dissipation.IsEnabled) || Aetherflow.WillHaveOneChargeGCD(3))
+        if (Dissipation.EnoughLevel && Dissipation.WillHaveOneChargeGCD(3) && Dissipation.IsEnabled || Aetherflow.WillHaveOneChargeGCD(3))
         {
             //能量吸收
             if (EnergyDrain.ShouldUse(out act, emptyOrSkipCombo: true)) return true;

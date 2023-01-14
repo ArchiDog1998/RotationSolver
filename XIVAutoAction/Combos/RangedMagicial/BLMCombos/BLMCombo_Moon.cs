@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Configuration;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.SigReplacers.Watcher;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Configuration;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Updaters;
+using static XIVAutoAction.SigReplacers.Watcher;
 
-namespace XIVAutoAttack.Combos.RangedMagicial;
+namespace XIVAutoAction.Combos.RangedMagicial.BLMCombos;
 internal sealed partial class BLMCombo_Moon : BLMCombo_Base
 {
     public override string GameVersion => "6.18";
@@ -383,7 +383,7 @@ internal sealed partial class BLMCombo_Moon : BLMCombo_Base
         {
             if (!InUmbralIce && !Freeze.EnoughLevel) return true;
 
-            if (InUmbralIce && ((!Freeze.EnoughLevel && Player.CurrentMp >= 9000) || UmbralHearts == 3)) return true;
+            if (InUmbralIce && (!Freeze.EnoughLevel && Player.CurrentMp >= 9000 || UmbralHearts == 3)) return true;
 
             if (InAstralFire) return true;
         }
@@ -406,7 +406,7 @@ internal sealed partial class BLMCombo_Moon : BLMCombo_Base
     private bool Maintence(out IAction act)
     {
         act = null;
-        if ((HaveHostilesInRange && InCombat) || IsEnochianActive) return false;
+        if (HaveHostilesInRange && InCombat || IsEnochianActive) return false;
 
         if (UmbralSoul.ShouldUse(out act) && UmbralIceStacks == 3 && ElementTimeEndAfterGCD(2)) return true;
         if (UmbralSoul.ShouldUse(out act) && (UmbralIceStacks != 3 || UmbralHearts != 3)) return true;

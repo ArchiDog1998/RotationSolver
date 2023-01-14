@@ -1,9 +1,9 @@
 ﻿using System;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.Script.Actions;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.Script.Actions;
 
-namespace XIVAutoAttack.Combos.Script.Combos;
+namespace XIVAutoAction.Combos.Script.Combos;
 
 internal class PLDCombo_Script : PLDCombo_Base, IScriptCombo
 {

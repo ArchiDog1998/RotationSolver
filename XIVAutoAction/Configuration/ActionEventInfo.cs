@@ -1,4 +1,4 @@
-﻿namespace XIVAutoAttack.Configuration
+﻿namespace XIVAutoAction.Configuration
 {
     public class ActionEventInfo
     {

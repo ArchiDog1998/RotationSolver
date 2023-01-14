@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Combos.Basic;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Helpers;
-using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.RangedPhysicial.DNCCombos.DNCCombo_Moon;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Basic;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Data;
+using XIVAutoAction.Helpers;
+using XIVAutoAction.Updaters;
+using static XIVAutoAction.Combos.RangedPhysicial.DNCCombos.DNCCombo_Moon;
 
-namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
+namespace XIVAutoAction.Combos.RangedPhysicial.DNCCombos;
 
 internal sealed class DNCCombo_Moon : DNCCombo_Base
 {
@@ -189,7 +189,7 @@ internal sealed class DNCCombo_Moon : DNCCombo_Base
 
         if (Windmill.ShouldUse(out _)) return true;
 
-        if (TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Count() >= 3) return false;
+        if (TargetUpdater.HostileTargets.GetObjectInRadius(25).Count() >= 3) return false;
 
         return false;
     }

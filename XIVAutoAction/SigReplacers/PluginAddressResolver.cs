@@ -2,9 +2,9 @@ using Dalamud.Game;
 using Dalamud.Logging;
 using System;
 using System.Runtime.InteropServices;
-using XIVAutoAttack.Data;
+using XIVAutoAction.Data;
 
-namespace XIVAutoAttack.SigReplacers;
+namespace XIVAutoAction.SigReplacers;
 
 internal class PluginAddressResolver : BaseAddressResolver
 {

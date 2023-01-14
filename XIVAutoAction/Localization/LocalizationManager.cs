@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace XIVAutoAttack.Localization;
+namespace XIVAutoAction.Localization;
 
 internal class LocalizationManager : IDisposable
 {

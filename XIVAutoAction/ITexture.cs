@@ -1,13 +1,12 @@
-﻿namespace XIVAutoAttack
-{
-    public interface IEnableTexture : ITexture
-    {
-        bool IsEnabled { get; set; }
-    }
+﻿namespace XIVAutoAction;
 
-    public interface ITexture
-    {
-        uint IconID { get; }
-        string Name { get; }
-    }
+public interface IEnableTexture : ITexture
+{
+    bool IsEnabled { get; set; }
+}
+
+public interface ITexture
+{
+    uint IconID { get; }
+    string Name { get; }
 }

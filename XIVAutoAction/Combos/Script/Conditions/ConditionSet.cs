@@ -5,10 +5,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Windows;
+using XIVAutoAction.Combos.Script;
+using XIVAutoAction.Localization;
+using XIVAutoAction.Windows;
 
-namespace XIVAutoAttack.Combos.Script.Conditions;
+namespace XIVAutoAction.Combos.Script.Conditions;
 
 internal class ConditionSet : ICondition
 {
@@ -22,7 +23,7 @@ internal class ConditionSet : ICondition
     public float Height => Conditions.Sum(c => c is ConditionSet ? c.Height + 10 : c.Height) + ICondition.DefaultHeight + 12;
     public void Draw(IScriptCombo combo)
     {
-        if (ImGui.BeginChild(this.GetHashCode().ToString(), new System.Numerics.Vector2(-1f, Height), true))
+        if (ImGui.BeginChild(GetHashCode().ToString(), new System.Numerics.Vector2(-1f, Height), true))
         {
             AddButton();
 

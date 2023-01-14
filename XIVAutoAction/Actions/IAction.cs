@@ -1,10 +1,9 @@
-﻿namespace XIVAutoAttack.Actions
+﻿namespace XIVAutoAction.Actions;
+
+public interface IAction : IEnableTexture
 {
-    public interface IAction : IEnableTexture
-    {
-        bool Use();
-        uint ID { get; }
-        uint AdjustedID { get; }
-        string CateName { get; }
-    }
+    bool Use();
+    uint ID { get; }
+    uint AdjustedID { get; }
+    string CateName { get; }
 }

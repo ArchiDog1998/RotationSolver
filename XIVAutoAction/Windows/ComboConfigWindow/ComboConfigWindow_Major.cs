@@ -9,16 +9,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Actions.BaseCraftAction;
-using XIVAutoAttack.Combos.CustomCombo;
-using XIVAutoAttack.Combos.Script;
-using XIVAutoAttack.Data;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.SigReplacers;
+using XIVAutoAction;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.CustomCombo;
+using XIVAutoAction.Combos.Script;
+using XIVAutoAction.Data;
+using XIVAutoAction.Localization;
+using XIVAutoAction.SigReplacers;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Actions.BaseCraftAction;
 
-namespace XIVAutoAttack.Windows.ComboConfigWindow;
+namespace XIVAutoAction.Windows.ComboConfigWindow;
 
 internal partial class ComboConfigWindow : Window
 {

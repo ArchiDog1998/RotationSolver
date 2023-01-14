@@ -2,8 +2,9 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using XIVAutoAction.Localization;
 
-namespace XIVAutoAttack.Helpers;
+namespace XIVAutoAction.Helpers;
 
 internal static class ReflectionHelper
 {
@@ -21,7 +22,7 @@ internal static class ReflectionHelper
                             && (info.IsStatic || info.GetCustomAttribute<ReflectableMemberAttribute>() != null)
                     select prop;
 
-        return props.Union(GetStaticProperties<T>(type.BaseType)).ToArray();
+        return props.Union(type.BaseType.GetStaticProperties<T>()).ToArray();
     }
 
     internal static MethodInfo[] GetStaticBoolMethodInfo(this Type type, Func<MethodInfo, bool> checks)
@@ -34,7 +35,7 @@ internal static class ReflectionHelper
                       && checks(method)
                       select method;
 
-        return methods.Union(GetStaticBoolMethodInfo(type.BaseType, checks)).ToArray();
+        return methods.Union(type.BaseType.GetStaticBoolMethodInfo(checks)).ToArray();
     }
 
     internal static PropertyInfo GetPropertyInfo(this Type type, string name)
@@ -47,7 +48,7 @@ internal static class ReflectionHelper
                && (info.IsStatic || info.GetCustomAttribute<ReflectableMemberAttribute>() != null)) return item;
         }
 
-        return GetPropertyInfo(type.BaseType, name);
+        return type.BaseType.GetPropertyInfo(name);
     }
 
     internal static MethodInfo GetMethodInfo(this Type type, string name)
@@ -60,19 +61,19 @@ internal static class ReflectionHelper
                       && !item.IsConstructor && item.ReturnType == typeof(bool)) return item;
         }
 
-        return GetMethodInfo(type.BaseType, name);
+        return type.BaseType.GetMethodInfo(name);
     }
 
     internal static string GetMemberName(this MemberInfo info)
     {
-        if (Localization.LocalizationManager.RightLang.MemberInfoName.TryGetValue(info.Name, out var memberName)) return memberName;
+        if (LocalizationManager.RightLang.MemberInfoName.TryGetValue(info.Name, out var memberName)) return memberName;
 
         return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName
             ?? info.Name;
     }
     internal static string GetMemberDescription(this MemberInfo info)
     {
-        if (Localization.LocalizationManager.RightLang.MemberInfoDesc.TryGetValue(info.Name, out var memberDesc)) return memberDesc;
+        if (LocalizationManager.RightLang.MemberInfoDesc.TryGetValue(info.Name, out var memberDesc)) return memberDesc;
 
         return info.GetCustomAttribute<DescriptionAttribute>()?.Description
             ?? string.Empty;

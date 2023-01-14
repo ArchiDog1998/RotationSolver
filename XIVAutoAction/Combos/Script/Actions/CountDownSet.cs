@@ -2,77 +2,77 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAttack.Actions;
-using XIVAutoAttack.Actions.BaseAction;
-using XIVAutoAttack.Localization;
-using XIVAutoAttack.Windows;
-using XIVAutoAttack.Windows.ComboConfigWindow;
+using XIVAutoAction.Actions;
+using XIVAutoAction.Combos.Script;
+using XIVAutoAction.Localization;
+using XIVAutoAction.Windows;
+using XIVAutoAction.Actions.BaseAction;
+using XIVAutoAction.Windows.ComboConfigWindow;
 
-namespace XIVAutoAttack.Combos.Script.Actions
+namespace XIVAutoAction.Combos.Script.Actions;
+
+internal class CountDownSet : IDraw
 {
-    internal class CountDownSet : IDraw
+    public List<CountDownAction> ActionsCondition { get; set; } = new List<CountDownAction>();
+
+    public void Draw(IScriptCombo combo)
     {
-        public List<CountDownAction> ActionsCondition { get; set; } = new List<CountDownAction>();
+        AddButton(combo);
 
-        public void Draw(IScriptCombo combo)
+        ImGui.SameLine();
+        ComboConfigWindow.Spacing();
+
+        ImGui.TextWrapped(LocalizationManager.RightLang.Scriptwindow_CountDownSetDesc);
+
+        if (ImGui.BeginChild($"##ActionUsageList", new Vector2(-5f, -1f), true))
         {
-            AddButton(combo);
-
-            ImGui.SameLine();
-            ComboConfigWindow.Spacing();
-
-            ImGui.TextWrapped(LocalizationManager.RightLang.Scriptwindow_CountDownSetDesc);
-
-            if (ImGui.BeginChild($"##ActionUsageList", new Vector2(-5f, -1f), true))
+            var relay = ActionsCondition;
+            if (ScriptComboWindow.DrawEditorList(relay, i =>
             {
-                var relay = ActionsCondition;
-                if (ScriptComboWindow.DrawEditorList(relay, i =>
-                {
-                    i.DrawHeader(combo);
-                }))
-                {
-                    ActionsCondition = relay;
-                }
-                ImGui.EndChild();
+                i.DrawHeader(combo);
+            }))
+            {
+                ActionsCondition = relay;
             }
+            ImGui.EndChild();
+        }
+    }
+
+    string search = string.Empty;
+    private void AddButton(IScriptCombo combo)
+    {
+        ScriptComboWindow.AddPopup("PopupAction" + GetHashCode().ToString(), string.Empty, null, ref search, combo.AllActions.OfType<BaseAction>(), item =>
+        {
+            ActionsCondition.Add(new CountDownAction(item));
+        });
+
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_AddActionDesc);
         }
 
-        string search = string.Empty;
-        private void AddButton(IScriptCombo combo)
-        {
-            ScriptComboWindow.AddPopup("PopupAction" + GetHashCode().ToString(), string.Empty, null, ref search, combo.AllActions.OfType<BaseAction>(), item =>
+        ImGui.SameLine();
+        ComboConfigWindow.Spacing();
+
+        ScriptComboWindow.AddPopup("PopupFunction" + GetHashCode().ToString(),
+            ref search, combo.AllOther, item =>
             {
                 ActionsCondition.Add(new CountDownAction(item));
             });
 
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_AddActionDesc);
-            }
-
-            ImGui.SameLine();
-            ComboConfigWindow.Spacing();
-
-            ScriptComboWindow.AddPopup("PopupFunction" + GetHashCode().ToString(),
-                ref search, combo.AllOther, item =>
-                {
-                    ActionsCondition.Add(new CountDownAction(item));
-                });
-
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip(string.Format(LocalizationManager.RightLang.Scriptwindow_AddFunctionDesc, combo.AllOther.Length));
-            }
-        }
-
-        public IAction ShouldUse(IScriptCombo owner, float time)
+        if (ImGui.IsItemHovered())
         {
-            foreach (var action in ActionsCondition.OrderBy(a => a.Time))
-            {
-                if (time < action.Time && action.ShouldUse(owner, out var act)) return act;
-            }
-
-            return null;
+            ImGui.SetTooltip(string.Format(LocalizationManager.RightLang.Scriptwindow_AddFunctionDesc, combo.AllOther.Length));
         }
+    }
+
+    public IAction ShouldUse(IScriptCombo owner, float time)
+    {
+        foreach (var action in ActionsCondition.OrderBy(a => a.Time))
+        {
+            if (time < action.Time && action.ShouldUse(owner, out var act)) return act;
+        }
+
+        return null;
     }
 }
