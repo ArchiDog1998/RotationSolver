@@ -27,8 +27,7 @@ internal class LocalizationManager : IDisposable
 
     private void ReadFile(string lang, Assembly assembly)
     {
-        Stream manifestResourceStream = assembly.GetManifestResourceStream("XIVAutoAction.Localization." + lang + ".json")
-            ?? assembly.GetManifestResourceStream("XIVAutoAction_CN.Localization." + lang + ".json");
+        Stream manifestResourceStream = assembly.GetManifestResourceStream("XIVAutoAction.Localization." + lang + ".json");
         if (manifestResourceStream == null) return;
         using StreamReader streamReader = new StreamReader(manifestResourceStream);
         _translations[lang] = JsonConvert.DeserializeObject<Strings>(streamReader.ReadToEnd());
@@ -51,7 +50,7 @@ internal class LocalizationManager : IDisposable
 #if DEBUG
     public void ExportLocalization()
     {
-        var directory = @"D:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\XIVAutoAction\XIVAutoAction\Localization";
+        var directory = @"D:\FFXIV_INT\XIVAutoAction\XIVAutoAction\Localization";
         if (!Directory.Exists(directory)) return;
 
         //Default values.
