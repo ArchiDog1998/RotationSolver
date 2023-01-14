@@ -50,4 +50,8 @@
     <EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
 </ItemGroup>
 
+<ItemGroup>
+  <PackageReference Include="DalamudPackager" Version="2.1.8" />
+</ItemGroup>
+
 </Project>  
