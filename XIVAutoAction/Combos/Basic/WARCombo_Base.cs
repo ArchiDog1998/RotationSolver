@@ -8,7 +8,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class WARCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class WARCombo_Base : CustomCombo.CustomCombo
 {
     private static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
 

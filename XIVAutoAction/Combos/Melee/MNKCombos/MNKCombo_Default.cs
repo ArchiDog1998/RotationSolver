@@ -8,24 +8,14 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Melee.MNKCombos.MNKCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.MNKCombos;
-internal sealed class MNKCombo_Default : MNKCombo_Base<CommandType>
+internal sealed class MNKCombo_Default : MNKCombo_Base
 {
     public override string GameVersion => "6.0";
 
     public override string Author => "无";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {

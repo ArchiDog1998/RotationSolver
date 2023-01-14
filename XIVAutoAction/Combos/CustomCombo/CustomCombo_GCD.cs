@@ -8,7 +8,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
+    internal abstract partial class CustomCombo
     {
         private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
         {

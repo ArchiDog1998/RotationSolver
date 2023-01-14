@@ -8,7 +8,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SCHCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class SCHCombo_Base : CustomCombo.CustomCombo
 {
     private static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
 

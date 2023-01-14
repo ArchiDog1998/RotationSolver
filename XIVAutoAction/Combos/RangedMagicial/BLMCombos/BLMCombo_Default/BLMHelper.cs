@@ -7,7 +7,6 @@ using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default.BLMCombo_Default;
 using static XIVAutoAttack.SigReplacers.Watcher;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
@@ -15,7 +14,7 @@ namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
 /// <summary>
 /// 黑魔帮助类
 /// </summary>
-internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
+internal sealed partial class BLMCombo_Default : BLMCombo_Base
 {
     internal static double TsPointElapsed = 0;
     internal static double TsPointRemain = 0;

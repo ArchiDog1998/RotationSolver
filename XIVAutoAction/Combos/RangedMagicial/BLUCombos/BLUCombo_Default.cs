@@ -10,21 +10,11 @@ using static XIVAutoAttack.Combos.RangedMagicial.BLUCombos.BLUCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLUCombos
 {
-    internal sealed class BLUCombo_Default : BLUCombo_Base<CommandType>
+    internal sealed class BLUCombo_Default : BLUCombo_Base
     {
         public override string GameVersion => "6.18";
 
         public override string Author => "汐ベMoon";
-
-        internal enum CommandType : byte
-        {
-            None,
-        }
-
-        protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-        {
-            //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-        };
 
         protected override bool CanHealAreaSpell => base.CanHealAreaSpell && BlueId == BLUID.Healer;
         protected override bool CanHealSingleSpell => base.CanHealSingleSpell && BlueId == BLUID.Healer;

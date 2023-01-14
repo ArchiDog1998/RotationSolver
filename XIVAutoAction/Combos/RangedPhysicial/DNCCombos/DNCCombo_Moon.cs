@@ -10,21 +10,11 @@ using static XIVAutoAttack.Combos.RangedPhysicial.DNCCombos.DNCCombo_Moon;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial.DNCCombos;
 
-internal sealed class DNCCombo_Moon : DNCCombo_Base<CommandType>
+internal sealed class DNCCombo_Moon : DNCCombo_Base
 {
     public override string GameVersion => "6.28";
 
     public override string Author => "汐ベMoon";
-
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {

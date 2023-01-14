@@ -5,7 +5,7 @@ using XIVAutoAttack.Data;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
+    internal abstract partial class CustomCombo
     {
         private static readonly BaseItem
             //刚力

@@ -5,25 +5,15 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.RangedMagicial.RDMCombos.RDMCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedMagicial.RDMCombos;
 
-internal sealed class RDMCombo_Default : RDMCombo_Base<CommandType>
-{
+internal sealed class RDMCombo_Default : RDMCombo_Base
+{ 
     public override string GameVersion => "6.0";
 
     public override string Author => "无";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {

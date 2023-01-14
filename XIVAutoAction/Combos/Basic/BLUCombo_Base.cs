@@ -16,7 +16,7 @@ namespace XIVAutoAttack.Combos.Basic
         DPS,
     }
 
-    internal abstract class BLUCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+    internal abstract class BLUCombo_Base : CustomCombo.CustomCombo
     {
         internal enum BLUAttackType : byte
         {

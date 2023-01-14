@@ -7,7 +7,7 @@ using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
-internal abstract class DRKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class DRKCombo_Base : CustomCombo.CustomCombo
 {
     private static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();
     protected static ushort DarksideTimeRemaining => JobGauge.DarksideTimeRemaining;

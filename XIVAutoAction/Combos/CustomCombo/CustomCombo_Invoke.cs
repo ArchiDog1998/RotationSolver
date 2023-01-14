@@ -10,7 +10,7 @@ using XIVAutoAttack.Windows;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
+    internal abstract partial class CustomCombo
     {
         public bool TryInvoke(out IAction newAction)
         {

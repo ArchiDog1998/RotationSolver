@@ -16,6 +16,10 @@
     <OutputPath>$(AppData)\XIVLauncher\devPlugins\$(ProjectName)</OutputPath>
 	</PropertyGroup>
   <ItemGroup>
+	  <PackageReference Include="DalamudPackager" Version="2.1.8" />
+	  
+	  <EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
+
 	  <Reference Include="Dalamud">
 		  <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
 		  <Private>False</Private>
@@ -46,12 +50,6 @@
 	  </Reference>
   </ItemGroup>
 	
-<ItemGroup>
-    <EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
-</ItemGroup>
 
-<ItemGroup>
-  <PackageReference Include="DalamudPackager" Version="2.1.8" />
-</ItemGroup>
 
 </Project>  

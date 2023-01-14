@@ -8,25 +8,15 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Healer.SGECombos.SGECombo_Default;
 
 namespace XIVAutoAttack.Combos.Healer.SGECombos;
 
-internal sealed class SGECombo_Default : SGECombo_Base<CommandType>
+internal sealed class SGECombo_Default : SGECombo_Base
 {
     public override string GameVersion => "6.18";
 
     public override string Author => "汐ベMoon";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     /// <summary>
     /// 自用均衡诊断

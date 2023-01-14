@@ -9,7 +9,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class MNKCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class MNKCombo_Base : CustomCombo.CustomCombo
 {
     private static MNKGauge JobGauge => Service.JobGauges.Get<MNKGauge>();
 

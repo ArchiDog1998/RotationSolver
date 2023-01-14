@@ -226,16 +226,6 @@ internal partial class ComboConfigWindow
                                     }
                                 }
 
-                                if (canAddButton)
-                                {
-                                    ImGui.NewLine();
-
-                                    foreach (var customCMD in combo.CommandShow)
-                                    {
-                                        Spacing();
-                                        CommandHelp(customCMD.Key, customCMD.Value);
-                                    }
-                                }
                             }, combo.JobIDs[0], combos[i].combos);
                         }
                         num++;

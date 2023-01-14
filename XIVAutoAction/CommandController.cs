@@ -459,12 +459,6 @@ namespace XIVAutoAttack
                             }
                         }
 
-                        var result = customCombo.OnCommand(str);
-                        if (!string.IsNullOrEmpty(result))
-                        {
-                            Service.ChatGui.Print(LocalizationManager.RightLang.Commands_ChangeResult + ": " + result);
-                            return;
-                        }
                         break;
                     }
 

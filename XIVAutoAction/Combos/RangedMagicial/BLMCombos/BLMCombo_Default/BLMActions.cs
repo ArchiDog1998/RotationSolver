@@ -4,12 +4,11 @@ using XIVAutoAttack.Combos.Basic;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default.BLMCombo_Default;
 
 
 namespace XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Default;
 
-internal sealed partial class BLMCombo_Default : BLMCombo_Base<CommandType>
+internal sealed partial class BLMCombo_Default : BLMCombo_Base
 {
 
     /// <summary>

@@ -10,21 +10,11 @@ using static XIVAutoAttack.Combos.Tank.WARCombos.WARCombo_Default;
 
 namespace XIVAutoAttack.Combos.Tank.WARCombos;
 
-internal sealed class WARCombo_Default : WARCombo_Base<CommandType>
+internal sealed class WARCombo_Default : WARCombo_Base
 {
     public override string GameVersion => "6.0";
 
     public override string Author => "无";
-
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
 
     public override SortedList<DescType, string> DescriptionDict => new()

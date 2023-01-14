@@ -6,25 +6,14 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Melee.NINCombos.NINCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.NINCombos;
 
-internal sealed class NINCombo_Default : NINCombo_Base<CommandType>
+internal sealed class NINCombo_Default : NINCombo_Base
 {
     public override string GameVersion => "6.0";
 
     public override string Author => "无";
-
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     private static NinAction _ninactionAim = null;
 

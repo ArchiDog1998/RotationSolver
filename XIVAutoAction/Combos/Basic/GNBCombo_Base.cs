@@ -9,7 +9,7 @@ using XIVAutoAttack.Helpers;
 namespace XIVAutoAttack.Combos.Basic;
 
 
-internal abstract class GNBCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class GNBCombo_Base : CustomCombo.CustomCombo
 {
     private static GNBGauge JobGauge => Service.JobGauges.Get<GNBGauge>();
 

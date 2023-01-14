@@ -9,7 +9,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic
 {
-    internal abstract partial class BLMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+    internal abstract partial class BLMCombo_Base : CustomCombo.CustomCombo
     {
         private static BLMGauge JobGauge => Service.JobGauges.Get<BLMGauge>();
 

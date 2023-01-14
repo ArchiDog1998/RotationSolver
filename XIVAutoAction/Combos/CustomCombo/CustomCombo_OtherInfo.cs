@@ -12,7 +12,7 @@ using static XIVAutoAttack.SigReplacers.Watcher;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract partial class CustomCombo<TCmd> where TCmd : Enum
+    internal abstract partial class CustomCombo
     {
         /// <summary>
         /// 玩家

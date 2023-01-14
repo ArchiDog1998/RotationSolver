@@ -5,20 +5,15 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Melee.SAMCombos.SAMCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.SAMCombos;
 
-internal sealed class SAMCombo_Default : SAMCombo_Base<CommandType>
+internal sealed class SAMCombo_Default : SAMCombo_Base
 {
     public override string GameVersion => "6.28";
 
     public override string Author => "逆光";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
 
     private protected override ActionConfiguration CreateConfiguration()
     {

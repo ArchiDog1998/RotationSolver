@@ -34,9 +34,9 @@ internal partial class ComboConfigWindow : Window
 
     private static readonly Dictionary<JobRole, string> _roleDescriptionValue = new Dictionary<JobRole, string>()
     {
-        {JobRole.Tank, $"{DescType.DefenseSingle.ToName()} ¡ú {CustomCombo<Enum>.Rampart}, {CustomCombo<Enum>.Reprisal}" },
-        {JobRole.Melee, $"{DescType.DefenseArea.ToName()} ¡ú {CustomCombo<Enum>.Feint}" },
-        {JobRole.RangedMagicial, $"{DescType.DefenseArea.ToName()} ¡ú {CustomCombo<Enum>.Addle}" },
+        {JobRole.Tank, $"{DescType.DefenseSingle.ToName()} ¡ú {CustomCombo.Rampart}, {CustomCombo.Reprisal}" },
+        {JobRole.Melee, $"{DescType.DefenseArea.ToName()} ¡ú {CustomCombo.Feint}" },
+        {JobRole.RangedMagicial, $"{DescType.DefenseArea.ToName()} ¡ú {CustomCombo.Addle}" },
     };
 
 

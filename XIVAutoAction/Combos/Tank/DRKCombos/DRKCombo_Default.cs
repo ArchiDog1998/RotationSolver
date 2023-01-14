@@ -11,20 +11,11 @@ using static XIVAutoAttack.Combos.Tank.DRKCombos.DRKCombo_Default;
 
 namespace XIVAutoAttack.Combos.Tank.DRKCombos;
 
-internal sealed class DRKCombo_Default : DRKCombo_Base<CommandType>
+internal sealed class DRKCombo_Default : DRKCombo_Base
 {
     public override string GameVersion => "6.18";
     public override string Author => "汐ベMoon";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
     protected override bool CanHealSingleAbility => false;
 
     /// <summary>

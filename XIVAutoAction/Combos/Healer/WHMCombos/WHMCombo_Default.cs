@@ -8,19 +8,13 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Healer.WHMCombos.WHMCombo_Default;
 
 namespace XIVAutoAttack.Combos.Healer.WHMCombos;
-internal sealed class WHMCombo_Default : WHMCombo_Base<CommandType>
+internal sealed class WHMCombo_Default : WHMCombo_Base
 {
     public override string GameVersion => "6.28";
 
     public override string Author => "逆光";
-
-    internal enum CommandType : byte
-    {
-        None,
-    }
 
     private protected override ActionConfiguration CreateConfiguration()
     {

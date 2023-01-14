@@ -5,7 +5,7 @@ using XIVAutoAttack.Combos.Script.Actions;
 
 namespace XIVAutoAttack.Combos.Script.Combos;
 
-internal class SCHCombo_Script : SCHCombo_Base<Enum>, IScriptCombo
+internal class SCHCombo_Script : SCHCombo_Base, IScriptCombo
 {
     public override string GameVersion => Set.GameVersion;
 

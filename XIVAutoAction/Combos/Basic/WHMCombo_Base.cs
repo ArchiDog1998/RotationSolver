@@ -7,7 +7,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class WHMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class WHMCombo_Base : CustomCombo.CustomCombo
 {
     private static WHMGauge JobGauge => Service.JobGauges.Get<WHMGauge>();
 

@@ -5,7 +5,7 @@ using XIVAutoAttack.Combos.Script.Actions;
 
 namespace XIVAutoAttack.Combos.Script.Combos
 {
-    internal class ASTCombo_Script : ASTCombo_Base<Enum>, IScriptCombo
+    internal class ASTCombo_Script : ASTCombo_Base, IScriptCombo
     {
         public override string Author => Set.GetAuthor();
         public override string GameVersion => Set.GameVersion;

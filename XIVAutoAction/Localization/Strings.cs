@@ -11,7 +11,6 @@ internal class Strings
     public string Commands_ChangeAutoBreak { get; set; } = "Modify automatic burst to{0}";
     public string Commands_ChangeSettings { get; set; } = "Modify {0} to {1}";
     public string Commands_InsertAction { get; set; } = "Will use skill \"{1}\" within {0}s";
-    public string Commands_ChangeResult { get; set; } = "The modified result is";
     public string Commands_CannotFind { get; set; } = "Unrecognized";
     public string Commands_OpenSettings { get; set; } = "The settings interface has been opened";
     public string Commands_SayHelloToAuthor { get; set; } = "This \"{0}\" is probably one of the authors of the \"XIV Auto Attack\", so say hello to him!";

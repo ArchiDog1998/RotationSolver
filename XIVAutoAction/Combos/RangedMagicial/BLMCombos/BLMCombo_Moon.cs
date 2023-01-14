@@ -7,25 +7,14 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.RangedMagicial.BLMCombo_Moon;
 using static XIVAutoAttack.SigReplacers.Watcher;
 
 namespace XIVAutoAttack.Combos.RangedMagicial;
-internal sealed partial class BLMCombo_Moon : BLMCombo_Base<CommandType>
+internal sealed partial class BLMCombo_Moon : BLMCombo_Base
 {
     public override string GameVersion => "6.18";
 
     public override string Author => "汐ベMoon";
-
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     internal static float MpUpdateRemain => 3 - ActionUpdater.MPUpdateElapsed;
     internal static bool TargetHasThunder => Target.HasStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4);

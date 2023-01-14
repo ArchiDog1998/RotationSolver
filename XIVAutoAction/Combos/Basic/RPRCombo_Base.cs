@@ -8,7 +8,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class RPRCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class RPRCombo_Base : CustomCombo.CustomCombo
 {
     private static RPRGauge JobGauge => Service.JobGauges.Get<RPRGauge>();
 

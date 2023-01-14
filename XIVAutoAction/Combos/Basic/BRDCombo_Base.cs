@@ -11,7 +11,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class BRDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class BRDCombo_Base : CustomCombo.CustomCombo
 {
     private static BRDGauge JobGauge => Service.JobGauges.Get<BRDGauge>();
 

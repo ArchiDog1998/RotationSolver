@@ -9,12 +9,8 @@ using static XIVAutoAttack.Combos.Tank.PLDCombos.PLDCombo_Frost;
 
 namespace XIVAutoAttack.Combos.Tank.PLDCombos;
 
-internal sealed class PLDCombo_Frost : PLDCombo_Base<CommandType>
+internal sealed class PLDCombo_Frost : PLDCombo_Base
 {
-    public enum CommandType : byte
-    {
-        None,
-    }
     public override string GameVersion => "6.18";
     public override string Author => "Frost";
     public override SortedList<DescType, string> DescriptionDict => new()

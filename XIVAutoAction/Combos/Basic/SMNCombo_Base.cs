@@ -7,7 +7,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SMNCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class SMNCombo_Base : CustomCombo.CustomCombo
 {
     private static SMNGauge JobGauge => Service.JobGauges.Get<SMNGauge>();
 

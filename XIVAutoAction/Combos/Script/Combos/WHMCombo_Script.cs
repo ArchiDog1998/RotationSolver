@@ -5,7 +5,7 @@ using XIVAutoAttack.Combos.Script.Actions;
 
 namespace XIVAutoAttack.Combos.Script.Combos;
 
-internal class WHMCombo_Script : WHMCombo_Base<Enum>, IScriptCombo
+internal class WHMCombo_Script : WHMCombo_Base, IScriptCombo
 {
     public override string GameVersion => Set.GameVersion;
 

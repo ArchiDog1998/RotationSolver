@@ -7,20 +7,15 @@ using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
 using XIVAutoAttack.Updaters;
-using static XIVAutoAttack.Combos.Healer.SCHCombos.SCHCombo_Default;
 
 namespace XIVAutoAttack.Combos.Healer.SCHCombos;
 
-internal sealed class SCHCombo_Default : SCHCombo_Base<CommandType>
+internal sealed class SCHCombo_Default : SCHCombo_Base
 {
     public override string GameVersion => "6.28";
 
     public override string Author => "逆光 & Ana Amari";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
     public SCHCombo_Default()
     {
         //防止大仙女吞技能

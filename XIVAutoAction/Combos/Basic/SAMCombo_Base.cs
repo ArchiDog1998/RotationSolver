@@ -8,7 +8,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SAMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class SAMCombo_Base : CustomCombo.CustomCombo
 {
     private static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
 

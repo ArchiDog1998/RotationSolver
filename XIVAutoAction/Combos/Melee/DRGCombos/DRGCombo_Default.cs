@@ -5,25 +5,15 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Melee.DRGCombos.DRGCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.DRGCombos;
 
-internal sealed class DRGCombo_Default : DRGCombo_Base<CommandType>
+internal sealed class DRGCombo_Default : DRGCombo_Base
 {
     public override string GameVersion => "6.18";
 
     public override string Author => "汐ベMoon";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
     private static bool safeMove = false;
 
 

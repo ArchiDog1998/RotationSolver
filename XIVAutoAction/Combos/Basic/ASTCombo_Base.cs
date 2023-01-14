@@ -10,7 +10,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class ASTCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class ASTCombo_Base: CustomCombo.CustomCombo
 {
     private static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
 

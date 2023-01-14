@@ -9,7 +9,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class SGECombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class SGECombo_Base : CustomCombo.CustomCombo
 {
     private static SGEGauge JobGauge => Service.JobGauges.Get<SGEGauge>();
 

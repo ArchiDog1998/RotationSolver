@@ -5,7 +5,7 @@ using XIVAutoAttack.Combos.Script.Actions;
 
 namespace XIVAutoAttack.Combos.Script.Combos;
 
-internal class DRKCombo_Script : DRKCombo_Base<Enum>, IScriptCombo
+internal class DRKCombo_Script : DRKCombo_Base, IScriptCombo
 {
     public override string GameVersion => Set.GameVersion;
 

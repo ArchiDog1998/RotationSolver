@@ -7,11 +7,10 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Melee.MNKCombos.MNKCombo_Matrix;
 
 namespace XIVAutoAttack.Combos.Melee.MNKCombos;
 
-internal sealed class MNKCombo_Matrix : MNKCombo_Base<CommandType>
+internal sealed class MNKCombo_Matrix : MNKCombo_Base
 {
     public override string GameVersion => "6.0";
 
@@ -43,15 +42,6 @@ internal sealed class MNKCombo_Matrix : MNKCombo_Base<CommandType>
     private bool In2 => Player.HasStatus(true, StatusID.RaptorForm);
     private bool In3 => Player.HasStatus(true, StatusID.CoerlForm);
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {

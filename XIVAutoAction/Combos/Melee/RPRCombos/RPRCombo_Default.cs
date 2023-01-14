@@ -5,20 +5,15 @@ using XIVAutoAttack.Combos.CustomCombo;
 using XIVAutoAttack.Configuration;
 using XIVAutoAttack.Data;
 using XIVAutoAttack.Helpers;
-using static XIVAutoAttack.Combos.Melee.RPRCombos.RPRCombo_Default;
 
 namespace XIVAutoAttack.Combos.Melee.RPRCombos;
 
-internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
+internal sealed class RPRCombo_Default : RPRCombo_Base
 {
     public override string GameVersion => "6.28";
 
     public override string Author => "逆光";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("EnshroudPooling", false, "双附体循环爆发(低于88级不会生效)**推荐**");
@@ -36,10 +31,6 @@ internal sealed class RPRCombo_Default : RPRCombo_Base<CommandType>
         HarvestMoon.ComboCheck = b => InCombat;
     }
 
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
     public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.DefenseSingle, $"能力: {ArcaneCrest}"},

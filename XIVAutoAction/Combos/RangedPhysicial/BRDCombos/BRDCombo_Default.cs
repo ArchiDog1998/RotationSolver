@@ -10,21 +10,12 @@ using static XIVAutoAttack.Combos.RangedPhysicial.BRDCombos.BRDCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial.BRDCombos;
 
-internal sealed class BRDCombo_Default : BRDCombo_Base<CommandType>
+internal sealed class BRDCombo_Default : BRDCombo_Base
 {
     public override string GameVersion => "6.28";
 
     public override string Author => "汐ベMoon";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     private protected override ActionConfiguration CreateConfiguration()
     {

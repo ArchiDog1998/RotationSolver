@@ -10,21 +10,11 @@ using static XIVAutoAttack.Combos.Tank.PLDCombos.PLDCombo_Default;
 
 namespace XIVAutoAttack.Combos.Tank.PLDCombos;
 
-internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
+internal sealed class PLDCombo_Default : PLDCombo_Base
 {
     public override string GameVersion => "6.18";
 
     public override string Author => "汐ベMoon";
-
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 

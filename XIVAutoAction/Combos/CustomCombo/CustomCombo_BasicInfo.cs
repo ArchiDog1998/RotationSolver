@@ -11,7 +11,7 @@ using static XIVAutoAttack.Helpers.ReflectionHelper;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract partial class CustomCombo<TCmd> : ICustomCombo where TCmd : Enum
+    internal abstract partial class CustomCombo : ICustomCombo
     {
         public abstract ClassJobID[] JobIDs { get; }
 
@@ -65,13 +65,6 @@ namespace XIVAutoAttack.Combos.CustomCombo
                 }
             }
         }
-        public string Description => string.Join('\n', DescriptionDict.Select(pair => pair.Key.ToName() + " → " + pair.Value));
-
-        /// <summary>
-        /// 说明字典
-        /// </summary>
-        public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
-
         /// <summary>
         /// 有即刻相关Buff
         /// </summary>

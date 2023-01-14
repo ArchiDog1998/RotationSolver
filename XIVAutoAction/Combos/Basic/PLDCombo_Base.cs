@@ -10,7 +10,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class PLDCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class PLDCombo_Base : CustomCombo.CustomCombo
 {
     private static PLDGauge JobGauge => Service.JobGauges.Get<PLDGauge>();
 

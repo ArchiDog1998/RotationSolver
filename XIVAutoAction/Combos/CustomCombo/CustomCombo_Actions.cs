@@ -9,7 +9,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.CustomCombo
 {
-    internal abstract partial class CustomCombo<TCmd> : ICustomCombo where TCmd : Enum
+    internal abstract partial class CustomCombo
     {
         internal class RoleAction : BaseAction
         {

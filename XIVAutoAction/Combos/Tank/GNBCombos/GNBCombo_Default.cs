@@ -8,21 +8,12 @@ using static XIVAutoAttack.Combos.Tank.GNBCombos.GNBCombo_Default;
 
 namespace XIVAutoAttack.Combos.Tank.GNBCombos;
 
-internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
-{
+internal sealed class GNBCombo_Default : GNBCombo_Base
+{ 
     public override string GameVersion => "6.18";
 
     public override string Author => "汐ベMoon";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
 

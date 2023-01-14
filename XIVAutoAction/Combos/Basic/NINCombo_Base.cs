@@ -8,7 +8,7 @@ using XIVAutoAttack.Helpers;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class NINCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class NINCombo_Base : CustomCombo.CustomCombo
 {
     private static NINGauge JobGauge => Service.JobGauges.Get<NINGauge>();
 

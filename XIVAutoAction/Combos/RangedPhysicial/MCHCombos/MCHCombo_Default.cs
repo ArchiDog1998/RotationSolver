@@ -11,19 +11,9 @@ using static XIVAutoAttack.Combos.RangedPhysicial.MCHCombos.MCHCombo_Default;
 
 namespace XIVAutoAttack.Combos.RangedPhysicial.MCHCombos;
 
-internal sealed class MCHCombo_Default : MCHCombo_Base<CommandType>
+internal sealed class MCHCombo_Default : MCHCombo_Base
 {
     public override string GameVersion => "6.28";
-
-    internal enum CommandType : byte
-    {
-        None,
-    }
-
-    protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
-    {
-        //{CommandType.None, "" }, //写好注释啊！用来提示用户的。
-    };
 
     /// <summary>
     /// 4人本小怪快死了

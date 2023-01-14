@@ -10,7 +10,7 @@ using XIVAutoAttack.Updaters;
 
 namespace XIVAutoAttack.Combos.Basic;
 
-internal abstract class RDMCombo_Base<TCmd> : CustomCombo<TCmd> where TCmd : Enum
+internal abstract class RDMCombo_Base : CustomCombo.CustomCombo
 {
     private static RDMGauge JobGauge => Service.JobGauges.Get<RDMGauge>();
 

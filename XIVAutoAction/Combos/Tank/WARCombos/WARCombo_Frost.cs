@@ -11,23 +11,24 @@ using static XIVAutoAttack.Combos.Melee.NINCombos.WARCombo_Frost;
 
 namespace XIVAutoAttack.Combos.Melee.NINCombos;
 
-internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
+internal sealed class WARCombo_Frost : WARCombo_Base
 {
     public override string GameVersion => "6.18";
 
     public override string Author => "Frost";
 
-    internal enum CommandType : byte
-    {
-        None,
-    }
-    //描述
+    /// <summary>
+    /// 描述
+    /// </summary>
     public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.Description, "可能还不如那个呢,调整了一些技能的优先级"},
     };
 
-    //自定义选项
+    /// <summary>
+    /// 自定义选项
+    /// </summary>
+    /// <returns></returns>
     private protected override ActionConfiguration CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseThrillofBattlePre", false, "倒计时11s时使用战栗,关爱学者")
@@ -35,7 +36,11 @@ internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
             .SetBool("UseTomahawkPre", false, "mt倒计时1s时飞斧开怪");
     }
 
-    //倒计时时使用的技能
+    /// <summary>
+    /// 倒计时时使用的技能
+    /// </summary>
+    /// <param name="remainTime"></param>
+    /// <returns></returns>
     private protected override IAction CountDownAction(float remainTime)
     {
         if (Config.GetBoolByName("UseTomahawkPre") && remainTime <= 1 && Tomahawk.ShouldUse(out _)) return Tomahawk;//提前1s飞斧开怪
@@ -44,7 +49,11 @@ internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
         return base.CountDownAction(remainTime);
     }
 
-    //通常GCD
+    /// <summary>
+    /// 通常GCD
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected override bool GeneralGCD(out IAction act)
     {
         //大招
@@ -74,7 +83,12 @@ internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
         return false;
     }
 
-    //单体防御能力技
+    /// <summary>
+    /// 单体防御能力技
+    /// </summary>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         if (abilityRemain == 2)
@@ -103,7 +117,13 @@ internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
         act = null;
         return false;
     }
-    //范围防御能力技
+
+    /// <summary>
+    /// 范围防御能力技
+    /// </summary>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         if (ShakeItOff.ShouldUse(out act, mustUse: true)) return true;//摆脱
@@ -111,7 +131,13 @@ internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
 
         return false;
     }
-    //攻击能力技
+
+    /// <summary>
+    /// 攻击能力技
+    /// </summary>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
 
@@ -120,9 +146,6 @@ internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
             //狂暴
             if (Berserk.ShouldUse(out act)) return true;
         }
-
-
-
 
         //战嚎
         if (Infuriate.ShouldUse(out act, emptyOrSkipCombo: true) && Player.HasStatus(true, StatusID.SurgingTempest)) return true;
@@ -144,7 +167,13 @@ internal sealed class WARCombo_Frost : WARCombo_Base<CommandType>
 
         return false;
     }
-    //单体治疗能力技
+
+    /// <summary>
+    /// 单体治疗能力技
+    /// </summary>
+    /// <param name="abilityRemain"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //原初的勇猛
