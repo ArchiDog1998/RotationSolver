@@ -14,21 +14,6 @@ namespace XIVAutoAction.Actions.BaseAction
 {
     internal partial class BaseAction
     {
-        static readonly StatusID[] SpellBan = new StatusID[]
-        {
-
-        };
-
-        static readonly StatusID[] WeaponskillBan = new StatusID[]
-        {
-
-        };
-
-        static readonly StatusID[] AbilityBan = new StatusID[]
-        {
-
-        };
-
         static readonly uint[] BadStatus = new uint[]
         {
             579, //状态限制
@@ -123,20 +108,6 @@ namespace XIVAutoAction.Actions.BaseAction
 
             //MP不够
             if (Service.ClientState.LocalPlayer.CurrentMp < MPNeed) return false;
-
-            //有可恶的状态。
-            switch (_action.GetActinoType())
-            {
-                case ActionCate.Spell: //魔法
-                    if (!player.WillStatusEndGCD(0, 0, false, SpellBan)) return false;
-                    break;
-                case ActionCate.Weaponskill: //战技
-                    if (!player.WillStatusEndGCD(0, 0, false, WeaponskillBan)) return false;
-                    break;
-                case ActionCate.Ability: //能力
-                    if (!player.StatusTime(false, AbilityBan).IsLessThan(ActionUpdater.AbilityRemain)) return false;
-                    break;
-            }
 
             //没有前置Buff
             if (BuffsNeed != null)

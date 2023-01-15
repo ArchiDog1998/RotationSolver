@@ -12,7 +12,15 @@
 
 ~~Translations on [Crowdin](https://crowdin.com/project/xivautoaction).~~
 
-**It will probably have distributions in game version 7.0，and only supports international servers.**
+**It will probably have distributions in game version 6.5，and only supports international servers.**
+
+There are several reasons why I don't want to distribute this plugin right now.
+
+1. I moved from Chinese Server to Japanese Data Center. So I need some time to adjust to the new environment and grow the new character.
+2. This repository's framework is a little bit strange right now. I need to tidy up these codes and refactor the architecture.
+3. I have a lot of work to do, such as such as industrial software research.
+4. I am not a major in software engineering, so I need to learn some soft engineering knowledge.
+5. I want to enjoy the game for a while.
 
 ## 对于国服用户
 

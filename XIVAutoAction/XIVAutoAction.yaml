@@ -2,8 +2,8 @@
 name: XIV Auto Action
 author: ArchiTed
 description: |-
-  Make truly auto attack possible. Please use it carefully.
-punchline: Make truly auto attack possible.
+  Makes true automatic rotation possible. Please use it carefully.
+punchline: Makes true automatic rotation possible.
 repo_url: https://github.com/ArchiDog1998/XIVAutoAction
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAction/master/XIVAutoActionIcon.png
 dalamud_api_level: 8

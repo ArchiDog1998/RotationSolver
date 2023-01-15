@@ -76,6 +76,7 @@ internal partial class BaseCraftAction : IAction
             }
         }
     }
+
     public uint IconID { get; }
 
     public string Name { get; }
