@@ -4,7 +4,6 @@
   "Commands_ChangeAutoBreak": "Modify automatic burst to{0}",
   "Commands_ChangeSettings": "Modify {0} to {1}",
   "Commands_InsertAction": "Will use skill \"{1}\" within {0}s",
-  "Commands_ChangeResult": "The modified result is",
   "Commands_CannotFind": "Unrecognized",
   "Commands_OpenSettings": "The settings interface has been opened",
   "Commands_SayHelloToAuthor": "This \"{0}\" is probably one of the authors of the \"XIV Auto Attack\", so say hello to him!",
