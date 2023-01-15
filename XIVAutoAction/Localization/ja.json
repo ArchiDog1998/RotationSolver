@@ -4,7 +4,6 @@
   "Commands_ChangeAutoBreak": "自動バーストを{0} に変更します",
   "Commands_ChangeSettings": "{0} を {1} に変更",
   "Commands_InsertAction": "{1}秒以内にスキル \" {0}\" を使用します",
-  "Commands_ChangeResult": "修正された結果は",
   "Commands_CannotFind": "未認識",
   "Commands_OpenSettings": "設定インターフェイスを開きました",
   "Commands_SayHelloToAuthor": "この \"{0}\" はおそらく「XIV Auto Attack」の作者の一人なので、彼に挨拶してください!",
