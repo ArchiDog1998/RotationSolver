@@ -1,0 +1,20 @@
+﻿
+name: XIV Auto Action
+author: ArchiTed
+description: |-
+  Make truly auto attack possible. Please use it carefully.
+punchline: Make truly auto attack possible.
+repo_url: https://github.com/ArchiDog1998/XIVAutoAction
+icon_url: https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAction/master/XIVAutoActionIcon.png
+dalamud_api_level: 8
+tags:
+  - Attack
+  - Manufacture
+category_tags:
+  - jobs
+image_urls:
+  - https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAction/master/gifs/ExampleDNC.gif
+download_count: 1024
+download_link_install: https://github.com/ArchiDog1998/XIVAutoAction/releases/latest/download/latest.zip
+download_link_update: https://github.com/ArchiDog1998/XIVAutoAction/releases/latest/download/latest.zip
+download_link_testing: https://github.com/ArchiDog1998/XIVAutoAction/releases/latest/download/latest.zip

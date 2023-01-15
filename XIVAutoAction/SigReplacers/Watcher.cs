@@ -122,8 +122,9 @@ namespace XIVAutoAction.SigReplacers
                 && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
                 && loc.Tags.Length > 0 && !loc.Tags.Contains(flag))
             {
-
-                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, string.Format(LocalizationManager.RightLang.Action_WrongLocation, loc.Loc.ToName()), "", ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon);
+                //Todo: Damage Icon should be something intersting.
+                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, string.Format(LocalizationManager.RightLang.Action_WrongLocation, loc.Loc.ToName()), "",
+                    ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon, 0);
                 if (!string.IsNullOrEmpty(Service.Configuration.LocationWrongText))
                 {
                     Speak(Service.Configuration.LocationWrongText);

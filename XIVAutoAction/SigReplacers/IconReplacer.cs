@@ -139,7 +139,7 @@ internal sealed class IconReplacer : IDisposable
     {
         unsafe
         {
-            getIconHook = Hook<GetIconDelegate>.FromAddress((IntPtr)ActionManager.fpGetAdjustedActionId, GetIconDetour);
+            getIconHook = Hook<GetIconDelegate>.FromAddress((IntPtr)ActionManager.MemberFunctionPointers.GetAdjustedActionId, GetIconDetour);
         }
         isIconReplaceableHook = Hook<IsIconReplaceableDelegate>.FromAddress(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);
 

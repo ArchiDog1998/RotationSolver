@@ -167,7 +167,7 @@ namespace XIVAutoAction.Actions.BaseAction
                     //如果有输入上次的数据，那么上次不能是上述的ID。
                     if (OtherIDsNot != null)
                     {
-                        if (OtherIDsNot.Contains(Service.Address.LastComboAction)) return false;
+                        if (OtherIDsNot.Contains(ActionUpdater.LastComboAction)) return false;
                     }
 
                     //如果有Combo，有LastAction，而且上次不是连击，那就不触发。
@@ -178,9 +178,9 @@ namespace XIVAutoAction.Actions.BaseAction
 
                     if (comboActions.Length > 0)
                     {
-                        if (comboActions.Contains(Service.Address.LastComboAction))
+                        if (comboActions.Contains(ActionUpdater.LastComboAction))
                         {
-                            if (Service.Address.ComboTime < ActionUpdater.WeaponRemain) return false;
+                            if (ActionUpdater.ComboTime < ActionUpdater.WeaponRemain) return false;
                         }
                         else
                         {
@@ -214,7 +214,7 @@ namespace XIVAutoAction.Actions.BaseAction
 
         public unsafe bool Use()
         {
-            var loc = new FFXIVClientStructs.FFXIV.Client.Graphics.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
+            var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
 
             if (ShouldEndSpecial) CommandController.ResetSpecial(true);
 

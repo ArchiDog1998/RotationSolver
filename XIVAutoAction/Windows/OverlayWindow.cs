@@ -27,7 +27,7 @@ internal static class OverlayWindow
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]) return;
 
-        ImGui.PushID("AutoAttackOverlay");
+        ImGui.PushID("AutoActionOverlay");
 
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
 

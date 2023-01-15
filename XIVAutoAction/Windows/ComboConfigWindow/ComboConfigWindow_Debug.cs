@@ -71,7 +71,7 @@ internal partial class ComboConfigWindow
             DrawAction(Watcher.LastAction, nameof(Watcher.LastAction));
             DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
             DrawAction(Watcher.LastGCD, nameof(Watcher.LastGCD));
-            DrawAction(Service.Address.LastComboAction, nameof(Service.Address.LastComboAction));
+            DrawAction(ActionUpdater.LastComboAction, nameof(ActionUpdater.LastComboAction));
         }
 
         if (ImGui.CollapsingHeader("Countdown, Exception"))

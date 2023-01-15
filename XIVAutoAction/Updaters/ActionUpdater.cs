@@ -12,17 +12,20 @@ namespace XIVAutoAction.Updaters;
 
 internal static class ActionUpdater
 {
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    private static unsafe IntPtr ComboTimer => (IntPtr)((byte*)ActionManager.Instance() + 0x60);
+    public static unsafe float ComboTime => *(float*)ComboTimer;
+    private static IntPtr LastComboMove => ComboTimer + 4;
+    public static unsafe ActionID LastComboAction => *(ActionID*)LastComboMove;
+
+
     internal static float WeaponRemain { get; private set; } = 0;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static float WeaponTotal { get; private set; } = 0;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static float WeaponElapsed { get; private set; } = 0;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static bool InCombat { get; private set; } = false;
+
     internal static byte AbilityRemainCount { get; private set; } = 0;
 
     internal static float AbilityRemain { get; private set; } = 0;

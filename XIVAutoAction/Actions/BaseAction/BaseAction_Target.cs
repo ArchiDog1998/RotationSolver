@@ -445,6 +445,6 @@ namespace XIVAutoAction.Actions.BaseAction
         /// </summary>
         private static bool NoAOEForAttackMark =>
             Service.Configuration.ChooseAttackMark && !Service.Configuration.AttackMarkAOE
-            && MarkingController.HaveAttackChara(TargetUpdater.HostileTargets);
+            && MarkingHelper.HaveAttackChara(TargetUpdater.HostileTargets);
     }
 }

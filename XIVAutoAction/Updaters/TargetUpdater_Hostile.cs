@@ -18,7 +18,6 @@ internal static partial class TargetUpdater
 {
 #if DEBUG
     internal static IEnumerable<BattleChara> AllTargets { get; set; } = new BattleChara[0];
-
 #else
     private static IEnumerable<BattleChara> AllTargets { get; set; } = new BattleChara[0];
 #endif
@@ -86,7 +85,8 @@ internal static partial class TargetUpdater
                      try
                      {
                          return t.TargetObject == Service.ClientState.LocalPlayer ||
-                            ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId == FateManager.Instance()->CurrentFate->FateId;
+                            ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId == FateManager.Instance()->CurrentFate->FateId
+                            && Service.ClientState.LocalPlayer.Level <= FateManager.Instance()->CurrentFate->MaxLevel;
                      }
                      catch
                      {

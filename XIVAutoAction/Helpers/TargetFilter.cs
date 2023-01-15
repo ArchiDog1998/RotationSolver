@@ -41,7 +41,7 @@ internal static class TargetFilter
         //去掉停止标记的怪
         if (Service.Configuration.FilterStopMark)
         {
-            var charas = MarkingController.FilterStopCharaes(availableCharas);
+            var charas = MarkingHelper.FilterStopCharaes(availableCharas);
             if (charas?.Any() ?? false) availableCharas = charas;
         }
 
@@ -152,7 +152,7 @@ internal static class TargetFilter
     /// <returns></returns>
     internal static IEnumerable<BattleChara> ProvokeTarget(IEnumerable<BattleChara> inputCharas, bool needDistance = false)
     {
-        var tankIDS = TargetUpdater.AllianceMembers.GetJobCategory(JobRole.Tank).Select(member => member.ObjectId);
+        var tankIDS = TargetUpdater.AllianceMembers.GetJobCategory(JobRole.Tank).Select(member => (ulong)member.ObjectId);
         var loc = Service.ClientState.LocalPlayer.Position;
         var id = Service.ClientState.LocalPlayer.ObjectId;
 
@@ -358,19 +358,19 @@ internal static class TargetFilter
     {
         if (!Service.Configuration.ChooseAttackMark) return null;
 
-        var b = MarkingController.Attack1Chara(charas);
+        var b = MarkingHelper.Attack1Chara(charas);
         if (b != null) return b;
 
-        b = MarkingController.Attack2Chara(charas);
+        b = MarkingHelper.Attack2Chara(charas);
         if (b != null) return b;
 
-        b = MarkingController.Attack3Chara(charas);
+        b = MarkingHelper.Attack3Chara(charas);
         if (b != null) return b;
 
-        b = MarkingController.Attack4Chara(charas);
+        b = MarkingHelper.Attack4Chara(charas);
         if (b != null) return b;
 
-        b = MarkingController.Attack5Chara(charas);
+        b = MarkingHelper.Attack5Chara(charas);
         if (b != null) return b;
         return null;
     }
