@@ -52,13 +52,6 @@ internal partial class ComboConfigWindow : Window
                 ImGui.EndTabItem();
             }
 #endif
-
-            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_AboutItem))
-            {
-                DrawAbout();
-                ImGui.EndTabItem();
-            }
-
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_AttackItem))
             {
                 DrawAttack();

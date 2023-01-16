@@ -179,13 +179,6 @@ internal class Strings
     public string Configwindow_Params_ConditionUp { get; set; } = "Up";
     public string Configwindow_Params_ConditionDown { get; set; } = "Down";
     public string Configwindow_Params_ConditionDelete { get; set; } = "Delete";
-    public string Configwindow_About_Declaration { get; set; } = "This plugin is open source and free, please do not pay for this plugin from any source. \nIf you have got this plugin from paid sources, please immediately initiate a refund, provide a bad review and report the seller";
-    public string Configwindow_About_XianYu { get; set; } = "Including but not limited to the following online sellers (in no particular order):";
-    public string Configwindow_About_Owner { get; set; } = "Plugin author: ArchiDog1998 (秋水) reserves the right of final interpretation";
-    public string Configwindow_About_Collaborators { get; set; } = "Co-developed by: 汐ベMoon, gamous, 逆光, sciuridae564, 玖祁, 牙刷play";
-    public string Configwindow_About_Github { get; set; } = "Version updates for this plugin are posted on Github";
-    public string Configwindow_About_Discord { get; set; } = "Click to join Discord for discussion";
-    public string Configwindow_About_Wiki { get; set; } = "Click to view Wiki";
     #endregion
 
     #region ScriptWindow
