@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Logging;
-using RotationSolver;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using RotationSolver.Updaters;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Actions.BaseAction;
 
@@ -266,7 +266,7 @@ internal partial class BaseAction
     private bool TargetHostile(float range, bool mustUse, int aoeCount, out BattleChara target)
     {
         //如果不用自动找目标，那就直接返回。
-        if (!CommandController.AutoTarget)
+        if (RotationSolverCommands.StateType != StateCommandType.Manual)
         {
             if (Service.TargetManager.Target is BattleChara b && b.CanAttack() && b.DistanceToPlayer() <= range)
             {
@@ -329,7 +329,7 @@ internal partial class BaseAction
             }
 
             //如果不用自动找目标，那就不打AOE
-            if (!CommandController.AutoTarget)
+            if (RotationSolverCommands.StateType != StateCommandType.Manual)
             {
                 if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
             }

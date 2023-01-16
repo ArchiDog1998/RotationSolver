@@ -5,6 +5,7 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Linq;
 using RotationSolver.Updaters;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Combos.RangedMagicial.BLUCombos
 {
@@ -113,7 +114,7 @@ namespace RotationSolver.Combos.RangedMagicial.BLUCombos
             if (BlueId == BLUID.Healer)
             {
                 //有某些非常危险的状态。
-                if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
+                if (RotationSolverCommands.SpecialType == SpecialCommandType.EsunaShield && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
                 {
                     if (Exuviation.ShouldUse(out act, mustUse: true)) return true;
                 }

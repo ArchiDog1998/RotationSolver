@@ -7,6 +7,7 @@ using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Updaters;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Combos.Tank.DRKCombos;
 
@@ -81,7 +82,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base
         if (SyphonStrike.ShouldUse(out act)) return true;
         if (HardSlash.ShouldUse(out act)) return true;
 
-        if (CommandController.Move && MoveAbility(1, out act)) return true;
+        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
 
         if (Unmend.ShouldUse(out act)) return true;
 

@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 using RotationSolver.Actions;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
@@ -104,7 +105,7 @@ internal static class StatusHelper
 
     internal static void StatusOff(StatusID status)
     {
-        CommandController.SubmitToChat($"/statusoff {GetStatusName(status)}");
+        RotationSolverCommands.SubmitToChat($"/statusoff {GetStatusName(status)}");
     }
 
     /// <summary>

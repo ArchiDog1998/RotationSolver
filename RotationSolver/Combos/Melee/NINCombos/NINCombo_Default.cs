@@ -1,6 +1,7 @@
 using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Commands;
 using RotationSolver.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -280,7 +281,7 @@ internal sealed class NINCombo_Default : NINCombo_Base
             if (SpinningEdge.ShouldUse(out act)) return true;
 
             //飞刀
-            if (CommandController.Move && MoveAbility(1, out act)) return true;
+            if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
             if (ThrowingDagger.ShouldUse(out act)) return true;
         }
 

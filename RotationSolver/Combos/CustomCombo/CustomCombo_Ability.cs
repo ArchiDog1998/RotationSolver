@@ -1,4 +1,3 @@
-using RotationSolver;
 using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -6,6 +5,7 @@ using RotationSolver.Updaters;
 using System.Data;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Combos.CustomCombo;
 
@@ -13,7 +13,7 @@ internal abstract partial class CustomCombo
 {
     private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
-        act = CommandController.NextAction;
+        act = RotationSolverCommands.NextAction;
         if (act is BaseAction a && a != null && !a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return true;
 
         if (!Service.Configuration.UseAbility || Player.TotalCastTime - Player.CurrentCastTime > Service.Configuration.WeaponInterval)
@@ -43,14 +43,16 @@ internal abstract partial class CustomCombo
             }
         }
 
+        var specialType = RotationSolverCommands.SpecialType;
+
         if (role == JobRole.Tank)
         {
-            if (CommandController.RaiseOrShirk)
+            if (specialType == SpecialCommandType.RaiseShirk)
             {
                 if (Shirk.ShouldUse(out act)) return true;
             }
 
-            if (CommandController.EsunaOrShield && Shield.ShouldUse(out act)) return true;
+            if (specialType == SpecialCommandType.EsunaShield && Shield.ShouldUse(out act)) return true;
 
             if (Service.Configuration.AutoShield)
             {
@@ -63,7 +65,7 @@ internal abstract partial class CustomCombo
             }
         }
 
-        if (CommandController.AntiRepulsion)
+        if (specialType == SpecialCommandType.AntiRepulsion)
         {
             switch (role)
             {
@@ -82,13 +84,13 @@ internal abstract partial class CustomCombo
                     break;
             }
         }
-        if (CommandController.EsunaOrShield && role == JobRole.Melee)
+        if (specialType == SpecialCommandType.EsunaShield && role == JobRole.Melee)
         {
             if (TrueNorth.ShouldUse(out act)) return true;
         }
 
-        if (CommandController.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
-        if (CommandController.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
+        if (specialType == SpecialCommandType.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
+        if (specialType == SpecialCommandType.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         if (TargetUpdater.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
         {
             if (ShouldUseHealAreaAbility(abilityRemain, out act)) return true;
@@ -150,7 +152,7 @@ internal abstract partial class CustomCombo
             if (helpDefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         }
 
-        if (CommandController.Move && MoveAbility(abilityRemain, out act))
+        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(abilityRemain, out act))
         {
             if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
         }
@@ -191,13 +193,13 @@ internal abstract partial class CustomCombo
     private bool ShouldUseHealAreaAbility(byte abilityRemain, out IAction act)
     {
         act = null;
-        return (CommandController.HealArea || CanHealAreaAbility) && ActionUpdater.InCombat && HealAreaAbility(abilityRemain, out act);
+        return (RotationSolverCommands.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && ActionUpdater.InCombat && HealAreaAbility(abilityRemain, out act);
     }
 
     private bool ShouldUseHealSingleAbility(byte abilityRemain, out IAction act)
     {
         act = null;
-        return (CommandController.HealSingle || CanHealSingleAbility) && ActionUpdater.InCombat && HealSingleAbility(abilityRemain, out act);
+        return (RotationSolverCommands.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility) && ActionUpdater.InCombat && HealSingleAbility(abilityRemain, out act);
     }
 
     /// <summary>
@@ -252,7 +254,7 @@ internal abstract partial class CustomCombo
     /// <param name="abilityRemain"></param>
     /// <param name="act"></param>
     /// <returns></returns>
-    private protected virtual bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected virtual bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }

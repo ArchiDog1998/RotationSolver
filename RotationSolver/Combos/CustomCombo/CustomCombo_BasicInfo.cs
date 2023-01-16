@@ -10,6 +10,7 @@ using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Configuration;
 using RotationSolver;
 using RotationSolver.Data;
+using RotationSolver.Attributes;
 
 namespace RotationSolver.Combos.CustomCombo;
 
@@ -76,7 +77,7 @@ internal abstract partial class CustomCombo : ICustomCombo
     /// 有盾姿，如果为非T那么始终为true
     /// </summary>
     [ReflectableMember]
-    internal bool HaveShield => Player.HasStatus(true, StatusHelper.SheildStatus);
+    internal static bool HaveShield => Player.HasStatus(true, StatusHelper.SheildStatus);
 
 
     public uint IconID { get; }
@@ -91,7 +92,7 @@ internal abstract partial class CustomCombo : ICustomCombo
     {
         get
         {
-            if (MoveAbility(1, out var act) && act is BaseAction a) return a.Target;
+            if (MoveForwardAbility(1, out var act) && act is BaseAction a) return a.Target;
             return null;
         }
     }

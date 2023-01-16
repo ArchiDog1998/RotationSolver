@@ -1,5 +1,4 @@
-﻿using RotationSolver;
-using RotationSolver.Actions;
+﻿using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
@@ -8,6 +7,7 @@ using RotationSolver.Windows;
 using System;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Combos.CustomCombo;
 
@@ -103,7 +103,7 @@ internal abstract partial class CustomCombo
     DateTime lastTime;
     private bool CheckAction(uint actionID)
     {
-        if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0, 0, 3)) && CommandController.AutoAttack)
+        if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0, 0, 3)) && RotationSolverCommands.StateType != StateCommandType.Cancel)
         {
             _lastSayingGCDAction = actionID;
             lastTime = DateTime.Now;

@@ -1,7 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
-using RotationSolver;
 using RotationSolver.Actions;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
@@ -62,7 +62,7 @@ internal abstract partial class CustomCombo
     /// <summary>
     /// 是否处于爆发，自动爆发或者手动点击的爆发
     /// </summary>
-    protected static bool SettingBreak => CommandController.Break || Service.Configuration.AutoBreak;
+    protected static bool SettingBreak => RotationSolverCommands.SpecialType == SpecialCommandType.Break || Service.Configuration.AutoBreak;
 
     /// <summary>
     /// 当前等级

@@ -231,7 +231,7 @@ internal abstract class RDMCombo_Base : CustomCombo.CustomCombo
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         if (CorpsAcorps.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;

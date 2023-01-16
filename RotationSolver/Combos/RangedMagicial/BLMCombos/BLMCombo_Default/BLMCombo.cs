@@ -118,12 +118,12 @@ internal sealed partial class BLMCombo_Default : BLMCombo_Base
         return base.MoveGCD(out act);
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         //以太步
         if (AetherialManipulation.ShouldUse(out act, mustUse: true)) return true;
 
-        return base.MoveAbility(abilityRemain, out act);
+        return base.MoveForwardAbility(abilityRemain, out act);
     }
 
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)

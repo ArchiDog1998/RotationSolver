@@ -215,7 +215,7 @@ internal abstract class DRKCombo_Base : CustomCombo.CustomCombo
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         if (Plunge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 

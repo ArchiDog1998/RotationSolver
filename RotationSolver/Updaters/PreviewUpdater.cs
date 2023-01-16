@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
@@ -28,7 +29,7 @@ internal static class PreviewUpdater
     static DtrBarEntry dtrEntry;
     private static void UpdateEntry()
     {
-        if (Service.Configuration.UseDtr && CommandController.StateString != null)
+        if (Service.Configuration.UseDtr && RotationSolverCommands.EntryString != null)
         {
             if (dtrEntry == null)
             {
@@ -37,7 +38,7 @@ internal static class PreviewUpdater
             dtrEntry.Shown = true;
             dtrEntry.Text = new SeString(
                 new IconPayload(BitmapFontIcon.DPS),
-                new TextPayload(CommandController.StateString)
+                new TextPayload(RotationSolverCommands.EntryString)
                 );
         }
         else if (dtrEntry != null)

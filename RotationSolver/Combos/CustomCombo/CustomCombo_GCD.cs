@@ -1,10 +1,10 @@
-﻿using RotationSolver;
-using RotationSolver.Actions;
+﻿using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Updaters;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Combos.CustomCombo;
 
@@ -12,23 +12,25 @@ internal abstract partial class CustomCombo
 {
     private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
     {
-        IAction act = CommandController.NextAction;
+        IAction act = RotationSolverCommands.NextAction;
         if (act is BaseAction a && a != null && a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return act;
 
         if (EmergencyGCD(out act)) return act;
 
+        var specialType = RotationSolverCommands.SpecialType;
+
         if (EsunaRaise(out act, abilityRemain, false)) return act;
-        if (CommandController.Move && MoveGCD(out act))
+        if (specialType == SpecialCommandType.MoveForward && MoveGCD(out act))
         {
             if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
         }
         if (TargetUpdater.HPNotFull && ActionUpdater.InCombat)
         {
-            if ((CommandController.HealArea || CanHealAreaSpell) && HealAreaGCD(out act)) return act;
-            if ((CommandController.HealSingle || CanHealSingleSpell) && HealSingleGCD(out act)) return act;
+            if ((specialType == SpecialCommandType.HealArea || CanHealAreaSpell) && HealAreaGCD(out act)) return act;
+            if ((specialType == SpecialCommandType.HealSingle || CanHealSingleSpell) && HealSingleGCD(out act)) return act;
         }
-        if (CommandController.DefenseArea && DefenseAreaGCD(out act)) return act;
-        if (CommandController.DefenseSingle && DefenseSingleGCD(out act)) return act;
+        if (specialType == SpecialCommandType.DefenseArea && DefenseAreaGCD(out act)) return act;
+        if (specialType == SpecialCommandType.DefenseSingle && DefenseSingleGCD(out act)) return act;
 
         //自动防御
         if (helpDefenseAOE && DefenseAreaGCD(out act)) return act;
@@ -55,8 +57,10 @@ internal abstract partial class CustomCombo
 
         if (Raise == null) return false;
 
+        var specialType = RotationSolverCommands.SpecialType;
+
         //有某些非常危险的状态。
-        if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
+        if (specialType == SpecialCommandType.EsunaShield && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
         {
             if (Job.GetJobRole() == JobRole.Healer && Esuna.ShouldUse(out act, mustUse: true)) return true;
         }
@@ -71,7 +75,7 @@ internal abstract partial class CustomCombo
             {
                 if (HaveSwift && Raise.ShouldUse(out act)) return true;
             }
-            else if (CommandController.RaiseOrShirk || HaveSwift || !Swiftcast.IsCoolDown && actabilityRemain > 0 || mustUse)
+            else if (specialType == SpecialCommandType.RaiseShirk || HaveSwift || !Swiftcast.IsCoolDown && actabilityRemain > 0 || mustUse)
             {
                 if (Raise.ShouldUse(out _))
                 {

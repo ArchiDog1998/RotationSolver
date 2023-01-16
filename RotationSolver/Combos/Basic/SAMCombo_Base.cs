@@ -283,7 +283,7 @@ internal abstract class SAMCombo_Base : CustomCombo.CustomCombo
     };
     #endregion
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         if (HissatsuGyoten.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;

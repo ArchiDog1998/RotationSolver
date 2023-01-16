@@ -2,7 +2,7 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using RotationSolver;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -343,7 +343,7 @@ internal static partial class TargetUpdater
         if (DateTime.Now - foundTime > relayTime)
         {
             Service.TargetManager.SetTarget(author);
-            CommandController.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
+            RotationSolverCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = string.Format(LocalizationManager.RightLang.Commands_SayHelloToAuthor, author.Name),

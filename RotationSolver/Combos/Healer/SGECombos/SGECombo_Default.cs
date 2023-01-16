@@ -161,7 +161,7 @@ internal sealed class SGECombo_Default : SGECombo_Base
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         //…Ò“Ì
         if (Icarus.ShouldUse(out act, emptyOrSkipCombo: true)) return true;

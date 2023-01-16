@@ -1,4 +1,5 @@
-﻿using RotationSolver.Localization;
+﻿using RotationSolver.Attributes;
+using RotationSolver.Localization;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -8,10 +9,6 @@ namespace RotationSolver.Helpers;
 
 internal static class ReflectionHelper
 {
-    internal class ReflectableMemberAttribute : Attribute
-    {
-
-    }
     internal static PropertyInfo[] GetStaticProperties<T>(this Type type)
     {
         if (type == null) return new PropertyInfo[0];

@@ -8,6 +8,7 @@ using RotationSolver.Updaters;
 using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Combos.Basic;
 
@@ -216,7 +217,7 @@ internal abstract class BRDCombo_Base : CustomCombo.CustomCombo
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //有某些非常危险的状态。
-        if (CommandController.EsunaOrShield && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
+        if (RotationSolverCommands.SpecialType == SpecialCommandType.EsunaShield && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
         {
             if (WardensPaean.ShouldUse(out act, mustUse: true)) return true;
         }

@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game;
+using RotationSolver.Commands;
 using System;
 using System.Collections.Generic;
 
@@ -43,7 +44,7 @@ internal static class MajorUpdater
 
         ActionUpdater.DoAction();
 
-        CommandController.UpdateAutoAttack();
+        RotationSolverCommands.UpdateRotationState();
         ActionUpdater.UpdateNextAction();
         MacroUpdater.UpdateMacro();
     }

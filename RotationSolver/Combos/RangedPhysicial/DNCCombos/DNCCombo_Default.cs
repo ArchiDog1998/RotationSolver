@@ -63,7 +63,7 @@ internal sealed class DNCCombo_Default : DNCCombo_Base
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         if (EnAvant.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;

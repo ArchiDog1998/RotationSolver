@@ -305,7 +305,7 @@ internal abstract class NINCombo_Base : CustomCombo.CustomCombo
     /// </summary>
     public static NinAction HyoshoRanryu { get; } = new(ActionID.HyoshoRanryu, Ten, Jin);
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         if (Shukuchi.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 

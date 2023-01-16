@@ -6,6 +6,7 @@ using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Updaters;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Combos.Tank.WARCombos;
 
@@ -74,7 +75,7 @@ internal sealed class WARCombo_Default : WARCombo_Base
         if (HeavySwing.ShouldUse(out act)) return true;
 
         //够不着，随便打一个吧。
-        if (CommandController.Move && MoveAbility(1, out act)) return true;
+        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
         if (Tomahawk.ShouldUse(out act)) return true;
 
         return false;

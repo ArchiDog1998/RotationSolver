@@ -1,6 +1,7 @@
 using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Commands;
 using RotationSolver.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -29,7 +30,7 @@ internal sealed class DRGCombo_Default : DRGCombo_Base
         {DescType.MoveAction, $"{SpineshatterDive}, {DragonfireDive}"},
     };
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         if (abilityRemain > 1)
         {
@@ -147,7 +148,7 @@ internal sealed class DRGCombo_Default : DRGCombo_Base
         }
         if (TrueThrust.ShouldUse(out act)) return true;
 
-        if (CommandController.Move && MoveAbility(1, out act)) return true;
+        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
         if (PiercingTalon.ShouldUse(out act)) return true;
 
         return false;

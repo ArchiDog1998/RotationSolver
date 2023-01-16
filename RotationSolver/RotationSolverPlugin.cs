@@ -10,14 +10,12 @@ using RotationSolver.Updaters;
 using RotationSolver.Windows;
 using System;
 using RotationSolver.Windows.ComboConfigWindow;
+using RotationSolver.Commands;
 
 namespace RotationSolver;
 
 public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
-    private const string _command = "/pattack";
-
-    internal const string _autoCommand = "/aauto";
 
     private readonly WindowSystem windowSystem;
 
@@ -65,26 +63,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _scriptComboWindow.WindowName = LocalizationManager.RightLang.Scriptwindow_Header
             + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString();
 
-        Service.CommandManager.RemoveHandler(_command);
-        Service.CommandManager.RemoveHandler(_autoCommand);
-
-        Service.CommandManager.AddHandler(_command, new CommandInfo(OnCommand)
-        {
-            HelpMessage = LocalizationManager.RightLang.Commands_pattack,
-            ShowInHelp = true,
-        });
-
-        Service.CommandManager.AddHandler(_autoCommand, new CommandInfo(AttackObject)
-        {
-            HelpMessage = LocalizationManager.RightLang.Commands_aauto,
-            ShowInHelp = true,
-        });
+        RotationSolverCommands.Disable();
+        RotationSolverCommands.Enable();
     }
 
     public void Dispose()
     {
-        Service.CommandManager.RemoveHandler(_command);
-        Service.CommandManager.RemoveHandler(_autoCommand);
+        RotationSolverCommands.Disable();
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
@@ -108,24 +93,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     {
         _scriptComboWindow.TargetCombo = combo;
         _scriptComboWindow.IsOpen = true;
-    }
-
-    private static void AttackObject(string command, string arguments)
-    {
-        string[] array = arguments.Split();
-
-        if (array.Length > 0)
-        {
-            CommandController.DoAutoAttack(array[0]);
-        }
-    }
-
-    private static void OnCommand(string command, string arguments)
-    {
-        string[] array = arguments.Split();
-
-        if (IconReplacer.AutoAttackConfig(array[0], array.Length > 1 ? array[1] : array[0]))
-            OpenConfigWindow();
     }
 
     internal static void OpenConfigWindow()

@@ -16,6 +16,7 @@ using RotationSolver.Combos.Script;
 using RotationSolver.SigReplacers;
 using RotationSolver.Data;
 using RotationSolver.Localization;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Windows.ComboConfigWindow;
 
@@ -304,9 +305,10 @@ internal partial class ComboConfigWindow : Window
         ImGui.SameLine();
     }
 
+    [Obsolete("Move the help function to the command class.")]
     private static void CommandHelp(string command, string help = null)
     {
-        command = RotationSolverPlugin._autoCommand + " " + command;
+        command = RotationSolverCommands._command + " " + command;
         if (ImGui.Button(command))
         {
             Service.CommandManager.ProcessCommand(command);

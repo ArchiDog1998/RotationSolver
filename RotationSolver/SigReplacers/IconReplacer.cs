@@ -280,41 +280,4 @@ internal sealed class IconReplacer : IDisposable
     {
         return 1uL;
     }
-
-    internal static bool AutoAttackConfig(string str, string str1)
-    {
-        switch (str)
-        {
-            case "setall":
-                {
-                    foreach (var item in CustomCombos)
-                    {
-                        foreach (var combo in item.combos)
-                        {
-                            combo.IsEnabled = true;
-                        }
-                    }
-                    Service.ChatGui.Print("All SET");
-                    Service.Configuration.Save();
-                    break;
-                }
-            case "unsetall":
-                {
-                    foreach (var item in CustomCombos)
-                    {
-                        foreach (var combo in item.combos)
-                        {
-                            combo.IsEnabled = false;
-                        }
-                    }
-                    Service.ChatGui.Print("All UNSET");
-                    Service.Configuration.Save();
-                    break;
-                }
-            default:
-                return true;
-        }
-        Service.Configuration.Save();
-        return false;
-    }
 }

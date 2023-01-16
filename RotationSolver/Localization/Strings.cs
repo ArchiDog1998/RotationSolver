@@ -6,8 +6,7 @@ namespace RotationSolver.Localization;
 internal class Strings
 {
     #region Commands
-    public string Commands_pattack { get; set; } = "Open a window to set whether auto-attack is enabled for each profession";
-    public string Commands_aauto { get; set; } = "Set the mode of attack";
+    public string Commands_Rotation { get; set; } = "Set the mode of attack";
     public string Commands_ChangeAutoBreak { get; set; } = "Modify automatic burst to{0}";
     public string Commands_ChangeSettings { get; set; } = "Modify {0} to {1}";
     public string Commands_InsertAction { get; set; } = "Will use skill \"{1}\" within {0}s";

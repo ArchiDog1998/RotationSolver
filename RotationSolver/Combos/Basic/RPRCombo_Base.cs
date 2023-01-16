@@ -308,7 +308,7 @@ internal abstract class RPRCombo_Base : CustomCombo.CustomCombo
     #endregion
 
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         //E上去
         if (HellsIngress.ShouldUse(out act, emptyOrSkipCombo: true)) return true;

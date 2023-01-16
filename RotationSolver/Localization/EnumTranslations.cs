@@ -1,0 +1,96 @@
+﻿using Dalamud.Game.ClientState.Keys;
+using RotationSolver.Commands;
+using RotationSolver.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Channels;
+using System.Threading.Tasks;
+
+namespace RotationSolver.Localization
+{
+    internal static class EnumTranslations
+    {
+        internal static string ToName(this VirtualKey k) => k switch
+            {
+                VirtualKey.SHIFT => "SHIFT",
+                VirtualKey.CONTROL => "CTRL",
+                VirtualKey.MENU => "ALT",
+                _ => k.ToString(),
+            };
+
+        public static string ToName(this JobRole role) => role switch
+        {
+            JobRole.None => LocalizationManager.RightLang.JobRole_None,
+            JobRole.Tank => LocalizationManager.RightLang.JobRole_Tank,
+            JobRole.Melee => LocalizationManager.RightLang.JobRole_Melee,
+            JobRole.Ranged => LocalizationManager.RightLang.JobRole_Ranged,
+            JobRole.Healer => LocalizationManager.RightLang.JobRole_Healer,
+            JobRole.RangedPhysical => LocalizationManager.RightLang.JobRole_RangedPhysical,
+            JobRole.RangedMagicial => LocalizationManager.RightLang.JobRole_RangedMagicial,
+            JobRole.DiscipleoftheLand => LocalizationManager.RightLang.JobRole_DiscipleoftheLand,
+            JobRole.DiscipleoftheHand => LocalizationManager.RightLang.JobRole_DiscipleoftheHand,
+            _ => string.Empty,
+        };
+
+        public static string ToName(this TargetingType role) => role switch
+        {
+            TargetingType.Big => "Big",
+            TargetingType.Small => "Small",
+            TargetingType.HighHP => "High HP",
+            TargetingType.LowHP => "Low HP",
+            TargetingType.HighMaxHP => "High Max HP",
+            TargetingType.LowMaxHP => "Low Max HP",
+            _ => string.Empty,
+        };
+
+        internal static string ToSayout(this SpecialCommandType type, JobRole role) => type switch
+        {
+            SpecialCommandType.HealArea => "Start Heal Area",
+            SpecialCommandType.HealSingle => "Start Heal Single",
+            SpecialCommandType.DefenseArea => "Start Defense Area",
+            SpecialCommandType.DefenseSingle => "Start Defense Single",
+            SpecialCommandType.EsunaShield => "Start " + (role == JobRole.Tank ? "Shield" : "Esuna"),
+            SpecialCommandType.RaiseShirk => "Start " + (role == JobRole.Tank ? "Shirk" : "Raise"),
+            SpecialCommandType.MoveForward => "Start Move Forward",
+            SpecialCommandType.MoveBack => "Start Move Back",
+            SpecialCommandType.AntiRepulsion => "Start AntiRepulsion",
+            SpecialCommandType.Break => "Start Break",
+            SpecialCommandType.EndSpecial => "End Special",
+            _ => string.Empty,
+        };
+
+        internal static string ToSayout(this StateCommandType type, JobRole role) => type switch
+        {
+            StateCommandType.Smart => "Start Smart " + RotationSolverCommands.TargetingType.ToName(),
+            StateCommandType.Manual => "Start Manual",
+            StateCommandType.Cancel => "Cancel",
+            _ => string.Empty,
+        };
+
+        internal static string ToSpecialString(this SpecialCommandType type, JobRole role) => type switch
+        {
+            SpecialCommandType.HealArea => "Heal Area",
+            SpecialCommandType.HealSingle => "Heal Single",
+            SpecialCommandType.DefenseArea => "Defense Area",
+            SpecialCommandType.DefenseSingle => "Defense Single",
+            SpecialCommandType.EsunaShield => role == JobRole.Tank ? "Shield" : "Esuna",
+            SpecialCommandType.RaiseShirk => role == JobRole.Tank ? "Shirk" : "Raise",
+            SpecialCommandType.MoveForward => "Move Forward",
+            SpecialCommandType.MoveBack => "Move Back",
+            SpecialCommandType.AntiRepulsion => "AntiRepulsion",
+            SpecialCommandType.Break => "Break",
+            SpecialCommandType.EndSpecial => "End Special",
+            _ => string.Empty,
+        };
+
+        internal static string ToStateString(this StateCommandType type, JobRole role) => type switch
+        {
+            StateCommandType.Smart => "Smart " + RotationSolverCommands.TargetingType.ToName(),
+            StateCommandType.Manual => "Manual",
+            StateCommandType.Cancel => "Off",
+            _ => string.Empty,
+        };
+    }
+}

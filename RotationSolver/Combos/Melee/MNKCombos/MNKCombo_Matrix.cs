@@ -2,6 +2,7 @@
 using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Commands;
 using RotationSolver.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -73,7 +74,7 @@ internal sealed class MNKCombo_Matrix : MNKCombo_Base
         return false;
     }
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         if (Thunderclap.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
@@ -369,7 +370,7 @@ internal sealed class MNKCombo_Matrix : MNKCombo_Base
         // 军体拳
         if (JunTiQuan(out act)) return true;
 
-        if (CommandController.Move && MoveAbility(1, out act)) return true;
+        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
         if (Chakra < 5 && Meditation.ShouldUse(out act)) return true;
         if (Config.GetBoolByName("AutoFormShift") && FormShift.ShouldUse(out act)) return true;
 

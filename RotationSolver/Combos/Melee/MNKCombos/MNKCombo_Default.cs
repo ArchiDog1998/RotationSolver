@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Commands;
 using RotationSolver.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -143,7 +144,7 @@ internal sealed class MNKCombo_Default : MNKCombo_Base
             if (OpoOpoForm(out act)) return true;
         }
 
-        if (CommandController.Move && MoveAbility(1, out act)) return true;
+        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
         if (Chakra < 5 && Meditation.ShouldUse(out act)) return true;
         if (Config.GetBoolByName("AutoFormShift") && FormShift.ShouldUse(out act)) return true;
 

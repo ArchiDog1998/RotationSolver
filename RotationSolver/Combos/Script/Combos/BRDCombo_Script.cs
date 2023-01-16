@@ -59,6 +59,6 @@ internal class BRDCombo_Script : BRDCombo_Base, IScriptCombo
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
         => Set.HealSingleAbilitySet.ShouldUse(this, abilityRemain, null, out act);
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
         => Set.MoveAbilitySet.ShouldUse(this, abilityRemain, null, out act);
 }

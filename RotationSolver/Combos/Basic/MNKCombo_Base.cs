@@ -186,7 +186,7 @@ internal abstract class MNKCombo_Base : CustomCombo.CustomCombo
     /// </summary>
     public static BaseAction RiddleofWind { get; } = new(ActionID.RiddleofWind, true);
 
-    private protected override bool MoveAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         if (Thunderclap.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;

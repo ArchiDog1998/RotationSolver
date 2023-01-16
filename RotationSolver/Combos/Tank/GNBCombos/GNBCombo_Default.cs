@@ -1,6 +1,7 @@
 using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base
         if (BrutalShell.ShouldUse(out act)) return true;
         if (KeenEdge.ShouldUse(out act)) return true;
 
-        if (CommandController.Move && MoveAbility(1, out act)) return true;
+        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
 
         if (LightningShot.ShouldUse(out act)) return true;
 

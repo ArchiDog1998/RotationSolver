@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Numerics;
 using RotationSolver.Updaters;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Helpers;
 
@@ -376,7 +377,7 @@ internal static class TargetFilter
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
     {
-        switch (CommandController.RightTargetingType)
+        switch (RotationSolverCommands.TargetingType)
         {
             default:
             case TargetingType.Big:
