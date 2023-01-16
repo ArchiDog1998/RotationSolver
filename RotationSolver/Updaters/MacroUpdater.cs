@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using XIVAutoAction.Data;
+﻿using RotationSolver.Data;
+using System.Collections.Generic;
 
-namespace XIVAutoAction.Updaters;
+namespace RotationSolver.Updaters;
 
 internal static class MacroUpdater
 {

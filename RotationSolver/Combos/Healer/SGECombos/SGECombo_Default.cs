@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Updaters;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Updaters;
+using RotationSolver.Actions;
+using RotationSolver.Helpers;
+using RotationSolver.Data;
+using RotationSolver.Configuration;
+using RotationSolver;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
 
-namespace XIVAutoAction.Combos.Healer.SGECombos;
+namespace RotationSolver.Combos.Healer.SGECombos;
 
 internal sealed class SGECombo_Default : SGECombo_Base
 {

@@ -1,17 +1,17 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using RotationSolver;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.SigReplacers;
+using RotationSolver.Updaters;
 using System;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAction;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.SigReplacers;
-using XIVAutoAction.Updaters;
-using static XIVAutoAction.SigReplacers.Watcher;
+using static RotationSolver.SigReplacers.Watcher;
 
-namespace XIVAutoAction.Combos.CustomCombo;
+namespace RotationSolver.Combos.CustomCombo;
 
 internal abstract partial class CustomCombo
 {

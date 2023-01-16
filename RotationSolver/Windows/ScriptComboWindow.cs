@@ -4,6 +4,10 @@ using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using Newtonsoft.Json;
+using RotationSolver.Combos.Script;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Localization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,12 +15,8 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using XIVAutoAction.Combos.Script;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Localization;
 
-namespace XIVAutoAction.Windows;
+namespace RotationSolver.Windows;
 
 internal class ScriptComboWindow : Window
 {

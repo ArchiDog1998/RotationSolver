@@ -1,10 +1,10 @@
 ﻿using ImGuiNET;
 using System.Numerics;
-using XIVAutoAction;
-using XIVAutoAction.Localization;
-using XIVAutoAction.Configuration;
+using RotationSolver.Configuration;
+using RotationSolver;
+using RotationSolver.Localization;
 
-namespace XIVAutoAction.Windows.ComboConfigWindow;
+namespace RotationSolver.Windows.ComboConfigWindow;
 
 internal partial class ComboConfigWindow
 {

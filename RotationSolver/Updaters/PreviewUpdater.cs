@@ -8,14 +8,13 @@ using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.SigReplacers;
 using System;
 using System.Runtime.InteropServices;
-using XIVAutoAction;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.SigReplacers;
 
-namespace XIVAutoAction.Updaters;
+namespace RotationSolver.Updaters;
 
 internal static class PreviewUpdater
 {

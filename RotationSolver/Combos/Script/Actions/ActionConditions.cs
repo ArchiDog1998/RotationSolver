@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Script.Conditions;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Localization;
-using XIVAutoAction.Windows;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Windows.ComboConfigWindow;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Windows.ComboConfigWindow;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Windows;
+using RotationSolver.Helpers;
+using RotationSolver.Combos.Script.Conditions;
+using RotationSolver.Localization;
 
-namespace XIVAutoAction.Combos.Script.Actions;
+namespace RotationSolver.Combos.Script.Actions;
 
 /// <summary>
 /// 最右边那栏用来渲染的

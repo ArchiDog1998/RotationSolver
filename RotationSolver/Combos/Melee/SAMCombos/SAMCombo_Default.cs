@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
+﻿using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using System.Collections.Generic;
 
-namespace XIVAutoAction.Combos.Melee.SAMCombos;
+namespace RotationSolver.Combos.Melee.SAMCombos;
 
 internal sealed class SAMCombo_Default : SAMCombo_Base
 {

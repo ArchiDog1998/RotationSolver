@@ -1,13 +1,11 @@
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System.Collections.Generic;
-using XIVAutoAction;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using static XIVAutoAction.Combos.Tank.GNBCombos.GNBCombo_Default;
 
-namespace XIVAutoAction.Combos.Tank.GNBCombos;
+namespace RotationSolver.Combos.Tank.GNBCombos;
 
 internal sealed class GNBCombo_Default : GNBCombo_Base
 {

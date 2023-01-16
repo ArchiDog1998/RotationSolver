@@ -1,11 +1,12 @@
 using Dalamud.Configuration;
 using Dalamud.Game.ClientState.Keys;
+using RotationSolver;
+using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using XIVAutoAction.Data;
 
-namespace XIVAutoAction.Configuration;
+namespace RotationSolver.Configuration;
 
 [Serializable]
 public class PluginConfiguration : IPluginConfiguration

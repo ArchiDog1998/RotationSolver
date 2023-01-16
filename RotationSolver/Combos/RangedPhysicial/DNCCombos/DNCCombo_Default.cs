@@ -1,12 +1,12 @@
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System.Collections.Generic;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Updaters;
+using RotationSolver.Updaters;
 
-namespace XIVAutoAction.Combos.RangedPhysicial.DNCCombos;
+namespace RotationSolver.Combos.RangedPhysicial.DNCCombos;
 
 internal sealed class DNCCombo_Default : DNCCombo_Base
 {

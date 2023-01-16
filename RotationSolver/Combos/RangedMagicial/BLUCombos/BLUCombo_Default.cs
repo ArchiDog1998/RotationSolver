@@ -1,12 +1,12 @@
-﻿using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Updaters;
+﻿using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using System.Linq;
+using RotationSolver.Updaters;
 
-namespace XIVAutoAction.Combos.RangedMagicial.BLUCombos
+namespace RotationSolver.Combos.RangedMagicial.BLUCombos
 {
     internal sealed class BLUCombo_Default : BLUCombo_Base
     {

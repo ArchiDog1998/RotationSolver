@@ -14,11 +14,11 @@ using Dalamud.Game.Gui.FlyText;
 using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
 using Dalamud.Plugin;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Localization;
-using XIVAutoAction.SigReplacers;
+using RotationSolver.Configuration;
+using RotationSolver.Localization;
+using RotationSolver.SigReplacers;
 
-namespace XIVAutoAction;
+namespace RotationSolver;
 
 internal class Service
 {

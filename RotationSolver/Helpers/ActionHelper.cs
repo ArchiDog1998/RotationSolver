@@ -1,8 +1,8 @@
-﻿using XIVAutoAction.Data;
+﻿using RotationSolver.Data;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 
-namespace XIVAutoAction.Helpers;
+namespace RotationSolver.Helpers;
 
 internal static class ActionHelper
 {

@@ -1,15 +1,14 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
+using RotationSolver.Actions;
+using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using XIVAutoAction;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Data;
 
 
-namespace XIVAutoAction.Helpers;
+namespace RotationSolver.Helpers;
 
 internal static class StatusHelper
 {

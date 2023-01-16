@@ -1,14 +1,14 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System.Collections.Generic;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using static XIVAutoAction.Combos.RangedPhysicial.BRDCombos.BRDCombo_Default;
+using static RotationSolver.Combos.RangedPhysicial.BRDCombos.BRDCombo_Default;
 
-namespace XIVAutoAction.Combos.RangedPhysicial.BRDCombos;
+namespace RotationSolver.Combos.RangedPhysicial.BRDCombos;
 
 internal sealed class BRDCombo_Default : BRDCombo_Base
 {

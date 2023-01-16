@@ -2,14 +2,14 @@
 using Newtonsoft.Json;
 using System;
 using System.Linq;
-using XIVAutoAction;
-using XIVAutoAction.Combos.Script;
-using XIVAutoAction.Data;
-using XIVAutoAction.Localization;
-using XIVAutoAction.Windows;
-using XIVAutoAction.Actions.BaseAction;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Data;
+using RotationSolver.Windows;
+using RotationSolver.Combos.Script;
+using RotationSolver;
+using RotationSolver.Localization;
 
-namespace XIVAutoAction.Combos.Script.Conditions;
+namespace RotationSolver.Combos.Script.Conditions;
 
 internal class ActionCondition : ICondition
 {

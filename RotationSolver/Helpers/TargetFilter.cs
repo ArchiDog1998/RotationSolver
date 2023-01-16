@@ -1,15 +1,14 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAction;
-using XIVAutoAction.Data;
-using XIVAutoAction.Updaters;
+using RotationSolver.Updaters;
 
-namespace XIVAutoAction.Helpers;
+namespace RotationSolver.Helpers;
 
 internal static class TargetFilter
 {

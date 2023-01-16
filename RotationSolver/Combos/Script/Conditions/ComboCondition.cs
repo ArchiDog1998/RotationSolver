@@ -3,15 +3,15 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAction;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Localization;
-using XIVAutoAction.Windows;
-using XIVAutoAction.Actions.BaseAction;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Windows;
+using RotationSolver.Combos.Script;
+using RotationSolver.Localization;
+using RotationSolver.Helpers;
 
-namespace XIVAutoAction.Combos.Script.Conditions;
+namespace RotationSolver.Combos.Script.Conditions;
 
 internal class ComboCondition : ICondition
 {

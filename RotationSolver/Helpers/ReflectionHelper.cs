@@ -1,10 +1,10 @@
-﻿using System;
+﻿using RotationSolver.Localization;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAction.Localization;
 
-namespace XIVAutoAction.Helpers;
+namespace RotationSolver.Helpers;
 
 internal static class ReflectionHelper
 {

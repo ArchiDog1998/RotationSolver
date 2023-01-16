@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Updaters;
+using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Updaters;
-using static XIVAutoAction.SigReplacers.Watcher;
+using static RotationSolver.SigReplacers.Watcher;
 
-namespace XIVAutoAction.Combos.RangedMagicial.BLMCombos;
+namespace RotationSolver.Combos.RangedMagicial.BLMCombos;
 internal sealed partial class BLMCombo_Moon : BLMCombo_Base
 {
     public override string GameVersion => "6.18";

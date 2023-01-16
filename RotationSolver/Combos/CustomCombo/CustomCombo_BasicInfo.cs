@@ -3,102 +3,101 @@ using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Actions.BaseAction;
-using static XIVAutoAction.Helpers.ReflectionHelper;
+using RotationSolver.Actions.BaseAction;
+using static RotationSolver.Helpers.ReflectionHelper;
+using RotationSolver.Helpers;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration;
+using RotationSolver;
+using RotationSolver.Data;
 
-namespace XIVAutoAction.Combos.CustomCombo
+namespace RotationSolver.Combos.CustomCombo;
+
+internal abstract partial class CustomCombo : ICustomCombo
 {
-    internal abstract partial class CustomCombo : ICustomCombo
+    public abstract ClassJobID[] JobIDs { get; }
+
+    public abstract string GameVersion { get; }
+
+    public ClassJob Job => Service.DataManager.GetExcelSheet<ClassJob>().GetRow((uint)JobIDs[0]);
+
+    public string Name => Job.Abbreviation + " - " + Job.Name;
+
+    /// <summary>
+    /// 作者
+    /// </summary>
+    public abstract string Author { get; }
+
+    /// <summary>
+    /// 目标是否将要死亡
+    /// </summary>
+    internal static bool IsTargetDying
     {
-        public abstract ClassJobID[] JobIDs { get; }
-
-        public abstract string GameVersion { get; }
-
-        public ClassJob Job => Service.DataManager.GetExcelSheet<ClassJob>().GetRow((uint)JobIDs[0]);
-
-        public string Name => Job.Abbreviation + " - " + Job.Name;
-
-        /// <summary>
-        /// 作者
-        /// </summary>
-        public abstract string Author { get; }
-
-        /// <summary>
-        /// 目标是否将要死亡
-        /// </summary>
-        internal static bool IsTargetDying
+        get
         {
-            get
+            if (Target == null) return false;
+            return Target.IsDying();
+        }
+    }
+
+    /// <summary>
+    /// 目标是否是Boss
+    /// </summary>
+    internal static bool IsTargetBoss
+    {
+        get
+        {
+            if (Target == null) return false;
+            return Target.IsBoss();
+        }
+    }
+
+    public bool IsEnabled
+    {
+        get => Service.Configuration.EnabledCombos.Contains(Name);
+        set
+        {
+            if (value)
             {
-                if (Target == null) return false;
-                return Target.IsDying();
+                Service.Configuration.EnabledCombos.Add(Name);
+            }
+            else
+            {
+                Service.Configuration.EnabledCombos.Remove(Name);
             }
         }
+    }
+    /// <summary>
+    /// 有即刻相关Buff
+    /// </summary>
+    internal static bool HaveSwift => Player.HasStatus(true, Swiftcast.BuffsProvide);
 
-        /// <summary>
-        /// 目标是否是Boss
-        /// </summary>
-        internal static bool IsTargetBoss
+    /// <summary>
+    /// 有盾姿，如果为非T那么始终为true
+    /// </summary>
+    [ReflectableMember]
+    internal bool HaveShield => Player.HasStatus(true, StatusHelper.SheildStatus);
+
+
+    public uint IconID { get; }
+    private protected CustomCombo()
+    {
+        IconID = IconSet.GetJobIcon(this);
+    }
+
+    public ActionConfiguration Config => ActionConfiguration.GetConfig((uint)JobIDs[0], Author, CreateConfiguration());
+
+    public BattleChara MoveTarget
+    {
+        get
         {
-            get
-            {
-                if (Target == null) return false;
-                return Target.IsBoss();
-            }
+            if (MoveAbility(1, out var act) && act is BaseAction a) return a.Target;
+            return null;
         }
+    }
 
-        public bool IsEnabled
-        {
-            get => Service.Configuration.EnabledCombos.Contains(Name);
-            set
-            {
-                if (value)
-                {
-                    Service.Configuration.EnabledCombos.Add(Name);
-                }
-                else
-                {
-                    Service.Configuration.EnabledCombos.Remove(Name);
-                }
-            }
-        }
-        /// <summary>
-        /// 有即刻相关Buff
-        /// </summary>
-        internal static bool HaveSwift => Player.HasStatus(true, Swiftcast.BuffsProvide);
-
-        /// <summary>
-        /// 有盾姿，如果为非T那么始终为true
-        /// </summary>
-        [ReflectableMember]
-        internal bool HaveShield => Player.HasStatus(true, StatusHelper.SheildStatus);
-
-
-        public uint IconID { get; }
-        private protected CustomCombo()
-        {
-            IconID = IconSet.GetJobIcon(this);
-        }
-
-        public ActionConfiguration Config => ActionConfiguration.GetConfig((uint)JobIDs[0], Author, CreateConfiguration());
-
-        public BattleChara MoveTarget
-        {
-            get
-            {
-                if (MoveAbility(1, out var act) && act is BaseAction a) return a.Target;
-                return null;
-            }
-        }
-
-        private protected virtual ActionConfiguration CreateConfiguration()
-        {
-            return new ActionConfiguration();
-        }
+    private protected virtual ActionConfiguration CreateConfiguration()
+    {
+        return new ActionConfiguration();
     }
 }

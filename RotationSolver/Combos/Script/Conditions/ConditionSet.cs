@@ -2,14 +2,14 @@
 using Dalamud.Interface.Components;
 using ImGuiNET;
 using Newtonsoft.Json;
+using RotationSolver.Combos.Script;
+using RotationSolver.Localization;
+using RotationSolver.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction.Combos.Script;
-using XIVAutoAction.Localization;
-using XIVAutoAction.Windows;
 
-namespace XIVAutoAction.Combos.Script.Conditions;
+namespace RotationSolver.Combos.Script.Conditions;
 
 internal class ConditionSet : ICondition
 {

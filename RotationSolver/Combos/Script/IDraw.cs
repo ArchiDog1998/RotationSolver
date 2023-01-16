@@ -1,7 +1,6 @@
-﻿namespace XIVAutoAction.Combos.Script
+﻿namespace RotationSolver.Combos.Script;
+
+internal interface IDraw
 {
-    internal interface IDraw
-    {
-        void Draw(IScriptCombo combo);
-    }
+    void Draw(IScriptCombo combo);
 }

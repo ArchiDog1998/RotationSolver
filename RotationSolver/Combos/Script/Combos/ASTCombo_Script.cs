@@ -1,9 +1,9 @@
-﻿using System;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.Script.Actions;
+﻿using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.Script.Actions;
+using System;
 
-namespace XIVAutoAction.Combos.Script.Combos;
+namespace RotationSolver.Combos.Script.Combos;
 
 internal class ASTCombo_Script : ASTCombo_Base, IScriptCombo
 {

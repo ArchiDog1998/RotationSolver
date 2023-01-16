@@ -1,4 +1,4 @@
-﻿namespace XIVAutoAction;
+﻿namespace RotationSolver;
 
 public interface IEnableTexture : ITexture
 {

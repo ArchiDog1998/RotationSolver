@@ -1,12 +1,12 @@
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System.Collections.Generic;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
 
-namespace XIVAutoAction.Combos.RangedMagicial.RDMCombos;
+namespace RotationSolver.Combos.RangedMagicial.RDMCombos;
 
 internal sealed class RDMCombo_Default : RDMCombo_Base
 {

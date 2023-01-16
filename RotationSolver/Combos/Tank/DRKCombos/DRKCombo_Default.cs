@@ -1,14 +1,14 @@
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Updaters;
+using RotationSolver.Updaters;
 
-namespace XIVAutoAction.Combos.Tank.DRKCombos;
+namespace RotationSolver.Combos.Tank.DRKCombos;
 
 internal sealed class DRKCombo_Default : DRKCombo_Base
 {

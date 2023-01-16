@@ -2,17 +2,17 @@
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.SigReplacers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using XIVAutoAction;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.SigReplacers;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace XIVAutoAction.Updaters;
+namespace RotationSolver.Updaters;
 
 internal static partial class TargetUpdater
 {

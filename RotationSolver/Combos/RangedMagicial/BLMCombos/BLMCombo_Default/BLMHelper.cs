@@ -1,15 +1,15 @@
 ﻿#if DEBUG
 
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Updaters;
 using System;
 using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Updaters;
-using static XIVAutoAction.SigReplacers.Watcher;
+using static RotationSolver.SigReplacers.Watcher;
 
-namespace XIVAutoAction.Combos.RangedMagicial.BLMCombo_Default;
+namespace RotationSolver.Combos.RangedMagicial.BLMCombo_Default;
 
 /// <summary>
 /// 黑魔帮助类

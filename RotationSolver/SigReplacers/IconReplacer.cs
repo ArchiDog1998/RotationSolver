@@ -8,16 +8,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAction;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Combos.Script;
-using XIVAutoAction.Combos.Script.Actions;
-using XIVAutoAction.Data;
-using XIVAutoAction.Updaters;
-using XIVAutoAction.Combos.Script.Conditions;
+using RotationSolver.Combos.Script.Conditions;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Combos.Script;
+using RotationSolver.Combos.Script.Actions;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Updaters;
 
-namespace XIVAutoAction.SigReplacers;
+namespace RotationSolver.SigReplacers;
 
 internal sealed class IconReplacer : IDisposable
 {

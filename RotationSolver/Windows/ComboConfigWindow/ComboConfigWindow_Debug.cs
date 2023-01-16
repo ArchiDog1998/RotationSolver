@@ -1,13 +1,14 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using ImGuiNET;
+using RotationSolver;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.SigReplacers;
+using RotationSolver.Updaters;
 using System.Linq;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.SigReplacers;
-using XIVAutoAction.Updaters;
+using RotationSolver.Actions.BaseAction;
 
-namespace XIVAutoAction.Windows.ComboConfigWindow;
+namespace RotationSolver.Windows.ComboConfigWindow;
 #if DEBUG
 internal partial class ComboConfigWindow
 {

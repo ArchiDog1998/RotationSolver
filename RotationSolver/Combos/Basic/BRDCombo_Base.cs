@@ -2,14 +2,14 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Updaters;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Updaters;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 
-namespace XIVAutoAction.Combos.Basic;
+namespace RotationSolver.Combos.Basic;
 
 internal abstract class BRDCombo_Base : CustomCombo.CustomCombo
 {

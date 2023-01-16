@@ -1,12 +1,13 @@
+using RotationSolver;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Updaters;
 using System.Data;
 using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Updaters;
+using RotationSolver.Actions.BaseAction;
 
-namespace XIVAutoAction.Combos.CustomCombo;
+namespace RotationSolver.Combos.CustomCombo;
 
 internal abstract partial class CustomCombo
 {

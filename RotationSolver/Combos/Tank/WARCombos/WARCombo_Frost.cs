@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Updaters;
+using RotationSolver.Updaters;
 
-namespace XIVAutoAction.Combos.Tank.WARCombos;
+namespace RotationSolver.Combos.Tank.WARCombos;
 
 internal sealed class WARCombo_Frost : WARCombo_Base
 {

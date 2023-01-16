@@ -1,17 +1,17 @@
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
+using RotationSolver.Combos.Script;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using RotationSolver.Localization;
+using RotationSolver.SigReplacers;
+using RotationSolver.Updaters;
+using RotationSolver.Windows;
 using System;
-using XIVAutoAction.Combos.Script;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Localization;
-using XIVAutoAction.SigReplacers;
-using XIVAutoAction.Updaters;
-using XIVAutoAction.Windows;
-using XIVAutoAction.Windows.ComboConfigWindow;
+using RotationSolver.Windows.ComboConfigWindow;
 
-namespace XIVAutoAction;
+namespace RotationSolver;
 
 public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {

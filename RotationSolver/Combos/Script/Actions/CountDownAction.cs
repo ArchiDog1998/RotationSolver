@@ -1,14 +1,14 @@
 ﻿using ImGuiNET;
 using System.Linq;
 using System.Reflection;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Localization;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Windows.ComboConfigWindow;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Windows.ComboConfigWindow;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Localization;
+using RotationSolver.Helpers;
 
-namespace XIVAutoAction.Combos.Script.Actions
+namespace RotationSolver.Combos.Script.Actions
 {
     internal class CountDownAction
     {

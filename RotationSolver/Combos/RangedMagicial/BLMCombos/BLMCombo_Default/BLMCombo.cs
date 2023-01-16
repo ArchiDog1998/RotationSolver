@@ -1,15 +1,15 @@
 ﻿#if DEBUG
 
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System.Collections.Generic;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
 
 
-namespace XIVAutoAction.Combos.RangedMagicial.BLMCombo_Default;
+namespace RotationSolver.Combos.RangedMagicial.BLMCombo_Default;
 internal sealed partial class BLMCombo_Default : BLMCombo_Base
 {
     public override string GameVersion => "6.18";

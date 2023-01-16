@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace XIVAutoAction.Data;
+namespace RotationSolver.Data;
 
-[StructLayout(LayoutKind.Explicit, Size = 688)]
 public struct MarkingHelper
 {
     public static long Attack1 => GetMarker(0);
@@ -15,9 +14,9 @@ public struct MarkingHelper
     public static long Attack3 => GetMarker(2);
     public static long Attack4 => GetMarker(3);
     public static long Attack5 => GetMarker(4);
-    public static long Bind1 => GetMarker(5); 
-    public static long Bind2 => GetMarker(6); 
-    public static long Bind3 => GetMarker(7); 
+    public static long Bind1 => GetMarker(5);
+    public static long Bind2 => GetMarker(6);
+    public static long Bind3 => GetMarker(7);
     public static long Stop1 => GetMarker(8);
     public static long Stop2 => GetMarker(9);
     public static long Square => GetMarker(10);

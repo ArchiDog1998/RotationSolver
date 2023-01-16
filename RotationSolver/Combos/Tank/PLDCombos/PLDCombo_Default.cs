@@ -1,14 +1,13 @@
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Updaters;
-using static XIVAutoAction.Combos.Tank.PLDCombos.PLDCombo_Default;
+using RotationSolver.Updaters;
 
-namespace XIVAutoAction.Combos.Tank.PLDCombos;
+namespace RotationSolver.Combos.Tank.PLDCombos;
 
 internal sealed class PLDCombo_Default : PLDCombo_Base
 {

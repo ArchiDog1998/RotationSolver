@@ -1,6 +1,6 @@
-﻿using XIVAutoAction.Localization;
+﻿using RotationSolver.Localization;
 
-namespace XIVAutoAction.Combos.CustomCombo;
+namespace RotationSolver.Combos.CustomCombo;
 
 public enum DescType : byte
 {

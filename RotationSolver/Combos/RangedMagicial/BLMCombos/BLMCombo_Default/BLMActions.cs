@@ -1,12 +1,11 @@
 ﻿#if DEBUG
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Data;
-using XIVAutoAction.Updaters;
-using XIVAutoAction.Helpers;
+using RotationSolver.Helpers;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Actions;
+using RotationSolver.Updaters;
+using RotationSolver.Data;
 
-
-namespace XIVAutoAction.Combos.RangedMagicial.BLMCombo_Default;
+namespace RotationSolver.Combos.RangedMagicial.BLMCombo_Default;
 
 internal sealed partial class BLMCombo_Default : BLMCombo_Base
 {

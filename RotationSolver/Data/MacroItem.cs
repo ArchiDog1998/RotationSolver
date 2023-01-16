@@ -1,8 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
+using RotationSolver;
 
-namespace XIVAutoAction.Data;
+namespace RotationSolver.Data;
 
 internal unsafe class MacroItem
 {

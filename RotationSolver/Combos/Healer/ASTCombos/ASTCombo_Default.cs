@@ -1,14 +1,14 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Updaters;
+using RotationSolver.Updaters;
 
-namespace XIVAutoAction.Combos.Healer.ASTCombos;
+namespace RotationSolver.Combos.Healer.ASTCombos;
 
 internal sealed class ASTCombo_Default : ASTCombo_Base
 {

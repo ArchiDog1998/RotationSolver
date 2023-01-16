@@ -2,6 +2,11 @@
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ImGuiNET;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Localization;
+using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,15 +16,9 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
-using XIVAutoAction;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Localization;
-using XIVAutoAction.Updaters;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace XIVAutoAction.SigReplacers
+namespace RotationSolver.SigReplacers
 {
     public static class Watcher
     {

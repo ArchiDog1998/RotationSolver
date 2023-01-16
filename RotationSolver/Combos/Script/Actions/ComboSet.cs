@@ -1,12 +1,12 @@
 ﻿using ImGuiNET;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Localization;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Localization;
 
-namespace XIVAutoAction.Combos.Script.Actions
+namespace RotationSolver.Combos.Script.Actions
 {
     internal class ComboSet : IDraw
     {

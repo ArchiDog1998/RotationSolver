@@ -1,9 +1,8 @@
 ﻿using Dalamud.Game;
 using System;
 using System.Collections.Generic;
-using XIVAutoAction.Updaters;
 
-namespace XIVAutoAction.Updaters;
+namespace RotationSolver.Updaters;
 
 internal static class MajorUpdater
 {

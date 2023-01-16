@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using XIVAutoAction.Combos.Script.Actions;
+﻿using RotationSolver.Combos.Script.Actions;
+using System.Collections.Generic;
 
-namespace XIVAutoAction.Localization;
+namespace RotationSolver.Localization;
 
 internal class Strings
 {

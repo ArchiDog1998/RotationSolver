@@ -1,6 +1,6 @@
-﻿using XIVAutoAction.Localization;
+﻿using RotationSolver.Localization;
 
-namespace XIVAutoAction.Actions;
+namespace RotationSolver.Actions;
 
 public enum EnemyLocation : byte
 {

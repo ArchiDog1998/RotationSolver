@@ -4,13 +4,15 @@ using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Localization;
-using XIVAutoAction.Windows;
-using XIVAutoAction.Actions.BaseAction;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Helpers;
+using RotationSolver.Data;
+using RotationSolver.Windows;
+using RotationSolver.Combos.Script;
+using RotationSolver;
+using RotationSolver.Localization;
 
-namespace XIVAutoAction.Combos.Script.Conditions;
+namespace RotationSolver.Combos.Script.Conditions;
 
 internal class TargetCondition : ICondition
 {

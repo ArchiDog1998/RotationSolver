@@ -1,13 +1,13 @@
 ﻿using ImGuiNET;
 using System.Collections.Generic;
 using System.Numerics;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Localization;
-using XIVAutoAction.Windows;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Windows.ComboConfigWindow;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Windows.ComboConfigWindow;
+using RotationSolver.Actions;
+using RotationSolver.Windows;
+using RotationSolver.Localization;
 
-namespace XIVAutoAction.Combos.Script.Actions
+namespace RotationSolver.Combos.Script.Actions
 {
     internal class ActionsSet : IDraw
     {

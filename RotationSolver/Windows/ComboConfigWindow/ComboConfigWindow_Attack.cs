@@ -2,16 +2,16 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
+using RotationSolver;
+using RotationSolver.Data;
+using RotationSolver.Localization;
+using RotationSolver.SigReplacers;
 using System;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAction;
-using XIVAutoAction.Data;
-using XIVAutoAction.Localization;
-using XIVAutoAction.SigReplacers;
 
-namespace XIVAutoAction.Windows.ComboConfigWindow;
+namespace RotationSolver.Windows.ComboConfigWindow;
 
 internal partial class ComboConfigWindow
 {

@@ -1,9 +1,8 @@
 ﻿using Dalamud.Hooking;
 using System;
 using System.Runtime.InteropServices;
-using XIVAutoAction;
 
-namespace XIVAutoAction.SigReplacers;
+namespace RotationSolver.SigReplacers;
 
 internal static class CountDown
 {

@@ -1,6 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 
-namespace XIVAutoAction.Helpers;
+namespace RotationSolver.Helpers;
 
 internal static class VirtualKeyHelper
 {

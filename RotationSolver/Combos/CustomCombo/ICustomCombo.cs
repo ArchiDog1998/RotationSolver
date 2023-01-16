@@ -1,12 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver;
+using RotationSolver.Actions;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
 using System.Collections.Generic;
 using System.Reflection;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
 
-namespace XIVAutoAction.Combos.CustomCombo;
+namespace RotationSolver.Combos.CustomCombo;
 
 internal interface ICustomCombo : IEnableTexture
 {

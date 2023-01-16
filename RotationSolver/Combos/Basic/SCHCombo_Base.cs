@@ -1,12 +1,13 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Updaters;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Updaters;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver;
 
-namespace XIVAutoAction.Combos.Basic;
+namespace RotationSolver.Combos.Basic;
 
 internal abstract class SCHCombo_Base : CustomCombo.CustomCombo
 {

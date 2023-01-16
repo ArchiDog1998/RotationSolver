@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
+﻿using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using System.Collections.Generic;
+using RotationSolver.Helpers;
 
-namespace XIVAutoAction.Combos.Melee.RPRCombos;
+namespace RotationSolver.Combos.Melee.RPRCombos;
 
 internal sealed class RPRCombo_Default : RPRCombo_Base
 {

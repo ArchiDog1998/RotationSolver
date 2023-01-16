@@ -1,11 +1,12 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
+using RotationSolver;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System;
 using System.Numerics;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
 
-namespace XIVAutoAction.Updaters;
+namespace RotationSolver.Updaters;
 
 internal static class MovingUpdater
 {

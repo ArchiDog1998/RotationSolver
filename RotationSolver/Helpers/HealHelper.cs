@@ -3,13 +3,13 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver;
+using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction;
-using XIVAutoAction.Data;
 
-namespace XIVAutoAction.Helpers;
+namespace RotationSolver.Helpers;
 
 public record LevelModifier(int Main, int Sub, int Div);
 internal class HealHelper

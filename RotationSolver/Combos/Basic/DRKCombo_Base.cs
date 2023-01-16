@@ -1,10 +1,10 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Actions.BaseAction;
 
-namespace XIVAutoAction.Combos.Basic;
+namespace RotationSolver.Combos.Basic;
 internal abstract class DRKCombo_Base : CustomCombo.CustomCombo
 {
     private static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();

@@ -1,4 +1,4 @@
-﻿namespace XIVAutoAction.Data;
+﻿namespace RotationSolver.Data;
 
 public enum TargetingType
 {

@@ -3,9 +3,9 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Runtime.InteropServices;
-using XIVAutoAction.Data;
+using RotationSolver.Data;
 
-namespace XIVAutoAction.SigReplacers;
+namespace RotationSolver.SigReplacers;
 
 internal class PluginAddressResolver : BaseAddressResolver
 {

@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Data;
-using XIVAutoAction.SigReplacers;
+﻿using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.SigReplacers;
+using System.Linq;
 
-namespace XIVAutoAction.Helpers;
+namespace RotationSolver.Helpers;
 
 internal static class IActionHelper
 {

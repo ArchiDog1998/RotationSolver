@@ -1,13 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using ImGuiNET;
+using RotationSolver;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Localization;
 using System;
 using System.Numerics;
-using XIVAutoAction;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Localization;
 
-namespace XIVAutoAction.Windows.ComboConfigWindow;
+namespace RotationSolver.Windows.ComboConfigWindow;
 
 internal partial class ComboConfigWindow
 {

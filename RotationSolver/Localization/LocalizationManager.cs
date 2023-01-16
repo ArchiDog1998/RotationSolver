@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace XIVAutoAction.Localization;
+namespace RotationSolver.Localization;
 
 internal class LocalizationManager : IDisposable
 {

@@ -9,16 +9,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAction;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Combos.Script;
-using XIVAutoAction.Data;
-using XIVAutoAction.Localization;
-using XIVAutoAction.SigReplacers;
-using XIVAutoAction.Actions.BaseAction;
+using RotationSolver.Actions;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Combos.Script;
+using RotationSolver.SigReplacers;
+using RotationSolver.Data;
+using RotationSolver.Localization;
 
-namespace XIVAutoAction.Windows.ComboConfigWindow;
+namespace RotationSolver.Windows.ComboConfigWindow;
 
 internal partial class ComboConfigWindow : Window
 {

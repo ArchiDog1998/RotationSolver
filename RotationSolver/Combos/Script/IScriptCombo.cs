@@ -1,9 +1,8 @@
-﻿using System.IO;
-using XIVAutoAction;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Combos.Script.Actions;
+﻿using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Combos.Script.Actions;
+using System.IO;
 
-namespace XIVAutoAction.Combos.Script
+namespace RotationSolver.Combos.Script
 {
     internal interface IScriptCombo : ICustomCombo
     {

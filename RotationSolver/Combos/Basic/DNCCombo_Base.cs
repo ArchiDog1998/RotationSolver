@@ -1,14 +1,13 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
-using XIVAutoAction;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Combos.CustomCombo;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Actions;
+using RotationSolver.Helpers;
+using RotationSolver.Data;
 
-namespace XIVAutoAction.Combos.Basic;
+namespace RotationSolver.Combos.Basic;
 internal abstract class DNCCombo_Base : CustomCombo.CustomCombo
 {
     private static DNCGauge JobGauge => Service.JobGauges.Get<DNCGauge>();

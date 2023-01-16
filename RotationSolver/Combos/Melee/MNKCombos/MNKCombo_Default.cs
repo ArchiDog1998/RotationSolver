@@ -1,16 +1,15 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
 
-namespace XIVAutoAction.Combos.Melee.MNKCombos;
+namespace RotationSolver.Combos.Melee.MNKCombos;
 internal sealed class MNKCombo_Default : MNKCombo_Base
 {
     public override string GameVersion => "6.0";

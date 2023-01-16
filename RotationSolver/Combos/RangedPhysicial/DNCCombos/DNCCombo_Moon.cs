@@ -1,14 +1,13 @@
+using RotationSolver.Actions;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Updaters;
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Updaters;
-using static XIVAutoAction.Combos.RangedPhysicial.DNCCombos.DNCCombo_Moon;
 
-namespace XIVAutoAction.Combos.RangedPhysicial.DNCCombos;
+namespace RotationSolver.Combos.RangedPhysicial.DNCCombos;
 
 internal sealed class DNCCombo_Moon : DNCCombo_Base
 {

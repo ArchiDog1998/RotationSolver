@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Combos.Basic;
-using XIVAutoAction.Combos.CustomCombo;
-using XIVAutoAction.Configuration;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Updaters;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Updaters;
+using RotationSolver.Actions;
+using RotationSolver.Helpers;
+using RotationSolver.Configuration;
+using RotationSolver.Combos.Basic;
+using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Data;
 
-namespace XIVAutoAction.Combos.Healer.WHMCombos;
+namespace RotationSolver.Combos.Healer.WHMCombos;
 internal sealed class WHMCombo_Default : WHMCombo_Base
 {
     public override string GameVersion => "6.28";

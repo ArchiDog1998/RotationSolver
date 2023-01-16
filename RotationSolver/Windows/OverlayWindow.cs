@@ -1,18 +1,18 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface;
 using ImGuiNET;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.SigReplacers;
+using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using XIVAutoAction.Actions;
-using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.SigReplacers;
-using XIVAutoAction.Updaters;
+using RotationSolver.Actions.BaseAction;
 
-namespace XIVAutoAction.Windows;
+namespace RotationSolver.Windows;
 
 internal static class OverlayWindow
 {

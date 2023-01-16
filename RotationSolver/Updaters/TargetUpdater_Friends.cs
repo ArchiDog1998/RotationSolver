@@ -2,6 +2,11 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using RotationSolver;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Localization;
+using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,13 +14,8 @@ using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
-using XIVAutoAction;
-using XIVAutoAction.Data;
-using XIVAutoAction.Helpers;
-using XIVAutoAction.Localization;
-using XIVAutoAction.Updaters;
 
-namespace XIVAutoAction.Updaters;
+namespace RotationSolver.Updaters;
 
 internal static partial class TargetUpdater
 {

@@ -1,9 +1,10 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using RotationSolver;
+using RotationSolver.Data;
+using RotationSolver.Updaters;
 using System;
-using XIVAutoAction.Data;
-using XIVAutoAction.Updaters;
 
-namespace XIVAutoAction.Helpers;
+namespace RotationSolver.Helpers;
 
 internal static class CooldownHelper
 {
