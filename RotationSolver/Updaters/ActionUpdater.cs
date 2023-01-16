@@ -33,7 +33,6 @@ internal static class ActionUpdater
     internal static uint[] BluSlots { get; private set; } = new uint[24];
 
     internal static IAction NextAction { get; private set; }
-    internal static uint LastCraftAction { get; set; } = 0;
 
 #if DEBUG
     internal static Exception exception;
@@ -155,16 +154,6 @@ internal static class ActionUpdater
     internal static float _lastCastingTotal = 0;
     internal unsafe static void DoAction()
     {
-        //Crafting Action.
-        var ptr = Service.GameGui.GetAddonByName("Synthesis", 1);
-        if (ptr != IntPtr.Zero)
-        {
-
-            CommandController.DoAnAction(false);
-
-            return;
-        }
-
         if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInQuestEvent]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied33]

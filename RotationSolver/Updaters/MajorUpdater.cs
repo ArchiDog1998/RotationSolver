@@ -36,7 +36,6 @@ internal static class MajorUpdater
         PreviewUpdater.UpdatePreview();
 
         ActionUpdater.UpdateActionInfo();
-        SynthesisUpdater.UpdateSynthesis();
 
         TargetUpdater.UpdateHostileTargets();
         TargetUpdater.UpdateFriends();

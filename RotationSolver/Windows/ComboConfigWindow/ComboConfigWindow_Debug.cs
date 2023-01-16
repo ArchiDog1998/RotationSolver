@@ -84,16 +84,6 @@ internal partial class ComboConfigWindow
                 ImGui.Text(ActionUpdater.exception.StackTrace);
             }
         }
-
-        if (ImGui.CollapsingHeader("Crafting Debug"))
-        {
-            ImGui.Text($"Progress: {SynthesisUpdater.CurrentProgress} / {SynthesisUpdater.MaxProgress}");
-            ImGui.Text($"Quality: {SynthesisUpdater.CurrentQuality} / {SynthesisUpdater.MaxQuality}");
-            ImGui.Text($"Durability: {SynthesisUpdater.CurrentDurability} / {SynthesisUpdater.StartingDurability}");
-            ImGui.Text("Step Number: " + SynthesisUpdater.StepNumber.ToString());
-            ImGui.Text("Condition: " + SynthesisUpdater.CraftCondition.ToString());
-            ImGui.Text("LastCraft: " + ActionUpdater.LastCraftAction.ToString());
-        }
     }
 
     private static void DrawAction(ActionID id, string type)

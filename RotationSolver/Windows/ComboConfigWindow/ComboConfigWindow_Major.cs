@@ -17,7 +17,6 @@ using XIVAutoAction.Data;
 using XIVAutoAction.Localization;
 using XIVAutoAction.SigReplacers;
 using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Actions.BaseCraftAction;
 
 namespace XIVAutoAction.Windows.ComboConfigWindow;
 
@@ -364,16 +363,6 @@ internal partial class ComboConfigWindow : Window
                 {
                     ImGui.Text("Target Name: " + baseAct.Target.Name);
                 }
-#endif
-            }
-            else if (act is BaseCraftAction craft)
-            {
-#if DEBUG
-                ImGui.Text("Cost: " + craft.CPCost.ToString());
-                ImGui.Text("Progress: " + craft.Progress.ToString());
-                ImGui.Text("ProgressBase: " + craft.ProgressBase.ToString());
-                ImGui.Text("Quality: " + craft.Quality.ToString());
-                ImGui.Text("QualityBase: " + craft.QualityBase.ToString());
 #endif
             }
         });

@@ -12,7 +12,6 @@ using XIVAutoAction.SigReplacers;
 using XIVAutoAction.Updaters;
 using XIVAutoAction.Windows;
 using XIVAutoAction.Actions.BaseAction;
-using XIVAutoAction.Actions.BaseCraftAction;
 
 namespace XIVAutoAction
 {
@@ -283,10 +282,6 @@ namespace XIVAutoAction
                     {
                         Service.TargetManager.SetTarget(act.Target);
                     }
-                }
-                if (nextAction is BaseCraftAction craft)
-                {
-                    ActionUpdater.LastCraftAction = craft.ID;
                 }
             }
             return;
