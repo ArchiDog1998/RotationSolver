@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	  <AssemblyName>XIVAutoAction</AssemblyName>
+	  <AssemblyName>RotationSolver</AssemblyName>
 	  <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 	  <TargetFramework>net7.0</TargetFramework>
 	  <PlatformTarget>x64</PlatformTarget>

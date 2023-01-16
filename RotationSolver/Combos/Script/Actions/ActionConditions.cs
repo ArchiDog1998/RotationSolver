@@ -107,9 +107,9 @@ internal class ActionConditions : IDraw
             ImGui.SameLine();
             ComboConfigWindow.Spacing();
 
-            if (ImGui.Selectable(_action.Name, this == XIVAutoAttackPlugin._scriptComboWindow.ActiveAction))
+            if (ImGui.Selectable(_action.Name, this == RotationSolverPlugin._scriptComboWindow.ActiveAction))
             {
-                XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
+                RotationSolverPlugin._scriptComboWindow.ActiveAction = this;
             }
         }
         else if (_method != null)
@@ -121,7 +121,7 @@ internal class ActionConditions : IDraw
 
             if (ImGui.Selectable(_method.GetMemberName()))
             {
-                XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
+                RotationSolverPlugin._scriptComboWindow.ActiveAction = this;
             }
 
             var desc = _method.GetMemberDescription();
@@ -134,7 +134,7 @@ internal class ActionConditions : IDraw
         {
             if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_Return))
             {
-                XIVAutoAttackPlugin._scriptComboWindow.ActiveAction = this;
+                RotationSolverPlugin._scriptComboWindow.ActiveAction = this;
             }
         }
     }

@@ -44,7 +44,7 @@ internal class LocalizationManager : IDisposable
             RightLang = new Strings();
         }
 
-        XIVAutoAttackPlugin.ChangeWindowHeader();
+        RotationSolverPlugin.ChangeWindowHeader();
     }
 
 #if DEBUG

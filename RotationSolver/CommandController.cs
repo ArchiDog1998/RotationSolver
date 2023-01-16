@@ -464,7 +464,7 @@ namespace XIVAutoAction
 
                     Service.ChatGui.PrintError(LocalizationManager.RightLang.Commands_CannotFind + ": " + str);
                     Service.ChatGui.PrintError(LocalizationManager.RightLang.Commands_OpenSettings);
-                    XIVAutoAttackPlugin.OpenConfigWindow();
+                    RotationSolverPlugin.OpenConfigWindow();
                     return;
             }
         }

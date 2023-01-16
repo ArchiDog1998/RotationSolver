@@ -13,7 +13,7 @@ using XIVAutoAction.Windows.ComboConfigWindow;
 
 namespace XIVAutoAction;
 
-public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
+public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
     private const string _command = "/pattack";
 
@@ -23,9 +23,9 @@ public sealed class XIVAutoAttackPlugin : IDalamudPlugin, IDisposable
 
     private static ComboConfigWindow _comboConfigWindow;
     internal static ScriptComboWindow _scriptComboWindow;
-    public string Name => "XIV Auto Attack";
+    public string Name => "Rotation Solver";
 
-    public XIVAutoAttackPlugin(DalamudPluginInterface pluginInterface)
+    public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();

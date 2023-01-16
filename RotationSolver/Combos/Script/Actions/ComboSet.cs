@@ -84,9 +84,9 @@ namespace XIVAutoAction.Combos.Script.Actions
 
             if (ImGui.BeginChild($"##ActionDescOf{JobID}From{AuthorName}", new Vector2(-5f, -1f), true))
             {
-                if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_CountDown, CountDown == XIVAutoAttackPlugin._scriptComboWindow.ActiveSet))
+                if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_CountDown, CountDown == RotationSolverPlugin._scriptComboWindow.ActiveSet))
                 {
-                    XIVAutoAttackPlugin._scriptComboWindow.ActiveSet = CountDown;
+                    RotationSolverPlugin._scriptComboWindow.ActiveSet = CountDown;
                 }
                 if (ImGui.IsItemHovered())
                 {
@@ -98,9 +98,9 @@ namespace XIVAutoAction.Combos.Script.Actions
                                   select prop)
                 {
                     var value = p.GetValue(this) as ActionsSet;
-                    if (ImGui.Selectable(p.GetMemberName(), value == XIVAutoAttackPlugin._scriptComboWindow.ActiveSet))
+                    if (ImGui.Selectable(p.GetMemberName(), value == RotationSolverPlugin._scriptComboWindow.ActiveSet))
                     {
-                        XIVAutoAttackPlugin._scriptComboWindow.ActiveSet = value;
+                        RotationSolverPlugin._scriptComboWindow.ActiveSet = value;
                     }
 
                     var d = p.GetMemberDescription();

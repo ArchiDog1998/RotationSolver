@@ -242,7 +242,7 @@ internal partial class ComboConfigWindow : Window
 
                 if (ImGui.Button($"{FontAwesomeIcon.Edit.ToIconString()}##{texture.GetHashCode()}"))
                 {
-                    XIVAutoAttackPlugin.OpenScriptWindow(script);
+                    RotationSolverPlugin.OpenScriptWindow(script);
                 }
                 ImGui.PopFont();
 
@@ -315,7 +315,7 @@ internal partial class ComboConfigWindow : Window
 
     private static void CommandHelp(string command, string help = null)
     {
-        command = XIVAutoAttackPlugin._autoCommand + " " + command;
+        command = RotationSolverPlugin._autoCommand + " " + command;
         if (ImGui.Button(command))
         {
             Service.CommandManager.ProcessCommand(command);
