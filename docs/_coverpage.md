@@ -1,8 +1,8 @@
-![logo](https://raw.githubusercontent.com/ArchiDog1998/XIVAutoAttack/master/XIVAutoAttackIcon.png)
+![logo](/RotationSolverIconDiscord_512.png)
 
-# **⚔️XIV Auto Attack** <small>1.0.0.0</small>
+# **⚔️Rotation Solver** <small>1.0.0.0</small>
 
-> Teach you how to perform better in combat! -- gamous
+> Based on the pve combat information in one frame, find the best action.
 
-[Github](https://github.com/ArchiDog1998/XIVAutoAttack)
+[Github](https://github.com/ArchiDog1998/RotationSolver)
 [Start](#Whale🦗)
