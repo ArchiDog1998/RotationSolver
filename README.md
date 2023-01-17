@@ -2,8 +2,8 @@
 # [![](docs/RotationSolverIcon_128.png)](https://archidog1998.github.io/RotationSolver/#/) **Rotation Solver**
 
 [![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/latest/total.svg?label=latestdownload&style=for-the-badge)]()
-[![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/total.svg?label=Downloads&style=for-the-badge)]()
-[![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/XIVAutoAttack?label=LineCount&style=for-the-badge)]()
+[![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/total.svg?label=Download&style=for-the-badge)]()
+[![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/XIVAutoAttack?label=LinesCount&style=for-the-badge)]()
 [![Github License](https://img.shields.io/github/license/ArchiDog1998/XIVAutoAttack.svg?label=License&style=for-the-badge)]()
 
 
