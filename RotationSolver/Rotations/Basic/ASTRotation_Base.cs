@@ -10,7 +10,7 @@ using RotationSolver.Data;
 
 namespace RotationSolver.Combos.Basic;
 
-internal abstract class ASTCombo_Base : CustomCombo.CustomRotation
+internal abstract class ASTRotation_Base : CustomCombo.CustomRotation
 {
     private static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
 

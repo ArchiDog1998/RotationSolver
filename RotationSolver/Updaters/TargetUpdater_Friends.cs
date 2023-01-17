@@ -201,9 +201,9 @@ internal static partial class TargetUpdater
         //TODO:少了所有罩子类技能
         var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, areaHots) * hotSubArea;
 
-        var healAreability = Service.Configuration.HealthAreaAbilitys.TryGetValue(job, out value) ? value : Service.Configuration.HealthAreaAbility;
+        var healAreability = ConfigurationHelper.GetHealAreaAbility(job);
 
-        var healAreaspell = Service.Configuration.HealthAreafSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthAreafSpell;
+        var healAreaspell = ConfigurationHelper.GetHealAreafSpell(job);
 
         CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreability - ratio;
 
@@ -219,7 +219,7 @@ internal static partial class TargetUpdater
             StatusID.Regen3
         };
 
-        var healsingAbility = Service.Configuration.HealthSingleAbilitys.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleAbility;
+        var healsingAbility = Service.Configuration.HealthSingleAbilities.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleAbility;
         //Hot衰减
         var abilityCount = PartyMembers.Count(p =>
         {

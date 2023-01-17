@@ -14,7 +14,7 @@ using RotationSolver.Attributes;
 
 namespace RotationSolver.Combos.CustomCombo;
 
-internal abstract partial class CustomRotation : ICustomCombo
+internal abstract partial class CustomRotation : ICustomRotation
 {
     public abstract ClassJobID[] JobIDs { get; }
 

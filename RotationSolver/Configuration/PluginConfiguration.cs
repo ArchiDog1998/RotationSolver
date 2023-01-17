@@ -71,13 +71,13 @@ public class PluginConfiguration : IPluginConfiguration
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<ClassJobID, float>();
 
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractAreas { get; set; } = new Dictionary<ClassJobID, float>();
-    public Dictionary<ClassJobID, float> HealthAreaAbilitys { get; set; } = new Dictionary<ClassJobID, float>();
+    public Dictionary<ClassJobID, float> HealthAreaAbilities { get; set; } = new Dictionary<ClassJobID, float>();
     public float HealthAreaAbility { get; set; } = 0.75f;
 
     public Dictionary<ClassJobID, float> HealthAreafSpells { get; set; } = new Dictionary<ClassJobID, float>();
     public float HealthAreafSpell { get; set; } = 0.65f;
 
-    public Dictionary<ClassJobID, float> HealthSingleAbilitys { get; set; } = new Dictionary<ClassJobID, float>();
+    public Dictionary<ClassJobID, float> HealthSingleAbilities { get; set; } = new Dictionary<ClassJobID, float>();
     public float HealthSingleAbility { get; set; } = 0.7f;
 
     public Dictionary<ClassJobID, float> HealthSingleSpells { get; set; } = new Dictionary<ClassJobID, float>();
@@ -90,7 +90,6 @@ public class PluginConfiguration : IPluginConfiguration
     public float WeaponFaster { get; set; } = 0.08f;
     public float WeaponDelay { get; set; } = 0;
     public string LocationWrongText { get; set; } = string.Empty;
-    public string ScriptComboFolder { get; set; } = string.Empty;
 
     public int MoveTargetAngle { get; set; } = 24;
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();

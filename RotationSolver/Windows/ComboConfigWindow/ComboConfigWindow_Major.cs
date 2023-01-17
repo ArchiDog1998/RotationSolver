@@ -39,8 +39,6 @@ internal partial class ComboConfigWindow : Window
         {JobRole.RangedMagicial, $"{DescType.DefenseArea.ToName()} ¡ú {CustomRotation.Addle}" },
     };
 
-
-
     public override unsafe void Draw()
     {
         if (ImGui.BeginTabBar("AutoAttackSettings"))
@@ -158,7 +156,7 @@ internal partial class ComboConfigWindow : Window
 
 
 
-    internal static void DrawTexture<T>(T texture, Action otherThing, ClassJobID jobId = 0, ICustomCombo[] combos = null) where T : class, IEnableTexture
+    internal static void DrawTexture<T>(T texture, Action otherThing, ClassJobID jobId = 0, ICustomRotation[] combos = null) where T : class, IEnableTexture
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
@@ -168,7 +166,7 @@ internal partial class ComboConfigWindow : Window
 
         ImGui.SetColumnWidth(0, t.Width + 5);
 
-        var com = texture as ICustomCombo;
+        var com = texture as ICustomRotation;
 
         var str = com?.Description;
 

@@ -10,7 +10,7 @@ using System.Linq;
 using static RotationSolver.SigReplacers.Watcher;
 
 namespace RotationSolver.Combos.RangedMagicial.BLMCombos;
-internal sealed partial class BLMCombo_Moon : BLMCombo_Base
+internal sealed partial class BLMCombo_Moon : BLMRotation_Base
 {
     public override string GameVersion => "6.18";
 

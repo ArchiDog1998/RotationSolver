@@ -159,7 +159,7 @@ public static class IconSet
 
     };
 
-    internal static uint GetJobIcon(ICustomCombo combo)
+    internal static uint GetJobIcon(ICustomRotation combo)
     {
         IconType type = IconType.Gold;
         switch (combo.Job.GetJobRole())

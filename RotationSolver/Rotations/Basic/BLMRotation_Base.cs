@@ -9,7 +9,7 @@ using RotationSolver.Updaters;
 
 namespace RotationSolver.Combos.Basic
 {
-    internal abstract partial class BLMCombo_Base : CustomCombo.CustomRotation
+    internal abstract partial class BLMRotation_Base : CustomCombo.CustomRotation
     {
         private static BLMGauge JobGauge => Service.JobGauges.Get<BLMGauge>();
 

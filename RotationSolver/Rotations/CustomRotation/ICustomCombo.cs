@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace RotationSolver.Combos.CustomCombo;
 
-internal interface ICustomCombo : IEnableTexture
+internal interface ICustomRotation : IEnableTexture
 {
     ClassJob Job { get; }
     ClassJobID[] JobIDs { get; }

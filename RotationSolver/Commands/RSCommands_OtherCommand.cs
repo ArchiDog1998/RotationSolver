@@ -91,7 +91,7 @@ namespace RotationSolver.Commands
         }
 
 
-        private static void DoComboCommand(ICustomCombo customCombo, string str)
+        private static void DoComboCommand(ICustomRotation customCombo, string str)
         {
             foreach (var boolean in customCombo.Config.bools)
             {

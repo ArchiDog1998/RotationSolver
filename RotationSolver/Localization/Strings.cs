@@ -81,9 +81,6 @@ internal class Strings
     public string Configwindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
     public string Configwindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in 5s";
     public string Configwindow_AttackItem_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.\nOnly player-current-job specific commands will be prompted.";
-    public string Configwindow_AttackItem_ScriptFolder { get; set; } = "Custom Loop Storage Path";
-    public string Configwindow_AttackItem_LoadScript { get; set; } = "Click to load a custom loop";
-    public string Configwindow_AttackItem_ScriptFolderError { get; set; } = "Please set a storage path to use the custom loop properly!";
     public string Configwindow_AttackItem_KeyName { get; set; } = "The key name is";
     public string Configwindow_AttackItem_Loop { get; set; } = "Enable";
     public string Configwindow_Events_AddEvent { get; set; } = "AddEvents";
@@ -158,9 +155,9 @@ internal class Strings
     public string Configwindow_Params_HealthForDyingTank { get; set; } = "Set the HP threshold for tank to use invincibility";
     public string Configwindow_Params_Targets { get; set; } = "Target selection";
     public string Configwindow_Params_RightNowTargetToHostileType { get; set; } = "Hostile target filtering condition";
-    public string Configwindow_Params_TargetToHostileType1 { get; set; } = "All hostiles";
-    public string Configwindow_Params_TargetToHostileType2 { get; set; } = "Enemies or all hostiles";
-    public string Configwindow_Params_TargetToHostileType3 { get; set; } = "Hostiles targeting party members";
+    public string Configwindow_Params_TargetToHostileType1 { get; set; } = "All targets can attack";
+    public string Configwindow_Params_TargetToHostileType2 { get; set; } = "Targets have a target or all targets can attack";
+    public string Configwindow_Params_TargetToHostileType3 { get; set; } = "Targets have a target";
     public string Configwindow_Params_AddEnemyListToHostile { get; set; } = "Enemies";
     public string Configwindow_Params_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
     public string Configwindow_Params_AttackMarkAOE { get; set; } = "Forced use of AOE";

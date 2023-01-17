@@ -4,7 +4,7 @@ using System.IO;
 
 namespace RotationSolver.Combos.Script
 {
-    internal interface IScriptCombo : ICustomCombo
+    internal interface IScriptCombo : ICustomRotation
     {
         public ComboSet Set { get; set; }
     }
