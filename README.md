@@ -1,10 +1,10 @@
 
 # [![](docs/RotationSolverIcon_128.png)](https://archidog1998.github.io/RotationSolver/#/) **Rotation Solver**
 
-[![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/latest/total.svg?label=最新版本下载量&style=for-the-badge)]()
-[![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/total.svg?label=总下载量&style=for-the-badge)]()
-[![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/XIVAutoAttack?label=总行数&style=for-the-badge)]()
-[![Github License](https://img.shields.io/github/license/ArchiDog1998/XIVAutoAttack.svg?label=开源协议&style=for-the-badge)]()
+[![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/latest/total.svg?label=latestdownload&style=for-the-badge)]()
+[![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/total.svg?label=Downloads&style=for-the-badge)]()
+[![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/XIVAutoAttack?label=LineCount&style=for-the-badge)]()
+[![Github License](https://img.shields.io/github/license/ArchiDog1998/XIVAutoAttack.svg?label=License&style=for-the-badge)]()
 
 
 
@@ -22,11 +22,11 @@ There are several reasons why I don't want to distribute this plugin right now.
 
 > Based on the pve combat information in one frame, find the best action.
 
-The `information` is almost all the information available in one frame in combat, including the status of the all players in party, the status of the hostile targets, action cooling, the number of action stack, the MP and HP of charactors, the location of charactors, casting action of the hostile target, combo ID, combat duration, etc.
+The `information` is almost all the information available in one frame in combat, including the status of the all players in party, the status of the hostile targets, action cooling, the number of action stack, the MP and HP of characters, the location of characters, casting action of the hostile target, combo ID, combat duration, player level, etc. In this case, opener is also a kind of information that a lot of abilities are not cooling down.
 
-So it is designed for `general combat`, not for savage or ultimate. So use it carefully.
+Then, it will highlight the best action one the hot bar, or help you to click on it.
 
-It will highlight the best action one the hotbar, or help you to click on it.
+It is designed for `general combat`, not for savage or ultimate. So use it carefully.
 
 ## Concept
 
@@ -38,7 +38,7 @@ I have to admit, it does have an automatic component, which might not good for s
 
 If you have any questions about usage, please check the [Wiki](https://archidog1998.github.io/RotationSolver/#/). Wiki is NOT ready yet...
 
-![Discord](https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2) Discord is NOT available yet. Please waiting for some time...
+[![Discord](https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2)](https://discord.gg/4fECHunam9)
 
 [![Crowdin](https://badges.crowdin.net/badge/light/crowdin-on-dark.png)](https://crowdin.com/project/rotationsolver)Please do NOT translate right now. It will change a lot...
 
