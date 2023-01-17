@@ -377,7 +377,7 @@ internal static class TargetFilter
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
     {
-        switch (RotationSolverCommands.TargetingType)
+        switch (RSCommands.TargetingType)
         {
             default:
             case TargetingType.Big:

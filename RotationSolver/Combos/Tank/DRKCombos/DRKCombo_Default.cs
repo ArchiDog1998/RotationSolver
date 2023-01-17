@@ -82,7 +82,7 @@ internal sealed class DRKCombo_Default : DRKCombo_Base
         if (SyphonStrike.ShouldUse(out act)) return true;
         if (HardSlash.ShouldUse(out act)) return true;
 
-        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
+        if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
 
         if (Unmend.ShouldUse(out act)) return true;
 

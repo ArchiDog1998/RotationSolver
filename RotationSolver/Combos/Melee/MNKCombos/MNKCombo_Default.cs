@@ -144,7 +144,7 @@ internal sealed class MNKCombo_Default : MNKCombo_Base
             if (OpoOpoForm(out act)) return true;
         }
 
-        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
+        if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
         if (Chakra < 5 && Meditation.ShouldUse(out act)) return true;
         if (Config.GetBoolByName("AutoFormShift") && FormShift.ShouldUse(out act)) return true;
 

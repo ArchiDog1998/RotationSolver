@@ -103,7 +103,7 @@ internal abstract partial class CustomCombo
     DateTime lastTime;
     private bool CheckAction(uint actionID)
     {
-        if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0, 0, 3)) && RotationSolverCommands.StateType != StateCommandType.Cancel)
+        if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0, 0, 3)) && RSCommands.StateType != StateCommandType.Cancel)
         {
             _lastSayingGCDAction = actionID;
             lastTime = DateTime.Now;

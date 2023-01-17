@@ -29,7 +29,7 @@ internal static class PreviewUpdater
     static DtrBarEntry dtrEntry;
     private static void UpdateEntry()
     {
-        if (Service.Configuration.UseDtr && RotationSolverCommands.EntryString != null)
+        if (Service.Configuration.UseDtr && RSCommands.EntryString != null)
         {
             if (dtrEntry == null)
             {
@@ -38,7 +38,7 @@ internal static class PreviewUpdater
             dtrEntry.Shown = true;
             dtrEntry.Text = new SeString(
                 new IconPayload(BitmapFontIcon.DPS),
-                new TextPayload(RotationSolverCommands.EntryString)
+                new TextPayload(RSCommands.EntryString)
                 );
         }
         else if (dtrEntry != null)

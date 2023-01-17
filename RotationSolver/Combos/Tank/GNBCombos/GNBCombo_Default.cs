@@ -57,7 +57,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base
         if (BrutalShell.ShouldUse(out act)) return true;
         if (KeenEdge.ShouldUse(out act)) return true;
 
-        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
+        if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
 
         if (LightningShot.ShouldUse(out act)) return true;
 

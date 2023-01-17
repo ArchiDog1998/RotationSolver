@@ -281,7 +281,7 @@ internal sealed class NINCombo_Default : NINCombo_Base
             if (SpinningEdge.ShouldUse(out act)) return true;
 
             //飞刀
-            if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
+            if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
             if (ThrowingDagger.ShouldUse(out act)) return true;
         }
 

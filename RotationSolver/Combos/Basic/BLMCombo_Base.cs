@@ -108,20 +108,6 @@ namespace RotationSolver.Combos.Basic
         /// </summary>
         protected static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? JobGauge.PolyglotStacks == 2 : JobGauge.PolyglotStacks == 1;
 
-        /// <summary>
-        /// 当前火状态还能打几个火4
-        /// </summary>
-        /// <returns></returns>
-        protected static byte F4RemainingNumber()
-        {
-            if (!InAstralFire) return 0;
-            var mpCount = (byte)((Player.CurrentMp - 800) / Fire4.MPNeed);
-            var timeCountDe = (byte)((JobGauge.ElementTimeRemaining - CooldownHelper.CalcSpellTime(3000)) / CooldownHelper.CalcSpellTime(2800));
-            var timeCountPe = (byte)((JobGauge.ElementTimeRemaining - CooldownHelper.CalcSpellTime(2500)) / CooldownHelper.CalcSpellTime(2800));
-            if (IsParadoxActive) return Math.Min(mpCount, timeCountPe);
-            else return Math.Min(mpCount, timeCountDe);
-        }
-
         public class ThunderAction : BaseAction
         {
             internal override uint MPNeed => HasThunder ? 0 : base.MPNeed;

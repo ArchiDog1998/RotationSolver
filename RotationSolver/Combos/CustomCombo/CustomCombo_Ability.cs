@@ -13,7 +13,7 @@ internal abstract partial class CustomCombo
 {
     private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
-        act = RotationSolverCommands.NextAction;
+        act = RSCommands.NextAction;
         if (act is BaseAction a && a != null && !a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return true;
 
         if (!Service.Configuration.UseAbility || Player.TotalCastTime - Player.CurrentCastTime > Service.Configuration.WeaponInterval)
@@ -43,7 +43,7 @@ internal abstract partial class CustomCombo
             }
         }
 
-        var specialType = RotationSolverCommands.SpecialType;
+        var specialType = RSCommands.SpecialType;
 
         if (role == JobRole.Tank)
         {
@@ -152,7 +152,7 @@ internal abstract partial class CustomCombo
             if (helpDefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
         }
 
-        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(abilityRemain, out act))
+        if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(abilityRemain, out act))
         {
             if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
         }
@@ -193,13 +193,13 @@ internal abstract partial class CustomCombo
     private bool ShouldUseHealAreaAbility(byte abilityRemain, out IAction act)
     {
         act = null;
-        return (RotationSolverCommands.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && ActionUpdater.InCombat && HealAreaAbility(abilityRemain, out act);
+        return (RSCommands.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && ActionUpdater.InCombat && HealAreaAbility(abilityRemain, out act);
     }
 
     private bool ShouldUseHealSingleAbility(byte abilityRemain, out IAction act)
     {
         act = null;
-        return (RotationSolverCommands.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility) && ActionUpdater.InCombat && HealSingleAbility(abilityRemain, out act);
+        return (RSCommands.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility) && ActionUpdater.InCombat && HealSingleAbility(abilityRemain, out act);
     }
 
     /// <summary>

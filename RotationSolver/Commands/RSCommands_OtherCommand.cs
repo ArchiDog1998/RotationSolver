@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RotationSolver.Commands
 {
-    internal static partial class RotationSolverCommands
+    internal static partial class RSCommands
     {
         internal record NextAct(BaseAction act, DateTime deadTime);
 

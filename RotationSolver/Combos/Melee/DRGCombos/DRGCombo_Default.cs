@@ -148,7 +148,7 @@ internal sealed class DRGCombo_Default : DRGCombo_Base
         }
         if (TrueThrust.ShouldUse(out act)) return true;
 
-        if (RotationSolverCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
+        if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
         if (PiercingTalon.ShouldUse(out act)) return true;
 
         return false;

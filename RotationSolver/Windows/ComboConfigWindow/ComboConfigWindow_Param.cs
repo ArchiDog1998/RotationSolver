@@ -315,7 +315,7 @@ internal partial class ComboConfigWindow
                 }
                 ImGui.SameLine();
                 Spacing();
-                CommandHelp("AutoBreak");
+                //CommandHelp("AutoBreak");
 
                 bool useItem = Service.Configuration.UseItem;
                 if (ImGui.Checkbox(LocalizationManager.RightLang.Configwindow_Params_UseItem, ref useItem))

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace RotationSolver.Commands
 {
-    internal static partial class RotationSolverCommands
+    internal static partial class RSCommands
     {
         private static DateTime _fastClickStopwatch = DateTime.Now;
 

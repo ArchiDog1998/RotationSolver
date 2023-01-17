@@ -44,7 +44,7 @@ internal static class MajorUpdater
 
         ActionUpdater.DoAction();
 
-        RotationSolverCommands.UpdateRotationState();
+        RSCommands.UpdateRotationState();
         ActionUpdater.UpdateNextAction();
         MacroUpdater.UpdateMacro();
     }

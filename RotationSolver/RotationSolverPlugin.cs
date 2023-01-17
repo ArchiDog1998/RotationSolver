@@ -63,13 +63,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _scriptComboWindow.WindowName = LocalizationManager.RightLang.Scriptwindow_Header
             + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString();
 
-        RotationSolverCommands.Disable();
-        RotationSolverCommands.Enable();
+        RSCommands.Disable();
+        RSCommands.Enable();
     }
 
     public void Dispose()
     {
-        RotationSolverCommands.Disable();
+        RSCommands.Disable();
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;

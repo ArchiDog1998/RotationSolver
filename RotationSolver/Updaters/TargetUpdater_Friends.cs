@@ -343,7 +343,7 @@ internal static partial class TargetUpdater
         if (DateTime.Now - foundTime > relayTime)
         {
             Service.TargetManager.SetTarget(author);
-            RotationSolverCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
+            RSCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = string.Format(LocalizationManager.RightLang.Commands_SayHelloToAuthor, author.Name),

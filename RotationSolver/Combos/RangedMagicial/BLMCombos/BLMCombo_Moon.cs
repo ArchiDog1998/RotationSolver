@@ -18,10 +18,6 @@ internal sealed partial class BLMCombo_Moon : BLMCombo_Base
 
     internal static float MpUpdateRemain => 3 - ActionUpdater.MPUpdateElapsed;
     internal static bool TargetHasThunder => Target.HasStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4);
-    /// <summary>
-    /// GCD间隔总时间
-    /// </summary>
-    internal static double GCDTime => CalcSpellTime(2500, isSpell: false);
     internal static ActionRec[] RecordSpells => RecordActions.Where(b => b.action.ActionCategory.Value.RowId == 2).ToArray();
     internal static bool IsOldSpell(int count, IAction action) => RecordSpells[count].action.RowId == action.ID;
     /// <summary>
@@ -31,14 +27,6 @@ internal sealed partial class BLMCombo_Moon : BLMCombo_Base
     /// <returns></returns>
     internal static bool TargetThunderWillEnd(float time) => Target.WillStatusEnd(time, false, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4);
     protected override bool CanHealSingleAbility => false;
-    /// <summary>
-    /// 计算魔法的咏唱或GCD时间
-    /// </summary>
-    /// <param name="GCDTime"></param>
-    /// <param name="isSpell"></param>
-    /// <param name="isSpellTime"></param>
-    /// <returns></returns>
-    internal static double CalcSpellTime(double GCDTime, bool isSpell = true, bool isSpellTime = true) => CooldownHelper.CalcSpellTime(GCDTime, isSpell, isSpellTime);
 
     private static bool iceOpener = false;
     private static bool fireOpener = true;
@@ -532,16 +520,16 @@ internal sealed partial class BLMCombo_Moon : BLMCombo_Base
 
         if (!InAstralFire) return false;
 
-        if (!IsParadoxActive)
-        {
-            if (fireOpener && Leylines.IsCoolDown && !Leylines.ElapsedAfterGCD(1) && !Manafont.IsCoolDown) return true;
+        //if (!IsParadoxActive)
+        //{
+        //    if (fireOpener && Leylines.IsCoolDown && !Leylines.ElapsedAfterGCD(1) && !Manafont.IsCoolDown) return true;
 
-            if (F4RemainingNumber() == 3 && Triplecast.CurrentCharges == 1 && Level == 90) return false;
+        //    if (F4RemainingNumber() == 3 && Triplecast.CurrentCharges == 1 && Level == 90) return false;
 
-            if (Player.CurrentMp == 0) return false;
+        //    if (Player.CurrentMp == 0) return false;
 
-            if (IsLastGCD(true, Xenoglossy, Thunder) && F4RemainingNumber() < 2) return true;
-        }
+        //    if (IsLastGCD(true, Xenoglossy, Thunder) && F4RemainingNumber() < 2) return true;
+        //}
 
 
 
@@ -647,8 +635,8 @@ internal sealed partial class BLMCombo_Moon : BLMCombo_Base
 
         //能瞬发时判断
         if (HaveSwift && ElementTimeEndAfterGCD(1, 1)) return true;
-        //当前火状态还能打几个火4
-        if (F4RemainingNumber() >= 1) return true;
+        ////当前火状态还能打几个火4
+        //if (F4RemainingNumber() >= 1) return true;
 
         return false;
     }

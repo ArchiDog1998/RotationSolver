@@ -104,43 +104,46 @@ internal partial class ComboConfigWindow : Window
                 {
                     ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-                    CommandHelp("AttackSmart", LocalizationManager.RightLang.Configwindow_HelpItem_AttackSmart);
+                    StateCommandType.Smart.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("AttackManual", LocalizationManager.RightLang.Configwindow_HelpItem_AttackManual);
+                    StateCommandType.Manual.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("AttackCancel", LocalizationManager.RightLang.Configwindow_HelpItem_AttackCancel);
+                    StateCommandType.Cancel.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("HealArea", LocalizationManager.RightLang.Configwindow_HelpItem_HealArea);
+                    SpecialCommandType.HealArea.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("HealSingle", LocalizationManager.RightLang.Configwindow_HelpItem_HealSingle);
+                    SpecialCommandType.HealSingle.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("DefenseArea", LocalizationManager.RightLang.Configwindow_HelpItem_DefenseArea);
+                    SpecialCommandType.DefenseArea.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("DefenseSingle", LocalizationManager.RightLang.Configwindow_HelpItem_DefenseSingle);
+                    SpecialCommandType.DefenseSingle.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("EsunaShield", LocalizationManager.RightLang.Configwindow_HelpItem_EsunaShield);
+                    SpecialCommandType.EsunaShield.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("RaiseShirk", LocalizationManager.RightLang.Configwindow_HelpItem_RaiseShirk);
+                    SpecialCommandType.RaiseShirk.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("AntiRepulsion", LocalizationManager.RightLang.Configwindow_HelpItem_AntiRepulsion);
+                    SpecialCommandType.MoveForward.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("Break", LocalizationManager.RightLang.Configwindow_HelpItem_Break);
+                    SpecialCommandType.MoveBack.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("Move", LocalizationManager.RightLang.Configwindow_HelpItem_Move);
+                    SpecialCommandType.AntiRepulsion.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    CommandHelp("EndSpecial", LocalizationManager.RightLang.Configwindow_HelpItem_EndSpecial);
+                    SpecialCommandType.Break.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    ImGui.Separator();
+
+                    SpecialCommandType.EndSpecial.DisplayCommandHelp(EnumTranslations.ToHelp);
                     ImGui.Separator();
                 }
                 ImGui.PopStyleVar();
@@ -305,30 +308,6 @@ internal partial class ComboConfigWindow : Window
         ImGui.SameLine();
     }
 
-    [Obsolete("Move the help function to the command class.")]
-    private static void CommandHelp(string command, string help = null)
-    {
-        command = RotationSolverCommands._command + " " + command;
-        if (ImGui.Button(command))
-        {
-            Service.CommandManager.ProcessCommand(command);
-        }
-        if (ImGui.IsItemHovered())
-        {
-            ImGui.SetTooltip($"{LocalizationManager.RightLang.Configwindow_Helper_RunCommand}: {command}\n{LocalizationManager.RightLang.Configwindow_Helper_CopyCommand}: {command}");
-
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
-            {
-                ImGui.SetClipboardText(command);
-            }
-        }
-
-        if (!string.IsNullOrEmpty(help))
-        {
-            ImGui.SameLine();
-            ImGui.Text(" ¡ú " + help);
-        }
-    }
     private unsafe static void DrawAction(IAction act)
     {
         if (act == null) return;
@@ -337,8 +316,8 @@ internal partial class ComboConfigWindow : Window
         {
             if (act is BaseAction baseAct)
             {
-                if (baseAct.IsTimeline) CommandHelp($"Insert{act}-{5}",
-                    string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, act));
+                //if (baseAct.IsTimeline) CommandHelp($"Insert{act}-{5}",
+                //    string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, act));
 #if DEBUG
                 ImGui.Text("Have One:" + baseAct.HaveOneChargeDEBUG.ToString());
                 ImGui.Text("Is Real GCD: " + baseAct.IsRealGCD.ToString());

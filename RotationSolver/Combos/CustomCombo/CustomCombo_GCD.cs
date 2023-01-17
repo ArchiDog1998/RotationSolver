@@ -12,12 +12,12 @@ internal abstract partial class CustomCombo
 {
     private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
     {
-        IAction act = RotationSolverCommands.NextAction;
+        IAction act = RSCommands.NextAction;
         if (act is BaseAction a && a != null && a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return act;
 
         if (EmergencyGCD(out act)) return act;
 
-        var specialType = RotationSolverCommands.SpecialType;
+        var specialType = RSCommands.SpecialType;
 
         if (EsunaRaise(out act, abilityRemain, false)) return act;
         if (specialType == SpecialCommandType.MoveForward && MoveGCD(out act))
@@ -57,7 +57,7 @@ internal abstract partial class CustomCombo
 
         if (Raise == null) return false;
 
-        var specialType = RotationSolverCommands.SpecialType;
+        var specialType = RSCommands.SpecialType;
 
         //有某些非常危险的状态。
         if (specialType == SpecialCommandType.EsunaShield && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())

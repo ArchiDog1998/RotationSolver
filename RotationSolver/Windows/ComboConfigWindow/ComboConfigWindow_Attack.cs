@@ -171,7 +171,7 @@ internal partial class ComboConfigWindow
                                     {
                                         ImGui.SameLine();
                                         Spacing();
-                                        CommandHelp(boolean.name);
+                                        //CommandHelp(boolean.name);
                                     }
                                 }
                                 foreach (var doubles in actions.doubles)
@@ -208,7 +208,7 @@ internal partial class ComboConfigWindow
                                             {
                                                 ImGui.SameLine();
                                                 Spacing();
-                                                CommandHelp(comboItem.name + comboIndex.ToString());
+                                                //CommandHelp(comboItem.name + comboIndex.ToString());
                                             }
                                         }
                                         ImGui.EndCombo();
@@ -223,7 +223,7 @@ internal partial class ComboConfigWindow
                                     {
                                         ImGui.SameLine();
                                         Spacing();
-                                        CommandHelp(comboItem.name);
+                                        //CommandHelp(comboItem.name);
                                     }
                                 }
 

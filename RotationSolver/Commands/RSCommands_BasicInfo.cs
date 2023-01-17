@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace RotationSolver.Commands
 {
-    internal static partial class RotationSolverCommands
+    internal static partial class RSCommands
     {
         internal const string _command = "/rotation";
 

@@ -183,7 +183,7 @@ internal static class ActionUpdater
                 _weaponDelayStopwatch.Stop();
                 _weaponDelayStopwatch.Reset();
 
-                RotationSolverCommands.DoAnAction(true);
+                RSCommands.DoAnAction(true);
 
                 Random ran = new Random(DateTime.Now.Millisecond);
                 _weaponRandomDelay = (long)(ran.NextDouble() * Service.Configuration.WeaponDelay * 1000);
@@ -207,13 +207,13 @@ internal static class ActionUpdater
         if (WeaponRemain < 2 * Service.Configuration.WeaponInterval)
         {
             if (WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponFaster) return;
-            RotationSolverCommands.DoAnAction(false);
+            RSCommands.DoAnAction(false);
 
             return;
         }
         else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
         {
-            RotationSolverCommands.DoAnAction(false);
+            RSCommands.DoAnAction(false);
         }
     }
 

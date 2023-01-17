@@ -186,7 +186,7 @@ internal partial class BaseAction
     {
         var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
 
-        if (ShouldEndSpecial) RotationSolverCommands.ResetSpecial();
+        if (ShouldEndSpecial) RSCommands.ResetSpecial();
 
         return _action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
             ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, Target.ObjectId);

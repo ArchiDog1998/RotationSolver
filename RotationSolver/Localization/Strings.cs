@@ -64,8 +64,11 @@ internal class Strings
     public string Configwindow_HelpItem_Break { get; set; }
         = "Open a window to use break-combo.";
 
-    public string Configwindow_HelpItem_Move { get; set; }
-        = "Open a window to move.";
+    public string Configwindow_HelpItem_MoveForward { get; set; }
+        = "Open a window to move forward.";
+
+    public string Configwindow_HelpItem_MoveBack { get; set; }
+        = "Open a window to move back.";
 
     public string Configwindow_HelpItem_EndSpecial { get; set; }
     = "Close special status";

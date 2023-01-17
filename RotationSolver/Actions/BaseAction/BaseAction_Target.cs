@@ -266,7 +266,7 @@ internal partial class BaseAction
     private bool TargetHostile(float range, bool mustUse, int aoeCount, out BattleChara target)
     {
         //如果不用自动找目标，那就直接返回。
-        if (RotationSolverCommands.StateType != StateCommandType.Manual)
+        if (RSCommands.StateType != StateCommandType.Manual)
         {
             if (Service.TargetManager.Target is BattleChara b && b.CanAttack() && b.DistanceToPlayer() <= range)
             {
@@ -329,7 +329,7 @@ internal partial class BaseAction
             }
 
             //如果不用自动找目标，那就不打AOE
-            if (RotationSolverCommands.StateType != StateCommandType.Manual)
+            if (RSCommands.StateType != StateCommandType.Manual)
             {
                 if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
             }

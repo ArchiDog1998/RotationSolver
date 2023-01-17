@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RotationSolver.Commands
 {
-    internal static partial class RotationSolverCommands
+    internal static partial class RSCommands
     {
         private static DateTime _specialStateStartTime = DateTime.MinValue;
         private static double SpecialTimeLeft => Service.Configuration.SpecialDuration - (DateTime.Now - _specialStateStartTime).TotalSeconds;

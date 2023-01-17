@@ -105,7 +105,7 @@ internal static class StatusHelper
 
     internal static void StatusOff(StatusID status)
     {
-        RotationSolverCommands.SubmitToChat($"/statusoff {GetStatusName(status)}");
+        RSCommands.SubmitToChat($"/statusoff {GetStatusName(status)}");
     }
 
     /// <summary>

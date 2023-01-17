@@ -16,7 +16,6 @@ internal static class IActionHelper
         return IsActionID(Watcher.LastGCD, ids);
     }
 
-
     internal static bool IsLastAbility(bool isAdjust, params IAction[] actions)
     {
         return IsLastAbility(GetIDFromActions(isAdjust, actions));
