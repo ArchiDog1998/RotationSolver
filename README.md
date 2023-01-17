@@ -1,28 +1,51 @@
 
-# XIVAutoAction
+# [![](docs/RotationSolverIcon_128.png)](https://archidog1998.github.io/RotationSolver/#/) **Rotation Solver**
 
 [![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/latest/total.svg?label=最新版本下载量&style=for-the-badge)]()
 [![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/total.svg?label=总下载量&style=for-the-badge)]()
 [![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/XIVAutoAttack?label=总行数&style=for-the-badge)]()
 [![Github License](https://img.shields.io/github/license/ArchiDog1998/XIVAutoAttack.svg?label=开源协议&style=for-the-badge)]()
 
-> 这个库已经不再维护了。
->
-> This repository is abandoned. 
 
-~~Translations on [Crowdin](https://crowdin.com/project/xivautoaction).~~
 
-**It will probably have distributions in game version 6.5，and only supports international servers.**
+**It will probably have distributions in `game version 6.5`，and only supports international servers.**
 
 There are several reasons why I don't want to distribute this plugin right now.
 
 1. I moved from Chinese Server to Japanese Data Center. So I need some time to adjust to the new environment and grow the new character.
 2. This repository's framework is a little bit strange right now. I need to tidy up these codes and refactor the architecture.
-3. I have a lot of work to do, such as such as industrial software research.
+3. I have a lot of work to do, such as industrial software research and damn IELTS.
 4. I am not a major in software engineering, so I need to learn some soft engineering knowledge.
 5. I want to enjoy the game for a while.
 
+## Brief
+
+> Based on the pve combat information in one frame, find the best action.
+
+The `information` is almost all the information available in one frame in combat, including the status of the all players in party, the status of the hostile targets, action cooling, the number of action stack, the MP and HP of charactors, the location of charactors, casting action of the hostile target, combo ID, combat duration, etc.
+
+So it is designed for `general combat`, not for savage or ultimate. So use it carefully.
+
+It will highlight the best action one the hotbar, or help you to click on it.
+
+## Concept
+
+I have to admit, I'm not a good arpg player. But I enjoy the experience of FFXIV. So I want to design a plugin that can improve my gaming experience without affecting other player's gaming experience. So there goes to `Rotation Solver`. 
+
+I have to admit, it does have an automatic component, which might not good for some player. But it can NOT affect any other player's game experience. pvp is absolutely NOT allowed in this plugin.
+
+## Links
+
+If you have any questions about usage, please check the [Wiki](https://archidog1998.github.io/RotationSolver/#/). Wiki is NOT ready yet...
+
+![Discord](https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2) Discord is NOT available yet. Please waiting for some time...
+
+[![Crowdin](https://badges.crowdin.net/badge/light/crowdin-on-dark.png)](https://crowdin.com/project/rotationsolver)Please do NOT translate right now. It will change a lot...
+
+
 ## 对于国服用户
+
+> 这个库已经不再维护了。
 
 ### 声明
 本仓库使用的是[GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)协议，任何人均享有自由分发软件的自由。详看[原文](https://github.com/ArchiDog1998/XIVAutoAction/blob/main/LICENSE#L23-L27)。请所有使用本仓库的作者遵循此协议。
