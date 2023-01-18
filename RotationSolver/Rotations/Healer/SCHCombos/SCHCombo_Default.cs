@@ -1,12 +1,12 @@
 using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Updaters;
+using RotationSolver.Configuration.RotationConfig;
 
 namespace RotationSolver.Combos.Healer.SCHCombos;
 
@@ -21,10 +21,10 @@ internal sealed class SCHCombo_Default : SCHRotation_Base
         //防止大仙女吞技能
         SummonSeraph.ComboCheck = b => WhisperingDawn.ElapsedAfterGCD(1) || FeyIllumination.ElapsedAfterGCD(1) || FeyBlessing.ElapsedAfterGCD(1);
     }
-    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
-    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
+    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
+    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶")
                                             .SetBool("prevDUN", false, "开局15秒开扩散盾")
@@ -216,14 +216,14 @@ internal sealed class SCHCombo_Default : SCHRotation_Base
     //15秒秘策单盾扩散
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Config.GetBoolByName("prevDUN") && remainTime <= 15 && !DeploymentTactics.IsCoolDown && TargetUpdater.PartyMembers.Count() > 1)
+        if (Config.GetBool("prevDUN") && remainTime <= 15 && !DeploymentTactics.IsCoolDown && TargetUpdater.PartyMembers.Count() > 1)
         {
 
             if (!Recitation.IsCoolDown) return Recitation;
             if (!TargetUpdater.PartyMembers.Any((n) => n.HasStatus(true, StatusID.Galvanize)))
             {
                 //如果还没上激励就给t一个激励
-                if (Config.GetBoolByName("GiveT"))
+                if (Config.GetBool("GiveT"))
                 {
                     return Adloquium;
                 }

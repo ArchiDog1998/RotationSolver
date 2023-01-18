@@ -15,7 +15,7 @@
     <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 	</PropertyGroup>
   <ItemGroup>
-	  <PackageReference Include="DalamudPackager" Version="2.1.10" MakeZip="true"/>
+	  <PackageReference Include="DalamudPackager" Version="2.1.10" MakeZip="true" />
 	  
 	  <EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
 

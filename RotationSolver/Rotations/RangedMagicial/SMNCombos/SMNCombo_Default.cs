@@ -1,7 +1,7 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ internal sealed class SMNCombo_Default : SMNRotation_Base
     public override string Author => "逆光";
 
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetCombo("addSwiftcast", 0, "将即刻咏唱加入循环", "关（留着复活乱死的笨比）", "给风神", "给火神", "智能（我全都要）")
@@ -59,7 +59,7 @@ internal sealed class SMNCombo_Default : SMNRotation_Base
         //单体
         if (Gemshine.ShouldUse(out act)) return true;
 
-        if (!IsMoving && Config.GetBoolByName("addCrimsonCyclone") && CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
+        if (!IsMoving && Config.GetBool("addCrimsonCyclone") && CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
 
         //龙神不死鸟
         if ((Player.HasStatus(false, StatusID.SearingLight) || SearingLight.IsCoolDown) && SummonBahamut.ShouldUse(out act)) return true;
@@ -69,7 +69,7 @@ internal sealed class SMNCombo_Default : SMNRotation_Base
         if (IsMoving && (Player.HasStatus(true, StatusID.GarudasFavor) || InIfrit) && RuinIV.ShouldUse(out act, mustUse: true)) return true;
 
         //召唤蛮神
-        switch (Config.GetComboByName("SummonOrder"))
+        switch (Config.GetCombo("SummonOrder"))
         {
             default:
                 //土
@@ -141,7 +141,7 @@ internal sealed class SMNCombo_Default : SMNRotation_Base
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //即刻进循环
-        switch (Config.GetComboByName("addSwiftcast"))
+        switch (Config.GetCombo("addSwiftcast"))
         {
             default:
                 break;

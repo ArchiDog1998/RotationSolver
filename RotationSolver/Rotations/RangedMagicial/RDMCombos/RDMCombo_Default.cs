@@ -1,7 +1,7 @@
 using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ internal sealed class RDMCombo_Default : RDMRotation_Base
         Acceleration.ComboCheck = b => InCombat;
     }
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("UseVercure", true, "使用赤治疗获得即刻");
@@ -126,7 +126,7 @@ internal sealed class RDMCombo_Default : RDMRotation_Base
 
 
         //赤治疗，加即刻，有连续咏唱或者即刻的话就不放了
-        if (Config.GetBoolByName("UseVercure") && Vercure.ShouldUse(out act)
+        if (Config.GetBool("UseVercure") && Vercure.ShouldUse(out act)
             ) return true;
 
         return false;

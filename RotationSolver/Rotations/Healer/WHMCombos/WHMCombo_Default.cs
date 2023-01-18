@@ -4,10 +4,10 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Updaters;
 using RotationSolver.Actions;
 using RotationSolver.Helpers;
-using RotationSolver.Configuration;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Data;
+using RotationSolver.Configuration.RotationConfig;
 
 namespace RotationSolver.Combos.Healer.WHMCombos;
 internal sealed class WHMCombo_Default : WHMRotation_Base
@@ -16,7 +16,7 @@ internal sealed class WHMCombo_Default : WHMRotation_Base
 
     public override string Author => "逆光";
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseLilyWhenFull", true, "蓝花集满时自动释放蓝花（低于苦难之心等级时不会生效）")
                                             .SetBool("UsePreRegen", false, "倒计时5秒时给t上盾和再生");
@@ -36,7 +36,7 @@ internal sealed class WHMCombo_Default : WHMRotation_Base
         //泄蓝花 团队缺血时优先狂喜之心
         bool liliesNearlyFull = Lily == 2 && LilyAfter(17);
         bool liliesFullNoBlood = Lily == 3 && BloodLily < 3;
-        if (Config.GetBoolByName("UseLilyWhenFull") && (liliesNearlyFull || liliesFullNoBlood) && AfflatusMisery.EnoughLevel)
+        if (Config.GetBool("UseLilyWhenFull") && (liliesNearlyFull || liliesFullNoBlood) && AfflatusMisery.EnoughLevel)
         {
             if (TargetUpdater.PartyMembersAverHP < 0.7)
             {
@@ -170,7 +170,7 @@ internal sealed class WHMCombo_Default : WHMRotation_Base
     //开局5s使用再生和盾给开了盾姿的t
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Config.GetBoolByName("UsePreRegen") && remainTime <= 5 && remainTime > 3 && DivineBenison.ShouldUse(out _))
+        if (Config.GetBool("UsePreRegen") && remainTime <= 5 && remainTime > 3 && DivineBenison.ShouldUse(out _))
         {
             if (DivineBenison.ShouldUse(out _))
             {

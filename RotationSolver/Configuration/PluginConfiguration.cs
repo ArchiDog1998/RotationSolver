@@ -18,7 +18,8 @@ public class PluginConfiguration : IPluginConfiguration
     public SortedSet<string> EnabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DiabledActions { get; private set; } = new SortedSet<uint>();
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
-    public Dictionary<uint, Dictionary<string, ActionConfiguration>> CombosConfigurations { get; private set; } = new Dictionary<uint, Dictionary<string, ActionConfiguration>>();
+    public Dictionary<uint, Dictionary<string, Dictionary<string, string>>> RotationsConfigurations { get; private set; } 
+        = new Dictionary<uint, Dictionary<string, Dictionary<string, string>>>();
     public Dictionary<uint, string> ComboChoices { get; private set; } = new Dictionary<uint, string>();
     public Dictionary<uint, byte> TargetToHostileTypes { get; set; } =
         new Dictionary<uint, byte>();

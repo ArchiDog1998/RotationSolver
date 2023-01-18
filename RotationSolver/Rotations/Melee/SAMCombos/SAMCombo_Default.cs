@@ -1,7 +1,7 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ internal sealed class SAMCombo_Default : SAMRotation_Base
     public override string Author => "逆光";
 
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetFloat("addKenki", 50, "当剑气大于该值时将必杀技·震天/九天加入循环", min: 0, max: 85, speed: 5);
@@ -116,7 +116,7 @@ internal sealed class SAMCombo_Default : SAMRotation_Base
         if (Shoha.ShouldUse(out act)) return true;
 
         //震天、九天
-        if (Kenki >= 50 && Ikishoten.WillHaveOneCharge(10) || Kenki >= Config.GetFloatByName("addKenki") || IsTargetBoss && IsTargetDying)
+        if (Kenki >= 50 && Ikishoten.WillHaveOneCharge(10) || Kenki >= Config.GetFloat("addKenki") || IsTargetBoss && IsTargetDying)
         {
             if (HissatsuKyuten.ShouldUse(out act)) return true;
             if (HissatsuShinten.ShouldUse(out act)) return true;

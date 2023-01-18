@@ -1,13 +1,13 @@
 using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Updaters;
 using RotationSolver.Commands;
+using RotationSolver.Configuration.RotationConfig;
 
 namespace RotationSolver.Combos.Tank.DRKCombos;
 
@@ -33,7 +33,7 @@ internal sealed class DRKCombo_Default : DRKRotation_Base
     };
 
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("TheBlackestNight", true, "留3000蓝");
@@ -174,7 +174,7 @@ internal sealed class DRKCombo_Default : DRKRotation_Base
         if (HasDarkArts) return true;
 
         //是否留3000蓝开黑盾
-        if (Config.GetBoolByName("TheBlackestNight") && Player.CurrentMp < 6000) return false;
+        if (Config.GetBool("TheBlackestNight") && Player.CurrentMp < 6000) return false;
 
         //爆发期打完
         if (Delirium.IsCoolDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7)) return true;

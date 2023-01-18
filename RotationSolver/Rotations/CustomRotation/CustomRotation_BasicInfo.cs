@@ -7,10 +7,10 @@ using RotationSolver.Actions.BaseAction;
 using static RotationSolver.Helpers.ReflectionHelper;
 using RotationSolver.Helpers;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
 using RotationSolver;
 using RotationSolver.Data;
 using RotationSolver.Attributes;
+using RotationSolver.Configuration.RotationConfig;
 
 namespace RotationSolver.Combos.CustomCombo;
 
@@ -81,12 +81,13 @@ internal abstract partial class CustomRotation : ICustomRotation
 
 
     public uint IconID { get; }
+
+    public RotationConfigSet Config { get; }
     private protected CustomRotation()
     {
         IconID = IconSet.GetJobIcon(this);
+        Config = CreateConfiguration();
     }
-
-    public ActionConfiguration Config => ActionConfiguration.GetConfig((uint)JobIDs[0], Author, CreateConfiguration());
 
     public BattleChara MoveTarget
     {
@@ -97,8 +98,8 @@ internal abstract partial class CustomRotation : ICustomRotation
         }
     }
 
-    private protected virtual ActionConfiguration CreateConfiguration()
+    private protected virtual RotationConfigSet CreateConfiguration()
     {
-        return new ActionConfiguration();
+        return new RotationConfigSet(JobIDs[0], Author);
     }
 }

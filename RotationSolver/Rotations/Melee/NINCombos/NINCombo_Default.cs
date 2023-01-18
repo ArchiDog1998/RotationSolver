@@ -2,7 +2,7 @@ using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Commands;
-using RotationSolver.Configuration;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Updaters;
@@ -18,7 +18,7 @@ internal sealed class NINCombo_Default : NINRotation_Base
 
     private static NinAction _ninactionAim = null;
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseHide", true, "脱战隐身恢复忍术").SetBool("AutoUnhide", true, "自动取消隐身");
     }
@@ -244,12 +244,12 @@ internal sealed class NINCombo_Default : NINRotation_Base
         if (DoNinjutsus(out act)) return true;
 
         //用真北取消隐匿
-        if (Config.GetBoolByName("AutoUnhide") && Player.HasStatus(true, StatusID.Hidden))
+        if (Config.GetBool("AutoUnhide") && Player.HasStatus(true, StatusID.Hidden))
         {
             StatusHelper.StatusOff(StatusID.Hidden);
         }
         //用隐匿恢复忍术数量
-        if (!InCombat && _ninactionAim == null && Config.GetBoolByName("UseHide")
+        if (!InCombat && _ninactionAim == null && Config.GetBool("UseHide")
             && Ten.IsCoolDown && Hide.ShouldUse(out act)) return true;
 
         var replace = Service.IconReplacer.OriginalHook(2260);

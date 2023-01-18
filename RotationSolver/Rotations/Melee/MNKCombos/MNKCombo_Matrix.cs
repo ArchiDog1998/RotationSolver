@@ -3,7 +3,7 @@ using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Commands;
-using RotationSolver.Configuration;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
@@ -51,7 +51,7 @@ internal sealed class MNKCombo_Matrix : MNKRotation_Base
         { DescType.MoveAction, $"{Thunderclap}" },
     };
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("AutoFormShift", true, "自动演武");
     }
@@ -372,7 +372,7 @@ internal sealed class MNKCombo_Matrix : MNKRotation_Base
 
         if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
         if (Chakra < 5 && Meditation.ShouldUse(out act)) return true;
-        if (Config.GetBoolByName("AutoFormShift") && FormShift.ShouldUse(out act)) return true;
+        if (Config.GetBool("AutoFormShift") && FormShift.ShouldUse(out act)) return true;
 
         return false;
     }

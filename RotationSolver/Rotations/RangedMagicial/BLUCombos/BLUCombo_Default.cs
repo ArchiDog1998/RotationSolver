@@ -1,11 +1,11 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
-using RotationSolver.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Linq;
 using RotationSolver.Updaters;
 using RotationSolver.Commands;
+using RotationSolver.Configuration.RotationConfig;
 
 namespace RotationSolver.Combos.RangedMagicial.BLUCombos
 {
@@ -18,7 +18,7 @@ namespace RotationSolver.Combos.RangedMagicial.BLUCombos
         protected override bool CanHealAreaSpell => base.CanHealAreaSpell && BlueId == BLUID.Healer;
         protected override bool CanHealSingleSpell => base.CanHealSingleSpell && BlueId == BLUID.Healer;
 
-        private protected override ActionConfiguration CreateConfiguration()
+        private protected override RotationConfigSet CreateConfiguration()
         {
             return base.CreateConfiguration()
                 .SetCombo("BlueId", 2, "职能", "防护", "治疗", "进攻")
@@ -30,9 +30,9 @@ namespace RotationSolver.Combos.RangedMagicial.BLUCombos
                 .SetFloat("FinalStingHP", 0, "开始使用终极针的Hp");
         }
 
-        private bool MoonFluteBreak => Config.GetBoolByName("MoonFluteBreak");
-        private bool UseFinalSting => Config.GetBoolByName("UseFinalSting");
-        private float FinalStingHP => Config.GetFloatByName("FinalStingHP");
+        private bool MoonFluteBreak => Config.GetBool("MoonFluteBreak");
+        private bool UseFinalSting => Config.GetBool("UseFinalSting");
+        private float FinalStingHP => Config.GetFloat("FinalStingHP");
         /// <summary>
         /// 0-70练级,快速练级,滑舌拉怪
         /// </summary>
@@ -40,16 +40,16 @@ namespace RotationSolver.Combos.RangedMagicial.BLUCombos
         /// <summary>
         /// 赌几率秒杀
         /// </summary>
-        private bool GamblerKill => Config.GetBoolByName("GamblerKill");
+        private bool GamblerKill => Config.GetBool("GamblerKill");
         /// <summary>
         /// 单体时是否释放高伤害AOE
         /// </summary>
-        private bool SingleAOE => Config.GetBoolByName("SingleAOE");
+        private bool SingleAOE => Config.GetBool("SingleAOE");
 
         private protected override void UpdateInfo()
         {
-            BlueId = (BLUID)Config.GetComboByName("BlueId");
-            AttackType = (BLUAttackType)Config.GetComboByName("AttackType");
+            BlueId = (BLUID)Config.GetCombo("BlueId");
+            AttackType = (BLUAttackType)Config.GetCombo("AttackType");
         }
 
         private protected override bool AttackAbility(byte abilityRemain, out IAction act)

@@ -5,10 +5,10 @@ using RotationSolver.Updaters;
 using RotationSolver.Actions;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
-using RotationSolver.Configuration;
 using RotationSolver;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Configuration.RotationConfig;
 
 namespace RotationSolver.Combos.Healer.SGECombos;
 
@@ -39,10 +39,10 @@ internal sealed class SGECombo_Default : SGERotation_Base
         }
     };
 
-    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
-    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBoolByName("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
+    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
+    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "×Ô¶¯ÓÃGCDÄÌ");
     }

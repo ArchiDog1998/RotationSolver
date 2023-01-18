@@ -2,7 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ internal sealed class BRDCombo_Default : BRDRotation_Base
     public override string Author => "汐ベMoon";
 
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("BindWAND", false, "猛者绑定旅神歌")
@@ -34,11 +34,11 @@ internal sealed class BRDCombo_Default : BRDRotation_Base
         {DescType.HealSingle, $"{NaturesMinne}"},
     };
 
-    private bool BindWAND => Config.GetBoolByName("BindWAND") && WanderersMinuet.EnoughLevel;
-    private int FirstSong => Config.GetComboByName("FirstSong");
-    private float WANDRemainTime => 45 - Config.GetFloatByName("WANDTime");
-    private float MAGERemainTime => 45 - Config.GetFloatByName("MAGETime");
-    private float ARMYRemainTime => 45 - Config.GetFloatByName("ARMYTime");
+    private bool BindWAND => Config.GetBool("BindWAND") && WanderersMinuet.EnoughLevel;
+    private int FirstSong => Config.GetCombo("FirstSong");
+    private float WANDRemainTime => 45 - Config.GetFloat("WANDTime");
+    private float MAGERemainTime => 45 - Config.GetFloat("MAGETime");
+    private float ARMYRemainTime => 45 - Config.GetFloat("ARMYTime");
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {

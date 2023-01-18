@@ -1,12 +1,12 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Updaters;
+using RotationSolver.Configuration.RotationConfig;
 
 namespace RotationSolver.Combos.Tank.WARCombos;
 
@@ -28,7 +28,7 @@ internal sealed class WARCombo_Frost : WARRotation_Base
     /// 自定义选项
     /// </summary>
     /// <returns></returns>
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseThrillofBattlePre", false, "倒计时11s时使用战栗,关爱学者")
             .SetBool("UseShakeItOffPre", false, "倒计时2s时使用摆脱")
@@ -42,9 +42,9 @@ internal sealed class WARCombo_Frost : WARRotation_Base
     /// <returns></returns>
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Config.GetBoolByName("UseTomahawkPre") && remainTime <= 1 && Tomahawk.ShouldUse(out _)) return Tomahawk;//提前1s飞斧开怪
-        if (Config.GetBoolByName("UseThrillofBattlePre") && remainTime <= 11 && ThrillofBattle.ShouldUse(out _)) return ThrillofBattle;//提前11s战栗
-        if (Config.GetBoolByName("UseShakeItOffPre") && remainTime <= 1 && ShakeItOff.ShouldUse(out _)) return ShakeItOff;//提前2s摆脱
+        if (Config.GetBool("UseTomahawkPre") && remainTime <= 1 && Tomahawk.ShouldUse(out _)) return Tomahawk;//提前1s飞斧开怪
+        if (Config.GetBool("UseThrillofBattlePre") && remainTime <= 11 && ThrillofBattle.ShouldUse(out _)) return ThrillofBattle;//提前11s战栗
+        if (Config.GetBool("UseShakeItOffPre") && remainTime <= 1 && ShakeItOff.ShouldUse(out _)) return ShakeItOff;//提前2s摆脱
         return base.CountDownAction(remainTime);
     }
 

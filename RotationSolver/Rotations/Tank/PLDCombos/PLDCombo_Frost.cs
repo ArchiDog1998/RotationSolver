@@ -1,7 +1,7 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
@@ -16,15 +16,15 @@ internal sealed class PLDCombo_Frost : PLDRotation_Base
     {
         {DescType.Description, "远离且不移动时会读圣灵；aoe时优先安魂圣环；战逃外弃打1赎罪（需求技速2.40-2.45）"},
     };
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseDivineVeilPre", false, "倒计时15s使用幕帘")
                                             .SetBool("UseHolySpiritPre", true, "预读圣灵");
     }
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Config.GetBoolByName("UseDivineVeilPre") && remainTime <= 15 && DivineVeil.ShouldUse(out _)) return DivineVeil;//提前15s幕帘
-        if (Config.GetBoolByName("UseHolySpiritPre") && remainTime <= 2 && HolySpirit.ShouldUse(out _)) return HolySpirit;//提前2s圣灵
+        if (Config.GetBool("UseDivineVeilPre") && remainTime <= 15 && DivineVeil.ShouldUse(out _)) return DivineVeil;//提前15s幕帘
+        if (Config.GetBool("UseHolySpiritPre") && remainTime <= 2 && HolySpirit.ShouldUse(out _)) return HolySpirit;//提前2s圣灵
         return base.CountDownAction(remainTime);
     }/*
     //紧急使用的GCD

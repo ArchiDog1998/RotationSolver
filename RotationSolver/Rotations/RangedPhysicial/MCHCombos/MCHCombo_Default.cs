@@ -1,12 +1,12 @@
 using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Updaters;
+using RotationSolver.Configuration.RotationConfig;
 
 namespace RotationSolver.Combos.RangedPhysicial.MCHCombos;
 
@@ -28,7 +28,7 @@ internal sealed class MCHCombo_Default : MCHRotation_Base
 
     public override string Author => "汐ベMoon";
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("MCH_Opener", true, "标准起手")
@@ -70,7 +70,7 @@ internal sealed class MCHCombo_Default : MCHRotation_Base
             if (ChainSaw.ShouldUse(out act, mustUse: true))
             {
                 if (Player.HasStatus(true, StatusID.Reassemble)) return true;
-                if (!Config.GetBoolByName("MCH_Opener") || Wildfire.IsCoolDown) return true;
+                if (!Config.GetBool("MCH_Opener") || Wildfire.IsCoolDown) return true;
                 if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(4) && Drill.IsCoolDown && Drill.ElapsedAfterGCD(3)) return true;
                 if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(3) && Drill.IsCoolDown && Drill.ElapsedAfterGCD(4)) return true;
             }
@@ -101,13 +101,13 @@ internal sealed class MCHCombo_Default : MCHRotation_Base
             if (Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //等级小于90时,整备不再留层数
-        if ((!ChainSaw.EnoughLevel || !Config.GetBoolByName("MCH_Reassemble"))
+        if ((!ChainSaw.EnoughLevel || !Config.GetBool("MCH_Reassemble"))
             && nextGCD.IsAnySameAction(false, AirAnchor, Drill))
         {
             if (Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //整备优先链锯
-        if (Config.GetBoolByName("MCH_Reassemble") && nextGCD.IsAnySameAction(true, ChainSaw))
+        if (Config.GetBool("MCH_Reassemble") && nextGCD.IsAnySameAction(true, ChainSaw))
         {
             if (Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         }
@@ -119,7 +119,7 @@ internal sealed class MCHCombo_Default : MCHRotation_Base
         //起手在链锯前释放野火
         if (nextGCD.IsAnySameAction(true, ChainSaw) && !IsLastGCD(true, HeatBlast))
         {
-            if (SettingBreak && Config.GetBoolByName("MCH_Opener") && Wildfire.ShouldUse(out act)) return true;
+            if (SettingBreak && Config.GetBool("MCH_Opener") && Wildfire.ShouldUse(out act)) return true;
         }
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
@@ -140,7 +140,7 @@ internal sealed class MCHCombo_Default : MCHRotation_Base
         if (BarrelStabilizer.ShouldUse(out act)) return true;
 
         //超荷
-        if (CanUseHypercharge(out act) && (Config.GetBoolByName("MCH_Opener") && abilityRemain == 1 || !Config.GetBoolByName("MCH_Opener"))) return true;
+        if (CanUseHypercharge(out act) && (Config.GetBool("MCH_Opener") && abilityRemain == 1 || !Config.GetBool("MCH_Opener"))) return true;
 
         if (GaussRound.CurrentCharges <= Ricochet.CurrentCharges)
         {
@@ -199,7 +199,7 @@ internal sealed class MCHCombo_Default : MCHRotation_Base
         //在三大金刚还剩8秒冷却好时不释放超荷
         if (Drill.EnoughLevel && Drill.WillHaveOneChargeGCD(3)) return false;
         if (AirAnchor.EnoughLevel && AirAnchor.WillHaveOneCharge(3)) return false;
-        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(3) || !ChainSaw.IsCoolDown) && Config.GetBoolByName("MCH_Opener")) return false;
+        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(3) || !ChainSaw.IsCoolDown) && Config.GetBool("MCH_Opener")) return false;
 
         //小怪AOE和4人本超荷判断
         if (SpreadShot.ShouldUse(out _))
@@ -240,7 +240,7 @@ internal sealed class MCHCombo_Default : MCHRotation_Base
         if (Battery == 100 && ChainSaw.EnoughLevel && !ChainSaw.WillHaveOneCharge(13)) return true;
 
         //小怪,AOE,不吃团辅判断
-        if (!Config.GetBoolByName("MCH_Automaton") || !Target.IsBoss() && !IsMoving || Level < Wildfire.ID) return true;
+        if (!Config.GetBool("MCH_Automaton") || !Target.IsBoss() && !IsMoving || Level < Wildfire.ID) return true;
         if (SpreadShot.ShouldUse(out _) && !Target.IsBoss() && IsMoving) return false;
 
         //机器人吃团辅判断

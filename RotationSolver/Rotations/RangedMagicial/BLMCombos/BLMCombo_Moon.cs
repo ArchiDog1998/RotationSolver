@@ -1,7 +1,7 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Configuration;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Updaters;
@@ -39,7 +39,7 @@ internal sealed partial class BLMCombo_Moon : BLMRotation_Base
     /// <summary>
     /// 双星灵循环
     /// </summary>
-    private bool DoubleTranspose => Config.GetComboByName("UseLoop") == 1;
+    private bool DoubleTranspose => Config.GetCombo("UseLoop") == 1;
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
@@ -48,7 +48,7 @@ internal sealed partial class BLMCombo_Moon : BLMRotation_Base
         { DescType.MoveAction, $"{AetherialManipulation}，目标为面向夹角小于30°内最远目标。" },
     };
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
                     //.SetCombo("UseLoop", 0, "循环管理", "标准循环", "星灵循环", "压冰循环")
@@ -154,7 +154,7 @@ internal sealed partial class BLMCombo_Moon : BLMRotation_Base
         if (UseSharpcast(out act)) return true;
 
         //黑魔纹
-        if (Config.GetBoolByName("AutoLeylines") && Target.IsBoss() && Leylines.ShouldUse(out act))
+        if (Config.GetBool("AutoLeylines") && Target.IsBoss() && Leylines.ShouldUse(out act))
         {
             if (Player.HasStatus(true, StatusID.Triplecast) && Player.StatusStack(true, StatusID.Triplecast) <= 1) return true;
 

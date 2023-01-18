@@ -2,7 +2,7 @@ using RotationSolver.Actions;
 using RotationSolver.Combos.Basic;
 using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Commands;
-using RotationSolver.Configuration;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ internal sealed class DRGCombo_Default : DRGRotation_Base
     private static bool safeMove = false;
 
 
-    private protected override ActionConfiguration CreateConfiguration()
+    private protected override RotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("DRG_ShouldDelay", true, "延后红龙血")
             .SetBool("DRG_Opener", false, "88级起手")
@@ -114,7 +114,7 @@ internal sealed class DRGCombo_Default : DRGRotation_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        safeMove = Config.GetBoolByName("DRG_SafeMove");
+        safeMove = Config.GetBool("DRG_SafeMove");
 
         #region 群伤
         if (CoerthanTorment.ShouldUse(out act)) return true;
@@ -124,7 +124,7 @@ internal sealed class DRGCombo_Default : DRGRotation_Base
         #endregion
 
         #region 单体
-        if (Config.GetBoolByName("ShouldDelay"))
+        if (Config.GetBool("ShouldDelay"))
         {
             if (WheelingThrust.ShouldUse(out act)) return true;
             if (FangandClaw.ShouldUse(out act)) return true;

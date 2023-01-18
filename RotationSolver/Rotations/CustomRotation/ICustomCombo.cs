@@ -2,7 +2,7 @@
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver;
 using RotationSolver.Actions;
-using RotationSolver.Configuration;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using System.Collections.Generic;
 using System.Reflection;
@@ -17,7 +17,7 @@ internal interface ICustomRotation : IEnableTexture
 
     string GameVersion { get; }
     string Author { get; }
-    ActionConfiguration Config { get; }
+    RotationConfigSet Config { get; }
 
     BattleChara MoveTarget { get; }
 

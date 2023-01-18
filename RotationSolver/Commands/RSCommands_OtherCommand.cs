@@ -39,7 +39,7 @@ namespace RotationSolver.Commands
                     var customCombo = IconReplacer.RightNowCombo;
                     if (customCombo == null) return;
 
-                    DoComboCommand(customCombo, str);
+                    DoRotationCommand(customCombo, str);
                     break;
 
                 case OtherCommandType.Actions:
@@ -91,51 +91,51 @@ namespace RotationSolver.Commands
         }
 
 
-        private static void DoComboCommand(ICustomRotation customCombo, string str)
+        private static void DoRotationCommand(ICustomRotation customCombo, string str)
         {
-            foreach (var boolean in customCombo.Config.bools)
-            {
-                if (boolean.name == str)
-                {
-                    boolean.value = !boolean.value;
+            //foreach (var boolean in customCombo.Config.bools)
+            //{
+            //    if (boolean.name == str)
+            //    {
+            //        boolean.value = !boolean.value;
 
-                    Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettings, boolean.description, boolean.value));
+            //        Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettings, boolean.description, boolean.value));
 
-                    return;
-                }
-            }
+            //        return;
+            //    }
+            //}
 
-            foreach (var combo in customCombo.Config.combos)
-            {
-                if (str.StartsWith(combo.name))
-                {
-                    var numStr = str.Substring(combo.name.Length);
+            //foreach (var combo in customCombo.Config.combos)
+            //{
+            //    if (str.StartsWith(combo.name))
+            //    {
+            //        var numStr = str.Substring(combo.name.Length);
 
-                    if (string.IsNullOrEmpty(numStr) || str.Length == 0)
-                    {
-                        combo.value = (combo.value + 1) % combo.items.Length;
+            //        if (string.IsNullOrEmpty(numStr) || str.Length == 0)
+            //        {
+            //            combo.value = (combo.value + 1) % combo.items.Length;
 
-                    }
-                    else if (int.TryParse(numStr, out int num))
-                    {
-                        combo.value = num % combo.items.Length;
-                    }
-                    else
-                    {
-                        for (int i = 0; i < combo.items.Length; i++)
-                        {
-                            if (combo.items[i] == str)
-                            {
-                                combo.value = i;
-                            }
-                        }
-                    }
+            //        }
+            //        else if (int.TryParse(numStr, out int num))
+            //        {
+            //            combo.value = num % combo.items.Length;
+            //        }
+            //        else
+            //        {
+            //            for (int i = 0; i < combo.items.Length; i++)
+            //            {
+            //                if (combo.items[i] == str)
+            //                {
+            //                    combo.value = i;
+            //                }
+            //            }
+            //        }
 
-                    Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettings, combo.description, combo.items[combo.value]));
+            //        Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettings, combo.description, combo.items[combo.value]));
 
-                    return;
-                }
-            }
+            //        return;
+            //    }
+            //}
         }
     }
 }
