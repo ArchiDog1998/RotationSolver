@@ -97,17 +97,17 @@ internal static partial class TargetUpdater
 
             switch (IconReplacer.RightNowTargetToHostileType)
             {
-                case 0:
+                case  TargetHostileType.AllTargetsCanAttack:
                     HostileTargets = AllTargets;
                     break;
 
                 default:
-                case 1:
+                case  TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack:
                     if (!HostileTargets.Any())
                         HostileTargets = AllTargets;
                     break;
 
-                case 2:
+                case  TargetHostileType.TargetsHaveTarget:
                     break;
             }
 

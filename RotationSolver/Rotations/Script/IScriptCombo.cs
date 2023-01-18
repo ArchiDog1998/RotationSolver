@@ -13,7 +13,7 @@ namespace RotationSolver.Combos.Script
     {
         public static string GetFolder(this ComboSet set)
         {
-            return Path.Combine(Service.Configuration.ScriptComboFolder, $"{(uint)set.JobID}_{set.AuthorName}.json");
+            return Path.Combine(typeof(ScriptComboExtension).Assembly.Location, $"{(uint)set.JobID}_{set.AuthorName}.json");
         }
 
         public static string GetAuthor(this ComboSet set)

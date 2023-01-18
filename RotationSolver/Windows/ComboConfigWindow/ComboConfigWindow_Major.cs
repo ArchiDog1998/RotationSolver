@@ -266,8 +266,7 @@ internal partial class ComboConfigWindow : Window
             Spacing();
             ImGui.PushFont(UiBuilder.IconFont);
 
-            if (Directory.Exists(Service.Configuration.ScriptComboFolder)
-                && ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{texture.GetHashCode() + 1}"))
+            if (ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{texture.GetHashCode() + 1}"))
             {
                 var newCom = IconReplacer.AddScripCombo(com.JobIDs[0]);
                 if (newCom != null)

@@ -76,7 +76,6 @@ internal partial class ComboConfigWindow
         }
     }
 
-
     private static void DrawRotation(ICustomRotation rotation, bool canAddButton)
     {
         ImGui.Spacing();
@@ -86,7 +85,7 @@ internal partial class ComboConfigWindow
 
         ImGui.Spacing();
 
-        DrawConfig(rotation.Config);
+        DrawConfig(rotation.Config, canAddButton);
     }
 
     private static void DrawTargetHostileTYpe(ICustomRotation rotation)
@@ -144,11 +143,11 @@ internal partial class ComboConfigWindow
         DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubtractSingle,
             () => ConfigurationHelper.GetHealingOfTimeSubtractSingle(job),
             (value) => Service.Configuration.HealingOfTimeSubtractSingles[job] = value);
-
     }
 
-    private static void DrawConfig(ActionConfiguration actions)
+    private static void DrawConfig(ActionConfiguration actions, bool canAddButton)
     {
+        var num = actions.GetHashCode();
         foreach (var boolean in actions.bools)
         {
             bool val = boolean.value;
@@ -238,5 +237,4 @@ internal partial class ComboConfigWindow
             Service.Configuration.Save();
         }
     }
-
 }
