@@ -27,20 +27,15 @@ internal static partial class TargetUpdater
     /// </summary>
     internal static IEnumerable<BattleChara> HostileTargets { get; private set; } = new BattleChara[0];
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static IEnumerable<BattleChara> TarOnMeTargets { get; private set; } = new BattleChara[0];
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static IEnumerable<BattleChara> CanInterruptTargets { get; private set; } = new BattleChara[0];
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static bool HaveHostilesInRange { get; private set; } = false;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static bool IsHostileAOE { get; private set; } = false;
+    internal static bool IsHostileCastingAOE { get; private set; } = false;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static bool IsHostileTank { get; private set; } = false;
+    internal static bool IsHostileCastingToTank { get; private set; } = false;
 
     internal unsafe static void UpdateHostileTargets()
     {
@@ -137,8 +132,8 @@ internal static partial class TargetUpdater
         {
             var tar = HostileTargets.FirstOrDefault();
 
-            IsHostileTank = IsHostileCastingTank(tar);
-            IsHostileAOE = IsHostileCastingArea(tar);
+            IsHostileCastingToTank = IsHostileCastingTank(tar);
+            IsHostileCastingAOE = IsHostileCastingArea(tar);
         }
     }
 

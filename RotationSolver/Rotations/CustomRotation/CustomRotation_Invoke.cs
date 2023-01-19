@@ -37,7 +37,7 @@ internal abstract partial class CustomRotation
         byte abilityRemain = ActionUpdater.AbilityRemainCount;
 
         //防AOE
-        var helpDefenseAOE = Service.Configuration.UseDefenceAbility && TargetUpdater.IsHostileAOE;
+        var helpDefenseAOE = Service.Configuration.UseDefenceAbility && TargetUpdater.IsHostileCastingAOE;
 
         //防单体
         bool helpDefenseSingle = false;
@@ -50,7 +50,7 @@ internal abstract partial class CustomRotation
 
                 if (attackingTankObj.Count() != 1) return false;
 
-                return TargetUpdater.IsHostileTank;
+                return TargetUpdater.IsHostileCastingToTank;
             })) helpDefenseSingle = true;
         }
 

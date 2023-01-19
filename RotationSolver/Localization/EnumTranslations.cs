@@ -1,24 +1,31 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Commands;
 using RotationSolver.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Localization
 {
     internal static class EnumTranslations
     {
-        internal static string ToName(this VirtualKey k) => k switch
-            {
-                VirtualKey.SHIFT => "SHIFT",
-                VirtualKey.CONTROL => "CTRL",
-                VirtualKey.MENU => "ALT",
-                _ => k.ToString(),
-            };
+        public static string ToName(this VirtualKey k) => k switch
+        {
+            VirtualKey.SHIFT => "SHIFT",
+            VirtualKey.CONTROL => "CTRL",
+            VirtualKey.MENU => "ALT",
+            _ => k.ToString(),
+        };
+
+        public static string ToName(this DescType type) => type switch
+        {
+            DescType.Description => LocalizationManager.RightLang.DescType_Description,
+            DescType.BreakingAction => LocalizationManager.RightLang.DescType_BreakingAction,
+            DescType.HealArea => LocalizationManager.RightLang.DescType_HealArea,
+            DescType.HealSingle => LocalizationManager.RightLang.DescType_HealSingle,
+            DescType.DefenseArea => LocalizationManager.RightLang.DescType_DefenseArea,
+            DescType.DefenseSingle => LocalizationManager.RightLang.DescType_DefenseSingle,
+            DescType.MoveAction => LocalizationManager.RightLang.DescType_MoveAction,
+            _ => string.Empty,
+        };
 
         public static string ToName(this JobRole role) => role switch
         {
@@ -51,8 +58,19 @@ namespace RotationSolver.Localization
             SpecialCommandType.HealSingle => "Start Heal Single",
             SpecialCommandType.DefenseArea => "Start Defense Area",
             SpecialCommandType.DefenseSingle => "Start Defense Single",
-            SpecialCommandType.EsunaShield => "Start " + (role == JobRole.Tank ? "Shield" : "Esuna"),
-            SpecialCommandType.RaiseShirk => "Start " + (role == JobRole.Tank ? "Shirk" : "Raise"),
+            SpecialCommandType.EsunaShieldNorth => "Start " + role switch
+            {
+                JobRole.Tank => "Shield",
+                JobRole.Healer => "Esuna",
+                JobRole.Melee => "TrueNorth",
+                _ => nameof(SpecialCommandType.EsunaShieldNorth),
+            },
+            SpecialCommandType.RaiseShirk => "Start " + role switch
+            {
+                JobRole.Tank => "Shirk",
+                JobRole.Healer => "Raise",
+                _ => nameof(SpecialCommandType.RaiseShirk),
+            },
             SpecialCommandType.MoveForward => "Start Move Forward",
             SpecialCommandType.MoveBack => "Start Move Back",
             SpecialCommandType.AntiRepulsion => "Start AntiRepulsion",
@@ -75,8 +93,19 @@ namespace RotationSolver.Localization
             SpecialCommandType.HealSingle => "Heal Single",
             SpecialCommandType.DefenseArea => "Defense Area",
             SpecialCommandType.DefenseSingle => "Defense Single",
-            SpecialCommandType.EsunaShield => role == JobRole.Tank ? "Shield" : "Esuna",
-            SpecialCommandType.RaiseShirk => role == JobRole.Tank ? "Shirk" : "Raise",
+            SpecialCommandType.EsunaShieldNorth => role switch
+            {
+                JobRole.Tank => "Shield",
+                JobRole.Healer => "Esuna",
+                JobRole.Melee => "TrueNorth",
+                _ => string.Empty,
+            },
+            SpecialCommandType.RaiseShirk => role switch
+            {
+                JobRole.Tank => "Shirk",
+                JobRole.Healer => "Raise",
+                _ => string.Empty,
+            },
             SpecialCommandType.MoveForward => "Move Forward",
             SpecialCommandType.MoveBack => "Move Back",
             SpecialCommandType.AntiRepulsion => "AntiRepulsion",
@@ -99,7 +128,7 @@ namespace RotationSolver.Localization
             SpecialCommandType.HealSingle => LocalizationManager.RightLang.Configwindow_HelpItem_HealSingle,
             SpecialCommandType.DefenseArea => LocalizationManager.RightLang.Configwindow_HelpItem_DefenseArea,
             SpecialCommandType.DefenseSingle => LocalizationManager.RightLang.Configwindow_HelpItem_DefenseSingle,
-            SpecialCommandType.EsunaShield => LocalizationManager.RightLang.Configwindow_HelpItem_EsunaShield,
+            SpecialCommandType.EsunaShieldNorth => LocalizationManager.RightLang.Configwindow_HelpItem_EsunaShield,
             SpecialCommandType.RaiseShirk => LocalizationManager.RightLang.Configwindow_HelpItem_RaiseShirk,
             SpecialCommandType.MoveForward => LocalizationManager.RightLang.Configwindow_HelpItem_MoveForward,
             SpecialCommandType.MoveBack => LocalizationManager.RightLang.Configwindow_HelpItem_MoveBack,

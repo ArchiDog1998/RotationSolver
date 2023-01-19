@@ -25,140 +25,204 @@ internal abstract partial class CustomRotation
         if (EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
         var role = Job.GetJobRole();
 
-        if (TargetUpdater.CanInterruptTargets.Any())
-        {
-            switch (role)
-            {
-                case JobRole.Tank:
-                    if (Interject.ShouldUse(out act)) return true;
-                    break;
-
-                case JobRole.Melee:
-                    if (LegSweep.ShouldUse(out act)) return true;
-                    break;
-
-                case JobRole.RangedPhysical:
-                    if (HeadGraze.ShouldUse(out act)) return true;
-                    break;
-            }
-        }
+        if (InterruptAbility(role, out act)) return true;
 
         var specialType = RSCommands.SpecialType;
 
-        if (role == JobRole.Tank)
-        {
-            if (specialType == SpecialCommandType.RaiseShirk)
-            {
-                if (Shirk.ShouldUse(out act)) return true;
-            }
+        if (ShirkOrShield(role, specialType, out act)) return true;
+        if (AntiRepulsion(role, specialType, out act)) return true;
 
-            if (specialType == SpecialCommandType.EsunaShield && Shield.ShouldUse(out act)) return true;
-
-            if (Service.Configuration.AutoShield)
-            {
-                //Alive Tanks with shield.
-                var defensesTanks = TargetUpdater.AllianceTanks.Where(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.SheildStatus));
-                if (defensesTanks == null || defensesTanks.Count() == 0)
-                {
-                    if (!HaveShield && Shield.ShouldUse(out act)) return true;
-                }
-            }
-        }
-
-        if (specialType == SpecialCommandType.AntiRepulsion)
-        {
-            switch (role)
-            {
-                case JobRole.Tank:
-                case JobRole.Melee:
-                    if (ArmsLength.ShouldUse(out act)) return true;
-                    break;
-                case JobRole.Healer:
-                    if (Surecast.ShouldUse(out act)) return true;
-                    break;
-                case JobRole.RangedPhysical:
-                    if (ArmsLength.ShouldUse(out act)) return true;
-                    break;
-                case JobRole.RangedMagicial:
-                    if (Surecast.ShouldUse(out act)) return true;
-                    break;
-            }
-        }
-        if (specialType == SpecialCommandType.EsunaShield && role == JobRole.Melee)
+        if (specialType == SpecialCommandType.EsunaShieldNorth && role == JobRole.Melee)
         {
             if (TrueNorth.ShouldUse(out act)) return true;
         }
 
-        if (specialType == SpecialCommandType.DefenseArea && DefenceAreaAbility(abilityRemain, out act)) return true;
-        if (specialType == SpecialCommandType.DefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
-        if (TargetUpdater.HPNotFull || Service.ClientState.LocalPlayer.ClassJob.Id == 25)
+        if (GeneralHealAbility(abilityRemain, specialType, out act)) return true;
+
+        if (AutoDefense(abilityRemain, role, helpDefenseAOE, helpDefenseSingle, out act)) return true;
+
+        if (MovingAbility(abilityRemain, specialType, out act)) return true;
+
+        if (GeneralUsingAbility(role, out act)) return true;
+
+        if (GeneralAbility(abilityRemain, out act)) return true;
+        if (HaveHostilesInRange && AttackAbility(abilityRemain, out act)) return true;
+
+        //Run!
+        if (!InCombat && IsMoving && role == JobRole.RangedPhysical
+            && !Service.ClientState.LocalPlayer.HasStatus(false, StatusID.Peloton)
+            && Peloton.ShouldUse(out act, mustUse: true)) return true;
+
+        return false;
+    }
+
+    private bool InterruptAbility(JobRole role, out IAction act)
+    {
+        act = null;
+        if (!TargetUpdater.CanInterruptTargets.Any()) return false;
+
+        switch (role)
         {
-            if (ShouldUseHealAreaAbility(abilityRemain, out act)) return true;
-            if (ShouldUseHealSingleAbility(abilityRemain, out act)) return true;
+            case JobRole.Tank:
+                if (Interject.ShouldUse(out act)) return true;
+                break;
+
+            case JobRole.Melee:
+                if (LegSweep.ShouldUse(out act)) return true;
+                break;
+
+            case JobRole.RangedPhysical:
+                if (HeadGraze.ShouldUse(out act)) return true;
+                break;
+        }
+        return false;
+    }
+
+    private bool ShirkOrShield(JobRole role, SpecialCommandType specialType, out IAction act)
+    {
+        act = null;
+        if (role != JobRole.Tank) return false;
+
+        switch (specialType)
+        {
+            case SpecialCommandType.RaiseShirk:
+                if (Shirk.ShouldUse(out act)) return true;
+                break;
+
+            case SpecialCommandType.EsunaShieldNorth:
+                if (Shield.ShouldUse(out act)) return true;
+                break;
         }
 
-        //防御
-        if (HaveHostilesInRange)
+        if (Service.Configuration.AutoShield)
         {
-            //防AOE
-            if (helpDefenseAOE && Service.Configuration.UseDefenceAbility)
+            if (!TargetUpdater.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.SheildStatus)))
             {
+                if (!HaveShield && Shield.ShouldUse(out act)) return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool AntiRepulsion(JobRole role, SpecialCommandType specialType, out IAction act)
+    {
+        act = null;
+
+        if (specialType != SpecialCommandType.AntiRepulsion) return false;
+
+        switch (role)
+        {
+            case JobRole.Tank:
+            case JobRole.Melee:
+                if (ArmsLength.ShouldUse(out act)) return true;
+                break;
+            case JobRole.Healer:
+                if (Surecast.ShouldUse(out act)) return true;
+                break;
+            case JobRole.RangedPhysical:
+                if (ArmsLength.ShouldUse(out act)) return true;
+                break;
+            case JobRole.RangedMagicial:
+                if (Surecast.ShouldUse(out act)) return true;
+                break;
+        }
+
+        return false;
+    }
+
+    private bool GeneralHealAbility(byte abilityRemain, SpecialCommandType specialType, out IAction act)
+    {
+        act = null;
+        switch (specialType)
+        {
+            case SpecialCommandType.DefenseArea:
                 if (DefenceAreaAbility(abilityRemain, out act)) return true;
-                if (role is JobRole.Melee or JobRole.RangedPhysical or JobRole.RangedMagicial)
-                {
-                    //防卫
-                    if (DefenceSingleAbility(abilityRemain, out act)) return true;
-                }
-            }
+                break;
 
-            //防单体
-            if (role == JobRole.Tank)
-            {
-                var haveTargets = TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets);
-                if ((Service.Configuration.AutoProvokeForTank || TargetUpdater.AllianceTanks.Count() < 2)
-                    && haveTargets.Count() != TargetUpdater.HostileTargets.Count())
-
-                {
-                    //开盾挑衅
-                    if (!HaveShield && Shield.ShouldUse(out act)) return true;
-                    if (Provoke.ShouldUse(out act, mustUse: true)) return true;
-                }
-
-                if (HaveShield && Service.Configuration.UseDefenceAbility)
-                {
-                    var tarOnmeCount = TargetUpdater.TarOnMeTargets.Count();
-
-                    //被群殴呢
-                    if (tarOnmeCount > 1 && !IsMoving)
-                    {
-                        if (ArmsLength.ShouldUse(out act)) return true;
-                        if (DefenceSingleAbility(abilityRemain, out act)) return true;
-                    }
-
-                    //就一个打我，需要正在对我搞事情。
-                    if (tarOnmeCount == 1)
-                    {
-                        var tar = TargetUpdater.TarOnMeTargets.First();
-                        if (TargetUpdater.IsHostileTank)
-                        {
-                            //防卫
-                            if (DefenceSingleAbility(abilityRemain, out act)) return true;
-                        }
-                    }
-                }
-            }
-
-            //辅助防卫
-            if (helpDefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
+            case SpecialCommandType.DefenseSingle:
+                if (DefenceSingleAbility(abilityRemain, out act)) return true;
+                break;
         }
 
-        if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(abilityRemain, out act))
+        if ((TargetUpdater.HPNotFull || Job.RowId == (uint)ClassJobID.BlackMage) && ActionUpdater.InCombat)
+        {
+            if ((RSCommands.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act)) return true;
+            if ((RSCommands.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act)) return true;
+        }
+
+        return false;
+    }
+
+    private bool AutoDefense(byte abilityRemain, JobRole role, bool helpDefenseAOE, bool helpDefenseSingle, out IAction act)
+    {
+        act = null;
+
+        if (!ActionUpdater.InCombat || !HaveHostilesInRange) return false;
+
+        //Auto Provoke
+        if (role == JobRole.Tank
+            && (Service.Configuration.AutoProvokeForTank || TargetUpdater.AllianceTanks.Count() < 2)
+            && TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets, true).Count() != TargetUpdater.HostileTargets.Count())
+
+        {
+            if (!HaveShield && Shield.ShouldUse(out act)) return true;
+            if (Provoke.ShouldUse(out act, mustUse: true)) return true;
+        }
+
+        //No using defence abilities.
+        if (!Service.Configuration.UseDefenceAbility) return false;
+
+        if (helpDefenseAOE)
+        {
+            if (DefenceAreaAbility(abilityRemain, out act)) return true;
+            if (role is JobRole.Melee or JobRole.RangedPhysical or JobRole.RangedMagicial)
+            {
+                if (DefenceSingleAbility(abilityRemain, out act)) return true;
+            }
+        }
+
+        //Defnece himself.
+        if (role == JobRole.Tank && HaveShield)
+        {
+            var tarOnmeCount = TargetUpdater.TarOnMeTargets.Count();
+
+            //A lot targets are targeting on me.
+            if (tarOnmeCount > 1 && !IsMoving)
+            {
+                if (ArmsLength.ShouldUse(out act)) return true;
+                if (DefenceSingleAbility(abilityRemain, out act)) return true;
+            }
+
+            //Big damage cating action.
+            if (tarOnmeCount == 1 && TargetUpdater.IsHostileCastingToTank)
+            {
+                if (DefenceSingleAbility(abilityRemain, out act)) return true;
+            }
+        }
+
+        if (helpDefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
+
+        return false;
+    }
+
+    private bool MovingAbility(byte abilityRemain, SpecialCommandType specialType, out IAction act)
+    {
+        act = null;
+        if (specialType == SpecialCommandType.MoveForward && MoveForwardAbility(abilityRemain, out act))
         {
             if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
         }
+        else if (specialType == SpecialCommandType.MoveBack)
+        {
+            if(MoveBackAbility(abilityRemain, out act)) return true;
+        }
+        return false;
+    }
 
-
-        //恢复/下踢
+    private bool GeneralUsingAbility(JobRole role, out IAction act)
+    {
+        act = null;
         switch (role)
         {
             case JobRole.Tank:
@@ -180,42 +244,11 @@ internal abstract partial class CustomRotation
                 if (SecondWind.ShouldUse(out act)) return true;
                 break;
         }
-
-        if (!InCombat && IsMoving && role == JobRole.RangedPhysical
-            && !Service.ClientState.LocalPlayer.HasStatus(false, StatusID.Peloton)
-            && Peloton.ShouldUse(out act, mustUse: true)) return true;
-
-        if (GeneralAbility(abilityRemain, out act)) return true;
-        if (HaveHostilesInRange && AttackAbility(abilityRemain, out act)) return true;
         return false;
     }
 
-    private bool ShouldUseHealAreaAbility(byte abilityRemain, out IAction act)
-    {
-        act = null;
-        return (RSCommands.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && ActionUpdater.InCombat && HealAreaAbility(abilityRemain, out act);
-    }
-
-    private bool ShouldUseHealSingleAbility(byte abilityRemain, out IAction act)
-    {
-        act = null;
-        return (RSCommands.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility) && ActionUpdater.InCombat && HealSingleAbility(abilityRemain, out act);
-    }
-
-    /// <summary>
-    /// 覆盖写一些用于攻击的能力技，只有附近有敌人的时候才会有效。
-    /// </summary>
-    /// <param name="abilityRemain"></param>
-    /// <param name="act"></param>
-    /// <returns></returns>
     private protected abstract bool AttackAbility(byte abilityRemain, out IAction act);
-    /// <summary>
-    /// 覆盖写一些用于因为后面的GCD技能而要适应的能力技能
-    /// </summary>
-    /// <param name="abilityRemain"></param>
-    /// <param name="nextGCD"></param>
-    /// <param name="act"></param>
-    /// <returns></returns>
+
     private protected virtual bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (nextGCD is BaseAction action)
@@ -236,66 +269,36 @@ internal abstract partial class CustomRotation
         return false;
     }
 
-    /// <summary>
-    /// 常规的能力技，啥时候都能使用。
-    /// </summary>
-    /// <param name="level"></param>
-    /// <param name="abilityRemain"></param>
-    /// <param name="act"></param>
-    /// <returns></returns>
     private protected virtual bool GeneralAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
 
-    /// <summary>
-    /// 移动能力技
-    /// </summary>
-    /// <param name="abilityRemain"></param>
-    /// <param name="act"></param>
-    /// <returns></returns>
     private protected virtual bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
 
-    /// <summary>
-    /// 单体治疗的能力技
-    /// </summary>
-    /// <param name="abilityRemain"></param>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    private protected virtual bool MoveBackAbility(byte abilityRemain, out IAction act)
+    {
+        act = null; return false;
+    }
+
     private protected virtual bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
 
-    /// <summary>
-    /// 单体防御能力技
-    /// </summary>
-    /// <param name="abilityRemain"></param>
-    /// <param name="act"></param>
-    /// <returns></returns>
     private protected virtual bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
-    /// <summary>
-    /// 范围防御能力技
-    /// </summary>
-    /// <param name="abilityRemain"></param>
-    /// <param name="act"></param>
-    /// <returns></returns>
+
     private protected virtual bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;
     }
-    /// <summary>
-    /// 范围治疗的能力技
-    /// </summary>
-    /// <param name="abilityRemain"></param>
-    /// <param name="act"></param>
-    /// <returns></returns>
+
     private protected virtual bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         act = null; return false;

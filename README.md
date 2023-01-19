@@ -9,7 +9,7 @@
 
 
 
-**It will probably have distributions in `game version 6.5`，and only supports international servers.**
+**It will probably have distributions in `game version 6.4`，and only supports international servers.**
 
 There are several reasons why I don't want to distribute this plugin right now.
 

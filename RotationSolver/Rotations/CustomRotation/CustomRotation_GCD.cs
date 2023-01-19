@@ -60,7 +60,7 @@ internal abstract partial class CustomRotation
         var specialType = RSCommands.SpecialType;
 
         //有某些非常危险的状态。
-        if (specialType == SpecialCommandType.EsunaShield && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
+        if (specialType == SpecialCommandType.EsunaShieldNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
         {
             if (Job.GetJobRole() == JobRole.Healer && Esuna.ShouldUse(out act, mustUse: true)) return true;
         }

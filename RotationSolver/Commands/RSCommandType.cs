@@ -13,7 +13,7 @@ namespace RotationSolver.Commands
         HealSingle,
         DefenseArea,
         DefenseSingle,
-        EsunaShield,
+        EsunaShieldNorth,
         RaiseShirk,
         MoveForward,
         MoveBack,
