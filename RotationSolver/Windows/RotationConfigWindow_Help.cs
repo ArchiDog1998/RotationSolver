@@ -1,5 +1,8 @@
-﻿using ImGuiNET;
+﻿using Dalamud.Interface.Colors;
+using Dalamud.Utility;
+using ImGuiNET;
 using RotationSolver.Commands;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Numerics;
 
@@ -10,6 +13,29 @@ namespace RotationSolver.Windows.RotationConfigWindow
         private void DrawHelpTab()
         {
             ImGui.Text(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
+
+            ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.ParsedGreen);
+            if (ImGui.Button("Github"))
+            {
+                Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
+            }
+
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            if (ImGui.Button("Discord"))
+            {
+                Util.OpenLink("https://discord.gg/4fECHunam9");
+            }
+
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            if (ImGui.Button("Wiki"))
+            {
+                Util.OpenLink("https://archidog1998.github.io/RotationSolver/");
+            }
+            ImGui.PopStyleColor();
 
             if (ImGui.BeginChild("Help Infomation", new Vector2(0f, -1f), true))
             {
