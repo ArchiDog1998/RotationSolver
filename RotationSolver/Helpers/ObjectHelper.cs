@@ -68,7 +68,7 @@ internal static class ObjectHelper
         return b.CurrentHp >= GetHealthFromMulty(1.5f);
     }
 
-    internal static EnemyLocation FindEnemyLocation(this GameObject enemy)
+    internal static EnemyPositional FindEnemyLocation(this GameObject enemy)
     {
         Vector3 pPosition = enemy.Position;
         float rotation = enemy.Rotation;
@@ -79,9 +79,9 @@ internal static class ObjectHelper
 
         double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
 
-        if (angle < Math.PI / 4) return EnemyLocation.Front;
-        else if (angle > Math.PI * 3 / 4) return EnemyLocation.Back;
-        return EnemyLocation.Side;
+        if (angle < Math.PI / 4) return EnemyPositional.Front;
+        else if (angle > Math.PI * 3 / 4) return EnemyPositional.Back;
+        return EnemyPositional.Side;
     }
 
     public unsafe static bool CanAttack(this GameObject actor)

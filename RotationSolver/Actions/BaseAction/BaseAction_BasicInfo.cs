@@ -91,7 +91,7 @@ internal partial class BaseAction : IAction
     /// </summary>
     internal unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
 
-    internal virtual EnemyLocation EnermyLocation
+    internal virtual EnemyPositional EnermyPositonal
     {
         get
         {
@@ -99,7 +99,7 @@ internal partial class BaseAction : IAction
             {
                 return location.Loc;
             }
-            return EnemyLocation.None;
+            return EnemyPositional.None;
         }
     }
     internal virtual unsafe uint MPNeed

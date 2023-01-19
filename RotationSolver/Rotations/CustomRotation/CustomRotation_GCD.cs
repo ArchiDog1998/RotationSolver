@@ -76,8 +76,6 @@ internal abstract partial class CustomRotation
         return false;
     }
 
-    private protected virtual IAction CountDownAction(float remainTime) => null;
-
     private protected virtual bool EmergencyGCD(out IAction act)
     {
         act = null; return false;

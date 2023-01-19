@@ -13,23 +13,23 @@ namespace RotationSolver.Helpers;
 
 internal static class StatusHelper
 {
-    public record LocationInfo(EnemyLocation Loc, byte[] Tags);
+    public record LocationInfo(EnemyPositional Loc, byte[] Tags);
     public static readonly SortedList<ActionID, LocationInfo> ActionLocations = new SortedList<ActionID, LocationInfo>()
     {
-        {ActionID.FangandClaw, new( EnemyLocation.Side, new byte[] { 13, 10 })},
-        {ActionID.WheelingThrust, new(EnemyLocation.Back, new byte[] { 10, 13 }) },
-        {ActionID.ChaosThrust, new(EnemyLocation.Back, new byte[] { 61, 28 }) },
-        {ActionID.ChaoticSpring, new(EnemyLocation.Back, new byte[] { 66, 28 }) },
-        {ActionID.Demolish, new(EnemyLocation.Back, new byte[] { 46, 60 }) },
-        {ActionID.SnapPunch, new(EnemyLocation.Side, new byte[] { 19, 21 }) },
-        {ActionID.TrickAttack, new(EnemyLocation.Back, new byte[] { 25 }) },
-        {ActionID.AeolianEdge,new( EnemyLocation.Back, new byte[] { 30, 68 }) },
-        {ActionID.ArmorCrush, new(EnemyLocation.Side, new byte[] { 30, 66 }) },
-        {ActionID.Suiton, new(EnemyLocation.Back, new byte[] { }) },
-        {ActionID.Gibbet, new(EnemyLocation.Side , new byte[] { 11 })},
-        {ActionID.Gallows, new(EnemyLocation.Back, new byte[] { 11 }) },
-        {ActionID.Gekko, new(EnemyLocation.Back , new byte[] { 68, 29, 72 })},
-        {ActionID.Kasha, new(EnemyLocation.Side, new byte[] { 29, 68, 72 }) },
+        {ActionID.FangandClaw, new( EnemyPositional.Side, new byte[] { 13, 10 })},
+        {ActionID.WheelingThrust, new(EnemyPositional.Back, new byte[] { 10, 13 }) },
+        {ActionID.ChaosThrust, new(EnemyPositional.Back, new byte[] { 61, 28 }) },
+        {ActionID.ChaoticSpring, new(EnemyPositional.Back, new byte[] { 66, 28 }) },
+        {ActionID.Demolish, new(EnemyPositional.Back, new byte[] { 46, 60 }) },
+        {ActionID.SnapPunch, new(EnemyPositional.Side, new byte[] { 19, 21 }) },
+        {ActionID.TrickAttack, new(EnemyPositional.Back, new byte[] { 25 }) },
+        {ActionID.AeolianEdge,new( EnemyPositional.Back, new byte[] { 30, 68 }) },
+        {ActionID.ArmorCrush, new(EnemyPositional.Side, new byte[] { 30, 66 }) },
+        {ActionID.Suiton, new(EnemyPositional.Back, new byte[] { }) },
+        {ActionID.Gibbet, new(EnemyPositional.Side , new byte[] { 11 })},
+        {ActionID.Gallows, new(EnemyPositional.Back, new byte[] { 11 }) },
+        {ActionID.Gekko, new(EnemyPositional.Back , new byte[] { 68, 29, 72 })},
+        {ActionID.Kasha, new(EnemyPositional.Side, new byte[] { 29, 68, 72 }) },
     };
 
     public static StatusID[] SheildStatus { get; } = new StatusID[]

@@ -256,9 +256,9 @@ internal abstract partial class CustomRotation
             if (Job.GetJobRole() is JobRole.Healer or JobRole.RangedMagicial &&
             action.CastTime >= 5 && Swiftcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-            if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyLocation != EnemyLocation.None && action.Target != null)
+            if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyPositonal != EnemyPositional.None && action.Target != null)
             {
-                if (action.EnermyLocation != action.Target.FindEnemyLocation() && action.Target.HasLocationSide())
+                if (action.EnermyPositonal != action.Target.FindEnemyLocation() && action.Target.HasLocationSide())
                 {
                     if (TrueNorth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
                 }

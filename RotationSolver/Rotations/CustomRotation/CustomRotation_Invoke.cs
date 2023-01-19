@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Commands;
+using RotationSolver.Localization;
 
 namespace RotationSolver.Combos.CustomCombo;
 
@@ -30,19 +31,14 @@ internal abstract partial class CustomRotation
 
     private IAction Invoke()
     {
-        //倒计时专用能力。
         var countDown = CountDown.CountDownTime;
         if (countDown > 0) return CountDownAction(countDown);
 
         byte abilityRemain = ActionUpdater.AbilityRemainCount;
-
-        //防AOE
         var helpDefenseAOE = Service.Configuration.UseDefenceAbility && TargetUpdater.IsHostileCastingAOE;
 
-        //防单体
         bool helpDefenseSingle = false;
-        //是个骑士或者奶妈
-        if (Job.GetJobRole() == JobRole.Healer || Service.ClientState.LocalPlayer.ClassJob.Id == 19)
+        if (Job.GetJobRole() == JobRole.Healer || Job.RowId == (uint)ClassJobID.Paladin)
         {
             if (TargetUpdater.PartyTanks.Any((tank) =>
             {
@@ -56,48 +52,51 @@ internal abstract partial class CustomRotation
 
         IAction act = GCD(abilityRemain, helpDefenseAOE, helpDefenseSingle);
 
-        if (act != null && act is BaseAction GCDaction)
+        if (act != null && act is BaseAction GcdAction)
         {
             //Sayout!
-            if (GCDaction.EnermyLocation != EnemyLocation.None && GCDaction.Target.HasLocationSide()
+            if (GcdAction.EnermyPositonal != EnemyPositional.None && GcdAction.Target.HasLocationSide()
                  && !Player.HasStatus(true, StatusID.TrueNorth))
             {
-                if (CheckAction(GCDaction.ID))
+                if (CheckAction(GcdAction.ID))
                 {
-                    string location = GCDaction.EnermyLocation.ToName();
-                    if (Service.Configuration.SayPotional) Watcher.Speak(location);
-                    if (Service.Configuration.FlytextPositional) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    string positional = GcdAction.EnermyPositonal.ToName();
+                    if (Service.Configuration.SayPotional) Watcher.Speak(positional);
+                    if (Service.Configuration.FlytextPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
-                            (uint)Service.IconReplacer.OriginalHook((ActionID)GCDaction.ID)).Icon,
+                            (uint)Service.IconReplacer.OriginalHook((ActionID)GcdAction.ID)).Icon,
                     });
-                    OverlayWindow.EnemyLocationTarget = GCDaction.Target;
-                    OverlayWindow.ShouldLocation = GCDaction.EnermyLocation;
+                    OverlayWindow.EnemyLocationTarget = GcdAction.Target;
+                    OverlayWindow.ShouldPositional = GcdAction.EnermyPositonal;
                 }
             }
             else
             {
-                OverlayWindow.ShouldLocation = EnemyLocation.None;
+                OverlayWindow.ShouldPositional = EnemyPositional.None;
             }
 
-            if (abilityRemain == 0 || ActionUpdater.WeaponTotal < ActionUpdater._lastCastingTotal) return GCDaction;
+            if (abilityRemain == 0 || ActionUpdater.WeaponTotal < ActionUpdater._lastCastingTotal) return GcdAction;
 
-            if (Ability(abilityRemain, GCDaction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
+            if (Ability(abilityRemain, GcdAction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
 
-            return GCDaction;
+            return GcdAction;
         }
         else if (act == null)
         {
-            OverlayWindow.ShouldLocation = EnemyLocation.None;
+            OverlayWindow.ShouldPositional = EnemyPositional.None;
             if (Ability(abilityRemain, Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
             return null;
         }
         else
         {
-            OverlayWindow.ShouldLocation = EnemyLocation.None;
+            OverlayWindow.ShouldPositional = EnemyPositional.None;
         }
         return act;
     }
+
+    private protected virtual IAction CountDownAction(float remainTime) => null;
+
 
     uint _lastSayingGCDAction;
     DateTime lastTime;

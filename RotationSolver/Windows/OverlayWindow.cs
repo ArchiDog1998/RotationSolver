@@ -17,7 +17,7 @@ namespace RotationSolver.Windows;
 internal static class OverlayWindow
 {
     internal static BattleChara EnemyLocationTarget;
-    internal static EnemyLocation ShouldLocation { get; set; } = EnemyLocation.None;
+    internal static EnemyPositional ShouldPositional { get; set; } = EnemyPositional.None;
     public static void Draw()
     {
         if (Service.GameGui == null || Service.ClientState.LocalPlayer == null || !Service.Configuration.UseOverlayWindow) return;
@@ -134,7 +134,7 @@ internal static class OverlayWindow
 
         if (EnemyLocationTarget == null || !Service.Configuration.PositionalFeedback) return;
         if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth)) return;
-        if (ShouldLocation is EnemyLocation.None or EnemyLocation.Front) return;
+        if (ShouldPositional is EnemyPositional.None or EnemyPositional.Front) return;
 
         float radius = EnemyLocationTarget.HitboxRadius + 3.5f;
         float rotation = EnemyLocationTarget.Rotation;
@@ -147,14 +147,14 @@ internal static class OverlayWindow
         List<Vector2> pts = new List<Vector2>(2 * COUNT + 2);
 
         pts.Add(scrPos);
-        switch (ShouldLocation)
+        switch (ShouldPositional)
         {
-            case EnemyLocation.Side:
+            case EnemyPositional.Side:
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
                 pts.Add(scrPos);
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
                 break;
-            case EnemyLocation.Back:
+            case EnemyPositional.Back:
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
                 break;
             default:
@@ -162,7 +162,7 @@ internal static class OverlayWindow
         }
         pts.Add(scrPos);
 
-        bool wrong = ShouldLocation != EnemyLocationTarget.FindEnemyLocation();
+        bool wrong = ShouldPositional != EnemyLocationTarget.FindEnemyLocation();
         var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
 
         pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));

@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using RotationSolver.Actions;
 using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Commands;
 using RotationSolver.Data;
@@ -13,6 +14,15 @@ namespace RotationSolver.Localization
             VirtualKey.CONTROL => "CTRL",
             VirtualKey.MENU => "ALT",
             _ => k.ToString(),
+        };
+
+        public static string ToName(this EnemyPositional value) => value switch
+        {
+            EnemyPositional.None => LocalizationManager.RightLang.EnemyLocation_None,
+            EnemyPositional.Back => LocalizationManager.RightLang.EnemyLocation_Back,
+            EnemyPositional.Side => LocalizationManager.RightLang.EnemyLocation_Side,
+            EnemyPositional.Front => LocalizationManager.RightLang.EnemyLocation_Front,
+            _ => string.Empty,
         };
 
         public static string ToName(this DescType type) => type switch

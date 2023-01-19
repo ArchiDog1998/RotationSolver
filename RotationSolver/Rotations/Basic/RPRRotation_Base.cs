@@ -41,8 +41,8 @@ internal abstract class RPRRotation_Base : CustomCombo.CustomRotation
 
     public class PRPAction : BaseAction
     {
-        internal override EnemyLocation EnermyLocation => Player.HasStatus(true, StatusID.Enshrouded)
-            ? EnemyLocation.None : base.EnermyLocation;
+        internal override EnemyPositional EnermyPositonal => Player.HasStatus(true, StatusID.Enshrouded)
+            ? EnemyPositional.None : base.EnermyPositonal;
         internal PRPAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
         {
