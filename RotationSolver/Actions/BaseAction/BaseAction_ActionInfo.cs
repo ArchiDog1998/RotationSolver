@@ -180,8 +180,6 @@ internal partial class BaseAction
         return true;
     }
 
-    //internal uint TargetId { get; private set; } = 0xE0000000;
-
     public unsafe bool Use()
     {
         var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };

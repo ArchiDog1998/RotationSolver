@@ -166,7 +166,7 @@ internal partial class RotationConfigWindow : Window
 
                 if (ImGui.Button($"{FontAwesomeIcon.Edit.ToIconString()}##{texture.GetHashCode()}"))
                 {
-                    RotationSolverPlugin.OpenScriptWindow(script);
+                    //RotationSolverPlugin.OpenScriptWindow(script);
                 }
                 ImGui.PopFont();
 
@@ -181,7 +181,7 @@ internal partial class RotationConfigWindow : Window
 
                 if (ImGui.Button($"{FontAwesomeIcon.Globe.ToIconString()}##{texture.GetHashCode()}"))
                 {
-                    var url = @"https://github.com/ArchiDog1998/XIVAutoAttack/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
+                    var url = @"https://github.com/ArchiDog1998/RotationSolver/blob/main/" + texture.GetType().FullName.Replace(".", @"/") + ".cs";
 
                     Util.OpenLink(url);
                 }
@@ -193,25 +193,25 @@ internal partial class RotationConfigWindow : Window
                 }
             }
 
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
-            ImGui.PushFont(UiBuilder.IconFont);
+            //ImGui.SameLine();
+            //ImGuiHelper.Spacing();
+            //ImGui.PushFont(UiBuilder.IconFont);
 
-            if (ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{texture.GetHashCode() + 1}"))
-            {
-                var newCom = IconReplacer.AddScripCombo(com.JobIDs[0]);
-                if (newCom != null)
-                {
-                    Service.Configuration.ComboChoices[(uint)jobId] = newCom.RotationName;
-                    Service.Configuration.Save();
-                }
-            }
-            ImGui.PopFont();
+            //if (ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{texture.GetHashCode() + 1}"))
+            //{
+            //    var newCom = IconReplacer.AddScripCombo(com.JobIDs[0]);
+            //    if (newCom != null)
+            //    {
+            //        Service.Configuration.ComboChoices[(uint)jobId] = newCom.RotationName;
+            //        Service.Configuration.Save();
+            //    }
+            //}
+            //ImGui.PopFont();
 
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_AddCombo);
-            }
+            //if (ImGui.IsItemHovered())
+            //{
+            //    ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Helper_AddCombo);
+            //}
 
         }
 

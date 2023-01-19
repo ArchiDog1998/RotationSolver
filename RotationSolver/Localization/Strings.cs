@@ -79,7 +79,7 @@ internal class Strings
     public string Configwindow_Helper_SwitchAuthor { get; set; } = "Click to switch authors";
     public string Configwindow_Helper_GameVersion { get; set; } = "Game Version";
     public string Configwindow_Helper_EditCombo { get; set; } = "Click to edit this custom Combo.";
-    public string Configwindow_Helper_AddCombo { get; set; } = "Add a custom Combo.";
+    //public string Configwindow_Helper_AddCombo { get; set; } = "Add a custom Combo.";
     public string Configwindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string Configwindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string Configwindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
@@ -185,7 +185,6 @@ internal class Strings
     #endregion
 
     #region ScriptWindow
-    public string Scriptwindow_Header { get; set; } = "Custom loop v";
     public string Scriptwindow_Author { get; set; } = "Author";
     public string Scriptwindow_OpenSourceFile { get; set; } = "Open Source File";
     public string Scriptwindow_Save { get; set; } = "Save";

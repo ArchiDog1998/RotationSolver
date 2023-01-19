@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RotationSolver.Data
+namespace RotationSolver.Data;
+
+internal enum TargetHostileType : byte
 {
-    internal enum TargetHostileType : byte
-    {
-        AllTargetsCanAttack,
-        TargetsHaveTargetOrAllTargetsCanAttack,
-        TargetsHaveTarget,
-    }
+    AllTargetsCanAttack,
+    TargetsHaveTargetOrAllTargetsCanAttack,
+    TargetsHaveTarget,
 }

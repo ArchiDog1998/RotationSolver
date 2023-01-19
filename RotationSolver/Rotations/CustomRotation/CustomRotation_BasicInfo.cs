@@ -55,16 +55,16 @@ internal abstract partial class CustomRotation : ICustomRotation
 
     public bool IsEnabled
     {
-        get => !Service.Configuration.EnabledCombos.Contains(Name);
+        get => !Service.Configuration.DisabledCombos.Contains(Name);
         set
         {
             if (value)
             {
-                Service.Configuration.EnabledCombos.Remove(Name);
+                Service.Configuration.DisabledCombos.Remove(Name);
             }
             else
             {
-                Service.Configuration.EnabledCombos.Add(Name);
+                Service.Configuration.DisabledCombos.Add(Name);
             }
         }
     }

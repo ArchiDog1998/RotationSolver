@@ -21,7 +21,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private readonly WindowSystem windowSystem;
 
     private static RotationConfigWindow _comboConfigWindow;
-    internal static ScriptComboWindow _scriptComboWindow;
     public string Name => "Rotation Solver";
 
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
@@ -34,10 +33,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.IconReplacer = new IconReplacer();
 
         _comboConfigWindow = new();
-        _scriptComboWindow = new();
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(_comboConfigWindow);
-        windowSystem.AddWindow(_scriptComboWindow);
 
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
@@ -60,9 +57,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     {
         _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
             + typeof(RotationConfigWindow).Assembly.GetName().Version.ToString();
-
-        _scriptComboWindow.WindowName = LocalizationManager.RightLang.Scriptwindow_Header
-            + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString();
 
         RSCommands.Disable();
         RSCommands.Enable();
@@ -88,12 +82,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private void OnOpenConfigUi()
     {
         _comboConfigWindow.IsOpen = true;
-    }
-
-    internal static void OpenScriptWindow(IScriptCombo combo)
-    {
-        _scriptComboWindow.TargetCombo = combo;
-        _scriptComboWindow.IsOpen = true;
     }
 
     internal static void OpenConfigWindow()

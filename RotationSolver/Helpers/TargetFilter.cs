@@ -36,7 +36,7 @@ internal static class TargetFilter
         if (availableCharas == null || !availableCharas.Any()) return null;
 
         //找到被标记攻击的怪
-        if (GetAttackMarkChara(availableCharas) is BattleChara b && b != null) return b;
+        if (MarkingHelper.GetAttackMarkChara(availableCharas) is BattleChara b && b != null) return b;
 
         //去掉停止标记的怪
         if (Service.Configuration.FilterStopMark)
@@ -352,27 +352,6 @@ internal static class TargetFilter
         var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
         distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
         return distance;
-    }
-
-    internal static BattleChara GetAttackMarkChara(IEnumerable<BattleChara> charas)
-    {
-        if (!Service.Configuration.ChooseAttackMark) return null;
-
-        var b = MarkingHelper.Attack1Chara(charas);
-        if (b != null) return b;
-
-        b = MarkingHelper.Attack2Chara(charas);
-        if (b != null) return b;
-
-        b = MarkingHelper.Attack3Chara(charas);
-        if (b != null) return b;
-
-        b = MarkingHelper.Attack4Chara(charas);
-        if (b != null) return b;
-
-        b = MarkingHelper.Attack5Chara(charas);
-        if (b != null) return b;
-        return null;
     }
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)

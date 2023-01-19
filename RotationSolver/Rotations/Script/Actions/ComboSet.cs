@@ -82,36 +82,36 @@ namespace RotationSolver.Combos.Script.Actions
                 Description = desc;
             }
 
-            if (ImGui.BeginChild($"##ActionDescOf{JobID}From{AuthorName}", new Vector2(-5f, -1f), true))
-            {
-                if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_CountDown, CountDown == RotationSolverPlugin._scriptComboWindow.ActiveSet))
-                {
-                    RotationSolverPlugin._scriptComboWindow.ActiveSet = CountDown;
-                }
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_CountDownDesc);
-                }
+            //if (ImGui.BeginChild($"##ActionDescOf{JobID}From{AuthorName}", new Vector2(-5f, -1f), true))
+            //{
+            //    if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_CountDown, CountDown == RotationSolverPlugin._scriptComboWindow.ActiveSet))
+            //    {
+            //        RotationSolverPlugin._scriptComboWindow.ActiveSet = CountDown;
+            //    }
+            //    if (ImGui.IsItemHovered())
+            //    {
+            //        ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_CountDownDesc);
+            //    }
 
-                foreach (var p in from prop in GetType().GetRuntimeProperties()
-                                  where prop.PropertyType == typeof(ActionsSet)
-                                  select prop)
-                {
-                    var value = p.GetValue(this) as ActionsSet;
-                    if (ImGui.Selectable(p.GetMemberName(), value == RotationSolverPlugin._scriptComboWindow.ActiveSet))
-                    {
-                        RotationSolverPlugin._scriptComboWindow.ActiveSet = value;
-                    }
+            //    foreach (var p in from prop in GetType().GetRuntimeProperties()
+            //                      where prop.PropertyType == typeof(ActionsSet)
+            //                      select prop)
+            //    {
+            //        var value = p.GetValue(this) as ActionsSet;
+            //        if (ImGui.Selectable(p.GetMemberName(), value == RotationSolverPlugin._scriptComboWindow.ActiveSet))
+            //        {
+            //            RotationSolverPlugin._scriptComboWindow.ActiveSet = value;
+            //        }
 
-                    var d = p.GetMemberDescription();
-                    if (ImGui.IsItemHovered() && !string.IsNullOrEmpty(d))
-                    {
-                        ImGui.SetTooltip(d);
-                    }
-                }
+            //        var d = p.GetMemberDescription();
+            //        if (ImGui.IsItemHovered() && !string.IsNullOrEmpty(d))
+            //        {
+            //            ImGui.SetTooltip(d);
+            //        }
+            //    }
 
-                ImGui.EndChild();
-            }
+            //    ImGui.EndChild();
+            //}
         }
     }
 }

@@ -22,7 +22,6 @@ internal static class OverlayWindow
     {
         if (Service.GameGui == null || Service.ClientState.LocalPlayer == null || !Service.Configuration.UseOverlayWindow) return;
 
-        //转场或者在看片片，不执行。
         if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]) return;

@@ -106,10 +106,10 @@ internal class ActionConditions : IDraw
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            if (ImGui.Selectable(_action.Name, this == RotationSolverPlugin._scriptComboWindow.ActiveAction))
-            {
-                RotationSolverPlugin._scriptComboWindow.ActiveAction = this;
-            }
+            //if (ImGui.Selectable(_action.Name, this == RotationSolverPlugin._scriptComboWindow.ActiveAction))
+            //{
+            //    RotationSolverPlugin._scriptComboWindow.ActiveAction = this;
+            //}
         }
         else if (_method != null)
         {
@@ -118,10 +118,10 @@ internal class ActionConditions : IDraw
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            if (ImGui.Selectable(_method.GetMemberName()))
-            {
-                RotationSolverPlugin._scriptComboWindow.ActiveAction = this;
-            }
+            //if (ImGui.Selectable(_method.GetMemberName()))
+            //{
+            //    RotationSolverPlugin._scriptComboWindow.ActiveAction = this;
+            //}
 
             var desc = _method.GetMemberDescription();
             if (ImGui.IsItemHovered() && !string.IsNullOrEmpty(desc))
@@ -131,10 +131,10 @@ internal class ActionConditions : IDraw
         }
         else
         {
-            if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_Return))
-            {
-                RotationSolverPlugin._scriptComboWindow.ActiveAction = this;
-            }
+            //if (ImGui.Selectable(LocalizationManager.RightLang.Scriptwindow_Return))
+            //{
+            //    RotationSolverPlugin._scriptComboWindow.ActiveAction = this;
+            //}
         }
     }
 
