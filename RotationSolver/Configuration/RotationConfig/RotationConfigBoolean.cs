@@ -1,4 +1,6 @@
 ﻿using ImGuiNET;
+using RotationSolver.Commands;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 
 namespace RotationSolver.Configuration.RotationConfig;
@@ -26,8 +28,8 @@ internal class RotationConfigBoolean : RotationConfigBase
         if (canAddButton)
         {
             ImGui.SameLine();
-            //Spacing();
-            //CommandHelp(boolean.name);
+            ImGuiHelper.Spacing();
+            RSCommands.DisplayCommandHelp(OtherCommandType.Rotations, Name);
         }
     }
 

@@ -35,7 +35,7 @@ namespace RotationSolver.Commands
         {
             switch (otherType)
             {
-                case OtherCommandType.Combos:
+                case OtherCommandType.Rotations:
                     var customCombo = IconReplacer.RightNowCombo;
                     if (customCombo == null) return;
 

@@ -31,7 +31,7 @@ namespace RotationSolver.Commands
     internal enum OtherCommandType : byte
     {
         Settings,
-        Combos,
+        Rotations,
         Actions,
     }
 }

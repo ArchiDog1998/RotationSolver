@@ -49,6 +49,4 @@ internal abstract class RotationConfigBase : IRotationConfig
     public abstract void Draw(RotationConfigSet set, bool canAddButton);
 
     public virtual bool DoCommand(IRotationConfigSet set, string str) => str.StartsWith(Name);
-
-
 }

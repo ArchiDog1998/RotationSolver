@@ -10,9 +10,14 @@ namespace RotationSolver.Commands;
 
 internal static partial class RSCommands
 {
-    internal static void DisplayCommandHelp<T>(this T command, Func<T, string> getHelp = null) where T : struct, Enum
+    internal static void DisplayCommandHelp<T>(this T command, string extraCommand = "", Func<T, string> getHelp = null) where T : struct, Enum
     {
         var cmdStr = _command + " " + command.ToString();
+        if (!string.IsNullOrEmpty(extraCommand))
+        {
+            cmdStr += " " + extraCommand;
+        }
+
         if (ImGui.Button(cmdStr))
         {
             Service.CommandManager.ProcessCommand(cmdStr);

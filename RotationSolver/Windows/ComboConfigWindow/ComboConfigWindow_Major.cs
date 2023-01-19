@@ -17,6 +17,7 @@ using RotationSolver.SigReplacers;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Commands;
+using RotationSolver.Helpers;
 
 namespace RotationSolver.Windows.ComboConfigWindow;
 
@@ -102,46 +103,46 @@ internal partial class ComboConfigWindow : Window
                 {
                     ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-                    StateCommandType.Smart.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    StateCommandType.Smart.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    StateCommandType.Manual.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    StateCommandType.Manual.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    StateCommandType.Cancel.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.HealArea.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.HealArea.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.HealSingle.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.HealSingle.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.DefenseArea.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.DefenseArea.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.DefenseSingle.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.DefenseSingle.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.EsunaShield.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.EsunaShield.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.RaiseShirk.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.MoveForward.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.MoveForward.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.MoveBack.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.MoveBack.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.AntiRepulsion.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.AntiRepulsion.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.Break.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.Break.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
 
-                    SpecialCommandType.EndSpecial.DisplayCommandHelp(EnumTranslations.ToHelp);
+                    SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                     ImGui.Separator();
                 }
                 ImGui.PopStyleVar();
@@ -226,7 +227,7 @@ internal partial class ComboConfigWindow : Window
             }
 
             ImGui.SameLine();
-            Spacing();
+            ImGuiHelper.Spacing();
 
 
             if (texture is IScriptCombo script)
@@ -263,7 +264,7 @@ internal partial class ComboConfigWindow : Window
             }
 
             ImGui.SameLine();
-            Spacing();
+            ImGuiHelper.Spacing();
             ImGui.PushFont(UiBuilder.IconFont);
 
             if (ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{texture.GetHashCode() + 1}"))
@@ -294,16 +295,6 @@ internal partial class ComboConfigWindow : Window
         ImGui.PopStyleVar();
     }
 
-    internal static void Spacing(byte count = 1)
-    {
-        string s = string.Empty;
-        for (int i = 0; i < count; i++)
-        {
-            s += "    ";
-        }
-        ImGui.Text(s);
-        ImGui.SameLine();
-    }
 
     private unsafe static void DrawAction(IAction act)
     {

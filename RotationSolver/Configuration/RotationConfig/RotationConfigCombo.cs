@@ -1,6 +1,8 @@
 ﻿using ImGuiNET;
 using Lumina.Data.Parsing;
+using RotationSolver.Commands;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System;
 using System.Collections.Generic;
@@ -33,8 +35,13 @@ internal class RotationConfigCombo : RotationConfigBase
                 if (canAddButton)
                 {
                     ImGui.SameLine();
-                    //Spacing();
-                    //CommandHelp(comboItem.name + comboIndex.ToString());
+                    ImGuiHelper.Spacing();
+                    RSCommands.DisplayCommandHelp(OtherCommandType.Rotations, Name + " " +comboIndex.ToString());
+
+                    ImGui.SameLine();
+                    ImGuiHelper.Spacing();
+                    RSCommands.DisplayCommandHelp(OtherCommandType.Rotations, Name + " " + Items[comboIndex]);
+
                 }
             }
             ImGui.EndCombo();
@@ -48,8 +55,8 @@ internal class RotationConfigCombo : RotationConfigBase
         if (canAddButton)
         {
             ImGui.SameLine();
-            //Spacing();
-            //CommandHelp(comboItem.name);
+            ImGuiHelper.Spacing();
+            RSCommands.DisplayCommandHelp(OtherCommandType.Rotations, Name);
         }
     }
 
