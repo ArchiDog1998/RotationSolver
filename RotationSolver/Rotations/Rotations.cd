@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RotationSolver.Combos.CustomCombo.CustomRotation">
+    <Position X="9.75" Y="2.5" Width="2.25" />
+    <NestedTypes>
+      <Class Name="RotationSolver.Combos.CustomCombo.CustomRotation.RoleAction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rotations\CustomRotation\CustomRotation_Actions.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>0igKNo5ASMUpVo3BhcEcJ6QQACAGUWEBCJuCS8pABUE=</HashCode>
+      <FileName>Rotations\CustomRotation\CustomRotation_Ability.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.PLDRotation_Base">
+    <Position X="1" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEMEAEAEAEBEAPAChQQAAOYoAAFCAAIAAqAgCBAAAA=</HashCode>
+      <FileName>Rotations\Basic\PLDRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.WARRotation_Base">
+    <Position X="3" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAgAEIBIQEAMAEBBCAgAYIAJAABUAiBIAgQAgAAAAA=</HashCode>
+      <FileName>Rotations\Basic\WARRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.DRKRotation_Base">
+    <Position X="5" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BwSEACEjQAMgUAEBAEAjKBAAIAAAAoAAAEgAAAAUAAA=</HashCode>
+      <FileName>Rotations\Basic\DRKRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.GNBRotation_Base">
+    <Position X="7.25" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AGwGIiQmAREAEEFAAIBAAAAEIAAFgASAAQgBAEhABAQ=</HashCode>
+      <FileName>Rotations\Basic\GNBRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.WHMRotation_Base">
+    <Position X="12.75" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIQAAiIQAEEIQAQCOCABAIIARAQQAQEAAAAEAwAAA=</HashCode>
+      <FileName>Rotations\Basic\WHMRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.SCHRotation_Base">
+    <Position X="14.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIgRgAENA4CiAAAACEYAIwEJAjCgAAAAgAAgA=</HashCode>
+      <FileName>Rotations\Basic\SCHRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.ASTRotation_Base">
+    <Position X="16.75" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AggSAMAAAAQIG9gAQBgAAgAAIAEkAAAAAAhEFoAACAA=</HashCode>
+      <FileName>Rotations\Basic\ASTRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.SGERotation_Base">
+    <Position X="19" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAKEAAIAAAAENAaBiAoZ0AIIAAAAAYDAAAECAACAKI=</HashCode>
+      <FileName>Rotations\Basic\SGERotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.MNKRotation_Base">
+    <Position X="5.25" Y="26.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAEAAAAgEAIAUAFCCADAggEAIAAAAEQQJIAYAJBkSAA=</HashCode>
+      <FileName>Rotations\Basic\MNKRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.DRGRotation_Base">
+    <Position X="7.75" Y="26.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BEwAAAAIgkAAFAAEBgQAAAEGIAAgAIIgAABAAABAAAA=</HashCode>
+      <FileName>Rotations\Basic\DRGRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.NINRotation_Base">
+    <Position X="10" Y="26.5" Width="1.75" />
+    <NestedTypes>
+      <Class Name="RotationSolver.Combos.Basic.NINRotation_Base.NinAction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rotations\Basic\NINRotation_Base.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EEEII1BAAACBkEHAGAgQQEAAIAYldAACgIEEAYUBkCA=</HashCode>
+      <FileName>Rotations\Basic\NINRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.SAMRotation_Base">
+    <Position X="12.25" Y="26.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BAABAAERogAAFAnABQAGBHFGIAQBEkQBEEAJAAAAAGA=</HashCode>
+      <FileName>Rotations\Basic\SAMRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.RPRRotation_Base">
+    <Position X="14.5" Y="26.5" Width="1.75" />
+    <NestedTypes>
+      <Class Name="RotationSolver.Combos.Basic.RPRRotation_Base.PRPAction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rotations\Basic\RPRRotation_Base.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AIABEEAEjiAgGAEAACRRAAgwLAEAgBAAgIAABBCIAEA=</HashCode>
+      <FileName>Rotations\Basic\RPRRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.BRDRotation_Base">
+    <Position X="1" Y="14" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AlEACAAFBAAIEAQAkAABAAoAMABCCCAAgRoCAAIAIQA=</HashCode>
+      <FileName>Rotations\Basic\BRDRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.MCHRotation_Base">
+    <Position X="3" Y="14.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>JAIAAAAAAiCA8QiREBAAAAEAIiAAAAAAAEgQAgAAAAA=</HashCode>
+      <FileName>Rotations\Basic\MCHRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.DNCRotation_Base">
+    <Position X="5.25" Y="15" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AMCCAAkgMCgAECAQAAAIcCWAYEIAEIgAABAAAAAABgo=</HashCode>
+      <FileName>Rotations\Basic\DNCRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.SMNRotation_Base">
+    <Position X="16.75" Y="14.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ASEAAkBIoBIEEoEIAyMQgACEIQIUAACMAIAEAAAEGAA=</HashCode>
+      <FileName>Rotations\Basic\SMNRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.BLMRotation_Base">
+    <Position X="14.5" Y="14.75" Width="2" />
+    <NestedTypes>
+      <Class Name="RotationSolver.Combos.Basic.BLMRotation_Base.ThunderAction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rotations\Basic\BLMRotation_Base.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="RotationSolver.Combos.Basic.BLMRotation_Base.Fire3Action" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rotations\Basic\BLMRotation_Base.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="RotationSolver.Combos.Basic.BLMRotation_Base.ElementAction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rotations\Basic\BLMRotation_Base.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AQAIIBABAAAGEAAIAImoAAQAKQEUMQQEFAEQABqIAgI=</HashCode>
+      <FileName>Rotations\Basic\BLMRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.RDMRotation_Base">
+    <Position X="19.25" Y="13.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABJIAIIQBAA0YEIBCCAAAAQMAAsAABigAAEAGIgAAg=</HashCode>
+      <FileName>Rotations\Basic\RDMRotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Combos.Basic.BLURotation_Base">
+    <Position X="23.75" Y="2.5" Width="2" />
+    <NestedTypes>
+      <Enum Name="RotationSolver.Combos.Basic.BLURotation_Base.BLUAttackType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rotations\Basic\BLURotation_Base.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="RotationSolver.Combos.Basic.BLURotation_Base.BLUActionType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rotations\Basic\BLURotation_Base.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="RotationSolver.Combos.Basic.BLURotation_Base.BLUID" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rotations\Basic\BLURotation_Base.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Class Name="RotationSolver.Combos.Basic.BLURotation_Base.BLUAction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rotations\Basic\BLURotation_Base.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>yklCQVgAxPYrHIlAMfglZ6xrCcrhBAyLDhiAOgYdskA=</HashCode>
+      <FileName>Rotations\Basic\BLURotation_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

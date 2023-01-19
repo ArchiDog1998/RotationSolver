@@ -9,15 +9,17 @@ using RotationSolver.Data;
 
 namespace RotationSolver.Combos.Basic;
 
-internal enum BLUID : byte
-{
-    Tank,
-    Healer,
-    DPS,
-}
 
-internal abstract class BLURotation_Base : CustomCombo.CustomRotation
+internal abstract class BLURotation_Base : CustomRotation
 {
+    internal enum BLUID : byte
+    {
+        Tank,
+        Healer,
+        DPS,
+    }
+
+
     internal enum BLUAttackType : byte
     {
         Magical,

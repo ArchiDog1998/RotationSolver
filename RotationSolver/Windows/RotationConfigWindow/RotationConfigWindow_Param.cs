@@ -1,11 +1,9 @@
-﻿using Dalamud.Game.ClientState.Keys;
-using ImGuiNET;
+﻿using ImGuiNET;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System;
-using System.Linq;
 using System.Numerics;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
@@ -328,26 +326,26 @@ internal partial class RotationConfigWindow
 
     private void DrawParamHostile()
     {
-        if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Params_AddHostileCondition))
+        if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Param_AddHostileCondition))
         {
             Service.Configuration.TargetingTypes.Add(TargetingType.Big);
         }
         ImGui.SameLine();
         ImGuiHelper.Spacing();
-        ImGui.Text(LocalizationManager.RightLang.Configwindow_Params_HostileDesc);
+        ImGui.Text(LocalizationManager.RightLang.Configwindow_Param_HostileDesc);
         for (int i = 0; i < Service.Configuration.TargetingTypes.Count; i++)
         {
             ImGui.Separator();
 
             var names = Enum.GetNames(typeof(TargetingType));
             var targingType = (int)Service.Configuration.TargetingTypes[i];
-            if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Params_HostileCondition + "##HostileCondition" + i.ToString(), ref targingType, names, names.Length))
+            if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Param_HostileCondition + "##HostileCondition" + i.ToString(), ref targingType, names, names.Length))
             {
                 Service.Configuration.TargetingTypes[i] = (TargetingType)targingType;
                 Service.Configuration.Save();
             }
 
-            if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Params_ConditionUp + "##HostileUp" + i.ToString()))
+            if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Param_ConditionUp + "##HostileUp" + i.ToString()))
             {
                 if (i != 0)
                 {
@@ -358,7 +356,7 @@ internal partial class RotationConfigWindow
             }
             ImGui.SameLine();
             ImGuiHelper.Spacing();
-            if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Params_ConditionDown + "##HostileDown" + i.ToString()))
+            if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Param_ConditionDown + "##HostileDown" + i.ToString()))
             {
                 if (i < Service.Configuration.TargetingTypes.Count - 1)
                 {
@@ -371,7 +369,7 @@ internal partial class RotationConfigWindow
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Params_ConditionDelete + "##HostileDelete" + i.ToString()))
+            if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Param_ConditionDelete + "##HostileDelete" + i.ToString()))
             {
                 Service.Configuration.TargetingTypes.RemoveAt(i);
             }

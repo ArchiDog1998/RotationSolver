@@ -87,7 +87,6 @@ internal partial class RotationConfigWindow : Window
     }
 
 
-
     private static void DrawTexture<T>(T texture, Action otherThing, ClassJobID jobId = 0, ICustomRotation[] combos = null) where T : class, IEnableTexture
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));

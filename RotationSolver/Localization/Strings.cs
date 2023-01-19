@@ -176,12 +176,12 @@ internal class Strings
     public string Configwindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
     public string Configwindow_Param_RaiseBrinkofDeath { get; set; } = "Raise player even has Brink of Death";
     public string Configwindow_Param_Hostile { get; set; } = "Hostile target filtering options";
-    public string Configwindow_Params_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
-    public string Configwindow_Params_AddHostileCondition { get; set; } = "Add selection condition";
-    public string Configwindow_Params_HostileCondition { get; set; } = "Hostile target selection condition";
-    public string Configwindow_Params_ConditionUp { get; set; } = "Up";
-    public string Configwindow_Params_ConditionDown { get; set; } = "Down";
-    public string Configwindow_Params_ConditionDelete { get; set; } = "Delete";
+    public string Configwindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
+    public string Configwindow_Param_AddHostileCondition { get; set; } = "Add selection condition";
+    public string Configwindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
+    public string Configwindow_Param_ConditionUp { get; set; } = "Up";
+    public string Configwindow_Param_ConditionDown { get; set; } = "Down";
+    public string Configwindow_Param_ConditionDelete { get; set; } = "Delete";
     #endregion
 
     #region ScriptWindow
