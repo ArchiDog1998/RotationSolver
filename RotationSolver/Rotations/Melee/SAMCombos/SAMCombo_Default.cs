@@ -1,12 +1,12 @@
 ﻿using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
-namespace RotationSolver.Combos.Melee.SAMCombos;
+namespace RotationSolver.Rotations.Melee.SAMCombos;
 
 internal sealed class SAMCombo_Default : SAMRotation_Base
 {

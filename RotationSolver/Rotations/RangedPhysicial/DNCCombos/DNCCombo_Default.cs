@@ -1,12 +1,12 @@
 using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
 using RotationSolver.Updaters;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Combos.RangedPhysicial.DNCCombos;
+namespace RotationSolver.Rotations.RangedPhysicial.DNCCombos;
 
 internal sealed class DNCCombo_Default : DNCRotation_Base
 {

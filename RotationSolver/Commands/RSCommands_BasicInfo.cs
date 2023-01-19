@@ -1,18 +1,8 @@
 ﻿using Dalamud.Game.Command;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.SigReplacers;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Commands
 {

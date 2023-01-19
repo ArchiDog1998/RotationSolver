@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using RotationSolver.Combos.Script.Conditions;
 
-namespace RotationSolver.Combos.Script.Conditions;
+namespace RotationSolver.Rotations.Script.Conditions;
 
 internal interface ICondition : IDraw
 {

@@ -1,13 +1,13 @@
 using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Updaters;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Combos.Tank.PLDCombos;
+namespace RotationSolver.Rotations.Tank.PLDCombos;
 
 internal sealed class PLDCombo_Default : PLDRotation_Base
 {

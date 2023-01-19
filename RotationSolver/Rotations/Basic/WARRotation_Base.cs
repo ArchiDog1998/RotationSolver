@@ -4,9 +4,9 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Actions.BaseAction;
 
-namespace RotationSolver.Combos.Basic;
+namespace RotationSolver.Rotations.Basic;
 
-internal abstract class WARRotation_Base : CustomCombo.CustomRotation
+internal abstract class WARRotation_Base : CustomRotation.CustomRotation
 {
     private static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
 

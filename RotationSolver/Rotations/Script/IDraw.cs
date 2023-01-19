@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.Combos.Script;
+﻿namespace RotationSolver.Rotations.Script;
 
 internal interface IDraw
 {

@@ -5,11 +5,10 @@ using System.Linq;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Windows;
-using RotationSolver.Combos.Script;
-using RotationSolver;
 using RotationSolver.Localization;
+using RotationSolver.Rotations.Script;
 
-namespace RotationSolver.Combos.Script.Conditions;
+namespace RotationSolver.Rotations.Script.Conditions;
 
 internal class ActionCondition : ICondition
 {

@@ -2,15 +2,13 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Updaters;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
-using RotationSolver;
 
-namespace RotationSolver.Combos.Basic;
+namespace RotationSolver.Rotations.Basic;
 
-internal abstract class SGERotation_Base : CustomCombo.CustomRotation
+internal abstract class SGERotation_Base : CustomRotation.CustomRotation
 {
     private static SGEGauge JobGauge => Service.JobGauges.Get<SGEGauge>();
 

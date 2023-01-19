@@ -18,6 +18,12 @@
 	  <PackageReference Include="DalamudPackager" Version="2.1.10" MakeZip="true" />
 	  
 	  <EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
+	  
+	  <Compile Remove="Windows\RotationConfigWindow\**" />
+	  
+	  <EmbeddedResource Remove="Windows\RotationConfigWindow\**" />
+	  
+	  <None Remove="Windows\RotationConfigWindow\**" />
 
 	  <Reference Include="Dalamud">
 		  <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>

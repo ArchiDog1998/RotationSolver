@@ -4,15 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
-using static RotationSolver.Helpers.ReflectionHelper;
 using RotationSolver.Helpers;
-using RotationSolver.Combos.CustomCombo;
-using RotationSolver;
 using RotationSolver.Data;
 using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Combos.CustomCombo;
+namespace RotationSolver.Rotations.CustomRotation;
 
 internal abstract partial class CustomRotation : ICustomRotation
 {

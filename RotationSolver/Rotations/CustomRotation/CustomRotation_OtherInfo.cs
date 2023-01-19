@@ -11,7 +11,7 @@ using System.Linq;
 using System.Reflection;
 using static RotationSolver.SigReplacers.Watcher;
 
-namespace RotationSolver.Combos.CustomCombo;
+namespace RotationSolver.Rotations.CustomRotation;
 
 internal abstract partial class CustomRotation
 {

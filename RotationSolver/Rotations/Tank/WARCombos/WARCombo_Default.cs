@@ -1,14 +1,14 @@
 using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Updaters;
 using RotationSolver.Commands;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Combos.Tank.WARCombos;
+namespace RotationSolver.Rotations.Tank.WARCombos;
 
 internal sealed class WARCombo_Default : WARRotation_Base
 {

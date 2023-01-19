@@ -6,8 +6,9 @@ using RotationSolver.Actions;
 using RotationSolver.Windows;
 using RotationSolver.Localization;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.Script;
 
-namespace RotationSolver.Combos.Script.Actions
+namespace RotationSolver.Rotations.Script.Actions
 {
     internal class ActionsSet : IDraw
     {

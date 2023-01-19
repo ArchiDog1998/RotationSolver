@@ -4,20 +4,16 @@ using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
+using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Localization;
+using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Rotations.Script;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Numerics;
-using RotationSolver.Actions;
-using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.Script;
-using RotationSolver.SigReplacers;
-using RotationSolver.Data;
-using RotationSolver.Localization;
-using RotationSolver.Commands;
-using RotationSolver.Helpers;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
 

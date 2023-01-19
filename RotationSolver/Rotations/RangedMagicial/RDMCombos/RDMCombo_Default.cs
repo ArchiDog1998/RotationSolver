@@ -1,12 +1,12 @@
 using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
-namespace RotationSolver.Combos.RangedMagicial.RDMCombos;
+namespace RotationSolver.Rotations.RangedMagicial.RDMCombos;
 
 internal sealed class RDMCombo_Default : RDMRotation_Base
 {

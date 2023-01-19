@@ -5,12 +5,11 @@ using RotationSolver.Updaters;
 using RotationSolver.Actions;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
-using RotationSolver;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Rotations.Basic;
 
-namespace RotationSolver.Combos.Healer.SGECombos;
+namespace RotationSolver.Rotations.Healer.SGECombos;
 
 internal sealed class SGECombo_Default : SGERotation_Base
 {

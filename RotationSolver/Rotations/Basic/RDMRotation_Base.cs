@@ -2,15 +2,14 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Updaters;
 using RotationSolver.Actions;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
 
-namespace RotationSolver.Combos.Basic;
+namespace RotationSolver.Rotations.Basic;
 
-internal abstract class RDMRotation_Base : CustomCombo.CustomRotation
+internal abstract class RDMRotation_Base : CustomRotation.CustomRotation
 {
     private static RDMGauge JobGauge => Service.JobGauges.Get<RDMGauge>();
 

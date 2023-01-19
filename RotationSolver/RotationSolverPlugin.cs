@@ -2,16 +2,15 @@
 
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using RotationSolver.Combos.Script;
+using RotationSolver.Commands;
 using RotationSolver.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
 using RotationSolver.Windows;
-using System;
-using RotationSolver.Commands;
 using RotationSolver.Windows.RotationConfigWindow;
+using System;
 
 namespace RotationSolver;
 

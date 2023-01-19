@@ -1,15 +1,14 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Actions;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
 using RotationSolver.Updaters;
 
-namespace RotationSolver.Combos.Basic
+namespace RotationSolver.Rotations.Basic
 {
-    internal abstract partial class BLMRotation_Base : CustomCombo.CustomRotation
+    internal abstract partial class BLMRotation_Base : CustomRotation.CustomRotation
     {
         private static BLMGauge JobGauge => Service.JobGauges.Get<BLMGauge>();
 

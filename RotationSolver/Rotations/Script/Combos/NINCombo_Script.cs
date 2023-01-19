@@ -1,10 +1,10 @@
 ﻿using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.Script;
-using RotationSolver.Combos.Script.Actions;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.Script;
+using RotationSolver.Rotations.Script.Actions;
 using System;
 
-namespace RotationSolver.Combos.Script.Combos;
+namespace RotationSolver.Rotations.Script.Combos;
 
 internal class NINCombo_Script : NINRotation_Base, IScriptCombo
 {

@@ -7,10 +7,10 @@ using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Windows;
 using RotationSolver.Helpers;
-using RotationSolver.Combos.Script.Conditions;
 using RotationSolver.Localization;
+using RotationSolver.Rotations.Script.Conditions;
 
-namespace RotationSolver.Combos.Script.Actions;
+namespace RotationSolver.Rotations.Script.Actions;
 
 /// <summary>
 /// 最右边那栏用来渲染的

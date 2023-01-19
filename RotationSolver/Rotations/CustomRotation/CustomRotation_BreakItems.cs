@@ -4,8 +4,7 @@ using RotationSolver.Data;
 using System;
 using System.Linq;
 
-namespace RotationSolver.Combos.CustomCombo;
-
+namespace RotationSolver.Rotations.CustomRotation;
 internal abstract partial class CustomRotation
 {
     private static readonly BaseItem

@@ -1,14 +1,12 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
-using RotationSolver;
 
-namespace RotationSolver.Combos.Basic;
+namespace RotationSolver.Rotations.Basic;
 
-internal abstract class WHMRotation_Base : CustomCombo.CustomRotation
+internal abstract class WHMRotation_Base : CustomRotation.CustomRotation
 {
     private static WHMGauge JobGauge => Service.JobGauges.Get<WHMGauge>();
 

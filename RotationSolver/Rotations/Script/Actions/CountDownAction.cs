@@ -7,7 +7,7 @@ using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Helpers;
 
-namespace RotationSolver.Combos.Script.Actions
+namespace RotationSolver.Rotations.Script.Actions
 {
     internal class CountDownAction
     {

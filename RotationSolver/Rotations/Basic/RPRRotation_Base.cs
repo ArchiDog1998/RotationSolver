@@ -2,13 +2,12 @@
 using System;
 using RotationSolver.Helpers;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Actions;
 using RotationSolver.Data;
 
-namespace RotationSolver.Combos.Basic;
+namespace RotationSolver.Rotations.Basic;
 
-internal abstract class RPRRotation_Base : CustomCombo.CustomRotation
+internal abstract class RPRRotation_Base : CustomRotation.CustomRotation
 {
     private static RPRGauge JobGauge => Service.JobGauges.Get<RPRGauge>();
 

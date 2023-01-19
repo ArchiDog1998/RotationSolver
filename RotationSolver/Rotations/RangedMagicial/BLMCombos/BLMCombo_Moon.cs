@@ -1,15 +1,15 @@
 ﻿using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Collections.Generic;
 using System.Linq;
 using static RotationSolver.SigReplacers.Watcher;
 
-namespace RotationSolver.Combos.RangedMagicial.BLMCombos;
+namespace RotationSolver.Rotations.RangedMagicial.BLMCombos;
 internal sealed partial class BLMCombo_Moon : BLMRotation_Base
 {
     public override string GameVersion => "6.18";

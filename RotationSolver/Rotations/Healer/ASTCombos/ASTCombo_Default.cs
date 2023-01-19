@@ -1,14 +1,14 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Updaters;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Combos.Healer.ASTCombos;
+namespace RotationSolver.Rotations.Healer.ASTCombos;
 
 internal sealed class ASTCombo_Default : ASTRotation_Base
 {

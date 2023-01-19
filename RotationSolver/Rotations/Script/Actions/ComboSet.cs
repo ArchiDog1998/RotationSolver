@@ -2,11 +2,12 @@
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using RotationSolver.Rotations.Script;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
 
-namespace RotationSolver.Combos.Script.Actions
+namespace RotationSolver.Rotations.Script.Actions
 {
     internal class ComboSet : IDraw
     {

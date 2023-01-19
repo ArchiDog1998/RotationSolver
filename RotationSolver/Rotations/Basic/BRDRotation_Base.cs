@@ -3,16 +3,15 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Updaters;
 using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Commands;
 
-namespace RotationSolver.Combos.Basic;
+namespace RotationSolver.Rotations.Basic;
 
-internal abstract class BRDRotation_Base : CustomCombo.CustomRotation
+internal abstract class BRDRotation_Base : CustomRotation.CustomRotation
 {
     private static BRDGauge JobGauge => Service.JobGauges.Get<BRDGauge>();
 

@@ -1,12 +1,12 @@
 using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
-namespace RotationSolver.Combos.Tank.GNBCombos;
+namespace RotationSolver.Rotations.Tank.GNBCombos;
 
 internal sealed class GNBCombo_Default : GNBRotation_Base
 {

@@ -10,7 +10,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 
-namespace RotationSolver.Combos.CustomCombo;
+namespace RotationSolver.Rotations.CustomRotation;
 
 internal abstract partial class CustomRotation
 {

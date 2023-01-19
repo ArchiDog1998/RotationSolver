@@ -1,12 +1,12 @@
 ﻿using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Data;
 using System.Collections.Generic;
 using RotationSolver.Helpers;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Combos.Melee.RPRCombos;
+namespace RotationSolver.Rotations.Melee.RPRCombos;
 
 internal sealed class RPRCombo_Default : RPRRotation_Base
 {

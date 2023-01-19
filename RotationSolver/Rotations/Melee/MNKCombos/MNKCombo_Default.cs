@@ -1,16 +1,16 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RotationSolver.Combos.Melee.MNKCombos;
+namespace RotationSolver.Rotations.Melee.MNKCombos;
 internal sealed class MNKCombo_Default : MNKRotation_Base
 {
     public override string GameVersion => "6.0";

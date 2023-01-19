@@ -1,8 +1,8 @@
-﻿using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Combos.Script.Actions;
+﻿using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Rotations.Script.Actions;
 using System.IO;
 
-namespace RotationSolver.Combos.Script
+namespace RotationSolver.Rotations.Script
 {
     internal interface IScriptCombo : ICustomRotation
     {

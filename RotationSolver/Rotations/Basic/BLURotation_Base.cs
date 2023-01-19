@@ -2,15 +2,14 @@
 using System.Linq;
 using RotationSolver.Updaters;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Actions;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
 
-namespace RotationSolver.Combos.Basic;
+namespace RotationSolver.Rotations.Basic;
 
 
-internal abstract class BLURotation_Base : CustomRotation
+internal abstract class BLURotation_Base : CustomRotation.CustomRotation
 {
     internal enum BLUID : byte
     {

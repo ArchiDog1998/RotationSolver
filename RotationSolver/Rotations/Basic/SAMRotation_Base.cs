@@ -1,14 +1,13 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 
-namespace RotationSolver.Combos.Basic;
+namespace RotationSolver.Rotations.Basic;
 
-internal abstract class SAMRotation_Base : CustomCombo.CustomRotation
+internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
 {
     private static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
 

@@ -1,12 +1,12 @@
 ﻿using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
-namespace RotationSolver.Combos.RangedMagicial.SMNCombos;
+namespace RotationSolver.Rotations.RangedMagicial.SMNCombos;
 
 internal sealed class SMNCombo_Default : SMNRotation_Base
 {

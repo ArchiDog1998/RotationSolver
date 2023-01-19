@@ -1,7 +1,7 @@
 ﻿using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.SigReplacers;
 using System;
 using System.Collections.Generic;

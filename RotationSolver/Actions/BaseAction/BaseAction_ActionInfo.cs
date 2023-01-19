@@ -1,14 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using RotationSolver.Commands;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.SigReplacers;
+using RotationSolver.Updaters;
 using System;
 using System.Linq;
-using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Actions;
-using RotationSolver.Helpers;
-using RotationSolver.SigReplacers;
-using RotationSolver.Data;
-using RotationSolver.Updaters;
-using RotationSolver.Commands;
 
 namespace RotationSolver.Actions.BaseAction;
 

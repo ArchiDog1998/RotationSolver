@@ -3,14 +3,13 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Actions;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
 
-namespace RotationSolver.Combos.Basic;
+namespace RotationSolver.Rotations.Basic;
 
-internal abstract class ASTRotation_Base : CustomCombo.CustomRotation
+internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
 {
     private static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
 

@@ -4,8 +4,8 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Actions.BaseAction;
 
-namespace RotationSolver.Combos.Basic;
-internal abstract class DRKRotation_Base : CustomCombo.CustomRotation
+namespace RotationSolver.Rotations.Basic;
+internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
 {
     private static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();
     protected static ushort DarksideTimeRemaining => JobGauge.DarksideTimeRemaining;

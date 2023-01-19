@@ -3,19 +3,18 @@ using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
+using RotationSolver.Actions;
+using RotationSolver.Data;
+using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Rotations.Script;
+using RotationSolver.Rotations.Script.Actions;
+using RotationSolver.Rotations.Script.Conditions;
+using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using RotationSolver.Combos.Script.Conditions;
-using RotationSolver.Actions;
-using RotationSolver.Data;
-using RotationSolver.Combos.Script;
-using RotationSolver.Combos.Script.Actions;
-using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Updaters;
-using System.Runtime.CompilerServices;
 
 namespace RotationSolver.SigReplacers;
 

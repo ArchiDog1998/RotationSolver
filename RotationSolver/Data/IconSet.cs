@@ -1,6 +1,6 @@
 ﻿using ImGuiScene;
 using RotationSolver;
-using RotationSolver.Combos.CustomCombo;
+using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
 namespace RotationSolver.Data;

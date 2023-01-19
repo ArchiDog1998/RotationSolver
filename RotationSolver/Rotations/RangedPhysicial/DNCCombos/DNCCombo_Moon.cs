@@ -1,13 +1,13 @@
 using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RotationSolver.Combos.RangedPhysicial.DNCCombos;
+namespace RotationSolver.Rotations.RangedPhysicial.DNCCombos;
 
 internal sealed class DNCCombo_Moon : DNCRotation_Base
 {

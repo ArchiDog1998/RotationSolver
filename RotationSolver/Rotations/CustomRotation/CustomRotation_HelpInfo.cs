@@ -1,10 +1,10 @@
-﻿using RotationSolver.Combos.CustomCombo;
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
+using RotationSolver.Rotations.CustomRotation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RotationSolver.Combos.CustomCombo;
+namespace RotationSolver.Rotations.CustomRotation;
 
 internal abstract partial class CustomRotation
 {

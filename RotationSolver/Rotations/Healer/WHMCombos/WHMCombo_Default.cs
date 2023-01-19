@@ -4,12 +4,12 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Updaters;
 using RotationSolver.Actions;
 using RotationSolver.Helpers;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Data;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Combos.Healer.WHMCombos;
+namespace RotationSolver.Rotations.Healer.WHMCombos;
 internal sealed class WHMCombo_Default : WHMRotation_Base
 {
     public override string GameVersion => "6.28";

@@ -1,14 +1,14 @@
 using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Collections.Generic;
 
-namespace RotationSolver.Combos.Melee.NINCombos;
+namespace RotationSolver.Rotations.Melee.NINCombos;
 
 internal sealed class NINCombo_Default : NINRotation_Base
 {

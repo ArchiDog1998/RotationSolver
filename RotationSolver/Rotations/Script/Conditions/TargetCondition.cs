@@ -8,11 +8,9 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
 using RotationSolver.Windows;
-using RotationSolver.Combos.Script;
-using RotationSolver;
 using RotationSolver.Localization;
 
-namespace RotationSolver.Combos.Script.Conditions;
+namespace RotationSolver.Rotations.Script.Conditions;
 
 internal class TargetCondition : ICondition
 {

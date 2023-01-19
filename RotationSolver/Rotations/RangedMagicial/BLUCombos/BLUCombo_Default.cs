@@ -1,13 +1,13 @@
 ﻿using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Linq;
 using RotationSolver.Updaters;
 using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Rotations.Basic;
 
-namespace RotationSolver.Combos.RangedMagicial.BLUCombos
+namespace RotationSolver.Rotations.RangedMagicial.BLUCombos
 {
     internal sealed class BLUCombo_Default : BLURotation_Base
     {

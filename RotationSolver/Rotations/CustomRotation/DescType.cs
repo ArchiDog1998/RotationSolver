@@ -1,6 +1,6 @@
 ﻿using RotationSolver.Localization;
 
-namespace RotationSolver.Combos.CustomCombo;
+namespace RotationSolver.Rotations.CustomRotation;
 
 public enum DescType : byte
 {

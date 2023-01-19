@@ -1,8 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using RotationSolver.Actions;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Commands;
 using RotationSolver.Data;
+using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Localization
 {

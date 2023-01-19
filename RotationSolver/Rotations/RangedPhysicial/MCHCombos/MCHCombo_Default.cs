@@ -1,14 +1,14 @@
 using RotationSolver.Actions;
-using RotationSolver.Combos.Basic;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using RotationSolver.Updaters;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Rotations.Basic;
+using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Combos.RangedPhysicial.MCHCombos;
+namespace RotationSolver.Rotations.RangedPhysicial.MCHCombos;
 
 internal sealed class MCHCombo_Default : MCHRotation_Base
 {

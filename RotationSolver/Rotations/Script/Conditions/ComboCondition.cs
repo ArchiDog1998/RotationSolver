@@ -7,11 +7,10 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Windows;
-using RotationSolver.Combos.Script;
 using RotationSolver.Localization;
 using RotationSolver.Helpers;
 
-namespace RotationSolver.Combos.Script.Conditions;
+namespace RotationSolver.Rotations.Script.Conditions;
 
 internal class ComboCondition : ICondition
 {

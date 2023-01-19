@@ -1,13 +1,12 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver;
 using RotationSolver.Actions;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace RotationSolver.Combos.CustomCombo;
+namespace RotationSolver.Rotations.CustomRotation;
 
 internal interface ICustomRotation : IEnableTexture
 {

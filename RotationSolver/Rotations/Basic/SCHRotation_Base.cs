@@ -1,15 +1,13 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Combos.CustomCombo;
 using RotationSolver.Updaters;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver;
 
-namespace RotationSolver.Combos.Basic;
+namespace RotationSolver.Rotations.Basic;
 
-internal abstract class SCHRotation_Base : CustomCombo.CustomRotation
+internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
 {
     private static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
 
