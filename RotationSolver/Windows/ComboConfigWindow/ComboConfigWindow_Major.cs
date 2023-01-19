@@ -41,7 +41,7 @@ internal partial class ComboConfigWindow : Window
 
     public override unsafe void Draw()
     {
-        if (ImGui.BeginTabBar("AutoAttackSettings"))
+        if (ImGui.BeginTabBar("RotationSolverSettings"))
         {
 #if DEBUG
             if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem("Debug"))

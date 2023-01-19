@@ -1,3 +1,3 @@
-# Rotation Solver⚔️
+# RotationSolver⚔️
 
 To be continued.

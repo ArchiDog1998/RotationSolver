@@ -1,10 +1,11 @@
 
 # [![](docs/RotationSolverIcon_128.png)](https://archidog1998.github.io/RotationSolver/#/) **Rotation Solver**
 
-[![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/latest/total.svg?label=latestdownload&style=for-the-badge)]()
-[![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/XIVAutoAttack/total.svg?label=Download&style=for-the-badge)]()
-[![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/XIVAutoAttack?label=LinesCount&style=for-the-badge)]()
-[![Github License](https://img.shields.io/github/license/ArchiDog1998/XIVAutoAttack.svg?label=License&style=for-the-badge)]()
+![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/RotationSolver/latest/total.svg?style=for-the-badge)
+![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/RotationSolver/total.svg?style=for-the-badge)
+![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/RotationSolver?style=for-the-badge)
+![Github License](https://img.shields.io/github/license/ArchiDog1998/RotationSolver.svg?label=License&style=for-the-badge)
+![Github Commits](https://img.shields.io/github/commits-since/ArchiDog1998/RotationSolver/latest/main?style=for-the-badge)
 
 
 
@@ -46,6 +47,8 @@ If you have any questions about usage, please check the [Wiki](https://archidog1
 ## 对于国服用户
 
 > 这个库已经不再维护了。
+>
+> 本插件不得以任何形式在国服中使用。
 
 ### 声明
 本仓库使用的是[GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)协议，任何人均享有自由分发软件的自由。详看[原文](https://github.com/ArchiDog1998/XIVAutoAction/blob/main/LICENSE#L23-L27)。请所有使用本仓库的作者遵循此协议。

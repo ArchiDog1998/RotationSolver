@@ -12,8 +12,6 @@ namespace RotationSolver.Configuration;
 public class PluginConfiguration : IPluginConfiguration
 {
     public int Version { get; set; } = 6;
-    //public int HostileCount { get; set; } = 3;
-    //public int PartyCount { get; set; } = 2;
     public int VoiceVolume { get; set; } = 80;
     public SortedSet<string> EnabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DiabledActions { get; private set; } = new SortedSet<uint>();
