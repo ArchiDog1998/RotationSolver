@@ -14,7 +14,7 @@ namespace RotationSolver.Combos.Tank.DRKCombos;
 internal sealed class DRKCombo_Default : DRKRotation_Base
 {
     public override string GameVersion => "6.18";
-    public override string Author => "汐ベMoon";
+    public override string RotationName => "汐ベMoon";
 
     protected override bool CanHealSingleAbility => false;
 

@@ -13,7 +13,7 @@ namespace RotationSolver.Combos.RangedMagicial.BLUCombos
     {
         public override string GameVersion => "6.18";
 
-        public override string Author => "汐ベMoon";
+        public override string RotationName => "汐ベMoon";
 
         protected override bool CanHealAreaSpell => base.CanHealAreaSpell && BlueId == BLUID.Healer;
         protected override bool CanHealSingleSpell => base.CanHealSingleSpell && BlueId == BLUID.Healer;

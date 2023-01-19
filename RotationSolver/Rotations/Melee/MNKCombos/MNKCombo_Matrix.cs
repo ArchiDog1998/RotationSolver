@@ -15,7 +15,7 @@ internal sealed class MNKCombo_Matrix : MNKRotation_Base
 {
     public override string GameVersion => "6.0";
 
-    public override string Author => "Matrix - 工整/阴阳起手";
+    public override string RotationName => "Matrix - 工整/阴阳起手";
 
     private uint balanceType; //0 阴       、 1-阳
     private int balanceStep; // 1 第一段震脚 、 2 第二段震脚 、 0 小爆发震脚

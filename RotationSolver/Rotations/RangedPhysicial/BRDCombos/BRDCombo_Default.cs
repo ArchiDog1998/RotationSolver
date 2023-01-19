@@ -14,7 +14,7 @@ internal sealed class BRDCombo_Default : BRDRotation_Base
 {
     public override string GameVersion => "6.28";
 
-    public override string Author => "汐ベMoon";
+    public override string RotationName => "汐ベMoon";
 
 
     private protected override IRotationConfigSet CreateConfiguration()

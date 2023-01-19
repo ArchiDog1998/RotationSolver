@@ -14,7 +14,7 @@ internal sealed class ASTCombo_Default : ASTRotation_Base
 {
     public override string GameVersion => "6.28";
 
-    public override string Author => "汐ベMoon";
+    public override string RotationName => "汐ベMoon";
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {

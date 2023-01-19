@@ -123,19 +123,19 @@ internal partial class RotationConfigWindow : Window
 
         if (com != null)
         {
-            if (!string.IsNullOrEmpty(com.Author) && combos != null)
+            if (!string.IsNullOrEmpty(com.RotationName) && combos != null)
             {
                 ImGui.SameLine();
                 ImGui.TextDisabled("  -  ");
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(ImGui.CalcTextSize(com.Author).X + 30);
-                if (ImGui.BeginCombo("##" + com.Name + "Author", com.Author))
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(com.RotationName).X + 30);
+                if (ImGui.BeginCombo("##" + com.Name + "Author", com.RotationName))
                 {
                     foreach (var c in combos)
                     {
-                        if (ImGui.Selectable(c.Author))
+                        if (ImGui.Selectable(c.RotationName))
                         {
-                            Service.Configuration.ComboChoices[(uint)jobId] = c.Author;
+                            Service.Configuration.ComboChoices[(uint)jobId] = c.RotationName;
                             Service.Configuration.Save();
                         }
                         if (ImGui.IsItemHovered())
@@ -202,7 +202,7 @@ internal partial class RotationConfigWindow : Window
                 var newCom = IconReplacer.AddScripCombo(com.JobIDs[0]);
                 if (newCom != null)
                 {
-                    Service.Configuration.ComboChoices[(uint)jobId] = newCom.Author;
+                    Service.Configuration.ComboChoices[(uint)jobId] = newCom.RotationName;
                     Service.Configuration.Save();
                 }
             }

@@ -26,7 +26,7 @@ internal sealed class MCHCombo_Default : MCHRotation_Base
         {DescType.DefenseArea, $"{Tactician}"},
     };
 
-    public override string Author => "汐ベMoon";
+    public override string RotationName => "汐ベMoon";
 
     private protected override IRotationConfigSet CreateConfiguration()
     {

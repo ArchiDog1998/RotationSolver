@@ -11,7 +11,7 @@ namespace RotationSolver.Combos.Tank.PLDCombos;
 internal sealed class PLDCombo_Frost : PLDRotation_Base
 {
     public override string GameVersion => "6.18";
-    public override string Author => "Frost";
+    public override string RotationName => "Frost";
     public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.Description, "远离且不移动时会读圣灵；aoe时优先安魂圣环；战逃外弃打1赎罪（需求技速2.40-2.45）"},

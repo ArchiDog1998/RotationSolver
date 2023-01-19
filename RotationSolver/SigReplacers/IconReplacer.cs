@@ -72,7 +72,7 @@ internal sealed class IconReplacer : IDisposable
         {
             foreach (var combo in group.combos)
             {
-                if (combo.Author == choice)
+                if (combo.RotationName == choice)
                 {
                     return combo;
                 }
@@ -229,7 +229,7 @@ internal sealed class IconReplacer : IDisposable
 
         foreach (var combo in combos)
         {
-            if (!result.Any(c => c.Author == combo.Author))
+            if (!result.Any(c => c.RotationName == combo.RotationName))
             {
                 result.Add(combo);
             }

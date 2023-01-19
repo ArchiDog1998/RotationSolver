@@ -7,7 +7,7 @@ namespace RotationSolver.Combos.Script.Combos;
 
 internal class ASTCombo_Script : ASTRotation_Base, IScriptCombo
 {
-    public override string Author => Set.GetAuthor();
+    public override string RotationName => Set.GetAuthor();
     public override string GameVersion => Set.GameVersion;
 
     public ComboSet Set { get; set; } = new ComboSet();

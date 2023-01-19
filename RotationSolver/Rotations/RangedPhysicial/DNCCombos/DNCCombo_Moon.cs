@@ -13,7 +13,7 @@ internal sealed class DNCCombo_Moon : DNCRotation_Base
 {
     public override string GameVersion => "6.28";
 
-    public override string Author => "Ï«¥ÙMoon";
+    public override string RotationName => "Ï«¥ÙMoon";
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {

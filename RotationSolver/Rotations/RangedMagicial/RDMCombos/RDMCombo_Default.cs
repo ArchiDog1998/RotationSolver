@@ -12,7 +12,7 @@ internal sealed class RDMCombo_Default : RDMRotation_Base
 {
     public override string GameVersion => "6.0";
 
-    public override string Author => "нч";
+    public override string RotationName => "нч";
 
 
     public override SortedList<DescType, string> DescriptionDict => new()

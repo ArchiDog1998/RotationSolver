@@ -14,7 +14,7 @@ internal sealed class NINCombo_Default : NINRotation_Base
 {
     public override string GameVersion => "6.0";
 
-    public override string Author => "无";
+    public override string RotationName => "无";
 
     private static NinAction _ninactionAim = null;
 

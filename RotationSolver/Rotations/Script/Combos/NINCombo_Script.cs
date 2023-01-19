@@ -10,7 +10,7 @@ internal class NINCombo_Script : NINRotation_Base, IScriptCombo
 {
     public override string GameVersion => Set.GameVersion;
 
-    public override string Author => Set.GetAuthor();
+    public override string RotationName => Set.GetAuthor();
 
     public ComboSet Set { get; set; } = new ComboSet();
 

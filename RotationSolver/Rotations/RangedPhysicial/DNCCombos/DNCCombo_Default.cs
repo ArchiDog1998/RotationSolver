@@ -11,7 +11,7 @@ namespace RotationSolver.Combos.RangedPhysicial.DNCCombos;
 internal sealed class DNCCombo_Default : DNCRotation_Base
 {
     public override string GameVersion => "6.18";
-    public override string Author => "нч";
+    public override string RotationName => "нч";
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {

@@ -16,7 +16,7 @@ internal sealed class SGECombo_Default : SGERotation_Base
 {
     public override string GameVersion => "6.18";
 
-    public override string Author => "Ï«¥ÙMoon";
+    public override string RotationName => "Ï«¥ÙMoon";
 
 
     /// <summary>

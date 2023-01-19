@@ -14,7 +14,7 @@ internal sealed partial class BLMCombo_Moon : BLMRotation_Base
 {
     public override string GameVersion => "6.18";
 
-    public override string Author => "汐ベMoon";
+    public override string RotationName => "汐ベMoon";
 
     internal static float MpUpdateRemain => 3 - ActionUpdater.MPUpdateElapsed;
     internal static bool TargetHasThunder => Target.HasStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4);

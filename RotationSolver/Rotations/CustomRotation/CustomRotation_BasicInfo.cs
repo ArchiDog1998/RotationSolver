@@ -27,7 +27,7 @@ internal abstract partial class CustomRotation : ICustomRotation
     /// <summary>
     /// 作者
     /// </summary>
-    public abstract string Author { get; }
+    public abstract string RotationName { get; }
 
     /// <summary>
     /// 目标是否将要死亡
@@ -55,16 +55,16 @@ internal abstract partial class CustomRotation : ICustomRotation
 
     public bool IsEnabled
     {
-        get => Service.Configuration.EnabledCombos.Contains(Name);
+        get => !Service.Configuration.EnabledCombos.Contains(Name);
         set
         {
             if (value)
             {
-                Service.Configuration.EnabledCombos.Add(Name);
+                Service.Configuration.EnabledCombos.Remove(Name);
             }
             else
             {
-                Service.Configuration.EnabledCombos.Remove(Name);
+                Service.Configuration.EnabledCombos.Add(Name);
             }
         }
     }
@@ -100,6 +100,6 @@ internal abstract partial class CustomRotation : ICustomRotation
 
     private protected virtual IRotationConfigSet CreateConfiguration()
     {
-        return new RotationConfigSet(JobIDs[0], Author);
+        return new RotationConfigSet(JobIDs[0], RotationName);
     }
 }

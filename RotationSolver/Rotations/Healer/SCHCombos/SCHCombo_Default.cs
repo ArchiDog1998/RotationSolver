@@ -14,7 +14,7 @@ internal sealed class SCHCombo_Default : SCHRotation_Base
 {
     public override string GameVersion => "6.28";
 
-    public override string Author => "逆光 & Ana Amari";
+    public override string RotationName => "逆光 & Ana Amari";
 
     public SCHCombo_Default()
     {

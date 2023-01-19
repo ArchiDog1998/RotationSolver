@@ -13,7 +13,7 @@ internal sealed class DRGCombo_Default : DRGRotation_Base
 {
     public override string GameVersion => "6.18";
 
-    public override string Author => "Ï«¥ÙMoon";
+    public override string RotationName => "Ï«¥ÙMoon";
 
     private static bool safeMove = false;
 

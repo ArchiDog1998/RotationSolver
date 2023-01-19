@@ -14,7 +14,7 @@ internal sealed class WARCombo_Frost : WARRotation_Base
 {
     public override string GameVersion => "6.18";
 
-    public override string Author => "Frost";
+    public override string RotationName => "Frost";
 
     /// <summary>
     /// 描述

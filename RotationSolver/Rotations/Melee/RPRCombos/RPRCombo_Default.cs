@@ -12,7 +12,7 @@ internal sealed class RPRCombo_Default : RPRRotation_Base
 {
     public override string GameVersion => "6.28";
 
-    public override string Author => "逆光";
+    public override string RotationName => "逆光";
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
