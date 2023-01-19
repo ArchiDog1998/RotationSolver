@@ -88,54 +88,26 @@ namespace RotationSolver.Commands
                     }
                 }
             }
+
+            Service.ChatGui.Print(LocalizationManager.RightLang.Commands_InsertActionFailure);
         }
 
 
         private static void DoRotationCommand(ICustomRotation customCombo, string str)
         {
-            //foreach (var boolean in customCombo.Config.bools)
-            //{
-            //    if (boolean.name == str)
-            //    {
-            //        boolean.value = !boolean.value;
+            var configs = customCombo.Configs;
+            foreach (var config in configs)
+            {
+                if(config.DoCommand(configs, str))
+                {
+                    //Say out.
+                    Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeRotationConfig,
+                        config.DisplayName, configs.GetDisplayString(config.Name)));
 
-            //        Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettings, boolean.description, boolean.value));
-
-            //        return;
-            //    }
-            //}
-
-            //foreach (var combo in customCombo.Config.combos)
-            //{
-            //    if (str.StartsWith(combo.name))
-            //    {
-            //        var numStr = str.Substring(combo.name.Length);
-
-            //        if (string.IsNullOrEmpty(numStr) || str.Length == 0)
-            //        {
-            //            combo.value = (combo.value + 1) % combo.items.Length;
-
-            //        }
-            //        else if (int.TryParse(numStr, out int num))
-            //        {
-            //            combo.value = num % combo.items.Length;
-            //        }
-            //        else
-            //        {
-            //            for (int i = 0; i < combo.items.Length; i++)
-            //            {
-            //                if (combo.items[i] == str)
-            //                {
-            //                    combo.value = i;
-            //                }
-            //            }
-            //        }
-
-            //        Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettings, combo.description, combo.items[combo.value]));
-
-            //        return;
-            //    }
-            //}
+                    return;
+                }
+            }
+            Service.ChatGui.Print(LocalizationManager.RightLang.Commands_CannotFindRotationConfig);
         }
     }
 }

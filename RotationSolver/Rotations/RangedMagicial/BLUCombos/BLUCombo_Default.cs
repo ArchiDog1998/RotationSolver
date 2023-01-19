@@ -30,9 +30,9 @@ namespace RotationSolver.Combos.RangedMagicial.BLUCombos
                 .SetFloat("FinalStingHP", 0, "开始使用终极针的Hp");
         }
 
-        private bool MoonFluteBreak => Config.GetBool("MoonFluteBreak");
-        private bool UseFinalSting => Config.GetBool("UseFinalSting");
-        private float FinalStingHP => Config.GetFloat("FinalStingHP");
+        private bool MoonFluteBreak => Configs.GetBool("MoonFluteBreak");
+        private bool UseFinalSting => Configs.GetBool("UseFinalSting");
+        private float FinalStingHP => Configs.GetFloat("FinalStingHP");
         /// <summary>
         /// 0-70练级,快速练级,滑舌拉怪
         /// </summary>
@@ -40,16 +40,16 @@ namespace RotationSolver.Combos.RangedMagicial.BLUCombos
         /// <summary>
         /// 赌几率秒杀
         /// </summary>
-        private bool GamblerKill => Config.GetBool("GamblerKill");
+        private bool GamblerKill => Configs.GetBool("GamblerKill");
         /// <summary>
         /// 单体时是否释放高伤害AOE
         /// </summary>
-        private bool SingleAOE => Config.GetBool("SingleAOE");
+        private bool SingleAOE => Configs.GetBool("SingleAOE");
 
         private protected override void UpdateInfo()
         {
-            BlueId = (BLUID)Config.GetCombo("BlueId");
-            AttackType = (BLUAttackType)Config.GetCombo("AttackType");
+            BlueId = (BLUID)Configs.GetCombo("BlueId");
+            AttackType = (BLUAttackType)Configs.GetCombo("AttackType");
         }
 
         private protected override bool AttackAbility(byte abilityRemain, out IAction act)

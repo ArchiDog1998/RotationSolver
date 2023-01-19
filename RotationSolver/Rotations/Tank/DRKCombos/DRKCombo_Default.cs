@@ -174,7 +174,7 @@ internal sealed class DRKCombo_Default : DRKRotation_Base
         if (HasDarkArts) return true;
 
         //是否留3000蓝开黑盾
-        if (Config.GetBool("TheBlackestNight") && Player.CurrentMp < 6000) return false;
+        if (Configs.GetBool("TheBlackestNight") && Player.CurrentMp < 6000) return false;
 
         //爆发期打完
         if (Delirium.IsCoolDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7)) return true;

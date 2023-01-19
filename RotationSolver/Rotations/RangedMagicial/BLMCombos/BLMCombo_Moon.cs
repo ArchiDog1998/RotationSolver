@@ -39,7 +39,7 @@ internal sealed partial class BLMCombo_Moon : BLMRotation_Base
     /// <summary>
     /// 双星灵循环
     /// </summary>
-    private bool DoubleTranspose => Config.GetCombo("UseLoop") == 1;
+    private bool DoubleTranspose => Configs.GetCombo("UseLoop") == 1;
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
@@ -154,7 +154,7 @@ internal sealed partial class BLMCombo_Moon : BLMRotation_Base
         if (UseSharpcast(out act)) return true;
 
         //黑魔纹
-        if (Config.GetBool("AutoLeylines") && Target.IsBoss() && Leylines.ShouldUse(out act))
+        if (Configs.GetBool("AutoLeylines") && Target.IsBoss() && Leylines.ShouldUse(out act))
         {
             if (Player.HasStatus(true, StatusID.Triplecast) && Player.StatusStack(true, StatusID.Triplecast) <= 1) return true;
 

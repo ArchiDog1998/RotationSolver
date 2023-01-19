@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RotationSolver.Configuration.RotationConfig
 {
-    internal interface IRotationConfigSet
+    internal interface IRotationConfigSet : IEnumerable<IRotationConfig>
     {
         IRotationConfigSet SetFloat(string name, float value, string displayName, float min = 0, float max = 1, float speed = 0.002f);
 
@@ -24,9 +24,21 @@ namespace RotationSolver.Configuration.RotationConfig
 
         float GetFloat(string name);
 
+        /// <summary>
+        /// Get the raw string value in the saved dictionary, is not readable.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         string GetString(string name);
 
-        void Draw(bool canAddButton);
+        /// <summary>
+        /// Get the readable string for display.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        string GetDisplayString(string name);
 
+
+        void Draw(bool canAddButton);
     }
 }

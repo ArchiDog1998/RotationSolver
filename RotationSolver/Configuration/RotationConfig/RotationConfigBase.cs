@@ -1,6 +1,7 @@
 ﻿using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,8 @@ internal abstract class RotationConfigBase : IRotationConfig
         return config;
     }
 
+    public virtual string GetDisplayValue(ClassJobID job, string rotationName) => GetValue(job, rotationName);
+
     public void SetValue(ClassJobID job, string rotationName, string value)
     {
         if (!Service.Configuration.RotationsConfigurations.TryGetValue((uint)job, out var jobDict))
@@ -44,4 +47,8 @@ internal abstract class RotationConfigBase : IRotationConfig
     }
 
     public abstract void Draw(RotationConfigSet set, bool canAddButton);
+
+    public virtual bool DoCommand(IRotationConfigSet set, string str) => str.StartsWith(Name);
+
+
 }

@@ -42,9 +42,9 @@ internal sealed class WARCombo_Frost : WARRotation_Base
     /// <returns></returns>
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Config.GetBool("UseTomahawkPre") && remainTime <= 1 && Tomahawk.ShouldUse(out _)) return Tomahawk;//提前1s飞斧开怪
-        if (Config.GetBool("UseThrillofBattlePre") && remainTime <= 11 && ThrillofBattle.ShouldUse(out _)) return ThrillofBattle;//提前11s战栗
-        if (Config.GetBool("UseShakeItOffPre") && remainTime <= 1 && ShakeItOff.ShouldUse(out _)) return ShakeItOff;//提前2s摆脱
+        if (Configs.GetBool("UseTomahawkPre") && remainTime <= 1 && Tomahawk.ShouldUse(out _)) return Tomahawk;//提前1s飞斧开怪
+        if (Configs.GetBool("UseThrillofBattlePre") && remainTime <= 11 && ThrillofBattle.ShouldUse(out _)) return ThrillofBattle;//提前11s战栗
+        if (Configs.GetBool("UseShakeItOffPre") && remainTime <= 1 && ShakeItOff.ShouldUse(out _)) return ShakeItOff;//提前2s摆脱
         return base.CountDownAction(remainTime);
     }
 

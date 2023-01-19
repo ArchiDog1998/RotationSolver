@@ -116,7 +116,7 @@ internal sealed class SAMCombo_Default : SAMRotation_Base
         if (Shoha.ShouldUse(out act)) return true;
 
         //震天、九天
-        if (Kenki >= 50 && Ikishoten.WillHaveOneCharge(10) || Kenki >= Config.GetFloat("addKenki") || IsTargetBoss && IsTargetDying)
+        if (Kenki >= 50 && Ikishoten.WillHaveOneCharge(10) || Kenki >= Configs.GetFloat("addKenki") || IsTargetBoss && IsTargetDying)
         {
             if (HissatsuKyuten.ShouldUse(out act)) return true;
             if (HissatsuShinten.ShouldUse(out act)) return true;

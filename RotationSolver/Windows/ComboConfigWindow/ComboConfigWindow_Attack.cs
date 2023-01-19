@@ -85,7 +85,7 @@ internal partial class ComboConfigWindow
 
         ImGui.Spacing();
 
-        rotation.Config.Draw(canAddButton);
+        rotation.Configs.Draw(canAddButton);
     }
 
     private static void DrawTargetHostileTYpe(ICustomRotation rotation)

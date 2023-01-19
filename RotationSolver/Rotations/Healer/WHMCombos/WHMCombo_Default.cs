@@ -36,7 +36,7 @@ internal sealed class WHMCombo_Default : WHMRotation_Base
         //泄蓝花 团队缺血时优先狂喜之心
         bool liliesNearlyFull = Lily == 2 && LilyAfter(17);
         bool liliesFullNoBlood = Lily == 3 && BloodLily < 3;
-        if (Config.GetBool("UseLilyWhenFull") && (liliesNearlyFull || liliesFullNoBlood) && AfflatusMisery.EnoughLevel)
+        if (Configs.GetBool("UseLilyWhenFull") && (liliesNearlyFull || liliesFullNoBlood) && AfflatusMisery.EnoughLevel)
         {
             if (TargetUpdater.PartyMembersAverHP < 0.7)
             {
@@ -170,7 +170,7 @@ internal sealed class WHMCombo_Default : WHMRotation_Base
     //开局5s使用再生和盾给开了盾姿的t
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Config.GetBool("UsePreRegen") && remainTime <= 5 && remainTime > 3 && DivineBenison.ShouldUse(out _))
+        if (Configs.GetBool("UsePreRegen") && remainTime <= 5 && remainTime > 3 && DivineBenison.ShouldUse(out _))
         {
             if (DivineBenison.ShouldUse(out _))
             {

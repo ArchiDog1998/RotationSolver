@@ -244,12 +244,12 @@ internal sealed class NINCombo_Default : NINRotation_Base
         if (DoNinjutsus(out act)) return true;
 
         //用真北取消隐匿
-        if (Config.GetBool("AutoUnhide") && Player.HasStatus(true, StatusID.Hidden))
+        if (Configs.GetBool("AutoUnhide") && Player.HasStatus(true, StatusID.Hidden))
         {
             StatusHelper.StatusOff(StatusID.Hidden);
         }
         //用隐匿恢复忍术数量
-        if (!InCombat && _ninactionAim == null && Config.GetBool("UseHide")
+        if (!InCombat && _ninactionAim == null && Configs.GetBool("UseHide")
             && Ten.IsCoolDown && Hide.ShouldUse(out act)) return true;
 
         var replace = Service.IconReplacer.OriginalHook(2260);

@@ -146,7 +146,7 @@ internal sealed class MNKCombo_Default : MNKRotation_Base
 
         if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
         if (Chakra < 5 && Meditation.ShouldUse(out act)) return true;
-        if (Config.GetBool("AutoFormShift") && FormShift.ShouldUse(out act)) return true;
+        if (Configs.GetBool("AutoFormShift") && FormShift.ShouldUse(out act)) return true;
 
         return false;
     }

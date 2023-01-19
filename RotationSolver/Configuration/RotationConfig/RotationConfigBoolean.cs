@@ -30,4 +30,11 @@ internal class RotationConfigBoolean : RotationConfigBase
             //CommandHelp(boolean.name);
         }
     }
+
+    public override bool DoCommand(IRotationConfigSet set, string str)
+    {
+        if (!base.DoCommand(set, str)) return false;
+        set.SetValue(Name, (!set.GetBool(Name)).ToString());
+        return true;
+    }
 }

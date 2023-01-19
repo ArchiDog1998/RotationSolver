@@ -21,8 +21,8 @@ internal sealed class SCHCombo_Default : SCHRotation_Base
         //防止大仙女吞技能
         SummonSeraph.ComboCheck = b => WhisperingDawn.ElapsedAfterGCD(1) || FeyIllumination.ElapsedAfterGCD(1) || FeyBlessing.ElapsedAfterGCD(1);
     }
-    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
-    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
+    protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Configs.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
+    protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Configs.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
@@ -216,14 +216,14 @@ internal sealed class SCHCombo_Default : SCHRotation_Base
     //15秒秘策单盾扩散
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Config.GetBool("prevDUN") && remainTime <= 15 && !DeploymentTactics.IsCoolDown && TargetUpdater.PartyMembers.Count() > 1)
+        if (Configs.GetBool("prevDUN") && remainTime <= 15 && !DeploymentTactics.IsCoolDown && TargetUpdater.PartyMembers.Count() > 1)
         {
 
             if (!Recitation.IsCoolDown) return Recitation;
             if (!TargetUpdater.PartyMembers.Any((n) => n.HasStatus(true, StatusID.Galvanize)))
             {
                 //如果还没上激励就给t一个激励
-                if (Config.GetBool("GiveT"))
+                if (Configs.GetBool("GiveT"))
                 {
                     return Adloquium;
                 }

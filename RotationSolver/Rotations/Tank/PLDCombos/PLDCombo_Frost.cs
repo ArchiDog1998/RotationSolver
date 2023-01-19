@@ -23,8 +23,8 @@ internal sealed class PLDCombo_Frost : PLDRotation_Base
     }
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Config.GetBool("UseDivineVeilPre") && remainTime <= 15 && DivineVeil.ShouldUse(out _)) return DivineVeil;//提前15s幕帘
-        if (Config.GetBool("UseHolySpiritPre") && remainTime <= 2 && HolySpirit.ShouldUse(out _)) return HolySpirit;//提前2s圣灵
+        if (Configs.GetBool("UseDivineVeilPre") && remainTime <= 15 && DivineVeil.ShouldUse(out _)) return DivineVeil;//提前15s幕帘
+        if (Configs.GetBool("UseHolySpiritPre") && remainTime <= 2 && HolySpirit.ShouldUse(out _)) return HolySpirit;//提前2s圣灵
         return base.CountDownAction(remainTime);
     }/*
     //紧急使用的GCD

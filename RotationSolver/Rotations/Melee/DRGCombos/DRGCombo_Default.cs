@@ -114,7 +114,7 @@ internal sealed class DRGCombo_Default : DRGRotation_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        safeMove = Config.GetBool("DRG_SafeMove");
+        safeMove = Configs.GetBool("DRG_SafeMove");
 
         #region »∫…À
         if (CoerthanTorment.ShouldUse(out act)) return true;
@@ -124,7 +124,7 @@ internal sealed class DRGCombo_Default : DRGRotation_Base
         #endregion
 
         #region µ•ÃÂ
-        if (Config.GetBool("ShouldDelay"))
+        if (Configs.GetBool("ShouldDelay"))
         {
             if (WheelingThrust.ShouldUse(out act)) return true;
             if (FangandClaw.ShouldUse(out act)) return true;

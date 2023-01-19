@@ -34,11 +34,11 @@ internal sealed class BRDCombo_Default : BRDRotation_Base
         {DescType.HealSingle, $"{NaturesMinne}"},
     };
 
-    private bool BindWAND => Config.GetBool("BindWAND") && WanderersMinuet.EnoughLevel;
-    private int FirstSong => Config.GetCombo("FirstSong");
-    private float WANDRemainTime => 45 - Config.GetFloat("WANDTime");
-    private float MAGERemainTime => 45 - Config.GetFloat("MAGETime");
-    private float ARMYRemainTime => 45 - Config.GetFloat("ARMYTime");
+    private bool BindWAND => Configs.GetBool("BindWAND") && WanderersMinuet.EnoughLevel;
+    private int FirstSong => Configs.GetCombo("FirstSong");
+    private float WANDRemainTime => 45 - Configs.GetFloat("WANDTime");
+    private float MAGERemainTime => 45 - Configs.GetFloat("MAGETime");
+    private float ARMYRemainTime => 45 - Configs.GetFloat("ARMYTime");
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {

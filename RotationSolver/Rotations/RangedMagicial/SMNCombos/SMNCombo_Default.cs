@@ -59,7 +59,7 @@ internal sealed class SMNCombo_Default : SMNRotation_Base
         //单体
         if (Gemshine.ShouldUse(out act)) return true;
 
-        if (!IsMoving && Config.GetBool("addCrimsonCyclone") && CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
+        if (!IsMoving && Configs.GetBool("addCrimsonCyclone") && CrimsonCyclone.ShouldUse(out act, mustUse: true)) return true;
 
         //龙神不死鸟
         if ((Player.HasStatus(false, StatusID.SearingLight) || SearingLight.IsCoolDown) && SummonBahamut.ShouldUse(out act)) return true;
@@ -69,7 +69,7 @@ internal sealed class SMNCombo_Default : SMNRotation_Base
         if (IsMoving && (Player.HasStatus(true, StatusID.GarudasFavor) || InIfrit) && RuinIV.ShouldUse(out act, mustUse: true)) return true;
 
         //召唤蛮神
-        switch (Config.GetCombo("SummonOrder"))
+        switch (Configs.GetCombo("SummonOrder"))
         {
             default:
                 //土
@@ -141,7 +141,7 @@ internal sealed class SMNCombo_Default : SMNRotation_Base
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //即刻进循环
-        switch (Config.GetCombo("addSwiftcast"))
+        switch (Configs.GetCombo("addSwiftcast"))
         {
             default:
                 break;

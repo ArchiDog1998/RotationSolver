@@ -76,7 +76,7 @@ internal sealed class RPRCombo_Default : RPRRotation_Base
 
             if (LemureShroud > 1)
             {
-                if (Config.GetBool("EnshroudPooling") && PlentifulHarvest.EnoughLevel && ArcaneCircle.WillHaveOneCharge(9) &&
+                if (Configs.GetBool("EnshroudPooling") && PlentifulHarvest.EnoughLevel && ArcaneCircle.WillHaveOneCharge(9) &&
                    (LemureShroud == 4 && Target.WillStatusEnd(30, true, StatusID.DeathsDesign) || LemureShroud == 3 && Target.WillStatusEnd(50, true, StatusID.DeathsDesign))) //双附体窗口期 
                 {
                     if (ShadowofDeath.ShouldUse(out act, mustUse: true)) return true;
@@ -155,8 +155,8 @@ internal sealed class RPRCombo_Default : RPRRotation_Base
             if (ArcaneCircle.ShouldUse(out act)) return true;
 
             if (IsTargetBoss && IsTargetDying || //资源倾泻
-               !Config.GetBool("EnshroudPooling") && Shroud >= 50 ||//未开启双附体
-               Config.GetBool("EnshroudPooling") && Shroud >= 50 &&
+               !Configs.GetBool("EnshroudPooling") && Shroud >= 50 ||//未开启双附体
+               Configs.GetBool("EnshroudPooling") && Shroud >= 50 &&
                (!PlentifulHarvest.EnoughLevel || //等级不足以双附体
                Player.HasStatus(true, StatusID.ArcaneCircle) || //在神秘环期间附体
                ArcaneCircle.WillHaveOneCharge(8) || //双附体起手

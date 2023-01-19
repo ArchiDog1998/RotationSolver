@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using RotationSolver.Data;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +11,7 @@ namespace RotationSolver.Configuration.RotationConfig
     {
         ClassJobID _job;
         string _rotationName;
-        public HashSet<IRotationConfig> Configs { get; } = new HashSet<IRotationConfig>(new RotationConfigComparer());
+        private HashSet<IRotationConfig> _configs = new HashSet<IRotationConfig>(new RotationConfigComparer());
 
         public RotationConfigSet(ClassJobID job, string rotationName)
         {
@@ -21,31 +22,31 @@ namespace RotationSolver.Configuration.RotationConfig
         #region Set
         public IRotationConfigSet SetFloat(string name, float value, string displayName, float min = 0, float max = 1, float speed = 0.002f)
         {
-            Configs.Add(new RotationConfigFloat(name, value, displayName, min, max, speed));
+            _configs.Add(new RotationConfigFloat(name, value, displayName, min, max, speed));
             return this;
         }
 
         public IRotationConfigSet SetString(string name, string value, string displayName)
         {
-            Configs.Add(new RotationConfigString(name, value, displayName));
+            _configs.Add(new RotationConfigString(name, value, displayName));
             return this;
         }
 
         public IRotationConfigSet SetBool(string name, bool value, string displayName)
         {
-            Configs.Add(new RotationConfigBoolean(name, value, displayName));
+            _configs.Add(new RotationConfigBoolean(name, value, displayName));
             return this;
         }
 
         public IRotationConfigSet SetCombo(string name, int value, string displayName, params string[] items)
         {
-            Configs.Add(new RotationConfigCombo(name, value, displayName, items));
+            _configs.Add(new RotationConfigCombo(name, value, displayName, items));
             return this;
         }
 
         public void SetValue(string name, string value)
         {
-            var config = Configs.FirstOrDefault(config => config.Name == name);
+            var config = _configs.FirstOrDefault(config => config.Name == name);
             if (config == null) return;
             config.SetValue(_job, _rotationName, value);
         }
@@ -75,18 +76,32 @@ namespace RotationSolver.Configuration.RotationConfig
 
         public string GetString(string name)
         {
-            var config = Configs.FirstOrDefault(config => config.Name == name);
-            if (config == null) return string.Empty;
-            return config.GetValue(_job, _rotationName);
+            var config = GetConfig(name);
+            return config?.GetValue(_job, _rotationName);
         }
+
+        public string GetDisplayString(string name)
+        {
+            var config = GetConfig(name);
+            return config?.GetDisplayValue(_job, _rotationName);
+        }
+
+        private IRotationConfig GetConfig(string name) => _configs.FirstOrDefault(config => config.Name == name);
         #endregion
 
         public void Draw(bool canAddButton)
         {
-            foreach (var config in Configs)
+            foreach (var config in _configs)
             {
                 config.Draw(this, canAddButton);
             }
         }
+
+        public IEnumerator<IRotationConfig> GetEnumerator() => _configs.GetEnumerator();
+
+
+        IEnumerator IEnumerable.GetEnumerator() => _configs.GetEnumerator();
+
+
     }
 }

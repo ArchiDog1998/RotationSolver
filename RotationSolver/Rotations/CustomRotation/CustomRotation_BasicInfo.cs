@@ -82,11 +82,11 @@ internal abstract partial class CustomRotation : ICustomRotation
 
     public uint IconID { get; }
 
-    public IRotationConfigSet Config { get; }
+    public IRotationConfigSet Configs { get; }
     private protected CustomRotation()
     {
         IconID = IconSet.GetJobIcon(this);
-        Config = CreateConfiguration();
+        Configs = CreateConfiguration();
     }
 
     public BattleChara MoveTarget

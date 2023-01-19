@@ -126,7 +126,7 @@ internal sealed class RDMCombo_Default : RDMRotation_Base
 
 
         //赤治疗，加即刻，有连续咏唱或者即刻的话就不放了
-        if (Config.GetBool("UseVercure") && Vercure.ShouldUse(out act)
+        if (Configs.GetBool("UseVercure") && Vercure.ShouldUse(out act)
             ) return true;
 
         return false;
