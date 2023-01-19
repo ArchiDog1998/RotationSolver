@@ -15,7 +15,7 @@ internal sealed class SAMCombo_Default : SAMRotation_Base
     public override string Author => "逆光";
 
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetFloat("addKenki", 50, "当剑气大于该值时将必杀技·震天/九天加入循环", min: 0, max: 85, speed: 5);

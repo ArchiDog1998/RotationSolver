@@ -27,7 +27,7 @@ internal sealed class RDMCombo_Default : RDMRotation_Base
         Acceleration.ComboCheck = b => InCombat;
     }
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("UseVercure", true, "使用赤治疗获得即刻");

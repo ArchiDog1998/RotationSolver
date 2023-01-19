@@ -17,7 +17,7 @@ internal sealed class BRDCombo_Default : BRDRotation_Base
     public override string Author => "汐ベMoon";
 
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("BindWAND", false, "猛者绑定旅神歌")

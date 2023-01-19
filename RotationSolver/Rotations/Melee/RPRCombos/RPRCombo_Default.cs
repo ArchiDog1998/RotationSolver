@@ -14,7 +14,7 @@ internal sealed class RPRCombo_Default : RPRRotation_Base
 
     public override string Author => "逆光";
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("EnshroudPooling", false, "双附体循环爆发(低于88级不会生效)**推荐**");
     }

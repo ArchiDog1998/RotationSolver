@@ -16,7 +16,7 @@ internal sealed class WHMCombo_Default : WHMRotation_Base
 
     public override string Author => "逆光";
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseLilyWhenFull", true, "蓝花集满时自动释放蓝花（低于苦难之心等级时不会生效）")
                                             .SetBool("UsePreRegen", false, "倒计时5秒时给t上盾和再生");

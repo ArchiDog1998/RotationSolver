@@ -51,7 +51,7 @@ internal sealed class MNKCombo_Matrix : MNKRotation_Base
         { DescType.MoveAction, $"{Thunderclap}" },
     };
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("AutoFormShift", true, "自动演武");
     }

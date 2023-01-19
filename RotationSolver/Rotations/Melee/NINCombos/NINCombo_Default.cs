@@ -18,7 +18,7 @@ internal sealed class NINCombo_Default : NINRotation_Base
 
     private static NinAction _ninactionAim = null;
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseHide", true, "脱战隐身恢复忍术").SetBool("AutoUnhide", true, "自动取消隐身");
     }

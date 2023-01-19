@@ -24,7 +24,7 @@ internal sealed class SCHCombo_Default : SCHRotation_Base
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
     protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶")
                                             .SetBool("prevDUN", false, "开局15秒开扩散盾")

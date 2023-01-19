@@ -16,7 +16,7 @@ internal sealed class PLDCombo_Frost : PLDRotation_Base
     {
         {DescType.Description, "远离且不移动时会读圣灵；aoe时优先安魂圣环；战逃外弃打1赎罪（需求技速2.40-2.45）"},
     };
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseDivineVeilPre", false, "倒计时15s使用幕帘")
                                             .SetBool("UseHolySpiritPre", true, "预读圣灵");

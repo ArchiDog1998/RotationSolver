@@ -15,7 +15,7 @@ internal sealed class SMNCombo_Default : SMNRotation_Base
     public override string Author => "逆光";
 
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetCombo("addSwiftcast", 0, "将即刻咏唱加入循环", "关（留着复活乱死的笨比）", "给风神", "给火神", "智能（我全都要）")

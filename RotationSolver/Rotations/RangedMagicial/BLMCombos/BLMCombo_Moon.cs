@@ -48,7 +48,7 @@ internal sealed partial class BLMCombo_Moon : BLMRotation_Base
         { DescType.MoveAction, $"{AetherialManipulation}，目标为面向夹角小于30°内最远目标。" },
     };
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
                     //.SetCombo("UseLoop", 0, "循环管理", "标准循环", "星灵循环", "压冰循环")

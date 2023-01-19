@@ -18,7 +18,7 @@ internal sealed class DRGCombo_Default : DRGRotation_Base
     private static bool safeMove = false;
 
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("DRG_ShouldDelay", true, "延后红龙血")
             .SetBool("DRG_Opener", false, "88级起手")

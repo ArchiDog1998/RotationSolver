@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace RotationSolver.Configuration.RotationConfig
 {
-    internal class RotationConfigSet
+    internal class RotationConfigSet : IRotationConfigSet
     {
         ClassJobID _job;
         string _rotationName;
@@ -19,25 +19,25 @@ namespace RotationSolver.Configuration.RotationConfig
         }
 
         #region Set
-        public RotationConfigSet SetFloat(string name, float value, string displayName, float min = 0, float max = 1, float speed = 0.002f)
+        public IRotationConfigSet SetFloat(string name, float value, string displayName, float min = 0, float max = 1, float speed = 0.002f)
         {
             Configs.Add(new RotationConfigFloat(name, value, displayName, min, max, speed));
             return this;
         }
 
-        public RotationConfigSet SetString(string name, string value, string displayName)
+        public IRotationConfigSet SetString(string name, string value, string displayName)
         {
             Configs.Add(new RotationConfigString(name, value, displayName));
             return this;
         }
 
-        public RotationConfigSet SetBool(string name, bool value, string displayName)
+        public IRotationConfigSet SetBool(string name, bool value, string displayName)
         {
             Configs.Add(new RotationConfigBoolean(name, value, displayName));
             return this;
         }
 
-        public RotationConfigSet SetCombo(string name, int value, string displayName, params string[] items)
+        public IRotationConfigSet SetCombo(string name, int value, string displayName, params string[] items)
         {
             Configs.Add(new RotationConfigCombo(name, value, displayName, items));
             return this;

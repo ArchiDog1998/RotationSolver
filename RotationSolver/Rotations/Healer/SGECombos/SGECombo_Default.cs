@@ -42,7 +42,7 @@ internal sealed class SGECombo_Default : SGERotation_Base
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Config.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
     protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Config.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "×Ô¶¯ÓÃGCDÄÌ");
     }

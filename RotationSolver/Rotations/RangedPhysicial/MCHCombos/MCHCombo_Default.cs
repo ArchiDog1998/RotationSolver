@@ -28,7 +28,7 @@ internal sealed class MCHCombo_Default : MCHRotation_Base
 
     public override string Author => "汐ベMoon";
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("MCH_Opener", true, "标准起手")

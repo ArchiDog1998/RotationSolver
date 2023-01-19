@@ -82,7 +82,7 @@ internal abstract partial class CustomRotation : ICustomRotation
 
     public uint IconID { get; }
 
-    public RotationConfigSet Config { get; }
+    public IRotationConfigSet Config { get; }
     private protected CustomRotation()
     {
         IconID = IconSet.GetJobIcon(this);
@@ -98,7 +98,7 @@ internal abstract partial class CustomRotation : ICustomRotation
         }
     }
 
-    private protected virtual RotationConfigSet CreateConfiguration()
+    private protected virtual IRotationConfigSet CreateConfiguration()
     {
         return new RotationConfigSet(JobIDs[0], Author);
     }

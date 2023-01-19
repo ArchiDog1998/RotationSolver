@@ -18,7 +18,7 @@ namespace RotationSolver.Combos.RangedMagicial.BLUCombos
         protected override bool CanHealAreaSpell => base.CanHealAreaSpell && BlueId == BLUID.Healer;
         protected override bool CanHealSingleSpell => base.CanHealSingleSpell && BlueId == BLUID.Healer;
 
-        private protected override RotationConfigSet CreateConfiguration()
+        private protected override IRotationConfigSet CreateConfiguration()
         {
             return base.CreateConfiguration()
                 .SetCombo("BlueId", 2, "职能", "防护", "治疗", "进攻")

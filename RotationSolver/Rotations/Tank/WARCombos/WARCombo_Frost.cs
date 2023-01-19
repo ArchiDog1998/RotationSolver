@@ -28,7 +28,7 @@ internal sealed class WARCombo_Frost : WARRotation_Base
     /// 自定义选项
     /// </summary>
     /// <returns></returns>
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseThrillofBattlePre", false, "倒计时11s时使用战栗,关爱学者")
             .SetBool("UseShakeItOffPre", false, "倒计时2s时使用摆脱")

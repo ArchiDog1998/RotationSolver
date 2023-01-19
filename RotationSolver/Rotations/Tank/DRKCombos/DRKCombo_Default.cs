@@ -33,7 +33,7 @@ internal sealed class DRKCombo_Default : DRKRotation_Base
     };
 
 
-    private protected override RotationConfigSet CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("TheBlackestNight", true, "留3000蓝");

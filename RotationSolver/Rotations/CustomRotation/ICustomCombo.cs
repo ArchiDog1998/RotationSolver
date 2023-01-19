@@ -17,7 +17,7 @@ internal interface ICustomRotation : IEnableTexture
 
     string GameVersion { get; }
     string Author { get; }
-    RotationConfigSet Config { get; }
+    IRotationConfigSet Config { get; }
 
     BattleChara MoveTarget { get; }
 
