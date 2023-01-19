@@ -1,4 +1,6 @@
-﻿using RotationSolver.Combos.Script.Actions;
+﻿//本插件不得以任何形式在国服中使用。
+
+using RotationSolver.Combos.Script.Actions;
 using System.Collections.Generic;
 
 namespace RotationSolver.Localization;

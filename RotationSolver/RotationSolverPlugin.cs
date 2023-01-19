@@ -1,4 +1,5 @@
-using Dalamud.Game.Command;
+//本插件不得以任何形式在国服中使用。
+
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using RotationSolver.Combos.Script;
