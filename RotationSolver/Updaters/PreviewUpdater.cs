@@ -29,7 +29,7 @@ internal static class PreviewUpdater
     static DtrBarEntry dtrEntry;
     private static void UpdateEntry()
     {
-        if (Service.Configuration.UseDtr && RSCommands.EntryString != null)
+        if (Service.Configuration.ShowInfoOnDtr && RSCommands.EntryString != null)
         {
             if (dtrEntry == null)
             {
@@ -55,7 +55,7 @@ internal static class PreviewUpdater
         bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
             && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
-        ByteColor c = canMove && Service.Configuration.CheckForCasting ? greenColor : redColor;
+        ByteColor c = canMove && Service.Configuration.CastingDisplay ? greenColor : redColor;
         var isTarDead = false;
         if (Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId) is BattleChara b
             && b.CurrentHp == 0)

@@ -19,14 +19,14 @@ using RotationSolver.Localization;
 using RotationSolver.Commands;
 using RotationSolver.Helpers;
 
-namespace RotationSolver.Windows.ComboConfigWindow;
+namespace RotationSolver.Windows.RotationConfigWindow;
 
-internal partial class ComboConfigWindow : Window
+internal partial class RotationConfigWindow : Window
 {
     const float DRAG_NUMBER_WIDTH = 100;
 
-    public ComboConfigWindow()
-        : base(nameof(ComboConfigWindow), 0, false)
+    public RotationConfigWindow()
+        : base(nameof(RotationConfigWindow), 0, false)
     {
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
@@ -47,106 +47,37 @@ internal partial class ComboConfigWindow : Window
 #if DEBUG
             if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem("Debug"))
             {
-                DrawDebug();
+                DrawDebugTab();
                 ImGui.EndTabItem();
             }
 #endif
-            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_AttackItem))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_RotationItem))
             {
-                DrawAttack();
+                DrawRotationTab();
                 ImGui.EndTabItem();
             }
 
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ParamItem))
             {
-                DrawParam();
+                DrawParamTab();
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_EventsItem))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_EventItem))
             {
-                DrawEvent();
+                DrawEventTab();
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ActionsItem))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ActionItem))
             {
-                ImGui.Text(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
-
-                ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
-
-
-                if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
-                {
-                    foreach (var pair in IconReplacer.RightComboBaseActions.GroupBy(a => a.CateName).OrderBy(g => g.Key))
-                    {
-                        if (ImGui.CollapsingHeader(pair.Key))
-                        {
-                            foreach (var item in pair)
-                            {
-                                DrawAction(item);
-                                ImGui.Separator();
-                            }
-                        }
-                    }
-                    ImGui.EndChild();
-                }
-                ImGui.PopStyleVar();
+                DrawActionTab();
                 ImGui.EndTabItem();
             }
 
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_HelpItem))
             {
-                ImGui.Text(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
-
-                if (ImGui.BeginChild("Help Infomation", new Vector2(0f, -1f), true))
-                {
-                    ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
-
-                    StateCommandType.Smart.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    StateCommandType.Manual.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.HealArea.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.HealSingle.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.DefenseArea.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.DefenseSingle.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.EsunaShield.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.MoveForward.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.MoveBack.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.AntiRepulsion.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.Break.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-
-                    SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                    ImGui.Separator();
-                }
-                ImGui.PopStyleVar();
-
+                DrawHelpTab();
                 ImGui.EndTabItem();
             }
 
@@ -157,7 +88,7 @@ internal partial class ComboConfigWindow : Window
 
 
 
-    internal static void DrawTexture<T>(T texture, Action otherThing, ClassJobID jobId = 0, ICustomRotation[] combos = null) where T : class, IEnableTexture
+    private static void DrawTexture<T>(T texture, Action otherThing, ClassJobID jobId = 0, ICustomRotation[] combos = null) where T : class, IEnableTexture
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 

@@ -158,7 +158,7 @@ internal partial class BaseAction
     {
         target = null;
         //如果用户不想使用自动友方地面放置功能
-        if (!Service.Configuration.UseAreaAbilityFriendly) return false;
+        if (!Service.Configuration.UseGroundBeneficialAbility) return false;
 
         //如果当前目标是Boss且有身位，放他身上。
         if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && b.IsBoss() && b.HasLocationSide())
@@ -278,7 +278,7 @@ internal partial class BaseAction
         }
 
         //判断一下AOE攻击的时候如果有攻击目标标记目标
-        if (_action.CastType > 1 && (NoAOEForAttackMark || Service.Configuration.AttackSafeMode))
+        if (_action.CastType > 1 && (NoAOEForAttackMark || Service.Configuration.AbsSingleTarget))
         {
             target = null;
             return false;
@@ -300,7 +300,7 @@ internal partial class BaseAction
 
             return true;
         }
-        else if (Service.Configuration.AttackSafeMode)
+        else if (Service.Configuration.AbsSingleTarget)
         {
             target = null;
             return false;
@@ -323,7 +323,7 @@ internal partial class BaseAction
     {
         if (_action.EffectRange > 0 && !_isFriendly)
         {
-            if (NoAOEForAttackMark || Service.Configuration.AttackSafeMode)
+            if (NoAOEForAttackMark || Service.Configuration.AbsSingleTarget)
             {
                 return false;
             }
@@ -444,6 +444,6 @@ internal partial class BaseAction
     /// 开启攻击标记且有攻击标记目标且不开AOE。
     /// </summary>
     private static bool NoAOEForAttackMark =>
-        Service.Configuration.ChooseAttackMark && !Service.Configuration.AttackMarkAOE
+        Service.Configuration.ChooseAttackMark && !Service.Configuration.CanAttackMarkAOE
         && MarkingHelper.HaveAttackChara(TargetUpdater.HostileTargets);
 }

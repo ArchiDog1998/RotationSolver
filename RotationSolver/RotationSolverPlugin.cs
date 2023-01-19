@@ -9,8 +9,8 @@ using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
 using RotationSolver.Windows;
 using System;
-using RotationSolver.Windows.ComboConfigWindow;
 using RotationSolver.Commands;
+using RotationSolver.Windows.RotationConfigWindow;
 
 namespace RotationSolver;
 
@@ -19,7 +19,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     private readonly WindowSystem windowSystem;
 
-    private static ComboConfigWindow _comboConfigWindow;
+    private static RotationConfigWindow _comboConfigWindow;
     internal static ScriptComboWindow _scriptComboWindow;
     public string Name => "Rotation Solver";
 
@@ -58,7 +58,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     internal static void ChangeWindowHeader()
     {
         _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
-            + typeof(ComboConfigWindow).Assembly.GetName().Version.ToString();
+            + typeof(RotationConfigWindow).Assembly.GetName().Version.ToString();
 
         _scriptComboWindow.WindowName = LocalizationManager.RightLang.Scriptwindow_Header
             + typeof(ScriptComboWindow).Assembly.GetName().Version.ToString();

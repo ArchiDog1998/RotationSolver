@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Windows.ComboConfigWindow;
 using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Localization;
@@ -61,7 +60,7 @@ namespace RotationSolver.Combos.Script.Actions
                 ImGui.Image(_action.GetTexture().ImGuiHandle, size);
 
                 ImGui.SameLine();
-                ComboConfigWindow.Spacing();
+                ImGuiHelper.Spacing();
 
                 var time = Time;
                 ImGui.SetNextItemWidth(50);
@@ -71,7 +70,7 @@ namespace RotationSolver.Combos.Script.Actions
                 }
 
                 ImGui.SameLine();
-                ComboConfigWindow.Spacing();
+                ImGuiHelper.Spacing();
 
                 var mustUse = MustUse;
                 if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_MustUse}##MustUse{GetHashCode()}", ref mustUse))
@@ -96,7 +95,7 @@ namespace RotationSolver.Combos.Script.Actions
                 }
 
                 ImGui.SameLine();
-                ComboConfigWindow.Spacing();
+                ImGuiHelper.Spacing();
 
                 ImGui.Text(_action.Name);
             }
@@ -105,7 +104,7 @@ namespace RotationSolver.Combos.Script.Actions
                 ImGui.Image(IconSet.GetTexture(1).ImGuiHandle, size);
 
                 ImGui.SameLine();
-                ComboConfigWindow.Spacing();
+                ImGuiHelper.Spacing();
 
                 var time = Time;
                 ImGui.SetNextItemWidth(50);
@@ -115,7 +114,7 @@ namespace RotationSolver.Combos.Script.Actions
                 }
 
                 ImGui.SameLine();
-                ComboConfigWindow.Spacing();
+                ImGuiHelper.Spacing();
 
                 ImGui.Text(_method.GetMemberName());
 

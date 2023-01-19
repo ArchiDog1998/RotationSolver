@@ -8,11 +8,11 @@ using RotationSolver.Updaters;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
 
-namespace RotationSolver.Windows.ComboConfigWindow;
+namespace RotationSolver.Windows.RotationConfigWindow;
 #if DEBUG
-internal partial class ComboConfigWindow
+internal partial class RotationConfigWindow
 {
-    private void DrawDebug()
+    private void DrawDebugTab()
     {
         var str = TargetUpdater.EncryptString(Service.ClientState.LocalPlayer);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);

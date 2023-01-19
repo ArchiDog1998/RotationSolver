@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Windows.ComboConfigWindow;
 using RotationSolver.Actions;
 using RotationSolver.Windows;
 using RotationSolver.Localization;
+using RotationSolver.Helpers;
 
 namespace RotationSolver.Combos.Script.Actions;
 
@@ -19,7 +19,7 @@ internal class CountDownSet : IDraw
         AddButton(combo);
 
         ImGui.SameLine();
-        ComboConfigWindow.Spacing();
+        ImGuiHelper.Spacing();
 
         ImGui.TextWrapped(LocalizationManager.RightLang.Scriptwindow_CountDownSetDesc);
 
@@ -51,7 +51,7 @@ internal class CountDownSet : IDraw
         }
 
         ImGui.SameLine();
-        ComboConfigWindow.Spacing();
+        ImGuiHelper.Spacing();
 
         ScriptComboWindow.AddPopup("PopupFunction" + GetHashCode().ToString(),
             ref search, combo.AllOther, item =>

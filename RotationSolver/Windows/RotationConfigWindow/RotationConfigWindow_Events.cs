@@ -3,19 +3,20 @@ using System.Numerics;
 using RotationSolver.Configuration;
 using RotationSolver;
 using RotationSolver.Localization;
+using RotationSolver.Helpers;
 
-namespace RotationSolver.Windows.ComboConfigWindow;
+namespace RotationSolver.Windows.RotationConfigWindow;
 
-internal partial class ComboConfigWindow
+internal partial class RotationConfigWindow
 {
-    private void DrawEvent()
+    private void DrawEventTab()
     {
         if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Events_AddEvent))
         {
             Service.Configuration.Events.Add(new ActionEventInfo());
         }
         ImGui.SameLine();
-        Spacing();
+        ImGuiHelper.Spacing();
 
         ImGui.Text(LocalizationManager.RightLang.Configwindow_Events_Description);
 
@@ -49,7 +50,7 @@ internal partial class ComboConfigWindow
                 }
 
                 ImGui.SameLine();
-                Spacing();
+                ImGuiHelper.Spacing();
                 if (ImGui.Button($"{LocalizationManager.RightLang.Configwindow_Events_RemoveEvent}##RemoveEvent{i}"))
                 {
                     Service.Configuration.Events.RemoveAt(i);

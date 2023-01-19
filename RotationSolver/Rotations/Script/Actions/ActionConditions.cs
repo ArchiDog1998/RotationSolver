@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Windows.ComboConfigWindow;
 using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Windows;
@@ -80,7 +79,7 @@ internal class ActionConditions : IDraw
             ImGui.Image(_action.GetTexture().ImGuiHandle, size);
 
             ImGui.SameLine();
-            ComboConfigWindow.Spacing();
+            ImGuiHelper.Spacing();
 
             var mustUse = MustUse;
             if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_MustUse}##MustUse{GetHashCode()}", ref mustUse))
@@ -105,7 +104,7 @@ internal class ActionConditions : IDraw
             }
 
             ImGui.SameLine();
-            ComboConfigWindow.Spacing();
+            ImGuiHelper.Spacing();
 
             if (ImGui.Selectable(_action.Name, this == RotationSolverPlugin._scriptComboWindow.ActiveAction))
             {
@@ -117,7 +116,7 @@ internal class ActionConditions : IDraw
             ImGui.Image(IconSet.GetTexture(1).ImGuiHandle, size);
 
             ImGui.SameLine();
-            ComboConfigWindow.Spacing();
+            ImGuiHelper.Spacing();
 
             if (ImGui.Selectable(_method.GetMemberName()))
             {

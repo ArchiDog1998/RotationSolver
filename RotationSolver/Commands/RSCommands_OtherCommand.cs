@@ -54,11 +54,20 @@ namespace RotationSolver.Commands
 
         private static void DoSettingCommand(string str)
         {
+            if (str.Contains(nameof(Service.Configuration.AutoBreak)))
+            {
+                Service.Configuration.AutoBreak = !Service.Configuration.AutoBreak;
 
+                //Say out.
+                Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeRotationConfig,
+    nameof(Service.Configuration.AutoBreak), Service.Configuration.AutoBreak));
+
+            }
         }
 
         private static void DoActionCommand(string str)
         {
+            //Todo!
             var strs = str.Split('-');
 
             if (strs != null && strs.Length == 2 && double.TryParse(strs[1], out var time))

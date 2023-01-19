@@ -65,8 +65,8 @@ internal abstract partial class CustomRotation
                 if (CheckAction(GCDaction.ID))
                 {
                     string location = GCDaction.EnermyLocation.ToName();
-                    if (Service.Configuration.SayingLocation) Watcher.Speak(location);
-                    if (Service.Configuration.ShowLocation) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    if (Service.Configuration.SayPotional) Watcher.Speak(location);
+                    if (Service.Configuration.FlytextPositional) Service.ToastGui.ShowQuest(" " + location, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
                             (uint)Service.IconReplacer.OriginalHook((ActionID)GCDaction.ID)).Icon,

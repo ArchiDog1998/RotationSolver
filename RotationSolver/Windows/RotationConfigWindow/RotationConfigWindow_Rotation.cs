@@ -14,11 +14,11 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 
-namespace RotationSolver.Windows.ComboConfigWindow;
+namespace RotationSolver.Windows.RotationConfigWindow;
 
-internal partial class ComboConfigWindow
+internal partial class RotationConfigWindow
 {
-    private void DrawAttack()
+    private void DrawRotationTab()
     {
         ImGui.Text(LocalizationManager.RightLang.Configwindow_AttackItem_Description);
 
@@ -120,11 +120,11 @@ internal partial class ComboConfigWindow
 
     private static void DrawHealerSettings(ClassJobID job)
     {
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Params_HealthAreaAbility,
+        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthAreaAbility,
             () => ConfigurationHelper.GetHealAreaAbility(job),
             (value) => Service.Configuration.HealthAreaAbilities[job] = value);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Params_HealthAreafSpell,
+        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthAreaSpell,
             () => ConfigurationHelper.GetHealAreafSpell(job),
             (value) => Service.Configuration.HealthAreafSpells[job] = value);
 
@@ -132,11 +132,11 @@ internal partial class ComboConfigWindow
             () => ConfigurationHelper.GetHealingOfTimeSubtractArea(job),
             (value) => Service.Configuration.HealingOfTimeSubtractAreas[job] = value);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Params_HealthSingleAbility,
+        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthSingleAbility,
             () => ConfigurationHelper.GetHealSingleAbility(job),
             (value) => Service.Configuration.HealthSingleAbilities[job] = value);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Params_HealthSingleSpell,
+        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthSingleSpell,
             () => ConfigurationHelper.GetHealSingleSpell(job),
             (value) => Service.Configuration.HealthSingleSpells[job] = value);
 

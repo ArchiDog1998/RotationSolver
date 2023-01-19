@@ -3,7 +3,7 @@
   <Class Name="RotationSolver.Configuration.RotationConfig.RotationConfigBase">
     <Position X="4" Y="5.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAEAAAIAAAAgAAAAAAAAQAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAEAAAIAAAAgAAAAAAABYAAABAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Configuration\RotationConfig\RotationConfigBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -11,14 +11,14 @@
   <Class Name="RotationSolver.Configuration.RotationConfig.RotationConfigBoolean">
     <Position X="0.75" Y="9" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Configuration\RotationConfig\RotationConfigBoolean.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Configuration.RotationConfig.RotationConfigCombo">
     <Position X="7.25" Y="9" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACgAAAAAAABIAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Configuration\RotationConfig\RotationConfigCombo.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -38,9 +38,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Configuration.RotationConfig.RotationConfigSet">
-    <Position X="12" Y="7.25" Width="1.75" />
+    <Position X="12.25" Y="7.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>CACAAAgAAGAAAgAAAEAABAAAAAAQAgAgAAAAAAAAAAA=</HashCode>
+      <HashCode>CACgAAgAACAAAhAIAEAABAAAAAAQAgQkAAAAAAAAAAA=</HashCode>
       <FileName>Configuration\RotationConfig\RotationConfigSet.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -53,16 +53,16 @@
     </TypeIdentifier>
   </Class>
   <Interface Name="RotationSolver.Configuration.RotationConfig.IRotationConfigSet">
-    <Position X="12" Y="3.75" Width="1.75" />
+    <Position X="12.25" Y="3.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AACAAAgAACAAAgAAAEAABAAAAAAAAgAgAAAAAAAAAAA=</HashCode>
+      <HashCode>AACgAAgAACAAAgAAAEAABAAAAAAAAgAgAAAAAAAAAAA=</HashCode>
       <FileName>Configuration\RotationConfig\IRotationConfigSet.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Configuration.RotationConfig.IRotationConfig">
-    <Position X="4" Y="2.75" Width="1.5" />
+    <Position X="4.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAIAAAAgAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAEAAAIAAAAgAAAAAAABYAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Configuration\RotationConfig\IRotationConfig.cs</FileName>
     </TypeIdentifier>
   </Interface>

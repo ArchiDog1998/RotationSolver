@@ -64,7 +64,7 @@ namespace RotationSolver.Commands
                 Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
 
             //Saying out.
-            if (Service.Configuration.AutoSayingOut) Watcher.Speak(sayout(type, role));
+            if (Service.Configuration.SayOutStateChanged) Watcher.Speak(sayout(type, role));
 
             doingSomething(role);
         }

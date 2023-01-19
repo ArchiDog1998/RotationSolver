@@ -65,7 +65,7 @@ internal static class TargetFilter
             return null;
         }
 
-        if (Service.Configuration.MoveTowardsScreen)
+        if (Service.Configuration.MoveTowardsScreenCenter)
         {
             return FindMoveTargetScreenCenter(charas);
         }
