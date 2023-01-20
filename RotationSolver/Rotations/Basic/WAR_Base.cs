@@ -11,32 +11,32 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     private static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
-    private sealed protected override BaseAction Shield => Defiance;
+    private sealed protected override IBaseAction Shield => Defiance;
 
     /// <summary>
     /// ÊØ»¤
     /// </summary>
-    public static BaseAction Defiance { get; } = new(ActionID.Defiance, shouldEndSpecial: true);
+    public static IBaseAction Defiance { get; } = new BaseAction(ActionID.Defiance, shouldEndSpecial: true);
 
     /// <summary>
     /// ÖØÅü
     /// </summary>
-    public static BaseAction HeavySwing { get; } = new(ActionID.HeavySwing);
+    public static IBaseAction HeavySwing { get; } = new BaseAction(ActionID.HeavySwing);
 
     /// <summary>
     /// Ð×²ÐÁÑ
     /// </summary>
-    public static BaseAction Maim { get; } = new(ActionID.Maim);
+    public static IBaseAction Maim { get; } = new BaseAction(ActionID.Maim);
 
     /// <summary>
     /// ±©·çÕ¶ ÂÌ¸«
     /// </summary>
-    public static BaseAction StormsPath { get; } = new(ActionID.StormsPath);
+    public static IBaseAction StormsPath { get; } = new BaseAction(ActionID.StormsPath);
 
     /// <summary>
     /// ±©·çËé ºì¸«
     /// </summary>
-    public static BaseAction StormsEye { get; } = new(ActionID.StormsEye)
+    public static IBaseAction StormsEye { get; } = new BaseAction(ActionID.StormsEye)
     {
         ActionCheck = b => Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest),
     };
@@ -44,7 +44,7 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ·É¸«
     /// </summary>
-    public static BaseAction Tomahawk { get; } = new(ActionID.Tomahawk)
+    public static IBaseAction Tomahawk { get; } = new BaseAction(ActionID.Tomahawk)
     {
         FilterForTarget = b => TargetFilter.ProvokeTarget(b),
     };
@@ -52,7 +52,7 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÃÍ¹¥
     /// </summary>
-    public static BaseAction Onslaught { get; } = new(ActionID.Onslaught, shouldEndSpecial: true)
+    public static IBaseAction Onslaught { get; } = new BaseAction(ActionID.Onslaught, shouldEndSpecial: true)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -60,30 +60,30 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¶¯ÂÒ    
     /// </summary>
-    public static BaseAction Upheaval { get; } = new(ActionID.Upheaval)
+    public static IBaseAction Upheaval { get; } = new BaseAction(ActionID.Upheaval)
     {
-        BuffsNeed = new StatusID[] { StatusID.SurgingTempest },
+        StatusNeed = new StatusID[] { StatusID.SurgingTempest },
     };
 
     /// <summary>
     /// ³¬Ñ¹¸«
     /// </summary>
-    public static BaseAction Overpower { get; } = new(ActionID.Overpower);
+    public static IBaseAction Overpower { get; } = new BaseAction(ActionID.Overpower);
 
     /// <summary>
     /// ÃØÒø±©·ç
     /// </summary>
-    public static BaseAction MythrilTempest { get; } = new(ActionID.MythrilTempest);
+    public static IBaseAction MythrilTempest { get; } = new BaseAction(ActionID.MythrilTempest);
 
     /// <summary>
     /// ÈºÉ½Â¡Æð
     /// </summary>
-    public static BaseAction Orogeny { get; } = new(ActionID.Orogeny);
+    public static IBaseAction Orogeny { get; } = new BaseAction(ActionID.Orogeny);
 
     /// <summary>
     /// Ô­³õÖ®»ê
     /// </summary>
-    public static BaseAction InnerBeast { get; } = new(ActionID.InnerBeast)
+    public static IBaseAction InnerBeast { get; } = new BaseAction(ActionID.InnerBeast)
     {
         ActionCheck = b => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease),
     };
@@ -91,7 +91,7 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// Ô­³õµÄ½â·Å
     /// </summary>
-    public static BaseAction InnerRelease { get; } = new(ActionID.InnerRelease)
+    public static IBaseAction InnerRelease { get; } = new BaseAction(ActionID.InnerRelease)
     {
         ActionCheck = InnerBeast.ActionCheck,
     };
@@ -99,7 +99,7 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¸ÖÌúÐý·ç
     /// </summary>
-    public static BaseAction SteelCyclone { get; } = new(ActionID.SteelCyclone)
+    public static IBaseAction SteelCyclone { get; } = new BaseAction(ActionID.SteelCyclone)
     {
         ActionCheck = InnerBeast.ActionCheck,
     };
@@ -107,16 +107,16 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// Õ½º¿
     /// </summary>
-    public static BaseAction Infuriate { get; } = new(ActionID.Infuriate)
+    public static IBaseAction Infuriate { get; } = new BaseAction(ActionID.Infuriate)
     {
-        BuffsProvide = new[] { StatusID.InnerRelease },
+        StatusProvide = new[] { StatusID.InnerRelease },
         ActionCheck = b => HaveHostilesInRange && JobGauge.BeastGauge < 50 && InCombat,
     };
 
     /// <summary>
     /// ¿ñ±©
     /// </summary>
-    public static BaseAction Berserk { get; } = new(ActionID.Berserk)
+    public static IBaseAction Berserk { get; } = new BaseAction(ActionID.Berserk)
     {
         ActionCheck = b => HaveHostilesInRange && !InnerRelease.IsCoolDown,
     };
@@ -124,17 +124,17 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// Õ½Àõ
     /// </summary>
-    public static BaseAction ThrillofBattle { get; } = new(ActionID.ThrillofBattle, true, isTimeline: true);
+    public static IBaseAction ThrillofBattle { get; } = new BaseAction(ActionID.ThrillofBattle, true, isTimeline: true);
 
     /// <summary>
     /// Ì©È»×ÔÈô
     /// </summary>
-    public static BaseAction Equilibrium { get; } = new(ActionID.Equilibrium, true, isTimeline: true);
+    public static IBaseAction Equilibrium { get; } = new BaseAction(ActionID.Equilibrium, true, isTimeline: true);
 
     /// <summary>
     /// Ô­³õµÄÓÂÃÍ
     /// </summary>
-    public static BaseAction NascentFlash { get; } = new(ActionID.NascentFlash, isTimeline: true)
+    public static IBaseAction NascentFlash { get; } = new BaseAction(ActionID.NascentFlash, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -142,16 +142,16 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¸´³ð
     /// </summary>
-    public static BaseAction Vengeance { get; } = new(ActionID.Vengeance, isTimeline: true)
+    public static IBaseAction Vengeance { get; } = new BaseAction(ActionID.Vengeance, isTimeline: true)
     {
-        BuffsProvide = Rampart.BuffsProvide,
+        StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>
     /// Ô­³õµÄÖ±¾õ
     /// </summary>
-    public static BaseAction RawIntuition { get; } = new(ActionID.RawIntuition, isTimeline: true)
+    public static IBaseAction RawIntuition { get; } = new BaseAction(ActionID.RawIntuition, isTimeline: true)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };
@@ -159,12 +159,12 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// °ÚÍÑ
     /// </summary>
-    public static BaseAction ShakeItOff { get; } = new(ActionID.ShakeItOff, true, isTimeline: true);
+    public static IBaseAction ShakeItOff { get; } = new BaseAction(ActionID.ShakeItOff, true, isTimeline: true);
 
     /// <summary>
     /// ËÀ¶·
     /// </summary>
-    public static BaseAction Holmgang { get; } = new(ActionID.Holmgang, isTimeline: true)
+    public static IBaseAction Holmgang { get; } = new BaseAction(ActionID.Holmgang, isTimeline: true)
     {
         ChoiceTarget = (tars, mustUse) => Player,
     };
@@ -172,9 +172,9 @@ internal abstract class WARRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// Âù»Ä±ÀÁÑ
     /// </summary>
-    public static BaseAction PrimalRend { get; } = new(ActionID.PrimalRend)
+    public static IBaseAction PrimalRend { get; } = new BaseAction(ActionID.PrimalRend)
     {
-        BuffsNeed = new[] { StatusID.PrimalRendReady }
+        StatusNeed = new[] { StatusID.PrimalRendReady }
     };
 
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)

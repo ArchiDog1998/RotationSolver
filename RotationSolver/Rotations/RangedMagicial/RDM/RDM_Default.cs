@@ -194,7 +194,7 @@ internal sealed class RDM_Default : RDMRotation_Base
             }
 
             //看看有没有即刻相关的技能。
-            if (Player.HasStatus(true, Vercure.BuffsProvide))
+            if (Player.HasStatus(true, Vercure.StatusProvide))
             {
                 return false;
             }

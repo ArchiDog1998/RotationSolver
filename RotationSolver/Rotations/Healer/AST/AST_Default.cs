@@ -10,7 +10,7 @@ using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Healer.ASTCombos;
 
-internal sealed class AST_Default : ASTRotation_Base
+internal sealed class AST_Default : AST_Base
 {
     public override string GameVersion => "6.28";
 

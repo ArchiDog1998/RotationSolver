@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.Tank.GNBCombos;
 
-internal sealed class GNB_Default : GNBRotation_Base
+internal sealed class GNB_Default : GNB_Base
 {
     public override string GameVersion => "6.18";
 

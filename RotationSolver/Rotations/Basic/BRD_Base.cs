@@ -62,17 +62,17 @@ internal abstract class BRDRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 强力射击
     /// </summary>
-    public static BaseAction HeavyShoot { get; } = new(ActionID.HeavyShoot) { BuffsProvide = new[] { StatusID.StraightShotReady } };
+    public static IBaseAction HeavyShoot { get; } = new BaseAction(ActionID.HeavyShoot) { StatusProvide = new[] { StatusID.StraightShotReady } };
 
     /// <summary>
     /// 直线射击
     /// </summary>
-    public static BaseAction StraitShoot { get; } = new(ActionID.StraitShoot) { BuffsNeed = new[] { StatusID.StraightShotReady } };
+    public static IBaseAction StraitShoot { get; } = new BaseAction(ActionID.StraitShoot) { StatusNeed = new[] { StatusID.StraightShotReady } };
 
     /// <summary>
     /// 毒咬箭
     /// </summary>
-    public static BaseAction VenomousBite { get; } = new(ActionID.VenomousBite, isEot: true)
+    public static IBaseAction VenomousBite { get; } = new BaseAction(ActionID.VenomousBite, isEot: true)
     {
         TargetStatus = new[] { StatusID.VenomousBite, StatusID.CausticBite }
     };
@@ -80,7 +80,7 @@ internal abstract class BRDRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 风蚀箭
     /// </summary>
-    public static BaseAction Windbite { get; } = new(ActionID.Windbite, isEot: true)
+    public static IBaseAction Windbite { get; } = new BaseAction(ActionID.Windbite, isEot: true)
     {
         TargetStatus = new[] { StatusID.Windbite, StatusID.Stormbite }
     };
@@ -88,7 +88,7 @@ internal abstract class BRDRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 伶牙俐齿
     /// </summary>
-    public static BaseAction IronJaws { get; } = new(ActionID.IronJaws, isEot: true)
+    public static IBaseAction IronJaws { get; } = new BaseAction(ActionID.IronJaws, isEot: true)
     {
         TargetStatus = VenomousBite.TargetStatus.Union(Windbite.TargetStatus).ToArray(),
         ActionCheck = b => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, Windbite.TargetStatus),
@@ -97,32 +97,32 @@ internal abstract class BRDRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 放浪神的小步舞曲
     /// </summary>
-    public static BaseAction WanderersMinuet { get; } = new(ActionID.WanderersMinuet);
+    public static IBaseAction WanderersMinuet { get; } = new BaseAction(ActionID.WanderersMinuet);
 
     /// <summary>
     /// 贤者的叙事谣
     /// </summary>
-    public static BaseAction MagesBallad { get; } = new(ActionID.MagesBallad);
+    public static IBaseAction MagesBallad { get; } = new BaseAction(ActionID.MagesBallad);
 
     /// <summary>
     /// 军神的赞美歌
     /// </summary>
-    public static BaseAction ArmysPaeon { get; } = new(ActionID.ArmysPaeon);
+    public static IBaseAction ArmysPaeon { get; } = new BaseAction(ActionID.ArmysPaeon);
 
     /// <summary>
     /// 战斗之声
     /// </summary>
-    public static BaseAction BattleVoice { get; } = new(ActionID.BattleVoice, true);
+    public static IBaseAction BattleVoice { get; } = new BaseAction(ActionID.BattleVoice, true);
 
     /// <summary>
     /// 猛者强击
     /// </summary>
-    public static BaseAction RagingStrikes { get; } = new(ActionID.RagingStrikes, true);
+    public static IBaseAction RagingStrikes { get; } = new BaseAction(ActionID.RagingStrikes, true);
 
     /// <summary>
     /// 光明神的最终乐章
     /// </summary>
-    public static BaseAction RadiantFinale { get; } = new(ActionID.RadiantFinale, true)
+    public static IBaseAction RadiantFinale { get; } = new BaseAction(ActionID.RadiantFinale, true)
     {
         ActionCheck = b => JobGauge.Coda.Any(s => s != Song.NONE),
     };
@@ -130,17 +130,17 @@ internal abstract class BRDRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 纷乱箭
     /// </summary>
-    public static BaseAction Barrage { get; } = new(ActionID.Barrage);
+    public static IBaseAction Barrage { get; } = new BaseAction(ActionID.Barrage);
 
     /// <summary>
     /// 九天连箭
     /// </summary>
-    public static BaseAction EmpyrealArrow { get; } = new(ActionID.EmpyrealArrow);
+    public static IBaseAction EmpyrealArrow { get; } = new BaseAction(ActionID.EmpyrealArrow);
 
     /// <summary>
     /// 完美音调
     /// </summary>
-    public static BaseAction PitchPerfect { get; } = new(ActionID.PitchPerfect)
+    public static IBaseAction PitchPerfect { get; } = new BaseAction(ActionID.PitchPerfect)
     {
         ActionCheck = b => JobGauge.Song == Song.WANDERER,
     };
@@ -148,48 +148,48 @@ internal abstract class BRDRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 失血箭
     /// </summary>
-    public static BaseAction Bloodletter { get; } = new(ActionID.Bloodletter);
+    public static IBaseAction Bloodletter { get; } = new BaseAction(ActionID.Bloodletter);
 
     /// <summary>
     /// 死亡箭雨
     /// </summary>
-    public static BaseAction RainofDeath { get; } = new(ActionID.RainofDeath);
+    public static IBaseAction RainofDeath { get; } = new BaseAction(ActionID.RainofDeath);
 
     /// <summary>
     /// 连珠箭
     /// </summary>
-    public static BaseAction QuickNock { get; } = new(ActionID.QuickNock)
+    public static IBaseAction QuickNock { get; } = new BaseAction(ActionID.QuickNock)
     {
-        BuffsProvide = new[] { StatusID.ShadowbiteReady }
+        StatusProvide = new[] { StatusID.ShadowbiteReady }
     };
 
     /// <summary>
     /// 影噬箭
     /// </summary>
-    public static BaseAction Shadowbite { get; } = new(ActionID.Shadowbite)
+    public static IBaseAction Shadowbite { get; } = new BaseAction(ActionID.Shadowbite)
     {
-        BuffsNeed = new[] { StatusID.ShadowbiteReady }
+        StatusNeed = new[] { StatusID.ShadowbiteReady }
     };
 
     /// <summary>
     /// 光阴神的礼赞凯歌
     /// </summary>
-    public static BaseAction WardensPaean { get; } = new(ActionID.WardensPaean, true, isTimeline: true);
+    public static IBaseAction WardensPaean { get; } = new BaseAction(ActionID.WardensPaean, true, isTimeline: true);
 
     /// <summary>
     /// 大地神的抒情恋歌
     /// </summary>
-    public static BaseAction NaturesMinne { get; } = new(ActionID.NaturesMinne, true, isTimeline: true);
+    public static IBaseAction NaturesMinne { get; } = new BaseAction(ActionID.NaturesMinne, true, isTimeline: true);
 
     /// <summary>
     /// 侧风诱导箭
     /// </summary>
-    public static BaseAction Sidewinder { get; } = new(ActionID.Sidewinder);
+    public static IBaseAction Sidewinder { get; } = new BaseAction(ActionID.Sidewinder);
 
     /// <summary>
     /// 绝峰箭
     /// </summary>
-    public static BaseAction ApexArrow { get; } = new(ActionID.ApexArrow)
+    public static IBaseAction ApexArrow { get; } = new BaseAction(ActionID.ApexArrow)
     {
         ActionCheck = b => JobGauge.SoulVoice >= 20 && !Player.HasStatus(true, StatusID.BlastArrowReady),
     };
@@ -197,7 +197,7 @@ internal abstract class BRDRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 爆破箭
     /// </summary>
-    public static BaseAction BlastArrow { get; } = new(ActionID.BlastArrow)
+    public static IBaseAction BlastArrow { get; } = new BaseAction(ActionID.BlastArrow)
     {
         ActionCheck = b => Player.HasStatus(true, StatusID.BlastArrowReady),
     };
@@ -205,7 +205,7 @@ internal abstract class BRDRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 行吟
     /// </summary>
-    public static BaseAction Troubadour { get; } = new(ActionID.Troubadour, true, isTimeline: true)
+    public static IBaseAction Troubadour { get; } = new BaseAction(ActionID.Troubadour, true, isTimeline: true)
     {
         ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,

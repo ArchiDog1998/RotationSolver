@@ -3,6 +3,7 @@ using System;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Updaters;
 using RotationSolver.Data;
+using RotationSolver.Actions;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -42,7 +43,7 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Summoner, ClassJobID.Arcanist };
     protected override bool CanHealSingleSpell => false;
-    private sealed protected override BaseAction Raise => Resurrection;
+    private sealed protected override IBaseAction Raise => Resurrection;
 
     /// <summary>
     /// 宝石兽处于同行状态
@@ -93,16 +94,16 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 红宝石召唤 火神召唤
     /// </summary>
-    public static BaseAction SummonRuby { get; } = new(ActionID.SummonRuby)
+    public static IBaseAction SummonRuby { get; } = new BaseAction(ActionID.SummonRuby)
     {
-        BuffsProvide = new[] { StatusID.IfritsFavor },
+        StatusProvide = new[] { StatusID.IfritsFavor },
         ActionCheck = b => HaveSummon && IsIfritReady
     };
 
     /// <summary>
     /// 黄宝石召唤 土神召唤
     /// </summary>
-    public static BaseAction SummonTopaz { get; } = new(ActionID.SummonTopaz)
+    public static IBaseAction SummonTopaz { get; } = new BaseAction(ActionID.SummonTopaz)
     {
         ActionCheck = b => HaveSummon && IsTitanReady,
     };
@@ -110,16 +111,16 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 绿宝石召唤 风神召唤
     /// </summary>
-    public static BaseAction SummonEmerald { get; } = new(ActionID.SummonEmerald)
+    public static IBaseAction SummonEmerald { get; } = new BaseAction(ActionID.SummonEmerald)
     {
-        BuffsProvide = new[] { StatusID.GarudasFavor },
+        StatusProvide = new[] { StatusID.GarudasFavor },
         ActionCheck = b => HaveSummon && IsGarudaReady,
     };
 
     /// <summary>
     /// 宝石兽召唤
     /// </summary>
-    public static BaseAction SummonCarbuncle { get; } = new(ActionID.SummonCarbuncle)
+    public static IBaseAction SummonCarbuncle { get; } = new BaseAction(ActionID.SummonCarbuncle)
     {
         ActionCheck = b => !TargetUpdater.HavePet,
     };
@@ -128,7 +129,7 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 宝石耀 单体
     /// </summary>
-    public static BaseAction Gemshine { get; } = new(ActionID.Gemshine)
+    public static IBaseAction Gemshine { get; } = new BaseAction(ActionID.Gemshine)
     {
         ActionCheck = b => Attunement > 0,
     };
@@ -136,7 +137,7 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 宝石辉 AoE
     /// </summary>
-    public static BaseAction PreciousBrilliance { get; } = new(ActionID.PreciousBrilliance)
+    public static IBaseAction PreciousBrilliance { get; } = new BaseAction(ActionID.PreciousBrilliance)
     {
         ActionCheck = b => Attunement > 0,
     };
@@ -144,7 +145,7 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 以太蓄能  龙神附体 
     /// </summary>
-    public static BaseAction Aethercharge { get; } = new(ActionID.Aethercharge)
+    public static IBaseAction Aethercharge { get; } = new BaseAction(ActionID.Aethercharge)
     {
         ActionCheck = b => InCombat && HaveSummon
     };
@@ -152,14 +153,14 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 龙神召唤 不死鸟召唤
     /// </summary>
-    public static BaseAction SummonBahamut { get; } = new(ActionID.SummonBahamut)
+    public static IBaseAction SummonBahamut { get; } = new BaseAction(ActionID.SummonBahamut)
     {
         ActionCheck = b => InCombat && HaveSummon
     };
     /// <summary>
     /// 龙神迸发 不死鸟迸发
     /// </summary>
-    public static BaseAction EnkindleBahamut { get; } = new(ActionID.EnkindleBahamut)
+    public static IBaseAction EnkindleBahamut { get; } = new BaseAction(ActionID.EnkindleBahamut)
     {
         ActionCheck = b => InBahamut || InPhoenix,
     };
@@ -169,7 +170,7 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 死星核爆
     /// </summary>
-    public static BaseAction Deathflare { get; } = new(ActionID.Deathflare)
+    public static IBaseAction Deathflare { get; } = new BaseAction(ActionID.Deathflare)
     {
         ActionCheck = b => InBahamut,
     };
@@ -177,7 +178,7 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 苏生之炎
     /// </summary>
-    public static BaseAction Rekindle { get; } = new(ActionID.Rekindle, true)
+    public static IBaseAction Rekindle { get; } = new BaseAction(ActionID.Rekindle, true)
     {
         ActionCheck = b => InPhoenix,
     };
@@ -185,30 +186,30 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 深红旋风
     /// </summary>
-    public static BaseAction CrimsonCyclone { get; } = new(ActionID.CrimsonCyclone)
+    public static IBaseAction CrimsonCyclone { get; } = new BaseAction(ActionID.CrimsonCyclone)
     {
-        BuffsNeed = new[] { StatusID.IfritsFavor },
+        StatusNeed = new[] { StatusID.IfritsFavor },
     };
 
     /// <summary>
     /// 深红强袭
     /// </summary>
-    public static BaseAction CrimsonStrike { get; } = new(ActionID.CrimsonStrike);
+    public static IBaseAction CrimsonStrike { get; } = new BaseAction(ActionID.CrimsonStrike);
 
     /// <summary>
     /// 山崩
     /// </summary>
-    public static BaseAction MountainBuster { get; } = new(ActionID.MountainBuster)
+    public static IBaseAction MountainBuster { get; } = new BaseAction(ActionID.MountainBuster)
     {
-        BuffsNeed = new[] { StatusID.TitansFavor },
+        StatusNeed = new[] { StatusID.TitansFavor },
     };
 
     /// <summary>
     /// 螺旋气流
     /// </summary>
-    public static BaseAction Slipstream { get; } = new(ActionID.Slipstream)
+    public static IBaseAction Slipstream { get; } = new BaseAction(ActionID.Slipstream)
     {
-        BuffsNeed = new[] { StatusID.GarudasFavor },
+        StatusNeed = new[] { StatusID.GarudasFavor },
     };
 
     #endregion
@@ -216,36 +217,36 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 毁灭 毁坏 毁荡
     /// </summary>
-    public static BaseAction Ruin { get; } = new(ActionID.RuinSMN);
+    public static IBaseAction Ruin { get; } = new BaseAction(ActionID.RuinSMN);
 
     /// <summary>
     /// 毁绝
     /// </summary>
-    public static BaseAction RuinIV { get; } = new(ActionID.RuinIV)
+    public static IBaseAction RuinIV { get; } = new BaseAction(ActionID.RuinIV)
     {
-        BuffsNeed = new[] { StatusID.FurtherRuin },
+        StatusNeed = new[] { StatusID.FurtherRuin },
     };
 
     /// <summary>
     /// 迸裂 三重灾祸
     /// </summary>
-    public static BaseAction Outburst { get; } = new(ActionID.Outburst);
+    public static IBaseAction Outburst { get; } = new BaseAction(ActionID.Outburst);
 
     #endregion
     #region 能力技
     /// <summary>
     /// 灼热之光 团辅
     /// </summary>
-    public static BaseAction SearingLight { get; } = new(ActionID.SearingLight, true)
+    public static IBaseAction SearingLight { get; } = new BaseAction(ActionID.SearingLight, true)
     {
-        BuffsProvide = new[] { StatusID.SearingLight },
+        StatusProvide = new[] { StatusID.SearingLight },
         ActionCheck = b => InCombat,
     };
 
     /// <summary>
     /// 守护之光
     /// </summary>
-    public static BaseAction RadiantAegis { get; } = new(ActionID.RadiantAegis, true, isTimeline: true)
+    public static IBaseAction RadiantAegis { get; } = new BaseAction(ActionID.RadiantAegis, true, isTimeline: true)
     {
         ActionCheck = b => HaveSummon
     };
@@ -253,16 +254,16 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 能量吸收
     /// </summary>
-    public static BaseAction EnergyDrain { get; } = new(ActionID.EnergyDrainSMN)
+    public static IBaseAction EnergyDrain { get; } = new BaseAction(ActionID.EnergyDrainSMN)
     {
-        BuffsProvide = new[] { StatusID.FurtherRuin },
+        StatusProvide = new[] { StatusID.FurtherRuin },
         ActionCheck = b => !HasAetherflowStacks
     };
 
     /// <summary>
     /// 溃烂爆发
     /// </summary>
-    public static BaseAction Fester { get; } = new(ActionID.Fester)
+    public static IBaseAction Fester { get; } = new BaseAction(ActionID.Fester)
     {
         ActionCheck = b => HasAetherflowStacks
     };
@@ -270,16 +271,16 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 能量抽取
     /// </summary>
-    public static BaseAction EnergySiphon { get; } = new(ActionID.EnergySiphon)
+    public static IBaseAction EnergySiphon { get; } = new BaseAction(ActionID.EnergySiphon)
     {
-        BuffsProvide = new[] { StatusID.FurtherRuin },
+        StatusProvide = new[] { StatusID.FurtherRuin },
         ActionCheck = b => !HasAetherflowStacks
     };
 
     /// <summary>
     /// 痛苦核爆
     /// </summary>
-    public static BaseAction Painflare { get; } = new(ActionID.Painflare)
+    public static IBaseAction Painflare { get; } = new BaseAction(ActionID.Painflare)
     {
         ActionCheck = b => HasAetherflowStacks
     };
@@ -288,10 +289,10 @@ internal abstract class SMNRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 复生
     /// </summary>
-    public static BaseAction Resurrection { get; } = new(ActionID.ResurrectionSMN, true);
+    public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.ResurrectionSMN, true);
 
     /// <summary>
     /// 医术
     /// </summary>
-    public static BaseAction Physick { get; } = new(ActionID.Physick, true);
+    public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, true);
 }

@@ -15,14 +15,16 @@ namespace RotationSolver.Helpers
     internal static class ImGuiHelper
     {
         public static void DrawEnableTexture<T>(this T texture, bool isSelected, Action selected, 
-            Action additonalHeader = null, Action otherThing = null) where T : class, IEnableTexture
+            Action additonalHeader = null, Action otherThing = null) where T : class, ITexture
         {
             ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
             var t = texture.GetTexture();
             ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
 
-            var desc = texture.Description;
+            var able = texture as IEnable;
+
+            var desc = able?.Description;
             HoveredString(desc);
             ImGui.SameLine();
             Spacing();
@@ -34,16 +36,21 @@ namespace RotationSolver.Helpers
             }
             HoveredString(desc);
 
-            ImGui.SameLine();
-            Spacing();
-
-            bool enable = texture.IsEnabled;
-            if (ImGui.Checkbox("##" + texture.Name, ref enable))
+            bool enable = false;
+            if (able != null)
             {
-                texture.IsEnabled = enable;
-                Service.Configuration.Save();
+                ImGui.SameLine();
+                Spacing();
+
+                enable = able.IsEnabled;
+                if (ImGui.Checkbox("##" + texture.Name, ref enable))
+                {
+                    able.IsEnabled = enable;
+                    Service.Configuration.Save();
+                }
+                HoveredString(desc);
             }
-            HoveredString(desc);
+
 
             additonalHeader?.Invoke();
 

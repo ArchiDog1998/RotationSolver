@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.RangedPhysicial.DNCCombos;
 
-internal sealed class DNC_Default : DNCRotation_Base
+internal sealed class DNC_Default : DNC_Base
 {
     public override string GameVersion => "6.28";
 

@@ -32,45 +32,45 @@ internal abstract class MNKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 双龙脚
     /// </summary>
-    public static BaseAction DragonKick { get; } = new(ActionID.DragonKick)
+    public static IBaseAction DragonKick { get; } = new BaseAction(ActionID.DragonKick)
     {
-        BuffsProvide = new[] { StatusID.LeadenFist },
+        StatusProvide = new[] { StatusID.LeadenFist },
     };
 
     /// <summary>
     /// 连击
     /// </summary>
-    public static BaseAction Bootshine { get; } = new(ActionID.Bootshine);
+    public static IBaseAction Bootshine { get; } = new BaseAction(ActionID.Bootshine);
 
     /// <summary>
     /// 破坏神冲 aoe
     /// </summary>
-    public static BaseAction ArmoftheDestroyer { get; } = new(ActionID.ArmoftheDestroyer);
+    public static IBaseAction ArmoftheDestroyer { get; } = new BaseAction(ActionID.ArmoftheDestroyer);
 
     /// <summary>
     /// 破坏神脚 aoe
     /// </summary>
-    public static BaseAction ShadowoftheDestroyer { get; } = new(ActionID.ShadowoftheDestroyer);
+    public static IBaseAction ShadowoftheDestroyer { get; } = new BaseAction(ActionID.ShadowoftheDestroyer);
 
     /// <summary>
     /// 双掌打 伤害提高
     /// </summary>
-    public static BaseAction TwinSnakes { get; } = new(ActionID.TwinSnakes, isEot: true);
+    public static IBaseAction TwinSnakes { get; } = new BaseAction(ActionID.TwinSnakes, isEot: true);
 
     /// <summary>
     /// 正拳
     /// </summary>
-    public static BaseAction TrueStrike { get; } = new(ActionID.TrueStrike);
+    public static IBaseAction TrueStrike { get; } = new BaseAction(ActionID.TrueStrike);
 
     /// <summary>
     /// 四面脚 aoe
     /// </summary>
-    public static BaseAction FourpointFury { get; } = new(ActionID.FourpointFury);
+    public static IBaseAction FourpointFury { get; } = new BaseAction(ActionID.FourpointFury);
 
     /// <summary>
     /// 破碎拳
     /// </summary>
-    public static BaseAction Demolish { get; } = new(ActionID.Demolish, isEot: true)
+    public static IBaseAction Demolish { get; } = new BaseAction(ActionID.Demolish, isEot: true)
     {
         TargetStatus = new StatusID[] { StatusID.Demolish },
     };
@@ -78,22 +78,22 @@ internal abstract class MNKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 崩拳
     /// </summary>
-    public static BaseAction SnapPunch { get; } = new(ActionID.SnapPunch);
+    public static IBaseAction SnapPunch { get; } = new BaseAction(ActionID.SnapPunch);
 
     /// <summary>
     /// 地烈劲 aoe
     /// </summary>
-    public static BaseAction Rockbreaker { get; } = new(ActionID.Rockbreaker);
+    public static IBaseAction Rockbreaker { get; } = new BaseAction(ActionID.Rockbreaker);
 
     /// <summary>
     /// 斗气
     /// </summary>
-    public static BaseAction Meditation { get; } = new(ActionID.Meditation, true);
+    public static IBaseAction Meditation { get; } = new BaseAction(ActionID.Meditation, true);
 
     /// <summary>
     /// 铁山靠
     /// </summary>
-    public static BaseAction SteelPeak { get; } = new(ActionID.SteelPeak)
+    public static IBaseAction SteelPeak { get; } = new BaseAction(ActionID.SteelPeak)
     {
         ActionCheck = b => InCombat && Chakra == 5,
     };
@@ -101,7 +101,7 @@ internal abstract class MNKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 空鸣拳
     /// </summary>
-    public static BaseAction HowlingFist { get; } = new(ActionID.HowlingFist)
+    public static IBaseAction HowlingFist { get; } = new BaseAction(ActionID.HowlingFist)
     {
         ActionCheck = SteelPeak.ActionCheck,
     };
@@ -109,17 +109,17 @@ internal abstract class MNKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 义结金兰
     /// </summary>
-    public static BaseAction Brotherhood { get; } = new(ActionID.Brotherhood, true);
+    public static IBaseAction Brotherhood { get; } = new BaseAction(ActionID.Brotherhood, true);
 
     /// <summary>
     /// 红莲极意 提高dps
     /// </summary>
-    public static BaseAction RiddleofFire { get; } = new(ActionID.RiddleofFire, true);
+    public static IBaseAction RiddleofFire { get; } = new BaseAction(ActionID.RiddleofFire, true);
 
     /// <summary>
     /// 突进技能
     /// </summary>
-    public static BaseAction Thunderclap { get; } = new(ActionID.Thunderclap, shouldEndSpecial: true)
+    public static IBaseAction Thunderclap { get; } = new BaseAction(ActionID.Thunderclap, shouldEndSpecial: true)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -127,63 +127,63 @@ internal abstract class MNKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 真言
     /// </summary>
-    public static BaseAction Mantra { get; } = new(ActionID.Mantra, true, isTimeline: true);
+    public static IBaseAction Mantra { get; } = new BaseAction(ActionID.Mantra, true, isTimeline: true);
 
     /// <summary>
     /// 震脚
     /// </summary>
-    public static BaseAction PerfectBalance { get; } = new(ActionID.PerfectBalance)
+    public static IBaseAction PerfectBalance { get; } = new BaseAction(ActionID.PerfectBalance)
     {
-        BuffsNeed = new StatusID[] { StatusID.RaptorForm },
+        StatusNeed = new StatusID[] { StatusID.RaptorForm },
         ActionCheck = b => InCombat,
     };
 
     /// <summary>
     /// 苍气炮 阴
     /// </summary>
-    public static BaseAction ElixirField { get; } = new(ActionID.ElixirField);
+    public static IBaseAction ElixirField { get; } = new BaseAction(ActionID.ElixirField);
 
     /// <summary>
     /// 爆裂脚 阳
     /// </summary>
-    public static BaseAction FlintStrike { get; } = new(ActionID.FlintStrike);
+    public static IBaseAction FlintStrike { get; } = new BaseAction(ActionID.FlintStrike);
 
     /// <summary>
     /// 翻天脚 兔
     /// </summary>
-    public static BaseAction CelestialRevolution { get; } = new(ActionID.CelestialRevolution);
+    public static IBaseAction CelestialRevolution { get; } = new BaseAction(ActionID.CelestialRevolution);
 
     /// <summary>
     /// 凤凰舞
     /// </summary>
-    public static BaseAction RisingPhoenix { get; } = new(ActionID.RisingPhoenix);
+    public static IBaseAction RisingPhoenix { get; } = new BaseAction(ActionID.RisingPhoenix);
 
     /// <summary>
     /// 斗魂旋风脚 阴阳
     /// </summary>
-    public static BaseAction TornadoKick { get; } = new(ActionID.TornadoKick);
-    public static BaseAction PhantomRush { get; } = new(ActionID.PhantomRush);
+    public static IBaseAction TornadoKick { get; } = new BaseAction(ActionID.TornadoKick);
+    public static IBaseAction PhantomRush { get; } = new BaseAction(ActionID.PhantomRush);
 
     /// <summary>
     /// 演武
     /// </summary>
-    public static BaseAction FormShift { get; } = new(ActionID.FormShift, true)
+    public static IBaseAction FormShift { get; } = new BaseAction(ActionID.FormShift, true)
     {
-        BuffsProvide = new[] { StatusID.FormlessFist, StatusID.PerfectBalance },
+        StatusProvide = new[] { StatusID.FormlessFist, StatusID.PerfectBalance },
     };
 
     /// <summary>
     /// 金刚极意 盾
     /// </summary>
-    public static BaseAction RiddleofEarth { get; } = new(ActionID.RiddleofEarth, true, shouldEndSpecial: true, isTimeline: true)
+    public static IBaseAction RiddleofEarth { get; } = new BaseAction(ActionID.RiddleofEarth, true, shouldEndSpecial: true, isTimeline: true)
     {
-        BuffsProvide = new[] { StatusID.RiddleofEarth },
+        StatusProvide = new[] { StatusID.RiddleofEarth },
     };
 
     /// <summary>
     /// 疾风极意
     /// </summary>
-    public static BaseAction RiddleofWind { get; } = new(ActionID.RiddleofWind, true);
+    public static IBaseAction RiddleofWind { get; } = new BaseAction(ActionID.RiddleofWind, true);
 
     private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {

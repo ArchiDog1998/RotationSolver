@@ -13,7 +13,7 @@ namespace RotationSolver.Actions.BaseAction;
 
 internal partial class BaseAction
 {
-    internal bool IsTargetDying
+    public bool IsTargetDying
     {
         get
         {
@@ -22,7 +22,7 @@ internal partial class BaseAction
         }
     }
 
-    internal bool IsTargetBoss
+    public bool IsTargetBoss
     {
         get
         {
@@ -31,7 +31,7 @@ internal partial class BaseAction
         }
     }
 
-    internal BattleChara Target { get; private set; } = Service.ClientState.LocalPlayer;
+    public BattleChara Target { get; private set; } = Service.ClientState.LocalPlayer;
     private Vector3 _position = default;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
@@ -50,7 +50,7 @@ internal partial class BaseAction
     /// <summary>
     /// 给敌人造成的Debuff,如果有这些Debuff，那么不会执行，这个status是玩家赋予的。
     /// </summary>
-    internal StatusID[] TargetStatus { get; set; } = null;
+    public StatusID[] TargetStatus { get; set; } = null;
 
     internal static bool TankDefenseSelf(BattleChara chara)
     {

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace RotationSolver.Rotations.Melee.MNKCombos;
-internal sealed class MNK_Default : MNKRotation_Base
+internal sealed class MNK_Default : MNK_Base
 {
     public override string GameVersion => "6.0";
 

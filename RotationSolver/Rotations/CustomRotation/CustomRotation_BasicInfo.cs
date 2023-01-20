@@ -69,7 +69,7 @@ internal abstract partial class CustomRotation : ICustomRotation
     /// <summary>
     /// 有即刻相关Buff
     /// </summary>
-    internal static bool HaveSwift => Player.HasStatus(true, Swiftcast.BuffsProvide);
+    internal static bool HaveSwift => Player.HasStatus(true, Swiftcast.StatusProvide);
 
     /// <summary>
     /// 有盾姿，如果为非T那么始终为true

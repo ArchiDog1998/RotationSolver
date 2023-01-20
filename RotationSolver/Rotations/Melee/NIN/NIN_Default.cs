@@ -16,7 +16,7 @@ internal sealed class NIN_Default : NINRotation_Base
 
     public override string RotationName => "Default";
 
-    private static NinAction _ninactionAim = null;
+    private static INinAction _ninactionAim = null;
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
@@ -29,7 +29,7 @@ internal sealed class NIN_Default : NINRotation_Base
         {DescType.MoveAction, $"{Shukuchi}，目标为面向夹角小于30°内最远目标。"},
     };
 
-    private static void SetNinjustus(NinAction act)
+    private static void SetNinjustus(INinAction act)
     {
         if (_ninactionAim != null && IsLastAction(false, Ten, Jin, Chi, FumaShurikenTen, FumaShurikenJin)) return;
         _ninactionAim = act;

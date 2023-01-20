@@ -11,7 +11,7 @@ using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Tank.DRKCombos;
 
-internal sealed class DRK_Default : DRKRotation_Base
+internal sealed class DRK_Default : DRK_Base
 {
     public override string GameVersion => "6.18";
     public override string RotationName => "Default";

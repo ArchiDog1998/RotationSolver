@@ -32,25 +32,25 @@ internal abstract class RDMRotation_Base : CustomRotation.CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.RedMage };
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
-    private sealed protected override BaseAction Raise => Verraise;
+    private sealed protected override IBaseAction Raise => Verraise;
 
     /// <summary>
     /// ³à¸´»î
     /// </summary>
-    public static BaseAction Verraise { get; } = new(ActionID.Verraise, true);
+    public static IBaseAction Verraise { get; } = new BaseAction(ActionID.Verraise, true);
 
     /// <summary>
     /// Õðµ´
     /// </summary>
-    public static BaseAction Jolt { get; } = new(ActionID.Jolt)
+    public static IBaseAction Jolt { get; } = new BaseAction(ActionID.Jolt)
     {
-        BuffsProvide = Swiftcast.BuffsProvide.Union(new[] { StatusID.Acceleration }).ToArray(),
+        StatusProvide = Swiftcast.StatusProvide.Union(new[] { StatusID.Acceleration }).ToArray(),
     };
 
     /// <summary>
     /// »Ø´Ì
     /// </summary>
-    public static BaseAction Riposte { get; } = new(ActionID.Riposte)
+    public static IBaseAction Riposte { get; } = new BaseAction(ActionID.Riposte)
     {
         ActionCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
     };
@@ -58,15 +58,15 @@ internal abstract class RDMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ³àÉÁÀ×
     /// </summary>
-    public static BaseAction Verthunder { get; } = new(ActionID.Verthunder)
+    public static IBaseAction Verthunder { get; } = new BaseAction(ActionID.Verthunder)
     {
-        BuffsNeed = Jolt.BuffsProvide,
+        StatusNeed = Jolt.StatusProvide,
     };
 
     /// <summary>
     /// ¶Ì±øÏà½Ó
     /// </summary>
-    public static BaseAction CorpsAcorps { get; } = new(ActionID.CorpsAcorps, shouldEndSpecial: true)
+    public static IBaseAction CorpsAcorps { get; } = new BaseAction(ActionID.CorpsAcorps, shouldEndSpecial: true)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -74,57 +74,57 @@ internal abstract class RDMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ³à¼²·ç
     /// </summary>
-    public static BaseAction Veraero { get; } = new(ActionID.Veraero)
+    public static IBaseAction Veraero { get; } = new BaseAction(ActionID.Veraero)
     {
-        BuffsNeed = Jolt.BuffsProvide,
+        StatusNeed = Jolt.StatusProvide,
     };
 
     /// <summary>
     /// É¢Ëé
     /// </summary>
-    public static BaseAction Scatter { get; } = new(ActionID.Scatter)
+    public static IBaseAction Scatter { get; } = new BaseAction(ActionID.Scatter)
     {
-        BuffsNeed = Jolt.BuffsProvide,
+        StatusNeed = Jolt.StatusProvide,
     };
 
     /// <summary>
     /// ³àÕðÀ×
     /// </summary>
-    public static BaseAction Verthunder2 { get; } = new(ActionID.Verthunder2)
+    public static IBaseAction Verthunder2 { get; } = new BaseAction(ActionID.Verthunder2)
     {
-        BuffsProvide = Jolt.BuffsProvide,
+        StatusProvide = Jolt.StatusProvide,
     };
 
     /// <summary>
     /// ³àÁÒ·ç
     /// </summary>
-    public static BaseAction Veraero2 { get; } = new(ActionID.Veraero2)
+    public static IBaseAction Veraero2 { get; } = new BaseAction(ActionID.Veraero2)
     {
-        BuffsProvide = Jolt.BuffsProvide,
+        StatusProvide = Jolt.StatusProvide,
     };
 
     /// <summary>
     /// ³à»ðÑ×
     /// </summary>
-    public static BaseAction Verfire { get; } = new(ActionID.Verfire)
+    public static IBaseAction Verfire { get; } = new BaseAction(ActionID.Verfire)
     {
-        BuffsNeed = new[] { StatusID.VerfireReady },
-        BuffsProvide = Jolt.BuffsProvide,
+        StatusNeed = new[] { StatusID.VerfireReady },
+        StatusProvide = Jolt.StatusProvide,
     };
 
     /// <summary>
     /// ³à·ÉÊ¯
     /// </summary>
-    public static BaseAction Verstone { get; } = new(ActionID.Verstone)
+    public static IBaseAction Verstone { get; } = new BaseAction(ActionID.Verstone)
     {
-        BuffsNeed = new[] { StatusID.VerstoneReady },
-        BuffsProvide = Jolt.BuffsProvide,
+        StatusNeed = new[] { StatusID.VerstoneReady },
+        StatusProvide = Jolt.StatusProvide,
     };
 
     /// <summary>
     /// ½»»÷Õ¶
     /// </summary>
-    public static BaseAction Zwerchhau { get; } = new(ActionID.Zwerchhau)
+    public static IBaseAction Zwerchhau { get; } = new BaseAction(ActionID.Zwerchhau)
     {
         ActionCheck = b => BlackMana >= 15 && WhiteMana >= 15,
     };
@@ -132,17 +132,17 @@ internal abstract class RDMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ½»½£
     /// </summary>
-    public static BaseAction Engagement { get; } = new(ActionID.Engagement);
+    public static IBaseAction Engagement { get; } = new BaseAction(ActionID.Engagement);
 
     /// <summary>
     /// ·É½£
     /// </summary>
-    public static BaseAction Fleche { get; } = new(ActionID.Fleche);
+    public static IBaseAction Fleche { get; } = new BaseAction(ActionID.Fleche);
 
     /// <summary>
     /// Á¬¹¥
     /// </summary>
-    public static BaseAction Redoublement { get; } = new(ActionID.Redoublement)
+    public static IBaseAction Redoublement { get; } = new BaseAction(ActionID.Redoublement)
     {
         ActionCheck = b => BlackMana >= 15 && WhiteMana >= 15,
     };
@@ -151,15 +151,15 @@ internal abstract class RDMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ´Ù½ø
     /// </summary>
-    public static BaseAction Acceleration { get; } = new(ActionID.Acceleration, true)
+    public static IBaseAction Acceleration { get; } = new BaseAction(ActionID.Acceleration, true)
     {
-        BuffsProvide = new[] { StatusID.Acceleration },
+        StatusProvide = new[] { StatusID.Acceleration },
     };
 
     /// <summary>
     /// »®Ô²Õ¶
     /// </summary>
-    public static BaseAction Moulinet { get; } = new(ActionID.Moulinet)
+    public static IBaseAction Moulinet { get; } = new BaseAction(ActionID.Moulinet)
     {
         ActionCheck = b => BlackMana >= 20 && WhiteMana >= 20,
     };
@@ -167,45 +167,40 @@ internal abstract class RDMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ³àÖÎÁÆ
     /// </summary>
-    public static BaseAction Vercure { get; } = new(ActionID.Vercure, true)
+    public static IBaseAction Vercure { get; } = new BaseAction(ActionID.Vercure, true)
     {
-        BuffsProvide = Swiftcast.BuffsProvide.Union(Acceleration.BuffsProvide).ToArray(),
+        StatusProvide = Swiftcast.StatusProvide.Union(Acceleration.StatusProvide).ToArray(),
     };
 
     /// <summary>
     /// Áù·Ö·´»÷
     /// </summary>
-    public static BaseAction ContreSixte { get; } = new(ActionID.ContreSixte);
+    public static IBaseAction ContreSixte { get; } = new BaseAction(ActionID.ContreSixte);
 
     /// <summary>
     /// ¹ÄÀø
     /// </summary>
-    public static BaseAction Embolden { get; } = new(ActionID.Embolden, true);
-
-    ///// <summary>
-    ///// ÐøÕ¶
-    ///// </summary>
-    //public static BaseAction Reprise { get; } = new(ActionID.Reprise);
+    public static IBaseAction Embolden { get; } = new BaseAction(ActionID.Embolden, true);
 
     /// <summary>
     /// ¿¹ËÀ
     /// </summary>
-    public static BaseAction MagickBarrier { get; } = new(ActionID.MagickBarrier, true, isTimeline: true);
+    public static IBaseAction MagickBarrier { get; } = new BaseAction(ActionID.MagickBarrier, true, isTimeline: true);
 
     /// <summary>
     /// ³àºË±¬
     /// </summary>
-    public static BaseAction Verflare { get; } = new(ActionID.Verflare);
+    public static IBaseAction Verflare { get; } = new BaseAction(ActionID.Verflare);
 
     /// <summary>
     /// ³àÉñÊ¥
     /// </summary>
-    public static BaseAction Verholy { get; } = new(ActionID.Verholy);
+    public static IBaseAction Verholy { get; } = new BaseAction(ActionID.Verholy);
 
     /// <summary>
     /// ½¹ÈÈ
     /// </summary>
-    public static BaseAction Scorch { get; } = new(ActionID.Scorch)
+    public static IBaseAction Scorch { get; } = new BaseAction(ActionID.Scorch)
     {
         OtherIDsCombo = new[] { ActionID.Verholy },
     };
@@ -213,12 +208,12 @@ internal abstract class RDMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¾ö¶Ï
     /// </summary>
-    public static BaseAction Resolution { get; } = new(ActionID.Resolution);
+    public static IBaseAction Resolution { get; } = new BaseAction(ActionID.Resolution);
 
     /// <summary>
     /// Ä§Ôª»¯
     /// </summary>
-    public static BaseAction Manafication { get; } = new(ActionID.Manafication)
+    public static IBaseAction Manafication { get; } = new BaseAction(ActionID.Manafication)
     {
         ActionCheck = b => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0,
         OtherIDsNot = new[] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },

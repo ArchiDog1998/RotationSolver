@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.Melee.DRGCombos;
 
-internal sealed class DRG_Default : DRGRotation_Base
+internal sealed class DRG_Default : DRG_Base
 {
     public override string GameVersion => "6.18";
 

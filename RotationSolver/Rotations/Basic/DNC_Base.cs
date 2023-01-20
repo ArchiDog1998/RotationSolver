@@ -33,107 +33,107 @@ internal abstract class DNCRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÆÙÐº
     /// </summary>
-    public static BaseAction Cascade { get; } = new(ActionID.Cascade)
+    public static IBaseAction Cascade { get; } = new BaseAction(ActionID.Cascade)
     {
-        BuffsProvide = new[] { StatusID.SilkenSymmetry }
+        StatusProvide = new[] { StatusID.SilkenSymmetry }
     };
 
     /// <summary>
     /// ÅçÈª
     /// </summary>
-    public static BaseAction Fountain { get; } = new(ActionID.Fountain)
+    public static IBaseAction Fountain { get; } = new BaseAction(ActionID.Fountain)
     {
-        BuffsProvide = new[] { StatusID.SilkenFlow }
+        StatusProvide = new[] { StatusID.SilkenFlow }
     };
 
     /// <summary>
     /// ÄæÆÙÐº
     /// </summary>
-    public static BaseAction ReverseCascade { get; } = new(ActionID.ReverseCascade)
+    public static IBaseAction ReverseCascade { get; } = new BaseAction(ActionID.ReverseCascade)
     {
-        BuffsNeed = new[] { StatusID.SilkenSymmetry, StatusID.SilkenSymmetry2 },
+        StatusNeed = new[] { StatusID.SilkenSymmetry, StatusID.SilkenSymmetry2 },
     };
 
     /// <summary>
     /// ×¹ÅçÈª
     /// </summary>
-    public static BaseAction Fountainfall { get; } = new(ActionID.Fountainfall)
+    public static IBaseAction Fountainfall { get; } = new BaseAction(ActionID.Fountainfall)
     {
-        BuffsNeed = new[] { StatusID.SilkenFlow, StatusID.SilkenFlow2 }
+        StatusNeed = new[] { StatusID.SilkenFlow, StatusID.SilkenFlow2 }
     };
 
     /// <summary>
     /// ÉÈÎè¡¤Ðò
     /// </summary>
-    public static BaseAction FanDance { get; } = new(ActionID.FanDance)
+    public static IBaseAction FanDance { get; } = new BaseAction(ActionID.FanDance)
     {
         ActionCheck = b => JobGauge.Feathers > 0,
-        BuffsProvide = new[] { StatusID.ThreefoldFanDance },
+        StatusProvide = new[] { StatusID.ThreefoldFanDance },
     };
 
     /// <summary>
     /// ·ç³µ
     /// </summary>
-    public static BaseAction Windmill { get; } = new(ActionID.Windmill)
+    public static IBaseAction Windmill { get; } = new BaseAction(ActionID.Windmill)
     {
-        BuffsProvide = Cascade.BuffsProvide,
+        StatusProvide = Cascade.StatusProvide,
     };
 
     /// <summary>
     /// ÂäÈÐÓê
     /// </summary>
-    public static BaseAction Bladeshower { get; } = new(ActionID.Bladeshower)
+    public static IBaseAction Bladeshower { get; } = new BaseAction(ActionID.Bladeshower)
     {
-        BuffsProvide = Fountain.BuffsProvide,
+        StatusProvide = Fountain.StatusProvide,
     };
 
     /// <summary>
     /// Éý·ç³µ
     /// </summary>
-    public static BaseAction RisingWindmill { get; } = new(ActionID.RisingWindmill)
+    public static IBaseAction RisingWindmill { get; } = new BaseAction(ActionID.RisingWindmill)
     {
-        BuffsNeed = ReverseCascade.BuffsNeed,
+        StatusNeed = ReverseCascade.StatusNeed,
     };
 
     /// <summary>
     /// ÂäÑªÓê
     /// </summary>
-    public static BaseAction Bloodshower { get; } = new(ActionID.Bloodshower)
+    public static IBaseAction Bloodshower { get; } = new BaseAction(ActionID.Bloodshower)
     {
         AOECount = 2,
-        BuffsNeed = Fountainfall.BuffsNeed,
+        StatusNeed = Fountainfall.StatusNeed,
     };
 
     /// <summary>
     /// ÉÈÎè¡¤ÆÆ
     /// </summary>
-    public static BaseAction FanDance2 { get; } = new(ActionID.FanDance2)
+    public static IBaseAction FanDance2 { get; } = new BaseAction(ActionID.FanDance2)
     {
         ActionCheck = b => Feathers > 0,
         AOECount = 2,
-        BuffsProvide = new[] { StatusID.ThreefoldFanDance },
+        StatusProvide = new[] { StatusID.ThreefoldFanDance },
     };
 
     /// <summary>
     /// ÉÈÎè¡¤¼±
     /// </summary>
-    public static BaseAction FanDance3 { get; } = new(ActionID.FanDance3)
+    public static IBaseAction FanDance3 { get; } = new BaseAction(ActionID.FanDance3)
     {
-        BuffsNeed = FanDance2.BuffsProvide,
+        StatusNeed = FanDance2.StatusProvide,
     };
 
     /// <summary>
     /// ÉÈÎè¡¤ÖÕ
     /// </summary>
-    public static BaseAction FanDance4 { get; } = new(ActionID.FanDance4)
+    public static IBaseAction FanDance4 { get; } = new BaseAction(ActionID.FanDance4)
     {
-        BuffsNeed = new[] { StatusID.FourfoldFanDance },
+        StatusNeed = new[] { StatusID.FourfoldFanDance },
     };
 
     /// <summary>
     /// ½£Îè
     /// </summary>
-    public static BaseAction SaberDance { get; } = new(ActionID.SaberDance)
+    public static IBaseAction SaberDance { get; } = new BaseAction(ActionID.SaberDance)
     {
         ActionCheck = b => Esprit >= 50,
     };
@@ -141,20 +141,20 @@ internal abstract class DNCRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// Á÷ÐÇÎè
     /// </summary>
-    public static BaseAction StarfallDance { get; } = new(ActionID.StarfallDance)
+    public static IBaseAction StarfallDance { get; } = new BaseAction(ActionID.StarfallDance)
     {
-        BuffsNeed = new[] { StatusID.FlourishingStarfall },
+        StatusNeed = new[] { StatusID.FlourishingStarfall },
     };
 
     /// <summary>
     /// Ç°³å²½
     /// </summary>
-    public static BaseAction EnAvant { get; } = new(ActionID.EnAvant, true, shouldEndSpecial: true);
+    public static IBaseAction EnAvant { get; } = new BaseAction(ActionID.EnAvant, true, shouldEndSpecial: true);
 
     /// <summary>
     /// Ç¾Þ±Çú½Å²½
     /// </summary>
-    private static BaseAction Emboite { get; } = new(ActionID.Emboite, true)
+    private static IBaseAction Emboite { get; } = new BaseAction(ActionID.Emboite, true)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Emboite,
     };
@@ -162,7 +162,7 @@ internal abstract class DNCRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// Ð¡Äñ½»µþÌø
     /// </summary>
-    private static BaseAction Entrechat { get; } = new(ActionID.Entrechat, true)
+    private static IBaseAction Entrechat { get; } = new BaseAction(ActionID.Entrechat, true)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Entrechat,
     };
@@ -170,7 +170,7 @@ internal abstract class DNCRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÂÌÒ¶Ð¡ÌßÍÈ
     /// </summary>
-    private static BaseAction Jete { get; } = new(ActionID.Jete, true)
+    private static IBaseAction Jete { get; } = new BaseAction(ActionID.Jete, true)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Jete,
     };
@@ -178,7 +178,7 @@ internal abstract class DNCRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ½ð¹ÚÖº¼â×ª
     /// </summary>
-    private static BaseAction Pirouette { get; } = new(ActionID.Pirouette, true)
+    private static IBaseAction Pirouette { get; } = new BaseAction(ActionID.Pirouette, true)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Pirouette,
     };
@@ -186,9 +186,9 @@ internal abstract class DNCRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ±ê×¼Îè²½
     /// </summary>
-    public static BaseAction StandardStep { get; } = new(ActionID.StandardStep)
+    public static IBaseAction StandardStep { get; } = new BaseAction(ActionID.StandardStep)
     {
-        BuffsProvide = new[]
+        StatusProvide = new[]
         {
             StatusID.StandardStep,
             StatusID.TechnicalStep,
@@ -198,37 +198,37 @@ internal abstract class DNCRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¼¼ÇÉÎè²½
     /// </summary>
-    public static BaseAction TechnicalStep { get; } = new(ActionID.TechnicalStep)
+    public static IBaseAction TechnicalStep { get; } = new BaseAction(ActionID.TechnicalStep)
     {
-        BuffsNeed = new[]
+        StatusNeed = new[]
         {
             StatusID.StandardFinish,
         },
-        BuffsProvide = StandardStep.BuffsProvide,
+        StatusProvide = StandardStep.StatusProvide,
     };
 
     /// <summary>
     /// ±ê×¼Îè²½½áÊø
     /// </summary>
-    private static BaseAction StandardFinish { get; } = new(ActionID.StandardFinish)
+    private static IBaseAction StandardFinish { get; } = new BaseAction(ActionID.StandardFinish)
     {
-        BuffsNeed = new[] { StatusID.StandardStep },
+        StatusNeed = new[] { StatusID.StandardStep },
         ActionCheck = b => IsDancing && JobGauge.CompletedSteps == 2,
     };
 
     /// <summary>
     /// ¼¼ÇÉÎè²½½áÊø
     /// </summary>
-    private static BaseAction TechnicalFinish { get; } = new(ActionID.TechnicalFinish)
+    private static IBaseAction TechnicalFinish { get; } = new BaseAction(ActionID.TechnicalFinish)
     {
-        BuffsNeed = new[] { StatusID.TechnicalStep },
+        StatusNeed = new[] { StatusID.TechnicalStep },
         ActionCheck = b => IsDancing && JobGauge.CompletedSteps == 4,
     };
 
     /// <summary>
     /// ·ÀÊØÖ®É£°Í
     /// </summary>
-    public static BaseAction ShieldSamba { get; } = new(ActionID.ShieldSamba, true, isTimeline: true)
+    public static IBaseAction ShieldSamba { get; } = new BaseAction(ActionID.ShieldSamba, true, isTimeline: true)
     {
         ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
@@ -239,12 +239,12 @@ internal abstract class DNCRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÖÎÁÆÖ®»ª¶û×È
     /// </summary>
-    public static BaseAction CuringWaltz { get; } = new(ActionID.CuringWaltz, true, isTimeline: true);
+    public static IBaseAction CuringWaltz { get; } = new BaseAction(ActionID.CuringWaltz, true, isTimeline: true);
 
     /// <summary>
     /// ±ÕÊ½Îè×Ë
     /// </summary>
-    public static BaseAction ClosedPosition { get; } = new(ActionID.ClosedPosition, true)
+    public static IBaseAction ClosedPosition { get; } = new BaseAction(ActionID.ClosedPosition, true)
     {
         ChoiceTarget = (Targets, mustUse) =>
         {
@@ -262,15 +262,15 @@ internal abstract class DNCRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ½ø¹¥Ö®Ì½¸ê
     /// </summary>
-    public static BaseAction Devilment { get; } = new(ActionID.Devilment, true);
+    public static IBaseAction Devilment { get; } = new BaseAction(ActionID.Devilment, true);
 
     /// <summary>
     /// °Ù»¨ÕùÑÞ
     /// </summary>
-    public static BaseAction Flourish { get; } = new(ActionID.Flourish, true)
+    public static IBaseAction Flourish { get; } = new BaseAction(ActionID.Flourish, true)
     {
-        BuffsNeed = new[] { StatusID.StandardFinish },
-        BuffsProvide = new[]
+        StatusNeed = new[] { StatusID.StandardFinish },
+        StatusProvide = new[]
         {
             StatusID.ThreefoldFanDance,
             StatusID.FourfoldFanDance,
@@ -281,14 +281,14 @@ internal abstract class DNCRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¼´ÐË±íÑÝ
     /// </summary>
-    public static BaseAction Improvisation { get; } = new(ActionID.Improvisation, true);
+    public static IBaseAction Improvisation { get; } = new BaseAction(ActionID.Improvisation, true);
 
     /// <summary>
     /// ÌáÀ­ÄÉ
     /// </summary>
-    public static BaseAction Tillana { get; } = new(ActionID.Tillana)
+    public static IBaseAction Tillana { get; } = new BaseAction(ActionID.Tillana)
     {
-        BuffsNeed = new[] { StatusID.FlourishingFinish },
+        StatusNeed = new[] { StatusID.FlourishingFinish },
     };
 
     /// <summary>

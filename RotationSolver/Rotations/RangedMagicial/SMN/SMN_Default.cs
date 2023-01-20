@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.RangedMagicial.SMNCombos;
 
-internal sealed class SMN_Default : SMNRotation_Base
+internal sealed class SMN_Default : SMN_Base
 {
     public override string GameVersion => "6.28";
 
