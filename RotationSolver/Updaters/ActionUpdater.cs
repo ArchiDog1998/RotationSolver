@@ -150,8 +150,8 @@ internal static class ActionUpdater
         _lastMP = player.CurrentMp;
     }
 
-    static readonly Stopwatch _weaponDelayStopwatch = new Stopwatch();
-    static long _weaponRandomDelay = 0;
+    static DateTime _lastWeaponGo = DateTime.MinValue;
+    static float _weaponRandomDelay = -1;
     internal static float _lastCastingTotal = 0;
     internal unsafe static void DoAction()
     {
@@ -173,22 +173,17 @@ internal static class ActionUpdater
         //GCD
         if (WeaponRemain <= Service.Configuration.WeaponFaster)
         {
-            if (!_weaponDelayStopwatch.IsRunning)
+            if(_weaponRandomDelay < 0)
             {
-                _weaponDelayStopwatch.Start();
-                return;
-            }
-            else if (_weaponDelayStopwatch.ElapsedMilliseconds > _weaponRandomDelay)
-            {
-                _weaponDelayStopwatch.Stop();
-                _weaponDelayStopwatch.Reset();
-
-                RSCommands.DoAnAction(true);
-
                 Random ran = new Random(DateTime.Now.Millisecond);
-                _weaponRandomDelay = (long)(ran.NextDouble() * Service.Configuration.WeaponDelay * 1000);
+                _weaponRandomDelay = (float)ran.NextDouble() * Service.Configuration.WeaponDelay;
 
-                return;
+                _lastWeaponGo = DateTime.Now;
+            }
+            else if ((DateTime.Now - _lastWeaponGo).TotalSeconds >= _weaponRandomDelay)
+            {
+                _weaponRandomDelay = -1;
+                RSCommands.DoAnAction(true);
             }
             return;
         }
@@ -215,10 +210,5 @@ internal static class ActionUpdater
         {
             RSCommands.DoAnAction(false);
         }
-    }
-
-    public static void Dispose()
-    {
-        _weaponDelayStopwatch?.Stop();
     }
 }
