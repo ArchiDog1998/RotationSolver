@@ -6,4 +6,6 @@ public interface IAction : IEnableTexture
     uint ID { get; }
     uint AdjustedID { get; }
     string CateName { get; }
+
+    void Display(bool IsActive);
 }

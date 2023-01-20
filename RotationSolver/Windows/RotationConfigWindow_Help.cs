@@ -82,8 +82,9 @@ namespace RotationSolver.Windows.RotationConfigWindow
 
                 SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
+
+                ImGui.PopStyleVar();
             }
-            ImGui.PopStyleVar();
         }
     }
 }

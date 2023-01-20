@@ -76,7 +76,7 @@ internal class Strings
 
     public string Configwindow_HelpItem_EndSpecial { get; set; }
     = "Close special status";
-    public string Configwindow_Helper_SwitchAuthor { get; set; } = "Click to switch authors";
+    public string Configwindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
     public string Configwindow_Helper_GameVersion { get; set; } = "Game Version";
     public string Configwindow_Helper_EditCombo { get; set; } = "Click to edit this custom Combo.";
     //public string Configwindow_Helper_AddCombo { get; set; } = "Add a custom Combo.";
@@ -86,7 +86,7 @@ internal class Strings
     public string Configwindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in 5s";
     public string Configwindow_AttackItem_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.\nOnly player-current-job specific commands will be prompted.";
     public string Configwindow_AttackItem_KeyName { get; set; } = "The key name is";
-    public string Configwindow_AttackItem_Loop { get; set; } = "Enable";
+    public string Configwindow_AttackItem_Enable { get; set; } = "Enable";
     public string Configwindow_Events_AddEvent { get; set; } = "AddEvents";
     public string Configwindow_Events_Description { get; set; } = "In this window, you can set what macro will be trigger after using an action.";
     public string Configwindow_Events_ActionName { get; set; } = "Action Name";

@@ -59,4 +59,8 @@ internal class BaseItem : IAction
 
         return ActionManager.Instance()->UseAction(ActionType.Item, _item.RowId, Service.ClientState.LocalPlayer.ObjectId, A4);
     }
+
+    public void Display(bool IsActive)
+    {
+    }
 }

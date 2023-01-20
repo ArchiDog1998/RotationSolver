@@ -12,7 +12,6 @@ internal interface ICustomRotation : IEnableTexture
 {
     ClassJob Job { get; }
     ClassJobID[] JobIDs { get; }
-    string Description { get; }
 
     string GameVersion { get; }
     string RotationName { get; }
@@ -31,4 +30,6 @@ internal interface ICustomRotation : IEnableTexture
     MethodInfo[] AllGCDs { get; }
 
     bool TryInvoke(out IAction newAction);
+
+    void Display(ICustomRotation[] rotations, bool canAddButton);
 }

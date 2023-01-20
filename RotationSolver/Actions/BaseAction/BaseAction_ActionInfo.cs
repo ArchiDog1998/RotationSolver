@@ -13,13 +13,6 @@ namespace RotationSolver.Actions.BaseAction;
 
 internal partial class BaseAction
 {
-    static readonly uint[] BadStatus = new uint[]
-    {
-        579, //状态限制
-        573, //没学会
-        572, //一些额外条件未满足
-    };
-
     private float Range => ActionManager.GetActionRange(ID);
 
     /// <summary>
@@ -99,7 +92,7 @@ internal partial class BaseAction
         if (!skipDisable && !IsEnabled) return false;
 
         //技能状态不对，可能是没学会。
-        if (BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
+        if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
             return false;
 
         //等级不够

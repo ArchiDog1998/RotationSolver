@@ -22,6 +22,9 @@ internal partial class BaseAction : IAction
     /// </summary>
     internal bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
     public string Name => _action.Name;
+
+    public string Description => string.Empty;
+
     public string CateName
     {
         get
@@ -111,6 +114,7 @@ internal partial class BaseAction : IAction
             return mp;
         }
     }
+
 
     Action _action;
     internal BaseAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false, bool isTimeline = false)

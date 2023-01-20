@@ -63,16 +63,10 @@ internal partial class RotationConfigWindow
 
             var rotation = IconReplacer.GetChoosedRotation(rotations[i]);
 
-            if (ImGui.CollapsingHeader(rotation.Name))
-            {
-                var canAddButton = Service.ClientState.LocalPlayer != null 
-                    && rotation.JobIDs.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id);
+            var canAddButton = Service.ClientState.LocalPlayer != null
+                && rotation.JobIDs.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id);
 
-                DrawTexture(rotation, () =>
-                {
-                    DrawRotation(rotation, canAddButton);
-                }, rotation.JobIDs[0], rotations[i].combos);
-            }
+            rotation.Display(rotations[i].rotations, canAddButton);
         }
     }
 

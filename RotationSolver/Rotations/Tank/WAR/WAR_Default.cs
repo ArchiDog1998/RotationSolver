@@ -47,7 +47,6 @@ internal sealed class WAR_Default : WARRotation_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-
         //¸ã¸ã¹¥»÷
         if (PrimalRend.ShouldUse(out act, mustUse: true) && !IsMoving)
         {
@@ -90,13 +89,11 @@ internal sealed class WAR_Default : WARRotation_Base
                 if (RawIntuition.ShouldUse(out act)) return true;
             }
 
-
             //¸´³ð£¨¼õÉË30%£©
             if (Vengeance.ShouldUse(out act)) return true;
 
             //Ìú±Ú£¨¼õÉË20%£©
             if (Rampart.ShouldUse(out act)) return true;
-
 
             //Ô­³õµÄÖ±¾õ£¨¼õÉË10%£©
             if (RawIntuition.ShouldUse(out act)) return true;
@@ -111,7 +108,6 @@ internal sealed class WAR_Default : WARRotation_Base
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
-
         //±¬·¢
         if (!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) || !MythrilTempest.EnoughLevel)
         {

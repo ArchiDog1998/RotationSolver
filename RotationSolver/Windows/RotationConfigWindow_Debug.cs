@@ -57,11 +57,7 @@ internal partial class RotationConfigWindow
 
         if (ImGui.CollapsingHeader("Next Action"))
         {
-            if (ActionUpdater.NextAction != null)
-            {
-                DrawAction(ActionUpdater.NextAction);
-            }
-
+            ActionUpdater.NextAction?.Display(false);
             ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
             ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
 

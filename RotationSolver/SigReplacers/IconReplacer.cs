@@ -20,7 +20,7 @@ namespace RotationSolver.SigReplacers;
 
 internal sealed class IconReplacer : IDisposable
 {
-    public record CustomRotationGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomRotation[] combos);
+    public record CustomRotationGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomRotation[] rotations);
 
     private delegate ulong IsIconReplaceableDelegate(uint actionID);
 
@@ -69,7 +69,7 @@ internal sealed class IconReplacer : IDisposable
         var id = group.jobId;
         if (Service.Configuration.ComboChoices.TryGetValue((uint)id, out var choice))
         {
-            foreach (var combo in group.combos)
+            foreach (var combo in group.rotations)
             {
                 if (combo.RotationName == choice)
                 {
@@ -78,14 +78,14 @@ internal sealed class IconReplacer : IDisposable
             }
         }
 
-        foreach (var item in group.combos)
+        foreach (var item in group.rotations)
         {
             if (item.GetType().Name.Contains("Default"))
             {
                 return item;
             }
         }
-        return group.combos[0];
+        return group.rotations[0];
     }
 
     internal static IAction[] RightComboBaseActions
@@ -163,7 +163,7 @@ internal sealed class IconReplacer : IDisposable
                         .ToArray();
 
         _customCombosDict = new SortedList<JobRole, CustomRotationGroup[]>
-            (_customRotations.GroupBy(g => g.combos[0].Job.GetJobRole()).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
+            (_customRotations.GroupBy(g => g.rotations[0].Job.GetJobRole()).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
     }
 
     internal static string ScriptRotationFolder => typeof(IconReplacer).Assembly.Location + "/ScriptRotation";

@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using RotationSolver.Actions;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace RotationSolver.Windows.RotationConfigWindow;
 
 internal partial class RotationConfigWindow
 {
+    internal static IAction ActiveAction { get; set; }
+
     private void DrawActionTab()
     {
         ImGui.Text(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
@@ -23,7 +26,7 @@ internal partial class RotationConfigWindow
                 {
                     foreach (var item in pair)
                     {
-                        DrawAction(item);
+                        item.Display(ActiveAction == item);
                         ImGui.Separator();
                     }
                 }

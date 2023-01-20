@@ -2,6 +2,8 @@
 
 public interface IEnableTexture : ITexture
 {
+    string Description { get; }
+
     bool IsEnabled { get; set; }
 }
 
