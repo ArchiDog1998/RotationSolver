@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RotationSolver.Actions.BaseAction.BaseAction">
+    <Position X="5.25" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgwECLaCBgzahEBIMMEyQBMEHEBYxRBEBVxhADgMA=</HashCode>
+      <FileName>Actions\BaseAction\BaseAction_ActionInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RotationSolver.Actions.BaseItem">
+    <Position X="2.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAEAAAggAhAgAEAAQQAABAEAAAAAAACAoAAAAA=</HashCode>
+      <FileName>Actions\BaseItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="RotationSolver.Actions.IAction">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgABAAAAAAQAAAAAEAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Actions\IAction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

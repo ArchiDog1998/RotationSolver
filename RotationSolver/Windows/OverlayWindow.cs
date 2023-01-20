@@ -98,7 +98,7 @@ internal static class OverlayWindow
             }
         }
 #endif
-        var tar = IconReplacer.RightNowCombo?.MoveTarget;
+        var tar = IconReplacer.RightNowRotation?.MoveTarget;
         if (tar == null || tar == Service.ClientState.LocalPlayer) return;
 
         DrawTarget(tar, color, 8, out var scrPos);

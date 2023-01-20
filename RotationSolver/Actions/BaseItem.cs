@@ -1,10 +1,11 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Helpers;
 using System;
 
 namespace RotationSolver.Actions;
 
-internal class BaseItem : IAction
+internal class BaseItem : IBaseItem
 {
     private Item _item = null;
     private uint A4 { get; } = 0;
@@ -60,7 +61,5 @@ internal class BaseItem : IAction
         return ActionManager.Instance()->UseAction(ActionType.Item, _item.RowId, Service.ClientState.LocalPlayer.ObjectId, A4);
     }
 
-    public void Display(bool IsActive)
-    {
-    }
+    public void Display(bool IsActive) => this.DrawEnableTexture(false, null);
 }

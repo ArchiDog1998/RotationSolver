@@ -36,7 +36,7 @@ namespace RotationSolver.Commands
             switch (otherType)
             {
                 case OtherCommandType.Rotations:
-                    var customCombo = IconReplacer.RightNowCombo;
+                    var customCombo = IconReplacer.RightNowRotation;
                     if (customCombo == null) return;
 
                     DoRotationCommand(customCombo, str);
@@ -73,7 +73,7 @@ namespace RotationSolver.Commands
             if (strs != null && strs.Length == 2 && double.TryParse(strs[1], out var time))
             {
                 var actName = strs[0];
-                foreach (var iAct in IconReplacer.RightComboBaseActions)
+                foreach (var iAct in IconReplacer.RightRotationBaseActions)
                 {
                     if (iAct is not BaseAction act) continue;
                     if (!act.IsTimeline) continue;

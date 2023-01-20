@@ -211,7 +211,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 当前这个类所有的BaseAction
     /// </summary>
-    public IAction[] AllActions => GetBaseActions(GetType());
+    public IBaseAction[] AllActions => GetBaseActions(GetType());
 
     /// <summary>
     /// 这个类所有的公开bool值
@@ -235,13 +235,13 @@ internal abstract partial class CustomRotation
         return types.Length == 2 && types[0].ParameterType == typeof(uint) && types[1].ParameterType == typeof(uint);
     });
 
-    private IAction[] GetBaseActions(Type type)
+    private IBaseAction[] GetBaseActions(Type type)
     {
-        if (type == null) return new IAction[0];
+        if (type == null) return new IBaseAction[0];
 
         var acts = from prop in type.GetProperties()
-                   where typeof(IAction).IsAssignableFrom(prop.PropertyType)
-                   select (IAction)prop.GetValue(this) into act
+                   where typeof(IBaseAction).IsAssignableFrom(prop.PropertyType)
+                   select (IBaseAction)prop.GetValue(this) into act
                    orderby act.ID
                    where act is RoleAction role ? role.InRole(Job.GetJobRole()) : true
                    select act;

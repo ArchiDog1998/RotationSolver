@@ -8,7 +8,7 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Actions.BaseAction;
 
-internal partial class BaseAction : IAction
+internal partial class BaseAction : IBaseAction
 {
 
     private bool _isFriendly;

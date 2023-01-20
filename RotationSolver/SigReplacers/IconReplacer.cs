@@ -48,7 +48,7 @@ internal sealed class IconReplacer : IDisposable
         return classJob.GetJobRole() == JobRole.Tank ? TargetHostileType.AllTargetsCanAttack : TargetHostileType.TargetsHaveTarget;
     }
 
-    public static ICustomRotation RightNowCombo
+    public static ICustomRotation RightNowRotation
     {
         get
         {
@@ -88,13 +88,13 @@ internal sealed class IconReplacer : IDisposable
         return group.rotations[0];
     }
 
-    internal static IAction[] RightComboBaseActions
+    internal static IBaseAction[] RightRotationBaseActions
     {
         get
         {
-            var combo = RightNowCombo;
-            if (combo == null) return new IAction[0];
-            return combo.AllActions;
+            var rotation = RightNowRotation;
+            if (rotation == null) return new IBaseAction[0];
+            return rotation.AllActions;
         }
     }
 

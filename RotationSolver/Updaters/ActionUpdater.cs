@@ -47,7 +47,7 @@ internal static class ActionUpdater
 
         try
         {
-            var customCombo = IconReplacer.RightNowCombo;
+            var customCombo = IconReplacer.RightNowRotation;
 
             if (customCombo?.TryInvoke(out var newAction) ?? false)
             {
