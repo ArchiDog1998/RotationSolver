@@ -202,7 +202,7 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction Scorch { get; } = new BaseAction(ActionID.Scorch)
     {
-        OtherIDsCombo = new[] { ActionID.Verholy },
+        ComboIds = new[] { ActionID.Verholy },
     };
 
     /// <summary>
@@ -216,7 +216,7 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
     public static IBaseAction Manafication { get; } = new BaseAction(ActionID.Manafication)
     {
         ActionCheck = b => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0,
-        OtherIDsNot = new[] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
+        ComboIdsNot = new[] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
     };
 
     private protected override bool HealSingleGCD(out IAction act)

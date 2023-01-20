@@ -105,7 +105,7 @@ internal abstract class SAM_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction Mangetsu { get; } = new BaseAction(ActionID.Mangetsu)
     {
-        OtherIDsCombo = new[]
+        ComboIds = new[]
         {
             ActionID.Fuga,ActionID.Fuko
         }
@@ -115,7 +115,7 @@ internal abstract class SAM_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction Oka { get; } = new BaseAction(ActionID.Oka)
     {
-        OtherIDsCombo = new[]
+        ComboIds = new[]
         {
             ActionID.Fuga,ActionID.Fuko
         }

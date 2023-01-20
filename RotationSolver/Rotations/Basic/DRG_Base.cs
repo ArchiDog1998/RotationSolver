@@ -25,7 +25,7 @@ internal abstract class DRG_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction VorpalThrust { get; } = new BaseAction(ActionID.VorpalThrust)
     {
-        OtherIDsCombo = new[] { ActionID.RaidenThrust }
+        ComboIds = new[] { ActionID.RaidenThrust }
     };
 
     /// <summary>
@@ -38,7 +38,7 @@ internal abstract class DRG_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction Disembowel { get; } = new BaseAction(ActionID.Disembowel)
     {
-        OtherIDsCombo = new[] { ActionID.RaidenThrust }
+        ComboIds = new[] { ActionID.RaidenThrust }
     };
 
     /// <summary>
@@ -77,7 +77,7 @@ internal abstract class DRG_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction SonicThrust { get; } = new BaseAction(ActionID.SonicThrust)
     {
-        OtherIDsCombo = new[] { ActionID.DraconianFury }
+        ComboIds = new[] { ActionID.DraconianFury }
     };
 
     /// <summary>

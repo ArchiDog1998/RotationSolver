@@ -9,6 +9,10 @@ using RotationSolver.Data;
 namespace RotationSolver.Rotations.Basic;
 
 
+internal interface IBLUAction : IBaseAction
+{
+    bool OnSlot { get; }
+}
 internal abstract class BLU_Base : CustomRotation.CustomRotation
 {
     internal enum BLUID : byte
@@ -40,11 +44,6 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     protected static BLUID BlueId { get; set; } = BLUID.DPS;
 
     private protected sealed override IBaseAction Raise => AngelWhisper;
-
-    public interface IBLUAction : IBaseAction
-    {
-        bool OnSlot { get; }
-    }
 
     public class BLUAction : BaseAction, IBLUAction
     {

@@ -21,14 +21,14 @@ internal sealed class RPR_Default : RPR_Base
     public RPR_Default()
     {
         //保留红条不第一时间打出去,保证暴食不空转 同时保证不延后大丰收
-        BloodStalk.ComboCheck = b => !Player.HasStatus(true, StatusID.BloodsownCircle) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel || Soul == 100);
-        GrimSwathe.ComboCheck = BloodStalk.ComboCheck;
+        BloodStalk.RotationCheck = b => !Player.HasStatus(true, StatusID.BloodsownCircle) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel || Soul == 100);
+        GrimSwathe.RotationCheck = BloodStalk.RotationCheck;
 
         //必须有dot
-        ArcaneCircle.ComboCheck = b => Target.HasStatus(true, StatusID.DeathsDesign);
+        ArcaneCircle.RotationCheck = b => Target.HasStatus(true, StatusID.DeathsDesign);
 
         //必须进战
-        HarvestMoon.ComboCheck = b => InCombat;
+        HarvestMoon.RotationCheck = b => InCombat;
     }
 
     public override SortedList<DescType, string> DescriptionDict => new()

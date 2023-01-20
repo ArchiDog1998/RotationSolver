@@ -59,7 +59,7 @@ internal abstract class MCH_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction SlugShot { get; } = new BaseAction(ActionID.SlugShot)
     {
-        OtherIDsCombo = new[] { ActionID.HeatedSplitShot },
+        ComboIds = new[] { ActionID.HeatedSplitShot },
     };
 
     /// <summary>
@@ -67,7 +67,7 @@ internal abstract class MCH_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction CleanShot { get; } = new BaseAction(ActionID.CleanShot)
     {
-        OtherIDsCombo = new[] { ActionID.HeatedSlugShot },
+        ComboIds = new[] { ActionID.HeatedSlugShot },
     };
 
     /// <summary>

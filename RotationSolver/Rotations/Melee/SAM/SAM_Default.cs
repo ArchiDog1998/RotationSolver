@@ -28,15 +28,15 @@ internal sealed class SAM_Default : SAM_Base
     public SAM_Default()
     {
         //明镜里ban了最基础技能
-        Hakaze.ComboCheck = b => !haveMeikyoShisui;
-        Fuko.ComboCheck = b => !haveMeikyoShisui;
-        Fuga.ComboCheck = b => !haveMeikyoShisui;
-        Enpi.ComboCheck = b => !haveMeikyoShisui;
+        Hakaze.RotationCheck = b => !haveMeikyoShisui;
+        Fuko.RotationCheck = b => !haveMeikyoShisui;
+        Fuga.RotationCheck = b => !haveMeikyoShisui;
+        Enpi.RotationCheck = b => !haveMeikyoShisui;
         //保证有buff加成
-        Higanbana.ComboCheck = b => HaveMoon && HaveFlower;
-        OgiNamikiri.ComboCheck = b => HaveMoon && HaveFlower;
-        HissatsuSenei.ComboCheck = b => HaveMoon && HaveFlower;
-        HissatsuGuren.ComboCheck = b => HaveMoon && HaveFlower;
+        Higanbana.RotationCheck = b => HaveMoon && HaveFlower;
+        OgiNamikiri.RotationCheck = b => HaveMoon && HaveFlower;
+        HissatsuSenei.RotationCheck = b => HaveMoon && HaveFlower;
+        HissatsuGuren.RotationCheck = b => HaveMoon && HaveFlower;
     }
 
     public override SortedList<DescType, string> DescriptionDict => new()

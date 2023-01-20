@@ -23,7 +23,7 @@ internal sealed class RDM_Default : RDM_Base
 
     static RDM_Default()
     {
-        Acceleration.ComboCheck = b => InCombat;
+        Acceleration.RotationCheck = b => InCombat;
     }
 
     private protected override IRotationConfigSet CreateConfiguration()

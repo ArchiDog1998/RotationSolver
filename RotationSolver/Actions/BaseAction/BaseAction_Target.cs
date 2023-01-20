@@ -13,6 +13,8 @@ namespace RotationSolver.Actions.BaseAction;
 
 internal partial class BaseAction
 {
+    public byte AOECount { private get; set; } = 3;
+
     public bool IsTargetDying
     {
         get
@@ -47,9 +49,6 @@ internal partial class BaseAction
 
     internal Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForTarget { private get; set; } = null;
 
-    /// <summary>
-    /// 给敌人造成的Debuff,如果有这些Debuff，那么不会执行，这个status是玩家赋予的。
-    /// </summary>
     public StatusID[] TargetStatus { get; set; } = null;
 
     internal static bool TankDefenseSelf(BattleChara chara)

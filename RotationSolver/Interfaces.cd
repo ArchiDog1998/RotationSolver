@@ -1,30 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="RotationSolver.IEnable">
-    <Position X="4.75" Y="6" Width="1.5" />
+    <Position X="4.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ITexture.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.ITexture">
-    <Position X="2.75" Y="3.75" Width="1.5" />
+    <Position X="4.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ITexture.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Actions.IAction">
-    <Position X="2.75" Y="5.75" Width="1.5" />
+    <Position X="2.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgABAAAAAAQAAAAAEAAAAAAAAAgAAAAA=</HashCode>
       <FileName>Actions\IAction.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Actions.IBaseAction">
-    <Position X="4" Y="9.75" Width="1.5" />
+    <Position X="4.25" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAogAAAAAAABYAAAIAIADAAAACABIAAAAABAAAAgMA=</HashCode>
       <FileName>Actions\IBaseAction.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -40,6 +40,20 @@
     <TypeIdentifier>
       <HashCode>EAgAAAAAAEAAEAAAAAAIAQAAgAACAAAAABACCIBAAEE=</HashCode>
       <FileName>Rotations\CustomRotation\ICustomRotation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RotationSolver.Rotations.Basic.IBLUAction">
+    <Position X="3.25" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Rotations\Basic\BLU_Base.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RotationSolver.Rotations.Basic.INinAction">
+    <Position X="5.25" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rotations\Basic\NIN_Base.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

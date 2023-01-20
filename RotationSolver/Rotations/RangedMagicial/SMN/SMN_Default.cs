@@ -24,8 +24,8 @@ internal sealed class SMN_Default : SMN_Base
 
     public SMN_Default()
     {
-        RuinIV.ComboCheck = b => !Player.HasStatus(true, StatusID.Swiftcast) && !InBahamut && !InPhoenix;
-        SearingLight.ComboCheck = b => !Player.HasStatus(false, StatusID.SearingLight);
+        RuinIV.RotationCheck = b => !Player.HasStatus(true, StatusID.Swiftcast) && !InBahamut && !InPhoenix;
+        SearingLight.RotationCheck = b => !Player.HasStatus(false, StatusID.SearingLight);
     }
 
     protected override bool CanHealSingleSpell => false;

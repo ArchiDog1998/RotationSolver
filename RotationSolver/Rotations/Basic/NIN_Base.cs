@@ -6,6 +6,12 @@ using RotationSolver.Data;
 
 namespace RotationSolver.Rotations.Basic;
 
+internal interface INinAction : IBaseAction
+{
+    IBaseAction[] Ninjutsus { get; }
+}
+
+
 internal abstract class NIN_Base : CustomRotation.CustomRotation
 {
     private static NINGauge JobGauge => Service.JobGauges.Get<NINGauge>();
@@ -22,10 +28,6 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Ninja, ClassJobID.Rogue };
 
-    public interface INinAction : IBaseAction
-    {
-        IBaseAction[] Ninjutsus { get; }
-    }
 
     public class NinAction : BaseAction, INinAction
     {

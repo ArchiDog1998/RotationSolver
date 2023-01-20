@@ -16,10 +16,8 @@ internal partial class BaseAction : IBaseAction
 
     public bool ShouldEndSpecial { private get; set; }
 
-    public bool IsTimeline { get; } = false;
-    /// <summary>
-    /// 玩家当前等级是否大于等于技能可用等级
-    /// </summary>
+    internal bool IsTimeline { get; } = false;
+
     public bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
     public string Name => _action.Name;
 
@@ -83,11 +81,6 @@ internal partial class BaseAction : IBaseAction
     internal bool IsRealGCD { get; }
 
     private byte CoolDownGroup { get; }
-
-    /// <summary>
-    /// 范围类技能至少需要多少个对象才释放
-    /// </summary>
-    public byte AOECount { private get; set; } = 3;
 
     /// <summary>
     /// 真实咏唱时间

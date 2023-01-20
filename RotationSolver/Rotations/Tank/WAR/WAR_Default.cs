@@ -25,7 +25,7 @@ internal sealed class WAR_Default : WAR_Base
 
     static WAR_Default()
     {
-        InnerBeast.ComboCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest);
+        InnerBeast.RotationCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest);
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
