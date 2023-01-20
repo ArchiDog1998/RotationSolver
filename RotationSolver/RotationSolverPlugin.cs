@@ -11,11 +11,13 @@ using RotationSolver.Updaters;
 using RotationSolver.Windows;
 using RotationSolver.Windows.RotationConfigWindow;
 using System;
+using System.IO;
 
 namespace RotationSolver;
 
 public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
+    internal static string TimelineFolder { get; private set; }
 
     private readonly WindowSystem windowSystem;
 
@@ -28,6 +30,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
         Service.Address = new PluginAddressResolver();
         Service.Address.Setup();
+
+        TimelineFolder = Path.Combine(pluginInterface.ConfigDirectory.FullName, "Timeline");
+        if(!Directory.Exists(TimelineFolder)) Directory.CreateDirectory(TimelineFolder);
 
         Service.IconReplacer = new IconReplacer();
 

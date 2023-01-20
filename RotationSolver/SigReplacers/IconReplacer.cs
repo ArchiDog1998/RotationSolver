@@ -19,8 +19,6 @@ namespace RotationSolver.SigReplacers;
 
 internal sealed class IconReplacer : IDisposable
 {
-    internal static string TimelineFolder => typeof(IconReplacer).Assembly.Location + "/ScriptRotation";
-
 
     public record CustomRotationGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomRotation[] rotations);
 
