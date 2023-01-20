@@ -75,8 +75,8 @@ internal partial class RotationConfigWindow
 
     private void DrawParamBasic()
     {
-        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponDelay,
-            ref Service.Configuration.WeaponDelay);
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_WeaponDelay,
+            ref Service.Configuration.WeaponDelayMin, ref Service.Configuration.WeaponDelayMax);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponFaster,
             ref Service.Configuration.WeaponFaster, max:0.1f);
@@ -379,6 +379,19 @@ internal partial class RotationConfigWindow
     private static void DrawCheckBox(string name, ref bool value, string description = "")
     {
         if (ImGui.Checkbox(name, ref value))
+        {
+            Service.Configuration.Save();
+        }
+        if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip(description);
+        }
+    }
+
+    private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float speed = 0.002f, float min = 0, float max = 1, string description = "")
+    {
+        ImGui.SetNextItemWidth(100);
+        if (ImGui.DragFloatRange2(name, ref minValue, ref maxValue, speed, min, max))
         {
             Service.Configuration.Save();
         }

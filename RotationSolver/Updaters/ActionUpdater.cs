@@ -176,7 +176,8 @@ internal static class ActionUpdater
             if(_weaponRandomDelay < 0)
             {
                 Random ran = new Random(DateTime.Now.Millisecond);
-                _weaponRandomDelay = (float)ran.NextDouble() * Service.Configuration.WeaponDelay;
+                _weaponRandomDelay = Service.Configuration.WeaponDelayMin + 
+                    (float)ran.NextDouble() * (Service.Configuration.WeaponDelayMax - Service.Configuration.WeaponDelayMin);
 
                 _lastWeaponGo = DateTime.Now;
             }
