@@ -6,7 +6,7 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Melee.RPRCombos;
+namespace RotationSolver.Rotations.Melee.RPR;
 
 internal sealed class RPR_Default : RPR_Base
 {

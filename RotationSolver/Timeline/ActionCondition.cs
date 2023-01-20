@@ -6,13 +6,12 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Windows;
 using RotationSolver.Localization;
-using RotationSolver.Rotations.Script;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Actions;
 using Lumina.Data.Parsing;
 
-namespace RotationSolver.Rotations.Script.Conditions;
+namespace RotationSolver.Timeline;
 
 internal class ActionCondition : ICondition
 {

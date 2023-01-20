@@ -8,7 +8,7 @@ using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Collections.Generic;
 
-namespace RotationSolver.Rotations.Melee.NINCombos;
+namespace RotationSolver.Rotations.Melee.NIN;
 
 internal sealed class NIN_Default : NIN_Base
 {

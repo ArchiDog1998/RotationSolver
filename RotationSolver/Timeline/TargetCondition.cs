@@ -11,7 +11,7 @@ using RotationSolver.Windows;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Script.Conditions;
+namespace RotationSolver.Timeline;
 
 internal class TargetCondition : ICondition
 {
@@ -242,7 +242,7 @@ internal class TargetCondition : ICondition
                 break;
 
             case TargetConditionType.Distance:
-                if(ConditionHelper.DrawDragFloat($"m##m{GetHashCode()}", ref DistanceOrTime))
+                if (ConditionHelper.DrawDragFloat($"m##m{GetHashCode()}", ref DistanceOrTime))
                 {
                     DistanceOrTime = Math.Max(0, DistanceOrTime);
                 }

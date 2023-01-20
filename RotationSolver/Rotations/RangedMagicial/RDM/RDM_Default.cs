@@ -6,7 +6,7 @@ using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
-namespace RotationSolver.Rotations.RangedMagicial.RDMCombos;
+namespace RotationSolver.Rotations.RangedMagicial.RDM;
 
 internal sealed class RDM_Default : RDM_Base
 {

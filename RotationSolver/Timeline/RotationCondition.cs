@@ -11,7 +11,7 @@ using RotationSolver.Localization;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Script.Conditions;
+namespace RotationSolver.Timeline;
 
 internal class RotationCondition : ICondition
 {

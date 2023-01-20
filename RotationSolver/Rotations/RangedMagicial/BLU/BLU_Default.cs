@@ -7,7 +7,7 @@ using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.Basic;
 
-namespace RotationSolver.Rotations.RangedMagicial.BLUCombos
+namespace RotationSolver.Rotations.RangedMagicial.BLU
 {
     internal sealed class BLU_Default : BLU_Base
     {

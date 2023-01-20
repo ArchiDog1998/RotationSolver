@@ -6,7 +6,7 @@ using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
-namespace RotationSolver.Rotations.Tank.GNBCombos;
+namespace RotationSolver.Rotations.Tank.GNB;
 
 internal sealed class GNB_Default : GNB_Base
 {

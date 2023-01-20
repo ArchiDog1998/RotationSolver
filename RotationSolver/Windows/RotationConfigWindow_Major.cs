@@ -1,17 +1,8 @@
-using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
-using Dalamud.Utility;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
-using RotationSolver.Actions;
-using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
-using RotationSolver.Rotations.Script;
-using System;
 using System.Collections.Generic;
 using System.Numerics;
 

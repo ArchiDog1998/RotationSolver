@@ -3,7 +3,7 @@ using RotationSolver.Actions;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Rotations.CustomRotation;
-using RotationSolver.Rotations.Script.Conditions;
+using RotationSolver.Timeline;
 
 namespace RotationSolver.Localization;
 

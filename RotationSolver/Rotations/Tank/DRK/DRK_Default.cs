@@ -9,7 +9,7 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Tank.DRKCombos;
+namespace RotationSolver.Rotations.Tank.DRK;
 
 internal sealed class DRK_Default : DRK_Base
 {

@@ -8,7 +8,7 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.RangedPhysicial.MCHCombos;
+namespace RotationSolver.Rotations.RangedPhysicial.MCH;
 
 internal sealed class MCH_Default : MCH_Base
 {

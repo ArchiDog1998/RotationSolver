@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RotationSolver.Rotations.Melee.MNKCombos;
+namespace RotationSolver.Rotations.Melee.MNK;
 internal sealed class MNK_Default : MNK_Base
 {
     public override string GameVersion => "6.0";

@@ -8,7 +8,7 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Healer.SCHCombos;
+namespace RotationSolver.Rotations.Healer.SCH;
 
 internal sealed class SCH_Default : SCH_Base
 {

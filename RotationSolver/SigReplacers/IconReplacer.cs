@@ -2,16 +2,12 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
-using Newtonsoft.Json;
 using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Rotations.CustomRotation;
-using RotationSolver.Rotations.Script;
-using RotationSolver.Rotations.Script.Conditions;
 using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -19,7 +15,6 @@ namespace RotationSolver.SigReplacers;
 
 internal sealed class IconReplacer : IDisposable
 {
-
     public record CustomRotationGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomRotation[] rotations);
 
     private delegate ulong IsIconReplaceableDelegate(uint actionID);

@@ -9,7 +9,7 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Rotations.Basic;
 
-namespace RotationSolver.Rotations.Healer.SGECombos;
+namespace RotationSolver.Rotations.Healer.SGE;
 
 internal sealed class SGE_Default : SGE_Base
 {

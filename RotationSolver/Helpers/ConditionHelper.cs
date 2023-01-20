@@ -1,15 +1,10 @@
 ﻿using ImGuiNET;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
-using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
-using RotationSolver.Rotations.Script.Conditions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Helpers
 {

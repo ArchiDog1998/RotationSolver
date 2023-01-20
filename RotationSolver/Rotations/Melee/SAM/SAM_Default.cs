@@ -6,7 +6,7 @@ using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
-namespace RotationSolver.Rotations.Melee.SAMCombos;
+namespace RotationSolver.Rotations.Melee.SAM;
 
 internal sealed class SAM_Default : SAM_Base
 {

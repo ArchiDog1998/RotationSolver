@@ -6,9 +6,9 @@ using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
-using static RotationSolver.Rotations.RangedPhysicial.BRDCombos.BRD_Default;
+using static RotationSolver.Rotations.RangedPhysicial.BRD.BRD_Default;
 
-namespace RotationSolver.Rotations.RangedPhysicial.BRDCombos;
+namespace RotationSolver.Rotations.RangedPhysicial.BRD;
 
 internal sealed class BRD_Default : BRD_Base
 {

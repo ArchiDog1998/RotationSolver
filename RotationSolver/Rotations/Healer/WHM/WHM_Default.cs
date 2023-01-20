@@ -9,7 +9,7 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Healer.WHMCombos;
+namespace RotationSolver.Rotations.Healer.WHM;
 internal sealed class WHM_Default : WHM_Base
 {
     public override string GameVersion => "6.28";

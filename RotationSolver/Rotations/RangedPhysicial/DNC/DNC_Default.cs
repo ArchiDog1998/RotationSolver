@@ -7,7 +7,7 @@ using RotationSolver.Updaters;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RotationSolver.Rotations.RangedPhysicial.DNCCombos;
+namespace RotationSolver.Rotations.RangedPhysicial.DNC;
 
 internal sealed class DNC_Default : DNC_Base
 {

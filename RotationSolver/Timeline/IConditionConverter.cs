@@ -1,17 +1,12 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RotationSolver.Rotations.CustomRotation;
+﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace RotationSolver.Rotations.Script.Conditions;
-
-internal interface ICondition
-{
-    const float DefaultHeight = 33;
-    bool IsTrue(ICustomRotation rotation);
-    void Draw(ICustomRotation rotation);
-    float Height { get; }
-}
+namespace RotationSolver.Timeline;
 
 internal class IConditionConverter : JsonCreationConverter<ICondition>
 {

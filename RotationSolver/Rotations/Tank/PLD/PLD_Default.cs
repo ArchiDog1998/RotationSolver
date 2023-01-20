@@ -6,7 +6,7 @@ using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
-namespace RotationSolver.Rotations.Tank.PLDCombos;
+namespace RotationSolver.Rotations.Tank.PLD;
 
 internal sealed class PLD_Default : PLD_Base
 {

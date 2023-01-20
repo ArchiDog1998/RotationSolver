@@ -8,7 +8,7 @@ using RotationSolver.Commands;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Tank.WARCombos;
+namespace RotationSolver.Rotations.Tank.WAR;
 
 internal sealed class WAR_Default : WAR_Base
 {

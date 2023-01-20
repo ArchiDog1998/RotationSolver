@@ -7,7 +7,7 @@ using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
-namespace RotationSolver.Rotations.Melee.DRGCombos;
+namespace RotationSolver.Rotations.Melee.DRG;
 
 internal sealed class DRG_Default : DRG_Base
 {

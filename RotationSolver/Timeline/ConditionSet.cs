@@ -5,13 +5,12 @@ using Newtonsoft.Json;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
-using RotationSolver.Rotations.Script;
 using RotationSolver.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RotationSolver.Rotations.Script.Conditions;
+namespace RotationSolver.Timeline;
 
 internal class ConditionSet : ICondition
 {

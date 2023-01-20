@@ -6,7 +6,7 @@ using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 
-namespace RotationSolver.Rotations.RangedMagicial.SMNCombos;
+namespace RotationSolver.Rotations.RangedMagicial.SMN;
 
 internal sealed class SMN_Default : SMN_Base
 {

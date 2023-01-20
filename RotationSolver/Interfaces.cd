@@ -24,7 +24,7 @@
   <Interface Name="RotationSolver.Actions.IBaseAction">
     <Position X="4.25" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAogAAAAAAABYAAAIAIADAAAACABIAAAAABAAAAgMA=</HashCode>
+      <HashCode>CAAogAAAAAAABYQABIAIADAAAACABIAAAAABAAAAgMA=</HashCode>
       <FileName>Actions\IBaseAction.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -43,14 +43,14 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Rotations.Basic.IBLUAction">
-    <Position X="3.25" Y="15.25" Width="1.5" />
+    <Position X="3.25" Y="15.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
       <FileName>Rotations\Basic\BLU_Base.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Rotations.Basic.INinAction">
-    <Position X="5.25" Y="15.25" Width="1.5" />
+    <Position X="5.25" Y="15.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Rotations\Basic\NIN_Base.cs</FileName>

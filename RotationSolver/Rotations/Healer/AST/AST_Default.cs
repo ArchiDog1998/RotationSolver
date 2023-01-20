@@ -8,7 +8,7 @@ using RotationSolver.Updaters;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Healer.ASTCombos;
+namespace RotationSolver.Rotations.Healer.AST;
 
 internal sealed class AST_Default : AST_Base
 {
