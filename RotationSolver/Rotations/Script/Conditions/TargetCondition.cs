@@ -9,6 +9,7 @@ using RotationSolver.Helpers;
 using RotationSolver.Data;
 using RotationSolver.Windows;
 using RotationSolver.Localization;
+using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Script.Conditions;
 
@@ -27,21 +28,22 @@ internal class TargetCondition : ICondition
         }
     }
 
-    private BaseAction _action { get; set; }
+    private BaseAction _action;
     public ActionID ID { get; set; } = ActionID.None;
-    public bool Condition { get; set; }
-    public bool FromSelf { get; set; }
+
+    public bool Condition;
+    public bool FromSelf;
     private BaseStatus _status { get; set; }
     public StatusID Status { get; set; }
-    public bool IsTarget { get; set; }
-    public TargetConditionType TargetConditionType { get; set; }
+    public bool IsTarget;
+    public TargetConditionType TargetConditionType;
 
-    public float DistanceOrTime { get; set; }
+    public float DistanceOrTime;
 
-    public int GCD { get; set; }
-    public int Ability { get; set; }
+    public int GCD;
+    public int Ability;
 
-    public bool IsTrue(IScriptCombo combo)
+    public bool IsTrue(ICustomRotation combo)
     {
         if (Service.ClientState.LocalPlayer == null) return false;
 
@@ -95,18 +97,16 @@ internal class TargetCondition : ICondition
     public float Height => ICondition.DefaultHeight;
 
     string searchTxt = string.Empty;
-    public void Draw(IScriptCombo combo)
+    public void Draw(ICustomRotation combo)
     {
-        if (ID != ActionID.None && (_action == null || (ActionID)_action.ID != ID))
-        {
-            _action = combo.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == ID);
-        }
+        ConditionHelper.CheckBaseAction(combo, ID, ref _action);
+
         if (Status != StatusID.None && (_status == null || _status.ID != Status))
         {
             _status = AllStatus.FirstOrDefault(a => a.ID == Status);
         }
 
-        ScriptComboWindow.DrawCondition(IsTrue(combo));
+        ImGuiHelper.DrawCondition(IsTrue(combo));
         ImGui.SameLine();
 
         var name = _action != null ? string.Format(LocalizationManager.RightLang.Scriptwindow_ActionTarget, _action.Name)
@@ -131,7 +131,7 @@ internal class TargetCondition : ICondition
                 IsTarget = false;
             }
 
-            ScriptComboWindow.SearchItems(ref searchTxt, combo.AllActions, i =>
+            ImGuiHelper.SearchItems(ref searchTxt, combo.AllActions, i =>
             {
                 _action = (BaseAction)i;
                 ID = (ActionID)_action.ID;
@@ -142,14 +142,7 @@ internal class TargetCondition : ICondition
 
         ImGui.SameLine();
 
-        var type = (int)TargetConditionType;
-        var names = Enum.GetValues<TargetConditionType>().Select(e => e.ToName()).ToArray();
-        ImGui.SetNextItemWidth(100);
-
-        if (ImGui.Combo($"##Category{GetHashCode()}", ref type, names, names.Length))
-        {
-            TargetConditionType = (TargetConditionType)type;
-        }
+        ConditionHelper.DrawIntEnum($"##Category{GetHashCode()}", ref TargetConditionType, EnumTranslations.ToName);
 
         var condition = Condition ? 1 : 0;
         var combos = new string[0];
@@ -189,8 +182,7 @@ internal class TargetCondition : ICondition
             case TargetConditionType.HaveStatus:
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
-
-                ScriptComboWindow.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
                     _status = i;
                     Status = _status.ID;
@@ -198,11 +190,7 @@ internal class TargetCondition : ICondition
 
                 ImGui.SameLine();
 
-                var self = FromSelf;
-                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_StatusSelf}##Self{GetHashCode()}", ref self))
-                {
-                    FromSelf = self;
-                }
+                ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
                 if (ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_StatusSelfDesc);
@@ -213,7 +201,7 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                ScriptComboWindow.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
                     _status = i;
                     Status = _status.ID;
@@ -221,23 +209,13 @@ internal class TargetCondition : ICondition
 
                 ImGui.SameLine();
 
-                self = FromSelf;
-                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_StatusSelf}##Self{GetHashCode()}", ref self))
-                {
-                    FromSelf = self;
-                }
+                ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
                 if (ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_StatusSelfDesc);
                 }
 
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
-                var time = DistanceOrTime;
-                if (ImGui.DragFloat($"s##s{GetHashCode()}", ref time))
-                {
-                    DistanceOrTime = Math.Max(0, time);
-                }
+                ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref DistanceOrTime);
                 break;
 
 
@@ -245,7 +223,7 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                ScriptComboWindow.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
                 {
                     _status = i;
                     Status = _status.ID;
@@ -253,40 +231,20 @@ internal class TargetCondition : ICondition
 
                 ImGui.SameLine();
 
-                self = FromSelf;
-                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_StatusSelf}##Self{GetHashCode()}", ref self))
-                {
-                    FromSelf = self;
-                }
+                ImGui.Checkbox($"{LocalizationManager.RightLang.Scriptwindow_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
                 if (ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip(LocalizationManager.RightLang.Scriptwindow_StatusSelfDesc);
                 }
-                ImGui.SameLine();
 
-                ImGui.SetNextItemWidth(50);
-                var gcd = GCD;
-                if (ImGui.DragInt($"GCD##GCD{GetHashCode()}", ref gcd))
-                {
-                    GCD = Math.Max(0, gcd);
-                }
-                ImGui.SameLine();
-
-                ImGui.SetNextItemWidth(50);
-                var ability = Ability;
-                if (ImGui.DragInt($"{LocalizationManager.RightLang.Scriptwindow_Ability}##Ability{GetHashCode()}", ref ability))
-                {
-                    Ability = Math.Max(0, ability);
-                }
+                ConditionHelper.DrawDragInt($"GCD##GCD{GetHashCode()}", ref GCD);
+                ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.Scriptwindow_Ability}##Ability{GetHashCode()}", ref Ability);
                 break;
 
             case TargetConditionType.Distance:
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
-                var distance = DistanceOrTime;
-                if (ImGui.DragFloat($"m##m{GetHashCode()}", ref distance))
+                if(ConditionHelper.DrawDragFloat($"m##m{GetHashCode()}", ref DistanceOrTime))
                 {
-                    DistanceOrTime = Math.Max(0, distance);
+                    DistanceOrTime = Math.Max(0, DistanceOrTime);
                 }
                 break;
         }
@@ -303,20 +261,6 @@ public enum TargetConditionType : int
     StatusEndGCD,
 }
 
-internal static class TargetConditionTypeExtension
-{
-    internal static string ToName(this TargetConditionType type) => type switch
-    {
-        TargetConditionType.HaveStatus => LocalizationManager.RightLang.TargetConditionType_HaveStatus,
-        TargetConditionType.IsDying => LocalizationManager.RightLang.TargetConditionType_IsDying,
-        TargetConditionType.IsBoss => LocalizationManager.RightLang.TargetConditionType_IsBoss,
-        TargetConditionType.Distance => LocalizationManager.RightLang.TargetConditionType_Distance,
-        TargetConditionType.StatusEnd => LocalizationManager.RightLang.TargetConditionType_StatusEnd,
-        TargetConditionType.StatusEndGCD => LocalizationManager.RightLang.TargetConditionType_StatusEndGCD,
-        _ => string.Empty,
-    };
-
-}
 
 internal class BaseStatus : ITexture
 {

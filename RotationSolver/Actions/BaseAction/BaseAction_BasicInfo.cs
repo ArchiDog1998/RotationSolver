@@ -65,13 +65,7 @@ internal partial class BaseAction : IBaseAction
             }
         }
     }
-    /// <summary>
-    /// 技能ID
-    /// </summary>
     public uint ID => _action.RowId;
-    /// <summary>
-    /// 调整后的ID(真实技能ID)
-    /// </summary>
     public uint AdjustedID => (uint)Service.IconReplacer.OriginalHook((ActionID)ID);
 
     public uint IconID => _action.Icon;

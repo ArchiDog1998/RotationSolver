@@ -7,7 +7,6 @@ using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Rotations.Script;
-using RotationSolver.Rotations.Script.Actions;
 using RotationSolver.Rotations.Script.Conditions;
 using RotationSolver.Updaters;
 using System;
@@ -20,6 +19,9 @@ namespace RotationSolver.SigReplacers;
 
 internal sealed class IconReplacer : IDisposable
 {
+    internal static string TimelineFolder => typeof(IconReplacer).Assembly.Location + "/ScriptRotation";
+
+
     public record CustomRotationGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomRotation[] rotations);
 
     private delegate ulong IsIconReplaceableDelegate(uint actionID);
@@ -107,7 +109,7 @@ internal sealed class IconReplacer : IDisposable
         {
             if (_customCombosDict == null)
             {
-                SetStaticValues();
+                GetAllCustomCombos();
             }
             return _customCombosDict;
         }
@@ -119,13 +121,11 @@ internal sealed class IconReplacer : IDisposable
         {
             if (_customRotations == null)
             {
-                SetStaticValues();
+                GetAllCustomCombos();
             }
             return _customRotations;
         }
     }
-
-    internal static Dictionary<ClassJobID, Type> _customScriptCombos;
 
     private readonly Hook<IsIconReplaceableDelegate> isIconReplaceableHook;
 
@@ -146,80 +146,21 @@ internal sealed class IconReplacer : IDisposable
         isIconReplaceableHook.Enable();
     }
 
-
-    private static void GetAllCombos()
+    private static void GetAllCustomCombos()
     {
         _combos = (from t in Assembly.GetAssembly(typeof(ICustomRotation)).GetTypes()
-                   where t.GetInterfaces().Contains(typeof(ICustomRotation)) &&
-                        !t.GetInterfaces().Contains(typeof(IScriptCombo)) && !t.IsAbstract && !t.IsInterface
+                   where t.GetInterfaces().Contains(typeof(ICustomRotation))
+                        && !t.IsAbstract && !t.IsInterface
                    select (ICustomRotation)Activator.CreateInstance(t)).ToList();
-    }
 
-    private static void MaintenceCombos()
-    {
+
         _customRotations = (from combo in _combos
-                         group combo by combo.JobIDs[0] into comboGrp
-                         select new CustomRotationGroup(comboGrp.Key, comboGrp.First().JobIDs, SetCombos(comboGrp.ToArray())))
+                            group combo by combo.JobIDs[0] into comboGrp
+                            select new CustomRotationGroup(comboGrp.Key, comboGrp.First().JobIDs, SetCombos(comboGrp.ToArray())))
                         .ToArray();
 
         _customCombosDict = new SortedList<JobRole, CustomRotationGroup[]>
             (_customRotations.GroupBy(g => g.rotations[0].Job.GetJobRole()).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
-    }
-
-    internal static string ScriptRotationFolder => typeof(IconReplacer).Assembly.Location + "/ScriptRotation";
-
-    public static IScriptCombo AddScripCombo(ClassJobID id, bool update = true)
-    {
-        if (!Directory.Exists(ScriptRotationFolder))
-        {
-            return null;
-        }
-
-        if (_customScriptCombos.TryGetValue(id, out var value))
-        {
-            var add = (IScriptCombo)Activator.CreateInstance(value);
-            add.Set.JobID = id;
-            _combos.Add(add);
-
-            if (update) MaintenceCombos();
-            return add;
-        }
-        return null;
-    }
-
-    public static void LoadFromFolder()
-    {
-        if (Directory.Exists(ScriptRotationFolder))
-        {
-            foreach (var path in Directory.EnumerateFiles(ScriptRotationFolder, "*.json"))
-            {
-                try
-                {
-                    var set = JsonConvert.DeserializeObject<ComboSet>(File.ReadAllText(path), new IConditionConverter());
-
-                    if (set == null) continue;
-
-                    var combo = AddScripCombo(set.JobID, false);
-
-                    combo.Set = set;
-
-                    _combos.Add(combo);
-                }
-                catch { }
-            }
-        }
-
-        MaintenceCombos();
-    }
-
-    private static void SetStaticValues()
-    {
-        _customScriptCombos = (from t in Assembly.GetAssembly(typeof(IScriptCombo)).GetTypes()
-                               where t.GetInterfaces().Contains(typeof(IScriptCombo)) && !t.IsAbstract && !t.IsInterface
-                               select t).ToDictionary(t => ((IScriptCombo)Activator.CreateInstance(t)).JobIDs[0]);
-
-        GetAllCombos();
-        LoadFromFolder();
     }
 
     private static ICustomRotation[] SetCombos(ICustomRotation[] combos)
@@ -238,13 +179,6 @@ internal sealed class IconReplacer : IDisposable
 
     public void Dispose()
     {
-        foreach (var item in _combos)
-        {
-            if (item is IScriptCombo com)
-            {
-                File.WriteAllText(com.Set.GetFolder(), JsonConvert.SerializeObject(com.Set, Formatting.Indented));
-            }
-        }
         getIconHook.Dispose();
         isIconReplaceableHook.Dispose();
     }

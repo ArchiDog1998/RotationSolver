@@ -15,6 +15,19 @@ internal partial class RotationConfigWindow
     {
         ImGui.Text(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
 
+        ImGui.Columns(2);
+
+        DrawActionList();
+
+        ImGui.NextColumn();
+
+        DrawTimelineCondition();
+
+        ImGui.Columns(1);
+    }
+
+    private void DrawActionList()
+    {
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
 
@@ -34,5 +47,10 @@ internal partial class RotationConfigWindow
             ImGui.EndChild();
         }
         ImGui.PopStyleVar();
+    }
+
+    private void DrawTimelineCondition()
+    {
+
     }
 }

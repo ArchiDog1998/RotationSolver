@@ -1,14 +1,15 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RotationSolver.Rotations.CustomRotation;
 using System;
 
 namespace RotationSolver.Rotations.Script.Conditions;
 
-internal interface ICondition : IDraw
+internal interface ICondition
 {
     const float DefaultHeight = 33;
-    bool IsTrue(IScriptCombo combo);
-
+    bool IsTrue(ICustomRotation rotation);
+    void Draw(ICustomRotation rotation);
     float Height { get; }
 }
 
@@ -16,21 +17,21 @@ internal class IConditionConverter : JsonCreationConverter<ICondition>
 {
     protected override ICondition Create(JObject jObject)
     {
-        if (FieldExists("Conditions", jObject))
+        if (FieldExists(nameof(ConditionSet.Conditions), jObject))
         {
             return new ConditionSet();
         }
-        else if (FieldExists("ActionConditonType", jObject))
+        else if (FieldExists(nameof(ActionCondition.ActionConditonType), jObject))
         {
             return new ActionCondition();
         }
-        else if (FieldExists("TargetConditionType", jObject))
+        else if (FieldExists(nameof(TargetCondition.TargetConditionType), jObject))
         {
             return new TargetCondition();
         }
-        else if (FieldExists("ComboConditionType", jObject))
+        else if (FieldExists(nameof(RotationCondition.ComboConditionType), jObject))
         {
-            return new ComboCondition();
+            return new RotationCondition();
         }
         else
         {

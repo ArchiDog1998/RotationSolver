@@ -6,7 +6,6 @@ using System.Linq;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
-using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.CustomRotation;
 
@@ -74,7 +73,6 @@ internal abstract partial class CustomRotation : ICustomRotation
     /// <summary>
     /// 有盾姿，如果为非T那么始终为true
     /// </summary>
-    [ReflectableMember]
     internal static bool HaveShield => Player.HasStatus(true, StatusHelper.SheildStatus);
 
 

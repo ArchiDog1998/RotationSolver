@@ -1,5 +1,4 @@
-﻿using RotationSolver.Attributes;
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -16,7 +15,7 @@ internal static class ReflectionHelper
         var props = from prop in type.GetRuntimeProperties()
                     where typeof(T).IsAssignableFrom(prop.PropertyType)
                             && prop.GetMethod is MethodInfo info
-                            && (info.IsStatic || info.GetCustomAttribute<ReflectableMemberAttribute>() != null)
+                            && info.IsStatic
                     select prop;
 
         return props.Union(type.BaseType.GetStaticProperties<T>()).ToArray();
@@ -27,7 +26,7 @@ internal static class ReflectionHelper
         if (type == null) return new MethodInfo[0];
 
         var methods = from method in type.GetRuntimeMethods()
-                      where (method.IsStatic || method.GetCustomAttribute<ReflectableMemberAttribute>() != null)
+                      where method.IsStatic
                       && !method.IsConstructor && method.ReturnType == typeof(bool)
                       && checks(method)
                       select method;
@@ -42,7 +41,7 @@ internal static class ReflectionHelper
         foreach (var item in type.GetRuntimeProperties())
         {
             if (item.Name == name && item.GetMethod is MethodInfo info
-               && (info.IsStatic || info.GetCustomAttribute<ReflectableMemberAttribute>() != null)) return item;
+               && info.IsStatic) return item;
         }
 
         return type.BaseType.GetPropertyInfo(name);
@@ -54,7 +53,7 @@ internal static class ReflectionHelper
 
         foreach (var item in type.GetRuntimeMethods())
         {
-            if (item.Name == name && (item.IsStatic || item.GetCustomAttribute<ReflectableMemberAttribute>() != null)
+            if (item.Name == name && item.IsStatic
                       && !item.IsConstructor && item.ReturnType == typeof(bool)) return item;
         }
 
@@ -65,14 +64,13 @@ internal static class ReflectionHelper
     {
         if (LocalizationManager.RightLang.MemberInfoName.TryGetValue(info.Name, out var memberName)) return memberName;
 
-        return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName
-            ?? info.Name;
+        return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? info.Name;
     }
+
     internal static string GetMemberDescription(this MemberInfo info)
     {
         if (LocalizationManager.RightLang.MemberInfoDesc.TryGetValue(info.Name, out var memberDesc)) return memberDesc;
 
-        return info.GetCustomAttribute<DescriptionAttribute>()?.Description
-            ?? string.Empty;
+        return info.GetCustomAttribute<DescriptionAttribute>()?.Description ?? string.Empty;
     }
 }

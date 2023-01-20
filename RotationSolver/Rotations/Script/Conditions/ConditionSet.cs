@@ -2,7 +2,9 @@
 using Dalamud.Interface.Components;
 using ImGuiNET;
 using Newtonsoft.Json;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Rotations.Script;
 using RotationSolver.Windows;
 using System;
@@ -13,7 +15,7 @@ namespace RotationSolver.Rotations.Script.Conditions;
 
 internal class ConditionSet : ICondition
 {
-    public bool IsTrue(IScriptCombo combo) => Conditions.Count == 0 ? true :
+    public bool IsTrue(ICustomRotation combo) => Conditions.Count == 0 ? true :
                           IsAnd ? Conditions.All(c => c.IsTrue(combo))
                                 : Conditions.Any(c => c.IsTrue(combo));
     public List<ICondition> Conditions { get; set; } = new List<ICondition>();
@@ -21,7 +23,7 @@ internal class ConditionSet : ICondition
 
     [JsonIgnore]
     public float Height => Conditions.Sum(c => c is ConditionSet ? c.Height + 10 : c.Height) + ICondition.DefaultHeight + 12;
-    public void Draw(IScriptCombo combo)
+    public void Draw(ICustomRotation combo)
     {
         if (ImGui.BeginChild(GetHashCode().ToString(), new System.Numerics.Vector2(-1f, Height), true))
         {
@@ -29,15 +31,14 @@ internal class ConditionSet : ICondition
 
             ImGui.SameLine();
 
-            ScriptComboWindow.DrawCondition(IsTrue(combo));
+            ImGuiHelper.DrawCondition(IsTrue(combo));
 
             ImGui.SameLine();
 
             int isAnd = IsAnd ? 1 : 0;
             if (ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
             {
-                LocalizationManager.RightLang.Scriptwindow_OR,
-                LocalizationManager.RightLang.Scriptwindow_AND,
+                "OR", "AND",
             }, 2))
             {
                 IsAnd = isAnd != 0;
@@ -46,8 +47,10 @@ internal class ConditionSet : ICondition
             ImGui.Separator();
 
             var relay = Conditions;
-            if (ScriptComboWindow.DrawEditorList(relay, i => i.Draw(combo)))
+            if (ImGuiHelper.DrawEditorList(relay, i => i.Draw(combo)))
+            {
                 Conditions = relay;
+            }
 
             ImGui.EndChild();
         }
@@ -55,7 +58,7 @@ internal class ConditionSet : ICondition
 
     private void AddButton()
     {
-        if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "AddButton" + GetHashCode().ToString()))
         {
             ImGui.OpenPopup("Popup" + GetHashCode().ToString());
         }
@@ -65,7 +68,7 @@ internal class ConditionSet : ICondition
             AddOneCondition<ConditionSet>(LocalizationManager.RightLang.Scriptwindow_ConditionSet);
             AddOneCondition<ActionCondition>(LocalizationManager.RightLang.Scriptwindow_ActionCondition);
             AddOneCondition<TargetCondition>(LocalizationManager.RightLang.Scriptwindow_TargetCondition);
-            AddOneCondition<ComboCondition>(LocalizationManager.RightLang.Scriptwindow_ComboCondition);
+            AddOneCondition<RotationCondition>(LocalizationManager.RightLang.Scriptwindow_ComboCondition);
 
             ImGui.EndPopup();
         }

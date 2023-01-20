@@ -1,6 +1,5 @@
 ﻿//本插件不得以任何形式在国服中使用。
 
-using RotationSolver.Rotations.Script.Actions;
 using System.Collections.Generic;
 
 namespace RotationSolver.Localization;
@@ -216,8 +215,6 @@ internal class Strings
     public string Scriptwindow_Havenot { get; set; } = "Havenot";
     public string Scriptwindow_Ability { get; set; } = "Ability";
     public string Scriptwindow_Charges { get; set; } = "Charges";
-    public string Scriptwindow_OR { get; set; } = "OR";
-    public string Scriptwindow_AND { get; set; } = "AND";
     public string Scriptwindow_ConditionSet { get; set; } = "ConditionSet";
     public string Scriptwindow_ActionCondition { get; set; } = "ActionCondition";
     public string Scriptwindow_TargetCondition { get; set; } = "TargetCondition";
@@ -302,22 +299,7 @@ internal class Strings
     #endregion
     public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
     {
-        #region Combo
-        { nameof(ComboSet.EmergencyGCDSet), "Emergency GCD"},
-        { nameof(ComboSet.GeneralGCDSet), "General GCD"},
-        { nameof(ComboSet.DefenceAreaGCDSet), "Defence Area GCD"},
-        { nameof(ComboSet.DefenceSingleGCDSet), "Defence Single GCD"},
-        { nameof(ComboSet.HealAreaGCDSet), "Heal Area GCD"},
-        { nameof(ComboSet.HealSingleGCDSet), "Heal Single GCD"},
-        { nameof(ComboSet.MoveGCDSet), "Move GCD"},
-        { nameof(ComboSet.EmergencyAbilitySet), "Emergency Ability"},
-        { nameof(ComboSet.GeneralAbilitySet), "General Ability"},
-        { nameof(ComboSet.AttackAbilitySet), "Attack Ability"},
-        { nameof(ComboSet.DefenceAreaAbilitySet), "Defence Area Ability"},
-        { nameof(ComboSet.DefenceSingleAbilitySet), "Defence Single Ability"},
-        { nameof(ComboSet.HealAreaAbilitySet), "Heal Area Ability"},
-        { nameof(ComboSet.HealSingleAbilitySet), "Heal Single Ability"},
-        { nameof(ComboSet.MoveAbilitySet), "Move Ability"},
+        #region Rotation
         { "IsMoving", "IsMoving"},
         { "HaveHostilesInRange", "Have Hostiles InRange"},
         { "IsFullParty", "Is Full Party"},
@@ -401,22 +383,7 @@ internal class Strings
 
     public Dictionary<string, string> MemberInfoDesc { get; set; } = new Dictionary<string, string>()
     {
-        #region Combo
-        { nameof(ComboSet.EmergencyGCDSet), "EmergencyGCD"},
-        { nameof(ComboSet.GeneralGCDSet), "GeneralGCD"},
-        { nameof(ComboSet.DefenceAreaGCDSet), "DefenceAreaGCD"},
-        { nameof(ComboSet.DefenceSingleGCDSet), "DefenceSingleGCD"},
-        { nameof(ComboSet.HealAreaGCDSet), "HealAreaGCD"},
-        { nameof(ComboSet.HealSingleGCDSet), "HealSingleGCD "},
-        { nameof(ComboSet.MoveGCDSet), "MoveGCD"},
-        { nameof(ComboSet.EmergencyAbilitySet), "EmergencyAbility"},
-        { nameof(ComboSet.GeneralAbilitySet), "GeneralAbility"},
-        { nameof(ComboSet.AttackAbilitySet), "AttackAbility"},
-        { nameof(ComboSet.DefenceAreaAbilitySet), "DefenceAreaAbility"},
-        { nameof(ComboSet.DefenceSingleAbilitySet), "DefenceSingleAbility"},
-        { nameof(ComboSet.HealAreaAbilitySet), "HealAreaAbility"},
-        { nameof(ComboSet.HealSingleAbilitySet), "HealSingleAbility"},
-        { nameof(ComboSet.MoveAbilitySet), "MoveAbility"},
+        #region Rotation
         { "IsMoving", "Player Is Moving"},
         { "HaveHostilesInRange", "Have Hostiles In Range(Melee <3m,Ranged<25m)"},
         { "IsFullParty", "Is Full Party"},
