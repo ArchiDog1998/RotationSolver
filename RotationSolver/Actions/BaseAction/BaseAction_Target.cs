@@ -265,7 +265,7 @@ internal partial class BaseAction
     private bool TargetHostile(float range, bool mustUse, int aoeCount, out BattleChara target)
     {
         //如果不用自动找目标，那就直接返回。
-        if (RSCommands.StateType != StateCommandType.Manual)
+        if (RSCommands.StateType == StateCommandType.Manual)
         {
             if (Service.TargetManager.Target is BattleChara b && b.CanAttack() && b.DistanceToPlayer() <= range)
             {
@@ -294,8 +294,11 @@ internal partial class BaseAction
         {
             target = b;
 
-            //目标已有充足的Debuff
-            if (!CheckStatus(b ?? Service.ClientState.LocalPlayer, mustUse)) return false;
+            //No need to dot.
+            if (TargetStatus != null && !ObjectHelper.CanDot(b)) return false;
+
+            //Already has status.
+            if (!CheckStatus(b, mustUse)) return false;
 
             return true;
         }

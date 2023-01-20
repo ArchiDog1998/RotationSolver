@@ -36,7 +36,7 @@ namespace RotationSolver.Commands
             });
         }
 
-        internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial);
+        internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial, false);
 
         private static void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(stateType, EnumTranslations.ToSayout, role =>
         {
@@ -53,13 +53,13 @@ namespace RotationSolver.Commands
             UpdateToast();
         });
 
-        private static void DoSpecialCommandType(SpecialCommandType specialType) => DoOneCommandType(specialType, EnumTranslations.ToSayout, role =>
+        private static void DoSpecialCommandType(SpecialCommandType specialType, bool sayout = true) => DoOneCommandType(specialType, sayout ? EnumTranslations.ToSayout : (s, r) => string.Empty, role =>
         {
             _specialType = specialType;
             _specialString = specialType.ToSpecialString(role);
 
             _specialStateStartTime = specialType == SpecialCommandType.EndSpecial ? DateTime.MinValue : DateTime.Now;
-            UpdateToast();
+            if(sayout) UpdateToast();
         });
 
         private static void DoOneCommandType<T>(T type, Func<T, JobRole, string> sayout, Action<JobRole> doingSomething)

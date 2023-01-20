@@ -64,8 +64,7 @@ internal abstract partial class CustomRotation
                     if (Service.Configuration.SayPotional) Watcher.Speak(positional);
                     if (Service.Configuration.FlytextPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
-                        IconId = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(
-                            (uint)Service.IconReplacer.OriginalHook((ActionID)GcdAction.ID)).Icon,
+                        IconId = GcdAction.IconID,
                     });
                     OverlayWindow.EnemyLocationTarget = GcdAction.Target;
                     OverlayWindow.ShouldPositional = GcdAction.EnermyPositonal;

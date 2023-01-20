@@ -12,7 +12,7 @@ internal class Strings
     public string Commands_ChangeRotationConfig { get; set; } = "Modify {0} to {1}";
     public string Commands_CannotFindRotationConfig { get; set; } = "Failed to find the config in this rotation, please check it.";
 
-    public string Commands_InsertAction { get; set; } = "Will use skill \"{1}\" within {0}s";
+    public string Commands_InsertAction { get; set; } = "Will use it within {0}s";
 
     public string Commands_InsertActionFailure { get; set; } = "Can not find the action, please check the action name.";
     public string Commands_OpenSettings { get; set; } = "The settings interface has been opened";
@@ -184,17 +184,12 @@ internal class Strings
     #endregion
 
     #region ScriptWindow
-    public string Scriptwindow_Author { get; set; } = "Author";
-    public string Scriptwindow_OpenSourceFile { get; set; } = "Open Source File";
-    public string Scriptwindow_Save { get; set; } = "Save";
     public string Scriptwindow_DragdropDescription { get; set; } = "Drag&drop to move，Ctrl+Alt+RightClick to delete.";
     public string Scriptwindow_SearchBar { get; set; } = "Search Bar";
     public string Scriptwindow_MustUse { get; set; } = "MustUse";
     public string Scriptwindow_MustUseDesc { get; set; } = "Skip AOE and Buff.";
     public string Scriptwindow_Empty { get; set; } = "UseUp";
     public string Scriptwindow_EmptyDesc { get; set; } = "UseUp or Skip Combo";
-    public string Scriptwindow_Return { get; set; } = "Return condition";
-    public string Scriptwindow_ActionConditionsDescription { get; set; } = "Description";
     public string Scriptwindow_AbilityRemain { get; set; } = "Ability Remains";
     public string Scriptwindow_AbilityRemainDesc { get; set; } = "Use this action while how many abilities remain. Set it to zero to ignore.";
     public string Scriptwindow_AdjustID { get; set; } = "AdjustID";
@@ -204,9 +199,6 @@ internal class Strings
     public string Scriptwindow_AddActionDesc { get; set; } = "Add Action";
     public string Scriptwindow_AddFunctionDesc { get; set; } = "Add Function，total {0}.";
     public string Scriptwindow_ComboSetAuthorDefault { get; set; } = "Unknown";
-    public string Scriptwindow_CountDown { get; set; } = "CountDown";
-    public string Scriptwindow_CountDownDesc { get; set; } = "The actions need to use in the countdown.";
-    public string Scriptwindow_CountDownSetDesc { get; set; } = "Input the actions need to use in the countdown into the box below.";
     public string Scriptwindow_Can { get; set; } = "Can";
     public string Scriptwindow_Cannot { get; set; } = "Cannot";
     public string Scriptwindow_Is { get; set; } = "Is";
@@ -229,7 +221,7 @@ internal class Strings
     #region Actions
     public string Action_Friendly { get; set; } = "Support";
     public string Action_Attack { get; set; } = "Attack";
-    public string Action_WrongLocation { get; set; } = "要打{0}!";
+    public string Action_WrongLocation { get; set; } = "Positional {0}!";
 
     #endregion
 

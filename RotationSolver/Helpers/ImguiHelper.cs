@@ -49,7 +49,7 @@ internal static class ImGuiHelper
             }
             if (isSelected) ImGui.PopStyleColor();
 
-            HoveredString(desc, selected);
+            HoveredString(desc);
         }
 
 

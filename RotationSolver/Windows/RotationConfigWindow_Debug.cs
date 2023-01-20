@@ -34,6 +34,9 @@ internal partial class RotationConfigWindow
 
         if (ImGui.CollapsingHeader("Target Data"))
         {
+            var count = TargetUpdater.AllTargets?.Count() ??　0;
+            ImGui.Text(count.ToString());
+
             if (Service.TargetManager.Target is BattleChara b)
             {
                 ImGui.Text("Is Boss: " + b.IsBoss().ToString());

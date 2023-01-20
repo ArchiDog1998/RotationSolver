@@ -33,7 +33,6 @@ namespace RotationSolver.Commands
             if (nextAction == null) return;
             if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
 
-
             if (nextAction.Use())
             {
                 if (Service.Configuration.KeyBoardNoise) PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);

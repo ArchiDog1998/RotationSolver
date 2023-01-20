@@ -13,7 +13,7 @@ public class PluginConfiguration : IPluginConfiguration
 {
     public int Version { get; set; } = 6;
 
-    public int VoiceVolume = 80;
+    public int VoiceVolume = 100;
     public SortedSet<string> DisabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DiabledActions { get; private set; } = new SortedSet<uint>();
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();

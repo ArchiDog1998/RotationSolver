@@ -127,8 +127,8 @@ internal static class EnumTranslations
 
     internal static string ToSayout(this StateCommandType type, JobRole role) => type switch
     {
-        StateCommandType.Smart => "Start Smart " + RSCommands.TargetingType.ToName(),
-        StateCommandType.Manual => "Start Manual",
+        StateCommandType.Smart => "Smart " + RSCommands.TargetingType.ToName(),
+        StateCommandType.Manual => "Manual",
         StateCommandType.Cancel => "Cancel",
         _ => string.Empty,
     };

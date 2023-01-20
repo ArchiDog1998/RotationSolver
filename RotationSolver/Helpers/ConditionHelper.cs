@@ -61,17 +61,24 @@ namespace RotationSolver.Helpers
             return ImGui.DragInt(name, ref value);
         }
 
-        internal static bool DrawCheckBox(string name, ref int value)
+        internal static bool DrawCheckBox(string name, ref int value, string desc = "")
         {
             ImGui.SameLine();
 
             var @bool = value != 0;
+
+            var result = false;
             if (ImGui.Checkbox(name, ref @bool))
             {
                 value = @bool ? 1 : 0;
-                return true;
+                result = true;
             }
-            return false;
+            if(!string.IsNullOrEmpty(desc) && ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(desc);
+            }
+
+            return result;
         }
     }
 }

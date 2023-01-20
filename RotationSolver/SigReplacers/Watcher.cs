@@ -113,17 +113,21 @@ namespace RotationSolver.SigReplacers
             }
 
 #if DEBUG
-            if (flag != 0) Service.ChatGui.Print($"{action.Name}, {flag}");
+            if (flag != 0)
+            {
+                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
+                ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 0, action.Icon);
+            }
 #endif
 
             //事后骂人！
             if (Service.Configuration.PositionalFeedback
-                && StatusHelper.ActionLocations.TryGetValue(id, out var loc)
+                && ConfigurationHelper.ActionLocations.TryGetValue(id, out var loc)
                 && loc.Tags.Length > 0 && !loc.Tags.Contains(flag))
             {
-                //Todo: Damage Icon should be something intersting.
-                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, string.Format(LocalizationManager.RightLang.Action_WrongLocation, loc.Loc.ToName()), "",
-                    ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), action.Icon, 0);
+                var str = string.Format(LocalizationManager.RightLang.Action_WrongLocation, loc.Loc.ToName());
+                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, str, "",
+                    ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 0, action.Icon);
                 if (!string.IsNullOrEmpty(Service.Configuration.PositionalErrorText))
                 {
                     Speak(Service.Configuration.PositionalErrorText);

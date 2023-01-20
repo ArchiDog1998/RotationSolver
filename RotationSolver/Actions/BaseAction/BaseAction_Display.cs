@@ -15,7 +15,10 @@ namespace RotationSolver.Actions.BaseAction
 {
     internal partial class BaseAction
     {
-        public unsafe void Display(bool IsActive) => this.DrawEnableTexture(IsActive, () => RotationConfigWindow.ActiveAction = this, otherThing: () =>
+        public unsafe void Display(bool IsActive) => this.DrawEnableTexture(IsActive, () =>
+        {
+            if (IsTimeline) RotationConfigWindow.ActiveAction = this;
+        }, otherThing: () =>
         {
             if (IsTimeline) OtherCommandType.Actions.DisplayCommandHelp($"{this}-{5}",
                type => string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, this));

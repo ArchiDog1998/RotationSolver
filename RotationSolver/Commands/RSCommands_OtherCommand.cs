@@ -1,4 +1,5 @@
 ﻿using RotationSolver.Actions.BaseAction;
+using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
@@ -92,7 +93,12 @@ namespace RotationSolver.Commands
                         }
                         NextActs = NextActs.OrderBy(i => i.deadTime).ToList();
 
-                        Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time, act.Name));
+                        Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time), 
+                            new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                        {
+                            IconId = act.IconID,
+                        });
+
                         return;
                     }
                 }

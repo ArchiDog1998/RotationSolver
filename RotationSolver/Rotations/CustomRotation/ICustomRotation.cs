@@ -26,7 +26,6 @@ internal interface ICustomRotation : ITexture, IEnable
 
     MethodInfo[] AllTimes { get; }
     MethodInfo[] AllLast { get; }
-    MethodInfo[] AllOther { get; }
     MethodInfo[] AllGCDs { get; }
 
     bool TryInvoke(out IAction newAction);

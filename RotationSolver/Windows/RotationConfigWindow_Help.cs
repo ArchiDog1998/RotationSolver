@@ -63,16 +63,16 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 SpecialCommandType.DefenseSingle.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
-                SpecialCommandType.EsunaShieldNorth.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
-
-                SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
-
                 SpecialCommandType.MoveForward.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
                 SpecialCommandType.MoveBack.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+                ImGui.Separator();
+
+                SpecialCommandType.EsunaShieldNorth.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+                ImGui.Separator();
+
+                SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
                 SpecialCommandType.AntiRepulsion.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);

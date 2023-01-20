@@ -163,8 +163,8 @@ internal class ActionCondition : ICondition
 
             case ActionConditonType.ShouldUse:
 
-                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.Scriptwindow_MustUse}##MustUse{GetHashCode()}", ref Param1);
-                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.Scriptwindow_Empty}##MustUse{GetHashCode()}", ref Param2);
+                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.Scriptwindow_MustUse}##MustUse{GetHashCode()}", ref Param1, LocalizationManager.RightLang.Scriptwindow_MustUseDesc);
+                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.Scriptwindow_Empty}##MustUse{GetHashCode()}", ref Param2, LocalizationManager.RightLang.Scriptwindow_EmptyDesc);
                 break;
 
             case ActionConditonType.CurrentCharges:
