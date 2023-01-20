@@ -293,12 +293,7 @@ internal static partial class TargetUpdater
     /// </summary>
     static DateTime foundTime = DateTime.Now;
     static TimeSpan relayTime = TimeSpan.Zero;
-    static readonly string[] authorKeys = new string[]
-    {
-        "LwA5GZE3hRgUtxmCB59xqQ==",
-        "EJ/sAztgwh8D9PKF3IscmA==",
-        "b4/6WcxY3Xhh1Ln5LZKMVA==",
-    };
+
     static List<string> macroToAuthor = new List<string>()
     {
         "blush",
@@ -327,7 +322,7 @@ internal static partial class TargetUpdater
         if (foundTime == DateTime.MinValue) return;
 
         //找作者
-        var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && authorKeys.Contains(EncryptString(player))
+        var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && ConfigurationHelper. AuthorKeys.Contains(EncryptString(player))
                         && c.ObjectId != Service.ClientState.LocalPlayer.ObjectId) as PlayerCharacter;
 
         //没找到作者

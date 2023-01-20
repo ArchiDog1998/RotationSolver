@@ -48,6 +48,9 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
+                SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+                ImGui.Separator();
+
                 SpecialCommandType.HealArea.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
@@ -78,8 +81,6 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 SpecialCommandType.Break.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
-                SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
 
                 ImGui.PopStyleVar();
             }

@@ -11,6 +11,11 @@ namespace RotationSolver.Helpers;
 
 internal static class ConfigurationHelper
 {
+    public static readonly string[] AuthorKeys = new string[]
+    {
+        "Ig4lHXUohMZNIeheUtAtRg==",
+    };
+
     public static readonly uint[] BadStatus = new uint[]
     {
         579, //状态限制

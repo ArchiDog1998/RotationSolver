@@ -38,35 +38,29 @@ namespace RotationSolver.Commands
 
         internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial);
 
-        private static void DoStateCommandType(StateCommandType stateType)
+        private static void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(stateType, EnumTranslations.ToSayout, role =>
         {
-            DoOneCommandType(stateType, EnumTranslations.ToSayout, role =>
+            if (StateType == StateCommandType.Smart
+            && stateType == StateCommandType.Smart)
             {
-                if (StateType == StateCommandType.Smart
-                && stateType == StateCommandType.Smart)
-                {
-                    Service.Configuration.TargetingIndex += 1;
-                    Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count;
-                }
+                Service.Configuration.TargetingIndex += 1;
+                Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count;
+            }
 
-                StateType = stateType;
+            StateType = stateType;
 
-                _stateString = stateType.ToStateString(role);
-                UpdateToast();
-            });
-        }
+            _stateString = stateType.ToStateString(role);
+            UpdateToast();
+        });
 
-        private static void DoSpecialCommandType(SpecialCommandType specialType)
+        private static void DoSpecialCommandType(SpecialCommandType specialType) => DoOneCommandType(specialType, EnumTranslations.ToSayout, role =>
         {
-            DoOneCommandType(specialType, EnumTranslations.ToSayout, role =>
-            {
-                _specialType = specialType;
+            _specialType = specialType;
+            _specialString = specialType.ToSpecialString(role);
 
-                _specialString = specialType.ToSpecialString(role);
-                _specialStateStartTime = DateTime.Now;
-                UpdateToast();
-            });
-        }
+            _specialStateStartTime = specialType == SpecialCommandType.EndSpecial ? DateTime.MinValue : DateTime.Now;
+            UpdateToast();
+        });
 
         private static void DoOneCommandType<T>(T type, Func<T, JobRole, string> sayout, Action<JobRole> doingSomething)
             where T : struct, Enum
