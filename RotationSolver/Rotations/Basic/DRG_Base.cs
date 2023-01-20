@@ -4,10 +4,11 @@ using System.Linq;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
+using RotationSolver.Actions;
 
 namespace RotationSolver.Rotations.Basic;
 
-internal abstract class DRGRotation_Base : CustomRotation.CustomRotation
+internal abstract class DRG_Base : CustomRotation.CustomRotation
 
 {
     private static DRGGauge JobGauge => Service.JobGauges.Get<DRGGauge>();
@@ -17,12 +18,12 @@ internal abstract class DRGRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// æ´◊º¥Ã
     /// </summary>
-    public static BaseAction TrueThrust { get; } = new(ActionID.TrueThrust);
+    public static IBaseAction TrueThrust { get; } = new BaseAction(ActionID.TrueThrust);
 
     /// <summary>
     /// π·Õ®¥Ã
     /// </summary>
-    public static BaseAction VorpalThrust { get; } = new(ActionID.VorpalThrust)
+    public static IBaseAction VorpalThrust { get; } = new BaseAction(ActionID.VorpalThrust)
     {
         OtherIDsCombo = new[] { ActionID.RaidenThrust }
     };
@@ -30,12 +31,12 @@ internal abstract class DRGRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÷±¥Ã
     /// </summary>
-    public static BaseAction FullThrust { get; } = new(ActionID.FullThrust);
+    public static IBaseAction FullThrust { get; } = new BaseAction(ActionID.FullThrust);
 
     /// <summary>
     /// ø™Ã≈«π
     /// </summary>
-    public static BaseAction Disembowel { get; } = new(ActionID.Disembowel)
+    public static IBaseAction Disembowel { get; } = new BaseAction(ActionID.Disembowel)
     {
         OtherIDsCombo = new[] { ActionID.RaidenThrust }
     };
@@ -43,38 +44,38 @@ internal abstract class DRGRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ”£ª®≈≠∑≈
     /// </summary>
-    public static BaseAction ChaosThrust { get; } = new(ActionID.ChaosThrust);
+    public static IBaseAction ChaosThrust { get; } = new BaseAction(ActionID.ChaosThrust);
 
     /// <summary>
     /// ¡˙—¿¡˙◊¶
     /// </summary>
-    public static BaseAction FangandClaw { get; } = new(ActionID.FangandClaw)
+    public static IBaseAction FangandClaw { get; } = new BaseAction(ActionID.FangandClaw)
     {
-        BuffsNeed = new StatusID[] { StatusID.SharperFangandClaw },
+        StatusNeed = new StatusID[] { StatusID.SharperFangandClaw },
     };
 
     /// <summary>
     /// ¡˙Œ≤¥Ûªÿ–˝
     /// </summary>
-    public static BaseAction WheelingThrust { get; } = new(ActionID.WheelingThrust)
+    public static IBaseAction WheelingThrust { get; } = new BaseAction(ActionID.WheelingThrust)
     {
-        BuffsNeed = new StatusID[] { StatusID.EnhancedWheelingThrust },
+        StatusNeed = new StatusID[] { StatusID.EnhancedWheelingThrust },
     };
 
     /// <summary>
     /// π·¥©º‚
     /// </summary>
-    public static BaseAction PiercingTalon { get; } = new(ActionID.PiercingTalon);
+    public static IBaseAction PiercingTalon { get; } = new BaseAction(ActionID.PiercingTalon);
 
     /// <summary>
     /// À¿ÃÏ«π
     /// </summary>
-    public static BaseAction DoomSpike { get; } = new(ActionID.DoomSpike);
+    public static IBaseAction DoomSpike { get; } = new BaseAction(ActionID.DoomSpike);
 
     /// <summary>
     /// “ÙÀŸ¥Ã
     /// </summary>
-    public static BaseAction SonicThrust { get; } = new(ActionID.SonicThrust)
+    public static IBaseAction SonicThrust { get; } = new BaseAction(ActionID.SonicThrust)
     {
         OtherIDsCombo = new[] { ActionID.DraconianFury }
     };
@@ -82,51 +83,51 @@ internal abstract class DRGRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// …Ωæ≥ø·–Ã
     /// </summary>
-    public static BaseAction CoerthanTorment { get; } = new(ActionID.CoerthanTorment);
+    public static IBaseAction CoerthanTorment { get; } = new BaseAction(ActionID.CoerthanTorment);
 
     /// <summary>
     /// ∆∆ÀÈ≥Â
     /// </summary>
-    public static BaseAction SpineshatterDive { get; } = new(ActionID.SpineshatterDive);
+    public static IBaseAction SpineshatterDive { get; } = new BaseAction(ActionID.SpineshatterDive);
 
     /// <summary>
     /// ¡˙—◊≥Â
     /// </summary>
-    public static BaseAction DragonfireDive { get; } = new(ActionID.DragonfireDive);
+    public static IBaseAction DragonfireDive { get; } = new BaseAction(ActionID.DragonfireDive);
 
     /// <summary>
     /// Ã¯‘æ
     /// </summary>
-    public static BaseAction Jump { get; } = new(ActionID.Jump)
+    public static IBaseAction Jump { get; } = new BaseAction(ActionID.Jump)
     {
-        BuffsProvide = new StatusID[] { StatusID.DiveReady },
+        StatusProvide = new StatusID[] { StatusID.DiveReady },
     };
 
     /// <summary>
     /// ∏ﬂÃ¯
     /// </summary>
-    public static BaseAction HighJump { get; } = new(ActionID.HighJump)
+    public static IBaseAction HighJump { get; } = new BaseAction(ActionID.HighJump)
     {
-        BuffsProvide = Jump.BuffsProvide,
+        StatusProvide = Jump.StatusProvide,
     };
 
     /// <summary>
     /// ª√œÛ≥Â
     /// </summary>
-    public static BaseAction MirageDive { get; } = new(ActionID.MirageDive)
+    public static IBaseAction MirageDive { get; } = new BaseAction(ActionID.MirageDive)
     {
-        BuffsNeed = Jump.BuffsProvide,
+        StatusNeed = Jump.StatusProvide,
     };
 
     /// <summary>
     /// Œ‰…Ò«π
     /// </summary>
-    public static BaseAction Geirskogul { get; } = new(ActionID.Geirskogul);
+    public static IBaseAction Geirskogul { get; } = new BaseAction(ActionID.Geirskogul);
 
     /// <summary>
     /// À¿’ﬂ÷Æ∞∂
     /// </summary>
-    public static BaseAction Nastrond { get; } = new(ActionID.Nastrond)
+    public static IBaseAction Nastrond { get; } = new BaseAction(ActionID.Nastrond)
     {
         ActionCheck = b => JobGauge.IsLOTDActive,
     };
@@ -134,7 +135,7 @@ internal abstract class DRGRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ◊π–«≥Â
     /// </summary>
-    public static BaseAction Stardiver { get; } = new(ActionID.Stardiver)
+    public static IBaseAction Stardiver { get; } = new BaseAction(ActionID.Stardiver)
     {
         ActionCheck = b => JobGauge.IsLOTDActive,
     };
@@ -142,7 +143,7 @@ internal abstract class DRGRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÃÏ¡˙µ„æ¶
     /// </summary>
-    public static BaseAction WyrmwindThrust { get; } = new(ActionID.WyrmwindThrust)
+    public static IBaseAction WyrmwindThrust { get; } = new BaseAction(ActionID.WyrmwindThrust)
     {
         ActionCheck = b => JobGauge.FirstmindsFocusCount == 2,
     };
@@ -150,9 +151,9 @@ internal abstract class DRGRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¡˙Ω£
     /// </summary>
-    public static BaseAction LifeSurge { get; } = new(ActionID.LifeSurge, true)
+    public static IBaseAction LifeSurge { get; } = new BaseAction(ActionID.LifeSurge, true)
     {
-        BuffsProvide = new[] { StatusID.LifeSurge },
+        StatusProvide = new[] { StatusID.LifeSurge },
 
         ActionCheck = b => !IsLastAbility(true, LifeSurge),
     };
@@ -160,12 +161,12 @@ internal abstract class DRGRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// √Õ«π
     /// </summary>
-    public static BaseAction LanceCharge { get; } = new(ActionID.LanceCharge, true);
+    public static IBaseAction LanceCharge { get; } = new BaseAction(ActionID.LanceCharge, true);
 
     /// <summary>
     /// æﬁ¡˙ ”œﬂ
     /// </summary>
-    public static BaseAction DragonSight { get; } = new(ActionID.DragonSight, true)
+    public static IBaseAction DragonSight { get; } = new BaseAction(ActionID.DragonSight, true)
     {
         ChoiceTarget = (Targets, mustUse) =>
         {
@@ -181,8 +182,8 @@ internal abstract class DRGRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ’Ω∂∑¡¨µª
     /// </summary>
-    public static BaseAction BattleLitany { get; } = new(ActionID.BattleLitany, true)
+    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, true)
     {
-        BuffsNeed = new[] { StatusID.PowerSurge },
+        StatusNeed = new[] { StatusID.PowerSurge },
     };
 }

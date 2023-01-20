@@ -10,7 +10,7 @@ using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.RangedPhysicial.MCHCombos;
 
-internal sealed class MCH_Default : MCHRotation_Base
+internal sealed class MCH_Default : MCH_Base
 {
     public override string GameVersion => "6.28";
 

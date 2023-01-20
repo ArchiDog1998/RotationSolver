@@ -4,10 +4,11 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Updaters;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Actions;
 
 namespace RotationSolver.Rotations.Basic;
 
-internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
+internal abstract class SCH_Base : CustomRotation.CustomRotation
 {
     private static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
 
@@ -18,7 +19,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Scholar };
 
-    private sealed protected override BaseAction Raise => Resurrection;
+    private sealed protected override IBaseAction Raise => Resurrection;
     /// <summary>
     /// 有豆子
     /// </summary>
@@ -32,12 +33,12 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 医术
     /// </summary>
-    public static BaseAction Physick { get; } = new(ActionID.Physick, true, isTimeline: true);
+    public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, true, isTimeline: true);
 
     /// <summary>
     /// 鼓舞激励之策
     /// </summary>
-    public static BaseAction Adloquium { get; } = new(ActionID.Adloquium, true, isTimeline: true)
+    public static IBaseAction Adloquium { get; } = new BaseAction(ActionID.Adloquium, true, isTimeline: true)
     {
         ActionCheck = b => !b.HasStatus(false, StatusID.EukrasianDiagnosis,
             StatusID.EukrasianPrognosis,
@@ -48,20 +49,20 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 复生
     /// </summary>
-    public static BaseAction Resurrection { get; } = new(ActionID.Resurrection, true);
+    public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.Resurrection, true);
 
     /// <summary>
     /// 士气高扬之策
     /// </summary>
-    public static BaseAction Succor { get; } = new(ActionID.Succor, true, isTimeline: true)
+    public static IBaseAction Succor { get; } = new BaseAction(ActionID.Succor, true, isTimeline: true)
     {
-        BuffsProvide = new[] { StatusID.Galvanize },
+        StatusProvide = new[] { StatusID.Galvanize },
     };
 
     /// <summary>
     /// 生命活性法
     /// </summary>
-    public static BaseAction Lustrate { get; } = new(ActionID.Lustrate, true, isTimeline: true)
+    public static IBaseAction Lustrate { get; } = new BaseAction(ActionID.Lustrate, true, isTimeline: true)
     {
         ActionCheck = b => HasAetherflow
     };
@@ -69,7 +70,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 野战治疗阵
     /// </summary>
-    public static BaseAction SacredSoil { get; } = new(ActionID.SacredSoil, true, isTimeline: true)
+    public static IBaseAction SacredSoil { get; } = new BaseAction(ActionID.SacredSoil, true, isTimeline: true)
     {
         ActionCheck = b => HasAetherflow && !IsMoving,
     };
@@ -77,7 +78,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 不屈不挠之策
     /// </summary>
-    public static BaseAction Indomitability { get; } = new(ActionID.Indomitability, true, isTimeline: true)
+    public static IBaseAction Indomitability { get; } = new BaseAction(ActionID.Indomitability, true, isTimeline: true)
     {
         ActionCheck = b => HasAetherflow
     };
@@ -85,7 +86,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 深谋远虑之策
     /// </summary>
-    public static BaseAction Excogitation { get; } = new(ActionID.Excogitation, true, isTimeline: true)
+    public static IBaseAction Excogitation { get; } = new BaseAction(ActionID.Excogitation, true, isTimeline: true)
     {
         ActionCheck = b => HasAetherflow
     };
@@ -93,7 +94,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 慰藉
     /// </summary>
-    public static BaseAction Consolation { get; } = new(ActionID.Consolation, true, isTimeline: true)
+    public static IBaseAction Consolation { get; } = new BaseAction(ActionID.Consolation, true, isTimeline: true)
     {
         ActionCheck = b => HasSeraph,
     };
@@ -101,13 +102,13 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 生命回生法
     /// </summary>
-    public static BaseAction Protraction { get; } = new(ActionID.Protraction, true, isTimeline: true);
+    public static IBaseAction Protraction { get; } = new BaseAction(ActionID.Protraction, true, isTimeline: true);
     #endregion
     #region 进攻
     /// <summary>
     /// 毒菌 猛毒菌 蛊毒法
     /// </summary>
-    public static BaseAction Bio { get; } = new(ActionID.Bio, isEot: true)
+    public static IBaseAction Bio { get; } = new BaseAction(ActionID.Bio, isEot: true)
     {
         TargetStatus = new StatusID[] { StatusID.Bio, StatusID.Bio2, StatusID.Biolysis },
     };
@@ -115,17 +116,17 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 毁灭 气炎法 魔炎法 死炎法 极炎法
     /// </summary>
-    public static BaseAction Ruin { get; } = new(ActionID.Ruin);
+    public static IBaseAction Ruin { get; } = new BaseAction(ActionID.Ruin);
 
     /// <summary>
     /// 毁坏
     /// </summary>
-    public static BaseAction Ruin2 { get; } = new(ActionID.Ruin2);
+    public static IBaseAction Ruin2 { get; } = new BaseAction(ActionID.Ruin2);
 
     /// <summary>
     /// 能量吸收
     /// </summary>
-    public static BaseAction EnergyDrain { get; } = new(ActionID.EnergyDrain)
+    public static IBaseAction EnergyDrain { get; } = new BaseAction(ActionID.EnergyDrain)
     {
         ActionCheck = b => HasAetherflow
     };
@@ -133,13 +134,13 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 破阵法
     /// </summary>
-    public static BaseAction ArtofWar { get; } = new(ActionID.ArtofWar);//裂阵法 25866
+    public static IBaseAction ArtofWar { get; } = new BaseAction(ActionID.ArtofWar);//裂阵法 25866
     #endregion
     #region 仙女
     /// <summary>
     /// 炽天召唤
     /// </summary>
-    public static BaseAction SummonSeraph { get; } = new(ActionID.SummonSeraph, true, isTimeline: true)
+    public static IBaseAction SummonSeraph { get; } = new BaseAction(ActionID.SummonSeraph, true, isTimeline: true)
     {
         ActionCheck = b => TargetUpdater.HavePet,
     };
@@ -147,7 +148,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 朝日召唤
     /// </summary>
-    public static BaseAction SummonEos { get; } = new(ActionID.SummonEos)//夕月召唤 17216
+    public static IBaseAction SummonEos { get; } = new BaseAction(ActionID.SummonEos)//夕月召唤 17216
     {
         ActionCheck = b => !TargetUpdater.HavePet && (!Player.HasStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
     };
@@ -155,7 +156,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 仙光的低语/天使的低语
     /// </summary>
-    public static BaseAction WhisperingDawn { get; } = new(ActionID.WhisperingDawn, isTimeline: true)
+    public static IBaseAction WhisperingDawn { get; } = new BaseAction(ActionID.WhisperingDawn, isTimeline: true)
     {
         ActionCheck = b => TargetUpdater.HavePet,
     };
@@ -163,7 +164,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 异想的幻光/炽天的幻光
     /// </summary>
-    public static BaseAction FeyIllumination { get; } = new(ActionID.FeyIllumination, isTimeline: true)
+    public static IBaseAction FeyIllumination { get; } = new BaseAction(ActionID.FeyIllumination, isTimeline: true)
     {
         ActionCheck = b => TargetUpdater.HavePet,
     };
@@ -171,16 +172,16 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 转化
     /// </summary>
-    public static BaseAction Dissipation { get; } = new(ActionID.Dissipation)
+    public static IBaseAction Dissipation { get; } = new BaseAction(ActionID.Dissipation)
     {
-        BuffsProvide = new[] { StatusID.Dissipation },
+        StatusProvide = new[] { StatusID.Dissipation },
         ActionCheck = b => !HasAetherflow && !HasSeraph && InCombat && TargetUpdater.HavePet,
     };
 
     /// <summary>
     /// 以太契约-异想的融光
     /// </summary>
-    public static BaseAction Aetherpact { get; } = new(ActionID.Aetherpact, true, isTimeline: true)
+    public static IBaseAction Aetherpact { get; } = new BaseAction(ActionID.Aetherpact, true, isTimeline: true)
     {
         ActionCheck = b => JobGauge.FairyGauge >= 10 && TargetUpdater.HavePet && !HasSeraph
     };
@@ -188,7 +189,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 异想的祥光
     /// </summary>
-    public static BaseAction FeyBlessing { get; } = new(ActionID.FeyBlessing, isTimeline: true)
+    public static IBaseAction FeyBlessing { get; } = new BaseAction(ActionID.FeyBlessing, isTimeline: true)
     {
         ActionCheck = b => !HasSeraph && TargetUpdater.HavePet,
     };
@@ -197,7 +198,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 以太超流
     /// </summary>
-    public static BaseAction Aetherflow { get; } = new(ActionID.Aetherflow)
+    public static IBaseAction Aetherflow { get; } = new BaseAction(ActionID.Aetherflow)
     {
         ActionCheck = b => InCombat && !HasAetherflow
     };
@@ -205,12 +206,12 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 秘策
     /// </summary>
-    public static BaseAction Recitation { get; } = new(ActionID.Recitation, isTimeline: true);
+    public static IBaseAction Recitation { get; } = new BaseAction(ActionID.Recitation, isTimeline: true);
 
     /// <summary>
     /// 连环计
     /// </summary>
-    public static BaseAction ChainStratagem { get; } = new(ActionID.ChainStratagem)
+    public static IBaseAction ChainStratagem { get; } = new BaseAction(ActionID.ChainStratagem)
     {
         ActionCheck = b => InCombat && IsTargetBoss
     };
@@ -218,7 +219,7 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 展开战术
     /// </summary>
-    public static BaseAction DeploymentTactics { get; } = new(ActionID.DeploymentTactics, true, isTimeline: true)
+    public static IBaseAction DeploymentTactics { get; } = new BaseAction(ActionID.DeploymentTactics, true, isTimeline: true)
     {
         ChoiceTarget = (friends, mustUse) =>
         {
@@ -233,11 +234,11 @@ internal abstract class SCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 应急战术
     /// </summary>
-    public static BaseAction EmergencyTactics { get; } = new(ActionID.EmergencyTactics, isTimeline: true);
+    public static IBaseAction EmergencyTactics { get; } = new BaseAction(ActionID.EmergencyTactics, isTimeline: true);
 
     /// <summary>
     /// 疾风怒涛之计
     /// </summary>
-    public static BaseAction Expedient { get; } = new(ActionID.Expedient, isTimeline: true);
+    public static IBaseAction Expedient { get; } = new BaseAction(ActionID.Expedient, isTimeline: true);
     #endregion
 }

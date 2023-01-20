@@ -9,7 +9,7 @@ using RotationSolver.Data;
 
 namespace RotationSolver.Rotations.Basic;
 
-internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
+internal abstract class AST_Base : CustomRotation.CustomRotation
 {
     private static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
 
@@ -30,22 +30,22 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Astrologian };
 
-    private sealed protected override BaseAction Raise => Ascend;
+    private sealed protected override IBaseAction Raise => Ascend;
 
     /// <summary>
     /// 生辰
     /// </summary>
-    public static BaseAction Ascend { get; } = new(ActionID.Ascend, true);
+    public static IBaseAction Ascend { get; } = new BaseAction(ActionID.Ascend, true);
 
     /// <summary>
     /// 凶星
     /// </summary>
-    public static BaseAction Malefic { get; } = new(ActionID.Malefic);
+    public static IBaseAction Malefic { get; } = new BaseAction(ActionID.Malefic);
 
     /// <summary>
     /// 烧灼
     /// </summary>
-    public static BaseAction Combust { get; } = new(ActionID.Combust, isEot: true)
+    public static IBaseAction Combust { get; } = new BaseAction(ActionID.Combust, isEot: true)
     {
         TargetStatus = new StatusID[]
         {
@@ -59,22 +59,22 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 重力    
     /// </summary>
-    public static BaseAction Gravity { get; } = new(ActionID.Gravity);
+    public static IBaseAction Gravity { get; } = new BaseAction(ActionID.Gravity);
 
     /// <summary>
     /// 吉星
     /// </summary>
-    public static BaseAction Benefic { get; } = new(ActionID.Benefic, true, isTimeline: true);
+    public static IBaseAction Benefic { get; } = new BaseAction(ActionID.Benefic, true, isTimeline: true);
 
     /// <summary>
     /// 福星
     /// </summary>
-    public static BaseAction Benefic2 { get; } = new(ActionID.Benefic2, true, isTimeline: true);
+    public static IBaseAction Benefic2 { get; } = new BaseAction(ActionID.Benefic2, true, isTimeline: true);
 
     /// <summary>
     /// 吉星相位
     /// </summary>
-    public static BaseAction AspectedBenefic { get; } = new(ActionID.AspectedBenefic, true, isEot: true, isTimeline: true)
+    public static IBaseAction AspectedBenefic { get; } = new BaseAction(ActionID.AspectedBenefic, true, isEot: true, isTimeline: true)
     {
         TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
     };
@@ -82,17 +82,17 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 先天禀赋
     /// </summary>
-    public static BaseAction EssentialDignity { get; } = new(ActionID.EssentialDignity, true, isTimeline: true);
+    public static IBaseAction EssentialDignity { get; } = new BaseAction(ActionID.EssentialDignity, true, isTimeline: true);
 
     /// <summary>
     /// 星位合图
     /// </summary>
-    public static BaseAction Synastry { get; } = new(ActionID.Synastry, true, isTimeline: true);
+    public static IBaseAction Synastry { get; } = new BaseAction(ActionID.Synastry, true, isTimeline: true);
 
     /// <summary>
     /// 天星交错
     /// </summary>
-    public static BaseAction CelestialIntersection { get; } = new(ActionID.CelestialIntersection, true, isTimeline: true)
+    public static IBaseAction CelestialIntersection { get; } = new BaseAction(ActionID.CelestialIntersection, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
 
@@ -102,7 +102,7 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 擢升
     /// </summary>
-    public static BaseAction Exaltation { get; } = new(ActionID.Exaltation, true, isTimeline: true)
+    public static IBaseAction Exaltation { get; } = new BaseAction(ActionID.Exaltation, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -110,55 +110,55 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 阳星
     /// </summary>
-    public static BaseAction Helios { get; } = new(ActionID.Helios, true, isTimeline: true);
+    public static IBaseAction Helios { get; } = new BaseAction(ActionID.Helios, true, isTimeline: true);
 
     /// <summary>
     /// 阳星相位
     /// </summary>
-    public static BaseAction AspectedHelios { get; } = new(ActionID.AspectedHelios, true, isEot: true, isTimeline: true)
+    public static IBaseAction AspectedHelios { get; } = new BaseAction(ActionID.AspectedHelios, true, isEot: true, isTimeline: true)
     {
-        BuffsProvide = new StatusID[] { StatusID.AspectedHelios },
+        StatusProvide = new StatusID[] { StatusID.AspectedHelios },
     };
 
     /// <summary>
     /// 天星冲日
     /// </summary>
-    public static BaseAction CelestialOpposition { get; } = new(ActionID.CelestialOpposition, true, isTimeline: true);
+    public static IBaseAction CelestialOpposition { get; } = new BaseAction(ActionID.CelestialOpposition, true, isTimeline: true);
 
     /// <summary>
     /// 地星
     /// </summary>
-    public static BaseAction EarthlyStar { get; } = new(ActionID.EarthlyStar, true, isTimeline: true);
+    public static IBaseAction EarthlyStar { get; } = new BaseAction(ActionID.EarthlyStar, true, isTimeline: true);
 
     /// <summary>
     /// 命运之轮 减伤，手动放。
     /// </summary>
-    public static BaseAction CollectiveUnconscious { get; } = new(ActionID.CollectiveUnconscious, true, isTimeline: true);
+    public static IBaseAction CollectiveUnconscious { get; } = new BaseAction(ActionID.CollectiveUnconscious, true, isTimeline: true);
 
     /// <summary>
     /// 天宫图
     /// </summary>
-    public static BaseAction Horoscope { get; } = new(ActionID.Horoscope, true, isTimeline: true);
+    public static IBaseAction Horoscope { get; } = new BaseAction(ActionID.Horoscope, true, isTimeline: true);
 
     /// <summary>
     /// 光速
     /// </summary>
-    public static BaseAction Lightspeed { get; } = new(ActionID.Lightspeed);
+    public static IBaseAction Lightspeed { get; } = new BaseAction(ActionID.Lightspeed);
 
     /// <summary>
     /// 中间学派
     /// </summary>
-    public static BaseAction NeutralSect { get; } = new(ActionID.NeutralSect, isTimeline: true);
+    public static IBaseAction NeutralSect { get; } = new BaseAction(ActionID.NeutralSect, isTimeline: true);
 
     /// <summary>
     /// 大宇宙
     /// </summary>
-    public static BaseAction Macrocosmos { get; } = new(ActionID.Macrocosmos, isTimeline: true);
+    public static IBaseAction Macrocosmos { get; } = new BaseAction(ActionID.Macrocosmos, isTimeline: true);
 
     /// <summary>
     /// 星力
     /// </summary>
-    public static BaseAction Astrodyne { get; } = new(ActionID.Astrodyne)
+    public static IBaseAction Astrodyne { get; } = new BaseAction(ActionID.Astrodyne)
     {
         ActionCheck = b =>
         {
@@ -171,12 +171,12 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 占卜
     /// </summary>
-    public static BaseAction Divination { get; } = new(ActionID.Divination, true);
+    public static IBaseAction Divination { get; } = new BaseAction(ActionID.Divination, true);
 
     /// <summary>
     /// 抽卡
     /// </summary>
-    public static BaseAction Draw { get; } = new(ActionID.Draw)
+    public static IBaseAction Draw { get; } = new BaseAction(ActionID.Draw)
     {
         ActionCheck = b => DrawnCard == CardType.NONE,
     };
@@ -184,16 +184,16 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 重抽
     /// </summary>
-    public static BaseAction Redraw { get; } = new(ActionID.Redraw)
+    public static IBaseAction Redraw { get; } = new BaseAction(ActionID.Redraw)
     {
-        BuffsNeed = new[] { StatusID.ClarifyingDraw },
+        StatusNeed = new[] { StatusID.ClarifyingDraw },
         ActionCheck = b => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)),
     };
 
     /// <summary>
     /// 小奥秘卡
     /// </summary>
-    public static BaseAction MinorArcana { get; } = new(ActionID.MinorArcana)
+    public static IBaseAction MinorArcana { get; } = new BaseAction(ActionID.MinorArcana)
     {
         ActionCheck = b => InCombat && DrawnCrownCard == CardType.NONE,
     };
@@ -201,7 +201,7 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 出王冠卡
     /// </summary>
-    public static BaseAction CrownPlay { get; } = new(ActionID.CrownPlay)
+    public static IBaseAction CrownPlay { get; } = new BaseAction(ActionID.CrownPlay)
     {
         ActionCheck = b => DrawnCrownCard is CardType.LADY or CardType.LORD,
     };
@@ -209,7 +209,7 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 太阳神之衡
     /// </summary>
-    private static BaseAction Balance { get; } = new(ActionID.Balance)
+    private static IBaseAction Balance { get; } = new BaseAction(ActionID.Balance)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = b => DrawnCard == CardType.BALANCE,
@@ -218,7 +218,7 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 放浪神之箭
     /// </summary>
-    private static BaseAction Arrow { get; } = new(ActionID.Arrow)
+    private static IBaseAction Arrow { get; } = new BaseAction(ActionID.Arrow)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = b => DrawnCard == CardType.ARROW,
@@ -227,7 +227,7 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 战争神之枪
     /// </summary>
-    private static BaseAction Spear { get; } = new(ActionID.Spear)
+    private static IBaseAction Spear { get; } = new BaseAction(ActionID.Spear)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = b => DrawnCard == CardType.SPEAR,
@@ -236,7 +236,7 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 世界树之干
     /// </summary>
-    private static BaseAction Bole { get; } = new(ActionID.Bole)
+    private static IBaseAction Bole { get; } = new BaseAction(ActionID.Bole)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = b => DrawnCard == CardType.BOLE,
@@ -245,7 +245,7 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 河流神之瓶
     /// </summary>
-    private static BaseAction Ewer { get; } = new(ActionID.Ewer)
+    private static IBaseAction Ewer { get; } = new BaseAction(ActionID.Ewer)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = b => DrawnCard == CardType.EWER,
@@ -255,7 +255,7 @@ internal abstract class ASTRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 建筑神之塔
     /// </summary>
-    private static BaseAction Spire { get; } = new(ActionID.Spire)
+    private static IBaseAction Spire { get; } = new BaseAction(ActionID.Spire)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = b => DrawnCard == CardType.SPIRE,

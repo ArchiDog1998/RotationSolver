@@ -18,32 +18,32 @@ internal partial class BaseAction
     /// <summary>
     /// 如果之前是这些ID，那么就不会执行。
     /// </summary>
-    internal ActionID[] OtherIDsNot { private get; set; } = null;
+    public ActionID[] OtherIDsNot { private get; set; } = null;
 
     /// <summary>
     /// 如果之前不是这些ID中的某个，那么就不会执行。
     /// </summary>
-    internal ActionID[] OtherIDsCombo { private get; set; } = null;
+    public ActionID[] OtherIDsCombo { private get; set; } = null;
 
     /// <summary>
     /// 使用了这个技能会得到的Buff，如果有这些Buff中的一种，那么就不会执行，这个buff是自己提供的。 
     /// </summary>
-    internal StatusID[] BuffsProvide { get; set; } = null;
+    public StatusID[] StatusProvide { get; set; } = null;
 
     /// <summary>
     /// 使用这个技能需要的前置Buff，有任何一个就好。
     /// </summary>
-    internal virtual StatusID[] BuffsNeed { get; set; } = null;
+    public virtual StatusID[] StatusNeed { get; set; } = null;
 
     /// <summary>
     /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
     /// </summary>
-    internal Func<BattleChara, bool> ActionCheck { get; set; } = null;
+    public Func<BattleChara, bool> ActionCheck { get; set; } = null;
 
     /// <summary>
     /// 如果有一些别的需要判断的，可以写在这里。True表示可以使用这个技能。
     /// </summary>
-    internal Func<BattleChara, bool> ComboCheck { get; set; } = null;
+    public Func<BattleChara, bool> ComboCheck { get; set; } = null;
 
     private bool WillCooldown
     {
@@ -77,7 +77,7 @@ internal partial class BaseAction
     /// 判断是否需要使用这个技能
     /// </summary>
     /// <param name="act">返回的技能</param>
-    /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="BuffsProvide"/>和<seealso cref="TargetStatus">是否已提供，不判断AOE技能的敌人数量是否达标.</param>
+    /// <param name="mustUse">必须使用，不判断提供的Buff<seealso cref="StatusProvide"/>和<seealso cref="TargetStatus">是否已提供，不判断AOE技能的敌人数量是否达标.</param>
     /// <param name="emptyOrSkipCombo">如果有层数，放完所有层数，不判断是否为Combo<seealso cref="OtherIDsCombo"/><seealso cref="OtherIDsNot"/></param>
     /// <returns>这个技能能不能用</returns>
     public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
@@ -102,15 +102,15 @@ internal partial class BaseAction
         if (Service.ClientState.LocalPlayer.CurrentMp < MPNeed) return false;
 
         //没有前置Buff
-        if (BuffsNeed != null)
+        if (StatusNeed != null)
         {
-            if (!Service.ClientState.LocalPlayer.HasStatus(true, BuffsNeed)) return false;
+            if (!Service.ClientState.LocalPlayer.HasStatus(true, StatusNeed)) return false;
         }
 
         //已有提供的Buff的任何一种
-        if (BuffsProvide != null && !mustUse)
+        if (StatusProvide != null && !mustUse)
         {
-            if (Service.ClientState.LocalPlayer.HasStatus(true, BuffsProvide)) return false;
+            if (Service.ClientState.LocalPlayer.HasStatus(true, StatusProvide)) return false;
         }
 
         //还冷却不下来呢，来不及。
@@ -148,7 +148,7 @@ internal partial class BaseAction
             //如果是个法术需要咏唱，并且还在移动，也没有即刻相关的技能。
             if (CastTime > 0 && MovingUpdater.IsMoving)
             {
-                if (!player.HasStatus(true, CustomRotation.Swiftcast.BuffsProvide))
+                if (!player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide))
                 {
                     return false;
                 }

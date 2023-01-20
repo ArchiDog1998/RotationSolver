@@ -18,9 +18,6 @@ internal class BaseItem : IBaseItem
             InventoryManager.Instance()->GetInventoryItemCount(_item.RowId, true) > 0;
 
     public uint IconID { get; }
-    public bool IsEnabled { get; set; }
-    public string Description => string.Empty;
-    public string Author => string.Empty;
 
     public string Name => _item.Name;
 
@@ -30,7 +27,6 @@ internal class BaseItem : IBaseItem
     {
         _item = Service.DataManager.GetExcelSheet<Item>().GetRow(row);
         IconID = _item.Icon;
-
         A4 = a4;
     }
 

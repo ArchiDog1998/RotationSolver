@@ -26,7 +26,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 昏乱
     /// </summary>
-    public static RoleAction Addle { get; } = new(ActionID.Addle, new JobRole[] { JobRole.RangedMagicial }, isFriendly: true, isTimeline: true)
+    public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, new JobRole[] { JobRole.RangedMagicial }, isFriendly: true, isTimeline: true)
     {
         ActionCheck = b => !b.HasStatus(false, StatusID.Addle),
     };
@@ -34,9 +34,9 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 即刻咏唱
     /// </summary>
-    public static RoleAction Swiftcast { get; } = new(ActionID.Swiftcast, new JobRole[] { JobRole.RangedMagicial, JobRole.Healer }, true)
+    public static IBaseAction Swiftcast { get; } = new RoleAction(ActionID.Swiftcast, new JobRole[] { JobRole.RangedMagicial, JobRole.Healer }, true)
     {
-        BuffsProvide = new StatusID[]
+        StatusProvide = new StatusID[]
         {
             StatusID.Swiftcast,
             StatusID.Triplecast,
@@ -47,7 +47,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 康复
     /// </summary>
-    public static RoleAction Esuna { get; } = new(ActionID.Esuna, new JobRole[] { JobRole.Healer }, true)
+    public static IBaseAction Esuna { get; } = new RoleAction(ActionID.Esuna, new JobRole[] { JobRole.Healer }, true)
     {
         ChoiceTarget = (tars, mustUse) =>
         {
@@ -66,17 +66,17 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 营救
     /// </summary>
-    public static RoleAction Rescue { get; } = new(ActionID.Rescue, new JobRole[] { JobRole.Healer }, true, isTimeline: true);
+    public static IBaseAction Rescue { get; } = new RoleAction(ActionID.Rescue, new JobRole[] { JobRole.Healer }, true, isTimeline: true);
 
     /// <summary>
     /// 沉静
     /// </summary>
-    public static RoleAction Repose { get; } = new(ActionID.Repose, new JobRole[] { JobRole.Healer });
+    public static IBaseAction Repose { get; } = new RoleAction(ActionID.Repose, new JobRole[] { JobRole.Healer });
 
     /// <summary>
     /// 醒梦（如果MP低于6000那么使用）
     /// </summary>
-    public static RoleAction LucidDreaming { get; } = new(ActionID.LucidDreaming,
+    public static IBaseAction LucidDreaming { get; } = new RoleAction(ActionID.LucidDreaming,
         new JobRole[] { JobRole.Healer, JobRole.RangedMagicial }, true)
     {
         ActionCheck = b => Service.ClientState.LocalPlayer.CurrentMp < 6000 && InCombat,
@@ -85,7 +85,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 内丹
     /// </summary>
-    public static RoleAction SecondWind { get; } = new(ActionID.SecondWind,
+    public static IBaseAction SecondWind { get; } = new RoleAction(ActionID.SecondWind,
         new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, true, isTimeline: true)
     {
         ActionCheck = b => Service.ClientState.LocalPlayer?.GetHealthRatio() < Service.Configuration.HealthSingleAbility && InCombat,
@@ -94,14 +94,14 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 亲疏自行
     /// </summary>
-    public static RoleAction ArmsLength { get; } = new(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee, JobRole.RangedPhysical }, true, shouldEndSpecial: true);
+    public static IBaseAction ArmsLength { get; } = new RoleAction(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee, JobRole.RangedPhysical }, true, shouldEndSpecial: true);
 
     /// <summary>
     /// 铁壁
     /// </summary>
-    public static RoleAction Rampart { get; } = new(ActionID.Rampart, new JobRole[] { JobRole.Tank }, true, isTimeline: true)
+    public static IBaseAction Rampart { get; } = new RoleAction(ActionID.Rampart, new JobRole[] { JobRole.Tank }, true, isTimeline: true)
     {
-        BuffsProvide = new StatusID[]
+        StatusProvide = new StatusID[]
         {
             StatusID.Superbolide, StatusID.HallowedGround,
             StatusID.Rampart1, StatusID.Rampart2, StatusID.Rampart3,
@@ -124,7 +124,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 挑衅
     /// </summary>
-    public static RoleAction Provoke { get; } = new(ActionID.Provoke, new JobRole[] { JobRole.Tank }, isTimeline: true)
+    public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, new JobRole[] { JobRole.Tank }, isTimeline: true)
     {
         FilterForTarget = b => TargetFilter.ProvokeTarget(b),
     };
@@ -132,12 +132,12 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 雪仇
     /// </summary>
-    public static RoleAction Reprisal { get; } = new(ActionID.Reprisal, new JobRole[] { JobRole.Tank }, isTimeline: true);
+    public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank }, isTimeline: true);
 
     /// <summary>
     /// 退避
     /// </summary>
-    public static RoleAction Shirk { get; } = new(ActionID.Shirk, new JobRole[] { JobRole.Tank }, true)
+    public static IBaseAction Shirk { get; } = new RoleAction(ActionID.Shirk, new JobRole[] { JobRole.Tank }, true)
     {
         ChoiceTarget = (friends, mustUse) => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault(),
     };
@@ -145,7 +145,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 浴血
     /// </summary>
-    public static RoleAction Bloodbath { get; } = new(ActionID.Bloodbath, new JobRole[] { JobRole.Melee }, true, isTimeline: true)
+    public static IBaseAction Bloodbath { get; } = new RoleAction(ActionID.Bloodbath, new JobRole[] { JobRole.Melee }, true, isTimeline: true)
     {
         ActionCheck = SecondWind.ActionCheck,
     };
@@ -153,7 +153,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 牵制
     /// </summary>
-    public static RoleAction Feint { get; } = new(ActionID.Feint, new JobRole[] { JobRole.Melee }, isTimeline: true)
+    public static IBaseAction Feint { get; } = new RoleAction(ActionID.Feint, new JobRole[] { JobRole.Melee }, isTimeline: true)
     {
         ActionCheck = b => !b.HasStatus(false, StatusID.Feint),
     };
@@ -161,12 +161,12 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 插言
     /// </summary>
-    public static RoleAction Interject { get; } = new(ActionID.Interject, new JobRole[] { JobRole.Tank });
+    public static IBaseAction Interject { get; } = new RoleAction(ActionID.Interject, new JobRole[] { JobRole.Tank });
 
     /// <summary>
     /// 下踢
     /// </summary>
-    public static RoleAction LowBlow { get; } = new(ActionID.LowBlow, new JobRole[] { JobRole.Tank })
+    public static IBaseAction LowBlow { get; } = new RoleAction(ActionID.LowBlow, new JobRole[] { JobRole.Tank })
     {
         ActionCheck = b => !b.IsBoss() && !MovingUpdater.IsMoving,
     };
@@ -174,39 +174,39 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 扫腿
     /// </summary>
-    public static RoleAction LegSweep { get; } = new(ActionID.LegSweep, new JobRole[] { JobRole.Melee });
+    public static IBaseAction LegSweep { get; } = new RoleAction(ActionID.LegSweep, new JobRole[] { JobRole.Melee });
 
     /// <summary>
     /// 伤头
     /// </summary>
-    public static RoleAction HeadGraze { get; } = new(ActionID.HeadGraze, new JobRole[] { JobRole.RangedPhysical });
+    public static IBaseAction HeadGraze { get; } = new RoleAction(ActionID.HeadGraze, new JobRole[] { JobRole.RangedPhysical });
 
     /// <summary>
     /// 沉稳咏唱
     /// </summary>
-    public static RoleAction Surecast { get; } = new(ActionID.Surecast,
+    public static IBaseAction Surecast { get; } = new RoleAction(ActionID.Surecast,
         new JobRole[] { JobRole.RangedMagicial, JobRole.Healer }, true, shouldEndSpecial: true);
 
     /// <summary>
     /// 真北
     /// </summary>
-    public static RoleAction TrueNorth { get; } = new(ActionID.TrueNorth,
+    public static IBaseAction TrueNorth { get; } = new RoleAction(ActionID.TrueNorth,
         new JobRole[] { JobRole.Melee }, true, shouldEndSpecial: true)
     {
-        BuffsProvide = new StatusID[] { StatusID.TrueNorth },
+        StatusProvide = new StatusID[] { StatusID.TrueNorth },
     };
 
     /// <summary>
     /// 速行
     /// </summary>
-    public static RoleAction Peloton { get; } = new(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, true)
+    public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, true)
     {
-        BuffsProvide = new StatusID[] { StatusID.Peloton },
+        StatusProvide = new StatusID[] { StatusID.Peloton },
         ActionCheck = b => !InCombat && !TargetUpdater.HostileTargets.Any(),
     };
 
-    private protected virtual BaseAction Raise => null;
-    private protected virtual BaseAction Shield => null;
+    private protected virtual IBaseAction Raise => null;
+    private protected virtual IBaseAction Shield => null;
 
     /// <summary>
     /// 当前这个类所有的BaseAction

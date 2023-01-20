@@ -8,7 +8,7 @@ using RotationSolver.Data;
 namespace RotationSolver.Rotations.Basic;
 
 
-internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
+internal abstract class GNB_Base : CustomRotation.CustomRotation
 {
     private static GNBGauge JobGauge => Service.JobGauges.Get<GNBGauge>();
 
@@ -23,7 +23,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     protected static byte AmmoComboStep => JobGauge.AmmoComboStep;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
-    private sealed protected override BaseAction Shield => RoyalGuard;
+    private sealed protected override IBaseAction Shield => RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
@@ -33,27 +33,27 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÍõÊÒÇ×ÎÀ
     /// </summary>
-    public static BaseAction RoyalGuard { get; } = new(ActionID.RoyalGuard, shouldEndSpecial: true);
+    public static IBaseAction RoyalGuard { get; } = new BaseAction(ActionID.RoyalGuard, shouldEndSpecial: true);
 
     /// <summary>
     /// ÀûÈÐÕ¶
     /// </summary>
-    public static BaseAction KeenEdge { get; } = new(ActionID.KeenEdge);
+    public static IBaseAction KeenEdge { get; } = new BaseAction(ActionID.KeenEdge);
 
     /// <summary>
     /// ÎÞÇé
     /// </summary>
-    public static BaseAction NoMercy { get; } = new(ActionID.NoMercy);
+    public static IBaseAction NoMercy { get; } = new BaseAction(ActionID.NoMercy);
 
     /// <summary>
     /// ²Ð±©µ¯
     /// </summary>
-    public static BaseAction BrutalShell { get; } = new(ActionID.BrutalShell);
+    public static IBaseAction BrutalShell { get; } = new BaseAction(ActionID.BrutalShell);
 
     /// <summary>
     /// Î±×°
     /// </summary>
-    public static BaseAction Camouflage { get; } = new(ActionID.Camouflage, true, isTimeline: true)
+    public static IBaseAction Camouflage { get; } = new BaseAction(ActionID.Camouflage, true, isTimeline: true)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };
@@ -61,27 +61,27 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¶ñÄ§ÇÐ
     /// </summary>
-    public static BaseAction DemonSlice { get; } = new(ActionID.DemonSlice);
+    public static IBaseAction DemonSlice { get; } = new BaseAction(ActionID.DemonSlice);
 
     /// <summary>
     /// ÉÁÀ×µ¯
     /// </summary>
-    public static BaseAction LightningShot { get; } = new(ActionID.LightningShot);
+    public static IBaseAction LightningShot { get; } = new BaseAction(ActionID.LightningShot);
 
     /// <summary>
     /// Î£ÏÕÁìÓò
     /// </summary>
-    public static BaseAction DangerZone { get; } = new(ActionID.DangerZone);
+    public static IBaseAction DangerZone { get; } = new BaseAction(ActionID.DangerZone);
 
     /// <summary>
     /// Ñ¸Á¬Õ¶
     /// </summary>
-    public static BaseAction SolidBarrel { get; } = new(ActionID.SolidBarrel);
+    public static IBaseAction SolidBarrel { get; } = new BaseAction(ActionID.SolidBarrel);
 
     /// <summary>
     /// ±¬·¢»÷
     /// </summary>
-    public static BaseAction BurstStrike { get; } = new(ActionID.BurstStrike)
+    public static IBaseAction BurstStrike { get; } = new BaseAction(ActionID.BurstStrike)
     {
         ActionCheck = b => JobGauge.Ammo > 0,
     };
@@ -89,36 +89,36 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÐÇÔÆ
     /// </summary>
-    public static BaseAction Nebula { get; } = new(ActionID.Nebula, true, isTimeline: true)
+    public static IBaseAction Nebula { get; } = new BaseAction(ActionID.Nebula, true, isTimeline: true)
     {
-        BuffsProvide = Rampart.BuffsProvide,
+        StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>
     /// ¶ñÄ§É±
     /// </summary>
-    public static BaseAction DemonSlaughter { get; } = new(ActionID.DemonSlaughter);
+    public static IBaseAction DemonSlaughter { get; } = new BaseAction(ActionID.DemonSlaughter);
 
     /// <summary>
     /// ¼«¹â
     /// </summary>
-    public static BaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, true, isTimeline: true);
+    public static IBaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, true, isTimeline: true);
 
     /// <summary>
     /// ³¬»ðÁ÷ÐÇ
     /// </summary>
-    public static BaseAction Superbolide { get; } = new(ActionID.Superbolide, true, isTimeline: true);
+    public static IBaseAction Superbolide { get; } = new BaseAction(ActionID.Superbolide, true, isTimeline: true);
 
     /// <summary>
     /// ÒôËÙÆÆ
     /// </summary>
-    public static BaseAction SonicBreak { get; } = new(ActionID.SonicBreak);
+    public static IBaseAction SonicBreak { get; } = new BaseAction(ActionID.SonicBreak);
 
     /// <summary>
     /// ´Ö·ÖÕ¶
     /// </summary>
-    public static BaseAction RoughDivide { get; } = new(ActionID.RoughDivide, shouldEndSpecial: true)
+    public static IBaseAction RoughDivide { get; } = new BaseAction(ActionID.RoughDivide, shouldEndSpecial: true)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -126,7 +126,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÁÒÑÀ
     /// </summary>
-    public static BaseAction GnashingFang { get; } = new(ActionID.GnashingFang)
+    public static IBaseAction GnashingFang { get; } = new BaseAction(ActionID.GnashingFang)
     {
         ActionCheck = b => JobGauge.AmmoComboStep == 0 && JobGauge.Ammo > 0,
     };
@@ -134,17 +134,17 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¹­ÐÎ³å²¨
     /// </summary>
-    public static BaseAction BowShock { get; } = new(ActionID.BowShock);
+    public static IBaseAction BowShock { get; } = new BaseAction(ActionID.BowShock);
 
     /// <summary>
     /// ¹âÖ®ÐÄ
     /// </summary>
-    public static BaseAction HeartofLight { get; } = new(ActionID.HeartofLight, true, isTimeline: true);
+    public static IBaseAction HeartofLight { get; } = new BaseAction(ActionID.HeartofLight, true, isTimeline: true);
 
     /// <summary>
     /// Ê¯Ö®ÐÄ
     /// </summary>
-    public static BaseAction HeartofStone { get; } = new(ActionID.HeartofStone, true, isTimeline: true)
+    public static IBaseAction HeartofStone { get; } = new BaseAction(ActionID.HeartofStone, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -152,7 +152,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÃüÔËÖ®»·
     /// </summary>
-    public static BaseAction FatedCircle { get; } = new(ActionID.FatedCircle)
+    public static IBaseAction FatedCircle { get; } = new BaseAction(ActionID.FatedCircle)
     {
         ActionCheck = b => JobGauge.Ammo > 0,
     };
@@ -160,7 +160,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÑªÈÀ
     /// </summary>
-    public static BaseAction Bloodfest { get; } = new(ActionID.Bloodfest, true)
+    public static IBaseAction Bloodfest { get; } = new BaseAction(ActionID.Bloodfest, true)
     {
         ActionCheck = b => MaxAmmo - JobGauge.Ammo > 1,
     };
@@ -168,7 +168,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ±¶¹¥
     /// </summary>
-    public static BaseAction DoubleDown { get; } = new(ActionID.DoubleDown)
+    public static IBaseAction DoubleDown { get; } = new BaseAction(ActionID.DoubleDown)
     {
         ActionCheck = b => JobGauge.Ammo > 1,
     };
@@ -176,7 +176,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÃÍÊÞ×¦
     /// </summary>
-    public static BaseAction SavageClaw { get; } = new(ActionID.SavageClaw)
+    public static IBaseAction SavageClaw { get; } = new BaseAction(ActionID.SavageClaw)
     {
         ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang) == ActionID.SavageClaw,
     };
@@ -184,7 +184,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// Ð×ÇÝ×¦
     /// </summary>
-    public static BaseAction WickedTalon { get; } = new(ActionID.WickedTalon)
+    public static IBaseAction WickedTalon { get; } = new BaseAction(ActionID.WickedTalon)
     {
         ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.GnashingFang) == ActionID.WickedTalon,
     };
@@ -192,7 +192,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// Ëººí
     /// </summary>
-    public static BaseAction JugularRip { get; } = new(ActionID.JugularRip)
+    public static IBaseAction JugularRip { get; } = new BaseAction(ActionID.JugularRip)
     {
         ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation) == ActionID.JugularRip,
     };
@@ -200,7 +200,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ÁÑÌÅ
     /// </summary>
-    public static BaseAction AbdomenTear { get; } = new(ActionID.AbdomenTear)
+    public static IBaseAction AbdomenTear { get; } = new BaseAction(ActionID.AbdomenTear)
     {
         ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation) == ActionID.AbdomenTear,
     };
@@ -208,7 +208,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ´©Ä¿
     /// </summary>
-    public static BaseAction EyeGouge { get; } = new(ActionID.EyeGouge)
+    public static IBaseAction EyeGouge { get; } = new BaseAction(ActionID.EyeGouge)
     {
         ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation) == ActionID.EyeGouge,
     };
@@ -216,7 +216,7 @@ internal abstract class GNBRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ³¬¸ßËÙ
     /// </summary>
-    public static BaseAction Hypervelocity { get; } = new(ActionID.Hypervelocity)
+    public static IBaseAction Hypervelocity { get; } = new BaseAction(ActionID.Hypervelocity)
     {
         ActionCheck = b => Service.IconReplacer.OriginalHook(ActionID.Continuation)
         == ActionID.Hypervelocity,

@@ -8,7 +8,7 @@ using RotationSolver.Updaters;
 
 namespace RotationSolver.Rotations.Basic
 {
-    internal abstract partial class BLMRotation_Base : CustomRotation.CustomRotation
+    internal abstract partial class BLM_Base : CustomRotation.CustomRotation
     {
         private static BLMGauge JobGauge => Service.JobGauges.Get<BLMGauge>();
 
@@ -148,75 +148,75 @@ namespace RotationSolver.Rotations.Basic
         /// <summary>
         /// 闪雷
         /// </summary>
-        public static BaseAction Thunder { get; } = new ThunderAction(ActionID.Thunder, isDot: true);
+        public static IBaseAction Thunder { get; } = new ThunderAction(ActionID.Thunder, isDot: true);
 
         /// <summary>
         /// 暴雷
         /// </summary>
-        public static BaseAction Thunder3 { get; } = new ThunderAction(ActionID.Thunder3, isDot: true);
+        public static IBaseAction Thunder3 { get; } = new ThunderAction(ActionID.Thunder3, isDot: true);
 
         /// <summary>
         /// 震雷
         /// </summary>
-        public static BaseAction Thunder2 { get; } = new ThunderAction(ActionID.Thunder2, isDot: true);
+        public static IBaseAction Thunder2 { get; } = new ThunderAction(ActionID.Thunder2, isDot: true);
 
         /// <summary>
         /// 星灵移位
         /// </summary>
-        public static BaseAction Transpose { get; } = new(ActionID.Transpose) { ActionCheck = b => ActionUpdater.AbilityRemain.IsLessThan(JobGauge.ElementTimeRemaining / 1000f) };
+        public static IBaseAction Transpose { get; } = new BaseAction(ActionID.Transpose) { ActionCheck = b => ActionUpdater.AbilityRemain.IsLessThan(JobGauge.ElementTimeRemaining / 1000f) };
 
         /// <summary>
         /// 灵极魂
         /// </summary>
-        public static BaseAction UmbralSoul { get; } = new(ActionID.UmbralSoul) { ActionCheck = b => JobGauge.InUmbralIce && Transpose.ActionCheck(b) };
+        public static IBaseAction UmbralSoul { get; } = new BaseAction(ActionID.UmbralSoul) { ActionCheck = b => JobGauge.InUmbralIce && Transpose.ActionCheck(b) };
 
         /// <summary>
         /// 魔罩
         /// </summary>
-        public static BaseAction Manaward { get; } = new(ActionID.Manaward, true, isTimeline: true);
+        public static IBaseAction Manaward { get; } = new BaseAction(ActionID.Manaward, true, isTimeline: true);
 
         /// <summary>
         /// 魔泉
         /// </summary>
-        public static BaseAction Manafont { get; } = new(ActionID.Manafont);
+        public static IBaseAction Manafont { get; } = new BaseAction(ActionID.Manafont);
 
         /// <summary>
         /// 激情咏唱
         /// </summary>
-        public static BaseAction Sharpcast { get; } = new(ActionID.Sharpcast)
+        public static IBaseAction Sharpcast { get; } = new BaseAction(ActionID.Sharpcast)
         {
-            BuffsProvide = new[] { StatusID.Sharpcast },
+            StatusProvide = new[] { StatusID.Sharpcast },
             ActionCheck = b => HaveHostilesInRange,
         };
 
         /// <summary>
         /// 三连咏唱
         /// </summary>
-        public static BaseAction Triplecast { get; } = new(ActionID.Triplecast)
+        public static IBaseAction Triplecast { get; } = new BaseAction(ActionID.Triplecast)
         {
-            BuffsProvide = Swiftcast.BuffsProvide,
+            StatusProvide = Swiftcast.StatusProvide,
         };
 
         /// <summary>
         /// 黑魔纹
         /// </summary>
-        public static BaseAction Leylines { get; } = new(ActionID.Leylines, true, shouldEndSpecial: true)
+        public static IBaseAction Leylines { get; } = new BaseAction(ActionID.Leylines, true, shouldEndSpecial: true)
         {
-            BuffsProvide = new[] { StatusID.LeyLines, },
+            StatusProvide = new[] { StatusID.LeyLines, },
         };
 
         /// <summary>
         /// 魔纹步
         /// </summary>
-        public static BaseAction BetweenTheLines { get; } = new(ActionID.BetweenTheLines, true, shouldEndSpecial: true)
+        public static IBaseAction BetweenTheLines { get; } = new BaseAction(ActionID.BetweenTheLines, true, shouldEndSpecial: true)
         {
-            BuffsNeed = Leylines.BuffsProvide,
+            StatusNeed = Leylines.StatusProvide,
         };
 
         /// <summary>
         /// 以太步
         /// </summary>
-        public static BaseAction AetherialManipulation { get; } = new(ActionID.AetherialManipulation, true)
+        public static IBaseAction AetherialManipulation { get; } = new BaseAction(ActionID.AetherialManipulation, true)
         {
             ChoiceTarget = TargetFilter.FindTargetForMoving,
         };
@@ -224,37 +224,37 @@ namespace RotationSolver.Rotations.Basic
         /// <summary>
         /// 详述
         /// </summary>
-        public static BaseAction Amplifier { get; } = new(ActionID.Amplifier) { ActionCheck = b => JobGauge.EnochianTimer > 10000 && JobGauge.PolyglotStacks < 2 };
+        public static IBaseAction Amplifier { get; } = new BaseAction(ActionID.Amplifier) { ActionCheck = b => JobGauge.EnochianTimer > 10000 && JobGauge.PolyglotStacks < 2 };
 
         /// <summary>
         /// 核爆
         /// </summary>
-        public static BaseAction Flare { get; } = new ElementAction(ActionID.Flare) { ActionCheck = b => JobGauge.InAstralFire };
+        public static IBaseAction Flare { get; } = new ElementAction(ActionID.Flare) { ActionCheck = b => JobGauge.InAstralFire };
 
         /// <summary>
         /// 绝望
         /// </summary>
-        public static BaseAction Despair { get; } = new ElementAction(ActionID.Despair) { ActionCheck = b => JobGauge.InAstralFire };
+        public static IBaseAction Despair { get; } = new ElementAction(ActionID.Despair) { ActionCheck = b => JobGauge.InAstralFire };
 
         /// <summary>
         /// 秽浊
         /// </summary>
-        public static BaseAction Foul { get; } = new(ActionID.Foul) { ActionCheck = b => JobGauge.PolyglotStacks != 0 };
+        public static IBaseAction Foul { get; } = new BaseAction(ActionID.Foul) { ActionCheck = b => JobGauge.PolyglotStacks != 0 };
 
         /// <summary>
         /// 异言
         /// </summary>
-        public static BaseAction Xenoglossy { get; } = new(ActionID.Xenoglossy) { ActionCheck = b => JobGauge.PolyglotStacks != 0 };
+        public static IBaseAction Xenoglossy { get; } = new BaseAction(ActionID.Xenoglossy) { ActionCheck = b => JobGauge.PolyglotStacks != 0 };
 
         /// <summary>
         /// 崩溃
         /// </summary>
-        public static BaseAction Scathe { get; } = new(ActionID.Scathe);
+        public static IBaseAction Scathe { get; } = new BaseAction(ActionID.Scathe);
 
         /// <summary>
         /// 悖论
         /// </summary>
-        public static BaseAction Paradox { get; } = new(ActionID.Paradox)
+        public static IBaseAction Paradox { get; } = new BaseAction(ActionID.Paradox)
         {
             ActionCheck = b => JobGauge.IsParadoxActive,
         };
@@ -262,22 +262,22 @@ namespace RotationSolver.Rotations.Basic
         /// <summary>
         /// 火1
         /// </summary>
-        public static BaseAction Fire { get; } = new(ActionID.Fire);
+        public static IBaseAction Fire { get; } = new BaseAction(ActionID.Fire);
 
         /// <summary>
         /// 火2
         /// </summary>
-        public static BaseAction Fire2 { get; } = new(ActionID.Fire2);
+        public static IBaseAction Fire2 { get; } = new BaseAction(ActionID.Fire2);
 
         /// <summary>
         /// 火3
         /// </summary>
-        public static BaseAction Fire3 { get; } = new Fire3Action(ActionID.Fire3);
+        public static IBaseAction Fire3 { get; } = new Fire3Action(ActionID.Fire3);
 
         /// <summary>
         /// 火4
         /// </summary>
-        public static BaseAction Fire4 { get; } = new ElementAction(ActionID.Fire4)
+        public static IBaseAction Fire4 { get; } = new ElementAction(ActionID.Fire4)
         {
             ActionCheck = b => JobGauge.InAstralFire,
         };
@@ -285,22 +285,22 @@ namespace RotationSolver.Rotations.Basic
         /// <summary>
         /// 冰1
         /// </summary>
-        public static BaseAction Blizzard { get; } = new(ActionID.Blizzard);
+        public static IBaseAction Blizzard { get; } = new BaseAction(ActionID.Blizzard);
 
         /// <summary>
         /// 冰2
         /// </summary>
-        public static BaseAction Blizzard2 { get; } = new(ActionID.Blizzard2);
+        public static IBaseAction Blizzard2 { get; } = new BaseAction(ActionID.Blizzard2);
 
         /// <summary>
         /// 冰3
         /// </summary>
-        public static BaseAction Blizzard3 { get; } = new(ActionID.Blizzard3);
+        public static IBaseAction Blizzard3 { get; } = new BaseAction(ActionID.Blizzard3);
 
         /// <summary>
         /// 冰4
         /// </summary>
-        public static BaseAction Blizzard4 { get; } = new ElementAction(ActionID.Blizzard4)
+        public static IBaseAction Blizzard4 { get; } = new ElementAction(ActionID.Blizzard4)
         {
             ActionCheck = b =>
             {
@@ -315,7 +315,7 @@ namespace RotationSolver.Rotations.Basic
         /// <summary>
         /// 冻结
         /// </summary>
-        public static BaseAction Freeze { get; } = new ElementAction(ActionID.Freeze)
+        public static IBaseAction Freeze { get; } = new ElementAction(ActionID.Freeze)
         {
             ActionCheck = b => JobGauge.InUmbralIce,
         };

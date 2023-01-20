@@ -8,7 +8,7 @@ using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Melee.RPRCombos;
 
-internal sealed class RPR_Default : RPRRotation_Base
+internal sealed class RPR_Default : RPR_Base
 {
     public override string GameVersion => "6.28";
 

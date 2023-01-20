@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.Tank.PLDCombos;
 
-internal sealed class PLD_Default : PLDRotation_Base
+internal sealed class PLD_Default : PLD_Base
 {
     public override string GameVersion => "6.18";
     public override string RotationName => "Default";

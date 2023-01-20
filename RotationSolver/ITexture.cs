@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver;
 
-public interface IEnableTexture : ITexture
+public interface IEnable
 {
     string Description { get; }
 

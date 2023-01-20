@@ -9,7 +9,7 @@ using RotationSolver.Rotations.Basic;
 
 namespace RotationSolver.Rotations.RangedMagicial.BLUCombos
 {
-    internal sealed class BLU_Default : BLURotation_Base
+    internal sealed class BLU_Default : BLU_Base
     {
         public override string GameVersion => "6.18";
 

@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver.Actions;
 
-public interface IAction : IEnableTexture
+public interface IAction : ITexture
 {
     bool Use();
     uint ID { get; }

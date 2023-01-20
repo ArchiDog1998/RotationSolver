@@ -7,7 +7,7 @@ using RotationSolver.Helpers;
 
 namespace RotationSolver.Rotations.Basic;
 
-internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
+internal abstract class SAM_Base : CustomRotation.CustomRotation
 {
     private static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
 
@@ -52,37 +52,37 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 刃风
     /// </summary>
-    public static BaseAction Hakaze { get; } = new(ActionID.Hakaze);
+    public static IBaseAction Hakaze { get; } = new BaseAction(ActionID.Hakaze);
 
     /// <summary>
     /// 阵风
     /// </summary>
-    public static BaseAction Jinpu { get; } = new(ActionID.Jinpu);
+    public static IBaseAction Jinpu { get; } = new BaseAction(ActionID.Jinpu);
 
     /// <summary>
     /// 月光
     /// </summary>
-    public static BaseAction Gekko { get; } = new(ActionID.Gekko);
+    public static IBaseAction Gekko { get; } = new BaseAction(ActionID.Gekko);
 
     /// <summary>
     /// 士风
     /// </summary>
-    public static BaseAction Shifu { get; } = new(ActionID.Shifu);
+    public static IBaseAction Shifu { get; } = new BaseAction(ActionID.Shifu);
 
     /// <summary>
     /// 花车
     /// </summary>
-    public static BaseAction Kasha { get; } = new(ActionID.Kasha);
+    public static IBaseAction Kasha { get; } = new BaseAction(ActionID.Kasha);
 
     /// <summary>
     /// 雪风
     /// </summary>
-    public static BaseAction Yukikaze { get; } = new(ActionID.Yukikaze);
+    public static IBaseAction Yukikaze { get; } = new BaseAction(ActionID.Yukikaze);
 
     /// <summary>
     /// 照破
     /// </summary>
-    public static BaseAction Shoha { get; } = new(ActionID.Shoha)
+    public static IBaseAction Shoha { get; } = new BaseAction(ActionID.Shoha)
     {
         ActionCheck = b => MeditationStacks == 3
     };
@@ -93,17 +93,17 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 风雅
     /// </summary>
-    public static BaseAction Fuga { get; } = new(ActionID.Fuga);
+    public static IBaseAction Fuga { get; } = new BaseAction(ActionID.Fuga);
 
     /// <summary>
     /// 风光
     /// </summary>
-    public static BaseAction Fuko { get; } = new(ActionID.Fuko);
+    public static IBaseAction Fuko { get; } = new BaseAction(ActionID.Fuko);
 
     /// <summary>
     /// 满月
     /// </summary>
-    public static BaseAction Mangetsu { get; } = new(ActionID.Mangetsu)
+    public static IBaseAction Mangetsu { get; } = new BaseAction(ActionID.Mangetsu)
     {
         OtherIDsCombo = new[]
         {
@@ -113,7 +113,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 樱花
     /// </summary>
-    public static BaseAction Oka { get; } = new(ActionID.Oka)
+    public static IBaseAction Oka { get; } = new BaseAction(ActionID.Oka)
     {
         OtherIDsCombo = new[]
         {
@@ -124,7 +124,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 无明照破
     /// </summary>
-    public static BaseAction Shoha2 { get; } = new(ActionID.Shoha2)
+    public static IBaseAction Shoha2 { get; } = new BaseAction(ActionID.Shoha2)
     {
         ActionCheck = b => MeditationStacks == 3
     };
@@ -132,16 +132,16 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 奥义斩浪
     /// </summary>
-    public static BaseAction OgiNamikiri { get; } = new(ActionID.OgiNamikiri)
+    public static IBaseAction OgiNamikiri { get; } = new BaseAction(ActionID.OgiNamikiri)
     {
-        BuffsNeed = new[] { StatusID.OgiNamikiriReady },
+        StatusNeed = new[] { StatusID.OgiNamikiriReady },
         ActionCheck = b => !IsMoving
     };
 
     /// <summary>
     /// 回返斩浪
     /// </summary>
-    public static BaseAction KaeshiNamikiri { get; } = new(ActionID.KaeshiNamikiri)
+    public static IBaseAction KaeshiNamikiri { get; } = new BaseAction(ActionID.KaeshiNamikiri)
     {
         ActionCheck = b => JobGauge.Kaeshi == Dalamud.Game.ClientState.JobGauge.Enums.Kaeshi.NAMIKIRI
     };
@@ -151,7 +151,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 彼岸花
     /// </summary>
-    public static BaseAction Higanbana { get; } = new(ActionID.Higanbana, isEot: true)
+    public static IBaseAction Higanbana { get; } = new BaseAction(ActionID.Higanbana, isEot: true)
     {
         ActionCheck = b => !IsMoving && SenCount == 1,
         TargetStatus = new[] { StatusID.Higanbana },
@@ -160,7 +160,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 天下五剑
     /// </summary>
-    public static BaseAction TenkaGoken { get; } = new(ActionID.TenkaGoken)
+    public static IBaseAction TenkaGoken { get; } = new BaseAction(ActionID.TenkaGoken)
     {
         ActionCheck = b => !IsMoving && SenCount == 2,
     };
@@ -168,7 +168,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 纷乱雪月花
     /// </summary>
-    public static BaseAction MidareSetsugekka { get; } = new(ActionID.MidareSetsugekka)
+    public static IBaseAction MidareSetsugekka { get; } = new BaseAction(ActionID.MidareSetsugekka)
     {
         ActionCheck = b => !IsMoving && SenCount == 3,
     };
@@ -176,12 +176,12 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 燕回返
     /// </summary>
-    public static BaseAction TsubameGaeshi { get; } = new(ActionID.TsubameGaeshi);
+    public static IBaseAction TsubameGaeshi { get; } = new BaseAction(ActionID.TsubameGaeshi);
 
     /// <summary>
     /// 回返五剑
     /// </summary>
-    public static BaseAction KaeshiGoken { get; } = new(ActionID.KaeshiGoken)
+    public static IBaseAction KaeshiGoken { get; } = new BaseAction(ActionID.KaeshiGoken)
     {
         ActionCheck = b => JobGauge.Kaeshi == Dalamud.Game.ClientState.JobGauge.Enums.Kaeshi.GOKEN
     };
@@ -189,7 +189,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 回返雪月花
     /// </summary>
-    public static BaseAction KaeshiSetsugekka { get; } = new(ActionID.KaeshiSetsugekka)
+    public static IBaseAction KaeshiSetsugekka { get; } = new BaseAction(ActionID.KaeshiSetsugekka)
     {
         ActionCheck = b => JobGauge.Kaeshi == Dalamud.Game.ClientState.JobGauge.Enums.Kaeshi.SETSUGEKKA
     };
@@ -199,25 +199,25 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 心眼
     /// </summary>
-    public static BaseAction ThirdEye { get; } = new(ActionID.ThirdEye, true, isTimeline: true);
+    public static IBaseAction ThirdEye { get; } = new BaseAction(ActionID.ThirdEye, true, isTimeline: true);
 
     /// <summary>
     /// 燕飞
     /// </summary>
-    public static BaseAction Enpi { get; } = new(ActionID.Enpi);
+    public static IBaseAction Enpi { get; } = new BaseAction(ActionID.Enpi);
 
     /// <summary>
     /// 明镜止水
     /// </summary>
-    public static BaseAction MeikyoShisui { get; } = new(ActionID.MeikyoShisui)
+    public static IBaseAction MeikyoShisui { get; } = new BaseAction(ActionID.MeikyoShisui)
     {
-        BuffsProvide = new[] { StatusID.MeikyoShisui },
+        StatusProvide = new[] { StatusID.MeikyoShisui },
     };
 
     /// <summary>
     /// 叶隐
     /// </summary>
-    public static BaseAction Hagakure { get; } = new(ActionID.Hagakure)
+    public static IBaseAction Hagakure { get; } = new BaseAction(ActionID.Hagakure)
     {
         ActionCheck = b => SenCount > 0
     };
@@ -225,9 +225,9 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 意气冲天
     /// </summary>
-    public static BaseAction Ikishoten { get; } = new(ActionID.Ikishoten)
+    public static IBaseAction Ikishoten { get; } = new BaseAction(ActionID.Ikishoten)
     {
-        BuffsProvide = new[] { StatusID.OgiNamikiriReady },
+        StatusProvide = new[] { StatusID.OgiNamikiriReady },
         ActionCheck = b => InCombat
     };
     #endregion
@@ -236,7 +236,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 必杀剑·震天
     /// </summary>
-    public static BaseAction HissatsuShinten { get; } = new(ActionID.HissatsuShinten)
+    public static IBaseAction HissatsuShinten { get; } = new BaseAction(ActionID.HissatsuShinten)
     {
         ActionCheck = b => Kenki >= 25
     };
@@ -244,7 +244,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 必杀剑·晓天
     /// </summary>
-    public static BaseAction HissatsuGyoten { get; } = new(ActionID.HissatsuGyoten)
+    public static IBaseAction HissatsuGyoten { get; } = new BaseAction(ActionID.HissatsuGyoten)
     {
         ActionCheck = b => Kenki >= 10 && !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
     };
@@ -252,7 +252,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 必杀剑·夜天
     /// </summary>
-    public static BaseAction HissatsuYaten { get; } = new(ActionID.HissatsuYaten)
+    public static IBaseAction HissatsuYaten { get; } = new BaseAction(ActionID.HissatsuYaten)
     {
         ActionCheck = HissatsuGyoten.ActionCheck
     };
@@ -260,7 +260,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 必杀剑·九天
     /// </summary>
-    public static BaseAction HissatsuKyuten { get; } = new(ActionID.HissatsuKyuten)
+    public static IBaseAction HissatsuKyuten { get; } = new BaseAction(ActionID.HissatsuKyuten)
     {
         ActionCheck = b => Kenki >= 25
     };
@@ -268,7 +268,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 必杀剑·红莲
     /// </summary>
-    public static BaseAction HissatsuGuren { get; } = new(ActionID.HissatsuGuren)
+    public static IBaseAction HissatsuGuren { get; } = new BaseAction(ActionID.HissatsuGuren)
     {
         ActionCheck = b => Kenki >= 25
     };
@@ -276,7 +276,7 @@ internal abstract class SAMRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 必杀剑·闪影
     /// </summary>
-    public static BaseAction HissatsuSenei { get; } = new(ActionID.HissatsuSenei)
+    public static IBaseAction HissatsuSenei { get; } = new BaseAction(ActionID.HissatsuSenei)
     {
         ActionCheck = b => Kenki >= 25
     };

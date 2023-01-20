@@ -8,5 +8,6 @@ namespace RotationSolver.Actions
 {
     internal interface IBaseItem : IAction
     {
+        bool ShoudUseItem(out IAction item);
     }
 }

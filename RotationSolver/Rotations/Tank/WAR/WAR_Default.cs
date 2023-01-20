@@ -10,7 +10,7 @@ using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Tank.WARCombos;
 
-internal sealed class WAR_Default : WARRotation_Base
+internal sealed class WAR_Default : WAR_Base
 {
     public override string GameVersion => "6.0";
 

@@ -10,7 +10,7 @@ using static RotationSolver.Rotations.RangedPhysicial.BRDCombos.BRD_Default;
 
 namespace RotationSolver.Rotations.RangedPhysicial.BRDCombos;
 
-internal sealed class BRD_Default : BRDRotation_Base
+internal sealed class BRD_Default : BRD_Base
 {
     public override string GameVersion => "6.28";
 

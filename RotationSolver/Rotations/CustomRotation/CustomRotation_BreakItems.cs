@@ -7,7 +7,7 @@ using System.Linq;
 namespace RotationSolver.Rotations.CustomRotation;
 internal abstract partial class CustomRotation
 {
-    private static readonly BaseItem
+    private static readonly IBaseItem
         //刚力
         TinctureofStrength6 = new BaseItem(36109, 196625),
         //巧力

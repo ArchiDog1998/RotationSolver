@@ -5,26 +5,17 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Updaters;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
+using RotationSolver.Actions;
 
 namespace RotationSolver.Rotations.Basic;
 
-internal abstract class SGERotation_Base : CustomRotation.CustomRotation
+internal abstract class SGE_Base : CustomRotation.CustomRotation
 {
     private static SGEGauge JobGauge => Service.JobGauges.Get<SGEGauge>();
 
-    /// <summary>
-    /// 是否有均衡？
-    /// </summary>
     protected static bool HasEukrasia => JobGauge.Eukrasia;
-
-    /// <summary>
-    /// 豆子数量啊，叫啥我忘了。
-    /// </summary>
     protected static byte Addersgall => JobGauge.Addersgall;
 
-    /// <summary>
-    /// 毒箭用豆子数量啊，叫啥我忘了。
-    /// </summary>
     protected static byte Addersting => JobGauge.Addersting;
 
     /// <summary>
@@ -49,22 +40,22 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
-    private sealed protected override BaseAction Raise => Egeiro;
+    private sealed protected override IBaseAction Raise => Egeiro;
 
     /// <summary>
     /// 复苏
     /// </summary>
-    public static BaseAction Egeiro { get; } = new(ActionID.Egeiro, true);
+    public static IBaseAction Egeiro { get; } = new BaseAction(ActionID.Egeiro, true);
 
     /// <summary>
     /// 注药
     /// </summary>
-    public static BaseAction Dosis { get; } = new(ActionID.Dosis);
+    public static IBaseAction Dosis { get; } = new BaseAction(ActionID.Dosis);
 
     /// <summary>
     /// 均衡注药
     /// </summary>
-    public static BaseAction EukrasianDosis { get; } = new(ActionID.EukrasianDosis, isEot: true)
+    public static IBaseAction EukrasianDosis { get; } = new BaseAction(ActionID.EukrasianDosis, isEot: true)
     {
         TargetStatus = new StatusID[]
         {
@@ -77,29 +68,29 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 发炎
     /// </summary>
-    public static BaseAction Phlegma { get; } = new(ActionID.Phlegma);
+    public static IBaseAction Phlegma { get; } = new BaseAction(ActionID.Phlegma);
 
     /// <summary>
     /// 发炎2
     /// </summary>
-    public static BaseAction Phlegma2 { get; } = new(ActionID.Phlegma2);
+    public static IBaseAction Phlegma2 { get; } = new BaseAction(ActionID.Phlegma2);
 
     /// <summary>
     /// 发炎3
     /// </summary>
-    public static BaseAction Phlegma3 { get; } = new(ActionID.Phlegma3);
+    public static IBaseAction Phlegma3 { get; } = new BaseAction(ActionID.Phlegma3);
 
     /// <summary>
     /// 诊断
     /// </summary>
-    public static BaseAction Diagnosis { get; } = new(ActionID.Diagnosis, true);
+    public static IBaseAction Diagnosis { get; } = new BaseAction(ActionID.Diagnosis, true);
 
     /// <summary>
     /// 心关
     /// </summary>
-    public static BaseAction Kardia { get; } = new(ActionID.Kardia, true)
+    public static IBaseAction Kardia { get; } = new BaseAction(ActionID.Kardia, true)
     {
-        BuffsProvide = new StatusID[] { StatusID.Kardia },
+        StatusProvide = new StatusID[] { StatusID.Kardia },
         ChoiceTarget = (Targets, mustUse) =>
         {
             var targets = Targets.GetJobCategory(JobRole.Tank);
@@ -115,22 +106,17 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 预后
     /// </summary>
-    public static BaseAction Prognosis { get; } = new(ActionID.Prognosis, true, shouldEndSpecial: true, isTimeline: true);
+    public static IBaseAction Prognosis { get; } = new BaseAction(ActionID.Prognosis, true, shouldEndSpecial: true, isTimeline: true);
 
     /// <summary>
     /// 自生
     /// </summary>
-    public static BaseAction Physis { get; } = new(ActionID.Physis, true, isTimeline: true);
-
-    ///// <summary>
-    ///// 自生2
-    ///// </summary>
-    //public static BaseAction Physis2 { get; } = new(ActionID.Physis2, true, isTimeline: true);
+    public static IBaseAction Physis { get; } = new BaseAction(ActionID.Physis, true, isTimeline: true);
 
     /// <summary>
     /// 均衡
     /// </summary>
-    public static BaseAction Eukrasia { get; } = new(ActionID.Eukrasia, true, isTimeline: true)
+    public static IBaseAction Eukrasia { get; } = new BaseAction(ActionID.Eukrasia, true, isTimeline: true)
     {
         ActionCheck = b => !JobGauge.Eukrasia,
     };
@@ -138,12 +124,12 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 拯救
     /// </summary>
-    public static BaseAction Soteria { get; } = new(ActionID.Soteria, true, isTimeline: true);
+    public static IBaseAction Soteria { get; } = new BaseAction(ActionID.Soteria, true, isTimeline: true);
 
     /// <summary>
     /// 神翼
     /// </summary>
-    public static BaseAction Icarus { get; } = new(ActionID.Icarus, shouldEndSpecial: true)
+    public static IBaseAction Icarus { get; } = new BaseAction(ActionID.Icarus, shouldEndSpecial: true)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -151,7 +137,7 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 灵橡清汁
     /// </summary>
-    public static BaseAction Druochole { get; } = new(ActionID.Druochole, true, isTimeline: true)
+    public static IBaseAction Druochole { get; } = new BaseAction(ActionID.Druochole, true, isTimeline: true)
     {
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
@@ -159,12 +145,12 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 失衡
     /// </summary>
-    public static BaseAction Dyskrasia { get; } = new(ActionID.Dyskrasia);
+    public static IBaseAction Dyskrasia { get; } = new BaseAction(ActionID.Dyskrasia);
 
     /// <summary>
     /// 坚角清汁
     /// </summary>
-    public static BaseAction Kerachole { get; } = new(ActionID.Kerachole, true, isTimeline: true)
+    public static IBaseAction Kerachole { get; } = new BaseAction(ActionID.Kerachole, true, isTimeline: true)
     {
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
@@ -172,7 +158,7 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 寄生清汁
     /// </summary>
-    public static BaseAction Ixochole { get; } = new(ActionID.Ixochole, true, isTimeline: true)
+    public static IBaseAction Ixochole { get; } = new BaseAction(ActionID.Ixochole, true, isTimeline: true)
     {
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
@@ -180,12 +166,12 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 活化
     /// </summary>
-    public static BaseAction Zoe { get; } = new(ActionID.Zoe, isTimeline: true);
+    public static IBaseAction Zoe { get; } = new BaseAction(ActionID.Zoe, isTimeline: true);
 
     /// <summary>
     /// 白牛清汁
     /// </summary>
-    public static BaseAction Taurochole { get; } = new(ActionID.Taurochole, true, isTimeline: true)
+    public static IBaseAction Taurochole { get; } = new BaseAction(ActionID.Taurochole, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = b => JobGauge.Addersgall > 0,
@@ -194,7 +180,7 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 箭毒
     /// </summary>
-    public static BaseAction Toxikon { get; } = new(ActionID.Toxikon)
+    public static IBaseAction Toxikon { get; } = new BaseAction(ActionID.Toxikon)
     {
         ActionCheck = b => JobGauge.Addersting > 0,
     };
@@ -202,7 +188,7 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 输血
     /// </summary>
-    public static BaseAction Haima { get; } = new(ActionID.Haima, true, isTimeline: true)
+    public static IBaseAction Haima { get; } = new BaseAction(ActionID.Haima, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -210,7 +196,7 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 均衡诊断
     /// </summary>
-    public static BaseAction EukrasianDiagnosis { get; } = new(ActionID.EukrasianDiagnosis, true, isTimeline: true)
+    public static IBaseAction EukrasianDiagnosis { get; } = new BaseAction(ActionID.EukrasianDiagnosis, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -218,12 +204,12 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 均衡预后
     /// </summary>
-    public static BaseAction EukrasianPrognosis { get; } = new(ActionID.EukrasianPrognosis, true, isTimeline: true);
+    public static IBaseAction EukrasianPrognosis { get; } = new BaseAction(ActionID.EukrasianPrognosis, true, isTimeline: true);
 
     /// <summary>
     /// 根素
     /// </summary>
-    public static BaseAction Rhizomata { get; } = new(ActionID.Rhizomata, isTimeline: true)
+    public static IBaseAction Rhizomata { get; } = new BaseAction(ActionID.Rhizomata, isTimeline: true)
     {
         ActionCheck = b => JobGauge.Addersgall < 3,
     };
@@ -231,27 +217,27 @@ internal abstract class SGERotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 整体论
     /// </summary>
-    public static BaseAction Holos { get; } = new(ActionID.Holos, true, isTimeline: true);
+    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, true, isTimeline: true);
 
     /// <summary>
     /// 泛输血
     /// </summary>
-    public static BaseAction Panhaima { get; } = new(ActionID.Panhaima, true, isTimeline: true);
+    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, true, isTimeline: true);
 
     /// <summary>
     /// 混合
     /// </summary>
-    public static BaseAction Krasis { get; } = new(ActionID.Krasis, true, isTimeline: true);
+    public static IBaseAction Krasis { get; } = new BaseAction(ActionID.Krasis, true, isTimeline: true);
 
     /// <summary>
     /// 魂灵风息
     /// </summary>
-    public static BaseAction Pneuma { get; } = new(ActionID.Pneuma, isTimeline: true);
+    public static IBaseAction Pneuma { get; } = new BaseAction(ActionID.Pneuma, isTimeline: true);
 
     /// <summary>
     /// 消化
     /// </summary>
-    public static BaseAction Pepsis { get; } = new(ActionID.Pepsis, true, isTimeline: true)
+    public static IBaseAction Pepsis { get; } = new BaseAction(ActionID.Pepsis, true, isTimeline: true)
     {
         ActionCheck = b =>
         {

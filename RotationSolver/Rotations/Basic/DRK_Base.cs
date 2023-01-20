@@ -5,7 +5,7 @@ using RotationSolver.Helpers;
 using RotationSolver.Actions.BaseAction;
 
 namespace RotationSolver.Rotations.Basic;
-internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
+internal abstract class DRK_Base : CustomRotation.CustomRotation
 {
     private static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();
     protected static ushort DarksideTimeRemaining => JobGauge.DarksideTimeRemaining;
@@ -41,32 +41,32 @@ internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
     }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
-    private sealed protected override BaseAction Shield => Grit;
+    private sealed protected override IBaseAction Shield => Grit;
 
     /// <summary>
     /// 重斩
     /// </summary>
-    public static BaseAction HardSlash { get; } = new(ActionID.HardSlash);
+    public static IBaseAction HardSlash { get; } = new BaseAction(ActionID.HardSlash);
 
     /// <summary>
     /// 吸收斩
     /// </summary>
-    public static BaseAction SyphonStrike { get; } = new(ActionID.SyphonStrike);
+    public static IBaseAction SyphonStrike { get; } = new BaseAction(ActionID.SyphonStrike);
 
     /// <summary>
     /// 释放
     /// </summary>
-    public static BaseAction Unleash { get; } = new(ActionID.Unleash);
+    public static IBaseAction Unleash { get; } = new BaseAction(ActionID.Unleash);
 
     /// <summary>
     /// 深恶痛绝
     /// </summary>
-    public static BaseAction Grit { get; } = new(ActionID.Grit, shouldEndSpecial: true);
+    public static IBaseAction Grit { get; } = new BaseAction(ActionID.Grit, shouldEndSpecial: true);
 
     /// <summary>
     /// 伤残
     /// </summary>
-    public static BaseAction Unmend { get; } = new(ActionID.Unmend)
+    public static IBaseAction Unmend { get; } = new BaseAction(ActionID.Unmend)
     {
         FilterForTarget = b => TargetFilter.ProvokeTarget(b),
     };
@@ -74,36 +74,36 @@ internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 噬魂斩
     /// </summary>
-    public static BaseAction Souleater { get; } = new(ActionID.Souleater);
+    public static IBaseAction Souleater { get; } = new BaseAction(ActionID.Souleater);
 
     /// <summary>
     /// 暗黑波动
     /// </summary>
-    public static BaseAction FloodofDarkness { get; } = new(ActionID.FloodofDarkness);
+    public static IBaseAction FloodofDarkness { get; } = new BaseAction(ActionID.FloodofDarkness);
 
     /// <summary>
     /// 暗黑锋
     /// </summary>
-    public static BaseAction EdgeofDarkness { get; } = new(ActionID.EdgeofDarkness);
+    public static IBaseAction EdgeofDarkness { get; } = new BaseAction(ActionID.EdgeofDarkness);
 
     /// <summary>
     /// 嗜血
     /// </summary>
-    public static BaseAction BloodWeapon { get; } = new(ActionID.BloodWeapon);
+    public static IBaseAction BloodWeapon { get; } = new BaseAction(ActionID.BloodWeapon);
 
     /// <summary>
     /// 暗影墙
     /// </summary>
-    public static BaseAction ShadowWall { get; } = new(ActionID.ShadowWall, true, isTimeline: true)
+    public static IBaseAction ShadowWall { get; } = new BaseAction(ActionID.ShadowWall, true, isTimeline: true)
     {
-        BuffsProvide = Rampart.BuffsProvide,
+        StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
     /// <summary>
     /// 弃明投暗
     /// </summary>
-    public static BaseAction DarkMind { get; } = new(ActionID.DarkMind, true, isTimeline: true)
+    public static IBaseAction DarkMind { get; } = new BaseAction(ActionID.DarkMind, true, isTimeline: true)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };
@@ -111,17 +111,17 @@ internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 行尸走肉
     /// </summary>
-    public static BaseAction LivingDead { get; } = new(ActionID.LivingDead, true, isTimeline: true);
+    public static IBaseAction LivingDead { get; } = new BaseAction(ActionID.LivingDead, true, isTimeline: true);
 
     /// <summary>
     /// 腐秽大地
     /// </summary>
-    public static BaseAction SaltedEarth { get; } = new(ActionID.SaltedEarth);
+    public static IBaseAction SaltedEarth { get; } = new BaseAction(ActionID.SaltedEarth);
 
     /// <summary>
     /// 跳斩
     /// </summary>
-    public static BaseAction Plunge { get; } = new(ActionID.Plunge, shouldEndSpecial: true)
+    public static IBaseAction Plunge { get; } = new BaseAction(ActionID.Plunge, shouldEndSpecial: true)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving
     };
@@ -129,17 +129,17 @@ internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 吸血深渊
     /// </summary>
-    public static BaseAction AbyssalDrain { get; } = new(ActionID.AbyssalDrain);
+    public static IBaseAction AbyssalDrain { get; } = new BaseAction(ActionID.AbyssalDrain);
 
     /// <summary>
     /// 精雕怒斩
     /// </summary>
-    public static BaseAction CarveandSpit { get; } = new(ActionID.CarveandSpit);
+    public static IBaseAction CarveandSpit { get; } = new BaseAction(ActionID.CarveandSpit);
 
     /// <summary>
     /// 血溅
     /// </summary>
-    public static BaseAction Bloodspiller { get; } = new(ActionID.Bloodspiller)
+    public static IBaseAction Bloodspiller { get; } = new BaseAction(ActionID.Bloodspiller)
     {
         ActionCheck = b => JobGauge.Blood >= 50 || Player.HasStatus(true, StatusID.Delirium),
     };
@@ -147,7 +147,7 @@ internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 寂灭
     /// </summary>
-    public static BaseAction Quietus { get; } = new(ActionID.Quietus)
+    public static IBaseAction Quietus { get; } = new BaseAction(ActionID.Quietus)
     {
         ActionCheck = Bloodspiller.ActionCheck,
     };
@@ -155,12 +155,12 @@ internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 血乱
     /// </summary>
-    public static BaseAction Delirium { get; } = new(ActionID.Delirium);
+    public static IBaseAction Delirium { get; } = new BaseAction(ActionID.Delirium);
 
     /// <summary>
     /// 至黑之夜
     /// </summary>
-    public static BaseAction TheBlackestNight { get; } = new(ActionID.TheBlackestNight, isTimeline: true)
+    public static IBaseAction TheBlackestNight { get; } = new BaseAction(ActionID.TheBlackestNight, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -168,17 +168,17 @@ internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 刚魂
     /// </summary>
-    public static BaseAction StalwartSoul { get; } = new(ActionID.StalwartSoul);
+    public static IBaseAction StalwartSoul { get; } = new BaseAction(ActionID.StalwartSoul);
 
     /// <summary>
     /// 暗黑布道
     /// </summary>
-    public static BaseAction DarkMissionary { get; } = new(ActionID.DarkMissionary, true, isTimeline: true);
+    public static IBaseAction DarkMissionary { get; } = new BaseAction(ActionID.DarkMissionary, true, isTimeline: true);
 
     /// <summary>
     /// 掠影示现
     /// </summary>
-    public static BaseAction LivingShadow { get; } = new(ActionID.LivingShadow)
+    public static IBaseAction LivingShadow { get; } = new BaseAction(ActionID.LivingShadow)
     {
         ActionCheck = b => JobGauge.Blood >= 50,
     };
@@ -186,7 +186,7 @@ internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 献奉
     /// </summary>
-    public static BaseAction Oblation { get; } = new(ActionID.Oblation, true, isTimeline: true)
+    public static IBaseAction Oblation { get; } = new BaseAction(ActionID.Oblation, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -194,7 +194,7 @@ internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 暗影使者
     /// </summary>
-    public static BaseAction Shadowbringer { get; } = new(ActionID.Shadowbringer)
+    public static IBaseAction Shadowbringer { get; } = new BaseAction(ActionID.Shadowbringer)
     {
         ActionCheck = b => JobGauge.DarksideTimeRemaining > 0,
     };
@@ -202,9 +202,9 @@ internal abstract class DRKRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 腐秽黑暗
     /// </summary>
-    public static BaseAction SaltandDarkness { get; } = new(ActionID.SaltandDarkness)
+    public static IBaseAction SaltandDarkness { get; } = new BaseAction(ActionID.SaltandDarkness)
     {
-        BuffsNeed = new[] { StatusID.SaltedEarth },
+        StatusNeed = new[] { StatusID.SaltedEarth },
     };
 
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)

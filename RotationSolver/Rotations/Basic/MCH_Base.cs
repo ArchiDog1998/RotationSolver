@@ -3,10 +3,11 @@ using System;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Helpers;
 using RotationSolver.Data;
+using RotationSolver.Actions;
 
 namespace RotationSolver.Rotations.Basic;
 
-internal abstract class MCHRotation_Base : CustomRotation.CustomRotation
+internal abstract class MCH_Base : CustomRotation.CustomRotation
 {
     private static MCHGauge JobGauge => Service.JobGauges.Get<MCHGauge>();
 
@@ -51,12 +52,12 @@ internal abstract class MCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 分裂弹
     /// </summary>
-    public static BaseAction SplitShot { get; } = new(ActionID.SplitShot);
+    public static IBaseAction SplitShot { get; } = new BaseAction(ActionID.SplitShot);
 
     /// <summary>
     /// 独头弹
     /// </summary>
-    public static BaseAction SlugShot { get; } = new(ActionID.SlugShot)
+    public static IBaseAction SlugShot { get; } = new BaseAction(ActionID.SlugShot)
     {
         OtherIDsCombo = new[] { ActionID.HeatedSplitShot },
     };
@@ -64,7 +65,7 @@ internal abstract class MCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 狙击弹
     /// </summary>
-    public static BaseAction CleanShot { get; } = new(ActionID.CleanShot)
+    public static IBaseAction CleanShot { get; } = new BaseAction(ActionID.CleanShot)
     {
         OtherIDsCombo = new[] { ActionID.HeatedSlugShot },
     };
@@ -72,7 +73,7 @@ internal abstract class MCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 热冲击
     /// </summary>
-    public static BaseAction HeatBlast { get; } = new(ActionID.HeatBlast)
+    public static IBaseAction HeatBlast { get; } = new BaseAction(ActionID.HeatBlast)
     {
         ActionCheck = b => JobGauge.IsOverheated
         && !OverheatedEndAfterGCD(),
@@ -81,12 +82,12 @@ internal abstract class MCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 散射
     /// </summary>
-    public static BaseAction SpreadShot { get; } = new(ActionID.SpreadShot);
+    public static IBaseAction SpreadShot { get; } = new BaseAction(ActionID.SpreadShot);
 
     /// <summary>
     /// 自动弩
     /// </summary>
-    public static BaseAction AutoCrossbow { get; } = new(ActionID.AutoCrossbow)
+    public static IBaseAction AutoCrossbow { get; } = new BaseAction(ActionID.AutoCrossbow)
     {
         ActionCheck = HeatBlast.ActionCheck,
     };
@@ -94,41 +95,41 @@ internal abstract class MCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 热弹
     /// </summary>
-    public static BaseAction HotShot { get; } = new(ActionID.HotShot);
+    public static IBaseAction HotShot { get; } = new BaseAction(ActionID.HotShot);
 
     /// <summary>
     /// 空气锚
     /// </summary>
-    public static BaseAction AirAnchor { get; } = new(ActionID.AirAnchor);
+    public static IBaseAction AirAnchor { get; } = new BaseAction(ActionID.AirAnchor);
 
     /// <summary>
     /// 钻头
     /// </summary>
-    public static BaseAction Drill { get; } = new(ActionID.Drill);
+    public static IBaseAction Drill { get; } = new BaseAction(ActionID.Drill);
 
     /// <summary>
     /// 回转飞锯
     /// </summary>
-    public static BaseAction ChainSaw { get; } = new(ActionID.ChainSaw);
+    public static IBaseAction ChainSaw { get; } = new BaseAction(ActionID.ChainSaw);
 
     /// <summary>
     /// 毒菌冲击
     /// </summary>
-    public static BaseAction Bioblaster { get; } = new(ActionID.Bioblaster, isEot: true);
+    public static IBaseAction Bioblaster { get; } = new BaseAction(ActionID.Bioblaster, isEot: true);
 
     /// <summary>
     /// 整备
     /// </summary>
-    public static BaseAction Reassemble { get; } = new(ActionID.Reassemble)
+    public static IBaseAction Reassemble { get; } = new BaseAction(ActionID.Reassemble)
     {
-        BuffsProvide = new StatusID[] { StatusID.Reassemble },
+        StatusProvide = new StatusID[] { StatusID.Reassemble },
         ActionCheck = b => HaveHostilesInRange,
     };
 
     /// <summary>
     /// 超荷
     /// </summary>
-    public static BaseAction Hypercharge { get; } = new(ActionID.Hypercharge)
+    public static IBaseAction Hypercharge { get; } = new BaseAction(ActionID.Hypercharge)
     {
         ActionCheck = b => !JobGauge.IsOverheated && JobGauge.Heat >= 50,
     };
@@ -136,22 +137,22 @@ internal abstract class MCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 野火
     /// </summary>
-    public static BaseAction Wildfire { get; } = new(ActionID.Wildfire);
+    public static IBaseAction Wildfire { get; } = new BaseAction(ActionID.Wildfire);
 
     /// <summary>
     /// 虹吸弹
     /// </summary>
-    public static BaseAction GaussRound { get; } = new(ActionID.GaussRound);
+    public static IBaseAction GaussRound { get; } = new BaseAction(ActionID.GaussRound);
 
     /// <summary>
     /// 弹射
     /// </summary>
-    public static BaseAction Ricochet { get; } = new(ActionID.Ricochet);
+    public static IBaseAction Ricochet { get; } = new BaseAction(ActionID.Ricochet);
 
     /// <summary>
     /// 枪管加热
     /// </summary>
-    public static BaseAction BarrelStabilizer { get; } = new(ActionID.BarrelStabilizer)
+    public static IBaseAction BarrelStabilizer { get; } = new BaseAction(ActionID.BarrelStabilizer)
     {
         ActionCheck = b => JobGauge.Heat <= 50 && InCombat,
     };
@@ -159,7 +160,7 @@ internal abstract class MCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 车式浮空炮塔
     /// </summary>
-    public static BaseAction RookAutoturret { get; } = new(ActionID.RookAutoturret)
+    public static IBaseAction RookAutoturret { get; } = new BaseAction(ActionID.RookAutoturret)
     {
         ActionCheck = b => JobGauge.Battery >= 50 && !JobGauge.IsRobotActive,
     };
@@ -167,7 +168,7 @@ internal abstract class MCHRotation_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 策动
     /// </summary>
-    public static BaseAction Tactician { get; } = new(ActionID.Tactician, true, isTimeline: true)
+    public static IBaseAction Tactician { get; } = new BaseAction(ActionID.Tactician, true, isTimeline: true)
     {
         ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,

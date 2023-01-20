@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.Melee.SAMCombos;
 
-internal sealed class SAM_Default : SAMRotation_Base
+internal sealed class SAM_Default : SAM_Base
 {
     public override string GameVersion => "6.28";
 

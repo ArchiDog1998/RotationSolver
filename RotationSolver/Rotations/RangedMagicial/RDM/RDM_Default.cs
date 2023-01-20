@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.RangedMagicial.RDMCombos;
 
-internal sealed class RDM_Default : RDMRotation_Base
+internal sealed class RDM_Default : RDM_Base
 {
     public override string GameVersion => "6.0";
 
@@ -194,7 +194,7 @@ internal sealed class RDM_Default : RDMRotation_Base
             }
 
             //看看有没有即刻相关的技能。
-            if (Player.HasStatus(true, Vercure.BuffsProvide))
+            if (Player.HasStatus(true, Vercure.StatusProvide))
             {
                 return false;
             }

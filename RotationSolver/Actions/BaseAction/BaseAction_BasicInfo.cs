@@ -20,7 +20,7 @@ internal partial class BaseAction : IBaseAction
     /// <summary>
     /// 玩家当前等级是否大于等于技能可用等级
     /// </summary>
-    internal bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
+    public bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
     public string Name => _action.Name;
 
     public string Description => string.Empty;

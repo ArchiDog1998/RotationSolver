@@ -10,7 +10,7 @@ using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Healer.SCHCombos;
 
-internal sealed class SCH_Default : SCHRotation_Base
+internal sealed class SCH_Default : SCH_Base
 {
     public override string GameVersion => "6.28";
 
