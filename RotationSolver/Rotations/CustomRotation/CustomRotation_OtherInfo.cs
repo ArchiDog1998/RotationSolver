@@ -62,7 +62,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 是否处于爆发，自动爆发或者手动点击的爆发
     /// </summary>
-    protected static bool SettingBreak => RSCommands.SpecialType == SpecialCommandType.Break || Service.Configuration.AutoBreak;
+    protected static bool SettingBreak => RSCommands.SpecialType == SpecialCommandType.Burst || Service.Configuration.AutoBurst;
 
     /// <summary>
     /// 当前等级

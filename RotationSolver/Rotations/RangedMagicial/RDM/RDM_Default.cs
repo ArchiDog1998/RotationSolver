@@ -38,10 +38,10 @@ internal sealed class RDM_Default : RDM_Base
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
         if (nextGCD.IsAnySameAction(true, Zwerchhau, Redoublement, Moulinet))
         {
-            if (Service.Configuration.AutoBreak && Embolden.ShouldUse(out act, mustUse: true)) return true;
+            if (Service.Configuration.AutoBurst && Embolden.ShouldUse(out act, mustUse: true)) return true;
         }
         //开场爆发的时候释放。
-        if (Service.Configuration.AutoBreak && GetRightValue(WhiteMana) && GetRightValue(BlackMana))
+        if (Service.Configuration.AutoBurst && GetRightValue(WhiteMana) && GetRightValue(BlackMana))
         {
             if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
             if (Embolden.ShouldUse(out act, mustUse: true)) return true;

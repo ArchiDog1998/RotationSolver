@@ -78,7 +78,7 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 SpecialCommandType.AntiRepulsion.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
-                SpecialCommandType.Break.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+                SpecialCommandType.Burst.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
 

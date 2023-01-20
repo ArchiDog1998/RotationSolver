@@ -50,6 +50,9 @@ internal partial class RotationConfigWindow
 
     private void DrawTimelineCondition()
     {
+        if (ActiveAction == null) return;
+        if (!IconReplacer.RightRotationBaseActions.Any(a => a.ID == ActiveAction.ID)) return;
+
 
     }
 }

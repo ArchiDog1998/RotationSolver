@@ -18,7 +18,7 @@ namespace RotationSolver.Commands
         MoveForward,
         MoveBack,
         AntiRepulsion,
-        Break,
+        Burst,
     }
 
     internal enum StateCommandType : byte

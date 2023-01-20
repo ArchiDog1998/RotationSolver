@@ -120,7 +120,7 @@ internal static class EnumTranslations
         SpecialCommandType.MoveForward => "Start Move Forward",
         SpecialCommandType.MoveBack => "Start Move Back",
         SpecialCommandType.AntiRepulsion => "Start AntiRepulsion",
-        SpecialCommandType.Break => "Start Break",
+        SpecialCommandType.Burst => "Start Break",
         SpecialCommandType.EndSpecial => "End Special",
         _ => string.Empty,
     };
@@ -155,7 +155,7 @@ internal static class EnumTranslations
         SpecialCommandType.MoveForward => "Move Forward",
         SpecialCommandType.MoveBack => "Move Back",
         SpecialCommandType.AntiRepulsion => "AntiRepulsion",
-        SpecialCommandType.Break => "Break",
+        SpecialCommandType.Burst => "Break",
         SpecialCommandType.EndSpecial => "End Special",
         _ => string.Empty,
     };
@@ -179,7 +179,7 @@ internal static class EnumTranslations
         SpecialCommandType.MoveForward => LocalizationManager.RightLang.Configwindow_HelpItem_MoveForward,
         SpecialCommandType.MoveBack => LocalizationManager.RightLang.Configwindow_HelpItem_MoveBack,
         SpecialCommandType.AntiRepulsion => LocalizationManager.RightLang.Configwindow_HelpItem_AntiRepulsion,
-        SpecialCommandType.Break => LocalizationManager.RightLang.Configwindow_HelpItem_Break,
+        SpecialCommandType.Burst => LocalizationManager.RightLang.Configwindow_HelpItem_Break,
         SpecialCommandType.EndSpecial => LocalizationManager.RightLang.Configwindow_HelpItem_EndSpecial,
         _ => string.Empty,
     };

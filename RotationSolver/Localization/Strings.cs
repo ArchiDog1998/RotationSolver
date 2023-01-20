@@ -8,14 +8,13 @@ internal class Strings
 {
     #region Commands
     public string Commands_Rotation { get; set; } = "Set the mode of attack";
-    public string Commands_ChangeAutoBreak { get; set; } = "Modify automatic burst to{0}";
+    public string Commands_ChangeAutoBurst { get; set; } = "Modify automatic burst to {0}";
     public string Commands_ChangeRotationConfig { get; set; } = "Modify {0} to {1}";
     public string Commands_CannotFindRotationConfig { get; set; } = "Failed to find the config in this rotation, please check it.";
 
     public string Commands_InsertAction { get; set; } = "Will use it within {0}s";
 
     public string Commands_InsertActionFailure { get; set; } = "Can not find the action, please check the action name.";
-    public string Commands_OpenSettings { get; set; } = "The settings interface has been opened";
     public string Commands_SayHelloToAuthor { get; set; } = "This \"{0}\" is probably one of the authors of the \"XIV Auto Attack\", so say hello to him!";
 
     #endregion
@@ -270,17 +269,6 @@ internal class Strings
     public string JobRole_DiscipleoftheHand { get; set; } = "Disciple of the Hand";
 
     #endregion
-
-    #region CraftActionType
-    public string CraftActionType_Progress { get; set; } = "Progress";
-    public string CraftActionType_Quality { get; set; } = "Quality";
-    public string CraftActionType_Status { get; set; } = "Status";
-    public string CraftActionType_Other { get; set; } = "Other";
-
-    #endregion
-
-    public string CraftingCombo_Name { get; set; } = "Disciplines of Hands";
-
 
     #region EnemyLocation
     public string EnemyLocation_None { get; set; } = "None";

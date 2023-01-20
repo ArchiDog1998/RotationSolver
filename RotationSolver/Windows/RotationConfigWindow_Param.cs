@@ -208,11 +208,11 @@ internal partial class RotationConfigWindow
         ImGui.Separator();
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_AutoBreak,
-            ref Service.Configuration.AutoBreak);
+            ref Service.Configuration.AutoBurst);
 
         ImGui.SameLine();
         ImGuiHelper.Spacing();
-        RSCommands.DisplayCommandHelp(OtherCommandType.Settings, nameof(Service.Configuration.AutoBreak));
+        RSCommands.DisplayCommandHelp(OtherCommandType.Settings, nameof(Service.Configuration.AutoBurst));
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseItem,
             ref Service.Configuration.UseItem,

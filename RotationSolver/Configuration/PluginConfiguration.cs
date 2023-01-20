@@ -24,7 +24,7 @@ public class PluginConfiguration : IPluginConfiguration
         new Dictionary<uint, byte>();
     public int AddDotGCDCount = 2;
 
-    public bool AutoBreak = true;
+    public bool AutoBurst = true;
     public bool UseAbility = true;
     public bool UseDefenceAbility = true;
     public bool NeverReplaceIcon = false;

@@ -55,14 +55,13 @@ namespace RotationSolver.Commands
 
         private static void DoSettingCommand(string str)
         {
-            if (str.Contains(nameof(Service.Configuration.AutoBreak)))
+            if (str.Contains(nameof(Service.Configuration.AutoBurst)))
             {
-                Service.Configuration.AutoBreak = !Service.Configuration.AutoBreak;
+                Service.Configuration.AutoBurst = !Service.Configuration.AutoBurst;
 
                 //Say out.
-                Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeRotationConfig,
-    nameof(Service.Configuration.AutoBreak), Service.Configuration.AutoBreak));
-
+                Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeAutoBurst,
+                    Service.Configuration.AutoBurst));
             }
         }
 
