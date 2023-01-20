@@ -30,7 +30,6 @@ internal partial class RotationConfigWindow
     {
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-
         if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
         {
             foreach (var pair in IconReplacer.RightRotationBaseActions.GroupBy(a => a.CateName).OrderBy(g => g.Key))

@@ -33,7 +33,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ChangeTargetForFate = true;
     public bool MoveTowardsScreenCenter = true;
 
-    public bool SayOutStateChanged = false;
+    public bool SayOutStateChanged = true;
 
     public bool ShowInfoOnDtr = true;
 

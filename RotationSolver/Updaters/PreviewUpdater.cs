@@ -33,7 +33,7 @@ internal static class PreviewUpdater
         {
             if (dtrEntry == null)
             {
-                dtrEntry = Service.DtrBar.Get("Auto Attack");
+                dtrEntry = Service.DtrBar.Get("Rotation Solver");
             }
             dtrEntry.Shown = true;
             dtrEntry.Text = new SeString(

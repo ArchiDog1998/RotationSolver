@@ -109,7 +109,6 @@ namespace RotationSolver.Commands
             {
                 if(config.DoCommand(configs, str))
                 {
-                    //Say out.
                     Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeRotationConfig,
                         config.DisplayName, configs.GetDisplayString(config.Name)));
 

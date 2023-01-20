@@ -26,6 +26,16 @@ namespace RotationSolver.Commands
         internal static string EntryString =>
             _stateString + (SpecialTimeLeft < 0 ? string.Empty : $" - {_specialString}: {SpecialTimeLeft:F2}s");
 
+        private static void UpdateToast()
+        {
+            if (!Service.Configuration.ShowInfoOnToast) return;
+
+            Service.ToastGui.ShowQuest(" " + EntryString, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+            {
+                IconId = 101,
+            });
+        }
+
         internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial);
 
         private static void DoStateCommandType(StateCommandType stateType)
@@ -42,6 +52,7 @@ namespace RotationSolver.Commands
                 StateType = stateType;
 
                 _stateString = stateType.ToStateString(role);
+                UpdateToast();
             });
         }
 
@@ -53,6 +64,7 @@ namespace RotationSolver.Commands
 
                 _specialString = specialType.ToSpecialString(role);
                 _specialStateStartTime = DateTime.Now;
+                UpdateToast();
             });
         }
 

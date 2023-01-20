@@ -24,7 +24,7 @@ internal static partial class RSCommands
         }
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip($"{LocalizationManager.RightLang.Configwindow_Helper_RunCommand}: {command}\n{LocalizationManager.RightLang.Configwindow_Helper_CopyCommand}: {command}");
+            ImGui.SetTooltip($"{LocalizationManager.RightLang.Configwindow_Helper_RunCommand}: {cmdStr}\n{LocalizationManager.RightLang.Configwindow_Helper_CopyCommand}: {cmdStr}");
 
             if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
             {

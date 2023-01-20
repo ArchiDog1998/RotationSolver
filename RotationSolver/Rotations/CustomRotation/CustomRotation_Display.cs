@@ -41,11 +41,13 @@ namespace RotationSolver.Rotations.CustomRotation
             }
 
             ImGui.SameLine();
-            ImGui.TextDisabled("    -  " + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ":  ");
+            ImGui.TextDisabled("   -  " + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ":  ");
             ImGui.SameLine();
             ImGui.Text(GameVersion);
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
 
-            if(ImGuiHelper.IconButton(FontAwesomeIcon.Globe, GetHashCode().ToString()))
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Globe, GetHashCode().ToString()))
             {
                 var url = @"https://github.com/ArchiDog1998/RotationSolver/blob/main/" + GetType().FullName.Replace(".", @"/") + ".cs";
 

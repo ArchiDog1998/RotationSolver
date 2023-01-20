@@ -22,36 +22,34 @@ internal static class ImGuiHelper
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
+        ImGui.Columns(2, texture.Name, false);
+
         var t = texture.GetTexture();
+
+        ImGui.SetColumnWidth(0, t.Width + 5);
+
         ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
 
         var able = texture as IEnable;
 
         var desc = able?.Description;
-        HoveredString(desc);
-        ImGui.SameLine();
-        Spacing();
+        HoveredString(desc, selected);
 
-
-        if(ImGui.Selectable(texture.Name, isSelected))
-        {
-            selected?.Invoke();
-        }
-        HoveredString(desc);
+        ImGui.NextColumn();
 
         bool enable = false;
         if (able != null)
         {
-            ImGui.SameLine();
-            Spacing();
-
+            if (isSelected) ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
             enable = able.IsEnabled;
-            if (ImGui.Checkbox("##" + texture.Name, ref enable))
+            if (ImGui.Checkbox($"{texture.Name}##{texture.Name}", ref enable))
             {
                 able.IsEnabled = enable;
                 Service.Configuration.Save();
             }
-            HoveredString(desc);
+            if (isSelected) ImGui.PopStyleColor();
+
+            HoveredString(desc, selected);
         }
 
 
@@ -59,12 +57,13 @@ internal static class ImGuiHelper
 
         if (enable)
         {
-            ImGui.Indent(t.Width);
+            ImGui.Indent(20);
             ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(1f, 1f));
             otherThing?.Invoke();
             ImGui.PopStyleVar();
-            ImGui.Unindent();
+            ImGui.Unindent(20);
         }
+        ImGui.Columns(1);
 
         ImGui.PopStyleVar();
     }
@@ -79,11 +78,15 @@ internal static class ImGuiHelper
         //ImGuiComponents.IconButton(icon)
     }
 
-    public  static void HoveredString(string text)
+    public  static void HoveredString(string text, Action selected = null)
     {
         if (ImGui.IsItemHovered())
         {
             if (!string.IsNullOrEmpty(text)) ImGui.SetTooltip(text);
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Left))
+            {
+                selected?.Invoke();
+            }
         }
     }
 

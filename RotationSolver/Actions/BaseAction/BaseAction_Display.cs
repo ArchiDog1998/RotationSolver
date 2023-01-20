@@ -17,7 +17,7 @@ namespace RotationSolver.Actions.BaseAction
     {
         public unsafe void Display(bool IsActive) => this.DrawEnableTexture(IsActive, () => RotationConfigWindow.ActiveAction = this, otherThing: () =>
         {
-            if (IsTimeline) OtherCommandType.Actions.DisplayCommandHelp($"Insert{this}-{5}",
+            if (IsTimeline) OtherCommandType.Actions.DisplayCommandHelp($"{this}-{5}",
                type => string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, this));
 
 #if DEBUG

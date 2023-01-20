@@ -36,11 +36,7 @@ namespace RotationSolver.Commands
 
         private static void OnCommand(string command, string arguments)
         {
-            string[] array = arguments.Split();
-
-            if (!array.Any()) return;
-
-            DoOneCommand(array[0]);
+            DoOneCommand(arguments);
         }
         
         private static void DoOneCommand(string str)

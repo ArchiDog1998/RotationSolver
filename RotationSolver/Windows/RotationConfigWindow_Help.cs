@@ -14,14 +14,14 @@ namespace RotationSolver.Windows.RotationConfigWindow
         {
             ImGui.Text(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
 
-            ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.ParsedGreen);
+            ImGui.SameLine();
+
             if (ImGui.Button("Github"))
             {
                 Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
             }
 
             ImGui.SameLine();
-            ImGuiHelper.Spacing();
 
             if (ImGui.Button("Discord"))
             {
@@ -29,13 +29,11 @@ namespace RotationSolver.Windows.RotationConfigWindow
             }
 
             ImGui.SameLine();
-            ImGuiHelper.Spacing();
 
             if (ImGui.Button("Wiki"))
             {
                 Util.OpenLink("https://archidog1998.github.io/RotationSolver/");
             }
-            ImGui.PopStyleColor();
 
             if (ImGui.BeginChild("Help Infomation", new Vector2(0f, -1f), true))
             {
