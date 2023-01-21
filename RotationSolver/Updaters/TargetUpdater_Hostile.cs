@@ -39,9 +39,8 @@ internal static partial class TargetUpdater
 
     internal unsafe static void UpdateHostileTargets()
     {
-        var hasFate = (IntPtr)FateManager.Instance() != IntPtr.Zero;
+        var inFate = Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero && FateManager.Instance()->FateJoined > 0;
 
-        //能打的目标
         AllTargets = TargetFilter.GetTargetable(TargetFilter.GetObjectInRadius(Service.ObjectTable, 30).Where(obj =>
         {
 
@@ -50,51 +49,23 @@ internal static partial class TargetUpdater
                 if (c.StatusList.Any(status => Service.DataManager.GetExcelSheet<Status>()
                     .GetRow(status.StatusId).Icon == 15024)) return false;
 
-
-                try
-                {
-                    var gameObj = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)c.Address;
-
-                    //不可选中
-                    if (!gameObj->GetIsTargetable()) return false;
-
-                    //不在fate中，不打fate怪。
-                    if ((!hasFate ||FateManager.Instance()->FateJoined == 0)
-                        && gameObj->FateId > 0) return false;
-                }
-                catch
-                {
-                    return false;
-                }
+                //不可选中
+                if (!c.IsTargetable()) return false;
 
                 if (obj.CanAttack()) return true;
             }
             return false;
         }).Cast<BattleChara>());
 
-        //Filter the fate objects.
-        bool inFate = Service.Configuration.ChangeTargetForFate && hasFate && FateManager.Instance()->FateJoined > 0;
-        uint[] ids = GetEnemies() ?? new uint[0];
+        uint[] ids = GetEnemies();
 
 
         if (AllTargets != null)
         {
             HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate ?
-                 AllTargets.Where(t =>
-                 {
-                     bool lowEnoughLevel = Service.ClientState.LocalPlayer.Level <= FateManager.Instance()->CurrentFate->MaxLevel;
-
-                     try
-                     {
-                         return t.TargetObject == Service.ClientState.LocalPlayer ||
-                            lowEnoughLevel && ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId == FateManager.Instance()->CurrentFate->FateId;
-                     }
-                     catch
-                     {
-                         return false;
-                     }
-                 }) :
-                AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId));
+                 AllTargets.Where(t => t.FateId() == FateManager.Instance()->CurrentFate->FateId) :
+                AllTargets.Where(t => (t.TargetObject is BattleChara || ids.Contains(t.ObjectId)) && t.FateId() == 0
+                || t.TargetObject == Service.ClientState.LocalPlayer);
 
 
             switch (IconReplacer.RightNowTargetToHostileType)

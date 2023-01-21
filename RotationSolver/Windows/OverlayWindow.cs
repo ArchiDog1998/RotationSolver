@@ -80,24 +80,26 @@ internal static class OverlayWindow
         }
     }
 
-    private static void DrawMoveTarget()
+    private unsafe static void DrawMoveTarget()
     {
         if (!Service.Configuration.ShowMoveTarget) return;
 
         var c = Service.Configuration.MovingTargetColor;
         var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
-//#if DEBUG
-//        Service.GameGui.WorldToScreen(Service.ClientState.LocalPlayer.Position, out var plp);
-//        var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
-//        foreach (var t in TargetUpdater.AllTargets)
-//        {
-//            if (Service.GameGui.WorldToScreen(t.Position, out var p))
-//            {
-//                ImGui.GetWindowDrawList().AddText(p, color, $"Boss Ratio (Max): {t.MaxHp / calHealth:F2}\nDying Ratio (Current): {t.CurrentHp / calHealth:F2}");
-//            }
-//        }
-//#endif
+#if DEBUG
+        Service.GameGui.WorldToScreen(Service.ClientState.LocalPlayer.Position, out var plp);
+        var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
+        foreach (var t in TargetUpdater.AllTargets)
+        {
+            if (Service.GameGui.WorldToScreen(t.Position, out var p))
+            {
+                ImGui.GetWindowDrawList().AddText(p, color, $"FateId: {((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId}");
+
+                //ImGui.GetWindowDrawList().AddText(p, color, $"Boss Ratio (Max): {t.MaxHp / calHealth:F2}\nDying Ratio (Current): {t.CurrentHp / calHealth:F2}");
+            }
+        }
+#endif
         var tar = IconReplacer.RightNowRotation?.MoveTarget;
         if (tar == null || tar == Service.ClientState.LocalPlayer) return;
 

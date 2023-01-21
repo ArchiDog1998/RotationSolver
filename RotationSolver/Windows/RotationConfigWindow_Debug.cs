@@ -7,19 +7,22 @@ using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
 #if DEBUG
 internal partial class RotationConfigWindow
 {
-    private void DrawDebugTab()
+    private unsafe void DrawDebugTab()
     {
         var str = TargetUpdater.EncryptString(Service.ClientState.LocalPlayer);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("That is your HASH, send to ArchiTed", ref str, 100);
 
+        ImGui.Text("All: " + TargetUpdater.AllTargets.Count().ToString());
         ImGui.Text("Hostile: " + TargetUpdater.HostileTargets.Count().ToString());
         ImGui.Text("Friends: " + TargetUpdater.PartyMembers.Count().ToString());
+        ImGui.Text("Fate: " + FateManager.Instance()->FateJoined.ToString());
 
         if (ImGui.CollapsingHeader("Status from self."))
         {

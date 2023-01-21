@@ -23,6 +23,11 @@ internal static class ObjectHelper
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);
     }
 
+    internal static unsafe uint FateId(this GameObject obj)
+        => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->FateId;
+
+    internal static unsafe bool IsTargetable(this GameObject obj)
+    => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->GetIsTargetable();
     internal static bool IsBoss(this BattleChara obj)
     {
         if (obj == null) return false;
