@@ -7,17 +7,9 @@
 ![Github License](https://img.shields.io/github/license/ArchiDog1998/RotationSolver.svg?label=License&style=for-the-badge)
 ![Github Commits](https://img.shields.io/github/commits-since/ArchiDog1998/RotationSolver/latest/main?style=for-the-badge)
 
+Download it at this url:
 
-
-**It will probably have distributions in `game version 6.4`，and only supports international servers.**
-
-There are several reasons why I don't want to distribute this plugin right now.
-
-1. I moved from Chinese Server to Japanese Data Center. So I need some time to adjust to the new environment and grow the new character.
-2. This repository's framework is a little bit strange right now. I need to tidy up these codes and refactor the architecture.
-3. I have a lot of work to do, such as industrial software research and damn IELTS.
-4. I am not a major in software engineering, so I need to learn some soft engineering knowledge.
-5. I want to enjoy the game for a while.
+`https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/pluginmaster.json`
 
 ## Brief
 
