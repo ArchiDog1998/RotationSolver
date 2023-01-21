@@ -10,7 +10,7 @@ Then, it will highlight the best action one the hot bar, or help you to click on
 
 It is designed for `general combat`, not for savage or ultimate. So use it carefully.
 
-Download url:
+
 
 `https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/pluginmaster.json`
 
