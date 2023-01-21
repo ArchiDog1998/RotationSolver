@@ -20,13 +20,13 @@ internal sealed class NIN_Default : NIN_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("UseHide", true, "脱战隐身恢复忍术").SetBool("AutoUnhide", true, "自动取消隐身");
+        return base.CreateConfiguration().SetBool("UseHide", true, "Use hide").SetBool("AutoUnhide", true, "Auto Unhide.");
     }
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.DefenseSingle, $"{ShadeShift}"},
-        {DescType.MoveAction, $"{Shukuchi}，目标为面向夹角小于30°内最远目标。"},
+        {DescType.MoveAction, $"{Shukuchi}"},
     };
 
     private static void SetNinjustus(INinAction act)

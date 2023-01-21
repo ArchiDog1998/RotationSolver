@@ -21,7 +21,7 @@ namespace RotationSolver.Actions.BaseAction
         }, otherThing: () =>
         {
             if (IsTimeline) OtherCommandType.Actions.DisplayCommandHelp($"{this}-{5}",
-               type => string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, this));
+               type => string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, this), false);
 
 #if DEBUG
             ImGui.Text("Have One:" + HaveOneChargeDEBUG.ToString());

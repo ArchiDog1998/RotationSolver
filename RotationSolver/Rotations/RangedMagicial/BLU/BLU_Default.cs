@@ -21,13 +21,13 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
         private protected override IRotationConfigSet CreateConfiguration()
         {
             return base.CreateConfiguration()
-                .SetCombo("BlueId", 2, "职能", "防护", "治疗", "进攻")
-                .SetCombo("AttackType", 2, "攻击方式", "魔法", "物理", "我全都要")
-                .SetBool("MoonFluteBreak", false, "月笛爆发")
-                .SetBool("SingleAOE", true, "单目标释放高伤害AOE技能")
-                .SetBool("GamblerKill", false, "可以释放赌徒秒杀技能")
-                .SetBool("UseFinalSting", false, "终极针收尾")
-                .SetFloat("FinalStingHP", 0, "开始使用终极针的Hp");
+                .SetCombo("BlueId", 2, "Role", "Tank", "Healer", "DPS")
+                .SetCombo("AttackType", 2, "Type", "Magic", "Physic", "Both")
+                .SetBool("MoonFluteBreak", false, "MoonFlute")
+                .SetBool("SingleAOE", true, "Single AOE")
+                .SetBool("GamblerKill", false, "Gambler Kill")
+                .SetBool("UseFinalSting", false, "Use FinalSting")
+                .SetFloat("FinalStingHP", 0, "FinalStingHP");
         }
 
         private bool MoonFluteBreak => Configs.GetBool("MoonFluteBreak");

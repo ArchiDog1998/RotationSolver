@@ -18,6 +18,11 @@ internal class MajorConditionSet
 
     public string Name;
 
+    public MajorConditionSet()
+    {
+
+    }
+
     public MajorConditionSet(string name)
     {
         Name = name;

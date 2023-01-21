@@ -20,7 +20,7 @@ internal sealed class WAR_Default : WAR_Base
     {
         {DescType.DefenseArea, $"{ShakeItOff}"},
         {DescType.DefenseSingle, $"{RawIntuition}, {Vengeance}"},
-        {DescType.MoveAction, $"GCD: {PrimalRend}，目标为面向夹角小于30°内最远目标。\n                     能力: {Onslaught}, "},
+        {DescType.MoveAction, $"GCD: {PrimalRend}\n{Onslaught}"},
     };
 
     static WAR_Default()

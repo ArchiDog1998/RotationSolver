@@ -64,10 +64,10 @@ internal class ConditionSet : ICondition
 
         if (ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
         {
-            AddOneCondition<ConditionSet>(LocalizationManager.RightLang.Scriptwindow_ConditionSet);
-            AddOneCondition<ActionCondition>(LocalizationManager.RightLang.Scriptwindow_ActionCondition);
-            AddOneCondition<TargetCondition>(LocalizationManager.RightLang.Scriptwindow_TargetCondition);
-            AddOneCondition<RotationCondition>(LocalizationManager.RightLang.Scriptwindow_ComboCondition);
+            AddOneCondition<ConditionSet>(LocalizationManager.RightLang.Timeline_ConditionSet);
+            AddOneCondition<ActionCondition>(LocalizationManager.RightLang.Timeline_ActionCondition);
+            AddOneCondition<TargetCondition>(LocalizationManager.RightLang.Timeline_TargetCondition);
+            AddOneCondition<RotationCondition>(LocalizationManager.RightLang.Timeline_ComboCondition);
 
             ImGui.EndPopup();
         }

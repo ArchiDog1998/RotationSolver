@@ -26,15 +26,15 @@ internal sealed class SCH_Default : SCH_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶")
-                                            .SetBool("prevDUN", false, "开局15秒开扩散盾")
-                                            .SetBool("GiveT", false, "开局扩散盾给t（不勾和t跑的超远的时候给自己）");
+        return base.CreateConfiguration().SetBool("GCDHeal", false, "Aut use GCD to heal")
+                                            .SetBool("prevDUN", false, "Recitation in 15 seconds.")
+                                            .SetBool("GiveT", false, "Give Recitation to Tank");
     }
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.HealArea, $"GCD: {Succor}\n                     能力: {SacredSoil}, {SummonSeraph}, {WhisperingDawn}, {FeyBlessing}, {Indomitability}"},
-        {DescType.HealSingle, $"GCD: {Adloquium}, {Physick}\n                     能力: {SacredSoil}, {Aetherpact}, {Protraction}, {Excogitation}, {Lustrate}"},
-        {DescType.DefenseArea, $"GCD: {Succor}\n                     能力: {SacredSoil}, {Adloquium}, {SummonSeraph}, {FeyIllumination}, {Expedient}"},
+        {DescType.HealArea, $"{Succor}\n{SacredSoil}, {SummonSeraph}, {WhisperingDawn}, {FeyBlessing}, {Indomitability}"},
+        {DescType.HealSingle, $"{Adloquium}, {Physick}\n{SacredSoil}, {Aetherpact}, {Protraction}, {Excogitation}, {Lustrate}"},
+        {DescType.DefenseArea, $"{Succor}\n{SacredSoil}, {Adloquium}, {SummonSeraph}, {FeyIllumination}, {Expedient}"},
         {DescType.DefenseSingle, $"{Adloquium}"},
     };
 

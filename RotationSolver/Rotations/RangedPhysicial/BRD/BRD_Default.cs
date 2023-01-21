@@ -20,10 +20,10 @@ internal sealed class BRD_Default : BRD_Base
     {
         return base.CreateConfiguration()
             .SetBool("BindWAND", false, "猛者绑定旅神歌")
-            .SetCombo("FirstSong", 0, "第一首歌", "旅神歌", "贤者歌", "军神歌")
-            .SetFloat("WANDTime", 43, "旅神歌时间", min: 0, max: 45, speed: 1)
-            .SetFloat("MAGETime", 34, "贤者歌时间", min: 0, max: 45, speed: 1)
-            .SetFloat("ARMYTime", 43, "军神歌时间", min: 0, max: 45, speed: 1);
+            .SetCombo("FirstSong", 0, "First Song", "WAND", "MAGE", "ARMY")
+            .SetFloat("WANDTime", 43, "WAND Time", min: 0, max: 45, speed: 1)
+            .SetFloat("MAGETime", 34, "MAGE Time", min: 0, max: 45, speed: 1)
+            .SetFloat("ARMYTime", 43, "ARMY Time", min: 0, max: 45, speed: 1);
     }
 
     public override SortedList<DescType, string> DescriptionDict => new()

@@ -29,7 +29,7 @@ internal sealed class RDM_Default : RDM_Base
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("UseVercure", true, "使用赤治疗获得即刻");
+            .SetBool("UseVercure", true, "Use Vercure for Dualcast");
     }
 
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)

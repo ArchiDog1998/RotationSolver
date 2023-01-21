@@ -16,7 +16,7 @@ internal sealed class RPR_Default : RPR_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("EnshroudPooling", false, "双附体循环爆发(低于88级不会生效)**推荐**");
+        return base.CreateConfiguration().SetBool("EnshroudPooling", false, "Enshroud Pooling");
     }
     public RPR_Default()
     {
@@ -33,8 +33,8 @@ internal sealed class RPR_Default : RPR_Base
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.DefenseSingle, $"能力: {ArcaneCrest}"},
-        {DescType.MoveAction, $"能力: {HellsIngress}, "},
+        {DescType.DefenseSingle, $"{ArcaneCrest}"},
+        {DescType.MoveAction, $"{HellsIngress}"},
     };
     private protected override IAction CountDownAction(float remainTime)
     {

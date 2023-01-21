@@ -1,5 +1,5 @@
 ﻿
-name: XIV Auto Action
+name: Rotation Solver
 author: ArchiTed
 description: |-
   Based on the pve combat information in one frame, find the best action.

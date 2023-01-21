@@ -17,16 +17,17 @@ internal static class EnumTranslations
         TargetConditionType.Distance => LocalizationManager.RightLang.TargetConditionType_Distance,
         TargetConditionType.StatusEnd => LocalizationManager.RightLang.TargetConditionType_StatusEnd,
         TargetConditionType.StatusEndGCD => LocalizationManager.RightLang.TargetConditionType_StatusEndGCD,
+        TargetConditionType.CastingAction => LocalizationManager.RightLang.TargetConditionType_CastingAction,
         _ => string.Empty,
     };
 
     internal static string ToName(this ComboConditionType type) => type switch
     {
-        ComboConditionType.Bool => "布尔",
-        ComboConditionType.Byte => "整数",
-        ComboConditionType.Time => "时间",
+        ComboConditionType.Bool => "Boolean",
+        ComboConditionType.Byte => "Byte",
+        ComboConditionType.Time => "Time",
         ComboConditionType.TimeGCD => "GCD",
-        ComboConditionType.Last => "技能",
+        ComboConditionType.Last => "Action",
         _ => string.Empty,
     };
 

@@ -28,10 +28,10 @@ internal class Strings
     public string ConfigWindow_HelpItem { get; set; } = "Help";
 
     public string ConfigWindow_ActionItem_Description { get; set; }
-        = "In this window, you can modify the conditions of use for each action.";
+        = "Modify the usage for each action.";
 
     public string ConfigWindow_HelpItem_Description { get; set; }
-        = "In this window, you can see all XIVAutoAttack built-in commands for combat. ";
+        = "In this window, you can see all Rotation Solver built-in commands for combat. ";
 
     public string Configwindow_HelpItem_AttackSmart { get; set; }
         = "Start attacking in smart mode(auto-targeting) when out of combat, otherwise switch the target according to the conditions.";
@@ -183,38 +183,30 @@ internal class Strings
     #endregion
 
     #region ScriptWindow
-    public string Scriptwindow_DragdropDescription { get; set; } = "Drag&drop to move，Ctrl+Alt+RightClick to delete.";
-    public string Scriptwindow_SearchBar { get; set; } = "Search Bar";
-    public string Scriptwindow_MustUse { get; set; } = "MustUse";
-    public string Scriptwindow_MustUseDesc { get; set; } = "Skip AOE and Buff.";
-    public string Scriptwindow_Empty { get; set; } = "UseUp";
-    public string Scriptwindow_EmptyDesc { get; set; } = "UseUp or Skip Combo";
-    public string Scriptwindow_AbilityRemain { get; set; } = "Ability Remains";
-    public string Scriptwindow_AbilityRemainDesc { get; set; } = "Use this action while how many abilities remain. Set it to zero to ignore.";
-    public string Scriptwindow_AdjustID { get; set; } = "AdjustID";
-    public string Scriptwindow_NextGCD { get; set; } = "NextGCD";
-    public string Scriptwindow_ActionSetDescription { get; set; } = "Input the actions into the box below. The higher the position, the higher the priority.";
-    public string Scriptwindow_ActionSetGaurd { get; set; } = "ActionGaurd";
-    public string Scriptwindow_AddActionDesc { get; set; } = "Add Action";
-    public string Scriptwindow_AddFunctionDesc { get; set; } = "Add Function，total {0}.";
-    public string Scriptwindow_TimelineDescription { get; set; } = "Add some condition to automatic use this action.";
-    public string Scriptwindow_Can { get; set; } = "Can";
-    public string Scriptwindow_Cannot { get; set; } = "Cannot";
-    public string Scriptwindow_Is { get; set; } = "Is";
-    public string Scriptwindow_Isnot { get; set; } = "Isnot";
-    public string Scriptwindow_Have { get; set; } = "Have";
-    public string Scriptwindow_Havenot { get; set; } = "Havenot";
-    public string Scriptwindow_Ability { get; set; } = "Ability";
-    public string Scriptwindow_Charges { get; set; } = "Charges";
-    public string Scriptwindow_ConditionSet { get; set; } = "ConditionSet";
-    public string Scriptwindow_ActionCondition { get; set; } = "ActionCondition";
-    public string Scriptwindow_TargetCondition { get; set; } = "TargetCondition";
-    public string Scriptwindow_ComboCondition { get; set; } = "ComboCondition";
-    public string Scriptwindow_ActionTarget { get; set; } = "{0}'s target";
-    public string Scriptwindow_Target { get; set; } = "Target";
-    public string Scriptwindow_Player { get; set; } = "Player";
-    public string Scriptwindow_StatusSelf { get; set; } = "StatusSelf";
-    public string Scriptwindow_StatusSelfDesc { get; set; } = "StatusSelf";
+    public string Timeline_DragdropDescription { get; set; } = "Drag&drop to move，Ctrl+Alt+RightClick to delete.";
+    public string Timeline_SearchBar { get; set; } = "Search Bar";
+    public string Timeline_MustUse { get; set; } = "MustUse";
+    public string Timeline_MustUseDesc { get; set; } = "Skip AOE and Buff.";
+    public string Timeline_Empty { get; set; } = "UseUp";
+    public string Timeline_EmptyDesc { get; set; } = "UseUp or Skip Combo";
+    public string Timeline_TimelineDescription { get; set; } = "Add some condition to automatic use this action.";
+    public string Timeline_Can { get; set; } = "Can";
+    public string Timeline_Cannot { get; set; } = "Cannot";
+    public string Timeline_Is { get; set; } = "Is";
+    public string Timeline_Isnot { get; set; } = "Isnot";
+    public string Timeline_Have { get; set; } = "Have";
+    public string Timeline_Havenot { get; set; } = "Havenot";
+    public string Timeline_Ability { get; set; } = "Ability";
+    public string Timeline_Charges { get; set; } = "Charges";
+    public string Timeline_ConditionSet { get; set; } = "ConditionSet";
+    public string Timeline_ActionCondition { get; set; } = "ActionCondition";
+    public string Timeline_TargetCondition { get; set; } = "TargetCondition";
+    public string Timeline_ComboCondition { get; set; } = "ComboCondition";
+    public string Timeline_ActionTarget { get; set; } = "{0}'s target";
+    public string Timeline_Target { get; set; } = "Target";
+    public string Timeline_Player { get; set; } = "Player";
+    public string Timeline_StatusSelf { get; set; } = "StatusSelf";
+    public string Timeline_StatusSelfDesc { get; set; } = "StatusSelf";
     #endregion
 
     #region Actions
@@ -237,12 +229,13 @@ internal class Strings
     #endregion
 
     #region TargetConditionType
-    public string TargetConditionType_HaveStatus { get; set; } = "HaveStatus";
-    public string TargetConditionType_IsDying { get; set; } = "IsDying";
-    public string TargetConditionType_IsBoss { get; set; } = "IsBoss";
+    public string TargetConditionType_HaveStatus { get; set; } = "Have Status";
+    public string TargetConditionType_IsDying { get; set; } = "Is Dying";
+    public string TargetConditionType_IsBoss { get; set; } = "Is Boss";
     public string TargetConditionType_Distance { get; set; } = "Distance";
-    public string TargetConditionType_StatusEnd { get; set; } = "StatusEnd";
-    public string TargetConditionType_StatusEndGCD { get; set; } = "StatusEndGCD";
+    public string TargetConditionType_StatusEnd { get; set; } = "Status End";
+    public string TargetConditionType_StatusEndGCD { get; set; } = "Status End GCD";
+    public string TargetConditionType_CastingAction { get; set; } = "Casting Action";
 
     #endregion
 

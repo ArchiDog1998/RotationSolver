@@ -27,7 +27,7 @@ internal sealed class MNK_Default : MNK_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("AutoFormShift", true, "×Ô¶¯ÑÝÎä");
+        return base.CreateConfiguration().SetBool("AutoFormShift", true, "Auto use FormShift");
     }
 
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)

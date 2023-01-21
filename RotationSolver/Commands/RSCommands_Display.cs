@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace RotationSolver.Commands;
 
 internal static partial class RSCommands
 {
-    internal static void DisplayCommandHelp<T>(this T command, string extraCommand = "", Func<T, string> getHelp = null) where T : struct, Enum
+    internal static void DisplayCommandHelp<T>(this T command, string extraCommand = "", Func<T, string> getHelp = null, bool sameLine = true) where T : struct, Enum
     {
         var cmdStr = _command + " " + command.ToString();
         if (!string.IsNullOrEmpty(extraCommand))
@@ -38,7 +39,8 @@ internal static partial class RSCommands
 
             if(!string.IsNullOrEmpty(help))
             {
-                ImGui.SameLine();
+                if (sameLine) ImGui.SameLine();
+                else ImGuiHelper.Spacing();
                 ImGui.Text(" → " + help);
             }
         }

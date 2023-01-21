@@ -43,16 +43,16 @@ internal sealed partial class BLM_Default : BLM_Base
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        { DescType.HealSingle, $"{BetweenTheLines}, {Leylines}, 这个很特殊！" },
+        { DescType.HealSingle, $"{BetweenTheLines}, {Leylines}" },
         { DescType.DefenseSingle, $"{Manaward}" },
-        { DescType.MoveAction, $"{AetherialManipulation}，目标为面向夹角小于30°内最远目标。" },
+        { DescType.MoveAction, $"{AetherialManipulation}" },
     };
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
                     //.SetCombo("UseLoop", 0, "循环管理", "标准循环", "星灵循环", "压冰循环")
-                    .SetBool("AutoLeylines", true, "自动上黑魔纹");
+                    .SetBool("AutoLeylines", true, "Auto use Leylines");
     }
 
     private protected override void UpdateInfo()

@@ -20,9 +20,9 @@ internal sealed class DRG_Default : DRG_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("DRG_ShouldDelay", true, "延后红龙血")
-            .SetBool("DRG_Opener", false, "88级起手")
-            .SetBool("DRG_SafeMove", true, "安全位移");
+        return base.CreateConfiguration().SetBool("DRG_ShouldDelay", true, "Delay the dragon?")
+            .SetBool("DRG_Opener", false, "Opener in lv.88")
+            .SetBool("DRG_SafeMove", true, "Moving save");
     }
 
     public override SortedList<DescType, string> DescriptionDict => new SortedList<DescType, string>()

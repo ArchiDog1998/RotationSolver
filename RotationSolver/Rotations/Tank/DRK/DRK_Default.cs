@@ -26,7 +26,7 @@ internal sealed class DRK_Default : DRK_Base
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.HealSingle, $"{TheBlackestNight}，目标为被打的小可怜"},
+        {DescType.HealSingle, $"{TheBlackestNight}"},
         {DescType.DefenseArea, $"{DarkMissionary}"},
         {DescType.DefenseSingle, $"{Oblation}, {ShadowWall}, {DarkMind}"},
         {DescType.MoveAction, $"{Plunge}"},
@@ -36,7 +36,7 @@ internal sealed class DRK_Default : DRK_Base
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("TheBlackestNight", true, "留3000蓝");
+            .SetBool("TheBlackestNight", true, "Keep 3000 MP");
     }
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)

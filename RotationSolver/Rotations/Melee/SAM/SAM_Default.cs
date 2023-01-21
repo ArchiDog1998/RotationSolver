@@ -17,7 +17,7 @@ internal sealed class SAM_Default : SAM_Base
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetFloat("addKenki", 50, "当剑气大于该值时将必杀技·震天/九天加入循环", min: 0, max: 85, speed: 5);
+            .SetFloat("addKenki", 50, "use Kenki above.", min: 0, max: 85, speed: 5);
     }
 
     /// <summary>
@@ -41,8 +41,8 @@ internal sealed class SAM_Default : SAM_Base
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.DefenseSingle, $"能力: {ThirdEye}"},
-        {DescType.MoveAction, $"能力: {HissatsuGyoten}, "},
+        {DescType.DefenseSingle, $"{ThirdEye}"},
+        {DescType.MoveAction, $"{HissatsuGyoten}"},
     };
 
     private protected override bool GeneralGCD(out IAction act)

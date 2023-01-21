@@ -24,7 +24,6 @@ internal sealed class MCH_Default : MCH_Base
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.Description, $"标准循环会在野火前攒热量来打偶数分钟爆发.\n                     AOE和攻击小怪时不会释放野火"},
         {DescType.BreakingAction, $"{Wildfire}"},
         {DescType.DefenseArea, $"{Tactician}"},
     };
@@ -32,10 +31,10 @@ internal sealed class MCH_Default : MCH_Base
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("MCH_Opener", true, "标准起手")
-            .SetBool("MCH_Automaton", true, "机器人吃团辅")
-            .SetBool("MCH_Reassemble", true, "整备优先链锯")
-            .SetBool("DelayHypercharge", false, "强制在GCD后半段使用");
+            .SetBool("MCH_Opener", true, "Basic Opener")
+            .SetBool("MCH_Automaton", true, "Care for Automation")
+            .SetBool("MCH_Reassemble", true, "Ressamble for ChainSaw")
+            .SetBool("DelayHypercharge", false, "Use Hypercharge late");
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)

@@ -18,13 +18,13 @@ internal sealed class WHM_Default : WHM_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("UseLilyWhenFull", true, "蓝花集满时自动释放蓝花（低于苦难之心等级时不会生效）")
-                                            .SetBool("UsePreRegen", false, "倒计时5秒时给t上盾和再生");
+        return base.CreateConfiguration().SetBool("UseLilyWhenFull", true, "Auto use Lily when full")
+                                            .SetBool("UsePreRegen", false, "Regen on Tank in 5 seconds.");
     }
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.HealArea, $"GCD: {AfflatusRapture}, {Medica2}, {Cure3}, {Medica}\n                     能力: {Asylum}"},
-        {DescType.HealSingle, $"GCD: {AfflatusSolace}, {Regen}, {Cure2}, {Cure}\n                     能力: {Tetragrammaton},{DivineBenison}"},
+        {DescType.HealArea, $"{AfflatusRapture}, {Medica2}, {Cure3}, {Medica}\n{Asylum}"},
+        {DescType.HealSingle, $"{AfflatusSolace}, {Regen}, {Cure2}, {Cure}\n{Tetragrammaton},{DivineBenison}"},
         {DescType.DefenseArea, $"{Temperance}, {LiturgyoftheBell}"},
         {DescType.DefenseSingle, $"{DivineBenison}, {Aquaveil}"},
     };

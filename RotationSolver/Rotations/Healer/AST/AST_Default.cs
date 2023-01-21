@@ -18,10 +18,10 @@ internal sealed class AST_Default : AST_Base
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.HealArea, $"GCD: {AspectedHelios}, {Helios}\n                     能力: {EarthlyStar}, {CrownPlay}, {CelestialOpposition}"},
-        {DescType.HealSingle, $"GCD: {AspectedBenefic}, {Benefic2}, {Benefic}\n                     能力: {CelestialIntersection}, {EssentialDignity}"},
+        {DescType.HealArea, $"{AspectedHelios}, {Helios}\n {EarthlyStar}, {CrownPlay}, {CelestialOpposition}"},
+        {DescType.HealSingle, $"{AspectedBenefic}, {Benefic2}, {Benefic}\n{CelestialIntersection}, {EssentialDignity}"},
         {DescType.DefenseArea, $"{CollectiveUnconscious}"},
-        {DescType.DefenseSingle, $"{Exaltation}，给被挨打的T"},
+        {DescType.DefenseSingle, $"{Exaltation}"},
         {DescType.BreakingAction, $"{Divination}"}
     };
 
@@ -219,6 +219,4 @@ internal sealed class AST_Default : AST_Base
 
         return false;
     }
-
-
 }

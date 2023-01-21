@@ -46,7 +46,7 @@ internal partial class BaseAction : IBaseAction
                     result += "Dot";
                 }
             }
-            result += "-" + (IsRealGCD ? "GCD" : LocalizationManager.RightLang.Scriptwindow_Ability);
+            result += "-" + (IsRealGCD ? "GCD" : LocalizationManager.RightLang.Timeline_Ability);
             return result;
         }
     }

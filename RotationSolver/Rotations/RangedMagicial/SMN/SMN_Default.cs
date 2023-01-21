@@ -17,9 +17,9 @@ internal sealed class SMN_Default : SMN_Base
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetCombo("addSwiftcast", 0, "将即刻咏唱加入循环", "关（留着复活乱死的笨比）", "给风神", "给火神", "智能（我全都要）")
-            .SetCombo("SummonOrder", 0, "三神召唤顺序", "土神优先1：土-风-火", "土神优先2：土-火-风", "风神优先1：风-土-火")
-            .SetBool("addCrimsonCyclone", true, "自动释放火神冲锋（不在移动中）");
+            .SetCombo("addSwiftcast", 0, "Use Swiftcast", "No", "Wind", "Fire", "All")
+            .SetCombo("SummonOrder", 0, "Order", "Soil-Wind-Fire", "Soil-Fire-Wind", "Wind-Soil-Fire")
+            .SetBool("addCrimsonCyclone", true, "Auto CrimsonCyclon");
     }
 
     public SMN_Default()

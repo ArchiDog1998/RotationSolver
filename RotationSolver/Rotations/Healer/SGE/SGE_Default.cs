@@ -43,16 +43,16 @@ internal sealed class SGE_Default : SGE_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("GCDHeal", false, "自动用GCD奶");
+        return base.CreateConfiguration().SetBool("GCDHeal", false, "Auto Use GCD to heal.");
     }
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.HealArea, $"GCD: {Prognosis}\n                     能力: {Holos}, {Ixochole}, {Physis}"},
-        {DescType.HealSingle, $"GCD: {Diagnosis}\n                     能力: {Druochole}"},
+        {DescType.HealArea, $"{Prognosis}\n{Holos}, {Ixochole}, {Physis}"},
+        {DescType.HealSingle, $"{Diagnosis}\n{Druochole}"},
         {DescType.DefenseArea, $"{Panhaima}, {Kerachole}, {Prognosis}"},
-        {DescType.DefenseSingle, $"GCD: {Diagnosis}\n                     能力: {Haima}, {Taurochole}"},
-        {DescType.MoveAction, $"{Icarus}，目标为面向夹角小于30°内最远目标。"},
+        {DescType.DefenseSingle, $"{Diagnosis}\n{Haima}, {Taurochole}"},
+        {DescType.MoveAction, $"{Icarus}"},
     };
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {

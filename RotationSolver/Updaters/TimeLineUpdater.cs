@@ -17,7 +17,7 @@ namespace RotationSolver.Updaters
         static string _timelineFolder;
 
         static IEnumerable<MajorConditionSet> _conditionSet;
-        public static MajorConditionSet RightSet => _conditionSet.ElementAtOrDefault(Service.Configuration.TimelineIndex);
+        public static MajorConditionSet RightSet => _conditionSet?.ElementAtOrDefault(Service.Configuration.TimelineIndex);
 
         public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? new string[0];
 
@@ -29,7 +29,11 @@ namespace RotationSolver.Updaters
             if (customRotation == null) return;
 
             var allActions = IconReplacer.RightRotationBaseActions;
-            foreach (var conditionPair in RightSet.Conditions)
+
+            var set = RightSet;
+            if (set == null) return;
+
+            foreach (var conditionPair in set.Conditions)
             {
                 var nextAct = allActions.FirstOrDefault(a => a.ID == (uint)conditionPair.Key);
                 if (nextAct == null) continue;
@@ -51,8 +55,15 @@ namespace RotationSolver.Updaters
 
         public static void SaveFiles()
         {
-            Directory.Delete(_timelineFolder);
-            Directory.CreateDirectory(_timelineFolder);
+            try
+            {
+                Directory.Delete(_timelineFolder);
+                Directory.CreateDirectory(_timelineFolder);
+            }
+            catch
+            {
+
+            }
             foreach (var set in _conditionSet)
             {
                 set.Save(_timelineFolder);
@@ -63,9 +74,10 @@ namespace RotationSolver.Updaters
         {
             const string conditionName = "Unnamed";
             if (!_conditionSet.Any(c => c.Name == conditionName))
-                _conditionSet.Append(new MajorConditionSet(conditionName));
+            {
+                _conditionSet = _conditionSet.Union(new[] { new MajorConditionSet(conditionName) });
+            }
         }
-
 
         private static void Delete(string name)
         {
@@ -75,26 +87,40 @@ namespace RotationSolver.Updaters
         public static void DrawHeader()
         {
             var set = RightSet;
-            if (set == null) return;
+            bool hasSet = set != null;
 
-            ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
-
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
-
-            var combos = ConditionSetsName;
-            ImGui.Combo("MajorConditionCombo", ref Service.Configuration.TimelineIndex, combos, combos.Length);
-
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
-
-            if (ImGuiHelper.IconButton(Dalamud.Interface.FontAwesomeIcon.Cross, "##DeleteTimelineConditionSet"))
+            if (hasSet)
             {
-                Delete(set.Name);
+                ImGuiHelper.SetNextWidthWithName(set.Name);
+                ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
+
+                ImGui.SameLine();
             }
 
+            var combos = ConditionSetsName;
+            if (combos != null && combos.Length > Service.Configuration.TimelineIndex)
+            {
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(combos[Service.Configuration.TimelineIndex]).X + 30);
+            }
+            else
+            {
+                ImGui.SetNextItemWidth(30);
+            }
+
+            ImGui.Combo("##MajorConditionCombo", ref Service.Configuration.TimelineIndex, combos, combos.Length);
+
             ImGui.SameLine();
-            ImGuiHelper.Spacing();
+
+
+            if (hasSet)
+            {
+                if (ImGuiHelper.IconButton(Dalamud.Interface.FontAwesomeIcon.Ban, "##DeleteTimelineConditionSet"))
+                {
+                    Delete(set.Name);
+                }
+
+                ImGui.SameLine();
+            }
 
             if (ImGuiHelper.IconButton(Dalamud.Interface.FontAwesomeIcon.Plus, "##AddNewTimelineConditionSet"))
             {

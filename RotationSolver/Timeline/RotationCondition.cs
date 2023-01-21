@@ -143,11 +143,11 @@ internal class RotationCondition : ICondition
                 });
 
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
+                ImGui.SetNextItemWidth(80);
                 ImGui.Combo($"##IsOrNot{GetHashCode()}", ref Condition, new string[]
                 {
-                    LocalizationManager.RightLang.Scriptwindow_Is,
-                    LocalizationManager.RightLang.Scriptwindow_Isnot,
+                    LocalizationManager.RightLang.Timeline_Is,
+                    LocalizationManager.RightLang.Timeline_Isnot,
                 }, 2);
                 break;
 
@@ -218,8 +218,12 @@ internal class RotationCondition : ICondition
                 });
 
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
-                ImGui.Combo($"##IsNot{GetHashCode()}", ref Condition, new string[] { "Is", "Is not" }, 2);
+                ImGui.SetNextItemWidth(80);
+                ImGui.Combo($"##IsNot{GetHashCode()}", ref Condition, new string[]
+                {
+                    LocalizationManager.RightLang.Timeline_Is,
+                    LocalizationManager.RightLang.Timeline_Isnot,
+                }, 2);
 
                 ImGui.SameLine();
                 var name = _action?.Name ?? string.Empty;
@@ -231,7 +235,7 @@ internal class RotationCondition : ICondition
 
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
-                ImGui.Combo($"##调整{GetHashCode()}", ref Param1, new string[] { "Original", "Adjusted" }, 2);
+                ImGui.Combo($"##Adjust{GetHashCode()}", ref Param1, new string[] { "Original", "Adjusted" }, 2);
 
                 break;
         }
