@@ -3,7 +3,7 @@ using System.Runtime.Versioning;
 
 [assembly: AssemblyCompany("-")]
 [assembly: AssemblyConfiguration("Release")]
-[assembly: AssemblyDescription("Teach you how to perform better in combat!")]
+[assembly: AssemblyDescription("Based on the pve combat information in one frame, find the best action.")]
 [assembly: AssemblyFileVersion("1.1.0")]
 [assembly: AssemblyInformationalVersion("1.1.0")]
 [assembly: TargetPlatform("Windows7.0")]

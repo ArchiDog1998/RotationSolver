@@ -331,11 +331,12 @@ internal partial class BaseAction
             }
 
             //如果不用自动找目标，那就不打AOE
-            if (RSCommands.StateType != StateCommandType.Manual)
+            if (RSCommands.StateType == StateCommandType.Manual)
             {
                 if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
             }
             var count = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange).Count();
+
             if (count < aoeCount) return false;
         }
         return true;
