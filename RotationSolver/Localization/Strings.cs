@@ -197,7 +197,7 @@ internal class Strings
     public string Scriptwindow_ActionSetGaurd { get; set; } = "ActionGaurd";
     public string Scriptwindow_AddActionDesc { get; set; } = "Add Action";
     public string Scriptwindow_AddFunctionDesc { get; set; } = "Add Function，total {0}.";
-    public string Scriptwindow_ComboSetAuthorDefault { get; set; } = "Unknown";
+    public string Scriptwindow_TimelineDescription { get; set; } = "Add some condition to automatic use this action.";
     public string Scriptwindow_Can { get; set; } = "Can";
     public string Scriptwindow_Cannot { get; set; } = "Cannot";
     public string Scriptwindow_Is { get; set; } = "Is";

@@ -1,9 +1,11 @@
-﻿using RotationSolver.Actions.BaseAction;
+﻿using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.SigReplacers;
+using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +16,15 @@ namespace RotationSolver.Commands
 {
     internal static partial class RSCommands
     {
-        internal record NextAct(BaseAction act, DateTime deadTime);
+        internal record NextAct(IBaseAction act, DateTime deadTime);
 
         private static List<NextAct> NextActs = new List<NextAct>();
-        internal static BaseAction NextAction
+        internal static IBaseAction NextAction
         {
             get
             {
+                if (TimeLineUpdater.TimeLineAction != null) return TimeLineUpdater.TimeLineAction;
+
                 var next = NextActs.FirstOrDefault();
 
                 while (next != null && NextActs.Count > 0 && (next.deadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.act)))

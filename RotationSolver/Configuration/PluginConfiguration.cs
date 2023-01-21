@@ -24,6 +24,7 @@ public class PluginConfiguration : IPluginConfiguration
         new Dictionary<uint, byte>();
     public int AddDotGCDCount = 2;
 
+    public int TimelineIndex = 0;
     public bool AutoBurst = true;
     public bool UseAbility = true;
     public bool UseDefenceAbility = true;

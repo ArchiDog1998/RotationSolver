@@ -17,7 +17,6 @@ namespace RotationSolver;
 
 public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
-    internal static string TimelineFolder { get; private set; }
 
     private readonly WindowSystem windowSystem;
 
@@ -31,9 +30,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Address = new PluginAddressResolver();
         Service.Address.Setup();
 
-        TimelineFolder = Path.Combine(pluginInterface.ConfigDirectory.FullName, "Timeline");
-        if(!Directory.Exists(TimelineFolder)) Directory.CreateDirectory(TimelineFolder);
-
         Service.IconReplacer = new IconReplacer();
 
         _comboConfigWindow = new();
@@ -45,6 +41,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw += OverlayWindow.Draw;
 
         MajorUpdater.Enable();
+        TimeLineUpdater.Enable(pluginInterface.ConfigDirectory.FullName);
         Watcher.Enable();
         CountDown.Enable();
 
@@ -77,6 +74,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Localization.Dispose();
 
         MajorUpdater.Dispose();
+        TimeLineUpdater.SaveFiles();
         Watcher.Dispose();
         CountDown.Dispose();
 

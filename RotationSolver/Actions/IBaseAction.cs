@@ -47,6 +47,11 @@ namespace RotationSolver.Actions
         bool EnoughLevel { get; }
 
         /// <summary>
+        /// Is a GCD action.
+        /// </summary>
+        bool IsRealGCD { get; }
+
+        /// <summary>
         /// Should I use this action at this time. It will check a lot of things.
         /// Level, Enabled, Action Status, MP, Player Status, Coll down, Combo, Moving (for casting), Charges, Target, etc.
         /// </summary>

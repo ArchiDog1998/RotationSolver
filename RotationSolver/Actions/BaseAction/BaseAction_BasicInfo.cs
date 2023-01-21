@@ -72,7 +72,7 @@ internal partial class BaseAction : IBaseAction
 
     private bool IsGeneralGCD { get; }
 
-    internal bool IsRealGCD { get; }
+    public bool IsRealGCD { get; }
 
     private byte CoolDownGroup { get; }
 

@@ -38,5 +38,4 @@ internal static class MacroUpdater
             }
         }
     }
-
 }

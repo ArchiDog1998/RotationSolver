@@ -13,7 +13,7 @@ internal abstract partial class CustomRotation
     private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         IAction act = RSCommands.NextAction;
-        if (act is BaseAction a && a != null && a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return act;
+        if (act is IBaseAction a && a != null && a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return act;
 
         if (EmergencyGCD(out act)) return act;
 

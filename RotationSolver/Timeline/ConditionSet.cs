@@ -14,7 +14,7 @@ namespace RotationSolver.Timeline;
 
 internal class ConditionSet : ICondition
 {
-    public bool IsTrue(ICustomRotation combo) => Conditions.Count == 0 ? true :
+    public bool IsTrue(ICustomRotation combo) => Conditions.Count == 0 ? false :
                           IsAnd ? Conditions.All(c => c.IsTrue(combo))
                                 : Conditions.Any(c => c.IsTrue(combo));
     public List<ICondition> Conditions { get; set; } = new List<ICondition>();
