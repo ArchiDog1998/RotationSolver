@@ -72,13 +72,15 @@ internal sealed class SCH_Default : SCH_Base
         //DoT
         if (Bio.ShouldUse(out act)) return true;
 
-
         //AOE
         if (ArtofWar.ShouldUse(out act)) return true;
 
-        //单体
+        //Single
         if (Ruin.ShouldUse(out act)) return true;
         if (Ruin2.ShouldUse(out act)) return true;
+
+        //Add dot.
+        if (Bio.ShouldUse(out act, true)) return true;
 
         return false;
     }

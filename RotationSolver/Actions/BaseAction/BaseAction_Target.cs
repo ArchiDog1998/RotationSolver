@@ -250,7 +250,7 @@ internal partial class BaseAction
             target = ChoiceTarget(availableCharas, mustUse);
         }
 
-        return CheckStatus(target, mustUse);
+        return mustUse || CheckStatus(target);
     }
 
     private bool TargetDeath(out BattleChara target)
@@ -298,7 +298,7 @@ internal partial class BaseAction
             if (TargetStatus != null && !ObjectHelper.CanDot(b)) return false;
 
             //Already has status.
-            if (!CheckStatus(b, mustUse)) return false;
+            if (!mustUse && !CheckStatus(b)) return false;
 
             return true;
         }
@@ -411,10 +411,10 @@ internal partial class BaseAction
     private IEnumerable<BattleChara> TargetFilterFuncEot(IEnumerable<BattleChara> tars, bool mustUse)
     {
         if (FilterForTarget != null) return FilterForTarget(tars);
-        if (TargetStatus == null || !_isEot) return tars;
+        if (TargetStatus == null || !_isEot ||　mustUse) return tars;
 
-        var canDot = tars.Where(ObjectHelper.CanDot);
-        var DontHave = canDot.Where(b => CheckStatus(b, mustUse));
+        var canDot = mustUse ? tars : tars.Where(ObjectHelper.CanDot);
+        var DontHave = canDot.Where(CheckStatus);
 
         if (mustUse)
         {
@@ -433,11 +433,10 @@ internal partial class BaseAction
     /// </summary>
     /// <param name="tar"></param>
     /// <returns>True for add Eot.</returns>
-    private bool CheckStatus(BattleChara tar, bool mustUse)
+    private bool CheckStatus(BattleChara tar)
     {
         if (tar == null) return false;
 
-        if (mustUse) return true;
         if (TargetStatus == null) return true;
 
         return tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus);
