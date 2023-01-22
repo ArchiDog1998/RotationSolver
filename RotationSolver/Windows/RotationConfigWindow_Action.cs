@@ -54,7 +54,7 @@ internal partial class RotationConfigWindow
 
     private void DrawTimelineCondition()
     {
-        ImGui.Text(LocalizationManager.RightLang.Timeline_TimelineDescription);
+        ImGui.TextWrapped(LocalizationManager.RightLang.Timeline_TimelineDescription);
 
         var rotation = IconReplacer.RightNowRotation;
         if(rotation == null) return;

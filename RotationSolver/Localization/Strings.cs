@@ -82,7 +82,7 @@ internal class Strings
     public string Configwindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string Configwindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
     public string Configwindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in 5s";
-    public string Configwindow_AttackItem_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.\nOnly player-current-job specific commands will be prompted.";
+    public string Configwindow_AttackItem_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
     public string Configwindow_AttackItem_KeyName { get; set; } = "The key name is";
     public string Configwindow_AttackItem_Enable { get; set; } = "Enable";
     public string Configwindow_Events_AddEvent { get; set; } = "AddEvents";

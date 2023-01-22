@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
+using Dalamud.Utility;
 using ImGuiNET;
 using RotationSolver;
 using RotationSolver.Configuration.RotationConfig;
@@ -21,6 +22,12 @@ internal partial class RotationConfigWindow
     private void DrawRotationTab()
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_AttackItem_Description);
+
+        ImGui.SameLine();
+        if (ImGui.Button("Wiki"))
+        {
+            Util.OpenLink("https://archidog1998.github.io/RotationSolver/RotationDev");
+        }
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 

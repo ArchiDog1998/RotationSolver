@@ -1,3 +1,3 @@
 - [Quick Start](/quick-start.md)
-- [Rotation Development](/Development/)
-- [Plugin Development](/Development/)
+- [**Rotation Development**](/RotationDev/)
+- [**Plugin Development**](/Development/)
