@@ -112,4 +112,41 @@ internal static class StatusHelper
         return obj.StatusList.Where(status => isFromSelf ? status.SourceId == Service.ClientState.LocalPlayer.ObjectId
         || status.SourceObject?.OwnerId == Service.ClientState.LocalPlayer.ObjectId : true);
     }
+
+    internal static bool IsInvincible(this Status status)
+    {
+        if (status.GameData.Icon == 15024) return true;
+        return false;
+    }
+
+    static readonly StatusID[] dangeriousStatus = new StatusID[]
+    {
+        StatusID.Doom,
+        StatusID.Amnesia,
+        StatusID.Stun,
+        StatusID.Stun2,
+        StatusID.Sleep,
+        StatusID.Sleep2,
+        StatusID.Sleep3,
+        StatusID.Pacification,
+        StatusID.Pacification2,
+        StatusID.Silence,
+        StatusID.Slow,
+        StatusID.Slow2,
+        StatusID.Slow3,
+        StatusID.Slow4,
+        StatusID.Slow5,
+        StatusID.Blind,
+        StatusID.Blind2,
+        StatusID.Blind3,
+        StatusID.Paralysis,
+        StatusID.Paralysis2,
+        StatusID.Nightmare,
+        StatusID.Necrosis,
+    };
+
+    internal static bool IsDangerous(this Status status)
+    {
+        return dangeriousStatus.Any(id => (uint)id == status.StatusId);
+    }
 }

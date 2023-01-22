@@ -137,32 +137,7 @@ internal static partial class TargetUpdater
             return false;
         });
 
-        var dangeriousStatus = new StatusID[]
-        {
-            StatusID.Doom,
-            StatusID.Amnesia,
-            StatusID.Stun,
-            StatusID.Stun2,
-            StatusID.Sleep,
-            StatusID.Sleep2,
-            StatusID.Sleep3,
-            StatusID.Pacification,
-            StatusID.Pacification2,
-            StatusID.Silence,
-            StatusID.Slow,
-            StatusID.Slow2,
-            StatusID.Slow3,
-            StatusID.Slow4,
-            StatusID.Slow5,
-            StatusID.Blind,
-            StatusID.Blind2,
-            StatusID.Blind3,
-            StatusID.Paralysis,
-            StatusID.Paralysis2,
-            StatusID.Nightmare,
-            StatusID.Necrosis,
-        };
-        DyingPeople = WeakenPeople.Where(p => p.HasStatus(false, dangeriousStatus));
+        DyingPeople = WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous));
 
         SayHelloToAuthor();
         #endregion

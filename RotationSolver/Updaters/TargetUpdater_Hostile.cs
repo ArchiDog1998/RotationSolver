@@ -37,11 +37,7 @@ internal static partial class TargetUpdater
 
     internal static bool IsHostileCastingToTank { get; private set; } = false;
 
-    private static bool IsInvincibleStatus(Status status)
-    {
-        if (status.Icon == 15024) return true;
-        return false;
-    }
+
 
     internal unsafe static void UpdateHostileTargets()
     {
@@ -51,8 +47,7 @@ internal static partial class TargetUpdater
         {
             if (obj is BattleChara c && c.CurrentHp != 0)
             {
-                if (c.StatusList.Any(status => IsInvincibleStatus(Service.DataManager.GetExcelSheet<Status>()
-                    .GetRow(status.StatusId)))) return false;
+                if (c.StatusList.Any(StatusHelper.IsInvincible)) return false;
 
                 //不可选中
                 if (!c.IsTargetable()) return false;
