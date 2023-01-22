@@ -19,7 +19,7 @@ internal sealed class BRD_Default : BRD_Base
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("BindWAND", false, "猛者绑定旅神歌")
+            .SetBool("BindWAND", false, "Use Raging Strikes on WAND")
             .SetCombo("FirstSong", 0, "First Song", "WAND", "MAGE", "ARMY")
             .SetFloat("WANDTime", 43, "WAND Time", min: 0, max: 45, speed: 1)
             .SetFloat("MAGETime", 34, "MAGE Time", min: 0, max: 45, speed: 1)
@@ -125,11 +125,10 @@ internal sealed class BRD_Default : BRD_Base
 
         if (SettingBreak && Song != Song.NONE && MagesBallad.EnoughLevel)
         {
-
             //猛者强击
             if (RagingStrikes.ShouldUse(out act))
             {
-                if (BindWAND && Song == Song.WANDERER) return true;
+                if (BindWAND && Song == Song.WANDERER && WanderersMinuet.EnoughLevel) return true;
                 if (!BindWAND) return true;
             }
 
