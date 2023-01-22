@@ -10,71 +10,52 @@ namespace RotationSolver.Windows.RotationConfigWindow;
 
 internal partial class RotationConfigWindow
 {
+    private static void DrawParamTabItem(string name, Action act)
+    {
+        if (act == null) return;
+        if (ImGui.BeginTabItem(name))
+        {
+            if (ImGui.BeginChild("Param", new Vector2(0f, -1f), true))
+            {
+                act();
+                ImGui.EndChild();
+            }
+            ImGui.EndTabItem();
+        }
+    }
+
     private void DrawParamTab()
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_Params_Description);
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-        if (ImGui.BeginChild("Param", new Vector2(0f, -1f), true))
+        if (ImGui.BeginTabBar("Param Items"))
         {
-            //Never Repalce Icon
-            DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_NeverReplaceIcon,
-                ref Service.Configuration.NeverReplaceIcon,
-                LocalizationManager.RightLang.Configwindow_Param_NeverReplaceIconDesc);
+            DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Basic, DrawParamBasic);
+            DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Display, DrawParamDisplay);
+            DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Action, DrawParamAction);
+            DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Conditon, DrawParamCondition);
+            DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Target, DrawParamTarget);
+            DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Hostile, DrawParamHostile);
 
-            //Use Overlay Window
-            DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseOverlayWindow,
-                ref Service.Configuration.UseOverlayWindow,
-                LocalizationManager.RightLang.Configwindow_Param_UseOverlayWindowDesc);
-
-            if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Param_BasicSettings))
-            {
-                DrawParamBasic();
-            }
-
-            ImGui.Separator();
-
-            if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Param_DisplayEnhancement))
-            {
-                DrawParamDisplay();
-            }
-
-            ImGui.Separator();
-
-            if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Param_Action))
-            {
-                DrawParamAction();
-            }
-
-            ImGui.Separator();
-
-            if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Param_Conditon))
-            {
-                DrawParamCondition();
-            }
-
-            ImGui.Separator();
-
-            if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Param_Target))
-            {
-                DrawParamTarget();
-            }
-
-            ImGui.Separator();
-
-            if (ImGui.CollapsingHeader(LocalizationManager.RightLang.Configwindow_Param_Hostile))
-            {
-                DrawParamHostile();
-            }
-
-            ImGui.EndChild();
+            ImGui.EndTabBar();
         }
         ImGui.PopStyleVar();
     }
 
     private void DrawParamBasic()
     {
+        //Never Repalce Icon
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_NeverReplaceIcon,
+            ref Service.Configuration.NeverReplaceIcon,
+            LocalizationManager.RightLang.Configwindow_Param_NeverReplaceIconDesc);
+
+        //Use Overlay Window
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseOverlayWindow,
+            ref Service.Configuration.UseOverlayWindow,
+            LocalizationManager.RightLang.Configwindow_Param_UseOverlayWindowDesc);
+
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_WeaponDelay,
             ref Service.Configuration.WeaponDelayMin, ref Service.Configuration.WeaponDelayMax);
 
@@ -154,12 +135,11 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_PoslockCasting,
                 ref Service.Configuration.PoslockCasting);
 
-
-        ImGui.SameLine();
-        ImGuiHelper.Spacing();
-
         if (Service.Configuration.PoslockCasting)
         {
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
             DrawCombo(LocalizationManager.RightLang.Configwindow_Param_PoslockModifier,
                 ref Service.Configuration.PoslockModifier, EnumTranslations.ToName,
                 ConfigurationHelper.Keys,

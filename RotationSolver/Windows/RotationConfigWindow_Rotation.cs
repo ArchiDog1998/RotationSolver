@@ -24,9 +24,9 @@ internal partial class RotationConfigWindow
         ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_AttackItem_Description);
 
         ImGui.SameLine();
-        if (ImGui.Button("Wiki"))
+        if (ImGui.Button("Dev Wiki"))
         {
-            Util.OpenLink("https://archidog1998.github.io/RotationSolver/RotationDev");
+            Util.OpenLink("https://archidog1998.github.io/RotationSolver/#/RotationDev/");
         }
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
