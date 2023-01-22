@@ -35,7 +35,7 @@
   "Configwindow_Helper_RunCommand": "Click to execute the command",
   "Configwindow_Helper_CopyCommand": "Right-click to copy command",
   "Configwindow_Helper_InsertCommand": "Insert \"{0}\" first in 5s",
-  "Configwindow_AttackItem_Description": "You can enable the function for each job you want and configure the setting about how to use actions.\nOnly player-current-job specific commands will be prompted.",
+  "Configwindow_AttackItem_Description": "You can enable the function for each job you want and configure the setting about how to use actions.",
   "Configwindow_AttackItem_KeyName": "The key name is",
   "Configwindow_AttackItem_Enable": "Enable",
   "Configwindow_Events_AddEvent": "AddEvents",

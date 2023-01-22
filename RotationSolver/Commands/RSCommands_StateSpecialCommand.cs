@@ -69,10 +69,10 @@ namespace RotationSolver.Commands
             var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
                 Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
 
+            doingSomething(role);
+
             //Saying out.
             if (Service.Configuration.SayOutStateChanged) Watcher.Speak(sayout(type, role));
-
-            doingSomething(role);
         }
     }
 }
