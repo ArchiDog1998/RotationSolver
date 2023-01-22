@@ -18,7 +18,7 @@ internal sealed class AST_Default : AST_Base
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.HealArea, $"{AspectedHelios}, {Helios}\n {EarthlyStar}, {CrownPlay}, {CelestialOpposition}"},
+        {DescType.HealArea, $"{AspectedHelios}, {Helios}\n {EarthlyStar}, {CelestialOpposition}"},
         {DescType.HealSingle, $"{AspectedBenefic}, {Benefic2}, {Benefic}\n{CelestialIntersection}, {EssentialDignity}"},
         {DescType.DefenseArea, $"{CollectiveUnconscious}"},
         {DescType.DefenseSingle, $"{Exaltation}"},
@@ -148,7 +148,7 @@ internal sealed class AST_Default : AST_Base
         if (DrawnCrownCard == CardType.LORD || MinorArcana.WillHaveOneChargeGCD(1))
         {
             //进攻牌，随便发。或者CD要转好了，赶紧发掉。
-            if (CrownPlay.ShouldUse(out act)) return true;
+            if (MinorArcana.ShouldUse(out act)) return true;
         }
 
         //发牌
@@ -170,7 +170,7 @@ internal sealed class AST_Default : AST_Base
         if (CelestialIntersection.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         //奶量牌，要看情况。
-        if (DrawnCrownCard == CardType.LADY && CrownPlay.ShouldUse(out act)) return true;
+        if (DrawnCrownCard == CardType.LADY && MinorArcana.ShouldUse(out act)) return true;
 
         var tank = TargetUpdater.PartyTanks;
         var isBoss = Malefic.IsTargetBoss;
@@ -215,7 +215,7 @@ internal sealed class AST_Default : AST_Base
         if (Player.HasStatus(true, StatusID.HoroscopeHelios) && Horoscope.ShouldUse(out act)) return true;
 
         //奶量牌，要看情况。
-        if (DrawnCrownCard == CardType.LADY && CrownPlay.ShouldUse(out act)) return true;
+        if (DrawnCrownCard == CardType.LADY && MinorArcana.ShouldUse(out act)) return true;
 
         return false;
     }

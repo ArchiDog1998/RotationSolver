@@ -198,13 +198,13 @@ internal abstract class AST_Base : CustomRotation.CustomRotation
         ActionCheck = b => InCombat && DrawnCrownCard == CardType.NONE,
     };
 
-    /// <summary>
-    /// 出王冠卡
-    /// </summary>
-    public static IBaseAction CrownPlay { get; } = new BaseAction(ActionID.CrownPlay)
-    {
-        ActionCheck = b => DrawnCrownCard is CardType.LADY or CardType.LORD,
-    };
+    ///// <summary>
+    ///// 出王冠卡
+    ///// </summary>
+    //public static IBaseAction CrownPlay { get; } = new BaseAction(ActionID.CrownPlay)
+    //{
+    //    ActionCheck = b => DrawnCrownCard is CardType.LADY or CardType.LORD,
+    //};
 
     /// <summary>
     /// 太阳神之衡
