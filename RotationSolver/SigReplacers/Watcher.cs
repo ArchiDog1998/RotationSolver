@@ -116,7 +116,7 @@ namespace RotationSolver.SigReplacers
             if (flag != 0)
             {
                 Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
-                ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 94662, action.Icon);
+                ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 0, action.Icon);
             }
 #endif
 
@@ -125,9 +125,8 @@ namespace RotationSolver.SigReplacers
                 && ConfigurationHelper.ActionPositionals.TryGetValue(id, out var loc)
                 && loc.Tags.Length > 0 && !loc.Tags.Contains(flag))
             {
-                var str = string.Format(LocalizationManager.RightLang.Action_WrongPositional, loc.Loc.ToName());
-                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, str, "",
-                    ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 0, action.Icon);
+                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, loc.Loc.ToName(), "",
+                    ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 94662, action.Icon);
                 if (!string.IsNullOrEmpty(Service.Configuration.PositionalErrorText))
                 {
                     Speak(Service.Configuration.PositionalErrorText);
