@@ -65,7 +65,7 @@ internal sealed class SGE_Default : SGE_Base
         if (base.EmergencyAbility(abilitiesRemaining, nextGCD, out act)) return true;
 
         //下个技能是
-        if (nextGCD.IsAnySameAction(false, Pneuma, EukrasianDiagnosis,
+        if (nextGCD.IsTheSameTo(false, Pneuma, EukrasianDiagnosis,
             EukrasianPrognosis, Diagnosis, Prognosis))
         {
             //活化

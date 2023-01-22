@@ -36,7 +36,7 @@ internal sealed class RDM_Default : RDM_Base
     {
         act = null;
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
-        if (nextGCD.IsAnySameAction(true, Zwerchhau, Redoublement, Moulinet))
+        if (nextGCD.IsTheSameTo(true, Zwerchhau, Redoublement, Moulinet))
         {
             if (Service.Configuration.AutoBurst && Embolden.CanUse(out act, mustUse: true)) return true;
         }
@@ -47,7 +47,7 @@ internal sealed class RDM_Default : RDM_Base
             if (Embolden.CanUse(out act, mustUse: true)) return true;
         }
         //倍增要放到魔连攻击之后
-        if (ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Zwerchhau, Riposte))
+        if (ManaStacks == 3 || Level < 68 && !nextGCD.IsTheSameTo(true, Zwerchhau, Riposte))
         {
             if (!canUseMagic(act) && Manafication.CanUse(out act)) return true;
         }

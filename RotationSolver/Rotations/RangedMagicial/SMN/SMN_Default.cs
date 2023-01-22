@@ -145,21 +145,21 @@ internal sealed class SMN_Default : SMN_Base
             default:
                 break;
             case 1:
-                if (nextGCD.IsAnySameAction(true, Slipstream) || Attunement == 0 && Player.HasStatus(true, StatusID.GarudasFavor))
+                if (nextGCD.IsTheSameTo(true, Slipstream) || Attunement == 0 && Player.HasStatus(true, StatusID.GarudasFavor))
                 {
                     if (Swiftcast.CanUse(out act, mustUse: true)) return true;
                 }
                 break;
             case 2:
-                if (InIfrit && (nextGCD.IsAnySameAction(true, Gemshine, PreciousBrilliance) || IsMoving))
+                if (InIfrit && (nextGCD.IsTheSameTo(true, Gemshine, PreciousBrilliance) || IsMoving))
                 {
                     if (Swiftcast.CanUse(out act, mustUse: true)) return true;
                 }
                 break;
 
             case 3:
-                if (nextGCD.IsAnySameAction(true, Slipstream) || Attunement == 0 && Player.HasStatus(true, StatusID.GarudasFavor) ||
-                   InIfrit && (nextGCD.IsAnySameAction(true, Gemshine, PreciousBrilliance) || IsMoving))
+                if (nextGCD.IsTheSameTo(true, Slipstream) || Attunement == 0 && Player.HasStatus(true, StatusID.GarudasFavor) ||
+                   InIfrit && (nextGCD.IsTheSameTo(true, Gemshine, PreciousBrilliance) || IsMoving))
                 {
                     if (Swiftcast.CanUse(out act, mustUse: true)) return true;
                 }

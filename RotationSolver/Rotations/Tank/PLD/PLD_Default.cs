@@ -120,7 +120,7 @@ internal sealed class PLD_Default : PLD_Base
     //紧急使用的能力
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.IsAnySameAction(true, RiotBlade) || nextGCD.IsAnySameAction(true, GoringBlade))//插在暴乱剑或沥血剑前
+        if (nextGCD.IsTheSameTo(true, RiotBlade) || nextGCD.IsTheSameTo(true, GoringBlade))//插在暴乱剑或沥血剑前
         {
             if (FightorFlight.CanUse(out act) && abilitiesRemaining == 1) return true;//战逃
         }

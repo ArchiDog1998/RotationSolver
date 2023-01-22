@@ -60,7 +60,7 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
 
         private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
         {
-            if (nextGCD.IsAnySameAction(false, Selfdestruct, FinalSting))
+            if (nextGCD.IsTheSameTo(false, Selfdestruct, FinalSting))
             {
                 if (Swiftcast.CanUse(out act)) return true;
             }

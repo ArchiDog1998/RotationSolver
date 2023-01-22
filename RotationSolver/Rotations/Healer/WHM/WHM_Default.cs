@@ -76,7 +76,7 @@ internal sealed class WHM_Default : WHM_Base
             ThinAir.CanUse(out act)) return true;
 
         //加个全大赦,狂喜之心 医济医治愈疗
-        if (nextGCD.IsAnySameAction(true, AfflatusRapture, Medica, Medica2, Cure3))
+        if (nextGCD.IsTheSameTo(true, AfflatusRapture, Medica, Medica2, Cure3))
         {
             if (PlenaryIndulgence.CanUse(out act)) return true;
         }

@@ -41,7 +41,7 @@ internal sealed class SCH_Default : SCH_Base
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //秘策绑定单盾群盾
-        if (nextGCD.IsAnySameAction(true, Succor, Adloquium))
+        if (nextGCD.IsTheSameTo(true, Succor, Adloquium))
         {
             if (Recitation.CanUse(out act)) return true;
         }

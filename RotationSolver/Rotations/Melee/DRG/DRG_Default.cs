@@ -40,8 +40,8 @@ internal sealed class DRG_Default : DRG_Base
     }
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.IsAnySameAction(true, FullThrust, CoerthanTorment)
-            || Player.HasStatus(true, StatusID.LanceCharge) && nextGCD.IsAnySameAction(false, FangandClaw))
+        if (nextGCD.IsTheSameTo(true, FullThrust, CoerthanTorment)
+            || Player.HasStatus(true, StatusID.LanceCharge) && nextGCD.IsTheSameTo(false, FangandClaw))
         {
             //Áú½£
             if (abilityRemain == 1 && LifeSurge.CanUse(out act, emptyOrSkipCombo: true)) return true;

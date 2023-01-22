@@ -93,7 +93,7 @@ internal sealed class BRD_Default : BRD_Base
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //如果接下来要上毒或者要直线射击，那算了。
-        if (nextGCD.IsAnySameAction(true, StraitShoot, VenomousBite, Windbite, IronJaws))
+        if (nextGCD.IsTheSameTo(true, StraitShoot, VenomousBite, Windbite, IronJaws))
         {
             return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
         }

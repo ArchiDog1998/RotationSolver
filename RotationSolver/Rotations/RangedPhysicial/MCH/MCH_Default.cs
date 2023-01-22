@@ -96,28 +96,28 @@ internal sealed class MCH_Default : MCH_Base
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //等级小于钻头时,绑定狙击弹
-        if (!Drill.EnoughLevel && nextGCD.IsAnySameAction(true, CleanShot))
+        if (!Drill.EnoughLevel && nextGCD.IsTheSameTo(true, CleanShot))
         {
             if (Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //等级小于90时,整备不再留层数
         if ((!ChainSaw.EnoughLevel || !Configs.GetBool("MCH_Reassemble"))
-            && nextGCD.IsAnySameAction(false, AirAnchor, Drill))
+            && nextGCD.IsTheSameTo(false, AirAnchor, Drill))
         {
             if (Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //整备优先链锯
-        if (Configs.GetBool("MCH_Reassemble") && nextGCD.IsAnySameAction(true, ChainSaw))
+        if (Configs.GetBool("MCH_Reassemble") && nextGCD.IsTheSameTo(true, ChainSaw))
         {
             if (Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //如果接下来要搞三大金刚了，整备吧！
-        if (ChainSaw.EnoughLevel && nextGCD.IsAnySameAction(true, AirAnchor, Drill))
+        if (ChainSaw.EnoughLevel && nextGCD.IsTheSameTo(true, AirAnchor, Drill))
         {
             if (Reassemble.CanUse(out act)) return true;
         }
         //起手在链锯前释放野火
-        if (nextGCD.IsAnySameAction(true, ChainSaw) && !IsLastGCD(true, HeatBlast))
+        if (nextGCD.IsTheSameTo(true, ChainSaw) && !IsLastGCD(true, HeatBlast))
         {
             if (SettingBreak && Configs.GetBool("MCH_Opener") && Wildfire.CanUse(out act)) return true;
         }

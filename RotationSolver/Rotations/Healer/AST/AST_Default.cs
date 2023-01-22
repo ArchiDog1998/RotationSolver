@@ -74,7 +74,7 @@ internal sealed class AST_Default : AST_Base
         if (base.EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
 
         //如果要群奶了，先上个天宫图！
-        if (nextGCD.IsAnySameAction(true, AspectedHelios, Helios))
+        if (nextGCD.IsTheSameTo(true, AspectedHelios, Helios))
         {
             if (Horoscope.CanUse(out act)) return true;
 
@@ -83,7 +83,7 @@ internal sealed class AST_Default : AST_Base
         }
 
         //如果要单奶了，先上星位合图！
-        if (nextGCD.IsAnySameAction(true, Benefic, Benefic2, AspectedBenefic))
+        if (nextGCD.IsTheSameTo(true, Benefic, Benefic2, AspectedBenefic))
         {
             if (Synastry.CanUse(out act)) return true;
         }
