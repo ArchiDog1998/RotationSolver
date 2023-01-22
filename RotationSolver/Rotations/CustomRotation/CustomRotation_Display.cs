@@ -7,6 +7,7 @@ using Lumina.Data.Parsing;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
+using RotationSolver.Windows.RotationConfigWindow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,23 +61,7 @@ namespace RotationSolver.Rotations.CustomRotation
             ImGuiHelper.HoveredString(LocalizationManager.RightLang.Configwindow_Helper_OpenSource);
         }, () =>
         {
-            int isAllTargetAsHostile = (byte)IconReplacer.GetTargetHostileType(Job);
-            ImGui.SetNextItemWidth(300);
-            if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Param_RightNowTargetToHostileType + $"##HostileType{GetHashCode()}", ref isAllTargetAsHostile, new string[]
-            {
-                LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType1,
-                LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType2,
-                LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType3,
-            }, 3))
-            {
-                Service.Configuration.TargetToHostileTypes[Job.RowId] = (byte)isAllTargetAsHostile;
-                Service.Configuration.Save();
-            }
-
-            if(isAllTargetAsHostile != 2 && !Service.Configuration.AutoOffBetweenArea)
-            {
-                ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.Configwindow_Param_NoticeUnexpectedCombat);
-            }
+            RotationConfigWindow.DrawRotationRole(this);
 
             Configs.Draw(canAddButton);
         });

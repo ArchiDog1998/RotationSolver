@@ -36,6 +36,7 @@ internal sealed class RPR_Default : RPR_Base
         {DescType.DefenseSingle, $"{ArcaneCrest}"},
         {DescType.MoveAction, $"{HellsIngress}"},
     };
+
     private protected override IAction CountDownAction(float remainTime)
     {
         //倒数收获月

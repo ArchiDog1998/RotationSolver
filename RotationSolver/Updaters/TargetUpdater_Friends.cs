@@ -162,10 +162,9 @@ internal static partial class TargetUpdater
 
         var job = (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id;
 
-        float value;
         if(PartyMembers.Count() > 2)
         {
-            var hotSubArea = Service.Configuration.HealingOfTimeSubtractAreas.TryGetValue(job, out value) ? value : 0.3f;
+            var hotSubArea = job.GetHealingOfTimeSubtractArea();
 
             var areaHots = new StatusID[]
             {
@@ -190,7 +189,7 @@ internal static partial class TargetUpdater
             CanHealAreaAbility = CanHealAreaSpell = false;
         }
 
-        var hotSubSingle = Service.Configuration.HealingOfTimeSubtractSingles.TryGetValue(job, out value) ? value : 0.3f;
+        var hotSubSingle = job.GetHealingOfTimeSubtractSingle();
 
         var singleHots = new StatusID[]
         {
@@ -200,7 +199,7 @@ internal static partial class TargetUpdater
             StatusID.Regen3
         };
 
-        var healsingAbility = Service.Configuration.HealthSingleAbilities.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleAbility;
+        var healsingAbility = job.GetHealSingleAbility();
         //Hot衰减
         var abilityCount = PartyMembers.Count(p =>
         {
@@ -213,7 +212,8 @@ internal static partial class TargetUpdater
         });
         CanHealSingleAbility = abilityCount > 0;
 
-        var healsingSpell = Service.Configuration.HealthSingleSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleSpell;
+
+        var healsingSpell = job.GetHealSingleSpell();
 
         var gcdCount = PartyMembers.Count(p =>
         {

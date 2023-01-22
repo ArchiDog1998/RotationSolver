@@ -80,16 +80,12 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawRotation(ICustomRotation rotation, bool canAddButton)
+    internal static void DrawRotationRole(ICustomRotation rotation)
     {
-        ImGui.Spacing();
-
         DrawTargetHostileTYpe(rotation);
         DrawSpecialRoleSettings(rotation.Job.GetJobRole(), rotation.JobIDs[0]);
 
         ImGui.Spacing();
-
-        rotation.Configs.Draw(canAddButton);
     }
 
     private static void DrawTargetHostileTYpe(ICustomRotation rotation)
@@ -105,6 +101,11 @@ internal partial class RotationConfigWindow
         {
             Service.Configuration.TargetToHostileTypes[rotation.Job.RowId] = (byte)isAllTargetAsHostile;
             Service.Configuration.Save();
+        }
+
+        if (isAllTargetAsHostile != 2 && !Service.Configuration.AutoOffBetweenArea)
+        {
+            ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.Configwindow_Param_NoticeUnexpectedCombat);
         }
     }
 

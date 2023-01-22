@@ -57,11 +57,11 @@ internal partial class BaseAction
     }
     internal static bool TankBreakOtherCheck(ClassJobID id, BattleChara chara)
     {
-        var tankHealth = Service.Configuration.HealthForDyingTanks.TryGetValue(id, out var value) ? value : 0.15f;
+        var tankHealth = id.GetHealthForDyingTank();
 
         return TargetUpdater.HaveHostilesInRange
             && Service.ClientState.LocalPlayer.GetHealthRatio() < tankHealth
-            && TargetUpdater.PartyMembersAverHP > tankHealth + 0.1f;
+            && TargetUpdater.PartyMembersAverHP > tankHealth + 0.05f;
     }
 
     private bool FindTarget(bool mustUse, out BattleChara target)
