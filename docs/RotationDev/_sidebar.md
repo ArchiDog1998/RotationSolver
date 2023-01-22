@@ -1,2 +1,4 @@
-- [Set Up](RotationDev/set-up.md)
-- [Simple Rotation](RotationDev/Simple-rotation.md)
+- Getting Started
+  - [Set Up](RotationDev/set-up.md)
+  - [Simple Rotation](RotationDev/Simple-rotation.md)
+
