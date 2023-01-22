@@ -26,6 +26,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public int TimelineIndex = 0;
     public bool AutoBurst = true;
+    public bool AutoOffBetweenArea = true;
     public bool UseAbility = true;
     public bool UseDefenceAbility = true;
     public bool NeverReplaceIcon = false;

@@ -30,7 +30,7 @@ internal partial class RotationConfigWindow
 
     private void DrawActionList()
     {
-        ImGui.Text(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 

@@ -18,7 +18,7 @@ internal partial class RotationConfigWindow
         ImGui.SameLine();
         ImGuiHelper.Spacing();
 
-        ImGui.Text(LocalizationManager.RightLang.Configwindow_Events_Description);
+        ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_Events_Description);
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 

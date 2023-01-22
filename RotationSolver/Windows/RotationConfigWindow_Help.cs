@@ -12,7 +12,7 @@ namespace RotationSolver.Windows.RotationConfigWindow
     {
         private void DrawHelpTab()
         {
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
 
             ImGui.SameLine();
 

@@ -12,7 +12,7 @@ internal partial class RotationConfigWindow
 {
     private void DrawParamTab()
     {
-        ImGui.Text(LocalizationManager.RightLang.Configwindow_Params_Description);
+        ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_Params_Description);
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
@@ -92,6 +92,9 @@ internal partial class RotationConfigWindow
 
         DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_AddDotGCDCount,
             ref Service.Configuration.AddDotGCDCount, min: 0, max: 3);
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_AutoOffBetweenArea,
+            ref Service.Configuration.AutoOffBetweenArea);
     }
 
     private void DrawParamDisplay()

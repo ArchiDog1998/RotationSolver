@@ -1,4 +1,6 @@
 ﻿using Dalamud.Interface;
+using Dalamud.Interface.Colors;
+using Dalamud.Interface.Style;
 using Dalamud.Utility;
 using ImGuiNET;
 using Lumina.Data.Parsing;
@@ -60,16 +62,22 @@ namespace RotationSolver.Rotations.CustomRotation
         {
             int isAllTargetAsHostile = (byte)IconReplacer.GetTargetHostileType(Job);
             ImGui.SetNextItemWidth(300);
-            if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Params_RightNowTargetToHostileType + $"##HostileType{GetHashCode()}", ref isAllTargetAsHostile, new string[]
+            if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Param_RightNowTargetToHostileType + $"##HostileType{GetHashCode()}", ref isAllTargetAsHostile, new string[]
             {
-                                        LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType1,
-                                        LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType2,
-                                        LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType3,
+                LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType1,
+                LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType2,
+                LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType3,
             }, 3))
             {
                 Service.Configuration.TargetToHostileTypes[Job.RowId] = (byte)isAllTargetAsHostile;
                 Service.Configuration.Save();
             }
+
+            if(isAllTargetAsHostile != 2 && !Service.Configuration.AutoOffBetweenArea)
+            {
+                ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.Configwindow_Param_NoticeUnexpectedCombat);
+            }
+
             Configs.Draw(canAddButton);
         });
     }
