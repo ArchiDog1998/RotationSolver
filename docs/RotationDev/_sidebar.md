@@ -1,2 +1,2 @@
-- [Set Up](/set-up.md)
-- [Simple Rotation](/simple-rotation.md)
+- [Set Up](set-up.md)
+- [Simple Rotation](Simple-rotation.md)
