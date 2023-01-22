@@ -49,18 +49,18 @@ internal partial class RotationConfigWindow
 
             if (ImGui.BeginTabItem(key.ToName()))
             {
+                //Display the tooltip on the header.
+                if (ImGui.IsItemHovered() && _roleDescriptionValue.TryGetValue(key, out string roleDesc))
+                {
+                    ImGui.SetTooltip(roleDesc);
+                }
+
                 if (ImGui.BeginChild("Rotation Items", new Vector2(0f, -1f), true))
                 {
                     DrawRotations(rotations);
                     ImGui.EndChild();
                 }
                 ImGui.EndTabItem();
-            }
-
-            //Display the tooltip on the header.
-            if (ImGui.IsItemHovered() && _roleDescriptionValue.TryGetValue(key, out string roleDesc))
-            {
-                ImGui.SetTooltip(roleDesc);
             }
         }
     }
