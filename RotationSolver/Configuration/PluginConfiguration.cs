@@ -42,7 +42,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool SayPotional = true;
 
     public bool FlytextPositional = true;
-
+    public bool HealOutOfCombat = false;
     public bool ShowInfoOnToast = true;
     public bool RaiseAll = false;
     public bool CastingDisplay = true;
@@ -53,7 +53,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool RaiseBrinkofDeath = true;
     public int LessMPNoRaise = 0;
     public bool AutoShield = true;
-    public bool AddEnemyListToHostile = false;
+    public bool AddEnemyListToHostile = true;
     public bool UseAOEWhenManual = false;
     public bool UseItem = false;
     public bool PositionalFeedback = true;

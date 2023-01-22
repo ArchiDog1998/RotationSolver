@@ -246,6 +246,9 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_StartOnCountdown,
             ref Service.Configuration.StartOnCountdown);
 
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_HealOutOfCombat,
+            ref Service.Configuration.HealOutOfCombat);
+
         const float speed = 0.005f;
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_HealthDifference,
              ref Service.Configuration.HealthDifference,

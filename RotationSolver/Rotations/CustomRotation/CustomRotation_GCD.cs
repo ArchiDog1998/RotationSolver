@@ -27,7 +27,7 @@ internal abstract partial class CustomRotation
         }
 
         //General Heal
-        if (TargetUpdater.HPNotFull && ActionUpdater.InCombat)
+        if (TargetUpdater.HPNotFull && (ActionUpdater.InCombat || Service.Configuration.HealOutOfCombat))
         {
             if ((specialType == SpecialCommandType.HealArea || CanHealAreaSpell) && HealAreaGCD(out act)) return act;
             if ((specialType == SpecialCommandType.HealSingle || CanHealSingleSpell) && HealSingleGCD(out act)) return act;

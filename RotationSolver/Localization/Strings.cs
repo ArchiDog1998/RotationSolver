@@ -148,6 +148,9 @@ internal class Strings
     public string Configwindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
     public string Configwindow_Param_Conditon { get; set; } = "Condition";
     public string Configwindow_Param_StartOnCountdown { get; set; } = "Turn on auto-rotation on countdown";
+
+    public string Configwindow_Param_HealOutOfCombat { get; set; } = "Heal party members outside of combat.";
+
     public string Configwindow_Param_HealthDifference { get; set; } = "Set the HP standard deviation threshold for using AOE heal (ability & spell)";
     public string Configwindow_Param_HealthAreaAbility { get; set; } = "Set the HP threshold for using AOE healing ability";
     public string Configwindow_Param_HealthAreaSpell { get; set; } = "Set the HP threshold for using AOE healing spell";
@@ -162,7 +165,7 @@ internal class Strings
     public string Configwindow_Param_TargetToHostileType2 { get; set; } = "Targets have a target or all targets can attack";
     public string Configwindow_Param_TargetToHostileType3 { get; set; } = "Targets have a target";
     public string Configwindow_Param_NoticeUnexpectedCombat { get; set; } = "NOTICE: You are not turn the auto off between area on. It may start a combat unexpectedly.";
-    public string Configwindow_Param_AddEnemyListToHostile { get; set; } = "Enemies";
+    public string Configwindow_Param_AddEnemyListToHostile { get; set; } = "Add Enemies list to the hostile target.";
     public string Configwindow_Param_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
     public string Configwindow_Param_CanAttackMarkAOE { get; set; } = "Forced use of AOE";
     public string Configwindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
