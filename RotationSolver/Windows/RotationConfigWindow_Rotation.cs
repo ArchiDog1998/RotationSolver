@@ -22,16 +22,15 @@ internal partial class RotationConfigWindow
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_AttackItem_Description);
 
-        ImGui.BeginChild("Attack Items", new Vector2(0f, -1f), true);
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
         if (ImGui.BeginTabBar("Job Items"))
         {
             DrawRoleItems();
+
             ImGui.EndTabBar();
         }
         ImGui.PopStyleVar();
-        ImGui.EndChild();
     }
 
     private static void DrawRoleItems()
@@ -43,7 +42,11 @@ internal partial class RotationConfigWindow
 
             if (ImGui.BeginTabItem(key.ToName()))
             {
-                DrawRotations(rotations);
+                if (ImGui.BeginChild("Rotation Items", new Vector2(0f, -1f), true))
+                {
+                    DrawRotations(rotations);
+                    ImGui.EndChild();
+                }
                 ImGui.EndTabItem();
             }
 
