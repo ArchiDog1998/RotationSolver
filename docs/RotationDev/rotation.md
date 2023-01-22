@@ -1,6 +1,6 @@
 # Rotation Part
 
-We just started a simple 123 rotation. Obviously, it doesn't solve the complex combats. In this part, lets see how many methods can we override, and how to use them.
+We just started a simple 123 rotation. Obviously, it doesn't solve the complex combats. In this part, lets see how many methods can we override, and how to use them. That is the major work for the rotation developers.
 
 ## GCD
 

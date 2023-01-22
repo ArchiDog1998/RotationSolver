@@ -8,6 +8,7 @@ using RotationSolver.Updaters;
 using System.Linq;
 using RotationSolver.Actions.BaseAction;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using System;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
 #if DEBUG
@@ -22,7 +23,10 @@ internal partial class RotationConfigWindow
         ImGui.Text("All: " + TargetUpdater.AllTargets.Count().ToString());
         ImGui.Text("Hostile: " + TargetUpdater.HostileTargets.Count().ToString());
         ImGui.Text("Friends: " + TargetUpdater.PartyMembers.Count().ToString());
-        ImGui.Text("Fate: " + FateManager.Instance()->FateJoined.ToString());
+        if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
+        {
+            ImGui.Text("Fate: " + FateManager.Instance()->FateJoined.ToString());
+        }
 
         if (ImGui.CollapsingHeader("Status from self."))
         {

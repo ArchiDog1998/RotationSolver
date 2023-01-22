@@ -143,9 +143,7 @@ internal static partial class TargetUpdater
         #endregion
 
         #region Health
-        var members = PartyMembers;
-
-        PartyMembersHP = TargetFilter.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp);
+        PartyMembersHP = TargetFilter.GetObjectInRadius(PartyMembers, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp);
 
         float averHP = 0;
         foreach (var hp in PartyMembersHP)
@@ -164,25 +162,33 @@ internal static partial class TargetUpdater
 
         var job = (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id;
 
-        var hotSubArea = Service.Configuration.HealingOfTimeSubtractAreas.TryGetValue(job, out var value) ? value : 0.3f;
-
-        var areaHots = new StatusID[]
+        float value;
+        if(PartyMembers.Count() > 2)
         {
+            var hotSubArea = Service.Configuration.HealingOfTimeSubtractAreas.TryGetValue(job, out value) ? value : 0.3f;
+
+            var areaHots = new StatusID[]
+            {
              StatusID.AspectedHelios,
              StatusID.Medica2,
              StatusID.TrueMedica2,
-        };
+            };
 
-        //TODO:少了所有罩子类技能
-        var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, areaHots) * hotSubArea;
+            //TODO:少了所有罩子类技能
+            var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, areaHots) * hotSubArea;
 
-        var healAreability = ConfigurationHelper.GetHealAreaAbility(job);
+            var healAreability = ConfigurationHelper.GetHealAreaAbility(job);
 
-        var healAreaspell = ConfigurationHelper.GetHealAreafSpell(job);
+            var healAreaspell = ConfigurationHelper.GetHealAreafSpell(job);
 
-        CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreability - ratio;
+            CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreability - ratio;
 
-        CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreaspell - ratio;
+            CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreaspell - ratio;
+        }
+        else
+        {
+            CanHealAreaAbility = CanHealAreaSpell = false;
+        }
 
         var hotSubSingle = Service.Configuration.HealingOfTimeSubtractSingles.TryGetValue(job, out value) ? value : 0.3f;
 
