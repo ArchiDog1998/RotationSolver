@@ -311,7 +311,7 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
 
     private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
-        if (Shukuchi.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Shukuchi.CanUse(out act, emptyOrSkipCombo: true)) return true;
 
         return false;
     }

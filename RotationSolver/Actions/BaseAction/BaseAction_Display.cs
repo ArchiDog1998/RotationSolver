@@ -33,9 +33,9 @@ namespace RotationSolver.Actions.BaseAction
 
             ImGui.Text("Cast Time: " + CastTime.ToString());
             ImGui.Text("MP: " + MPNeed.ToString());
-            ImGui.Text($"Can Use: {ShouldUse(out _)} ");
-            ImGui.Text("Must Use:" + ShouldUse(out _, mustUse: true).ToString());
-            ImGui.Text("Empty Use:" + ShouldUse(out _, emptyOrSkipCombo: true).ToString());
+            ImGui.Text($"Can Use: {CanUse(out _)} ");
+            ImGui.Text("Must Use:" + CanUse(out _, mustUse: true).ToString());
+            ImGui.Text("Empty Use:" + CanUse(out _, emptyOrSkipCombo: true).ToString());
             ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(AdjustedID).ToString());
             if (Target != null)
             {

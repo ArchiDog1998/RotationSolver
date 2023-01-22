@@ -69,13 +69,13 @@ internal sealed class SGE_Default : SGE_Base
             EukrasianPrognosis, Diagnosis, Prognosis))
         {
             //活化
-            if (Zoe.ShouldUse(out act)) return true;
+            if (Zoe.CanUse(out act)) return true;
         }
 
         if (nextGCD == Diagnosis)
         {
             //混合
-            if (Krasis.ShouldUse(out act)) return true;
+            if (Krasis.CanUse(out act)) return true;
         }
 
         act = null;
@@ -85,14 +85,14 @@ internal sealed class SGE_Default : SGE_Base
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
 
-        if (Addersgall == 0 || Dyskrasia.ShouldUse(out _))
+        if (Addersgall == 0 || Dyskrasia.CanUse(out _))
         {
             //输血
-            if (Haima.ShouldUse(out act)) return true;
+            if (Haima.CanUse(out act)) return true;
         }
 
         //白牛清汁
-        if (Taurochole.ShouldUse(out act) && Taurochole.Target.GetHealthRatio() < 0.8) return true;
+        if (Taurochole.CanUse(out act) && Taurochole.Target.GetHealthRatio() < 0.8) return true;
 
         act = null!;
         return false;
@@ -101,7 +101,7 @@ internal sealed class SGE_Default : SGE_Base
     private protected override bool DefenseSingleGCD(out IAction act)
     {
         //诊断
-        if (EukrasianDiagnosis.ShouldUse(out act))
+        if (EukrasianDiagnosis.CanUse(out act))
         {
             if (EukrasianDiagnosis.Target.HasStatus(true,
                 StatusID.EukrasianDiagnosis,
@@ -110,7 +110,7 @@ internal sealed class SGE_Default : SGE_Base
             )) return false;
 
             //均衡
-            if (Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.CanUse(out act)) return true;
 
             act = EukrasianDiagnosis;
             return true;
@@ -125,14 +125,14 @@ internal sealed class SGE_Default : SGE_Base
         //泛输血
         if (Addersgall == 0 && TargetUpdater.PartyMembersAverHP < 0.7)
         {
-            if (Panhaima.ShouldUse(out act)) return true;
+            if (Panhaima.CanUse(out act)) return true;
         }
 
         //坚角清汁
-        if (Kerachole.ShouldUse(out act)) return true;
+        if (Kerachole.CanUse(out act)) return true;
 
         //整体论
-        if (Holos.ShouldUse(out act)) return true;
+        if (Holos.CanUse(out act)) return true;
 
         act = null!;
         return false;
@@ -141,7 +141,7 @@ internal sealed class SGE_Default : SGE_Base
     private protected override bool DefenseAreaGCD(out IAction act)
     {
         //预后
-        if (EukrasianPrognosis.ShouldUse(out act))
+        if (EukrasianPrognosis.CanUse(out act))
         {
             if (EukrasianDiagnosis.Target.HasStatus(true,
                 StatusID.EukrasianDiagnosis,
@@ -150,7 +150,7 @@ internal sealed class SGE_Default : SGE_Base
             )) return false;
 
             //均衡
-            if (Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.CanUse(out act)) return true;
 
             act = EukrasianPrognosis;
             return true;
@@ -163,23 +163,23 @@ internal sealed class SGE_Default : SGE_Base
     private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         //神翼
-        if (Icarus.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Icarus.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
     private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
     {
         //心关
-        if (Kardia.ShouldUse(out act)) return true;
+        if (Kardia.CanUse(out act)) return true;
 
         //根素
-        if (Addersgall == 0 && Rhizomata.ShouldUse(out act)) return true;
+        if (Addersgall == 0 && Rhizomata.CanUse(out act)) return true;
 
         //拯救
-        if (Soteria.ShouldUse(out act) && TargetUpdater.PartyMembers.Any(b => b.HasStatus(true, StatusID.Kardion) && b.GetHealthRatio() < Service.Configuration.HealthSingleAbility)) return true;
+        if (Soteria.CanUse(out act) && TargetUpdater.PartyMembers.Any(b => b.HasStatus(true, StatusID.Kardion) && b.GetHealthRatio() < Service.Configuration.HealthSingleAbility)) return true;
 
         //消化
-        if (Pepsis.ShouldUse(out act)) return true;
+        if (Pepsis.CanUse(out act)) return true;
 
         act = null!;
         return false;
@@ -194,37 +194,37 @@ internal sealed class SGE_Default : SGE_Base
         //}
 
         //发炎 留一层走位
-        if (Phlegma3.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
-        if (!Phlegma3.EnoughLevel && Phlegma2.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
-        if (!Phlegma2.EnoughLevel && Phlegma.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.ShouldUse(out _))) return true;
+        if (Phlegma3.CanUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.CanUse(out _))) return true;
+        if (!Phlegma3.EnoughLevel && Phlegma2.CanUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.CanUse(out _))) return true;
+        if (!Phlegma2.EnoughLevel && Phlegma.CanUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.CanUse(out _))) return true;
 
         //失衡
-        if (Dyskrasia.ShouldUse(out act)) return true;
+        if (Dyskrasia.CanUse(out act)) return true;
 
-        if (EukrasianDosis.ShouldUse(out var enAct))
+        if (EukrasianDosis.CanUse(out var enAct))
         {
             //补上Dot
-            if (Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.CanUse(out act)) return true;
             act = enAct;
             return true;
         }
 
         //注药
-        if (Dosis.ShouldUse(out act)) return true;
+        if (Dosis.CanUse(out act)) return true;
 
         //箭毒
-        if (Toxikon.ShouldUse(out act, mustUse: true)) return true;
+        if (Toxikon.CanUse(out act, mustUse: true)) return true;
 
         //脱战给T刷单盾嫖豆子
-        if (MEukrasianDiagnosis.ShouldUse(out _))
+        if (MEukrasianDiagnosis.CanUse(out _))
         {
             //均衡
-            if (Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.CanUse(out act)) return true;
 
             act = MEukrasianDiagnosis;
             return true;
         }
-        if (Eukrasia.ShouldUse(out act)) return true;
+        if (Eukrasia.CanUse(out act)) return true;
 
 
         return false;
@@ -233,10 +233,10 @@ internal sealed class SGE_Default : SGE_Base
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //白牛青汁
-        if (Taurochole.ShouldUse(out act)) return true;
+        if (Taurochole.CanUse(out act)) return true;
 
         //灵橡清汁
-        if (Druochole.ShouldUse(out act)) return true;
+        if (Druochole.CanUse(out act)) return true;
 
         //当资源不足时加入范围治疗缓解压力
         var tank = TargetUpdater.PartyTanks;
@@ -244,13 +244,13 @@ internal sealed class SGE_Default : SGE_Base
         if (Addersgall == 0 && tank.Count() == 1 && tank.Any(t => t.GetHealthRatio() < 0.6f) && !isBoss)
         {
             //整体论
-            if (Holos.ShouldUse(out act)) return true;
+            if (Holos.CanUse(out act)) return true;
 
             //自生
-            if (Physis.ShouldUse(out act)) return true;
+            if (Physis.CanUse(out act)) return true;
 
             //泛输血
-            if (Panhaima.ShouldUse(out act)) return true;
+            if (Panhaima.CanUse(out act)) return true;
         }
 
         act = null!;
@@ -259,29 +259,29 @@ internal sealed class SGE_Default : SGE_Base
 
     private protected override bool HealSingleGCD(out IAction act)
     {
-        if (Diagnosis.ShouldUse(out act)) return true;
+        if (Diagnosis.CanUse(out act)) return true;
         act = null;
         return false;
     }
 
     private protected override bool HealAreaGCD(out IAction act)
     {
-        if (TargetUpdater.PartyMembersAverHP < 0.65f || Dyskrasia.ShouldUse(out _) && TargetUpdater.PartyTanks.Any(t => t.GetHealthRatio() < 0.6f))
+        if (TargetUpdater.PartyMembersAverHP < 0.65f || Dyskrasia.CanUse(out _) && TargetUpdater.PartyTanks.Any(t => t.GetHealthRatio() < 0.6f))
         {
             //魂灵风息
-            if (Pneuma.ShouldUse(out act, mustUse: true)) return true;
+            if (Pneuma.CanUse(out act, mustUse: true)) return true;
         }
 
         //预后
         if (EukrasianPrognosis.Target.HasStatus(false, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis, StatusID.Galvanize))
         {
-            if (Prognosis.ShouldUse(out act)) return true;
+            if (Prognosis.CanUse(out act)) return true;
         }
 
-        if (EukrasianPrognosis.ShouldUse(out _))
+        if (EukrasianPrognosis.CanUse(out _))
         {
             //均衡
-            if (Eukrasia.ShouldUse(out act)) return true;
+            if (Eukrasia.CanUse(out act)) return true;
 
             act = EukrasianPrognosis;
             return true;
@@ -293,16 +293,16 @@ internal sealed class SGE_Default : SGE_Base
     private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
     {
         //坚角清汁
-        if (Kerachole.ShouldUse(out act) && Level >= 78) return true;
+        if (Kerachole.CanUse(out act) && Level >= 78) return true;
 
         //自生
-        if (Physis.ShouldUse(out act)) return true;
+        if (Physis.CanUse(out act)) return true;
 
         //整体论
-        if (Holos.ShouldUse(out act) && TargetUpdater.PartyMembersAverHP < 0.65f) return true;
+        if (Holos.CanUse(out act) && TargetUpdater.PartyMembersAverHP < 0.65f) return true;
 
         //寄生清汁
-        if (Ixochole.ShouldUse(out act)) return true;
+        if (Ixochole.CanUse(out act)) return true;
 
         return false;
     }

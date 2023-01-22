@@ -133,14 +133,14 @@ namespace RotationSolver.Rotations.Basic
             {
             }
 
-            public override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+            public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
             {
                 if (JobGauge.IsEnochianActive && CastTime - 0.5f > JobGauge.ElementTimeRemaining / 1000f)
                 {
                     act = null;
                     return false;
                 }
-                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
+                return base.CanUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
             }
         }
 

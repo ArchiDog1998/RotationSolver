@@ -218,7 +218,7 @@ internal abstract class BRD_Base : CustomRotation.CustomRotation
         //有某些非常危险的状态。
         if (RSCommands.SpecialType == SpecialCommandType.EsunaShieldNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
         {
-            if (WardensPaean.ShouldUse(out act, mustUse: true)) return true;
+            if (WardensPaean.CanUse(out act, mustUse: true)) return true;
         }
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }

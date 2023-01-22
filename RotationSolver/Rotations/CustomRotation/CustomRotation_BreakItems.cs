@@ -33,19 +33,19 @@ internal abstract partial class CustomRotation
         {
             case JobRole.Tank:
             case JobRole.Melee:
-                if (TinctureofStrength6.ShoudUseItem(out act)) return true;
+                if (TinctureofStrength6.CanUse(out act)) return true;
                 break;
 
             case JobRole.RangedPhysical:
-                if (TinctureofDexterity6.ShoudUseItem(out act)) return true;
+                if (TinctureofDexterity6.CanUse(out act)) return true;
                 break;
 
             case JobRole.RangedMagicial:
-                if (TinctureofIntelligence6.ShoudUseItem(out act)) return true;
+                if (TinctureofIntelligence6.CanUse(out act)) return true;
                 break;
 
             case JobRole.Healer:
-                if (TinctureofMind6.ShoudUseItem(out act)) return true;
+                if (TinctureofMind6.CanUse(out act)) return true;
                 break;
         }
         return false;

@@ -31,9 +31,9 @@ internal sealed class WAR_Default : WAR_Base
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //°ÚÍÑ ¶ÓÓÑÌ×¶Ü
-        if (ShakeItOff.ShouldUse(out act, mustUse: true)) return true;
+        if (ShakeItOff.CanUse(out act, mustUse: true)) return true;
 
-        if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
+        if (Reprisal.CanUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -41,14 +41,14 @@ internal sealed class WAR_Default : WAR_Base
     private protected override bool MoveGCD(out IAction act)
     {
         //·Å¸ö´ó Âù»Ä±ÀÁÑ »áÍùÇ°·É
-        if (PrimalRend.ShouldUse(out act, mustUse: true)) return true;
+        if (PrimalRend.CanUse(out act, mustUse: true)) return true;
         return false;
     }
 
     private protected override bool GeneralGCD(out IAction act)
     {
         //¸ã¸ã¹¥»÷
-        if (PrimalRend.ShouldUse(out act, mustUse: true) && !IsMoving)
+        if (PrimalRend.CanUse(out act, mustUse: true) && !IsMoving)
         {
             if (PrimalRend.Target.DistanceToPlayer() < 1)
             {
@@ -58,23 +58,23 @@ internal sealed class WAR_Default : WAR_Base
 
         //ÊÞ»êÊä³ö
         //¸ÖÌúÐý·ç
-        if (SteelCyclone.ShouldUse(out act)) return true;
+        if (SteelCyclone.CanUse(out act)) return true;
         //Ô­³õÖ®»ê
-        if (InnerBeast.ShouldUse(out act)) return true;
+        if (InnerBeast.CanUse(out act)) return true;
 
         //ÈºÌå
-        if (MythrilTempest.ShouldUse(out act)) return true;
-        if (Overpower.ShouldUse(out act)) return true;
+        if (MythrilTempest.CanUse(out act)) return true;
+        if (Overpower.CanUse(out act)) return true;
 
         //µ¥Ìå
-        if (StormsEye.ShouldUse(out act)) return true;
-        if (StormsPath.ShouldUse(out act)) return true;
-        if (Maim.ShouldUse(out act)) return true;
-        if (HeavySwing.ShouldUse(out act)) return true;
+        if (StormsEye.CanUse(out act)) return true;
+        if (StormsPath.CanUse(out act)) return true;
+        if (Maim.CanUse(out act)) return true;
+        if (HeavySwing.CanUse(out act)) return true;
 
         //¹»²»×Å£¬Ëæ±ã´òÒ»¸ö°É¡£
         if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
-        if (Tomahawk.ShouldUse(out act)) return true;
+        if (Tomahawk.CanUse(out act)) return true;
 
         return false;
     }
@@ -86,21 +86,21 @@ internal sealed class WAR_Default : WAR_Base
             if (TargetUpdater.HostileTargets.Count() > 1)
             {
                 //Ô­³õµÄÖ±¾õ£¨¼õÉË10%£©
-                if (RawIntuition.ShouldUse(out act)) return true;
+                if (RawIntuition.CanUse(out act)) return true;
             }
 
             //¸´³ð£¨¼õÉË30%£©
-            if (Vengeance.ShouldUse(out act)) return true;
+            if (Vengeance.CanUse(out act)) return true;
 
             //Ìú±Ú£¨¼õÉË20%£©
-            if (Rampart.ShouldUse(out act)) return true;
+            if (Rampart.CanUse(out act)) return true;
 
             //Ô­³õµÄÖ±¾õ£¨¼õÉË10%£©
-            if (RawIntuition.ShouldUse(out act)) return true;
+            if (RawIntuition.CanUse(out act)) return true;
         }
         //½µµÍ¹¥»÷
         //Ñ©³ð
-        if (Reprisal.ShouldUse(out act)) return true;
+        if (Reprisal.CanUse(out act)) return true;
 
         act = null;
         return false;
@@ -112,31 +112,31 @@ internal sealed class WAR_Default : WAR_Base
         if (!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) || !MythrilTempest.EnoughLevel)
         {
             //¿ñ±©
-            if (!InnerRelease.IsCoolDown && Berserk.ShouldUse(out act)) return true;
+            if (!InnerRelease.IsCoolDown && Berserk.CanUse(out act)) return true;
         }
 
         if (Player.GetHealthRatio() < 0.6f)
         {
             //Õ½Àõ
-            if (ThrillofBattle.ShouldUse(out act)) return true;
+            if (ThrillofBattle.CanUse(out act)) return true;
             //Ì©È»×ÔÈô ×ÔÄÌ°¡£¡
-            if (Equilibrium.ShouldUse(out act)) return true;
+            if (Equilibrium.CanUse(out act)) return true;
         }
 
         //ÄÌ¸ö¶ÓÓÑ°¡¡£
-        if (!HaveShield && NascentFlash.ShouldUse(out act)) return true;
+        if (!HaveShield && NascentFlash.CanUse(out act)) return true;
 
         //Õ½º¿
-        if (Infuriate.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Infuriate.CanUse(out act, emptyOrSkipCombo: true)) return true;
 
         //ÆÕÍ¨¹¥»÷
         //ÈºÉ½Â¡Æð
-        if (Orogeny.ShouldUse(out act)) return true;
+        if (Orogeny.CanUse(out act)) return true;
         //¶¯ÂÒ 
-        if (Upheaval.ShouldUse(out act)) return true;
+        if (Upheaval.CanUse(out act)) return true;
 
         //¸ã¸ã¹¥»÷
-        if (Onslaught.ShouldUse(out act, mustUse: true) && !IsMoving) return true;
+        if (Onslaught.CanUse(out act, mustUse: true) && !IsMoving) return true;
 
         return false;
     }

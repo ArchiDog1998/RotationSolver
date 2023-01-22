@@ -44,9 +44,9 @@ internal class RPR_Test : RPR_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        if (InfernalSlice.ShouldUse(out act)) return true;
-        if (WaxingSlice.ShouldUse(out act)) return true;
-        if (Slice.ShouldUse(out act)) return true;
+        if (InfernalSlice.CanUse(out act)) return true;
+        if (WaxingSlice.CanUse(out act)) return true;
+        if (Slice.CanUse(out act)) return true;
         return false;
     }
 }

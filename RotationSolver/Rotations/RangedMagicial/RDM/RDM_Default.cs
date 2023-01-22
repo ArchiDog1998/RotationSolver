@@ -38,18 +38,18 @@ internal sealed class RDM_Default : RDM_Base
         //鼓励要放到魔回刺或者魔Z斩或魔划圆斩之后
         if (nextGCD.IsAnySameAction(true, Zwerchhau, Redoublement, Moulinet))
         {
-            if (Service.Configuration.AutoBurst && Embolden.ShouldUse(out act, mustUse: true)) return true;
+            if (Service.Configuration.AutoBurst && Embolden.CanUse(out act, mustUse: true)) return true;
         }
         //开场爆发的时候释放。
         if (Service.Configuration.AutoBurst && GetRightValue(WhiteMana) && GetRightValue(BlackMana))
         {
-            if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
-            if (Embolden.ShouldUse(out act, mustUse: true)) return true;
+            if (!canUseMagic(act) && Manafication.CanUse(out act)) return true;
+            if (Embolden.CanUse(out act, mustUse: true)) return true;
         }
         //倍增要放到魔连攻击之后
         if (ManaStacks == 3 || Level < 68 && !nextGCD.IsAnySameAction(true, Zwerchhau, Riposte))
         {
-            if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
+            if (!canUseMagic(act) && Manafication.CanUse(out act)) return true;
         }
 
         act = null;
@@ -66,29 +66,29 @@ internal sealed class RDM_Default : RDM_Base
         act = null;
         if (SettingBreak)
         {
-            if (!canUseMagic(act) && Manafication.ShouldUse(out act)) return true;
-            if (Embolden.ShouldUse(out act, mustUse: true)) return true;
+            if (!canUseMagic(act) && Manafication.CanUse(out act)) return true;
+            if (Embolden.CanUse(out act, mustUse: true)) return true;
         }
 
         if (ManaStacks == 0 && (BlackMana < 50 || WhiteMana < 50) && !Manafication.WillHaveOneChargeGCD(1, 1))
         {
             //促进满了且预备buff没满就用。 
-            if (abilityRemain == 2 && Acceleration.ShouldUse(out act, emptyOrSkipCombo: true)
+            if (abilityRemain == 2 && Acceleration.CanUse(out act, emptyOrSkipCombo: true)
                 && (!Player.HasStatus(true, StatusID.VerfireReady) || !Player.HasStatus(true, StatusID.VerstoneReady))) return true;
 
             //即刻咏唱
             if (!Player.HasStatus(true, StatusID.Acceleration)
-                && Swiftcast.ShouldUse(out act, mustUse: true)
+                && Swiftcast.CanUse(out act, mustUse: true)
                 && (!Player.HasStatus(true, StatusID.VerfireReady) || !Player.HasStatus(true, StatusID.VerstoneReady))) return true;
         }
 
         //攻击四个能力技。
-        if (ContreSixte.ShouldUse(out act, mustUse: true)) return true;
-        if (Fleche.ShouldUse(out act)) return true;
+        if (ContreSixte.CanUse(out act, mustUse: true)) return true;
+        if (Fleche.CanUse(out act)) return true;
         //Empty: BaseAction.HaveStatusSelfFromSelf(1239)
-        if (Engagement.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Engagement.CanUse(out act, emptyOrSkipCombo: true)) return true;
 
-        if (CorpsAcorps.ShouldUse(out act, mustUse: true) && !IsMoving) return true;
+        if (CorpsAcorps.CanUse(out act, mustUse: true) && !IsMoving) return true;
 
         return false;
     }
@@ -99,33 +99,33 @@ internal sealed class RDM_Default : RDM_Base
         if (ManaStacks == 3) return false;
 
         #region 常规输出
-        if (!Verthunder2.ShouldUse(out _))
+        if (!Verthunder2.CanUse(out _))
         {
-            if (Verfire.ShouldUse(out act)) return true;
-            if (Verstone.ShouldUse(out act)) return true;
+            if (Verfire.CanUse(out act)) return true;
+            if (Verstone.CanUse(out act)) return true;
         }
 
         //试试看散碎
-        if (Scatter.ShouldUse(out act)) return true;
+        if (Scatter.CanUse(out act)) return true;
         //平衡魔元
         if (WhiteMana < BlackMana)
         {
-            if (Veraero2.ShouldUse(out act)) return true;
-            if (Veraero.ShouldUse(out act)) return true;
+            if (Veraero2.CanUse(out act)) return true;
+            if (Veraero.CanUse(out act)) return true;
         }
         else
         {
-            if (Verthunder2.ShouldUse(out act)) return true;
-            if (Verthunder.ShouldUse(out act)) return true;
+            if (Verthunder2.CanUse(out act)) return true;
+            if (Verthunder.CanUse(out act)) return true;
         }
-        if (Jolt.ShouldUse(out act)) return true;
+        if (Jolt.CanUse(out act)) return true;
         #endregion
 
         //震荡刷火炎和飞石
 
 
         //赤治疗，加即刻，有连续咏唱或者即刻的话就不放了
-        if (Configs.GetBool("UseVercure") && Vercure.ShouldUse(out act)
+        if (Configs.GetBool("UseVercure") && Vercure.CanUse(out act)
             ) return true;
 
         return false;
@@ -135,8 +135,8 @@ internal sealed class RDM_Default : RDM_Base
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //混乱
-        if (Addle.ShouldUse(out act)) return true;
-        if (MagickBarrier.ShouldUse(out act, mustUse: true)) return true;
+        if (Addle.CanUse(out act)) return true;
+        if (MagickBarrier.CanUse(out act, mustUse: true)) return true;
         return false;
     }
 
@@ -149,24 +149,24 @@ internal sealed class RDM_Default : RDM_Base
         {
             if (BlackMana > WhiteMana && level >= 70)
             {
-                if (Verholy.ShouldUse(out act, mustUse: true)) return true;
+                if (Verholy.CanUse(out act, mustUse: true)) return true;
             }
-            if (Verflare.ShouldUse(out act, mustUse: true)) return true;
+            if (Verflare.CanUse(out act, mustUse: true)) return true;
         }
 
         //焦热
-        if (Scorch.ShouldUse(out act, mustUse: true)) return true;
+        if (Scorch.CanUse(out act, mustUse: true)) return true;
 
         //决断
-        if (Resolution.ShouldUse(out act, mustUse: true)) return true;
+        if (Resolution.CanUse(out act, mustUse: true)) return true;
         #endregion
 
         #region 近战三连
 
 
-        if (IsLastGCD(true, Moulinet) && Moulinet.ShouldUse(out act, mustUse: true)) return true;
-        if (Zwerchhau.ShouldUse(out act)) return true;
-        if (Redoublement.ShouldUse(out act)) return true;
+        if (IsLastGCD(true, Moulinet) && Moulinet.CanUse(out act, mustUse: true)) return true;
+        if (Zwerchhau.CanUse(out act)) return true;
+        if (Redoublement.CanUse(out act)) return true;
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
         bool mustStart = Player.HasStatus(true, StatusID.Manafication) ||
@@ -211,15 +211,15 @@ internal sealed class RDM_Default : RDM_Base
 
         #region 开启爆发
         //要来可以使用近战三连了。
-        if (Moulinet.ShouldUse(out act))
+        if (Moulinet.CanUse(out act))
         {
             if (BlackMana >= 60 && WhiteMana >= 60) return true;
         }
         else
         {
-            if (BlackMana >= 50 && WhiteMana >= 50 && Riposte.ShouldUse(out act)) return true;
+            if (BlackMana >= 50 && WhiteMana >= 50 && Riposte.CanUse(out act)) return true;
         }
-        if (ManaStacks > 0 && Riposte.ShouldUse(out act)) return true;
+        if (ManaStacks > 0 && Riposte.CanUse(out act)) return true;
         #endregion
 
         return false;
@@ -229,7 +229,7 @@ internal sealed class RDM_Default : RDM_Base
     private bool canUseMagic(IAction act)
     {
         //return IsLastAction(true, Scorch) || IsLastAction(true, Resolution) || IsLastAction(true, Verholy) || IsLastAction(true, Verflare);
-        return Scorch.ShouldUse(out act) || Resolution.ShouldUse(out act);
+        return Scorch.CanUse(out act) || Resolution.CanUse(out act);
     }
 }
 

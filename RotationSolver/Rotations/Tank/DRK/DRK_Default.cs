@@ -41,15 +41,15 @@ internal sealed class DRK_Default : DRK_Base
 
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
-        if (TheBlackestNight.ShouldUse(out act)) return true;
+        if (TheBlackestNight.CanUse(out act)) return true;
 
         return false;
     }
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        if (DarkMissionary.ShouldUse(out act)) return true;
-        if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
+        if (DarkMissionary.CanUse(out act)) return true;
+        if (Reprisal.CanUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -59,11 +59,11 @@ internal sealed class DRK_Default : DRK_Base
         //寂灭
         if (Blood >= 80 || Player.HasStatus(true, StatusID.Delirium))
         {
-            if (Quietus.ShouldUse(out act)) return true;
+            if (Quietus.CanUse(out act)) return true;
         }
 
         //血溅
-        if (Bloodspiller.ShouldUse(out act))
+        if (Bloodspiller.CanUse(out act))
         {
             if (Player.HasStatus(true, StatusID.Delirium) && Player.StatusStack(true, StatusID.BloodWeapon) <= 3) return true;
 
@@ -74,17 +74,17 @@ internal sealed class DRK_Default : DRK_Base
         }
 
         //AOE
-        if (StalwartSoul.ShouldUse(out act)) return true;
-        if (Unleash.ShouldUse(out act)) return true;
+        if (StalwartSoul.CanUse(out act)) return true;
+        if (Unleash.CanUse(out act)) return true;
 
         //单体
-        if (Souleater.ShouldUse(out act)) return true;
-        if (SyphonStrike.ShouldUse(out act)) return true;
-        if (HardSlash.ShouldUse(out act)) return true;
+        if (Souleater.CanUse(out act)) return true;
+        if (SyphonStrike.CanUse(out act)) return true;
+        if (HardSlash.CanUse(out act)) return true;
 
         if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
 
-        if (Unmend.ShouldUse(out act)) return true;
+        if (Unmend.CanUse(out act)) return true;
 
         return false;
     }
@@ -93,48 +93,48 @@ internal sealed class DRK_Default : DRK_Base
         if (SettingBreak && (!IsFullParty && CanUseSpellInDungeonsMiddle || IsFullParty))
         {
             //嗜血
-            if (BloodWeapon.ShouldUse(out act)) return true;
+            if (BloodWeapon.CanUse(out act)) return true;
 
             //血乱
-            if (Delirium.ShouldUse(out act)) return true;
+            if (Delirium.CanUse(out act)) return true;
         }
 
         //掠影示现
-        if (LivingShadow.ShouldUse(out act)) return true;
+        if (LivingShadow.CanUse(out act)) return true;
 
         //暗黑波动
-        if (FloodofDarkness.ShouldUse(out act))
+        if (FloodofDarkness.CanUse(out act))
         {
-            if ((Player.CurrentMp >= 6000 || HasDarkArts) && Unleash.ShouldUse(out _)) return true;
+            if ((Player.CurrentMp >= 6000 || HasDarkArts) && Unleash.CanUse(out _)) return true;
         }
 
         //暗黑锋
         if (CanUseEdgeofDarkness(out act)) return true;
 
         //腐秽大地
-        if (!IsMoving && SaltedEarth.ShouldUse(out act, mustUse: true)) return true;
+        if (!IsMoving && SaltedEarth.CanUse(out act, mustUse: true)) return true;
 
         if (Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(8))
         {
             //暗影使者
-            if (Shadowbringer.ShouldUse(out act, mustUse: true)) return true;
+            if (Shadowbringer.CanUse(out act, mustUse: true)) return true;
 
             //吸血深渊+精雕怒斩
-            if (AbyssalDrain.ShouldUse(out act)) return true;
-            if (CarveandSpit.ShouldUse(out act)) return true;
+            if (AbyssalDrain.CanUse(out act)) return true;
+            if (CarveandSpit.CanUse(out act)) return true;
 
-            if (Shadowbringer.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (Shadowbringer.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
         }
         //吸血深渊+精雕怒斩
-        if (!Delirium.EnoughLevel && AbyssalDrain.ShouldUse(out act)) return true;
-        if (!Delirium.EnoughLevel && CarveandSpit.ShouldUse(out act)) return true;
+        if (!Delirium.EnoughLevel && AbyssalDrain.CanUse(out act)) return true;
+        if (!Delirium.EnoughLevel && CarveandSpit.CanUse(out act)) return true;
 
         //腐秽大地+腐秽黑暗
-        if (SaltandDarkness.ShouldUse(out act)) return true;
+        if (SaltandDarkness.CanUse(out act)) return true;
 
         //搞搞攻击
-        if (Plunge.ShouldUse(out act, mustUse: true) && !IsMoving) return true;
+        if (Plunge.CanUse(out act, mustUse: true) && !IsMoving) return true;
 
         return false;
     }
@@ -143,23 +143,23 @@ internal sealed class DRK_Default : DRK_Base
     private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
     {
         //上黑盾
-        if (TheBlackestNight.ShouldUse(out act)) return true;
+        if (TheBlackestNight.CanUse(out act)) return true;
 
         if (abilityRemain == 2)
         {
             //减伤10%
-            if (Oblation.ShouldUse(out act)) return true;
+            if (Oblation.CanUse(out act)) return true;
 
             //减伤30%
-            if (ShadowWall.ShouldUse(out act)) return true;
+            if (ShadowWall.CanUse(out act)) return true;
 
             //减伤20%
-            if (Rampart.ShouldUse(out act)) return true;
-            if (DarkMind.ShouldUse(out act)) return true;
+            if (Rampart.CanUse(out act)) return true;
+            if (DarkMind.CanUse(out act)) return true;
         }
         //降低攻击
         //雪仇
-        if (Reprisal.ShouldUse(out act)) return true;
+        if (Reprisal.CanUse(out act)) return true;
 
         act = null;
         return false;
@@ -167,7 +167,7 @@ internal sealed class DRK_Default : DRK_Base
 
     private bool CanUseEdgeofDarkness(out IAction act)
     {
-        if (!EdgeofDarkness.ShouldUse(out act)) return false;
+        if (!EdgeofDarkness.CanUse(out act)) return false;
 
         //if (!IsFullParty && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) return false;
 
@@ -187,8 +187,8 @@ internal sealed class DRK_Default : DRK_Base
     private protected override IAction CountDownAction(float remainTime)
     {
         //战斗前嗜血和血乱
-        if (remainTime <= 7 && Delirium.ShouldUse(out var act)) return act;
-        if (remainTime <= 5 && BloodWeapon.ShouldUse(out var act1)) return act1;
+        if (remainTime <= 7 && Delirium.CanUse(out var act)) return act;
+        if (remainTime <= 5 && BloodWeapon.CanUse(out var act1)) return act1;
         return base.CountDownAction(remainTime);
     }
 }

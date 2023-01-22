@@ -42,7 +42,7 @@ internal sealed class BRD_Default : BRD_Base
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //行吟
-        if (Troubadour.ShouldUse(out act)) return true;
+        if (Troubadour.CanUse(out act)) return true;
 
         return false;
     }
@@ -50,7 +50,7 @@ internal sealed class BRD_Default : BRD_Base
     private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
     {
         //大地神的抒情恋歌
-        if (NaturesMinne.ShouldUse(out act)) return true;
+        if (NaturesMinne.CanUse(out act)) return true;
 
         return false;
     }
@@ -58,8 +58,8 @@ internal sealed class BRD_Default : BRD_Base
     private protected override bool GeneralGCD(out IAction act)
     {
         //伶牙俐齿
-        if (IronJaws.ShouldUse(out act)) return true;
-        if (IronJaws.ShouldUse(out act, mustUse: true) && IronJaws.Target.WillStatusEnd(30, true, IronJaws.TargetStatus))
+        if (IronJaws.CanUse(out act)) return true;
+        if (IronJaws.CanUse(out act, mustUse: true) && IronJaws.Target.WillStatusEnd(30, true, IronJaws.TargetStatus))
         {
             if (Player.HasStatus(true, StatusID.RagingStrikes) && Player.WillStatusEndGCD(1, 0, true, StatusID.RagingStrikes)) return true;
         }
@@ -67,25 +67,25 @@ internal sealed class BRD_Default : BRD_Base
         //放大招！
         if (CanUseApexArrow(out act)) return true;
         //爆破箭
-        if (BlastArrow.ShouldUse(out act, mustUse: true))
+        if (BlastArrow.CanUse(out act, mustUse: true))
         {
             if (!Player.HasStatus(true, StatusID.RagingStrikes)) return true;
             if (Player.HasStatus(true, StatusID.RagingStrikes) && Barrage.IsCoolDown) return true;
         }
 
         //群体GCD
-        if (Shadowbite.ShouldUse(out act)) return true;
-        if (QuickNock.ShouldUse(out act)) return true;
+        if (Shadowbite.CanUse(out act)) return true;
+        if (QuickNock.CanUse(out act)) return true;
 
         //上毒
-        if (Windbite.ShouldUse(out act)) return true;
-        if (VenomousBite.ShouldUse(out act)) return true;
+        if (Windbite.CanUse(out act)) return true;
+        if (VenomousBite.CanUse(out act)) return true;
 
         //直线射击
-        if (StraitShoot.ShouldUse(out act)) return true;
+        if (StraitShoot.CanUse(out act)) return true;
 
         //强力射击
-        if (HeavyShoot.ShouldUse(out act)) return true;
+        if (HeavyShoot.CanUse(out act)) return true;
 
         return false;
     }
@@ -102,7 +102,7 @@ internal sealed class BRD_Default : BRD_Base
             if ((EmpyrealArrow.IsCoolDown && !EmpyrealArrow.WillHaveOneChargeGCD(1) || !EmpyrealArrow.EnoughLevel) && Repertoire != 3)
             {
                 //纷乱箭
-                if (!Player.HasStatus(true, StatusID.StraightShotReady) && Barrage.ShouldUse(out act)) return true;
+                if (!Player.HasStatus(true, StatusID.StraightShotReady) && Barrage.CanUse(out act)) return true;
             }
         }
 
@@ -115,31 +115,31 @@ internal sealed class BRD_Default : BRD_Base
 
         if (Song == Song.NONE)
         {
-            if (FirstSong == 0 && WanderersMinuet.ShouldUse(out act)) return true;
-            if (FirstSong == 1 && MagesBallad.ShouldUse(out act)) return true;
-            if (FirstSong == 2 && ArmysPaeon.ShouldUse(out act)) return true;
-            if (WanderersMinuet.ShouldUse(out act)) return true;
-            if (MagesBallad.ShouldUse(out act)) return true;
-            if (ArmysPaeon.ShouldUse(out act)) return true;
+            if (FirstSong == 0 && WanderersMinuet.CanUse(out act)) return true;
+            if (FirstSong == 1 && MagesBallad.CanUse(out act)) return true;
+            if (FirstSong == 2 && ArmysPaeon.CanUse(out act)) return true;
+            if (WanderersMinuet.CanUse(out act)) return true;
+            if (MagesBallad.CanUse(out act)) return true;
+            if (ArmysPaeon.CanUse(out act)) return true;
         }
 
         if (SettingBreak && Song != Song.NONE && MagesBallad.EnoughLevel)
         {
             //猛者强击
-            if (RagingStrikes.ShouldUse(out act))
+            if (RagingStrikes.CanUse(out act))
             {
                 if (BindWAND && Song == Song.WANDERER && WanderersMinuet.EnoughLevel) return true;
                 if (!BindWAND) return true;
             }
 
             //光明神的最终乐章
-            if (RadiantFinale.ShouldUse(out act, mustUse: true))
+            if (RadiantFinale.CanUse(out act, mustUse: true))
             {
                 if (Player.HasStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
             }
 
             //战斗之声
-            if (BattleVoice.ShouldUse(out act, mustUse: true))
+            if (BattleVoice.CanUse(out act, mustUse: true))
             {
                 if (IsLastAction(true, RadiantFinale)) return true;
 
@@ -150,16 +150,16 @@ internal sealed class BRD_Default : BRD_Base
         if (RadiantFinale.EnoughLevel && RadiantFinale.IsCoolDown && BattleVoice.EnoughLevel && !BattleVoice.IsCoolDown) return false;
 
         //放浪神的小步舞曲
-        if (WanderersMinuet.ShouldUse(out act))
+        if (WanderersMinuet.CanUse(out act))
         {
             if (SongEndAfter(ARMYRemainTime) && (Song != Song.NONE || Player.HasStatus(true, StatusID.ArmyEthos)) && abilityRemain == 1) return true;
         }
 
         //九天连箭
-        if (Song != Song.NONE && EmpyrealArrow.ShouldUse(out act)) return true;
+        if (Song != Song.NONE && EmpyrealArrow.CanUse(out act)) return true;
 
         //完美音调
-        if (PitchPerfect.ShouldUse(out act))
+        if (PitchPerfect.CanUse(out act))
         {
             if (SongEndAfter(3) && Repertoire > 0) return true;
 
@@ -171,7 +171,7 @@ internal sealed class BRD_Default : BRD_Base
         }
 
         //贤者的叙事谣
-        if (MagesBallad.ShouldUse(out act))
+        if (MagesBallad.CanUse(out act))
         {
             if (Song == Song.WANDERER && SongEndAfter(WANDRemainTime) && Repertoire == 0) return true;
             if (Song == Song.ARMY && SongEndAfterGCD(2) && WanderersMinuet.IsCoolDown) return true;
@@ -179,7 +179,7 @@ internal sealed class BRD_Default : BRD_Base
 
 
         //军神的赞美歌
-        if (ArmysPaeon.ShouldUse(out act))
+        if (ArmysPaeon.CanUse(out act))
         {
             if (WanderersMinuet.EnoughLevel && SongEndAfter(MAGERemainTime) && Song == Song.MAGE) return true;
             if (WanderersMinuet.EnoughLevel && SongEndAfter(2) && MagesBallad.IsCoolDown && Song == Song.WANDERER) return true;
@@ -187,7 +187,7 @@ internal sealed class BRD_Default : BRD_Base
         }
 
         //测风诱导箭
-        if (Sidewinder.ShouldUse(out act))
+        if (Sidewinder.CanUse(out act))
         {
             if (Player.HasStatus(true, StatusID.BattleVoice) && (Player.HasStatus(true, StatusID.RadiantFinale) || !RadiantFinale.EnoughLevel)) return true;
 
@@ -202,10 +202,10 @@ internal sealed class BRD_Default : BRD_Base
         if (EmpyrealArrow.IsCoolDown || !EmpyrealArrow.WillHaveOneChargeGCD() || Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
         {
             //死亡剑雨
-            if (RainofDeath.ShouldUse(out act, emptyOrSkipCombo: empty)) return true;
+            if (RainofDeath.CanUse(out act, emptyOrSkipCombo: empty)) return true;
 
             //失血箭
-            if (Bloodletter.ShouldUse(out act, emptyOrSkipCombo: empty)) return true;
+            if (Bloodletter.CanUse(out act, emptyOrSkipCombo: empty)) return true;
         }
 
         return false;
@@ -214,10 +214,10 @@ internal sealed class BRD_Default : BRD_Base
     private bool CanUseApexArrow(out IAction act)
     {
         //放大招！
-        if (!ApexArrow.ShouldUse(out act, mustUse: true)) return false;
+        if (!ApexArrow.CanUse(out act, mustUse: true)) return false;
 
         //aoe期间
-        if (QuickNock.ShouldUse(out _) && SoulVoice == 100) return true;
+        if (QuickNock.CanUse(out _) && SoulVoice == 100) return true;
 
         //快爆发了,攒着等爆发
         if (SoulVoice == 100 && BattleVoice.WillHaveOneCharge(25)) return false;

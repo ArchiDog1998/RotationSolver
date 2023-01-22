@@ -39,32 +39,32 @@ internal sealed class RPR_Default : RPR_Base
     private protected override IAction CountDownAction(float remainTime)
     {
         //倒数收获月
-        if (remainTime <= 30 && Soulsow.ShouldUse(out _)) return Soulsow;
+        if (remainTime <= 30 && Soulsow.CanUse(out _)) return Soulsow;
         //提前2s勾刃
-        if (remainTime <= 2 && Harpe.ShouldUse(out _)) return Harpe;
+        if (remainTime <= 2 && Harpe.CanUse(out _)) return Harpe;
         return base.CountDownAction(remainTime);
     }
 
     private protected override bool GeneralGCD(out IAction act)
     {
         //非战斗收获月
-        if (Soulsow.ShouldUse(out act)) return true;
+        if (Soulsow.CanUse(out act)) return true;
 
         //上Debuff
-        if (WhorlofDeath.ShouldUse(out act)) return true;
-        if (ShadowofDeath.ShouldUse(out act)) return true;
+        if (WhorlofDeath.CanUse(out act)) return true;
+        if (ShadowofDeath.CanUse(out act)) return true;
 
         //补蓝
         if (SoulReaver)
         {
-            if (Guillotine.ShouldUse(out act)) return true;
+            if (Guillotine.CanUse(out act)) return true;
             if (Player.HasStatus(true, StatusID.EnhancedGibbet))
             {
-                if (Gibbet.ShouldUse(out act)) return true;
+                if (Gibbet.CanUse(out act)) return true;
             }
             else
             {
-                if (Gallows.ShouldUse(out act)) return true;
+                if (Gallows.CanUse(out act)) return true;
             }
         }
 
@@ -72,77 +72,77 @@ internal sealed class RPR_Default : RPR_Base
         if (Enshrouded)
         {
             //补DoT
-            if (ShadowofDeath.ShouldUse(out act)) return true;
+            if (ShadowofDeath.CanUse(out act)) return true;
 
             if (LemureShroud > 1)
             {
                 if (Configs.GetBool("EnshroudPooling") && PlentifulHarvest.EnoughLevel && ArcaneCircle.WillHaveOneCharge(9) &&
                    (LemureShroud == 4 && Target.WillStatusEnd(30, true, StatusID.DeathsDesign) || LemureShroud == 3 && Target.WillStatusEnd(50, true, StatusID.DeathsDesign))) //双附体窗口期 
                 {
-                    if (ShadowofDeath.ShouldUse(out act, mustUse: true)) return true;
+                    if (ShadowofDeath.CanUse(out act, mustUse: true)) return true;
                 }
 
                 //夜游魂衣-虚无/交错收割 阴冷收割
-                if (GrimReaping.ShouldUse(out act)) return true;
+                if (GrimReaping.CanUse(out act)) return true;
                 if (Player.HasStatus(true, StatusID.EnhancedCrossReaping) || !Player.HasStatus(true, StatusID.EnhancedVoidReaping))
                 {
-                    if (CrossReaping.ShouldUse(out act)) return true;
+                    if (CrossReaping.CanUse(out act)) return true;
                 }
                 else
                 {
-                    if (VoidReaping.ShouldUse(out act)) return true;
+                    if (VoidReaping.CanUse(out act)) return true;
                 }
             }
             if (LemureShroud == 1)
             {
                 if (Communio.EnoughLevel)
                 {
-                    if (!IsMoving && Communio.ShouldUse(out act, mustUse: true))
+                    if (!IsMoving && Communio.CanUse(out act, mustUse: true))
                     {
                         return true;
                     }
                     //跑机制来不及读条？补个buff混一下
                     else
                     {
-                        if (ShadowofDeath.ShouldUse(out act, mustUse: IsMoving)) return true;
+                        if (ShadowofDeath.CanUse(out act, mustUse: IsMoving)) return true;
                     }
                 }
                 else
                 {
                     //夜游魂衣-虚无/交错收割 阴冷收割
-                    if (GrimReaping.ShouldUse(out act)) return true;
+                    if (GrimReaping.CanUse(out act)) return true;
                     if (Player.HasStatus(true, StatusID.EnhancedCrossReaping) || !Player.HasStatus(true, StatusID.EnhancedVoidReaping))
                     {
-                        if (CrossReaping.ShouldUse(out act)) return true;
+                        if (CrossReaping.CanUse(out act)) return true;
                     }
                     else
                     {
-                        if (VoidReaping.ShouldUse(out act)) return true;
+                        if (VoidReaping.CanUse(out act)) return true;
                     }
                 }
             }
         }
 
         //大丰收
-        if (PlentifulHarvest.ShouldUse(out act, mustUse: true)) return true;
+        if (PlentifulHarvest.CanUse(out act, mustUse: true)) return true;
 
         //灵魂钐割
-        if (SoulScythe.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (SoulScythe.CanUse(out act, emptyOrSkipCombo: true)) return true;
         //灵魂切割
-        if (SoulSlice.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (SoulSlice.CanUse(out act, emptyOrSkipCombo: true)) return true;
 
         //群体二连
-        if (NightmareScythe.ShouldUse(out act)) return true;
-        if (SpinningScythe.ShouldUse(out act)) return true;
+        if (NightmareScythe.CanUse(out act)) return true;
+        if (SpinningScythe.CanUse(out act)) return true;
 
         //单体三连
-        if (InfernalSlice.ShouldUse(out act)) return true;
-        if (WaxingSlice.ShouldUse(out act)) return true;
-        if (Slice.ShouldUse(out act)) return true;
+        if (InfernalSlice.CanUse(out act)) return true;
+        if (WaxingSlice.CanUse(out act)) return true;
+        if (Slice.CanUse(out act)) return true;
 
         //摸不到怪 先花掉收获月
-        if (HarvestMoon.ShouldUse(out act, mustUse: true)) return true;
-        if (Harpe.ShouldUse(out act)) return true;
+        if (HarvestMoon.CanUse(out act, mustUse: true)) return true;
+        if (Harpe.CanUse(out act)) return true;
 
         return false;
     }
@@ -152,7 +152,7 @@ internal sealed class RPR_Default : RPR_Base
         if (SettingBreak)
         {
             //神秘环
-            if (ArcaneCircle.ShouldUse(out act)) return true;
+            if (ArcaneCircle.CanUse(out act)) return true;
 
             if (IsTargetBoss && IsTargetDying || //资源倾泻
                !Configs.GetBool("EnshroudPooling") && Shroud >= 50 ||//未开启双附体
@@ -164,27 +164,27 @@ internal sealed class RPR_Default : RPR_Base
                !Player.HasStatus(true, StatusID.ArcaneCircle) && Shroud >= 90)) //攒蓝条为双附体
             {
                 //夜游魂衣
-                if (Enshroud.ShouldUse(out act)) return true;
+                if (Enshroud.CanUse(out act)) return true;
             }
         }
         if (Enshrouded)
         {
             //夜游魂衣-夜游魂切割 夜游魂钐割
-            if (LemuresScythe.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
-            if (LemuresSlice.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (LemuresScythe.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (LemuresSlice.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         //暴食
         //大丰收期间延后暴食
         if (PlentifulHarvest.EnoughLevel && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && !Player.HasStatus(true, StatusID.BloodsownCircle) || !PlentifulHarvest.EnoughLevel)
         {
-            if (Gluttony.ShouldUse(out act, mustUse: true)) return true;
+            if (Gluttony.CanUse(out act, mustUse: true)) return true;
         }
 
         //AOE
-        if (GrimSwathe.ShouldUse(out act)) return true;
+        if (GrimSwathe.CanUse(out act)) return true;
         //单体
-        if (BloodStalk.ShouldUse(out act)) return true;
+        if (BloodStalk.CanUse(out act)) return true;
         return false;
     }
 
@@ -194,7 +194,7 @@ internal sealed class RPR_Default : RPR_Base
         //牵制
         if (!SoulReaver && !Enshrouded)
         {
-            if (Feint.ShouldUse(out act)) return true;
+            if (Feint.CanUse(out act)) return true;
         }
 
         act = null;
@@ -206,7 +206,7 @@ internal sealed class RPR_Default : RPR_Base
         //神秘纹
         if (!SoulReaver && !Enshrouded)
         {
-            if (ArcaneCrest.ShouldUse(out act)) return true;
+            if (ArcaneCrest.CanUse(out act)) return true;
         }
 
         act = null;

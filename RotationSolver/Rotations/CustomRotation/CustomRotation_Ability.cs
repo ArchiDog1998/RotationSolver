@@ -14,7 +14,7 @@ internal abstract partial class CustomRotation
     private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         act = RSCommands.NextAction;
-        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return true;
+        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _, mustUse: true, skipDisable: true)) return true;
 
         if (!Service.Configuration.UseAbility || Player.TotalCastTime - Player.CurrentCastTime > Service.Configuration.WeaponInterval)
         {
@@ -34,7 +34,7 @@ internal abstract partial class CustomRotation
 
         if (specialType == SpecialCommandType.EsunaShieldNorth && role == JobRole.Melee)
         {
-            if (TrueNorth.ShouldUse(out act)) return true;
+            if (TrueNorth.CanUse(out act)) return true;
         }
 
         if (GeneralHealAbility(abilityRemain, specialType, out act)) return true;
@@ -51,7 +51,7 @@ internal abstract partial class CustomRotation
         //Run!
         if (!InCombat && IsMoving && role == JobRole.RangedPhysical
             && !Service.ClientState.LocalPlayer.HasStatus(false, StatusID.Peloton)
-            && Peloton.ShouldUse(out act, mustUse: true)) return true;
+            && Peloton.CanUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -64,15 +64,15 @@ internal abstract partial class CustomRotation
         switch (role)
         {
             case JobRole.Tank:
-                if (Interject.ShouldUse(out act)) return true;
+                if (Interject.CanUse(out act)) return true;
                 break;
 
             case JobRole.Melee:
-                if (LegSweep.ShouldUse(out act)) return true;
+                if (LegSweep.CanUse(out act)) return true;
                 break;
 
             case JobRole.RangedPhysical:
-                if (HeadGraze.ShouldUse(out act)) return true;
+                if (HeadGraze.CanUse(out act)) return true;
                 break;
         }
         return false;
@@ -86,11 +86,11 @@ internal abstract partial class CustomRotation
         switch (specialType)
         {
             case SpecialCommandType.RaiseShirk:
-                if (Shirk.ShouldUse(out act)) return true;
+                if (Shirk.CanUse(out act)) return true;
                 break;
 
             case SpecialCommandType.EsunaShieldNorth:
-                if (Shield.ShouldUse(out act)) return true;
+                if (Shield.CanUse(out act)) return true;
                 break;
         }
 
@@ -98,7 +98,7 @@ internal abstract partial class CustomRotation
         {
             if (!TargetUpdater.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.SheildStatus)))
             {
-                if (!HaveShield && Shield.ShouldUse(out act)) return true;
+                if (!HaveShield && Shield.CanUse(out act)) return true;
             }
         }
 
@@ -115,16 +115,16 @@ internal abstract partial class CustomRotation
         {
             case JobRole.Tank:
             case JobRole.Melee:
-                if (ArmsLength.ShouldUse(out act)) return true;
+                if (ArmsLength.CanUse(out act)) return true;
                 break;
             case JobRole.Healer:
-                if (Surecast.ShouldUse(out act)) return true;
+                if (Surecast.CanUse(out act)) return true;
                 break;
             case JobRole.RangedPhysical:
-                if (ArmsLength.ShouldUse(out act)) return true;
+                if (ArmsLength.CanUse(out act)) return true;
                 break;
             case JobRole.RangedMagicial:
-                if (Surecast.ShouldUse(out act)) return true;
+                if (Surecast.CanUse(out act)) return true;
                 break;
         }
 
@@ -166,8 +166,8 @@ internal abstract partial class CustomRotation
             && TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets, true).Count() != TargetUpdater.HostileTargets.Count())
 
         {
-            if (!HaveShield && Shield.ShouldUse(out act)) return true;
-            if (Provoke.ShouldUse(out act, mustUse: true)) return true;
+            if (!HaveShield && Shield.CanUse(out act)) return true;
+            if (Provoke.CanUse(out act, mustUse: true)) return true;
         }
 
         //No using defence abilities.
@@ -190,7 +190,7 @@ internal abstract partial class CustomRotation
             //A lot targets are targeting on me.
             if (tarOnmeCount > 1 && !IsMoving)
             {
-                if (ArmsLength.ShouldUse(out act)) return true;
+                if (ArmsLength.CanUse(out act)) return true;
                 if (DefenceSingleAbility(abilityRemain, out act)) return true;
             }
 
@@ -226,22 +226,22 @@ internal abstract partial class CustomRotation
         switch (role)
         {
             case JobRole.Tank:
-                if (LowBlow.ShouldUse(out act)) return true;
+                if (LowBlow.CanUse(out act)) return true;
                 break;
 
             case JobRole.Melee:
-                if (SecondWind.ShouldUse(out act)) return true;
-                if (Bloodbath.ShouldUse(out act)) return true;
+                if (SecondWind.CanUse(out act)) return true;
+                if (Bloodbath.CanUse(out act)) return true;
                 break;
 
             case JobRole.Healer:
             case JobRole.RangedMagicial:
                 if (JobIDs[0] == ClassJobID.BlackMage) break;
-                if (LucidDreaming.ShouldUse(out act)) return true;
+                if (LucidDreaming.CanUse(out act)) return true;
                 break;
 
             case JobRole.RangedPhysical:
-                if (SecondWind.ShouldUse(out act)) return true;
+                if (SecondWind.CanUse(out act)) return true;
                 break;
         }
         return false;
@@ -254,13 +254,13 @@ internal abstract partial class CustomRotation
         if (nextGCD is BaseAction action)
         {
             if (Job.GetJobRole() is JobRole.Healer or JobRole.RangedMagicial &&
-            action.CastTime >= 5 && Swiftcast.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            action.CastTime >= 5 && Swiftcast.CanUse(out act, emptyOrSkipCombo: true)) return true;
 
             if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyPositonal != EnemyPositional.None && action.Target != null)
             {
                 if (action.EnermyPositonal != action.Target.FindEnemyLocation() && action.Target.HasLocationSide())
                 {
-                    if (TrueNorth.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+                    if (TrueNorth.CanUse(out act, emptyOrSkipCombo: true)) return true;
                 }
             }
         }

@@ -63,7 +63,7 @@ namespace RotationSolver.Actions
         /// Do not need to check the combo.</param>
         /// <param name="skipDisable">skip the diable for emergency use.</param>
         /// <returns>should I use.</returns>
-        bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false);
+        bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false);
 
         #region CoolDown
 

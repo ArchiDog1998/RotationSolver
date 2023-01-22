@@ -221,13 +221,13 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
 
     private protected override bool HealSingleGCD(out IAction act)
     {
-        if (Vercure.ShouldUse(out act, mustUse: true)) return true;
+        if (Vercure.CanUse(out act, mustUse: true)) return true;
         return false;
     }
 
     private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
-        if (CorpsAcorps.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (CorpsAcorps.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }

@@ -310,7 +310,7 @@ internal abstract class RPR_Base : CustomRotation.CustomRotation
     private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         //E上去
-        if (HellsIngress.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (HellsIngress.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }

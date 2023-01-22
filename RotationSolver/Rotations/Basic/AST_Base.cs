@@ -266,12 +266,12 @@ internal abstract class AST_Base : CustomRotation.CustomRotation
         act = null;
         if (!Seals.Contains(SealType.NONE)) return false;
 
-        if (Balance.ShouldUse(out act)) return true;
-        if (Arrow.ShouldUse(out act)) return true;
-        if (Spear.ShouldUse(out act)) return true;
-        if (Bole.ShouldUse(out act)) return true;
-        if (Ewer.ShouldUse(out act)) return true;
-        if (Spire.ShouldUse(out act)) return true;
+        if (Balance.CanUse(out act)) return true;
+        if (Arrow.CanUse(out act)) return true;
+        if (Spear.CanUse(out act)) return true;
+        if (Bole.CanUse(out act)) return true;
+        if (Ewer.CanUse(out act)) return true;
+        if (Spire.CanUse(out act)) return true;
 
         return false;
     }

@@ -53,7 +53,7 @@ internal class ActionCondition : ICondition
                 break;
 
             case ActionConditonType.ShouldUse:
-                result = _action.ShouldUse(out _, Param1 > 0, Param2 > 0);
+                result = _action.CanUse(out _, Param1 > 0, Param2 > 0);
                 break;
 
             case ActionConditonType.EnoughLevel:

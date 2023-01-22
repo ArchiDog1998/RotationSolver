@@ -57,7 +57,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
             Type = type;
         }
 
-        public override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+        public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
         {
             act = null;
 
@@ -67,7 +67,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
             if (AttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
             if (AttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
 
-            return base.ShouldUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
+            return base.CanUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
         }
     }
 
@@ -729,15 +729,15 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
 
     private protected override bool MoveGCD(out IAction act)
     {
-        if (Loom.ShouldUse(out act)) return true;
+        if (Loom.CanUse(out act)) return true;
         return base.MoveGCD(out act);
     }
 
 
     private protected override bool EmergencyGCD(out IAction act)
     {
-        if (AetherialMimicry.ShouldUse(out act)) return true;
-        if (BasicInstinct.ShouldUse(out act)) return true;
+        if (AetherialMimicry.CanUse(out act)) return true;
+        if (BasicInstinct.CanUse(out act)) return true;
         return base.EmergencyGCD(out act);
     }
 

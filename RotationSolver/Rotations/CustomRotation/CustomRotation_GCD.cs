@@ -13,7 +13,7 @@ internal abstract partial class CustomRotation
     private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         IAction act = RSCommands.NextAction;
-        if (act is IBaseAction a && a != null && a.IsRealGCD && a.ShouldUse(out _, mustUse: true, skipDisable: true)) return act;
+        if (act is IBaseAction a && a != null && a.IsRealGCD && a.CanUse(out _, mustUse: true, skipDisable: true)) return act;
 
         if (EmergencyGCD(out act)) return act;
 
@@ -42,7 +42,7 @@ internal abstract partial class CustomRotation
         //Esuna
         if (specialType == SpecialCommandType.EsunaShieldNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
         {
-            if (Job.GetJobRole() == JobRole.Healer && Esuna.ShouldUse(out act, mustUse: true)) return act;
+            if (Job.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, mustUse: true)) return act;
         }
 
         if (GeneralGCD(out var action)) return action;
@@ -66,11 +66,11 @@ internal abstract partial class CustomRotation
         {
             if (Job.RowId == (uint)ClassJobID.RedMage)
             {
-                if (HaveSwift && Raise.ShouldUse(out act)) return true;
+                if (HaveSwift && Raise.CanUse(out act)) return true;
             }
             else if (specialType == SpecialCommandType.RaiseShirk || HaveSwift || !Swiftcast.IsCoolDown && actabilityRemain > 0 || mustUse)
             {
-                if (Raise.ShouldUse(out act)) return true;
+                if (Raise.CanUse(out act)) return true;
             }
         }
         return false;

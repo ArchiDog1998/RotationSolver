@@ -180,14 +180,14 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //死斗 如果血不够了。
-        if (Holmgang.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Holmgang.Target)) return true;
+        if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Holmgang.Target)) return true;
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 
     private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         //突进
-        if (Onslaught.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Onslaught.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }

@@ -302,14 +302,14 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
         if (!IsDancing) return false;
 
         //标准舞步结束
-        if (Player.HasStatus(true, StatusID.StandardStep) && Player.WillStatusEnd(1, true, StatusID.StandardStep) || StandardFinish.ShouldUse(out _, mustUse: true))
+        if (Player.HasStatus(true, StatusID.StandardStep) && Player.WillStatusEnd(1, true, StatusID.StandardStep) || StandardFinish.CanUse(out _, mustUse: true))
         {
             act = StandardStep;
             return true;
         }
 
         //技巧舞步结束
-        if (Player.HasStatus(true, StatusID.TechnicalStep) && Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || TechnicalFinish.ShouldUse(out _, mustUse: true))
+        if (Player.HasStatus(true, StatusID.TechnicalStep) && Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || TechnicalFinish.CanUse(out _, mustUse: true))
         {
             act = TechnicalStep;
             return true;
@@ -330,10 +330,10 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
         if (Player.HasStatus(true, StatusID.StandardStep) && CompletedSteps == 2) return false;
         if (Player.HasStatus(true, StatusID.TechnicalStep) && CompletedSteps == 4) return false;
 
-        if (Emboite.ShouldUse(out act)) return true;
-        if (Entrechat.ShouldUse(out act)) return true;
-        if (Jete.ShouldUse(out act)) return true;
-        if (Pirouette.ShouldUse(out act)) return true;
+        if (Emboite.CanUse(out act)) return true;
+        if (Entrechat.CanUse(out act)) return true;
+        if (Jete.CanUse(out act)) return true;
+        if (Pirouette.CanUse(out act)) return true;
         return false;
     }
 }

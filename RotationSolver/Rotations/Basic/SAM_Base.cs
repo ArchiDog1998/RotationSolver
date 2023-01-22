@@ -284,7 +284,7 @@ internal abstract class SAM_Base : CustomRotation.CustomRotation
 
     private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
-        if (HissatsuGyoten.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (HissatsuGyoten.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }
