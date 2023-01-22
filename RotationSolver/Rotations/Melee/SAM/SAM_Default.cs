@@ -95,7 +95,7 @@ internal sealed class SAM_Default : SAM_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //意气冲天
         if (Kenki <= 50 && Ikishoten.CanUse(out act)) return true;
@@ -124,7 +124,7 @@ internal sealed class SAM_Default : SAM_Base
         act = null;
         return false;
     }
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //明镜止水
         if (HaveHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) &&
@@ -132,14 +132,14 @@ internal sealed class SAM_Default : SAM_Base
         {
             if (MeikyoShisui.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (ThirdEye.CanUse(out act)) return true;
         return false;
     }
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (ThirdEye.CanUse(out act)) return true;
         if (Feint.CanUse(out act)) return true;

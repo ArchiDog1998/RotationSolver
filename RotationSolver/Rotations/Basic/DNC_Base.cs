@@ -336,4 +336,10 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
         if (Pirouette.CanUse(out act)) return true;
         return false;
     }
+
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (EnAvant.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
 }

@@ -67,12 +67,12 @@ internal sealed partial class BLM_Default : BLM_Base
         return base.CountDownAction(remainTime);
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (BetweenTheLines.CanUse(out act)) return true;
         if (Leylines.CanUse(out act, mustUse: true)) return true;
 
-        return base.HealSingleAbility(abilityRemain, out act);
+        return base.HealSingleAbility(abilitiesRemaining, out act);
     }
 
     private protected override bool DefenseSingleGCD(out IAction act)
@@ -82,7 +82,7 @@ internal sealed partial class BLM_Default : BLM_Base
         return base.DefenseSingleGCD(out act);
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //混乱
         if (Addle.CanUse(out act)) return true;
@@ -128,7 +128,7 @@ internal sealed partial class BLM_Default : BLM_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //三连咏唱
         if (UseTriplecast(out act)) return true;
@@ -142,7 +142,7 @@ internal sealed partial class BLM_Default : BLM_Base
         }
 
         //星灵移位
-        if (UseTranspose(abilityRemain, out act)) return true;
+        if (UseTranspose(abilitiesRemaining, out act)) return true;
 
         //醒梦
         if (Level == 90 && UseLucidDreaming(out act)) return true;
@@ -409,7 +409,7 @@ internal sealed partial class BLM_Default : BLM_Base
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    private bool UseTranspose(byte abilityRemain, out IAction act)
+    private bool UseTranspose(byte abilitiesRemaining, out IAction act)
     {
         if (!Transpose.CanUse(out act, mustUse: true)) return false;
 
@@ -445,7 +445,7 @@ internal sealed partial class BLM_Default : BLM_Base
         }
 
         //星灵转冰
-        if (InAstralFire && abilityRemain == 2 && (Manafont.ElapsedAfter(3) || !Manafont.IsCoolDown))
+        if (InAstralFire && abilitiesRemaining == 2 && (Manafont.ElapsedAfter(3) || !Manafont.IsCoolDown))
         {
             if (IsLastGCD(true, Despair) || IsOldSpell(1, Despair) && IsLastGCD(true, Xenoglossy, Thunder)) return true;
         }

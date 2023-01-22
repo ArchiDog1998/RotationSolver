@@ -39,14 +39,14 @@ internal sealed class DRK_Default : DRK_Base
             .SetBool("TheBlackestNight", true, "Keep 3000 MP");
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (TheBlackestNight.CanUse(out act)) return true;
 
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (DarkMissionary.CanUse(out act)) return true;
         if (Reprisal.CanUse(out act, mustUse: true)) return true;
@@ -88,7 +88,7 @@ internal sealed class DRK_Default : DRK_Base
 
         return false;
     }
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (SettingBreak && (!IsFullParty && CanUseSpellInDungeonsMiddle || IsFullParty))
         {
@@ -140,12 +140,12 @@ internal sealed class DRK_Default : DRK_Base
     }
 
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //上黑盾
         if (TheBlackestNight.CanUse(out act)) return true;
 
-        if (abilityRemain == 2)
+        if (abilitiesRemaining == 2)
         {
             //减伤10%
             if (Oblation.CanUse(out act)) return true;

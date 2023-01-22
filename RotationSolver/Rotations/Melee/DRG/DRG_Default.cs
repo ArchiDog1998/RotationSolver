@@ -15,9 +15,6 @@ internal sealed class DRG_Default : DRG_Base
 
     public override string RotationName => "Default";
 
-    private static bool safeMove = false;
-
-
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("DRG_ShouldDelay", true, "Delay the dragon?")
@@ -53,14 +50,14 @@ internal sealed class DRG_Default : DRG_Base
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (SettingBreak)
         {
             //√Õ«π
             if (LanceCharge.CanUse(out act, mustUse: true))
             {
-                if (abilityRemain == 1 && !Player.HasStatus(true, StatusID.PowerSurge)) return true;
+                if (abilitiesRemaining == 1 && !Player.HasStatus(true, StatusID.PowerSurge)) return true;
                 if (Player.HasStatus(true, StatusID.PowerSurge)) return true;
             }
 
@@ -114,8 +111,6 @@ internal sealed class DRG_Default : DRG_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        safeMove = Configs.GetBool("DRG_SafeMove");
-
         #region »∫…À
         if (CoerthanTorment.CanUse(out act)) return true;
         if (SonicThrust.CanUse(out act)) return true;
@@ -156,7 +151,7 @@ internal sealed class DRG_Default : DRG_Base
         #endregion
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //«£÷∆
         if (Feint.CanUse(out act)) return true;

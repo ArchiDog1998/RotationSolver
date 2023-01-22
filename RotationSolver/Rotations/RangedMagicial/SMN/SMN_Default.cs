@@ -106,7 +106,7 @@ internal sealed class SMN_Default : SMN_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (SettingBreak)
         {
@@ -137,7 +137,7 @@ internal sealed class SMN_Default : SMN_Base
 
         return false;
     }
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //即刻进循环
         switch (Configs.GetCombo("addSwiftcast"))
@@ -165,7 +165,7 @@ internal sealed class SMN_Default : SMN_Base
                 }
                 break;
         }
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
     private protected override IAction CountDownAction(float remainTime)
@@ -176,7 +176,7 @@ internal sealed class SMN_Default : SMN_Base
         return base.CountDownAction(remainTime);
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //守护之光
         if (RadiantAegis.CanUse(out act)) return true;
@@ -192,7 +192,7 @@ internal sealed class SMN_Default : SMN_Base
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //守护之光
         if (RadiantAegis.CanUse(out act)) return true;

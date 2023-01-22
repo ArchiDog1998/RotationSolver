@@ -25,7 +25,7 @@ internal sealed class AST_Default : AST_Base
         {DescType.BreakingAction, $"{Divination}"}
     };
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //天星交错
         if (CelestialIntersection.CanUse(out act, emptyOrSkipCombo: true)) return true;
@@ -35,12 +35,12 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //来个命运之轮
         if (CollectiveUnconscious.CanUse(out act)) return true;
 
-        return base.DefenceAreaAbility(abilityRemain, out act);
+        return base.DefenceAreaAbility(abilitiesRemaining, out act);
     }
 
     private protected override bool GeneralGCD(out IAction act)
@@ -90,7 +90,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
-    private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
+    private protected override bool GeneralAbility(byte abilitiesRemaining, out IAction act)
     {
         //如果当前还没有卡牌，那就抽一张
         if (Draw.CanUse(out act)) return true;
@@ -120,7 +120,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (SettingBreak && Divination.CanUse(out act)) return true;
 
@@ -152,7 +152,7 @@ internal sealed class AST_Default : AST_Base
         }
 
         //发牌
-        if (abilityRemain == 1)
+        if (abilitiesRemaining == 1)
         {
             if (PlayCard(out act)) return true;
         }
@@ -160,7 +160,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (EssentialDignity.Target.GetHealthRatio() < 0.4
             && EssentialDignity.CanUse(out act, emptyOrSkipCombo: true)) return true;
@@ -198,7 +198,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
-    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //群Hot
         if (CelestialOpposition.CanUse(out act)) return true;

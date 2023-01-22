@@ -58,7 +58,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //加个神速咏唱
         if (PresenseOfMind.CanUse(out act)) return true;
@@ -69,7 +69,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //加个无中生有
         if (nextGCD is BaseAction action && action.MPNeed >= 1000 &&
@@ -81,7 +81,7 @@ internal sealed class WHM_Default : WHM_Base
             if (PlenaryIndulgence.CanUse(out act)) return true;
         }
 
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
     private protected override bool HealSingleGCD(out IAction act)
@@ -101,7 +101,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //天赐 大资源救急用
         if (Benediction.Target.GetHealthRatio() < 0.3
@@ -138,7 +138,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //庇护所
         if (Asylum.CanUse(out act)) return true;
@@ -147,7 +147,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //神祝祷
         if (DivineBenison.CanUse(out act)) return true;
@@ -157,7 +157,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //节制
         if (Temperance.CanUse(out act)) return true;

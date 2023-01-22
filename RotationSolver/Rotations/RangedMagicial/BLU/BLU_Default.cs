@@ -52,19 +52,19 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             AttackType = (BLUAttackType)Configs.GetCombo("AttackType");
         }
 
-        private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+        private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
         {
             act = null;
             return false;
         }
 
-        private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+        private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
         {
             if (nextGCD.IsAnySameAction(false, Selfdestruct, FinalSting))
             {
                 if (Swiftcast.CanUse(out act)) return true;
             }
-            return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+            return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
         }
 
         private protected override bool MoveGCD(out IAction act)

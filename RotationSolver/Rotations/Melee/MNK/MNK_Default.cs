@@ -30,19 +30,19 @@ internal sealed class MNK_Default : MNK_Base
         return base.CreateConfiguration().SetBool("AutoFormShift", true, "Auto use FormShift");
     }
 
-    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Mantra.CanUse(out act)) return true;
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (RiddleofEarth.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
         return false;
@@ -151,7 +151,7 @@ internal sealed class MNK_Default : MNK_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (SettingBreak)
         {

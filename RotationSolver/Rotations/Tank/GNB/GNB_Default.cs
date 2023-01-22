@@ -66,10 +66,10 @@ internal sealed class GNB_Default : GNB_Base
 
 
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //无情,目前只有4GCD起手的判断
-        if (SettingBreak && abilityRemain == 1 && CanUseNoMercy(out act)) return true;
+        if (SettingBreak && abilitiesRemaining == 1 && CanUseNoMercy(out act)) return true;
 
         //危险领域
         if (DangerZone.CanUse(out act))
@@ -106,16 +106,16 @@ internal sealed class GNB_Default : GNB_Base
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (HeartofLight.CanUse(out act, emptyOrSkipCombo: true)) return true;
         if (Reprisal.CanUse(out act, mustUse: true)) return true;
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (abilityRemain == 2)
+        if (abilitiesRemaining == 2)
         {
             //减伤10%）
             if (HeartofStone.CanUse(out act)) return true;
@@ -137,9 +137,9 @@ internal sealed class GNB_Default : GNB_Base
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (Aurora.CanUse(out act, emptyOrSkipCombo: true) && abilityRemain == 1) return true;
+        if (Aurora.CanUse(out act, emptyOrSkipCombo: true) && abilitiesRemaining == 1) return true;
 
         return false;
     }

@@ -37,7 +37,7 @@ internal sealed class MCH_Default : MCH_Base
             .SetBool("DelayHypercharge", false, "Use Hypercharge late");
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //策动
         if (Tactician.CanUse(out act, mustUse: true)) return true;
@@ -93,7 +93,7 @@ internal sealed class MCH_Default : MCH_Base
         if (remainTime <= 5 && Reassemble.CanUse(out _, emptyOrSkipCombo: true)) return Reassemble;
         return base.CountDownAction(remainTime);
     }
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //等级小于钻头时,绑定狙击弹
         if (!Drill.EnoughLevel && nextGCD.IsAnySameAction(true, CleanShot))
@@ -121,10 +121,10 @@ internal sealed class MCH_Default : MCH_Base
         {
             if (SettingBreak && Configs.GetBool("MCH_Opener") && Wildfire.CanUse(out act)) return true;
         }
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //野火
         if (SettingBreak && CanUseWildfire(out act)) return true;
@@ -140,7 +140,7 @@ internal sealed class MCH_Default : MCH_Base
         if (BarrelStabilizer.CanUse(out act)) return true;
 
         //超荷
-        if (CanUseHypercharge(out act) && (Configs.GetBool("MCH_Opener") && abilityRemain == 1 || !Configs.GetBool("MCH_Opener"))) return true;
+        if (CanUseHypercharge(out act) && (Configs.GetBool("MCH_Opener") && abilitiesRemaining == 1 || !Configs.GetBool("MCH_Opener"))) return true;
 
         if (GaussRound.CurrentCharges <= Ricochet.CurrentCharges)
         {

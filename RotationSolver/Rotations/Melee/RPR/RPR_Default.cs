@@ -147,7 +147,7 @@ internal sealed class RPR_Default : RPR_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (SettingBreak)
         {
@@ -189,7 +189,7 @@ internal sealed class RPR_Default : RPR_Base
     }
 
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //牵制
         if (!SoulReaver && !Enshrouded)
@@ -201,7 +201,7 @@ internal sealed class RPR_Default : RPR_Base
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //神秘纹
         if (!SoulReaver && !Enshrouded)

@@ -309,7 +309,7 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
     /// </summary>
     public static INinAction HyoshoRanryu { get; } = new NinAction(ActionID.HyoshoRanryu, Ten, Jin);
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Shukuchi.CanUse(out act, emptyOrSkipCombo: true)) return true;
 

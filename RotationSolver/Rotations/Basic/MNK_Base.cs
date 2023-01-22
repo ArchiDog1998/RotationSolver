@@ -185,7 +185,7 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction RiddleofWind { get; } = new BaseAction(ActionID.RiddleofWind, true);
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Thunderclap.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;

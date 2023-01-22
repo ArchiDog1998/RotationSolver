@@ -22,20 +22,14 @@ internal sealed class DNC_Default : DNC_Base
         {DescType.MoveAction, $"{EnAvant}"},
     };
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
-    {
-        if (EnAvant.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        return false;
-    }
-
-    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (CuringWaltz.CanUse(out act, emptyOrSkipCombo: true)) return true;
         if (Improvisation.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (ShieldSamba.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
@@ -52,7 +46,7 @@ internal sealed class DNC_Default : DNC_Base
         return base.CountDownAction(remainTime);
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
         //ÌøÎè×´Ì¬½ûÖ¹Ê¹ÓÃ

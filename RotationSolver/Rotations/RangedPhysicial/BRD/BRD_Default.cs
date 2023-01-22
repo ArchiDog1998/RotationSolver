@@ -39,7 +39,7 @@ internal sealed class BRD_Default : BRD_Base
     private float MAGERemainTime => 45 - Configs.GetFloat("MAGETime");
     private float ARMYRemainTime => 45 - Configs.GetFloat("ARMYTime");
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //行吟
         if (Troubadour.CanUse(out act)) return true;
@@ -47,7 +47,7 @@ internal sealed class BRD_Default : BRD_Base
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //大地神的抒情恋歌
         if (NaturesMinne.CanUse(out act)) return true;
@@ -90,12 +90,12 @@ internal sealed class BRD_Default : BRD_Base
         return false;
     }
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //如果接下来要上毒或者要直线射击，那算了。
         if (nextGCD.IsAnySameAction(true, StraitShoot, VenomousBite, Windbite, IronJaws))
         {
-            return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+            return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
         }
         else if ((!RagingStrikes.EnoughLevel || Player.HasStatus(true, StatusID.RagingStrikes)) && (!BattleVoice.EnoughLevel || Player.HasStatus(true, StatusID.BattleVoice)))
         {
@@ -106,10 +106,10 @@ internal sealed class BRD_Default : BRD_Base
             }
         }
 
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
 
@@ -152,7 +152,7 @@ internal sealed class BRD_Default : BRD_Base
         //放浪神的小步舞曲
         if (WanderersMinuet.CanUse(out act))
         {
-            if (SongEndAfter(ARMYRemainTime) && (Song != Song.NONE || Player.HasStatus(true, StatusID.ArmyEthos)) && abilityRemain == 1) return true;
+            if (SongEndAfter(ARMYRemainTime) && (Song != Song.NONE || Player.HasStatus(true, StatusID.ArmyEthos)) && abilitiesRemaining == 1) return true;
         }
 
         //九天连箭
@@ -165,9 +165,9 @@ internal sealed class BRD_Default : BRD_Base
 
             if (Repertoire == 3) return true;
 
-            if (Repertoire == 2 && EmpyrealArrow.WillHaveOneChargeGCD(1) && abilityRemain == 1) return true;
+            if (Repertoire == 2 && EmpyrealArrow.WillHaveOneChargeGCD(1) && abilitiesRemaining == 1) return true;
 
-            if (Repertoire == 2 && EmpyrealArrow.WillHaveOneChargeGCD() && abilityRemain == 2) return true;
+            if (Repertoire == 2 && EmpyrealArrow.WillHaveOneChargeGCD() && abilitiesRemaining == 2) return true;
         }
 
         //贤者的叙事谣

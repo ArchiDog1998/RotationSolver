@@ -96,7 +96,7 @@ internal sealed class SCH_Default : SCH_Base
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //判断是否有人有线
         var haveLink = TargetUpdater.PartyMembers.Any(p =>
@@ -125,7 +125,7 @@ internal sealed class SCH_Default : SCH_Base
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
 
         //深谋远虑之策
@@ -142,7 +142,7 @@ internal sealed class SCH_Default : SCH_Base
         return false;
     }
 
-    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //慰藉
         if (SummonSeraph.CanUse(out act)) return true;
@@ -173,7 +173,7 @@ internal sealed class SCH_Default : SCH_Base
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //异想的幻光
         if (FeyIllumination.CanUse(out act)) return true;
@@ -191,7 +191,7 @@ internal sealed class SCH_Default : SCH_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (SettingBreak)
         {

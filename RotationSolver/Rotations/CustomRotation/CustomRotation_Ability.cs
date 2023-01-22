@@ -11,7 +11,7 @@ namespace RotationSolver.Rotations.CustomRotation;
 
 internal abstract partial class CustomRotation
 {
-    private bool Ability(byte abilityRemain, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
+    private bool Ability(byte abilitiesRemaining, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         act = RSCommands.NextAction;
         if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _, mustUse: true, skipDisable: true)) return true;
@@ -22,7 +22,7 @@ internal abstract partial class CustomRotation
             return false;
         }
 
-        if (EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
+        if (EmergencyAbility(abilitiesRemaining, nextGCD, out act)) return true;
         var role = Job.GetJobRole();
 
         if (InterruptAbility(role, out act)) return true;
@@ -37,16 +37,16 @@ internal abstract partial class CustomRotation
             if (TrueNorth.CanUse(out act)) return true;
         }
 
-        if (GeneralHealAbility(abilityRemain, specialType, out act)) return true;
+        if (GeneralHealAbility(abilitiesRemaining, specialType, out act)) return true;
 
-        if (AutoDefense(abilityRemain, role, helpDefenseAOE, helpDefenseSingle, out act)) return true;
+        if (AutoDefense(abilitiesRemaining, role, helpDefenseAOE, helpDefenseSingle, out act)) return true;
 
-        if (MovingAbility(abilityRemain, specialType, out act)) return true;
+        if (MovingAbility(abilitiesRemaining, specialType, out act)) return true;
 
         if (GeneralUsingAbility(role, out act)) return true;
 
-        if (GeneralAbility(abilityRemain, out act)) return true;
-        if (HaveHostilesInRange && AttackAbility(abilityRemain, out act)) return true;
+        if (GeneralAbility(abilitiesRemaining, out act)) return true;
+        if (HaveHostilesInRange && AttackAbility(abilitiesRemaining, out act)) return true;
 
         //Run!
         if (!InCombat && IsMoving && role == JobRole.RangedPhysical
@@ -131,30 +131,30 @@ internal abstract partial class CustomRotation
         return false;
     }
 
-    private bool GeneralHealAbility(byte abilityRemain, SpecialCommandType specialType, out IAction act)
+    private bool GeneralHealAbility(byte abilitiesRemaining, SpecialCommandType specialType, out IAction act)
     {
         act = null;
         switch (specialType)
         {
             case SpecialCommandType.DefenseArea:
-                if (DefenceAreaAbility(abilityRemain, out act)) return true;
+                if (DefenceAreaAbility(abilitiesRemaining, out act)) return true;
                 break;
 
             case SpecialCommandType.DefenseSingle:
-                if (DefenceSingleAbility(abilityRemain, out act)) return true;
+                if (DefenceSingleAbility(abilitiesRemaining, out act)) return true;
                 break;
         }
 
         if ((TargetUpdater.HPNotFull || Job.RowId == (uint)ClassJobID.BlackMage) && ActionUpdater.InCombat)
         {
-            if ((RSCommands.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && HealAreaAbility(abilityRemain, out act)) return true;
-            if ((RSCommands.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilityRemain, out act)) return true;
+            if ((RSCommands.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && HealAreaAbility(abilitiesRemaining, out act)) return true;
+            if ((RSCommands.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilitiesRemaining, out act)) return true;
         }
 
         return false;
     }
 
-    private bool AutoDefense(byte abilityRemain, JobRole role, bool helpDefenseAOE, bool helpDefenseSingle, out IAction act)
+    private bool AutoDefense(byte abilitiesRemaining, JobRole role, bool helpDefenseAOE, bool helpDefenseSingle, out IAction act)
     {
         act = null;
 
@@ -175,10 +175,10 @@ internal abstract partial class CustomRotation
 
         if (helpDefenseAOE)
         {
-            if (DefenceAreaAbility(abilityRemain, out act)) return true;
+            if (DefenceAreaAbility(abilitiesRemaining, out act)) return true;
             if (role is JobRole.Melee or JobRole.RangedPhysical or JobRole.RangedMagicial)
             {
-                if (DefenceSingleAbility(abilityRemain, out act)) return true;
+                if (DefenceSingleAbility(abilitiesRemaining, out act)) return true;
             }
         }
 
@@ -191,31 +191,31 @@ internal abstract partial class CustomRotation
             if (tarOnmeCount > 1 && !IsMoving)
             {
                 if (ArmsLength.CanUse(out act)) return true;
-                if (DefenceSingleAbility(abilityRemain, out act)) return true;
+                if (DefenceSingleAbility(abilitiesRemaining, out act)) return true;
             }
 
             //Big damage cating action.
             if (tarOnmeCount == 1 && TargetUpdater.IsHostileCastingToTank)
             {
-                if (DefenceSingleAbility(abilityRemain, out act)) return true;
+                if (DefenceSingleAbility(abilitiesRemaining, out act)) return true;
             }
         }
 
-        if (helpDefenseSingle && DefenceSingleAbility(abilityRemain, out act)) return true;
+        if (helpDefenseSingle && DefenceSingleAbility(abilitiesRemaining, out act)) return true;
 
         return false;
     }
 
-    private bool MovingAbility(byte abilityRemain, SpecialCommandType specialType, out IAction act)
+    private bool MovingAbility(byte abilitiesRemaining, SpecialCommandType specialType, out IAction act)
     {
         act = null;
-        if (specialType == SpecialCommandType.MoveForward && MoveForwardAbility(abilityRemain, out act))
+        if (specialType == SpecialCommandType.MoveForward && MoveForwardAbility(abilitiesRemaining, out act))
         {
             if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
         }
         else if (specialType == SpecialCommandType.MoveBack)
         {
-            if(MoveBackAbility(abilityRemain, out act)) return true;
+            if(MoveBackAbility(abilitiesRemaining, out act)) return true;
         }
         return false;
     }
@@ -248,14 +248,14 @@ internal abstract partial class CustomRotation
     }
 
 
-    private protected virtual bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected virtual bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         if (nextGCD is BaseAction action)
         {
             if (Job.GetJobRole() is JobRole.Healer or JobRole.RangedMagicial &&
             action.CastTime >= 5 && Swiftcast.CanUse(out act, emptyOrSkipCombo: true)) return true;
 
-            if (Service.Configuration.AutoUseTrueNorth && abilityRemain == 1 && action.EnermyPositonal != EnemyPositional.None && action.Target != null)
+            if (Service.Configuration.AutoUseTrueNorth && abilitiesRemaining == 1 && action.EnermyPositonal != EnemyPositional.None && action.Target != null)
             {
                 if (action.EnermyPositonal != action.Target.FindEnemyLocation() && action.Target.HasLocationSide())
                 {
@@ -268,41 +268,40 @@ internal abstract partial class CustomRotation
         return false;
     }
 
-    private protected virtual bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected virtual bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected virtual bool MoveBackAbility(byte abilityRemain, out IAction act)
+    private protected virtual bool MoveBackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected virtual bool HealSingleAbility(byte abilityRemain, out IAction act)
+    private protected virtual bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected virtual bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected virtual bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected virtual bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected virtual bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected virtual bool HealAreaAbility(byte abilityRemain, out IAction act)
+    private protected virtual bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected virtual bool GeneralAbility(byte abilityRemain, out IAction act)
+    private protected virtual bool GeneralAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected abstract bool AttackAbility(byte abilityRemain, out IAction act);
-
+    private protected abstract bool AttackAbility(byte abilitiesRemaining, out IAction act);
 }

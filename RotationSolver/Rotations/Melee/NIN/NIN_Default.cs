@@ -295,14 +295,14 @@ internal sealed class NIN_Default : NIN_Base
         return base.MoveGCD(out act);
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (ShadeShift.CanUse(out act)) return true;
 
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
         if (!InCombat || Service.IconReplacer.OriginalHook(2260) != 2260) return false;
@@ -334,7 +334,7 @@ internal sealed class NIN_Default : NIN_Base
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //牵制
         if (Feint.CanUse(out act)) return true;

@@ -207,15 +207,15 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
         StatusNeed = new[] { StatusID.SaltedEarth },
     };
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //行尸走肉
         if (LivingDead.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], LivingDead.Target)) return true;
 
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Plunge.CanUse(out act, emptyOrSkipCombo: true)) return true;
 

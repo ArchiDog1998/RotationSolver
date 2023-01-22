@@ -54,15 +54,15 @@ internal sealed class SGE_Default : SGE_Base
         {DescType.DefenseSingle, $"{Diagnosis}\n{Haima}, {Taurochole}"},
         {DescType.MoveAction, $"{Icarus}"},
     };
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null!;
         return false;
     }
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        if (base.EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
+        if (base.EmergencyAbility(abilitiesRemaining, nextGCD, out act)) return true;
 
         //下个技能是
         if (nextGCD.IsAnySameAction(false, Pneuma, EukrasianDiagnosis,
@@ -82,7 +82,7 @@ internal sealed class SGE_Default : SGE_Base
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
 
         if (Addersgall == 0 || Dyskrasia.CanUse(out _))
@@ -160,14 +160,8 @@ internal sealed class SGE_Default : SGE_Base
         return false;
     }
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
-    {
-        //神翼
-        if (Icarus.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        return false;
-    }
 
-    private protected override bool GeneralAbility(byte abilityRemain, out IAction act)
+    private protected override bool GeneralAbility(byte abilitiesRemaining, out IAction act)
     {
         //心关
         if (Kardia.CanUse(out act)) return true;
@@ -230,7 +224,7 @@ internal sealed class SGE_Default : SGE_Base
         return false;
     }
 
-    private protected override bool HealSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //白牛青汁
         if (Taurochole.CanUse(out act)) return true;
@@ -290,7 +284,7 @@ internal sealed class SGE_Default : SGE_Base
         act = null;
         return false;
     }
-    private protected override bool HealAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //坚角清汁
         if (Kerachole.CanUse(out act) && Level >= 78) return true;

@@ -28,7 +28,7 @@ internal sealed class WAR_Default : WAR_Base
         InnerBeast.RotationCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest);
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //°ÚÍÑ ¶ÓÓÑÌ×¶Ü
         if (ShakeItOff.CanUse(out act, mustUse: true)) return true;
@@ -79,9 +79,9 @@ internal sealed class WAR_Default : WAR_Base
         return false;
     }
 
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (abilityRemain == 2)
+        if (abilitiesRemaining == 2)
         {
             if (TargetUpdater.HostileTargets.Count() > 1)
             {
@@ -106,7 +106,7 @@ internal sealed class WAR_Default : WAR_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //±¬·¢
         if (!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) || !MythrilTempest.EnoughLevel)

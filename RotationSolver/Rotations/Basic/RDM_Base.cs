@@ -225,7 +225,7 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
         return false;
     }
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected sealed  override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         if (CorpsAcorps.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;

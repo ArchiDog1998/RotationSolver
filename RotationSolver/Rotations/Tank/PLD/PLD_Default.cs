@@ -93,7 +93,7 @@ internal sealed class PLD_Default : PLD_Base
     }
 
     //范围防御能力技
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
 
         if (Reprisal.CanUse(out act, mustUse: true)) return true;// 雪仇
@@ -103,7 +103,7 @@ internal sealed class PLD_Default : PLD_Base
     }
 
     //单体防御能力技
-    private protected override bool DefenceSingleAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
 
         if (Rampart.CanUse(out act)) return true;//铁壁（减伤20%）
@@ -118,16 +118,16 @@ internal sealed class PLD_Default : PLD_Base
         return false;
     }
     //紧急使用的能力
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         if (nextGCD.IsAnySameAction(true, RiotBlade) || nextGCD.IsAnySameAction(true, GoringBlade))//插在暴乱剑或沥血剑前
         {
-            if (FightorFlight.CanUse(out act) && abilityRemain == 1) return true;//战逃
+            if (FightorFlight.CanUse(out act) && abilitiesRemaining == 1) return true;//战逃
         }
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
     //攻击能力技
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (HolyCircle.CanUse(out _))//借用圣环的判断
         {

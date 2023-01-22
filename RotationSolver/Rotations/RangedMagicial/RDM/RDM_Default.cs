@@ -61,7 +61,7 @@ internal sealed class RDM_Default : RDM_Base
         return value >= 6 && value <= 12;
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
         if (SettingBreak)
@@ -73,7 +73,7 @@ internal sealed class RDM_Default : RDM_Base
         if (ManaStacks == 0 && (BlackMana < 50 || WhiteMana < 50) && !Manafication.WillHaveOneChargeGCD(1, 1))
         {
             //´Ù½øÂúÁËÇÒÔ¤±¸buffÃ»Âú¾ÍÓÃ¡£ 
-            if (abilityRemain == 2 && Acceleration.CanUse(out act, emptyOrSkipCombo: true)
+            if (abilitiesRemaining == 2 && Acceleration.CanUse(out act, emptyOrSkipCombo: true)
                 && (!Player.HasStatus(true, StatusID.VerfireReady) || !Player.HasStatus(true, StatusID.VerstoneReady))) return true;
 
             //¼´¿ÌÓ½³ª
@@ -132,7 +132,7 @@ internal sealed class RDM_Default : RDM_Base
     }
 
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //»ìÂÒ
         if (Addle.CanUse(out act)) return true;
