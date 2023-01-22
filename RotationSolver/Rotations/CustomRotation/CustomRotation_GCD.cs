@@ -81,8 +81,6 @@ internal abstract partial class CustomRotation
         act = null; return false;
     }
 
-    private protected abstract bool GeneralGCD(out IAction act);
-
     private protected virtual bool MoveGCD(out IAction act)
     {
         act = null; return false;
@@ -107,4 +105,6 @@ internal abstract partial class CustomRotation
     {
         act = null; return false;
     }
+
+    private protected abstract bool GeneralGCD(out IAction act);
 }

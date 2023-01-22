@@ -247,7 +247,6 @@ internal abstract partial class CustomRotation
         return false;
     }
 
-    private protected abstract bool AttackAbility(byte abilityRemain, out IAction act);
 
     private protected virtual bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
@@ -267,11 +266,6 @@ internal abstract partial class CustomRotation
 
         act = null;
         return false;
-    }
-
-    private protected virtual bool GeneralAbility(byte abilityRemain, out IAction act)
-    {
-        act = null; return false;
     }
 
     private protected virtual bool MoveForwardAbility(byte abilityRemain, out IAction act)
@@ -303,4 +297,12 @@ internal abstract partial class CustomRotation
     {
         act = null; return false;
     }
+
+    private protected virtual bool GeneralAbility(byte abilityRemain, out IAction act)
+    {
+        act = null; return false;
+    }
+
+    private protected abstract bool AttackAbility(byte abilityRemain, out IAction act);
+
 }
