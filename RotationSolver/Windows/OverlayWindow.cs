@@ -150,12 +150,12 @@ internal static class OverlayWindow
         pts.Add(scrPos);
         switch (ShouldPositional)
         {
-            case EnemyPositional.Side:
+            case EnemyPositional.Flank:
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
                 pts.Add(scrPos);
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
                 break;
-            case EnemyPositional.Back:
+            case EnemyPositional.Rear:
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
                 break;
             default:

@@ -85,8 +85,8 @@ internal static class ObjectHelper
         double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
 
         if (angle < Math.PI / 4) return EnemyPositional.Front;
-        else if (angle > Math.PI * 3 / 4) return EnemyPositional.Back;
-        return EnemyPositional.Side;
+        else if (angle > Math.PI * 3 / 4) return EnemyPositional.Rear;
+        return EnemyPositional.Flank;
     }
 
     public unsafe static bool CanAttack(this GameObject actor)

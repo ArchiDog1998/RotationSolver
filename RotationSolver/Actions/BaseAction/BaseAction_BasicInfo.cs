@@ -85,7 +85,7 @@ internal partial class BaseAction : IBaseAction
     {
         get
         {
-            if (ConfigurationHelper.ActionLocations.TryGetValue((ActionID)ID, out var location))
+            if (ConfigurationHelper.ActionPositionals.TryGetValue((ActionID)ID, out var location))
             {
                 return location.Loc;
             }

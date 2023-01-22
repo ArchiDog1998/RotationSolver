@@ -56,8 +56,8 @@ internal static class EnumTranslations
     public static string ToName(this EnemyPositional value) => value switch
     {
         EnemyPositional.None => LocalizationManager.RightLang.EnemyLocation_None,
-        EnemyPositional.Back => LocalizationManager.RightLang.EnemyLocation_Back,
-        EnemyPositional.Side => LocalizationManager.RightLang.EnemyLocation_Side,
+        EnemyPositional.Rear => LocalizationManager.RightLang.EnemyLocation_Rear,
+        EnemyPositional.Flank => LocalizationManager.RightLang.EnemyLocation_Flank,
         EnemyPositional.Front => LocalizationManager.RightLang.EnemyLocation_Front,
         _ => string.Empty,
     };

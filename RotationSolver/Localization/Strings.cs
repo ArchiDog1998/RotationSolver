@@ -212,7 +212,7 @@ internal class Strings
     #region Actions
     public string Action_Friendly { get; set; } = "Support";
     public string Action_Attack { get; set; } = "Attack";
-    public string Action_WrongLocation { get; set; } = "Positional {0}!";
+    public string Action_WrongPositional { get; set; } = "Positional {0}!";
 
     #endregion
 
@@ -265,8 +265,8 @@ internal class Strings
 
     #region EnemyLocation
     public string EnemyLocation_None { get; set; } = "None";
-    public string EnemyLocation_Back { get; set; } = "Back";
-    public string EnemyLocation_Side { get; set; } = "Side";
+    public string EnemyLocation_Rear { get; set; } = "Rear";
+    public string EnemyLocation_Flank { get; set; } = "Flank";
     public string EnemyLocation_Front { get; set; } = "Front";
 
     #endregion
