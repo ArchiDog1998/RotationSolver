@@ -101,7 +101,7 @@
   "Configwindow_Param_UseItemDesc": "Use poison, WIP",
   "Configwindow_Param_Conditon": "Condition",
   "Configwindow_Param_StartOnCountdown": "Turn on auto-rotation on countdown",
-  "Configwindow_Param_HealingOutOfCombat": "Heal party members outside of combat.",
+  "Configwindow_Param_HealOutOfCombat": "Heal party members outside of combat.",
   "Configwindow_Param_HealthDifference": "Set the HP standard deviation threshold for using AOE heal (ability & spell)",
   "Configwindow_Param_HealthAreaAbility": "Set the HP threshold for using AOE healing ability",
   "Configwindow_Param_HealthAreaSpell": "Set the HP threshold for using AOE healing spell",

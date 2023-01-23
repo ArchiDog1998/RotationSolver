@@ -50,9 +50,8 @@ internal sealed class WHM_Default : WHM_Base
         if (Holy.CanUse(out act)) return true;
 
         //单体输出
-        if (Aero.CanUse(out act, mustUse: IsMoving && HaveHostilesInRange)) return true;
+        if (Aero.CanUse(out act, mustUse: IsMoving)) return true;
         if (Stone.CanUse(out act)) return true;
-
 
         act = null;
         return false;

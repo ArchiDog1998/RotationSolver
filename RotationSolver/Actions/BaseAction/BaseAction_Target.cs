@@ -294,11 +294,14 @@ internal partial class BaseAction
         {
             target = b;
 
-            //No need to dot.
-            if (TargetStatus != null && !ObjectHelper.CanDot(b)) return false;
+            if (!mustUse)
+            {
+                //No need to dot.
+                if (TargetStatus != null && !ObjectHelper.CanDot(b)) return false;
 
-            //Already has status.
-            if (!mustUse && !CheckStatus(b)) return false;
+                //Already has status.
+                if (!CheckStatus(b)) return false;
+            }
 
             return true;
         }
