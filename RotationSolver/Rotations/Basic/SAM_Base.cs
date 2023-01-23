@@ -1,7 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using RotationSolver.Actions.BaseAction;
 using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 
@@ -282,9 +281,9 @@ internal abstract class SAM_Base : CustomRotation.CustomRotation
     };
     #endregion
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (HissatsuGyoten.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (HissatsuGyoten.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }

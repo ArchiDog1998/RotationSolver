@@ -1,12 +1,12 @@
 using RotationSolver.Actions;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using System.Collections.Generic;
-using System.Linq;
-using RotationSolver.Updaters;
-using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Updaters;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RotationSolver.Rotations.RangedPhysicial.MCH;
 
@@ -37,10 +37,10 @@ internal sealed class MCH_Default : MCH_Base
             .SetBool("DelayHypercharge", false, "Use Hypercharge late");
     }
 
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //策动
-        if (Tactician.ShouldUse(out act, mustUse: true)) return true;
+        if (Tactician.CanUse(out act, mustUse: true)) return true;
 
         return false;
     }
@@ -51,38 +51,38 @@ internal sealed class MCH_Default : MCH_Base
         if (!InCombat)
         {
             //开场前整备,空气锚和钻头必须冷却好
-            if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolDown || !Drill.IsCoolDown) && Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolingDown || !Drill.IsCoolingDown) && Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         //群体常规GCD
         //AOE,毒菌冲击
-        if (Bioblaster.ShouldUse(out act)) return true;
-        if (ChainSaw.ShouldUse(out act)) return true;
-        if (IsOverheated && AutoCrossbow.ShouldUse(out act)) return true;
-        if (SpreadShot.ShouldUse(out act)) return true;
+        if (Bioblaster.CanUse(out act)) return true;
+        if (ChainSaw.CanUse(out act)) return true;
+        if (IsOverheated && AutoCrossbow.CanUse(out act)) return true;
+        if (SpreadShot.CanUse(out act)) return true;
 
         if (!IsOverheated || IsOverheated && OverheatedEndAfterGCD())
         {
             //单体,四个牛逼的技能。先空气锚再钻头
-            if (AirAnchor.ShouldUse(out act)) return true;
-            else if (!AirAnchor.EnoughLevel && HotShot.ShouldUse(out act)) return true;
-            if (Drill.ShouldUse(out act)) return true;
-            if (ChainSaw.ShouldUse(out act, mustUse: true))
+            if (AirAnchor.CanUse(out act)) return true;
+            else if (!AirAnchor.EnoughLevel && HotShot.CanUse(out act)) return true;
+            if (Drill.CanUse(out act)) return true;
+            if (ChainSaw.CanUse(out act, mustUse: true))
             {
                 if (Player.HasStatus(true, StatusID.Reassemble)) return true;
-                if (!Configs.GetBool("MCH_Opener") || Wildfire.IsCoolDown) return true;
-                if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(4) && Drill.IsCoolDown && Drill.ElapsedAfterGCD(3)) return true;
-                if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(3) && Drill.IsCoolDown && Drill.ElapsedAfterGCD(4)) return true;
+                if (!Configs.GetBool("MCH_Opener") || Wildfire.IsCoolingDown) return true;
+                if (AirAnchor.IsCoolingDown && AirAnchor.ElapsedAfterGCD(4) && Drill.IsCoolingDown && Drill.ElapsedAfterGCD(3)) return true;
+                if (AirAnchor.IsCoolingDown && AirAnchor.ElapsedAfterGCD(3) && Drill.IsCoolingDown && Drill.ElapsedAfterGCD(4)) return true;
             }
         }
 
         //过热状态
-        if (IsOverheated && HeatBlast.ShouldUse(out act)) return true;
+        if (IsOverheated && HeatBlast.CanUse(out act)) return true;
 
         //单体常规GCD
-        if (CleanShot.ShouldUse(out act)) return true;
-        if (SlugShot.ShouldUse(out act)) return true;
-        if (SplitShot.ShouldUse(out act)) return true;
+        if (CleanShot.CanUse(out act)) return true;
+        if (SlugShot.CanUse(out act)) return true;
+        if (SplitShot.CanUse(out act)) return true;
 
         return false;
     }
@@ -90,65 +90,65 @@ internal sealed class MCH_Default : MCH_Base
     private protected override IAction CountDownAction(float remainTime)
     {
         //提前5秒整备
-        if (remainTime <= 5 && Reassemble.ShouldUse(out _, emptyOrSkipCombo: true)) return Reassemble;
+        if (remainTime <= 5 && Reassemble.CanUse(out _, emptyOrSkipCombo: true)) return Reassemble;
         return base.CountDownAction(remainTime);
     }
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //等级小于钻头时,绑定狙击弹
-        if (!Drill.EnoughLevel && nextGCD.IsAnySameAction(true, CleanShot))
+        if (!Drill.EnoughLevel && nextGCD.IsTheSameTo(true, CleanShot))
         {
-            if (Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //等级小于90时,整备不再留层数
         if ((!ChainSaw.EnoughLevel || !Configs.GetBool("MCH_Reassemble"))
-            && nextGCD.IsAnySameAction(false, AirAnchor, Drill))
+            && nextGCD.IsTheSameTo(false, AirAnchor, Drill))
         {
-            if (Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //整备优先链锯
-        if (Configs.GetBool("MCH_Reassemble") && nextGCD.IsAnySameAction(true, ChainSaw))
+        if (Configs.GetBool("MCH_Reassemble") && nextGCD.IsTheSameTo(true, ChainSaw))
         {
-            if (Reassemble.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
         //如果接下来要搞三大金刚了，整备吧！
-        if (ChainSaw.EnoughLevel && nextGCD.IsAnySameAction(true, AirAnchor, Drill))
+        if (ChainSaw.EnoughLevel && nextGCD.IsTheSameTo(true, AirAnchor, Drill))
         {
-            if (Reassemble.ShouldUse(out act)) return true;
+            if (Reassemble.CanUse(out act)) return true;
         }
         //起手在链锯前释放野火
-        if (nextGCD.IsAnySameAction(true, ChainSaw) && !IsLastGCD(true, HeatBlast))
+        if (nextGCD.IsTheSameTo(true, ChainSaw) && !IsLastGCD(true, HeatBlast))
         {
-            if (SettingBreak && Configs.GetBool("MCH_Opener") && Wildfire.ShouldUse(out act)) return true;
+            if (InBurst && Configs.GetBool("MCH_Opener") && Wildfire.CanUse(out act)) return true;
         }
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //野火
-        if (SettingBreak && CanUseWildfire(out act)) return true;
+        if (InBurst && CanUseWildfire(out act)) return true;
 
         //车式浮空炮塔
         if (CanUseRookAutoturret(out act)) return true;
 
         //起手虹吸弹、弹射
-        if (Ricochet.CurrentCharges == Ricochet.MaxCharges && Ricochet.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
-        if (GaussRound.CurrentCharges == GaussRound.MaxCharges && GaussRound.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (Ricochet.CurrentCharges == Ricochet.MaxCharges && Ricochet.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (GaussRound.CurrentCharges == GaussRound.MaxCharges && GaussRound.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
         //枪管加热
-        if (BarrelStabilizer.ShouldUse(out act)) return true;
+        if (BarrelStabilizer.CanUse(out act)) return true;
 
         //超荷
-        if (CanUseHypercharge(out act) && (Configs.GetBool("MCH_Opener") && abilityRemain == 1 || !Configs.GetBool("MCH_Opener"))) return true;
+        if (CanUseHypercharge(out act) && (Configs.GetBool("MCH_Opener") && abilitiesRemaining == 1 || !Configs.GetBool("MCH_Opener"))) return true;
 
         if (GaussRound.CurrentCharges <= Ricochet.CurrentCharges)
         {
             //弹射
-            if (Ricochet.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (Ricochet.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
         }
         //虹吸弹
-        if (GaussRound.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (GaussRound.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
 
         act = null!;
         return false;
@@ -161,19 +161,19 @@ internal sealed class MCH_Default : MCH_Base
     /// <returns></returns>
     private bool CanUseWildfire(out IAction act)
     {
-        if (!Wildfire.ShouldUse(out act)) return false;
+        if (!Wildfire.CanUse(out act)) return false;
 
         if (Heat < 50 && !IsOverheated) return false;
 
         //小怪和AOE期间不打野火
-        if (SpreadShot.ShouldUse(out _) || TargetUpdater.PartyMembers.Count() is > 1 and <= 4 && !Target.IsBoss()) return false;
+        if (SpreadShot.CanUse(out _) || TargetUpdater.PartyMembers.Count() is > 1 and <= 4 && !Target.IsBoss()) return false;
 
         //在过热时
         if (IsLastAction(true, Hypercharge)) return true;
 
-        if (ChainSaw.EnoughLevel && !ChainSaw.IsCoolDown) return false;
+        if (ChainSaw.EnoughLevel && !ChainSaw.IsCoolingDown) return false;
 
-        if (Hypercharge.IsCoolDown) return false;
+        if (Hypercharge.IsCoolingDown) return false;
 
         //当上一个技能是钻头,空气锚,热冲击时不释放野火
         if (IsLastGCD(true, Drill, HeatBlast, AirAnchor)) return false;
@@ -188,7 +188,7 @@ internal sealed class MCH_Default : MCH_Base
     /// <returns></returns>
     private bool CanUseHypercharge(out IAction act)
     {
-        if (!Hypercharge.ShouldUse(out act) || Player.HasStatus(true, StatusID.Reassemble)) return false;
+        if (!Hypercharge.CanUse(out act) || Player.HasStatus(true, StatusID.Reassemble)) return false;
 
         //有野火buff必须释放超荷
         if (Player.HasStatus(true, StatusID.Wildfire)) return true;
@@ -199,10 +199,10 @@ internal sealed class MCH_Default : MCH_Base
         //在三大金刚还剩8秒冷却好时不释放超荷
         if (Drill.EnoughLevel && Drill.WillHaveOneChargeGCD(3)) return false;
         if (AirAnchor.EnoughLevel && AirAnchor.WillHaveOneCharge(3)) return false;
-        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(3) || !ChainSaw.IsCoolDown) && Configs.GetBool("MCH_Opener")) return false;
+        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolingDown && ChainSaw.WillHaveOneCharge(3) || !ChainSaw.IsCoolingDown) && Configs.GetBool("MCH_Opener")) return false;
 
         //小怪AOE和4人本超荷判断
-        if (SpreadShot.ShouldUse(out _))
+        if (SpreadShot.CanUse(out _))
         {
             if (!AutoCrossbow.EnoughLevel) return false;
             return true;
@@ -228,7 +228,7 @@ internal sealed class MCH_Default : MCH_Base
     /// <returns></returns>
     private bool CanUseRookAutoturret(out IAction act)
     {
-        if (!RookAutoturret.ShouldUse(out act, mustUse: true)) return false;
+        if (!RookAutoturret.CanUse(out act, mustUse: true)) return false;
 
         //4人本小怪快死了不释放
         if (isDyingNotBoss) return false;
@@ -241,11 +241,11 @@ internal sealed class MCH_Default : MCH_Base
 
         //小怪,AOE,不吃团辅判断
         if (!Configs.GetBool("MCH_Automaton") || !Target.IsBoss() && !IsMoving || Level < Wildfire.ID) return true;
-        if (SpreadShot.ShouldUse(out _) && !Target.IsBoss() && IsMoving) return false;
+        if (SpreadShot.CanUse(out _) && !Target.IsBoss() && IsMoving) return false;
 
         //机器人吃团辅判断
-        if (AirAnchor.IsCoolDown && AirAnchor.WillHaveOneChargeGCD() && Battery > 80) return true;
-        if (ChainSaw.WillHaveOneCharge(4) || ChainSaw.IsCoolDown && !ChainSaw.ElapsedAfterGCD(3) && Battery <= 60) return true;
+        if (AirAnchor.IsCoolingDown && AirAnchor.WillHaveOneChargeGCD() && Battery > 80) return true;
+        if (ChainSaw.WillHaveOneCharge(4) || ChainSaw.IsCoolingDown && !ChainSaw.ElapsedAfterGCD(3) && Battery <= 60) return true;
 
         return false;
     }

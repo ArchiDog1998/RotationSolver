@@ -1,11 +1,11 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
+using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System;
 using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Actions;
-using RotationSolver.Helpers;
-using RotationSolver.Data;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -198,13 +198,13 @@ internal abstract class AST_Base : CustomRotation.CustomRotation
         ActionCheck = b => InCombat && DrawnCrownCard == CardType.NONE,
     };
 
-    /// <summary>
-    /// 出王冠卡
-    /// </summary>
-    public static IBaseAction CrownPlay { get; } = new BaseAction(ActionID.CrownPlay)
-    {
-        ActionCheck = b => DrawnCrownCard is CardType.LADY or CardType.LORD,
-    };
+    ///// <summary>
+    ///// 出王冠卡
+    ///// </summary>
+    //public static IBaseAction CrownPlay { get; } = new BaseAction(ActionID.CrownPlay)
+    //{
+    //    ActionCheck = b => DrawnCrownCard is CardType.LADY or CardType.LORD,
+    //};
 
     /// <summary>
     /// 太阳神之衡
@@ -266,12 +266,12 @@ internal abstract class AST_Base : CustomRotation.CustomRotation
         act = null;
         if (!Seals.Contains(SealType.NONE)) return false;
 
-        if (Balance.ShouldUse(out act)) return true;
-        if (Arrow.ShouldUse(out act)) return true;
-        if (Spear.ShouldUse(out act)) return true;
-        if (Bole.ShouldUse(out act)) return true;
-        if (Ewer.ShouldUse(out act)) return true;
-        if (Spire.ShouldUse(out act)) return true;
+        if (Balance.CanUse(out act)) return true;
+        if (Arrow.CanUse(out act)) return true;
+        if (Spear.CanUse(out act)) return true;
+        if (Bole.CanUse(out act)) return true;
+        if (Ewer.CanUse(out act)) return true;
+        if (Spire.CanUse(out act)) return true;
 
         return false;
     }

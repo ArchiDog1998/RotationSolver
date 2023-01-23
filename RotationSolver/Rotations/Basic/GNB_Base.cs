@@ -1,9 +1,8 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using RotationSolver.Actions.BaseAction;
 using RotationSolver.Actions;
-using RotationSolver.Helpers;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -222,17 +221,17 @@ internal abstract class GNB_Base : CustomRotation.CustomRotation
         == ActionID.Hypervelocity,
     };
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //超火流星 如果谢不够了。
-        if (Superbolide.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Superbolide.Target)) return true;
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        if (Superbolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Superbolide.Target)) return true;
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         //突进
-        if (RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (RoughDivide.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }

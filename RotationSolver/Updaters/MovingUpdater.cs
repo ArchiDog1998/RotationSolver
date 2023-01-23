@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
-using RotationSolver;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System;

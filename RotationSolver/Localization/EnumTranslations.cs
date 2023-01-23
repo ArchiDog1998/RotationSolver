@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Keys;
-using RotationSolver.Actions;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Rotations.CustomRotation;
@@ -56,8 +55,8 @@ internal static class EnumTranslations
     public static string ToName(this EnemyPositional value) => value switch
     {
         EnemyPositional.None => LocalizationManager.RightLang.EnemyLocation_None,
-        EnemyPositional.Back => LocalizationManager.RightLang.EnemyLocation_Back,
-        EnemyPositional.Side => LocalizationManager.RightLang.EnemyLocation_Side,
+        EnemyPositional.Rear => LocalizationManager.RightLang.EnemyLocation_Rear,
+        EnemyPositional.Flank => LocalizationManager.RightLang.EnemyLocation_Flank,
         EnemyPositional.Front => LocalizationManager.RightLang.EnemyLocation_Front,
         _ => string.Empty,
     };
@@ -120,7 +119,7 @@ internal static class EnumTranslations
         },
         SpecialCommandType.MoveForward => "Start Move Forward",
         SpecialCommandType.MoveBack => "Start Move Back",
-        SpecialCommandType.AntiRepulsion => "Start AntiRepulsion",
+        SpecialCommandType.AntiKnockback => "Start AntiKnockback",
         SpecialCommandType.Burst => "Start Break",
         SpecialCommandType.EndSpecial => "End Special",
         _ => string.Empty,
@@ -155,7 +154,7 @@ internal static class EnumTranslations
         },
         SpecialCommandType.MoveForward => "Move Forward",
         SpecialCommandType.MoveBack => "Move Back",
-        SpecialCommandType.AntiRepulsion => "AntiRepulsion",
+        SpecialCommandType.AntiKnockback => "AntiKnockback",
         SpecialCommandType.Burst => "Break",
         SpecialCommandType.EndSpecial => "End Special",
         _ => string.Empty,
@@ -179,7 +178,7 @@ internal static class EnumTranslations
         SpecialCommandType.RaiseShirk => LocalizationManager.RightLang.Configwindow_HelpItem_RaiseShirk,
         SpecialCommandType.MoveForward => LocalizationManager.RightLang.Configwindow_HelpItem_MoveForward,
         SpecialCommandType.MoveBack => LocalizationManager.RightLang.Configwindow_HelpItem_MoveBack,
-        SpecialCommandType.AntiRepulsion => LocalizationManager.RightLang.Configwindow_HelpItem_AntiRepulsion,
+        SpecialCommandType.AntiKnockback => LocalizationManager.RightLang.Configwindow_HelpItem_AntiKnockback,
         SpecialCommandType.Burst => LocalizationManager.RightLang.Configwindow_HelpItem_Break,
         SpecialCommandType.EndSpecial => LocalizationManager.RightLang.Configwindow_HelpItem_EndSpecial,
         _ => string.Empty,

@@ -1,13 +1,11 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
-using System;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Data;
+using RotationSolver.Localization;
 using System.Collections.Generic;
 using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Helpers;
-using RotationSolver.Data;
-using RotationSolver.Configuration.RotationConfig;
-using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
@@ -26,30 +24,6 @@ internal abstract partial class CustomRotation : ICustomRotation
     /// </summary>
     public abstract string RotationName { get; }
 
-    /// <summary>
-    /// 目标是否将要死亡
-    /// </summary>
-    internal static bool IsTargetDying
-    {
-        get
-        {
-            if (Target == null) return false;
-            return Target.IsDying();
-        }
-    }
-
-    /// <summary>
-    /// 目标是否是Boss
-    /// </summary>
-    internal static bool IsTargetBoss
-    {
-        get
-        {
-            if (Target == null) return false;
-            return Target.IsBoss();
-        }
-    }
-
     public bool IsEnabled
     {
         get => !Service.Configuration.DisabledCombos.Contains(Name);
@@ -65,16 +39,6 @@ internal abstract partial class CustomRotation : ICustomRotation
             }
         }
     }
-    /// <summary>
-    /// 有即刻相关Buff
-    /// </summary>
-    internal static bool HaveSwift => Player.HasStatus(true, Swiftcast.StatusProvide);
-
-    /// <summary>
-    /// 有盾姿，如果为非T那么始终为true
-    /// </summary>
-    internal static bool HaveShield => Player.HasStatus(true, StatusHelper.SheildStatus);
-
 
     public uint IconID { get; }
 
@@ -94,8 +58,21 @@ internal abstract partial class CustomRotation : ICustomRotation
         }
     }
 
+    public string Description => string.Join('\n', DescriptionDict.Select(pair => pair.Key.ToName() + " → " + pair.Value));
+
+    /// <summary>
+    /// Description about the actions.
+    /// </summary>
+    public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
+
     private protected virtual IRotationConfigSet CreateConfiguration()
     {
         return new RotationConfigSet(JobIDs[0], RotationName);
     }
+
+
+    /// <summary>
+    /// Update your customized field.
+    /// </summary>
+    private protected virtual void UpdateInfo() { }
 }

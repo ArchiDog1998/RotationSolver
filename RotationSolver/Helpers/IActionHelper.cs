@@ -34,7 +34,7 @@ internal static class IActionHelper
         return IsActionID(Watcher.LastAction, ids);
     }
 
-    internal static bool IsAnySameAction(this IAction action, bool isAdjust, params IAction[] actions)
+    internal static bool IsTheSameTo(this IAction action, bool isAdjust, params IAction[] actions)
     {
         return IsActionID(isAdjust ? (ActionID)action.AdjustedID : (ActionID)action.ID, GetIDFromActions(isAdjust, actions));
     }

@@ -38,7 +38,7 @@ namespace RotationSolver.Commands
         {
             DoOneCommand(arguments);
         }
-        
+
         private static void DoOneCommand(string str)
         {
             if (TryGetOneEnum<StateCommandType>(str, out var stateType))

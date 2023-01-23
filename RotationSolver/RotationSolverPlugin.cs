@@ -11,7 +11,6 @@ using RotationSolver.Updaters;
 using RotationSolver.Windows;
 using RotationSolver.Windows.RotationConfigWindow;
 using System;
-using System.IO;
 
 namespace RotationSolver;
 

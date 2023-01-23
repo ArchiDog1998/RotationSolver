@@ -1,10 +1,9 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using RotationSolver.Actions.BaseAction;
 using RotationSolver.Actions;
-using RotationSolver.Helpers;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -185,9 +184,9 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction RiddleofWind { get; } = new BaseAction(ActionID.RiddleofWind, true);
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (Thunderclap.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Thunderclap.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }

@@ -73,7 +73,7 @@ namespace RotationSolver.Helpers
                 value = @bool ? 1 : 0;
                 result = true;
             }
-            if(!string.IsNullOrEmpty(desc) && ImGui.IsItemHovered())
+            if (!string.IsNullOrEmpty(desc) && ImGui.IsItemHovered())
             {
                 ImGui.SetTooltip(desc);
             }

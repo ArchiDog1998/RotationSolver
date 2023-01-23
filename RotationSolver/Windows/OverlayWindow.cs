@@ -1,7 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface;
 using ImGuiNET;
-using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using RotationSolver.Actions.BaseAction;
 
 namespace RotationSolver.Windows;
 
@@ -80,7 +79,7 @@ internal static class OverlayWindow
         }
     }
 
-    private static void DrawMoveTarget()
+    private unsafe static void DrawMoveTarget()
     {
         if (!Service.Configuration.ShowMoveTarget) return;
 
@@ -94,7 +93,9 @@ internal static class OverlayWindow
         {
             if (Service.GameGui.WorldToScreen(t.Position, out var p))
             {
-                ImGui.GetWindowDrawList().AddText(p, color, $"Boss Ratio (Max): {t.MaxHp / calHealth:F2}\nDying Ratio (Current): {t.CurrentHp / calHealth:F2}");
+                ImGui.GetWindowDrawList().AddText(p, color, $"FateId: {((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId}");
+
+                //ImGui.GetWindowDrawList().AddText(p, color, $"Boss Ratio (Max): {t.MaxHp / calHealth:F2}\nDying Ratio (Current): {t.CurrentHp / calHealth:F2}");
             }
         }
 #endif
@@ -148,12 +149,12 @@ internal static class OverlayWindow
         pts.Add(scrPos);
         switch (ShouldPositional)
         {
-            case EnemyPositional.Side:
+            case EnemyPositional.Flank:
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
                 pts.Add(scrPos);
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
                 break;
-            case EnemyPositional.Back:
+            case EnemyPositional.Rear:
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
                 break;
             default:

@@ -1,8 +1,6 @@
-﻿using Dalamud.Interface.Colors;
-using Dalamud.Utility;
+﻿using Dalamud.Utility;
 using ImGuiNET;
 using RotationSolver.Commands;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Numerics;
 
@@ -12,7 +10,7 @@ namespace RotationSolver.Windows.RotationConfigWindow
     {
         private void DrawHelpTab()
         {
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
 
             ImGui.SameLine();
 
@@ -75,7 +73,7 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
-                SpecialCommandType.AntiRepulsion.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+                SpecialCommandType.AntiKnockback.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
                 SpecialCommandType.Burst.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);

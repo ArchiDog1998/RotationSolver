@@ -1,13 +1,12 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Updaters;
 using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Commands;
+using RotationSolver.Updaters;
+using System.Linq;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -40,10 +39,7 @@ internal abstract class BRD_Base : CustomRotation.CustomRotation
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-    protected static bool SongEndAfter(float time)
-    {
-        return EndAfter(JobGauge.SongTimer / 1000f, time) && JobGauge.SongTimer / 1000f <= time;
-    }
+    protected static bool SongEndAfter(float time) => EndAfter(SongTime, time);
 
     /// <summary>
     /// 这首歌啊在多久后还在唱嘛
@@ -51,13 +47,11 @@ internal abstract class BRD_Base : CustomRotation.CustomRotation
     /// <param name="abilityCount"></param>
     /// <param name="gctCount"></param>
     /// <returns></returns>
-    protected static bool SongEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
-    {
-        return EndAfterGCD(JobGauge.SongTimer / 1000f, gctCount, abilityCount);
-    }
+    protected static bool SongEndAfterGCD(uint gctCount = 0, uint abilityCount = 0) => EndAfterGCD(SongTime, gctCount, abilityCount);
+
+    private static float SongTime => JobGauge.SongTimer / 1000f;
 
     public sealed override ClassJobID[] JobIDs => new[] { ClassJobID.Bard, ClassJobID.Archer };
-
 
     /// <summary>
     /// 强力射击
@@ -218,7 +212,7 @@ internal abstract class BRD_Base : CustomRotation.CustomRotation
         //有某些非常危险的状态。
         if (RSCommands.SpecialType == SpecialCommandType.EsunaShieldNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
         {
-            if (WardensPaean.ShouldUse(out act, mustUse: true)) return true;
+            if (WardensPaean.CanUse(out act, mustUse: true)) return true;
         }
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }

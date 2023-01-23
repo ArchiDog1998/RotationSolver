@@ -1,12 +1,11 @@
-﻿using RotationSolver;
-using RotationSolver.Actions;
+﻿using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Updaters;
 using System;
 using System.Linq;
 using System.Reflection;
-using RotationSolver.Actions.BaseAction;
 
 namespace RotationSolver.Rotations.CustomRotation;
 

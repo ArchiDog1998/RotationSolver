@@ -1,8 +1,8 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Actions.BaseAction;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -110,7 +110,7 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
     public static IBaseAction Infuriate { get; } = new BaseAction(ActionID.Infuriate)
     {
         StatusProvide = new[] { StatusID.InnerRelease },
-        ActionCheck = b => HaveHostilesInRange && JobGauge.BeastGauge < 50 && InCombat,
+        ActionCheck = b => HasHostilesInRange && JobGauge.BeastGauge < 50 && InCombat,
     };
 
     /// <summary>
@@ -118,7 +118,7 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction Berserk { get; } = new BaseAction(ActionID.Berserk)
     {
-        ActionCheck = b => HaveHostilesInRange && !InnerRelease.IsCoolDown,
+        ActionCheck = b => HasHostilesInRange && !InnerRelease.IsCoolingDown,
     };
 
     /// <summary>
@@ -177,17 +177,17 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
         StatusNeed = new[] { StatusID.PrimalRendReady }
     };
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //死斗 如果血不够了。
-        if (Holmgang.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Holmgang.Target)) return true;
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Holmgang.Target)) return true;
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         //突进
-        if (Onslaught.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Onslaught.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }

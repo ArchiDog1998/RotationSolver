@@ -6,7 +6,6 @@ using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -103,9 +102,8 @@ internal static partial class TargetUpdater
     {
         #region Friend
         var party = Service.PartyList;
-        PartyMembers = party.Length == 0 ? Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer } :
-            party.Where(obj => obj != null && obj.GameObject is BattleChara)
-            .Select(obj => obj.GameObject as BattleChara);
+        PartyMembers = party.Length == 0 ? (Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer })
+            : party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara);
 
         //添加亲信
         PartyMembers = PartyMembers.Union(Service.ObjectTable.Where(obj => obj.SubKind == 9 && obj is BattleChara).Cast<BattleChara>());
@@ -137,40 +135,13 @@ internal static partial class TargetUpdater
             return false;
         });
 
-        var dangeriousStatus = new StatusID[]
-        {
-            StatusID.Doom,
-            StatusID.Amnesia,
-            StatusID.Stun,
-            StatusID.Stun2,
-            StatusID.Sleep,
-            StatusID.Sleep2,
-            StatusID.Sleep3,
-            StatusID.Pacification,
-            StatusID.Pacification2,
-            StatusID.Silence,
-            StatusID.Slow,
-            StatusID.Slow2,
-            StatusID.Slow3,
-            StatusID.Slow4,
-            StatusID.Slow5,
-            StatusID.Blind,
-            StatusID.Blind2,
-            StatusID.Blind3,
-            StatusID.Paralysis,
-            StatusID.Paralysis2,
-            StatusID.Nightmare,
-            StatusID.Necrosis,
-        };
-        DyingPeople = WeakenPeople.Where(p => p.HasStatus(false, dangeriousStatus));
+        DyingPeople = WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous));
 
         SayHelloToAuthor();
         #endregion
 
         #region Health
-        var members = PartyMembers;
-
-        PartyMembersHP = TargetFilter.GetObjectInRadius(members, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp);
+        PartyMembersHP = TargetFilter.GetObjectInRadius(PartyMembers, 30).Where(r => r.CurrentHp > 0).Select(p => (float)p.CurrentHp / p.MaxHp);
 
         float averHP = 0;
         foreach (var hp in PartyMembersHP)
@@ -189,27 +160,34 @@ internal static partial class TargetUpdater
 
         var job = (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id;
 
-        var hotSubArea = Service.Configuration.HealingOfTimeSubtractAreas.TryGetValue(job, out var value) ? value : 0.3f;
-
-        var areaHots = new StatusID[]
+        if (PartyMembers.Count() > 2)
         {
+            var hotSubArea = job.GetHealingOfTimeSubtractArea();
+
+            var areaHots = new StatusID[]
+            {
              StatusID.AspectedHelios,
              StatusID.Medica2,
              StatusID.TrueMedica2,
-        };
+            };
 
-        //TODO:少了所有罩子类技能
-        var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, areaHots) * hotSubArea;
+            //TODO:少了所有罩子类技能
+            var ratio = GetHealingOfTimeRatio(Service.ClientState.LocalPlayer, areaHots) * hotSubArea;
 
-        var healAreability = ConfigurationHelper.GetHealAreaAbility(job);
+            var healAreability = ConfigurationHelper.GetHealAreaAbility(job);
 
-        var healAreaspell = ConfigurationHelper.GetHealAreafSpell(job);
+            var healAreaspell = ConfigurationHelper.GetHealAreafSpell(job);
 
-        CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreability - ratio;
+            CanHealAreaAbility = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreability - ratio;
 
-        CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreaspell - ratio;
+            CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < healAreaspell - ratio;
+        }
+        else
+        {
+            CanHealAreaAbility = CanHealAreaSpell = false;
+        }
 
-        var hotSubSingle = Service.Configuration.HealingOfTimeSubtractSingles.TryGetValue(job, out value) ? value : 0.3f;
+        var hotSubSingle = job.GetHealingOfTimeSubtractSingle();
 
         var singleHots = new StatusID[]
         {
@@ -219,7 +197,7 @@ internal static partial class TargetUpdater
             StatusID.Regen3
         };
 
-        var healsingAbility = Service.Configuration.HealthSingleAbilities.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleAbility;
+        var healsingAbility = job.GetHealSingleAbility();
         //Hot衰减
         var abilityCount = PartyMembers.Count(p =>
         {
@@ -232,7 +210,8 @@ internal static partial class TargetUpdater
         });
         CanHealSingleAbility = abilityCount > 0;
 
-        var healsingSpell = Service.Configuration.HealthSingleSpells.TryGetValue(job, out value) ? value : Service.Configuration.HealthSingleSpell;
+
+        var healsingSpell = job.GetHealSingleSpell();
 
         var gcdCount = PartyMembers.Count(p =>
         {
@@ -322,7 +301,7 @@ internal static partial class TargetUpdater
         if (foundTime == DateTime.MinValue) return;
 
         //找作者
-        var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && ConfigurationHelper. AuthorKeys.Contains(EncryptString(player))
+        var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && ConfigurationHelper.AuthorKeys.Contains(EncryptString(player))
                         && c.ObjectId != Service.ClientState.LocalPlayer.ObjectId) as PlayerCharacter;
 
         //没找到作者

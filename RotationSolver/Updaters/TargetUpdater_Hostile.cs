@@ -1,14 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -31,70 +30,41 @@ internal static partial class TargetUpdater
 
     internal static IEnumerable<BattleChara> CanInterruptTargets { get; private set; } = new BattleChara[0];
 
-    internal static bool HaveHostilesInRange { get; private set; } = false;
+    internal static bool HasHostilesInRange { get; private set; } = false;
 
     internal static bool IsHostileCastingAOE { get; private set; } = false;
 
     internal static bool IsHostileCastingToTank { get; private set; } = false;
 
+
+
     internal unsafe static void UpdateHostileTargets()
     {
-        var hasFate = (IntPtr)FateManager.Instance() != IntPtr.Zero;
+        var inFate = Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero && FateManager.Instance()->FateJoined > 0;
 
-        //能打的目标
         AllTargets = TargetFilter.GetTargetable(TargetFilter.GetObjectInRadius(Service.ObjectTable, 30).Where(obj =>
         {
-
             if (obj is BattleChara c && c.CurrentHp != 0)
             {
-                if (c.StatusList.Any(status => Service.DataManager.GetExcelSheet<Status>()
-                    .GetRow(status.StatusId).Icon == 15024)) return false;
+                if (c.StatusList.Any(StatusHelper.IsInvincible)) return false;
 
-
-                try
-                {
-                    var gameObj = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)c.Address;
-
-                    //不可选中
-                    if (!gameObj->GetIsTargetable()) return false;
-
-                    //不在fate中，不打fate怪。
-                    if ((!hasFate ||FateManager.Instance()->FateJoined == 0)
-                        && gameObj->FateId > 0) return false;
-                }
-                catch
-                {
-                    return false;
-                }
+                //不可选中
+                if (!c.IsTargetable()) return false;
 
                 if (obj.CanAttack()) return true;
             }
             return false;
         }).Cast<BattleChara>());
 
-        //Filter the fate objects.
-        bool inFate = Service.Configuration.ChangeTargetForFate && hasFate && FateManager.Instance()->FateJoined > 0;
-        uint[] ids = GetEnemies() ?? new uint[0];
+        uint[] ids = GetEnemies();
 
 
         if (AllTargets != null)
         {
             HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate ?
-                 AllTargets.Where(t =>
-                 {
-                     bool lowEnoughLevel = Service.ClientState.LocalPlayer.Level <= FateManager.Instance()->CurrentFate->MaxLevel;
-
-                     try
-                     {
-                         return t.TargetObject == Service.ClientState.LocalPlayer ||
-                            lowEnoughLevel && ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId == FateManager.Instance()->CurrentFate->FateId;
-                     }
-                     catch
-                     {
-                         return false;
-                     }
-                 }) :
-                AllTargets.Where(t => t.TargetObject is BattleChara || ids.Contains(t.ObjectId));
+                 AllTargets.Where(t => t.FateId() == FateManager.Instance()->CurrentFate->FateId) :
+                AllTargets.Where(t => (t.TargetObject is BattleChara || ids.Contains(t.ObjectId)) && t.FateId() == 0
+                || t.TargetObject == Service.ClientState.LocalPlayer);
 
 
             switch (IconReplacer.RightNowTargetToHostileType)
@@ -113,8 +83,21 @@ internal static partial class TargetUpdater
                     break;
             }
 
-            CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2
-            && tar.CurrentCastTime >= Service.Configuration.InterruptibleTime);
+            CanInterruptTargets = HostileTargets.Where(tar =>
+            {
+                var baseCheck = tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2
+                    && tar.CurrentCastTime >= Service.Configuration.InterruptibleTime;
+
+                if(!baseCheck) return false;
+
+                var act = Service.DataManager.GetExcelSheet<Action>().GetRow(tar.CastActionId);
+                if (act == null) return false;
+
+                //跳过扇形圆型
+                if (act.CastType is 3 or 4) return false;
+                if (ActionManager.GetActionRange(tar.CastActionId) < 8) return false;
+                return true;
+            });
 
             TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId);
 
@@ -127,12 +110,12 @@ internal static partial class TargetUpdater
                     radius = 3;
                     break;
             }
-            HaveHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Any();
+            HasHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Any();
         }
         else
         {
             AllTargets = HostileTargets = CanInterruptTargets = new BattleChara[0];
-            HaveHostilesInRange = false;
+            HasHostilesInRange = false;
         }
 
         if (HostileTargets.Count() == 1)

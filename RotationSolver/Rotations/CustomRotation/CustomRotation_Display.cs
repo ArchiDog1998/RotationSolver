@@ -1,15 +1,9 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Utility;
 using ImGuiNET;
-using Lumina.Data.Parsing;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.SigReplacers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RotationSolver.Windows.RotationConfigWindow;
 
 namespace RotationSolver.Rotations.CustomRotation
 {
@@ -58,18 +52,8 @@ namespace RotationSolver.Rotations.CustomRotation
             ImGuiHelper.HoveredString(LocalizationManager.RightLang.Configwindow_Helper_OpenSource);
         }, () =>
         {
-            int isAllTargetAsHostile = (byte)IconReplacer.GetTargetHostileType(Job);
-            ImGui.SetNextItemWidth(300);
-            if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Params_RightNowTargetToHostileType + $"##HostileType{GetHashCode()}", ref isAllTargetAsHostile, new string[]
-            {
-                                        LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType1,
-                                        LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType2,
-                                        LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType3,
-            }, 3))
-            {
-                Service.Configuration.TargetToHostileTypes[Job.RowId] = (byte)isAllTargetAsHostile;
-                Service.Configuration.Save();
-            }
+            RotationConfigWindow.DrawRotationRole(this);
+
             Configs.Draw(canAddButton);
         });
     }

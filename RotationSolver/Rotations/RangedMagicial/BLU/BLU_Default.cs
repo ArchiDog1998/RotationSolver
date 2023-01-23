@@ -1,11 +1,11 @@
 ﻿using RotationSolver.Actions;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
-using System.Linq;
-using RotationSolver.Updaters;
 using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
+using RotationSolver.Updaters;
+using System.Linq;
 
 namespace RotationSolver.Rotations.RangedMagicial.BLU
 {
@@ -52,25 +52,25 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             AttackType = (BLUAttackType)Configs.GetCombo("AttackType");
         }
 
-        private protected override bool AttackAbility(byte abilityRemain, out IAction act)
+        private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
         {
             act = null;
             return false;
         }
 
-        private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+        private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
         {
-            if (nextGCD.IsAnySameAction(false, Selfdestruct, FinalSting))
+            if (nextGCD.IsTheSameTo(false, Selfdestruct, FinalSting))
             {
-                if (Swiftcast.ShouldUse(out act)) return true;
+                if (Swiftcast.CanUse(out act)) return true;
             }
-            return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+            return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
         }
 
         private protected override bool MoveGCD(out IAction act)
         {
             //正义飞踢
-            if (JKick.ShouldUse(out act, mustUse: true)) return true;
+            if (JKick.CanUse(out act, mustUse: true)) return true;
             return base.MoveGCD(out act);
         }
 
@@ -80,15 +80,15 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             //狂战士副作用期间
             if (Player.HasStatus(true, StatusID.WaningNocturne)) return false;
             //鬼宿脚
-            if (PhantomFlurry.IsCoolDown && !PhantomFlurry.ElapsedAfter(1) || Player.HasStatus(true, StatusID.PhantomFlurry))
+            if (PhantomFlurry.IsCoolingDown && !PhantomFlurry.ElapsedAfter(1) || Player.HasStatus(true, StatusID.PhantomFlurry))
             {
-                if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.ShouldUse(out act, mustUse: true)) return true;
+                if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.CanUse(out act, mustUse: true)) return true;
                 return false;
             }
             //穿甲散弹
             if (Player.HasStatus(true, StatusID.SurpanakhaFury))
             {
-                if (Surpanakha.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+                if (Surpanakha.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
             }
 
             //终极针组合
@@ -116,15 +116,15 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
                 //有某些非常危险的状态。
                 if (RSCommands.SpecialType == SpecialCommandType.EsunaShieldNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
                 {
-                    if (Exuviation.ShouldUse(out act, mustUse: true)) return true;
+                    if (Exuviation.CanUse(out act, mustUse: true)) return true;
                 }
-                if (AngelsSnack.ShouldUse(out act)) return true;
-                if (Stotram.ShouldUse(out act)) return true;
-                if (PomCure.ShouldUse(out act)) return true;
+                if (AngelsSnack.CanUse(out act)) return true;
+                if (Stotram.CanUse(out act)) return true;
+                if (PomCure.CanUse(out act)) return true;
             }
             else
             {
-                if (WhiteWind.ShouldUse(out act, mustUse: true)) return true;
+                if (WhiteWind.CanUse(out act, mustUse: true)) return true;
             }
 
             return base.HealAreaGCD(out act);
@@ -142,23 +142,23 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
 
             if (!AllOnSlot(MoonFlute)) return false;
 
-            if (AllOnSlot(TripleTrident) && !TripleTrident.IsCoolDown)
+            if (AllOnSlot(TripleTrident) && !TripleTrident.IsCoolingDown)
             {
                 //口笛
-                if (Whistle.ShouldUse(out act)) return true;
+                if (Whistle.CanUse(out act)) return true;
                 //哔哩哔哩
-                if (!Player.HasStatus(true, StatusID.Tingling) && Player.HasStatus(true, StatusID.Harmonized) && Tingle.ShouldUse(out act, mustUse: true)) return true;
+                if (!Player.HasStatus(true, StatusID.Tingling) && Player.HasStatus(true, StatusID.Harmonized) && Tingle.CanUse(out act, mustUse: true)) return true;
                 //鱼叉
-                if (Player.HasStatus(true, StatusID.WaxingNocturne) && TripleTrident.ShouldUse(out act, mustUse: true)) return true;
+                if (Player.HasStatus(true, StatusID.WaxingNocturne) && TripleTrident.CanUse(out act, mustUse: true)) return true;
             }
 
             if (AllOnSlot(Whistle, FinalSting, BasicInstinct) && UseFinalSting)
             {
-                if (HaveHostilesInRange && Whistle.ShouldUse(out act)) return true;
+                if (HasHostilesInRange && Whistle.CanUse(out act)) return true;
                 //破防
-                if (Player.HasStatus(true, StatusID.WaxingNocturne) && Offguard.ShouldUse(out act)) return true;
+                if (Player.HasStatus(true, StatusID.WaxingNocturne) && Offguard.CanUse(out act)) return true;
                 //哔哩哔哩
-                if (Player.HasStatus(true, StatusID.WaxingNocturne) && Tingle.ShouldUse(out act)) return true;
+                if (Player.HasStatus(true, StatusID.WaxingNocturne) && Tingle.CanUse(out act)) return true;
             }
 
             //月笛
@@ -167,41 +167,41 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             if (!Player.HasStatus(true, StatusID.WaxingNocturne)) return false;
 
             //月下彼岸花
-            if (Nightbloom.ShouldUse(out act, mustUse: true)) return true;
+            if (Nightbloom.CanUse(out act, mustUse: true)) return true;
             //地火喷发
-            if (Eruption.ShouldUse(out act, mustUse: true)) return true;
+            if (Eruption.CanUse(out act, mustUse: true)) return true;
             //马特拉魔术
-            if (MatraMagic.ShouldUse(out act, mustUse: true)) return true;
+            if (MatraMagic.CanUse(out act, mustUse: true)) return true;
             //正义飞踢
-            if (JKick.ShouldUse(out act, mustUse: true)) return true;
+            if (JKick.CanUse(out act, mustUse: true)) return true;
             //捕食
-            if (Devour.ShouldUse(out act, mustUse: true)) return true;
+            if (Devour.CanUse(out act, mustUse: true)) return true;
             //轰雷
-            if (ShockStrike.ShouldUse(out act, mustUse: true)) return true;
+            if (ShockStrike.CanUse(out act, mustUse: true)) return true;
             //冰雪乱舞
-            if (GlassDance.ShouldUse(out act, mustUse: true)) return true;
+            if (GlassDance.CanUse(out act, mustUse: true)) return true;
             //魔法锤
-            if (MagicHammer.ShouldUse(out act, mustUse: true)) return true;
+            if (MagicHammer.CanUse(out act, mustUse: true)) return true;
             //穿甲散弹
-            if (Surpanakha.CurrentCharges >= 3 && Surpanakha.ShouldUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (Surpanakha.CurrentCharges >= 3 && Surpanakha.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
             //鬼宿脚
-            if (PhantomFlurry.ShouldUse(out act, mustUse: true)) return true;
+            if (PhantomFlurry.CanUse(out act, mustUse: true)) return true;
 
             //冰雾
-            if (WhiteDeath.ShouldUse(out act)) return true;
+            if (WhiteDeath.CanUse(out act)) return true;
             //如意大旋风
-            if (SettingBreak && !MoonFluteBreak && BothEnds.ShouldUse(out act, mustUse: true)) return true;
+            if (InBurst && !MoonFluteBreak && BothEnds.CanUse(out act, mustUse: true)) return true;
             //类星体
-            if (Quasar.ShouldUse(out act, mustUse: true)) return true;
+            if (Quasar.CanUse(out act, mustUse: true)) return true;
             //飞翎雨
-            if (FeatherRain.ShouldUse(out act, mustUse: true)) return true;
+            if (FeatherRain.CanUse(out act, mustUse: true)) return true;
             //山崩
-            if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
+            if (MountainBuster.CanUse(out act, mustUse: true)) return true;
             //冰雪乱舞
-            if (MountainBuster.ShouldUse(out act, mustUse: true)) return true;
+            if (MountainBuster.CanUse(out act, mustUse: true)) return true;
 
             //音爆
-            if (SonicBoom.ShouldUse(out act)) return true;
+            if (SonicBoom.CanUse(out act)) return true;
 
             return false;
         }
@@ -214,7 +214,7 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
         /// <returns></returns>
         private bool CanUseMoonFlute(out IAction act)
         {
-            if (!MoonFlute.ShouldUse(out act) && !HaveHostilesInRange) return false;
+            if (!MoonFlute.CanUse(out act) && !HasHostilesInRange) return false;
 
             if (Player.HasStatus(true, StatusID.WaxingNocturne)) return false;
 
@@ -232,7 +232,7 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
         {
             act = null;
             if (!UseFinalSting) return false;
-            if (!FinalSting.ShouldUse(out _)) return false;
+            if (!FinalSting.CanUse(out _)) return false;
 
             var useFinalSting = Player.HasStatus(true, StatusID.WaxingNocturne, StatusID.Harmonized);
 
@@ -240,21 +240,21 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             {
                 if ((float)Target.CurrentHp / Target.MaxHp > FinalStingHP) return false;
 
-                if (Whistle.ShouldUse(out act)) return true;
-                if (MoonFlute.ShouldUse(out act)) return true;
-                if (useFinalSting && FinalSting.ShouldUse(out act)) return true;
+                if (Whistle.CanUse(out act)) return true;
+                if (MoonFlute.CanUse(out act)) return true;
+                if (useFinalSting && FinalSting.CanUse(out act)) return true;
             }
 
             if (AllOnSlot(Whistle, MoonFlute, FinalSting, BasicInstinct))
             {
 
                 //破防
-                if (Player.HasStatus(true, StatusID.WaxingNocturne) && Offguard.ShouldUse(out act)) return true;
+                if (Player.HasStatus(true, StatusID.WaxingNocturne) && Offguard.CanUse(out act)) return true;
 
                 if ((float)Target.CurrentHp / Target.MaxHp > FinalStingHP) return false;
-                if (Whistle.ShouldUse(out act)) return true;
-                if (MoonFlute.ShouldUse(out act)) return true;
-                if (useFinalSting && FinalSting.ShouldUse(out act)) return true;
+                if (Whistle.CanUse(out act)) return true;
+                if (MoonFlute.CanUse(out act)) return true;
+                if (useFinalSting && FinalSting.CanUse(out act)) return true;
             }
 
             return false;
@@ -271,54 +271,54 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             if (Player.HasStatus(true, StatusID.WaxingNocturne)) return false;
 
             //滑舌 +眩晕 0-70练级用
-            if (QuickLevel && StickyTongue.ShouldUse(out act)) return true;
+            if (QuickLevel && StickyTongue.CanUse(out act)) return true;
 
             //苦闷之歌
-            if (AllOnSlot(Bristle, SongofTorment) && SongofTorment.ShouldUse(out _))
+            if (AllOnSlot(Bristle, SongofTorment) && SongofTorment.CanUse(out _))
             {
                 //怒发冲冠
-                if (Bristle.ShouldUse(out act)) return true;
-                if (SongofTorment.ShouldUse(out act)) return true;
+                if (Bristle.CanUse(out act)) return true;
+                if (SongofTorment.CanUse(out act)) return true;
             }
-            if (SongofTorment.ShouldUse(out act)) return true;
+            if (SongofTorment.CanUse(out act)) return true;
 
             //复仇冲击
-            if (RevengeBlast.ShouldUse(out act)) return true;
+            if (RevengeBlast.CanUse(out act)) return true;
             //赌徒行为
             if (GamblerKill)
             {
                 //导弹
-                if (Missile.ShouldUse(out act)) return true;
+                if (Missile.CanUse(out act)) return true;
                 //螺旋尾
-                if (TailScrew.ShouldUse(out act)) return true;
+                if (TailScrew.CanUse(out act)) return true;
                 //死亡宣告
-                if (Doom.ShouldUse(out act)) return true;
+                if (Doom.CanUse(out act)) return true;
             }
 
             //锋利菜刀 近战 眩晕增伤
-            if (SharpenedKnife.ShouldUse(out act)) return true;
+            if (SharpenedKnife.CanUse(out act)) return true;
 
             //吸血 回蓝
-            if (Player.CurrentMp < 1000 && BloodDrain.ShouldUse(out act)) return true;
+            if (Player.CurrentMp < 1000 && BloodDrain.CanUse(out act)) return true;
             //音爆
-            if (SonicBoom.ShouldUse(out act)) return true;
+            if (SonicBoom.CanUse(out act)) return true;
             //永恒射线 无法 +眩晕1s
-            if (PerpetualRay.ShouldUse(out act)) return true;
+            if (PerpetualRay.CanUse(out act)) return true;
             //深渊贯穿 无物 +麻痹
-            if (AbyssalTransfixion.ShouldUse(out act)) return true;
+            if (AbyssalTransfixion.CanUse(out act)) return true;
             //逆流 雷法 +加重
-            if (Reflux.ShouldUse(out act)) return true;
+            if (Reflux.CanUse(out act)) return true;
             //水炮
-            if (WaterCannon.ShouldUse(out act)) return true;
+            if (WaterCannon.CanUse(out act)) return true;
 
             //小侦测
-            if (CondensedLibra.ShouldUse(out act)) return true;
+            if (CondensedLibra.CanUse(out act)) return true;
 
             //滑舌 +眩晕
-            if (StickyTongue.ShouldUse(out act)) return true;
+            if (StickyTongue.CanUse(out act)) return true;
 
             //投掷沙丁鱼(打断)
-            if (FlyingSardine.ShouldUse(out act)) return true;
+            if (FlyingSardine.CanUse(out act)) return true;
 
             return false;
         }
@@ -337,78 +337,78 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             if (GamblerKill)
             {
                 //火箭炮
-                if (Launcher.ShouldUse(out act, mustUse: true)) return true;
+                if (Launcher.CanUse(out act, mustUse: true)) return true;
                 //5级即死
-                if (Level5Death.ShouldUse(out act, mustUse: true)) return true;
+                if (Level5Death.CanUse(out act, mustUse: true)) return true;
             }
 
             if (false)
             {
-                if (AcornBomb.ShouldUse(out act, mustUse: true)) return true;
-                if (Faze.ShouldUse(out act, mustUse: true)) return true;
-                if (Snort.ShouldUse(out act, mustUse: true)) return true;
-                if (BadBreath.ShouldUse(out act, mustUse: true)) return true;
-                if (Chirp.ShouldUse(out act, mustUse: true)) return true;
-                if (Level5Petrify.ShouldUse(out act, mustUse: true)) return true;
+                if (AcornBomb.CanUse(out act, mustUse: true)) return true;
+                if (Faze.CanUse(out act, mustUse: true)) return true;
+                if (Snort.CanUse(out act, mustUse: true)) return true;
+                if (BadBreath.CanUse(out act, mustUse: true)) return true;
+                if (Chirp.CanUse(out act, mustUse: true)) return true;
+                if (Level5Petrify.CanUse(out act, mustUse: true)) return true;
             }
 
             //陆行鸟陨石
-            if (TargetUpdater.HaveChocobo && ChocoMeteor.ShouldUse(out act, mustUse: true)) return true;
+            if (TargetUpdater.HaveChocobo && ChocoMeteor.CanUse(out act, mustUse: true)) return true;
 
             if (TargetUpdater.HostileTargets.GetObjectInRadius(6).Count() < 3)
             {
                 //水力吸引
-                if (HydroPull.ShouldUse(out act)) return true;
+                if (HydroPull.CanUse(out act)) return true;
             }
 
             //寒冰咆哮
-            if (TheRamVoice.ShouldUse(out act)) return true;
+            if (TheRamVoice.CanUse(out act)) return true;
 
             //超振动
-            if (!IsMoving && Target.HasStatus(false, StatusID.DeepFreeze) && TheRamVoice.ShouldUse(out act)) return true;
+            if (!IsMoving && Target.HasStatus(false, StatusID.DeepFreeze) && TheRamVoice.CanUse(out act)) return true;
 
             //雷电咆哮
-            if (TheDragonVoice.ShouldUse(out act)) return true;
+            if (TheDragonVoice.CanUse(out act)) return true;
 
             //冰焰
-            if (Blaze.ShouldUse(out act)) return true;
-            if (FeculentFlood.ShouldUse(out act)) return true;
+            if (Blaze.CanUse(out act)) return true;
+            if (FeculentFlood.CanUse(out act)) return true;
             //火炎放射
-            if (FlameThrower.ShouldUse(out act)) return true;
+            if (FlameThrower.CanUse(out act)) return true;
             //水流吐息
-            if (AquaBreath.ShouldUse(out act)) return true;
+            if (AquaBreath.CanUse(out act)) return true;
             //高压电流
-            if (HighVoltage.ShouldUse(out act)) return true;
+            if (HighVoltage.CanUse(out act)) return true;
             //怒视
-            if (Glower.ShouldUse(out act)) return true;
+            if (Glower.CanUse(out act)) return true;
             //平原震裂
-            if (Plaincracker.ShouldUse(out act)) return true;
+            if (Plaincracker.CanUse(out act)) return true;
             //诡异视线
-            if (TheLook.ShouldUse(out act)) return true;
+            if (TheLook.CanUse(out act)) return true;
             //喷墨
-            if (InkJet.ShouldUse(out act)) return true;
-            if (FireAngon.ShouldUse(out act)) return true;
-            if (MindBlast.ShouldUse(out act)) return true;
-            if (AlpineDraft.ShouldUse(out act)) return true;
-            if (ProteanWave.ShouldUse(out act)) return true;
-            if (Northerlies.ShouldUse(out act)) return true;
-            if (Electrogenesis.ShouldUse(out act)) return true;
-            if (WhiteKnightsTour.ShouldUse(out act)) return true;
-            if (BlackKnightsTour.ShouldUse(out act)) return true;
-            if (Tatamigaeshi.ShouldUse(out act)) return true;
+            if (InkJet.CanUse(out act)) return true;
+            if (FireAngon.CanUse(out act)) return true;
+            if (MindBlast.CanUse(out act)) return true;
+            if (AlpineDraft.CanUse(out act)) return true;
+            if (ProteanWave.CanUse(out act)) return true;
+            if (Northerlies.CanUse(out act)) return true;
+            if (Electrogenesis.CanUse(out act)) return true;
+            if (WhiteKnightsTour.CanUse(out act)) return true;
+            if (BlackKnightsTour.CanUse(out act)) return true;
+            if (Tatamigaeshi.CanUse(out act)) return true;
 
-            if (MustardBomb.ShouldUse(out act)) return true;
-            if (AetherialSpark.ShouldUse(out act)) return true;
-            if (MaledictionofWater.ShouldUse(out act)) return true;
-            if (FlyingFrenzy.ShouldUse(out act)) return true;
-            if (DrillCannons.ShouldUse(out act)) return true;
-            if (Weight4tonze.ShouldUse(out act)) return true;
-            if (Needles1000.ShouldUse(out act)) return true;
-            if (Kaltstrahl.ShouldUse(out act)) return true;
-            if (PeripheralSynthesis.ShouldUse(out act)) return true;
-            if (FlameThrower.ShouldUse(out act)) return true;
-            if (FlameThrower.ShouldUse(out act)) return true;
-            if (SaintlyBeam.ShouldUse(out act)) return true;
+            if (MustardBomb.CanUse(out act)) return true;
+            if (AetherialSpark.CanUse(out act)) return true;
+            if (MaledictionofWater.CanUse(out act)) return true;
+            if (FlyingFrenzy.CanUse(out act)) return true;
+            if (DrillCannons.CanUse(out act)) return true;
+            if (Weight4tonze.CanUse(out act)) return true;
+            if (Needles1000.CanUse(out act)) return true;
+            if (Kaltstrahl.CanUse(out act)) return true;
+            if (PeripheralSynthesis.CanUse(out act)) return true;
+            if (FlameThrower.CanUse(out act)) return true;
+            if (FlameThrower.CanUse(out act)) return true;
+            if (SaintlyBeam.CanUse(out act)) return true;
 
             return false;
         }
@@ -424,48 +424,48 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             if (Player.HasStatus(true, StatusID.WaxingNocturne)) return false;
 
             //冰雾
-            if (WhiteDeath.ShouldUse(out act)) return true;
+            if (WhiteDeath.CanUse(out act)) return true;
             //玄天武水壁
-            if (DivineCataract.ShouldUse(out act)) return true;
+            if (DivineCataract.CanUse(out act)) return true;
 
             //斗灵弹
-            if (TheRoseofDestruction.ShouldUse(out act)) return true;
+            if (TheRoseofDestruction.CanUse(out act)) return true;
 
             //渔叉三段
-            if (SettingBreak && !MoonFluteBreak && TripleTrident.ShouldUse(out act)) return true;
+            if (InBurst && !MoonFluteBreak && TripleTrident.CanUse(out act)) return true;
             //马特拉魔术
-            if (SettingBreak && !MoonFluteBreak && MatraMagic.ShouldUse(out act)) return true;
+            if (InBurst && !MoonFluteBreak && MatraMagic.CanUse(out act)) return true;
 
             //捕食
-            if (Devour.ShouldUse(out act)) return true;
+            if (Devour.CanUse(out act)) return true;
             //魔法锤
             //if (MagicHammer.ShouldUse(out act)) return true;
 
             //月下彼岸花
-            if (SettingBreak && !MoonFluteBreak && Nightbloom.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (InBurst && !MoonFluteBreak && Nightbloom.CanUse(out act, mustUse: SingleAOE)) return true;
             //如意大旋风
-            if (SettingBreak && !MoonFluteBreak && BothEnds.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (InBurst && !MoonFluteBreak && BothEnds.CanUse(out act, mustUse: SingleAOE)) return true;
 
             //穿甲散弹
-            if (SettingBreak && !MoonFluteBreak && Surpanakha.CurrentCharges >= 3 && Surpanakha.ShouldUse(out act, mustUse: SingleAOE, emptyOrSkipCombo: true)) return true;
+            if (InBurst && !MoonFluteBreak && Surpanakha.CurrentCharges >= 3 && Surpanakha.CanUse(out act, mustUse: SingleAOE, emptyOrSkipCombo: true)) return true;
 
             //类星体
-            if (Quasar.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (Quasar.CanUse(out act, mustUse: SingleAOE)) return true;
             //正义飞踢
-            if (!IsMoving && JKick.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (!IsMoving && JKick.CanUse(out act, mustUse: SingleAOE)) return true;
 
             //地火喷发
-            if (Eruption.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (Eruption.CanUse(out act, mustUse: SingleAOE)) return true;
             //飞翎雨
-            if (FeatherRain.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (FeatherRain.CanUse(out act, mustUse: SingleAOE)) return true;
 
             //轰雷
-            if (ShockStrike.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (ShockStrike.CanUse(out act, mustUse: SingleAOE)) return true;
             //山崩
-            if (MountainBuster.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (MountainBuster.CanUse(out act, mustUse: SingleAOE)) return true;
 
             //冰雪乱舞
-            if (MountainBuster.ShouldUse(out act, mustUse: SingleAOE)) return true;
+            if (MountainBuster.CanUse(out act, mustUse: SingleAOE)) return true;
 
             //if (MountainBuster.ShouldUse(out act, mustUse: SingleAOE)) return true;
 

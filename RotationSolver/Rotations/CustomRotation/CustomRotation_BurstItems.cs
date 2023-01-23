@@ -1,7 +1,5 @@
-﻿using RotationSolver;
-using RotationSolver.Actions;
+﻿using RotationSolver.Actions;
 using RotationSolver.Data;
-using System;
 using System.Linq;
 
 namespace RotationSolver.Rotations.CustomRotation;
@@ -17,15 +15,11 @@ internal abstract partial class CustomRotation
         //意力
         TinctureofIntelligence6 = new BaseItem(36112, 65535);
 
-    /// <summary>
-    /// 是否使用爆发药
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
-    protected bool UseBreakItem(out IAction act)
+    protected bool UseBurstItem(out IAction act)
     {
         act = null;
-        if (Service.PartyList.Count() < 8) return false;
+        
+        if (!IsFullParty) return false;
         if (Service.ClientState.LocalPlayer.Level < 90) return false;
 
         var role = Job.GetJobRole();
@@ -33,19 +27,19 @@ internal abstract partial class CustomRotation
         {
             case JobRole.Tank:
             case JobRole.Melee:
-                if (TinctureofStrength6.ShoudUseItem(out act)) return true;
+                if (TinctureofStrength6.CanUse(out act)) return true;
                 break;
 
             case JobRole.RangedPhysical:
-                if (TinctureofDexterity6.ShoudUseItem(out act)) return true;
+                if (TinctureofDexterity6.CanUse(out act)) return true;
                 break;
 
             case JobRole.RangedMagicial:
-                if (TinctureofIntelligence6.ShoudUseItem(out act)) return true;
+                if (TinctureofIntelligence6.CanUse(out act)) return true;
                 break;
 
             case JobRole.Healer:
-                if (TinctureofMind6.ShoudUseItem(out act)) return true;
+                if (TinctureofMind6.CanUse(out act)) return true;
                 break;
         }
         return false;

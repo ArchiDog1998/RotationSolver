@@ -1,6 +1,4 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver;
-using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -13,11 +11,15 @@ internal partial class BaseAction : IBaseAction
 
     private bool _isFriendly;
     private bool _isEot;
+    Action _action;
 
-    public bool ShouldEndSpecial { private get; set; }
+    private bool ShouldEndSpecial { get; set; }
 
     internal bool IsTimeline { get; } = false;
 
+    /// <summary>
+    /// EnoughLevel for using.
+    /// </summary>
     public bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
     public string Name => _action.Name;
 
@@ -85,13 +87,14 @@ internal partial class BaseAction : IBaseAction
     {
         get
         {
-            if (ConfigurationHelper.ActionLocations.TryGetValue((ActionID)ID, out var location))
+            if (ConfigurationHelper.ActionPositionals.TryGetValue((ActionID)ID, out var location))
             {
                 return location.Loc;
             }
             return EnemyPositional.None;
         }
     }
+
     internal virtual unsafe uint MPNeed
     {
         get
@@ -102,8 +105,14 @@ internal partial class BaseAction : IBaseAction
         }
     }
 
-
-    Action _action;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="actionID"></param>
+    /// <param name="isFriendly">is a friendly or supporting action</param>
+    /// <param name="shouldEndSpecial">end special after using it</param>
+    /// <param name="isEot">is hot or dot action</param>
+    /// <param name="isTimeline">should I put it to the timeline (heal and defense only)</param>
     internal BaseAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false, bool isTimeline = false)
     {
         _action = Service.DataManager.GetExcelSheet<Action>().GetRow((uint)actionID);

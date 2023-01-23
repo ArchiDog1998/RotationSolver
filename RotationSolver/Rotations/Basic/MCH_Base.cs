@@ -1,9 +1,8 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Helpers;
-using RotationSolver.Data;
 using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -123,7 +122,7 @@ internal abstract class MCH_Base : CustomRotation.CustomRotation
     public static IBaseAction Reassemble { get; } = new BaseAction(ActionID.Reassemble)
     {
         StatusProvide = new StatusID[] { StatusID.Reassemble },
-        ActionCheck = b => HaveHostilesInRange,
+        ActionCheck = b => HasHostilesInRange,
     };
 
     /// <summary>

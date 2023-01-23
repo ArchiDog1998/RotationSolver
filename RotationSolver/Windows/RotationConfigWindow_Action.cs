@@ -1,7 +1,6 @@
 ﻿using ImGuiNET;
 using RotationSolver.Actions;
 using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
@@ -30,7 +29,7 @@ internal partial class RotationConfigWindow
 
     private void DrawActionList()
     {
-        ImGui.Text(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
@@ -54,10 +53,10 @@ internal partial class RotationConfigWindow
 
     private void DrawTimelineCondition()
     {
-        ImGui.Text(LocalizationManager.RightLang.Timeline_TimelineDescription);
+        ImGui.TextWrapped(LocalizationManager.RightLang.Timeline_TimelineDescription);
 
         var rotation = IconReplacer.RightNowRotation;
-        if(rotation == null) return;
+        if (rotation == null) return;
 
         TimeLineUpdater.DrawHeader();
 

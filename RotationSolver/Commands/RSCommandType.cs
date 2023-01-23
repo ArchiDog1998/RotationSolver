@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RotationSolver.Commands
+﻿namespace RotationSolver.Commands
 {
     internal enum SpecialCommandType : byte
     {
@@ -17,7 +11,7 @@ namespace RotationSolver.Commands
         RaiseShirk,
         MoveForward,
         MoveBack,
-        AntiRepulsion,
+        AntiKnockback,
         Burst,
     }
 

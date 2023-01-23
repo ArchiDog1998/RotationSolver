@@ -1,11 +1,10 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Updaters;
 using RotationSolver.Actions;
-using RotationSolver.Helpers;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Updaters;
+using System.Linq;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -202,24 +201,24 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
         ActionCheck = Cover.ActionCheck,
     };
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        if (HallowedGround.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], HallowedGround.Target)) return true;
+        if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], HallowedGround.Target)) return true;
         //神圣领域 如果谢不够了。
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         //调停
-        if (Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Intervene.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
-    private protected override bool HealSingleGCD(out IAction act)
+    private protected sealed override bool HealSingleGCD(out IAction act)
     {
         //深仁厚泽
-        if (Clemency.ShouldUse(out act)) return true;
+        if (Clemency.CanUse(out act)) return true;
         return false;
     }
 }

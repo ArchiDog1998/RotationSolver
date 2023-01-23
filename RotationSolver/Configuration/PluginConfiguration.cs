@@ -1,6 +1,4 @@
 using Dalamud.Configuration;
-using Dalamud.Game.ClientState.Keys;
-using RotationSolver;
 using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
@@ -17,7 +15,7 @@ public class PluginConfiguration : IPluginConfiguration
     public SortedSet<string> DisabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DiabledActions { get; private set; } = new SortedSet<uint>();
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
-    public Dictionary<uint, Dictionary<string, Dictionary<string, string>>> RotationsConfigurations { get; private set; } 
+    public Dictionary<uint, Dictionary<string, Dictionary<string, string>>> RotationsConfigurations { get; private set; }
         = new Dictionary<uint, Dictionary<string, Dictionary<string, string>>>();
     public Dictionary<uint, string> ComboChoices { get; private set; } = new Dictionary<uint, string>();
     public Dictionary<uint, byte> TargetToHostileTypes { get; set; } =
@@ -26,6 +24,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public int TimelineIndex = 0;
     public bool AutoBurst = true;
+    public bool AutoOffBetweenArea = true;
     public bool UseAbility = true;
     public bool UseDefenceAbility = true;
     public bool NeverReplaceIcon = false;
@@ -41,7 +40,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool SayPotional = true;
 
     public bool FlytextPositional = true;
-
+    public bool HealOutOfCombat = false;
     public bool ShowInfoOnToast = true;
     public bool RaiseAll = false;
     public bool CastingDisplay = true;
@@ -52,14 +51,14 @@ public class PluginConfiguration : IPluginConfiguration
     public bool RaiseBrinkofDeath = true;
     public int LessMPNoRaise = 0;
     public bool AutoShield = true;
-    public bool AddEnemyListToHostile = false;
+    public bool AddEnemyListToHostile = true;
     public bool UseAOEWhenManual = false;
     public bool UseItem = false;
     public bool PositionalFeedback = true;
     public bool ShowMoveTarget = true;
     public bool ShowTarget = true;
     public bool ChooseAttackMark = true;
-    public bool CanAttackMarkAOE= true;
+    public bool CanAttackMarkAOE = true;
     public bool FilterStopMark = true;
     public bool UseOverlayWindow = true;
     public bool TeachingMode = true;

@@ -1,9 +1,8 @@
 ﻿using ImGuiNET;
-using System.Numerics;
 using RotationSolver.Configuration;
-using RotationSolver;
-using RotationSolver.Localization;
 using RotationSolver.Helpers;
+using RotationSolver.Localization;
+using System.Numerics;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
 
@@ -18,7 +17,7 @@ internal partial class RotationConfigWindow
         ImGui.SameLine();
         ImGuiHelper.Spacing();
 
-        ImGui.Text(LocalizationManager.RightLang.Configwindow_Events_Description);
+        ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_Events_Description);
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 

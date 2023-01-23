@@ -30,7 +30,7 @@ internal class BaseItem : IBaseItem
         A4 = a4;
     }
 
-    public unsafe bool ShoudUseItem(out IAction item)
+    public unsafe bool CanUse(out IAction item)
     {
         item = this;
 

@@ -1,57 +1,60 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using ImGuiNET;
-using RotationSolver;
+using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
+using System;
 using System.Linq;
-using RotationSolver.Actions.BaseAction;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
 #if DEBUG
 internal partial class RotationConfigWindow
 {
-    private void DrawDebugTab()
+    private unsafe void DrawDebugTab()
     {
         var str = TargetUpdater.EncryptString(Service.ClientState.LocalPlayer);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
-        ImGui.InputText("That is your HASH, send to ArchiTed", ref str, 100);
+        ImGui.InputText("That is your HASH", ref str, 100);
 
-        ImGui.Text("Hostile: " + TargetUpdater.HostileTargets.Count().ToString());
         ImGui.Text("Friends: " + TargetUpdater.PartyMembers.Count().ToString());
-
-        if (ImGui.CollapsingHeader("Status from self."))
+        if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
         {
-            foreach (var item in Service.ClientState.LocalPlayer.StatusList)
+            ImGui.Text("Fate: " + FateManager.Instance()->FateJoined.ToString());
+        }
+
+        if (ImGui.CollapsingHeader("Status"))
+        {
+            foreach (var status in Service.ClientState.LocalPlayer.StatusList)
             {
-                if (item.SourceId == Service.ClientState.LocalPlayer.ObjectId)
-                {
-                    ImGui.Text(item.GameData.Name + item.StatusId);
-                }
+                var source = Service.ObjectTable.SearchById(status.SourceId)?.Name ?? "None";
+                ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
             }
         }
 
         if (ImGui.CollapsingHeader("Target Data"))
         {
-            var count = TargetUpdater.AllTargets?.Count() ??　0;
-            ImGui.Text(count.ToString());
-
             if (Service.TargetManager.Target is BattleChara b)
             {
                 ImGui.Text("Is Boss: " + b.IsBoss().ToString());
-                ImGui.Text("Has Side: " + b.HasLocationSide().ToString());
+                ImGui.Text("Has Positional: " + b.HasPositional().ToString());
                 ImGui.Text("Is Dying: " + b.IsDying().ToString());
 
                 foreach (var status in b.StatusList)
                 {
                     if (status.SourceId == Service.ClientState.LocalPlayer.ObjectId)
                     {
-                        ImGui.Text(status.GameData.Name + status.StatusId);
+                        ImGui.Text($"{status.GameData.Name}: {status.StatusId}");
                     }
                 }
             }
-            ImGui.Text("");
+
+            ImGui.Text("All: " + TargetUpdater.AllTargets.Count().ToString());
+            ImGui.Text("Hostile: " + TargetUpdater.HostileTargets.Count().ToString());
             foreach (var item in TargetUpdater.HostileTargets)
             {
                 ImGui.Text(item.Name.ToString());
@@ -60,10 +63,11 @@ internal partial class RotationConfigWindow
 
         if (ImGui.CollapsingHeader("Next Action"))
         {
+            ImGui.Text(RSCommands.SpecialType.ToString());
+
             ActionUpdater.NextAction?.Display(false);
             ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
             ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
-
         }
 
         if (ImGui.CollapsingHeader("Last Action"))

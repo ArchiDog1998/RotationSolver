@@ -1,9 +1,8 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using RotationSolver.Actions.BaseAction;
 using RotationSolver.Actions;
-using RotationSolver.Helpers;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.Rotations.Basic
@@ -133,14 +132,14 @@ namespace RotationSolver.Rotations.Basic
             {
             }
 
-            public override bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+            public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
             {
                 if (JobGauge.IsEnochianActive && CastTime - 0.5f > JobGauge.ElementTimeRemaining / 1000f)
                 {
                     act = null;
                     return false;
                 }
-                return base.ShouldUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
+                return base.CanUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
             }
         }
 
@@ -186,7 +185,7 @@ namespace RotationSolver.Rotations.Basic
         public static IBaseAction Sharpcast { get; } = new BaseAction(ActionID.Sharpcast)
         {
             StatusProvide = new[] { StatusID.Sharpcast },
-            ActionCheck = b => HaveHostilesInRange,
+            ActionCheck = b => HasHostilesInRange,
         };
 
         /// <summary>

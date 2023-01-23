@@ -1,16 +1,12 @@
-﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
-using Dalamud.Interface.Components;
+﻿using Dalamud.Interface.Colors;
+using Dalamud.Utility;
 using ImGuiNET;
-using RotationSolver;
-using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.SigReplacers;
 using System;
-using System.IO;
 using System.Linq;
 using System.Numerics;
 
@@ -20,18 +16,23 @@ internal partial class RotationConfigWindow
 {
     private void DrawRotationTab()
     {
-        ImGui.Text(LocalizationManager.RightLang.Configwindow_AttackItem_Description);
+        ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_AttackItem_Description);
 
-        ImGui.BeginChild("Attack Items", new Vector2(0f, -1f), true);
+        ImGui.SameLine();
+        if (ImGui.Button("Dev Wiki"))
+        {
+            Util.OpenLink("https://archidog1998.github.io/RotationSolver/#/RotationDev/");
+        }
+
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
         if (ImGui.BeginTabBar("Job Items"))
         {
             DrawRoleItems();
+
             ImGui.EndTabBar();
         }
         ImGui.PopStyleVar();
-        ImGui.EndChild();
     }
 
     private static void DrawRoleItems()
@@ -43,14 +44,18 @@ internal partial class RotationConfigWindow
 
             if (ImGui.BeginTabItem(key.ToName()))
             {
-                DrawRotations(rotations);
-                ImGui.EndTabItem();
-            }
+                //Display the tooltip on the header.
+                if (ImGui.IsItemHovered() && _roleDescriptionValue.TryGetValue(key, out string roleDesc))
+                {
+                    ImGui.SetTooltip(roleDesc);
+                }
 
-            //Display the tooltip on the header.
-            if (ImGui.IsItemHovered() && _roleDescriptionValue.TryGetValue(key, out string roleDesc))
-            {
-                ImGui.SetTooltip(roleDesc);
+                if (ImGui.BeginChild("Rotation Items", new Vector2(0f, -1f), true))
+                {
+                    DrawRotations(rotations);
+                    ImGui.EndChild();
+                }
+                ImGui.EndTabItem();
             }
         }
     }
@@ -70,31 +75,32 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawRotation(ICustomRotation rotation, bool canAddButton)
+    internal static void DrawRotationRole(ICustomRotation rotation)
     {
-        ImGui.Spacing();
-
         DrawTargetHostileTYpe(rotation);
         DrawSpecialRoleSettings(rotation.Job.GetJobRole(), rotation.JobIDs[0]);
 
         ImGui.Spacing();
-
-        rotation.Configs.Draw(canAddButton);
     }
 
     private static void DrawTargetHostileTYpe(ICustomRotation rotation)
     {
         var isAllTargetAsHostile = (int)IconReplacer.GetTargetHostileType(rotation.Job);
         ImGui.SetNextItemWidth(300);
-        if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Params_RightNowTargetToHostileType + $"##HostileType{rotation.GetHashCode()}", ref isAllTargetAsHostile, new string[]
+        if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Param_RightNowTargetToHostileType + $"##HostileType{rotation.GetHashCode()}", ref isAllTargetAsHostile, new string[]
         {
-             LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType1,
-             LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType2,
-             LocalizationManager.RightLang.Configwindow_Params_TargetToHostileType3,
+             LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType1,
+             LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType2,
+             LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType3,
         }, 3))
         {
             Service.Configuration.TargetToHostileTypes[rotation.Job.RowId] = (byte)isAllTargetAsHostile;
             Service.Configuration.Save();
+        }
+
+        if (isAllTargetAsHostile != 2 && !Service.Configuration.AutoOffBetweenArea)
+        {
+            ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.Configwindow_Param_NoticeUnexpectedCombat);
         }
     }
 
@@ -106,7 +112,7 @@ internal partial class RotationConfigWindow
         }
         else if (role == JobRole.Tank)
         {
-            DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Params_HealthForDyingTank,
+            DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthForDyingTank,
                 () => ConfigurationHelper.GetHealthForDyingTank(job),
                 (value) => Service.Configuration.HealthForDyingTanks[job] = value);
         }
@@ -122,7 +128,7 @@ internal partial class RotationConfigWindow
             () => ConfigurationHelper.GetHealAreafSpell(job),
             (value) => Service.Configuration.HealthAreafSpells[job] = value);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubtractArea,
+        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealingOfTimeSubtractArea,
             () => ConfigurationHelper.GetHealingOfTimeSubtractArea(job),
             (value) => Service.Configuration.HealingOfTimeSubtractAreas[job] = value);
 
@@ -134,7 +140,7 @@ internal partial class RotationConfigWindow
             () => ConfigurationHelper.GetHealSingleSpell(job),
             (value) => Service.Configuration.HealthSingleSpells[job] = value);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Params_HealingOfTimeSubtractSingle,
+        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealingOfTimeSubtractSingle,
             () => ConfigurationHelper.GetHealingOfTimeSubtractSingle(job),
             (value) => Service.Configuration.HealingOfTimeSubtractSingles[job] = value);
     }

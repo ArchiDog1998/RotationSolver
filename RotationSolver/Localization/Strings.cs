@@ -60,7 +60,7 @@ internal class Strings
     public string Configwindow_HelpItem_RaiseShirk { get; set; }
         = "Open a window to use Raise or Shirk.";
 
-    public string Configwindow_HelpItem_AntiRepulsion { get; set; }
+    public string Configwindow_HelpItem_AntiKnockback { get; set; }
         = "Open a window to use knockback-penalty actions.";
 
     public string Configwindow_HelpItem_Break { get; set; }
@@ -82,7 +82,7 @@ internal class Strings
     public string Configwindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string Configwindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
     public string Configwindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in 5s";
-    public string Configwindow_AttackItem_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.\nOnly player-current-job specific commands will be prompted.";
+    public string Configwindow_AttackItem_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
     public string Configwindow_AttackItem_KeyName { get; set; } = "The key name is";
     public string Configwindow_AttackItem_Enable { get; set; } = "Enable";
     public string Configwindow_Events_AddEvent { get; set; } = "AddEvents";
@@ -96,14 +96,15 @@ internal class Strings
     public string Configwindow_Param_NeverReplaceIconDesc { get; set; } = "Icon replacement: Repose is automatically displayed as the next skill to be used";
     public string Configwindow_Param_UseOverlayWindow { get; set; } = "Display top overlay";
     public string Configwindow_Param_UseOverlayWindowDesc { get; set; } = "This window is currently used to cue the body position in advance.";
-    public string Configwindow_Param_BasicSettings { get; set; } = "Basic settings";
+    public string Configwindow_Param_Basic { get; set; } = "Basic";
     public string Configwindow_Param_WeaponDelay { get; set; } = "Set the random interval between GCD (seconds)";
     public string Configwindow_Param_WeaponFaster { get; set; } = "Set the time advance of use actions";
     public string Configwindow_Param_WeaponInterval { get; set; } = "Set the interval between abilities using";
     public string Configwindow_Param_InterruptibleTime { get; set; } = "Set the delay of interrupting";
     public string Configwindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string Configwindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
-    public string Configwindow_Param_DisplayEnhancement { get; set; } = "Display enhancement";
+    public string Configwindow_Param_AutoOffBetweenArea { get; set; } = "Turn off when player is between area.";
+    public string Configwindow_Param_Display { get; set; } = "Display";
     public string Configwindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting";
     public string Configwindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
     public string Configwindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
@@ -126,7 +127,7 @@ internal class Strings
     public string Configwindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
     public string Configwindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on dtrbar";
     public string Configwindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state changed on toast";
-    public string Configwindow_Param_Action { get; set; } = "Use of actions";
+    public string Configwindow_Param_Action { get; set; } = "Action";
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Param_AutoBreak { get; set; } = "Automatic breaking";
     public string Configwindow_Param_UseAbility { get; set; } = "Auto-use abilities";
@@ -145,22 +146,26 @@ internal class Strings
     public string Configwindow_Param_LessMPNoRaise { get; set; } = "Nerver raise player if MP is less than the set value";
     public string Configwindow_Param_UseItem { get; set; } = "Use items";
     public string Configwindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
-    public string Configwindow_Param_Conditon { get; set; } = "Trigger conditions";
+    public string Configwindow_Param_Conditon { get; set; } = "Condition";
     public string Configwindow_Param_StartOnCountdown { get; set; } = "Turn on auto-rotation on countdown";
+
+    public string Configwindow_Param_HealOutOfCombat { get; set; } = "Heal party members outside of combat.";
+
     public string Configwindow_Param_HealthDifference { get; set; } = "Set the HP standard deviation threshold for using AOE heal (ability & spell)";
     public string Configwindow_Param_HealthAreaAbility { get; set; } = "Set the HP threshold for using AOE healing ability";
     public string Configwindow_Param_HealthAreaSpell { get; set; } = "Set the HP threshold for using AOE healing spell";
-    public string Configwindow_Params_HealingOfTimeSubtractArea { get; set; } = "Set the HP threshold reduce with hot effect(AOE)";
+    public string Configwindow_Param_HealingOfTimeSubtractArea { get; set; } = "Set the HP threshold reduce with hot effect(AOE)";
     public string Configwindow_Param_HealthSingleAbility { get; set; } = "Set the HP threshold for using single healing ability";
     public string Configwindow_Param_HealthSingleSpell { get; set; } = "Set the HP threshold for using single healing spell";
-    public string Configwindow_Params_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
-    public string Configwindow_Params_HealthForDyingTank { get; set; } = "Set the HP threshold for tank to use invincibility";
-    public string Configwindow_Param_Target { get; set; } = "Target selection";
-    public string Configwindow_Params_RightNowTargetToHostileType { get; set; } = "Hostile target filtering condition";
-    public string Configwindow_Params_TargetToHostileType1 { get; set; } = "All targets can attack";
-    public string Configwindow_Params_TargetToHostileType2 { get; set; } = "Targets have a target or all targets can attack";
-    public string Configwindow_Params_TargetToHostileType3 { get; set; } = "Targets have a target";
-    public string Configwindow_Param_AddEnemyListToHostile { get; set; } = "Enemies";
+    public string Configwindow_Param_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
+    public string Configwindow_Param_HealthForDyingTank { get; set; } = "Set the HP threshold for tank to use invincibility";
+    public string Configwindow_Param_Target { get; set; } = "Target";
+    public string Configwindow_Param_RightNowTargetToHostileType { get; set; } = "Hostile target filtering condition";
+    public string Configwindow_Param_TargetToHostileType1 { get; set; } = "All targets can attack";
+    public string Configwindow_Param_TargetToHostileType2 { get; set; } = "Targets have a target or all targets can attack";
+    public string Configwindow_Param_TargetToHostileType3 { get; set; } = "Targets have a target";
+    public string Configwindow_Param_NoticeUnexpectedCombat { get; set; } = "NOTICE: You are not turn the auto off between area on. It may start a combat unexpectedly.";
+    public string Configwindow_Param_AddEnemyListToHostile { get; set; } = "Add Enemies list to the hostile target.";
     public string Configwindow_Param_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
     public string Configwindow_Param_CanAttackMarkAOE { get; set; } = "Forced use of AOE";
     public string Configwindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
@@ -173,7 +178,7 @@ internal class Strings
     public string Configwindow_Param_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";
     public string Configwindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
     public string Configwindow_Param_RaiseBrinkofDeath { get; set; } = "Raise player even has Brink of Death";
-    public string Configwindow_Param_Hostile { get; set; } = "Hostile target filtering options";
+    public string Configwindow_Param_Hostile { get; set; } = "Hostile";
     public string Configwindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string Configwindow_Param_AddHostileCondition { get; set; } = "Add selection condition";
     public string Configwindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
@@ -212,8 +217,6 @@ internal class Strings
     #region Actions
     public string Action_Friendly { get; set; } = "Support";
     public string Action_Attack { get; set; } = "Attack";
-    public string Action_WrongLocation { get; set; } = "Positional {0}!";
-
     #endregion
 
     #region ActionConditionType
@@ -265,8 +268,8 @@ internal class Strings
 
     #region EnemyLocation
     public string EnemyLocation_None { get; set; } = "None";
-    public string EnemyLocation_Back { get; set; } = "Back";
-    public string EnemyLocation_Side { get; set; } = "Side";
+    public string EnemyLocation_Rear { get; set; } = "Rear";
+    public string EnemyLocation_Flank { get; set; } = "Flank";
     public string EnemyLocation_Front { get; set; } = "Front";
 
     #endregion

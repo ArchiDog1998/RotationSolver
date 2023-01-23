@@ -153,7 +153,8 @@ internal sealed class IconReplacer : IDisposable
                         .ToArray();
 
         _customCombosDict = new SortedList<JobRole, CustomRotationGroup[]>
-            (_customRotations.GroupBy(g => g.rotations[0].Job.GetJobRole()).ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
+            (_customRotations.GroupBy(g => g.rotations[0].Job.GetJobRole())
+            .ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
     }
 
     private static ICustomRotation[] SetCombos(ICustomRotation[] combos)

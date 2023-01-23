@@ -1,13 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Logging;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using RotationSolver.Updaters;
-using RotationSolver.Commands;
 
 namespace RotationSolver.Actions.BaseAction;
 
@@ -15,25 +15,21 @@ internal partial class BaseAction
 {
     public byte AOECount { private get; set; } = 3;
 
-    public bool IsTargetDying
-    {
-        get
-        {
-            if (Target == null) return false;
-            return Target.IsDying();
-        }
-    }
+    /// <summary>
+    /// Shortcut for Target.IsDying();
+    /// </summary>
+    public bool IsTargetDying => Target?.IsDying() ?? false;
 
-    public bool IsTargetBoss
-    {
-        get
-        {
-            if (Target == null) return false;
-            return Target.IsBoss();
-        }
-    }
+    /// <summary>
+    /// Shortcut for Target.IsBoss();
+    /// </summary>
+    public bool IsTargetBoss => Target?.IsBoss() ?? false;
 
+    /// <summary>
+    /// The action's target.
+    /// </summary>
     public BattleChara Target { get; private set; } = Service.ClientState.LocalPlayer;
+
     private Vector3 _position = default;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
@@ -57,11 +53,11 @@ internal partial class BaseAction
     }
     internal static bool TankBreakOtherCheck(ClassJobID id, BattleChara chara)
     {
-        var tankHealth = Service.Configuration.HealthForDyingTanks.TryGetValue(id, out var value) ? value : 0.15f;
+        var tankHealth = id.GetHealthForDyingTank();
 
-        return TargetUpdater.HaveHostilesInRange
+        return TargetUpdater.HasHostilesInRange
             && Service.ClientState.LocalPlayer.GetHealthRatio() < tankHealth
-            && TargetUpdater.PartyMembersAverHP > tankHealth + 0.1f;
+            && TargetUpdater.PartyMembersAverHP > tankHealth + 0.05f;
     }
 
     private bool FindTarget(bool mustUse, out BattleChara target)
@@ -160,7 +156,7 @@ internal partial class BaseAction
         if (!Service.Configuration.UseGroundBeneficialAbility) return false;
 
         //如果当前目标是Boss且有身位，放他身上。
-        if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && b.IsBoss() && b.HasLocationSide())
+        if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && b.IsBoss() && b.HasPositional())
         {
             target = b;
             _position = target.Position;
@@ -250,7 +246,7 @@ internal partial class BaseAction
             target = ChoiceTarget(availableCharas, mustUse);
         }
 
-        return CheckStatus(target, mustUse);
+        return mustUse || CheckStatus(target);
     }
 
     private bool TargetDeath(out BattleChara target)
@@ -294,11 +290,14 @@ internal partial class BaseAction
         {
             target = b;
 
-            //No need to dot.
-            if (TargetStatus != null && !ObjectHelper.CanDot(b)) return false;
+            if (!mustUse)
+            {
+                //No need to dot.
+                if (TargetStatus != null && !ObjectHelper.CanDot(b)) return false;
 
-            //Already has status.
-            if (!CheckStatus(b, mustUse)) return false;
+                //Already has status.
+                if (!CheckStatus(b)) return false;
+            }
 
             return true;
         }
@@ -331,11 +330,12 @@ internal partial class BaseAction
             }
 
             //如果不用自动找目标，那就不打AOE
-            if (RSCommands.StateType != StateCommandType.Manual)
+            if (RSCommands.StateType == StateCommandType.Manual)
             {
                 if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
             }
             var count = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange).Count();
+
             if (count < aoeCount) return false;
         }
         return true;
@@ -410,10 +410,10 @@ internal partial class BaseAction
     private IEnumerable<BattleChara> TargetFilterFuncEot(IEnumerable<BattleChara> tars, bool mustUse)
     {
         if (FilterForTarget != null) return FilterForTarget(tars);
-        if (TargetStatus == null || !_isEot) return tars;
+        if (TargetStatus == null || !_isEot || mustUse) return tars;
 
-        var canDot = tars.Where(ObjectHelper.CanDot);
-        var DontHave = canDot.Where(b => CheckStatus(b, mustUse));
+        var canDot = mustUse ? tars : tars.Where(ObjectHelper.CanDot);
+        var DontHave = canDot.Where(CheckStatus);
 
         if (mustUse)
         {
@@ -432,11 +432,10 @@ internal partial class BaseAction
     /// </summary>
     /// <param name="tar"></param>
     /// <returns>True for add Eot.</returns>
-    private bool CheckStatus(BattleChara tar, bool mustUse)
+    private bool CheckStatus(BattleChara tar)
     {
         if (tar == null) return false;
 
-        if (mustUse) return true;
         if (TargetStatus == null) return true;
 
         return tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus);

@@ -31,7 +31,7 @@ internal partial class BaseAction
     {
         get
         {
-            if (!IsGeneralGCD && IsCoolDown)
+            if (!IsGeneralGCD && IsCoolingDown)
             {
                 if (IsRealGCD)
                 {
@@ -51,7 +51,7 @@ internal partial class BaseAction
         }
     }
 
-    public unsafe virtual bool ShouldUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+    public unsafe virtual bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
     {
         act = this;
 

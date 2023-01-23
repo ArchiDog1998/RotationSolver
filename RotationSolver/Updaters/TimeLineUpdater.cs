@@ -3,12 +3,9 @@ using RotationSolver.Actions;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
 using RotationSolver.Timeline;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Updaters
 {

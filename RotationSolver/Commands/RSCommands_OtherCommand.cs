@@ -1,6 +1,5 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
@@ -9,8 +8,6 @@ using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Commands
 {
@@ -96,11 +93,11 @@ namespace RotationSolver.Commands
                         }
                         NextActs = NextActs.OrderBy(i => i.deadTime).ToList();
 
-                        Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time), 
+                        Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
                             new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                        {
-                            IconId = act.IconID,
-                        });
+                            {
+                                IconId = act.IconID,
+                            });
 
                         return;
                     }
@@ -116,7 +113,7 @@ namespace RotationSolver.Commands
             var configs = customCombo.Configs;
             foreach (var config in configs)
             {
-                if(config.DoCommand(configs, str))
+                if (config.DoCommand(configs, str))
                 {
                     Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeRotationConfig,
                         config.DisplayName, configs.GetDisplayString(config.Name)));

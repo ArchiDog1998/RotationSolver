@@ -1,8 +1,8 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Actions.BaseAction;
 
 namespace RotationSolver.Rotations.Basic;
 internal abstract class DRK_Base : CustomRotation.CustomRotation
@@ -207,17 +207,17 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
         StatusNeed = new[] { StatusID.SaltedEarth },
     };
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //行尸走肉
-        if (LivingDead.ShouldUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], LivingDead.Target)) return true;
+        if (LivingDead.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], LivingDead.Target)) return true;
 
-        return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (Plunge.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Plunge.CanUse(out act, emptyOrSkipCombo: true)) return true;
 
         return false;
     }

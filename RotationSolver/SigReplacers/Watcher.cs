@@ -2,7 +2,6 @@
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ImGuiNET;
-using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -22,7 +21,7 @@ namespace RotationSolver.SigReplacers
 {
     public static class Watcher
     {
-        public record ActionRec(DateTime UsedTime, Action action);
+        public record ActionRec(DateTime UsedTime, Action Action);
 
         private delegate void ReceiveAbiltyDelegate(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail);
 
@@ -53,7 +52,6 @@ namespace RotationSolver.SigReplacers
 
             _receivAbilityHook?.Enable();
         }
-
 
         private static void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail)
         {
@@ -122,12 +120,11 @@ namespace RotationSolver.SigReplacers
 
             //事后骂人！
             if (Service.Configuration.PositionalFeedback
-                && ConfigurationHelper.ActionLocations.TryGetValue(id, out var loc)
+                && ConfigurationHelper.ActionPositionals.TryGetValue(id, out var loc)
                 && loc.Tags.Length > 0 && !loc.Tags.Contains(flag))
             {
-                var str = string.Format(LocalizationManager.RightLang.Action_WrongLocation, loc.Loc.ToName());
-                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, str, "",
-                    ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 0, action.Icon);
+                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, loc.Loc.ToName(), "",
+                    ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 94662, action.Icon);
                 if (!string.IsNullOrEmpty(Service.Configuration.PositionalErrorText))
                 {
                     Speak(Service.Configuration.PositionalErrorText);

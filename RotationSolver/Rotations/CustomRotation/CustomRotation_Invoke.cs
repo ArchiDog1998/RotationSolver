@@ -1,14 +1,14 @@
 ﻿using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
 using RotationSolver.Windows;
 using System;
 using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Commands;
-using RotationSolver.Localization;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
@@ -55,7 +55,7 @@ internal abstract partial class CustomRotation
         if (act != null && act is BaseAction GcdAction)
         {
             //Sayout!
-            if (GcdAction.EnermyPositonal != EnemyPositional.None && GcdAction.Target.HasLocationSide()
+            if (GcdAction.EnermyPositonal != EnemyPositional.None && GcdAction.Target.HasPositional()
                  && !Player.HasStatus(true, StatusID.TrueNorth))
             {
                 if (CheckAction(GcdAction.ID))

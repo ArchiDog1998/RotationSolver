@@ -1,9 +1,6 @@
 using Dalamud.Game;
-using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Runtime.InteropServices;
-using RotationSolver.Data;
 
 namespace RotationSolver.SigReplacers;
 
