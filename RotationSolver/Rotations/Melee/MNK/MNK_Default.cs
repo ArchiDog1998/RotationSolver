@@ -144,6 +144,10 @@ internal sealed class MNK_Default : MNK_Base
             if (OpoOpoForm(out act)) return true;
         }
 
+        if (CoerlForm(out act)) return true;
+        if (RaptorForm(out act)) return true;
+        if (OpoOpoForm(out act)) return true;
+
         if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
         if (Chakra < 5 && Meditation.CanUse(out act)) return true;
         if (Configs.GetBool("AutoFormShift") && FormShift.CanUse(out act)) return true;

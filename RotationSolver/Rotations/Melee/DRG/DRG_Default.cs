@@ -130,17 +130,16 @@ internal sealed class DRG_Default : DRG_Base
             if (WheelingThrust.CanUse(out act)) return true;
         }
 
+        if (FullThrust.CanUse(out act)) return true;
+        if (ChaosThrust.CanUse(out act)) return true;
+
         //看看是否需要续Buff
-        if (!Player.WillStatusEndGCD(5, 0, true, StatusID.PowerSurge))
-        {
-            if (FullThrust.CanUse(out act)) return true;
-            if (VorpalThrust.CanUse(out act)) return true;
-            if (ChaosThrust.CanUse(out act)) return true;
-        }
-        else
+        if (Player.WillStatusEndGCD(5, 0, true, StatusID.PowerSurge))
         {
             if (Disembowel.CanUse(out act)) return true;
         }
+
+        if (VorpalThrust.CanUse(out act)) return true;
         if (TrueThrust.CanUse(out act)) return true;
 
         if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;

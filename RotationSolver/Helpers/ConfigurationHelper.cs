@@ -33,9 +33,11 @@ internal static class ConfigurationHelper
 
     public static readonly uint[] BadStatus = new uint[]
     {
-        579, //状态限制
-        573, //没学会
-        572, //一些额外条件未满足
+        581, //Unable to use.
+        579, //Between Area
+        574, //Job
+        573, //没学会 ?
+        572, //一些额外条件未满足 ?
     };
 
     public static readonly VirtualKey[] Keys = new VirtualKey[] { VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
