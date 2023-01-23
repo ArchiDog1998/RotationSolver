@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.2.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.1.0...v1.2.0) (2023-01-23)
+
+
+### Features
+
+* add an option called autooff between area. ([0254b12](https://github.com/ArchiDog1998/RotationSolver/commit/0254b12e845763341fd651036dcaa2a0466ea872))
+* add heal out of combat option. ([ccbc9eb](https://github.com/ArchiDog1998/RotationSolver/commit/ccbc9eb058b97edd135b9e7b7e08a6720df0d03f))
+
+
+### Bug Fixes
+
+* add debug information. ([0812c97](https://github.com/ArchiDog1998/RotationSolver/commit/0812c97b7976ec1806afe31e06543768b4437ca1))
+* add some conditions for interrupt. ([424fc1d](https://github.com/ArchiDog1998/RotationSolver/commit/424fc1d95793f8c4075bdb66f67046446cad88eb))
+* ast base remove action `Crown Play` ([10e9d1f](https://github.com/ArchiDog1998/RotationSolver/commit/10e9d1feba234195f0cf51886fe9a96eaab29785))
+* brd default fix the bug that ragingStrikes is not used in low level. ([c011885](https://github.com/ArchiDog1998/RotationSolver/commit/c01188553dbdb826d4d6481bbbccb0282bccab1c))
+* change ui under rotation tab item. ([f10607c](https://github.com/ArchiDog1998/RotationSolver/commit/f10607c74781714a9892a0310e1506c9c94b3a98))
+* changed the flytext positional tips. ([795f4cb](https://github.com/ArchiDog1998/RotationSolver/commit/795f4cb9d796a0f692babeadc501ebbb84bb4d06))
+* changed the name of positional. ([e16da0f](https://github.com/ArchiDog1998/RotationSolver/commit/e16da0f8b5dd936a3e3a51dd54016f4e673a236e))
+* changed the param tab layout. ([4e7fefc](https://github.com/ArchiDog1998/RotationSolver/commit/4e7fefc836214001e2495ff909e3794541dd5849))
+* dot action's usage in Manual mode. ([8399d37](https://github.com/ArchiDog1998/RotationSolver/commit/8399d374fced6d71f7b800b2d640743c0102dcb7))
+* fix for healing area when only one player in the party. Now needs there. ([38932a2](https://github.com/ArchiDog1998/RotationSolver/commit/38932a2e5014915435bb6efd9150bc9e529e0b5c))
+* fix for must use on dot acition. ([fda37e4](https://github.com/ArchiDog1998/RotationSolver/commit/fda37e46af80cebc78c6b49509b5599a4109e41a))
+* fix for rotation role description mistakes. ([5116d08](https://github.com/ArchiDog1998/RotationSolver/commit/5116d08ac63ee696eae527aac40ad8bdc8ce8930))
+* fix for state speaking mistake. ([ab23d20](https://github.com/ArchiDog1998/RotationSolver/commit/ab23d207423cf99345b97fcd599116e6c08c596e))
+* fix for unused UI and param for role. ([0eb96c9](https://github.com/ArchiDog1998/RotationSolver/commit/0eb96c96abeaed56196a9e3eb090977cc67f05c0))
+* fixed the bug that some aoe actions are not used. ([bb314a7](https://github.com/ArchiDog1998/RotationSolver/commit/bb314a7e744de7db7588a415a02e67ef286e648f))
+* remove some garbage infomation. ([efe7f8d](https://github.com/ArchiDog1998/RotationSolver/commit/efe7f8df839d34d35cb08d6cff0151cb61d0cd8b))
+* rename AutiRepulsion to AntiKnockback! ([df6f1e7](https://github.com/ArchiDog1998/RotationSolver/commit/df6f1e7ef7973b3f7581feb77603caf382d8aa66))
+
 ## [1.1.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.0.0...v1.1.0) (2023-01-21)
 
 
