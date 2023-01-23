@@ -3,6 +3,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
@@ -62,6 +63,8 @@ internal partial class RotationConfigWindow
 
         if (ImGui.CollapsingHeader("Next Action"))
         {
+            ImGui.Text(RSCommands.SpecialType.ToString());
+
             ActionUpdater.NextAction?.Display(false);
             ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
             ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
