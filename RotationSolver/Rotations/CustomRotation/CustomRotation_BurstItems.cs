@@ -15,15 +15,11 @@ internal abstract partial class CustomRotation
         //意力
         TinctureofIntelligence6 = new BaseItem(36112, 65535);
 
-    /// <summary>
-    /// 是否使用爆发药
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
-    protected bool UseBreakItem(out IAction act)
+    protected bool UseBurstItem(out IAction act)
     {
         act = null;
-        if (Service.PartyList.Count() < 8) return false;
+        
+        if (!IsFullParty) return false;
         if (Service.ClientState.LocalPlayer.Level < 90) return false;
 
         var role = Job.GetJobRole();

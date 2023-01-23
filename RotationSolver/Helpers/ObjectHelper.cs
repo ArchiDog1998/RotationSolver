@@ -16,7 +16,7 @@ internal static class ObjectHelper
         return Service.DataManager.GetExcelSheet<BNpcBase>().GetRow(obj.DataId);
     }
 
-    internal static bool HasLocationSide(this GameObject obj)
+    internal static bool HasPositional(this GameObject obj)
     {
         if (obj == null) return false;
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);

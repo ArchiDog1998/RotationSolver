@@ -11,6 +11,7 @@ internal partial class BaseAction : IBaseAction
 
     private bool _isFriendly;
     private bool _isEot;
+    Action _action;
 
     private bool ShouldEndSpecial { get; set; }
 
@@ -104,8 +105,14 @@ internal partial class BaseAction : IBaseAction
         }
     }
 
-
-    Action _action;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="actionID"></param>
+    /// <param name="isFriendly">is a friendly or supporting action</param>
+    /// <param name="shouldEndSpecial">end special after using it</param>
+    /// <param name="isEot">is hot or dot action</param>
+    /// <param name="isTimeline">should I put it to the timeline (heal and defense only)</param>
     internal BaseAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false, bool isTimeline = false)
     {
         _action = Service.DataManager.GetExcelSheet<Action>().GetRow((uint)actionID);

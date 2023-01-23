@@ -256,7 +256,7 @@ internal abstract partial class CustomRotation
 
             if (Service.Configuration.AutoUseTrueNorth && abilitiesRemaining == 1 && action.EnermyPositonal != EnemyPositional.None && action.Target != null)
             {
-                if (action.EnermyPositonal != action.Target.FindEnemyLocation() && action.Target.HasLocationSide())
+                if (action.EnermyPositonal != action.Target.FindEnemyLocation() && action.Target.HasPositional())
                 {
                     if (TrueNorth.CanUse(out act, emptyOrSkipCombo: true)) return true;
                 }

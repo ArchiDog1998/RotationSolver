@@ -55,7 +55,7 @@ internal abstract partial class CustomRotation
         if (act != null && act is BaseAction GcdAction)
         {
             //Sayout!
-            if (GcdAction.EnermyPositonal != EnemyPositional.None && GcdAction.Target.HasLocationSide()
+            if (GcdAction.EnermyPositonal != EnemyPositional.None && GcdAction.Target.HasPositional()
                  && !Player.HasStatus(true, StatusID.TrueNorth))
             {
                 if (CheckAction(GcdAction.ID))

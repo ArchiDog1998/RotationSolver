@@ -102,9 +102,8 @@ internal static partial class TargetUpdater
     {
         #region Friend
         var party = Service.PartyList;
-        PartyMembers = party.Length == 0 ? Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer } :
-            party.Where(obj => obj != null && obj.GameObject is BattleChara)
-            .Select(obj => obj.GameObject as BattleChara);
+        PartyMembers = party.Length == 0 ? (Service.ClientState.LocalPlayer == null ? new BattleChara[0] : new BattleChara[] { Service.ClientState.LocalPlayer })
+            : party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara);
 
         //添加亲信
         PartyMembers = PartyMembers.Union(Service.ObjectTable.Where(obj => obj.SubKind == 9 && obj is BattleChara).Cast<BattleChara>());

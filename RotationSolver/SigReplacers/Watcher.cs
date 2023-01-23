@@ -53,7 +53,6 @@ namespace RotationSolver.SigReplacers
             _receivAbilityHook?.Enable();
         }
 
-
         private static void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail)
         {
             _receivAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTrail);

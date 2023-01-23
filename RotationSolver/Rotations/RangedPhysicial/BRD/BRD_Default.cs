@@ -15,19 +15,16 @@ internal sealed class BRD_Default : BRD_Base
 
     public override string RotationName => "Default";
 
-    private protected override IRotationConfigSet CreateConfiguration()
-    {
-        return base.CreateConfiguration()
+    private protected override IRotationConfigSet CreateConfiguration() => base.CreateConfiguration()
             .SetBool("BindWAND", false, "Use Raging Strikes on WAND")
             .SetCombo("FirstSong", 0, "First Song", "WAND", "MAGE", "ARMY")
             .SetFloat("WANDTime", 43, "WAND Time", min: 0, max: 45, speed: 1)
             .SetFloat("MAGETime", 34, "MAGE Time", min: 0, max: 45, speed: 1)
             .SetFloat("ARMYTime", 43, "ARMY Time", min: 0, max: 45, speed: 1);
-    }
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.Description, $"请确保三首歌时间加在一起等于120秒!"},
+        {DescType.Description, "Please make sure that the three song times add up to 120 seconds!"},
         {DescType.DefenseArea, $"{Troubadour}"},
         {DescType.HealSingle, $"{NaturesMinne}"},
     };

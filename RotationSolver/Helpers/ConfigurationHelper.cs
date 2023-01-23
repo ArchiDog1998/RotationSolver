@@ -28,7 +28,7 @@ internal static class ConfigurationHelper
 
     public static readonly string[] AuthorKeys = new string[]
     {
-        "Ig4lHXUohMZNIeheUtAtRg==",
+        "Ig4lHXUohMZNIeheUtAtRg==", //ArchiTed
     };
 
     public static readonly uint[] BadStatus = new uint[]

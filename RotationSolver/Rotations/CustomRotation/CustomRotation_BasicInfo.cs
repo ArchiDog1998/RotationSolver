@@ -3,6 +3,9 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
+using RotationSolver.Localization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
@@ -55,8 +58,21 @@ internal abstract partial class CustomRotation : ICustomRotation
         }
     }
 
+    public string Description => string.Join('\n', DescriptionDict.Select(pair => pair.Key.ToName() + " → " + pair.Value));
+
+    /// <summary>
+    /// Description about the actions.
+    /// </summary>
+    public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
+
     private protected virtual IRotationConfigSet CreateConfiguration()
     {
         return new RotationConfigSet(JobIDs[0], RotationName);
     }
+
+
+    /// <summary>
+    /// Update your customized field.
+    /// </summary>
+    private protected virtual void UpdateInfo() { }
 }

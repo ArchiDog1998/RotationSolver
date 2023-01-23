@@ -317,7 +317,7 @@ internal sealed class NIN_Default : NIN_Base
 
         if (!IsMoving && TenChiJin.CanUse(out act)) return true;
         if (Kassatsu.CanUse(out act)) return true;
-        if (UseBreakItem(out act)) return true;
+        if (UseBurstItem(out act)) return true;
 
         if (Bunshin.CanUse(out act)) return true;
         if (HellfrogMedium.CanUse(out act)) return true;

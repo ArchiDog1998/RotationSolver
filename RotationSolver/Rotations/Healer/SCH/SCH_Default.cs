@@ -18,7 +18,6 @@ internal sealed class SCH_Default : SCH_Base
 
     public SCH_Default()
     {
-        //防止大仙女吞技能
         SummonSeraph.RotationCheck = b => WhisperingDawn.ElapsedAfterGCD(1) || FeyIllumination.ElapsedAfterGCD(1) || FeyBlessing.ElapsedAfterGCD(1);
     }
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Configs.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
