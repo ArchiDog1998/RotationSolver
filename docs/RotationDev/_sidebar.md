@@ -3,14 +3,13 @@
   - [Simple Rotation](RotationDev/simple-rotation.md)
 - Fundamentals
   - [Rotation Part](RotationDev/rotation.md)
-  - Rotation Info
-  - Action
-  - Character
+  - [Rotation Info](RotationDev/rotation-info.md)
+  - [Action](RotationDev/action.md)
+  - [Character](RotationDev/character.md)
 
 - Advanced
   - Customization
   - Action List
   - Data Maintain
   - Debug
-
 
