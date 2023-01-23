@@ -73,7 +73,7 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
-                SpecialCommandType.AntiRepulsion.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+                SpecialCommandType.AntiKnockback.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
                 SpecialCommandType.Burst.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);

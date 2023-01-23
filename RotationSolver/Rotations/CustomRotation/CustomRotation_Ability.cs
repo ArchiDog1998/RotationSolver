@@ -108,7 +108,7 @@ internal abstract partial class CustomRotation
     {
         act = null;
 
-        if (specialType != SpecialCommandType.AntiRepulsion) return false;
+        if (specialType != SpecialCommandType.AntiKnockback) return false;
 
         switch (role)
         {

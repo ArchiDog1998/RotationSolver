@@ -11,7 +11,7 @@
         RaiseShirk,
         MoveForward,
         MoveBack,
-        AntiRepulsion,
+        AntiKnockback,
         Burst,
     }
 

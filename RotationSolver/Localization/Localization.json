@@ -23,7 +23,7 @@
   "Configwindow_HelpItem_DefenseSingle": "Open a window to use one or more single defense.",
   "Configwindow_HelpItem_EsunaShield": "Open a window to use Esuna,tank stance actions or True North.",
   "Configwindow_HelpItem_RaiseShirk": "Open a window to use Raise or Shirk.",
-  "Configwindow_HelpItem_AntiRepulsion": "Open a window to use knockback-penalty actions.",
+  "Configwindow_HelpItem_AntiKnockback": "Open a window to use knockback-penalty actions.",
   "Configwindow_HelpItem_Break": "Open a window to use break-combo.",
   "Configwindow_HelpItem_MoveForward": "Open a window to move forward.",
   "Configwindow_HelpItem_MoveBack": "Open a window to move back.",

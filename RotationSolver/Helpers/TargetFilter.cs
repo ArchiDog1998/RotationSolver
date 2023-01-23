@@ -61,7 +61,8 @@ internal static class TargetFilter
         if (mustUse)
         {
             var tar = charas.OrderBy(DistanceToPlayer).FirstOrDefault();
-            if (tar?.DistanceToPlayer() < 1) return tar;
+            if(tar == null) return null;
+            if (tar.DistanceToPlayer() < 1) return tar;
             return null;
         }
 

@@ -60,7 +60,7 @@ internal class Strings
     public string Configwindow_HelpItem_RaiseShirk { get; set; }
         = "Open a window to use Raise or Shirk.";
 
-    public string Configwindow_HelpItem_AntiRepulsion { get; set; }
+    public string Configwindow_HelpItem_AntiKnockback { get; set; }
         = "Open a window to use knockback-penalty actions.";
 
     public string Configwindow_HelpItem_Break { get; set; }
