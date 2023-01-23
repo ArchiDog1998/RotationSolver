@@ -29,7 +29,7 @@ internal abstract partial class CustomRotation
         var specialType = RSCommands.SpecialType;
 
         if (ShirkOrShield(role, specialType, out act)) return true;
-        if (AntiRepulsion(role, specialType, out act)) return true;
+        if (AntiKnockback(role, specialType, out act)) return true;
 
         if (specialType == SpecialCommandType.EsunaShieldNorth && role == JobRole.Melee)
         {
@@ -104,7 +104,7 @@ internal abstract partial class CustomRotation
         return false;
     }
 
-    private bool AntiRepulsion(JobRole role, SpecialCommandType specialType, out IAction act)
+    private bool AntiKnockback(JobRole role, SpecialCommandType specialType, out IAction act)
     {
         act = null;
 

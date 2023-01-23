@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
@@ -82,8 +83,21 @@ internal static partial class TargetUpdater
                     break;
             }
 
-            CanInterruptTargets = HostileTargets.Where(tar => tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2
-            && tar.CurrentCastTime >= Service.Configuration.InterruptibleTime);
+            CanInterruptTargets = HostileTargets.Where(tar =>
+            {
+                var baseCheck = tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2
+                    && tar.CurrentCastTime >= Service.Configuration.InterruptibleTime;
+
+                if(!baseCheck) return false;
+
+                var act = Service.DataManager.GetExcelSheet<Action>().GetRow(tar.CastActionId);
+                if (act == null) return false;
+
+                //跳过扇形圆型
+                if (act.CastType is 3 or 4) return false;
+                if (ActionManager.GetActionRange(tar.CastActionId) < 8) return false;
+                return true;
+            });
 
             TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId);
 
