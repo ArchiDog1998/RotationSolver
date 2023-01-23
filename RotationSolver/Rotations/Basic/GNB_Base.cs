@@ -1,9 +1,8 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using RotationSolver.Actions.BaseAction;
 using RotationSolver.Actions;
-using RotationSolver.Helpers;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 
 namespace RotationSolver.Rotations.Basic;
 

@@ -1,14 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using ImGuiNET;
-using RotationSolver;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
-using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using System;
+using System.Linq;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
 #if DEBUG

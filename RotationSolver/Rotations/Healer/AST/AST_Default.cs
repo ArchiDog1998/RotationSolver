@@ -2,11 +2,11 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using System.Collections.Generic;
-using System.Linq;
-using RotationSolver.Updaters;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Updaters;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.AST;
 
@@ -122,7 +122,7 @@ internal sealed class AST_Default : AST_Base
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (SettingBreak && Divination.CanUse(out act)) return true;
+        if (InBurst && Divination.CanUse(out act)) return true;
 
         //如果当前还没有皇冠卡牌，那就抽一张
         if (MinorArcana.CanUse(out act, emptyOrSkipCombo: true)) return true;
@@ -174,7 +174,7 @@ internal sealed class AST_Default : AST_Base
 
         var tank = TargetUpdater.PartyTanks;
         var isBoss = Malefic.IsTargetBoss;
-        if (EssentialDignity.IsCoolDown && tank.Count() == 1 && tank.Any(t => t.GetHealthRatio() < 0.5) && !isBoss)
+        if (EssentialDignity.IsCoolingDown && tank.Count() == 1 && tank.Any(t => t.GetHealthRatio() < 0.5) && !isBoss)
         {
             //群Hot
             if (CelestialOpposition.CanUse(out act)) return true;

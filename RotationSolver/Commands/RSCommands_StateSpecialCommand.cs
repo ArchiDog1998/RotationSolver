@@ -3,10 +3,6 @@ using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Commands
 {
@@ -59,7 +55,7 @@ namespace RotationSolver.Commands
             _specialString = specialType.ToSpecialString(role);
 
             _specialStateStartTime = specialType == SpecialCommandType.EndSpecial ? DateTime.MinValue : DateTime.Now;
-            if(sayout) UpdateToast();
+            if (sayout) UpdateToast();
         });
 
         private static void DoOneCommandType<T>(T type, Func<T, JobRole, string> sayout, Action<JobRole> doingSomething)

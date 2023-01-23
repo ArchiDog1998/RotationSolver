@@ -1,9 +1,8 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using RotationSolver.Actions.BaseAction;
 using RotationSolver.Actions;
-using RotationSolver.Helpers;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.Rotations.Basic
@@ -186,7 +185,7 @@ namespace RotationSolver.Rotations.Basic
         public static IBaseAction Sharpcast { get; } = new BaseAction(ActionID.Sharpcast)
         {
             StatusProvide = new[] { StatusID.Sharpcast },
-            ActionCheck = b => HaveHostilesInRange,
+            ActionCheck = b => HasHostilesInRange,
         };
 
         /// <summary>

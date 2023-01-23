@@ -143,7 +143,7 @@ internal sealed class PLD_Default : PLD_Base
             if (FightorFlight.ElapsedAfterGCD(2)) return true; //开场延后
         }
         if (FastBlade.CanUse(out _))//距离不远
-                                       //&& !IsMoving) //不在移动中 
+                                    //&& !IsMoving) //不在移动中 
         {
             if (Player.HasStatus(true, StatusID.FightOrFlight)//有战逃buff
                 && Intervene.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;//调停放空
@@ -159,7 +159,7 @@ internal sealed class PLD_Default : PLD_Base
         }
         if (OathGauge == 100 && Player.CurrentHp < Player.MaxHp)//忠义已满且不满血
         {
-            if (HaveShield && Sheltron.CanUse(out act)) return true;//盾阵
+            if (HasShield && Sheltron.CanUse(out act)) return true;//盾阵
 
         }
         return false;

@@ -18,8 +18,8 @@ internal sealed partial class BLM_Default : BLM_Base
 
     internal static float MpUpdateRemain => 3 - ActionUpdater.MPUpdateElapsed;
     internal static bool TargetHasThunder => Target.HasStatus(true, StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4);
-    internal static ActionRec[] RecordSpells => RecordActions.Where(b => b.action.ActionCategory.Value.RowId == 2).ToArray();
-    internal static bool IsOldSpell(int count, IAction action) => RecordSpells[count].action.RowId == action.ID;
+    internal static ActionRec[] RecordSpells => RecordActions.Where(b => b.Action.GetActinoType() == ActionCate.Spell).ToArray();
+    internal static bool IsOldSpell(int count, IAction action) => RecordSpells[count].Action.RowId == action.ID;
     /// <summary>
     /// 目标身上的雷dot剩余时间
     /// </summary>
@@ -51,7 +51,6 @@ internal sealed partial class BLM_Default : BLM_Base
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-                    //.SetCombo("UseLoop", 0, "循环管理", "标准循环", "星灵循环", "压冰循环")
                     .SetBool("AutoLeylines", true, "Auto use Leylines");
     }
 
@@ -110,7 +109,7 @@ internal sealed partial class BLM_Default : BLM_Base
         if (Level == 90 && LoopManagerMax(out act)) return true;
 
         //移动时
-        if (IsMoving && InCombat && HaveHostilesInRange && !IsLastAction(true, AetherialManipulation))
+        if (IsMoving && InCombat && HasHostilesInRange && !IsLastAction(true, AetherialManipulation))
         {
             if (Foul.CanUse(out act)) return true;
             if (Xenoglossy.CanUse(out act)) return true;
@@ -180,7 +179,7 @@ internal sealed partial class BLM_Default : BLM_Base
         if (!InCombat)
         {
             //激情咏唱
-            if (Sharpcast.CanUse(out act) && HaveHostilesInRange) return true;
+            if (Sharpcast.CanUse(out act) && HasHostilesInRange) return true;
         }
         if (iceOpener)
         {
@@ -394,7 +393,7 @@ internal sealed partial class BLM_Default : BLM_Base
     private bool Maintence(out IAction act)
     {
         act = null;
-        if (HaveHostilesInRange && InCombat || IsEnochianActive) return false;
+        if (HasHostilesInRange && InCombat || IsEnochianActive) return false;
 
         if (UmbralSoul.CanUse(out act) && UmbralIceStacks == 3 && ElementTimeEndAfterGCD(2)) return true;
         if (UmbralSoul.CanUse(out act) && (UmbralIceStacks != 3 || UmbralHearts != 3)) return true;
@@ -440,12 +439,12 @@ internal sealed partial class BLM_Default : BLM_Base
                 if (HasFire && Player.CurrentMp >= 7200) return true;
 
                 //瞬双n(2/3-1)
-                if (!HasFire && HaveSwift && Player.CurrentMp >= 8000) return true;
+                if (!HasFire && HasSwift && Player.CurrentMp >= 8000) return true;
             }
         }
 
         //星灵转冰
-        if (InAstralFire && abilitiesRemaining == 2 && (Manafont.ElapsedAfter(3) || !Manafont.IsCoolDown))
+        if (InAstralFire && abilitiesRemaining == 2 && (Manafont.ElapsedAfter(3) || !Manafont.IsCoolingDown))
         {
             if (IsLastGCD(true, Despair) || IsOldSpell(1, Despair) && IsLastGCD(true, Xenoglossy, Thunder)) return true;
         }
@@ -467,7 +466,7 @@ internal sealed partial class BLM_Default : BLM_Base
         if (InUmbralIce && UmbralIceStacks < 3 && !IsParadoxActive)
         {
             if (HasFire || Player.HasStatus(true, StatusID.LeyLines)) return false;
-            if (Transpose.IsCoolDown && (UseThunder(out _) || UseXenoglossy(out _))) return true;
+            if (Transpose.IsCoolingDown && (UseThunder(out _) || UseXenoglossy(out _))) return true;
         }
 
         //if (fireOpener && Leylines.IsCoolDown) return true;
@@ -554,7 +553,7 @@ internal sealed partial class BLM_Default : BLM_Base
             return true;
         }
 
-        if (Triplecast.IsCoolDown && Triplecast.CurrentCharges == 1 && Player.HasStatus(true, StatusID.Triplecast)) return false;
+        if (Triplecast.IsCoolingDown && Triplecast.CurrentCharges == 1 && Player.HasStatus(true, StatusID.Triplecast)) return false;
         //if (!IsLastSpell(true, Actions.Thunder)) return true;
         return true;
 
@@ -572,7 +571,7 @@ internal sealed partial class BLM_Default : BLM_Base
         if (!Paradox.CanUse(out act)) return false;
 
         //在冰
-        if (InUmbralIce && (Transpose.IsCoolDown && UmbralIceStacks >= 1 || UmbralIceStacks == 3 && UmbralHearts == 3)) return true;
+        if (InUmbralIce && (Transpose.IsCoolingDown && UmbralIceStacks >= 1 || UmbralIceStacks == 3 && UmbralHearts == 3)) return true;
 
         //在火
         if (InAstralFire && ElementTimeEndAfterGCD(2)) return true;
@@ -604,10 +603,10 @@ internal sealed partial class BLM_Default : BLM_Base
             if (HasFire || StandardLoop) return false;
 
             //瞬单3/4
-            if (HaveSwift && Player.CurrentMp >= 5600) return true;
+            if (HasSwift && Player.CurrentMp >= 5600) return true;
 
             //长单3,4,5
-            if (!HaveSwift && !UseThunder(out _) && !UseXenoglossy(out _)) return true;
+            if (!HasSwift && !UseThunder(out _) && !UseXenoglossy(out _)) return true;
         }
 
         if (InAstralFire)
@@ -634,7 +633,7 @@ internal sealed partial class BLM_Default : BLM_Base
         if (Player.CurrentMp < 2400) return false;
 
         //能瞬发时判断
-        if (HaveSwift && ElementTimeEndAfterGCD(1, 1)) return true;
+        if (HasSwift && ElementTimeEndAfterGCD(1, 1)) return true;
         ////当前火状态还能打几个火4
         //if (F4RemainingNumber() >= 1) return true;
 
@@ -673,7 +672,7 @@ internal sealed partial class BLM_Default : BLM_Base
         if (StandardLoop && (Player.CurrentMp == 0 || !UseFire4(out _) && !UseDespair(out _))) return true;
 
         //双星灵
-        if (InAstralFire && !UseFire4(out _) && !UseDespair(out _) && !IsParadoxActive && (Manafont.ElapsedAfter(3) || !Manafont.IsCoolDown)) return true;
+        if (InAstralFire && !UseFire4(out _) && !UseDespair(out _) && !IsParadoxActive && (Manafont.ElapsedAfter(3) || !Manafont.IsCoolingDown)) return true;
         return false;
     }
 
@@ -717,7 +716,7 @@ internal sealed partial class BLM_Default : BLM_Base
             //上个技能是异言pass
             if (IsLastGCD(true, Xenoglossy)) return false;
             //魔泉时
-            if (!Manafont.ElapsedAfter(3) && Manafont.IsCoolDown) return false;
+            if (!Manafont.ElapsedAfter(3) && Manafont.IsCoolingDown) return false;
 
             if (TargetHasThunder && !TargetThunderWillEnd(8)) return false;
 
@@ -745,7 +744,7 @@ internal sealed partial class BLM_Default : BLM_Base
         {
             if (InUmbralIce && UmbralHearts != 3) return false;
             if (EnchinaEndAfterGCD(3) && IsPolyglotStacksMaxed) return true;
-            if (!Manafont.IsCoolDown && IsLastGCD(true, Despair)) return true;
+            if (!Manafont.IsCoolingDown && IsLastGCD(true, Despair)) return true;
 
             return false;
         }
@@ -758,7 +757,7 @@ internal sealed partial class BLM_Default : BLM_Base
             if (IsOldSpell(1, Thunder3)) return false;
             if (PolyglotStacks == 2) return true;
             if (HasFire) return true;
-            if (!HasFire && (HaveSwift || !Swiftcast.IsCoolDown) && !Player.HasStatus(true, StatusID.LeyLines)) return true;
+            if (!HasFire && (HasSwift || !Swiftcast.IsCoolingDown) && !Player.HasStatus(true, StatusID.LeyLines)) return true;
 
             //if ( (3 - ActionUpdater.MPUpdateElapsed) - ActionUpdater.WeaponRemain < 1.5)
         }
@@ -766,11 +765,11 @@ internal sealed partial class BLM_Default : BLM_Base
         //在火
         if (InAstralFire)
         {
-            if (IsLastGCD(true, Xenoglossy) || HaveSwift) return false;
+            if (IsLastGCD(true, Xenoglossy) || HasSwift) return false;
             //起手
             if (iceOpener && !IsParadoxActive && Player.CurrentMp <= 1200) return true;
             //魔泉时
-            if (!Manafont.ElapsedAfter(3) && Manafont.IsCoolDown) return false;
+            if (!Manafont.ElapsedAfter(3) && Manafont.IsCoolingDown) return false;
 
             //未来观测卡跳蓝(三连咏唱)
 

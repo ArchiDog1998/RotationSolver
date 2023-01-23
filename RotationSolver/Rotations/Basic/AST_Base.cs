@@ -1,11 +1,11 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
+using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using System;
 using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Actions;
-using RotationSolver.Helpers;
-using RotationSolver.Data;
 
 namespace RotationSolver.Rotations.Basic;
 

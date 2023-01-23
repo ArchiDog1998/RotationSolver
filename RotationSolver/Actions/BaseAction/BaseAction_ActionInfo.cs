@@ -31,7 +31,7 @@ internal partial class BaseAction
     {
         get
         {
-            if (!IsGeneralGCD && IsCoolDown)
+            if (!IsGeneralGCD && IsCoolingDown)
             {
                 if (IsRealGCD)
                 {

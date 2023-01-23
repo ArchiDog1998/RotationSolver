@@ -1,13 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Logging;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using RotationSolver.Updaters;
-using RotationSolver.Commands;
 
 namespace RotationSolver.Actions.BaseAction;
 
@@ -15,25 +15,21 @@ internal partial class BaseAction
 {
     public byte AOECount { private get; set; } = 3;
 
-    public bool IsTargetDying
-    {
-        get
-        {
-            if (Target == null) return false;
-            return Target.IsDying();
-        }
-    }
+    /// <summary>
+    /// Shortcut for Target.IsDying();
+    /// </summary>
+    public bool IsTargetDying => Target?.IsDying() ?? false;
 
-    public bool IsTargetBoss
-    {
-        get
-        {
-            if (Target == null) return false;
-            return Target.IsBoss();
-        }
-    }
+    /// <summary>
+    /// Shortcut for Target.IsBoss();
+    /// </summary>
+    public bool IsTargetBoss => Target?.IsBoss() ?? false;
 
+    /// <summary>
+    /// The action's target.
+    /// </summary>
     public BattleChara Target { get; private set; } = Service.ClientState.LocalPlayer;
+
     private Vector3 _position = default;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
@@ -59,7 +55,7 @@ internal partial class BaseAction
     {
         var tankHealth = id.GetHealthForDyingTank();
 
-        return TargetUpdater.HaveHostilesInRange
+        return TargetUpdater.HasHostilesInRange
             && Service.ClientState.LocalPlayer.GetHealthRatio() < tankHealth
             && TargetUpdater.PartyMembersAverHP > tankHealth + 0.05f;
     }
@@ -414,7 +410,7 @@ internal partial class BaseAction
     private IEnumerable<BattleChara> TargetFilterFuncEot(IEnumerable<BattleChara> tars, bool mustUse)
     {
         if (FilterForTarget != null) return FilterForTarget(tars);
-        if (TargetStatus == null || !_isEot ||　mustUse) return tars;
+        if (TargetStatus == null || !_isEot || mustUse) return tars;
 
         var canDot = mustUse ? tars : tars.Where(ObjectHelper.CanDot);
         var DontHave = canDot.Where(CheckStatus);

@@ -1,13 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Updaters;
 using RotationSolver.Actions;
-using RotationSolver.Helpers;
-using RotationSolver.Data;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Updaters;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.WHM;
 internal sealed class WHM_Default : WHM_Base
@@ -63,7 +63,7 @@ internal sealed class WHM_Default : WHM_Base
         if (PresenseOfMind.CanUse(out act)) return true;
 
         //加个法令
-        if (HaveHostilesInRange && Assize.CanUse(out act, mustUse: true)) return true;
+        if (HasHostilesInRange && Assize.CanUse(out act, mustUse: true)) return true;
 
         return false;
     }

@@ -106,13 +106,13 @@ internal sealed class NIN_Default : NIN_Base
                 return true;
             }
             //背刺
-            if (SettingBreak && Suiton.CanUse(out _))
+            if (InBurst && Suiton.CanUse(out _))
             {
                 SetNinjustus(Suiton);
             }
         }
         //常规单体忍术
-        if (Ten.CanUse(out _) && (!TenChiJin.EnoughLevel || TenChiJin.IsCoolDown))
+        if (Ten.CanUse(out _) && (!TenChiJin.EnoughLevel || TenChiJin.IsCoolingDown))
         {
             if (Raiton.CanUse(out _))
             {
@@ -250,7 +250,7 @@ internal sealed class NIN_Default : NIN_Base
         }
         //用隐匿恢复忍术数量
         if (!InCombat && _ninactionAim == null && Configs.GetBool("UseHide")
-            && Ten.IsCoolDown && Hide.CanUse(out act)) return true;
+            && Ten.IsCoolingDown && Hide.CanUse(out act)) return true;
 
         var replace = Service.IconReplacer.OriginalHook(2260);
         //无忍术或者忍术中途停了
@@ -308,7 +308,7 @@ internal sealed class NIN_Default : NIN_Base
         if (!InCombat || Service.IconReplacer.OriginalHook(2260) != 2260) return false;
 
         //夺取
-        if (SettingBreak && Mug.CanUse(out act)) return true;
+        if (InBurst && Mug.CanUse(out act)) return true;
 
 
         //解决Buff

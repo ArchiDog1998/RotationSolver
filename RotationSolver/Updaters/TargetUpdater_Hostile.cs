@@ -2,13 +2,11 @@
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -31,7 +29,7 @@ internal static partial class TargetUpdater
 
     internal static IEnumerable<BattleChara> CanInterruptTargets { get; private set; } = new BattleChara[0];
 
-    internal static bool HaveHostilesInRange { get; private set; } = false;
+    internal static bool HasHostilesInRange { get; private set; } = false;
 
     internal static bool IsHostileCastingAOE { get; private set; } = false;
 
@@ -98,12 +96,12 @@ internal static partial class TargetUpdater
                     radius = 3;
                     break;
             }
-            HaveHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Any();
+            HasHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Any();
         }
         else
         {
             AllTargets = HostileTargets = CanInterruptTargets = new BattleChara[0];
-            HaveHostilesInRange = false;
+            HasHostilesInRange = false;
         }
 
         if (HostileTargets.Count() == 1)

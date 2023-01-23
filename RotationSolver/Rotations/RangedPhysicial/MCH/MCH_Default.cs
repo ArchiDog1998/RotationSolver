@@ -1,12 +1,12 @@
 using RotationSolver.Actions;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using System.Collections.Generic;
-using System.Linq;
-using RotationSolver.Updaters;
-using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Updaters;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RotationSolver.Rotations.RangedPhysicial.MCH;
 
@@ -51,7 +51,7 @@ internal sealed class MCH_Default : MCH_Base
         if (!InCombat)
         {
             //开场前整备,空气锚和钻头必须冷却好
-            if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolDown || !Drill.IsCoolDown) && Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolingDown || !Drill.IsCoolingDown) && Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         //群体常规GCD
@@ -70,9 +70,9 @@ internal sealed class MCH_Default : MCH_Base
             if (ChainSaw.CanUse(out act, mustUse: true))
             {
                 if (Player.HasStatus(true, StatusID.Reassemble)) return true;
-                if (!Configs.GetBool("MCH_Opener") || Wildfire.IsCoolDown) return true;
-                if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(4) && Drill.IsCoolDown && Drill.ElapsedAfterGCD(3)) return true;
-                if (AirAnchor.IsCoolDown && AirAnchor.ElapsedAfterGCD(3) && Drill.IsCoolDown && Drill.ElapsedAfterGCD(4)) return true;
+                if (!Configs.GetBool("MCH_Opener") || Wildfire.IsCoolingDown) return true;
+                if (AirAnchor.IsCoolingDown && AirAnchor.ElapsedAfterGCD(4) && Drill.IsCoolingDown && Drill.ElapsedAfterGCD(3)) return true;
+                if (AirAnchor.IsCoolingDown && AirAnchor.ElapsedAfterGCD(3) && Drill.IsCoolingDown && Drill.ElapsedAfterGCD(4)) return true;
             }
         }
 
@@ -119,7 +119,7 @@ internal sealed class MCH_Default : MCH_Base
         //起手在链锯前释放野火
         if (nextGCD.IsTheSameTo(true, ChainSaw) && !IsLastGCD(true, HeatBlast))
         {
-            if (SettingBreak && Configs.GetBool("MCH_Opener") && Wildfire.CanUse(out act)) return true;
+            if (InBurst && Configs.GetBool("MCH_Opener") && Wildfire.CanUse(out act)) return true;
         }
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
@@ -127,7 +127,7 @@ internal sealed class MCH_Default : MCH_Base
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //野火
-        if (SettingBreak && CanUseWildfire(out act)) return true;
+        if (InBurst && CanUseWildfire(out act)) return true;
 
         //车式浮空炮塔
         if (CanUseRookAutoturret(out act)) return true;
@@ -171,9 +171,9 @@ internal sealed class MCH_Default : MCH_Base
         //在过热时
         if (IsLastAction(true, Hypercharge)) return true;
 
-        if (ChainSaw.EnoughLevel && !ChainSaw.IsCoolDown) return false;
+        if (ChainSaw.EnoughLevel && !ChainSaw.IsCoolingDown) return false;
 
-        if (Hypercharge.IsCoolDown) return false;
+        if (Hypercharge.IsCoolingDown) return false;
 
         //当上一个技能是钻头,空气锚,热冲击时不释放野火
         if (IsLastGCD(true, Drill, HeatBlast, AirAnchor)) return false;
@@ -199,7 +199,7 @@ internal sealed class MCH_Default : MCH_Base
         //在三大金刚还剩8秒冷却好时不释放超荷
         if (Drill.EnoughLevel && Drill.WillHaveOneChargeGCD(3)) return false;
         if (AirAnchor.EnoughLevel && AirAnchor.WillHaveOneCharge(3)) return false;
-        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolDown && ChainSaw.WillHaveOneCharge(3) || !ChainSaw.IsCoolDown) && Configs.GetBool("MCH_Opener")) return false;
+        if (ChainSaw.EnoughLevel && (ChainSaw.IsCoolingDown && ChainSaw.WillHaveOneCharge(3) || !ChainSaw.IsCoolingDown) && Configs.GetBool("MCH_Opener")) return false;
 
         //小怪AOE和4人本超荷判断
         if (SpreadShot.CanUse(out _))
@@ -244,8 +244,8 @@ internal sealed class MCH_Default : MCH_Base
         if (SpreadShot.CanUse(out _) && !Target.IsBoss() && IsMoving) return false;
 
         //机器人吃团辅判断
-        if (AirAnchor.IsCoolDown && AirAnchor.WillHaveOneChargeGCD() && Battery > 80) return true;
-        if (ChainSaw.WillHaveOneCharge(4) || ChainSaw.IsCoolDown && !ChainSaw.ElapsedAfterGCD(3) && Battery <= 60) return true;
+        if (AirAnchor.IsCoolingDown && AirAnchor.WillHaveOneChargeGCD() && Battery > 80) return true;
+        if (ChainSaw.WillHaveOneCharge(4) || ChainSaw.IsCoolingDown && !ChainSaw.ElapsedAfterGCD(3) && Battery <= 60) return true;
 
         return false;
     }

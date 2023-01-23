@@ -1,13 +1,13 @@
 using RotationSolver.Actions;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
-using System.Collections.Generic;
-using System.Linq;
-using RotationSolver.Updaters;
 using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Updaters;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RotationSolver.Rotations.Tank.DRK;
 
@@ -90,7 +90,7 @@ internal sealed class DRK_Default : DRK_Base
     }
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (SettingBreak && (!IsFullParty && CanUseSpellInDungeonsMiddle || IsFullParty))
+        if (InBurst && (!IsFullParty && CanUseSpellInDungeonsMiddle || IsFullParty))
         {
             //嗜血
             if (BloodWeapon.CanUse(out act)) return true;
@@ -177,7 +177,7 @@ internal sealed class DRK_Default : DRK_Base
         if (Configs.GetBool("TheBlackestNight") && Player.CurrentMp < 6000) return false;
 
         //爆发期打完
-        if (Delirium.IsCoolDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7)) return true;
+        if (Delirium.IsCoolingDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7)) return true;
 
         //非爆发期防止溢出+续buff
         if (Player.CurrentMp > 8500 || DarkSideEndAfterGCD(3)) return true;

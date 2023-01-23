@@ -2,14 +2,13 @@
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Helpers;
 using RotationSolver.Data;
-using RotationSolver.Windows;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
+using System;
+using System.Linq;
 
 namespace RotationSolver.Timeline;
 
@@ -92,7 +91,7 @@ internal class TargetCondition : ICondition
                 break;
 
             case TargetConditionType.CastingAction:
-                if(string.IsNullOrEmpty(CastingActionName) || tar.CastActionId == 0)
+                if (string.IsNullOrEmpty(CastingActionName) || tar.CastActionId == 0)
                 {
                     result = false;
                     break;

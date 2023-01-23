@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
-using RotationSolver.Actions;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using System;
@@ -26,62 +25,70 @@ internal static class StatusHelper
     public static bool NeedHealing(BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
 
     /// <summary>
-    /// 状态是否在下几个GCD转好后消失(列表中剩余时间最小的)。
+    /// Will any of <paramref name="statusIDs"/> be end after <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?
     /// </summary>
-    /// <param name="gcdCount">要隔着多少个完整的GCD</param>
-    /// <param name="abilityCount">再多少个能力技之后</param>
-    /// <returns>这个时间点状态是否已经消失</returns>
-    internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool isFromSelf = true, params StatusID[] effectIDs)
+    /// <param name="obj"></param>
+    /// <param name="gcdCount"></param>
+    /// <param name="abilityCount"></param>
+    /// <param name="isFromSelf"></param>
+    /// <param name="statusIDs"></param>
+    /// <returns></returns>
+    internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool isFromSelf = true, params StatusID[] statusIDs)
     {
-        var remain = obj.StatusTime(isFromSelf, effectIDs);
+        var remain = obj.StatusTime(isFromSelf, statusIDs);
         return CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount);
     }
 
+
     /// <summary>
-    /// 状态是否在几秒后消失。
+    /// Will any of <paramref name="statusIDs"/> be end after <paramref name="time"/> seconds?
     /// </summary>
-    /// <param name="remainWant">要多少秒呢</param>
-    /// <returns>这个时间点状态是否已经消失</returns>
-    internal static bool WillStatusEnd(this BattleChara obj, float remainWant, bool isFromSelf = true, params StatusID[] effectIDs)
+    /// <param name="obj"></param>
+    /// <param name="time"></param>
+    /// <param name="isFromSelf"></param>
+    /// <param name="statusIDs"></param>
+    /// <returns></returns>
+    internal static bool WillStatusEnd(this BattleChara obj, float time, bool isFromSelf = true, params StatusID[] statusIDs)
     {
-        var remain = obj.StatusTime(isFromSelf, effectIDs);
-        return CooldownHelper.RecastAfter(remain, remainWant);
+        var remain = obj.StatusTime(isFromSelf, statusIDs);
+        return CooldownHelper.RecastAfter(remain, time);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+    internal static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        var times = obj.StatusTimes(isFromSelf, effectIDs);
+        var times = obj.StatusTimes(isFromSelf, statusIDs);
         if (times == null || !times.Any()) return 0;
         return times.Min();
     }
 
-    private static IEnumerable<float> StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+    private static IEnumerable<float> StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        return obj.GetStatus(isFromSelf, effectIDs).Select(status => status.RemainingTime == 0 ? float.MaxValue : status.RemainingTime);
+        return obj.GetStatus(isFromSelf, statusIDs).Select(status => status.RemainingTime == 0 ? float.MaxValue : status.RemainingTime);
     }
 
-    internal static byte StatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+    internal static byte StatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        var stacks = obj.StatusStacks(isFromSelf, effectIDs);
+        var stacks = obj.StatusStacks(isFromSelf, statusIDs);
         if (stacks == null || !stacks.Any()) return 0;
         return stacks.Min();
     }
 
-    private static IEnumerable<byte> StatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+    private static IEnumerable<byte> StatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        return obj.GetStatus(isFromSelf, effectIDs).Select(status => status.StackCount == 0 ? byte.MaxValue : status.StackCount);
+        return obj.GetStatus(isFromSelf, statusIDs).Select(status => status.StackCount == 0 ? byte.MaxValue : status.StackCount);
     }
 
     /// <summary>
-    /// 表示角色<paramref name="obj"/>是否存在任何人或自己赋予的参数<paramref name="effectIDs"/>中的任何一个
+    /// Has one status right now.
     /// </summary>
-    /// <param name="obj">检查对象</param>
-    /// <param name="effectIDs">状态</param>
-    /// <returns>是否拥有任何一个状态</returns>
-    internal static bool HasStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+    /// <param name="obj"></param>
+    /// <param name="isFromSelf"></param>
+    /// <param name="statusIDs"></param>
+    /// <returns></returns>
+    internal static bool HasStatus(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        return obj.GetStatus(isFromSelf, effectIDs).Any();
+        return obj.GetStatus(isFromSelf, statusIDs).Any();
     }
 
     internal static void StatusOff(StatusID status)
@@ -89,19 +96,14 @@ internal static class StatusHelper
         RSCommands.SubmitToChat($"/statusoff {GetStatusName(status)}");
     }
 
-    /// <summary>
-    /// 获得状态的名字
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
     internal static string GetStatusName(StatusID id)
     {
         return Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow((uint)id).Name.ToString();
     }
 
-    private static IEnumerable<Status> GetStatus(this BattleChara obj, bool isFromSelf, params StatusID[] effectIDs)
+    private static IEnumerable<Status> GetStatus(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        var newEffects = effectIDs.Select(a => (uint)a);
+        var newEffects = statusIDs.Select(a => (uint)a);
         return obj.GetAllStatus(isFromSelf).Where(status => newEffects.Contains(status.StatusId));
     }
 

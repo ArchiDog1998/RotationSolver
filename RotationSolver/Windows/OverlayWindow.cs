@@ -1,7 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface;
 using ImGuiNET;
-using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using RotationSolver.Actions.BaseAction;
 
 namespace RotationSolver.Windows;
 

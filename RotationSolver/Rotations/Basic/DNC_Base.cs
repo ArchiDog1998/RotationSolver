@@ -1,10 +1,9 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using System.Linq;
-using RotationSolver.Actions.BaseAction;
 using RotationSolver.Actions;
-using RotationSolver.Helpers;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
+using System.Linq;
 
 namespace RotationSolver.Rotations.Basic;
 internal abstract class DNC_Base : CustomRotation.CustomRotation

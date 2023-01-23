@@ -1,6 +1,4 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver;
-using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -14,10 +12,13 @@ internal partial class BaseAction : IBaseAction
     private bool _isFriendly;
     private bool _isEot;
 
-    public bool ShouldEndSpecial { private get; set; }
+    private bool ShouldEndSpecial { get; set; }
 
     internal bool IsTimeline { get; } = false;
 
+    /// <summary>
+    /// EnoughLevel for using.
+    /// </summary>
     public bool EnoughLevel => Service.ClientState.LocalPlayer.Level >= _action.ClassJobLevel;
     public string Name => _action.Name;
 
@@ -92,6 +93,7 @@ internal partial class BaseAction : IBaseAction
             return EnemyPositional.None;
         }
     }
+
     internal virtual unsafe uint MPNeed
     {
         get

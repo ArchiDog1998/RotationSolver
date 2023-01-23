@@ -1,15 +1,11 @@
 ﻿using ImGuiNET;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
-using RotationSolver.Windows;
-using RotationSolver.Localization;
 using RotationSolver.Helpers;
+using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
-using RotationSolver.Actions;
-using Lumina.Data.Parsing;
+using System;
 
 namespace RotationSolver.Timeline;
 
@@ -61,7 +57,7 @@ internal class ActionCondition : ICondition
                 break;
 
             case ActionConditonType.IsCoolDown:
-                result = _action.IsCoolDown;
+                result = _action.IsCoolingDown;
                 break;
 
             case ActionConditonType.CurrentCharges:

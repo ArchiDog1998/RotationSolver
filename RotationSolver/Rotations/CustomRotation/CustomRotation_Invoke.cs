@@ -1,14 +1,14 @@
 ﻿using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
 using RotationSolver.Windows;
 using System;
 using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Commands;
-using RotationSolver.Localization;
 
 namespace RotationSolver.Rotations.CustomRotation;
 

@@ -1,10 +1,10 @@
 ﻿using RotationSolver.Actions;
-using RotationSolver.Data;
-using System.Collections.Generic;
-using RotationSolver.Helpers;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
+using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.Melee.RPR;
 
@@ -150,7 +150,7 @@ internal sealed class RPR_Default : RPR_Base
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (SettingBreak)
+        if (InBurst)
         {
             //神秘环
             if (ArcaneCircle.CanUse(out act)) return true;

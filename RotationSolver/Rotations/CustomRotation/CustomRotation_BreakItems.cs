@@ -1,7 +1,5 @@
-﻿using RotationSolver;
-using RotationSolver.Actions;
+﻿using RotationSolver.Actions;
 using RotationSolver.Data;
-using System;
 using System.Linq;
 
 namespace RotationSolver.Rotations.CustomRotation;

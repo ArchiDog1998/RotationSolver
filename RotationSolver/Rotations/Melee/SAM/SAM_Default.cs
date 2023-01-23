@@ -127,7 +127,7 @@ internal sealed class SAM_Default : SAM_Base
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //明镜止水
-        if (HaveHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) &&
+        if (HasHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) &&
             (!IsTargetBoss || Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana) || !HaveMoon && !HaveFlower || IsTargetBoss && IsTargetDying))
         {
             if (MeikyoShisui.CanUse(out act, emptyOrSkipCombo: true)) return true;

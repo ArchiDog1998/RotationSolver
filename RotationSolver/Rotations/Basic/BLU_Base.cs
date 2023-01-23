@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-using RotationSolver.Updaters;
+﻿using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Actions;
-using RotationSolver.Helpers;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Updaters;
+using System.Linq;
 
 namespace RotationSolver.Rotations.Basic;
 

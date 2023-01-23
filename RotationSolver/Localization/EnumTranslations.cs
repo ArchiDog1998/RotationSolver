@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Keys;
-using RotationSolver.Actions;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Rotations.CustomRotation;

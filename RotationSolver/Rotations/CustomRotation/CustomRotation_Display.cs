@@ -1,18 +1,9 @@
 ﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
-using Dalamud.Interface.Style;
 using Dalamud.Utility;
 using ImGuiNET;
-using Lumina.Data.Parsing;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.SigReplacers;
 using RotationSolver.Windows.RotationConfigWindow;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Rotations.CustomRotation
 {

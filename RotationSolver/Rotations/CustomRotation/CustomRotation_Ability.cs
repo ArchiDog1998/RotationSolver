@@ -1,11 +1,10 @@
 using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Updaters;
-using System.Data;
 using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Commands;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
@@ -46,7 +45,7 @@ internal abstract partial class CustomRotation
         if (GeneralUsingAbility(role, out act)) return true;
 
         if (GeneralAbility(abilitiesRemaining, out act)) return true;
-        if (HaveHostilesInRange && AttackAbility(abilitiesRemaining, out act)) return true;
+        if (HasHostilesInRange && AttackAbility(abilitiesRemaining, out act)) return true;
 
         //Run!
         if (!InCombat && IsMoving && role == JobRole.RangedPhysical
@@ -98,7 +97,7 @@ internal abstract partial class CustomRotation
         {
             if (!TargetUpdater.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.SheildStatus)))
             {
-                if (!HaveShield && Shield.CanUse(out act)) return true;
+                if (!HasShield && Shield.CanUse(out act)) return true;
             }
         }
 
@@ -158,7 +157,7 @@ internal abstract partial class CustomRotation
     {
         act = null;
 
-        if (!ActionUpdater.InCombat || !HaveHostilesInRange) return false;
+        if (!ActionUpdater.InCombat || !HasHostilesInRange) return false;
 
         //Auto Provoke
         if (role == JobRole.Tank
@@ -166,7 +165,7 @@ internal abstract partial class CustomRotation
             && TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets, true).Count() != TargetUpdater.HostileTargets.Count())
 
         {
-            if (!HaveShield && Shield.CanUse(out act)) return true;
+            if (!HasShield && Shield.CanUse(out act)) return true;
             if (Provoke.CanUse(out act, mustUse: true)) return true;
         }
 
@@ -183,7 +182,7 @@ internal abstract partial class CustomRotation
         }
 
         //Defnece himself.
-        if (role == JobRole.Tank && HaveShield)
+        if (role == JobRole.Tank && HasShield)
         {
             var tarOnmeCount = TargetUpdater.TarOnMeTargets.Count();
 
@@ -215,7 +214,7 @@ internal abstract partial class CustomRotation
         }
         else if (specialType == SpecialCommandType.MoveBack)
         {
-            if(MoveBackAbility(abilitiesRemaining, out act)) return true;
+            if (MoveBackAbility(abilitiesRemaining, out act)) return true;
         }
         return false;
     }

@@ -1,8 +1,8 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Actions.BaseAction;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -110,7 +110,7 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
     public static IBaseAction Infuriate { get; } = new BaseAction(ActionID.Infuriate)
     {
         StatusProvide = new[] { StatusID.InnerRelease },
-        ActionCheck = b => HaveHostilesInRange && JobGauge.BeastGauge < 50 && InCombat,
+        ActionCheck = b => HasHostilesInRange && JobGauge.BeastGauge < 50 && InCombat,
     };
 
     /// <summary>
@@ -118,7 +118,7 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction Berserk { get; } = new BaseAction(ActionID.Berserk)
     {
-        ActionCheck = b => HaveHostilesInRange && !InnerRelease.IsCoolDown,
+        ActionCheck = b => HasHostilesInRange && !InnerRelease.IsCoolingDown,
     };
 
     /// <summary>

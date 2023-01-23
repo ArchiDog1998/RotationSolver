@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using RotationSolver.Data;
-using System;
+﻿using RotationSolver.Data;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +68,7 @@ namespace RotationSolver.Configuration.RotationConfig
         public float GetFloat(string name)
         {
             var result = GetString(name);
-            if(float.TryParse(result, out var f)) return f;
+            if (float.TryParse(result, out var f)) return f;
             return float.NaN;
         }
 

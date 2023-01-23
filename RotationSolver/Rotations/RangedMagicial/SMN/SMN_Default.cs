@@ -61,8 +61,8 @@ internal sealed class SMN_Default : SMN_Base
         if (!IsMoving && Configs.GetBool("addCrimsonCyclone") && CrimsonCyclone.CanUse(out act, mustUse: true)) return true;
 
         //龙神不死鸟
-        if ((Player.HasStatus(false, StatusID.SearingLight) || SearingLight.IsCoolDown) && SummonBahamut.CanUse(out act)) return true;
-        if (!SummonBahamut.EnoughLevel && HaveHostilesInRange && Aethercharge.CanUse(out act)) return true;
+        if ((Player.HasStatus(false, StatusID.SearingLight) || SearingLight.IsCoolingDown) && SummonBahamut.CanUse(out act)) return true;
+        if (!SummonBahamut.EnoughLevel && HasHostilesInRange && Aethercharge.CanUse(out act)) return true;
 
         //毁4
         if (IsMoving && (Player.HasStatus(true, StatusID.GarudasFavor) || InIfrit) && RuinIV.CanUse(out act, mustUse: true)) return true;
@@ -108,7 +108,7 @@ internal sealed class SMN_Default : SMN_Base
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (SettingBreak)
+        if (InBurst)
         {
             //灼热之光
             if (SearingLight.CanUse(out act)) return true;
@@ -124,10 +124,10 @@ internal sealed class SMN_Default : SMN_Base
         if (MountainBuster.CanUse(out act, mustUse: true)) return true;
 
         //痛苦核爆
-        if ((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolDown) ||
+        if ((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolingDown) ||
             !SearingLight.EnoughLevel || IsTargetBoss && IsTargetDying) && Painflare.CanUse(out act)) return true;
         //溃烂爆发
-        if ((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolDown) ||
+        if ((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolingDown) ||
             !SearingLight.EnoughLevel || IsTargetBoss && IsTargetDying) && Fester.CanUse(out act)) return true;
 
         //能量抽取

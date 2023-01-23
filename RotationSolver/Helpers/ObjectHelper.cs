@@ -1,11 +1,10 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Actions;
 using RotationSolver.Data;
+using RotationSolver.Updaters;
 using System;
 using System.Linq;
 using System.Numerics;
-using RotationSolver.Updaters;
 
 namespace RotationSolver.Helpers;
 
@@ -28,6 +27,12 @@ internal static class ObjectHelper
 
     internal static unsafe bool IsTargetable(this GameObject obj)
     => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->GetIsTargetable();
+
+    /// <summary>
+    /// Is character a boss? Max HP exceeds a certain amount.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     internal static bool IsBoss(this BattleChara obj)
     {
         if (obj == null) return false;
@@ -36,7 +41,18 @@ internal static class ObjectHelper
     }
 
     /// <summary>
-    /// 获得目标的当前血量百分比
+    /// Is character a dying? Current HP is below a certain amount. It is for running out of resources.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    internal static bool IsDying(this BattleChara b)
+    {
+        if (b == null) return false;
+        return b.CurrentHp <= GetHealthFromMulty(0.8f) || b.GetHealthRatio() < 0.02f;
+    }
+
+    /// <summary>
+    /// Get the <paramref name="b"/>'s current HP percentage.
     /// </summary>
     /// <param name="b"></param>
     /// <returns></returns>
@@ -51,16 +67,6 @@ internal static class ObjectHelper
         return b.GetHealthRatio();
     }
 
-    /// <summary>
-    /// 用于倾泻所有资源来收尾
-    /// </summary>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    internal static bool IsDying(this BattleChara b)
-    {
-        if (b == null) return false;
-        return b.CurrentHp <= GetHealthFromMulty(0.8f) || b.GetHealthRatio() < 0.02f;
-    }
 
     /// <summary>
     /// 用于判断是否能上Dot

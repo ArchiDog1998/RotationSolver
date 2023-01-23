@@ -55,7 +55,7 @@ internal sealed class DNC_Default : DNC_Base
         //进攻之探戈
         if (Devilment.CanUse(out act))
         {
-            if (SettingBreak && !TechnicalStep.EnoughLevel) return true;
+            if (InBurst && !TechnicalStep.EnoughLevel) return true;
 
             if (Player.HasStatus(true, StatusID.TechnicalFinish)) return true;
         }
@@ -80,7 +80,7 @@ internal sealed class DNC_Default : DNC_Base
         //扇舞·终
         if (FanDance4.CanUse(out act, mustUse: true))
         {
-            if (TechnicalStep.EnoughLevel && TechnicalStep.IsCoolDown && TechnicalStep.WillHaveOneChargeGCD()) return false;
+            if (TechnicalStep.EnoughLevel && TechnicalStep.IsCoolingDown && TechnicalStep.WillHaveOneChargeGCD()) return false;
             return true;
         }
 
@@ -99,7 +99,7 @@ internal sealed class DNC_Default : DNC_Base
         if (ExcutionStepGCD(out act)) return true;
 
         //技巧舞步
-        if (SettingBreak && InCombat && TechnicalStep.CanUse(out act, mustUse: true)) return true;
+        if (InBurst && InCombat && TechnicalStep.CanUse(out act, mustUse: true)) return true;
 
         //攻击GCD
         if (AttackGCD(out act, Player.HasStatus(true, StatusID.Devilment))) return true;
@@ -161,10 +161,10 @@ internal sealed class DNC_Default : DNC_Base
         if (Level - Target.Level > 10) return false;
 
         //周围没有敌人不跳舞
-        if (!HaveHostilesInRange) return false;
+        if (!HasHostilesInRange) return false;
 
         //技巧舞步状态和快冷却好时不释放
-        if (TechnicalStep.EnoughLevel && (Player.HasStatus(true, StatusID.TechnicalFinish) || TechnicalStep.IsCoolDown && TechnicalStep.WillHaveOneCharge(5))) return false;
+        if (TechnicalStep.EnoughLevel && (Player.HasStatus(true, StatusID.TechnicalFinish) || TechnicalStep.IsCoolingDown && TechnicalStep.WillHaveOneCharge(5))) return false;
 
         return true;
     }

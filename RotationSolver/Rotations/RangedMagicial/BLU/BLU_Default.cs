@@ -1,11 +1,11 @@
 ﻿using RotationSolver.Actions;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
-using System.Linq;
-using RotationSolver.Updaters;
 using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
+using RotationSolver.Updaters;
+using System.Linq;
 
 namespace RotationSolver.Rotations.RangedMagicial.BLU
 {
@@ -80,7 +80,7 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             //狂战士副作用期间
             if (Player.HasStatus(true, StatusID.WaningNocturne)) return false;
             //鬼宿脚
-            if (PhantomFlurry.IsCoolDown && !PhantomFlurry.ElapsedAfter(1) || Player.HasStatus(true, StatusID.PhantomFlurry))
+            if (PhantomFlurry.IsCoolingDown && !PhantomFlurry.ElapsedAfter(1) || Player.HasStatus(true, StatusID.PhantomFlurry))
             {
                 if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.CanUse(out act, mustUse: true)) return true;
                 return false;
@@ -142,7 +142,7 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
 
             if (!AllOnSlot(MoonFlute)) return false;
 
-            if (AllOnSlot(TripleTrident) && !TripleTrident.IsCoolDown)
+            if (AllOnSlot(TripleTrident) && !TripleTrident.IsCoolingDown)
             {
                 //口笛
                 if (Whistle.CanUse(out act)) return true;
@@ -154,7 +154,7 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
 
             if (AllOnSlot(Whistle, FinalSting, BasicInstinct) && UseFinalSting)
             {
-                if (HaveHostilesInRange && Whistle.CanUse(out act)) return true;
+                if (HasHostilesInRange && Whistle.CanUse(out act)) return true;
                 //破防
                 if (Player.HasStatus(true, StatusID.WaxingNocturne) && Offguard.CanUse(out act)) return true;
                 //哔哩哔哩
@@ -190,7 +190,7 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             //冰雾
             if (WhiteDeath.CanUse(out act)) return true;
             //如意大旋风
-            if (SettingBreak && !MoonFluteBreak && BothEnds.CanUse(out act, mustUse: true)) return true;
+            if (InBurst && !MoonFluteBreak && BothEnds.CanUse(out act, mustUse: true)) return true;
             //类星体
             if (Quasar.CanUse(out act, mustUse: true)) return true;
             //飞翎雨
@@ -214,7 +214,7 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
         /// <returns></returns>
         private bool CanUseMoonFlute(out IAction act)
         {
-            if (!MoonFlute.CanUse(out act) && !HaveHostilesInRange) return false;
+            if (!MoonFlute.CanUse(out act) && !HasHostilesInRange) return false;
 
             if (Player.HasStatus(true, StatusID.WaxingNocturne)) return false;
 
@@ -432,9 +432,9 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             if (TheRoseofDestruction.CanUse(out act)) return true;
 
             //渔叉三段
-            if (SettingBreak && !MoonFluteBreak && TripleTrident.CanUse(out act)) return true;
+            if (InBurst && !MoonFluteBreak && TripleTrident.CanUse(out act)) return true;
             //马特拉魔术
-            if (SettingBreak && !MoonFluteBreak && MatraMagic.CanUse(out act)) return true;
+            if (InBurst && !MoonFluteBreak && MatraMagic.CanUse(out act)) return true;
 
             //捕食
             if (Devour.CanUse(out act)) return true;
@@ -442,12 +442,12 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
             //if (MagicHammer.ShouldUse(out act)) return true;
 
             //月下彼岸花
-            if (SettingBreak && !MoonFluteBreak && Nightbloom.CanUse(out act, mustUse: SingleAOE)) return true;
+            if (InBurst && !MoonFluteBreak && Nightbloom.CanUse(out act, mustUse: SingleAOE)) return true;
             //如意大旋风
-            if (SettingBreak && !MoonFluteBreak && BothEnds.CanUse(out act, mustUse: SingleAOE)) return true;
+            if (InBurst && !MoonFluteBreak && BothEnds.CanUse(out act, mustUse: SingleAOE)) return true;
 
             //穿甲散弹
-            if (SettingBreak && !MoonFluteBreak && Surpanakha.CurrentCharges >= 3 && Surpanakha.CanUse(out act, mustUse: SingleAOE, emptyOrSkipCombo: true)) return true;
+            if (InBurst && !MoonFluteBreak && Surpanakha.CurrentCharges >= 3 && Surpanakha.CanUse(out act, mustUse: SingleAOE, emptyOrSkipCombo: true)) return true;
 
             //类星体
             if (Quasar.CanUse(out act, mustUse: SingleAOE)) return true;

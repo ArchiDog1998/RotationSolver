@@ -6,8 +6,6 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
 
 namespace RotationSolver.Updaters;
 
@@ -173,10 +171,10 @@ internal static class ActionUpdater
         //GCD
         if (WeaponRemain <= Service.Configuration.WeaponFaster)
         {
-            if(_weaponRandomDelay < 0)
+            if (_weaponRandomDelay < 0)
             {
                 Random ran = new Random(DateTime.Now.Millisecond);
-                _weaponRandomDelay = Service.Configuration.WeaponDelayMin + 
+                _weaponRandomDelay = Service.Configuration.WeaponDelayMin +
                     (float)ran.NextDouble() * (Service.Configuration.WeaponDelayMax - Service.Configuration.WeaponDelayMin);
 
                 _lastWeaponGo = DateTime.Now;

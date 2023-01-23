@@ -2,10 +2,6 @@
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Commands;
 
@@ -33,11 +29,11 @@ internal static partial class RSCommands
             }
         }
 
-        if (getHelp!= null)
+        if (getHelp != null)
         {
             var help = getHelp(command);
 
-            if(!string.IsNullOrEmpty(help))
+            if (!string.IsNullOrEmpty(help))
             {
                 if (sameLine) ImGui.SameLine();
                 else ImGuiHelper.Spacing();

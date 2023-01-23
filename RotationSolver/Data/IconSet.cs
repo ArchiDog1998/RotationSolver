@@ -1,5 +1,4 @@
 ﻿using ImGuiScene;
-using RotationSolver;
 using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 

@@ -1,14 +1,8 @@
-﻿using ImGuiNET;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RotationSolver.Data;
-using RotationSolver.Rotations.CustomRotation;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
 
 namespace RotationSolver.Timeline;
 

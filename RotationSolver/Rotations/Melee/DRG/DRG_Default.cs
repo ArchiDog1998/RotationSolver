@@ -52,7 +52,7 @@ internal sealed class DRG_Default : DRG_Base
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (SettingBreak)
+        if (InBurst)
         {
             //รอวน
             if (LanceCharge.CanUse(out act, mustUse: true))

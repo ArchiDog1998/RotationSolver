@@ -2,7 +2,6 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
-using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using System;
@@ -10,14 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Helpers;
 
 internal static class ImGuiHelper
 {
-    public static void DrawEnableTexture<T>(this T texture, bool isSelected, Action selected, 
+    public static void DrawEnableTexture<T>(this T texture, bool isSelected, Action selected,
         Action additonalHeader = null, Action otherThing = null) where T : class, ITexture
     {
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
@@ -78,7 +75,7 @@ internal static class ImGuiHelper
         //ImGuiComponents.IconButton(icon)
     }
 
-    public  static void HoveredString(string text, Action selected = null)
+    public static void HoveredString(string text, Action selected = null)
     {
         if (ImGui.IsItemHovered())
         {

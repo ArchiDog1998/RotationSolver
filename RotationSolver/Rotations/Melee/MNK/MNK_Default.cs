@@ -153,7 +153,7 @@ internal sealed class MNK_Default : MNK_Base
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (SettingBreak)
+        if (InBurst)
         {
             if (RiddleofFire.CanUse(out act)) return true;
             if (Brotherhood.CanUse(out act)) return true;
@@ -171,7 +171,7 @@ internal sealed class MNK_Default : MNK_Base
                 Demolish.CanUse(out _);
                 var demo = Demolish.Target.WillStatusEndGCD(3, 0, true, StatusID.Demolish);
 
-                if (!dis && (!demo || !PerfectBalance.IsCoolDown))
+                if (!dis && (!demo || !PerfectBalance.IsCoolingDown))
                 {
                     if (PerfectBalance.CanUse(out act, emptyOrSkipCombo: true)) return true;
                 }

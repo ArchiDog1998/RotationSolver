@@ -1,6 +1,4 @@
-﻿using RotationSolver.Localization;
-
-namespace RotationSolver.Data;
+﻿namespace RotationSolver.Data;
 
 public enum EnemyPositional : byte
 {

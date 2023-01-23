@@ -1,5 +1,4 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver;
 using RotationSolver.Helpers;
 using System;
 
@@ -8,37 +7,20 @@ namespace RotationSolver.Actions.BaseAction;
 
 internal partial class BaseAction
 {
-    /// <summary>
-    /// 这个技能已经运转了几个完整的GCD
-    /// </summary>
-    /// <param name="gcdCount">已经运转了多少个完整的GCD</param>
-    /// <param name="abilityCount">再多少个能力技之后</param>
-    /// <returns>是否已经冷却了这么久了(不在冷却会返回false)</returns>
     public bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0)
     {
-        if (!IsCoolDown) return false;
+        if (!IsCoolingDown) return false;
         var elapsed = RecastTimeElapsedOneCharge;
         return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, abilityCount);
     }
 
-    /// <summary>
-    /// 这个技能已经进入冷却多少秒了
-    /// </summary>
-    /// <param name="gcdelapsed">已经进行了多少秒了</param>
-    /// <returns>是否已经冷却了这么久了(不在冷却会返回false)</returns>
-    public bool ElapsedAfter(float gcdelapsed)
+    public bool ElapsedAfter(float time)
     {
-        if (!IsCoolDown) return false;
+        if (!IsCoolingDown) return false;
         var elapsed = RecastTimeElapsedOneCharge;
-        return CooldownHelper.ElapsedAfter(elapsed, gcdelapsed);
+        return CooldownHelper.ElapsedAfter(elapsed, time);
     }
 
-    /// <summary>
-    /// 距离下几个GCD转好这个技能能用吗。
-    /// </summary>
-    /// <param name="gcdCount">要隔着多少个完整的GCD</param>
-    /// <param name="abilityCount">再多少个能力技之后</param>
-    /// <returns>这个时间点是否起码有一层可以用</returns>
     public bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0)
     {
         if (HaveOneCharge) return true;
@@ -46,15 +28,7 @@ internal partial class BaseAction
         return CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount);
     }
 
-    /// <summary>
-    /// 几秒钟以后能转好嘛
-    /// </summary>
-    /// <param name="remain">要多少秒呢</param>
-    /// <returns>这个时间点是否起码有一层可以用</returns>
-    public bool WillHaveOneCharge(float remain)
-    {
-        return WillHaveOneCharge(remain, true);
-    }
+    public bool WillHaveOneCharge(float remain) => WillHaveOneCharge(remain, true);
 
     private bool WillHaveOneCharge(float remain, bool addWeaponRemain)
     {
@@ -78,7 +52,7 @@ internal partial class BaseAction
     /// <summary>
     /// 是否正在冷却中
     /// </summary>
-    public unsafe bool IsCoolDown => CoolDownDetail->IsActive != 0;
+    public unsafe bool IsCoolingDown => CoolDownDetail->IsActive != 0;
 
     /// <summary>
     /// 复唱剩余时间
@@ -92,11 +66,11 @@ internal partial class BaseAction
     /// <summary>
     /// 是否起码有一层技能
     /// </summary>
-    private bool HaveOneCharge => IsCoolDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
+    private bool HaveOneCharge => IsCoolingDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
     /// <summary>
     /// 当前技能层数
     /// </summary>
-    public ushort CurrentCharges => IsCoolDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
+    public ushort CurrentCharges => IsCoolingDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
 
     private float RecastTimeOneCharge => ActionManager.GetAdjustedRecastTime(ActionType.Spell, AdjustedID) / 1000f;
 

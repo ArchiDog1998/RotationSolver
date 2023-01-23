@@ -1,11 +1,10 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using System;
-using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Updaters;
 using RotationSolver.Actions;
-using RotationSolver.Helpers;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
+using RotationSolver.Updaters;
+using System.Linq;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -225,7 +224,7 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
         return false;
     }
 
-    private protected sealed  override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         if (CorpsAcorps.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;

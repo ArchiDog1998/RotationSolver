@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
-using RotationSolver.Helpers;
-using RotationSolver.Windows.RotationConfigWindow;
-using RotationSolver.Localization;
 using RotationSolver.Commands;
+using RotationSolver.Helpers;
+using RotationSolver.Localization;
+using RotationSolver.Windows.RotationConfigWindow;
 
 namespace RotationSolver.Actions.BaseAction
 {

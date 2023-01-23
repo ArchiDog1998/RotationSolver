@@ -6,7 +6,6 @@ using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
-using static RotationSolver.Rotations.RangedPhysicial.BRD.BRD_Default;
 
 namespace RotationSolver.Rotations.RangedPhysicial.BRD;
 
@@ -70,7 +69,7 @@ internal sealed class BRD_Default : BRD_Base
         if (BlastArrow.CanUse(out act, mustUse: true))
         {
             if (!Player.HasStatus(true, StatusID.RagingStrikes)) return true;
-            if (Player.HasStatus(true, StatusID.RagingStrikes) && Barrage.IsCoolDown) return true;
+            if (Player.HasStatus(true, StatusID.RagingStrikes) && Barrage.IsCoolingDown) return true;
         }
 
         //群体GCD
@@ -99,7 +98,7 @@ internal sealed class BRD_Default : BRD_Base
         }
         else if ((!RagingStrikes.EnoughLevel || Player.HasStatus(true, StatusID.RagingStrikes)) && (!BattleVoice.EnoughLevel || Player.HasStatus(true, StatusID.BattleVoice)))
         {
-            if ((EmpyrealArrow.IsCoolDown && !EmpyrealArrow.WillHaveOneChargeGCD(1) || !EmpyrealArrow.EnoughLevel) && Repertoire != 3)
+            if ((EmpyrealArrow.IsCoolingDown && !EmpyrealArrow.WillHaveOneChargeGCD(1) || !EmpyrealArrow.EnoughLevel) && Repertoire != 3)
             {
                 //纷乱箭
                 if (!Player.HasStatus(true, StatusID.StraightShotReady) && Barrage.CanUse(out act)) return true;
@@ -123,7 +122,7 @@ internal sealed class BRD_Default : BRD_Base
             if (ArmysPaeon.CanUse(out act)) return true;
         }
 
-        if (SettingBreak && Song != Song.NONE && MagesBallad.EnoughLevel)
+        if (InBurst && Song != Song.NONE && MagesBallad.EnoughLevel)
         {
             //猛者强击
             if (RagingStrikes.CanUse(out act))
@@ -147,7 +146,7 @@ internal sealed class BRD_Default : BRD_Base
             }
         }
 
-        if (RadiantFinale.EnoughLevel && RadiantFinale.IsCoolDown && BattleVoice.EnoughLevel && !BattleVoice.IsCoolDown) return false;
+        if (RadiantFinale.EnoughLevel && RadiantFinale.IsCoolingDown && BattleVoice.EnoughLevel && !BattleVoice.IsCoolingDown) return false;
 
         //放浪神的小步舞曲
         if (WanderersMinuet.CanUse(out act))
@@ -174,7 +173,7 @@ internal sealed class BRD_Default : BRD_Base
         if (MagesBallad.CanUse(out act))
         {
             if (Song == Song.WANDERER && SongEndAfter(WANDRemainTime) && Repertoire == 0) return true;
-            if (Song == Song.ARMY && SongEndAfterGCD(2) && WanderersMinuet.IsCoolDown) return true;
+            if (Song == Song.ARMY && SongEndAfterGCD(2) && WanderersMinuet.IsCoolingDown) return true;
         }
 
 
@@ -182,7 +181,7 @@ internal sealed class BRD_Default : BRD_Base
         if (ArmysPaeon.CanUse(out act))
         {
             if (WanderersMinuet.EnoughLevel && SongEndAfter(MAGERemainTime) && Song == Song.MAGE) return true;
-            if (WanderersMinuet.EnoughLevel && SongEndAfter(2) && MagesBallad.IsCoolDown && Song == Song.WANDERER) return true;
+            if (WanderersMinuet.EnoughLevel && SongEndAfter(2) && MagesBallad.IsCoolingDown && Song == Song.WANDERER) return true;
             if (!WanderersMinuet.EnoughLevel && SongEndAfter(2)) return true;
         }
 
@@ -193,13 +192,13 @@ internal sealed class BRD_Default : BRD_Base
 
             if (!BattleVoice.WillHaveOneCharge(10) && !RadiantFinale.WillHaveOneCharge(10)) return true;
 
-            if (RagingStrikes.IsCoolDown && !Player.HasStatus(true, StatusID.RagingStrikes)) return true;
+            if (RagingStrikes.IsCoolingDown && !Player.HasStatus(true, StatusID.RagingStrikes)) return true;
         }
 
         //看看现在有没有开猛者强击和战斗之声
         bool empty = Player.HasStatus(true, StatusID.RagingStrikes) && (Player.HasStatus(true, StatusID.BattleVoice) || !BattleVoice.EnoughLevel) || Song == Song.MAGE;
 
-        if (EmpyrealArrow.IsCoolDown || !EmpyrealArrow.WillHaveOneChargeGCD() || Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
+        if (EmpyrealArrow.IsCoolingDown || !EmpyrealArrow.WillHaveOneChargeGCD() || Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
         {
             //死亡剑雨
             if (RainofDeath.CanUse(out act, emptyOrSkipCombo: empty)) return true;

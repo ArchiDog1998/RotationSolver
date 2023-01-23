@@ -1,12 +1,12 @@
 using RotationSolver.Actions;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using System.Collections.Generic;
-using System.Linq;
-using RotationSolver.Updaters;
-using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Updaters;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.SCH;
 
@@ -193,7 +193,7 @@ internal sealed class SCH_Default : SCH_Base
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (SettingBreak)
+        if (InBurst)
         {
             //连环计
             if (ChainStratagem.CanUse(out act)) return true;
@@ -218,10 +218,10 @@ internal sealed class SCH_Default : SCH_Base
     //15秒秘策单盾扩散
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Configs.GetBool("prevDUN") && remainTime <= 15 && !DeploymentTactics.IsCoolDown && TargetUpdater.PartyMembers.Count() > 1)
+        if (Configs.GetBool("prevDUN") && remainTime <= 15 && !DeploymentTactics.IsCoolingDown && TargetUpdater.PartyMembers.Count() > 1)
         {
 
-            if (!Recitation.IsCoolDown) return Recitation;
+            if (!Recitation.IsCoolingDown) return Recitation;
             if (!TargetUpdater.PartyMembers.Any((n) => n.HasStatus(true, StatusID.Galvanize)))
             {
                 //如果还没上激励就给t一个激励

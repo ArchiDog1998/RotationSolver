@@ -1,13 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Commands;
 using RotationSolver.Data;
+using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Numerics;
-using RotationSolver.Updaters;
-using RotationSolver.Commands;
 
 namespace RotationSolver.Helpers;
 

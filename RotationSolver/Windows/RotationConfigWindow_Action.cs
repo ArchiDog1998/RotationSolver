@@ -1,7 +1,6 @@
 ﻿using ImGuiNET;
 using RotationSolver.Actions;
 using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
@@ -57,7 +56,7 @@ internal partial class RotationConfigWindow
         ImGui.TextWrapped(LocalizationManager.RightLang.Timeline_TimelineDescription);
 
         var rotation = IconReplacer.RightNowRotation;
-        if(rotation == null) return;
+        if (rotation == null) return;
 
         TimeLineUpdater.DrawHeader();
 

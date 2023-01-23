@@ -64,7 +64,7 @@ internal sealed class RDM_Default : RDM_Base
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
-        if (SettingBreak)
+        if (InBurst)
         {
             if (!canUseMagic(act) && Manafication.CanUse(out act)) return true;
             if (Embolden.CanUse(out act, mustUse: true)) return true;
@@ -170,7 +170,7 @@ internal sealed class RDM_Default : RDM_Base
 
         //如果倍增好了，或者魔元满了，或者正在爆发，或者处于开场爆发状态，就马上用！
         bool mustStart = Player.HasStatus(true, StatusID.Manafication) ||
-                         BlackMana == 100 || WhiteMana == 100 || !Embolden.IsCoolDown;
+                         BlackMana == 100 || WhiteMana == 100 || !Embolden.IsCoolingDown;
 
         //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
         if (!mustStart)

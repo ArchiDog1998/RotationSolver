@@ -1,12 +1,12 @@
 using RotationSolver.Actions;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using System.Collections.Generic;
-using System.Linq;
-using RotationSolver.Updaters;
-using RotationSolver.Commands;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.Updaters;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RotationSolver.Rotations.Tank.WAR;
 
@@ -112,7 +112,7 @@ internal sealed class WAR_Default : WAR_Base
         if (!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) || !MythrilTempest.EnoughLevel)
         {
             //¿ñ±©
-            if (!InnerRelease.IsCoolDown && Berserk.CanUse(out act)) return true;
+            if (!InnerRelease.IsCoolingDown && Berserk.CanUse(out act)) return true;
         }
 
         if (Player.GetHealthRatio() < 0.6f)
@@ -124,7 +124,7 @@ internal sealed class WAR_Default : WAR_Base
         }
 
         //ÄÌ¸ö¶ÓÓÑ°¡¡£
-        if (!HaveShield && NascentFlash.CanUse(out act)) return true;
+        if (!HasShield && NascentFlash.CanUse(out act)) return true;
 
         //Õ½º¿
         if (Infuriate.CanUse(out act, emptyOrSkipCombo: true)) return true;

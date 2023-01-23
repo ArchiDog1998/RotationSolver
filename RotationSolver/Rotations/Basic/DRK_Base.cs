@@ -1,8 +1,8 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Actions.BaseAction;
 
 namespace RotationSolver.Rotations.Basic;
 internal abstract class DRK_Base : CustomRotation.CustomRotation

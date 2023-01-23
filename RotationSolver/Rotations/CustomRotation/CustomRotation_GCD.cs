@@ -1,10 +1,10 @@
 ﻿using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Updaters;
 using System.Linq;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Commands;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
@@ -48,7 +48,7 @@ internal abstract partial class CustomRotation
         if (GeneralGCD(out var action)) return action;
 
         //Swift Raise
-        if (Service.Configuration.RaisePlayerBySwift && (HaveSwift || !Swiftcast.IsCoolDown)
+        if (Service.Configuration.RaisePlayerBySwift && (HasSwift || !Swiftcast.IsCoolingDown)
             && RaiseSpell(specialType, out act, abilityRemain, true)) return act;
 
         if (Service.Configuration.RaisePlayerByCasting && RaiseSpell(specialType, out act, abilityRemain, true)) return act;
@@ -66,9 +66,9 @@ internal abstract partial class CustomRotation
         {
             if (Job.RowId == (uint)ClassJobID.RedMage)
             {
-                if (HaveSwift && Raise.CanUse(out act)) return true;
+                if (HasSwift && Raise.CanUse(out act)) return true;
             }
-            else if (specialType == SpecialCommandType.RaiseShirk || HaveSwift || !Swiftcast.IsCoolDown && actabilityRemain > 0 || mustUse)
+            else if (specialType == SpecialCommandType.RaiseShirk || HasSwift || !Swiftcast.IsCoolingDown && actabilityRemain > 0 || mustUse)
             {
                 if (Raise.CanUse(out act)) return true;
             }

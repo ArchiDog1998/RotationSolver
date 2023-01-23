@@ -3,7 +3,6 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace RotationSolver.Data;
 
@@ -47,7 +46,7 @@ public struct MarkingHelper
 
     internal unsafe static IEnumerable<BattleChara> FilterStopCharaes(IEnumerable<BattleChara> charas)
     {
-        var ids = new List<long>() { GetMarker(8) , GetMarker(9) }.Where(id => id != 0xE0000000);
+        var ids = new List<long>() { GetMarker(8), GetMarker(9) }.Where(id => id != 0xE0000000);
         return charas.Where(b => !ids.Contains(b.ObjectId));
     }
 }

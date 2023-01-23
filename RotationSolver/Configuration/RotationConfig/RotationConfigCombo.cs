@@ -1,14 +1,8 @@
 ﻿using ImGuiNET;
-using Lumina.Data.Parsing;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Configuration.RotationConfig;
 
@@ -36,7 +30,7 @@ internal class RotationConfigCombo : RotationConfigBase
                 {
                     ImGui.SameLine();
                     ImGuiHelper.Spacing();
-                    RSCommands.DisplayCommandHelp(OtherCommandType.Rotations, Name + " " +comboIndex.ToString());
+                    RSCommands.DisplayCommandHelp(OtherCommandType.Rotations, Name + " " + comboIndex.ToString());
 
                     ImGui.SameLine();
                     ImGuiHelper.Spacing();

@@ -60,7 +60,7 @@ internal partial class RotationConfigWindow
             ref Service.Configuration.WeaponDelayMin, ref Service.Configuration.WeaponDelayMax);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponFaster,
-            ref Service.Configuration.WeaponFaster, max:0.1f);
+            ref Service.Configuration.WeaponFaster, max: 0.1f);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponInterval,
             ref Service.Configuration.WeaponInterval, min: 0.5f, max: 0.7f);
@@ -88,7 +88,7 @@ internal partial class RotationConfigWindow
         if (Service.Configuration.TeachingMode)
         {
             ImGuiHelper.Spacing();
- 
+
             DrawColor(LocalizationManager.RightLang.Configwindow_Param_TeachingModeColor,
                 ref Service.Configuration.TeachingModeColor);
         }
@@ -109,7 +109,7 @@ internal partial class RotationConfigWindow
             DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowTarget,
                 ref Service.Configuration.ShowTarget);
 
-            if(Service.Configuration.ShowTarget)
+            if (Service.Configuration.ShowTarget)
             {
                 ImGuiHelper.Spacing();
 
@@ -178,7 +178,7 @@ internal partial class RotationConfigWindow
             ref Service.Configuration.PositionalErrorText, 100,
             LocalizationManager.RightLang.Configwindow_Params_LocationWrongTextDesc);
     }
-    
+
     private void DrawParamAction()
     {
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseAOEWhenManual,

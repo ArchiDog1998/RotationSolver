@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RotationSolver.Rotations.CustomRotation;
-using System;
+﻿using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Timeline;
 

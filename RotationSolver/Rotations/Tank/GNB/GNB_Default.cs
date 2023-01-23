@@ -69,7 +69,7 @@ internal sealed class GNB_Default : GNB_Base
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //无情,目前只有4GCD起手的判断
-        if (SettingBreak && abilitiesRemaining == 1 && CanUseNoMercy(out act)) return true;
+        if (InBurst && abilitiesRemaining == 1 && CanUseNoMercy(out act)) return true;
 
         //危险领域
         if (DangerZone.CanUse(out act))
@@ -80,7 +80,7 @@ internal sealed class GNB_Default : GNB_Base
             if (!GnashingFang.EnoughLevel && (Player.HasStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(15))) return true;
 
             //爆发期,烈牙之后
-            if (Player.HasStatus(true, StatusID.NoMercy) && GnashingFang.IsCoolDown) return true;
+            if (Player.HasStatus(true, StatusID.NoMercy) && GnashingFang.IsCoolingDown) return true;
 
             //非爆发期
             if (!Player.HasStatus(true, StatusID.NoMercy) && !GnashingFang.WillHaveOneCharge(20)) return true;
@@ -96,7 +96,7 @@ internal sealed class GNB_Default : GNB_Base
         if (Hypervelocity.CanUse(out act)) return true;
 
         //血壤
-        if (GnashingFang.IsCoolDown && Bloodfest.CanUse(out act)) return true;
+        if (GnashingFang.IsCoolingDown && Bloodfest.CanUse(out act)) return true;
 
         //搞搞攻击,粗分斩
         if (RoughDivide.CanUse(out act, mustUse: true) && !IsMoving) return true;
@@ -156,13 +156,13 @@ internal sealed class GNB_Default : GNB_Base
         if (BurstStrike.EnoughLevel)
         {
             //4GCD起手判断
-            if (IsLastGCD((ActionID)KeenEdge.ID) && Ammo == 1 && !GnashingFang.IsCoolDown && !Bloodfest.IsCoolDown) return true;
+            if (IsLastGCD((ActionID)KeenEdge.ID) && Ammo == 1 && !GnashingFang.IsCoolingDown && !Bloodfest.IsCoolingDown) return true;
 
             //3弹进无情
             else if (Ammo == (Level >= 88 ? 3 : 2)) return true;
 
             //2弹进无情
-            else if (Ammo == 2 && GnashingFang.IsCoolDown) return true;
+            else if (Ammo == 2 && GnashingFang.IsCoolingDown) return true;
         }
 
         act = null;
@@ -190,7 +190,7 @@ internal sealed class GNB_Default : GNB_Base
             if (Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && Bloodfest.WillHaveOneCharge(5)) return true;
 
             //4GCD起手烈牙判断
-            if (Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && (!Bloodfest.IsCoolDown && Bloodfest.EnoughLevel || !Bloodfest.EnoughLevel)) return true;
+            if (Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && (!Bloodfest.IsCoolingDown && Bloodfest.EnoughLevel || !Bloodfest.EnoughLevel)) return true;
         }
         return false;
     }
@@ -213,11 +213,11 @@ internal sealed class GNB_Default : GNB_Base
             if (!GnashingFang.EnoughLevel && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
             //在烈牙后面使用音速破
-            if (GnashingFang.IsCoolDown && Player.HasStatus(true, StatusID.NoMercy)) return true;
+            if (GnashingFang.IsCoolingDown && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
             //其他判断
             if (!DoubleDown.EnoughLevel && Player.HasStatus(true, StatusID.ReadyToRip)
-                && GnashingFang.IsCoolDown) return true;
+                && GnashingFang.IsCoolingDown) return true;
 
         }
         return false;
@@ -237,7 +237,7 @@ internal sealed class GNB_Default : GNB_Base
             if (DemonSlice.CanUse(out _) && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
             //在音速破后使用倍攻
-            if (SonicBreak.IsCoolDown && Player.HasStatus(true, StatusID.NoMercy)) return true;
+            if (SonicBreak.IsCoolingDown && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
             //2弹无情的特殊判断,提前使用倍攻
             if (Player.HasStatus(true, StatusID.NoMercy) && !NoMercy.WillHaveOneCharge(55) && Bloodfest.WillHaveOneCharge(5)) return true;
@@ -259,7 +259,7 @@ internal sealed class GNB_Default : GNB_Base
             if (DemonSlice.CanUse(out _)) return false;
 
             //如果烈牙剩0.5秒冷却好,不释放爆发击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-            if (SonicBreak.IsCoolDown && SonicBreak.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;
+            if (SonicBreak.IsCoolingDown && SonicBreak.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;
 
             //无情中爆发击判定
             if (Player.HasStatus(true, StatusID.NoMercy) &&
@@ -284,7 +284,7 @@ internal sealed class GNB_Default : GNB_Base
             if (!SonicBreak.EnoughLevel && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
             //爆发期,无情中且音速破在冷却中
-            if (Player.HasStatus(true, StatusID.NoMercy) && SonicBreak.IsCoolDown) return true;
+            if (Player.HasStatus(true, StatusID.NoMercy) && SonicBreak.IsCoolingDown) return true;
 
         }
         return false;

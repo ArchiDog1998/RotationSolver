@@ -2,7 +2,6 @@
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ImGuiNET;
-using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -22,7 +21,7 @@ namespace RotationSolver.SigReplacers
 {
     public static class Watcher
     {
-        public record ActionRec(DateTime UsedTime, Action action);
+        public record ActionRec(DateTime UsedTime, Action Action);
 
         private delegate void ReceiveAbiltyDelegate(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail);
 

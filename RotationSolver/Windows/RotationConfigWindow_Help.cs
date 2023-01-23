@@ -1,8 +1,6 @@
-﻿using Dalamud.Interface.Colors;
-using Dalamud.Utility;
+﻿using Dalamud.Utility;
 using ImGuiNET;
 using RotationSolver.Commands;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Numerics;
 

@@ -6,7 +6,6 @@ using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -162,7 +161,7 @@ internal static partial class TargetUpdater
 
         var job = (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id;
 
-        if(PartyMembers.Count() > 2)
+        if (PartyMembers.Count() > 2)
         {
             var hotSubArea = job.GetHealingOfTimeSubtractArea();
 
@@ -303,7 +302,7 @@ internal static partial class TargetUpdater
         if (foundTime == DateTime.MinValue) return;
 
         //找作者
-        var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && ConfigurationHelper. AuthorKeys.Contains(EncryptString(player))
+        var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && ConfigurationHelper.AuthorKeys.Contains(EncryptString(player))
                         && c.ObjectId != Service.ClientState.LocalPlayer.ObjectId) as PlayerCharacter;
 
         //没找到作者

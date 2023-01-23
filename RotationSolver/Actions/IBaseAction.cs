@@ -1,10 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using RotationSolver.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Actions
 {
@@ -13,7 +9,7 @@ namespace RotationSolver.Actions
         /// <summary>
         /// If combo id is on this list, this aciton will not used.
         /// </summary>
-        ActionID[] ComboIdsNot {set; }
+        ActionID[] ComboIdsNot { set; }
 
         /// <summary>
         /// The combos that are not written on the action list.
@@ -52,7 +48,7 @@ namespace RotationSolver.Actions
         bool IsRealGCD { get; }
 
         /// <summary>
-        /// Should I use this action at this time. It will check a lot of things.
+        /// Can I use this action at this time. It will check a lot of things.
         /// Level, Enabled, Action Status, MP, Player Status, Coll down, Combo, Moving (for casting), Charges, Target, etc.
         /// </summary>
         /// <param name="act"></param>
@@ -66,28 +62,53 @@ namespace RotationSolver.Actions
         bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false);
 
         #region CoolDown
-
         /// <summary>
-        /// Is cooling down.
+        /// Is action cooling down.
         /// </summary>
-        bool IsCoolDown { get; }
+        bool IsCoolingDown { get; }
 
         /// <summary>
-        /// The charges count.
+        /// Current charges count.
         /// </summary>
         ushort CurrentCharges { get; }
+
+        /// <summary>
+        /// Max charges count.
+        /// </summary>
         ushort MaxCharges { get; }
+
+        /// <summary>
+        /// Has it been in cooldown for <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?
+        /// </summary>
+        /// <param name="gcdCount"></param>
+        /// <param name="abilityCount"></param>
+        /// <returns></returns>
         bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0);
 
-        bool ElapsedAfter(float gcdelapsed);
+        /// <summary>
+        /// Has it been in cooldown for <paramref name="time"/> seconds?
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        bool ElapsedAfter(float time);
 
+        /// <summary>
+        /// Will have at least one charge after <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?
+        /// </summary>
+        /// <param name="gcdCount"></param>
+        /// <param name="abilityCount"></param>
+        /// <returns></returns>
         bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0);
 
+        /// <summary>
+        /// Will have at least one charge after <paramref name="time"/> seconds?
+        /// </summary>
+        /// <param name="remain"></param>
+        /// <returns></returns>
         bool WillHaveOneCharge(float remain);
         #endregion
 
         #region Target
-
         /// <summary>
         /// If target has these statuses from player self, this aciton will not used.
         /// </summary>
