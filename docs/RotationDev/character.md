@@ -1,6 +1,6 @@
 # Character
 
-The last source of information is character. Very inportant.
+The last source of information is character. Very important.
 
 ## Basic
 

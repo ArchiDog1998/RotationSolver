@@ -6,10 +6,7 @@
   - [Rotation Info](RotationDev/rotation-info.md)
   - [Action](RotationDev/action.md)
   - [Character](RotationDev/character.md)
-
 - Advanced
-  - Customization
-  - Action List
-  - Data Maintain
-  - Debug
+  - [Customization](RotationDev/customization.md)
+  - [Data Maintenance](RotationDev/data-maintenance.md)
 

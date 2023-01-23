@@ -1,5 +1,17 @@
 # Development of Rotation.
 
-Thank you for join the circle of rotation developers. 
+Thank you for join the circle of rotation developers who have a role called `xxx dev` in [Discord](https://discord.gg/4fECHunam9). 
 
-In here you can try to creat you own rotation for your combat! I would like you to share your own rotation to the public!
+Actually, all the rotations should be developed by the players who  who have a certain understanding of the job, not me who doesn't.  I would like you to share your own rotation to the public!
+
+I'll make it easier and easier to develop a custom rotation.
+
+## Responsibility
+
+- Basic
+  - Maintain your own rotation.
+  - Answer the questions about your own rotation.
+- Advanced
+  - Maintain the action list.
+  - Maintain the id of action or status.
+  - Raise the issue encountered in the development.
