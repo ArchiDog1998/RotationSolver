@@ -9,7 +9,7 @@ internal static class ConfigurationHelper
     public record LocationInfo(EnemyPositional Loc, byte[] Tags);
     public static readonly SortedList<ActionID, LocationInfo> ActionPositionals = new SortedList<ActionID, LocationInfo>()
     {
-        {ActionID.FangandClaw, new( EnemyPositional.Flank, new byte[] { 13, 10 })},
+        {ActionID.FangandClaw, new(EnemyPositional.Flank, new byte[] { 13, 10 })},
         {ActionID.WheelingThrust, new(EnemyPositional.Rear, new byte[] { 10, 13 }) },
         {ActionID.ChaosThrust, new(EnemyPositional.Rear, new byte[] { 61, 28 }) },
         {ActionID.ChaoticSpring, new(EnemyPositional.Rear, new byte[] { 66, 28 }) },
