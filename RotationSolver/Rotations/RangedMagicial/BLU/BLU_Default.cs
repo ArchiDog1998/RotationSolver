@@ -50,6 +50,7 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
         {
             BlueId = (BLUID)Configs.GetCombo("BlueId");
             AttackType = (BLUAttackType)Configs.GetCombo("AttackType");
+            base.UpdateInfo();
         }
 
         private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)

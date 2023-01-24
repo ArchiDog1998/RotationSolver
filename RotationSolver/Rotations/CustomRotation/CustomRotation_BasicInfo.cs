@@ -49,14 +49,7 @@ internal abstract partial class CustomRotation : ICustomRotation
         Configs = CreateConfiguration();
     }
 
-    public BattleChara MoveTarget
-    {
-        get
-        {
-            if (MoveForwardAbility(1, out var act) && act is BaseAction a) return a.Target;
-            return null;
-        }
-    }
+    public BattleChara MoveTarget { get; private set; }
 
     public string Description => string.Join('\n', DescriptionDict.Select(pair => pair.Key.ToName() + " → " + pair.Value));
 
@@ -74,5 +67,8 @@ internal abstract partial class CustomRotation : ICustomRotation
     /// <summary>
     /// Update your customized field.
     /// </summary>
-    private protected virtual void UpdateInfo() { }
+    private protected virtual void UpdateInfo() 
+    {
+        MoveTarget = (MoveForwardAbility(1, out var act) && act is BaseAction a) ? a.Target : null;
+    }
 }
