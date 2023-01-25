@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -36,11 +37,26 @@ internal static partial class TargetUpdater
 
     internal static bool IsHostileCastingToTank { get; private set; } = false;
 
-
+    internal static unsafe bool Infate
+    {
+        get
+        {
+            try
+            {
+                return Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero && FateManager.Instance()->FateJoined > 0
+            && Service.ClientState.LocalPlayer.Level <= FateManager.Instance()->CurrentFate->MaxLevel;
+            }
+            catch(Exception ex)
+            {
+                PluginLog.Error(ex.StackTrace);
+                return false;
+            }
+        }
+    }
 
     internal unsafe static void UpdateHostileTargets()
     {
-        var inFate = Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero && FateManager.Instance()->FateJoined > 0;
+        var inFate = Infate;
 
         AllTargets = TargetFilter.GetTargetable(TargetFilter.GetObjectInRadius(Service.ObjectTable, 30).Where(obj =>
         {
