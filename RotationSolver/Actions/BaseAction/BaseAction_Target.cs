@@ -412,18 +412,19 @@ internal partial class BaseAction
         if (FilterForTarget != null) return FilterForTarget(tars);
         if (TargetStatus == null || !_isEot || mustUse) return tars;
 
-        var canDot = mustUse ? tars : tars.Where(ObjectHelper.CanDot);
-        var DontHave = canDot.Where(CheckStatus);
+        var dontHave = tars.Where(CheckStatus);
+        var canDot = mustUse ? (dontHave.Any() ? dontHave : tars)
+            : dontHave.Where(ObjectHelper.CanDot);
 
         if (mustUse)
         {
-            if (DontHave.Any()) return DontHave;
+            if (dontHave.Any()) return dontHave;
             if (canDot.Any()) return canDot;
             return tars;
         }
         else
         {
-            return DontHave;
+            return dontHave;
         }
     }
 
