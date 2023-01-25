@@ -37,20 +37,24 @@ internal static partial class TargetUpdater
 
     internal static bool IsHostileCastingToTank { get; private set; } = false;
 
-    internal static unsafe bool Infate
+    internal static unsafe ushort Infate
     {
         get
         {
             try
             {
-                return Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero && FateManager.Instance()->FateJoined > 0
-            && Service.ClientState.LocalPlayer.Level <= FateManager.Instance()->CurrentFate->MaxLevel;
+                if( Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero 
+                    && (IntPtr)FateManager.Instance()->CurrentFate != IntPtr.Zero
+                    && Service.ClientState.LocalPlayer.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
+                {
+                    return FateManager.Instance()->CurrentFate->FateId;
+                }
             }
             catch(Exception ex)
             {
                 PluginLog.Error(ex.StackTrace);
-                return false;
             }
+            return 0;
         }
     }
 
@@ -77,8 +81,8 @@ internal static partial class TargetUpdater
 
         if (AllTargets != null)
         {
-            HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate ?
-                 AllTargets.Where(t => t.FateId() == FateManager.Instance()->CurrentFate->FateId) :
+            HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate > 0 ?
+                 AllTargets.Where(t => t.FateId() == inFate) :
                 AllTargets.Where(t => (t.TargetObject is BattleChara || ids.Contains(t.ObjectId)) && t.FateId() == 0
                 || t.TargetObject == Service.ClientState.LocalPlayer);
 
