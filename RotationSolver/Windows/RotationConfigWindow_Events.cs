@@ -13,6 +13,7 @@ internal partial class RotationConfigWindow
         if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Events_AddEvent))
         {
             Service.Configuration.Events.Add(new ActionEventInfo());
+            Service.Configuration.Save();
         }
         ImGui.SameLine();
         ImGuiHelper.Spacing();
@@ -38,6 +39,7 @@ internal partial class RotationConfigWindow
                     ref macroindex, 1, 0, 99))
                 {
                     Service.Configuration.Events[i].MacroIndex = macroindex;
+                    Service.Configuration.Save();
                 }
 
                 bool isShared = Service.Configuration.Events[i].IsShared;
@@ -53,12 +55,12 @@ internal partial class RotationConfigWindow
                 if (ImGui.Button($"{LocalizationManager.RightLang.Configwindow_Events_RemoveEvent}##RemoveEvent{i}"))
                 {
                     Service.Configuration.Events.RemoveAt(i);
+                    Service.Configuration.Save();
                 }
                 ImGui.Separator();
             }
             ImGui.EndChild();
         }
         ImGui.PopStyleVar();
-
     }
 }
