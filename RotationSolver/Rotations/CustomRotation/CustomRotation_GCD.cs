@@ -40,7 +40,9 @@ internal abstract partial class CustomRotation
         if (helpDefenseSingle && DefenseSingleGCD(out act)) return act;
 
         //Esuna
-        if (specialType == SpecialCommandType.EsunaShieldNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
+        if ((specialType == SpecialCommandType.EsunaShieldNorth || !HasHostilesInRange)
+            && TargetUpdater.WeakenPeople.Any() 
+            || TargetUpdater.DyingPeople.Any())
         {
             if (Job.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, mustUse: true)) return act;
         }

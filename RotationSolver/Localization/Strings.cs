@@ -219,6 +219,15 @@ internal class Strings
     public string Action_Attack { get; set; } = "Attack";
     #endregion
 
+    #region ComboConditionType
+    public string ComboConditionType_Bool { get; set; } = "Boolean";
+    public string ComboConditionType_Byte { get; set; } = "Byte";
+    public string ComboConditionType_Time { get; set; } = "Time";
+    public string ComboConditionType_GCD { get; set; } = "GCD";
+    public string ComboConditionType_Last { get; set; } = "Last";
+
+    #endregion
+
     #region ActionConditionType
     public string ActionConditionType_Elapsed { get; set; } = "Elapsed";
     public string ActionConditionType_ElapsedGCD { get; set; } = "ElapsedGCD ";

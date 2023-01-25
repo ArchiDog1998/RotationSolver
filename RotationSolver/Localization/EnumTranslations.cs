@@ -22,11 +22,11 @@ internal static class EnumTranslations
 
     internal static string ToName(this ComboConditionType type) => type switch
     {
-        ComboConditionType.Bool => "Boolean",
-        ComboConditionType.Byte => "Byte",
-        ComboConditionType.Time => "Time",
-        ComboConditionType.TimeGCD => "GCD",
-        ComboConditionType.Last => "Action",
+        ComboConditionType.Bool => LocalizationManager.RightLang.ComboConditionType_Bool,
+        ComboConditionType.Byte => LocalizationManager.RightLang.ComboConditionType_Byte,
+        ComboConditionType.Time => LocalizationManager.RightLang.ComboConditionType_Time,
+        ComboConditionType.TimeGCD => LocalizationManager.RightLang.ComboConditionType_GCD,
+        ComboConditionType.Last => LocalizationManager.RightLang.ComboConditionType_Last,
         _ => string.Empty,
     };
 
