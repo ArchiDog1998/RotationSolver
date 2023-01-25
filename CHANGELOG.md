@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.1](https://github.com/ArchiDog1998/RotationSolver/compare/v1.2.0...v1.2.1) (2023-01-25)
+
+
+### Bug Fixes
+
+* add more translation fields. ([d7b5c04](https://github.com/ArchiDog1998/RotationSolver/commit/d7b5c04bcc29e5c22ec6b533d50090b830a48c2b))
+* add some bad status, drg mnk low levels patched. ([9f90915](https://github.com/ArchiDog1998/RotationSolver/commit/9f90915f45173c4e21086fed0a5fe853335462bc))
+* changed the dot logic to dot a better target. ([422bbed](https://github.com/ArchiDog1998/RotationSolver/commit/422bbedfd809e1f548920824a627d1b402339ce8))
+* Esuna people when no hostile target in range. ([3f0b585](https://github.com/ArchiDog1998/RotationSolver/commit/3f0b585debc9d8528e19559aea2cec5ac5012f1c))
+* events will be a regex rather than equal. ([a74bfea](https://github.com/ArchiDog1998/RotationSolver/commit/a74bfeaeea5b4fd11e16a88c8fe93340c6a6303b))
+* fix for statechanging in countdown. ([a94d8cc](https://github.com/ArchiDog1998/RotationSolver/commit/a94d8ccc11af3735d19dc8d88ecd9421be04979f))
+* FIx the Moving targeting. ([bf37562](https://github.com/ArchiDog1998/RotationSolver/commit/bf375627724ac7a8bab02e88363157b782ddb574))
+* fix with fateManager..GOD! ([6ba62e4](https://github.com/ArchiDog1998/RotationSolver/commit/6ba62e406faa1e28888117dffdd1f56aa916f319))
+* marking targeting bug fixed, maybe. ([2e67d3c](https://github.com/ArchiDog1998/RotationSolver/commit/2e67d3ced691bcb668e41885b56bff173406da35))
+
 ## [1.2.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.1.0...v1.2.0) (2023-01-23)
 
 
