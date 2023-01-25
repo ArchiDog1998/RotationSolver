@@ -225,7 +225,34 @@ internal class Strings
     public string ComboConditionType_Time { get; set; } = "Time";
     public string ComboConditionType_GCD { get; set; } = "GCD";
     public string ComboConditionType_Last { get; set; } = "Last";
+    #endregion
 
+    #region TargetingType
+    public string TargetingType_Big { get; set; } = "Big";
+    public string TargetingType_Small { get; set; } = "Small";
+    public string TargetingType_HighHP { get; set; } = "High HP";
+    public string TargetingType_LowHP { get; set; } = "Low HP";
+    public string TargetingType_HighMaxHP { get; set; } = "High Max HP";
+    public string TargetingType_LowMaxHP { get; set; } = "Low Max HP";
+    #endregion
+
+    #region SpecialCommandTypeSayout
+    public string SpecialCommandType_Start { get; set; } = "Start ";
+
+    public string SpecialCommandType_HealArea { get; set; } = "Heal Area";
+    public string SpecialCommandType_HealSingle { get; set; } = "Heal Single";
+    public string SpecialCommandType_DefenseArea { get; set; } = "Defense Area";
+    public string SpecialCommandType_DefenseSingle { get; set; } = "Defense Single";
+    public string SpecialCommandType_Shield { get; set; } = "Shield";
+    public string SpecialCommandType_MoveForward { get; set; } = "Move Forward";
+    public string SpecialCommandType_MoveBack { get; set; } = "Move Back";
+    public string SpecialCommandType_AntiKnockback { get; set; } = "Anti-Knockback";
+    public string SpecialCommandType_Burst { get; set; } = "Burst";
+    public string SpecialCommandType_EndSpecial { get; set; } = "End Special";
+    public string SpecialCommandType_Smart { get; set; } = "Smart ";
+    public string SpecialCommandType_Manual { get; set; } = "Manual";
+    public string SpecialCommandType_Cancel { get; set; } = "Cancel";
+    public string SpecialCommandType_Off { get; set; } = "Off";
     #endregion
 
     #region ActionConditionType
