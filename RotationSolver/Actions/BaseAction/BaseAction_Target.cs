@@ -445,6 +445,7 @@ internal partial class BaseAction
     /// 开启攻击标记且有攻击标记目标且不开AOE。
     /// </summary>
     private static bool NoAOEForAttackMark =>
-        Service.Configuration.ChooseAttackMark && !Service.Configuration.CanAttackMarkAOE
+        Service.Configuration.ChooseAttackMark 
+        && !Service.Configuration.CanAttackMarkAOE
         && MarkingHelper.HaveAttackChara(TargetUpdater.HostileTargets);
 }
