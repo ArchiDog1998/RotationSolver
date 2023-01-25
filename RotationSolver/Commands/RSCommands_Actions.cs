@@ -64,7 +64,10 @@ namespace RotationSolver.Commands
             //Auto start at count Down.
             else if (Service.Configuration.StartOnCountdown && CountDown.CountDownTime > 0)
             {
-                if (StateType == StateCommandType.Cancel) StateType = StateCommandType.Smart;
+                if (StateType == StateCommandType.Cancel)
+                {
+                    DoStateCommandType(StateCommandType.Smart);
+                }
             }
         }
 
