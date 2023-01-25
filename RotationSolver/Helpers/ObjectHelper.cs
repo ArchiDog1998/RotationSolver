@@ -98,6 +98,8 @@ internal static class ObjectHelper
     public unsafe static bool CanAttack(this GameObject actor)
     {
         if (actor == null) return false;
+        if (actor is not BattleChara b) return false;
+        if (b.CurrentHp == 0) return false;
         return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address) == 1;
     }
 

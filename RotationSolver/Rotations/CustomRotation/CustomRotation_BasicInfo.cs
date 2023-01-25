@@ -67,8 +67,5 @@ internal abstract partial class CustomRotation : ICustomRotation
     /// <summary>
     /// Update your customized field.
     /// </summary>
-    private protected virtual void UpdateInfo() 
-    {
-        MoveTarget = (MoveForwardAbility(1, out var act) && act is BaseAction a) ? a.Target : null;
-    }
+    private protected virtual void UpdateInfo() { }
 }
