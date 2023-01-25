@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -36,11 +37,30 @@ internal static partial class TargetUpdater
 
     internal static bool IsHostileCastingToTank { get; private set; } = false;
 
-
+    internal static unsafe ushort Infate
+    {
+        get
+        {
+            try
+            {
+                if( Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero 
+                    && (IntPtr)FateManager.Instance()->CurrentFate != IntPtr.Zero
+                    && Service.ClientState.LocalPlayer.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
+                {
+                    return FateManager.Instance()->CurrentFate->FateId;
+                }
+            }
+            catch(Exception ex)
+            {
+                PluginLog.Error(ex.StackTrace);
+            }
+            return 0;
+        }
+    }
 
     internal unsafe static void UpdateHostileTargets()
     {
-        var inFate = Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero && FateManager.Instance()->FateJoined > 0;
+        var inFate = Infate;
 
         AllTargets = TargetFilter.GetTargetable(TargetFilter.GetObjectInRadius(Service.ObjectTable, 30).Where(obj =>
         {
@@ -61,8 +81,8 @@ internal static partial class TargetUpdater
 
         if (AllTargets != null)
         {
-            HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate ?
-                 AllTargets.Where(t => t.FateId() == FateManager.Instance()->CurrentFate->FateId) :
+            HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate > 0 ?
+                 AllTargets.Where(t => t.FateId() == inFate) :
                 AllTargets.Where(t => (t.TargetObject is BattleChara || ids.Contains(t.ObjectId)) && t.FateId() == 0
                 || t.TargetObject == Service.ClientState.LocalPlayer);
 

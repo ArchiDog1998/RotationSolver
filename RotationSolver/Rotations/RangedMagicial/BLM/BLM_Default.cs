@@ -54,11 +54,6 @@ internal sealed partial class BLM_Default : BLM_Base
                     .SetBool("AutoLeylines", true, "Auto use Leylines");
     }
 
-    private protected override void UpdateInfo()
-    {
-        base.UpdateInfo();
-    }
-
     private protected override IAction CountDownAction(float remainTime)
     {
         //战斗前激情

@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using RotationSolver.Commands;
 using RotationSolver.Data;
+using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Timeline;
 
@@ -22,11 +23,11 @@ internal static class EnumTranslations
 
     internal static string ToName(this ComboConditionType type) => type switch
     {
-        ComboConditionType.Bool => "Boolean",
-        ComboConditionType.Byte => "Byte",
-        ComboConditionType.Time => "Time",
-        ComboConditionType.TimeGCD => "GCD",
-        ComboConditionType.Last => "Action",
+        ComboConditionType.Bool => LocalizationManager.RightLang.ComboConditionType_Bool,
+        ComboConditionType.Byte => LocalizationManager.RightLang.ComboConditionType_Byte,
+        ComboConditionType.Time => LocalizationManager.RightLang.ComboConditionType_Time,
+        ComboConditionType.TimeGCD => LocalizationManager.RightLang.ComboConditionType_GCD,
+        ComboConditionType.Last => LocalizationManager.RightLang.ComboConditionType_Last,
         _ => string.Empty,
     };
 
@@ -89,82 +90,59 @@ internal static class EnumTranslations
 
     public static string ToName(this TargetingType role) => role switch
     {
-        TargetingType.Big => "Big",
-        TargetingType.Small => "Small",
-        TargetingType.HighHP => "High HP",
-        TargetingType.LowHP => "Low HP",
-        TargetingType.HighMaxHP => "High Max HP",
-        TargetingType.LowMaxHP => "Low Max HP",
+        TargetingType.Big => LocalizationManager.RightLang.TargetingType_Big,
+        TargetingType.Small => LocalizationManager.RightLang.TargetingType_Small,
+        TargetingType.HighHP => LocalizationManager.RightLang.TargetingType_HighHP,
+        TargetingType.LowHP => LocalizationManager.RightLang.TargetingType_LowHP,
+        TargetingType.HighMaxHP => LocalizationManager.RightLang.TargetingType_HighMaxHP,
+        TargetingType.LowMaxHP => LocalizationManager.RightLang.TargetingType_LowMaxHP,
         _ => string.Empty,
     };
 
     internal static string ToSayout(this SpecialCommandType type, JobRole role) => type switch
     {
-        SpecialCommandType.HealArea => "Start Heal Area",
-        SpecialCommandType.HealSingle => "Start Heal Single",
-        SpecialCommandType.DefenseArea => "Start Defense Area",
-        SpecialCommandType.DefenseSingle => "Start Defense Single",
-        SpecialCommandType.EsunaShieldNorth => "Start " + role switch
-        {
-            JobRole.Tank => "Shield",
-            JobRole.Healer => "Esuna",
-            JobRole.Melee => "TrueNorth",
-            _ => nameof(SpecialCommandType.EsunaShieldNorth),
-        },
-        SpecialCommandType.RaiseShirk => "Start " + role switch
-        {
-            JobRole.Tank => "Shirk",
-            JobRole.Healer => "Raise",
-            _ => nameof(SpecialCommandType.RaiseShirk),
-        },
-        SpecialCommandType.MoveForward => "Start Move Forward",
-        SpecialCommandType.MoveBack => "Start Move Back",
-        SpecialCommandType.AntiKnockback => "Start AntiKnockback",
-        SpecialCommandType.Burst => "Start Break",
-        SpecialCommandType.EndSpecial => "End Special",
-        _ => string.Empty,
+        SpecialCommandType.EndSpecial => type.ToSpecialString(role),
+        _ => LocalizationManager.RightLang.SpecialCommandType_Start + type.ToSpecialString(role),
     };
 
     internal static string ToSayout(this StateCommandType type, JobRole role) => type switch
     {
-        StateCommandType.Smart => "Smart " + RSCommands.TargetingType.ToName(),
-        StateCommandType.Manual => "Manual",
-        StateCommandType.Cancel => "Cancel",
-        _ => string.Empty,
+        StateCommandType.Cancel => LocalizationManager.RightLang.SpecialCommandType_Cancel,
+        _ => type.ToStateString(role),
     };
 
     internal static string ToSpecialString(this SpecialCommandType type, JobRole role) => type switch
     {
-        SpecialCommandType.HealArea => "Heal Area",
-        SpecialCommandType.HealSingle => "Heal Single",
-        SpecialCommandType.DefenseArea => "Defense Area",
-        SpecialCommandType.DefenseSingle => "Defense Single",
+        SpecialCommandType.HealArea => LocalizationManager.RightLang.SpecialCommandType_HealArea,
+        SpecialCommandType.HealSingle => LocalizationManager.RightLang.SpecialCommandType_HealSingle,
+        SpecialCommandType.DefenseArea => LocalizationManager.RightLang.SpecialCommandType_DefenseArea,
+        SpecialCommandType.DefenseSingle => LocalizationManager.RightLang.SpecialCommandType_DefenseSingle,
         SpecialCommandType.EsunaShieldNorth => role switch
         {
-            JobRole.Tank => "Shield",
-            JobRole.Healer => "Esuna",
-            JobRole.Melee => "TrueNorth",
-            _ => string.Empty,
+            JobRole.Tank => LocalizationManager.RightLang.SpecialCommandType_Shield,
+            JobRole.Healer => CustomRotation.Esuna.Name,
+            JobRole.Melee => CustomRotation.TrueNorth.Name,
+            _ => nameof(SpecialCommandType.EsunaShieldNorth),
         },
         SpecialCommandType.RaiseShirk => role switch
         {
-            JobRole.Tank => "Shirk",
-            JobRole.Healer => "Raise",
-            _ => string.Empty,
+            JobRole.Tank => CustomRotation.Shirk.Name,
+            JobRole.Healer => WHM_Base.Raise1.Name,
+            _ => nameof(SpecialCommandType.RaiseShirk),
         },
-        SpecialCommandType.MoveForward => "Move Forward",
-        SpecialCommandType.MoveBack => "Move Back",
-        SpecialCommandType.AntiKnockback => "AntiKnockback",
-        SpecialCommandType.Burst => "Break",
-        SpecialCommandType.EndSpecial => "End Special",
+        SpecialCommandType.MoveForward => LocalizationManager.RightLang.SpecialCommandType_MoveForward,
+        SpecialCommandType.MoveBack => LocalizationManager.RightLang.SpecialCommandType_MoveBack,
+        SpecialCommandType.AntiKnockback => LocalizationManager.RightLang.SpecialCommandType_AntiKnockback,
+        SpecialCommandType.Burst => LocalizationManager.RightLang.SpecialCommandType_Burst,
+        SpecialCommandType.EndSpecial => LocalizationManager.RightLang.SpecialCommandType_EndSpecial,
         _ => string.Empty,
     };
 
     internal static string ToStateString(this StateCommandType type, JobRole role) => type switch
     {
-        StateCommandType.Smart => "Smart " + RSCommands.TargetingType.ToName(),
-        StateCommandType.Manual => "Manual",
-        StateCommandType.Cancel => "Off",
+        StateCommandType.Smart => LocalizationManager.RightLang.SpecialCommandType_Smart + RSCommands.TargetingType.ToName(),
+        StateCommandType.Manual => LocalizationManager.RightLang.SpecialCommandType_Manual,
+        StateCommandType.Cancel => LocalizationManager.RightLang.SpecialCommandType_Off,
         _ => string.Empty,
     };
 

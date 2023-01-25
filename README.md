@@ -33,7 +33,7 @@ If you have any questions about usage, please check the [Wiki](https://archidog1
 
 [![Discord](https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2)](https://discord.gg/4fECHunam9)
 
-[![Crowdin](https://badges.crowdin.net/badge/light/crowdin-on-dark.png)](https://crowdin.com/project/rotationsolver)Please do NOT translate right now. It will change a lot...
+[![Crowdin](https://badges.crowdin.net/badge/light/crowdin-on-dark.png)](https://crowdin.com/project/rotationsolver)
 
 
 ## 对于国服用户

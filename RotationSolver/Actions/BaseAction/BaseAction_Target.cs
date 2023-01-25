@@ -412,18 +412,18 @@ internal partial class BaseAction
         if (FilterForTarget != null) return FilterForTarget(tars);
         if (TargetStatus == null || !_isEot || mustUse) return tars;
 
-        var canDot = mustUse ? tars : tars.Where(ObjectHelper.CanDot);
-        var DontHave = canDot.Where(CheckStatus);
+        var dontHave = tars.Where(CheckStatus);
+        var canDot = dontHave.Where(ObjectHelper.CanDot);
 
         if (mustUse)
         {
-            if (DontHave.Any()) return DontHave;
             if (canDot.Any()) return canDot;
+            if (dontHave.Any()) return dontHave;
             return tars;
         }
         else
         {
-            return DontHave;
+            return canDot;
         }
     }
 
@@ -445,6 +445,7 @@ internal partial class BaseAction
     /// 开启攻击标记且有攻击标记目标且不开AOE。
     /// </summary>
     private static bool NoAOEForAttackMark =>
-        Service.Configuration.ChooseAttackMark && !Service.Configuration.CanAttackMarkAOE
+        Service.Configuration.ChooseAttackMark 
+        && !Service.Configuration.CanAttackMarkAOE
         && MarkingHelper.HaveAttackChara(TargetUpdater.HostileTargets);
 }

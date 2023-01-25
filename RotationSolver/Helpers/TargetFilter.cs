@@ -36,7 +36,8 @@ internal static class TargetFilter
         if (availableCharas == null || !availableCharas.Any()) return null;
 
         //找到被标记攻击的怪
-        if (MarkingHelper.GetAttackMarkChara(availableCharas) is BattleChara b && b != null) return b;
+        if (Service.Configuration.ChooseAttackMark && 
+            MarkingHelper.GetAttackMarkChara(availableCharas) is BattleChara b && b != null) return b;
 
         //去掉停止标记的怪
         if (Service.Configuration.FilterStopMark)

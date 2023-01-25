@@ -15,6 +15,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.SigReplacers
@@ -103,7 +104,7 @@ namespace RotationSolver.SigReplacers
             //Macro
             foreach (var item in Service.Configuration.Events)
             {
-                if (item.Name != action.Name) continue;
+                if (!new Regex(item.Name).Match(action.Name).Success) continue;
                 if (item.MacroIndex < 0 || item.MacroIndex > 99) break;
 
                 MacroUpdater.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
