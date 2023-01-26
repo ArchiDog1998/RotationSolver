@@ -6,6 +6,7 @@ using RotationSolver.Helpers;
 using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Numerics;
 
@@ -329,7 +330,10 @@ internal partial class BaseAction
             {
                 if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
             }
-            return GetMostObjects(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount).Any();
+
+            var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount);
+            if (tars.Count() < aoeCount) return false;
+            if (Service.Configuration.NoNewHostiles && tars.Any(t => t.TargetObject == null)) return false;
         }
         return true;
     }
