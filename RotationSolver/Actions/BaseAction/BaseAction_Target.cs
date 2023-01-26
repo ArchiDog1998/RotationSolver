@@ -273,7 +273,7 @@ internal partial class BaseAction
         }
 
         //判断一下AOE攻击的时候如果有攻击目标标记目标
-        if (_action.CastType > 1 && (NoAOEForAttackMark || Service.Configuration.AbsSingleTarget))
+        if (_action.CastType > 1 && NoAOEForAttackMark)
         {
             target = null;
             return false;
@@ -301,11 +301,6 @@ internal partial class BaseAction
 
             return true;
         }
-        else if (Service.Configuration.AbsSingleTarget)
-        {
-            target = null;
-            return false;
-        }
 
         if (Service.Configuration.UseAOEWhenManual || mustUse)
         {
@@ -324,7 +319,7 @@ internal partial class BaseAction
     {
         if (_action.EffectRange > 0 && !_isFriendly)
         {
-            if (NoAOEForAttackMark || Service.Configuration.AbsSingleTarget)
+            if (NoAOEForAttackMark)
             {
                 return false;
             }
@@ -334,9 +329,7 @@ internal partial class BaseAction
             {
                 if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
             }
-            var count = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange).Count();
-
-            if (count < aoeCount) return false;
+            return GetMostObjects(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount).Any();
         }
         return true;
     }
@@ -375,7 +368,21 @@ internal partial class BaseAction
     }
 
     private int CanGetTargetCount(BattleChara target, IEnumerable<BattleChara> canAttack)
-        => canAttack.Count(g => CanGetTarget(target, g));
+    {
+        int count = 0;
+        foreach (var t in canAttack)
+        {
+            if(CanGetTarget(target, t))
+            {
+                count++;
+                if (Service.Configuration.NoNewHostiles && t.TargetObject == null)
+                {
+                    return 0;
+                }
+            }
+        }
+        return count;
+    }
 
     internal bool CanGetTarget(BattleChara target, BattleChara subTarget)
     {

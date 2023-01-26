@@ -69,7 +69,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool KeyBoardNoise = true;
     public bool UseGroundBeneficialAbility = true;
     public bool StartOnCountdown = true;
-    public bool AbsSingleTarget = false;
+    public bool NoNewHostiles = false;
     public bool UseHealWhenNotAHealer = true;
     public float ObjectMinRadius = 0f;
     public float HealthDifference = 0.25f;

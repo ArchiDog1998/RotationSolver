@@ -131,8 +131,8 @@ internal class Strings
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Param_AutoBreak { get; set; } = "Automatic breaking";
     public string Configwindow_Param_UseAbility { get; set; } = "Auto-use abilities";
-    public string Configwindow_Param_AbsSingleTarget { get; set; } = "Safe mode (absolutely single target)";
-    public string Configwindow_Params_AbsSingleTargetDesc { get; set; } = "Nerver use any AOE action with single target./nBut if the number of hostile enough, AOE action will still be used.";
+    public string Configwindow_Param_NoNewHostiles { get; set; } = "Don't target new mobs";
+    public string Configwindow_Params_NoNewHostilesDesc { get; set; } = "Nerver use any AOE action when this action may attack the mobs that not is a hostile target.";
     public string Configwindow_Param_UseDefenceAbility { get; set; } = "Use defence abilities";
     public string Configwindow_Param_UseDefenceAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???";
     public string Configwindow_Param_AutoShield { get; set; } = "Auto tank stance";

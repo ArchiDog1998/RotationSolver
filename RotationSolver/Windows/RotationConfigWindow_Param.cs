@@ -184,9 +184,9 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseAOEWhenManual,
             ref Service.Configuration.UseAOEWhenManual);
 
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_AbsSingleTarget,
-            ref Service.Configuration.AbsSingleTarget,
-            LocalizationManager.RightLang.Configwindow_Params_AbsSingleTargetDesc);
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_NoNewHostiles,
+            ref Service.Configuration.NoNewHostiles,
+            LocalizationManager.RightLang.Configwindow_Params_NoNewHostilesDesc);
 
         ImGui.Separator();
 
