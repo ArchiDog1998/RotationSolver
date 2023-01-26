@@ -31,5 +31,22 @@
     "AcceptsFeedback": true,
     "FeedbackMessage": null,
     "FeedbackWebhook": null
+  },
+  {
+    "Author": "matrix",
+    "Name": "FakeName",
+    "InternalName": "FakeName",
+    "AssemblyVersion": "1.0.0.5",
+    "Description": "Change your character name.",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 8,
+    "LoadRequiredState": 0,
+    "LoadSync": false,
+    "LoadPriority": 0,
+    "Punchline": "Change your character name.",
+    "AcceptsFeedback": true,
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/FakeName/releases/latest/download/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/FakeName/releases/latest/download/latest.zip",
+    "DownloadLinkTesting": "https://github.com/ArchiDog1998/FakeName/releases/latest/download/latest.zip",
   }
 ]
