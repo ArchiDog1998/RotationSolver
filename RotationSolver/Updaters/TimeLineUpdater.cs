@@ -1,9 +1,11 @@
 ﻿using ImGuiNET;
+using Newtonsoft.Json;
 using RotationSolver.Actions;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
 using RotationSolver.Timeline;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -32,7 +34,7 @@ namespace RotationSolver.Updaters
 
             foreach (var conditionPair in set.Conditions)
             {
-                var nextAct = allActions.FirstOrDefault(a => a.ID == (uint)conditionPair.Key);
+                var nextAct = allActions.FirstOrDefault(a => a.ID == conditionPair.Key);
                 if (nextAct == null) continue;
 
                 if (!conditionPair.Value.IsTrue(customRotation)) continue;
@@ -122,6 +124,12 @@ namespace RotationSolver.Updaters
             if (ImGuiHelper.IconButton(Dalamud.Interface.FontAwesomeIcon.Plus, "##AddNewTimelineConditionSet"))
             {
                 AddNew();
+            }
+
+            ImGui.SameLine();
+            if (ImGuiHelper.IconButton(Dalamud.Interface.FontAwesomeIcon.Folder, "##OpenDefinationFolder"))
+            {
+                Process.Start("explorer.exe", _timelineFolder);
             }
         }
     }

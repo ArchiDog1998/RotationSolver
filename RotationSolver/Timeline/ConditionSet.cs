@@ -22,7 +22,7 @@ internal class ConditionSet : ICondition
     public float Height => Conditions.Sum(c => c is ConditionSet ? c.Height + 10 : c.Height) + ICondition.DefaultHeight + 12;
     public void Draw(ICustomRotation combo)
     {
-        if (ImGui.BeginChild(GetHashCode().ToString(), new System.Numerics.Vector2(-1f, Height), true))
+        if (ImGui.BeginChild("ConditionSet" + GetHashCode().ToString(), new System.Numerics.Vector2(-1f, Height), true))
         {
             AddButton();
 

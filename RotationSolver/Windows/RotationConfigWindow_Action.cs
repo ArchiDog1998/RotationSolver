@@ -15,7 +15,6 @@ internal partial class RotationConfigWindow
 
     private void DrawActionTab()
     {
-
         ImGui.Columns(2);
 
         DrawActionList();
@@ -66,9 +65,9 @@ internal partial class RotationConfigWindow
         var set = TimeLineUpdater.RightSet;
         if (set == null) return;
 
-        if (!set.Conditions.TryGetValue((ActionID)ActiveAction.ID, out var conditionSet))
+        if (!set.Conditions.TryGetValue(ActiveAction.ID, out var conditionSet))
         {
-            conditionSet = set.Conditions[(ActionID)ActiveAction.ID] = new Timeline.ConditionSet();
+            conditionSet = set.Conditions[ActiveAction.ID] = new Timeline.ConditionSet();
         }
 
         conditionSet?.Draw(rotation);
