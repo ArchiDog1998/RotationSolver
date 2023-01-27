@@ -57,8 +57,8 @@ namespace RotationSolver.Actions
         /// Skip for <seealso cref="StatusProvide"/> and <seealso cref="TargetStatus"> cheking.</param>
         /// <param name="emptyOrSkipCombo">Use all charges, no keeping.
         /// Do not need to check the combo.</param>
-        /// <param name="skipDisable">skip the diable for emergency use.</param>
-        /// <returns>should I use.</returns>
+        /// <param name="skipDisable">skip the diable for emergency use. Please always set this to false.</param>
+        /// <returns>Should I use.</returns>
         bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false);
 
         #region CoolDown
