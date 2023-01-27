@@ -16,7 +16,15 @@ internal static class ActionUpdater
     private static IntPtr LastComboMove => ComboTimer + 4;
     public static unsafe ActionID LastComboAction => *(ActionID*)LastComboMove;
 
-
+    static DateTime _startCombatTime = DateTime.MinValue;
+    public static TimeSpan CombatTime
+    {
+        get
+        {
+            if(_startCombatTime == DateTime.MinValue) return TimeSpan.Zero;
+            return DateTime.Now - _startCombatTime;
+        }
+    }
     internal static float WeaponRemain { get; private set; } = 0;
 
     internal static float WeaponTotal { get; private set; } = 0;
@@ -67,7 +75,16 @@ internal static class ActionUpdater
 
     internal unsafe static void UpdateActionInfo()
     {
+        var last = InCombat;
         InCombat = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
+        if(!last && InCombat)
+        {
+            _startCombatTime = DateTime.Now;
+        }
+        else if(last && !InCombat)
+        {
+            _startCombatTime = DateTime.MinValue;
+        }
 
         for (int i = 0; i < BluSlots.Length; i++)
         {
@@ -136,7 +153,7 @@ internal static class ActionUpdater
         if (player == null) return;
 
         //不是黑魔不考虑啊
-        if (player.ClassJob.Id != 25) return;
+        if (player.ClassJob.Id != (uint)ClassJobID.BlackMage) return;
 
         //有醒梦，就算了啊
         if (player.HasStatus(true, StatusID.LucidDreaming)) return;

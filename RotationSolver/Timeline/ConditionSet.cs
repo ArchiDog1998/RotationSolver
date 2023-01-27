@@ -65,7 +65,7 @@ internal class ConditionSet : ICondition
             AddOneCondition<ConditionSet>(LocalizationManager.RightLang.Timeline_ConditionSet);
             AddOneCondition<ActionCondition>(LocalizationManager.RightLang.Timeline_ActionCondition);
             AddOneCondition<TargetCondition>(LocalizationManager.RightLang.Timeline_TargetCondition);
-            AddOneCondition<RotationCondition>(LocalizationManager.RightLang.Timeline_ComboCondition);
+            AddOneCondition<RotationCondition>(LocalizationManager.RightLang.Timeline_RotationCondition);
 
             ImGui.EndPopup();
         }

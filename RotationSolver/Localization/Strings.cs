@@ -206,7 +206,7 @@ internal class Strings
     public string Timeline_ConditionSet { get; set; } = "ConditionSet";
     public string Timeline_ActionCondition { get; set; } = "ActionCondition";
     public string Timeline_TargetCondition { get; set; } = "TargetCondition";
-    public string Timeline_ComboCondition { get; set; } = "ComboCondition";
+    public string Timeline_RotationCondition { get; set; } = "RotationCondition";
     public string Timeline_ActionTarget { get; set; } = "{0}'s target";
     public string Timeline_Target { get; set; } = "Target";
     public string Timeline_Player { get; set; } = "Player";
