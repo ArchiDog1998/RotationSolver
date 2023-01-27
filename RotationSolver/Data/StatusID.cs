@@ -1112,50 +1112,7 @@ internal enum StatusID : ushort
     /// </summary>
     Necrosis = 2965,
 
-    #region Crafting
-    /// <summary>
-    /// 内静
-    /// </summary>
-    InnerQuiet = 251,
+    MightyGuard = 1719,
 
-    /// <summary>
-    /// 改革
-    /// </summary>
-    Innovation = 2189,
-
-    /// <summary>
-    /// 崇敬
-    /// </summary>
-    Veneration = 2226,
-
-    /// <summary>
-    /// 阔步
-    /// </summary>
-    GreatStrides = 254,
-
-    /// <summary>
-    /// 掌握
-    /// </summary>
-    Manipulation = 1164,
-
-    /// <summary>
-    /// 俭约
-    /// </summary>
-    WasteNot = 252,
-
-    /// <summary>
-    /// 长期俭约
-    /// </summary>
-    WasteNot2 = 257,
-
-    /// <summary>
-    /// 最终确认
-    /// </summary>
-    FinalAppraisal = 2190,
-
-    /// <summary>
-    /// 坚信
-    /// </summary>
-    MuscleMemory = 2191,
-    #endregion
+    IceSpikes = 1307,
 }

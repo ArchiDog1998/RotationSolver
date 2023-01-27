@@ -139,27 +139,25 @@ namespace RotationSolver.Rotations.RangedMagicial.BLU
         private bool DBlueBreak(out IAction act)
         {
             act = null;
-            //if (BlueId == BLUID.Healer && BlueId == BLUID.Tank) return false;
+            if (!HasHostilesInRange) return false;
 
-            if (!AllOnSlot(MoonFlute)) return false;
-
-            if (AllOnSlot(TripleTrident) && !TripleTrident.IsCoolingDown)
+            if (AllOnSlot(TripleTrident) && TripleTrident.WillHaveOneChargeGCD(OnSlotCount(Whistle, Tingle), 0))
             {
                 //口笛
                 if (Whistle.CanUse(out act)) return true;
                 //哔哩哔哩
                 if (!Player.HasStatus(true, StatusID.Tingling) && Player.HasStatus(true, StatusID.Harmonized) && Tingle.CanUse(out act, mustUse: true)) return true;
                 //鱼叉
-                if (Player.HasStatus(true, StatusID.WaxingNocturne) && TripleTrident.CanUse(out act, mustUse: true)) return true;
+                if (TripleTrident.CanUse(out act, mustUse: true)) return true;
             }
 
             if (AllOnSlot(Whistle, FinalSting, BasicInstinct) && UseFinalSting)
             {
-                if (HasHostilesInRange && Whistle.CanUse(out act)) return true;
+                if (Whistle.CanUse(out act)) return true;
                 //破防
-                if (Player.HasStatus(true, StatusID.WaxingNocturne) && Offguard.CanUse(out act)) return true;
+                if (Offguard.CanUse(out act)) return true;
                 //哔哩哔哩
-                if (Player.HasStatus(true, StatusID.WaxingNocturne) && Tingle.CanUse(out act)) return true;
+                if (Tingle.CanUse(out act)) return true;
             }
 
             //月笛

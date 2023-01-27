@@ -46,6 +46,15 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
 
     public class BLUAction : BaseAction, IBLUAction
     {
+        static readonly StatusID[] NoPhysic = new StatusID[]
+        {
+            StatusID.IceSpikes,
+        };
+
+        static readonly StatusID[] NoMagic = new StatusID[]
+        {
+        };
+
         private BLUActionType Type;
 
         public unsafe bool OnSlot => ActionUpdater.BluSlots.Any(i => AdjustedID == Service.IconReplacer.OriginalHook(i));
@@ -54,6 +63,12 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
             : base(actionID, isFriendly, shouldEndSpecial, isEot, isTimeline)
         {
             Type = type;
+            FilterForTarget = ts => ts.Where(t =>
+            {
+                if (t.HasStatus(false, NoPhysic) && Type == BLUActionType.Physical) return false;
+                if (t.HasStatus(false, NoMagic) && Type == BLUActionType.Magical) return false;
+                return true;
+            });
         }
 
         public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
@@ -62,7 +77,6 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
 
             if (!OnSlot) return false;
 
-            //排除其他类型的魔法。
             if (AttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
             if (AttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
 
@@ -599,7 +613,13 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 强力守护
     /// </summary>
-    public static IBLUAction MightyGuard { get; } = new BLUAction(ActionID.MightyGuard, BLUActionType.None, true);
+    public static IBLUAction MightyGuard { get; } = new BLUAction(ActionID.MightyGuard, BLUActionType.None, true)
+    {
+        StatusProvide = new StatusID[]
+        {
+            StatusID.MightyGuard,
+        },
+    };
 
     /// <summary>
     /// 月之笛
@@ -736,9 +756,21 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     private protected override bool EmergencyGCD(out IAction act)
     {
         if (AetherialMimicry.CanUse(out act)) return true;
-        if (BasicInstinct.CanUse(out act)) return true;
+        if (BasicInstinct.CanUse(out _))
+        {
+            if (MightyGuard.CanUse(out act)) return true;
+            act = BasicInstinct;
+            return true;
+        }
         return base.EmergencyGCD(out act);
     }
 
     protected static bool AllOnSlot(params IBLUAction[] actions) => actions.All(a => a.OnSlot);
+    protected static uint OnSlotCount(params IBLUAction[] actions) => (uint)actions.Count(a => a.OnSlot);
+
+    public override IBaseAction[] AllActions => base.AllActions.Where(a =>
+    {
+        if (a is not BLUAction b) return false;
+        return b.OnSlot;
+    }).ToArray();
 }

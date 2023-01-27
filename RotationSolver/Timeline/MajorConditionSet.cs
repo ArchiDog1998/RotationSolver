@@ -8,6 +8,9 @@ namespace RotationSolver.Timeline;
 
 internal class MajorConditionSet
 {
+    /// <summary>
+    /// Key for action id.
+    /// </summary>
     public Dictionary<uint, ConditionSet> Conditions { get; } = new Dictionary<uint, ConditionSet>();
 
     public string Name;

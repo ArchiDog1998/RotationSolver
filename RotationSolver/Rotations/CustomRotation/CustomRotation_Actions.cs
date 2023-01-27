@@ -210,7 +210,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 当前这个类所有的BaseAction
     /// </summary>
-    public IBaseAction[] AllActions => GetBaseActions(GetType());
+    public virtual IBaseAction[] AllActions => GetBaseActions(GetType());
 
     /// <summary>
     /// 这个类所有的公开bool值

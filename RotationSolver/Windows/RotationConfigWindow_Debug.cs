@@ -46,10 +46,8 @@ internal partial class RotationConfigWindow
 
                 foreach (var status in b.StatusList)
                 {
-                    if (status.SourceId == Service.ClientState.LocalPlayer.ObjectId)
-                    {
-                        ImGui.Text($"{status.GameData.Name}: {status.StatusId}");
-                    }
+                    var source = Service.ObjectTable.SearchById(status.SourceId)?.Name ?? "None";
+                    ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
                 }
             }
 
