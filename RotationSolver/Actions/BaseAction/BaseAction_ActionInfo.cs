@@ -92,13 +92,8 @@ internal partial class BaseAction
             }
         }
 
-        if (CastTime > 0 && MovingUpdater.IsMoving)
-        {
-            if (!player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide))
-            {
-                return false;
-            }
-        }
+        if (CastTime > 0 && MovingUpdater.IsMoving &&
+            !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
 
         if (!FindTarget(mustUse, out var target)) return false;
 

@@ -151,8 +151,8 @@ internal partial class BaseAction
             {
                 Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
                 float rotation = Service.ClientState.LocalPlayer.Rotation;
-                _position = new Vector3(pPosition.X + (float)Math.Sin(rotation), pPosition.Y,
-                    pPosition.Z + (float)Math.Cos(rotation));
+                _position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
+                    pPosition.Z + (float)Math.Cos(rotation) * range);
                 return true;
             }
             return false;

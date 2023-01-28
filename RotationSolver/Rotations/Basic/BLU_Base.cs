@@ -694,7 +694,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 若隐若现
     /// </summary>
-    private static IBLUAction Loom { get; } = new BLUAction(ActionID.Loom, BLUActionType.None);
+    private static IBLUAction Loom { get; } = new BLUAction(ActionID.Loom, BLUActionType.None, shouldEndSpecial: true);
 
     /// <summary>
     /// 斗争本能
