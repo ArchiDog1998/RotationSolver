@@ -6,6 +6,7 @@ using RotationSolver.Helpers;
 using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Numerics;
 
@@ -142,11 +143,23 @@ internal partial class BaseAction
 
     private bool TargetAreaMove(float range, bool mustUse, out BattleChara target)
     {
-        var availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).OfType<BattleChara>();
-        target = ChoiceTarget(TargetFilter.GetObjectInRadius(availableCharas, range), mustUse);
-        if (target == null) return false;
-        _position = target.Position;
-        return true;
+        if (Service.Configuration.MoveAreaActionFarthest)
+        {
+            target = null;
+            Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
+            float rotation = Service.ClientState.LocalPlayer.Rotation;
+            _position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
+                pPosition.Z + (float)Math.Cos(rotation) * range);
+            return true;
+        }
+        else
+        {
+            var availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).OfType<BattleChara>();
+            target = TargetFilter.GetObjectInRadius(availableCharas, range).FindTargetForMoving(mustUse);
+            if (target == null) return false;
+            _position = target.Position;
+            return true;
+        }
     }
 
     private bool TargetAreaFriend(float range, bool mustUse, out BattleChara target)
@@ -273,7 +286,7 @@ internal partial class BaseAction
         }
 
         //判断一下AOE攻击的时候如果有攻击目标标记目标
-        if (_action.CastType > 1 && (NoAOEForAttackMark || Service.Configuration.AbsSingleTarget))
+        if (_action.CastType > 1 && NoAOEForAttackMark)
         {
             target = null;
             return false;
@@ -301,11 +314,6 @@ internal partial class BaseAction
 
             return true;
         }
-        else if (Service.Configuration.AbsSingleTarget)
-        {
-            target = null;
-            return false;
-        }
 
         if (Service.Configuration.UseAOEWhenManual || mustUse)
         {
@@ -324,7 +332,7 @@ internal partial class BaseAction
     {
         if (_action.EffectRange > 0 && !_isFriendly)
         {
-            if (NoAOEForAttackMark || Service.Configuration.AbsSingleTarget)
+            if (NoAOEForAttackMark)
             {
                 return false;
             }
@@ -334,9 +342,10 @@ internal partial class BaseAction
             {
                 if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
             }
-            var count = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange).Count();
 
-            if (count < aoeCount) return false;
+            var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount);
+            if (tars.Count() < aoeCount) return false;
+            if (Service.Configuration.NoNewHostiles && tars.Any(t => t.TargetObject == null)) return false;
         }
         return true;
     }
@@ -375,7 +384,21 @@ internal partial class BaseAction
     }
 
     private int CanGetTargetCount(BattleChara target, IEnumerable<BattleChara> canAttack)
-        => canAttack.Count(g => CanGetTarget(target, g));
+    {
+        int count = 0;
+        foreach (var t in canAttack)
+        {
+            if(CanGetTarget(target, t))
+            {
+                count++;
+                if (Service.Configuration.NoNewHostiles && t.TargetObject == null)
+                {
+                    return 0;
+                }
+            }
+        }
+        return count;
+    }
 
     internal bool CanGetTarget(BattleChara target, BattleChara subTarget)
     {
@@ -390,6 +413,9 @@ internal partial class BaseAction
         switch (_action.CastType)
         {
             case 10: //环形范围攻击也就这么判断吧，我烦了。
+                var dis = Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius;
+                return dis <= _action.EffectRange && dis >= 8;
+
             case 2: // 圆形范围攻击
                 return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= _action.EffectRange;
 

@@ -8,7 +8,10 @@ namespace RotationSolver.Timeline;
 
 internal class MajorConditionSet
 {
-    public Dictionary<ActionID, ConditionSet> Conditions { get; } = new Dictionary<ActionID, ConditionSet>();
+    /// <summary>
+    /// Key for action id.
+    /// </summary>
+    public Dictionary<uint, ConditionSet> Conditions { get; } = new Dictionary<uint, ConditionSet>();
 
     public string Name;
 
@@ -31,7 +34,7 @@ internal class MajorConditionSet
         File.WriteAllText(path, str);
     }
 
-    public static IEnumerable<MajorConditionSet> Read(string folder)
+    public static MajorConditionSet[] Read(string folder)
     {
         if (!Directory.Exists(folder)) return new MajorConditionSet[0];
 
@@ -40,6 +43,6 @@ internal class MajorConditionSet
             var str = File.ReadAllText(p);
 
             return JsonConvert.DeserializeObject<MajorConditionSet>(str, new IConditionConverter());
-        }).Where(set => set != null);
+        }).Where(set => set != null && !string.IsNullOrEmpty(set.Name)).ToArray();
     }
 }

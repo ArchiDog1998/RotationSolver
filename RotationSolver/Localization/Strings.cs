@@ -131,8 +131,8 @@ internal class Strings
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Param_AutoBreak { get; set; } = "Automatic breaking";
     public string Configwindow_Param_UseAbility { get; set; } = "Auto-use abilities";
-    public string Configwindow_Param_AbsSingleTarget { get; set; } = "Safe mode (absolutely single target)";
-    public string Configwindow_Params_AbsSingleTargetDesc { get; set; } = "Nerver use any AOE action with single target./nBut if the number of hostile enough, AOE action will still be used.";
+    public string Configwindow_Param_NoNewHostiles { get; set; } = "Don't target new mobs";
+    public string Configwindow_Params_NoNewHostilesDesc { get; set; } = "Nerver use any AOE action when this action may attack the mobs that not is a hostile target.";
     public string Configwindow_Param_UseDefenceAbility { get; set; } = "Use defence abilities";
     public string Configwindow_Param_UseDefenceAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???";
     public string Configwindow_Param_AutoShield { get; set; } = "Auto tank stance";
@@ -178,6 +178,8 @@ internal class Strings
     public string Configwindow_Param_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";
     public string Configwindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
     public string Configwindow_Param_RaiseBrinkofDeath { get; set; } = "Raise player even has Brink of Death";
+    public string Configwindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
+    public string Configwindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
     public string Configwindow_Param_Hostile { get; set; } = "Hostile";
     public string Configwindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string Configwindow_Param_AddHostileCondition { get; set; } = "Add selection condition";
@@ -206,7 +208,7 @@ internal class Strings
     public string Timeline_ConditionSet { get; set; } = "ConditionSet";
     public string Timeline_ActionCondition { get; set; } = "ActionCondition";
     public string Timeline_TargetCondition { get; set; } = "TargetCondition";
-    public string Timeline_ComboCondition { get; set; } = "ComboCondition";
+    public string Timeline_RotationCondition { get; set; } = "RotationCondition";
     public string Timeline_ActionTarget { get; set; } = "{0}'s target";
     public string Timeline_Target { get; set; } = "Target";
     public string Timeline_Player { get; set; } = "Player";

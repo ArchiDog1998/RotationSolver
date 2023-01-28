@@ -48,4 +48,4 @@ Some Property you can set.
 
 ## FlagID
 
-For melee job, some actions have positional. In order to make the position feedback right, we need to maintain one [table]([RotationSolver/ConfigurationHelper.cs at main · ArchiDog1998/RotationSolver (github.com)](https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver/Helpers/ConfigurationHelper.cs#L10)). Please put the number in flytext when hitting the right positional on this table.
+For melee job, some actions have positional. In order to make the position feedback right, we need to maintain one [table](https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver/Helpers/ConfigurationHelper.cs#L10). Please put the number in flytext when hitting the right positional on this table.

@@ -15,3 +15,7 @@ I'll make it easier and easier to develop a custom rotation.
   - Maintain the action list.
   - Maintain the id of action or status.
   - Raise the issue encountered in the development.
+
+## Forum
+
+This wiki isn't perfect right now. If you have any question or suggestion, please talk about it on `#rotation` channel in [Discord](https://discord.gg/4fECHunam9) with a `xxx dev` role.

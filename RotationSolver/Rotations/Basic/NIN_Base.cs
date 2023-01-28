@@ -117,10 +117,7 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 缩地
     /// </summary>
-    public static IBaseAction Shukuchi { get; } = new BaseAction(ActionID.Shukuchi, true)
-    {
-        ChoiceTarget = TargetFilter.FindTargetForMoving,
-    };
+    public static IBaseAction Shukuchi { get; } = new BaseAction(ActionID.Shukuchi, true);
 
     /// <summary>
     /// 断绝

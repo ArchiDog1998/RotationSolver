@@ -22,7 +22,7 @@ internal class ConditionSet : ICondition
     public float Height => Conditions.Sum(c => c is ConditionSet ? c.Height + 10 : c.Height) + ICondition.DefaultHeight + 12;
     public void Draw(ICustomRotation combo)
     {
-        if (ImGui.BeginChild(GetHashCode().ToString(), new System.Numerics.Vector2(-1f, Height), true))
+        if (ImGui.BeginChild("ConditionSet" + GetHashCode().ToString(), new System.Numerics.Vector2(-1f, Height), true))
         {
             AddButton();
 
@@ -65,7 +65,7 @@ internal class ConditionSet : ICondition
             AddOneCondition<ConditionSet>(LocalizationManager.RightLang.Timeline_ConditionSet);
             AddOneCondition<ActionCondition>(LocalizationManager.RightLang.Timeline_ActionCondition);
             AddOneCondition<TargetCondition>(LocalizationManager.RightLang.Timeline_TargetCondition);
-            AddOneCondition<RotationCondition>(LocalizationManager.RightLang.Timeline_ComboCondition);
+            AddOneCondition<RotationCondition>(LocalizationManager.RightLang.Timeline_RotationCondition);
 
             ImGui.EndPopup();
         }

@@ -116,6 +116,7 @@ internal static class PreviewUpdater
         "_ActionBar07",
         "_ActionBar08",
         "_ActionBar09",
+        "_ActionCross",
     };
     unsafe delegate bool ActionBarAction(ActionBarSlot* bar, HotBarSlot* hot, uint highLightID);
     unsafe delegate bool ActionBarPredicate(ActionBarSlot* bar, HotBarSlot* hot);
@@ -137,7 +138,6 @@ internal static class PreviewUpdater
                 if (doingSomething(actionBarSlot, hotBarSlot, highLightId))
                 {
                     actBar->PulseActionBarSlot(slotIndex);
-                    //键盘按下效果音效
                     UIModule.PlaySound(12, 0, 0, 0);
                     return;
                 }

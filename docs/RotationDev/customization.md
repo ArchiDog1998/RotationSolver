@@ -37,6 +37,7 @@ Sometimes, for saving the resource. We want to save the value to the field. But 
     private protected override void UpdateInfo() 
     {
         //Set your value to field here.
+        base.UpdateInfo();
     }
 ```
 

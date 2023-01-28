@@ -68,8 +68,9 @@ public class PluginConfiguration : IPluginConfiguration
     public Vector3 SubTargetColor = new(1f, 0.9f, 0f);
     public bool KeyBoardNoise = true;
     public bool UseGroundBeneficialAbility = true;
+    public bool MoveAreaActionFarthest = true;
     public bool StartOnCountdown = true;
-    public bool AbsSingleTarget = false;
+    public bool NoNewHostiles = false;
     public bool UseHealWhenNotAHealer = true;
     public float ObjectMinRadius = 0f;
     public float HealthDifference = 0.25f;

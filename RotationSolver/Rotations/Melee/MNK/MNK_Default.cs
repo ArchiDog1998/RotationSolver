@@ -139,13 +139,6 @@ internal sealed class MNK_Default : MNK_Base
         {
             if (RaptorForm(out act)) return true;
         }
-        else
-        {
-            if (OpoOpoForm(out act)) return true;
-        }
-
-        if (CoerlForm(out act)) return true;
-        if (RaptorForm(out act)) return true;
         if (OpoOpoForm(out act)) return true;
 
         if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;

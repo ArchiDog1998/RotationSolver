@@ -166,6 +166,16 @@ internal abstract partial class CustomRotation
     protected static bool EndAfter(float remain, float remainNeed)
         => CooldownHelper.RecastAfter(remain, remainNeed);
 
+    /// <summary>
+    /// Whether the battle lasted less than <paramref name="time"/> seconds
+    /// </summary>
+    /// <param name="time">time in second.</param>
+    /// <returns></returns>
+    public static bool CombatElapsed(float time)
+    {
+        return CooldownHelper.ElapsedAfter(time, (float)ActionUpdater.CombatTime.TotalSeconds);
+    }
+
     public MethodInfo[] AllLast => GetType().GetStaticBoolMethodInfo(m =>
     {
         var types = m.GetParameters();

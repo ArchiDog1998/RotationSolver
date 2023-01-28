@@ -93,7 +93,7 @@ internal static class OverlayWindow
         {
             if (Service.GameGui.WorldToScreen(t.Position, out var p))
             {
-                ImGui.GetWindowDrawList().AddText(p, color, $"FateId: {((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId}");
+                //ImGui.GetWindowDrawList().AddText(p, color, $"FateId: {((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)t.Address)->FateId}");
 
                 //ImGui.GetWindowDrawList().AddText(p, color, $"Boss Ratio (Max): {t.MaxHp / calHealth:F2}\nDying Ratio (Current): {t.CurrentHp / calHealth:F2}");
             }
