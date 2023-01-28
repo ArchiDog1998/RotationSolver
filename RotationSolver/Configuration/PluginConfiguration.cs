@@ -68,6 +68,7 @@ public class PluginConfiguration : IPluginConfiguration
     public Vector3 SubTargetColor = new(1f, 0.9f, 0f);
     public bool KeyBoardNoise = true;
     public bool UseGroundBeneficialAbility = true;
+    public bool MoveAreaAbilityMustUse = true;
     public bool StartOnCountdown = true;
     public bool NoNewHostiles = false;
     public bool UseHealWhenNotAHealer = true;

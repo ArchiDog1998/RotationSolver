@@ -57,7 +57,7 @@ internal static class TargetFilter
             .OrderBy(DistanceToPlayer).First();
     }
 
-    internal static BattleChara FindTargetForMoving(IEnumerable<BattleChara> charas, bool mustUse)
+    internal static BattleChara FindTargetForMoving(this IEnumerable<BattleChara> charas, bool mustUse)
     {
         if (mustUse)
         {

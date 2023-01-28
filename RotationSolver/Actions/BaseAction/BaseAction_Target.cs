@@ -144,10 +144,24 @@ internal partial class BaseAction
     private bool TargetAreaMove(float range, bool mustUse, out BattleChara target)
     {
         var availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).OfType<BattleChara>();
-        target = ChoiceTarget(TargetFilter.GetObjectInRadius(availableCharas, range), mustUse);
-        if (target == null) return false;
-        _position = target.Position;
-        return true;
+        target = TargetFilter.GetObjectInRadius(availableCharas, range).FindTargetForMoving(mustUse);
+        if (target == null)
+        {
+            if (Service.Configuration.MoveAreaAbilityMustUse)
+            {
+                Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
+                float rotation = Service.ClientState.LocalPlayer.Rotation;
+                _position = new Vector3(pPosition.X + (float)Math.Sin(rotation), pPosition.Y,
+                    pPosition.Z + (float)Math.Cos(rotation));
+                return true;
+            }
+            return false;
+        }
+        else
+        {
+            _position = target.Position;
+            return true;
+        }
     }
 
     private bool TargetAreaFriend(float range, bool mustUse, out BattleChara target)
