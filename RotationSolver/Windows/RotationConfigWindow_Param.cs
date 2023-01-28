@@ -303,9 +303,9 @@ internal partial class RotationConfigWindow
             ref Service.Configuration.MoveTargetAngle, 0.02f, 0, 100,
             LocalizationManager.RightLang.Configwindow_Param_MoveTargetAngleDesc);
 
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_MoveAreaAbilityMustUse,
-                ref Service.Configuration.MoveAreaAbilityMustUse,
-                LocalizationManager.RightLang.Configwindow_Param_MoveAreaAbilityMustUseDesc);
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_MoveAreaActionFarthest,
+                ref Service.Configuration.MoveAreaActionFarthest,
+                LocalizationManager.RightLang.Configwindow_Param_MoveAreaActionFarthestDesc);
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_RaiseAll,
             ref Service.Configuration.RaiseAll);

@@ -178,8 +178,8 @@ internal class Strings
     public string Configwindow_Param_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";
     public string Configwindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
     public string Configwindow_Param_RaiseBrinkofDeath { get; set; } = "Raise player even has Brink of Death";
-    public string Configwindow_Param_MoveAreaAbilityMustUse { get; set; } = "Must use the Moving Area Ability";
-    public string Configwindow_Param_MoveAreaAbilityMustUseDesc { get; set; } = "If no character can be moved, move to the furthest position from character's face direction.";
+    public string Configwindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
+    public string Configwindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
     public string Configwindow_Param_Hostile { get; set; } = "Hostile";
     public string Configwindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string Configwindow_Param_AddHostileCondition { get; set; } = "Add selection condition";

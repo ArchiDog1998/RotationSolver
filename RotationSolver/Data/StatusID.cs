@@ -1115,4 +1115,6 @@ internal enum StatusID : ushort
     MightyGuard = 1719,
 
     IceSpikes = 1307,
+
+    RespellingSpray = 556,
 }

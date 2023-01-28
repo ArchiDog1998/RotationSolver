@@ -4,6 +4,7 @@ using ImGuiNET;
 using RotationSolver.Commands;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using RotationSolver.Rotations.Basic;
 using RotationSolver.Windows.RotationConfigWindow;
 
 namespace RotationSolver.Actions.BaseAction
@@ -34,10 +35,10 @@ namespace RotationSolver.Actions.BaseAction
                 ImGui.Text("Must Use:" + CanUse(out _, mustUse: true).ToString());
                 ImGui.Text("Empty Use:" + CanUse(out _, emptyOrSkipCombo: true).ToString());
                 ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(AdjustedID).ToString());
-                //if (Target != null)
-                //{
-                //    ImGui.Text("Target Name: " + Target.Name);
-                //}
+                if (Target != null)
+                {
+                    ImGui.Text("Target Name: " + Target.Name);
+                }
             }
             catch
             {

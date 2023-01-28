@@ -21,8 +21,6 @@ internal sealed class BLU_Default : BLU_Base
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetCombo("BlueId", 2, "Role", "Tank", "Healer", "DPS")
-            .SetCombo("AttackType", 2, "Type", "Magic", "Physic", "Both")
             .SetBool("MoonFluteBreak", false, "MoonFlute")
             .SetBool("SingleAOE", true, "Single AOE")
             .SetBool("GamblerKill", false, "Gambler Kill")
@@ -45,13 +43,6 @@ internal sealed class BLU_Default : BLU_Base
     /// 单体时是否释放高伤害AOE
     /// </summary>
     private bool SingleAOE => Configs.GetBool("SingleAOE");
-
-    private protected override void UpdateInfo()
-    {
-        BlueId = (BLUID)Configs.GetCombo("BlueId");
-        AttackType = (BLUAttackType)Configs.GetCombo("AttackType");
-        base.UpdateInfo();
-    }
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
@@ -138,17 +129,16 @@ internal sealed class BLU_Default : BLU_Base
     /// <returns></returns>
     private bool DBlueBreak(out IAction act)
     {
-        act = null;
-        if (!HasHostilesInRange) return false;
-
-        if (AllOnSlot(TripleTrident) && TripleTrident.WillHaveOneChargeGCD(OnSlotCount(Whistle, Tingle), 0))
+        if (TripleTrident.OnSlot && TripleTrident.WillHaveOneChargeGCD(OnSlotCount(Whistle, Tingle), 0))
         {
             //口笛
             if (Whistle.CanUse(out act)) return true;
             //哔哩哔哩
-            if (!Player.HasStatus(true, StatusID.Tingling) && Player.HasStatus(true, StatusID.Harmonized) && Tingle.CanUse(out act, mustUse: true)) return true;
+            if (!Player.HasStatus(true, StatusID.Tingling) 
+                && Tingle.CanUse(out act, mustUse: true)) return true;
+            if (Offguard.CanUse(out act)) return true;
             //鱼叉
-            if (TripleTrident.CanUse(out act, mustUse: true)) return true;
+            if(TripleTrident.CanUse(out act, mustUse: true)) return true;
         }
 
         if (AllOnSlot(Whistle, FinalSting, BasicInstinct) && UseFinalSting)
@@ -246,7 +236,6 @@ internal sealed class BLU_Default : BLU_Base
 
         if (AllOnSlot(Whistle, MoonFlute, FinalSting, BasicInstinct))
         {
-
             //破防
             if (Player.HasStatus(true, StatusID.WaxingNocturne) && Offguard.CanUse(out act)) return true;
 
@@ -301,6 +290,7 @@ internal sealed class BLU_Default : BLU_Base
         if (Player.CurrentMp < 1000 && BloodDrain.CanUse(out act)) return true;
         //音爆
         if (SonicBoom.CanUse(out act)) return true;
+        if (DrillCannons.CanUse(out act,mustUse:true)) return true;
         //永恒射线 无法 +眩晕1s
         if (PerpetualRay.CanUse(out act)) return true;
         //深渊贯穿 无物 +麻痹

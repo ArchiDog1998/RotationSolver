@@ -1,5 +1,6 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Updaters;
@@ -11,6 +12,7 @@ namespace RotationSolver.Rotations.Basic;
 internal interface IBLUAction : IBaseAction
 {
     bool OnSlot { get; }
+    bool RightType { get; }
 }
 internal abstract class BLU_Base : CustomRotation.CustomRotation
 {
@@ -20,7 +22,6 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
         Healer,
         DPS,
     }
-
 
     internal enum BLUAttackType : byte
     {
@@ -53,22 +54,30 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
 
         static readonly StatusID[] NoMagic = new StatusID[]
         {
+            StatusID.RespellingSpray,
         };
 
-        private BLUActionType Type;
+        private BLUActionType _type;
+        public bool RightType
+        {
+            get
+            {
+                if (AttackType == BLUAttackType.Physical && _type == BLUActionType.Magical) return false;
+                if (AttackType == BLUAttackType.Magical && _type == BLUActionType.Physical) return false;
+
+                if (Target.HasStatus(false, NoPhysic) && _type == BLUActionType.Physical) return false;
+                if (Target.HasStatus(false, NoMagic) && _type == BLUActionType.Magical) return false;
+                return true;
+            }
+        }
 
         public unsafe bool OnSlot => ActionUpdater.BluSlots.Any(i => AdjustedID == Service.IconReplacer.OriginalHook(i));
 
         internal BLUAction(ActionID actionID, BLUActionType type, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false, bool isTimeline = false)
             : base(actionID, isFriendly, shouldEndSpecial, isEot, isTimeline)
         {
-            Type = type;
-            FilterForTarget = ts => ts.Where(t =>
-            {
-                if (t.HasStatus(false, NoPhysic) && Type == BLUActionType.Physical) return false;
-                if (t.HasStatus(false, NoMagic) && Type == BLUActionType.Magical) return false;
-                return true;
-            });
+            _type = type;
+            ActionCheck = t => OnSlot && RightType;
         }
 
         public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
@@ -76,10 +85,6 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
             act = null;
 
             if (!OnSlot) return false;
-
-            if (AttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
-            if (AttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
-
             return base.CanUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
         }
     }
@@ -277,7 +282,10 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 哔哩哔哩
     /// </summary>
-    public static IBLUAction Tingle { get; } = new BLUAction(ActionID.Tingle, BLUActionType.Magical);
+    public static IBLUAction Tingle { get; } = new BLUAction(ActionID.Tingle, BLUActionType.Magical)
+    {
+        StatusProvide = new StatusID[] {StatusID.Tingling},
+    };
 
     /// <summary>
     /// 掀地板之术
@@ -773,4 +781,18 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
         if (a is not BLUAction b) return false;
         return b.OnSlot;
     }).ToArray();
+
+    private protected override IRotationConfigSet CreateConfiguration()
+    {
+        return base.CreateConfiguration()
+            .SetCombo("BlueId", 2, "Role", "Tank", "Healer", "DPS")
+            .SetCombo("AttackType", 2, "Type", "Magic", "Physic", "Both");
+    }
+
+    private protected override void UpdateInfo()
+    {
+        BlueId = (BLUID)Configs.GetCombo("BlueId");
+        AttackType = (BLUAttackType)Configs.GetCombo("AttackType");
+        base.UpdateInfo();
+    }
 }

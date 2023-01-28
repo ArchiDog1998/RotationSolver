@@ -143,22 +143,20 @@ internal partial class BaseAction
 
     private bool TargetAreaMove(float range, bool mustUse, out BattleChara target)
     {
-        var availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).OfType<BattleChara>();
-        target = TargetFilter.GetObjectInRadius(availableCharas, range).FindTargetForMoving(mustUse);
-        if (target == null)
+        if (Service.Configuration.MoveAreaActionFarthest)
         {
-            if (Service.Configuration.MoveAreaAbilityMustUse)
-            {
-                Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
-                float rotation = Service.ClientState.LocalPlayer.Rotation;
-                _position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
-                    pPosition.Z + (float)Math.Cos(rotation) * range);
-                return true;
-            }
-            return false;
+            target = null;
+            Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
+            float rotation = Service.ClientState.LocalPlayer.Rotation;
+            _position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
+                pPosition.Z + (float)Math.Cos(rotation) * range);
+            return true;
         }
         else
         {
+            var availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).OfType<BattleChara>();
+            target = TargetFilter.GetObjectInRadius(availableCharas, range).FindTargetForMoving(mustUse);
+            if (target == null) return false;
             _position = target.Position;
             return true;
         }
