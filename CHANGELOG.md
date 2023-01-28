@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.2](https://github.com/ArchiDog1998/RotationSolver/compare/v1.2.1...v1.2.2) (2023-01-28)
+
+
+### Bug Fixes
+
+* add a testing blu rotation but is not pulic, too limited. ([29a84da](https://github.com/ArchiDog1998/RotationSolver/commit/29a84daa95cb3511e2a7ed58e6aa84dc7102c188))
+* add cross bar highlighting.. ([89d313b](https://github.com/ArchiDog1998/RotationSolver/commit/89d313bae8902d114b80c17b974c58e031e1e9e6))
+* CastType 10 rings targeting for blu. ([08cd530](https://github.com/ArchiDog1998/RotationSolver/commit/08cd5303e9bc0abc57ce24d87a5df106a2cba07f))
+* change the logic of blu. ([6d85dd0](https://github.com/ArchiDog1998/RotationSolver/commit/6d85dd0a6c652d757940f5d16d8bd8f69febc903))
+* changed for hostiles targeting. ([315f1e8](https://github.com/ArchiDog1998/RotationSolver/commit/315f1e844fb1a814f269531fd0bf049a7a13268c))
+* changing targetself NoNewHostiles Settings. ([2d2e6fd](https://github.com/ArchiDog1998/RotationSolver/commit/2d2e6fdb3e0ad20c400e59954a971889844964cb))
+* fix for casting & moving bug for Tingle. ([1326219](https://github.com/ArchiDog1998/RotationSolver/commit/13262195477cbabf99689f93c5d94a77d7abcb2a))
+* fix for timeline UI bugs. ([8507513](https://github.com/ArchiDog1998/RotationSolver/commit/8507513470c0d8e4ad05d1547a3c0aec8b5757ba))
+* Improved area moving target selection. ([696de82](https://github.com/ArchiDog1998/RotationSolver/commit/696de82b4bae3b3a6233c8367fd708d7c109d6f4))
+* mnk defautl 123 ([58c2997](https://github.com/ArchiDog1998/RotationSolver/commit/58c2997b6ec4c60edc27947f97810d2da63ef010))
+* timeline add combat time condition. ([c34156e](https://github.com/ArchiDog1998/RotationSolver/commit/c34156ed2939330b6b95ae9847998ef74149fd27))
+
 ## [1.2.1](https://github.com/ArchiDog1998/RotationSolver/compare/v1.2.0...v1.2.1) (2023-01-25)
 
 
