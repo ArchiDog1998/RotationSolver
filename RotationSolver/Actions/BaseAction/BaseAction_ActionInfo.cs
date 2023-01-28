@@ -79,22 +79,25 @@ internal partial class BaseAction
 
         if (!WillCooldown) return false;
 
-        if (IsGeneralGCD)
+        if (!emptyOrSkipCombo)
         {
-            if (!emptyOrSkipCombo && !CheckForCombo()) return false;
-
-            if (CastTime > 0 && MovingUpdater.IsMoving)
+            if (IsGeneralGCD)
             {
-                if (!player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide))
-                {
+                if (!CheckForCombo()) return false;
+            }
+            else
+            {
+                if (RecastTimeRemain > ActionUpdater.WeaponRemain + ActionUpdater.WeaponTotal)
                     return false;
-                }
             }
         }
-        else
+
+        if (CastTime > 0 && MovingUpdater.IsMoving)
         {
-            if (!emptyOrSkipCombo && RecastTimeRemain > ActionUpdater.WeaponRemain + ActionUpdater.WeaponTotal)
+            if (!player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide))
+            {
                 return false;
+            }
         }
 
         if (!FindTarget(mustUse, out var target)) return false;
