@@ -401,6 +401,9 @@ internal partial class BaseAction
         switch (_action.CastType)
         {
             case 10: //环形范围攻击也就这么判断吧，我烦了。
+                var dis = Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius;
+                return dis <= _action.EffectRange && dis >= 8;
+
             case 2: // 圆形范围攻击
                 return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= _action.EffectRange;
 
