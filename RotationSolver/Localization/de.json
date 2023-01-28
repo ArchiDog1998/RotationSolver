@@ -154,7 +154,7 @@
   "Timeline_ConditionSet": "ConditionSet",
   "Timeline_ActionCondition": "ActionCondition",
   "Timeline_TargetCondition": "TargetCondition",
-  "Timeline_ComboCondition": "ComboCondition",
+  "Timeline_RotationCondition": "RotationCondition",
   "Timeline_ActionTarget": "{0}'s target",
   "Timeline_Target": "Target",
   "Timeline_Player": "Player",
