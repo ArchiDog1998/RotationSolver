@@ -25,7 +25,14 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
-        Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+        try
+        {
+            Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+        }
+        catch
+        {
+            Service.Configuration = new PluginConfiguration();
+        }
         Service.Address = new PluginAddressResolver();
         Service.Address.Setup();
 
