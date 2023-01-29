@@ -68,7 +68,6 @@ internal static partial class TargetUpdater
             {
                 if (c.StatusList.Any(StatusHelper.IsInvincible)) return false;
 
-                //不可选中
                 if (!c.IsTargetable()) return false;
 
                 if (obj.CanAttack()) return true;
@@ -78,14 +77,12 @@ internal static partial class TargetUpdater
 
         uint[] ids = GetEnemies();
 
-
         if (AllTargets != null)
         {
             HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate > 0 ?
                  AllTargets.Where(t => t.FateId() == inFate) :
                 AllTargets.Where(t => (t.TargetObject is BattleChara || ids.Contains(t.ObjectId)) && t.FateId() == 0
                 || t.TargetObject == Service.ClientState.LocalPlayer);
-
 
             switch (IconReplacer.RightNowTargetToHostileType)
             {
@@ -152,18 +149,16 @@ internal static partial class TargetUpdater
         if (!Service.Configuration.AddEnemyListToHostile) return new uint[0];
 
         var addonByName = Service.GameGui.GetAddonByName("_EnemyList", 1);
-        if (addonByName != IntPtr.Zero)
+        if (addonByName == IntPtr.Zero) return new uint[0];
+
+        var addon = (AddonEnemyList*)addonByName;
+        var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[19];
+        List<uint> list = new List<uint>(addon->EnemyCount);
+        for (var i = 0; i < addon->EnemyCount; i++)
         {
-            var addon = (AddonEnemyList*)addonByName;
-            var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[19];
-            List<uint> list = new List<uint>(addon->EnemyCount);
-            for (var i = 0; i < addon->EnemyCount; i++)
-            {
-                list.Add((uint)numArray->IntArray[8 + i * 6]);
-            }
-            return list.ToArray();
+            list.Add((uint)numArray->IntArray[8 + i * 6]);
         }
-        return new uint[0];
+        return list.ToArray();
     }
 
     private static bool IsHostileCastingTank(BattleChara h)

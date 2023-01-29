@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Localization;
 
-internal class Strings
+internal partial class Strings
 {
     #region Commands
-    public string Commands_Rotation { get; set; } = "Set the mode of attack";
+    public string Commands_Rotation { get; set; } = "Open config window.";
     public string Commands_ChangeAutoBurst { get; set; } = "Modify automatic burst to {0}";
     public string Commands_ChangeRotationConfig { get; set; } = "Modify {0} to {1}";
     public string Commands_CannotFindRotationConfig { get; set; } = "Failed to find the config in this rotation, please check it.";
@@ -131,7 +131,7 @@ internal class Strings
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Param_AutoBreak { get; set; } = "Automatic breaking";
     public string Configwindow_Param_UseAbility { get; set; } = "Auto-use abilities";
-    public string Configwindow_Param_NoNewHostiles { get; set; } = "Don't target new mobs";
+    public string Configwindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by aoe";
     public string Configwindow_Params_NoNewHostilesDesc { get; set; } = "Nerver use any AOE action when this action may attack the mobs that not is a hostile target.";
     public string Configwindow_Param_UseDefenceAbility { get; set; } = "Use defence abilities";
     public string Configwindow_Param_UseDefenceAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???";

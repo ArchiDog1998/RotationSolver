@@ -95,6 +95,12 @@ Here is a simplified example in SCH:
 
 
 
+## Localization
+
+If you want your UI and description to support multiple languages, Add your custom Properties to the file located in `Localization\Strings_Rotation`. And use it like `LocalizationManager.RightLang.%PropertyName%`.
+
+
+
 ## BurstItem
 
 You can use burst item when you call `UseBurstItem` method in rotation. It will only be used in full party at level 90.

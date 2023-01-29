@@ -57,10 +57,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Localization.ExportLocalization();
 #endif
 
-        ChangeWindowHeader();
+        ChangeUITranslation();
     }
 
-    internal static void ChangeWindowHeader()
+    internal static void ChangeUITranslation()
     {
         _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
             + typeof(RotationConfigWindow).Assembly.GetName().Version.ToString();

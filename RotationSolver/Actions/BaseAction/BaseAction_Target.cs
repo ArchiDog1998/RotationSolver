@@ -390,11 +390,11 @@ internal partial class BaseAction
         {
             if(CanGetTarget(target, t))
             {
-                count++;
                 if (Service.Configuration.NoNewHostiles && t.TargetObject == null)
                 {
                     return 0;
                 }
+                count++;
             }
         }
         return count;
