@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.3](https://github.com/ArchiDog1998/RotationSolver/compare/v1.2.2...v1.2.3) (2023-01-29)
+
+
+### Bug Fixes
+
+* add a try catch for config reading. ([7808c41](https://github.com/ArchiDog1998/RotationSolver/commit/7808c41c58828e0415ba4d06fb686d5a4a8ecb41))
+* fix for param input mistake. ([fe4cd85](https://github.com/ArchiDog1998/RotationSolver/commit/fe4cd85740b27409d660bb4e86f49f491433e47f))
+
 ## [1.2.2](https://github.com/ArchiDog1998/RotationSolver/compare/v1.2.1...v1.2.2) (2023-01-28)
 
 
