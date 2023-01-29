@@ -1,5 +1,5 @@
 - Getting Started
-  - [Quick Start](quick-start.md)
+  - [Basic Settings](basic-settings.md)
 - Development
   - [**Rotation Development**](RotationDev/)
   - [**Plugin Development**](Development/)

@@ -44,7 +44,7 @@ internal class LocalizationManager : IDisposable
             RightLang = new Strings();
         }
 
-        RotationSolverPlugin.ChangeWindowHeader();
+        RotationSolverPlugin.ChangeUITranslation();
     }
 
 #if DEBUG

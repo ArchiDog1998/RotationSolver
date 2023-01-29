@@ -343,7 +343,7 @@ internal partial class BaseAction
                 if (!Service.Configuration.UseAOEWhenManual && !mustUse) return false;
             }
 
-            var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount);
+            var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange);
             if (tars.Count() < aoeCount) return false;
             if (Service.Configuration.NoNewHostiles && tars.Any(t => t.TargetObject == null)) return false;
         }
@@ -390,11 +390,11 @@ internal partial class BaseAction
         {
             if(CanGetTarget(target, t))
             {
-                count++;
                 if (Service.Configuration.NoNewHostiles && t.TargetObject == null)
                 {
                     return 0;
                 }
+                count++;
             }
         }
         return count;

@@ -25,7 +25,14 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
-        Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+        try
+        {
+            Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+        }
+        catch
+        {
+            Service.Configuration = new PluginConfiguration();
+        }
         Service.Address = new PluginAddressResolver();
         Service.Address.Setup();
 
@@ -50,10 +57,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Localization.ExportLocalization();
 #endif
 
-        ChangeWindowHeader();
+        ChangeUITranslation();
     }
 
-    internal static void ChangeWindowHeader()
+    internal static void ChangeUITranslation()
     {
         _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
             + typeof(RotationConfigWindow).Assembly.GetName().Version.ToString();
