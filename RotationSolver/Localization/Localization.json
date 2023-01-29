@@ -1,5 +1,5 @@
 {
-  "Commands_Rotation": "Set the mode of attack",
+  "Commands_Rotation": "Open config window.",
   "Commands_ChangeAutoBurst": "Modify automatic burst to {0}",
   "Commands_ChangeRotationConfig": "Modify {0} to {1}",
   "Commands_CannotFindRotationConfig": "Failed to find the config in this rotation, please check it.",
