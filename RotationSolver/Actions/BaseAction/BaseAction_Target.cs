@@ -250,7 +250,6 @@ internal partial class BaseAction
         {
             //找到能覆盖最多的位置，并且选血最少的来。
             target = ChoiceTarget(GetMostObjects(availableCharas, aoeCount), mustUse);
-
         }
         else
         {
