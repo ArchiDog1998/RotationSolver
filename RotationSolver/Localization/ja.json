@@ -1,5 +1,5 @@
 {
-  "Commands_Rotation": "Set the mode of attack",
+  "Commands_Rotation": "Open config window.",
   "Commands_ChangeAutoBurst": "Modify automatic burst to {0}",
   "Commands_ChangeRotationConfig": "Modify {0} to {1}",
   "Commands_CannotFindRotationConfig": "Failed to find the config in this rotation, please check it.",
@@ -84,7 +84,7 @@
   "Configwindow_Param_UseAOEWhenManual": "Use AOE actions in manual mode",
   "Configwindow_Param_AutoBreak": "Automatic breaking",
   "Configwindow_Param_UseAbility": "Auto-use abilities",
-  "Configwindow_Param_NoNewHostiles": "Don't target new mobs",
+  "Configwindow_Param_NoNewHostiles": "Don't attack new mobs by aoe",
   "Configwindow_Params_NoNewHostilesDesc": "Nerver use any AOE action when this action may attack the mobs that not is a hostile target.",
   "Configwindow_Param_UseDefenceAbility": "Use defence abilities",
   "Configwindow_Param_UseDefenceAbilityDesc": "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???",
