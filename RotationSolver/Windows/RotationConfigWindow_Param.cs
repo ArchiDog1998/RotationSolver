@@ -59,6 +59,12 @@ internal partial class RotationConfigWindow
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_WeaponDelay,
             ref Service.Configuration.WeaponDelayMin, ref Service.Configuration.WeaponDelayMax);
 
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_DeathDelay,
+            ref Service.Configuration.DeathDelayMin, ref Service.Configuration.DeathDelayMax);
+
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_HostileDelay,
+            ref Service.Configuration.HostileDelayMin, ref Service.Configuration.HostileDelayMax);
+
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponFaster,
             ref Service.Configuration.WeaponFaster, max: 0.1f);
 

@@ -25,6 +25,10 @@ internal static class ActionUpdater
             return DateTime.Now - _startCombatTime;
         }
     }
+
+    private static  RandomDelay GCDDelay = new RandomDelay(() => WeaponRemain <= Service.Configuration.WeaponFaster,
+    () => (Service.Configuration.WeaponDelayMin, Service.Configuration.WeaponDelayMax));
+
     internal static float WeaponRemain { get; private set; } = 0;
 
     internal static float WeaponTotal { get; private set; } = 0;
@@ -186,21 +190,9 @@ internal static class ActionUpdater
             || *(bool*)((IntPtr)ActionManager.Instance() + 0x68)) return;
 
         //GCD
-        if (WeaponRemain <= Service.Configuration.WeaponFaster)
+        if (GCDDelay.Check)
         {
-            if (_weaponRandomDelay < 0)
-            {
-                Random ran = new Random(DateTime.Now.Millisecond);
-                _weaponRandomDelay = Service.Configuration.WeaponDelayMin +
-                    (float)ran.NextDouble() * (Service.Configuration.WeaponDelayMax - Service.Configuration.WeaponDelayMin);
-
-                _lastWeaponGo = DateTime.Now;
-            }
-            else if ((DateTime.Now - _lastWeaponGo).TotalSeconds >= _weaponRandomDelay)
-            {
-                _weaponRandomDelay = -1;
-                RSCommands.DoAnAction(true);
-            }
+            if (GCDDelay.Update()) RSCommands.DoAnAction(true);
             return;
         }
 

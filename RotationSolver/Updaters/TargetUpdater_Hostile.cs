@@ -58,6 +58,9 @@ internal static partial class TargetUpdater
         }
     }
 
+    static RandomDelay _hostileDelay = new RandomDelay(() => HostileTargets.Any(), () => (Service.Configuration.HostileDelayMin, Service.Configuration.HostileDelayMax));
+
+
     internal unsafe static void UpdateHostileTargets()
     {
         var inFate = Infate;
@@ -99,6 +102,8 @@ internal static partial class TargetUpdater
                 case TargetHostileType.TargetsHaveTarget:
                     break;
             }
+
+            if (!_hostileDelay.Update()) HostileTargets = new BattleChara[0];
 
             CanInterruptTargets = HostileTargets.Where(tar =>
             {

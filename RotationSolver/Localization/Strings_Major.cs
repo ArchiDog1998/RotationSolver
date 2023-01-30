@@ -97,7 +97,10 @@ internal partial class Strings
     public string Configwindow_Param_UseOverlayWindow { get; set; } = "Display top overlay";
     public string Configwindow_Param_UseOverlayWindowDesc { get; set; } = "This window is currently used to cue the body position in advance.";
     public string Configwindow_Param_Basic { get; set; } = "Basic";
-    public string Configwindow_Param_WeaponDelay { get; set; } = "Set the random interval between GCD (seconds)";
+    public string Configwindow_Param_WeaponDelay { get; set; } = "Set the range of random delay for GCD in second.";
+    public string Configwindow_Param_DeathDelay { get; set; } = "Set the range of random delay for raising deaths in second.";
+    public string Configwindow_Param_HostileDelay { get; set; } = "Set the range of random delay for finding hostile targets in second.";
+
     public string Configwindow_Param_WeaponFaster { get; set; } = "Set the time advance of use actions";
     public string Configwindow_Param_WeaponInterval { get; set; } = "Set the interval between abilities using";
     public string Configwindow_Param_InterruptibleTime { get; set; } = "Set the delay of interrupting";

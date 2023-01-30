@@ -94,8 +94,16 @@ public class PluginConfiguration : IPluginConfiguration
     public float SpecialDuration = 3;
     public float WeaponInterval = 0.67f;
     public float WeaponFaster = 0.08f;
+
     public float WeaponDelayMin = 0;
     public float WeaponDelayMax = 0;
+
+    public float DeathDelayMin = 0;
+    public float DeathDelayMax = 0;
+
+    public float HostileDelayMin = 0;
+    public float HostileDelayMax = 0;
+
     public string PositionalErrorText = string.Empty;
 
     public int MoveTargetAngle = 24;

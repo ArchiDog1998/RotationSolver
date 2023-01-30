@@ -238,6 +238,13 @@ internal static partial class TargetUpdater
     }
 
     static SortedDictionary<uint, Vector3> _locations = new SortedDictionary<uint, Vector3>();
+
+    static RandomDelay _deathAllDelay = new RandomDelay(() => DeathPeopleAll.Any(), 
+        () => (Service.Configuration.DeathDelayMin, Service.Configuration.DeathDelayMax));
+
+    static RandomDelay _deathPartyDelay = new RandomDelay(() => DeathPeopleParty.Any(),
+        () => (Service.Configuration.DeathDelayMin, Service.Configuration.DeathDelayMax));
+
     private static void MaintainDeathPeople()
     {
         SortedDictionary<uint, Vector3> locs = new SortedDictionary<uint, Vector3>();
@@ -252,6 +259,9 @@ internal static partial class TargetUpdater
 
         DeathPeopleAll = FilterForDeath(DeathPeopleAll);
         DeathPeopleParty = FilterForDeath(DeathPeopleParty);
+
+        if (!_deathAllDelay.Update()) DeathPeopleAll = new BattleChara[0];
+        if (!_deathPartyDelay.Update()) DeathPeopleParty = new BattleChara[0];
 
         _locations = locs;
     }
