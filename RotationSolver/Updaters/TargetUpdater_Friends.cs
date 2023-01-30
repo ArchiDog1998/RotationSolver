@@ -112,15 +112,13 @@ internal static partial class TargetUpdater
             : party.Where(obj => obj != null && obj.GameObject is BattleChara).Select(obj => obj.GameObject as BattleChara);
 
         //添加亲信
-        PartyMembers = PartyMembers.Union(Service.ObjectTable.Where(obj => obj.SubKind == 9 && obj is BattleChara).Cast<BattleChara>());
+        PartyMembers = PartyMembers.Union(Service.ObjectTable.OfType<BattleChara>().Where(obj => obj.SubKind == 9));
 
-        HavePet = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc
-                && npc.BattleNpcKind == BattleNpcSubKind.Pet
-                && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
+        var mayPet = Service.ObjectTable.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId);
 
-        HaveChocobo = Service.ObjectTable.Where(obj => obj != null && obj is BattleNpc npc
-                && npc.BattleNpcKind == BattleNpcSubKind.Chocobo
-                && npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId).Count() > 0;
+        HavePet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
+
+        HaveChocobo = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Chocobo); 
 
         AllianceMembers = Service.ObjectTable.OfType<PlayerCharacter>();
 
