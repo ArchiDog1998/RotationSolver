@@ -384,7 +384,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float speed = 0.002f, float min = 0, float max = 1, string description = "")
+    private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float speed = 0.002f, float min = 0, float max = 3, string description = "")
     {
         ImGui.SetNextItemWidth(100);
         if (ImGui.DragFloatRange2(name, ref minValue, ref maxValue, speed, min, max))

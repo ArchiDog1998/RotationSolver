@@ -82,6 +82,7 @@ internal static partial class TargetUpdater
 
         if (AllTargets != null)
         {
+            var lastHostile = HostileTargets;
             HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate > 0 ?
                  AllTargets.Where(t => t.FateId() == inFate) :
                 AllTargets.Where(t => (t.TargetObject is BattleChara || ids.Contains(t.ObjectId)) && t.FateId() == 0
@@ -103,7 +104,7 @@ internal static partial class TargetUpdater
                     break;
             }
 
-            if (!_hostileDelay.Update()) HostileTargets = new BattleChara[0];
+            if (!_hostileDelay.Update()) HostileTargets = lastHostile;
 
             CanInterruptTargets = HostileTargets.Where(tar =>
             {

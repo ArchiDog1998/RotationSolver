@@ -169,8 +169,6 @@ internal static class ActionUpdater
         _lastMP = player.CurrentMp;
     }
 
-    static DateTime _lastWeaponGo = DateTime.MinValue;
-    static float _weaponRandomDelay = -1;
     internal static float _lastCastingTotal = 0;
     internal unsafe static void DoAction()
     {
