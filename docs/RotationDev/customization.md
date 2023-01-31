@@ -101,6 +101,6 @@ If you want your UI and description to support multiple languages, Add your cust
 
 
 
-## BurstItem
+## Tincture
 
-You can use burst item when you call `UseBurstItem` method in rotation. It will only be used in full party at level 90.
+You can use tincture when you call `UseTincture` method in rotation. It will only be used in full party at level 90.
