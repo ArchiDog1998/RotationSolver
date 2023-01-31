@@ -31,8 +31,7 @@ internal static class ObjectHelper
 
     internal static bool CanInterrupt(this BattleChara b)
     {
-        var baseCheck = b.IsCasting && b.IsCastInterruptible && b.TotalCastTime >= 2
-            && b.CurrentCastTime >= Service.Configuration.InterruptibleTime;
+        var baseCheck = b.IsCasting && b.IsCastInterruptible && b.TotalCastTime >= 2;
 
         if (!baseCheck) return false;
         if (!Service.Configuration.InterruptibleMoreCheck) return true;

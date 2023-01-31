@@ -97,16 +97,23 @@ internal partial class Strings
     public string Configwindow_Param_UseOverlayWindow { get; set; } = "Display top overlay";
     public string Configwindow_Param_UseOverlayWindowDesc { get; set; } = "This window is currently used to cue the body position in advance.";
     public string Configwindow_Param_Basic { get; set; } = "Basic";
-    public string Configwindow_Param_WeaponDelay { get; set; } = "Set the range of random delay for GCD in second.";
-    public string Configwindow_Param_DeathDelay { get; set; } = "Set the range of random delay for raising deaths in second.";
-    public string Configwindow_Param_HostileDelay { get; set; } = "Set the range of random delay for finding hostile targets in second.";
 
     public string Configwindow_Param_WeaponFaster { get; set; } = "Set the time advance of use actions";
     public string Configwindow_Param_WeaponInterval { get; set; } = "Set the interval between abilities using";
-    public string Configwindow_Param_InterruptibleTime { get; set; } = "Set the delay of interrupting";
     public string Configwindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string Configwindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
     public string Configwindow_Param_AutoOffBetweenArea { get; set; } = "Turn off when player is between area.";
+
+    public string Configwindow_Param_Delay { get; set; } = "Delay";
+
+    public string Configwindow_Param_WeaponDelay { get; set; } = "Set the range of random delay for GCD in second.";
+    public string Configwindow_Param_DeathDelay { get; set; } = "Set the range of random delay for raising deaths in second.";
+    public string Configwindow_Param_HostileDelay { get; set; } = "Set the range of random delay for finding hostile targets in second.";
+    public string Configwindow_Param_InterruptDelay { get; set; } = "Set the range of random delay for interrupting hostile targets in second.";
+    public string Configwindow_Param_WeakenDelay { get; set; } = "Set the range of random delay for esuna weakens in second.";
+
+    public string Configwindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
+
     public string Configwindow_Param_Display { get; set; } = "Display";
     public string Configwindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting";
     public string Configwindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
@@ -151,6 +158,8 @@ internal partial class Strings
     public string Configwindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
     public string Configwindow_Param_Conditon { get; set; } = "Condition";
     public string Configwindow_Param_StartOnCountdown { get; set; } = "Turn on auto-rotation on countdown";
+    public string Configwindow_Param_InterruptibleMoreCheck { get; set; } = "Interrupt the action with action type check.";
+
 
     public string Configwindow_Param_HealOutOfCombat { get; set; } = "Heal party members outside of combat.";
 

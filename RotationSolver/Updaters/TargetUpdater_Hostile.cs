@@ -20,12 +20,13 @@ internal static partial class TargetUpdater
     /// <summary>
     /// 敌人
     /// </summary>
-    internal static IEnumerable<BattleChara> HostileTargets { get; private set; } = new BattleChara[0];
+    internal static ObjectListDelay<BattleChara> HostileTargets { get; } = new ObjectListDelay<BattleChara>(
+        () => (Service.Configuration.HostileDelayMin, Service.Configuration.HostileDelayMax));
 
     internal static IEnumerable<BattleChara> TarOnMeTargets { get; private set; } = new BattleChara[0];
 
-    internal static IEnumerable<BattleChara> CanInterruptTargets { get; private set; } = new BattleChara[0];
-
+    internal static ObjectListDelay<BattleChara> CanInterruptTargets { get;} = new ObjectListDelay<BattleChara>(
+        () => (Service.Configuration.InterruptDelayMin, Service.Configuration.InterruptDelayMax));
     internal static bool HasHostilesInRange { get; private set; } = false;
 
     internal static bool IsHostileCastingAOE { get; private set; } = false;
@@ -81,9 +82,9 @@ internal static partial class TargetUpdater
             return b.CanAttack();
         });
 
-        HostileTargets = GetHostileTargets(allAttackableTargets);
+        HostileTargets.Delay(GetHostileTargets(allAttackableTargets));
 
-        CanInterruptTargets = HostileTargets.Where(ObjectHelper.CanInterrupt);
+        CanInterruptTargets.Delay(HostileTargets.Where(ObjectHelper.CanInterrupt));
 
         TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId);
 

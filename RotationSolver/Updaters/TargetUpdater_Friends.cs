@@ -42,16 +42,20 @@ internal static partial class TargetUpdater
     internal static IEnumerable<BattleChara> AllianceTanks { get; private set; } = new PlayerCharacter[0];
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static IEnumerable<BattleChara> DeathPeopleAll { get; private set; } = new PlayerCharacter[0];
+    internal static ObjectListDelay<BattleChara> DeathPeopleAll { get; } = new (
+        ()=>(Service.Configuration.DeathDelayMin, Service.Configuration.DeathDelayMax));
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static IEnumerable<BattleChara> DeathPeopleParty { get; private set; } = new PlayerCharacter[0];
+    internal static ObjectListDelay<BattleChara> DeathPeopleParty { get; } = new(
+        () => (Service.Configuration.DeathDelayMin, Service.Configuration.DeathDelayMax));
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static IEnumerable<BattleChara> WeakenPeople { get; private set; } = new PlayerCharacter[0];
+    internal static ObjectListDelay<BattleChara> WeakenPeople { get;  } = new(
+        () => (Service.Configuration.WeakenDelayMin, Service.Configuration.WeakenDelayMax));
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static IEnumerable<BattleChara> DyingPeople { get; private set; } = new PlayerCharacter[0];
+    internal static ObjectListDelay<BattleChara> DyingPeople { get; } = new(
+        () => (Service.Configuration.WeakenDelayMin, Service.Configuration.WeakenDelayMax));
     /// <summary>
     /// 小队成员HP
     /// </summary>
@@ -120,29 +124,28 @@ internal static partial class TargetUpdater
         PartyHealers = PartyMembers.GetJobCategory(JobRole.Healer);
         AllianceTanks = AllianceMembers.GetJobCategory(JobRole.Tank);
 
-        DeathPeopleAll = AllianceMembers.GetDeath();
-        DeathPeopleParty = PartyMembers.GetDeath();
-        MaintainDeathPeople();
+        var deathAll = AllianceMembers.GetDeath();
+        var deathParty = PartyMembers.GetDeath();
+        MaintainDeathPeople(ref deathAll, ref deathParty);
+        DeathPeopleAll.Delay(deathAll);
+        DeathPeopleParty.Delay(deathParty);
 
-        WeakenPeople = PartyMembers.Where(p => p.StatusList.Any(status => 
-            status.GameData.CanDispel && status.RemainingTime > 2));
+        WeakenPeople.Delay(PartyMembers.Where(p => p.StatusList.Any(status => 
+            status.GameData.CanDispel && status.RemainingTime > 2)));
 
-        DyingPeople = WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous));
+        DyingPeople.Delay(WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous)));
 
         SayHelloToAuthor();
         #endregion
 
-        #region Health
         PartyMembersHP = PartyMembers.Select(ObjectHelper.GetHealthRatio).Where(r => r > 0);
         PartyMembersAverHP = PartyMembersHP.Average();
         PartyMembersDifferHP = (float)Math.Sqrt(PartyMembersHP.Average(d => Math.Pow(d - PartyMembersAverHP, 2)));
 
         UpdateCanHeal(Service.ClientState.LocalPlayer);
-        #endregion
     }
 
-    private static RandomDelay _healDelay = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
-
+    static RandomDelay _healDelay = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
 
     static void UpdateCanHeal(PlayerCharacter player)
     {
@@ -198,33 +201,31 @@ internal static partial class TargetUpdater
     }
 
     static SortedDictionary<uint, Vector3> _locations = new SortedDictionary<uint, Vector3>();
-    private static void MaintainDeathPeople()
+    private static void MaintainDeathPeople(ref IEnumerable<BattleChara> deathAll, ref IEnumerable<BattleChara> deathParty)
     {
         SortedDictionary<uint, Vector3> locs = new SortedDictionary<uint, Vector3>();
-        foreach (var item in DeathPeopleAll)
+        foreach (var item in deathAll)
         {
             locs[item.ObjectId] = item.Position;
         }
-        foreach (var item in DeathPeopleParty)
+        foreach (var item in deathParty)
         {
             locs[item.ObjectId] = item.Position;
         }
 
-        DeathPeopleAll = FilterForDeath(DeathPeopleAll);
-        DeathPeopleParty = FilterForDeath(DeathPeopleParty);
+        deathAll = FilterForDeath(deathAll);
+        deathParty = FilterForDeath(deathParty);
 
         _locations = locs;
     }
 
-    private static IEnumerable<BattleChara> FilterForDeath(IEnumerable<BattleChara> battleCharas)
-    {
-        return battleCharas.Where(b =>
+    private static IEnumerable<BattleChara> FilterForDeath(IEnumerable<BattleChara> battleCharas) 
+        => battleCharas.Where(b =>
         {
             if (!_locations.TryGetValue(b.ObjectId, out var loc)) return false;
 
             return loc == b.Position;
         });
-    }
 
 
     /// <summary>
