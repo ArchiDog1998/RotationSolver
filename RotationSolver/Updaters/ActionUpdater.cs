@@ -26,7 +26,7 @@ internal static class ActionUpdater
         }
     }
 
-    private static  RandomDelay GCDDelay = new RandomDelay(() => WeaponRemain <= Service.Configuration.WeaponFaster,
+    private static  RandomDelay _GCDDelay = new RandomDelay(() => WeaponRemain <= Service.Configuration.WeaponFaster,
     () => (Service.Configuration.WeaponDelayMin, Service.Configuration.WeaponDelayMax));
 
     internal static float WeaponRemain { get; private set; } = 0;
@@ -188,9 +188,9 @@ internal static class ActionUpdater
             || *(bool*)((IntPtr)ActionManager.Instance() + 0x68)) return;
 
         //GCD
-        if (GCDDelay.Check)
+        if (_GCDDelay.Check)
         {
-            if (GCDDelay.Update()) RSCommands.DoAnAction(true);
+            if (_GCDDelay.Update()) RSCommands.DoAnAction(true);
             return;
         }
 

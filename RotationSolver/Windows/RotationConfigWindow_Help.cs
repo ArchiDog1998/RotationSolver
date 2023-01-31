@@ -33,6 +33,13 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 Util.OpenLink("https://archidog1998.github.io/RotationSolver/");
             }
 
+            ImGui.SameLine();
+
+            if (ImGui.Button("Changelog"))
+            {
+                Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver/blob/release/CHANGELOG.md");
+            }
+
             if (ImGui.BeginChild("Help Infomation", new Vector2(0f, -1f), true))
             {
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));

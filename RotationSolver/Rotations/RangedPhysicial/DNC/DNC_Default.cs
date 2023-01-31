@@ -219,7 +219,8 @@ internal sealed class DNC_Default : DNC_Base
         if (!IsDancing) return false;
 
         //标准舞步结束
-        if (Player.HasStatus(true, StatusID.StandardStep) && Player.WillStatusEnd(1, true, StatusID.StandardStep) || StandardFinish.CanUse(out _, mustUse: true))
+        if (Player.HasStatus(true, StatusID.StandardStep) && (Player.WillStatusEnd(1, true, StatusID.StandardStep) || CompletedSteps == 2 && Player.WillStatusEnd(1, true, StatusID.StandardFinish))
+            || StandardFinish.CanUse(out _, mustUse: true))
         {
             act = StandardStep;
             return true;
