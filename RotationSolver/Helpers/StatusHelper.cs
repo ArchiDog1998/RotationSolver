@@ -12,6 +12,16 @@ namespace RotationSolver.Helpers;
 
 internal static class StatusHelper
 {
+    public static StatusID[] AreaHots { get; } = new StatusID[]
+    {
+        StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2
+    };
+
+    public static StatusID[] SingleHots { get; } = new StatusID[]
+    {
+        StatusID.AspectedBenefic, StatusID.Regen1, StatusID.Regen2, StatusID.Regen3
+    };
+
     public static StatusID[] SheildStatus { get; } = new StatusID[]
     {
         StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance

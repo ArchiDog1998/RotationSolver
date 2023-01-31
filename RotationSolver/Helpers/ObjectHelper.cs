@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Data;
 using RotationSolver.Updaters;
@@ -27,6 +28,23 @@ internal static class ObjectHelper
 
     internal static unsafe bool IsTargetable(this GameObject obj)
     => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->GetIsTargetable();
+
+    internal static bool CanInterrupt(this BattleChara b)
+    {
+        var baseCheck = b.IsCasting && b.IsCastInterruptible && b.TotalCastTime >= 2
+            && b.CurrentCastTime >= Service.Configuration.InterruptibleTime;
+
+        if (!baseCheck) return false;
+        if (!Service.Configuration.InterruptibleMoreCheck) return true;
+
+        var act = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(b.CastActionId);
+        if (act == null) return false;
+
+        //跳过扇形圆型
+        if (act.CastType is 3 or 4) return false;
+        if (ActionManager.GetActionRange(b.CastActionId) < 8) return false;
+        return true;
+    }
 
     /// <summary>
     /// Is character a boss? Max HP exceeds a certain amount.

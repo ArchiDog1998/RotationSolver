@@ -35,8 +35,7 @@ internal static class MajorUpdater
 
         ActionUpdater.UpdateActionInfo();
 
-        TargetUpdater.UpdateHostileTargets();
-        TargetUpdater.UpdateFriends();
+        TargetUpdater.UpdateTarget();
 
         MovingUpdater.UpdateLocation();
 

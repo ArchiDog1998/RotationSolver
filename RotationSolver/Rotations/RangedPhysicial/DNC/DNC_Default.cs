@@ -39,8 +39,7 @@ internal sealed class DNC_Default : DNC_Base
     {
         if (remainTime <= 15)
         {
-            if (StandardStep.CanUse(out _, mustUse: true)) return StandardStep;
-            IAction act;
+            if (StandardStep.CanUse(out var act, mustUse: true)) return act;
             if (ExcutionStepGCD(out act)) return act;
         }
         return base.CountDownAction(remainTime);
@@ -211,6 +210,28 @@ internal sealed class DNC_Default : DNC_Base
         //else if (ClosedPosition.ShouldUse(out act)) return true;
 
         act = null;
+        return false;
+    }
+
+    private static bool FinishStepGCD(out IAction act)
+    {
+        act = null;
+        if (!IsDancing) return false;
+
+        //标准舞步结束
+        if (Player.HasStatus(true, StatusID.StandardStep) && Player.WillStatusEnd(1, true, StatusID.StandardStep) || StandardFinish.CanUse(out _, mustUse: true))
+        {
+            act = StandardStep;
+            return true;
+        }
+
+        //技巧舞步结束
+        if (Player.HasStatus(true, StatusID.TechnicalStep) && Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || TechnicalFinish.CanUse(out _, mustUse: true))
+        {
+            act = TechnicalStep;
+            return true;
+        }
+
         return false;
     }
 }

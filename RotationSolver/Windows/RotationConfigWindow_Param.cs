@@ -74,6 +74,8 @@ internal partial class RotationConfigWindow
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_InterruptibleTime,
             ref Service.Configuration.InterruptibleTime, min: 0, max: 2);
 
+        // Service.Configuraton.InterruptibleMoreCheck
+
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_SpecialDuration,
             ref Service.Configuration.SpecialDuration, speed: 0.02f, min: 1, max: 20);
 

@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Fates;
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
@@ -16,12 +17,6 @@ namespace RotationSolver.Updaters;
 
 internal static partial class TargetUpdater
 {
-#if DEBUG
-    internal static IEnumerable<BattleChara> AllTargets { get; set; } = new BattleChara[0];
-#else
-    private static IEnumerable<BattleChara> AllTargets { get; set; } = new BattleChara[0];
-#endif
-
     /// <summary>
     /// 敌人
     /// </summary>
@@ -37,13 +32,13 @@ internal static partial class TargetUpdater
 
     internal static bool IsHostileCastingToTank { get; private set; } = false;
 
-    internal static unsafe ushort Infate
+    internal static unsafe ushort FateId
     {
         get
         {
             try
             {
-                if( Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero 
+                if(Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero 
                     && (IntPtr)FateManager.Instance()->CurrentFate != IntPtr.Zero
                     && Service.ClientState.LocalPlayer.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
                 {
@@ -58,72 +53,10 @@ internal static partial class TargetUpdater
         }
     }
 
-    static RandomDelay _hostileDelay = new RandomDelay(() => HostileTargets.Any(), () => (Service.Configuration.HostileDelayMin, Service.Configuration.HostileDelayMax));
-
-
-    internal unsafe static void UpdateHostileTargets()
+    private static float JobRange
     {
-        var inFate = Infate;
-
-        AllTargets = TargetFilter.GetTargetable(TargetFilter.GetObjectInRadius(Service.ObjectTable, 30).Where(obj =>
+        get
         {
-            if (obj is BattleChara c && c.CurrentHp != 0)
-            {
-                if (c.StatusList.Any(StatusHelper.IsInvincible)) return false;
-
-                if (!c.IsTargetable()) return false;
-
-                if (obj.CanAttack()) return true;
-            }
-            return false;
-        }).Cast<BattleChara>());
-
-        uint[] ids = GetEnemies();
-
-        if (AllTargets != null)
-        {
-            var lastHostile = HostileTargets;
-            HostileTargets = CountDown.CountDownTime > 0 ? AllTargets : inFate > 0 ?
-                 AllTargets.Where(t => t.FateId() == inFate) :
-                AllTargets.Where(t => (t.TargetObject is BattleChara || ids.Contains(t.ObjectId)) && t.FateId() == 0
-                || t.TargetObject == Service.ClientState.LocalPlayer);
-
-            switch (IconReplacer.RightNowTargetToHostileType)
-            {
-                case TargetHostileType.AllTargetsCanAttack:
-                    HostileTargets = AllTargets;
-                    break;
-
-                default:
-                case TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack:
-                    if (!HostileTargets.Any())
-                        HostileTargets = AllTargets;
-                    break;
-
-                case TargetHostileType.TargetsHaveTarget:
-                    break;
-            }
-
-            if (!_hostileDelay.Update()) HostileTargets = lastHostile;
-
-            CanInterruptTargets = HostileTargets.Where(tar =>
-            {
-                var baseCheck = tar.IsCasting && tar.IsCastInterruptible && tar.TotalCastTime >= 2
-                    && tar.CurrentCastTime >= Service.Configuration.InterruptibleTime;
-
-                if(!baseCheck) return false;
-
-                var act = Service.DataManager.GetExcelSheet<Action>().GetRow(tar.CastActionId);
-                if (act == null) return false;
-
-                //跳过扇形圆型
-                if (act.CastType is 3 or 4) return false;
-                if (ActionManager.GetActionRange(tar.CastActionId) < 8) return false;
-                return true;
-            });
-
-            TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId);
-
             float radius = 25;
             switch (Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
                 Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole())
@@ -133,13 +66,28 @@ internal static partial class TargetUpdater
                     radius = 3;
                     break;
             }
-            HasHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, radius).Any();
+            return radius;
         }
-        else
+    }
+
+    private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
+    {
+        var allAttackableTargets = allTargets.Where(b =>
         {
-            AllTargets = HostileTargets = CanInterruptTargets = new BattleChara[0];
-            HasHostilesInRange = false;
-        }
+            if (!b.IsTargetable()) return false;
+
+            if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
+
+            return b.CanAttack();
+        });
+
+        HostileTargets = GetHostileTargets(allAttackableTargets);
+
+        CanInterruptTargets = HostileTargets.Where(ObjectHelper.CanInterrupt);
+
+        TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId);
+
+        HasHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, JobRange).Any();
 
         if (HostileTargets.Count() == 1)
         {
@@ -148,6 +96,37 @@ internal static partial class TargetUpdater
             IsHostileCastingToTank = IsHostileCastingTank(tar);
             IsHostileCastingAOE = IsHostileCastingArea(tar);
         }
+        else
+        {
+            IsHostileCastingToTank = IsHostileCastingAOE = false;
+        }
+    }
+
+    private static IEnumerable<BattleChara> GetHostileTargets(IEnumerable<BattleChara> allattackableTargets)
+    {
+        var type = IconReplacer.RightNowTargetToHostileType;
+        if (type == TargetHostileType.AllTargetsCanAttack || CountDown.CountDownTime > 0)
+        {
+            return allattackableTargets;
+        }
+
+        uint[] ids = GetEnemies();
+        var fateId = FateId;
+
+        var hostiles = allattackableTargets.Where(t =>
+        {
+            if (ids.Contains(t.ObjectId)) return true;
+            if (t.TargetObject == Service.ClientState.LocalPlayer) return true;
+
+            return fateId > 0 ? t.FateId() == fateId : t.TargetObject is BattleChara;
+        });
+
+        if (type == TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack)
+        {
+            if (!hostiles.Any()) hostiles = allattackableTargets;
+        }
+
+        return hostiles;
     }
 
     private static unsafe uint[] GetEnemies()

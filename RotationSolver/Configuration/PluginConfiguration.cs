@@ -91,6 +91,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public Dictionary<ClassJobID, float> HealthForDyingTanks { get; set; } = new Dictionary<ClassJobID, float>();
     public float InterruptibleTime = 0.5f;
+    public bool InterruptibleMoreCheck = true;
     public float SpecialDuration = 3;
     public float WeaponInterval = 0.67f;
     public float WeaponFaster = 0.08f;

@@ -24,7 +24,7 @@ internal partial class RotationConfigWindow
         ImGui.Text("Friends: " + TargetUpdater.PartyMembers.Count().ToString());
         if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
         {
-            ImGui.Text("Fate: " + TargetUpdater.Infate.ToString());
+            ImGui.Text("Fate: " + TargetUpdater.FateId.ToString());
         }
 
         if (ImGui.CollapsingHeader("Status"))
