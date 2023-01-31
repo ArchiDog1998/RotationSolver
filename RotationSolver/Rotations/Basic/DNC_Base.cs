@@ -252,7 +252,7 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
             !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
             //Remove other partner.
             && !b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2)
-            ).ToArray();
+            );
 
             return Targets.GetJobCategory(JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical).FirstOrDefault();
         },

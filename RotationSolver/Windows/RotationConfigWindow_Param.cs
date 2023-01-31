@@ -76,13 +76,13 @@ internal partial class RotationConfigWindow
     private void DrawParamDelay()
     {
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_WeaponDelay,
-            ref Service.Configuration.WeaponDelayMin, ref Service.Configuration.WeaponDelayMax, max: 1);
+            ref Service.Configuration.WeaponDelayMin, ref Service.Configuration.WeaponDelayMax, speed: 0.002f, max: 1);
 
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_HostileDelay,
             ref Service.Configuration.HostileDelayMin, ref Service.Configuration.HostileDelayMax);
 
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_InterruptDelay,
-            ref Service.Configuration.InterruptDelayMin, ref Service.Configuration.InterruptDelayMin);
+            ref Service.Configuration.InterruptDelayMin, ref Service.Configuration.InterruptDelayMax);
 
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_DeathDelay,
             ref Service.Configuration.DeathDelayMin, ref Service.Configuration.DeathDelayMax);
@@ -397,7 +397,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float speed = 0.002f, float min = 0, float max = 3, string description = "")
+    private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float speed = 0.01f, float min = 0, float max = 3, string description = "")
     {
         ImGui.SetNextItemWidth(100);
         if (ImGui.DragFloatRange2(name, ref minValue, ref maxValue, speed, min, max))

@@ -155,6 +155,7 @@ internal sealed class DNC_Default : DNC_Base
     private bool UseStandardStep(out IAction act)
     {
         if (!StandardStep.CanUse(out act, mustUse: true)) return false;
+        if(Player.WillStatusEndGCD(2, 0, true, StatusID.StandardFinish)) return true;
 
         //等级低于玩家太多不跳舞,都直接秒了还跳啥舞
         if (Level - Target.Level > 10) return false;
@@ -166,24 +167,6 @@ internal sealed class DNC_Default : DNC_Base
         if (TechnicalStep.EnoughLevel && (Player.HasStatus(true, StatusID.TechnicalFinish) || TechnicalStep.IsCoolingDown && TechnicalStep.WillHaveOneCharge(5))) return false;
 
         return true;
-    }
-
-    /// <summary>
-    /// 结束舞步
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
-    private bool UseFinishStepGCD(out IAction act)
-    {
-        if (!FinishStepGCD(out act)) return false;
-
-        if (Target.IsBoss()) return true;
-
-        if (Windmill.CanUse(out _)) return true;
-
-        if (TargetUpdater.HostileTargets.GetObjectInRadius(25).Count() >= 3) return false;
-
-        return false;
     }
 
     /// <summary>

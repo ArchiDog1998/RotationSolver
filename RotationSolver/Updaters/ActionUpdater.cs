@@ -188,11 +188,8 @@ internal static class ActionUpdater
 
         //GCD
         var canUseGCD = WeaponRemain <= Service.Configuration.WeaponFaster;
-        if (canUseGCD)
-        {
-            if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
-            return;
-        }
+        if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
+        if (canUseGCD) return;
 
         //要超出GCD了，那就不放技能了。
         if (WeaponRemain < Service.Configuration.WeaponInterval

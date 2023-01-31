@@ -34,12 +34,13 @@ internal class ObjectListDelay<T> : IEnumerable<T> where T : GameObject
             }
             revealTime.Add(item.ObjectId, time);
 
-            if (time > now)
+            if (now > time)
             {
                 outList.Add(item);
             }
         }
 
+        _list = outList;
         _revealTime = revealTime;
     }
 

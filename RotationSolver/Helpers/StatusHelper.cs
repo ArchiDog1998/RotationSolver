@@ -125,10 +125,16 @@ internal static class StatusHelper
         || status.SourceObject?.OwnerId == Service.ClientState.LocalPlayer.ObjectId : true);
     }
 
+    static readonly StatusID[] invincibalStatus = new StatusID[]
+    {
+        StatusID.StoneSkin,
+    };
+
     internal static bool IsInvincible(this Status status)
     {
         if (status.GameData.Icon == 15024) return true;
-        return false;
+
+        return invincibalStatus.Any(id => (uint)id == status.StatusId);
     }
 
     static readonly StatusID[] dangeriousStatus = new StatusID[]
@@ -159,6 +165,7 @@ internal static class StatusHelper
 
     internal static bool IsDangerous(this Status status)
     {
+        if(status.StackCount > 2) return true;
         return dangeriousStatus.Any(id => (uint)id == status.StatusId);
     }
 }
