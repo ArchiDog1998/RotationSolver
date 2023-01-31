@@ -105,6 +105,9 @@ public class PluginConfiguration : IPluginConfiguration
     public float HostileDelayMin = 0;
     public float HostileDelayMax = 0;
 
+    public float HealDelayMin = 0;
+    public float HealDelayMax = 0;
+
     public string PositionalErrorText = string.Empty;
 
     public int MoveTargetAngle = 24;

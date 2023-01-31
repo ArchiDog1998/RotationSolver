@@ -57,7 +57,7 @@ internal static class TargetFilter
             .OrderBy(DistanceToPlayer).First();
     }
 
-    internal static GameObject FindTargetForMoving(this IEnumerable<GameObject> charas, bool mustUse)
+    internal static T FindTargetForMoving<T>(this IEnumerable<T> charas, bool mustUse) where T : GameObject
     {
         if (mustUse)
         {
@@ -78,7 +78,7 @@ internal static class TargetFilter
     }
 
     const float DISTANCE_TO_MOVE = 3;
-    private static GameObject FindMoveTargetFaceDirection(IEnumerable<GameObject> charas)
+    private static T FindMoveTargetFaceDirection<T>(IEnumerable<T> charas) where T : GameObject
     {
         Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
         float rotation = Service.ClientState.LocalPlayer.Rotation;
@@ -97,7 +97,7 @@ internal static class TargetFilter
         return tars.FirstOrDefault();
     }
 
-    private static GameObject FindMoveTargetScreenCenter(IEnumerable<GameObject> charas)
+    private static T FindMoveTargetScreenCenter<T>(IEnumerable<T> charas) where T : GameObject
     {
         var pPosition = Service.ClientState.LocalPlayer.Position;
         if (!Service.GameGui.WorldToScreen(pPosition, out var playerScrPos)) return null;

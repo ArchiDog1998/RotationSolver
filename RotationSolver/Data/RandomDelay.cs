@@ -11,30 +11,29 @@ internal struct RandomDelay
 {
 	DateTime _startDelayTime = DateTime.MinValue;
 	float _delayTime = -1;
-    Func<bool> _getCheck;
     Func<(float min, float max)> _getRange;
 	Random _ran = new Random(DateTime.Now.Millisecond);
-
-    public bool Check => _getCheck?.Invoke() ?? false;
-    public RandomDelay(Func<bool> getCheck, Func<(float min, float max)> getRange)
+    bool _lastValue = false;
+    public RandomDelay(Func<(float min, float max)> getRange)
 	{
-        _getCheck = getCheck;
         _getRange = getRange;
 	}
 
-	public bool Update()
+	public bool Delay(bool originData)
 	{
-        if(_getCheck == null || _getRange == null) return false;
+        if(_getRange == null) return false;
 
-        if (!Check)
+        if (!originData)
         {
+            _lastValue = false;
             _delayTime = -1;
             return false;
         }
 
-        //Not start
-        if (_delayTime < 0)
+        //Not start And changed.
+        if (_delayTime < 0 && !_lastValue)
         {
+            _lastValue = true;
             _startDelayTime = DateTime.Now;
             var range = _getRange();
             _delayTime = range.min + (float)_ran.NextDouble() * (range.max - range.min);
@@ -42,6 +41,7 @@ internal struct RandomDelay
         //Times up
         else if ((DateTime.Now - _startDelayTime).TotalSeconds >= _delayTime)
         {
+            //I set it.
             _delayTime = -1;
             return true;
         }

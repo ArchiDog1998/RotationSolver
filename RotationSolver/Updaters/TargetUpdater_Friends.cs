@@ -141,6 +141,9 @@ internal static partial class TargetUpdater
         #endregion
     }
 
+    private static RandomDelay _healDelay = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+
+
     static void UpdateCanHeal(PlayerCharacter player)
     {
         var job = (ClassJobID)player.ClassJob.Id;
@@ -164,6 +167,12 @@ internal static partial class TargetUpdater
             if (!CanHealAreaSpell)
                 CanHealAreaSpell = PartyMembersDifferHP < Service.Configuration.HealthDifference && PartyMembersAverHP < ConfigurationHelper.GetHealAreafSpell(job) - ratio;
         }
+
+        //Delay
+        CanHealSingleAbility = _healDelay.Delay(CanHealSingleAbility);
+        CanHealSingleSpell = _healDelay.Delay(CanHealSingleSpell);
+        CanHealAreaAbility = _healDelay.Delay(CanHealAreaAbility);
+        CanHealAreaSpell = _healDelay.Delay(CanHealAreaSpell);
 
         PartyMembersMinHP = PartyMembersHP.Any() ? PartyMembersHP.Min() : 0;
         HPNotFull = PartyMembersMinHP < 1;
