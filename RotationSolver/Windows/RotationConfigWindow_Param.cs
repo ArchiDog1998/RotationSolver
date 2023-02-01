@@ -33,6 +33,7 @@ internal partial class RotationConfigWindow
         if (ImGui.BeginTabBar("Param Items"))
         {
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Basic, DrawParamBasic);
+            DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Delay, DrawParamDelay);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Display, DrawParamDisplay);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Action, DrawParamAction);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Conditon, DrawParamCondition);
@@ -56,17 +57,11 @@ internal partial class RotationConfigWindow
             ref Service.Configuration.UseOverlayWindow,
             LocalizationManager.RightLang.Configwindow_Param_UseOverlayWindowDesc);
 
-        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_WeaponDelay,
-            ref Service.Configuration.WeaponDelayMin, ref Service.Configuration.WeaponDelayMax);
-
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponFaster,
             ref Service.Configuration.WeaponFaster, max: 0.1f);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponInterval,
             ref Service.Configuration.WeaponInterval, min: 0.5f, max: 0.7f);
-
-        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_InterruptibleTime,
-            ref Service.Configuration.InterruptibleTime, min: 0, max: 2);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_SpecialDuration,
             ref Service.Configuration.SpecialDuration, speed: 0.02f, min: 1, max: 20);
@@ -76,6 +71,42 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_AutoOffBetweenArea,
             ref Service.Configuration.AutoOffBetweenArea);
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseWorkTask,
+            ref Service.Configuration.UseWorkTask);
+    }
+
+    private void DrawParamDelay()
+    {
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_WeaponDelay,
+            ref Service.Configuration.WeaponDelayMin, ref Service.Configuration.WeaponDelayMax, speed: 0.002f, max: 1);
+
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_HostileDelay,
+            ref Service.Configuration.HostileDelayMin, ref Service.Configuration.HostileDelayMax);
+
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_InterruptDelay,
+            ref Service.Configuration.InterruptDelayMin, ref Service.Configuration.InterruptDelayMax);
+
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_DeathDelay,
+            ref Service.Configuration.DeathDelayMin, ref Service.Configuration.DeathDelayMax);
+
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_WeakenDelay,
+            ref Service.Configuration.WeakenDelayMin, ref Service.Configuration.WeakenDelayMax);
+
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_HealDelay,
+            ref Service.Configuration.HealDelayMin, ref Service.Configuration.HealDelayMax);
+
+        if (Service.Configuration.UseStopCasting)
+        {
+            DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_StopCastingDelay,
+                ref Service.Configuration.StopCastingDelayMin, ref Service.Configuration.StopCastingDelayMax);
+        }
+
+        if (Service.Configuration.UseWorkTask)
+        {
+            DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_WorkTaskDelay,
+                ref Service.Configuration.WorkTaskDelay, min: 0, max: 200);
+        }
     }
 
     private void DrawParamDisplay()
@@ -145,6 +176,10 @@ internal partial class RotationConfigWindow
                 ConfigurationHelper.Keys,
                 LocalizationManager.RightLang.Configwindow_Param_PoslockDescription);
         }
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseStopCasting,
+            ref Service.Configuration.UseStopCasting);
+
         ImGui.Separator();
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_SayOutStateChanged,
@@ -243,6 +278,9 @@ internal partial class RotationConfigWindow
 
     private void DrawParamCondition()
     {
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_InterruptibleMoreCheck,
+            ref Service.Configuration.InterruptibleMoreCheck);
+
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_StartOnCountdown,
             ref Service.Configuration.StartOnCountdown);
 
@@ -378,7 +416,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float speed = 0.002f, float min = 0, float max = 1, string description = "")
+    private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float speed = 0.01f, float min = 0, float max = 3, string description = "")
     {
         ImGui.SetNextItemWidth(100);
         if (ImGui.DragFloatRange2(name, ref minValue, ref maxValue, speed, min, max))

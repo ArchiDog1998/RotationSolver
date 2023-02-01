@@ -57,7 +57,7 @@ internal static class TargetFilter
             .OrderBy(DistanceToPlayer).First();
     }
 
-    internal static BattleChara FindTargetForMoving(this IEnumerable<BattleChara> charas, bool mustUse)
+    internal static T FindTargetForMoving<T>(this IEnumerable<T> charas, bool mustUse) where T : GameObject
     {
         if (mustUse)
         {
@@ -78,7 +78,7 @@ internal static class TargetFilter
     }
 
     const float DISTANCE_TO_MOVE = 3;
-    private static BattleChara FindMoveTargetFaceDirection(IEnumerable<BattleChara> charas)
+    private static T FindMoveTargetFaceDirection<T>(IEnumerable<T> charas) where T : GameObject
     {
         Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
         float rotation = Service.ClientState.LocalPlayer.Rotation;
@@ -97,7 +97,7 @@ internal static class TargetFilter
         return tars.FirstOrDefault();
     }
 
-    private static BattleChara FindMoveTargetScreenCenter(IEnumerable<BattleChara> charas)
+    private static T FindMoveTargetScreenCenter<T>(IEnumerable<T> charas) where T : GameObject
     {
         var pPosition = Service.ClientState.LocalPlayer.Position;
         if (!Service.GameGui.WorldToScreen(pPosition, out var playerScrPos)) return null;
@@ -228,17 +228,10 @@ internal static class TargetFilter
         return null;
     }
 
-    internal unsafe static IEnumerable<BattleChara> GetTargetable(IEnumerable<BattleChara> charas)
-    {
-        return charas.Where(item => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)item.Address)->GetIsTargetable());
-    }
-
-    internal unsafe static IEnumerable<BattleChara> GetDeath(this IEnumerable<BattleChara> charas)
-    {
-        charas = GetTargetable(charas);
-
-        return charas.Where(item =>
+    internal unsafe static IEnumerable<BattleChara> GetDeath(this IEnumerable<BattleChara> charas) => charas.Where(item =>
         {
+            if (!item.IsTargetable()) return false;
+
             //如果还有血，就算了。
             if (item.CurrentHp != 0) return false;
 
@@ -253,7 +246,6 @@ internal static class TargetFilter
 
             return true;
         });
-    }
 
     internal static IEnumerable<BattleChara> GetJobCategory(this IEnumerable<BattleChara> objects, params JobRole[] roles)
     {

@@ -209,7 +209,7 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 标准舞步结束
     /// </summary>
-    private static IBaseAction StandardFinish { get; } = new BaseAction(ActionID.StandardFinish)
+    protected static IBaseAction StandardFinish { get; } = new BaseAction(ActionID.StandardFinish)
     {
         StatusNeed = new[] { StatusID.StandardStep },
         ActionCheck = b => IsDancing && JobGauge.CompletedSteps == 2,
@@ -218,7 +218,7 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 技巧舞步结束
     /// </summary>
-    private static IBaseAction TechnicalFinish { get; } = new BaseAction(ActionID.TechnicalFinish)
+    protected static IBaseAction TechnicalFinish { get; } = new BaseAction(ActionID.TechnicalFinish)
     {
         StatusNeed = new[] { StatusID.TechnicalStep },
         ActionCheck = b => IsDancing && JobGauge.CompletedSteps == 4,
@@ -252,7 +252,7 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
             !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
             //Remove other partner.
             && !b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2)
-            ).ToArray();
+            );
 
             return Targets.GetJobCategory(JobRole.Melee, JobRole.RangedMagicial, JobRole.RangedPhysical).FirstOrDefault();
         },
@@ -289,33 +289,6 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
     {
         StatusNeed = new[] { StatusID.FlourishingFinish },
     };
-
-    /// <summary>
-    /// 结束舞步
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
-    protected static bool FinishStepGCD(out IAction act)
-    {
-        act = null;
-        if (!IsDancing) return false;
-
-        //标准舞步结束
-        if (Player.HasStatus(true, StatusID.StandardStep) && Player.WillStatusEnd(1, true, StatusID.StandardStep) || StandardFinish.CanUse(out _, mustUse: true))
-        {
-            act = StandardStep;
-            return true;
-        }
-
-        //技巧舞步结束
-        if (Player.HasStatus(true, StatusID.TechnicalStep) && Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || TechnicalFinish.CanUse(out _, mustUse: true))
-        {
-            act = TechnicalStep;
-            return true;
-        }
-
-        return false;
-    }
 
     /// <summary>
     /// 执行舞步

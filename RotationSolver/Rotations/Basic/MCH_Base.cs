@@ -174,4 +174,6 @@ internal abstract class MCH_Base : CustomRotation.CustomRotation
             StatusID.Tactician2,
             StatusID.ShieldSamba),
     };
+
+    public static IBaseAction Dismantle { get; } = new BaseAction(ActionID.Dismantle, true, isTimeline: true);
 }

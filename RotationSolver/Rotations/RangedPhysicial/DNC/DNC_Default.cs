@@ -39,8 +39,7 @@ internal sealed class DNC_Default : DNC_Base
     {
         if (remainTime <= 15)
         {
-            if (StandardStep.CanUse(out _, mustUse: true)) return StandardStep;
-            IAction act;
+            if (StandardStep.CanUse(out var act, mustUse: true)) return act;
             if (ExcutionStepGCD(out act)) return act;
         }
         return base.CountDownAction(remainTime);
@@ -156,6 +155,7 @@ internal sealed class DNC_Default : DNC_Base
     private bool UseStandardStep(out IAction act)
     {
         if (!StandardStep.CanUse(out act, mustUse: true)) return false;
+        if(Player.WillStatusEndGCD(2, 0, true, StatusID.StandardFinish)) return true;
 
         //等级低于玩家太多不跳舞,都直接秒了还跳啥舞
         if (Level - Target.Level > 10) return false;
@@ -167,24 +167,6 @@ internal sealed class DNC_Default : DNC_Base
         if (TechnicalStep.EnoughLevel && (Player.HasStatus(true, StatusID.TechnicalFinish) || TechnicalStep.IsCoolingDown && TechnicalStep.WillHaveOneCharge(5))) return false;
 
         return true;
-    }
-
-    /// <summary>
-    /// 结束舞步
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
-    private bool UseFinishStepGCD(out IAction act)
-    {
-        if (!FinishStepGCD(out act)) return false;
-
-        if (Target.IsBoss()) return true;
-
-        if (Windmill.CanUse(out _)) return true;
-
-        if (TargetUpdater.HostileTargets.GetObjectInRadius(25).Count() >= 3) return false;
-
-        return false;
     }
 
     /// <summary>
@@ -211,6 +193,29 @@ internal sealed class DNC_Default : DNC_Base
         //else if (ClosedPosition.ShouldUse(out act)) return true;
 
         act = null;
+        return false;
+    }
+
+    private static bool FinishStepGCD(out IAction act)
+    {
+        act = null;
+        if (!IsDancing) return false;
+
+        //标准舞步结束
+        if (Player.HasStatus(true, StatusID.StandardStep) && (Player.WillStatusEnd(1, true, StatusID.StandardStep) || CompletedSteps == 2 && Player.WillStatusEnd(1, true, StatusID.StandardFinish))
+            || StandardFinish.CanUse(out _, mustUse: true))
+        {
+            act = StandardStep;
+            return true;
+        }
+
+        //技巧舞步结束
+        if (Player.HasStatus(true, StatusID.TechnicalStep) && Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || TechnicalFinish.CanUse(out _, mustUse: true))
+        {
+            act = TechnicalStep;
+            return true;
+        }
+
         return false;
     }
 }

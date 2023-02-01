@@ -12,6 +12,16 @@ namespace RotationSolver.Helpers;
 
 internal static class StatusHelper
 {
+    public static StatusID[] AreaHots { get; } = new StatusID[]
+    {
+        StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2
+    };
+
+    public static StatusID[] SingleHots { get; } = new StatusID[]
+    {
+        StatusID.AspectedBenefic, StatusID.Regen1, StatusID.Regen2, StatusID.Regen3
+    };
+
     public static StatusID[] SheildStatus { get; } = new StatusID[]
     {
         StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance
@@ -115,10 +125,16 @@ internal static class StatusHelper
         || status.SourceObject?.OwnerId == Service.ClientState.LocalPlayer.ObjectId : true);
     }
 
+    static readonly StatusID[] invincibalStatus = new StatusID[]
+    {
+        StatusID.StoneSkin,
+    };
+
     internal static bool IsInvincible(this Status status)
     {
         if (status.GameData.Icon == 15024) return true;
-        return false;
+
+        return invincibalStatus.Any(id => (uint)id == status.StatusId);
     }
 
     static readonly StatusID[] dangeriousStatus = new StatusID[]
@@ -149,6 +165,7 @@ internal static class StatusHelper
 
     internal static bool IsDangerous(this Status status)
     {
+        if(status.StackCount > 2) return true;
         return dangeriousStatus.Any(id => (uint)id == status.StatusId);
     }
 }

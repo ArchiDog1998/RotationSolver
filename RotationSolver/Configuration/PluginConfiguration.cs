@@ -90,12 +90,38 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthSingleSpell = 0.55f;
 
     public Dictionary<ClassJobID, float> HealthForDyingTanks { get; set; } = new Dictionary<ClassJobID, float>();
-    public float InterruptibleTime = 0.5f;
+
+    public bool InterruptibleMoreCheck = true;
     public float SpecialDuration = 3;
     public float WeaponInterval = 0.67f;
     public float WeaponFaster = 0.08f;
+
     public float WeaponDelayMin = 0;
     public float WeaponDelayMax = 0;
+
+    public float DeathDelayMin = 0.5f;
+    public float DeathDelayMax = 1;
+
+    public float WeakenDelayMin = 0.5f;
+    public float WeakenDelayMax = 1;
+
+    public float HostileDelayMin = 0;
+    public float HostileDelayMax = 0;
+
+    public float HealDelayMin = 0.5f;
+    public float HealDelayMax = 1;
+
+    public float StopCastingDelayMin = 0.5f;
+    public float StopCastingDelayMax = 1;
+
+    public float InterruptDelayMin = 0.5f;
+    public float InterruptDelayMax = 1;
+
+    public bool UseWorkTask = true;
+    public int WorkTaskDelay = 20;
+
+    public bool UseStopCasting = true;
+
     public string PositionalErrorText = string.Empty;
 
     public int MoveTargetAngle = 24;

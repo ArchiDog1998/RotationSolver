@@ -29,9 +29,6 @@ internal static class MovingUpdater
 
         _moving = _lastPosition != p;
         _lastPosition = p;
-
-        if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TenChiJin)) IsMoving = false;
-
     }
 
     private static bool MovingDetour(IntPtr ptr)

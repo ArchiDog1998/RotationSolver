@@ -26,45 +26,66 @@ internal static class PreviewUpdater
         UpdateHightLight();
     }
 
-    static DtrBarEntry dtrEntry;
+    static DtrBarEntry _dtrEntry;
+    static string _showValue;
     private static void UpdateEntry()
     {
         if (Service.Configuration.ShowInfoOnDtr && RSCommands.EntryString != null)
         {
-            if (dtrEntry == null)
+            if (_dtrEntry == null)
             {
-                dtrEntry = Service.DtrBar.Get("Rotation Solver");
+                _dtrEntry = Service.DtrBar.Get("Rotation Solver");
             }
-            dtrEntry.Shown = true;
-            dtrEntry.Text = new SeString(
-                new IconPayload(BitmapFontIcon.DPS),
-                new TextPayload(RSCommands.EntryString)
-                );
+            if(!_dtrEntry.Shown) _dtrEntry.Shown = true;
+            if(_showValue != RSCommands.EntryString)
+            {
+                _showValue = RSCommands.EntryString;
+                _dtrEntry.Text = new SeString(
+                    new IconPayload(BitmapFontIcon.DPS),
+                    new TextPayload(_showValue)
+                    );
+            }
         }
-        else if (dtrEntry != null)
+        else if (_dtrEntry != null && _dtrEntry.Shown)
         {
-            dtrEntry.Shown = false;
+            _dtrEntry.Shown = false;
         }
     }
 
-    private static unsafe void UpdateCastBar()
+    static bool _canMove;
+    static bool _isTarDead;
+    static RandomDelay _tarDeadDelay = new RandomDelay(() =>
+    (Service.Configuration.StopCastingDelayMin, Service.Configuration.StopCastingDelayMax));
+    internal static void UpdateCastBarState()
     {
-        ByteColor redColor = new ByteColor() { A = 255, R = 120, G = 0, B = 60 };
-        ByteColor greenColor = new ByteColor() { A = 255, R = 60, G = 120, B = 30 };
+        var tardead = Service.Configuration.UseStopCasting ? Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId)
+            is BattleChara b && b.CurrentHp == 0 : false;
+        _isTarDead = _tarDeadDelay.Delay(tardead);
 
         bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
             && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
-        ByteColor c = canMove && Service.Configuration.CastingDisplay ? greenColor : redColor;
-        var isTarDead = false;
-        if (Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId) is BattleChara b
-            && b.CurrentHp == 0)
+        //For lock
+        var specialStatus = Service.ClientState.LocalPlayer.HasStatus(true, StatusID.PhantomFlurry, StatusID.TenChiJin);
+
+        MovingUpdater.IsMoving = _canMove = specialStatus ? false : canMove;
+    }
+
+    static bool _showCanMove;
+    static readonly ByteColor _redColor = new ByteColor() { A = 255, R = 120, G = 0, B = 60 };
+    static readonly ByteColor _greenColor = new ByteColor() { A = 255, R = 60, G = 120, B = 30 };
+    private static unsafe void UpdateCastBar()
+    {
+        if (_isTarDead)
         {
-            isTarDead = true;
+            RSCommands.SubmitToChat("/acan");
         }
 
-        var specialStatus = Service.ClientState.LocalPlayer.HasStatus(true, StatusID.PhantomFlurry);
-        MovingUpdater.IsMoving = specialStatus ? false : canMove || isTarDead;
+        var nowMove = _canMove && Service.Configuration.CastingDisplay;
+        if (nowMove == _showCanMove) return;
+        _showCanMove = nowMove;
+
+        ByteColor c = _showCanMove ? _greenColor : _redColor;
 
         var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);
         if (castBar == IntPtr.Zero) return;
@@ -75,16 +96,18 @@ internal static class PreviewUpdater
         progressBar->AddBlue = c.B;
     }
 
+    static uint _higtLightId;
     private unsafe static void UpdateHightLight()
     {
         var actId = ActionUpdater.NextAction?.AdjustedID ?? 0;
+        if (_higtLightId == actId) return;
+        _higtLightId = actId;
 
         HigglightAtionBar((slot, hot) =>
         {
-            return Service.Configuration.TeachingMode && IsActionSlotRight(slot, hot, actId);
+            return Service.Configuration.TeachingMode && IsActionSlotRight(slot, hot, _higtLightId);
         });
     }
-
 
     internal static unsafe void PulseAtionBar(uint actionID)
     {
@@ -239,6 +262,6 @@ internal static class PreviewUpdater
     {
         //Hide All highLight.
         HigglightAtionBar();
-        dtrEntry?.Dispose();
+        _dtrEntry?.Dispose();
     }
 }

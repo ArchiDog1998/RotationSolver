@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Logging;
 using RotationSolver.Commands;
 using RotationSolver.Data;
@@ -78,7 +79,8 @@ internal partial class BaseAction
         }
         else if (_action.TargetArea)
         {
-            return TargetArea(range, mustUse, aoeCount, out target);
+            target = player;
+            return TargetArea(range, mustUse, aoeCount, player);
         }
         //如果能对友方和敌方都能选中
         else if (_action.CanTargetParty && _action.CanTargetHostile)
@@ -103,49 +105,44 @@ internal partial class BaseAction
         }
         else
         {
-            target = Service.TargetManager.Target is BattleChara battle ? battle : Service.ClientState.LocalPlayer;
+            target = Service.TargetManager.Target is BattleChara battle ? battle : player;
             return true;
         }
     }
 
     #region TargetArea
-    private bool TargetArea(float range, bool mustUse, int aoeCount, out BattleChara target)
+    private bool TargetArea(float range, bool mustUse, int aoeCount, PlayerCharacter player)
     {
         //移动
         if (_action.EffectRange == 1 && range >= 15)
         {
-            return TargetAreaMove(range, mustUse, out target);
+            return TargetAreaMove(range, mustUse);
         }
         //其他友方
         else if (_isFriendly)
         {
-            return TargetAreaFriend(range, mustUse, out target);
+            return TargetAreaFriend(range, mustUse, player);
         }
         //敌方
         else
         {
-            return TargetAreaHostile(aoeCount, out target);
+            return TargetAreaHostile(aoeCount);
         }
     }
 
-    private bool TargetAreaHostile(int aoeCount, out BattleChara target)
+    private bool TargetAreaHostile(int aoeCount)
     {
-        target = GetMostObjects(TargetUpdater.HostileTargets, aoeCount)
+        var target = GetMostObjects(TargetUpdater.HostileTargets, aoeCount)
             .OrderByDescending(ObjectHelper.GetHealthRatio).FirstOrDefault();
-        if (target == null)
-        {
-            target = Service.ClientState.LocalPlayer;
-            return false;
-        }
+        if (target == null) return false;
         _position = target.Position;
         return true;
     }
 
-    private bool TargetAreaMove(float range, bool mustUse, out BattleChara target)
+    private bool TargetAreaMove(float range, bool mustUse)
     {
         if (Service.Configuration.MoveAreaActionFarthest)
         {
-            target = null;
             Vector3 pPosition = Service.ClientState.LocalPlayer.Position;
             float rotation = Service.ClientState.LocalPlayer.Rotation;
             _position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
@@ -154,25 +151,24 @@ internal partial class BaseAction
         }
         else
         {
-            var availableCharas = Service.ObjectTable.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId).OfType<BattleChara>();
-            target = TargetFilter.GetObjectInRadius(availableCharas, range).FindTargetForMoving(mustUse);
+
+            var availableCharas = TargetUpdater.AllTargets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId);
+            var target = TargetFilter.GetObjectInRadius(availableCharas, range).FindTargetForMoving(mustUse);
             if (target == null) return false;
             _position = target.Position;
             return true;
         }
     }
 
-    private bool TargetAreaFriend(float range, bool mustUse, out BattleChara target)
+    private bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
     {
-        target = null;
         //如果用户不想使用自动友方地面放置功能
         if (!Service.Configuration.UseGroundBeneficialAbility) return false;
 
         //如果当前目标是Boss且有身位，放他身上。
         if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && b.IsBoss() && b.HasPositional())
         {
-            target = b;
-            _position = target.Position;
+            _position = b.Position;
             return true;
         }
         //计算玩家和被打的Ｔ之间的关系。
@@ -180,27 +176,25 @@ internal partial class BaseAction
         {
             var attackT = TargetFilter.FindAttackedTarget(TargetUpdater.PartyTanks.GetObjectInRadius(range + _action.EffectRange), mustUse);
 
-            target = Service.ClientState.LocalPlayer;
-
             if (attackT == null)
             {
-                _position = target.Position;
+                _position = player.Position;
             }
             else
             {
-                var disToTankRound = Math.Max(range, Vector3.Distance(target.Position, attackT.Position) + attackT.HitboxRadius);
+                var disToTankRound = Math.Max(range, Vector3.Distance(player.Position, attackT.Position) + attackT.HitboxRadius);
 
                 if (disToTankRound < _action.EffectRange
-                    || disToTankRound > 2 * _action.EffectRange - target.HitboxRadius
+                    || disToTankRound > 2 * _action.EffectRange - player.HitboxRadius
                     || disToTankRound > range)
                 {
-                    _position = target.Position;
+                    _position = player.Position;
                 }
                 else
                 {
-                    Vector3 directionToTank = attackT.Position - target.Position;
+                    Vector3 directionToTank = attackT.Position - player.Position;
                     var MoveDirection = directionToTank / directionToTank.Length() * (disToTankRound - _action.EffectRange);
-                    _position = target.Position + MoveDirection;
+                    _position = player.Position + MoveDirection;
                 }
             }
             return true;
@@ -250,7 +244,6 @@ internal partial class BaseAction
         {
             //找到能覆盖最多的位置，并且选血最少的来。
             target = ChoiceTarget(GetMostObjects(availableCharas, aoeCount), mustUse);
-
         }
         else
         {

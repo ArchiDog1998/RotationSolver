@@ -15,7 +15,7 @@ internal abstract partial class CustomRotation
         //意力
         TinctureofIntelligence6 = new BaseItem(36112, 65535);
 
-    protected bool UseBurstItem(out IAction act)
+    protected bool UseTincture(out IAction act)
     {
         act = null;
         

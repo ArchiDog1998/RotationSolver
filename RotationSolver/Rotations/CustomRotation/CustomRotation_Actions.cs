@@ -93,7 +93,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 亲疏自行
     /// </summary>
-    public static IBaseAction ArmsLength { get; } = new RoleAction(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee, JobRole.RangedPhysical }, true, shouldEndSpecial: true);
+    public static IBaseAction ArmsLength { get; } = new RoleAction(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee, JobRole.RangedPhysical }, true, shouldEndSpecial: true, isTimeline: true);
 
     /// <summary>
     /// 铁壁

@@ -1654,6 +1654,8 @@ public enum ActionID : uint
     /// 策动
     /// </summary>
     Tactician = 16889,
+
+    Dismantle = 2887,
     #endregion
 
     #region MNK

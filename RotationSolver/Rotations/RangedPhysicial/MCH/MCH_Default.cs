@@ -42,6 +42,7 @@ internal sealed class MCH_Default : MCH_Base
         //策动
         if (Tactician.CanUse(out act, mustUse: true)) return true;
 
+        if (Dismantle.CanUse(out act, mustUse: true)) return true;
         return false;
     }
 

@@ -25,6 +25,9 @@ internal static class ActionUpdater
             return DateTime.Now - _startCombatTime;
         }
     }
+
+    private static  RandomDelay _GCDDelay = new RandomDelay(() => (Service.Configuration.WeaponDelayMin, Service.Configuration.WeaponDelayMax));
+
     internal static float WeaponRemain { get; private set; } = 0;
 
     internal static float WeaponTotal { get; private set; } = 0;
@@ -165,8 +168,6 @@ internal static class ActionUpdater
         _lastMP = player.CurrentMp;
     }
 
-    static DateTime _lastWeaponGo = DateTime.MinValue;
-    static float _weaponRandomDelay = -1;
     internal static float _lastCastingTotal = 0;
     internal unsafe static void DoAction()
     {
@@ -186,23 +187,9 @@ internal static class ActionUpdater
             || *(bool*)((IntPtr)ActionManager.Instance() + 0x68)) return;
 
         //GCD
-        if (WeaponRemain <= Service.Configuration.WeaponFaster)
-        {
-            if (_weaponRandomDelay < 0)
-            {
-                Random ran = new Random(DateTime.Now.Millisecond);
-                _weaponRandomDelay = Service.Configuration.WeaponDelayMin +
-                    (float)ran.NextDouble() * (Service.Configuration.WeaponDelayMax - Service.Configuration.WeaponDelayMin);
-
-                _lastWeaponGo = DateTime.Now;
-            }
-            else if ((DateTime.Now - _lastWeaponGo).TotalSeconds >= _weaponRandomDelay)
-            {
-                _weaponRandomDelay = -1;
-                RSCommands.DoAnAction(true);
-            }
-            return;
-        }
+        var canUseGCD = WeaponRemain <= Service.Configuration.WeaponFaster;
+        if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
+        if (canUseGCD) return;
 
         //要超出GCD了，那就不放技能了。
         if (WeaponRemain < Service.Configuration.WeaponInterval
