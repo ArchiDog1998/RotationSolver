@@ -53,18 +53,19 @@ internal static class PreviewUpdater
     }
 
     static bool _canMove;
+    static bool _isTarDead;
     internal static void UpdateCastBarState()
     {
+        _isTarDead = Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId)
+            is BattleChara b && b.CurrentHp == 0;
+
         bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
             && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
-
-        var isTarDead = Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId)
-            is BattleChara b && b.CurrentHp == 0;
 
         //For lock
         var specialStatus = Service.ClientState.LocalPlayer.HasStatus(true, StatusID.PhantomFlurry, StatusID.TenChiJin);
 
-        MovingUpdater.IsMoving = _canMove = specialStatus ? false : (canMove || isTarDead);
+        MovingUpdater.IsMoving = _canMove = specialStatus ? false : canMove;
     }
 
     static bool _showCanMove;
@@ -72,6 +73,11 @@ internal static class PreviewUpdater
     static readonly ByteColor _greenColor = new ByteColor() { A = 255, R = 60, G = 120, B = 30 };
     private static unsafe void UpdateCastBar()
     {
+        if (_isTarDead)
+        {
+            RSCommands.SubmitToChat("/acan");
+        }
+
         var nowMove = _canMove && Service.Configuration.CastingDisplay;
         if (nowMove == _showCanMove) return;
         _showCanMove = nowMove;
