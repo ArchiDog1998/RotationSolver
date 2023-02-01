@@ -32,17 +32,13 @@ internal static class MajorUpdater
         //        }
         //#endif
 
-        //PreviewUpdater.UpdateCastBarState();
+        if (Service.Configuration.UseWorkTask)
+        {
+            UpdateWork();
+        }
+
         PreviewUpdater.UpdatePreview();
-        //ActionUpdater.UpdateActionInfo();
-        //TargetUpdater.UpdateTarget();
-        //MovingUpdater.UpdateLocation();
-
         ActionUpdater.DoAction();
-
-        //TimeLineUpdater.UpdateTimelineAction();
-        //ActionUpdater.UpdateNextAction();
-        //RSCommands.UpdateRotationState();
         MacroUpdater.UpdateMacro();
     }
 
@@ -55,29 +51,30 @@ internal static class MajorUpdater
             while (true)
             {
                 if(_quit) return;
-                if (!Service.Conditions.Any() || Service.ClientState.LocalPlayer == null)
+                if (!Service.Configuration.UseWorkTask || !Service.Conditions.Any() || Service.ClientState.LocalPlayer == null)
                 {
                     Task.Delay(200);
                     continue;
                 }
 
-                PreviewUpdater.UpdateCastBarState();
-                //PreviewUpdater.UpdatePreview();
-                ActionUpdater.UpdateActionInfo();
-                TargetUpdater.UpdateTarget();
-                MovingUpdater.UpdateLocation();
-
-                //ActionUpdater.DoAction();
-
-                TimeLineUpdater.UpdateTimelineAction();
-                ActionUpdater.UpdateNextAction();
-                RSCommands.UpdateRotationState();
-                //MacroUpdater.UpdateMacro();
-
+                UpdateWork();
                 Task.Delay(Service.Configuration.WorkTaskDelay);
             }
         });
         MovingUpdater.Enable();
+    }
+
+    private static void UpdateWork()
+    {
+        PreviewUpdater.UpdateCastBarState();
+        ActionUpdater.UpdateActionInfo();
+        TargetUpdater.UpdateTarget();
+        MovingUpdater.UpdateLocation();
+
+        TimeLineUpdater.UpdateTimelineAction();
+        ActionUpdater.UpdateNextAction();
+        RSCommands.UpdateRotationState();
+
     }
 
     public static void Dispose()

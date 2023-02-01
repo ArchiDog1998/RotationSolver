@@ -99,22 +99,28 @@ public class PluginConfiguration : IPluginConfiguration
     public float WeaponDelayMin = 0;
     public float WeaponDelayMax = 0;
 
-    public float DeathDelayMin = 0;
-    public float DeathDelayMax = 0;
+    public float DeathDelayMin = 0.5f;
+    public float DeathDelayMax = 1;
 
-    public float WeakenDelayMin = 0;
-    public float WeakenDelayMax = 0;
+    public float WeakenDelayMin = 0.5f;
+    public float WeakenDelayMax = 1;
 
     public float HostileDelayMin = 0;
     public float HostileDelayMax = 0;
 
-    public float HealDelayMin = 0;
-    public float HealDelayMax = 0;
+    public float HealDelayMin = 0.5f;
+    public float HealDelayMax = 1;
+
+    public float StopCastingDelayMin = 0.5f;
+    public float StopCastingDelayMax = 1;
 
     public float InterruptDelayMin = 0.5f;
     public float InterruptDelayMax = 1;
 
+    public bool UseWorkTask = true;
     public int WorkTaskDelay = 20;
+
+    public bool UseStopCasting = true;
 
     public string PositionalErrorText = string.Empty;
 

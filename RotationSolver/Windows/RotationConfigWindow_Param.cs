@@ -71,6 +71,9 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_AutoOffBetweenArea,
             ref Service.Configuration.AutoOffBetweenArea);
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseWorkTask,
+            ref Service.Configuration.UseWorkTask);
     }
 
     private void DrawParamDelay()
@@ -93,8 +96,17 @@ internal partial class RotationConfigWindow
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_HealDelay,
             ref Service.Configuration.HealDelayMin, ref Service.Configuration.HealDelayMax);
 
-        DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_WorkTaskDelay,
-            ref Service.Configuration.WorkTaskDelay, min: 0, max: 200);
+        if (Service.Configuration.UseStopCasting)
+        {
+            DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_StopCastingDelay,
+                ref Service.Configuration.StopCastingDelayMin, ref Service.Configuration.StopCastingDelayMax);
+        }
+
+        if (Service.Configuration.UseWorkTask)
+        {
+            DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_WorkTaskDelay,
+                ref Service.Configuration.WorkTaskDelay, min: 0, max: 200);
+        }
     }
 
     private void DrawParamDisplay()
@@ -164,6 +176,10 @@ internal partial class RotationConfigWindow
                 ConfigurationHelper.Keys,
                 LocalizationManager.RightLang.Configwindow_Param_PoslockDescription);
         }
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseStopCasting,
+            ref Service.Configuration.UseStopCasting);
+
         ImGui.Separator();
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_SayOutStateChanged,

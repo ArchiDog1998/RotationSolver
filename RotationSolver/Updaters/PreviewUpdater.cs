@@ -54,10 +54,13 @@ internal static class PreviewUpdater
 
     static bool _canMove;
     static bool _isTarDead;
+    static RandomDelay _tarDeadDelay = new RandomDelay(() =>
+    (Service.Configuration.StopCastingDelayMin, Service.Configuration.StopCastingDelayMax));
     internal static void UpdateCastBarState()
     {
-        _isTarDead = Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId)
-            is BattleChara b && b.CurrentHp == 0;
+        var tardead = Service.Configuration.UseStopCasting ? Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId)
+            is BattleChara b && b.CurrentHp == 0 : false;
+        _isTarDead = _tarDeadDelay.Delay(tardead);
 
         bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
             && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
