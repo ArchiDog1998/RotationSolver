@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.2.3...v1.3.0) (2023-02-01)
+
+
+### Features
+
+* add a auto cancel for casting, Maybe. ([d40f88e](https://github.com/ArchiDog1998/RotationSolver/commit/d40f88e5bc8c2e5e082f7681e4db5ee3113e1bbf))
+* add a lot of delay. ([f9dbd57](https://github.com/ArchiDog1998/RotationSolver/commit/f9dbd572749812694c1687dab3036c8e4c374238))
+* add a random delay for hostile targeting and raising. ([e7a7f1b](https://github.com/ArchiDog1998/RotationSolver/commit/e7a7f1b70182bc16f8de400e11bf3bc5f5379172))
+* add stop casting delay. ([6944b7b](https://github.com/ArchiDog1998/RotationSolver/commit/6944b7bbde8fb2239eff02009ae2cfb116416834))
+* multi thread for acceleration. ([7950f91](https://github.com/ArchiDog1998/RotationSolver/commit/7950f91a6ec5847df903c00a821227bd17bfedd6))
+
+
+### Bug Fixes
+
+* add a changelog button to Help tab. ([866f0b0](https://github.com/ArchiDog1998/RotationSolver/commit/866f0b0a1356d2a39bf2ea1bd7353b55fa95de0e))
+* change method name from BurstItem to Tincture. ([3b4ff8b](https://github.com/ArchiDog1998/RotationSolver/commit/3b4ff8bed18f71ec3168454f546abee28a2fb700))
+* delay healing. ([e746d62](https://github.com/ArchiDog1998/RotationSolver/commit/e746d62f62b41c8808baf3501b6eb0cba7464424))
+* fix some condition for status. ([5858428](https://github.com/ArchiDog1998/RotationSolver/commit/5858428c5c5dc72a4d79901c61075644ea0c7c97))
+* friends targeting changed. ([9157d96](https://github.com/ArchiDog1998/RotationSolver/commit/9157d96ea46f48fd584d78adc6921dd201c93a0b))
+* mch actions add dismantle ([2b97248](https://github.com/ArchiDog1998/RotationSolver/commit/2b972482a60c6d5d595f86e1a78c901404070c69))
+* seperate the preview update. ([67e3273](https://github.com/ArchiDog1998/RotationSolver/commit/67e327371d7af3bb18d149a8fb7eef684fcefc08))
+
 ## [1.2.3](https://github.com/ArchiDog1998/RotationSolver/compare/v1.2.2...v1.2.3) (2023-01-29)
 
 
