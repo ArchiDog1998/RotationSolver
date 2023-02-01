@@ -32,6 +32,7 @@ internal static class MajorUpdater
         //        }
         //#endif
 
+        //PreviewUpdater.UpdateCastBarState();
         PreviewUpdater.UpdatePreview();
         //ActionUpdater.UpdateActionInfo();
         //TargetUpdater.UpdateTarget();
@@ -60,6 +61,7 @@ internal static class MajorUpdater
                     continue;
                 }
 
+                PreviewUpdater.UpdateCastBarState();
                 //PreviewUpdater.UpdatePreview();
                 ActionUpdater.UpdateActionInfo();
                 TargetUpdater.UpdateTarget();
