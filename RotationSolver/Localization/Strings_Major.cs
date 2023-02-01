@@ -114,6 +114,8 @@ internal partial class Strings
 
     public string Configwindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
 
+    public string Configwindow_Param_WorkTaskDelay { get; set; } = "Set the work task delay in millisecond. Smaller, more precise, more resource-intensive";
+
     public string Configwindow_Param_Display { get; set; } = "Display";
     public string Configwindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting";
     public string Configwindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";

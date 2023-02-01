@@ -56,15 +56,12 @@ internal static class PreviewUpdater
             && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
         ByteColor c = canMove && Service.Configuration.CastingDisplay ? greenColor : redColor;
-        var isTarDead = false;
-        if (Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId) is BattleChara b
-            && b.CurrentHp == 0)
-        {
-            isTarDead = true;
-        }
+        var isTarDead = Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId) 
+            is BattleChara b && b.CurrentHp == 0;
 
-        var specialStatus = Service.ClientState.LocalPlayer.HasStatus(true, StatusID.PhantomFlurry);
-        MovingUpdater.IsMoving = specialStatus ? false : canMove || isTarDead;
+        //For lock
+        var specialStatus = Service.ClientState.LocalPlayer.HasStatus(true, StatusID.PhantomFlurry, StatusID.TenChiJin);
+        MovingUpdater.IsMoving = specialStatus ? false : (canMove || isTarDead);
 
         var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);
         if (castBar == IntPtr.Zero) return;

@@ -92,6 +92,9 @@ internal partial class RotationConfigWindow
 
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_HealDelay,
             ref Service.Configuration.HealDelayMin, ref Service.Configuration.HealDelayMax);
+
+        DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_WorkTaskDelay,
+            ref Service.Configuration.WorkTaskDelay, min: 0, max: 200);
     }
 
     private void DrawParamDisplay()

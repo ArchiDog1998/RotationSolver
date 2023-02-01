@@ -41,7 +41,7 @@ internal static class ObjectHelper
 
         //跳过扇形圆型
         if (act.CastType is 3 or 4) return false;
-        if (ActionManager.GetActionRange(b.CastActionId) < 8) return false;
+        if (ActionManager.GetActionRange(b.CastActionId) is > 0 and < 8) return false;
         return true;
     }
 

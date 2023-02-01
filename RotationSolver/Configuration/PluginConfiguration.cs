@@ -114,6 +114,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float InterruptDelayMin = 0.5f;
     public float InterruptDelayMax = 1;
 
+    public int WorkTaskDelay = 20;
+
     public string PositionalErrorText = string.Empty;
 
     public int MoveTargetAngle = 24;
