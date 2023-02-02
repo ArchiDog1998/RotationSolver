@@ -86,18 +86,10 @@ internal static partial class TargetUpdater
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal static bool CanHealSingleSpell { get; private set; } = false;
 
-    /// <summary>
-    /// 有宠物
-    /// </summary>
     internal static bool HavePet { get; private set; } = false;
 
-    /// <summary>
-    /// 有陆行鸟
-    /// </summary>
     internal static bool HaveChocobo { get; private set; } = false;
-    /// <summary>
-    /// 血量没有满
-    /// </summary>
+
     internal static bool HPNotFull { get; private set; } = false;
 
     private static IEnumerable<BattleChara> GetPartyMembers(IEnumerable<BattleChara> allTargets)
@@ -186,7 +178,7 @@ internal static partial class TargetUpdater
         var ratio = GetHealingOfTimeRatio(p, hotStatus);
 
         var h = p.GetHealthRatio();
-        if (h == 0 || !StatusHelper.NeedHealing(p)) return false;
+        if (h == 0 || !p.NeedHealing()) return false;
 
         return h < healSingle - hotSubSingle * ratio;
     });

@@ -32,7 +32,7 @@ internal static class StatusHelper
         StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead,
     };
 
-    public static bool NeedHealing(BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
+    public static bool NeedHealing(this BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
 
     /// <summary>
     /// Will any of <paramref name="statusIDs"/> be end after <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?

@@ -21,19 +21,27 @@ internal partial class RotationConfigWindow
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("That is your HASH", ref str, 100);
 
-        ImGui.Text("Friends: " + TargetUpdater.PartyMembers.Count().ToString());
-        if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
-        {
-            ImGui.Text("Fate: " + TargetUpdater.FateId.ToString());
-        }
-
         if (ImGui.CollapsingHeader("Status"))
         {
+            if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
+            {
+                ImGui.Text("Fate: " + TargetUpdater.FateId.ToString());
+            }
+
             foreach (var status in Service.ClientState.LocalPlayer.StatusList)
             {
                 var source = Service.ObjectTable.SearchById(status.SourceId)?.Name ?? "None";
                 ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
             }
+        }
+
+        if (ImGui.CollapsingHeader("Party"))
+        {
+            ImGui.Text("Friends: " + TargetUpdater.PartyMembers.Count().ToString());
+            ImGui.Text("CanHealSingleAbility: " + TargetUpdater.CanHealSingleAbility.ToString());
+            ImGui.Text("CanHealSingleSpell: " + TargetUpdater.CanHealSingleSpell.ToString());
+            ImGui.Text("CanHealAreaAbility: " + TargetUpdater.CanHealAreaAbility.ToString());
+            ImGui.Text("CanHealAreaSpell: " + TargetUpdater.CanHealAreaSpell.ToString());
         }
 
         if (ImGui.CollapsingHeader("Target Data"))
