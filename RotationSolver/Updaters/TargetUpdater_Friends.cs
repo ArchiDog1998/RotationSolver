@@ -137,13 +137,12 @@ internal static partial class TargetUpdater
         UpdateCanHeal(Service.ClientState.LocalPlayer);
     }
 
-    static RandomDelay _healDelay1 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+    static RandomDelay _healDelay1 = new RandomDelay(GetHealRange);
+    static RandomDelay _healDelay2 = new RandomDelay(GetHealRange);
+    static RandomDelay _healDelay3 = new RandomDelay(GetHealRange);
+    static RandomDelay _healDelay4 = new RandomDelay(GetHealRange);
 
-    static RandomDelay _healDelay2 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
-
-    static RandomDelay _healDelay3 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
-
-    static RandomDelay _healDelay4 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+    static (float min, float max) GetHealRange() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax);
 
     static void UpdateCanHeal(PlayerCharacter player)
     {

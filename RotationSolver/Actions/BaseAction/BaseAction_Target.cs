@@ -429,7 +429,7 @@ internal partial class BaseAction
     private IEnumerable<BattleChara> TargetFilterFuncEot(IEnumerable<BattleChara> tars, bool mustUse)
     {
         if (FilterForTarget != null) return FilterForTarget(tars);
-        if (TargetStatus == null || !_isEot || mustUse) return tars;
+        if (TargetStatus == null || !_isEot) return tars;
 
         var dontHave = tars.Where(CheckStatus);
         var canDot = dontHave.Where(ObjectHelper.CanDot);
