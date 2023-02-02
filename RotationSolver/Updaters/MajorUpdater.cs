@@ -32,7 +32,7 @@ internal static class MajorUpdater
         //        }
         //#endif
 
-        if (Service.Configuration.UseWorkTask)
+        if (!Service.Configuration.UseWorkTask)
         {
             UpdateWork();
         }
