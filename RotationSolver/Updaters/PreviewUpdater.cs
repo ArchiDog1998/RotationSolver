@@ -83,7 +83,7 @@ internal static class PreviewUpdater
     {
         if (_isTarDead)
         {
-            RSCommands.SubmitToChat("/acan");
+            //RSCommands.SubmitToChat("/acan");
         }
 
         var nowMove = _canMove && Service.Configuration.CastingDisplay;

@@ -121,7 +121,7 @@ public class PluginConfiguration : IPluginConfiguration
     public int WorkTaskDelay = 20;
     public bool ShowWorkTaskFPS = true;
 
-    public bool UseStopCasting = true;
+    public bool UseStopCasting = false;
 
     public string PositionalErrorText = string.Empty;
 
