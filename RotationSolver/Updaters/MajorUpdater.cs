@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game;
 using RotationSolver.Commands;
+using System;
 using System.Threading.Tasks;
 
 namespace RotationSolver.Updaters;
@@ -32,7 +33,7 @@ internal static class MajorUpdater
         //        }
         //#endif
 
-        if (Service.Configuration.UseWorkTask)
+        if (!Service.Configuration.UseWorkTask)
         {
             UpdateWork();
         }
@@ -42,26 +43,47 @@ internal static class MajorUpdater
         MacroUpdater.UpdateMacro();
     }
 
-    static bool _quit = false;
+    static bool _work = true;
+    static DateTime _lastUpdate = DateTime.MinValue;
+    static readonly TimeSpan _oneSecond = TimeSpan.FromSeconds(1);
+    static int _frameCount = 0;
+    public static string FrameCount { get; private set; }
     public static void Enable()
     {
         Service.Framework.Update += FrameworkUpdate;
-        Task.Run(() =>
+        Task.Run(async () =>
         {
-            while (true)
+            while (_work)
             {
-                if(_quit) return;
                 if (!Service.Configuration.UseWorkTask || !Service.Conditions.Any() || Service.ClientState.LocalPlayer == null)
                 {
-                    Task.Delay(200);
+                    await Task.Delay(200);
                     continue;
                 }
 
                 UpdateWork();
-                Task.Delay(Service.Configuration.WorkTaskDelay);
+                await Task.Delay(Service.Configuration.WorkTaskDelay);
+
+                CalculateFPS();
             }
         });
         MovingUpdater.Enable();
+    }
+
+    private static void CalculateFPS()
+    {
+        var now = DateTime.Now;
+        var span = now - _lastUpdate;
+        if (span > _oneSecond)
+        {
+            FrameCount = _frameCount.ToString();
+            _lastUpdate = now;
+            _frameCount = 0;
+        }
+        else
+        {
+            _frameCount++;
+        }
     }
 
     private static void UpdateWork()
@@ -71,15 +93,16 @@ internal static class MajorUpdater
         TargetUpdater.UpdateTarget();
         MovingUpdater.UpdateLocation();
 
+        RotationUpdater.UpdateRotation();
+
         TimeLineUpdater.UpdateTimelineAction();
         ActionUpdater.UpdateNextAction();
         RSCommands.UpdateRotationState();
-
     }
 
     public static void Dispose()
     {
-        _quit = true;
+        _work = false;
         Service.Framework.Update -= FrameworkUpdate;
         PreviewUpdater.Dispose();
         MovingUpdater.Dispose();

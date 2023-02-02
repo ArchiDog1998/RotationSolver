@@ -119,6 +119,7 @@ internal partial class Strings
     public string Configwindow_Param_WorkTaskDelay { get; set; } = "Set the work task delay in millisecond. Smaller, more precise, more resource-intensive";
 
     public string Configwindow_Param_Display { get; set; } = "Display";
+    public string Configwindow_Param_Advanced { get; set; } = "Advanced";
     public string Configwindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting.";
     public string Configwindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
     public string Configwindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
@@ -141,10 +142,13 @@ internal partial class Strings
     public string Configwindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";
     public string Configwindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
     public string Configwindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on dtrbar";
+
+    public string Configwindow_Param_ShowWorkTaskFPS { get; set; } = "Display Task FPS on dtrbar";
+
     public string Configwindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state changed on toast";
     public string Configwindow_Param_Action { get; set; } = "Action";
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
-    public string Configwindow_Param_AutoBreak { get; set; } = "Automatic breaking";
+    public string Configwindow_Param_AutoBurst { get; set; } = "Automatic burst";
     public string Configwindow_Param_UseAbility { get; set; } = "Auto-use abilities";
     public string Configwindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by aoe";
     public string Configwindow_Params_NoNewHostilesDesc { get; set; } = "Nerver use any AOE action when this action may attack the mobs that not is a hostile target.";

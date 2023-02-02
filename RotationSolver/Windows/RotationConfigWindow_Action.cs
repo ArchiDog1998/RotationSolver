@@ -34,7 +34,7 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
         {
-            foreach (var pair in IconReplacer.RightRotationBaseActions.GroupBy(a => a.CateName).OrderBy(g => g.Key))
+            foreach (var pair in RotationUpdater.RightRotationBaseActions.GroupBy(a => a.CateName).OrderBy(g => g.Key))
             {
                 if (ImGui.CollapsingHeader(pair.Key))
                 {
@@ -54,13 +54,13 @@ internal partial class RotationConfigWindow
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.Timeline_TimelineDescription);
 
-        var rotation = IconReplacer.RightNowRotation;
+        var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
         TimeLineUpdater.DrawHeader();
 
         if (ActiveAction == null) return;
-        if (!IconReplacer.RightRotationBaseActions.Any(a => a.ID == ActiveAction.ID)) return;
+        if (!RotationUpdater.RightRotationBaseActions.Any(a => a.ID == ActiveAction.ID)) return;
 
         var set = TimeLineUpdater.RightSet;
         if (set == null) return;

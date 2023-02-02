@@ -6,6 +6,7 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.SigReplacers;
+using RotationSolver.Updaters;
 using System;
 using System.Linq;
 using System.Numerics;
@@ -37,9 +38,9 @@ internal partial class RotationConfigWindow
 
     private static void DrawRoleItems()
     {
-        foreach (var key in IconReplacer.CustomRotationsDict.Keys)
+        foreach (var key in RotationUpdater.CustomRotationsDict.Keys)
         {
-            var rotations = IconReplacer.CustomRotationsDict[key];
+            var rotations = RotationUpdater.CustomRotationsDict[key];
             if (rotations == null || rotations.Length == 0) continue;
 
             if (ImGui.BeginTabItem(key.ToName()))
@@ -60,18 +61,20 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawRotations(IconReplacer.CustomRotationGroup[] rotations)
+    private static void DrawRotations(RotationUpdater.CustomRotationGroup[] rotations)
     {
         for (int i = 0; i < rotations.Length; i++)
         {
             if (i > 0) ImGui.Separator();
 
-            var rotation = IconReplacer.GetChoosedRotation(rotations[i]);
+            var group = rotations[i];
+            Service.Configuration.RotationChoices.TryGetValue((uint)group.jobId, out var rotationName);
+            var rotation = RotationUpdater.GetChoosedRotation(group, rotationName);
 
             var canAddButton = Service.ClientState.LocalPlayer != null
                 && rotation.JobIDs.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id);
 
-            rotation.Display(rotations[i].rotations, canAddButton);
+            rotation.Display(group.rotations, canAddButton);
         }
     }
 

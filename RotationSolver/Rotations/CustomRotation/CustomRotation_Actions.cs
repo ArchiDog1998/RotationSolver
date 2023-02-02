@@ -200,8 +200,7 @@ internal abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, true)
     {
-        StatusProvide = new StatusID[] { StatusID.Peloton },
-        ActionCheck = b => !InCombat && !TargetUpdater.HostileTargets.Any(),
+        ActionCheck = b => !InCombat && TargetUpdater.PartyMembers.GetObjectInRadius(20).Any(p => !p.HasStatus(false, StatusID.Peloton)),
     };
 
     private protected virtual IBaseAction Raise => null;

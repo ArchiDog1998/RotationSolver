@@ -86,18 +86,10 @@ internal static partial class TargetUpdater
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal static bool CanHealSingleSpell { get; private set; } = false;
 
-    /// <summary>
-    /// 有宠物
-    /// </summary>
     internal static bool HavePet { get; private set; } = false;
 
-    /// <summary>
-    /// 有陆行鸟
-    /// </summary>
     internal static bool HaveChocobo { get; private set; } = false;
-    /// <summary>
-    /// 血量没有满
-    /// </summary>
+
     internal static bool HPNotFull { get; private set; } = false;
 
     private static IEnumerable<BattleChara> GetPartyMembers(IEnumerable<BattleChara> allTargets)
@@ -145,7 +137,13 @@ internal static partial class TargetUpdater
         UpdateCanHeal(Service.ClientState.LocalPlayer);
     }
 
-    static RandomDelay _healDelay = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+    static RandomDelay _healDelay1 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+
+    static RandomDelay _healDelay2 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+
+    static RandomDelay _healDelay3 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+
+    static RandomDelay _healDelay4 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
 
     static void UpdateCanHeal(PlayerCharacter player)
     {
@@ -172,10 +170,10 @@ internal static partial class TargetUpdater
         }
 
         //Delay
-        CanHealSingleAbility = _healDelay.Delay(CanHealSingleAbility);
-        CanHealSingleSpell = _healDelay.Delay(CanHealSingleSpell);
-        CanHealAreaAbility = _healDelay.Delay(CanHealAreaAbility);
-        CanHealAreaSpell = _healDelay.Delay(CanHealAreaSpell);
+        CanHealSingleAbility = _healDelay1.Delay(CanHealSingleAbility);
+        CanHealSingleSpell = _healDelay2.Delay(CanHealSingleSpell);
+        CanHealAreaAbility = _healDelay3.Delay(CanHealAreaAbility);
+        CanHealAreaSpell = _healDelay4.Delay(CanHealAreaSpell);
 
         PartyMembersMinHP = PartyMembersHP.Any() ? PartyMembersHP.Min() : 0;
         HPNotFull = PartyMembersMinHP < 1;
@@ -186,7 +184,7 @@ internal static partial class TargetUpdater
         var ratio = GetHealingOfTimeRatio(p, hotStatus);
 
         var h = p.GetHealthRatio();
-        if (h == 0 || !StatusHelper.NeedHealing(p)) return false;
+        if (h == 0 || !p.NeedHealing()) return false;
 
         return h < healSingle - hotSubSingle * ratio;
     });

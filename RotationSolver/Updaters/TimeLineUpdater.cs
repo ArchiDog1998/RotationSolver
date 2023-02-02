@@ -24,10 +24,10 @@ namespace RotationSolver.Updaters
         public static void UpdateTimelineAction()
         {
             if (_conditionSet == null) return;
-            var customRotation = IconReplacer.RightNowRotation;
+            var customRotation = RotationUpdater.RightNowRotation;
             if (customRotation == null) return;
 
-            var allActions = IconReplacer.RightRotationBaseActions;
+            var allActions = RotationUpdater.RightRotationBaseActions;
 
             var set = RightSet;
             if (set == null) return;
