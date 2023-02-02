@@ -35,10 +35,12 @@ internal partial class RotationConfigWindow
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Basic, DrawParamBasic);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Delay, DrawParamDelay);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Display, DrawParamDisplay);
+            DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Sound, DrawParamSound);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Action, DrawParamAction);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Conditon, DrawParamCondition);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Target, DrawParamTarget);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Hostile, DrawParamHostile);
+            DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Advanced, DrawParamAdvanced);
 
             ImGui.EndTabBar();
         }
@@ -109,6 +111,43 @@ internal partial class RotationConfigWindow
         }
     }
 
+    private void DrawParamSound()
+    {
+        DrawIntNumber(LocalizationManager.RightLang.Configwindow_Params_VoiceVolume,
+            ref Service.Configuration.VoiceVolume, max: 100);
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_SayOutStateChanged,
+            ref Service.Configuration.SayOutStateChanged);
+
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_SayPositional,
+            ref Service.Configuration.SayPotional);
+
+        DrawInputText(LocalizationManager.RightLang.Configwindow_Param_PositionaErrorText,
+            ref Service.Configuration.PositionalErrorText, 100,
+            LocalizationManager.RightLang.Configwindow_Params_LocationWrongTextDesc);
+    }
+
+    private void DrawParamAdvanced()
+    {
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_PoslockCasting,
+        ref Service.Configuration.PoslockCasting);
+
+        if (Service.Configuration.PoslockCasting)
+        {
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            DrawCombo(LocalizationManager.RightLang.Configwindow_Param_PoslockModifier,
+                ref Service.Configuration.PoslockModifier, EnumTranslations.ToName,
+                ConfigurationHelper.Keys,
+                LocalizationManager.RightLang.Configwindow_Param_PoslockDescription);
+        }
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseStopCasting,
+            ref Service.Configuration.UseStopCasting);
+    }
+
     private void DrawParamDisplay()
     {
         var useOverlayWindow = Service.Configuration.UseOverlayWindow;
@@ -155,35 +194,7 @@ internal partial class RotationConfigWindow
         }
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_KeyBoardNoise,
-             ref Service.Configuration.KeyBoardNoise);
-
-        ImGui.Separator();
-
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_CastingDisplay,
-            ref Service.Configuration.CastingDisplay);
-
-
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_PoslockCasting,
-                ref Service.Configuration.PoslockCasting);
-
-        if (Service.Configuration.PoslockCasting)
-        {
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
-
-            DrawCombo(LocalizationManager.RightLang.Configwindow_Param_PoslockModifier,
-                ref Service.Configuration.PoslockModifier, EnumTranslations.ToName,
-                ConfigurationHelper.Keys,
-                LocalizationManager.RightLang.Configwindow_Param_PoslockDescription);
-        }
-
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseStopCasting,
-            ref Service.Configuration.UseStopCasting);
-
-        ImGui.Separator();
-
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_SayOutStateChanged,
-            ref Service.Configuration.SayOutStateChanged);
+            ref Service.Configuration.KeyBoardNoise);
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowInfoOnDtr,
             ref Service.Configuration.ShowInfoOnDtr);
@@ -191,13 +202,19 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowInfoOnToast,
             ref Service.Configuration.ShowInfoOnToast);
 
+        if (Service.Configuration.ShowInfoOnDtr && Service.Configuration.UseWorkTask)
+        {
+            DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowWorkTaskFPS,
+                ref Service.Configuration.ShowWorkTaskFPS);
+        }
+
         ImGui.Spacing();
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_CastingDisplay,
+            ref Service.Configuration.CastingDisplay);
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_FlytextPositional,
             ref Service.Configuration.FlytextPositional);
-
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_SayPositional,
-            ref Service.Configuration.SayPotional);
 
         if (useOverlayWindow)
         {
@@ -205,13 +222,6 @@ internal partial class RotationConfigWindow
                 ref Service.Configuration.PositionalFeedback,
                 LocalizationManager.RightLang.Configwindow_Param_PositionalFeedbackDesc);
         }
-
-        DrawIntNumber(LocalizationManager.RightLang.Configwindow_Params_VoiceVolume,
-            ref Service.Configuration.VoiceVolume, max: 100);
-
-        DrawInputText(LocalizationManager.RightLang.Configwindow_Param_PositionaErrorText,
-            ref Service.Configuration.PositionalErrorText, 100,
-            LocalizationManager.RightLang.Configwindow_Params_LocationWrongTextDesc);
     }
 
     private void DrawParamAction()

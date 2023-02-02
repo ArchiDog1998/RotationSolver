@@ -30,16 +30,21 @@ internal static class PreviewUpdater
     static string _showValue;
     private static void UpdateEntry()
     {
-        if (Service.Configuration.ShowInfoOnDtr && RSCommands.EntryString != null)
+        var showStr = RSCommands.EntryString;
+        if (Service.Configuration.ShowWorkTaskFPS)
+        {
+            showStr += " " + MajorUpdater.FrameCount + "Hz";
+        }
+        if (Service.Configuration.ShowInfoOnDtr && showStr != null)
         {
             if (_dtrEntry == null)
             {
                 _dtrEntry = Service.DtrBar.Get("Rotation Solver");
             }
             if(!_dtrEntry.Shown) _dtrEntry.Shown = true;
-            if(_showValue != RSCommands.EntryString)
+            if(_showValue != showStr)
             {
-                _showValue = RSCommands.EntryString;
+                _showValue = showStr;
                 _dtrEntry.Text = new SeString(
                     new IconPayload(BitmapFontIcon.DPS),
                     new TextPayload(_showValue)

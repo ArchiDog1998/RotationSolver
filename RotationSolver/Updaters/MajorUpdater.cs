@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game;
 using RotationSolver.Commands;
+using System;
 using System.Threading.Tasks;
 
 namespace RotationSolver.Updaters;
@@ -43,6 +44,10 @@ internal static class MajorUpdater
     }
 
     static bool _work = true;
+    static DateTime _lastUpdate = DateTime.MinValue;
+    static readonly TimeSpan _oneSecond = TimeSpan.FromSeconds(1);
+    static int _frameCount = 0;
+    public static string FrameCount { get; private set; }
     public static void Enable()
     {
         Service.Framework.Update += FrameworkUpdate;
@@ -58,9 +63,27 @@ internal static class MajorUpdater
 
                 UpdateWork();
                 Task.Delay(Service.Configuration.WorkTaskDelay);
+
+                CalculateFPS();
             }
         });
         MovingUpdater.Enable();
+    }
+
+    private static void CalculateFPS()
+    {
+        var now = DateTime.Now;
+        var span = now - _lastUpdate;
+        if (span > _oneSecond)
+        {
+            FrameCount = (_frameCount / span.TotalSeconds).ToString("F2");
+            _lastUpdate = now;
+            _frameCount = 0;
+        }
+        else
+        {
+            _frameCount++;
+        }
     }
 
     private static void UpdateWork()
