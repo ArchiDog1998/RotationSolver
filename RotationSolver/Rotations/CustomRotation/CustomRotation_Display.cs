@@ -23,7 +23,7 @@ namespace RotationSolver.Rotations.CustomRotation
                     {
                         if (ImGui.Selectable(r.RotationName))
                         {
-                            Service.Configuration.ComboChoices[Job.RowId] = r.RotationName;
+                            Service.Configuration.RotationChoices[Job.RowId] = r.RotationName;
                             Service.Configuration.Save();
                         }
                         if (ImGui.IsItemHovered())

@@ -56,7 +56,7 @@ internal static class ActionUpdater
 
         try
         {
-            var customRotation = IconReplacer.RightNowRotation;
+            var customRotation = RotationUpdater.RightNowRotation;
 
             if (customRotation?.TryInvoke(out var newAction) ?? false)
             {

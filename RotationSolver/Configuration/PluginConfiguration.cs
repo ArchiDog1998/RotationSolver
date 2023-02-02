@@ -17,7 +17,7 @@ public class PluginConfiguration : IPluginConfiguration
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
     public Dictionary<uint, Dictionary<string, Dictionary<string, string>>> RotationsConfigurations { get; private set; }
         = new Dictionary<uint, Dictionary<string, Dictionary<string, string>>>();
-    public Dictionary<uint, string> ComboChoices { get; private set; } = new Dictionary<uint, string>();
+    public Dictionary<uint, string> RotationChoices { get; private set; } = new Dictionary<uint, string>();
     public Dictionary<uint, byte> TargetToHostileTypes { get; set; } =
         new Dictionary<uint, byte>();
     public int AddDotGCDCount = 2;

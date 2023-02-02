@@ -42,15 +42,14 @@ internal static class MajorUpdater
         MacroUpdater.UpdateMacro();
     }
 
-    static bool _quit = false;
+    static bool _work = true;
     public static void Enable()
     {
         Service.Framework.Update += FrameworkUpdate;
         Task.Run(() =>
         {
-            while (true)
+            while (_work)
             {
-                if(_quit) return;
                 if (!Service.Configuration.UseWorkTask || !Service.Conditions.Any() || Service.ClientState.LocalPlayer == null)
                 {
                     Task.Delay(200);
@@ -71,15 +70,16 @@ internal static class MajorUpdater
         TargetUpdater.UpdateTarget();
         MovingUpdater.UpdateLocation();
 
+        RotationUpdater.UpdateRotation();
+
         TimeLineUpdater.UpdateTimelineAction();
         ActionUpdater.UpdateNextAction();
         RSCommands.UpdateRotationState();
-
     }
 
     public static void Dispose()
     {
-        _quit = true;
+        _work = false;
         Service.Framework.Update -= FrameworkUpdate;
         PreviewUpdater.Dispose();
         MovingUpdater.Dispose();
