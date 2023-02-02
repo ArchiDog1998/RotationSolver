@@ -118,7 +118,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float InterruptDelayMax = 1;
 
     public bool UseWorkTask = true;
-    public int WorkTaskDelay = 20;
+    public int WorkTaskDelay = 10;
     public bool ShowWorkTaskFPS = true;
 
     public bool UseStopCasting = false;

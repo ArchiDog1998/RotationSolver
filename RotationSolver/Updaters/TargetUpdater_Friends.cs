@@ -131,8 +131,15 @@ internal static partial class TargetUpdater
         #endregion
 
         PartyMembersHP = PartyMembers.Select(ObjectHelper.GetHealthRatio).Where(r => r > 0);
-        PartyMembersAverHP = PartyMembersHP.Average();
-        PartyMembersDifferHP = (float)Math.Sqrt(PartyMembersHP.Average(d => Math.Pow(d - PartyMembersAverHP, 2)));
+        if (PartyMembersHP.Any())
+        {
+            PartyMembersAverHP = PartyMembersHP.Average();
+            PartyMembersDifferHP = (float)Math.Sqrt(PartyMembersHP.Average(d => Math.Pow(d - PartyMembersAverHP, 2)));
+        }
+        else
+        {
+            PartyMembersAverHP = PartyMembersDifferHP = 0;
+        }
 
         UpdateCanHeal(Service.ClientState.LocalPlayer);
     }

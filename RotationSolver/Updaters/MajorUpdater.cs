@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game;
+using Dalamud.Logging;
 using RotationSolver.Commands;
 using System;
 using System.Threading.Tasks;
