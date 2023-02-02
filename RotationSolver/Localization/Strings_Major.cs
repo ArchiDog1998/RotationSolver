@@ -119,7 +119,6 @@ internal partial class Strings
     public string Configwindow_Param_WorkTaskDelay { get; set; } = "Set the work task delay in millisecond. Smaller, more precise, more resource-intensive";
 
     public string Configwindow_Param_Display { get; set; } = "Display";
-    public string Configwindow_Param_Sound { get; set; } = "Sound";
     public string Configwindow_Param_Advanced { get; set; } = "Advanced";
     public string Configwindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting.";
     public string Configwindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
@@ -149,7 +148,7 @@ internal partial class Strings
     public string Configwindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state changed on toast";
     public string Configwindow_Param_Action { get; set; } = "Action";
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
-    public string Configwindow_Param_AutoBreak { get; set; } = "Automatic breaking";
+    public string Configwindow_Param_AutoBurst { get; set; } = "Automatic burst";
     public string Configwindow_Param_UseAbility { get; set; } = "Auto-use abilities";
     public string Configwindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by aoe";
     public string Configwindow_Params_NoNewHostilesDesc { get; set; } = "Nerver use any AOE action when this action may attack the mobs that not is a hostile target.";

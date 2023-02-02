@@ -51,18 +51,18 @@ internal static class MajorUpdater
     public static void Enable()
     {
         Service.Framework.Update += FrameworkUpdate;
-        Task.Run(() =>
+        Task.Run(async () =>
         {
             while (_work)
             {
                 if (!Service.Configuration.UseWorkTask || !Service.Conditions.Any() || Service.ClientState.LocalPlayer == null)
                 {
-                    Task.Delay(200);
+                    await Task.Delay(200);
                     continue;
                 }
 
                 UpdateWork();
-                Task.Delay(Service.Configuration.WorkTaskDelay);
+                await Task.Delay(Service.Configuration.WorkTaskDelay);
 
                 CalculateFPS();
             }
@@ -76,7 +76,7 @@ internal static class MajorUpdater
         var span = now - _lastUpdate;
         if (span > _oneSecond)
         {
-            FrameCount = (_frameCount / span.TotalSeconds).ToString("F2");
+            FrameCount = _frameCount.ToString();
             _lastUpdate = now;
             _frameCount = 0;
         }

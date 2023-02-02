@@ -137,7 +137,13 @@ internal static partial class TargetUpdater
         UpdateCanHeal(Service.ClientState.LocalPlayer);
     }
 
-    static RandomDelay _healDelay = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+    static RandomDelay _healDelay1 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+
+    static RandomDelay _healDelay2 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+
+    static RandomDelay _healDelay3 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
+
+    static RandomDelay _healDelay4 = new RandomDelay(() => (Service.Configuration.HealDelayMin, Service.Configuration.HealDelayMax));
 
     static void UpdateCanHeal(PlayerCharacter player)
     {
@@ -164,10 +170,10 @@ internal static partial class TargetUpdater
         }
 
         //Delay
-        CanHealSingleAbility = _healDelay.Delay(CanHealSingleAbility);
-        CanHealSingleSpell = _healDelay.Delay(CanHealSingleSpell);
-        CanHealAreaAbility = _healDelay.Delay(CanHealAreaAbility);
-        CanHealAreaSpell = _healDelay.Delay(CanHealAreaSpell);
+        CanHealSingleAbility = _healDelay1.Delay(CanHealSingleAbility);
+        CanHealSingleSpell = _healDelay2.Delay(CanHealSingleSpell);
+        CanHealAreaAbility = _healDelay3.Delay(CanHealAreaAbility);
+        CanHealAreaSpell = _healDelay4.Delay(CanHealAreaSpell);
 
         PartyMembersMinHP = PartyMembersHP.Any() ? PartyMembersHP.Min() : 0;
         HPNotFull = PartyMembersMinHP < 1;

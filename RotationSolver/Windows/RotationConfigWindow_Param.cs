@@ -35,7 +35,6 @@ internal partial class RotationConfigWindow
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Basic, DrawParamBasic);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Delay, DrawParamDelay);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Display, DrawParamDisplay);
-            DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Sound, DrawParamSound);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Action, DrawParamAction);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Conditon, DrawParamCondition);
             DrawParamTabItem(LocalizationManager.RightLang.Configwindow_Param_Target, DrawParamTarget);
@@ -111,14 +110,13 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private void DrawParamSound()
+    private void DrawParamAdvanced()
     {
         DrawIntNumber(LocalizationManager.RightLang.Configwindow_Params_VoiceVolume,
-            ref Service.Configuration.VoiceVolume, max: 100);
+    ref Service.Configuration.VoiceVolume, max: 100);
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_SayOutStateChanged,
             ref Service.Configuration.SayOutStateChanged);
-
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_SayPositional,
             ref Service.Configuration.SayPotional);
@@ -126,10 +124,9 @@ internal partial class RotationConfigWindow
         DrawInputText(LocalizationManager.RightLang.Configwindow_Param_PositionaErrorText,
             ref Service.Configuration.PositionalErrorText, 100,
             LocalizationManager.RightLang.Configwindow_Params_LocationWrongTextDesc);
-    }
 
-    private void DrawParamAdvanced()
-    {
+        ImGui.Separator();
+
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_PoslockCasting,
         ref Service.Configuration.PoslockCasting);
 
@@ -235,7 +232,7 @@ internal partial class RotationConfigWindow
 
         ImGui.Separator();
 
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_AutoBreak,
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_AutoBurst,
             ref Service.Configuration.AutoBurst);
 
         ImGui.SameLine();
