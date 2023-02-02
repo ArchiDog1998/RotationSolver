@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.1](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.0...v1.3.1) (2023-02-02)
+
+
+### Bug Fixes
+
+* add fps show, and change the param layout. ([4c4bd29](https://github.com/ArchiDog1998/RotationSolver/commit/4c4bd29c2816320f09c69e3a9f11f263dc9e2542))
+* add more info in debug tab. ([c96224d](https://github.com/ArchiDog1998/RotationSolver/commit/c96224d1c5d82ea2c2b21deeb627f01a159bdc21))
+* fix for healing error. fix for work task await. ([b365cc8](https://github.com/ArchiDog1998/RotationSolver/commit/b365cc8db9fcd7a519f0cd9760759fd29952c8ac))
+* fix the Main thread doing task work when choose Using work task. ([4df0449](https://github.com/ArchiDog1998/RotationSolver/commit/4df044949d8a1ce2df17baa2dfd4e6e921ef9719))
+* peloton will be used when partymember in radius doesn't has the status Peloton. ([253fa4c](https://github.com/ArchiDog1998/RotationSolver/commit/253fa4c9ed68c673b13ac8511bce59121e9d1bd5))
+* remove stop casting. ([7d5103f](https://github.com/ArchiDog1998/RotationSolver/commit/7d5103f8b118938a32b001b8274ad8e6d99d2494))
+
 ## [1.3.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.2.3...v1.3.0) (2023-02-01)
 
 
