@@ -39,6 +39,8 @@ internal static class MajorUpdater
             UpdateWork();
         }
 
+        MovingUpdater.UpdateLocation();
+
         PreviewUpdater.UpdatePreview();
         ActionUpdater.DoAction();
         MacroUpdater.UpdateMacro();
@@ -68,7 +70,7 @@ internal static class MajorUpdater
                 }
                 catch(Exception ex) 
                 {
-                    PluginLog.Debug(ex, "TaskException");
+                    PluginLog.Error(ex, "TaskException");
                 }
 
                 await Task.Delay(Service.Configuration.WorkTaskDelay);
@@ -100,7 +102,6 @@ internal static class MajorUpdater
         PreviewUpdater.UpdateCastBarState();
         ActionUpdater.UpdateActionInfo();
         TargetUpdater.UpdateTarget();
-        MovingUpdater.UpdateLocation();
 
         RotationUpdater.UpdateRotation();
 
