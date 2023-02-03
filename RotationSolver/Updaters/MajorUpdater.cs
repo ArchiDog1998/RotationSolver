@@ -62,7 +62,15 @@ internal static class MajorUpdater
                     continue;
                 }
 
-                UpdateWork();
+                try
+                {
+                    UpdateWork();
+                }
+                catch(Exception ex) 
+                {
+                    PluginLog.Debug(ex, "TaskException");
+                }
+
                 await Task.Delay(Service.Configuration.WorkTaskDelay);
 
                 CalculateFPS();
