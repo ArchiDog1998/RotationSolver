@@ -367,7 +367,7 @@ internal partial class RotationConfigWindow
         }
         ImGui.SameLine();
         ImGuiHelper.Spacing();
-        ImGui.Text(LocalizationManager.RightLang.Configwindow_Param_HostileDesc);
+        ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_Param_HostileDesc);
         for (int i = 0; i < Service.Configuration.TargetingTypes.Count; i++)
         {
             ImGui.Separator();

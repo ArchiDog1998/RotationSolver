@@ -102,9 +102,8 @@ internal sealed class WHM_Default : WHM_Base
 
     private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        //天赐 大资源救急用
-        if (Benediction.Target.GetHealthRatio() < 0.3
-            && Benediction.CanUse(out act)) return true;
+        if (Benediction.CanUse(out act) && 
+            Benediction.Target.GetHealthRatio() < 0.3) return true;
 
         //庇护所
         if (!IsMoving && Asylum.CanUse(out act)) return true;
@@ -169,16 +168,10 @@ internal sealed class WHM_Default : WHM_Base
     //开局5s使用再生和盾给开了盾姿的t
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Configs.GetBool("UsePreRegen") && remainTime <= 5 && remainTime > 3 && DivineBenison.CanUse(out _))
+        if (Configs.GetBool("UsePreRegen") && remainTime <= 5 && remainTime > 3)
         {
-            if (DivineBenison.CanUse(out _))
-            {
-                return DivineBenison;
-            }
-            if (Regen.CanUse(out _))
-            {
-                return Regen;
-            }
+            if (Regen.CanUse(out var act)) return act;
+            if (DivineBenison.CanUse(out act)) return act;
         }
         return base.CountDownAction(remainTime);
     }

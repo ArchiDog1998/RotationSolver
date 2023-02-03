@@ -343,7 +343,10 @@ internal static class TargetFilter
     internal static float DistanceToPlayer(this GameObject obj)
     {
         if (obj == null) return float.MaxValue;
-        var distance = Vector3.Distance(Service.ClientState.LocalPlayer.Position, obj.Position) - Service.ClientState.LocalPlayer.HitboxRadius;
+        var player = Service.ClientState.LocalPlayer;
+        if (player == null) return float.MaxValue;
+
+        var distance = Vector3.Distance(player.Position, obj.Position) - player.HitboxRadius;
         distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
         return distance;
     }

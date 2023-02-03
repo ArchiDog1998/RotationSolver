@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game;
+using Dalamud.Logging;
 using RotationSolver.Commands;
 using System;
 using System.Threading.Tasks;
@@ -61,7 +62,15 @@ internal static class MajorUpdater
                     continue;
                 }
 
-                UpdateWork();
+                try
+                {
+                    UpdateWork();
+                }
+                catch(Exception ex) 
+                {
+                    PluginLog.Debug(ex, "TaskException");
+                }
+
                 await Task.Delay(Service.Configuration.WorkTaskDelay);
 
                 CalculateFPS();
