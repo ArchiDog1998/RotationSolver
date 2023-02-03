@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.2](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.1...v1.3.2) (2023-02-03)
+
+
+### Bug Fixes
+
+* fix for dot targeting when mustuse. ([4bf54e3](https://github.com/ArchiDog1998/RotationSolver/commit/4bf54e34278362d780c411d369df8046840d7724))
+* fix the MemberHP calculation bug when the count of hps is zero. ([9dd502a](https://github.com/ArchiDog1998/RotationSolver/commit/9dd502ac619b03c614685cc8a48d261aa7130cf8))
+* the usage of Benediction. ([786b2ca](https://github.com/ArchiDog1998/RotationSolver/commit/786b2cacd2218fad5c44a8533e7a91af2ce79fd4))
+
 ## [1.3.1](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.0...v1.3.1) (2023-02-02)
 
 
