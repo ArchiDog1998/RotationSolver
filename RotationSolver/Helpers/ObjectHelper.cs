@@ -4,6 +4,7 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Data;
 using RotationSolver.Updaters;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -29,6 +30,7 @@ internal static class ObjectHelper
     internal static unsafe bool IsTargetable(this GameObject obj)
     => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->GetIsTargetable();
 
+    static readonly Dictionary<uint, bool> _effectRangeCheck = new Dictionary<uint, bool>();
     internal static bool CanInterrupt(this BattleChara b)
     {
         var baseCheck = b.IsCasting && b.IsCastInterruptible && b.TotalCastTime >= 2;
@@ -36,13 +38,14 @@ internal static class ObjectHelper
         if (!baseCheck) return false;
         if (!Service.Configuration.InterruptibleMoreCheck) return true;
 
-        var act = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(b.CastActionId);
-        if (act == null) return false;
+        var id = b.CastActionId;
+        if (_effectRangeCheck.TryGetValue(id, out var check)) return check;
 
-        //跳过扇形圆型
-        if (act.CastType is 3 or 4) return false;
-        if (ActionManager.GetActionRange(b.CastActionId) is > 0 and < 8) return false;
-        return true;
+        var act = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(b.CastActionId);
+        if (act == null) return _effectRangeCheck[id] = false;
+        if (act.CastType is 3 or 4) return _effectRangeCheck[id] = false;
+        if (act.EffectRange is > 0 and < 8) return _effectRangeCheck[id] = false;
+        return _effectRangeCheck[id] = true;
     }
 
     /// <summary>

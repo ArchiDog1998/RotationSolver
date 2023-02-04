@@ -128,6 +128,7 @@ internal static class StatusHelper
     static readonly StatusID[] invincibalStatus = new StatusID[]
     {
         StatusID.StoneSkin,
+        StatusID.IceSpikesInvincible,
     };
 
     internal static bool IsInvincible(this Status status)

@@ -1119,4 +1119,5 @@ internal enum StatusID : ushort
     RespellingSpray = 556,
 
     StoneSkin = 151,
+    IceSpikesInvincible = 198,
 }
