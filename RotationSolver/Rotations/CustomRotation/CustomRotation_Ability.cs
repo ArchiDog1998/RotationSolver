@@ -49,7 +49,6 @@ internal abstract partial class CustomRotation
 
         //Run!
         if (!InCombat && IsMoving && role == JobRole.RangedPhysical
-            && !Service.ClientState.LocalPlayer.HasStatus(false, StatusID.Peloton)
             && Peloton.CanUse(out act, mustUse: true)) return true;
 
         return false;

@@ -69,6 +69,7 @@ internal partial class RotationConfigWindow
 
         if (ImGui.CollapsingHeader("Next Action"))
         {
+            ImGui.Text(RotationUpdater.RightNowRotation.RotationName);
             ImGui.Text(RSCommands.SpecialType.ToString());
 
             ActionUpdater.NextAction?.Display(false);
