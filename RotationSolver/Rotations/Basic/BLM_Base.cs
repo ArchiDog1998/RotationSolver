@@ -164,7 +164,7 @@ namespace RotationSolver.Rotations.Basic
         /// </summary>
         public static IBaseAction Manafont { get; } = new BaseAction(ActionID.Manafont)
         {
-            ActionCheck = b => Player.CurrentMp <= 8000,
+            ActionCheck = b => Player.CurrentMp <= 7000,
         };
 
         /// <summary>

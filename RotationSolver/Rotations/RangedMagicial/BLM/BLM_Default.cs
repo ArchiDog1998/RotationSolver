@@ -235,6 +235,7 @@ internal class BLM_Default : BLM_Base
         {
             case 1:
                 if (Fire2.CanUse(out act)) return true;
+                //if (IsParadoxActive && Fire.CanUse(out act)) return true;
                 if (Fire3.CanUse(out act)) return true;
                 break;
             case 2:
@@ -245,7 +246,7 @@ internal class BLM_Default : BLM_Base
 
         if (ElementTimeEndAfterGCD(Configs.GetBool("ExtendTimeSafely") ? 3u : 2u))
         {
-            if (Player.CurrentMp >= Fire.MPNeed + 800 && Fire.CanUse(out act)) return true;
+            if (Player.CurrentMp >= Fire.MPNeed * 2 + 800 && Fire.CanUse(out act)) return true;
             if (Flare.CanUse(out act)) return true;
             if (Despair.CanUse(out act)) return true;
         }
@@ -273,7 +274,7 @@ internal class BLM_Default : BLM_Base
         if (Fire2.CanUse(out act)) return true;
 
         //To add Manafont.
-        if(!Manafont.IsCoolingDown && IsPolyglotStacksMaxed && UsePolyglot(out act, 0)) return true;
+        if(!Manafont.IsCoolingDown && Manafont.ActionCheck.Invoke(null) && IsPolyglotStacksMaxed && UsePolyglot(out act, 0)) return true;
 
         if (Player.CurrentMp >= Fire.MPNeed + 800)
         {
@@ -289,7 +290,7 @@ internal class BLM_Default : BLM_Base
     private static bool UseInstanceSpell(out IAction act)
     {
         if (UsePolyglot(out act)) return true;
-        if (HasThunder && AddThunder(out act)) return true;
+        if (HasThunder && AddThunder(out act, 1)) return true;
         if (UsePolyglot(out act, 0)) return true;
         return false;
     }
