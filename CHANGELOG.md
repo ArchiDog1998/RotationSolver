@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.3.3](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.2...v1.3.3) (2023-02-05)
+
+
+### Bug Fixes
+
+* add a rotation name in debug. ([e2a52d4](https://github.com/ArchiDog1998/RotationSolver/commit/e2a52d44237b2bdea81cf575a19a384a1bedec66))
+* add some invincible status and change the interrupt logic. ([ac3cb97](https://github.com/ArchiDog1998/RotationSolver/commit/ac3cb9715cf53918b3104cf35e7e0854062beb9b))
+* fix for moving check update. ([d8947f9](https://github.com/ArchiDog1998/RotationSolver/commit/d8947f9149e6bcc96cd20ff358de6e0765408efb))
+* rewrite the blm. ([928d41e](https://github.com/ArchiDog1998/RotationSolver/commit/928d41efe94b0f355114c8417c36bc9dace8bf62))
+
 ## [1.3.2](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.1...v1.3.2) (2023-02-03)
 
 
