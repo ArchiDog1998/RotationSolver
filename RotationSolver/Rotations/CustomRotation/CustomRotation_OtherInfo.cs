@@ -171,8 +171,9 @@ internal abstract partial class CustomRotation
     /// </summary>
     /// <param name="time">time in second.</param>
     /// <returns></returns>
-    public static bool CombatElapsed(float time)
+    public static bool CombatElapsedLess(float time)
     {
+        if (!InCombat) return true;
         return CooldownHelper.ElapsedAfter(time, (float)ActionUpdater.CombatTime.TotalSeconds);
     }
 

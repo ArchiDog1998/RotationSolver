@@ -95,7 +95,7 @@ internal partial class BaseAction : IBaseAction
         }
     }
 
-    internal virtual unsafe uint MPNeed
+    public virtual unsafe uint MPNeed
     {
         get
         {

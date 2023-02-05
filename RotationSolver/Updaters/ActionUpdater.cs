@@ -111,7 +111,8 @@ internal static class ActionUpdater
         if (player.IsCasting) weapontotal = Math.Max(weapontotal, castTotal);
 
         WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Spell, 11);
-        WeaponRemain = Math.Max(weapontotal - WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
+        WeaponRemain = WeaponElapsed == 0 ? player.TotalCastTime - player.CurrentCastTime
+            : Math.Max(weapontotal - WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
 
         //确定读条时间。
         if (WeaponElapsed < 0.3) _lastCastingTotal = castTotal;

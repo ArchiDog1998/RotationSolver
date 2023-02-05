@@ -6,6 +6,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.RangedMagicial.BLM;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
 using System;
@@ -23,6 +24,8 @@ internal partial class RotationConfigWindow
 
         if (ImGui.CollapsingHeader("Status"))
         {
+            ImGui.Text(ActionUpdater.WeaponRemain.ToString());
+
             if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
             {
                 ImGui.Text("Fate: " + TargetUpdater.FateId.ToString());

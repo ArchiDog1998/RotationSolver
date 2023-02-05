@@ -186,6 +186,8 @@ public enum ActionID : uint
     /// </summary>
     Thunder3 = 153,
 
+    Thunder4 = 7420,
+
     /// <summary>
     /// 星灵移位
     /// </summary>

@@ -1120,4 +1120,6 @@ internal enum StatusID : ushort
 
     StoneSkin = 151,
     IceSpikesInvincible = 198,
+
+    CircleOfPower = 738,
 }
