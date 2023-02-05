@@ -21,6 +21,17 @@ internal sealed class WHM_Default : WHM_Base
         return base.CreateConfiguration().SetBool("UseLilyWhenFull", true, "Auto use Lily when full")
                                             .SetBool("UsePreRegen", false, "Regen on Tank in 5 seconds.");
     }
+    public static IBaseAction RegenDefense { get; } = new BaseAction(ActionID.Regen, true, isEot: true, isTimeline: true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+        TargetStatus = new[]
+        {
+            StatusID.Regen1,
+            StatusID.Regen2,
+            StatusID.Regen3,
+        }
+    };
+
     public override SortedList<DescType, string> DescriptionDict => new()
     {
         {DescType.HealArea, $"{AfflatusRapture}, {Medica2}, {Cure3}, {Medica}\n{Asylum}"},

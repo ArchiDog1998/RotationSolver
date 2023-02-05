@@ -51,7 +51,7 @@ internal partial class BaseAction
         }
     }
 
-    public unsafe virtual bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+    public unsafe virtual bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0)
     {
         act = this;
 
@@ -87,7 +87,7 @@ internal partial class BaseAction
             }
             else
             {
-                if (RecastTimeRemain > ActionUpdater.WeaponRemain + ActionUpdater.WeaponTotal)
+                if (RecastTimeRemain > ActionUpdater.WeaponRemain + ActionUpdater.WeaponTotal * gcdCountForAbility)
                     return false;
             }
         }

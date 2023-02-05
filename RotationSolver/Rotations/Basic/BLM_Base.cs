@@ -71,21 +71,11 @@ namespace RotationSolver.Rotations.Basic
             return EndAfterGCD(JobGauge.EnochianTimer / 1000f, gctCount, abilityCount);
         }
 
-        /// <summary>
-        /// 天语剩余时间
-        /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
         protected static bool ElementTimeEndAfter(float time)
         {
             return EndAfter(JobGauge.ElementTimeRemaining / 1000f, time);
         }
 
-        /// <summary>
-        /// 天语剩余时间
-        /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
         protected static bool ElementTimeEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
         {
             return EndAfterGCD(JobGauge.ElementTimeRemaining / 1000f, gctCount, abilityCount);
@@ -108,20 +98,20 @@ namespace RotationSolver.Rotations.Basic
 
         public class ThunderAction : BaseAction
         {
-            internal override uint MPNeed => HasThunder ? 0 : base.MPNeed;
+            public override uint MPNeed => HasThunder ? 0 : base.MPNeed;
 
-            internal ThunderAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
-                : base(actionID, isFriendly, shouldEndSpecial, isDot)
+            internal ThunderAction(ActionID actionID)
+                : base(actionID, false, false, true)
             {
             }
         }
 
-        public class Fire3Action : ElementAction
+        public class Fire3Action : BaseAction
         {
-            internal override uint MPNeed => HasFire ? 0 : base.MPNeed;
+            public override uint MPNeed => HasFire ? 0 : base.MPNeed;
 
-            internal Fire3Action(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isDot = false)
-                : base(actionID, isFriendly, shouldEndSpecial, isDot)
+            internal Fire3Action(ActionID actionID)
+                : base(actionID, false, false, false)
             {
             }
         }
@@ -132,9 +122,9 @@ namespace RotationSolver.Rotations.Basic
             {
             }
 
-            public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false)
+            public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0)
             {
-                if (JobGauge.IsEnochianActive && CastTime - 0.5f > JobGauge.ElementTimeRemaining / 1000f)
+                if (ElementTimeEndAfter(CastTime - 0.1f))
                 {
                     act = null;
                     return false;
@@ -147,17 +137,12 @@ namespace RotationSolver.Rotations.Basic
         /// <summary>
         /// 闪雷
         /// </summary>
-        public static IBaseAction Thunder { get; } = new ThunderAction(ActionID.Thunder, isDot: true);
-
-        /// <summary>
-        /// 暴雷
-        /// </summary>
-        public static IBaseAction Thunder3 { get; } = new ThunderAction(ActionID.Thunder3, isDot: true);
+        public static IBaseAction Thunder { get; } = new ThunderAction(ActionID.Thunder);
 
         /// <summary>
         /// 震雷
         /// </summary>
-        public static IBaseAction Thunder2 { get; } = new ThunderAction(ActionID.Thunder2, isDot: true);
+        public static IBaseAction Thunder2 { get; } = new ThunderAction(ActionID.Thunder2);
 
         /// <summary>
         /// 星灵移位
@@ -177,7 +162,10 @@ namespace RotationSolver.Rotations.Basic
         /// <summary>
         /// 魔泉
         /// </summary>
-        public static IBaseAction Manafont { get; } = new BaseAction(ActionID.Manafont);
+        public static IBaseAction Manafont { get; } = new BaseAction(ActionID.Manafont)
+        {
+            ActionCheck = b => Player.CurrentMp <= 7000,
+        };
 
         /// <summary>
         /// 激情咏唱
@@ -271,7 +259,10 @@ namespace RotationSolver.Rotations.Basic
         /// <summary>
         /// 火3
         /// </summary>
-        public static IBaseAction Fire3 { get; } = new Fire3Action(ActionID.Fire3);
+        public static IBaseAction Fire3 { get; } = new Fire3Action(ActionID.Fire3)
+        {
+            ActionCheck = b => !IsLastGCD(ActionID.Fire3),
+        };
 
         /// <summary>
         /// 火4
@@ -294,29 +285,29 @@ namespace RotationSolver.Rotations.Basic
         /// <summary>
         /// 冰3
         /// </summary>
-        public static IBaseAction Blizzard3 { get; } = new BaseAction(ActionID.Blizzard3);
+        public static IBaseAction Blizzard3 { get; } = new BaseAction(ActionID.Blizzard3)
+        {
+            ActionCheck = b => !IsLastGCD(ActionID.Blizzard3),
+        };
 
         /// <summary>
         /// 冰4
         /// </summary>
-        public static IBaseAction Blizzard4 { get; } = new ElementAction(ActionID.Blizzard4)
-        {
-            ActionCheck = b =>
-            {
-                if (IsLastGCD(true, Blizzard4)) return false;
-
-                if (JobGauge.UmbralHearts == 3) return false;
-
-                return JobGauge.InUmbralIce;
-            }
-        };
+        public static IBaseAction Blizzard4 { get; } = new ElementAction(ActionID.Blizzard4);
 
         /// <summary>
         /// 冻结
         /// </summary>
-        public static IBaseAction Freeze { get; } = new ElementAction(ActionID.Freeze)
+        public static IBaseAction Freeze { get; } = new ElementAction(ActionID.Freeze);
+
+        public static float Fire4Time { get; private set; }
+        private protected override void UpdateInfo()
         {
-            ActionCheck = b => JobGauge.InUmbralIce,
-        };
+            if (Player.CastActionId == (uint)ActionID.Fire4 && Player.CurrentCastTime < 0.2)
+            {
+                Fire4Time = Player.TotalCastTime;
+            }
+            base.UpdateInfo();
+        }
     }
 }

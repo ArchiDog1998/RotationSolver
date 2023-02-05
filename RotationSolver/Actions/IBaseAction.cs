@@ -7,6 +7,11 @@ namespace RotationSolver.Actions
     internal interface IBaseAction : IAction, IEnable
     {
         /// <summary>
+        /// MP for casting.
+        /// </summary>
+        uint MPNeed { get; }
+
+        /// <summary>
         /// If combo id is on this list, this aciton will not used.
         /// </summary>
         ActionID[] ComboIdsNot { set; }
@@ -58,8 +63,9 @@ namespace RotationSolver.Actions
         /// <param name="emptyOrSkipCombo">Use all charges, no keeping one.
         /// Do not need to check the combo.</param>
         /// <param name="skipDisable">Skip the diable for emergency use. Please always set this to false.</param>
+        /// <param name="gcdCountForAbility">The count of gcd for ability to delay. Only used in BLM right now</paramref>
         /// <returns>Should I use.</returns>
-        bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false);
+        bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0);
 
         #region CoolDown
         /// <summary>
