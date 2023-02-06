@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Data;
 using RotationSolver.Updaters;
@@ -22,6 +23,14 @@ internal static class ObjectHelper
     {
         if (obj == null) return false;
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);
+    }
+
+    internal static unsafe bool IsOthersTreasure(this GameObject obj)
+    {
+        //From Tweaks/TreasureHuntTargets.cs
+        var tar = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
+        return tar->ObjectKind == 2 && tar->SubKind == 5 && tar->EventId.Type == EventHandlerType.TreasureHuntDirector
+            && tar->NamePlateIconId != 60094;
     }
 
     internal static unsafe uint FateId(this GameObject obj)

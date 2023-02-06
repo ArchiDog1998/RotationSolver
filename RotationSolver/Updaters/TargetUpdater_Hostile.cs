@@ -119,6 +119,9 @@ internal static partial class TargetUpdater
             if (ids.Contains(t.ObjectId)) return true;
             if (t.TargetObject == Service.ClientState.LocalPlayer) return true;
 
+            //Remove other's treasure.
+            if (t.IsOthersTreasure()) return false;
+
             return fateId > 0 ? t.FateId() == fateId : t.TargetObject is BattleChara;
         });
 
