@@ -108,8 +108,8 @@ internal sealed class AST_Default : AST_Base
     private protected override bool HealSingleGCD(out IAction act)
     {
         //吉星相位
-        if (AspectedBenefic.Target.GetHealthRatio() > 0.4
-            && AspectedBenefic.CanUse(out act)) return true;
+        if (AspectedBenefic.CanUse(out act)
+            && AspectedBenefic.Target.GetHealthRatio() > 0.4) return true;
 
         //福星
         if (Benefic2.CanUse(out act)) return true;
