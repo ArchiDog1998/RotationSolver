@@ -59,8 +59,18 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         Service.Localization.ExportLocalization();
 #endif
-
+        Service.DutyState.DutyStarted += DutyState_DutyStarted;
         ChangeUITranslation();
+    }
+
+    private void DutyState_DutyStarted(object sender, ushort e)
+    {
+        var territory = Service.DataManager.GetExcelSheet<TerritoryType>().GetRow(e);
+        if (territory?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
+        {
+            var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
+            Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndWarning, str));
+        }
     }
 
     internal static void ChangeUITranslation()
@@ -74,6 +84,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     public void Dispose()
     {
+        Service.DutyState.DutyStarted -= DutyState_DutyStarted;
+
         RSCommands.Disable();
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;

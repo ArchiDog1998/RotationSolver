@@ -499,4 +499,6 @@ internal partial class Strings
         { "Chakra", "Chakra"},
         #endregion        
     };
+
+    public string HighEndWarning { get; set; } = "You'd better not use Rotation Solver in {0}!";
 }

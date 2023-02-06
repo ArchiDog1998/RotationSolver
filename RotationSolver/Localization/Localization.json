@@ -343,5 +343,6 @@
     "OverheatedEndAfter": "OverheatedEndAfter",
     "OverheatedEndAfterGCD": "OverheatedEndAfterGCD",
     "Chakra": "Chakra"
-  }
+  },
+  "HighEndWarning": "You'd better not use Rotation Solver in {0}!"
 }
