@@ -49,10 +49,6 @@ internal abstract partial class CustomRotation
 
         if (GeneralGCD(out var action)) return action;
 
-        //Swift Raise
-        if (Service.Configuration.RaisePlayerBySwift && (HasSwift || !Swiftcast.IsCoolingDown)
-            && RaiseSpell(specialType, out act, abilityRemain, true)) return act;
-
         if (Service.Configuration.RaisePlayerByCasting && RaiseSpell(specialType, out act, abilityRemain, true)) return act;
 
         return null;
@@ -70,7 +66,11 @@ internal abstract partial class CustomRotation
             {
                 if (HasSwift && Raise.CanUse(out act)) return true;
             }
-            else if (specialType == SpecialCommandType.RaiseShirk || HasSwift || !Swiftcast.IsCoolingDown && actabilityRemain > 0 || mustUse)
+            else if (specialType == SpecialCommandType.RaiseShirk || HasSwift || mustUse)
+            {
+                if (Raise.CanUse(out act)) return true;
+            }
+            else if (Service.Configuration.RaisePlayerBySwift && !Swiftcast.IsCoolingDown && actabilityRemain > 0)
             {
                 if (Raise.CanUse(out act)) return true;
             }
