@@ -47,7 +47,8 @@ internal class BLM_Default : BLM_Base
         => base.CreateConfiguration()
         .SetFloat("CountDownTime", 4, "What Time to Leylines when Counting down.", 3, 5)
         .SetBool("UseTransposeForParadox", true, "Use Transpose to Fire for Paradox")
-        .SetBool("ExtendTimeSafely", false, "Extend Fire Element Time Safely");
+        .SetBool("ExtendTimeSafely", false, "Extend Fire Element Time Safely")
+        .SetBool("UseN15", false, "Use N15");
 
     private protected override IAction CountDownAction(float remainTime)
     {
@@ -63,19 +64,18 @@ internal class BLM_Default : BLM_Base
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        act = null;
-
         if (InBurst && UseTincture(out act)) return true;
         if (InUmbralIce)
         {
-            if(UmbralIceStacks == 2 
-                && !HasFire
+            if (UmbralIceStacks == 2 && !HasFire
                 && !IsLastGCD(ActionID.Paradox))
             {
                 if (Swiftcast.CanUse(out act)) return true;
                 if (Triplecast.CanUse(out act, emptyOrSkipCombo: true)) return true;
             }
-            if(Sharpcast.CanUse(out act, emptyOrSkipCombo: true)) return true;
+
+            if (UmbralIceStacks < 3 && LucidDreaming.CanUse(out act)) return true;
+            if (Sharpcast.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
         if (InAstralFire)
         {
@@ -235,7 +235,11 @@ internal class BLM_Default : BLM_Base
         {
             case 1:
                 if (Fire2.CanUse(out act)) return true;
-                //if (IsParadoxActive && Fire.CanUse(out act)) return true;
+                if (Configs.GetBool("UseN15"))
+                {
+                    if (HasFire && Fire3.CanUse(out act)) return true;
+                    if (IsParadoxActive && Fire.CanUse(out act)) return true;
+                }
                 if (Fire3.CanUse(out act)) return true;
                 break;
             case 2:
