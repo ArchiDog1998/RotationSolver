@@ -52,7 +52,10 @@ namespace RotationSolver.Commands
         }
 
         internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial, false);
-        internal static void CancelState() => DoStateCommandType(StateCommandType.Cancel);
+        internal static void CancelState()
+        {
+            if (StateType != StateCommandType.Cancel) DoStateCommandType(StateCommandType.Cancel);
+        }
 
         internal static void UpdateRotationState()
         {

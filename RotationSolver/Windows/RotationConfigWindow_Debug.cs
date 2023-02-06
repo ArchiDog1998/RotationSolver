@@ -119,12 +119,6 @@ internal partial class RotationConfigWindow
     private void DrawIcon()
     {
         ImGui.Image(IconSet.GetTexture(61832).ImGuiHandle, new Vector2(24, 24));
-        var territory = Service.DataManager.GetExcelSheet<TerritoryType>()
-            .GetRow(Service.ClientState.TerritoryType);
-
-        ImGui.Text(territory.PlaceName?.Value?.Name.ToString() ?? "None");
-        ImGui.Image(IconSet.GetTexture((uint)territory.PlaceNameIcon).ImGuiHandle, new Vector2(24, 24));
-        ImGui.Image(IconSet.GetTexture((uint)territory.PlaceNameRegionIcon).ImGuiHandle, new Vector2(24, 24));
     }
 
     private static void DrawAction(ActionID id, string type)

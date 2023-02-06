@@ -8,6 +8,7 @@ using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
+using Dalamud.Game.DutyState;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Gui.FlyText;
@@ -76,5 +77,8 @@ internal class Service
     public static GamepadState GamepadState { get; private set; }
     [PluginService]
     public static Framework Framework { get; private set; }
+
+    [PluginService]
+    public static DutyState DutyState { get; private set; }
 
 }
