@@ -177,7 +177,7 @@ internal static class ActionUpdater
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied33]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied38]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Jumping61]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas] && Service.Configuration.AutoOffBetweenArea
+            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction]

@@ -2,6 +2,7 @@
 
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Commands;
 using RotationSolver.Configuration;
 using RotationSolver.Data;
@@ -45,12 +46,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
         Service.Interface.UiBuilder.Draw += OverlayWindow.Draw;
+        Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
         MajorUpdater.Enable();
         TimeLineUpdater.Enable(pluginInterface.ConfigDirectory.FullName);
         Watcher.Enable();
         CountDown.Enable();
-
 
         Service.Localization = new LocalizationManager();
 #if DEBUG
@@ -58,6 +59,27 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #endif
 
         ChangeUITranslation();
+    }
+
+    private void ClientState_TerritoryChanged(object sender, ushort e)
+    {
+#if DEBUG
+        Service.ChatGui.Print($"Terrritory: {e}");
+        var territory = Service.DataManager.GetExcelSheet<TerritoryType>().GetRow(e);
+        if (territory != null)
+        {
+            Service.ChatGui.Print($"Terrritory Name: {territory.PlaceName}");
+            Service.ChatGui.Print($"Terrritory Icon: {territory.PlaceNameIcon}");
+            Service.ChatGui.Print($"Terrritory Zone Icon: {territory.PlaceNameRegionIcon}");
+        }
+#endif
+
+        if (!Service.Configuration.AutoOffBetweenArea) return;
+        if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty]
+            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56]
+            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty95]
+            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundToDuty97]) return;
+        RSCommands.CancelState();
     }
 
     internal static void ChangeUITranslation()
@@ -75,6 +97,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
+        Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
+
         Service.IconReplacer.Dispose();
 
         Service.Localization.Dispose();
