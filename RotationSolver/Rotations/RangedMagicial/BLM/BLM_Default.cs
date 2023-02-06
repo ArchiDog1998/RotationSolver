@@ -45,7 +45,7 @@ internal class BLM_Default : BLM_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
         => base.CreateConfiguration()
-        .SetFloat("CountDownTime", 3, "What Time to Fire3 when Counting down.", 2, 4)
+        .SetFloat("CountDownTime", 3.8f, "What Time to Fire3 when Counting down.", 2, 5)
         .SetBool("UseTransposeForParadox", true, "Use Transpose to Fire for Paradox")
         .SetBool("ExtendTimeSafely", false, "Extend Fire Element Time Safely")
         .SetBool("UseN15", false, "Use N15");
@@ -78,7 +78,7 @@ internal class BLM_Default : BLM_Base
         }
         if (InAstralFire)
         {
-            if (!CombatElapsedLess(5) && CombatElapsedLess(8) && Leylines.CanUse(out act)) return true;
+            if (!CombatElapsedLess(6) && CombatElapsedLess(9) && Leylines.CanUse(out act)) return true;
             if (Triplecast.CanUse(out act, gcdCountForAbility: 5)) return true;
         }
         if (Amplifier.CanUse(out act)) return true;
@@ -98,9 +98,12 @@ internal class BLM_Default : BLM_Base
         }
 
         //Using Manafont
-        if (InAstralFire && Player.CurrentMp == 0 && Manafont.CanUse(out act)) return true;
-        //To Ice
-        if (NeedToTransposeGoIce(true) && Transpose.CanUse(out act)) return true;
+        if (InAstralFire)
+        {
+            if (Player.CurrentMp == 0 && Manafont.CanUse(out act)) return true;
+            //To Ice
+            if (NeedToTransposeGoIce(true) && Transpose.CanUse(out act)) return true;
+        }
 
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
