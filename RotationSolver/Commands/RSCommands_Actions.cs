@@ -56,10 +56,15 @@ namespace RotationSolver.Commands
 
         internal static void UpdateRotationState()
         {
-            //结束战斗，那就关闭。
             if (Service.ClientState.LocalPlayer.CurrentHp == 0
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut]
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent])
+            {
+                CancelState();
+            }
+            else if (Service.Configuration.AutoOffBetweenArea && (
+                Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]))
             {
                 CancelState();
             }
