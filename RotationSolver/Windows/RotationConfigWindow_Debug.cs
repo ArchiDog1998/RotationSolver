@@ -65,13 +65,14 @@ internal partial class RotationConfigWindow
         ImGui.Text("CanHealAreaSpell: " + TargetUpdater.CanHealAreaSpell.ToString());
     }
 
-    private void DrawTargetData()
+    private unsafe void DrawTargetData()
     {
         if (Service.TargetManager.Target is BattleChara b)
         {
             ImGui.Text("Is Boss: " + b.IsBoss().ToString());
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());
+            ImGui.Text("NamePlate: " + ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)b.Address)->NamePlateIconId.ToString());
 
             foreach (var status in b.StatusList)
             {

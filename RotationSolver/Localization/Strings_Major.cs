@@ -115,6 +115,7 @@ internal partial class Strings
 
     public string Configwindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
 
+    public string Configwindow_Param_PelotonDelay { get; set; } = "Set the range of random delay for peloton usage in second.";
     public string Configwindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stoping casting when target is dead in second.";
     public string Configwindow_Param_WorkTaskDelay { get; set; } = "Set the work task delay in millisecond. Smaller, more precise, more resource-intensive";
 
