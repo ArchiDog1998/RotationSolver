@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.4](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.3...v1.3.4) (2023-02-06)
+
+
+### Bug Fixes
+
+* add a warning for high-end duty. ([eb279ac](https://github.com/ArchiDog1998/RotationSolver/commit/eb279ac48b19f84a54cadd11dd27c9a665bd8a6f))
+* add luciddreaming to blm. ([7ce852f](https://github.com/ArchiDog1998/RotationSolver/commit/7ce852ffc61e96054d36e19c8189808d1a9c0d39))
+* add poleton delay. ([7a34239](https://github.com/ArchiDog1998/RotationSolver/commit/7a342392b087f04ecb4c72d75a726bf70ad856a0))
+* blm default, changeing the usage of leyline and manafont. ([1134e17](https://github.com/ArchiDog1998/RotationSolver/commit/1134e1741a58d2dd76d7c61ea80e881224ce8544))
+* changed the layout of debug tab. ([3d408e2](https://github.com/ArchiDog1998/RotationSolver/commit/3d408e26e0ca4fbb9da10b6eb012c46488b08c37))
+* changed the target finding method of sector action. ([105759c](https://github.com/ArchiDog1998/RotationSolver/commit/105759c671faaae722f28296da1756df28c651be))
+* changing the raising logic. ([a5496d9](https://github.com/ArchiDog1998/RotationSolver/commit/a5496d98c307eb7f6bec58b34dce991376c6d77e))
+* Fixed the auto cancel of territory changing bug ([de935ab](https://github.com/ArchiDog1998/RotationSolver/commit/de935ab95841f383fab5e3f89dd956a2cbdd145b))
+* remove casting cancel options. ([63eade0](https://github.com/ArchiDog1998/RotationSolver/commit/63eade0faf9f17049110938d34e04f9a99f2b9c7))
+* remove the targets that belongs other parties in treasure hunt. ([4e0d5bd](https://github.com/ArchiDog1998/RotationSolver/commit/4e0d5bded7e5861ffbdf2ceac32a4ab01cfbc7af))
+
 ## [1.3.3](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.2...v1.3.3) (2023-02-05)
 
 
