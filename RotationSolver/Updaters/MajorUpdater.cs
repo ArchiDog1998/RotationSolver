@@ -43,8 +43,6 @@ internal static class MajorUpdater
         ActionUpdater.DoAction();
         MacroUpdater.UpdateMacro();
 
-
-        ActionUpdater.UpdateActionInfo();
         MovingUpdater.UpdateLocation();
     }
 
@@ -101,6 +99,7 @@ internal static class MajorUpdater
 
     private static void UpdateWork()
     {
+        ActionUpdater.UpdateActionInfo();
         PreviewUpdater.UpdateCastBarState();
         TargetUpdater.UpdateTarget();
 

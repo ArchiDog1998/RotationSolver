@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -393,6 +394,8 @@ internal partial class BaseAction
         return count;
     }
 
+    const double _alpha = Math.PI / 3;
+
     internal bool CanGetTarget(BattleChara target, BattleChara subTarget)
     {
         if (target == null) return false;
@@ -412,13 +415,14 @@ internal partial class BaseAction
             case 2: // 圆形范围攻击
                 return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= _action.EffectRange;
 
-            case 3: // 扇形范围攻击
-                double cos = Vector3.Dot(dir, tdir) / (dir.Length() * tdir.Length());
-                return subTarget.DistanceToPlayer() <= _action.EffectRange && cos >= 0.5;
+            case 3: // Sector
+                if(subTarget.DistanceToPlayer() > _action.EffectRange) return false;
+                tdir += dir / dir.Length() * target.HitboxRadius / (float)Math.Sin(_alpha);
+                return Vector3.Dot(dir, tdir) / (dir.Length() * tdir.Length()) >= Math.Cos(_alpha);
 
             case 4: //直线范围攻击
-                double distance = Vector3.Cross(dir, tdir).Length() / dir.Length();
-                return subTarget.DistanceToPlayer() <= _action.EffectRange && distance <= 2;
+                if (subTarget.DistanceToPlayer() > _action.EffectRange) return false;
+                return Vector3.Cross(dir, tdir).Length() / dir.Length() <= 2 + target.HitboxRadius;
         }
 
         PluginLog.LogDebug(Name + "'s CastType is not valid! The value is " + _action.CastType.ToString());
