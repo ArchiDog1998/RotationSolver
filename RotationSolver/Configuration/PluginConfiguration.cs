@@ -117,6 +117,9 @@ public class PluginConfiguration : IPluginConfiguration
     public float InterruptDelayMin = 0.5f;
     public float InterruptDelayMax = 1;
 
+    public float PelotonDelayMin = 1f;
+    public float PelotonDelayMax = 2;
+
     public bool UseWorkTask = true;
     public int WorkTaskDelay = 10;
     public bool ShowWorkTaskFPS = true;

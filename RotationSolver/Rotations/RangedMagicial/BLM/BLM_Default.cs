@@ -45,16 +45,16 @@ internal class BLM_Default : BLM_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
         => base.CreateConfiguration()
-        .SetFloat("CountDownTime", 4, "What Time to Leylines when Counting down.", 3, 5)
+        .SetFloat("CountDownTime", 3.8f, "What Time to Fire3 when Counting down.", 2, 5)
         .SetBool("UseTransposeForParadox", true, "Use Transpose to Fire for Paradox")
-        .SetBool("ExtendTimeSafely", false, "Extend Fire Element Time Safely");
+        .SetBool("ExtendTimeSafely", false, "Extend Fire Element Time Safely")
+        .SetBool("UseN15", false, "Use N15");
 
     private protected override IAction CountDownAction(float remainTime)
     {
         IAction act;
         if(remainTime < Configs.GetFloat("CountDownTime"))
         {
-            if (Leylines.CanUse(out act)) return act;
             if (Fire3.CanUse(out act)) return act;
         }
         if (remainTime <= 12 && Sharpcast.CanUse(out act, emptyOrSkipCombo: true)) return act;
@@ -63,23 +63,22 @@ internal class BLM_Default : BLM_Base
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        act = null;
-
         if (InBurst && UseTincture(out act)) return true;
         if (InUmbralIce)
         {
-            if(UmbralIceStacks == 2 
-                && !HasFire
+            if (UmbralIceStacks == 2 && !HasFire
                 && !IsLastGCD(ActionID.Paradox))
             {
                 if (Swiftcast.CanUse(out act)) return true;
                 if (Triplecast.CanUse(out act, emptyOrSkipCombo: true)) return true;
             }
-            if(Sharpcast.CanUse(out act, emptyOrSkipCombo: true)) return true;
+
+            if (UmbralIceStacks < 3 && LucidDreaming.CanUse(out act)) return true;
+            if (Sharpcast.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
         if (InAstralFire)
         {
-            if (Manafont.CanUse(out act)) return true;
+            if (!CombatElapsedLess(6) && CombatElapsedLess(9) && Leylines.CanUse(out act)) return true;
             if (Triplecast.CanUse(out act, gcdCountForAbility: 5)) return true;
         }
         if (Amplifier.CanUse(out act)) return true;
@@ -98,8 +97,13 @@ internal class BLM_Default : BLM_Base
             if(Transpose.CanUse(out act)) return true;
         }
 
-        //To Ice
-        if (NeedToTransposeGoIce(true) && Transpose.CanUse(out act)) return true;
+        //Using Manafont
+        if (InAstralFire)
+        {
+            if (Player.CurrentMp == 0 && Manafont.CanUse(out act)) return true;
+            //To Ice
+            if (NeedToTransposeGoIce(true) && Transpose.CanUse(out act)) return true;
+        }
 
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
@@ -146,7 +150,8 @@ internal class BLM_Default : BLM_Base
 
         if (!NeedToGoIce) return false;
 
-        if (NeedToTransposeGoIce(false)
+        //Use Manafont or transpose.
+        if ((!Manafont.IsCoolingDown || NeedToTransposeGoIce(false))
             && UseInstanceSpell(out act)) return true;
 
         //Go to Ice.
@@ -235,7 +240,11 @@ internal class BLM_Default : BLM_Base
         {
             case 1:
                 if (Fire2.CanUse(out act)) return true;
-                //if (IsParadoxActive && Fire.CanUse(out act)) return true;
+                if (Configs.GetBool("UseN15"))
+                {
+                    if (HasFire && Fire3.CanUse(out act)) return true;
+                    if (IsParadoxActive && Fire.CanUse(out act)) return true;
+                }
                 if (Fire3.CanUse(out act)) return true;
                 break;
             case 2:
@@ -272,9 +281,6 @@ internal class BLM_Default : BLM_Base
 
         if (UmbralHearts < 2 && Flare.CanUse(out act)) return true;
         if (Fire2.CanUse(out act)) return true;
-
-        //To add Manafont.
-        if(!Manafont.IsCoolingDown && Manafont.ActionCheck.Invoke(null) && IsPolyglotStacksMaxed && UsePolyglot(out act, 0)) return true;
 
         if (Player.CurrentMp >= Fire.MPNeed + 800)
         {

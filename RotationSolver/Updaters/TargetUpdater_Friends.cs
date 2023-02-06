@@ -250,7 +250,6 @@ internal static partial class TargetUpdater
     };
     private static void SayHelloToAuthor()
     {
-        //只有任务中才能执行此操作
         if (!Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInQuestEvent]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.WaitingForDuty]
@@ -259,24 +258,18 @@ internal static partial class TargetUpdater
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]) return;
 
-        //战斗中不执行
-        if (ActionUpdater.InCombat) return;
+        if (ActionUpdater.InCombat || foundTime == DateTime.MinValue) return;
 
-        //已经干过此事，不执行
-        if (foundTime == DateTime.MinValue) return;
-
-        //找作者
         var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && ConfigurationHelper.AuthorKeys.Contains(EncryptString(player))
                         && c.ObjectId != Service.ClientState.LocalPlayer.ObjectId) as PlayerCharacter;
 
-        //没找到作者
         if (author == null) return;
 
         //Random Time
         if (relayTime == TimeSpan.Zero)
         {
             foundTime = DateTime.Now;
-            relayTime = new TimeSpan(new Random().Next(30000, 80000));
+            relayTime = new TimeSpan(new Random().Next(80000, 100000));
         }
 
         if (DateTime.Now - foundTime > relayTime)

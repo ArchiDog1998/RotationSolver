@@ -32,8 +32,6 @@ namespace RotationSolver.Commands
             });
         }
 
-        internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial, false);
-
         private static void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(stateType, EnumTranslations.ToSayout, role =>
         {
             if (StateType == StateCommandType.Smart

@@ -97,11 +97,14 @@ internal partial class RotationConfigWindow
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_HealDelay,
             ref Service.Configuration.HealDelayMin, ref Service.Configuration.HealDelayMax);
 
-        if (Service.Configuration.UseStopCasting)
-        {
-            DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_StopCastingDelay,
-                ref Service.Configuration.StopCastingDelayMin, ref Service.Configuration.StopCastingDelayMax);
-        }
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_PelotonDelay,
+            ref Service.Configuration.PelotonDelayMin, ref Service.Configuration.PelotonDelayMax);
+
+        //if (Service.Configuration.UseStopCasting)
+        //{
+        //    DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_StopCastingDelay,
+        //        ref Service.Configuration.StopCastingDelayMin, ref Service.Configuration.StopCastingDelayMax);
+        //}
 
         if (Service.Configuration.UseWorkTask)
         {
@@ -141,8 +144,8 @@ internal partial class RotationConfigWindow
                 LocalizationManager.RightLang.Configwindow_Param_PoslockDescription);
         }
 
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseStopCasting,
-            ref Service.Configuration.UseStopCasting);
+        //DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseStopCasting,
+        //    ref Service.Configuration.UseStopCasting);
     }
 
     private void DrawParamDisplay()

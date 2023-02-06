@@ -51,16 +51,26 @@ namespace RotationSolver.Commands
             return;
         }
 
+        internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial, false);
+        internal static void CancelState()
+        {
+            if (StateType != StateCommandType.Cancel) DoStateCommandType(StateCommandType.Cancel);
+        }
+
         internal static void UpdateRotationState()
         {
-            //结束战斗，那就关闭。
             if (Service.ClientState.LocalPlayer.CurrentHp == 0
                 || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51])
-                StateType = StateCommandType.Cancel;
-
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent])
+            {
+                CancelState();
+            }
+            else if (Service.Configuration.AutoOffBetweenArea && (
+                Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
+                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]))
+            {
+                CancelState();
+            }
             //Auto start at count Down.
             else if (Service.Configuration.StartOnCountdown && CountDown.CountDownTime > 0)
             {
