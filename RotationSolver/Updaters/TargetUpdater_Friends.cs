@@ -122,8 +122,7 @@ internal static partial class TargetUpdater
         DeathPeopleAll.Delay(deathAll);
         DeathPeopleParty.Delay(deathParty);
 
-        WeakenPeople.Delay(PartyMembers.Where(p => p.StatusList.Any(status => 
-            status.GameData.CanDispel && status.RemainingTime > 2)));
+        WeakenPeople.Delay(PartyMembers.Where(p => p.StatusList.Any(StatusHelper.CanDispel)));
 
         DyingPeople.Delay(WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous)));
 

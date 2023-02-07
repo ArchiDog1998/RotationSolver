@@ -166,7 +166,13 @@ internal static class StatusHelper
 
     internal static bool IsDangerous(this Status status)
     {
+        if (!status.CanDispel()) return false;
         if(status.StackCount > 2) return true;
         return dangeriousStatus.Any(id => (uint)id == status.StatusId);
+    }
+
+    internal static bool CanDispel(this Status status)
+    {
+        return status.GameData.CanDispel && status.RemainingTime > 2;
     }
 }
