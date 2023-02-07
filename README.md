@@ -63,7 +63,7 @@ If you have any questions about usage, please check the [Wiki](https://archidog1
 ### 添加url的原因
 
 - 期望有足够多人能够一起维护这个插件
-- 让我这个手残玩家能用自己写的插件完整的体验一下高难本。
+- 让我这个手残玩家能用自己写的插件完整的体验一下极神副本。
 
 2022.10时有了某位玩家的热情让我觉得这两个曾经的梦想有可能实现，所以创立了QQ群。
 
