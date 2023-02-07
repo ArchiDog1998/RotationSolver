@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -60,14 +61,14 @@ namespace RotationSolver.Commands
         internal static void UpdateRotationState()
         {
             if (Service.ClientState.LocalPlayer.CurrentHp == 0
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.LoggingOut]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent])
+                || Service.Conditions[ConditionFlag.LoggingOut]
+                || Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent])
             {
                 CancelState();
             }
             else if (Service.Configuration.AutoOffBetweenArea && (
-                Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
-                || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]))
+                Service.Conditions[ConditionFlag.BetweenAreas]
+                || Service.Conditions[ConditionFlag.BetweenAreas51]))
             {
                 CancelState();
             }

@@ -5,7 +5,7 @@
   "Commands_CannotFindRotationConfig": "Failed to find the config in this rotation, please check it.",
   "Commands_InsertAction": "Will use it within {0}s",
   "Commands_InsertActionFailure": "Can not find the action, please check the action name.",
-  "Commands_SayHelloToAuthor": "This \"{0}\" is probably one of the authors of the \"XIV Auto Attack\", so say hello to him!",
+  "Commands_SayHelloToAuthor": "This \"{0}\" is probably one of the authors of the \"Rotation Solver\", so say hello to him!",
   "ConfigWindow_Header": "Rotation Solver Settings v",
   "ConfigWindow_RotationItem": "Rotation",
   "ConfigWindow_ParamItem": "Param",

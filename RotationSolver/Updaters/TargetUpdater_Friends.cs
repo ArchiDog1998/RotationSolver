@@ -231,13 +231,6 @@ internal static partial class TargetUpdater
             return loc == b.Position;
         });
 
-
-    /// <summary>
-    /// 作者本人
-    /// </summary>
-    static DateTime foundTime = DateTime.Now;
-    static TimeSpan relayTime = TimeSpan.Zero;
-
     static List<string> macroToAuthor = new List<string>()
     {
         "blush",
@@ -248,43 +241,32 @@ internal static partial class TargetUpdater
         "cheer",
         "stroke",
     };
+
+    static bool _isStarted = false;
+    static RandomDelay _authorDelay = new RandomDelay(() => (0, 1));
     private static void SayHelloToAuthor()
     {
-        if (!Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInQuestEvent]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.WaitingForDuty]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.WaitingForDutyFinder]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]) return;
-
-        if (ActionUpdater.InCombat || foundTime == DateTime.MinValue) return;
-
-        var author = AllianceMembers.FirstOrDefault(c => c is PlayerCharacter player && ConfigurationHelper.AuthorKeys.Contains(EncryptString(player))
-                        && c.ObjectId != Service.ClientState.LocalPlayer.ObjectId) as PlayerCharacter;
-
-        if (author == null) return;
-
-        //Random Time
-        if (relayTime == TimeSpan.Zero)
+        var started = _authorDelay.Delay(!ActionUpdater.InCombat && Service.DutyState.IsDutyStarted);
+        if(!_isStarted && started)
         {
-            foundTime = DateTime.Now;
-            relayTime = new TimeSpan(new Random().Next(80000, 100000));
-        }
+            var author = AllianceMembers.OfType<PlayerCharacter>()
+                .FirstOrDefault(c => c.ObjectId != Service.ClientState.LocalPlayer.ObjectId
+                && ConfigurationHelper.AuthorKeys.Contains(EncryptString(c)));
 
-        if (DateTime.Now - foundTime > relayTime)
-        {
-            Service.TargetManager.SetTarget(author);
-            RSCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
-            Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            if (author != null)
             {
-                Message = string.Format(LocalizationManager.RightLang.Commands_SayHelloToAuthor, author.Name),
-                Type = Dalamud.Game.Text.XivChatType.Notice,
-            });
-            UIModule.PlaySound(20, 0, 0, 0);
-            foundTime = DateTime.MinValue;
-            Service.TargetManager.SetTarget(null);
+                Service.TargetManager.SetTarget(author);
+                RSCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
+                Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+                {
+                    Message = string.Format(LocalizationManager.RightLang.Commands_SayHelloToAuthor, author.Name),
+                    Type = Dalamud.Game.Text.XivChatType.Notice,
+                });
+                UIModule.PlaySound(20, 0, 0, 0);
+                Service.TargetManager.SetTarget(null);
+            }
         }
+        _isStarted = started;
     }
 
     internal static string EncryptString(PlayerCharacter player)
