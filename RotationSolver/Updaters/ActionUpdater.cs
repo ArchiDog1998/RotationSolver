@@ -27,7 +27,7 @@ internal static class ActionUpdater
         }
     }
 
-    private static  RandomDelay _GCDDelay = new RandomDelay(() => (Service.Configuration.WeaponDelayMin, Service.Configuration.WeaponDelayMax));
+    static  RandomDelay _GCDDelay = new RandomDelay(() => (Service.Configuration.WeaponDelayMin, Service.Configuration.WeaponDelayMax));
 
     internal static float WeaponRemain { get; private set; } = 0;
 

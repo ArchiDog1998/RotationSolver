@@ -9,7 +9,7 @@ namespace RotationSolver.Data;
 
 internal struct RandomDelay
 {
-	DateTime _startDelayTime = DateTime.MinValue;
+	DateTime _startDelayTime = DateTime.Now;
 	float _delayTime = -1;
     Func<(float min, float max)> _getRange;
 	Random _ran = new Random(DateTime.Now.Millisecond);

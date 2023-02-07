@@ -195,7 +195,7 @@ internal abstract partial class CustomRotation
         StatusProvide = new StatusID[] { StatusID.TrueNorth },
     };
 
-    static readonly RandomDelay _pelotonDelay = new RandomDelay(() => 
+    static RandomDelay _pelotonDelay = new RandomDelay(() => 
         (Service.Configuration.PelotonDelayMin, Service.Configuration.PelotonDelayMax));
     /// <summary>
     /// 速行
