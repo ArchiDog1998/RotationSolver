@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using RotationSolver.Actions;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -26,6 +27,12 @@ internal sealed class AST_Default : AST_Base
         {DescType.BreakingAction, $"{Divination}"}
     };
 
+    private static IBaseAction AspectedBeneficDefense { get; } = new BaseAction(ActionID.AspectedBenefic, true, isEot: true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+        TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
+    };
+
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //天星交错
@@ -46,6 +53,10 @@ internal sealed class AST_Default : AST_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
+        //Add AspectedBeneficwhen not in combat.
+        if (!InCombat && TargetUpdater.PartyTanks.Any(t => !t.HasStatus(true, StatusID.AspectedBenefic))
+            && AspectedBeneficDefense.CanUse(out act)) return true;
+
         //群体输出
         if (Gravity.CanUse(out act)) return true;
 

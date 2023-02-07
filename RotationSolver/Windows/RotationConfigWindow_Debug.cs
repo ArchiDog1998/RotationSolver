@@ -43,8 +43,6 @@ internal partial class RotationConfigWindow
 
     private unsafe void DrawStatus()
     {
-        ImGui.Text(ActionUpdater.WeaponRemain.ToString());
-
         if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
         {
             ImGui.Text("Fate: " + TargetUpdater.FateId.ToString());
