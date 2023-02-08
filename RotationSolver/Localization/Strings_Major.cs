@@ -168,6 +168,7 @@ internal partial class Strings
     public string Configwindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
     public string Configwindow_Param_Conditon { get; set; } = "Condition";
     public string Configwindow_Param_StartOnCountdown { get; set; } = "Turn on auto-rotation on countdown";
+    public string Configwindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";
     public string Configwindow_Param_InterruptibleMoreCheck { get; set; } = "Interrupt the action with action type check.";
 
 

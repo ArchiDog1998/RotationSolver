@@ -40,7 +40,7 @@ internal abstract partial class CustomRotation
         if (helpDefenseSingle && DefenseSingleGCD(out act)) return act;
 
         //Esuna
-        if ((specialType == SpecialCommandType.EsunaShieldNorth || !HasHostilesInRange)
+        if ((specialType == SpecialCommandType.EsunaShieldNorth || !HasHostilesInRange || Service.Configuration.EsunaAll)
             && TargetUpdater.WeakenPeople.Any() 
             || TargetUpdater.DyingPeople.Any())
         {

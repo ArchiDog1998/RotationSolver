@@ -125,6 +125,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowWorkTaskFPS = true;
 
     public bool UseStopCasting = false;
+    public bool EsunaAll = false;
 
     public string PositionalErrorText = string.Empty;
 

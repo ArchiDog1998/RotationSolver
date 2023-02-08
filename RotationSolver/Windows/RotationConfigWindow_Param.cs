@@ -294,6 +294,9 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_StartOnCountdown,
             ref Service.Configuration.StartOnCountdown);
 
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_EsunaAll,
+            ref Service.Configuration.EsunaAll);
+
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_HealOutOfCombat,
             ref Service.Configuration.HealOutOfCombat);
 
