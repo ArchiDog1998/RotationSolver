@@ -258,7 +258,7 @@ internal static class TargetFilter
         });
     }
 
-    private static bool IsJobCategory(this BattleChara obj, JobRole role)
+    internal static bool IsJobCategory(this BattleChara obj, JobRole role)
     {
         SortedSet<byte> validJobs = new(Service.DataManager.GetExcelSheet<ClassJob>()
             .Where(job => role == job.GetJobRole())

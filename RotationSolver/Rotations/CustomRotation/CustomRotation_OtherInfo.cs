@@ -55,6 +55,10 @@ internal abstract partial class CustomRotation
     /// </summary>
     protected static bool InCombat => ActionUpdater.InCombat;
 
+    static RandomDelay _notInCombatDelay = new RandomDelay(() =>
+        (Service.Configuration.NotInCombatDelayMin, Service.Configuration.NotInCombatDelayMax));
+    protected static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
+
     /// <summary>
     /// The player's target.
     /// </summary>

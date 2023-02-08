@@ -15,7 +15,7 @@ internal partial class Strings
     public string Commands_InsertAction { get; set; } = "Will use it within {0}s";
 
     public string Commands_InsertActionFailure { get; set; } = "Can not find the action, please check the action name.";
-    public string Commands_SayHelloToAuthor { get; set; } = "This \"{0}\" is probably one of the authors of the \"XIV Auto Attack\", so say hello to him!";
+    public string Commands_SayHelloToAuthor { get; set; } = "This \"{0}\" is probably one of the authors of the \"Rotation Solver\", so say hello to him!";
 
     #endregion
 
@@ -115,7 +115,7 @@ internal partial class Strings
 
     public string Configwindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
 
-    public string Configwindow_Param_PelotonDelay { get; set; } = "Set the range of random delay for peloton usage in second.";
+    public string Configwindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in second.";
     public string Configwindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stoping casting when target is dead in second.";
     public string Configwindow_Param_WorkTaskDelay { get; set; } = "Set the work task delay in millisecond. Smaller, more precise, more resource-intensive";
 
@@ -168,6 +168,7 @@ internal partial class Strings
     public string Configwindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
     public string Configwindow_Param_Conditon { get; set; } = "Condition";
     public string Configwindow_Param_StartOnCountdown { get; set; } = "Turn on auto-rotation on countdown";
+    public string Configwindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";
     public string Configwindow_Param_InterruptibleMoreCheck { get; set; } = "Interrupt the action with action type check.";
 
 

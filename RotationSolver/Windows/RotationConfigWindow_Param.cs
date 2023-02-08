@@ -97,8 +97,8 @@ internal partial class RotationConfigWindow
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_HealDelay,
             ref Service.Configuration.HealDelayMin, ref Service.Configuration.HealDelayMax);
 
-        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_PelotonDelay,
-            ref Service.Configuration.PelotonDelayMin, ref Service.Configuration.PelotonDelayMax);
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_NotInCombatDelay,
+            ref Service.Configuration.NotInCombatDelayMin, ref Service.Configuration.NotInCombatDelayMax);
 
         //if (Service.Configuration.UseStopCasting)
         //{
@@ -293,6 +293,9 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_StartOnCountdown,
             ref Service.Configuration.StartOnCountdown);
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_EsunaAll,
+            ref Service.Configuration.EsunaAll);
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_HealOutOfCombat,
             ref Service.Configuration.HealOutOfCombat);

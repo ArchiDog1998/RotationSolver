@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Actions;
 using RotationSolver.Commands;
@@ -26,7 +27,7 @@ internal static class ActionUpdater
         }
     }
 
-    private static  RandomDelay _GCDDelay = new RandomDelay(() => (Service.Configuration.WeaponDelayMin, Service.Configuration.WeaponDelayMax));
+    static  RandomDelay _GCDDelay = new RandomDelay(() => (Service.Configuration.WeaponDelayMin, Service.Configuration.WeaponDelayMax));
 
     internal static float WeaponRemain { get; private set; } = 0;
 
@@ -172,19 +173,19 @@ internal static class ActionUpdater
     internal static float _lastCastingTotal = 0;
     internal unsafe static void DoAction()
     {
-        if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInQuestEvent]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied33]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Occupied38]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Jumping61]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Mounted]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.SufferingStatusAffliction2]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.RolePlaying]
-            || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InFlight]
-            //避免技能队列激活的时候反复按。
+        if (Service.Conditions[ConditionFlag.OccupiedInQuestEvent]
+            || Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
+            || Service.Conditions[ConditionFlag.Occupied33]
+            || Service.Conditions[ConditionFlag.Occupied38]
+            || Service.Conditions[ConditionFlag.Jumping61]
+            || Service.Conditions[ConditionFlag.BetweenAreas]
+            || Service.Conditions[ConditionFlag.BetweenAreas51]
+            || Service.Conditions[ConditionFlag.Mounted]
+            || Service.Conditions[ConditionFlag.SufferingStatusAffliction]
+            || Service.Conditions[ConditionFlag.SufferingStatusAffliction2]
+            || Service.Conditions[ConditionFlag.RolePlaying]
+            || Service.Conditions[ConditionFlag.InFlight]
+            //Skip the action queue.
             || *(bool*)((IntPtr)ActionManager.Instance() + 0x68)) return;
 
         //GCD
