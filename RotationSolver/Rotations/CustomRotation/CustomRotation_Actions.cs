@@ -195,14 +195,12 @@ internal abstract partial class CustomRotation
         StatusProvide = new StatusID[] { StatusID.TrueNorth },
     };
 
-    static RandomDelay _pelotonDelay = new RandomDelay(() => 
-        (Service.Configuration.PelotonDelayMin, Service.Configuration.PelotonDelayMax));
     /// <summary>
     /// 速行
     /// </summary>
     public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, true)
     {
-        ActionCheck = b => _pelotonDelay.Delay(!InCombat) && TargetUpdater.PartyMembers.GetObjectInRadius(20)
+        ActionCheck = b => NotInCombatDelay && TargetUpdater.PartyMembers.GetObjectInRadius(20)
             .Any(p => p.WillStatusEnd(3, false, StatusID.Peloton)),
     };
 

@@ -8,6 +8,7 @@ using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.AST;
@@ -30,6 +31,7 @@ internal sealed class AST_Default : AST_Base
     private static IBaseAction AspectedBeneficDefense { get; } = new BaseAction(ActionID.AspectedBenefic, true, isEot: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
+        ActionCheck = b => b.IsJobCategory(JobRole.Tank),
         TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
     };
 
@@ -54,8 +56,7 @@ internal sealed class AST_Default : AST_Base
     private protected override bool GeneralGCD(out IAction act)
     {
         //Add AspectedBeneficwhen not in combat.
-        if (!InCombat && TargetUpdater.PartyTanks.Any(t => !t.HasStatus(true, StatusID.AspectedBenefic))
-            && AspectedBeneficDefense.CanUse(out act)) return true;
+        if (NotInCombatDelay && AspectedBeneficDefense.CanUse(out act)) return true;
 
         //群体输出
         if (Gravity.CanUse(out act)) return true;
@@ -84,6 +85,8 @@ internal sealed class AST_Default : AST_Base
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (base.EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
+
+        if (!InCombat) return false;
 
         //如果要群奶了，先上个天宫图！
         if (nextGCD.IsTheSameTo(true, AspectedHelios, Helios))

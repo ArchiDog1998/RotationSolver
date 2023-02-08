@@ -97,8 +97,8 @@ internal partial class RotationConfigWindow
         DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_HealDelay,
             ref Service.Configuration.HealDelayMin, ref Service.Configuration.HealDelayMax);
 
-        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_PelotonDelay,
-            ref Service.Configuration.PelotonDelayMin, ref Service.Configuration.PelotonDelayMax);
+        DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_NotInCombatDelay,
+            ref Service.Configuration.NotInCombatDelayMin, ref Service.Configuration.NotInCombatDelayMax);
 
         //if (Service.Configuration.UseStopCasting)
         //{

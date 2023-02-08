@@ -117,6 +117,7 @@ internal abstract class AST_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction AspectedHelios { get; } = new BaseAction(ActionID.AspectedHelios, true, isEot: true, isTimeline: true)
     {
+        ActionCheck = b => !IsLastGCD(ActionID.AspectedHelios),
         StatusProvide = new StatusID[] { StatusID.AspectedHelios },
     };
 
