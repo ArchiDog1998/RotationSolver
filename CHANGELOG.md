@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.5](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.4...v1.3.5) (2023-02-08)
+
+
+### Bug Fixes
+
+* add an option for esuna all. ([a64db9c](https://github.com/ArchiDog1998/RotationSolver/commit/a64db9ce726039740f16277cea793b54b63fa479))
+* ast use AspectedBenefic when not in combat. ([52ddf21](https://github.com/ArchiDog1998/RotationSolver/commit/52ddf21e75c6f98e047b0810a53342b21c0a9154))
+* change the delay to Not In Combat Delay. For something need to do Not In Combat. ([ffc2c43](https://github.com/ArchiDog1998/RotationSolver/commit/ffc2c43f1052c8756c69df85b8a4fed7d0043a8e))
+* esuna strategy. ([c9a36bd](https://github.com/ArchiDog1998/RotationSolver/commit/c9a36bd6ec3e460acbc12d082194479168de0117))
+* fixed the peloton delay. ([e123d6b](https://github.com/ArchiDog1998/RotationSolver/commit/e123d6b06632380710dc203dbec44df1b43d5a31))
+* pelotion Usage. ([70c72dd](https://github.com/ArchiDog1998/RotationSolver/commit/70c72dded4bc12abd9c771c68ecdd208c88fc36a))
+
 ## [1.3.4](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.3...v1.3.4) (2023-02-06)
 
 
