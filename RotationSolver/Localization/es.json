@@ -63,7 +63,7 @@
   "Configwindow_Param_InterruptDelay": "Set the range of random delay for interrupting hostile targets in second.",
   "Configwindow_Param_WeakenDelay": "Set the range of random delay for esuna weakens in second.",
   "Configwindow_Param_HealDelay": "Set the range of random delay for healing people in second.",
-  "Configwindow_Param_PelotonDelay": "Set the range of random delay for peloton usage in second.",
+  "Configwindow_Param_NotInCombatDelay": "Set the range of random delay for Not In Combat in second.",
   "Configwindow_Param_StopCastingDelay": "Set the range of random delay for stoping casting when target is dead in second.",
   "Configwindow_Param_WorkTaskDelay": "Set the work task delay in millisecond. Smaller, more precise, more resource-intensive",
   "Configwindow_Param_Display": "Display",
