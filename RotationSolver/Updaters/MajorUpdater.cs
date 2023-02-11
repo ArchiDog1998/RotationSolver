@@ -8,12 +8,14 @@ namespace RotationSolver.Updaters;
 
 internal static class MajorUpdater
 {
+    private static bool IsValid => Service.Conditions.Any() && Service.ClientState.LocalPlayer != null;
+
     //#if DEBUG
     //    private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
     //#endif
     private static void FrameworkUpdate(Framework framework)
     {
-        if (!Service.Conditions.Any() || Service.ClientState.LocalPlayer == null) return;
+        if (!IsValid) return;
 
         //#if DEBUG
         //        //Get changed condition.
@@ -99,6 +101,8 @@ internal static class MajorUpdater
 
     private static void UpdateWork()
     {
+        if (!IsValid) return;
+
         ActionUpdater.UpdateActionInfo();
         PreviewUpdater.UpdateCastBarState();
         TargetUpdater.UpdateTarget();

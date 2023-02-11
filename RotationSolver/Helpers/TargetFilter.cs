@@ -21,7 +21,7 @@ internal static class TargetFilter
         //根据默认设置排序怪且没有大招
         availableCharas = DefaultTargetingType(availableCharas).Where(StatusHelper.NeedHealing);
 
-        var tar = availableCharas.OrderBy(ObjectHelper.GetHealingRatio).First();
+        var tar = availableCharas.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
 
         if (tar.GetHealingRatio() < 1) return tar;
 
@@ -57,7 +57,7 @@ internal static class TargetFilter
         float radius = availableCharas.FirstOrDefault().HitboxRadius;
 
         return availableCharas.Where(c => c.HitboxRadius == radius)
-            .OrderBy(DistanceToPlayer).First();
+            .OrderBy(DistanceToPlayer).FirstOrDefault();
     }
 
     private static BattleChara GetTopPriorityHostile(IEnumerable<BattleChara> availableCharas)
@@ -212,33 +212,33 @@ internal static class TargetFilter
             //如果全死了，赶紧复活啊。
             if (TCount > 0 && deathT.Count() == TCount)
             {
-                return deathT.First();
+                return deathT.FirstOrDefault();
             }
 
             //确认一下死了的H有哪些。
             var deathH = deathParty.GetJobCategory(JobRole.Healer);
 
             //如果H死了，就先救他。
-            if (deathH.Count() != 0) return deathH.First();
+            if (deathH.Any()) return deathH.FirstOrDefault();
 
             //如果T死了，就再救他。
-            if (deathT.Count() != 0) return deathT.First();
+            if (deathT.Any()) return deathT.FirstOrDefault();
 
             //T和H都还活着，那就随便救一个。
-            return deathParty.First();
+            return deathParty.FirstOrDefault();
         }
 
         if (deathAll.Any())
         {
             //确认一下死了的H有哪些。
             var deathAllH = deathAll.GetJobCategory(JobRole.Healer);
-            if (deathAllH.Count() != 0) return deathAllH.First();
+            if (deathAllH.Any()) return deathAllH.FirstOrDefault();
 
             //确认一下死了的T有哪些。
             var deathAllT = deathAll.GetJobCategory(JobRole.Tank);
-            if (deathAllT.Count() != 0) return deathAllT.First();
+            if (deathAllT.Any()) return deathAllT.FirstOrDefault();
 
-            return deathAll.First();
+            return deathAll.FirstOrDefault();
         }
 
         return null;
