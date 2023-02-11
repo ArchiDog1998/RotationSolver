@@ -1,13 +1,12 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using RotationSolver.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RotationSolver.Data;
+namespace RotationSolver.Helpers;
 
-public struct MarkingHelper
+public class MarkingHelper
 {
     private unsafe static long GetMarker(uint index) => MarkingController.Instance()->MarkerArray[index];
 

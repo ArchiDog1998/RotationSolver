@@ -152,7 +152,6 @@ internal partial class BaseAction
         }
         else
         {
-
             var availableCharas = TargetUpdater.AllTargets.Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId);
             var target = TargetFilter.GetObjectInRadius(availableCharas, range).FindTargetForMoving(mustUse);
             if (target == null) return false;

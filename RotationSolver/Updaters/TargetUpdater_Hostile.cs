@@ -77,6 +77,9 @@ internal static partial class TargetUpdater
         {
             if (!b.IsNPCEnemy()) return false;
 
+            //Dead.
+            if (b.CurrentHp == 0) return false;
+
             if (!b.IsTargetable()) return false;
 
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;

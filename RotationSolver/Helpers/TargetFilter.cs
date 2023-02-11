@@ -36,8 +36,8 @@ internal static class TargetFilter
         if (availableCharas == null || !availableCharas.Any()) return null;
 
         //找到被标记攻击的怪
-        if (Service.Configuration.ChooseAttackMark && 
-            MarkingHelper.GetAttackMarkChara(availableCharas) is BattleChara b && b != null) return b;
+        var b = MarkingHelper.GetAttackMarkChara(availableCharas);
+        if (Service.Configuration.ChooseAttackMark && b != null) return b;
 
         //去掉停止标记的怪
         if (Service.Configuration.FilterStopMark)
@@ -46,15 +46,31 @@ internal static class TargetFilter
             if (charas?.Any() ?? false) availableCharas = charas;
         }
 
-        //根据默认设置排序怪
-        availableCharas = DefaultTargetingType(availableCharas);
+        b = GetTopPriorityHostile(availableCharas);
+        if (b != null) return b;
 
+        //根据默认设置排序怪
+        availableCharas = DefaultTargetingType(availableCharas.Where(b => 
+            !TargetUpdater.TreasureCharas.Contains(b.ObjectId)));
 
         //找到体积一样小的
         float radius = availableCharas.FirstOrDefault().HitboxRadius;
 
         return availableCharas.Where(c => c.HitboxRadius == radius)
             .OrderBy(DistanceToPlayer).First();
+    }
+
+    private static BattleChara GetTopPriorityHostile(IEnumerable<BattleChara> availableCharas)
+    {
+        //Hunting log and weapon.
+        var b = availableCharas.FirstOrDefault(b => b.GetNamePlateIcon() is 60092 or 60096);
+        if (b != null) return b;
+
+        if(TargetUpdater.TreasureCharas.Length > 0)
+        {
+            return availableCharas.FirstOrDefault(b => b.ObjectId == TargetUpdater.TreasureCharas[0]);
+        }
+        return null;
     }
 
     internal static T FindTargetForMoving<T>(this IEnumerable<T> charas, bool mustUse) where T : GameObject

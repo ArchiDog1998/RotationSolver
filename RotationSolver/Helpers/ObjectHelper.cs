@@ -14,10 +14,10 @@ namespace RotationSolver.Helpers;
 
 internal static class ObjectHelper
 {
-    static readonly SortedList<EventHandlerType, uint[]> _eventType = new SortedList<EventHandlerType, uint[]>()
+    static readonly EventHandlerType[] _eventType = new EventHandlerType[]
     {
-        {EventHandlerType.TreasureHuntDirector, new uint[] {60094 } },
-        {EventHandlerType.Quest, new uint[] {71224} },
+        EventHandlerType.TreasureHuntDirector,
+        EventHandlerType.Quest,
     };
 
     private unsafe static BNpcBase GetObjectNPC(this GameObject obj)
@@ -37,9 +37,10 @@ internal static class ObjectHelper
 
     internal static unsafe bool IsOthersPlayers(this GameObject obj)
     {
-        if (_eventType.TryGetValue(obj.GetAddress()->EventId.Type, out var id))
+        //SpecialType but no NamePlateIcon
+        if (_eventType.Contains(obj.GetAddress()->EventId.Type))
         {
-            return !id.Contains( obj.GetAddress()->NamePlateIconId);
+            return obj.GetNamePlateIcon() == 0;
         }
         return false;
     }
@@ -48,6 +49,9 @@ internal static class ObjectHelper
         && obj.GetBattleNPCSubkind() == BattleNpcSubKind.Enemy;
 
     internal static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.GetAddress()->ObjectKind;
+
+    internal static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.GetAddress()->NamePlateIconId;
+
     internal static unsafe BattleNpcSubKind GetBattleNPCSubkind(this GameObject obj) => (BattleNpcSubKind)obj.GetAddress()->SubKind;
 
     internal static unsafe uint FateId(this GameObject obj) => obj.GetAddress()->FateId;
