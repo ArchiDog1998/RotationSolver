@@ -19,7 +19,7 @@ public struct MarkingHelper
         for (uint i = 0; i < 5; i++)
         {
             var b = GetChara(charas, GetMarker(i));
-            if (b?.CanAttack() ?? false) return b;
+            if (b?.IsNPCEnemy() ?? false) return b;
         }
         return null;
     }

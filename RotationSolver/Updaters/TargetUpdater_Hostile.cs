@@ -81,7 +81,7 @@ internal static partial class TargetUpdater
 
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
 
-            return b.CanAttack();
+            return true;
         });
 
         HostileTargets.Delay(GetHostileTargets(allAttackableTargets));

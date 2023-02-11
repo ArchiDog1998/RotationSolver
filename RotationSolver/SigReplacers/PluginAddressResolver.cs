@@ -7,7 +7,7 @@ namespace RotationSolver.SigReplacers;
 internal class PluginAddressResolver : BaseAddressResolver
 {
     public IntPtr IsActionIdReplaceable { get; private set; }
-    public IntPtr CanAttackFunction { get; private set; }
+    //public IntPtr CanAttackFunction { get; private set; }
     public IntPtr MovingController { get; private set; }
     public IntPtr ReceiveAbilty { get; private set; }
     public IntPtr CountdownTimerAdress { get; private set; }
@@ -22,7 +22,7 @@ internal class PluginAddressResolver : BaseAddressResolver
         IsActionIdReplaceable = scanner.ScanText("E8 ?? ?? ?? ?? 84 C0 74 4C 8B D3");
 
         //IDK
-        CanAttackFunction = scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
+        //CanAttackFunction = scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B DA 8B F9 E8 ?? ?? ?? ?? 4C 8B C3 ");
         MovingController = scanner.ScanText("40 55 53 48 8D 6C 24 ?? 48 81 EC ?? ?? ?? ?? 48 83 79 ?? ??");
         ReceiveAbilty = scanner.ScanText("4C 89 44 24 ?? 55 56 41 54 41 55 41 56");
         CountdownTimerAdress = scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 40 8B 41");
