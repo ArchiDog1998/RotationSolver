@@ -75,6 +75,8 @@ internal static partial class TargetUpdater
     {
         var allAttackableTargets = allTargets.Where(b =>
         {
+            if (!b.IsNPCEnemy()) return false;
+
             if (!b.IsTargetable()) return false;
 
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
@@ -120,7 +122,7 @@ internal static partial class TargetUpdater
             if (t.TargetObject == Service.ClientState.LocalPlayer) return true;
 
             //Remove other's treasure.
-            if (t.IsOthersTreasure()) return false;
+            if (t.IsOthersPlayers()) return false;
 
             return fateId > 0 ? t.FateId() == fateId : t.TargetObject is BattleChara;
         });

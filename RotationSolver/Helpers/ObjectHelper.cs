@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Lumina.Excel.GeneratedSheets;
@@ -13,6 +14,12 @@ namespace RotationSolver.Helpers;
 
 internal static class ObjectHelper
 {
+    static readonly SortedList<EventHandlerType, uint[]> _eventType = new SortedList<EventHandlerType, uint[]>()
+    {
+        {EventHandlerType.TreasureHuntDirector, new uint[] {60094 } },
+        {EventHandlerType.Quest, new uint[] {71224} },
+    };
+
     private unsafe static BNpcBase GetObjectNPC(this GameObject obj)
     {
         if (obj == null) return null;
@@ -25,19 +32,27 @@ internal static class ObjectHelper
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);
     }
 
-    internal static unsafe bool IsOthersTreasure(this GameObject obj)
+    internal static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetAddress(this GameObject obj)
+        => (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
+
+    internal static unsafe bool IsOthersPlayers(this GameObject obj)
     {
-        //From Tweaks/TreasureHuntTargets.cs
-        var tar = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
-        return tar->ObjectKind == 2 && tar->SubKind == 5 && tar->EventId.Type == EventHandlerType.TreasureHuntDirector
-            && tar->NamePlateIconId != 60094;
+        if (_eventType.TryGetValue(obj.GetAddress()->EventId.Type, out var id))
+        {
+            return !id.Contains( obj.GetAddress()->NamePlateIconId);
+        }
+        return false;
     }
 
-    internal static unsafe uint FateId(this GameObject obj)
-        => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->FateId;
+    internal static unsafe bool IsNPCEnemy(this GameObject obj) => obj.GetObjectKind() == ObjectKind.BattleNpc
+        && obj.GetBattleNPCSubkind() == BattleNpcSubKind.Enemy;
 
-    internal static unsafe bool IsTargetable(this GameObject obj)
-    => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->GetIsTargetable();
+    internal static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.GetAddress()->ObjectKind;
+    internal static unsafe BattleNpcSubKind GetBattleNPCSubkind(this GameObject obj) => (BattleNpcSubKind)obj.GetAddress()->SubKind;
+
+    internal static unsafe uint FateId(this GameObject obj) => obj.GetAddress()->FateId;
+
+    internal static unsafe bool IsTargetable(this GameObject obj) => obj.GetAddress()->GetIsTargetable();
 
     static readonly Dictionary<uint, bool> _effectRangeCheck = new Dictionary<uint, bool>();
     internal static bool CanInterrupt(this BattleChara b)

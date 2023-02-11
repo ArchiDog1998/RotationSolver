@@ -70,7 +70,10 @@ internal partial class RotationConfigWindow
             ImGui.Text("Is Boss: " + b.IsBoss().ToString());
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());
-            ImGui.Text("NamePlate: " + ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)b.Address)->NamePlateIconId.ToString());
+            ImGui.Text("NamePlate: " + b.GetAddress()->NamePlateIconId.ToString());
+            ImGui.Text("Kind: " + b.GetAddress()->ObjectKind.ToString());
+            ImGui.Text("Subkind: " + b.GetAddress()->SubKind.ToString());
+            ImGui.Text("EventType: " + b.GetAddress()->EventId.Type.ToString());
 
             foreach (var status in b.StatusList)
             {
@@ -117,7 +120,8 @@ internal partial class RotationConfigWindow
 
     private void DrawIcon()
     {
-        ImGui.Image(IconSet.GetTexture(61832).ImGuiHandle, new Vector2(24, 24));
+        ImGui.Image(IconSet.GetTexture(60094).ImGuiHandle, new Vector2(24, 24));
+        ImGui.Image(IconSet.GetTexture(71224).ImGuiHandle, new Vector2(24, 24));
     }
 
     private static void DrawAction(ActionID id, string type)
