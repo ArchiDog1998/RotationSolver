@@ -51,12 +51,13 @@ internal static class TargetFilter
 
         if (TargetUpdater.TreasureCharas.Length > 0)
         {
-            return availableCharas.FirstOrDefault(b => b.ObjectId == TargetUpdater.TreasureCharas[0]);
+            b = availableCharas.FirstOrDefault(b => b.ObjectId == TargetUpdater.TreasureCharas[0]);
+            if (b != null) return b;
+            availableCharas = availableCharas.Where(b => !TargetUpdater.TreasureCharas.Contains(b.ObjectId));
         }
 
         //根据默认设置排序怪
-        availableCharas = DefaultTargetingType(availableCharas.Where(b => 
-            !TargetUpdater.TreasureCharas.Contains(b.ObjectId)));
+        availableCharas = DefaultTargetingType(availableCharas);
 
         //找到体积一样小的
         float radius = availableCharas.FirstOrDefault().HitboxRadius;

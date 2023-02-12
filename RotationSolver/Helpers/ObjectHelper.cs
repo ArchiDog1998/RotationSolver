@@ -45,15 +45,9 @@ internal static class ObjectHelper
         return false;
     }
 
-    static readonly EventHandlerType[] _someSpecialEvent = new EventHandlerType[]
-    {
-        EventHandlerType.PublicContentDirector, //Island Sanctuary..
-        EventHandlerType.FateDirector,
-    };
     internal static unsafe bool IsNPCEnemy(this GameObject obj) 
         => obj.GetObjectKind() == ObjectKind.BattleNpc
         && obj.GetBattleNPCSubkind() == BattleNpcSubKind.Enemy 
-        && !_someSpecialEvent.Contains(obj.GetEventType()) 
         && obj.CanAttack();
 
     private unsafe static bool CanAttack(this GameObject actor)
