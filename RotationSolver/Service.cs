@@ -23,6 +23,11 @@ namespace RotationSolver;
 
 internal class Service
 {
+    internal static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager* CharacterManager
+        => FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager.Instance();
+
+    internal static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.BattleChara* Player
+        => (FFXIVClientStructs.FFXIV.Client.Game.Character.BattleChara*)(void*)ClientState.LocalPlayer.Address;
     internal static LocalizationManager Localization { get; set; }
 
     internal static PluginConfiguration Configuration { get; set; }

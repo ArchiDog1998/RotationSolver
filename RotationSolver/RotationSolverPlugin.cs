@@ -23,7 +23,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private static RotationConfigWindow _comboConfigWindow;
     public string Name => "Rotation Solver";
 
-    public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
+    public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
 

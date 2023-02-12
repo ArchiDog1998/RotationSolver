@@ -86,9 +86,9 @@ internal static partial class TargetUpdater
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal static bool CanHealSingleSpell { get; private set; } = false;
 
-    internal static bool HavePet { get; private set; } = false;
+    internal static unsafe bool HavePet  => (IntPtr)Service.CharacterManager->LookupPetByOwnerObject(Service.Player) != IntPtr.Zero;
 
-    internal static bool HaveChocobo { get; private set; } = false;
+    internal static unsafe bool HaveCompanion => (IntPtr)Service.CharacterManager->LookupBuddyByOwnerObject(Service.Player) != IntPtr.Zero;
 
     internal static bool HPNotFull { get; private set; } = false;
 
@@ -105,10 +105,6 @@ internal static partial class TargetUpdater
     {
         #region Friend
         PartyMembers = GetPartyMembers(allTargets);
-
-        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId);
-        HavePet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
-        HaveChocobo = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Chocobo); 
 
         AllianceMembers = allTargets.OfType<PlayerCharacter>();
 

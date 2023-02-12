@@ -48,6 +48,10 @@ internal partial class RotationConfigWindow
             ImGui.Text("Fate: " + TargetUpdater.FateId.ToString());
         }
 
+        ImGui.Text("Have pet: " + TargetUpdater.HavePet.ToString());
+        ImGui.Text("Have Companion: " + TargetUpdater.HaveCompanion.ToString());
+
+
         foreach (var status in Service.ClientState.LocalPlayer.StatusList)
         {
             var source = Service.ObjectTable.SearchById(status.SourceId)?.Name ?? "None";
