@@ -209,7 +209,7 @@ internal abstract partial class CustomRotation
         act = null;
         if (specialType == SpecialCommandType.MoveForward && MoveForwardAbility(abilitiesRemaining, out act))
         {
-            if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
+            if (act is BaseAction b && ObjectHelper.DistanceToPlayer(b.Target) > 5) return true;
         }
         else if (specialType == SpecialCommandType.MoveBack)
         {

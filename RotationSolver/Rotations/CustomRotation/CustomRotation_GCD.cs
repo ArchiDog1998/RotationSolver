@@ -23,7 +23,7 @@ internal abstract partial class CustomRotation
 
         if (specialType == SpecialCommandType.MoveForward && MoveGCD(out act))
         {
-            if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
+            if (act is BaseAction b && ObjectHelper.DistanceToPlayer(b.Target) > 5) return act;
         }
 
         //General Heal

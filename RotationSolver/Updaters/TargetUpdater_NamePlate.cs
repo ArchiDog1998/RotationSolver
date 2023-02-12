@@ -10,7 +10,7 @@ namespace RotationSolver.Updaters;
 
 internal static partial class TargetUpdater
 {
-    public static uint[] TreasureCharas { get; private set; }
+    public static uint[] TreasureCharas { get; private set; } = new uint[0];
     private static void UpdateNamePlate(IEnumerable<BattleChara> allTargets)
     {
         List<uint> charas = new List<uint>(5);

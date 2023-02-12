@@ -48,7 +48,7 @@ internal static class ObjectHelper
     static readonly EventHandlerType[] _someSpecialEvent = new EventHandlerType[]
     {
         EventHandlerType.PublicContentDirector, //Island Sanctuary..
-        EventHandlerType.FateDirector, //Island Sanctuary..
+        EventHandlerType.FateDirector,
     };
     internal static unsafe bool IsNPCEnemy(this GameObject obj) 
         => obj.GetObjectKind() == ObjectKind.BattleNpc
@@ -62,6 +62,10 @@ internal static class ObjectHelper
     }
 
     internal static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.GetAddress()->ObjectKind;
+
+    internal static bool IsTopPriorityHostile(this GameObject obj)
+        //Hunting log and weapon.
+        => obj.GetNamePlateIcon() is 60092 or 60096;
 
     internal static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.GetAddress()->NamePlateIconId;
     internal static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.GetAddress()->EventId.Type;
@@ -185,5 +189,21 @@ internal static class ObjectHelper
         }
 
         return (uint)(multi * Service.ClientState.LocalPlayer.MaxHp);
+    }
+
+    /// <summary>
+    /// 对象<paramref name="obj"/>距玩家的距离
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    internal static float DistanceToPlayer(this GameObject obj)
+    {
+        if (obj == null) return float.MaxValue;
+        var player = Service.ClientState.LocalPlayer;
+        if (player == null) return float.MaxValue;
+
+        var distance = Vector3.Distance(player.Position, obj.Position) - player.HitboxRadius;
+        distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
+        return distance;
     }
 }

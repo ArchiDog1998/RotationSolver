@@ -46,8 +46,13 @@ internal static class TargetFilter
             if (charas?.Any() ?? false) availableCharas = charas;
         }
 
-        b = GetTopPriorityHostile(availableCharas);
+        b = availableCharas.FirstOrDefault(ObjectHelper.IsTopPriorityHostile); 
         if (b != null) return b;
+
+        if (TargetUpdater.TreasureCharas.Length > 0)
+        {
+            return availableCharas.FirstOrDefault(b => b.ObjectId == TargetUpdater.TreasureCharas[0]);
+        }
 
         //根据默认设置排序怪
         availableCharas = DefaultTargetingType(availableCharas.Where(b => 
@@ -57,27 +62,14 @@ internal static class TargetFilter
         float radius = availableCharas.FirstOrDefault().HitboxRadius;
 
         return availableCharas.Where(c => c.HitboxRadius == radius)
-            .OrderBy(DistanceToPlayer).FirstOrDefault();
-    }
-
-    private static BattleChara GetTopPriorityHostile(IEnumerable<BattleChara> availableCharas)
-    {
-        //Hunting log and weapon.
-        var b = availableCharas.FirstOrDefault(b => b.GetNamePlateIcon() is 60092 or 60096);
-        if (b != null) return b;
-
-        if(TargetUpdater.TreasureCharas.Length > 0)
-        {
-            return availableCharas.FirstOrDefault(b => b.ObjectId == TargetUpdater.TreasureCharas[0]);
-        }
-        return null;
+            .OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
     }
 
     internal static T FindTargetForMoving<T>(this IEnumerable<T> charas, bool mustUse) where T : GameObject
     {
         if (mustUse)
         {
-            var tar = charas.OrderBy(DistanceToPlayer).FirstOrDefault();
+            var tar = charas.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
             if(tar == null) return null;
             if (tar.DistanceToPlayer() < 1) return tar;
             return null;
@@ -108,7 +100,7 @@ internal static class TargetFilter
             Vector2 dirVec = new Vector2(dir.Z, dir.X);
             double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
             return angle <= Math.PI * Service.Configuration.MoveTargetAngle / 360;
-        }).OrderByDescending(DistanceToPlayer);
+        }).OrderByDescending(ObjectHelper.DistanceToPlayer);
 
         return tars.FirstOrDefault();
     }
@@ -129,7 +121,7 @@ internal static class TargetFilter
             if (dir.Y > 0) return false;
 
             return Math.Abs(dir.X / dir.Y) < Math.Tan(Math.PI * Service.Configuration.MoveTargetAngle / 360);
-        }).OrderByDescending(DistanceToPlayer);
+        }).OrderByDescending(ObjectHelper.DistanceToPlayer);
 
         return tars.FirstOrDefault();
     }
@@ -351,21 +343,7 @@ internal static class TargetFilter
         return objects.Where(o => o.DistanceToPlayer() <= radius);
     }
 
-    /// <summary>
-    /// 对象<paramref name="obj"/>距玩家的距离
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    internal static float DistanceToPlayer(this GameObject obj)
-    {
-        if (obj == null) return float.MaxValue;
-        var player = Service.ClientState.LocalPlayer;
-        if (player == null) return float.MaxValue;
 
-        var distance = Vector3.Distance(player.Position, obj.Position) - player.HitboxRadius;
-        distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
-        return distance;
-    }
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
     {

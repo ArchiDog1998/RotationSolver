@@ -52,11 +52,11 @@ internal abstract partial class CustomRotation
         {
             if (TargetUpdater.DyingPeople.Any())
             {
-                return TargetUpdater.DyingPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
+                return TargetUpdater.DyingPeople.OrderBy(ObjectHelper.DistanceToPlayer).First();
             }
             else if (TargetUpdater.WeakenPeople.Any())
             {
-                return TargetUpdater.WeakenPeople.OrderBy(b => TargetFilter.DistanceToPlayer(b)).First();
+                return TargetUpdater.WeakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).First();
             }
             return null;
         },
