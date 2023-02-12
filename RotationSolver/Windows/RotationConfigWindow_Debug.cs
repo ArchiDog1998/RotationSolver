@@ -67,13 +67,15 @@ internal partial class RotationConfigWindow
     {
         if (Service.TargetManager.Target is BattleChara b)
         {
+            ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
             ImGui.Text("Is Boss: " + b.IsBoss().ToString());
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());
-            ImGui.Text("NamePlate: " + b.GetAddress()->NamePlateIconId.ToString());
-            ImGui.Text("Kind: " + b.GetAddress()->ObjectKind.ToString());
-            ImGui.Text("Subkind: " + b.GetAddress()->SubKind.ToString());
-            ImGui.Text("EventType: " + b.GetAddress()->EventId.Type.ToString());
+            ImGui.Text("Kind: " + b.GetObjectKind().ToString());
+            ImGui.Text("Subkind: " + b.GetBattleNPCSubkind().ToString());
+            ImGui.Text("EventType: " + b.GetEventType().ToString());
+            ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
+            ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
 
             foreach (var status in b.StatusList)
             {

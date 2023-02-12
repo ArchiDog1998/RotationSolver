@@ -162,7 +162,7 @@ internal static class OverlayWindow
         }
         pts.Add(scrPos);
 
-        bool wrong = ShouldPositional != EnemyLocationTarget.FindEnemyLocation();
+        bool wrong = ShouldPositional != EnemyLocationTarget.FindEnemyPositional();
         var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
 
         pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));

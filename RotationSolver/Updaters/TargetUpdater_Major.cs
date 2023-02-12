@@ -13,12 +13,11 @@ namespace RotationSolver.Updaters
         internal static IEnumerable<GameObject> AllTargets { get; private set; }
         internal static void UpdateTarget()
         {
-            var wholeTargets = Service.ObjectTable.GetObjectInRadius(60);
-            AllTargets = wholeTargets.GetObjectInRadius(30);
+            AllTargets = Service.ObjectTable.GetObjectInRadius(30);
             var battles = AllTargets.OfType<BattleChara>();
             UpdateHostileTargets(battles);
             UpdateFriends(battles);
-            UpdateNamePlate(wholeTargets.OfType<BattleChara>());
+            UpdateNamePlate(Service.ObjectTable.OfType<BattleChara>());
         }
     }
 }

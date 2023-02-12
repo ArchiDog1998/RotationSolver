@@ -38,19 +38,33 @@ internal static class ObjectHelper
     internal static unsafe bool IsOthersPlayers(this GameObject obj)
     {
         //SpecialType but no NamePlateIcon
-        if (_eventType.Contains(obj.GetAddress()->EventId.Type))
+        if (_eventType.Contains(obj.GetEventType()))
         {
             return obj.GetNamePlateIcon() == 0;
         }
         return false;
     }
 
-    internal static unsafe bool IsNPCEnemy(this GameObject obj) => obj.GetObjectKind() == ObjectKind.BattleNpc
-        && obj.GetBattleNPCSubkind() == BattleNpcSubKind.Enemy;
+    static readonly EventHandlerType[] _someSpecialEvent = new EventHandlerType[]
+    {
+        EventHandlerType.PublicContentDirector, //Island Sanctuary..
+        EventHandlerType.FateDirector, //Island Sanctuary..
+    };
+    internal static unsafe bool IsNPCEnemy(this GameObject obj) 
+        => obj.GetObjectKind() == ObjectKind.BattleNpc
+        && obj.GetBattleNPCSubkind() == BattleNpcSubKind.Enemy 
+        && !_someSpecialEvent.Contains(obj.GetEventType()) 
+        && obj.CanAttack();
+
+    private unsafe static bool CanAttack(this GameObject actor)
+    {
+        return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address) == 1;
+    }
 
     internal static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.GetAddress()->ObjectKind;
 
     internal static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.GetAddress()->NamePlateIconId;
+    internal static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.GetAddress()->EventId.Type;
 
     internal static unsafe BattleNpcSubKind GetBattleNPCSubkind(this GameObject obj) => (BattleNpcSubKind)obj.GetAddress()->SubKind;
 
@@ -127,7 +141,7 @@ internal static class ObjectHelper
         return b.CurrentHp >= GetHealthFromMulty(1.5f);
     }
 
-    internal static EnemyPositional FindEnemyLocation(this GameObject enemy)
+    internal static EnemyPositional FindEnemyPositional(this GameObject enemy)
     {
         Vector3 pPosition = enemy.Position;
         float rotation = enemy.Rotation;
@@ -142,14 +156,6 @@ internal static class ObjectHelper
         else if (angle > Math.PI * 3 / 4) return EnemyPositional.Rear;
         return EnemyPositional.Flank;
     }
-
-    //public unsafe static bool CanAttack(this GameObject actor)
-    //{
-    //    if (actor == null) return false;
-    //    if (actor is not BattleChara b) return false;
-    //    if (b.CurrentHp == 0) return false;
-    //    return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address) == 1;
-    //}
 
 #if DEBUG
     internal static uint GetHealthFromMulty(float mult)
