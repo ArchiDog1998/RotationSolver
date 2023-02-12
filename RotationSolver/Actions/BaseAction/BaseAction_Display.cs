@@ -22,6 +22,7 @@ namespace RotationSolver.Actions.BaseAction
 #if DEBUG
             try
             {
+                ImGui.Text("Can Target: " + CanTargetTo(Target));
                 ImGui.Text("Have One:" + HaveOneChargeDEBUG.ToString());
                 ImGui.Text("Is Real GCD: " + IsRealGCD.ToString());
                 ImGui.Text("Recast One: " + RecastTimeOneChargeDEBUG.ToString());

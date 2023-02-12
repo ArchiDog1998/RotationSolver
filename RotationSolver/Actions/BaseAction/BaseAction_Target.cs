@@ -204,10 +204,10 @@ internal partial class BaseAction
 
     private bool TargetPartyAndHostile(float range, bool mustUse, out BattleChara target)
     {
-        var availableCharas = TargetUpdater.PartyMembers.Union(TargetUpdater.HostileTargets).Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId);
-        availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
+        var availableCharas = TargetUpdater.PartyMembers.Union(TargetUpdater.HostileTargets)
+            .Where(b => b.ObjectId != Service.ClientState.LocalPlayer.ObjectId);
+        availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range).Where(CanTargetTo);
 
-        //特殊选队友的方法。
         target = ChoiceTarget(availableCharas, mustUse);
         if (target == null) return false;
         return true;
@@ -247,7 +247,8 @@ internal partial class BaseAction
         }
         else
         {
-            availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range);
+            availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range)
+                .Where(CanTargetTo);
             //特殊选队友的方法。
             target = ChoiceTarget(availableCharas, mustUse);
         }
@@ -292,10 +293,11 @@ internal partial class BaseAction
 
     private bool TargetHostileManual(BattleChara b, bool mustUse, int aoeCount, out BattleChara target)
     {
+        target = b;
+        if (!CanTargetTo(b)) return false;
+
         if (_action.CastType == 1)
         {
-            target = b;
-
             if (!mustUse)
             {
                 //No need to dot.
@@ -312,7 +314,6 @@ internal partial class BaseAction
         {
             if (GetMostObjects(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount).Contains(b))
             {
-                target = b;
                 return true;
             }
         }
@@ -348,7 +349,7 @@ internal partial class BaseAction
     {
         var range = Range;
         var canAttack = targets.Where(t => t.DistanceToPlayer() <= range + _action.EffectRange);
-        var canGetObj = canAttack.Where(t => t.DistanceToPlayer() <= range);
+        var canGetObj = canAttack.Where(t => t.DistanceToPlayer() <= range && CanTargetTo(t));
 
         if (_action.CastType == 1) return canGetObj;
 
@@ -454,13 +455,23 @@ internal partial class BaseAction
     /// </summary>
     /// <param name="tar"></param>
     /// <returns>True for add Eot.</returns>
-    private bool CheckStatus(BattleChara tar)
+    bool CheckStatus(BattleChara tar)
     {
         if (tar == null) return false;
 
         if (TargetStatus == null) return true;
 
         return tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus);
+    }
+
+    unsafe bool CanTargetTo(BattleChara tar)
+    {
+        if (tar == null) return false;
+
+        var id = ActionManager.GetActionInRangeOrLoS(AdjustedID, (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.Player,
+            (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)tar.Address);
+
+        return id is 0 or 565;
     }
 
     /// <summary>

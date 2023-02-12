@@ -12,10 +12,8 @@ namespace RotationSolver.Updaters;
 
 internal static class ActionUpdater
 {
-    private static unsafe IntPtr ComboTimer => (IntPtr)((byte*)ActionManager.Instance() + 0x60);
-    public static unsafe float ComboTime => *(float*)ComboTimer;
-    private static IntPtr LastComboMove => ComboTimer + 4;
-    public static unsafe ActionID LastComboAction => *(ActionID*)LastComboMove;
+    public static unsafe float ComboTime => ActionManager.Instance()->Combo.Timer;
+    public static unsafe ActionID LastComboAction => (ActionID)ActionManager.Instance()->Combo.Action;
 
     static DateTime _startCombatTime = DateTime.MinValue;
     public static TimeSpan CombatTime
@@ -80,7 +78,7 @@ internal static class ActionUpdater
     internal unsafe static void UpdateActionInfo()
     {
         var last = InCombat;
-        InCombat = Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat];
+        InCombat = Service.Conditions[ConditionFlag.InCombat];
         if(!last && InCombat)
         {
             _startCombatTime = DateTime.Now;
@@ -185,8 +183,7 @@ internal static class ActionUpdater
             || Service.Conditions[ConditionFlag.SufferingStatusAffliction2]
             || Service.Conditions[ConditionFlag.RolePlaying]
             || Service.Conditions[ConditionFlag.InFlight]
-            //Skip the action queue.
-            || *(bool*)((IntPtr)ActionManager.Instance() + 0x68)) return;
+            || ActionManager.Instance()->ActionQueued) return;
 
         //GCD
         var canUseGCD = WeaponRemain <= Service.Configuration.WeaponFaster;

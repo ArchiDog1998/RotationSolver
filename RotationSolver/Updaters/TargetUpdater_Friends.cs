@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game.Group;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using RotationSolver.Commands;
 using RotationSolver.Data;
@@ -41,19 +42,15 @@ internal static partial class TargetUpdater
     /// </summary>
     internal static IEnumerable<BattleChara> AllianceTanks { get; private set; } = new PlayerCharacter[0];
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static ObjectListDelay<BattleChara> DeathPeopleAll { get; } = new (
         ()=>(Service.Configuration.DeathDelayMin, Service.Configuration.DeathDelayMax));
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static ObjectListDelay<BattleChara> DeathPeopleParty { get; } = new(
         () => (Service.Configuration.DeathDelayMin, Service.Configuration.DeathDelayMax));
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static ObjectListDelay<BattleChara> WeakenPeople { get;  } = new(
         () => (Service.Configuration.WeakenDelayMin, Service.Configuration.WeakenDelayMax));
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static ObjectListDelay<BattleChara> DyingPeople { get; } = new(
         () => (Service.Configuration.WeakenDelayMin, Service.Configuration.WeakenDelayMax));
     /// <summary>
@@ -86,7 +83,7 @@ internal static partial class TargetUpdater
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal static bool CanHealSingleSpell { get; private set; } = false;
 
-    internal static unsafe bool HavePet  => (IntPtr)Service.CharacterManager->LookupPetByOwnerObject(Service.Player) != IntPtr.Zero;
+    internal static unsafe bool HavePet { get; private set; }
 
     internal static unsafe bool HaveCompanion => (IntPtr)Service.CharacterManager->LookupBuddyByOwnerObject(Service.Player) != IntPtr.Zero;
 
@@ -105,8 +102,10 @@ internal static partial class TargetUpdater
     {
         #region Friend
         PartyMembers = GetPartyMembers(allTargets);
-
         AllianceMembers = allTargets.OfType<PlayerCharacter>();
+
+        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.ClientState.LocalPlayer.ObjectId);
+        HavePet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
 
         PartyTanks = PartyMembers.GetJobCategory(JobRole.Tank);
         PartyHealers = PartyMembers.GetJobCategory(JobRole.Healer);
