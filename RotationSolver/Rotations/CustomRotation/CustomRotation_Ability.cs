@@ -209,7 +209,7 @@ internal abstract partial class CustomRotation
         act = null;
         if (specialType == SpecialCommandType.MoveForward && MoveForwardAbility(abilitiesRemaining, out act))
         {
-            if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return true;
+            if (act is BaseAction b && ObjectHelper.DistanceToPlayer(b.Target) > 5) return true;
         }
         else if (specialType == SpecialCommandType.MoveBack)
         {
@@ -255,7 +255,7 @@ internal abstract partial class CustomRotation
 
             if (Service.Configuration.AutoUseTrueNorth && abilitiesRemaining == 1 && action.EnermyPositonal != EnemyPositional.None && action.Target != null)
             {
-                if (action.EnermyPositonal != action.Target.FindEnemyLocation() && action.Target.HasPositional())
+                if (action.EnermyPositonal != action.Target.FindEnemyPositional() && action.Target.HasPositional())
                 {
                     if (TrueNorth.CanUse(out act, emptyOrSkipCombo: true)) return true;
                 }

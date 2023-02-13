@@ -132,6 +132,8 @@ public class PluginConfiguration : IPluginConfiguration
     public int MoveTargetAngle = 24;
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
+    public MacroInfo DutyStart { get; set; } = new MacroInfo();
+    public MacroInfo DutyEnd { get; set; } = new MacroInfo();
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);

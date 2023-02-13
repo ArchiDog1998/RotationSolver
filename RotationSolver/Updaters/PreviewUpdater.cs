@@ -2,6 +2,7 @@
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
@@ -83,7 +84,7 @@ internal static class PreviewUpdater
     {
         if (_isTarDead)
         {
-            //RSCommands.SubmitToChat("/acan");
+            UIState.Instance()->Hotbar.CancelCast();
         }
 
         var nowMove = _canMove && Service.Configuration.CastingDisplay;

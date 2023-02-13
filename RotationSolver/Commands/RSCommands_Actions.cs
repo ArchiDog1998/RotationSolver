@@ -43,7 +43,7 @@ namespace RotationSolver.Commands
                     //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if (Service.TargetManager.Target is not PlayerCharacter && (act.Target?.CanAttack() ?? false))
+                    if (Service.TargetManager.Target is not PlayerCharacter && (act.Target?.IsNPCEnemy() ?? false))
                     {
                         Service.TargetManager.SetTarget(act.Target);
                     }

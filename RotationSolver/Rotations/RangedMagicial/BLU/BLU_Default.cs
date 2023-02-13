@@ -342,7 +342,7 @@ internal sealed class BLU_Default : BLU_Base
         }
 
         //陆行鸟陨石
-        if (TargetUpdater.HaveChocobo && ChocoMeteor.CanUse(out act, mustUse: true)) return true;
+        if (TargetUpdater.HaveCompanion && ChocoMeteor.CanUse(out act, mustUse: true)) return true;
 
         if (TargetUpdater.HostileTargets.GetObjectInRadius(6).Count() < 3)
         {

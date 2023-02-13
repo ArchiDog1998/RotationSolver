@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
@@ -75,11 +76,16 @@ internal static partial class TargetUpdater
     {
         var allAttackableTargets = allTargets.Where(b =>
         {
+            if (!b.IsNPCEnemy()) return false;
+
+            //Dead.
+            if (b.CurrentHp == 0) return false;
+
             if (!b.IsTargetable()) return false;
 
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
 
-            return b.CanAttack();
+            return true;
         });
 
         HostileTargets.Delay(GetHostileTargets(allAttackableTargets));
@@ -116,11 +122,12 @@ internal static partial class TargetUpdater
 
         var hostiles = allattackableTargets.Where(t =>
         {
+            //Remove other's treasure.
+            if (t.IsOthersPlayers()) return false;
+
             if (ids.Contains(t.ObjectId)) return true;
             if (t.TargetObject == Service.ClientState.LocalPlayer) return true;
-
-            //Remove other's treasure.
-            if (t.IsOthersTreasure()) return false;
+            if (t.IsTopPriorityHostile()) return true;
 
             return fateId > 0 ? t.FateId() == fateId : t.TargetObject is BattleChara;
         });

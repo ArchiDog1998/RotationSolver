@@ -76,21 +76,20 @@ internal partial class Strings
     = "Close special status";
     public string Configwindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
     public string Configwindow_Helper_GameVersion { get; set; } = "Game Version";
-    public string Configwindow_Helper_EditCombo { get; set; } = "Click to edit this custom Combo.";
-    //public string Configwindow_Helper_AddCombo { get; set; } = "Add a custom Combo.";
     public string Configwindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string Configwindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string Configwindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
     public string Configwindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in 5s";
-    public string Configwindow_AttackItem_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
-    public string Configwindow_AttackItem_KeyName { get; set; } = "The key name is";
-    public string Configwindow_AttackItem_Enable { get; set; } = "Enable";
+    public string Configwindow_Rotation_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
+    public string Configwindow_Rotation_KeyName { get; set; } = "The key name is";
     public string Configwindow_Events_AddEvent { get; set; } = "AddEvents";
     public string Configwindow_Events_Description { get; set; } = "In this window, you can set what macro will be trigger after using an action.";
     public string Configwindow_Events_ActionName { get; set; } = "Action Name";
     public string Configwindow_Events_MacroIndex { get; set; } = "Macro No.";
-    public string Configwindow_Events_ShareMacro { get; set; } = "Shared Macro No.";
+    public string Configwindow_Events_ShareMacro { get; set; } = "Is Shared";
     public string Configwindow_Events_RemoveEvent { get; set; } = "Delete Event";
+    public string Configwindow_Events_DutyStart { get; set; } = "Duty Start: ";
+    public string Configwindow_Events_DutyEnd{ get; set; } = "Duty End: ";
     public string Configwindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
     public string Configwindow_Param_NeverReplaceIcon { get; set; } = "Never Replace Icons";
     public string Configwindow_Param_NeverReplaceIconDesc { get; set; } = "Icon replacement: Repose is automatically displayed as the next skill to be used";
@@ -170,7 +169,6 @@ internal partial class Strings
     public string Configwindow_Param_StartOnCountdown { get; set; } = "Turn on auto-rotation on countdown";
     public string Configwindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";
     public string Configwindow_Param_InterruptibleMoreCheck { get; set; } = "Interrupt the action with action type check.";
-
 
     public string Configwindow_Param_HealOutOfCombat { get; set; } = "Heal party members outside of combat.";
 

@@ -6,7 +6,7 @@
     "Author": "ArchiTed",
     "Name": "Rotation Solver",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
-      "Description": "Based on the pve combat information in one frame, find the best action.\n\nThe `information` is almost all the information available in one frame in combat, including the status of the all players in party, the status of the hostile targets, action cooling, the number of action stack, the MP and HP of characters, the location of characters, casting action of the hostile target, combo ID, combat duration, player level, etc. In this case, opener is also a kind of information that a lot of abilities are not cooling down.\n\nThen, it will highlight the best action one the hot bar, or help you to click on it.\n\nIt is designed for general combat, not for savage or ultimate. So use it carefully.",
+    "Description": "Based on the pve combat information in one frame, find the best action.\n\nThe `information` is almost all the information available in one frame in combat, including the status of the all players in party, the status of the hostile targets, action cooling, the number of action stack, the MP and HP of characters, the location of characters, casting action of the hostile target, combo ID, combat duration, player level, etc. In this case, opener is also a kind of information that a lot of abilities are not cooling down.\n\nThen, it will highlight the best action one the hot bar, or help you to click on it.\n\nIt is designed for general combat, not for savage or ultimate. So use it carefully.",
     "Tags": [
       "combat",
       "rotation"
@@ -16,12 +16,12 @@
     ],
     "IsHide": false,
     "InternalName": "RotationSolver",
-    "AssemblyVersion": "1.3.4",
+    "AssemblyVersion": "1.3.5",
     "IsTestingExclusive": false,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 8,
-    "DownloadCount": 1024,
+    "DownloadCount": 4096,
     "LastUpdate": 0,
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip",
     "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip",

@@ -105,10 +105,7 @@ namespace RotationSolver.SigReplacers
             foreach (var item in Service.Configuration.Events)
             {
                 if (!new Regex(item.Name).Match(action.Name).Success) continue;
-                if (item.MacroIndex < 0 || item.MacroIndex > 99) break;
-
-                MacroUpdater.Macros.Enqueue(new MacroItem(tar, item.IsShared ? RaptureMacroModule.Instance->Shared[item.MacroIndex] :
-                    RaptureMacroModule.Instance->Individual[item.MacroIndex]));
+                if (item.AddMacro(tar)) break;
             }
 
 #if DEBUG

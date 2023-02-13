@@ -1,5 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Client.Game.Group;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions.BaseAction;
@@ -48,15 +50,33 @@ internal partial class RotationConfigWindow
             ImGui.Text("Fate: " + TargetUpdater.FateId.ToString());
         }
 
+        ImGui.Text("Have pet: " + TargetUpdater.HavePet.ToString());
+        ImGui.Text("Have Companion: " + TargetUpdater.HaveCompanion.ToString());
+
+
         foreach (var status in Service.ClientState.LocalPlayer.StatusList)
         {
             var source = Service.ObjectTable.SearchById(status.SourceId)?.Name ?? "None";
             ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
         }
     }
-    private void DrawParty()
+    private unsafe void DrawParty()
     {
-        ImGui.Text("Friends: " + TargetUpdater.PartyMembers.Count().ToString());
+        var status = AgentDeepDungeonStatus.Instance();
+        if ((IntPtr)status != IntPtr.Zero) 
+        {
+            foreach (var item in status->Data->PomanderSpan)
+            {
+                ImGui.Text(item.Name.ToString() + " : " + item.ItemId.ToString());
+            }
+
+            foreach (var item in status->Data->MagiciteSpan)
+            {
+                ImGui.Text(item.Name.ToString() + " : " + item.ItemId.ToString());
+            }
+        }
+
+        ImGui.Text("Party: " + TargetUpdater.PartyMembers.Count().ToString());
         ImGui.Text("CanHealSingleAbility: " + TargetUpdater.CanHealSingleAbility.ToString());
         ImGui.Text("CanHealSingleSpell: " + TargetUpdater.CanHealSingleSpell.ToString());
         ImGui.Text("CanHealAreaAbility: " + TargetUpdater.CanHealAreaAbility.ToString());
@@ -67,10 +87,15 @@ internal partial class RotationConfigWindow
     {
         if (Service.TargetManager.Target is BattleChara b)
         {
+            ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
             ImGui.Text("Is Boss: " + b.IsBoss().ToString());
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());
-            ImGui.Text("NamePlate: " + ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)b.Address)->NamePlateIconId.ToString());
+            ImGui.Text("Kind: " + b.GetObjectKind().ToString());
+            ImGui.Text("Subkind: " + b.GetBattleNPCSubkind().ToString());
+            ImGui.Text("EventType: " + b.GetEventType().ToString());
+            ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
+            ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
 
             foreach (var status in b.StatusList)
             {
@@ -117,7 +142,8 @@ internal partial class RotationConfigWindow
 
     private void DrawIcon()
     {
-        ImGui.Image(IconSet.GetTexture(61832).ImGuiHandle, new Vector2(24, 24));
+        ImGui.Image(IconSet.GetTexture(60094).ImGuiHandle, new Vector2(24, 24));
+        ImGui.Image(IconSet.GetTexture(71224).ImGuiHandle, new Vector2(24, 24));
     }
 
     private static void DrawAction(ActionID id, string type)

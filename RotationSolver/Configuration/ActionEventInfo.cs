@@ -1,15 +1,25 @@
-﻿namespace RotationSolver.Configuration;
+﻿using ImGuiNET;
+using RotationSolver.Localization;
 
-public class ActionEventInfo
+namespace RotationSolver.Configuration;
+
+public class ActionEventInfo : MacroInfo
 {
-    public string Name { get; set; }
-    public int MacroIndex { get; set; }
-    public bool IsShared { get; set; }
+    public string Name;
 
     public ActionEventInfo()
     {
         Name = "";
-        MacroIndex = -1;
-        IsShared = false;
+    }
+
+    public override void DisplayMacro()
+    {
+        if (ImGui.InputText($"{LocalizationManager.RightLang.Configwindow_Events_ActionName}##ActionName{GetHashCode()}",
+            ref Name, 100))
+        {
+            Service.Configuration.Save();
+        }
+
+        base.DisplayMacro();
     }
 }

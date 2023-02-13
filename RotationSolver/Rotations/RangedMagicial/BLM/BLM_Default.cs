@@ -110,9 +110,6 @@ internal class BLM_Default : BLM_Base
         //Triplecast for moving.
         if (IsMoving && Triplecast.CanUse(out act, emptyOrSkipCombo: true)) return true;
         
-        if (InFireOrIce(out act, out mustGo)) return true;
-        if (mustGo) return false;
-
         if (AddElementBase(out act)) return true;
         if (Scathe.CanUse(out act)) return true;
         if (MaintainceStatus(out act)) return true;

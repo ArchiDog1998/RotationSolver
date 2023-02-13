@@ -12,6 +12,7 @@ using RotationSolver.Updaters;
 using RotationSolver.Windows;
 using RotationSolver.Windows.RotationConfigWindow;
 using System;
+using System.Threading.Tasks;
 
 namespace RotationSolver;
 
@@ -23,7 +24,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private static RotationConfigWindow _comboConfigWindow;
     public string Name => "Rotation Solver";
 
-    public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
+    public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
 
@@ -60,7 +61,15 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Localization.ExportLocalization();
 #endif
         Service.DutyState.DutyStarted += DutyState_DutyStarted;
+        Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
         ChangeUITranslation();
+    }
+
+    private async void DutyState_DutyCompleted(object sender, ushort e)
+    {
+        await Task.Delay(new Random().Next(4000, 6000));
+
+        Service.Configuration.DutyEnd.AddMacro();
     }
 
     private void DutyState_DutyStarted(object sender, ushort e)
@@ -71,6 +80,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
             Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndWarning, str));
         }
+
+        Service.Configuration.DutyStart.AddMacro();
     }
 
     internal static void ChangeUITranslation()
@@ -85,6 +96,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public void Dispose()
     {
         Service.DutyState.DutyStarted -= DutyState_DutyStarted;
+        Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
 
         RSCommands.Disable();
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;

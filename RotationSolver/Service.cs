@@ -15,6 +15,7 @@ using Dalamud.Game.Gui.FlyText;
 using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using RotationSolver.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
@@ -23,6 +24,11 @@ namespace RotationSolver;
 
 internal class Service
 {
+    internal static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager* CharacterManager
+        => FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager.Instance();
+
+    internal static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.BattleChara* Player
+        => Control.Instance()->LocalPlayer;
     internal static LocalizationManager Localization { get; set; }
 
     internal static PluginConfiguration Configuration { get; set; }

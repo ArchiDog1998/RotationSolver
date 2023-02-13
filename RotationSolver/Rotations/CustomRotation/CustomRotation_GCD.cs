@@ -23,7 +23,7 @@ internal abstract partial class CustomRotation
 
         if (specialType == SpecialCommandType.MoveForward && MoveGCD(out act))
         {
-            if (act is BaseAction b && TargetFilter.DistanceToPlayer(b.Target) > 5) return act;
+            if (act is BaseAction b && ObjectHelper.DistanceToPlayer(b.Target) > 5) return act;
         }
 
         //General Heal
@@ -60,19 +60,25 @@ internal abstract partial class CustomRotation
         if (Raise == null) return false;
         if (Player.CurrentMp <= Service.Configuration.LessMPNoRaise) return false;
 
-        if (Service.Configuration.RaiseAll ? TargetUpdater.DeathPeopleAll.Any() : TargetUpdater.DeathPeopleParty.Any())
+        if ((Service.Configuration.RaiseAll ? TargetUpdater.DeathPeopleAll.Any() : TargetUpdater.DeathPeopleParty.Any())
+            && Raise.CanUse(out act))
         {
-            if (Job.RowId == (uint)ClassJobID.RedMage)
+            if (specialType == SpecialCommandType.RaiseShirk || HasSwift)
             {
-                if (HasSwift && Raise.CanUse(out act)) return true;
+                return true;
             }
-            else if (specialType == SpecialCommandType.RaiseShirk || HasSwift || mustUse)
+            else if (mustUse)
             {
-                if (Raise.CanUse(out act)) return true;
+                if(Swiftcast.CanUse(out act)) return true;
+                else
+                {
+                    act = Raise;
+                    return true;
+                }
             }
             else if (Service.Configuration.RaisePlayerBySwift && !Swiftcast.IsCoolingDown && actabilityRemain > 0)
             {
-                if (Raise.CanUse(out act)) return true;
+                return true;
             }
         }
         return false;

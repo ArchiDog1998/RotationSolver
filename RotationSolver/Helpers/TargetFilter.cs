@@ -21,7 +21,7 @@ internal static class TargetFilter
         //根据默认设置排序怪且没有大招
         availableCharas = DefaultTargetingType(availableCharas).Where(StatusHelper.NeedHealing);
 
-        var tar = availableCharas.OrderBy(ObjectHelper.GetHealingRatio).First();
+        var tar = availableCharas.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
 
         if (tar.GetHealingRatio() < 1) return tar;
 
@@ -36,8 +36,8 @@ internal static class TargetFilter
         if (availableCharas == null || !availableCharas.Any()) return null;
 
         //找到被标记攻击的怪
-        if (Service.Configuration.ChooseAttackMark && 
-            MarkingHelper.GetAttackMarkChara(availableCharas) is BattleChara b && b != null) return b;
+        var b = MarkingHelper.GetAttackMarkChara(availableCharas);
+        if (Service.Configuration.ChooseAttackMark && b != null) return b;
 
         //去掉停止标记的怪
         if (Service.Configuration.FilterStopMark)
@@ -46,22 +46,31 @@ internal static class TargetFilter
             if (charas?.Any() ?? false) availableCharas = charas;
         }
 
+        b = availableCharas.FirstOrDefault(ObjectHelper.IsTopPriorityHostile); 
+        if (b != null) return b;
+
+        if (TargetUpdater.TreasureCharas.Length > 0)
+        {
+            b = availableCharas.FirstOrDefault(b => b.ObjectId == TargetUpdater.TreasureCharas[0]);
+            if (b != null) return b;
+            availableCharas = availableCharas.Where(b => !TargetUpdater.TreasureCharas.Contains(b.ObjectId));
+        }
+
         //根据默认设置排序怪
         availableCharas = DefaultTargetingType(availableCharas);
-
 
         //找到体积一样小的
         float radius = availableCharas.FirstOrDefault().HitboxRadius;
 
         return availableCharas.Where(c => c.HitboxRadius == radius)
-            .OrderBy(DistanceToPlayer).First();
+            .OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
     }
 
     internal static T FindTargetForMoving<T>(this IEnumerable<T> charas, bool mustUse) where T : GameObject
     {
         if (mustUse)
         {
-            var tar = charas.OrderBy(DistanceToPlayer).FirstOrDefault();
+            var tar = charas.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
             if(tar == null) return null;
             if (tar.DistanceToPlayer() < 1) return tar;
             return null;
@@ -92,7 +101,7 @@ internal static class TargetFilter
             Vector2 dirVec = new Vector2(dir.Z, dir.X);
             double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
             return angle <= Math.PI * Service.Configuration.MoveTargetAngle / 360;
-        }).OrderByDescending(DistanceToPlayer);
+        }).OrderByDescending(ObjectHelper.DistanceToPlayer);
 
         return tars.FirstOrDefault();
     }
@@ -113,7 +122,7 @@ internal static class TargetFilter
             if (dir.Y > 0) return false;
 
             return Math.Abs(dir.X / dir.Y) < Math.Tan(Math.PI * Service.Configuration.MoveTargetAngle / 360);
-        }).OrderByDescending(DistanceToPlayer);
+        }).OrderByDescending(ObjectHelper.DistanceToPlayer);
 
         return tars.FirstOrDefault();
     }
@@ -196,33 +205,33 @@ internal static class TargetFilter
             //如果全死了，赶紧复活啊。
             if (TCount > 0 && deathT.Count() == TCount)
             {
-                return deathT.First();
+                return deathT.FirstOrDefault();
             }
 
             //确认一下死了的H有哪些。
             var deathH = deathParty.GetJobCategory(JobRole.Healer);
 
             //如果H死了，就先救他。
-            if (deathH.Count() != 0) return deathH.First();
+            if (deathH.Any()) return deathH.FirstOrDefault();
 
             //如果T死了，就再救他。
-            if (deathT.Count() != 0) return deathT.First();
+            if (deathT.Any()) return deathT.FirstOrDefault();
 
             //T和H都还活着，那就随便救一个。
-            return deathParty.First();
+            return deathParty.FirstOrDefault();
         }
 
         if (deathAll.Any())
         {
             //确认一下死了的H有哪些。
             var deathAllH = deathAll.GetJobCategory(JobRole.Healer);
-            if (deathAllH.Count() != 0) return deathAllH.First();
+            if (deathAllH.Any()) return deathAllH.FirstOrDefault();
 
             //确认一下死了的T有哪些。
             var deathAllT = deathAll.GetJobCategory(JobRole.Tank);
-            if (deathAllT.Count() != 0) return deathAllT.First();
+            if (deathAllT.Any()) return deathAllT.FirstOrDefault();
 
-            return deathAll.First();
+            return deathAll.FirstOrDefault();
         }
 
         return null;
@@ -335,21 +344,7 @@ internal static class TargetFilter
         return objects.Where(o => o.DistanceToPlayer() <= radius);
     }
 
-    /// <summary>
-    /// 对象<paramref name="obj"/>距玩家的距离
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    internal static float DistanceToPlayer(this GameObject obj)
-    {
-        if (obj == null) return float.MaxValue;
-        var player = Service.ClientState.LocalPlayer;
-        if (player == null) return float.MaxValue;
 
-        var distance = Vector3.Distance(player.Position, obj.Position) - player.HitboxRadius;
-        distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
-        return distance;
-    }
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
     {

@@ -1,4 +1,8 @@
-﻿using RotationSolver.Data;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
 using System.Collections.Generic;
 
 namespace RotationSolver.Updaters;

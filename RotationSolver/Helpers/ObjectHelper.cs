@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Lumina.Excel.GeneratedSheets;
@@ -13,6 +14,12 @@ namespace RotationSolver.Helpers;
 
 internal static class ObjectHelper
 {
+    static readonly EventHandlerType[] _eventType = new EventHandlerType[]
+    {
+        EventHandlerType.TreasureHuntDirector,
+        EventHandlerType.Quest,
+    };
+
     private unsafe static BNpcBase GetObjectNPC(this GameObject obj)
     {
         if (obj == null) return null;
@@ -25,19 +32,43 @@ internal static class ObjectHelper
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);
     }
 
-    internal static unsafe bool IsOthersTreasure(this GameObject obj)
+    internal static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetAddress(this GameObject obj)
+        => (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
+
+    internal static unsafe bool IsOthersPlayers(this GameObject obj)
     {
-        //From Tweaks/TreasureHuntTargets.cs
-        var tar = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
-        return tar->ObjectKind == 2 && tar->SubKind == 5 && tar->EventId.Type == EventHandlerType.TreasureHuntDirector
-            && tar->NamePlateIconId != 60094;
+        //SpecialType but no NamePlateIcon
+        if (_eventType.Contains(obj.GetEventType()))
+        {
+            return obj.GetNamePlateIcon() == 0;
+        }
+        return false;
     }
 
-    internal static unsafe uint FateId(this GameObject obj)
-        => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->FateId;
+    internal static unsafe bool IsNPCEnemy(this GameObject obj) 
+        => obj.GetObjectKind() == ObjectKind.BattleNpc
+        && obj.GetBattleNPCSubkind() == BattleNpcSubKind.Enemy 
+        && obj.CanAttack();
 
-    internal static unsafe bool IsTargetable(this GameObject obj)
-    => ((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address)->GetIsTargetable();
+    private unsafe static bool CanAttack(this GameObject actor)
+    {
+        return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address) == 1;
+    }
+
+    internal static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.GetAddress()->ObjectKind;
+
+    internal static bool IsTopPriorityHostile(this GameObject obj)
+        //Hunting log and weapon.
+        => obj.GetNamePlateIcon() is 60092 or 60096;
+
+    internal static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.GetAddress()->NamePlateIconId;
+    internal static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.GetAddress()->EventId.Type;
+
+    internal static unsafe BattleNpcSubKind GetBattleNPCSubkind(this GameObject obj) => (BattleNpcSubKind)obj.GetAddress()->SubKind;
+
+    internal static unsafe uint FateId(this GameObject obj) => obj.GetAddress()->FateId;
+
+    internal static unsafe bool IsTargetable(this GameObject obj) => obj.GetAddress()->GetIsTargetable();
 
     static readonly Dictionary<uint, bool> _effectRangeCheck = new Dictionary<uint, bool>();
     internal static bool CanInterrupt(this BattleChara b)
@@ -108,7 +139,7 @@ internal static class ObjectHelper
         return b.CurrentHp >= GetHealthFromMulty(1.5f);
     }
 
-    internal static EnemyPositional FindEnemyLocation(this GameObject enemy)
+    internal static EnemyPositional FindEnemyPositional(this GameObject enemy)
     {
         Vector3 pPosition = enemy.Position;
         float rotation = enemy.Rotation;
@@ -122,14 +153,6 @@ internal static class ObjectHelper
         if (angle < Math.PI / 4) return EnemyPositional.Front;
         else if (angle > Math.PI * 3 / 4) return EnemyPositional.Rear;
         return EnemyPositional.Flank;
-    }
-
-    public unsafe static bool CanAttack(this GameObject actor)
-    {
-        if (actor == null) return false;
-        if (actor is not BattleChara b) return false;
-        if (b.CurrentHp == 0) return false;
-        return ((delegate*<long, IntPtr, long>)Service.Address.CanAttackFunction)(142L, actor.Address) == 1;
     }
 
 #if DEBUG
@@ -160,5 +183,21 @@ internal static class ObjectHelper
         }
 
         return (uint)(multi * Service.ClientState.LocalPlayer.MaxHp);
+    }
+
+    /// <summary>
+    /// 对象<paramref name="obj"/>距玩家的距离
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    internal static float DistanceToPlayer(this GameObject obj)
+    {
+        if (obj == null) return float.MaxValue;
+        var player = Service.ClientState.LocalPlayer;
+        if (player == null) return float.MaxValue;
+
+        var distance = Vector3.Distance(player.Position, obj.Position) - player.HitboxRadius;
+        distance -= Math.Max(obj.HitboxRadius, Service.Configuration.ObjectMinRadius);
+        return distance;
     }
 }
