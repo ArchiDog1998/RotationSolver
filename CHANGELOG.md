@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.4.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.5...v1.4.0) (2023-02-13)
+
+
+### Features
+
+* add a duty start or end event for macro usage. ([fcfbd53](https://github.com/ArchiDog1998/RotationSolver/commit/fcfbd53d05be8a1ea2c7e4b95de8ffc0831ac69b))
+
+
+### Bug Fixes
+
+* add a feature for target the treasure hunt in order. ([97d71c4](https://github.com/ArchiDog1998/RotationSolver/commit/97d71c479efeab409a9d0eccf4bb73892c254fe4))
+* add top priority hostile for hunting log. ([b468063](https://github.com/ArchiDog1998/RotationSolver/commit/b46806396f40f2f69761935fdd777d3e10fb33b1))
+* change the way finding Pet and Companion. ([442b178](https://github.com/ArchiDog1998/RotationSolver/commit/442b1788f6fe977c9e7f1004f90c90e41310a759))
+* changing the raising logic when gcd is not cooling down. ([5787e92](https://github.com/ArchiDog1998/RotationSolver/commit/5787e92b349c0975e6292f098154c4d8691351c0))
+* moving back the cast cancel.. ([2b0d0a5](https://github.com/ArchiDog1998/RotationSolver/commit/2b0d0a5700d6e331af0d8222bf09bf35bb944f4f))
+* skip the watching when there is no player. ([f414e98](https://github.com/ArchiDog1998/RotationSolver/commit/f414e9889a5543e2e8d557a60a11db661d592728))
+* try to fix with sight. It is hard. ([6365291](https://github.com/ArchiDog1998/RotationSolver/commit/6365291af482cc385d54f4d8a7af2e74d6e66fb4))
+* try to remove canattack method. ([90623c1](https://github.com/ArchiDog1998/RotationSolver/commit/90623c1f0f21b5a149cb430f20e107952cdb6712))
+
 ## [1.3.5](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.4...v1.3.5) (2023-02-08)
 
 
