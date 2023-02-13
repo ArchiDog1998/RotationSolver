@@ -12,6 +12,7 @@ using RotationSolver.Updaters;
 using RotationSolver.Windows;
 using RotationSolver.Windows.RotationConfigWindow;
 using System;
+using System.Threading.Tasks;
 
 namespace RotationSolver;
 
@@ -64,12 +65,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         ChangeUITranslation();
     }
 
-    private void DutyState_DutyCompleted(object sender, ushort e)
+    private async void DutyState_DutyCompleted(object sender, ushort e)
     {
-#if DEBUG
-        Service.ChatGui.Print("Succeed!");
-        Service.Configuration.DutyStart.AddMacro();
-#endif
+        await Task.Delay(new Random().Next(4000, 6000));
+
+        Service.Configuration.DutyEnd.AddMacro();
     }
 
     private void DutyState_DutyStarted(object sender, ushort e)
@@ -80,9 +80,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
             Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndWarning, str));
         }
-#if DEBUG
-        Service.Configuration.DutyEnd.AddMacro();
-#endif
+
+        Service.Configuration.DutyStart.AddMacro();
     }
 
     internal static void ChangeUITranslation()

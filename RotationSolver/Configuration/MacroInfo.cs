@@ -32,8 +32,9 @@ public class MacroInfo
 
     public virtual void DisplayMacro()
     {
+        ImGui.SetNextItemWidth(50);
         if (ImGui.DragInt($"{LocalizationManager.RightLang.Configwindow_Events_MacroIndex}##MacroIndex{GetHashCode()}",
-            ref MacroIndex, 1, 0, 99))
+            ref MacroIndex, 1, -1, 99))
         {
             Service.Configuration.Save();
         }

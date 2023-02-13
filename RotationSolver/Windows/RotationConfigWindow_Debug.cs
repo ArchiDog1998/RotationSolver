@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.Game.Group;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions.BaseAction;
@@ -61,9 +62,21 @@ internal partial class RotationConfigWindow
     }
     private unsafe void DrawParty()
     {
+        var status = AgentDeepDungeonStatus.Instance();
+        if ((IntPtr)status != IntPtr.Zero) 
+        {
+            foreach (var item in status->Data->PomanderSpan)
+            {
+                ImGui.Text(item.Name.ToString() + " : " + item.ItemId.ToString());
+            }
+
+            foreach (var item in status->Data->MagiciteSpan)
+            {
+                ImGui.Text(item.Name.ToString() + " : " + item.ItemId.ToString());
+            }
+        }
+
         ImGui.Text("Party: " + TargetUpdater.PartyMembers.Count().ToString());
-        ImGui.Text("PartyP: " + TargetUpdater.PartyMembers.Count(m => GroupManager.Instance()->IsObjectIDInParty(m.ObjectId)).ToString());
-        ImGui.Text("PartyA: " + TargetUpdater.PartyMembers.Count(m => GroupManager.Instance()->IsObjectIDInAlliance(m.ObjectId)).ToString());
         ImGui.Text("CanHealSingleAbility: " + TargetUpdater.CanHealSingleAbility.ToString());
         ImGui.Text("CanHealSingleSpell: " + TargetUpdater.CanHealSingleSpell.ToString());
         ImGui.Text("CanHealAreaAbility: " + TargetUpdater.CanHealAreaAbility.ToString());

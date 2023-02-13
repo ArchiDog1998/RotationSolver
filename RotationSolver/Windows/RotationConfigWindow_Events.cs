@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Configuration;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -36,6 +37,7 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginChild("Events List", new Vector2(0f, -1f), true))
         {
+            ActionEventInfo remove = null;
             foreach (var eve in Service.Configuration.Events)
             {
                 eve.DisplayMacro();
@@ -43,13 +45,18 @@ internal partial class RotationConfigWindow
                 ImGui.SameLine();
                 ImGuiHelper.Spacing();
 
-                if (ImGui.Button($"{LocalizationManager.RightLang.Configwindow_Events_RemoveEvent}##RemoveEvent{GetHashCode()}"))
+                if (ImGui.Button($"{LocalizationManager.RightLang.Configwindow_Events_RemoveEvent}##RemoveEvent{eve.GetHashCode()}"))
                 {
-                    Service.Configuration.Events.Remove(eve);
-                    Service.Configuration.Save();
+                    remove = eve;
                 }
                 ImGui.Separator();
             }
+            if(remove!= null)
+            {
+                Service.Configuration.Events.Remove(remove);
+                Service.Configuration.Save();
+            }
+
             ImGui.EndChild();
         }
         ImGui.PopStyleVar();
