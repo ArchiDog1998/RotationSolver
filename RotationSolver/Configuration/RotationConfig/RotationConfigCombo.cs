@@ -35,7 +35,6 @@ internal class RotationConfigCombo : RotationConfigBase
                     ImGui.SameLine();
                     ImGuiHelper.Spacing();
                     RSCommands.DisplayCommandHelp(OtherCommandType.Rotations, Name + " " + Items[comboIndex]);
-
                 }
             }
             ImGui.EndCombo();
