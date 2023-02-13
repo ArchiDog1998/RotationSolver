@@ -105,7 +105,7 @@ namespace RotationSolver.SigReplacers
             foreach (var item in Service.Configuration.Events)
             {
                 if (!new Regex(item.Name).Match(action.Name).Success) continue;
-                if (MacroUpdater.AddMacro(item, tar)) break;
+                if (item.AddMacro(tar)) break;
             }
 
 #if DEBUG

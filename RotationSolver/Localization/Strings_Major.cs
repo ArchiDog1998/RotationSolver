@@ -89,8 +89,10 @@ internal partial class Strings
     public string Configwindow_Events_Description { get; set; } = "In this window, you can set what macro will be trigger after using an action.";
     public string Configwindow_Events_ActionName { get; set; } = "Action Name";
     public string Configwindow_Events_MacroIndex { get; set; } = "Macro No.";
-    public string Configwindow_Events_ShareMacro { get; set; } = "Shared Macro No.";
+    public string Configwindow_Events_ShareMacro { get; set; } = "Is Shared";
     public string Configwindow_Events_RemoveEvent { get; set; } = "Delete Event";
+    public string Configwindow_Events_DutyStart { get; set; } = "Duty Start: ";
+    public string Configwindow_Events_DutyEnd{ get; set; } = "Duty End: ";
     public string Configwindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
     public string Configwindow_Param_NeverReplaceIcon { get; set; } = "Never Replace Icons";
     public string Configwindow_Param_NeverReplaceIconDesc { get; set; } = "Icon replacement: Repose is automatically displayed as the next skill to be used";

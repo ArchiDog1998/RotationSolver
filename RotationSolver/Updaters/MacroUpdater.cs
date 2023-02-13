@@ -42,15 +42,4 @@ internal static class MacroUpdater
             }
         }
     }
-
-    public static unsafe bool AddMacro(MacroInfo info, GameObject tar)
-    {
-        if (info.MacroIndex < 0 || info.MacroIndex > 99) return false;
-
-        Macros.Enqueue(new MacroItem(tar, info.IsShared ? 
-            RaptureMacroModule.Instance->Shared[info.MacroIndex] :
-            RaptureMacroModule.Instance->Individual[info.MacroIndex]));
-
-        return true;
-    }
 }

@@ -68,6 +68,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     {
 #if DEBUG
         Service.ChatGui.Print("Succeed!");
+        Service.Configuration.DutyStart.AddMacro();
 #endif
     }
 
@@ -79,6 +80,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
             Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndWarning, str));
         }
+#if DEBUG
+        Service.Configuration.DutyEnd.AddMacro();
+#endif
     }
 
     internal static void ChangeUITranslation()

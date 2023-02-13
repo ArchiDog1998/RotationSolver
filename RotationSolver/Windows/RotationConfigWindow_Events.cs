@@ -22,39 +22,30 @@ internal partial class RotationConfigWindow
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
+#if DEBUG
+        ImGui.Text(LocalizationManager.RightLang.Configwindow_Events_DutyStart);
+        ImGui.SameLine();
+        ImGuiHelper.Spacing();
+        Service.Configuration.DutyStart.DisplayMacro();
+
+        ImGui.Text(LocalizationManager.RightLang.Configwindow_Events_DutyEnd);
+        ImGui.SameLine();
+        ImGuiHelper.Spacing();
+        Service.Configuration.DutyEnd.DisplayMacro();
+#endif
+
         if (ImGui.BeginChild("Events List", new Vector2(0f, -1f), true))
         {
-            for (int i = 0; i < Service.Configuration.Events.Count; i++)
+            foreach (var eve in Service.Configuration.Events)
             {
-                string name = Service.Configuration.Events[i].Name;
-                if (ImGui.InputText($"{LocalizationManager.RightLang.Configwindow_Events_ActionName}##ActionName{i}",
-                    ref name, 50))
-                {
-                    Service.Configuration.Events[i].Name = name;
-                    Service.Configuration.Save();
-                }
-
-                int macroindex = Service.Configuration.Events[i].MacroIndex;
-                if (ImGui.DragInt($"{LocalizationManager.RightLang.Configwindow_Events_MacroIndex}##MacroIndex{i}",
-                    ref macroindex, 1, 0, 99))
-                {
-                    Service.Configuration.Events[i].MacroIndex = macroindex;
-                    Service.Configuration.Save();
-                }
-
-                bool isShared = Service.Configuration.Events[i].IsShared;
-                if (ImGui.Checkbox($"{LocalizationManager.RightLang.Configwindow_Events_ShareMacro}##ShareMacro{i}",
-                    ref isShared))
-                {
-                    Service.Configuration.Events[i].IsShared = isShared;
-                    Service.Configuration.Save();
-                }
+                eve.DisplayMacro();
 
                 ImGui.SameLine();
                 ImGuiHelper.Spacing();
-                if (ImGui.Button($"{LocalizationManager.RightLang.Configwindow_Events_RemoveEvent}##RemoveEvent{i}"))
+
+                if (ImGui.Button($"{LocalizationManager.RightLang.Configwindow_Events_RemoveEvent}##RemoveEvent{GetHashCode()}"))
                 {
-                    Service.Configuration.Events.RemoveAt(i);
+                    Service.Configuration.Events.Remove(eve);
                     Service.Configuration.Save();
                 }
                 ImGui.Separator();
