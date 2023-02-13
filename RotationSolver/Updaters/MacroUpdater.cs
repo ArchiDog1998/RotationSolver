@@ -1,4 +1,8 @@
-﻿using RotationSolver.Data;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Configuration;
+using RotationSolver.Data;
 using System.Collections.Generic;
 
 namespace RotationSolver.Updaters;
@@ -37,5 +41,16 @@ internal static class MacroUpdater
                 DoingMacro.StartUseMacro();
             }
         }
+    }
+
+    public static unsafe bool AddMacro(MacroInfo info, GameObject tar)
+    {
+        if (info.MacroIndex < 0 || info.MacroIndex > 99) return false;
+
+        Macros.Enqueue(new MacroItem(tar, info.IsShared ? 
+            RaptureMacroModule.Instance->Shared[info.MacroIndex] :
+            RaptureMacroModule.Instance->Individual[info.MacroIndex]));
+
+        return true;
     }
 }

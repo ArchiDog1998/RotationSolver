@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Client.Game.Group;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions.BaseAction;
@@ -58,9 +59,11 @@ internal partial class RotationConfigWindow
             ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
         }
     }
-    private void DrawParty()
+    private unsafe void DrawParty()
     {
-        ImGui.Text("Friends: " + TargetUpdater.PartyMembers.Count().ToString());
+        ImGui.Text("Party: " + TargetUpdater.PartyMembers.Count().ToString());
+        ImGui.Text("PartyP: " + TargetUpdater.PartyMembers.Count(m => GroupManager.Instance()->IsObjectIDInParty(m.ObjectId)).ToString());
+        ImGui.Text("PartyA: " + TargetUpdater.PartyMembers.Count(m => GroupManager.Instance()->IsObjectIDInAlliance(m.ObjectId)).ToString());
         ImGui.Text("CanHealSingleAbility: " + TargetUpdater.CanHealSingleAbility.ToString());
         ImGui.Text("CanHealSingleSpell: " + TargetUpdater.CanHealSingleSpell.ToString());
         ImGui.Text("CanHealAreaAbility: " + TargetUpdater.CanHealAreaAbility.ToString());

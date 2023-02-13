@@ -60,7 +60,15 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Localization.ExportLocalization();
 #endif
         Service.DutyState.DutyStarted += DutyState_DutyStarted;
+        Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
         ChangeUITranslation();
+    }
+
+    private void DutyState_DutyCompleted(object sender, ushort e)
+    {
+#if DEBUG
+        Service.ChatGui.Print("Succeed!");
+#endif
     }
 
     private void DutyState_DutyStarted(object sender, ushort e)
@@ -85,6 +93,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public void Dispose()
     {
         Service.DutyState.DutyStarted -= DutyState_DutyStarted;
+        Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
 
         RSCommands.Disable();
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
