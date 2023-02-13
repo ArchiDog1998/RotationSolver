@@ -42,7 +42,7 @@ internal class RotationConfigCombo : RotationConfigBase
         }
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_AttackItem_KeyName + ": " + Name);
+            ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Rotation_KeyName + ": " + Name);
         }
 
         //显示可以设置的按键

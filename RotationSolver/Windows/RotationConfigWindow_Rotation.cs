@@ -17,7 +17,7 @@ internal partial class RotationConfigWindow
 {
     private void DrawRotationTab()
     {
-        ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_AttackItem_Description);
+        ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_Rotation_Description);
 
         ImGui.SameLine();
         if (ImGui.Button("Dev Wiki"))
