@@ -58,8 +58,24 @@ internal static class ObjectHelper
     internal static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.GetAddress()->ObjectKind;
 
     internal static bool IsTopPriorityHostile(this GameObject obj)
+    {
+        var icon = obj.GetNamePlateIcon();
         //Hunting log and weapon.
-        => obj.GetNamePlateIcon() is 60092 or 60096;
+        if (icon 
+            is 60092 //Hunting
+            or 60096 //Weapon
+            or 71204 //Main Quest
+            or 71144 //Majur Quest
+            or 71224 //Other Quest
+            or 71244 //Leve
+            ) return true;
+        if(icon == 0) return false;
+        var type = obj.GetEventType();
+
+        if(type is EventHandlerType.Quest) return true;
+
+        return false;
+    }
 
     internal static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.GetAddress()->NamePlateIconId;
     internal static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.GetAddress()->EventId.Type;

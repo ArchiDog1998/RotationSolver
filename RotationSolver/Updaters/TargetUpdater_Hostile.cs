@@ -122,11 +122,12 @@ internal static partial class TargetUpdater
 
         var hostiles = allattackableTargets.Where(t =>
         {
+            if (ids.Contains(t.ObjectId)) return true;
+            if (t.TargetObject == Service.ClientState.LocalPlayer) return true;
+
             //Remove other's treasure.
             if (t.IsOthersPlayers()) return false;
 
-            if (ids.Contains(t.ObjectId)) return true;
-            if (t.TargetObject == Service.ClientState.LocalPlayer) return true;
             if (t.IsTopPriorityHostile()) return true;
 
             return fateId > 0 ? t.FateId() == fateId : t.TargetObject is BattleChara;
