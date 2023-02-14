@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
@@ -59,14 +60,15 @@ internal static class PreviewUpdater
     }
 
     static bool _canMove;
-    static bool _isTarDead;
-    static RandomDelay _tarDeadDelay = new RandomDelay(() =>
+    static bool _isTarNoNeedCast;
+    static RandomDelay _tarStopCastDelay = new RandomDelay(() =>
     (Service.Configuration.StopCastingDelayMin, Service.Configuration.StopCastingDelayMax));
     internal static void UpdateCastBarState()
     {
-        var tardead = Service.Configuration.UseStopCasting ? Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId)
-            is BattleChara b && b.CurrentHp == 0 : false;
-        _isTarDead = _tarDeadDelay.Delay(tardead);
+        var tardead = Service.Configuration.UseStopCasting ? 
+            Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId) is BattleChara b 
+            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0 ): false;
+        _isTarNoNeedCast = _tarStopCastDelay.Delay(tardead);
 
         bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
             && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
@@ -82,7 +84,7 @@ internal static class PreviewUpdater
     static readonly ByteColor _greenColor = new ByteColor() { A = 255, R = 60, G = 120, B = 30 };
     private static unsafe void UpdateCastBar()
     {
-        if (_isTarDead)
+        if (_isTarNoNeedCast)
         {
             UIState.Instance()->Hotbar.CancelCast();
         }
