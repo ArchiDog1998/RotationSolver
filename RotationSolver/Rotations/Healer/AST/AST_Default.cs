@@ -123,7 +123,7 @@ internal sealed class AST_Default : AST_Base
     {
         //吉星相位
         if (AspectedBenefic.CanUse(out act)
-            && AspectedBenefic.Target.GetHealthRatio() > 0.4) return true;
+            && (IsMoving || AspectedBenefic.Target.GetHealthRatio() > 0.4)) return true;
 
         //福星
         if (Benefic2.CanUse(out act)) return true;
