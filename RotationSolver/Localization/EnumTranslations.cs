@@ -117,12 +117,12 @@ internal static class EnumTranslations
         SpecialCommandType.HealSingle => LocalizationManager.RightLang.SpecialCommandType_HealSingle,
         SpecialCommandType.DefenseArea => LocalizationManager.RightLang.SpecialCommandType_DefenseArea,
         SpecialCommandType.DefenseSingle => LocalizationManager.RightLang.SpecialCommandType_DefenseSingle,
-        SpecialCommandType.EsunaShieldNorth => role switch
+        SpecialCommandType.EsunaStanceNorth => role switch
         {
             JobRole.Tank => LocalizationManager.RightLang.SpecialCommandType_Shield,
             JobRole.Healer => CustomRotation.Esuna.Name,
             JobRole.Melee => CustomRotation.TrueNorth.Name,
-            _ => nameof(SpecialCommandType.EsunaShieldNorth),
+            _ => nameof(SpecialCommandType.EsunaStanceNorth),
         },
         SpecialCommandType.RaiseShirk => role switch
         {
@@ -152,7 +152,7 @@ internal static class EnumTranslations
         SpecialCommandType.HealSingle => LocalizationManager.RightLang.Configwindow_HelpItem_HealSingle,
         SpecialCommandType.DefenseArea => LocalizationManager.RightLang.Configwindow_HelpItem_DefenseArea,
         SpecialCommandType.DefenseSingle => LocalizationManager.RightLang.Configwindow_HelpItem_DefenseSingle,
-        SpecialCommandType.EsunaShieldNorth => LocalizationManager.RightLang.Configwindow_HelpItem_EsunaShield,
+        SpecialCommandType.EsunaStanceNorth => LocalizationManager.RightLang.Configwindow_HelpItem_EsunaShield,
         SpecialCommandType.RaiseShirk => LocalizationManager.RightLang.Configwindow_HelpItem_RaiseShirk,
         SpecialCommandType.MoveForward => LocalizationManager.RightLang.Configwindow_HelpItem_MoveForward,
         SpecialCommandType.MoveBack => LocalizationManager.RightLang.Configwindow_HelpItem_MoveBack,

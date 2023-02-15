@@ -22,7 +22,7 @@ internal static class StatusHelper
         StatusID.AspectedBenefic, StatusID.Regen1, StatusID.Regen2, StatusID.Regen3
     };
 
-    public static StatusID[] SheildStatus { get; } = new StatusID[]
+    public static StatusID[] TankStanceStatus { get; } = new StatusID[]
     {
         StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance
     };

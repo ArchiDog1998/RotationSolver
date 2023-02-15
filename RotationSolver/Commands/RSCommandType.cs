@@ -7,7 +7,7 @@
         HealSingle,
         DefenseArea,
         DefenseSingle,
-        EsunaShieldNorth,
+        EsunaStanceNorth,
         RaiseShirk,
         MoveForward,
         MoveBack,

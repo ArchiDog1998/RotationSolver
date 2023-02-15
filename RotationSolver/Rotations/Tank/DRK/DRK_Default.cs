@@ -18,14 +18,9 @@ internal sealed class DRK_Default : DRK_Base
 
     protected override bool CanHealSingleAbility => false;
 
-    /// <summary>
-    /// 在4人本的道中已经聚好怪可以使用相关技能(不移动且身边有大于3只小怪)
-    /// </summary>
-    private static bool CanUseSpellInDungeonsMiddle => TargetUpdater.PartyMembers.Count() is > 1 and <= 4 && !Target.IsBoss() && !IsMoving
-                                                    && TargetUpdater.HostileTargets.GetObjectInRadius(5).Count() >= 3;
-
     public override SortedList<DescType, string> DescriptionDict => new()
     {
+        {DescType.Description, "If you don't want to use Provoke, please remove the tank stance." },
         {DescType.HealSingle, $"{TheBlackestNight}"},
         {DescType.DefenseArea, $"{DarkMissionary}"},
         {DescType.DefenseSingle, $"{Oblation}, {ShadowWall}, {DarkMind}"},
@@ -37,6 +32,16 @@ internal sealed class DRK_Default : DRK_Base
     {
         return base.CreateConfiguration()
             .SetBool("TheBlackestNight", true, "Keep 3000 MP");
+    }
+
+    private protected override IAction CountDownAction(float remainTime)
+    {
+        //Provoke when has Shield.
+        if (HasTankStance && remainTime <= 0.7 && Provoke.CanUse(out var act)) return act;
+        if (remainTime <= 2 && UseTincture(out act)) return act;
+        if (remainTime <= 3 && TheBlackestNight.CanUse(out act)) return act;
+        if (remainTime <= 4 && BloodWeapon.CanUse(out act)) return act;
+        return base.CountDownAction(remainTime);
     }
 
     private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
@@ -51,6 +56,32 @@ internal sealed class DRK_Default : DRK_Base
         if (DarkMissionary.CanUse(out act)) return true;
         if (Reprisal.CanUse(out act, mustUse: true)) return true;
 
+        return false;
+    }
+
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (TheBlackestNight.CanUse(out act)) return true;
+
+        if (abilitiesRemaining == 2)
+        {
+            //10
+            if (TargetUpdater.HostileTargets.Count() > 1 && Oblation.CanUse(out act)) return true;
+
+            //30
+            if (ShadowWall.CanUse(out act)) return true;
+
+            //20
+            if (Rampart.CanUse(out act)) return true;
+            if (DarkMind.CanUse(out act)) return true;
+
+            //10
+            if(Oblation.CanUse(out act, emptyOrSkipCombo:true)) return true;
+        }
+
+        if (Reprisal.CanUse(out act)) return true;
+
+        act = null;
         return false;
     }
 
@@ -70,7 +101,6 @@ internal sealed class DRK_Default : DRK_Base
             if (Blood >= 50 && BloodWeapon.WillHaveOneChargeGCD(1) || Blood >= 90 && !Player.HasStatus(true, StatusID.Delirium)) return true;
 
             if (!Delirium.EnoughLevel) return true;
-
         }
 
         //AOE
@@ -83,14 +113,13 @@ internal sealed class DRK_Default : DRK_Base
         if (HardSlash.CanUse(out act)) return true;
 
         if (RSCommands.SpecialType == SpecialCommandType.MoveForward && MoveForwardAbility(1, out act)) return true;
-
         if (Unmend.CanUse(out act)) return true;
 
         return false;
     }
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (InBurst && (!IsFullParty && CanUseSpellInDungeonsMiddle || IsFullParty))
+        //if (InBurst && (!IsFullParty && CanUseSpellInDungeonsMiddle || IsFullParty))
         {
             //嗜血
             if (BloodWeapon.CanUse(out act)) return true;
@@ -140,30 +169,6 @@ internal sealed class DRK_Default : DRK_Base
     }
 
 
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //上黑盾
-        if (TheBlackestNight.CanUse(out act)) return true;
-
-        if (abilitiesRemaining == 2)
-        {
-            //减伤10%
-            if (Oblation.CanUse(out act)) return true;
-
-            //减伤30%
-            if (ShadowWall.CanUse(out act)) return true;
-
-            //减伤20%
-            if (Rampart.CanUse(out act)) return true;
-            if (DarkMind.CanUse(out act)) return true;
-        }
-        //降低攻击
-        //雪仇
-        if (Reprisal.CanUse(out act)) return true;
-
-        act = null;
-        return false;
-    }
 
     private bool CanUseEdgeofDarkness(out IAction act)
     {
@@ -183,12 +188,5 @@ internal sealed class DRK_Default : DRK_Base
         if (Player.CurrentMp > 8500 || DarkSideEndAfterGCD(3)) return true;
 
         return false;
-    }
-    private protected override IAction CountDownAction(float remainTime)
-    {
-        //战斗前嗜血和血乱
-        if (remainTime <= 7 && Delirium.CanUse(out var act)) return act;
-        if (remainTime <= 5 && BloodWeapon.CanUse(out var act1)) return act1;
-        return base.CountDownAction(remainTime);
     }
 }

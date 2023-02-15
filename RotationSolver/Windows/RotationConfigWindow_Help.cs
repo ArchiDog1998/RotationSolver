@@ -74,7 +74,7 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 SpecialCommandType.MoveBack.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
-                SpecialCommandType.EsunaShieldNorth.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+                SpecialCommandType.EsunaStanceNorth.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
                 ImGui.Separator();
 
                 SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);

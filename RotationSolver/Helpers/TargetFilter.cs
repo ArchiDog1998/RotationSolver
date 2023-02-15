@@ -27,7 +27,7 @@ internal static class TargetFilter
 
         availableCharas = availableCharas.GetJobCategory(JobRole.Tank);
 
-        return availableCharas.FirstOrDefault(t => t.HasStatus(false, StatusHelper.SheildStatus))
+        return availableCharas.FirstOrDefault(t => t.HasStatus(false, StatusHelper.TankStanceStatus))
            ?? availableCharas.FirstOrDefault();
     }
 
@@ -139,7 +139,7 @@ internal static class TargetFilter
 
         if (!attachedT.Any())
         {
-            attachedT = charas.Where(tank => tank.HasStatus(false, StatusHelper.SheildStatus));
+            attachedT = charas.Where(tank => tank.HasStatus(false, StatusHelper.TankStanceStatus));
         }
 
         if (!attachedT.Any())

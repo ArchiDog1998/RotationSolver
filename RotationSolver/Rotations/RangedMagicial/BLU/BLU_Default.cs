@@ -106,7 +106,7 @@ internal sealed class BLU_Default : BLU_Base
         if (BlueId == BLUID.Healer)
         {
             //有某些非常危险的状态。
-            if (RSCommands.SpecialType == SpecialCommandType.EsunaShieldNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
+            if (RSCommands.SpecialType == SpecialCommandType.EsunaStanceNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
             {
                 if (Exuviation.CanUse(out act, mustUse: true)) return true;
             }

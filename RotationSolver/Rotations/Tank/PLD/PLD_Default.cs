@@ -159,7 +159,7 @@ internal sealed class PLD_Default : PLD_Base
         }
         if (OathGauge == 100 && Player.CurrentHp < Player.MaxHp)//忠义已满且不满血
         {
-            if (HasShield && Sheltron.CanUse(out act)) return true;//盾阵
+            if (HasTankStance && Sheltron.CanUse(out act)) return true;//盾阵
 
         }
         return false;
