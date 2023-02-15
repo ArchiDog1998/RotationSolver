@@ -31,7 +31,7 @@ internal abstract partial class CustomRotation
         if (ShirkOrShield(role, specialType, out act)) return true;
         if (AntiKnockback(role, specialType, out act)) return true;
 
-        if (specialType == SpecialCommandType.EsunaShieldNorth && role == JobRole.Melee)
+        if (specialType == SpecialCommandType.EsunaStanceNorth && role == JobRole.Melee)
         {
             if (TrueNorth.CanUse(out act)) return true;
         }
@@ -87,16 +87,16 @@ internal abstract partial class CustomRotation
                 if (Shirk.CanUse(out act)) return true;
                 break;
 
-            case SpecialCommandType.EsunaShieldNorth:
+            case SpecialCommandType.EsunaStanceNorth:
                 if (Shield.CanUse(out act)) return true;
                 break;
         }
 
         if (Service.Configuration.AutoShield)
         {
-            if (!TargetUpdater.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.SheildStatus)))
+            if (!TargetUpdater.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus)))
             {
-                if (!HasShield && Shield.CanUse(out act)) return true;
+                if (!HasTankStance && Shield.CanUse(out act)) return true;
             }
         }
 
@@ -164,7 +164,7 @@ internal abstract partial class CustomRotation
             && TargetFilter.ProvokeTarget(TargetUpdater.HostileTargets, true).Count() != TargetUpdater.HostileTargets.Count())
 
         {
-            if (!HasShield && Shield.CanUse(out act)) return true;
+            if (!HasTankStance && Shield.CanUse(out act)) return true;
             if (Provoke.CanUse(out act, mustUse: true)) return true;
         }
 
@@ -181,7 +181,7 @@ internal abstract partial class CustomRotation
         }
 
         //Defnece himself.
-        if (role == JobRole.Tank && HasShield)
+        if (role == JobRole.Tank && HasTankStance)
         {
             var tarOnmeCount = TargetUpdater.TarOnMeTargets.Count();
 

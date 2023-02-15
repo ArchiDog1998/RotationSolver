@@ -100,7 +100,8 @@ internal sealed class WHM_Default : WHM_Base
         if (AfflatusSolace.CanUse(out act)) return true;
 
         //再生
-        if (Regen.Target.GetHealthRatio() > 0.4 && Regen.CanUse(out act)) return true;
+        if (Regen.CanUse(out act) 
+            && (IsMoving || Regen.Target.GetHealthRatio() > 0.4)) return true;
 
         //救疗
         if (Cure2.CanUse(out act)) return true;

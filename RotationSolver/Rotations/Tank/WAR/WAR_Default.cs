@@ -124,7 +124,7 @@ internal sealed class WAR_Default : WAR_Base
         }
 
         //ÄÌ¸ö¶ÓÓÑ°¡¡£
-        if (!HasShield && NascentFlash.CanUse(out act)) return true;
+        if (!HasTankStance && NascentFlash.CanUse(out act)) return true;
 
         //Õ½º¿
         if (Infuriate.CanUse(out act, emptyOrSkipCombo: true)) return true;

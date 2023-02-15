@@ -33,7 +33,7 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    internal static bool HasShield => Player?.HasStatus(true, StatusHelper.SheildStatus) ?? false;
+    internal static bool HasTankStance => Player?.HasStatus(true, StatusHelper.TankStanceStatus) ?? false;
 
     /// <summary>
     /// Check the player is moving, such as running, walking or jumping.

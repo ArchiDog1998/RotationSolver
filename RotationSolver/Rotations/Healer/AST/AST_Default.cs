@@ -28,12 +28,29 @@ internal sealed class AST_Default : AST_Base
         {DescType.BreakingAction, $"{Divination}"}
     };
 
+    private protected override IRotationConfigSet CreateConfiguration()
+        => base.CreateConfiguration()
+            .SetFloat("UseEarthlyStarTime", 15, "Use the Earthly Star in Count down time", 4, 20);
+
     private static IBaseAction AspectedBeneficDefense { get; } = new BaseAction(ActionID.AspectedBenefic, true, isEot: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = b => b.IsJobCategory(JobRole.Tank),
         TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
     };
+
+    private protected override IAction CountDownAction(float remainTime)
+    {
+        if (remainTime < Malefic.CastTime + Service.Configuration.WeaponInterval
+            && Malefic.CanUse(out var act)) return act;
+        if (remainTime < 3 && UseTincture(out act)) return act;
+        if (remainTime < 4 && AspectedBeneficDefense.CanUse(out act)) return act;
+        if (remainTime < Configs.GetFloat("UseEarthlyStarTime") 
+            && EarthlyStar.CanUse(out act)) return act;
+        if (remainTime < 30 && Draw.CanUse(out act)) return act;
+
+        return base.CountDownAction(remainTime);
+    }
 
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
@@ -123,7 +140,7 @@ internal sealed class AST_Default : AST_Base
     {
         //吉星相位
         if (AspectedBenefic.CanUse(out act)
-            && AspectedBenefic.Target.GetHealthRatio() > 0.4) return true;
+            && (IsMoving || AspectedBenefic.Target.GetHealthRatio() > 0.4)) return true;
 
         //福星
         if (Benefic2.CanUse(out act)) return true;

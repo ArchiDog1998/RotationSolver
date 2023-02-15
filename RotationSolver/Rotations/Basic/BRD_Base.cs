@@ -210,7 +210,7 @@ internal abstract class BRD_Base : CustomRotation.CustomRotation
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //有某些非常危险的状态。
-        if (RSCommands.SpecialType == SpecialCommandType.EsunaShieldNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
+        if (RSCommands.SpecialType == SpecialCommandType.EsunaStanceNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
         {
             if (WardensPaean.CanUse(out act, mustUse: true)) return true;
         }

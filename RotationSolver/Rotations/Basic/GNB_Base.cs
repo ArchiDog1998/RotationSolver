@@ -61,7 +61,10 @@ internal abstract class GNB_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¶ñÄ§ÇÐ
     /// </summary>
-    public static IBaseAction DemonSlice { get; } = new BaseAction(ActionID.DemonSlice);
+    public static IBaseAction DemonSlice { get; } = new BaseAction(ActionID.DemonSlice)
+    {
+        AOECount = 2,
+    };
 
     /// <summary>
     /// ÉÁÀ×µ¯
@@ -98,7 +101,10 @@ internal abstract class GNB_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ¶ñÄ§É±
     /// </summary>
-    public static IBaseAction DemonSlaughter { get; } = new BaseAction(ActionID.DemonSlaughter);
+    public static IBaseAction DemonSlaughter { get; } = new BaseAction(ActionID.DemonSlaughter)
+    {
+        AOECount = 2,
+    };
 
     /// <summary>
     /// ¼«¹â

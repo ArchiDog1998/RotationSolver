@@ -54,7 +54,7 @@ internal partial class Strings
     public string Configwindow_HelpItem_DefenseSingle { get; set; }
         = "Open a window to use one or more single defense.";
 
-    public string Configwindow_HelpItem_EsunaShield { get; set; }
+    public string Configwindow_HelpItem_Esuna { get; set; }
         = "Open a window to use Esuna,tank stance actions or True North.";
 
     public string Configwindow_HelpItem_RaiseShirk { get; set; }
@@ -115,7 +115,7 @@ internal partial class Strings
     public string Configwindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
 
     public string Configwindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in second.";
-    public string Configwindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stoping casting when target is dead in second.";
+    public string Configwindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stoping casting when target is no need to cast in second.";
     public string Configwindow_Param_WorkTaskDelay { get; set; } = "Set the work task delay in millisecond. Smaller, more precise, more resource-intensive";
 
     public string Configwindow_Param_Display { get; set; } = "Display";
@@ -266,7 +266,7 @@ internal partial class Strings
     public string SpecialCommandType_HealSingle { get; set; } = "Heal Single";
     public string SpecialCommandType_DefenseArea { get; set; } = "Defense Area";
     public string SpecialCommandType_DefenseSingle { get; set; } = "Defense Single";
-    public string SpecialCommandType_Shield { get; set; } = "Shield";
+    public string SpecialCommandType_TankStance { get; set; } = "Tank Stance";
     public string SpecialCommandType_MoveForward { get; set; } = "Move Forward";
     public string SpecialCommandType_MoveBack { get; set; } = "Move Back";
     public string SpecialCommandType_AntiKnockback { get; set; } = "Anti-Knockback";
