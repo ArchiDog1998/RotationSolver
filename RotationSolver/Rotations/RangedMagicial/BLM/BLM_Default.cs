@@ -47,7 +47,6 @@ internal class BLM_Default : BLM_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
         => base.CreateConfiguration()
-        .SetFloat("CountDownTime", 3.8f, "What Time to Fire3 when Counting down.", 2, 5)
         .SetBool("UseTransposeForParadox", true, "Use Transpose to Fire for Paradox")
         .SetBool("ExtendTimeSafely", false, "Extend Fire Element Time Safely")
         .SetBool("UseN15", false, "Use N15");
@@ -55,7 +54,7 @@ internal class BLM_Default : BLM_Base
     private protected override IAction CountDownAction(float remainTime)
     {
         IAction act;
-        if(remainTime < Configs.GetFloat("CountDownTime"))
+        if(remainTime < Fire3.CastTime + Service.Configuration.WeaponInterval)
         {
             if (Fire3.CanUse(out act)) return act;
         }

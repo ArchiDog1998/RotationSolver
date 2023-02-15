@@ -63,15 +63,13 @@ internal sealed class DRK_Default : DRK_Base
     }
 
     private protected override IRotationConfigSet CreateConfiguration()
-    {
-        return base.CreateConfiguration()
+        => base.CreateConfiguration()
             .SetBool("TheBlackestNight", true, "Keep 3000 MP");
-    }
 
     private protected override IAction CountDownAction(float remainTime)
     {
         //Provoke when has Shield.
-        if (HasTankStance && remainTime <= 0.7 && Provoke.CanUse(out var act)) return act;
+        if (HasTankStance && remainTime <= Service.Configuration.WeaponInterval && Provoke.CanUse(out var act)) return act;
         if (remainTime <= 2 && UseTincture(out act)) return act;
         if (remainTime <= 3 && TheBlackestNight.CanUse(out act)) return act;
         if (remainTime <= 4 && BloodWeapon.CanUse(out act)) return act;

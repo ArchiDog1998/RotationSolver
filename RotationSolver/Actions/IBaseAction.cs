@@ -12,6 +12,11 @@ namespace RotationSolver.Actions
         uint MPNeed { get; }
 
         /// <summary>
+        /// Casting time
+        /// </summary>
+        float CastTime { get; }
+
+        /// <summary>
         /// If combo id is on this list, this aciton will not used.
         /// </summary>
         ActionID[] ComboIdsNot { set; }

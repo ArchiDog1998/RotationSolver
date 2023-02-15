@@ -119,7 +119,7 @@ internal static class EnumTranslations
         SpecialCommandType.DefenseSingle => LocalizationManager.RightLang.SpecialCommandType_DefenseSingle,
         SpecialCommandType.EsunaStanceNorth => role switch
         {
-            JobRole.Tank => LocalizationManager.RightLang.SpecialCommandType_Shield,
+            JobRole.Tank => LocalizationManager.RightLang.SpecialCommandType_TankStance,
             JobRole.Healer => CustomRotation.Esuna.Name,
             JobRole.Melee => CustomRotation.TrueNorth.Name,
             _ => nameof(SpecialCommandType.EsunaStanceNorth),
@@ -152,7 +152,7 @@ internal static class EnumTranslations
         SpecialCommandType.HealSingle => LocalizationManager.RightLang.Configwindow_HelpItem_HealSingle,
         SpecialCommandType.DefenseArea => LocalizationManager.RightLang.Configwindow_HelpItem_DefenseArea,
         SpecialCommandType.DefenseSingle => LocalizationManager.RightLang.Configwindow_HelpItem_DefenseSingle,
-        SpecialCommandType.EsunaStanceNorth => LocalizationManager.RightLang.Configwindow_HelpItem_EsunaShield,
+        SpecialCommandType.EsunaStanceNorth => LocalizationManager.RightLang.Configwindow_HelpItem_Esuna,
         SpecialCommandType.RaiseShirk => LocalizationManager.RightLang.Configwindow_HelpItem_RaiseShirk,
         SpecialCommandType.MoveForward => LocalizationManager.RightLang.Configwindow_HelpItem_MoveForward,
         SpecialCommandType.MoveBack => LocalizationManager.RightLang.Configwindow_HelpItem_MoveBack,

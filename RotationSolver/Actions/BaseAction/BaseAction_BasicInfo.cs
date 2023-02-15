@@ -78,10 +78,7 @@ internal partial class BaseAction : IBaseAction
 
     private byte CoolDownGroup { get; }
 
-    /// <summary>
-    /// 真实咏唱时间
-    /// </summary>
-    internal unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
+    public unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
 
     internal virtual EnemyPositional EnermyPositonal
     {

@@ -50,9 +50,6 @@ internal sealed class GNB_Default : GNB_Base
         //爆发击   
         if (CanUseBurstStrike(out act)) return true;
 
-        //单体三连
-        //如果烈牙剩0.5秒冷却好,不释放基础连击,主要因为技速不同可能会使烈牙延后太多所以判定一下
-        //if (GnashingFang.IsCoolDown && GnashingFang.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;
         if (SolidBarrel.CanUse(out act)) return true;
         if (BrutalShell.CanUse(out act)) return true;
         if (KeenEdge.CanUse(out act)) return true;
@@ -63,7 +60,6 @@ internal sealed class GNB_Default : GNB_Base
 
         return false;
     }
-
 
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
@@ -117,20 +113,19 @@ internal sealed class GNB_Default : GNB_Base
     {
         if (abilitiesRemaining == 2)
         {
-            //减伤10%）
+            //10
             if (HeartofStone.CanUse(out act)) return true;
 
-            //星云（减伤30%）
+            //30
             if (Nebula.CanUse(out act)) return true;
 
-            //铁壁（减伤20%）
+            //20
             if (Rampart.CanUse(out act)) return true;
 
-            //伪装（减伤10%）
+            //10
             if (Camouflage.CanUse(out act)) return true;
         }
-        //降低攻击
-        //雪仇
+
         if (Reprisal.CanUse(out act)) return true;
 
         act = null;
@@ -140,7 +135,6 @@ internal sealed class GNB_Default : GNB_Base
     private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Aurora.CanUse(out act, emptyOrSkipCombo: true) && abilitiesRemaining == 1) return true;
-
         return false;
     }
 
