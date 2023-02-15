@@ -13,7 +13,8 @@ namespace RotationSolver.Rotations.Tank.DRK;
 
 internal sealed class DRK_Default : DRK_Base
 {
-    public override string GameVersion => "6.18";
+    public override string GameVersion => "6.31";
+
     public override string RotationName => "Default";
 
     protected override bool CanHealSingleAbility => false;
@@ -27,6 +28,39 @@ internal sealed class DRK_Default : DRK_Base
         {DescType.MoveAction, $"{Plunge}"},
     };
 
+    private static bool InDeliruim => !Delirium.EnoughLevel || Delirium.IsCoolingDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7);
+
+    private static bool CombatLess => CombatElapsedLess(3);
+
+    private bool CheckDrakSide
+    {
+        get
+        {
+            if (DarkSideEndAfterGCD(3)) return true;
+
+            if (CombatLess) return false;
+
+            if (Configs.GetBool("TheBlackestNight") && Player.CurrentMp < 6000) return false;
+
+            if (InDeliruim || HasDarkArts) return true;
+
+            return Player.CurrentMp >= 8500;
+        }
+    }
+
+    private bool UseBlood
+    {
+        get
+        {
+            if (!Delirium.EnoughLevel) return true;
+
+            if (Player.HasStatus(true, StatusID.Delirium) && Player.StatusStack(true, StatusID.BloodWeapon) < 2) return true;
+
+            if (BloodWeapon.WillHaveOneChargeGCD(1) || Blood >= 90 && !Player.HasStatus(true, StatusID.Delirium)) return true;
+
+            return false;
+        }
+    }
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
@@ -87,20 +121,11 @@ internal sealed class DRK_Default : DRK_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        //寂灭
-        if (Blood >= 80 || Player.HasStatus(true, StatusID.Delirium))
+        //Use Blood
+        if (UseBlood)
         {
             if (Quietus.CanUse(out act)) return true;
-        }
-
-        //血溅
-        if (Bloodspiller.CanUse(out act))
-        {
-            if (Player.HasStatus(true, StatusID.Delirium) && Player.StatusStack(true, StatusID.BloodWeapon) <= 3) return true;
-
-            if (Blood >= 50 && BloodWeapon.WillHaveOneChargeGCD(1) || Blood >= 90 && !Player.HasStatus(true, StatusID.Delirium)) return true;
-
-            if (!Delirium.EnoughLevel) return true;
+            if (Bloodspiller.CanUse(out act)) return true;
         }
 
         //AOE
@@ -117,75 +142,44 @@ internal sealed class DRK_Default : DRK_Base
 
         return false;
     }
+
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        //if (InBurst && (!IsFullParty && CanUseSpellInDungeonsMiddle || IsFullParty))
+        if (CheckDrakSide)
         {
-            //嗜血
-            if (BloodWeapon.CanUse(out act)) return true;
+            if (FloodofDarkness.CanUse(out act)) return true;
+            if (EdgeofDarkness.CanUse(out act)) return true;
+        }
 
-            //血乱
+        if (InBurst)
+        {
+            if (BloodWeapon.CanUse(out act)) return true;
             if (Delirium.CanUse(out act)) return true;
         }
 
-        //掠影示现
-        if (LivingShadow.CanUse(out act)) return true;
-
-        //暗黑波动
-        if (FloodofDarkness.CanUse(out act))
+        if (CombatLess)
         {
-            if ((Player.CurrentMp >= 6000 || HasDarkArts) && Unleash.CanUse(out _)) return true;
+            act = null;
+            return false;
         }
 
-        //暗黑锋
-        if (CanUseEdgeofDarkness(out act)) return true;
+        if (LivingShadow.CanUse(out act)) return true;
 
-        //腐秽大地
         if (!IsMoving && SaltedEarth.CanUse(out act, mustUse: true)) return true;
 
-        if (Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(8))
+        if (InDeliruim)
         {
-            //暗影使者
             if (Shadowbringer.CanUse(out act, mustUse: true)) return true;
 
-            //吸血深渊+精雕怒斩
             if (AbyssalDrain.CanUse(out act)) return true;
             if (CarveandSpit.CanUse(out act)) return true;
 
             if (Shadowbringer.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
-
         }
-        //吸血深渊+精雕怒斩
-        if (!Delirium.EnoughLevel && AbyssalDrain.CanUse(out act)) return true;
-        if (!Delirium.EnoughLevel && CarveandSpit.CanUse(out act)) return true;
 
-        //腐秽大地+腐秽黑暗
         if (SaltandDarkness.CanUse(out act)) return true;
 
-        //搞搞攻击
         if (Plunge.CanUse(out act, mustUse: true) && !IsMoving) return true;
-
-        return false;
-    }
-
-
-
-    private bool CanUseEdgeofDarkness(out IAction act)
-    {
-        if (!EdgeofDarkness.CanUse(out act)) return false;
-
-        //if (!IsFullParty && TargetFilter.GetObjectInRadius(TargetUpdater.HostileTargets, 25).Length >= 3) return false;
-
-        if (HasDarkArts) return true;
-
-        //是否留3000蓝开黑盾
-        if (Configs.GetBool("TheBlackestNight") && Player.CurrentMp < 6000) return false;
-
-        //爆发期打完
-        if (Delirium.IsCoolingDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7)) return true;
-
-        //非爆发期防止溢出+续buff
-        if (Player.CurrentMp > 8500 || DarkSideEndAfterGCD(3)) return true;
 
         return false;
     }
