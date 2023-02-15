@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.1](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.0...v1.4.1) (2023-02-15)
+
+
+### Bug Fixes
+
+* add ast counting down. ([20ed886](https://github.com/ArchiDog1998/RotationSolver/commit/20ed886ef61f2cec9d6fa9040c90bcd9fddd8f8c))
+* ast whm single hot using changed. ([f3d5c40](https://github.com/ArchiDog1998/RotationSolver/commit/f3d5c4074cbe91a77df5f69b6c6f0dacb4d549d6))
+* change macro name from `EsunaShieldNorth` to `EsunaStanceNorth` ([9aa44e6](https://github.com/ArchiDog1998/RotationSolver/commit/9aa44e6063335fef43d4bdbb47bdf09b68e40266))
+* changed the drk default rotation. ([2d2f5ad](https://github.com/ArchiDog1998/RotationSolver/commit/2d2f5ade7e48e0e61dce1fb34cde76d36abf8b42))
+* fix for changing target strategy. ([b9e6470](https://github.com/ArchiDog1998/RotationSolver/commit/b9e64706d884011d5f896e4b3a9b725a6ce82b0e))
+* fix for raising casting stop. ([2fd647a](https://github.com/ArchiDog1998/RotationSolver/commit/2fd647aa09e66ae339d54cdebc4c645f9490aedb))
+* fix for targeting some event target. ([8f0b6e1](https://github.com/ArchiDog1998/RotationSolver/commit/8f0b6e1b8b7552bb5e68a405de2bf188ec819e95))
+
 ## [1.4.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.3.5...v1.4.0) (2023-02-13)
 
 
