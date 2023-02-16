@@ -195,6 +195,8 @@ internal partial class Strings
     public string Configwindow_Param_MoveTargetAngle { get; set; } = "The size of the sector angle that can be selected as the moveable target";
     public string Configwindow_Param_MoveTargetAngleDesc { get; set; } = "If the selection mode is based on character facing, i.e., targets within the character's viewpoint are movable targets. \nIf the selection mode is screen-centered, i.e., targets within a sector drawn upward from the character's point are movable targets.";
     public string Configwindow_Param_ChangeTargetForFate { get; set; } = "Select only Fate targets in Fate";
+    public string Configwindow_Param_OnlyAttackInView { get; set; } = "Only attack the target in view.";
+
     public string Configwindow_Param_MoveTowardsScreen { get; set; } = "Using movement actions towards the object in the center of the screen";
     public string Configwindow_Param_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";
     public string Configwindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
