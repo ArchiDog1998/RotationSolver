@@ -63,18 +63,18 @@ internal partial class RotationConfigWindow
     private unsafe void DrawParty()
     {
         var status = AgentDeepDungeonStatus.Instance();
-        if ((IntPtr)status != IntPtr.Zero) 
-        {
-            foreach (var item in status->Data->PomanderSpan)
-            {
-                ImGui.Text(item.Name.ToString() + " : " + item.ItemId.ToString());
-            }
+        //if ((IntPtr)status != IntPtr.Zero) 
+        //{
+        //    foreach (var item in status->Data->PomanderSpan)
+        //    {
+        //        ImGui.Text(item.Name.ToString() + " : " + item.ItemId.ToString());
+        //    }
 
-            foreach (var item in status->Data->MagiciteSpan)
-            {
-                ImGui.Text(item.Name.ToString() + " : " + item.ItemId.ToString());
-            }
-        }
+        //    foreach (var item in status->Data->MagiciteSpan)
+        //    {
+        //        ImGui.Text(item.Name.ToString() + " : " + item.ItemId.ToString());
+        //    }
+        //}
 
         ImGui.Text("Party: " + TargetUpdater.PartyMembers.Count().ToString());
         ImGui.Text("CanHealSingleAbility: " + TargetUpdater.CanHealSingleAbility.ToString());

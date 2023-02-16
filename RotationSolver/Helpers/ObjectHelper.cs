@@ -68,6 +68,7 @@ internal static class ObjectHelper
             or 71144 //Majur Quest
             or 71224 //Other Quest
             or 71244 //Leve
+            or 71344 //Major Quest
             ) return true;
         if(icon == 0) return false;
         var type = obj.GetEventType();
