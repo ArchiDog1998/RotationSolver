@@ -26,7 +26,7 @@ internal class BLU_25 : BLU_Base
 
         if (TripleTrident.OnSlot && TripleTrident.RightType && TripleTrident.WillHaveOneChargeGCD(OnSlotCount(Whistle, Tingle), 0))
         {
-            if (Whistle.CanUse(out act)) return true;
+            if ((TripleTrident.CanUse(out _, mustUse: true) || !HasHostilesInRange) &&Whistle.CanUse(out act)) return true;
 
             if (!Player.HasStatus(true, StatusID.Tingling)
                 && Tingle.CanUse(out act, mustUse: true)) return true;
