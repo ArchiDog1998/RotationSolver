@@ -101,7 +101,7 @@ internal sealed class BLU_Default : BLU_Base
         return false;
     }
 
-    private protected override bool HealAreaGCD(out IAction act)
+    private protected override bool HealSingleGCD(out IAction act)
     {
         if (BlueId == BLUID.Healer)
         {
@@ -119,7 +119,7 @@ internal sealed class BLU_Default : BLU_Base
             if (WhiteWind.CanUse(out act, mustUse: true)) return true;
         }
 
-        return base.HealAreaGCD(out act);
+        return base.HealSingleGCD(out act);
     }
 
     /// <summary>

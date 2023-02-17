@@ -85,6 +85,11 @@ internal static partial class TargetUpdater
 
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
 
+            if (Service.Configuration.OnlyAttackInView)
+            {
+                if(!Service.GameGui.WorldToScreen(b.Position, out _)) return false;
+            }
+
             return true;
         });
 

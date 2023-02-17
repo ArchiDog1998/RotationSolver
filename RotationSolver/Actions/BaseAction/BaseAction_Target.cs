@@ -382,9 +382,14 @@ internal partial class BaseAction
         int count = 0;
         foreach (var t in canAttack)
         {
-            if(CanGetTarget(target, t))
+            if(target == t)
             {
-                if (Service.Configuration.NoNewHostiles && t.TargetObject == null)
+                count++;
+            }
+            else if(CanGetTarget(target, t))
+            {
+                if (Service.Configuration.NoNewHostiles 
+                    && t.TargetObject == null)
                 {
                     return 0;
                 }
