@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.2](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.1...v1.4.2) (2023-02-17)
+
+
+### Bug Fixes
+
+* add a feature for only attack the target in view. ([8ae676a](https://github.com/ArchiDog1998/RotationSolver/commit/8ae676ac83fb363829933eea2c5a6d1c7191ac21))
+* add Isdead to check is plaer dead. ([f4f2e59](https://github.com/ArchiDog1998/RotationSolver/commit/f4f2e5909cfef13c0ee4766b82d5d2c76648d6a5))
+* fix some bug with RDM default. ([746bcd4](https://github.com/ArchiDog1998/RotationSolver/commit/746bcd432b0f7e5621bc466114d78d15211d4148))
+* fix target with dummy. ([5b23bbb](https://github.com/ArchiDog1998/RotationSolver/commit/5b23bbb09257a6fc2d6d148e68b367836d8f2fe8))
+* fix the NoNewHostiles strategy. ([13ceffc](https://github.com/ArchiDog1998/RotationSolver/commit/13ceffc2f90bfc029d21960071d3cffb3972637d))
+* RDM default changed. ([5d37094](https://github.com/ArchiDog1998/RotationSolver/commit/5d37094e504dd984c5fdf0871c853a54a2067828))
+
 ## [1.4.1](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.0...v1.4.1) (2023-02-15)
 
 
