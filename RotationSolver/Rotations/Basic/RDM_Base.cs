@@ -22,7 +22,6 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
     /// </summary>
     protected static byte BlackMana => JobGauge.BlackMana;
 
-
     /// <summary>
     /// Ä§¾§Êý
     /// </summary>

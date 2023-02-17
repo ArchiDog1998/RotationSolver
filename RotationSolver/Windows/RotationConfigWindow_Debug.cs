@@ -97,6 +97,9 @@ internal partial class RotationConfigWindow
             ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
             ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
             ImGui.Text("InView: " + Service.GameGui.WorldToScreen(b.Position, out _).ToString());
+            ImGui.Text("NameId: " + b.NameId.ToString());
+
+            
 
             foreach (var status in b.StatusList)
             {

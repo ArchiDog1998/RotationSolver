@@ -105,6 +105,7 @@ internal static class ObjectHelper
         return _effectRangeCheck[id] = true;
     }
 
+    private static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
     /// <summary>
     /// Is character a boss? Max HP exceeds a certain amount.
     /// </summary>
@@ -113,6 +114,7 @@ internal static class ObjectHelper
     internal static bool IsBoss(this BattleChara obj)
     {
         if (obj == null) return false;
+        if (obj.IsDummy()) return true;
         return obj.MaxHp >= GetHealthFromMulty(1.85f)
             || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
     }
@@ -125,6 +127,7 @@ internal static class ObjectHelper
     internal static bool IsDying(this BattleChara b)
     {
         if (b == null) return false;
+        if (b.IsDummy()) return false;
         return b.CurrentHp <= GetHealthFromMulty(0.8f) || b.GetHealthRatio() < 0.02f;
     }
 
@@ -153,6 +156,7 @@ internal static class ObjectHelper
     internal static bool CanDot(this BattleChara b)
     {
         if (b == null) return false;
+        if (b.IsDummy()) return true;
         return b.CurrentHp >= GetHealthFromMulty(1.5f);
     }
 
