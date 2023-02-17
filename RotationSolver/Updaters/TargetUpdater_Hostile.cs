@@ -60,6 +60,7 @@ internal static partial class TargetUpdater
         get
         {
             float radius = 25;
+            if(Service.ClientState.LocalPlayer == null) return radius;
             switch (Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
                 Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole())
             {

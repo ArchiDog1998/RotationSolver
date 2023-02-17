@@ -43,7 +43,7 @@ internal sealed class RDM_Default : RDM_Base
             if (Player.HasStatus(true, Vercure.StatusProvide)) return false;
 
             //Waiting for embolden.
-            if (Embolden.WillHaveOneChargeGCD(5)) return false;
+            if (Embolden.EnoughLevel && Embolden.WillHaveOneChargeGCD(5)) return false;
 
             return true;
         }
@@ -90,11 +90,9 @@ internal sealed class RDM_Default : RDM_Base
             if (Veraero2.CanUse(out act) && BlackMana - WhiteMana != 5) return true;
             if (Veraero.CanUse(out act) && BlackMana - WhiteMana != 6) return true;
         }
-        else
-        {
-            if (Verthunder2.CanUse(out act)) return true;
-            if (Verthunder.CanUse(out act)) return true;
-        }
+        if (Verthunder2.CanUse(out act)) return true;
+        if (Verthunder.CanUse(out act)) return true;
+
         if (Jolt.CanUse(out act)) return true;
 
         if (Configs.GetBool("UseVercure") && Vercure.CanUse(out act)) return true;
@@ -163,7 +161,7 @@ internal sealed class RDM_Default : RDM_Base
     {
         //Swift
         if (ManaStacks == 0 && (BlackMana < 50 || WhiteMana < 50) 
-            &&(CombatElapsedLess(4) || !Manafication.WillHaveOneChargeGCD(0, 1)))
+            &&(CombatElapsedLess(4) || !Manafication.EnoughLevel || !Manafication.WillHaveOneChargeGCD(0, 1)))
         {
             if(!Player.HasStatus(true, StatusID.VerfireReady, StatusID.VerstoneReady))
             {
