@@ -28,28 +28,21 @@ internal sealed class RDM_Default : RDM_Base
             if (Player.HasStatus(true, StatusID.Manafication, StatusID.Embolden) ||
                              BlackMana == 100 || WhiteMana == 100) return true;
 
-            //在魔法元没有溢出的情况下，要求较小的魔元不带触发，也可以强制要求跳过判断。
-
+            //在魔法元没有溢出的情况下，要求较小的魔元不带触发。
             if (BlackMana == WhiteMana) return false;
 
-            //要求较小的魔元不带触发，也可以强制要求跳过判断。
-            if (WhiteMana < BlackMana)
+            else if (WhiteMana < BlackMana)
             {
-                if (Player.HasStatus(true, StatusID.VerstoneReady))
-                {
-                    return false;
-                }
+                if (Player.HasStatus(true, StatusID.VerstoneReady)) return false;
             }
-            if (WhiteMana > BlackMana)
+            else
             {
-                if (Player.HasStatus(true, StatusID.VerfireReady))
-                {
-                    return false;
-                }
+                if (Player.HasStatus(true, StatusID.VerfireReady)) return false;
             }
 
             if (Player.HasStatus(true, Vercure.StatusProvide)) return false;
 
+            //Waiting for embolden.
             if (Embolden.WillHaveOneChargeGCD(5)) return false;
 
             return true;
