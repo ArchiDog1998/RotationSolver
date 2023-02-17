@@ -244,7 +244,7 @@ internal sealed class NIN_Default : NIN_Base
         if (DoNinjutsus(out act)) return true;
 
         //用真北取消隐匿
-        if (Configs.GetBool("AutoUnhide") && Player.HasStatus(true, StatusID.Hidden))
+        if (Configs.GetBool("AutoUnhide"))
         {
             StatusHelper.StatusOff(StatusID.Hidden);
         }

@@ -103,6 +103,7 @@ internal static class StatusHelper
 
     internal static void StatusOff(StatusID status)
     {
+        if (!Service.ClientState.LocalPlayer?.HasStatus(false, status) ?? true) return;
         RSCommands.SubmitToChat($"/statusoff {GetStatusName(status)}");
     }
 
