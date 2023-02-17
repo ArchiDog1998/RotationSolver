@@ -139,6 +139,7 @@
   "Configwindow_Param_MoveTargetAngle": "The size of the sector angle that can be selected as the moveable target",
   "Configwindow_Param_MoveTargetAngleDesc": "If the selection mode is based on character facing, i.e., targets within the character's viewpoint are movable targets. \nIf the selection mode is screen-centered, i.e., targets within a sector drawn upward from the character's point are movable targets.",
   "Configwindow_Param_ChangeTargetForFate": "Select only Fate targets in Fate",
+  "Configwindow_Param_OnlyAttackInView": "Only attack the target in view.",
   "Configwindow_Param_MoveTowardsScreen": "Using movement actions towards the object in the center of the screen",
   "Configwindow_Param_MoveTowardsScreenDesc": "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.",
   "Configwindow_Param_RaiseAll": "Raise all (include passerby)",
