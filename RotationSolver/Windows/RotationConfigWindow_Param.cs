@@ -346,6 +346,9 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ChangeTargetForFate,
             ref Service.Configuration.ChangeTargetForFate);
 
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_OnlyAttackInView,
+            ref Service.Configuration.OnlyAttackInView);
+
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_MoveTowardsScreen,
             ref Service.Configuration.MoveTowardsScreenCenter,
             LocalizationManager.RightLang.Configwindow_Param_MoveTowardsScreenDesc);

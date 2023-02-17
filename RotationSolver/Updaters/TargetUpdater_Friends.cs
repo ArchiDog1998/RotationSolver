@@ -100,7 +100,6 @@ internal static partial class TargetUpdater
 
     private unsafe static void UpdateFriends(IEnumerable<BattleChara> allTargets)
     {
-        #region Friend
         PartyMembers = GetPartyMembers(allTargets);
         AllianceMembers = allTargets.OfType<PlayerCharacter>();
 
@@ -118,11 +117,9 @@ internal static partial class TargetUpdater
         DeathPeopleParty.Delay(deathParty);
 
         WeakenPeople.Delay(PartyMembers.Where(p => p.StatusList.Any(StatusHelper.CanDispel)));
-
         DyingPeople.Delay(WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous)));
 
         SayHelloToAuthor();
-        #endregion
 
         PartyMembersHP = PartyMembers.Select(ObjectHelper.GetHealthRatio).Where(r => r > 0);
         if (PartyMembersHP.Any())

@@ -21,9 +21,12 @@ internal class BLU_25 : BLU_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
+        if (ChocoMeteor.CanUse(out act, mustUse: TargetUpdater.HaveCompanion)) return true;
+
+
         if (TripleTrident.OnSlot && TripleTrident.RightType && TripleTrident.WillHaveOneChargeGCD(OnSlotCount(Whistle, Tingle), 0))
         {
-            if (Whistle.CanUse(out act)) return true;
+            if ((TripleTrident.CanUse(out _, mustUse: true) || !HasHostilesInRange) &&Whistle.CanUse(out act)) return true;
 
             if (!Player.HasStatus(true, StatusID.Tingling)
                 && Tingle.CanUse(out act, mustUse: true)) return true;
@@ -36,12 +39,6 @@ internal class BLU_25 : BLU_Base
         if (DrillCannons.CanUse(out act, mustUse: true)) return true;
 
         return false;
-    }
-
-    private protected override bool HealAreaGCD(out IAction act)
-    {
-        if (WhiteWind.CanUse(out act, mustUse: true)) return true;
-        return base.HealAreaGCD(out act);
     }
 }
 #endif

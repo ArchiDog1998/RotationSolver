@@ -22,7 +22,6 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
     /// </summary>
     protected static byte BlackMana => JobGauge.BlackMana;
 
-
     /// <summary>
     /// Ä§¾§Êý
     /// </summary>
@@ -84,6 +83,7 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
     public static IBaseAction Scatter { get; } = new BaseAction(ActionID.Scatter)
     {
         StatusNeed = Jolt.StatusProvide,
+        AOECount = 2,
     };
 
     /// <summary>
@@ -218,7 +218,7 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
         ComboIdsNot = new[] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
     };
 
-    private protected override bool HealSingleGCD(out IAction act)
+    private protected sealed override bool HealSingleGCD(out IAction act)
     {
         if (Vercure.CanUse(out act, mustUse: true)) return true;
         return false;

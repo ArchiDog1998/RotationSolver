@@ -60,6 +60,7 @@ internal static partial class TargetUpdater
         get
         {
             float radius = 25;
+            if(Service.ClientState.LocalPlayer == null) return radius;
             switch (Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
                 Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole())
             {
@@ -84,6 +85,11 @@ internal static partial class TargetUpdater
             if (!b.IsTargetable()) return false;
 
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
+
+            if (Service.Configuration.OnlyAttackInView)
+            {
+                if(!Service.GameGui.WorldToScreen(b.Position, out _)) return false;
+            }
 
             return true;
         });

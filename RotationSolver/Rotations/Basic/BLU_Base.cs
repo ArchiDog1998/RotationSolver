@@ -62,6 +62,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
         {
             get
             {
+                if (_type == BLUActionType.None) return true;
                 if (AttackType == BLUAttackType.Physical && _type == BLUActionType.Magical) return false;
                 if (AttackType == BLUAttackType.Magical && _type == BLUActionType.Physical) return false;
 
@@ -794,5 +795,32 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
         BlueId = (BLUID)Configs.GetCombo("BlueId");
         AttackType = (BLUAttackType)Configs.GetCombo("AttackType");
         base.UpdateInfo();
+    }
+
+    private protected override bool HealSingleGCD(out IAction act)
+    {
+        if (BlueId == BLUID.Healer)
+        {
+            //if (Exuviation.CanUse(out act, mustUse: true)) return true;
+
+            if (PomCure.CanUse(out act)) return true;
+        }
+        if (WhiteWind.CanUse(out act, mustUse: true)) return true;
+        return base.HealSingleGCD(out act);
+    }
+
+    private protected override bool HealAreaGCD(out IAction act)
+    {
+        if (BlueId == BLUID.Healer)
+        {
+            //if (Exuviation.CanUse(out act, mustUse: true)) return true;
+
+            if (AngelsSnack.CanUse(out act)) return true;
+            if (Stotram.CanUse(out act)) return true;
+            if (Stotram.CanUse(out act)) return true;
+        }
+
+        if (WhiteWind.CanUse(out act, mustUse: true)) return true;
+        return base.HealAreaGCD(out act);
     }
 }

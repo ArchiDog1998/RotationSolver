@@ -239,10 +239,10 @@ internal static class TargetFilter
 
     internal unsafe static IEnumerable<BattleChara> GetDeath(this IEnumerable<BattleChara> charas) => charas.Where(item =>
         {
-            if (!item.IsTargetable()) return false;
-
-            //如果还有血，就算了。
+            if (!item.IsDead) return false;
             if (item.CurrentHp != 0) return false;
+
+            if (!item.IsTargetable()) return false;
 
             //如果已经有复活的Buff了，那就算了。
             if (item.HasStatus(false, StatusID.Raise)) return false;
