@@ -58,11 +58,14 @@ internal partial class RotationConfigWindow
             ref Service.Configuration.UseOverlayWindow,
             LocalizationManager.RightLang.Configwindow_Param_UseOverlayWindowDesc);
 
-        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponFaster,
-            ref Service.Configuration.WeaponFaster, max: 0.1f);
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponAhead,
+            ref Service.Configuration.WeaponAhead, max: 0.1f);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponInterval,
             ref Service.Configuration.WeaponInterval, min: 0.5f, max: 0.7f);
+
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_CountDownAhead,
+    ref Service.Configuration.CountDownAhead, min: 0.5f, max: 0.7f);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_SpecialDuration,
             ref Service.Configuration.SpecialDuration, speed: 0.02f, min: 1, max: 20);

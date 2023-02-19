@@ -172,7 +172,8 @@ internal sealed class SMN_Default : SMN_Base
     {
         if (remainTime <= 30 && SummonCarbuncle.CanUse(out _)) return SummonCarbuncle;
         //1.5s预读毁3
-        if (remainTime <= 1.5f && Ruin.CanUse(out _)) return Ruin;
+        if (remainTime <= Ruin.CastTime + Service.Configuration.CountDownAhead
+            && Ruin.CanUse(out _)) return Ruin;
         return base.CountDownAction(remainTime);
     }
 

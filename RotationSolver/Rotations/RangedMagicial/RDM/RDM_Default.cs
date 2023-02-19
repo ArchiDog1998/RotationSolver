@@ -62,7 +62,7 @@ internal sealed class RDM_Default : RDM_Base
 
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (remainTime < Verthunder.CastTime + Service.Configuration.WeaponInterval
+        if (remainTime < Verthunder.CastTime + Service.Configuration.CountDownAhead
             && Verthunder.CanUse(out var act)) return act;
 
         //Remove Swift

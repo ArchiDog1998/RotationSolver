@@ -54,7 +54,7 @@ internal class BLM_Default : BLM_Base
     private protected override IAction CountDownAction(float remainTime)
     {
         IAction act;
-        if(remainTime < Fire3.CastTime + Service.Configuration.WeaponInterval)
+        if(remainTime < Fire3.CastTime + Service.Configuration.CountDownAhead)
         {
             if (Fire3.CanUse(out act)) return act;
         }

@@ -94,7 +94,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool InterruptibleMoreCheck = true;
     public float SpecialDuration = 3;
     public float WeaponInterval = 0.67f;
-    public float WeaponFaster = 0.08f;
+    public float WeaponAhead = 0.08f;
 
     public float WeaponDelayMin = 0;
     public float WeaponDelayMax = 0;
@@ -129,6 +129,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool OnlyAttackInView = false;
 
     public string PositionalErrorText = string.Empty;
+    public float CountDownAhead = 0.6f;
 
     public int MoveTargetAngle = 24;
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();

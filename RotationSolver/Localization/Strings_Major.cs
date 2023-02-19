@@ -97,8 +97,9 @@ internal partial class Strings
     public string Configwindow_Param_UseOverlayWindowDesc { get; set; } = "This window is currently used to cue the body position in advance.";
     public string Configwindow_Param_Basic { get; set; } = "Basic";
 
-    public string Configwindow_Param_WeaponFaster { get; set; } = "Set the time advance of use actions";
+    public string Configwindow_Param_WeaponAhead { get; set; } = "Set the time advance of use actions";
     public string Configwindow_Param_WeaponInterval { get; set; } = "Set the interval between abilities using";
+    public string Configwindow_Param_CountDownAhead { get; set; } = "Set the time advance of use casting actions on counting down.";
     public string Configwindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string Configwindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
     public string Configwindow_Param_AutoOffBetweenArea { get; set; } = "Turn off when player is between area.";
