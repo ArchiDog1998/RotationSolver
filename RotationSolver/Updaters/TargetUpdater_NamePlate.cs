@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using RotationSolver.Commands;
 using RotationSolver.Helpers;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,8 @@ internal static partial class TargetUpdater
     private static void UpdateNamePlate(IEnumerable<BattleChara> allTargets)
     {
         List<uint> charas = new List<uint>(5);
-        //60701 - 60705 For treasure hunt.
-        for (int i = 60701; i <= 60705; i++)
+        //60687 - 60691 For treasure hunt.
+        for (int i = 60687; i <= 60691; i++)
         {
             var b = allTargets.FirstOrDefault(obj => obj.GetNamePlateIcon() == i);
             if (b == null || b.CurrentHp == 0) continue;
