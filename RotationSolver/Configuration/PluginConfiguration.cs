@@ -127,6 +127,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseStopCasting = false;
     public bool EsunaAll = false;
     public bool OnlyAttackInView = false;
+    public bool ShowStateOnNamePlate = true;
 
     public string PositionalErrorText = string.Empty;
     public float CountDownAhead = 0.6f;

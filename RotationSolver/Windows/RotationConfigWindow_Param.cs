@@ -211,6 +211,9 @@ internal partial class RotationConfigWindow
                 ref Service.Configuration.ShowWorkTaskFPS);
         }
 
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowStateOnNamePlate,
+            ref Service.Configuration.ShowStateOnNamePlate,  otherThing: RSCommands.UpdateStateNamePlate);
+
         ImGui.Spacing();
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_CastingDisplay,
@@ -423,11 +426,12 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawCheckBox(string name, ref bool value, string description = "")
+    private static void DrawCheckBox(string name, ref bool value, string description = "", Action otherThing = null)
     {
         if (ImGui.Checkbox(name, ref value))
         {
             Service.Configuration.Save();
+            otherThing?.Invoke();
         }
         if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
         {

@@ -146,7 +146,8 @@ internal partial class Strings
 
     public string Configwindow_Param_ShowWorkTaskFPS { get; set; } = "Display Task FPS on dtrbar";
 
-    public string Configwindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state changed on toast";
+    public string Configwindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
+    public string Configwindow_Param_ShowStateOnNamePlate { get; set; } = "Display plugin state on player's name plate.";
     public string Configwindow_Param_Action { get; set; } = "Action";
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Param_AutoBurst { get; set; } = "Automatic burst";
