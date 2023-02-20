@@ -99,8 +99,6 @@ internal partial class RotationConfigWindow
             ImGui.Text("InView: " + Service.GameGui.WorldToScreen(b.Position, out _).ToString());
             ImGui.Text("NameId: " + b.NameId.ToString());
 
-            
-
             foreach (var status in b.StatusList)
             {
                 var source = Service.ObjectTable.SearchById(status.SourceId)?.Name ?? "None";

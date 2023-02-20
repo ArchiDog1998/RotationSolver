@@ -62,7 +62,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #endif
         Service.DutyState.DutyStarted += DutyState_DutyStarted;
         Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
+        Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ChangeUITranslation();
+    }
+
+    private void ClientState_TerritoryChanged(object sender, ushort e)
+    {
+        RSCommands.UpdateStateNamePlate();
     }
 
     private async void DutyState_DutyCompleted(object sender, ushort e)
@@ -97,6 +103,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     {
         Service.DutyState.DutyStarted -= DutyState_DutyStarted;
         Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
+        Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
 
         RSCommands.Disable();
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
