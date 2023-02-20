@@ -22,11 +22,11 @@ internal sealed class MCH_Default : MCH_Base
     /// </summary>
     private static bool isDyingNotBoss => !Target.IsBoss() && IsTargetDying && TargetUpdater.PartyMembers.Count() is > 1 and <= 4;
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.BreakingAction, $"{Wildfire}"},
-        {DescType.DefenseArea, $"{Tactician}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.BurstAction, $"{Wildfire}"},
+    //    {DescType.DefenseArea, $"{Tactician}"},
+    //};
 
     private protected override IRotationConfigSet CreateConfiguration()
     {

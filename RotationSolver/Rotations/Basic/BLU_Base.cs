@@ -755,10 +755,10 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
 
     #endregion
 
-    private protected override bool MoveGCD(out IAction act)
+    private protected override bool MoveForwardGCD(out IAction act)
     {
         if (Loom.CanUse(out act)) return true;
-        return base.MoveGCD(out act);
+        return base.MoveForwardGCD(out act);
     }
 
 

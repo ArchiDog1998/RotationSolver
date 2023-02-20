@@ -9,14 +9,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RotationSolver.Helpers;
 
 internal static class ImGuiHelper
 {
     public static void DrawEnableTexture<T>(this T texture, bool isSelected, Action selected,
-        Action additonalHeader = null, Action otherThing = null) where T : class, ITexture
+        Action<string> showToolTip = null,Action additonalHeader = null, Action otherThing = null)
+        where T : class, ITexture
     {
+        showToolTip ??= text =>
+        {
+            if (!string.IsNullOrEmpty(text)) ImGui.SetTooltip(text);
+        };
+
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
         ImGui.Columns(2, texture.Name, false);
@@ -30,8 +37,14 @@ internal static class ImGuiHelper
         var able = texture as IEnable;
 
         var desc = able?.Description;
-        HoveredString(desc, selected);
-
+        if (ImGui.IsItemHovered())
+        {
+            showToolTip(desc);
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Left))
+            {
+                selected?.Invoke();
+            }
+        }
         ImGui.NextColumn();
 
         bool enable = false;
@@ -46,7 +59,7 @@ internal static class ImGuiHelper
             }
             if (isSelected) ImGui.PopStyleColor();
 
-            HoveredString(desc);
+            showToolTip(desc);
         }
 
 

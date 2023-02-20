@@ -46,14 +46,14 @@ internal sealed class SGE_Default : SGE_Base
         return base.CreateConfiguration().SetBool("GCDHeal", false, "Auto Use GCD to heal.");
     }
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.HealArea, $"{Prognosis}\n{Holos}, {Ixochole}, {Physis}"},
-        {DescType.HealSingle, $"{Diagnosis}\n{Druochole}"},
-        {DescType.DefenseArea, $"{Panhaima}, {Kerachole}, {Prognosis}"},
-        {DescType.DefenseSingle, $"{Diagnosis}\n{Haima}, {Taurochole}"},
-        {DescType.MoveAction, $"{Icarus}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.HealArea, $"{Prognosis}\n{Holos}, {Ixochole}, {Physis}"},
+    //    {DescType.HealSingle, $"{Diagnosis}\n{Druochole}"},
+    //    {DescType.DefenseArea, $"{Panhaima}, {Kerachole}, {Prognosis}"},
+    //    {DescType.DefenseSingle, $"{Diagnosis}\n{Haima}, {Taurochole}"},
+    //    {DescType.MoveAction, $"{Icarus}"},
+    //};
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null!;

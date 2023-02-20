@@ -1,15 +1,42 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Utility;
 using ImGuiNET;
+using RotationSolver.Attributes;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using RotationSolver.Timeline;
 using RotationSolver.Windows.RotationConfigWindow;
+using System.Reflection;
 
 namespace RotationSolver.Rotations.CustomRotation
 {
     internal abstract partial class CustomRotation
     {
-        public unsafe void Display(ICustomRotation[] rotations, bool canAddButton) => this.DrawEnableTexture(canAddButton, null, () =>
+        public unsafe void Display(ICustomRotation[] rotations, bool canAddButton)
+            => this.DrawEnableTexture(canAddButton, null,
+        text =>
+        {
+            ImGui.OpenPopup("Popup" + GetHashCode().ToString());
+
+            if (ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
+            {
+                if(!string.IsNullOrEmpty(text))
+                {
+                    ImGui.TextWrapped(text);
+                    ImGui.NewLine();
+                }
+
+                var type = this.GetType();
+                RotationDescAttribute.Merge(type.GetCustomAttributes<RotationDescAttribute>())?.Display(this);
+
+                foreach (var m in type.GetMethods())
+                {
+                    RotationDescAttribute.Merge(m.GetCustomAttributes<RotationDescAttribute>())?.Display(this);
+                }
+
+                ImGui.EndPopup();
+            }
+        }, () =>
         {
             if (!string.IsNullOrEmpty(RotationName) && rotations != null)
             {

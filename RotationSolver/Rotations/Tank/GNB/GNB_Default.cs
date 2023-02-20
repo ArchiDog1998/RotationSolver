@@ -17,13 +17,13 @@ internal sealed class GNB_Default : GNB_Base
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.HealSingle, $"{Aurora}"},
-        {DescType.DefenseArea, $"{HeartofLight}"},
-        {DescType.DefenseSingle, $"{HeartofStone}, {Nebula}, {Camouflage}"},
-        {DescType.MoveAction, $"{RoughDivide}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.HealSingle, $"{Aurora}"},
+    //    {DescType.DefenseArea, $"{HeartofLight}"},
+    //    {DescType.DefenseSingle, $"{HeartofStone}, {Nebula}, {Camouflage}"},
+    //    {DescType.MoveAction, $"{RoughDivide}"},
+    //};
 
     private protected override bool GeneralGCD(out IAction act)
     {

@@ -30,17 +30,17 @@ internal sealed class SMN_Default : SMN_Base
 
     protected override bool CanHealSingleSpell => false;
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.DefenseSingle, $"{RadiantAegis}"},
-        {DescType.HealSingle, $"{Physick}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.DefenseSingle, $"{RadiantAegis}"},
+    //    {DescType.HealSingle, $"{Physick}"},
+    //};
 
-    private protected override bool MoveGCD(out IAction act)
+    private protected override bool MoveForwardGCD(out IAction act)
     {
         //火神突进
         if (CrimsonCyclone.CanUse(out act, mustUse: true)) return true;
-        return base.MoveGCD(out act);
+        return base.MoveForwardGCD(out act);
     }
 
     private protected override bool GeneralGCD(out IAction act)

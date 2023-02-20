@@ -64,13 +64,21 @@ internal static class EnumTranslations
 
     public static string ToName(this DescType type) => type switch
     {
-        DescType.Description => LocalizationManager.RightLang.DescType_Description,
-        DescType.BreakingAction => LocalizationManager.RightLang.DescType_BreakingAction,
-        DescType.HealArea => LocalizationManager.RightLang.DescType_HealArea,
-        DescType.HealSingle => LocalizationManager.RightLang.DescType_HealSingle,
-        DescType.DefenseArea => LocalizationManager.RightLang.DescType_DefenseArea,
-        DescType.DefenseSingle => LocalizationManager.RightLang.DescType_DefenseSingle,
-        DescType.MoveAction => LocalizationManager.RightLang.DescType_MoveAction,
+        DescType.BurstActions => LocalizationManager.RightLang.DescType_BurstActions,
+
+        DescType.MoveForwardGCD => LocalizationManager.RightLang.DescType_MoveForwardGCD,
+        DescType.HealSingleGCD => LocalizationManager.RightLang.DescType_HealSingleGCD,
+        DescType.HealAreaGCD => LocalizationManager.RightLang.DescType_HealAreaGCD,
+        DescType.DefenseSingleGCD => LocalizationManager.RightLang.DescType_DefenseSingleGCD,
+        DescType.DefenseAreaGCD => LocalizationManager.RightLang.DescType_DefenseAreaGCD,
+
+        DescType.MoveForwardAbility => LocalizationManager.RightLang.DescType_MoveForwardAbility,
+        DescType.MoveBackAbility => LocalizationManager.RightLang.DescType_MoveBackAbility,
+        DescType.HealSingleAbility => LocalizationManager.RightLang.DescType_HealSingleAbility,
+        DescType.HealAreaAbility => LocalizationManager.RightLang.DescType_HealAreaAbility,
+        DescType.DefenceSingleAbility => LocalizationManager.RightLang.DescType_DefenseSingleAbility,
+        DescType.DefenceAreaAbility => LocalizationManager.RightLang.DescType_DefenseAreaAbility,
+
         _ => string.Empty,
     };
 

@@ -22,10 +22,10 @@ internal sealed class DRG_Default : DRG_Base
             .SetBool("DRG_SafeMove", true, "Moving save");
     }
 
-    public override SortedList<DescType, string> DescriptionDict => new SortedList<DescType, string>()
-    {
-        {DescType.MoveAction, $"{SpineshatterDive}, {DragonfireDive}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new SortedList<DescType, string>()
+    //{
+    //    {DescType.MoveAction, $"{SpineshatterDive}, {DragonfireDive}"},
+    //};
 
     private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {

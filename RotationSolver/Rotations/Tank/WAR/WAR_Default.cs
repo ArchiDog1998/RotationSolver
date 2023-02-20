@@ -16,12 +16,12 @@ internal sealed class WAR_Default : WAR_Base
 
     public override string RotationName => "Default";
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.DefenseArea, $"{ShakeItOff}"},
-        {DescType.DefenseSingle, $"{RawIntuition}, {Vengeance}"},
-        {DescType.MoveAction, $"GCD: {PrimalRend}\n{Onslaught}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.DefenseArea, $"{ShakeItOff}"},
+    //    {DescType.DefenseSingle, $"{RawIntuition}, {Vengeance}"},
+    //    {DescType.MoveAction, $"GCD: {PrimalRend}\n{Onslaught}"},
+    //};
 
     static WAR_Default()
     {
@@ -38,7 +38,7 @@ internal sealed class WAR_Default : WAR_Base
         return false;
     }
 
-    private protected override bool MoveGCD(out IAction act)
+    private protected override bool MoveForwardGCD(out IAction act)
     {
         //放个大 蛮荒崩裂 会往前飞
         if (PrimalRend.CanUse(out act, mustUse: true)) return true;

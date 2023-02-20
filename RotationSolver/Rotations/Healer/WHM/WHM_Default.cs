@@ -32,13 +32,13 @@ internal sealed class WHM_Default : WHM_Base
         }
     };
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.HealArea, $"{AfflatusRapture}, {Medica2}, {Cure3}, {Medica}\n{Asylum}"},
-        {DescType.HealSingle, $"{AfflatusSolace}, {Regen}, {Cure2}, {Cure}\n{Tetragrammaton},{DivineBenison}"},
-        {DescType.DefenseArea, $"{Temperance}, {LiturgyoftheBell}"},
-        {DescType.DefenseSingle, $"{DivineBenison}, {Aquaveil}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.HealArea, $"{AfflatusRapture}, {Medica2}, {Cure3}, {Medica}\n{Asylum}"},
+    //    {DescType.HealSingle, $"{AfflatusSolace}, {Regen}, {Cure2}, {Cure}\n{Tetragrammaton},{DivineBenison}"},
+    //    {DescType.DefenseArea, $"{Temperance}, {LiturgyoftheBell}"},
+    //    {DescType.DefenseSingle, $"{DivineBenison}, {Aquaveil}"},
+    //};
     private protected override bool GeneralGCD(out IAction act)
     {
         //苦难之心

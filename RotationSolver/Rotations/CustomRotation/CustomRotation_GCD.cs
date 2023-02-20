@@ -1,8 +1,10 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.Linq;
 
@@ -21,7 +23,7 @@ internal abstract partial class CustomRotation
 
         if (RaiseSpell(specialType, out act, abilityRemain, false)) return act;
 
-        if (specialType == SpecialCommandType.MoveForward && MoveGCD(out act))
+        if (specialType == SpecialCommandType.MoveForward && MoveForwardGCD(out act))
         {
             if (act is BaseAction b && ObjectHelper.DistanceToPlayer(b.Target) > 5) return act;
         }
@@ -89,26 +91,31 @@ internal abstract partial class CustomRotation
         act = null; return false;
     }
 
-    private protected virtual bool MoveGCD(out IAction act)
+    [RotationDesc(DescType.MoveForwardGCD)]
+    private protected virtual bool MoveForwardGCD(out IAction act)
     {
         act = null; return false;
     }
 
+    [RotationDesc(DescType.HealSingleGCD)]
     private protected virtual bool HealSingleGCD(out IAction act)
     {
         act = null; return false;
     }
 
+    [RotationDesc(DescType.HealAreaGCD)]
     private protected virtual bool HealAreaGCD(out IAction act)
     {
         act = null; return false;
     }
 
+    [RotationDesc(DescType.DefenseSingleGCD)]
     private protected virtual bool DefenseSingleGCD(out IAction act)
     {
         act = null; return false;
     }
 
+    [RotationDesc(DescType.DefenseAreaGCD)]
     private protected virtual bool DefenseAreaGCD(out IAction act)
     {
         act = null; return false;

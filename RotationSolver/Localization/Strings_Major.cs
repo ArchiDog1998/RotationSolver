@@ -306,13 +306,19 @@ internal partial class Strings
     #endregion
 
     #region DescType
-    public string DescType_Description { get; set; } = "Loop Description";
-    public string DescType_BreakingAction { get; set; } = "Burst Skills";
-    public string DescType_HealArea { get; set; } = "Range Healing";
-    public string DescType_HealSingle { get; set; } = "Mono Healing";
-    public string DescType_DefenseArea { get; set; } = "Range Defense";
-    public string DescType_DefenseSingle { get; set; } = "Mono Defense";
-    public string DescType_MoveAction { get; set; } = "Move Skills";
+    public string DescType_BurstActions { get; set; } = "Burst Actions";
+    public string DescType_MoveForwardGCD { get; set; } = "Move forward GCD";
+    public string DescType_HealAreaGCD { get; set; } = "Range Healing GCD";
+    public string DescType_HealSingleGCD { get; set; } = "Mono Healing GCD";
+    public string DescType_DefenseAreaGCD { get; set; } = "Range Defense GCD";
+    public string DescType_DefenseSingleGCD { get; set; } = "Mono Defense GCD";
+
+    public string DescType_HealAreaAbility { get; set; } = "Range Healing Ability";
+    public string DescType_HealSingleAbility { get; set; } = "Mono Healing Ability";
+    public string DescType_DefenseAreaAbility { get; set; } = "Range Defense Ability";
+    public string DescType_DefenseSingleAbility { get; set; } = "Mono Defense Ability";
+    public string DescType_MoveForwardAbility { get; set; } = "Move forward Ability";
+    public string DescType_MoveBackAbility { get; set; } = "Move back Ability";
 
     #endregion
 

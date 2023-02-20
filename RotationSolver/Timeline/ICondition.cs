@@ -9,5 +9,3 @@ internal interface ICondition
     void Draw(ICustomRotation rotation);
     float Height { get; }
 }
-
-

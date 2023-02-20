@@ -14,12 +14,12 @@ internal sealed class RDM_Default : RDM_Base
 
     public override string RotationName => "Default";
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.HealSingle, $"{Vercure}"},
-        {DescType.DefenseArea, $"{MagickBarrier}"},
-        {DescType.MoveAction, $"{CorpsAcorps}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.HealSingle, $"{Vercure}"},
+    //    {DescType.DefenseArea, $"{MagickBarrier}"},
+    //    {DescType.MoveAction, $"{CorpsAcorps}"},
+    //};
 
     public bool CanStartMeleeCombo 
     {

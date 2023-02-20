@@ -15,12 +15,12 @@ internal sealed class DNC_Default : DNC_Base
 
     public override string RotationName => "Default";
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.DefenseArea, $"{ShieldSamba}"},
-        {DescType.HealArea, $"{CuringWaltz}, {Improvisation}"},
-        {DescType.MoveAction, $"{EnAvant}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.DefenseArea, $"{ShieldSamba}"},
+    //    {DescType.HealArea, $"{CuringWaltz}, {Improvisation}"},
+    //    {DescType.MoveAction, $"{EnAvant}"},
+    //};
 
     private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {

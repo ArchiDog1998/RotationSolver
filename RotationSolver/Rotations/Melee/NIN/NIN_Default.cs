@@ -23,11 +23,11 @@ internal sealed class NIN_Default : NIN_Base
         return base.CreateConfiguration().SetBool("UseHide", true, "Use hide").SetBool("AutoUnhide", true, "Auto Unhide.");
     }
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.DefenseSingle, $"{ShadeShift}"},
-        {DescType.MoveAction, $"{Shukuchi}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.DefenseSingle, $"{ShadeShift}"},
+    //    {DescType.MoveAction, $"{Shukuchi}"},
+    //};
 
     private static void SetNinjustus(INinAction act)
     {
@@ -289,10 +289,10 @@ internal sealed class NIN_Default : NIN_Base
         return false;
     }
 
-    private protected override bool MoveGCD(out IAction act)
+    private protected override bool MoveForwardGCD(out IAction act)
     {
         if (ForkedRaiju.CanUse(out act)) return true;
-        return base.MoveGCD(out act);
+        return base.MoveForwardGCD(out act);
     }
 
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)

@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -8,25 +9,19 @@ using RotationSolver.Rotations.Basic;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.AST;
 
+[Description("Some Rotation Description")]
+[RotationDesc("Burst Info?")]
 internal sealed class AST_Default : AST_Base
 {
     public override string GameVersion => "6.28";
 
     public override string RotationName => "Default";
-
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.HealArea, $"{AspectedHelios}, {Helios}\n {EarthlyStar}, {CelestialOpposition}"},
-        {DescType.HealSingle, $"{AspectedBenefic}, {Benefic2}, {Benefic}\n{CelestialIntersection}, {EssentialDignity}"},
-        {DescType.DefenseArea, $"{CollectiveUnconscious}"},
-        {DescType.DefenseSingle, $"{Exaltation}"},
-        {DescType.BreakingAction, $"{Divination}"}
-    };
 
     private protected override IRotationConfigSet CreateConfiguration()
         => base.CreateConfiguration()
@@ -52,6 +47,7 @@ internal sealed class AST_Default : AST_Base
         return base.CountDownAction(remainTime);
     }
 
+    [RotationDesc(ActionID.CelestialIntersection, ActionID.Exaltation)]
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //天星交错
@@ -62,6 +58,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
+    [RotationDesc(ActionID.CollectiveUnconscious)]
     private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //来个命运之轮
@@ -87,6 +84,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
+    [RotationDesc(ActionID.AspectedHelios, ActionID.Helios)]
     private protected override bool HealAreaGCD(out IAction act)
     {
         //阳星相位
@@ -136,6 +134,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
+    [RotationDesc(ActionID.AspectedBenefic, ActionID.Benefic2, ActionID.Benefic)]
     private protected override bool HealSingleGCD(out IAction act)
     {
         //吉星相位
@@ -192,10 +191,10 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
+    [RotationDesc(ActionID.EssentialDignity, ActionID.CelestialIntersection, ActionID.CelestialOpposition,
+        ActionID.EarthlyStar, ActionID.Horoscope)]
     private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (EssentialDignity.Target.GetHealthRatio() < 0.4
-            && EssentialDignity.CanUse(out act, emptyOrSkipCombo: true)) return true;
         //常规奶
         if (EssentialDignity.CanUse(out act)) return true;
         //带盾奶
@@ -230,6 +229,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
+    [RotationDesc(ActionID.CelestialOpposition, ActionID.EarthlyStar, ActionID.Horoscope)]
     private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //群Hot

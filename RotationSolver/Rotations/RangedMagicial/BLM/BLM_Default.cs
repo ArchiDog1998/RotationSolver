@@ -14,10 +14,10 @@ internal class BLM_Default : BLM_Base
 
     public override string RotationName => "Default";
 
-    public override SortedList<DescType, string> DescriptionDict => new SortedList<DescType, string>() 
-    {
-        {DescType.HealSingle, $"{BetweenTheLines}, {Leylines}" }
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new SortedList<DescType, string>() 
+    //{
+    //    {DescType.HealSingle, $"{BetweenTheLines}, {Leylines}" }
+    //};
 
     private static bool NeedToGoIce
     {
@@ -376,9 +376,9 @@ internal class BLM_Default : BLM_Base
         return false;
     }
 
-    private protected override bool MoveGCD(out IAction act)
+    private protected override bool MoveForwardGCD(out IAction act)
     {
         if (AetherialManipulation.CanUse(out act, mustUse: true)) return true;
-        return base.MoveGCD(out act);
+        return base.MoveForwardGCD(out act);
     }
 }

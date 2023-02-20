@@ -39,11 +39,11 @@ internal sealed class SAM_Default : SAM_Base
         HissatsuGuren.RotationCheck = b => HaveMoon && HaveFlower;
     }
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.DefenseSingle, $"{ThirdEye}"},
-        {DescType.MoveAction, $"{HissatsuGyoten}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.DefenseSingle, $"{ThirdEye}"},
+    //    {DescType.MoveAction, $"{HissatsuGyoten}"},
+    //};
 
     private protected override bool GeneralGCD(out IAction act)
     {

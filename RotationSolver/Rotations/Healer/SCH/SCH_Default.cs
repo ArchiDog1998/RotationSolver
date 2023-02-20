@@ -29,13 +29,13 @@ internal sealed class SCH_Default : SCH_Base
                                             .SetBool("prevDUN", false, "Recitation in 15 seconds.")
                                             .SetBool("GiveT", false, "Give Recitation to Tank");
     }
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.HealArea, $"{Succor}\n{SacredSoil}, {SummonSeraph}, {WhisperingDawn}, {FeyBlessing}, {Indomitability}"},
-        {DescType.HealSingle, $"{Adloquium}, {Physick}\n{SacredSoil}, {Aetherpact}, {Protraction}, {Excogitation}, {Lustrate}"},
-        {DescType.DefenseArea, $"{Succor}\n{SacredSoil}, {Adloquium}, {SummonSeraph}, {FeyIllumination}, {Expedient}"},
-        {DescType.DefenseSingle, $"{Adloquium}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.HealArea, $"{Succor}\n{SacredSoil}, {SummonSeraph}, {WhisperingDawn}, {FeyBlessing}, {Indomitability}"},
+    //    {DescType.HealSingle, $"{Adloquium}, {Physick}\n{SacredSoil}, {Aetherpact}, {Protraction}, {Excogitation}, {Lustrate}"},
+    //    {DescType.DefenseArea, $"{Succor}\n{SacredSoil}, {Adloquium}, {SummonSeraph}, {FeyIllumination}, {Expedient}"},
+    //    {DescType.DefenseSingle, $"{Adloquium}"},
+    //};
 
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {

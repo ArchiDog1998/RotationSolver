@@ -12,9 +12,7 @@ internal sealed class PLD_Default : PLD_Base
 {
     public override string GameVersion => "6.18";
     public override string RotationName => "Default";
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-    };
+
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseDivineVeilPre", false, "DivineVeilPre in 15 seconds.")

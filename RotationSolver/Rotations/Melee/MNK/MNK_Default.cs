@@ -18,12 +18,12 @@ internal sealed class MNK_Default : MNK_Base
     public override string RotationName => "Default";
 
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.HealArea, $"{Mantra}"},
-        {DescType.DefenseSingle, $"{RiddleofEarth}"},
-        {DescType.MoveAction, $"{Thunderclap}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.HealArea, $"{Mantra}"},
+    //    {DescType.DefenseSingle, $"{RiddleofEarth}"},
+    //    {DescType.MoveAction, $"{Thunderclap}"},
+    //};
 
     private protected override IRotationConfigSet CreateConfiguration()
     {

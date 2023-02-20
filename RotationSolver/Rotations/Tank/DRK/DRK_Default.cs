@@ -19,14 +19,14 @@ internal sealed class DRK_Default : DRK_Base
 
     protected override bool CanHealSingleAbility => false;
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.Description, "If you don't want to use Provoke, please remove the tank stance." },
-        {DescType.HealSingle, $"{TheBlackestNight}"},
-        {DescType.DefenseArea, $"{DarkMissionary}"},
-        {DescType.DefenseSingle, $"{Oblation}, {ShadowWall}, {DarkMind}"},
-        {DescType.MoveAction, $"{Plunge}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.Description, "If you don't want to use Provoke, please remove the tank stance." },
+    //    {DescType.HealSingle, $"{TheBlackestNight}"},
+    //    {DescType.DefenseArea, $"{DarkMissionary}"},
+    //    {DescType.DefenseSingle, $"{Oblation}, {ShadowWall}, {DarkMind}"},
+    //    {DescType.MoveAction, $"{Plunge}"},
+    //};
 
     private static bool InDeliruim => !Delirium.EnoughLevel || Delirium.IsCoolingDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7);
 

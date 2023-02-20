@@ -19,7 +19,7 @@ internal interface ICustomRotation : ITexture, IEnable
 
     BattleChara MoveTarget { get; }
 
-    SortedList<DescType, string> DescriptionDict { get; }
+    //SortedList<DescType, string> DescriptionDict { get; }
     IBaseAction[] AllActions { get; }
     PropertyInfo[] AllBools { get; }
     PropertyInfo[] AllBytes { get; }

@@ -2,12 +2,19 @@
 
 public enum DescType : byte
 {
-    Description,
-    BreakingAction,
-    HealArea,
-    HealSingle,
-    DefenseArea,
-    DefenseSingle,
-    MoveAction,
-    OtherCommands,
+    None,
+    BurstActions,
+
+    MoveForwardGCD,
+    HealSingleGCD,
+    HealAreaGCD,
+    DefenseSingleGCD,
+    DefenseAreaGCD,
+
+    MoveForwardAbility,
+    MoveBackAbility,
+    HealSingleAbility,
+    HealAreaAbility,
+    DefenceSingleAbility,
+    DefenceAreaAbility,
 }

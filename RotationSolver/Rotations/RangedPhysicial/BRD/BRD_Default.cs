@@ -22,12 +22,12 @@ internal sealed class BRD_Default : BRD_Base
             .SetFloat("MAGETime", 34, "MAGE Time", min: 0, max: 45, speed: 1)
             .SetFloat("ARMYTime", 43, "ARMY Time", min: 0, max: 45, speed: 1);
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.Description, "Please make sure that the three song times add up to 120 seconds!"},
-        {DescType.DefenseArea, $"{Troubadour}"},
-        {DescType.HealSingle, $"{NaturesMinne}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.Description, "Please make sure that the three song times add up to 120 seconds!"},
+    //    {DescType.DefenseArea, $"{Troubadour}"},
+    //    {DescType.HealSingle, $"{NaturesMinne}"},
+    //};
 
     private bool BindWAND => Configs.GetBool("BindWAND") && WanderersMinuet.EnoughLevel;
     private int FirstSong => Configs.GetCombo("FirstSong");

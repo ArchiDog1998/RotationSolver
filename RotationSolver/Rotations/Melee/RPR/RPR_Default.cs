@@ -31,11 +31,11 @@ internal sealed class RPR_Default : RPR_Base
         HarvestMoon.RotationCheck = b => InCombat;
     }
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.DefenseSingle, $"{ArcaneCrest}"},
-        {DescType.MoveAction, $"{HellsIngress}"},
-    };
+    //public override SortedList<DescType, string> DescriptionDict => new()
+    //{
+    //    {DescType.DefenseSingle, $"{ArcaneCrest}"},
+    //    {DescType.MoveAction, $"{HellsIngress}"},
+    //};
 
     private protected override IAction CountDownAction(float remainTime)
     {
