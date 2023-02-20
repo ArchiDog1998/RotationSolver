@@ -73,6 +73,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     private async void DutyState_DutyCompleted(object sender, ushort e)
     {
+        RSCommands.CancelState();
         await Task.Delay(new Random().Next(4000, 6000));
 
         Service.Configuration.DutyEnd.AddMacro();
