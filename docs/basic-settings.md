@@ -12,3 +12,25 @@ Click on the button on the `Help` is not efficiency. So you can right click on t
 
 There is a brief macro function description.
 
+Macros are divided into two categories. One is for state, the other is for special duration.
+
+### State
+
+This kind of macro will set a no-time-limit state. It contains three macros.
+
+| Macro            | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| /rotation Smart  | Start attacking in smart mode(auto-targeting) when out of combat, otherwise switch the target according to the conditions. |
+| /rotation Manual | Start attacking in manual mode. You need to choose the target manually. |
+| /rotation Cancel | Stop attacking. Remember to turn it off when not in use!     |
+
+### Special Duration
+
+This kind of macro will open a window for some special action to use. And the time is set here.
+
+| Macro | Description |
+| ----- | ----------- |
+|       |             |
+
+
+

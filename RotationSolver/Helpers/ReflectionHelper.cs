@@ -1,5 +1,6 @@
 ﻿using RotationSolver.Localization;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -23,15 +24,18 @@ internal static class ReflectionHelper
 
     internal static MethodInfo[] GetStaticBoolMethodInfo(this Type type, Func<MethodInfo, bool> checks)
     {
+        return type.GetAllMethodInfo().Where(m => checks(m) && m.ReturnType == typeof(bool) && m.IsStatic).ToArray();
+    }
+
+    internal static IEnumerable<MethodInfo> GetAllMethodInfo(this Type type)
+    {
         if (type == null) return new MethodInfo[0];
 
         var methods = from method in type.GetRuntimeMethods()
-                      where method.IsStatic
-                      && !method.IsConstructor && method.ReturnType == typeof(bool)
-                      && checks(method)
+                      where !method.IsConstructor
                       select method;
 
-        return methods.Union(type.BaseType.GetStaticBoolMethodInfo(checks)).ToArray();
+        return methods.Union(type.BaseType.GetAllMethodInfo());
     }
 
     internal static PropertyInfo GetPropertyInfo(this Type type, string name)

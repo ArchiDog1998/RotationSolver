@@ -239,7 +239,7 @@ internal abstract partial class CustomRotation
         if (type == null) return new IBaseAction[0];
 
         var acts = from prop in type.GetProperties()
-                   where typeof(IBaseAction).IsAssignableFrom(prop.PropertyType)
+                   where typeof(IBaseAction).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true)
                    select (IBaseAction)prop.GetValue(this) into act
                    orderby act.ID
                    where act is RoleAction role ? role.InRole(Job.GetJobRole()) : true

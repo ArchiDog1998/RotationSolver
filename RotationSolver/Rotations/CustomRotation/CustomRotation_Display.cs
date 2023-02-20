@@ -1,4 +1,5 @@
 ﻿using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Utility;
 using ImGuiNET;
 using RotationSolver.Attributes;
@@ -6,36 +7,54 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Timeline;
 using RotationSolver.Windows.RotationConfigWindow;
+using System.Linq;
 using System.Reflection;
 
 namespace RotationSolver.Rotations.CustomRotation
 {
     internal abstract partial class CustomRotation
     {
+        const ImGuiWindowFlags flags = 
+              ImGuiWindowFlags.Tooltip |
+              ImGuiWindowFlags.NoTitleBar |
+              ImGuiWindowFlags.NoMove |
+              ImGuiWindowFlags.NoResize |
+              ImGuiWindowFlags.NoSavedSettings |
+              ImGuiWindowFlags.AlwaysAutoResize;
+
         public unsafe void Display(ICustomRotation[] rotations, bool canAddButton)
             => this.DrawEnableTexture(canAddButton, null,
         text =>
         {
-            ImGui.OpenPopup("Popup" + GetHashCode().ToString());
+            var id = "Popup" + GetHashCode().ToString();
 
-            if (ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
+            ImGui.SetWindowPos(id, ImGui.GetIO().MousePos);
+            ImGui.SetNextWindowSizeConstraints(new System.Numerics.Vector2(400, 0), new System.Numerics.Vector2(1000, 1000));
+            if (ImGui.Begin(id, flags))
             {
-                if(!string.IsNullOrEmpty(text))
+                if (!string.IsNullOrEmpty(text))
                 {
-                    ImGui.TextWrapped(text);
-                    ImGui.NewLine();
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, text);
                 }
 
                 var type = this.GetType();
-                RotationDescAttribute.Merge(type.GetCustomAttributes<RotationDescAttribute>())?.Display(this);
 
-                foreach (var m in type.GetMethods())
+                var attrs = type.GetCustomAttributes<RotationDescAttribute>().ToList();
+                foreach (var m in type.GetAllMethodInfo())
                 {
-                    RotationDescAttribute.Merge(m.GetCustomAttributes<RotationDescAttribute>())?.Display(this);
+                    attrs.Add(RotationDescAttribute.MergeToOne(m.GetCustomAttributes<RotationDescAttribute>()));
                 }
 
-                ImGui.EndPopup();
+                bool last = true;
+                foreach (var a in RotationDescAttribute.Merge(attrs))
+                {
+                    if (last) ImGui.Separator();
+                    last = RotationDescAttribute.MergeToOne(a)?.Display(this) ?? false;
+                }
+
+                ImGui.End();
             }
+
         }, () =>
         {
             if (!string.IsNullOrEmpty(RotationName) && rotations != null)

@@ -59,7 +59,10 @@ internal static class ImGuiHelper
             }
             if (isSelected) ImGui.PopStyleColor();
 
-            showToolTip(desc);
+            if (ImGui.IsItemHovered())
+            {
+                showToolTip(desc);
+            }
         }
 
 

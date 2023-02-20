@@ -1,7 +1,9 @@
 ﻿using ImGuiNET;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
 using System;
@@ -39,37 +41,60 @@ internal class RotationDescAttribute : Attribute
 
 	}
 
-	public void Display(ICustomRotation rotation)
+	public bool Display(ICustomRotation rotation)
 	{
-		ImGui.Columns(2);
-		ImGui.SetColumnWidth(0, 100);
-		ImGui.Text(DescType.ToName());
+		var acts = rotation.AllActions;
+
+		var allActions = Actions.Select(i => acts.FirstOrDefault(a => a.ID == (uint)i))
+			.Where(i => i != null);
+
+		bool hasDesc = !string.IsNullOrEmpty(Description);
+
+		if (!hasDesc && !allActions.Any()) return false;
+
+        ImGui.Columns(2);
+		ImGui.SetColumnWidth(0, 150);
+        ImGui.Text(DescType.ToName());
 
 		ImGui.NextColumn();
 
-		ImGui.TextWrapped(Description);
-		var acts = rotation.AllActions;
-		foreach (var item in Actions)
+		if (hasDesc)
 		{
-			var a = acts.FirstOrDefault(a => a.ID == (uint)item);
-			if (a == null) continue;
-			ImGui.Image(a.GetTexture().ImGuiHandle, new System.Numerics.Vector2(24, 24));
-			if (ImGui.IsItemHovered())
-			{
-				ImGui.SetTooltip(a.Name);
-			}
-			ImGui.SameLine();
+			ImGui.Text(Description);
+			ImGui.NewLine();
 		}
 
+		bool notStart = false;
+		foreach (var item in allActions)
+		{
+            if (item == null) continue;
 
-        ImGui.Columns();
+            if (notStart)
+			{
+				ImGui.SameLine();
+                ImGuiHelper.Spacing();
+            }
+
+            ImGui.Image(item.GetTexture().ImGuiHandle, new System.Numerics.Vector2(24, 24));
+			notStart = true;
+        }
+
+        ImGui.Columns(1);
+		return true;
 	}
+	public static IEnumerable<RotationDescAttribute[]> Merge(IEnumerable<RotationDescAttribute> rotationDescAttributes)
+		=> from r in rotationDescAttributes
+		   where r is RotationDescAttribute
+           group r by r.DescType into gr
+           orderby gr.Key
+           select gr.ToArray();
 
-	public static RotationDescAttribute Merge(IEnumerable<RotationDescAttribute> rotationDescAttributes)
+	public static RotationDescAttribute MergeToOne(IEnumerable<RotationDescAttribute> rotationDescAttributes)
 	{
 		var result = new RotationDescAttribute();
 		foreach (var attr in rotationDescAttributes)
 		{
+			if(attr == null) continue;
 			if(!string.IsNullOrEmpty(attr.Description))
 			{
                 result.Description = attr.Description;

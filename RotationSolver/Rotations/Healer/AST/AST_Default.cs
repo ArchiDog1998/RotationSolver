@@ -6,22 +6,19 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
-using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.AST;
 
-[Description("Some Rotation Description")]
-[RotationDesc("Burst Info?")]
+[RotationDesc("Burst Info?", ActionID.Divination)]
 internal sealed class AST_Default : AST_Base
 {
     public override string GameVersion => "6.28";
 
     public override string RotationName => "Default";
+
+    public override string Description => "This is a test description.";
 
     private protected override IRotationConfigSet CreateConfiguration()
         => base.CreateConfiguration()

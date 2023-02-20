@@ -51,6 +51,8 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 ImGui.Separator();
 
                 StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+
+                ImGui.Separator();
                 ImGui.Separator();
 
                 SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);

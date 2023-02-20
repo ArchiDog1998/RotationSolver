@@ -49,7 +49,7 @@ internal abstract partial class CustomRotation : ICustomRotation
 
     public BattleChara MoveTarget { get; private set; }
 
-    public virtual string Description { get; } = string.Empty;
+    public virtual string Description { get; } = "It seems that the author didn't write a description!";
 
     /// <summary>
     /// Description about the actions.

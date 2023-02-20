@@ -37,7 +37,7 @@ internal partial class Strings
         = "Start attacking in smart mode(auto-targeting) when out of combat, otherwise switch the target according to the conditions.";
 
     public string Configwindow_HelpItem_AttackManual { get; set; }
-        = "Start attacking in manual mode.";
+        = "Start attacking in manual mode. You need to choose the target manually.";
 
     public string Configwindow_HelpItem_AttackCancel { get; set; }
         = "Stop attacking. Remember to turn it off when not in use!";
