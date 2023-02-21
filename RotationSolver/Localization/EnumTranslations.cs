@@ -165,7 +165,7 @@ internal static class EnumTranslations
         SpecialCommandType.MoveForward => LocalizationManager.RightLang.Configwindow_HelpItem_MoveForward,
         SpecialCommandType.MoveBack => LocalizationManager.RightLang.Configwindow_HelpItem_MoveBack,
         SpecialCommandType.AntiKnockback => LocalizationManager.RightLang.Configwindow_HelpItem_AntiKnockback,
-        SpecialCommandType.Burst => LocalizationManager.RightLang.Configwindow_HelpItem_Break,
+        SpecialCommandType.Burst => LocalizationManager.RightLang.Configwindow_HelpItem_Burst,
         SpecialCommandType.EndSpecial => LocalizationManager.RightLang.Configwindow_HelpItem_EndSpecial,
         _ => string.Empty,
     };

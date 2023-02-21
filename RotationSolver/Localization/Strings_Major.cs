@@ -43,16 +43,16 @@ internal partial class Strings
         = "Stop attacking. Remember to turn it off when not in use!";
 
     public string Configwindow_HelpItem_HealArea { get; set; }
-        = "Open a window to use one or more AoE heal.";
+        = "Open a window to use AoE heal.";
 
     public string Configwindow_HelpItem_HealSingle { get; set; }
-        = "Open a window to use one or more single heal.";
+        = "Open a window to use single heal.";
 
     public string Configwindow_HelpItem_DefenseArea { get; set; }
-        = "Open a window to use one or more AoE defense.";
+        = "Open a window to use AoE defense.";
 
     public string Configwindow_HelpItem_DefenseSingle { get; set; }
-        = "Open a window to use one or more single defense.";
+        = "Open a window to use single defense.";
 
     public string Configwindow_HelpItem_Esuna { get; set; }
         = "Open a window to use Esuna,tank stance actions or True North.";
@@ -63,8 +63,8 @@ internal partial class Strings
     public string Configwindow_HelpItem_AntiKnockback { get; set; }
         = "Open a window to use knockback-penalty actions.";
 
-    public string Configwindow_HelpItem_Break { get; set; }
-        = "Open a window to use break-combo.";
+    public string Configwindow_HelpItem_Burst { get; set; }
+        = "Open a window to burst.";
 
     public string Configwindow_HelpItem_MoveForward { get; set; }
         = "Open a window to move forward.";
@@ -73,7 +73,7 @@ internal partial class Strings
         = "Open a window to move back.";
 
     public string Configwindow_HelpItem_EndSpecial { get; set; }
-    = "Close special status";
+        = "Close special window.";
     public string Configwindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
     public string Configwindow_Helper_GameVersion { get; set; } = "Game Version";
     public string Configwindow_Helper_OpenSource { get; set; } = "Open the source code URL";

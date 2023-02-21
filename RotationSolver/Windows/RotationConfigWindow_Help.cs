@@ -53,6 +53,7 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
                 ImGui.Separator();
+                ImGui.NewLine();
                 ImGui.Separator();
 
                 SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
