@@ -18,12 +18,32 @@ namespace RotationSolver.Attributes;
 internal class RotationDescAttribute : Attribute
 {
 	public string Description { get; private set; } = string.Empty;
-    public DescType DescType { get; private set; } = DescType.None;
+    public DescType Type { get; private set; } = DescType.None;
 	public IEnumerable<ActionID> Actions { get; private set; } = Enumerable.Empty<ActionID>();
-
-	public RotationDescAttribute(DescType descType)
+	private uint IconID => Type switch
 	{
-        DescType = descType;
+		DescType.BurstActions => 62583,
+
+		DescType.HealAreaGCD => 62582,
+		DescType.HealAreaAbility => 62582,
+		DescType.HealSingleGCD => 62582,
+		DescType.HealSingleAbility => 62582,
+
+		DescType.DefenseAreaGCD => 62581,
+		DescType.DefenceAreaAbility => 62581,
+		DescType.DefenseSingleGCD => 62581,
+		DescType.DefenceSingleAbility => 62581,
+
+		DescType.MoveForwardGCD => 104,
+		DescType.MoveForwardAbility => 104,
+		DescType.MoveBackAbility => 104,
+
+        _ => 62144,
+	};
+
+    public RotationDescAttribute(DescType descType)
+	{
+        Type = descType;
     }
 	public RotationDescAttribute(params ActionID[] actions)
 		:this(string.Empty, actions)
@@ -41,7 +61,9 @@ internal class RotationDescAttribute : Attribute
 
 	}
 
-	public bool Display(ICustomRotation rotation)
+	static readonly System.Numerics.Vector2 PIC_SIZE = new System.Numerics.Vector2(24, 24);
+
+    public bool Display(ICustomRotation rotation)
 	{
 		var acts = rotation.AllActions;
 
@@ -53,8 +75,9 @@ internal class RotationDescAttribute : Attribute
 		if (!hasDesc && !allActions.Any()) return false;
 
         ImGui.Columns(2, this.GetHashCode().ToString(), false);
-		ImGui.SetColumnWidth(0, 150);
-        ImGui.Text(DescType.ToName());
+		ImGui.SetColumnWidth(0, 170);
+        ImGui.Image(IconSet.GetTexture(IconID).ImGuiHandle, PIC_SIZE);
+        ImGui.Text(" " + Type.ToName());
 
 		ImGui.NextColumn();
 
@@ -72,10 +95,11 @@ internal class RotationDescAttribute : Attribute
             if (notStart)
 			{
 				ImGui.SameLine();
-                ImGuiHelper.Spacing();
+				ImGui.Text(" ");
+				ImGui.SameLine();
             }
 
-            ImGui.Image(item.GetTexture().ImGuiHandle, new System.Numerics.Vector2(24, 24));
+            ImGui.Image(item.GetTexture().ImGuiHandle, PIC_SIZE);
 			notStart = true;
         }
 
@@ -85,7 +109,7 @@ internal class RotationDescAttribute : Attribute
 	public static IEnumerable<RotationDescAttribute[]> Merge(IEnumerable<RotationDescAttribute> rotationDescAttributes)
 		=> from r in rotationDescAttributes
 		   where r is RotationDescAttribute
-           group r by r.DescType into gr
+           group r by r.Type into gr
            orderby gr.Key
            select gr.ToArray();
 
@@ -99,14 +123,14 @@ internal class RotationDescAttribute : Attribute
 			{
                 result.Description = attr.Description;
 			}
-			if(attr.DescType != DescType.None)
+			if(attr.Type != DescType.None)
 			{
-                result.DescType = attr.DescType;
+                result.Type = attr.Type;
 			}
             result.Actions = result.Actions.Union(attr.Actions);
         }
 
-		if (result.DescType == DescType.None) return null;
+		if (result.Type == DescType.None) return null;
 		return result;
 	}
 }

@@ -48,12 +48,10 @@ internal partial class RotationConfigWindow
 
     private void DrawParamBasic()
     {
-        //Never Repalce Icon
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_NeverReplaceIcon,
             ref Service.Configuration.NeverReplaceIcon,
             LocalizationManager.RightLang.Configwindow_Param_NeverReplaceIconDesc);
 
-        //Use Overlay Window
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseOverlayWindow,
             ref Service.Configuration.UseOverlayWindow,
             LocalizationManager.RightLang.Configwindow_Param_UseOverlayWindowDesc);
@@ -65,7 +63,7 @@ internal partial class RotationConfigWindow
             ref Service.Configuration.WeaponInterval, min: 0.5f, max: 0.7f);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_CountDownAhead,
-    ref Service.Configuration.CountDownAhead, min: 0.5f, max: 0.7f);
+            ref Service.Configuration.CountDownAhead, min: 0.5f, max: 0.7f);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_SpecialDuration,
             ref Service.Configuration.SpecialDuration, speed: 0.02f, min: 1, max: 20);
@@ -303,7 +301,7 @@ internal partial class RotationConfigWindow
             ref Service.Configuration.UseHealWhenNotAHealer);
 
         DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_LessMPNoRaise,
-            ref Service.Configuration.LessMPNoRaise, 200, 0, 10000);
+            ref Service.Configuration.LessMPNoRaise, 200, 0, 2000000);
     }
 
     private void DrawParamCondition()
