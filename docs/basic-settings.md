@@ -28,13 +28,19 @@ This kind of macro will set a no-time-limit state. It contains three macros.
 
 This kind of macro will open a window for some special action to use. And the time is set here.
 
-| Macro                   | Description                          |
-| ----------------------- | ------------------------------------ |
-| /rotation EndSpecial    | To end this special duration.        |
-| /rotation HealArea      | Open a window to use AoE heal.       |
-| /rotation HealSingle    | Open a window to use single heal.    |
-| /rotation DefenseArea   | Open a window to use AoE defense.    |
-| /rotation DefenseSingle | Open a window to use single defense. |
+| Macro                      | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| /rotation EndSpecial       | To end this special duration.                                |
+| /rotation HealArea         | Open a window to use AoE heal.                               |
+| /rotation HealSingle       | Open a window to use single heal.                            |
+| /rotation DefenseArea      | Open a window to use AoE defense.                            |
+| /rotation DefenseSingle    | Open a window to use single defense.                         |
+| /rotation MoveForward      | Open a window to move forward.                               |
+| /rotation MoveBack         | Open a window to move back.                                  |
+| /rotation EsunaStanceNorth | Open a window to use Esuna,tank stance actions or True North. |
+| /rotation RaiseShirk       | Open a window to use Raise or Shirk.                         |
+| /rotation AntiKnockback    | Open a window to use knockback-penalty actions.              |
+| /rotation Burst            | Open a window to burst.                                      |
 
 
 
