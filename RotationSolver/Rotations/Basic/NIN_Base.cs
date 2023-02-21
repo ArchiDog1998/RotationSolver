@@ -321,4 +321,12 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
         if (Feint.CanUse(out act)) return true;
         return false;
     }
+
+    [RotationDesc(ActionID.ShadeShift)]
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (ShadeShift.CanUse(out act)) return true;
+
+        return false;
+    }
 }

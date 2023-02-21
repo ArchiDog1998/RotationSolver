@@ -134,7 +134,6 @@ namespace RotationSolver.Rotations.Basic
             }
         }
 
-
         /// <summary>
         /// 闪雷
         /// </summary>
@@ -309,6 +308,27 @@ namespace RotationSolver.Rotations.Basic
                 Fire4Time = Player.TotalCastTime;
             }
             base.UpdateInfo();
+        }
+
+        [RotationDesc(ActionID.Manaward)]
+        private protected sealed override bool DefenseSingleGCD(out IAction act)
+        {
+            if (Manaward.CanUse(out act)) return true;
+            return base.DefenseSingleGCD(out act);
+        }
+
+        [RotationDesc(ActionID.Addle)]
+        private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+        {
+            if (Addle.CanUse(out act)) return true;
+            return false;
+        }
+
+        [RotationDesc(ActionID.AetherialManipulation)]
+        private protected sealed override bool MoveForwardGCD(out IAction act)
+        {
+            if (AetherialManipulation.CanUse(out act, mustUse: true)) return true;
+            return base.MoveForwardGCD(out act);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -356,29 +357,12 @@ internal class BLM_Default : BLM_Base
         return false;
     }
 
+    [RotationDesc(ActionID.BetweenTheLines, ActionID.Leylines)]
     private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (BetweenTheLines.CanUse(out act)) return true;
         if (Leylines.CanUse(out act, mustUse: true)) return true;
 
         return base.HealSingleAbility(abilitiesRemaining, out act);
-    }
-
-    private protected override bool DefenseSingleGCD(out IAction act)
-    {
-        if (Manaward.CanUse(out act)) return true;
-        return base.DefenseSingleGCD(out act);
-    }
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        if (Addle.CanUse(out act)) return true;
-        return false;
-    }
-
-    private protected override bool MoveForwardGCD(out IAction act)
-    {
-        if (AetherialManipulation.CanUse(out act, mustUse: true)) return true;
-        return base.MoveForwardGCD(out act);
     }
 }

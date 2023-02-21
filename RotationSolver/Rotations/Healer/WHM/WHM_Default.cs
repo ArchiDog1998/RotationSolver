@@ -1,5 +1,6 @@
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -32,13 +33,6 @@ internal sealed class WHM_Default : WHM_Base
         }
     };
 
-    //public override SortedList<DescType, string> DescriptionDict => new()
-    //{
-    //    {DescType.HealArea, $"{AfflatusRapture}, {Medica2}, {Cure3}, {Medica}\n{Asylum}"},
-    //    {DescType.HealSingle, $"{AfflatusSolace}, {Regen}, {Cure2}, {Cure}\n{Tetragrammaton},{DivineBenison}"},
-    //    {DescType.DefenseArea, $"{Temperance}, {LiturgyoftheBell}"},
-    //    {DescType.DefenseSingle, $"{DivineBenison}, {Aquaveil}"},
-    //};
     private protected override bool GeneralGCD(out IAction act)
     {
         //苦难之心
@@ -94,6 +88,7 @@ internal sealed class WHM_Default : WHM_Base
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
+    [RotationDesc(ActionID.AfflatusSolace, ActionID.Regen, ActionID.Cure2, ActionID.Cure)]
     private protected override bool HealSingleGCD(out IAction act)
     {
         //安慰之心
@@ -112,6 +107,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
+    [RotationDesc(ActionID.Benediction, ActionID.Asylum, ActionID.DivineBenison, ActionID.Tetragrammaton)]
     private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Benediction.CanUse(out act) && 
@@ -128,6 +124,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
+    [RotationDesc(ActionID.AfflatusRapture, ActionID.Medica2, ActionID.Cure3, ActionID.Medica)]
     private protected override bool HealAreaGCD(out IAction act)
     {
         //狂喜之心
@@ -148,15 +145,14 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
+    [RotationDesc(ActionID.Asylum)]
     private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
-        //庇护所
         if (Asylum.CanUse(out act)) return true;
-
-        act = null;
         return false;
     }
 
+    [RotationDesc(ActionID.DivineBenison, ActionID.Aquaveil)]
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //神祝祷
@@ -167,6 +163,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
+    [RotationDesc(ActionID.Temperance, ActionID.LiturgyoftheBell)]
     private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //节制
@@ -177,12 +174,14 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    //开局5s使用再生和盾给开了盾姿的t
     private protected override IAction CountDownAction(float remainTime)
     {
+        if(remainTime < Stone.CastTime + Service.Configuration.CountDownAhead
+            && Stone.CanUse(out var act)) return act;
+
         if (Configs.GetBool("UsePreRegen") && remainTime <= 5 && remainTime > 3)
         {
-            if (Regen.CanUse(out var act)) return act;
+            if (RegenDefense.CanUse(out act)) return act;
             if (DivineBenison.CanUse(out act)) return act;
         }
         return base.CountDownAction(remainTime);

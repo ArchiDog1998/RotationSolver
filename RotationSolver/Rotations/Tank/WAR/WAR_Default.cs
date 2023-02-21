@@ -1,4 +1,5 @@
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -16,31 +17,22 @@ internal sealed class WAR_Default : WAR_Base
 
     public override string RotationName => "Default";
 
-    //public override SortedList<DescType, string> DescriptionDict => new()
-    //{
-    //    {DescType.DefenseArea, $"{ShakeItOff}"},
-    //    {DescType.DefenseSingle, $"{RawIntuition}, {Vengeance}"},
-    //    {DescType.MoveAction, $"GCD: {PrimalRend}\n{Onslaught}"},
-    //};
-
     static WAR_Default()
     {
         InnerBeast.RotationCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest);
     }
 
+    [RotationDesc(ActionID.ShakeItOff, ActionID.Reprisal)]
     private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
-        //°ÚÍÑ ¶ÓÓÑÌ×¶Ü
         if (ShakeItOff.CanUse(out act, mustUse: true)) return true;
-
         if (Reprisal.CanUse(out act, mustUse: true)) return true;
-
         return false;
     }
 
+    [RotationDesc(ActionID.PrimalRend)]
     private protected override bool MoveForwardGCD(out IAction act)
     {
-        //·Å¸ö´ó Âù»Ä±ÀÁÑ »áÍùÇ°·É
         if (PrimalRend.CanUse(out act, mustUse: true)) return true;
         return false;
     }
@@ -79,6 +71,7 @@ internal sealed class WAR_Default : WAR_Base
         return false;
     }
 
+    [RotationDesc(ActionID.RawIntuition, ActionID.Vengeance, ActionID.Rampart, ActionID.RawIntuition, ActionID.Reprisal)]
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (abilitiesRemaining == 2)

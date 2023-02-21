@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Linq;
@@ -309,9 +310,25 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
         return false;
     }
 
+    [RotationDesc(ActionID.EnAvant)]
     private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         if (EnAvant.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.CuringWaltz, ActionID.Improvisation)]
+    private protected sealed override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (CuringWaltz.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Improvisation.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.ShieldSamba)]
+    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (ShieldSamba.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }

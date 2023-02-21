@@ -22,34 +22,13 @@ internal sealed class BRD_Default : BRD_Base
             .SetFloat("MAGETime", 34, "MAGE Time", min: 0, max: 45, speed: 1)
             .SetFloat("ARMYTime", 43, "ARMY Time", min: 0, max: 45, speed: 1);
 
-    //public override SortedList<DescType, string> DescriptionDict => new()
-    //{
-    //    {DescType.Description, "Please make sure that the three song times add up to 120 seconds!"},
-    //    {DescType.DefenseArea, $"{Troubadour}"},
-    //    {DescType.HealSingle, $"{NaturesMinne}"},
-    //};
+    public override string Description => "Please make sure that the three song times add up to 120 seconds!";
 
     private bool BindWAND => Configs.GetBool("BindWAND") && WanderersMinuet.EnoughLevel;
     private int FirstSong => Configs.GetCombo("FirstSong");
     private float WANDRemainTime => 45 - Configs.GetFloat("WANDTime");
     private float MAGERemainTime => 45 - Configs.GetFloat("MAGETime");
     private float ARMYRemainTime => 45 - Configs.GetFloat("ARMYTime");
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //行吟
-        if (Troubadour.CanUse(out act)) return true;
-
-        return false;
-    }
-
-    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //大地神的抒情恋歌
-        if (NaturesMinne.CanUse(out act)) return true;
-
-        return false;
-    }
 
     private protected override bool GeneralGCD(out IAction act)
     {

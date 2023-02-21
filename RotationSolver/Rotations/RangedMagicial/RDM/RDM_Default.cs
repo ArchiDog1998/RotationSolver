@@ -1,4 +1,5 @@
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -8,18 +9,12 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.RangedMagicial.RDM;
 
+[RotationDesc(ActionID.Embolden)]
 internal sealed class RDM_Default : RDM_Base
 {
     public override string GameVersion => "6.31";
 
     public override string RotationName => "Default";
-
-    //public override SortedList<DescType, string> DescriptionDict => new()
-    //{
-    //    {DescType.HealSingle, $"{Vercure}"},
-    //    {DescType.DefenseArea, $"{MagickBarrier}"},
-    //    {DescType.MoveAction, $"{CorpsAcorps}"},
-    //};
 
     public bool CanStartMeleeCombo 
     {
@@ -100,13 +95,6 @@ internal sealed class RDM_Default : RDM_Base
         return false;
     }
 
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        if (Addle.CanUse(out act)) return true;
-        if (MagickBarrier.CanUse(out act, mustUse: true)) return true;
-        return false;
-    }
 
     private protected override bool EmergencyGCD(out IAction act)
     {

@@ -94,15 +94,6 @@ internal enum StatusID : ushort
     /// </summary>
     Dia = 1871,
     #endregion
-    ///// <summary>
-    ///// 即刻咏唱
-    ///// </summary>
-    //Swiftcast1 = 1325,
-
-    ///// <summary>
-    ///// 即刻咏唱
-    ///// </summary>
-    //Swiftcast2 = 1987,
 
     /// <summary>
     /// 即刻咏唱
@@ -1106,7 +1097,6 @@ internal enum StatusID : ushort
     /// </summary>
     AuspiciousTrance = 2497,
 
-
     /// <summary>
     /// 致死腐烂毒素
     /// </summary>
@@ -1122,4 +1112,6 @@ internal enum StatusID : ushort
     IceSpikesInvincible = 198,
 
     CircleOfPower = 738,
+
+    Aetherpact = 1223,
 }

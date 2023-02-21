@@ -1,4 +1,5 @@
 ﻿using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.RangedMagicial.SMN;
 
+[RotationDesc(ActionID.SearingLight)]
 internal sealed class SMN_Default : SMN_Base
 {
     public override string GameVersion => "6.28";
@@ -30,12 +32,7 @@ internal sealed class SMN_Default : SMN_Base
 
     protected override bool CanHealSingleSpell => false;
 
-    //public override SortedList<DescType, string> DescriptionDict => new()
-    //{
-    //    {DescType.DefenseSingle, $"{RadiantAegis}"},
-    //    {DescType.HealSingle, $"{Physick}"},
-    //};
-
+    [RotationDesc(ActionID.CrimsonCyclone)]
     private protected override bool MoveForwardGCD(out IAction act)
     {
         //火神突进
@@ -175,31 +172,5 @@ internal sealed class SMN_Default : SMN_Base
         if (remainTime <= Ruin.CastTime + Service.Configuration.CountDownAhead
             && Ruin.CanUse(out _)) return Ruin;
         return base.CountDownAction(remainTime);
-    }
-
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //守护之光
-        if (RadiantAegis.CanUse(out act)) return true;
-
-        return false;
-    }
-
-    private protected override bool HealSingleGCD(out IAction act)
-    {
-        //医术
-        if (Physick.CanUse(out act)) return true;
-
-        return false;
-    }
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //守护之光
-        if (RadiantAegis.CanUse(out act)) return true;
-
-        //混乱
-        if (Addle.CanUse(out act)) return true;
-        return false;
     }
 }

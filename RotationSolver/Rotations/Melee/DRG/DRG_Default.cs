@@ -1,4 +1,5 @@
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
@@ -22,11 +23,7 @@ internal sealed class DRG_Default : DRG_Base
             .SetBool("DRG_SafeMove", true, "Moving save");
     }
 
-    //public override SortedList<DescType, string> DescriptionDict => new SortedList<DescType, string>()
-    //{
-    //    {DescType.MoveAction, $"{SpineshatterDive}, {DragonfireDive}"},
-    //};
-
+    [RotationDesc(ActionID.SpineshatterDive, ActionID.DragonfireDive)]
     private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
     {
         if (abilityRemain > 1)
@@ -149,6 +146,4 @@ internal sealed class DRG_Default : DRG_Base
 
         #endregion
     }
-
-
 }

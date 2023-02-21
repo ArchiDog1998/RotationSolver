@@ -198,4 +198,18 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
         if (Feint.CanUse(out act)) return true;
         return false;
     }
+
+    [RotationDesc(ActionID.Mantra)]
+    private protected sealed override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (Mantra.CanUse(out act)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.RiddleofEarth)]
+    private protected sealed override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (RiddleofEarth.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -20,40 +21,18 @@ internal sealed class PLD_Default : PLD_Base
     }
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (Configs.GetBool("UseHolySpiritPre") && remainTime <= 2 && HolySpirit.CanUse(out _)) return HolySpirit;//提前2s圣灵
+        if (Configs.GetBool("UseHolySpiritPre") && remainTime <= HolySpirit.CastTime + Service.Configuration.CountDownAhead
+            && HolySpirit.CanUse(out _)) return HolySpirit;//提前2s圣灵
 
         if (Configs.GetBool("UseDivineVeilPre") && remainTime <= 15 && DivineVeil.CanUse(out _)) return DivineVeil;//提前15s幕帘
 
         return base.CountDownAction(remainTime);
-    }/*
-    //紧急使用的GCD
-    private protected override bool EmergencyGCD(out IAction act)
-    {
-        if (Player.HasStatus(true, StatusID.Requiescat)
-            && Player.WillStatusEndGCD(1, 0, true, StatusID.Requiescat))
-        {
-             if (Confiteor.ShouldUse(out act, mustUse: true))return true;//安魂快无了赶紧悔罪
-        }
-        /*if ((Target.HasStatus(true, StatusID.GoringBlade) && Target.WillStatusEndGCD(3, 0, true, StatusID.GoringBlade))//沥血快断了
-            ||  (Target.HasStatus(true, StatusID.BladeofValor) && Target.WillStatusEndGCD(3, 0, true, StatusID.BladeofValor)))//英勇之剑快断了
-        {
-            if (BladeofValor.ShouldUse(out act, mustUse: true)) return true;// 英勇之剑
-            if (BladeofTruth.ShouldUse(out act, mustUse: true)) return true;// 真理之剑
-            if (BladeofFaith.ShouldUse(out act, mustUse: true)) return true;// 信念之剑
-            if (GoringBlade.ShouldUse(out act)) return true;// 沥血剑
-            if (RiotBlade.ShouldUse(out act)) return true;// 暴乱剑
-            if (FastBlade.ShouldUse(out act)) return true;// 先锋剑
-        
-        act= null;
-        return false;
-    }}*/
-
+    }
+    
 
     //通常GCD
     private protected override bool GeneralGCD(out IAction act)
     {
-
-
         //大招
         if (BladeofValor.CanUse(out act, mustUse: true)) return true;// 英勇之剑
         if (BladeofTruth.CanUse(out act, mustUse: true)) return true;// 真理之剑
@@ -90,35 +69,32 @@ internal sealed class PLD_Default : PLD_Base
         return false;
     }
 
-    //范围防御能力技
+    [RotationDesc(ActionID.Reprisal, ActionID.DivineVeil, ActionID.PassageofArms)]
     private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
-
         if (Reprisal.CanUse(out act, mustUse: true)) return true;// 雪仇
         if (DivineVeil.CanUse(out act)) return true;//圣光幕帘
         if (PassageofArms.CanUse(out act)) return true;//武装戍卫
         return false;
     }
 
-    //单体防御能力技
+    [RotationDesc(ActionID.Rampart, ActionID.Sentinel, ActionID.Reprisal, ActionID.Sheltron)]
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-
         if (Rampart.CanUse(out act)) return true;//铁壁（减伤20%）
         if (Sentinel.CanUse(out act)) return true; //预警（减伤30%）
         if (Reprisal.CanUse(out act)) return true;//雪仇
         if (Sheltron.CanUse(out act)) return true;// 盾阵
-
-        /*
-        if (Intervention.ShouldUse(out act)) return true;//干预
-        if (Cover.ShouldUse(out act)) return true;//保护
-        */
+        
+        //if (Intervention.ShouldUse(out act)) return true;//干预
+        //if (Cover.ShouldUse(out act)) return true;//保护
+        
         return false;
     }
     //紧急使用的能力
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.IsTheSameTo(true, RiotBlade) || nextGCD.IsTheSameTo(true, GoringBlade))//插在暴乱剑或沥血剑前
+        if (nextGCD.IsTheSameTo(true, RiotBlade, GoringBlade))//插在暴乱剑或沥血剑前
         {
             if (FightorFlight.CanUse(out act) && abilitiesRemaining == 1) return true;//战逃
         }

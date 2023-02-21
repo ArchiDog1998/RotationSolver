@@ -44,7 +44,7 @@ internal sealed class AST_Default : AST_Base
         return base.CountDownAction(remainTime);
     }
 
-    [RotationDesc(ActionID.CelestialIntersection, ActionID.Exaltation)]
+    [RotationDesc("Another test please.", ActionID.CelestialIntersection, ActionID.Exaltation)]
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //天星交错

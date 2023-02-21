@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Updaters;
 
@@ -294,4 +295,25 @@ internal abstract class SMN_Base : CustomRotation.CustomRotation
     /// 医术
     /// </summary>
     public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, true);
+
+    [RotationDesc(ActionID.RadiantAegis)]
+    private protected sealed override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (RadiantAegis.CanUse(out act)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.Physick)]
+    private protected override bool HealSingleGCD(out IAction act)
+    {
+        if (Physick.CanUse(out act)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.Addle)]
+    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (Addle.CanUse(out act)) return true;
+        return false;
+    }
 }

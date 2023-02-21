@@ -325,4 +325,15 @@ internal abstract class RPR_Base : CustomRotation.CustomRotation
         act = null;
         return false;
     }
+
+    [RotationDesc(ActionID.ArcaneCrest)]
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (!SoulReaver && !Enshrouded)
+        {
+            if (ArcaneCrest.CanUse(out act)) return true;
+        }
+
+        return base.DefenceSingleAbility(abilitiesRemaining, out act);
+    }
 }

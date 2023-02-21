@@ -134,11 +134,7 @@ internal sealed class SAM_Default : SAM_Base
         }
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
-    {
-        if (ThirdEye.CanUse(out act)) return true;
-        return false;
-    }
+
 
     private protected override IAction CountDownAction(float remainTime)
     {

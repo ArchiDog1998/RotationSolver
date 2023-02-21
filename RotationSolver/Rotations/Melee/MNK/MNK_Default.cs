@@ -17,29 +17,9 @@ internal sealed class MNK_Default : MNK_Base
 
     public override string RotationName => "Default";
 
-
-    //public override SortedList<DescType, string> DescriptionDict => new()
-    //{
-    //    {DescType.HealArea, $"{Mantra}"},
-    //    {DescType.DefenseSingle, $"{RiddleofEarth}"},
-    //    {DescType.MoveAction, $"{Thunderclap}"},
-    //};
-
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("AutoFormShift", true, "Auto use FormShift");
-    }
-
-    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        if (Mantra.CanUse(out act)) return true;
-        return false;
-    }
-
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
-    {
-        if (RiddleofEarth.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        return false;
     }
 
     private bool OpoOpoForm(out IAction act)
@@ -55,7 +35,6 @@ internal sealed class MNK_Default : MNK_Base
     {
         if (FourpointFury.CanUse(out act)) return true;
 
-        //È·ÈÏBuff
         if (Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist) && TwinSnakes.CanUse(out act)) return true;
 
         if (TrueStrike.CanUse(out act)) return true;
