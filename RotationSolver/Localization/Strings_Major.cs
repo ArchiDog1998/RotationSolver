@@ -123,6 +123,12 @@ internal partial class Strings
     public string Configwindow_Param_Advanced { get; set; } = "Advanced";
     public string Configwindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting.";
     public string Configwindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
+    public string Configwindow_Param_ShowHealthRatio { get; set; } = "Show the health ratio for the check of Boss, Dying, Dot.";
+
+    public string Configwindow_Param_HealthRatioBoss { get; set; } = "If target's max health ratio is higher than this, regard it as Boss.";
+
+    public string Configwindow_Param_HealthRatioDying { get; set; } = "If target's current health ratio is lower than this, regard it is dying.";
+    public string Configwindow_Param_HealthRatioDot { get; set; } = "If target's current health ratio is higher than this, regard it can be dot.";
     public string Configwindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
     public string Configwindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
     public string Configwindow_Param_CastingDisplay { get; set; } = "Enhance castbar with casting status";

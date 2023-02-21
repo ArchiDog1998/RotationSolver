@@ -39,9 +39,10 @@ internal static class OverlayWindow
 
         ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
 
-        DrawLocation();
+        DrawPositional();
         DrawTarget();
         DrawMoveTarget();
+        DrawHealthRatio();
 
         ImGui.PopStyleVar();
         ImGui.End();
@@ -80,6 +81,22 @@ internal static class OverlayWindow
         }
     }
 
+    static readonly uint HealthRatioColor = ImGui.GetColorU32(new Vector4(0, 1, 0.8f, 1));
+    private static void DrawHealthRatio()
+    {
+        if(!Service.Configuration.ShowHealthRatio) return;
+
+        var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
+        foreach (BattleChara t in TargetUpdater.AllTargets)
+        {
+            if (t == null) continue;
+            if (Service.GameGui.WorldToScreen(t.Position, out var p))
+            {
+                ImGui.GetWindowDrawList().AddText(p, HealthRatioColor, $"Health Ratio: {t.CurrentHp / calHealth:F2} / {t.MaxHp / calHealth:F2}");
+            }
+        }
+    }
+
     private unsafe static void DrawMoveTarget()
     {
         if (!Service.Configuration.ShowMoveTarget) return;
@@ -87,19 +104,6 @@ internal static class OverlayWindow
         var c = Service.Configuration.MovingTargetColor;
         var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
-#if DEBUG
-        Service.GameGui.WorldToScreen(Service.ClientState.LocalPlayer.Position, out var plp);
-        var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
-        foreach (var t in TargetUpdater.AllTargets)
-        {
-            if (Service.GameGui.WorldToScreen(t.Position, out var p))
-            {
-                //ImGui.GetWindowDrawList().AddText(p, color, $"Is In View: {TargetSystem.Instance()->IsObjectInViewRange(t.GetAddress())}");
-
-                //ImGui.GetWindowDrawList().AddText(p, color, $"Boss Ratio (Max): {t.MaxHp / calHealth:F2}\nDying Ratio (Current): {t.CurrentHp / calHealth:F2}");
-            }
-        }
-#endif
         var tar = RotationUpdater.RightNowRotation?.MoveTarget;
         if (tar == null || tar == Service.ClientState.LocalPlayer) return;
 
@@ -129,10 +133,8 @@ internal static class OverlayWindow
     }
 
     const int COUNT = 20;
-    private static void DrawLocation()
+    private static void DrawPositional()
     {
-
-
         if (EnemyLocationTarget == null || !Service.Configuration.PositionalFeedback) return;
         if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth)) return;
         if (ShouldPositional is EnemyPositional.None or EnemyPositional.Front) return;
@@ -143,11 +145,7 @@ internal static class OverlayWindow
         Vector3 pPosition = EnemyLocationTarget.Position;
         if (!Service.GameGui.WorldToScreen(pPosition, out var scrPos)) return;
 
-
-
-        List<Vector2> pts = new List<Vector2>(2 * COUNT + 2);
-
-        pts.Add(scrPos);
+        List<Vector2> pts = new List<Vector2>(2 * COUNT + 2) { scrPos };
         switch (ShouldPositional)
         {
             case EnemyPositional.Flank:

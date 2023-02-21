@@ -149,6 +149,20 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseStopCasting,
             ref Service.Configuration.UseStopCasting);
+
+        ImGui.Separator();
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowHealthRatio,
+            ref Service.Configuration.ShowHealthRatio);
+
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_HealthRatioBoss,
+            ref Service.Configuration.HealthRatioBoss, speed: 0.02f, min: 0, max: 10);
+
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_HealthRatioDying,
+            ref Service.Configuration.HealthRatioDying, speed: 0.02f, min: 0, max: 10);
+
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_HealthRatioDot,
+            ref Service.Configuration.HealthRatioDot, speed: 0.02f, min: 0, max: 10);
     }
 
     private void DrawParamDisplay()

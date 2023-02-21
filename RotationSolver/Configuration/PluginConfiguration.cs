@@ -56,6 +56,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseItem = false;
     public bool PositionalFeedback = true;
     public bool ShowMoveTarget = true;
+    public bool ShowHealthRatio = false;
     public bool ShowTarget = true;
     public bool ChooseAttackMark = true;
     public bool CanAttackMarkAOE = true;
@@ -134,6 +135,10 @@ public class PluginConfiguration : IPluginConfiguration
     public int NamePlateIconId = 71204;
 
     public int MoveTargetAngle = 24;
+    public float HealthRatioBoss = 1.85f;
+    public float HealthRatioDying = 0.8f;
+    public float HealthRatioDot = 1.5f;
+
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
