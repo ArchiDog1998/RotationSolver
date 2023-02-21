@@ -147,7 +147,7 @@ internal partial class Strings
     public string Configwindow_Param_ShowWorkTaskFPS { get; set; } = "Display Task FPS on dtrbar";
 
     public string Configwindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
-    public string Configwindow_Param_ShowStateOnNamePlate { get; set; } = "Display plugin state on player's name plate.";
+    public string Configwindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on.";
     public string Configwindow_Param_Action { get; set; } = "Action";
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Param_AutoBurst { get; set; } = "Automatic burst";
@@ -307,18 +307,18 @@ internal partial class Strings
 
     #region DescType
     public string DescType_BurstActions { get; set; } = "Burst Actions";
-    public string DescType_MoveForwardGCD { get; set; } = "Move forward GCD";
-    public string DescType_HealAreaGCD { get; set; } = "Range Healing GCD";
-    public string DescType_HealSingleGCD { get; set; } = "Mono Healing GCD";
-    public string DescType_DefenseAreaGCD { get; set; } = "Range Defense GCD";
-    public string DescType_DefenseSingleGCD { get; set; } = "Mono Defense GCD";
+    public string DescType_MoveForwardGCD { get; set; } = "Move Forward GCD";
+    public string DescType_HealAreaGCD { get; set; } = "Area Healing GCD";
+    public string DescType_HealSingleGCD { get; set; } = "Single Healing GCD";
+    public string DescType_DefenseAreaGCD { get; set; } = "Area Defense GCD";
+    public string DescType_DefenseSingleGCD { get; set; } = "Single Defense GCD";
 
-    public string DescType_HealAreaAbility { get; set; } = "Range Healing Ability";
-    public string DescType_HealSingleAbility { get; set; } = "Mono Healing Ability";
-    public string DescType_DefenseAreaAbility { get; set; } = "Range Defense Ability";
-    public string DescType_DefenseSingleAbility { get; set; } = "Mono Defense Ability";
-    public string DescType_MoveForwardAbility { get; set; } = "Move forward Ability";
-    public string DescType_MoveBackAbility { get; set; } = "Move back Ability";
+    public string DescType_HealAreaAbility { get; set; } = "Area Healing Ability";
+    public string DescType_HealSingleAbility { get; set; } = "Single Healing Ability";
+    public string DescType_DefenseAreaAbility { get; set; } = "Area Defense Ability";
+    public string DescType_DefenseSingleAbility { get; set; } = "Single Defense Ability";
+    public string DescType_MoveForwardAbility { get; set; } = "Move Forward Ability";
+    public string DescType_MoveBackAbility { get; set; } = "Move Back Ability";
 
     #endregion
 

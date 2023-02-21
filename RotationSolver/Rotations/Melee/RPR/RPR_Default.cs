@@ -189,19 +189,6 @@ internal sealed class RPR_Default : RPR_Base
         return false;
     }
 
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //牵制
-        if (!SoulReaver && !Enshrouded)
-        {
-            if (Feint.CanUse(out act)) return true;
-        }
-
-        act = null;
-        return false;
-    }
-
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //神秘纹

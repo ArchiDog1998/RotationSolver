@@ -150,10 +150,5 @@ internal sealed class DRG_Default : DRG_Base
         #endregion
     }
 
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //Ç£ÖÆ
-        if (Feint.CanUse(out act)) return true;
-        return false;
-    }
+
 }

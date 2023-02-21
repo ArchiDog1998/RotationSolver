@@ -50,7 +50,7 @@ internal static class ImGuiHelper
         bool enable = false;
         if (able != null)
         {
-            if (isSelected) ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+            if (isSelected) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
             enable = able.IsEnabled;
             if (ImGui.Checkbox($"{texture.Name}##{texture.Name}", ref enable))
             {

@@ -211,8 +211,8 @@ internal partial class RotationConfigWindow
                 ref Service.Configuration.ShowWorkTaskFPS);
         }
 
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowStateOnNamePlate,
-            ref Service.Configuration.ShowStateOnNamePlate,  otherThing: RSCommands.UpdateStateNamePlate);
+        DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_NamePlateIconId,
+            ref Service.Configuration.NamePlateIconId, 5, 0, 150000, otherThing: RSCommands.UpdateStateNamePlate);
 
         ImGui.Spacing();
 
@@ -465,12 +465,13 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawIntNumber(string name, ref int value, float speed = 0.2f, int min = 0, int max = 1, string description = "")
+    private static void DrawIntNumber(string name, ref int value, float speed = 0.2f, int min = 0, int max = 1, string description = "", Action otherThing = null)
     {
         ImGui.SetNextItemWidth(100);
         if (ImGui.DragInt(name, ref value, speed, min, max))
         {
             Service.Configuration.Save();
+            otherThing?.Invoke();
         }
         if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
         {

@@ -139,12 +139,6 @@ internal sealed class SAM_Default : SAM_Base
         if (ThirdEye.CanUse(out act)) return true;
         return false;
     }
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        if (ThirdEye.CanUse(out act)) return true;
-        if (Feint.CanUse(out act)) return true;
-        return false;
-    }
 
     private protected override IAction CountDownAction(float remainTime)
     {

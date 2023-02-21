@@ -42,13 +42,6 @@ internal sealed class MNK_Default : MNK_Base
         return false;
     }
 
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        if (Feint.CanUse(out act)) return true;
-        return false;
-    }
-
-
     private bool OpoOpoForm(out IAction act)
     {
         if (ArmoftheDestroyer.CanUse(out act)) return true;

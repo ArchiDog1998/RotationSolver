@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 
@@ -305,11 +306,23 @@ internal abstract class RPR_Base : CustomRotation.CustomRotation
     public static IBaseAction ArcaneCrest { get; } = new BaseAction(ActionID.ArcaneCrest, true, isTimeline: true);
     #endregion
 
-
+    [RotationDesc(ActionID.HellsIngress)]
     private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         //E上去
         if (HellsIngress.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.Feint)]
+    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (!SoulReaver && !Enshrouded)
+        {
+            if (Feint.CanUse(out act)) return true;
+        }
+
+        act = null;
         return false;
     }
 }

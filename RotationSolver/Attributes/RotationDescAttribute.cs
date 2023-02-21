@@ -52,7 +52,7 @@ internal class RotationDescAttribute : Attribute
 
 		if (!hasDesc && !allActions.Any()) return false;
 
-        ImGui.Columns(2);
+        ImGui.Columns(2, this.GetHashCode().ToString(), false);
 		ImGui.SetColumnWidth(0, 150);
         ImGui.Text(DescType.ToName());
 

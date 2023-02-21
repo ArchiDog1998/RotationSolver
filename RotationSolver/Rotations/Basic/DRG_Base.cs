@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System.Linq;
@@ -185,4 +186,12 @@ internal abstract class DRG_Base : CustomRotation.CustomRotation
     {
         StatusNeed = new[] { StatusID.PowerSurge },
     };
+
+
+    [RotationDesc(ActionID.Feint)]
+    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (Feint.CanUse(out act)) return true;
+        return false;
+    }
 }

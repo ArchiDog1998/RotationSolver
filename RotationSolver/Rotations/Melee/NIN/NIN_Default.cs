@@ -333,11 +333,4 @@ internal sealed class NIN_Default : NIN_Base
         }
         return false;
     }
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //牵制
-        if (Feint.CanUse(out act)) return true;
-        return false;
-    }
 }

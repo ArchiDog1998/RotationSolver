@@ -34,7 +34,9 @@ namespace RotationSolver.Rotations.CustomRotation
             {
                 if (!string.IsNullOrEmpty(text))
                 {
-                    ImGui.TextColored(ImGuiColors.DalamudYellow, text);
+                    ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+                    ImGui.TextWrapped(text);
+                    ImGui.PopStyleColor();
                 }
 
                 var type = this.GetType();
