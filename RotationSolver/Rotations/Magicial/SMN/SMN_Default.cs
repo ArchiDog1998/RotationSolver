@@ -1,4 +1,5 @@
 ﻿using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.RangedMagicial.SMN;
 
+[RotationDesc(ActionID.SearingLight)]
 internal sealed class SMN_Default : SMN_Base
 {
     public override string GameVersion => "6.28";
@@ -30,17 +32,12 @@ internal sealed class SMN_Default : SMN_Base
 
     protected override bool CanHealSingleSpell => false;
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.DefenseSingle, $"{RadiantAegis}"},
-        {DescType.HealSingle, $"{Physick}"},
-    };
-
-    private protected override bool MoveGCD(out IAction act)
+    [RotationDesc(ActionID.CrimsonCyclone)]
+    private protected override bool MoveForwardGCD(out IAction act)
     {
         //火神突进
         if (CrimsonCyclone.CanUse(out act, mustUse: true)) return true;
-        return base.MoveGCD(out act);
+        return base.MoveForwardGCD(out act);
     }
 
     private protected override bool GeneralGCD(out IAction act)
@@ -172,33 +169,8 @@ internal sealed class SMN_Default : SMN_Base
     {
         if (remainTime <= 30 && SummonCarbuncle.CanUse(out _)) return SummonCarbuncle;
         //1.5s预读毁3
-        if (remainTime <= 1.5f && Ruin.CanUse(out _)) return Ruin;
+        if (remainTime <= Ruin.CastTime + Service.Configuration.CountDownAhead
+            && Ruin.CanUse(out _)) return Ruin;
         return base.CountDownAction(remainTime);
-    }
-
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //守护之光
-        if (RadiantAegis.CanUse(out act)) return true;
-
-        return false;
-    }
-
-    private protected override bool HealSingleGCD(out IAction act)
-    {
-        //医术
-        if (Physick.CanUse(out act)) return true;
-
-        return false;
-    }
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //守护之光
-        if (RadiantAegis.CanUse(out act)) return true;
-
-        //混乱
-        if (Addle.CanUse(out act)) return true;
-        return false;
     }
 }

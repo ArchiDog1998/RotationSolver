@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 
@@ -184,9 +185,9 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
+    [RotationDesc(ActionID.Onslaught)]
     private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
-        //Í»½ø
         if (Onslaught.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }

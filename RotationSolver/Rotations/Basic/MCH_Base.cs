@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 
@@ -176,4 +177,12 @@ internal abstract class MCH_Base : CustomRotation.CustomRotation
     };
 
     public static IBaseAction Dismantle { get; } = new BaseAction(ActionID.Dismantle, true, isTimeline: true);
+
+    [RotationDesc(ActionID.Tactician, ActionID.Dismantle)]
+    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (Tactician.CanUse(out act, mustUse: true)) return true;
+        if (Dismantle.CanUse(out act, mustUse: true)) return true;
+        return false;
+    }
 }

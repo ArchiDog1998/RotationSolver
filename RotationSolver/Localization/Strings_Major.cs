@@ -37,22 +37,22 @@ internal partial class Strings
         = "Start attacking in smart mode(auto-targeting) when out of combat, otherwise switch the target according to the conditions.";
 
     public string Configwindow_HelpItem_AttackManual { get; set; }
-        = "Start attacking in manual mode.";
+        = "Start attacking in manual mode. You need to choose the target manually.";
 
     public string Configwindow_HelpItem_AttackCancel { get; set; }
         = "Stop attacking. Remember to turn it off when not in use!";
 
     public string Configwindow_HelpItem_HealArea { get; set; }
-        = "Open a window to use one or more AoE heal.";
+        = "Open a window to use AoE heal.";
 
     public string Configwindow_HelpItem_HealSingle { get; set; }
-        = "Open a window to use one or more single heal.";
+        = "Open a window to use single heal.";
 
     public string Configwindow_HelpItem_DefenseArea { get; set; }
-        = "Open a window to use one or more AoE defense.";
+        = "Open a window to use AoE defense.";
 
     public string Configwindow_HelpItem_DefenseSingle { get; set; }
-        = "Open a window to use one or more single defense.";
+        = "Open a window to use single defense.";
 
     public string Configwindow_HelpItem_Esuna { get; set; }
         = "Open a window to use Esuna,tank stance actions or True North.";
@@ -63,8 +63,8 @@ internal partial class Strings
     public string Configwindow_HelpItem_AntiKnockback { get; set; }
         = "Open a window to use knockback-penalty actions.";
 
-    public string Configwindow_HelpItem_Break { get; set; }
-        = "Open a window to use break-combo.";
+    public string Configwindow_HelpItem_Burst { get; set; }
+        = "Open a window to burst.";
 
     public string Configwindow_HelpItem_MoveForward { get; set; }
         = "Open a window to move forward.";
@@ -73,7 +73,7 @@ internal partial class Strings
         = "Open a window to move back.";
 
     public string Configwindow_HelpItem_EndSpecial { get; set; }
-    = "Close special status";
+        = "Close special window.";
     public string Configwindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
     public string Configwindow_Helper_GameVersion { get; set; } = "Game Version";
     public string Configwindow_Helper_OpenSource { get; set; } = "Open the source code URL";
@@ -97,8 +97,9 @@ internal partial class Strings
     public string Configwindow_Param_UseOverlayWindowDesc { get; set; } = "This window is currently used to cue the body position in advance.";
     public string Configwindow_Param_Basic { get; set; } = "Basic";
 
-    public string Configwindow_Param_WeaponFaster { get; set; } = "Set the time advance of use actions";
+    public string Configwindow_Param_WeaponAhead { get; set; } = "Set the time advance of use actions";
     public string Configwindow_Param_WeaponInterval { get; set; } = "Set the interval between abilities using";
+    public string Configwindow_Param_CountDownAhead { get; set; } = "Set the time advance of use casting actions on counting down.";
     public string Configwindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string Configwindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
     public string Configwindow_Param_AutoOffBetweenArea { get; set; } = "Turn off when player is between area.";
@@ -122,6 +123,13 @@ internal partial class Strings
     public string Configwindow_Param_Advanced { get; set; } = "Advanced";
     public string Configwindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting.";
     public string Configwindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
+    public string Configwindow_Param_ShowActionFlag { get; set; } = "Show action flag.";
+    public string Configwindow_Param_ShowHealthRatio { get; set; } = "Show the health ratio for the check of Boss, Dying, Dot.";
+
+    public string Configwindow_Param_HealthRatioBoss { get; set; } = "If target's max health ratio is higher than this, regard it as Boss.";
+
+    public string Configwindow_Param_HealthRatioDying { get; set; } = "If target's current health ratio is lower than this, regard it is dying.";
+    public string Configwindow_Param_HealthRatioDot { get; set; } = "If target's current health ratio is higher than this, regard it can be dot.";
     public string Configwindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
     public string Configwindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
     public string Configwindow_Param_CastingDisplay { get; set; } = "Enhance castbar with casting status";
@@ -145,7 +153,8 @@ internal partial class Strings
 
     public string Configwindow_Param_ShowWorkTaskFPS { get; set; } = "Display Task FPS on dtrbar";
 
-    public string Configwindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state changed on toast";
+    public string Configwindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
+    public string Configwindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommand 61435, 61437";
     public string Configwindow_Param_Action { get; set; } = "Action";
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Param_AutoBurst { get; set; } = "Automatic burst";
@@ -304,13 +313,19 @@ internal partial class Strings
     #endregion
 
     #region DescType
-    public string DescType_Description { get; set; } = "Loop Description";
-    public string DescType_BreakingAction { get; set; } = "Burst Skills";
-    public string DescType_HealArea { get; set; } = "Range Healing";
-    public string DescType_HealSingle { get; set; } = "Mono Healing";
-    public string DescType_DefenseArea { get; set; } = "Range Defense";
-    public string DescType_DefenseSingle { get; set; } = "Mono Defense";
-    public string DescType_MoveAction { get; set; } = "Move Skills";
+    public string DescType_BurstActions { get; set; } = "Burst Actions";
+    public string DescType_MoveForwardGCD { get; set; } = "Move Forward GCD";
+    public string DescType_HealAreaGCD { get; set; } = "Area Healing GCD";
+    public string DescType_HealSingleGCD { get; set; } = "Single Healing GCD";
+    public string DescType_DefenseAreaGCD { get; set; } = "Area Defense GCD";
+    public string DescType_DefenseSingleGCD { get; set; } = "Single Defense GCD";
+
+    public string DescType_HealAreaAbility { get; set; } = "Area Healing Ability";
+    public string DescType_HealSingleAbility { get; set; } = "Single Healing Ability";
+    public string DescType_DefenseAreaAbility { get; set; } = "Area Defense Ability";
+    public string DescType_DefenseSingleAbility { get; set; } = "Single Defense Ability";
+    public string DescType_MoveForwardAbility { get; set; } = "Move Forward Ability";
+    public string DescType_MoveBackAbility { get; set; } = "Move Back Ability";
 
     #endregion
 
@@ -320,8 +335,8 @@ internal partial class Strings
     public string JobRole_Melee { get; set; } = "Melee";
     public string JobRole_Ranged { get; set; } = "Ranged";
     public string JobRole_Healer { get; set; } = "Healer";
-    public string JobRole_RangedPhysical { get; set; } = "Ranged Physical";
-    public string JobRole_RangedMagicial { get; set; } = "Ranged Magicial";
+    public string JobRole_RangedPhysical { get; set; } = "Ranged";
+    public string JobRole_RangedMagicial { get; set; } = "Magicial";
     public string JobRole_DiscipleoftheLand { get; set; } = "Disciple of the Land";
     public string JobRole_DiscipleoftheHand { get; set; } = "Disciple of the Hand";
 

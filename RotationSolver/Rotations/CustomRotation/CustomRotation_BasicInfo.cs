@@ -1,14 +1,17 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
+[RotationDesc(DescType.BurstActions)]
 internal abstract partial class CustomRotation : ICustomRotation
 {
     public abstract ClassJobID[] JobIDs { get; }
@@ -43,20 +46,20 @@ internal abstract partial class CustomRotation : ICustomRotation
     public uint IconID { get; }
 
     public IRotationConfigSet Configs { get; }
+
+    public BattleChara MoveTarget { get; private set; }
+
+    public virtual string Description { get; } = "It seems that the author didn't write a description!";
+
+    /// <summary>
+    /// Description about the actions.
+    /// </summary>
+    //public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
     private protected CustomRotation()
     {
         IconID = IconSet.GetJobIcon(this);
         Configs = CreateConfiguration();
     }
-
-    public BattleChara MoveTarget { get; private set; }
-
-    public string Description => string.Join('\n', DescriptionDict.Select(pair => pair.Key.ToName() + " → " + pair.Value));
-
-    /// <summary>
-    /// Description about the actions.
-    /// </summary>
-    public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
 
     private protected virtual IRotationConfigSet CreateConfiguration()
     {

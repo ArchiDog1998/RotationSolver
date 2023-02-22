@@ -95,7 +95,6 @@ internal class ActionCondition : ICondition
             ID = (ActionID)_action.ID;
         });
 
-
         ImGui.SameLine();
 
         ConditionHelper.DrawIntEnum($"##Category{GetHashCode()}", ref ActionConditonType, EnumTranslations.ToName);

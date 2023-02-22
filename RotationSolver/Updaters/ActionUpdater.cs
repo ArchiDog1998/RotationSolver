@@ -186,7 +186,7 @@ internal static class ActionUpdater
             || ActionManager.Instance()->ActionQueued) return;
 
         //GCD
-        var canUseGCD = WeaponRemain <= Service.Configuration.WeaponFaster;
+        var canUseGCD = WeaponRemain <= Service.Configuration.WeaponAhead;
         if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
         if (canUseGCD) return;
 
@@ -203,12 +203,12 @@ internal static class ActionUpdater
         //只剩下最后一个能力技了，然后卡最后！
         if (WeaponRemain < 2 * Service.Configuration.WeaponInterval)
         {
-            if (WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponFaster) return;
+            if (WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponAhead) return;
             RSCommands.DoAnAction(false);
 
             return;
         }
-        else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponFaster)
+        else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponAhead)
         {
             RSCommands.DoAnAction(false);
         }

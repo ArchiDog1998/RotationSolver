@@ -1,4 +1,5 @@
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -10,6 +11,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.SCH;
 
+[RotationDesc(ActionID.ChainStratagem)]
 internal sealed class SCH_Default : SCH_Base
 {
     public override string GameVersion => "6.28";
@@ -29,13 +31,6 @@ internal sealed class SCH_Default : SCH_Base
                                             .SetBool("prevDUN", false, "Recitation in 15 seconds.")
                                             .SetBool("GiveT", false, "Give Recitation to Tank");
     }
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.HealArea, $"{Succor}\n{SacredSoil}, {SummonSeraph}, {WhisperingDawn}, {FeyBlessing}, {Indomitability}"},
-        {DescType.HealSingle, $"{Adloquium}, {Physick}\n{SacredSoil}, {Aetherpact}, {Protraction}, {Excogitation}, {Lustrate}"},
-        {DescType.DefenseArea, $"{Succor}\n{SacredSoil}, {Adloquium}, {SummonSeraph}, {FeyIllumination}, {Expedient}"},
-        {DescType.DefenseSingle, $"{Adloquium}"},
-    };
 
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
@@ -45,18 +40,14 @@ internal sealed class SCH_Default : SCH_Base
             if (Recitation.CanUse(out act)) return true;
         }
 
-        //以太契约
+        //Remove Aetherpact
         foreach (var item in TargetUpdater.PartyMembers)
         {
             if (item.GetHealthRatio() < 0.9) continue;
-            foreach (var status in item.StatusList)
+            if(item.HasStatus(true, StatusID.Aetherpact))
             {
-                if (status.StatusId == 1223 && status.SourceObject != null
-                    && status.SourceObject.OwnerId == Service.ClientState.LocalPlayer.ObjectId)
-                {
-                    act = Aetherpact;
-                    return true;
-                }
+                act = Aetherpact;
+                return true;
             }
         }
 
@@ -84,6 +75,7 @@ internal sealed class SCH_Default : SCH_Base
         return false;
     }
 
+    [RotationDesc(ActionID.Adloquium, ActionID.Physick)]
     private protected override bool HealSingleGCD(out IAction act)
     {
         //鼓舞激励之策
@@ -95,14 +87,12 @@ internal sealed class SCH_Default : SCH_Base
         return false;
     }
 
+    [RotationDesc(ActionID.Aetherpact, ActionID.Protraction, ActionID.SacredSoil, ActionID.Excogitation, ActionID.Lustrate, ActionID.Aetherpact)]
     private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //判断是否有人有线
-        var haveLink = TargetUpdater.PartyMembers.Any(p =>
-        p.StatusList.Any(
-            status => status.StatusId == 1223 && status.SourceObject != null
-            && status.SourceObject.OwnerId == Service.ClientState.LocalPlayer.ObjectId)
-        );
+        var haveLink = TargetUpdater.PartyMembers.Any(p => p.HasStatus(true, StatusID.Aetherpact));
+
         //以太契约
         if (Aetherpact.CanUse(out act) && FairyGauge >= 70 && !haveLink) return true;
 
@@ -124,15 +114,14 @@ internal sealed class SCH_Default : SCH_Base
         return false;
     }
 
+    [RotationDesc(ActionID.Excogitation)]
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-
-        //深谋远虑之策
         if (Excogitation.CanUse(out act)) return true;
-
         return false;
     }
 
+    [RotationDesc(ActionID.Succor)]
     private protected override bool HealAreaGCD(out IAction act)
     {
         //士气高扬之策
@@ -141,6 +130,8 @@ internal sealed class SCH_Default : SCH_Base
         return false;
     }
 
+
+    [RotationDesc(ActionID.SummonSeraph, ActionID.Consolation, ActionID.WhisperingDawn, ActionID.SacredSoil, ActionID.Indomitability)]
     private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //慰藉
@@ -163,15 +154,14 @@ internal sealed class SCH_Default : SCH_Base
         return false;
     }
 
+    [RotationDesc(ActionID.Succor)]
     private protected override bool DefenseAreaGCD(out IAction act)
     {
-        //士气高扬之策
         if (Succor.CanUse(out act)) return true;
-
-        act = null;
         return false;
     }
 
+    [RotationDesc(ActionID.FeyIllumination, ActionID.Expedient, ActionID.SummonSeraph, ActionID.Consolation, ActionID.SacredSoil)]
     private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //异想的幻光
@@ -189,6 +179,7 @@ internal sealed class SCH_Default : SCH_Base
 
         return false;
     }
+
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
@@ -217,6 +208,9 @@ internal sealed class SCH_Default : SCH_Base
     //15秒秘策单盾扩散
     private protected override IAction CountDownAction(float remainTime)
     {
+        if(remainTime < Ruin.CastTime + Service.Configuration.CountDownAhead 
+            && Ruin.CanUse(out var act)) return act;
+
         if (Configs.GetBool("prevDUN") && remainTime <= 15 && !DeploymentTactics.IsCoolingDown && TargetUpdater.PartyMembers.Count() > 1)
         {
 

@@ -4,12 +4,12 @@ So we need to fill the blank in the methods mentioned [before](RotationDev/rotat
 
 ## Player
 
-| Property           | Description                                                  |
-| ------------------ | ------------------------------------------------------------ |
-| Player             | This is the player.                                          |
-| Level              | The level of the player.                                     |
-| HasSwift           | Does player have swift cast, dual cast or triple cast.       |
-| HasShield          | Does player have grit, royal guard,  iron will or defiance.  |
+| Property      | Description                                                 |
+| ------------- | ----------------------------------------------------------- |
+| Player        | This is the player.                                         |
+| Level         | The level of the player.                                    |
+| HasSwift      | Does player have swift cast, dual cast or triple cast.      |
+| HasTankStance | Does player have grit, royal guard,  iron will or defiance. |
 
 
 
@@ -61,11 +61,12 @@ isAdjust: Check for adjust id not raw id.
 
 actions or ids: True if any of this is matched.
 
-| Methods       | Description               |
-| ------------- | ------------------------- |
-| IsLastGCD     | Check for GCD Record.     |
-| IsLastAbility | Check for ability Record. |
-| IsLastAction  | Check for action Record.  |
+| Methods           | Description                                   |
+| ----------------- | --------------------------------------------- |
+| IsLastGCD         | Check for GCD Record.                         |
+| IsLastAbility     | Check for ability Record.                     |
+| IsLastAction      | Check for action Record.                      |
+| CombatElapsedLess | Check  how long the battle has been going on. |
 
 
 

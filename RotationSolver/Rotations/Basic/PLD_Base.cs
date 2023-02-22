@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Updaters;
@@ -208,16 +209,16 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
+    [RotationDesc(ActionID.Intervene)]
     private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
-        //µ˜Õ£
         if (Intervene.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 
+    [RotationDesc(ActionID.Clemency)]
     private protected sealed override bool HealSingleGCD(out IAction act)
     {
-        //…Ó» ∫Ò‘Û
         if (Clemency.CanUse(out act)) return true;
         return false;
     }

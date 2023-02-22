@@ -175,6 +175,11 @@ public static class IconSet
                 type = IconType.Green;
                 break;
         }
+        return GetJobIcon(combo, type);
+    }
+
+    internal static uint GetJobIcon(ICustomRotation combo, IconType type)
+    {
         return _icons[type][(uint)combo.JobIDs[0] - 1];
     }
 }

@@ -59,11 +59,11 @@ internal sealed class BLU_Default : BLU_Base
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool MoveGCD(out IAction act)
+    private protected override bool MoveForwardGCD(out IAction act)
     {
         //正义飞踢
         if (JKick.CanUse(out act, mustUse: true)) return true;
-        return base.MoveGCD(out act);
+        return base.MoveForwardGCD(out act);
     }
 
     private protected override bool GeneralGCD(out IAction act)

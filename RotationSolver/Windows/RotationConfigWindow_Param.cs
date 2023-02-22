@@ -48,21 +48,22 @@ internal partial class RotationConfigWindow
 
     private void DrawParamBasic()
     {
-        //Never Repalce Icon
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_NeverReplaceIcon,
             ref Service.Configuration.NeverReplaceIcon,
             LocalizationManager.RightLang.Configwindow_Param_NeverReplaceIconDesc);
 
-        //Use Overlay Window
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseOverlayWindow,
             ref Service.Configuration.UseOverlayWindow,
             LocalizationManager.RightLang.Configwindow_Param_UseOverlayWindowDesc);
 
-        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponFaster,
-            ref Service.Configuration.WeaponFaster, max: 0.1f);
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponAhead,
+            ref Service.Configuration.WeaponAhead, max: 0.1f);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_WeaponInterval,
             ref Service.Configuration.WeaponInterval, min: 0.5f, max: 0.7f);
+
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_CountDownAhead,
+            ref Service.Configuration.CountDownAhead, min: 0.5f, max: 0.7f);
 
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_SpecialDuration,
             ref Service.Configuration.SpecialDuration, speed: 0.02f, min: 1, max: 20);
@@ -146,6 +147,23 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseStopCasting,
             ref Service.Configuration.UseStopCasting);
+
+        ImGui.Separator();
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowHealthRatio,
+            ref Service.Configuration.ShowHealthRatio);
+
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_HealthRatioBoss,
+            ref Service.Configuration.HealthRatioBoss, speed: 0.02f, min: 0, max: 10);
+
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_HealthRatioDying,
+            ref Service.Configuration.HealthRatioDying, speed: 0.02f, min: 0, max: 10);
+
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_HealthRatioDot,
+            ref Service.Configuration.HealthRatioDot, speed: 0.02f, min: 0, max: 10);
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowActionFlag,
+    ref Service.Configuration.ShowActionFlag);
     }
 
     private void DrawParamDisplay()
@@ -207,6 +225,9 @@ internal partial class RotationConfigWindow
             DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowWorkTaskFPS,
                 ref Service.Configuration.ShowWorkTaskFPS);
         }
+
+        DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_NamePlateIconId,
+            ref Service.Configuration.NamePlateIconId, 5, 0, 150000, otherThing: RSCommands.UpdateStateNamePlate);
 
         ImGui.Spacing();
 
@@ -283,7 +304,7 @@ internal partial class RotationConfigWindow
             ref Service.Configuration.UseHealWhenNotAHealer);
 
         DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_LessMPNoRaise,
-            ref Service.Configuration.LessMPNoRaise, 200, 0, 10000);
+            ref Service.Configuration.LessMPNoRaise, 200, 0, 2000000);
     }
 
     private void DrawParamCondition()
@@ -420,11 +441,12 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawCheckBox(string name, ref bool value, string description = "")
+    private static void DrawCheckBox(string name, ref bool value, string description = "", Action otherThing = null)
     {
         if (ImGui.Checkbox(name, ref value))
         {
             Service.Configuration.Save();
+            otherThing?.Invoke();
         }
         if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
         {
@@ -458,12 +480,13 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawIntNumber(string name, ref int value, float speed = 0.2f, int min = 0, int max = 1, string description = "")
+    private static void DrawIntNumber(string name, ref int value, float speed = 0.2f, int min = 0, int max = 1, string description = "", Action otherThing = null)
     {
         ImGui.SetNextItemWidth(100);
         if (ImGui.DragInt(name, ref value, speed, min, max))
         {
             Service.Configuration.Save();
+            otherThing?.Invoke();
         }
         if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
         {

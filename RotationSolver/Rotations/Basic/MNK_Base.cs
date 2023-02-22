@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 
@@ -184,9 +185,31 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction RiddleofWind { get; } = new BaseAction(ActionID.RiddleofWind, true);
 
+    [RotationDesc(ActionID.Thunderclap)]
     private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Thunderclap.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.Feint)]
+    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (Feint.CanUse(out act)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.Mantra)]
+    private protected sealed override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (Mantra.CanUse(out act)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.RiddleofEarth)]
+    private protected sealed override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (RiddleofEarth.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }

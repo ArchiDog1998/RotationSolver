@@ -1,4 +1,5 @@
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
@@ -11,6 +12,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.Tank.DRK;
 
+[RotationDesc(ActionID.BloodWeapon, ActionID.Delirium)]
 internal sealed class DRK_Default : DRK_Base
 {
     public override string GameVersion => "6.31";
@@ -18,15 +20,6 @@ internal sealed class DRK_Default : DRK_Base
     public override string RotationName => "Default";
 
     protected override bool CanHealSingleAbility => false;
-
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.Description, "If you don't want to use Provoke, please remove the tank stance." },
-        {DescType.HealSingle, $"{TheBlackestNight}"},
-        {DescType.DefenseArea, $"{DarkMissionary}"},
-        {DescType.DefenseSingle, $"{Oblation}, {ShadowWall}, {DarkMind}"},
-        {DescType.MoveAction, $"{Plunge}"},
-    };
 
     private static bool InDeliruim => !Delirium.EnoughLevel || Delirium.IsCoolingDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7);
 
@@ -76,6 +69,7 @@ internal sealed class DRK_Default : DRK_Base
         return base.CountDownAction(remainTime);
     }
 
+    [RotationDesc(ActionID.TheBlackestNight)]
     private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (TheBlackestNight.CanUse(out act)) return true;
@@ -83,6 +77,7 @@ internal sealed class DRK_Default : DRK_Base
         return false;
     }
 
+    [RotationDesc(ActionID.DarkMissionary, ActionID.Reprisal)]
     private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (DarkMissionary.CanUse(out act)) return true;
@@ -91,6 +86,7 @@ internal sealed class DRK_Default : DRK_Base
         return false;
     }
 
+    [RotationDesc(ActionID.TheBlackestNight, ActionID.Oblation, ActionID.ShadowWall, ActionID.Rampart, ActionID.DarkMind, ActionID.Reprisal)]
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (TheBlackestNight.CanUse(out act)) return true;

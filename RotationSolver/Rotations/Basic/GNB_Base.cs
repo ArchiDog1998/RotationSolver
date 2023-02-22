@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 
@@ -230,14 +231,13 @@ internal abstract class GNB_Base : CustomRotation.CustomRotation
 
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        //超火流星 如果谢不够了。
         if (Superbolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Superbolide.Target)) return true;
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
+    [RotationDesc(ActionID.RoughDivide)]
     private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
-        //突进
         if (RoughDivide.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }

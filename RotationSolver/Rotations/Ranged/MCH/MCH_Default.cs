@@ -22,12 +22,6 @@ internal sealed class MCH_Default : MCH_Base
     /// </summary>
     private static bool isDyingNotBoss => !Target.IsBoss() && IsTargetDying && TargetUpdater.PartyMembers.Count() is > 1 and <= 4;
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.BreakingAction, $"{Wildfire}"},
-        {DescType.DefenseArea, $"{Tactician}"},
-    };
-
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
@@ -35,15 +29,6 @@ internal sealed class MCH_Default : MCH_Base
             .SetBool("MCH_Automaton", true, "Care for Automation")
             .SetBool("MCH_Reassemble", true, "Ressamble for ChainSaw")
             .SetBool("DelayHypercharge", false, "Use Hypercharge late");
-    }
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //策动
-        if (Tactician.CanUse(out act, mustUse: true)) return true;
-
-        if (Dismantle.CanUse(out act, mustUse: true)) return true;
-        return false;
     }
 
     private protected override bool GeneralGCD(out IAction act)

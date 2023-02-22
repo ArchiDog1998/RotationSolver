@@ -39,11 +39,16 @@ internal static class PreviewUpdater
         }
         if (Service.Configuration.ShowInfoOnDtr && showStr != null)
         {
-            if (_dtrEntry == null)
+            try
             {
-                _dtrEntry = Service.DtrBar.Get("Rotation Solver");
+                _dtrEntry ??= Service.DtrBar.Get("Rotation Solver");
             }
-            if(!_dtrEntry.Shown) _dtrEntry.Shown = true;
+            catch
+            {
+                return;
+            }
+
+            if (!_dtrEntry.Shown) _dtrEntry.Shown = true;
             if(_showValue != showStr)
             {
                 _showValue = showStr;

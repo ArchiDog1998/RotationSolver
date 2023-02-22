@@ -1,4 +1,4 @@
-using Dalamud.Configuration;
+    using Dalamud.Configuration;
 using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
@@ -56,6 +56,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseItem = false;
     public bool PositionalFeedback = true;
     public bool ShowMoveTarget = true;
+    public bool ShowHealthRatio = false;
     public bool ShowTarget = true;
     public bool ChooseAttackMark = true;
     public bool CanAttackMarkAOE = true;
@@ -94,7 +95,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool InterruptibleMoreCheck = true;
     public float SpecialDuration = 3;
     public float WeaponInterval = 0.67f;
-    public float WeaponFaster = 0.08f;
+    public float WeaponAhead = 0.08f;
 
     public float WeaponDelayMin = 0;
     public float WeaponDelayMax = 0;
@@ -129,8 +130,17 @@ public class PluginConfiguration : IPluginConfiguration
     public bool OnlyAttackInView = false;
 
     public string PositionalErrorText = string.Empty;
+    public float CountDownAhead = 0.6f;
+
+    public int NamePlateIconId = 61437; // 61435
+    public bool ShowActionFlag = false;
+
 
     public int MoveTargetAngle = 24;
+    public float HealthRatioBoss = 1.85f;
+    public float HealthRatioDying = 0.8f;
+    public float HealthRatioDot = 1.5f;
+
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
     public MacroInfo DutyStart { get; set; } = new MacroInfo();

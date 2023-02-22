@@ -1,4 +1,5 @@
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.Melee.NIN;
 
+[RotationDesc(ActionID.Mug)]
 internal sealed class NIN_Default : NIN_Base
 {
     public override string GameVersion => "6.0";
@@ -20,14 +22,10 @@ internal sealed class NIN_Default : NIN_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("UseHide", true, "Use hide").SetBool("AutoUnhide", true, "Auto Unhide.");
+        return base.CreateConfiguration()
+            .SetBool("UseHide", true, "Use hide")
+            .SetBool("AutoUnhide", true, "Auto Unhide.");
     }
-
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.DefenseSingle, $"{ShadeShift}"},
-        {DescType.MoveAction, $"{Shukuchi}"},
-    };
 
     private static void SetNinjustus(INinAction act)
     {
@@ -289,17 +287,11 @@ internal sealed class NIN_Default : NIN_Base
         return false;
     }
 
-    private protected override bool MoveGCD(out IAction act)
+    [RotationDesc(ActionID.ForkedRaiju)]
+    private protected override bool MoveForwardGCD(out IAction act)
     {
         if (ForkedRaiju.CanUse(out act)) return true;
-        return base.MoveGCD(out act);
-    }
-
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
-    {
-        if (ShadeShift.CanUse(out act)) return true;
-
-        return false;
+        return base.MoveForwardGCD(out act);
     }
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
@@ -309,7 +301,6 @@ internal sealed class NIN_Default : NIN_Base
 
         //夺取
         if (InBurst && Mug.CanUse(out act)) return true;
-
 
         //解决Buff
         if (TrickAttack.CanUse(out act)) return true;
@@ -331,13 +322,6 @@ internal sealed class NIN_Default : NIN_Base
         {
             if (DreamWithinaDream.CanUse(out act)) return true;
         }
-        return false;
-    }
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //牵制
-        if (Feint.CanUse(out act)) return true;
         return false;
     }
 }

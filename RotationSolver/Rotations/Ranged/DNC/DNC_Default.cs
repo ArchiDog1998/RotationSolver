@@ -2,10 +2,7 @@ using RotationSolver.Actions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
-using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RotationSolver.Rotations.RangedPhysicial.DNC;
 
@@ -14,26 +11,6 @@ internal sealed class DNC_Default : DNC_Base
     public override string GameVersion => "6.28";
 
     public override string RotationName => "Default";
-
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.DefenseArea, $"{ShieldSamba}"},
-        {DescType.HealArea, $"{CuringWaltz}, {Improvisation}"},
-        {DescType.MoveAction, $"{EnAvant}"},
-    };
-
-    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        if (CuringWaltz.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        if (Improvisation.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        return false;
-    }
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        if (ShieldSamba.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        return false;
-    }
 
     private protected override IAction CountDownAction(float remainTime)
     {

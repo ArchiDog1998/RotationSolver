@@ -31,18 +31,14 @@ internal sealed class RPR_Default : RPR_Base
         HarvestMoon.RotationCheck = b => InCombat;
     }
 
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.DefenseSingle, $"{ArcaneCrest}"},
-        {DescType.MoveAction, $"{HellsIngress}"},
-    };
 
     private protected override IAction CountDownAction(float remainTime)
     {
         //倒数收获月
         if (remainTime <= 30 && Soulsow.CanUse(out _)) return Soulsow;
         //提前2s勾刃
-        if (remainTime <= 2 && Harpe.CanUse(out _)) return Harpe;
+        if (remainTime <= Harpe.CastTime + Service.Configuration.CountDownAhead
+            && Harpe.CanUse(out _)) return Harpe;
         return base.CountDownAction(remainTime);
     }
 
@@ -186,31 +182,6 @@ internal sealed class RPR_Default : RPR_Base
         if (GrimSwathe.CanUse(out act)) return true;
         //单体
         if (BloodStalk.CanUse(out act)) return true;
-        return false;
-    }
-
-
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //牵制
-        if (!SoulReaver && !Enshrouded)
-        {
-            if (Feint.CanUse(out act)) return true;
-        }
-
-        act = null;
-        return false;
-    }
-
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
-    {
-        //神秘纹
-        if (!SoulReaver && !Enshrouded)
-        {
-            if (ArcaneCrest.CanUse(out act)) return true;
-        }
-
-        act = null;
         return false;
     }
 }

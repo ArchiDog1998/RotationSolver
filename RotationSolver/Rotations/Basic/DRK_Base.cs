@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 
@@ -9,7 +10,7 @@ namespace RotationSolver.Rotations.Basic;
 internal abstract class DRK_Base : CustomRotation.CustomRotation
 {
     private static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();
-    protected static ushort DarksideTimeRemaining => JobGauge.DarksideTimeRemaining;
+    private static float DarksideTimeRemaining => JobGauge.DarksideTimeRemaining / 1000f;
     /// <summary>
     /// 暗血
     /// </summary>
@@ -27,7 +28,7 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
     /// <returns></returns>
     protected static bool DarkSideEndAfter(float time)
     {
-        return EndAfter(JobGauge.DarksideTimeRemaining / 1000f, time);
+        return EndAfter(DarksideTimeRemaining, time);
     }
 
     /// <summary>
@@ -38,7 +39,7 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
     /// <returns></returns>
     protected static bool DarkSideEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
     {
-        return EndAfterGCD(JobGauge.DarksideTimeRemaining / 1000f, gctCount, abilityCount);
+        return EndAfterGCD(DarksideTimeRemaining, gctCount, abilityCount);
     }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
@@ -216,6 +217,7 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
+    [RotationDesc(ActionID.Plunge)]
     private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Plunge.CanUse(out act, emptyOrSkipCombo: true)) return true;

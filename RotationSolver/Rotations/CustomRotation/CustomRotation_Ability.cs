@@ -1,5 +1,6 @@
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -266,31 +267,37 @@ internal abstract partial class CustomRotation
         return false;
     }
 
+    [RotationDesc(DescType.MoveForwardAbility)]
     private protected virtual bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
+    [RotationDesc(DescType.MoveBackAbility)]
     private protected virtual bool MoveBackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
+    [RotationDesc(DescType.HealSingleAbility)]
     private protected virtual bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
+    [RotationDesc(DescType.HealAreaAbility)]
     private protected virtual bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
+    [RotationDesc(DescType.DefenceSingleAbility)]
     private protected virtual bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
+    [RotationDesc(DescType.DefenceAreaAbility)]
     private protected virtual bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;

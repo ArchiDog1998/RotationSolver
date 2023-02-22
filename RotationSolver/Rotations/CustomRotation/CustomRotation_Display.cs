@@ -1,15 +1,69 @@
 ﻿using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Utility;
 using ImGuiNET;
+using RotationSolver.Attributes;
+using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using RotationSolver.Timeline;
 using RotationSolver.Windows.RotationConfigWindow;
+using System.Linq;
+using System.Numerics;
+using System.Reflection;
 
 namespace RotationSolver.Rotations.CustomRotation
 {
     internal abstract partial class CustomRotation
     {
-        public unsafe void Display(ICustomRotation[] rotations, bool canAddButton) => this.DrawEnableTexture(canAddButton, null, () =>
+        const ImGuiWindowFlags flags = 
+              ImGuiWindowFlags.Tooltip |
+              ImGuiWindowFlags.NoTitleBar |
+              ImGuiWindowFlags.NoMove |
+              ImGuiWindowFlags.NoResize |
+              ImGuiWindowFlags.NoSavedSettings |
+              ImGuiWindowFlags.AlwaysAutoResize;
+
+        public unsafe void Display(ICustomRotation[] rotations, bool canAddButton)
+            => this.DrawEnableTexture(canAddButton, null,
+        text =>
+        {
+            var id = "Popup" + GetHashCode().ToString();
+
+            ImGui.SetWindowPos(id, ImGui.GetIO().MousePos);
+            ImGui.SetNextWindowSizeConstraints(new Vector2(350, 0), new Vector2(1000, 1000));
+            if (ImGui.Begin(id, flags))
+            {
+                var t = IconSet. GetTexture(IconSet.GetJobIcon(this, IconType.Framed));
+                ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
+
+                if (!string.IsNullOrEmpty(text))
+                {
+                    ImGui.SameLine();
+                    ImGui.Text("  ");
+                    ImGui.SameLine();
+                    ImGui.TextWrapped(text);
+                }
+
+                var type = this.GetType();
+
+                var attrs = type.GetCustomAttributes<RotationDescAttribute>().ToList();
+                foreach (var m in type.GetAllMethodInfo())
+                {
+                    attrs.Add(RotationDescAttribute.MergeToOne(m.GetCustomAttributes<RotationDescAttribute>()));
+                }
+
+                bool last = true;
+                foreach (var a in RotationDescAttribute.Merge(attrs))
+                {
+                    if (last) ImGui.Separator();
+                    last = RotationDescAttribute.MergeToOne(a)?.Display(this) ?? false;
+                }
+
+                ImGui.End();
+            }
+
+        }, () =>
         {
             if (!string.IsNullOrEmpty(RotationName) && rotations != null)
             {

@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 
@@ -306,9 +307,25 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
     /// </summary>
     public static INinAction HyoshoRanryu { get; } = new NinAction(ActionID.HyoshoRanryu, Ten, Jin);
 
+    [RotationDesc(ActionID.Shukuchi)]
     private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Shukuchi.CanUse(out act, emptyOrSkipCombo: true)) return true;
+
+        return false;
+    }
+
+    [RotationDesc(ActionID.Feint)]
+    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (Feint.CanUse(out act)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.ShadeShift)]
+    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (ShadeShift.CanUse(out act)) return true;
 
         return false;
     }

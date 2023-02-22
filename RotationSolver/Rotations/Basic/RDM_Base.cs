@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Updaters;
@@ -218,15 +219,25 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
         ComboIdsNot = new[] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
     };
 
+    [RotationDesc(ActionID.Vercure)]
     private protected sealed override bool HealSingleGCD(out IAction act)
     {
         if (Vercure.CanUse(out act, mustUse: true)) return true;
         return false;
     }
 
+    [RotationDesc(ActionID.CorpsAcorps)]
     private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
     {
         if (CorpsAcorps.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.Addle, ActionID.MagickBarrier)]
+    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (Addle.CanUse(out act)) return true;
+        if (MagickBarrier.CanUse(out act, mustUse: true)) return true;
         return false;
     }
 }

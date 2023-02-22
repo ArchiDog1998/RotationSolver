@@ -114,8 +114,8 @@ internal static class ObjectHelper
     internal static bool IsBoss(this BattleChara obj)
     {
         if (obj == null) return false;
-        if (obj.IsDummy()) return true;
-        return obj.MaxHp >= GetHealthFromMulty(1.85f)
+        if (obj.IsDummy() && !Service.Configuration.ShowHealthRatio) return true;
+        return obj.MaxHp >= GetHealthFromMulty(Service.Configuration.HealthRatioBoss)
             || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
     }
 
@@ -127,8 +127,8 @@ internal static class ObjectHelper
     internal static bool IsDying(this BattleChara b)
     {
         if (b == null) return false;
-        if (b.IsDummy()) return false;
-        return b.CurrentHp <= GetHealthFromMulty(0.8f) || b.GetHealthRatio() < 0.02f;
+        if (b.IsDummy() && !Service.Configuration.ShowHealthRatio) return false;
+        return b.CurrentHp <= GetHealthFromMulty(Service.Configuration.HealthRatioDying) || b.GetHealthRatio() < 0.02f;
     }
 
     /// <summary>
@@ -147,17 +147,11 @@ internal static class ObjectHelper
         return b.GetHealthRatio();
     }
 
-
-    /// <summary>
-    /// 用于判断是否能上Dot
-    /// </summary>
-    /// <param name="b"></param>
-    /// <returns></returns>
     internal static bool CanDot(this BattleChara b)
     {
         if (b == null) return false;
-        if (b.IsDummy()) return true;
-        return b.CurrentHp >= GetHealthFromMulty(1.5f);
+        if (b.IsDummy() && !Service.Configuration.ShowHealthRatio) return true;
+        return b.CurrentHp >= GetHealthFromMulty(Service.Configuration.HealthRatioDot);
     }
 
     internal static EnemyPositional FindEnemyPositional(this GameObject enemy)
@@ -176,11 +170,7 @@ internal static class ObjectHelper
         return EnemyPositional.Flank;
     }
 
-#if DEBUG
     internal static uint GetHealthFromMulty(float mult)
-#else
-    private static uint GetHealthFromMulty(float mult)
-#endif
     {
         if (Service.ClientState.LocalPlayer == null) return 0;
 

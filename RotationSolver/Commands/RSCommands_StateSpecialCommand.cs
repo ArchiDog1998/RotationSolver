@@ -1,5 +1,6 @@
 ﻿using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using System;
@@ -32,7 +33,7 @@ namespace RotationSolver.Commands
             });
         }
 
-        private static void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(stateType, EnumTranslations.ToSayout, role =>
+        private static unsafe void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(stateType, EnumTranslations.ToSayout, role =>
         {
             if (StateType == StateCommandType.Smart
             && stateType == StateCommandType.Smart)
@@ -43,9 +44,19 @@ namespace RotationSolver.Commands
 
             StateType = stateType;
 
+            UpdateStateNamePlate();
+
             _stateString = stateType.ToStateString(role);
             UpdateToast();
         });
+
+        public static unsafe void UpdateStateNamePlate()
+        {
+            if (Service.ClientState.LocalPlayer == null) return;
+
+            Service.ClientState.LocalPlayer.GetAddress()->NamePlateIconId =
+                StateType == StateCommandType.Cancel ? 0u : (uint)Service.Configuration.NamePlateIconId;
+        }
 
         private static void DoSpecialCommandType(SpecialCommandType specialType, bool sayout = true) => DoOneCommandType(specialType, sayout ? EnumTranslations.ToSayout : (s, r) => string.Empty, role =>
         {

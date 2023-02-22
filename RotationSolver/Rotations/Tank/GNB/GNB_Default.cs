@@ -1,4 +1,5 @@
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -16,14 +17,6 @@ internal sealed class GNB_Default : GNB_Base
 
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
-
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.HealSingle, $"{Aurora}"},
-        {DescType.DefenseArea, $"{HeartofLight}"},
-        {DescType.DefenseSingle, $"{HeartofStone}, {Nebula}, {Camouflage}"},
-        {DescType.MoveAction, $"{RoughDivide}"},
-    };
 
     private protected override bool GeneralGCD(out IAction act)
     {
@@ -60,7 +53,6 @@ internal sealed class GNB_Default : GNB_Base
 
         return false;
     }
-
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
@@ -102,6 +94,7 @@ internal sealed class GNB_Default : GNB_Base
         return false;
     }
 
+    [RotationDesc(ActionID.HeartofLight, ActionID.Reprisal)]
     private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (HeartofLight.CanUse(out act, emptyOrSkipCombo: true)) return true;
@@ -109,6 +102,7 @@ internal sealed class GNB_Default : GNB_Base
         return false;
     }
 
+    [RotationDesc(ActionID.HeartofStone, ActionID.Nebula, ActionID.Rampart, ActionID.Camouflage, ActionID.Reprisal)]
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (abilitiesRemaining == 2)
@@ -132,6 +126,7 @@ internal sealed class GNB_Default : GNB_Base
         return false;
     }
 
+    [RotationDesc(ActionID.Aurora)]
     private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Aurora.CanUse(out act, emptyOrSkipCombo: true) && abilitiesRemaining == 1) return true;

@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Attributes;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -215,5 +216,19 @@ internal abstract class BRD_Base : CustomRotation.CustomRotation
             if (WardensPaean.CanUse(out act, mustUse: true)) return true;
         }
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
+    }
+
+    [RotationDesc(ActionID.Troubadour)]
+    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (Troubadour.CanUse(out act)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.NaturesMinne)]
+    private protected sealed override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (NaturesMinne.CanUse(out act)) return true;
+        return false;
     }
 }
