@@ -31,9 +31,6 @@ internal class LocalizationManager : IDisposable
         if (manifestResourceStream == null) return;
         using StreamReader streamReader = new StreamReader(manifestResourceStream);
         _translations[lang] = JsonConvert.DeserializeObject<Strings>(streamReader.ReadToEnd());
-#if DEBUG
-        Service.ChatGui.Print($"Load {lang} succeessfully!");
-#endif
     }
 
     private void SetLanguage(string lang)

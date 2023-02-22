@@ -123,7 +123,7 @@ internal partial class Strings
     public string Configwindow_Param_Advanced { get; set; } = "Advanced";
     public string Configwindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting.";
     public string Configwindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
-    public string Configwindow_Param_ShowMeleeActionFlag { get; set; } = "Show action flag when melee.";
+    public string Configwindow_Param_ShowActionFlag { get; set; } = "Show action flag.";
     public string Configwindow_Param_ShowHealthRatio { get; set; } = "Show the health ratio for the check of Boss, Dying, Dot.";
 
     public string Configwindow_Param_HealthRatioBoss { get; set; } = "If target's max health ratio is higher than this, regard it as Boss.";
@@ -154,7 +154,7 @@ internal partial class Strings
     public string Configwindow_Param_ShowWorkTaskFPS { get; set; } = "Display Task FPS on dtrbar";
 
     public string Configwindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
-    public string Configwindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on.";
+    public string Configwindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommand 61435, 61437";
     public string Configwindow_Param_Action { get; set; } = "Action";
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Param_AutoBurst { get; set; } = "Automatic burst";

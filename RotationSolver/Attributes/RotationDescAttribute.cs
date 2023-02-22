@@ -118,6 +118,7 @@ internal class RotationDescAttribute : Attribute
         ImGui.Columns(2, this.GetHashCode().ToString(), false);
 		ImGui.SetColumnWidth(0, 170);
         ImGui.Image(IconSet.GetTexture(IconID).ImGuiHandle, PIC_SIZE);
+		ImGui.SameLine();
 
 		var isOnCommand = IsOnCommand;
 		if (isOnCommand) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
@@ -128,8 +129,7 @@ internal class RotationDescAttribute : Attribute
 
 		if (hasDesc)
 		{
-			ImGui.Text(Description);
-			ImGui.NewLine();
+			ImGui.TextWrapped(Description);
 		}
 
 		bool notStart = false;

@@ -52,6 +52,8 @@ namespace RotationSolver.Commands
 
         public static unsafe void UpdateStateNamePlate()
         {
+            if (Service.ClientState.LocalPlayer == null) return;
+
             Service.ClientState.LocalPlayer.GetAddress()->NamePlateIconId =
                 StateType == StateCommandType.Cancel ? 0u : (uint)Service.Configuration.NamePlateIconId;
         }

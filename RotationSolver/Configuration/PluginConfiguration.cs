@@ -1,4 +1,4 @@
-using Dalamud.Configuration;
+    using Dalamud.Configuration;
 using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
@@ -132,8 +132,8 @@ public class PluginConfiguration : IPluginConfiguration
     public string PositionalErrorText = string.Empty;
     public float CountDownAhead = 0.6f;
 
-    public int NamePlateIconId = 61417; // 71204
-    public bool ShowMeleeActionFlag = false;
+    public int NamePlateIconId = 61437; // 61435
+    public bool ShowActionFlag = false;
 
 
     public int MoveTargetAngle = 24;

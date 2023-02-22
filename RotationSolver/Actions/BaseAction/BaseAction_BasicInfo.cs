@@ -86,7 +86,7 @@ internal partial class BaseAction : IBaseAction
         {
             if (ConfigurationHelper.ActionPositionals.TryGetValue((ActionID)ID, out var location))
             {
-                return location.Loc;
+                return location.Pos;
             }
             return EnemyPositional.None;
         }

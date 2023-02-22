@@ -162,8 +162,8 @@ internal partial class RotationConfigWindow
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_HealthRatioDot,
             ref Service.Configuration.HealthRatioDot, speed: 0.02f, min: 0, max: 10);
 
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowMeleeActionFlag,
-    ref Service.Configuration.ShowMeleeActionFlag);
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowActionFlag,
+    ref Service.Configuration.ShowActionFlag);
     }
 
     private void DrawParamDisplay()

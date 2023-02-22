@@ -3,11 +3,13 @@ using Dalamud.Interface.Colors;
 using Dalamud.Utility;
 using ImGuiNET;
 using RotationSolver.Attributes;
+using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Timeline;
 using RotationSolver.Windows.RotationConfigWindow;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 
 namespace RotationSolver.Rotations.CustomRotation
@@ -29,14 +31,18 @@ namespace RotationSolver.Rotations.CustomRotation
             var id = "Popup" + GetHashCode().ToString();
 
             ImGui.SetWindowPos(id, ImGui.GetIO().MousePos);
-            ImGui.SetNextWindowSizeConstraints(new System.Numerics.Vector2(400, 0), new System.Numerics.Vector2(1000, 1000));
+            ImGui.SetNextWindowSizeConstraints(new Vector2(350, 0), new Vector2(1000, 1000));
             if (ImGui.Begin(id, flags))
             {
+                var t = IconSet. GetTexture(IconSet.GetJobIcon(this, IconType.Framed));
+                ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
+
                 if (!string.IsNullOrEmpty(text))
                 {
-                    ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+                    ImGui.SameLine();
+                    ImGui.Text("  ");
+                    ImGui.SameLine();
                     ImGui.TextWrapped(text);
-                    ImGui.PopStyleColor();
                 }
 
                 var type = this.GetType();

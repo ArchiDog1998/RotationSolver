@@ -6,7 +6,7 @@ namespace RotationSolver.Helpers;
 
 internal static class ConfigurationHelper
 {
-    public record PositionalInfo(EnemyPositional Loc, byte[] Tags);
+    public record PositionalInfo(EnemyPositional Pos, byte[] Tags);
     public static readonly SortedList<ActionID, PositionalInfo> ActionPositionals = new SortedList<ActionID, PositionalInfo>()
     {
         {ActionID.FangandClaw, new(EnemyPositional.Flank, new byte[] { 13, 10 })},

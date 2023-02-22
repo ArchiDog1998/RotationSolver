@@ -45,46 +45,46 @@ namespace RotationSolver.Windows.RotationConfigWindow
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
                 StateCommandType.Smart.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 StateCommandType.Manual.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
                 ImGui.Separator();
-                ImGui.NewLine();
-                ImGui.Separator();
+                //ImGui.NewLine();
+                //ImGui.Separator();
 
                 SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 SpecialCommandType.HealArea.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 SpecialCommandType.HealSingle.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 SpecialCommandType.DefenseArea.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 SpecialCommandType.DefenseSingle.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 SpecialCommandType.MoveForward.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 SpecialCommandType.MoveBack.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 SpecialCommandType.EsunaStanceNorth.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 SpecialCommandType.AntiKnockback.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-                ImGui.Separator();
+                //ImGui.Separator();
 
                 SpecialCommandType.Burst.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 

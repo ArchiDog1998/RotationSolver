@@ -4,6 +4,8 @@
 	  <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 	  <TargetFramework>net7.0</TargetFramework>
 	  <PlatformTarget>x64</PlatformTarget>
+        <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+	  <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>

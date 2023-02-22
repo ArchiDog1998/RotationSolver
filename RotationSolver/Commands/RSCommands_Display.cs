@@ -37,7 +37,9 @@ internal static partial class RSCommands
             {
                 if (sameLine) ImGui.SameLine();
                 else ImGuiHelper.Spacing();
-                ImGui.Text(" → " + help);
+                ImGui.Text(" → ");
+                ImGui.SameLine();
+                ImGui.TextWrapped(help);
             }
         }
     }

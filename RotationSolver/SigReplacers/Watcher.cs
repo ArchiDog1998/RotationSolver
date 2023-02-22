@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
+using Dalamud.Interface.Colors;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ImGuiNET;
 using RotationSolver.Data;
@@ -108,19 +109,19 @@ namespace RotationSolver.SigReplacers
                 if (item.AddMacro(tar)) break;
             }
 
-            if (flag != 0 && Service.Configuration.ShowMeleeActionFlag)
+            if (flag != 0 && Service.Configuration.ShowActionFlag)
             {
                 Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
-                ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 0, action.Icon);
+                ImGui.GetColorU32(ImGuiColors.DPSRed), 0, action.Icon);
             }
 
             //事后骂人！
             if (Service.Configuration.PositionalFeedback
-                && ConfigurationHelper.ActionPositionals.TryGetValue(id, out var loc)
-                && loc.Tags.Length > 0 && !loc.Tags.Contains(flag))
+                && ConfigurationHelper.ActionPositionals.TryGetValue(id, out var pos)
+                && pos.Tags.Length > 0 && !pos.Tags.Contains(flag))
             {
-                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, loc.Loc.ToName(), "",
-                    ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 94662, action.Icon);
+                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, pos.Pos.ToName(), "",
+                    ImGui.GetColorU32(ImGuiColors.DPSRed), 94662, action.Icon);
                 if (!string.IsNullOrEmpty(Service.Configuration.PositionalErrorText))
                 {
                     Speak(Service.Configuration.PositionalErrorText);
@@ -162,7 +163,6 @@ namespace RotationSolver.SigReplacers
                 }
             }
         }
-
 
         public static void Dispose()
         {
