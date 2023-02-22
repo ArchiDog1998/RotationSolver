@@ -334,8 +334,8 @@ internal partial class Strings
     public string JobRole_Melee { get; set; } = "Melee";
     public string JobRole_Ranged { get; set; } = "Ranged";
     public string JobRole_Healer { get; set; } = "Healer";
-    public string JobRole_RangedPhysical { get; set; } = "Ranged Physical";
-    public string JobRole_RangedMagicial { get; set; } = "Ranged Magicial";
+    public string JobRole_RangedPhysical { get; set; } = "Ranged";
+    public string JobRole_RangedMagicial { get; set; } = "Magicial";
     public string JobRole_DiscipleoftheLand { get; set; } = "Disciple of the Land";
     public string JobRole_DiscipleoftheHand { get; set; } = "Disciple of the Hand";
 
