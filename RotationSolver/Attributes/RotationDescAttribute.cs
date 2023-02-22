@@ -1,7 +1,9 @@
-﻿using ImGuiNET;
+﻿using Dalamud.Interface.Colors;
+using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -41,6 +43,45 @@ internal class RotationDescAttribute : Attribute
         _ => 62144,
 	};
 
+	private bool IsOnCommand
+	{
+		get
+		{
+			var command = RSCommands.SpecialType;
+			switch(Type)
+			{
+				case DescType.BurstActions:
+                    return command == SpecialCommandType.Burst;
+
+				case DescType.HealAreaAbility:
+				case DescType.HealAreaGCD:
+                    return command == SpecialCommandType.HealArea;
+
+                case DescType.HealSingleAbility:
+				case DescType.HealSingleGCD:
+					return command == SpecialCommandType.HealSingle;
+
+				case DescType.DefenseAreaGCD:
+				case DescType.DefenceAreaAbility:
+					return command == SpecialCommandType.DefenseArea;
+
+				case DescType.DefenseSingleGCD:
+				case DescType.DefenceSingleAbility:
+					return command == SpecialCommandType.DefenseSingle;
+
+                case DescType.MoveForwardGCD:
+                case DescType.MoveForwardAbility:
+                    return command == SpecialCommandType.MoveForward;
+
+                case DescType.MoveBackAbility:
+                    return command == SpecialCommandType.MoveBack;
+
+                default: 
+					return false;
+			}
+		}
+	}
+
     public RotationDescAttribute(DescType descType)
 	{
         Type = descType;
@@ -77,7 +118,11 @@ internal class RotationDescAttribute : Attribute
         ImGui.Columns(2, this.GetHashCode().ToString(), false);
 		ImGui.SetColumnWidth(0, 170);
         ImGui.Image(IconSet.GetTexture(IconID).ImGuiHandle, PIC_SIZE);
+
+		var isOnCommand = IsOnCommand;
+		if (isOnCommand) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
         ImGui.Text(" " + Type.ToName());
+		if (isOnCommand) ImGui.PopStyleColor();
 
 		ImGui.NextColumn();
 
