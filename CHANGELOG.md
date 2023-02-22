@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.4.3](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.2...v1.4.3) (2023-02-22)
+
+
+### Bug Fixes
+
+* add a action flag option for debug. ([0bbfa9e](https://github.com/ArchiDog1998/RotationSolver/commit/0bbfa9e5d6df3ed99591b1c7b2abd1660ed8ceae))
+* add a feature for casting ahead when count down.. ([1429a01](https://github.com/ArchiDog1998/RotationSolver/commit/1429a0153f33897b0e49aadaf78617e663bfa8d3))
+* add a feature of command desc highlight when in that command. ([45ecef0](https://github.com/ArchiDog1998/RotationSolver/commit/45ecef04519ee094e2e04da5e1526bf047fcb56b))
+* add a state display on player's name plate. ([77abc1e](https://github.com/ArchiDog1998/RotationSolver/commit/77abc1ef1e2da21fea073ac1c28a70c3481310e8))
+* add an option to change the state name plate. ([36ce52b](https://github.com/ArchiDog1998/RotationSolver/commit/36ce52bb19d3a44e66ca5411ce521f0077133aff))
+* add auto cancel when duty complete. ([feed73d](https://github.com/ArchiDog1998/RotationSolver/commit/feed73d362c5b189b1a51a22ae1cce91012e6532))
+* add options for checking is boss, is dying or can dot. ([9da2af3](https://github.com/ArchiDog1998/RotationSolver/commit/9da2af3f3d9342275cfb70e87f91bd2e0bf16a17))
+* add tooltip icons. ([ed119b5](https://github.com/ArchiDog1998/RotationSolver/commit/ed119b53bff6188234443cc78191927f93ec6e82))
+* change all job's description. ([7525a57](https://github.com/ArchiDog1998/RotationSolver/commit/7525a5709d395cc9994176d36f468a7b0bf267fe))
+* change the style of description. ([0ea0c26](https://github.com/ArchiDog1998/RotationSolver/commit/0ea0c26d3a9283a20c8c423984244a7501d2739e))
+* changed the help display. ([27032f7](https://github.com/ArchiDog1998/RotationSolver/commit/27032f7d8ccc161a436feb5f24f82007148d8112))
+* fix the treasure hunt name plate id. ([bd514da](https://github.com/ArchiDog1998/RotationSolver/commit/bd514da5b669ab3258cf53f654c97b9f1f458b80))
+* renamed the ranged jobs' name. ([aa418fa](https://github.com/ArchiDog1998/RotationSolver/commit/aa418fad880359e99889129cdba221cfe212b946))
+* try to change the rotation tooltip display. ([7e96cd2](https://github.com/ArchiDog1998/RotationSolver/commit/7e96cd2fe45651205ae5976e76b34559d488601a))
+
 ## [1.4.2](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.1...v1.4.2) (2023-02-17)
 
 
