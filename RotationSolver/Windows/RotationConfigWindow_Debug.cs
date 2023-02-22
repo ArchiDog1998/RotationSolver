@@ -52,6 +52,7 @@ internal partial class RotationConfigWindow
 
         ImGui.Text("Have pet: " + TargetUpdater.HavePet.ToString());
         ImGui.Text("Have Companion: " + TargetUpdater.HaveCompanion.ToString());
+        ImGui.Text("Is Moving: " + AgentMap.Instance()->IsPlayerMoving.ToString());
 
 
         foreach (var status in Service.ClientState.LocalPlayer.StatusList)
@@ -62,7 +63,7 @@ internal partial class RotationConfigWindow
     }
     private unsafe void DrawParty()
     {
-        var status = AgentDeepDungeonStatus.Instance();
+        //var status = AgentDeepDungeonStatus.Instance();
         //if ((IntPtr)status != IntPtr.Zero) 
         //{
         //    foreach (var item in status->Data->PomanderSpan)
@@ -81,6 +82,12 @@ internal partial class RotationConfigWindow
         ImGui.Text("CanHealSingleSpell: " + TargetUpdater.CanHealSingleSpell.ToString());
         ImGui.Text("CanHealAreaAbility: " + TargetUpdater.CanHealAreaAbility.ToString());
         ImGui.Text("CanHealAreaSpell: " + TargetUpdater.CanHealAreaSpell.ToString());
+
+        foreach (var member in TargetUpdater.PartyMembers)
+        {
+            var cha = (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)member.GetAddress();
+            ImGui.Text(((VfxStruct*)cha->Omen)->Flags.ToString());
+        }
     }
 
     private unsafe void DrawTargetData()
