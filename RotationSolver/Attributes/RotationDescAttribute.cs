@@ -103,8 +103,9 @@ internal class RotationDescAttribute : Attribute
 	}
 
 	static readonly System.Numerics.Vector2 PIC_SIZE = new System.Numerics.Vector2(24, 24);
+	const float ATTR_INDENT = 170;
 
-    public bool Display(ICustomRotation rotation)
+    public void Display(ICustomRotation rotation)
 	{
 		var acts = rotation.AllActions;
 
@@ -113,10 +114,9 @@ internal class RotationDescAttribute : Attribute
 
 		bool hasDesc = !string.IsNullOrEmpty(Description);
 
-		if (!hasDesc && !allActions.Any()) return false;
+		if (!hasDesc && !allActions.Any()) return;
+        ImGui.Separator();
 
-        ImGui.Columns(2, this.GetHashCode().ToString(), false);
-		ImGui.SetColumnWidth(0, 170);
         ImGui.Image(IconSet.GetTexture(IconID).ImGuiHandle, PIC_SIZE);
 		ImGui.SameLine();
 
@@ -125,9 +125,10 @@ internal class RotationDescAttribute : Attribute
         ImGui.Text(" " + Type.ToName());
 		if (isOnCommand) ImGui.PopStyleColor();
 
-		ImGui.NextColumn();
+        ImGui.SameLine();
+        ImGui.Indent(ATTR_INDENT);
 
-		if (hasDesc)
+        if (hasDesc)
 		{
 			ImGui.TextWrapped(Description);
 		}
@@ -147,9 +148,7 @@ internal class RotationDescAttribute : Attribute
             ImGui.Image(item.GetTexture().ImGuiHandle, PIC_SIZE);
 			notStart = true;
         }
-
-        ImGui.Columns(1);
-		return true;
+        ImGui.Unindent(ATTR_INDENT);
 	}
 	public static IEnumerable<RotationDescAttribute[]> Merge(IEnumerable<RotationDescAttribute> rotationDescAttributes)
 		=> from r in rotationDescAttributes

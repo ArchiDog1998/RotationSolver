@@ -116,19 +116,20 @@ internal static class ActionUpdater
         //确定读条时间。
         if (WeaponElapsed < 0.3) _lastCastingTotal = castTotal;
 
-
         //确认能力技的相关信息
         var interval = Service.Configuration.WeaponInterval;
-        if (WeaponRemain < interval || WeaponElapsed == 0)
+        var checkRemain = WeaponRemain + 0.1f - Service.Configuration.WeaponAhead;
+        var checkElapsed = WeaponElapsed - 0.1f + Service.Configuration.WeaponAhead;
+        if (checkRemain < interval || WeaponElapsed == 0)
         {
             AbilityRemain = 0;
-            if (WeaponRemain > 0)
+            if (checkRemain > 0)
             {
                 AbilityRemain = WeaponRemain + interval;
             }
             AbilityRemainCount = 0;
         }
-        else if (WeaponRemain < 2 * interval)
+        else if (checkRemain < 2 * interval)
         {
             AbilityRemain = WeaponRemain - interval;
             AbilityRemainCount = 1;
@@ -137,7 +138,7 @@ internal static class ActionUpdater
         {
             var abilityWhole = (int)(weapontotal / Service.Configuration.WeaponInterval - 1);
             AbilityRemain = interval - WeaponElapsed % interval;
-            AbilityRemainCount = (byte)(abilityWhole - (int)(WeaponElapsed / interval));
+            AbilityRemainCount = (byte)(abilityWhole - (int)(checkElapsed / interval));
         }
 
         if (weapontotal > 0) WeaponTotal = weapontotal;

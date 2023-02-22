@@ -18,10 +18,11 @@ namespace RotationSolver.Rotations.CustomRotation
     {
         const ImGuiWindowFlags flags = 
               ImGuiWindowFlags.Tooltip |
-              ImGuiWindowFlags.NoTitleBar |
               ImGuiWindowFlags.NoMove |
-              ImGuiWindowFlags.NoResize |
               ImGuiWindowFlags.NoSavedSettings |
+              ImGuiWindowFlags.NoBringToFrontOnFocus |
+              ImGuiWindowFlags.NoDecoration |
+              ImGuiWindowFlags.NoInputs|
               ImGuiWindowFlags.AlwaysAutoResize;
 
         public unsafe void Display(ICustomRotation[] rotations, bool canAddButton)
@@ -31,7 +32,7 @@ namespace RotationSolver.Rotations.CustomRotation
             var id = "Popup" + GetHashCode().ToString();
 
             ImGui.SetWindowPos(id, ImGui.GetIO().MousePos);
-            ImGui.SetNextWindowSizeConstraints(new Vector2(350, 0), new Vector2(1000, 1000));
+            ImGui.SetNextWindowSizeConstraints(new Vector2(0, 0), new Vector2(1000, 1500));
             if (ImGui.Begin(id, flags))
             {
                 var t = IconSet. GetTexture(IconSet.GetJobIcon(this, IconType.Framed));
@@ -53,11 +54,9 @@ namespace RotationSolver.Rotations.CustomRotation
                     attrs.Add(RotationDescAttribute.MergeToOne(m.GetCustomAttributes<RotationDescAttribute>()));
                 }
 
-                bool last = true;
                 foreach (var a in RotationDescAttribute.Merge(attrs))
                 {
-                    if (last) ImGui.Separator();
-                    last = RotationDescAttribute.MergeToOne(a)?.Display(this) ?? false;
+                    RotationDescAttribute.MergeToOne(a)?.Display(this);
                 }
 
                 ImGui.End();

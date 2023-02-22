@@ -86,7 +86,23 @@ internal partial class RotationConfigWindow
         foreach (var member in TargetUpdater.PartyMembers)
         {
             var cha = (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)member.GetAddress();
-            ImGui.Text(((VfxStruct*)cha->Omen)->Flags.ToString());
+            var omen = (VfxStruct*)cha->Omen;
+            if ((IntPtr)omen != 0)
+            {
+                ImGui.Text("Omen:" + omen->Flags.ToString());
+            }
+            omen = (VfxStruct*)cha->VfxData;
+            if ((IntPtr)omen != 0)
+            {
+                ImGui.Text("Data:" + omen->Flags.ToString());
+            }
+            omen = (VfxStruct*)cha->VfxData2;
+            if ((IntPtr)omen != 0)
+            {
+                ImGui.Text("Data2:" + omen->Flags.ToString());
+            }
+            ImGui.Text(cha->StatusEffectVFXId.ToString());
+
         }
     }
 
