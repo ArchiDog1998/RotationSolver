@@ -47,6 +47,7 @@ If you have any questions about usage, please check the [Wiki](https://archidog1
 
 [![Crowdin](https://badges.crowdin.net/badge/light/crowdin-on-dark.png)](https://crowdin.com/project/rotationsolver)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B0IN5DX)
 
 ## 对于国服用户
 
