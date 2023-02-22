@@ -71,7 +71,7 @@
   "Configwindow_Param_Advanced": "Advanced",
   "Configwindow_Param_PoslockCasting": "Lock the movement when casting.",
   "Configwindow_Param_UseStopCasting": "Use stopping casting when target is dead.",
-  "Configwindow_Param_ShowMeleeActionFlag": "Show action flag when melee.",
+  "Configwindow_Param_ShowActionFlag": "Show action flag.",
   "Configwindow_Param_ShowHealthRatio": "Show the health ratio for the check of Boss, Dying, Dot.",
   "Configwindow_Param_HealthRatioBoss": "If target's max health ratio is higher than this, regard it as Boss.",
   "Configwindow_Param_HealthRatioDying": "If target's current health ratio is lower than this, regard it is dying.",

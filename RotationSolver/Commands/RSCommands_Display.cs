@@ -7,6 +7,7 @@ namespace RotationSolver.Commands;
 
 internal static partial class RSCommands
 {
+    const float INDENT_WIDTH = 180;
     internal static void DisplayCommandHelp<T>(this T command, string extraCommand = "", Func<T, string> getHelp = null, bool sameLine = true) where T : struct, Enum
     {
         var cmdStr = _command + " " + command.ToString();
@@ -29,17 +30,22 @@ internal static partial class RSCommands
             }
         }
 
-        if (getHelp != null)
-        {
-            var help = getHelp(command);
+        var help = getHelp?.Invoke(command);
 
-            if (!string.IsNullOrEmpty(help))
+        if (!string.IsNullOrEmpty(help))
+        {
+            if (sameLine)
             {
-                if (sameLine) ImGui.SameLine();
-                else ImGuiHelper.Spacing();
-                ImGui.Text(" → ");
                 ImGui.SameLine();
-                ImGui.TextWrapped(help);
+                ImGui.Indent(INDENT_WIDTH);
+            }
+            else ImGuiHelper.Spacing();
+            ImGui.Text(" → ");
+            ImGui.SameLine();
+            ImGui.TextWrapped(help);
+            if (sameLine)
+            {
+                ImGui.Unindent(INDENT_WIDTH);
             }
         }
     }

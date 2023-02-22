@@ -12,6 +12,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.Tank.DRK;
 
+[RotationDesc(ActionID.BloodWeapon, ActionID.Delirium)]
 internal sealed class DRK_Default : DRK_Base
 {
     public override string GameVersion => "6.31";
