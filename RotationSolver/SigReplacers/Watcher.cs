@@ -108,13 +108,11 @@ namespace RotationSolver.SigReplacers
                 if (item.AddMacro(tar)) break;
             }
 
-#if DEBUG
-            if (flag != 0)
+            if (flag != 0 && Service.Configuration.ShowMeleeActionFlag)
             {
                 Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
                 ImGui.GetColorU32(new Vector4(0.4f, 0, 0, 1)), 0, action.Icon);
             }
-#endif
 
             //事后骂人！
             if (Service.Configuration.PositionalFeedback

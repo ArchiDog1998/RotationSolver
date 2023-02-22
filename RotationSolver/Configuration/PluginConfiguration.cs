@@ -132,7 +132,9 @@ public class PluginConfiguration : IPluginConfiguration
     public string PositionalErrorText = string.Empty;
     public float CountDownAhead = 0.6f;
 
-    public int NamePlateIconId = 71204; //61417
+    public int NamePlateIconId = 61417; // 71204
+    public bool ShowMeleeActionFlag = false;
+
 
     public int MoveTargetAngle = 24;
     public float HealthRatioBoss = 1.85f;
