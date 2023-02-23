@@ -119,8 +119,6 @@ internal static partial class TargetUpdater
         WeakenPeople.Delay(PartyMembers.Where(p => p.StatusList.Any(StatusHelper.CanDispel)));
         DyingPeople.Delay(WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous)));
 
-        SayHelloToAuthor();
-
         PartyMembersHP = PartyMembers.Select(ObjectHelper.GetHealthRatio).Where(r => r > 0);
         if (PartyMembersHP.Any())
         {
@@ -222,50 +220,5 @@ internal static partial class TargetUpdater
             return loc == b.Position;
         });
 
-    static List<string> macroToAuthor = new List<string>()
-    {
-        "blush",
-        "hug",
-        "thumbsup",
-        "yes",
-        "clap",
-        "cheer",
-        "stroke",
-    };
 
-    static bool _isStarted = false;
-    static RandomDelay _authorDelay = new RandomDelay(() => (0, 1));
-    private static void SayHelloToAuthor()
-    {
-        var started = _authorDelay.Delay(!ActionUpdater.InCombat && Service.DutyState.IsDutyStarted);
-        if(!_isStarted && started)
-        {
-            var author = AllianceMembers.OfType<PlayerCharacter>()
-                .FirstOrDefault(c => c.ObjectId != Service.ClientState.LocalPlayer.ObjectId
-                && ConfigurationHelper.AuthorKeys.Contains(EncryptString(c)));
-
-            if (author != null)
-            {
-                Service.TargetManager.SetTarget(author);
-                RSCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
-                Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
-                {
-                    Message = string.Format(LocalizationManager.RightLang.Commands_SayHelloToAuthor, author.Name),
-                    Type = Dalamud.Game.Text.XivChatType.Notice,
-                });
-                UIModule.PlaySound(20, 0, 0, 0);
-                Service.TargetManager.SetTarget(null);
-            }
-        }
-        _isStarted = started;
-    }
-
-    internal static string EncryptString(PlayerCharacter player)
-    {
-        byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString() + " - " + player.Name.ToString() + "U6Wy.zCG");
-
-        var tmpHash = MD5.Create().ComputeHash(inputByteArray);
-        var retB = Convert.ToBase64String(tmpHash.ToArray());
-        return retB;
-    }
 }

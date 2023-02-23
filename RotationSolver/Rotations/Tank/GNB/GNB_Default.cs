@@ -88,7 +88,7 @@ internal sealed class GNB_Default : GNB_Base
 
         //¸ã¸ã¹¥»÷,´Ö·ÖÕ¶
         if (RoughDivide.CanUse(out act, mustUse: true) && !IsMoving) return true;
-        if (Player.HasStatus(true, StatusID.NoMercy) && RoughDivide.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (Player.HasStatus(true, StatusID.NoMercy) && RoughDivide.CanUse(out act, mustUse: true)) return true;
 
         act = null;
         return false;

@@ -22,7 +22,7 @@ internal partial class RotationConfigWindow
 {
     private void DrawDebugTab()
     {
-        var str = TargetUpdater.EncryptString(Service.ClientState.LocalPlayer);
+        var str = SocialUpdater.EncryptString(Service.ClientState.LocalPlayer);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("That is your HASH", ref str, 100);
 
@@ -91,18 +91,8 @@ internal partial class RotationConfigWindow
             {
                 ImGui.Text("Omen:" + omen->Flags.ToString());
             }
-            omen = (VfxStruct*)cha->VfxData;
-            if ((IntPtr)omen != 0)
-            {
-                ImGui.Text("Data:" + omen->Flags.ToString());
-            }
-            omen = (VfxStruct*)cha->VfxData2;
-            if ((IntPtr)omen != 0)
-            {
-                ImGui.Text("Data2:" + omen->Flags.ToString());
-            }
-            ImGui.Text(cha->StatusEffectVFXId.ToString());
 
+            ImGui.Text("StatusVfxId:" + cha->StatusEffectVFXId.ToString());
         }
     }
 
