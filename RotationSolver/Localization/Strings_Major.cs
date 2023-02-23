@@ -156,6 +156,8 @@ internal partial class Strings
     public string Configwindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
     public string Configwindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommand 61435, 61437";
     public string Configwindow_Param_Action { get; set; } = "Action";
+    public string Configwindow_Param_UseAOEAction { get; set; } = "Use AOE actions";
+
     public string Configwindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string Configwindow_Param_AutoBurst { get; set; } = "Automatic burst";
     public string Configwindow_Param_UseAbility { get; set; } = "Auto-use abilities";
