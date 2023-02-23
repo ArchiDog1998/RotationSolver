@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.4](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.3...v1.4.4) (2023-02-23)
+
+
+### Bug Fixes
+
+* add use aoe action option. ([3870dff](https://github.com/ArchiDog1998/RotationSolver/commit/3870dffd11fb1f0a128920fbd2f30359252aebd0))
+* chagned the move. ([0d85749](https://github.com/ArchiDog1998/RotationSolver/commit/0d85749ad6cbf6b29290c8856a29f16843fafa5c))
+* fix for ability remain check. ([7d8cb22](https://github.com/ArchiDog1998/RotationSolver/commit/7d8cb22fad064e67c1366a729165cdb775a3f60f))
+* fix for burst tooltips display. ([40b63a9](https://github.com/ArchiDog1998/RotationSolver/commit/40b63a9d911a5ba16cd4f1ec3139b836ed6da888))
+* fix with subtarget targeting. ([aa0f11d](https://github.com/ArchiDog1998/RotationSolver/commit/aa0f11d61c328a8652535846ffb910be9d8b5585))
+
 ## [1.4.3](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.2...v1.4.3) (2023-02-22)
 
 
