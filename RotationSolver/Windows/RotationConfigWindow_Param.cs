@@ -247,12 +247,18 @@ internal partial class RotationConfigWindow
 
     private void DrawParamAction()
     {
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseAOEWhenManual,
-            ref Service.Configuration.UseAOEWhenManual);
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseAOEAction,
+            ref Service.Configuration.UseAOEAction);
 
-        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_NoNewHostiles,
-            ref Service.Configuration.NoNewHostiles,
-            LocalizationManager.RightLang.Configwindow_Params_NoNewHostilesDesc);
+        if(Service.Configuration.UseAOEAction)
+        {
+            DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_UseAOEWhenManual,
+                ref Service.Configuration.UseAOEWhenManual);
+
+            DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_NoNewHostiles,
+                ref Service.Configuration.NoNewHostiles,
+                LocalizationManager.RightLang.Configwindow_Params_NoNewHostilesDesc);
+        }
 
         ImGui.Separator();
 
@@ -350,7 +356,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ChooseAttackMark,
             ref Service.Configuration.ChooseAttackMark);
 
-        if (Service.Configuration.ChooseAttackMark)
+        if (Service.Configuration.ChooseAttackMark && Service.Configuration.UseAOEAction)
         {
             ImGui.Indent();
 

@@ -53,6 +53,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         MajorUpdater.Enable();
         TimeLineUpdater.Enable(pluginInterface.ConfigDirectory.FullName);
+        SocialUpdater.Enable();
         Watcher.Enable();
         CountDown.Enable();
 
@@ -60,8 +61,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         Service.Localization.ExportLocalization();
 #endif
-        Service.DutyState.DutyStarted += DutyState_DutyStarted;
-        Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ChangeUITranslation();
     }
@@ -69,26 +68,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
         RSCommands.UpdateStateNamePlate();
-    }
-
-    private async void DutyState_DutyCompleted(object sender, ushort e)
-    {
-        RSCommands.CancelState();
-        await Task.Delay(new Random().Next(4000, 6000));
-
-        Service.Configuration.DutyEnd.AddMacro();
-    }
-
-    private void DutyState_DutyStarted(object sender, ushort e)
-    {
-        var territory = Service.DataManager.GetExcelSheet<TerritoryType>().GetRow(e);
-        if (territory?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
-        {
-            var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
-            Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndWarning, str));
-        }
-
-        Service.Configuration.DutyStart.AddMacro();
     }
 
     internal static void ChangeUITranslation()
@@ -102,8 +81,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     public void Dispose()
     {
-        Service.DutyState.DutyStarted -= DutyState_DutyStarted;
-        Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
 
         RSCommands.Disable();
@@ -112,13 +89,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
 
         Service.IconReplacer.Dispose();
-
         Service.Localization.Dispose();
 
         MajorUpdater.Dispose();
         TimeLineUpdater.SaveFiles();
         Watcher.Dispose();
         CountDown.Dispose();
+        SocialUpdater.Disable();
 
         IconSet.Dispose();
     }

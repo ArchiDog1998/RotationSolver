@@ -22,7 +22,7 @@ internal partial class RotationConfigWindow
 {
     private void DrawDebugTab()
     {
-        var str = TargetUpdater.EncryptString(Service.ClientState.LocalPlayer);
+        var str = SocialUpdater.EncryptString(Service.ClientState.LocalPlayer);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("That is your HASH", ref str, 100);
 
@@ -86,7 +86,13 @@ internal partial class RotationConfigWindow
         foreach (var member in TargetUpdater.PartyMembers)
         {
             var cha = (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)member.GetAddress();
-            ImGui.Text(((VfxStruct*)cha->Omen)->Flags.ToString());
+            var omen = (VfxStruct*)cha->Omen;
+            if ((IntPtr)omen != 0)
+            {
+                ImGui.Text("Omen:" + omen->Flags.ToString());
+            }
+
+            ImGui.Text("StatusVfxId:" + cha->StatusEffectVFXId.ToString());
         }
     }
 

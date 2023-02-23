@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using System;
@@ -22,15 +23,6 @@ internal static class MovingUpdater
         movingHook.Disable();
     }
 
-    internal static void UpdateLocation()
-    {
-        if (Service.ClientState.LocalPlayer == null) return;
-        var p = Service.ClientState.LocalPlayer.Position;
-
-        _moving = _lastPosition != p;
-        _lastPosition = p;
-    }
-
     private static bool MovingDetour(IntPtr ptr)
     {
         if (Service.Conditions[ConditionFlag.OccupiedInEvent])
@@ -45,12 +37,9 @@ internal static class MovingUpdater
         }
         return movingHook.Original(ptr);
     }
-
-    static Vector3 _lastPosition = Vector3.Zero;
-    static bool _moving = false;
-    internal static bool IsMoving
+    internal static unsafe bool IsMoving
     {
-        get => _moving;
+        get => AgentMap.Instance()->IsPlayerMoving > 0;
         set => _posLocker = !value;
     }
 }

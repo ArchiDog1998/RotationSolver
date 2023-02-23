@@ -53,6 +53,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AutoShield = true;
     public bool AddEnemyListToHostile = true;
     public bool UseAOEWhenManual = false;
+    public bool UseAOEAction = true;
     public bool UseItem = false;
     public bool PositionalFeedback = true;
     public bool ShowMoveTarget = true;

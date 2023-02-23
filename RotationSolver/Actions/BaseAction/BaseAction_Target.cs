@@ -280,7 +280,7 @@ internal partial class BaseAction
         }
 
         //判断一下AOE攻击的时候如果有攻击目标标记目标
-        if (_action.CastType > 1 && NoAOEForAttackMark)
+        if (_action.CastType > 1 && NoAOE)
         {
             target = null;
             return false;
@@ -310,7 +310,7 @@ internal partial class BaseAction
             return true;
         }
 
-        if (Service.Configuration.UseAOEWhenManual || mustUse)
+        if (Service.Configuration.UseAOEAction && Service.Configuration.UseAOEWhenManual || mustUse)
         {
             if (GetMostObjects(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), aoeCount).Contains(b))
             {
@@ -326,7 +326,7 @@ internal partial class BaseAction
     {
         if (_action.EffectRange > 0 && !_isFriendly)
         {
-            if (NoAOEForAttackMark)
+            if (NoAOE)
             {
                 return false;
             }
@@ -479,11 +479,15 @@ internal partial class BaseAction
         return id is 0 or 565;
     }
 
-    /// <summary>
-    /// 开启攻击标记且有攻击标记目标且不开AOE。
-    /// </summary>
-    private static bool NoAOEForAttackMark =>
-        Service.Configuration.ChooseAttackMark 
-        && !Service.Configuration.CanAttackMarkAOE
-        && MarkingHelper.HaveAttackChara(TargetUpdater.HostileTargets);
+    private static bool NoAOE
+    {
+        get
+        {
+            if (!Service.Configuration.UseAOEAction) return true;
+
+            return Service.Configuration.ChooseAttackMark
+                && !Service.Configuration.CanAttackMarkAOE
+                && MarkingHelper.HaveAttackChara(TargetUpdater.HostileTargets);
+        }
+    }
 }
