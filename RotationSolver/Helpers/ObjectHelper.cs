@@ -47,7 +47,7 @@ internal static class ObjectHelper
 
     internal static unsafe bool IsNPCEnemy(this GameObject obj) 
         => obj.GetObjectKind() == ObjectKind.BattleNpc
-        && obj.GetBattleNPCSubkind() == BattleNpcSubKind.Enemy 
+        && (byte)obj.GetBattleNPCSubkind() is (byte)BattleNpcSubKind.Enemy or 1
         && obj.CanAttack();
 
     private unsafe static bool CanAttack(this GameObject actor)

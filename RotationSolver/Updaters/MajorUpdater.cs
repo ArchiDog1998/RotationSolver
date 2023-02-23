@@ -105,7 +105,6 @@ internal static class MajorUpdater
         ActionUpdater.UpdateActionInfo();
         PreviewUpdater.UpdateCastBarState();
         TargetUpdater.UpdateTarget();
-        SocialUpdater.UpdateSocial();
 
         RotationUpdater.UpdateRotation();
 
