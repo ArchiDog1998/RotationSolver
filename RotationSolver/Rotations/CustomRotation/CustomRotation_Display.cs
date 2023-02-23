@@ -8,6 +8,7 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Timeline;
 using RotationSolver.Windows.RotationConfigWindow;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -43,12 +44,13 @@ namespace RotationSolver.Rotations.CustomRotation
                     ImGui.SameLine();
                     ImGui.Text("  ");
                     ImGui.SameLine();
-                    ImGui.TextWrapped(text);
+                    ImGui.Text(text);
                 }
 
-                var type = this.GetType();
+                var type = GetType();
 
-                var attrs = type.GetCustomAttributes<RotationDescAttribute>().ToList();
+                var attrs = new List<RotationDescAttribute> { RotationDescAttribute.MergeToOne(type.GetCustomAttributes<RotationDescAttribute>()) };
+
                 foreach (var m in type.GetAllMethodInfo())
                 {
                     attrs.Add(RotationDescAttribute.MergeToOne(m.GetCustomAttributes<RotationDescAttribute>()));

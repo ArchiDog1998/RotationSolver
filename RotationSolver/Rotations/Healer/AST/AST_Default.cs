@@ -11,14 +11,12 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.AST;
 
-[RotationDesc("Burst Info?", ActionID.Divination)]
+[RotationDesc(ActionID.Divination)]
 internal sealed class AST_Default : AST_Base
 {
     public override string GameVersion => "6.28";
 
     public override string RotationName => "Default";
-
-    public override string Description => "This is a test description.";
 
     private protected override IRotationConfigSet CreateConfiguration()
         => base.CreateConfiguration()
@@ -44,7 +42,7 @@ internal sealed class AST_Default : AST_Base
         return base.CountDownAction(remainTime);
     }
 
-    [RotationDesc("Another test please.", ActionID.CelestialIntersection, ActionID.Exaltation)]
+    [RotationDesc(ActionID.CelestialIntersection, ActionID.Exaltation)]
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //天星交错

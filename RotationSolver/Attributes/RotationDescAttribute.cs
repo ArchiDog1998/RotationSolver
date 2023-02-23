@@ -130,7 +130,7 @@ internal class RotationDescAttribute : Attribute
 
         if (hasDesc)
 		{
-			ImGui.TextWrapped(Description);
+			ImGui.Text(Description);
 		}
 
 		bool notStart = false;
