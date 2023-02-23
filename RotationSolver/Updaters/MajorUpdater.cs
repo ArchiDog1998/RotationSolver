@@ -45,8 +45,6 @@ internal static class MajorUpdater
         PreviewUpdater.UpdatePreview();
         ActionUpdater.DoAction();
         MacroUpdater.UpdateMacro();
-
-        MovingUpdater.UpdateLocation();
     }
 
     static bool _work = true;
