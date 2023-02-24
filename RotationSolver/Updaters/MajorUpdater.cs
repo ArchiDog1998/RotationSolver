@@ -42,6 +42,7 @@ internal static class MajorUpdater
             UpdateWork();
         }
 
+        SocialUpdater.UpdateSocial();
         PreviewUpdater.UpdatePreview();
         ActionUpdater.DoAction();
         MacroUpdater.UpdateMacro();

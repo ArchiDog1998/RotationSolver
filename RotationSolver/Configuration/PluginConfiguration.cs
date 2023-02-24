@@ -1,4 +1,5 @@
     using Dalamud.Configuration;
+using Dalamud.Logging;
 using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
@@ -149,5 +150,6 @@ public class PluginConfiguration : IPluginConfiguration
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);
+        PluginLog.Information("Rotation Solver Config Saved.");
     }
 }
