@@ -14,7 +14,7 @@ internal static class CooldownHelper
 
     private static float WeaponTime(uint gcdCount = 0, uint abilityCount = 0)
         => ActionUpdater.WeaponTotal * gcdCount
-        + Service.Configuration.WeaponInterval * abilityCount;
+        + Service.Configuration.AbilitiesInterval * abilityCount;
 
     internal static bool ElapsedAfterGCD(float elapsed, uint gcdCount = 0, uint abilityCount = 0)
     {

@@ -117,9 +117,9 @@ internal static class ActionUpdater
         if (WeaponElapsed < 0.3) _lastCastingTotal = castTotal;
 
         //确认能力技的相关信息
-        var interval = Service.Configuration.WeaponInterval;
-        var checkRemain = WeaponRemain + 0.1f - Service.Configuration.WeaponAhead;
-        var checkElapsed = WeaponElapsed - 0.1f + Service.Configuration.WeaponAhead;
+        var interval = Service.Configuration.AbilitiesInterval;
+        var checkRemain = WeaponRemain + 0.1f - Service.Configuration.ActionAhead;
+        var checkElapsed = WeaponElapsed - 0.1f + Service.Configuration.ActionAhead;
         if (checkRemain < interval || WeaponElapsed == 0)
         {
             AbilityRemain = 0;
@@ -136,7 +136,7 @@ internal static class ActionUpdater
         }
         else
         {
-            var abilityWhole = (int)(weapontotal / Service.Configuration.WeaponInterval - 1);
+            var abilityWhole = (int)(weapontotal / Service.Configuration.AbilitiesInterval - 1);
             AbilityRemain = interval - WeaponElapsed % interval;
             AbilityRemainCount = (byte)(abilityWhole - (int)(checkElapsed / interval));
         }
@@ -187,13 +187,13 @@ internal static class ActionUpdater
             || ActionManager.Instance()->ActionQueued) return;
 
         //GCD
-        var canUseGCD = WeaponRemain <= Service.Configuration.WeaponAhead;
+        var canUseGCD = WeaponRemain <= Service.Configuration.ActionAhead;
         if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
         if (canUseGCD) return;
 
         //要超出GCD了，那就不放技能了。
-        if (WeaponRemain < Service.Configuration.WeaponInterval
-            || WeaponElapsed < Service.Configuration.WeaponInterval)
+        if (WeaponRemain < Service.Configuration.AbilitiesInterval
+            || WeaponElapsed < Service.Configuration.AbilitiesInterval)
         {
             return;
         }
@@ -202,14 +202,14 @@ internal static class ActionUpdater
         if (WeaponElapsed <= _lastCastingTotal) return;
 
         //只剩下最后一个能力技了，然后卡最后！
-        if (WeaponRemain < 2 * Service.Configuration.WeaponInterval)
+        if (WeaponRemain < 2 * Service.Configuration.AbilitiesInterval)
         {
-            if (WeaponRemain > Service.Configuration.WeaponInterval + Service.Configuration.WeaponAhead) return;
+            if (WeaponRemain > Service.Configuration.AbilitiesInterval + Service.Configuration.ActionAhead) return;
             RSCommands.DoAnAction(false);
 
             return;
         }
-        else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.WeaponInterval <= Service.Configuration.WeaponAhead)
+        else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.AbilitiesInterval <= Service.Configuration.ActionAhead)
         {
             RSCommands.DoAnAction(false);
         }

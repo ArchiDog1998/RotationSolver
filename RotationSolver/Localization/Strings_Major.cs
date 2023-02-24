@@ -92,14 +92,14 @@ internal partial class Strings
     public string Configwindow_Events_DutyEnd{ get; set; } = "Duty End: ";
     public string Configwindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
     public string Configwindow_Param_NeverReplaceIcon { get; set; } = "Never Replace Icons";
-    public string Configwindow_Param_NeverReplaceIconDesc { get; set; } = "Icon replacement: Repose is automatically displayed as the next skill to be used";
-    public string Configwindow_Param_UseOverlayWindow { get; set; } = "Display top overlay";
-    public string Configwindow_Param_UseOverlayWindowDesc { get; set; } = "This window is currently used to cue the body position in advance.";
+    public string Configwindow_Param_NeverReplaceIconDesc { get; set; } = "Icon replacement: Repose is automatically displayed as the next action to be used";
+    public string Configwindow_Param_UseOverlayWindow { get; set; } = "Display Top Overlay";
+    public string Configwindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
     public string Configwindow_Param_Basic { get; set; } = "Basic";
 
-    public string Configwindow_Param_WeaponAhead { get; set; } = "Set the time advance of use actions";
-    public string Configwindow_Param_WeaponInterval { get; set; } = "Set the interval between abilities using";
-    public string Configwindow_Param_CountDownAhead { get; set; } = "Set the time advance of use casting actions on counting down.";
+    public string Configwindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
+    public string Configwindow_Param_AbilitiesInterval { get; set; } = "Set the interval between 0GCD using";
+    public string Configwindow_Param_CountDownAhead { get; set; } = "Set the time advance of using casting actions on counting down.";
     public string Configwindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string Configwindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
     public string Configwindow_Param_AutoOffBetweenArea { get; set; } = "Turn off when player is between area.";

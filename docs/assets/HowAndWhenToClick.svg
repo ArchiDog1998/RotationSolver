@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="104.61787mm"
+   height="47.215714mm"
+   viewBox="0 0 104.61787 47.215714"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="HowToClick.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.929784"
+     inkscape:cx="367.65773"
+     inkscape:cy="231.11395"
+     inkscape:window-width="3072"
+     inkscape:window-height="1831"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow3"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow3"
+       markerWidth="4.2071066"
+       markerHeight="7"
+       viewBox="0 0 4.2071068 7"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:round"
+         d="m -2.75,3 3,-3 -3,-3"
+         id="arrow3"
+         sodipodi:nodetypes="ccc" />
+    </marker>
+    <pattern
+       inkscape:collect="always"
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="1"
+       patternTransform="translate(0,0) scale(10,10)"
+       id="Strips1_1"
+       inkscape:stockid="Stripes 1:1">
+      <rect
+         style="fill:black;stroke:none"
+         x="0"
+         y="-0.5"
+         width="1"
+         height="2"
+         id="rect2997" />
+    </pattern>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;white-space:pre;inline-size:9.233;display:inline;fill:url(#Strips1_1);fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="7.6104169"
+       y="26.660696"
+       id="text1963" />
+    <g
+       id="g3984-1"
+       transform="translate(68.791666,-1.7638888)">
+      <rect
+         style="fill:#cccccc;fill-opacity:1;stroke:#333333;stroke-width:1.34005;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         id="rect429-5"
+         width="15.593284"
+         height="15.593284"
+         x="5.9616919"
+         y="5.9616919"
+         rx="1.9491605"
+         inkscape:label="rect429-5" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.59765px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         x="7.1368508"
+         y="15.781381"
+         id="text3979-9"><tspan
+           sodipodi:role="line"
+           id="tspan3977-5"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke-width:0"
+           x="7.1368508"
+           y="15.781381">GCD</tspan></text>
+    </g>
+    <g
+       id="g3984-1-6"
+       transform="translate(0,-1.7638888)">
+      <rect
+         style="fill:#cccccc;fill-opacity:1;stroke:#333333;stroke-width:1.34005;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         id="rect429-5-4"
+         width="15.593284"
+         height="15.593284"
+         x="5.9616919"
+         y="5.9616919"
+         rx="1.9491605"
+         inkscape:label="rect429-5" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.59765px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         x="7.1368508"
+         y="15.781381"
+         id="text3979-9-1"><tspan
+           sodipodi:role="line"
+           id="tspan3977-5-2"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke-width:0"
+           x="7.1368508"
+           y="15.781381">GCD</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58159px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="3.142036"
+       y="40.517529"
+       id="text5634-9-9"><tspan
+         id="tspan5632-5-7"
+         style="fill:#000000;fill-opacity:1;stroke-width:0"
+         x="3.142036"
+         y="40.517529"
+         sodipodi:role="line">ITV : Interval between 0GCD using</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58159px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="13.062577"
+       y="25.093197"
+       id="text5634-9-3"><tspan
+         id="tspan5632-5-3"
+         style="fill:#000000;fill-opacity:1;stroke-width:0"
+         x="13.062577"
+         y="25.093197"
+         sodipodi:role="line">ITV</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58159px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="61.019344"
+       y="24.568102"
+       id="text5634-9-3-9"><tspan
+         id="tspan5632-5-3-3"
+         style="fill:#000000;fill-opacity:1;stroke-width:0"
+         x="61.019344"
+         y="24.568102"
+         sodipodi:role="line">ITV</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.91732px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="4.2006111"
+       y="31.413017"
+       id="text5634-9-3-9-2"><tspan
+         id="tspan5632-5-3-3-6"
+         style="fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-opacity:1"
+         x="4.2006111"
+         y="31.413017"
+         sodipodi:role="line">ADV</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.91732px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="2.6064596"
+       y="44.101387"
+       id="text5634-9-3-9-2-08"><tspan
+         id="tspan5632-5-3-3-6-96"
+         style="fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-opacity:1"
+         x="2.6064596"
+         y="44.101387"
+         sodipodi:role="line">ADV : Time advance of using actions</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.91732px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="25.42598"
+       y="31.419167"
+       id="text5634-9-3-9-2-3"><tspan
+         id="tspan5632-5-3-3-6-9"
+         style="fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-opacity:1"
+         x="25.42598"
+         y="31.419167"
+         sodipodi:role="line">ADV</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.91732px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="51.95583"
+       y="31.419163"
+       id="text5634-9-3-9-2-0"><tspan
+         id="tspan5632-5-3-3-6-3"
+         style="fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-opacity:1"
+         x="51.95583"
+         y="31.419163"
+         sodipodi:role="line">ADV</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.91732px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="73.207123"
+       y="31.350613"
+       id="text5634-9-3-9-2-2"><tspan
+         id="tspan5632-5-3-3-6-0"
+         style="fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-opacity:1"
+         x="73.207123"
+         y="31.350613"
+         sodipodi:role="line">ADV</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.91732px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="83.224297"
+       y="41.839157"
+       id="text5634-9-3-9-2-2-6"><tspan
+         id="tspan5632-5-3-3-6-0-9"
+         style="fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-opacity:1"
+         x="83.224297"
+         y="41.839157"
+         sodipodi:role="line">Click Point</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58159px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="32.227264"
+       y="24.70521"
+       id="text5634-9-3-9-8"><tspan
+         id="tspan5632-5-3-3-1"
+         style="fill:#000000;fill-opacity:1;stroke-width:0"
+         x="32.227264"
+         y="24.70521"
+         sodipodi:role="line">&lt; 2 * ITV</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58159px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="92.895737"
+       y="19.98802"
+       id="text5634-9-5"><tspan
+         id="tspan5632-5-0"
+         style="fill:#000000;fill-opacity:1;stroke-width:0"
+         x="92.895737"
+         y="19.98802"
+         sodipodi:role="line">Time</tspan></text>
+    <path
+       style="fill:#050505;fill-opacity:1;stroke:#262626;stroke-width:1.41111;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow3)"
+       d="M 2.4793222,26.174712 H 101.96357"
+       id="path5722"
+       sodipodi:nodetypes="cc" />
+    <g
+       id="g12912"
+       transform="translate(0,-1.7638888)">
+      <path
+         style="fill:#050505;fill-opacity:1;stroke:#000000;stroke-width:0.503258;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 5.5432957,23.182185 v 6.576938"
+         id="path7205" />
+      <path
+         style="fill:#050505;fill-opacity:1;stroke:#000000;stroke-width:0.503258;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 26.709962,23.182185 v 6.576938"
+         id="path7205-1" />
+      <path
+         style="fill:#050505;fill-opacity:1;stroke:#000000;stroke-width:0.503258;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 53.168296,23.182185 v 6.576939"
+         id="path7205-9" />
+      <path
+         style="fill:#050505;fill-opacity:1;stroke:#000000;stroke-width:0.503258;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 74.334962,23.182185 v 6.576938"
+         id="path7205-16" />
+    </g>
+    <g
+       id="g12912-9"
+       transform="matrix(1.0003763,0,0,0.7321839,-1.7789194,7.9118456)">
+      <path
+         style="fill:#050505;fill-opacity:1;stroke:#800000;stroke-width:0.818743;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 5.5432957,23.182185 v 6.576938"
+         id="path7205-3" />
+      <path
+         style="fill:#050505;fill-opacity:1;stroke:#800000;stroke-width:0.818743;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 26.709962,23.182185 v 6.576938"
+         id="path7205-1-4" />
+      <path
+         style="fill:#050505;fill-opacity:1;stroke:#800000;stroke-width:0.818743;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 53.168296,23.182185 v 6.576939"
+         id="path7205-9-5" />
+      <path
+         style="fill:#050505;fill-opacity:1;stroke:#800000;stroke-width:0.818743;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 74.334962,23.182185 v 6.576938"
+         id="path7205-16-0" />
+    </g>
+    <path
+       style="fill:#050505;fill-opacity:1;stroke:#800000;stroke-width:0.670279;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 82.15408,38.39927 v 4.404667"
+       id="path7205-16-0-6" />
+    <g
+       id="g12859"
+       transform="translate(0,-1.7638888)">
+      <rect
+         style="fill:#cccccc;fill-opacity:1;stroke:#333333;stroke-width:1.00504;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         id="rect429-9"
+         width="11.694963"
+         height="11.694963"
+         x="26.960854"
+         y="5.7941866"
+         rx="1.4618703" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58159px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         x="27.560646"
+         y="10.546747"
+         id="text5634"><tspan
+           id="tspan5632"
+           style="fill:#000000;fill-opacity:1;stroke-width:0"
+           x="27.560646"
+           y="10.546747"
+           sodipodi:role="line">0GCD</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.59765px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         x="30.811287"
+         y="16.316404"
+         id="text3979-9-1-9"><tspan
+           sodipodi:role="line"
+           id="tspan3977-5-2-4"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke-width:0"
+           x="30.811287"
+           y="16.316404">2</tspan></text>
+    </g>
+    <g
+       id="g12859-6"
+       transform="translate(26.458333,-1.7638888)">
+      <rect
+         style="fill:#cccccc;fill-opacity:1;stroke:#333333;stroke-width:1.00504;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         id="rect429-9-5"
+         width="11.694963"
+         height="11.694963"
+         x="26.960854"
+         y="5.7941866"
+         rx="1.4618703" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58159px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         x="27.560646"
+         y="10.546747"
+         id="text5634-0"><tspan
+           id="tspan5632-51"
+           style="fill:#000000;fill-opacity:1;stroke-width:0"
+           x="27.560646"
+           y="10.546747"
+           sodipodi:role="line">0GCD</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.59765px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         x="30.811287"
+         y="16.316404"
+         id="text3979-9-1-9-3"><tspan
+           sodipodi:role="line"
+           id="tspan3977-5-2-4-9"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#000000;fill-opacity:1;stroke-width:0"
+           x="30.811287"
+           y="16.316404">1</tspan></text>
+    </g>
+  </g>
+</svg>

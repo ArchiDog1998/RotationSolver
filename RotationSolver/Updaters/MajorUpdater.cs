@@ -55,6 +55,8 @@ internal static class MajorUpdater
     public static void Enable()
     {
         Service.Framework.Update += FrameworkUpdate;
+        MovingUpdater.Enable();
+
         Task.Run(async () =>
         {
             while (_work)
@@ -79,7 +81,6 @@ internal static class MajorUpdater
                 CalculateFPS();
             }
         });
-        MovingUpdater.Enable();
     }
 
     private static void CalculateFPS()

@@ -16,7 +16,7 @@ internal abstract partial class CustomRotation
         act = RSCommands.NextAction;
         if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _, mustUse: true, skipDisable: true)) return true;
 
-        if (!Service.Configuration.UseAbility || Player.TotalCastTime - Player.CurrentCastTime > Service.Configuration.WeaponInterval)
+        if (!Service.Configuration.UseAbility || Player.TotalCastTime - Player.CurrentCastTime > Service.Configuration.AbilitiesInterval)
         {
             act = null;
             return false;
