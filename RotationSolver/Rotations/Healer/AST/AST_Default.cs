@@ -31,7 +31,7 @@ internal sealed class AST_Default : AST_Base
 
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (remainTime < Malefic.CastTime + Service.Configuration.WeaponInterval
+        if (remainTime < Malefic.CastTime + Service.Configuration.CountDownAhead
             && Malefic.CanUse(out var act)) return act;
         if (remainTime < 3 && UseTincture(out act)) return act;
         if (remainTime < 4 && AspectedBeneficDefense.CanUse(out act)) return act;

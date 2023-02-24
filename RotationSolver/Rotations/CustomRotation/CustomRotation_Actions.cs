@@ -167,7 +167,7 @@ internal abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction LowBlow { get; } = new RoleAction(ActionID.LowBlow, new JobRole[] { JobRole.Tank })
     {
-        ActionCheck = b => !b.IsBoss() && !MovingUpdater.IsMoving,
+        ActionCheck = b => !b.IsBoss() && !MovingUpdater.IsMoving && b.CastActionId != 0 && !b.IsCastInterruptible,
     };
 
     /// <summary>
