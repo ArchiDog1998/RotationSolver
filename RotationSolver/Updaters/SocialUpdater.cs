@@ -28,6 +28,23 @@ internal class SocialUpdater
         "stroke",
     };
 
+    static bool CanSocial
+    {
+        get
+        {
+            if (Service.Conditions[ConditionFlag.OccupiedInQuestEvent]
+                || Service.Conditions[ConditionFlag.WaitingForDuty]
+                || Service.Conditions[ConditionFlag.WaitingForDutyFinder]
+                || Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
+                || Service.Conditions[ConditionFlag.BetweenAreas]
+                || Service.Conditions[ConditionFlag.BetweenAreas51]) return false;
+
+            return Service.Conditions[ConditionFlag.BoundByDuty]
+                || Service.Conditions[ConditionFlag.BoundByDuty56]
+                || Service.Conditions[ConditionFlag.BoundByDuty95];
+        }
+    }
+
     internal static void Enable()
     {
         Service.DutyState.DutyStarted += DutyState_DutyStarted;
@@ -42,7 +59,7 @@ internal class SocialUpdater
         Service.Configuration.DutyEnd.AddMacro();
     }
 
-    static async void DutyState_DutyStarted(object sender, ushort e)
+    static void DutyState_DutyStarted(object sender, ushort e)
     {
         var territory = Service.DataManager.GetExcelSheet<TerritoryType>().GetRow(e);
         if (territory?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
@@ -50,15 +67,51 @@ internal class SocialUpdater
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
             Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndWarning, str));
         }
+    }
 
-        await Task.Delay(new Random().Next(1000));
+    internal static void Disable()
+    {
+        Service.DutyState.DutyStarted -= DutyState_DutyStarted;
+        Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
+    }
 
+    static bool _started = false;
+    internal static async void UpdateSocial()
+    {
+        if (ActionUpdater.InCombat) return;
+        var started = CanSocial;
+        if (!_started && started)
+        {
+            _started = started;
+
+            await Task.Delay(new Random().Next(1000));
+
+#if DEBUG
+            Service.ChatGui.Print("Macro now.");
+#endif
+            Service.Configuration.DutyStart.AddMacro();
+            await Task.Delay(new Random().Next(1000));
+            SayHelloToAuthor();
+        }
+        else _started = started;
+    }
+
+    private static async void SayHelloToAuthor()
+    {
         var author = TargetUpdater.AllianceMembers.OfType<PlayerCharacter>()
             .FirstOrDefault(c => c.ObjectId != Service.ClientState.LocalPlayer.ObjectId
             && ConfigurationHelper.AuthorKeys.Contains(EncryptString(c)));
 
         if (author != null)
         {
+            while(!author.IsTargetable() && !ActionUpdater.InCombat)
+            {
+                await Task.Delay(100);
+            }
+
+#if DEBUG
+            Service.ChatGui.Print("Saying hello.");
+#endif
             Service.TargetManager.SetTarget(author);
             RSCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
@@ -69,21 +122,12 @@ internal class SocialUpdater
             UIModule.PlaySound(20, 0, 0, 0);
             Service.TargetManager.SetTarget(null);
         }
-
-        await Task.Delay(new Random().Next(1000));
-
-        Service.Configuration.DutyStart.AddMacro();
-    }
-
-    internal static void Disable()
-    {
-        Service.DutyState.DutyStarted -= DutyState_DutyStarted;
-        Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
     }
 
     internal static string EncryptString(PlayerCharacter player)
     {
-        byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString() + " - " + player.Name.ToString() + "U6Wy.zCG");
+        byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString()
+            + " - " + player.Name.ToString() + "U6Wy.zCG");
 
         var tmpHash = MD5.Create().ComputeHash(inputByteArray);
         var retB = Convert.ToBase64String(tmpHash.ToArray());
