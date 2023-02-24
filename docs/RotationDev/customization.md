@@ -1,3 +1,5 @@
+
+
 # Customization
 
 Want to write a better rotation? You need to customize it!
@@ -45,18 +47,38 @@ Sometimes, for saving the resource. We want to save the value to the field. But 
 
 ## Description
 
-More description about your rotation? Overrive the `DescriptionDict`.
+More description about your rotation? Override the `Description`.
 
-Here is an example in BRD:
+Here is an example AST:
 
 ``` c#
-    public override SortedList<DescType, string> DescriptionDict => new()
-    {
-        {DescType.Description, "Please make sure that the three song times add up to 120 seconds!"},
-        {DescType.DefenseArea, $"{Troubadour}"},
-        {DescType.HealSingle, $"{NaturesMinne}"},
-    };
+    public override string Description => "Here is an Example Description.";
 ```
+
+And for the macro special duration. You can use attribute called `RotationDesc` to describe it. 
+
+Burst Info should be attached on the class.
+
+``` c#
+[RotationDesc("This is a burst info", ActionID.Divination)]
+internal sealed class AST_Default : AST_Base
+{
+    //...
+}
+```
+
+You can also separate it to describe, or just write one.
+
+``` c#
+[RotationDesc("Defence Single Description...\n Please use new line manually..")]
+[RotationDesc(ActionID.CelestialIntersection, ActionID.Exaltation)]
+private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+{
+    //...
+}
+```
+
+This is what it look like.
 
 
 

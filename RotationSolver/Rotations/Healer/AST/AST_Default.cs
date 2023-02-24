@@ -11,13 +11,14 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.AST;
 
-[RotationDesc(ActionID.Divination)]
+[RotationDesc("This is a burst info", ActionID.Divination)]
 internal sealed class AST_Default : AST_Base
 {
     public override string GameVersion => "6.28";
 
     public override string RotationName => "Default";
 
+    public override string Description => "Here is an Example Description";
     private protected override IRotationConfigSet CreateConfiguration()
         => base.CreateConfiguration()
             .SetFloat("UseEarthlyStarTime", 15, "Use the Earthly Star in Count down time", 4, 20);
@@ -42,6 +43,7 @@ internal sealed class AST_Default : AST_Base
         return base.CountDownAction(remainTime);
     }
 
+    [RotationDesc("Defence Single Description...\n Please use new line manually..")]
     [RotationDesc(ActionID.CelestialIntersection, ActionID.Exaltation)]
     private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {

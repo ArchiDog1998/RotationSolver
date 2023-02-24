@@ -2,6 +2,7 @@
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
 using System;
 using System.Linq;
@@ -167,7 +168,13 @@ internal abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction LowBlow { get; } = new RoleAction(ActionID.LowBlow, new JobRole[] { JobRole.Tank })
     {
-        ActionCheck = b => !b.IsBoss() && !MovingUpdater.IsMoving && b.CastActionId != 0 && !b.IsCastInterruptible,
+        ActionCheck = b =>
+        {
+            if (b.IsBoss() || MovingUpdater.IsMoving || b.CastActionId == 0) return false;
+
+            if (!b.IsCastInterruptible || Interject.IsCoolingDown) return true;
+            return false;
+        }
     };
 
     /// <summary>
