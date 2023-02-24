@@ -100,6 +100,7 @@
   "Configwindow_Param_ShowInfoOnToast": "Display plugin state on toast",
   "Configwindow_Param_NamePlateIconId": "Player's name plate icon id when state is on. Recommand 61435, 61437",
   "Configwindow_Param_Action": "Action",
+  "Configwindow_Param_UseAOEAction": "Use AOE actions",
   "Configwindow_Param_UseAOEWhenManual": "Use AOE actions in manual mode",
   "Configwindow_Param_AutoBurst": "Automatic burst",
   "Configwindow_Param_UseAbility": "Auto-use abilities",
