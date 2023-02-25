@@ -68,6 +68,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
         RSCommands.UpdateStateNamePlate();
+        SocialUpdater.CanSaying = true;
     }
 
     internal static void ChangeUITranslation()

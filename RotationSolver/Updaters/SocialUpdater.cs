@@ -28,6 +28,8 @@ internal class SocialUpdater
         "stroke",
     };
 
+    public static bool CanSaying { get; set; } = false;
+
     static bool CanSocial
     {
         get
@@ -39,9 +41,10 @@ internal class SocialUpdater
                 || Service.Conditions[ConditionFlag.BetweenAreas]
                 || Service.Conditions[ConditionFlag.BetweenAreas51]) return false;
 
-            return Service.Conditions[ConditionFlag.BoundByDuty]
-                || Service.Conditions[ConditionFlag.BoundByDuty56]
-                || Service.Conditions[ConditionFlag.BoundByDuty95];
+            if(Service.ClientState.LocalPlayer == null) return false;
+            if (!Service.ClientState.LocalPlayer.IsTargetable()) return false;
+
+            return Service.Conditions[ConditionFlag.BoundByDuty];
         }
     }
 
@@ -75,32 +78,33 @@ internal class SocialUpdater
         Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
     }
 
-    static bool _started = false;
     internal static async void UpdateSocial()
     {
         if (ActionUpdater.InCombat) return;
-        var started = CanSocial;
-        if (!_started && started)
+        if (CanSaying && CanSocial)
         {
-            _started = started;
+            CanSaying = false;
 
-            await Task.Delay(new Random().Next(1000));
+            await Task.Delay(new Random().Next(3000, 5000));
 
 #if DEBUG
-            Service.ChatGui.Print("Macro now.");
+            Service.ChatGui.PrintError("Macro now.");
 #endif
             Service.Configuration.DutyStart.AddMacro();
-            await Task.Delay(new Random().Next(1000));
+            await Task.Delay(new Random().Next(1000, 1500));
             SayHelloToAuthor();
         }
-        else _started = started;
     }
 
     private static async void SayHelloToAuthor()
     {
         var author = TargetUpdater.AllianceMembers.OfType<PlayerCharacter>()
-            .FirstOrDefault(c => c.ObjectId != Service.ClientState.LocalPlayer.ObjectId
-            && ConfigurationHelper.AuthorKeys.Contains(EncryptString(c)));
+            .FirstOrDefault(c =>
+#if DEBUG
+#else
+            c.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
+#endif
+            ConfigurationHelper.AuthorKeys.Contains(EncryptString(c)));
 
         if (author != null)
         {
@@ -109,9 +113,6 @@ internal class SocialUpdater
                 await Task.Delay(100);
             }
 
-#if DEBUG
-            Service.ChatGui.Print("Saying hello.");
-#endif
             Service.TargetManager.SetTarget(author);
             RSCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
