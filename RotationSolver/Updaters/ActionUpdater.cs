@@ -180,7 +180,7 @@ internal static class ActionUpdater
             || Service.Conditions[ConditionFlag.BetweenAreas]
             || Service.Conditions[ConditionFlag.BetweenAreas51]
             || Service.Conditions[ConditionFlag.Mounted]
-            || Service.Conditions[ConditionFlag.SufferingStatusAffliction]
+            //|| Service.Conditions[ConditionFlag.SufferingStatusAffliction] //Because of BLU30!
             || Service.Conditions[ConditionFlag.SufferingStatusAffliction2]
             || Service.Conditions[ConditionFlag.RolePlaying]
             || Service.Conditions[ConditionFlag.InFlight]

@@ -129,7 +129,8 @@ internal static partial class TargetUpdater
         var hostiles = allattackableTargets.Where(t =>
         {
             if (ids.Contains(t.ObjectId)) return true;
-            if (t.TargetObject == Service.ClientState.LocalPlayer) return true;
+            if (t.TargetObject == Service.ClientState.LocalPlayer
+            || t.TargetObject?.OwnerId == Service.ClientState.LocalPlayer.ObjectId) return true;
 
             //Remove other's treasure.
             if (t.IsOthersPlayers()) return false;

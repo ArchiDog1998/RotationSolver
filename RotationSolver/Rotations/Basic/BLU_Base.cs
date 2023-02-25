@@ -1,5 +1,6 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -764,6 +765,14 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
 
     private protected override bool EmergencyGCD(out IAction act)
     {
+        if (BlueId == BLUID.Healer)
+        {
+            //有某些非常危险的状态。
+            if (RSCommands.SpecialType == SpecialCommandType.EsunaStanceNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
+            {
+                if (Exuviation.CanUse(out act, mustUse: true)) return true;
+            }
+        }
         if (AetherialMimicry.CanUse(out act)) return true;
         if (BasicInstinct.CanUse(out _))
         {
@@ -771,6 +780,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
             act = BasicInstinct;
             return true;
         }
+
         return base.EmergencyGCD(out act);
     }
 
@@ -813,8 +823,6 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     {
         if (BlueId == BLUID.Healer)
         {
-            //if (Exuviation.CanUse(out act, mustUse: true)) return true;
-
             if (AngelsSnack.CanUse(out act)) return true;
             if (Stotram.CanUse(out act)) return true;
             if (Stotram.CanUse(out act)) return true;

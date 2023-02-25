@@ -111,9 +111,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float HostileDelayMin = 0;
     public float HostileDelayMax = 0;
 
-    public float HealDelayMin = 0.5f;
-    public float HealDelayMax = 1;
-
+    public float HealDelayMin = 0;
+    public float HealDelayMax = 0;
     public float StopCastingDelayMin = 0.5f;
     public float StopCastingDelayMax = 1;
 

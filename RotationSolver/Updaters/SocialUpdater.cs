@@ -30,6 +30,7 @@ internal class SocialUpdater
 
     public static bool CanSaying { get; set; } = false;
 
+    static RandomDelay _canSocial = new RandomDelay(() => (3, 5));
     static bool CanSocial
     {
         get
@@ -81,12 +82,9 @@ internal class SocialUpdater
     internal static async void UpdateSocial()
     {
         if (ActionUpdater.InCombat) return;
-        if (CanSaying && CanSocial)
+        if (_canSocial.Delay(CanSaying && CanSocial))
         {
             CanSaying = false;
-
-            await Task.Delay(new Random().Next(3000, 5000));
-
 #if DEBUG
             Service.ChatGui.PrintError("Macro now.");
 #endif
