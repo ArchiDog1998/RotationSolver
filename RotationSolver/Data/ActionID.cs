@@ -693,7 +693,7 @@ public enum ActionID : uint
     /// <summary>
     /// 以太复制
     /// </summary>
-    AetherialMimicry = 18322,
+    AethericMimicry = 18322,
 
     /// <summary>
     /// 穿甲散弹

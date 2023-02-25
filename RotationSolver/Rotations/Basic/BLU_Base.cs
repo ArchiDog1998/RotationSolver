@@ -56,6 +56,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
         static readonly StatusID[] NoMagic = new StatusID[]
         {
             StatusID.RespellingSpray,
+            StatusID.Magitek,
         };
 
         private BLUActionType _type;
@@ -723,7 +724,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 以太复制
     /// </summary>
-    private static IBLUAction AetherialMimicry { get; } = new BLUAction(ActionID.AetherialMimicry, BLUActionType.None, true)
+    private static IBLUAction AethericMimicry { get; } = new BLUAction(ActionID.AethericMimicry, BLUActionType.None, true)
     {
         ChoiceTarget = (charas, mustUse) =>
         {
@@ -765,6 +766,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
 
     private protected override bool EmergencyGCD(out IAction act)
     {
+        if (AethericMimicry.CanUse(out act)) return true;
         if (BlueId == BLUID.Healer)
         {
             //有某些非常危险的状态。
@@ -773,7 +775,6 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
                 if (Exuviation.CanUse(out act, mustUse: true)) return true;
             }
         }
-        if (AetherialMimicry.CanUse(out act)) return true;
         if (BasicInstinct.CanUse(out _))
         {
             if (MightyGuard.CanUse(out act)) return true;
@@ -811,8 +812,6 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     {
         if (BlueId == BLUID.Healer)
         {
-            //if (Exuviation.CanUse(out act, mustUse: true)) return true;
-
             if (PomCure.CanUse(out act)) return true;
         }
         if (WhiteWind.CanUse(out act, mustUse: true)) return true;
@@ -824,7 +823,6 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
         if (BlueId == BLUID.Healer)
         {
             if (AngelsSnack.CanUse(out act)) return true;
-            if (Stotram.CanUse(out act)) return true;
             if (Stotram.CanUse(out act)) return true;
         }
 

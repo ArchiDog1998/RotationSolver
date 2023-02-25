@@ -149,6 +149,5 @@ public class PluginConfiguration : IPluginConfiguration
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);
-        PluginLog.Information("Rotation Solver Config Saved.");
     }
 }

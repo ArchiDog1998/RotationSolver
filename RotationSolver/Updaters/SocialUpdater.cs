@@ -111,6 +111,9 @@ internal class SocialUpdater
                 await Task.Delay(100);
             }
 
+#if DEBUG
+            Service.ChatGui.PrintError("Author Time");
+#else
             Service.TargetManager.SetTarget(author);
             RSCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
@@ -120,6 +123,8 @@ internal class SocialUpdater
             });
             UIModule.PlaySound(20, 0, 0, 0);
             Service.TargetManager.SetTarget(null);
+#endif
+
         }
     }
 

@@ -1107,6 +1107,7 @@ internal enum StatusID : ushort
     IceSpikes = 1307,
 
     RespellingSpray = 556,
+    Magitek = 2166,
 
     StoneSkin = 151,
     IceSpikesInvincible = 198,

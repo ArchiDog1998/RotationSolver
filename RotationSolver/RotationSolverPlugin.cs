@@ -64,7 +64,14 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
         RSCommands.UpdateStateNamePlate();
-        SocialUpdater.CanSaying = true;
+        var territory = Service.DataManager.GetExcelSheet<TerritoryType>().GetRow(e);
+        if(territory?.ContentFinderCondition?.Value?.RowId != 0)
+        {
+            SocialUpdater.CanSaying = true;
+#if DEBUG
+            Service.ChatGui.PrintError("Reset Saying");
+#endif
+        }
     }
 
     internal static void ChangeUITranslation()

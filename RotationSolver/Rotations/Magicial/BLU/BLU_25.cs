@@ -21,7 +21,8 @@ internal class BLU_25 : BLU_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        if (ChocoMeteor.CanUse(out act, mustUse: TargetUpdater.HaveCompanion)) return true;
+        if (ChocoMeteor.CanUse(out act)) return true;
+        if (DrillCannons.CanUse(out act)) return true;
 
 
         if (TripleTrident.OnSlot && TripleTrident.RightType && TripleTrident.WillHaveOneChargeGCD(OnSlotCount(Whistle, Tingle), 0))
@@ -34,6 +35,7 @@ internal class BLU_25 : BLU_Base
 
             if (TripleTrident.CanUse(out act, mustUse: true)) return true;
         }
+        if (ChocoMeteor.CanUse(out act, mustUse: TargetUpdater.HaveCompanion)) return true;
 
         if (SonicBoom.CanUse(out act)) return true;
         if (DrillCannons.CanUse(out act, mustUse: true)) return true;
