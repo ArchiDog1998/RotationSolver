@@ -1,5 +1,3 @@
-//本插件不得以任何形式在国服中使用。
-
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
@@ -27,8 +25,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
-
-        if ((int)Service.ClientState.ClientLanguage is < 0 or > 3) return;
 
         try
         {

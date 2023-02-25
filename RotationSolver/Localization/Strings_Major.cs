@@ -1,6 +1,4 @@
-﻿//本插件不得以任何形式在国服中使用。
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace RotationSolver.Localization;
 
