@@ -192,8 +192,9 @@ internal static partial class TargetUpdater
         {
             if (h.IsCastInterruptible) return false;
             var last = h.TotalCastTime - h.CurrentCastTime;
-
-            if (!(h.TotalCastTime > 2 && last < 6 && last > 0.5)) return false;
+           
+            if (!(h.TotalCastTime > 2.5 && 
+                CooldownHelper.RecastAfterGCD(last, 2) && !CooldownHelper.RecastAfterGCD(last, 0))) return false;
 
             var action = Service.DataManager.GetExcelSheet<Action>().GetRow(h.CastActionId);
             return check?.Invoke(action) ?? false;

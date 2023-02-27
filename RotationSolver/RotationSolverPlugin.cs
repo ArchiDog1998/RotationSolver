@@ -15,7 +15,6 @@ namespace RotationSolver;
 
 public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
-
     private readonly WindowSystem windowSystem;
 
     private static RotationConfigWindow _comboConfigWindow;

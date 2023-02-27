@@ -125,7 +125,6 @@ internal class SocialUpdater
             UIModule.PlaySound(20, 0, 0, 0);
             Service.TargetManager.SetTarget(null);
 #endif
-
         }
     }
 
