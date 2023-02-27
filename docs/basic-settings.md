@@ -10,6 +10,8 @@ First of all, put a `Repose` Action to your hot bar which is shared. Rotation So
 
 Click on the button on the `Help` is not efficiency. So you can right click on the button to copy the macro to your clipboard. And add a macro with this command or use [QolBar](https://github.com/UnknownX7/QoLBar).
 
+![Macro Helps](assets/image-20230227112230914.png)
+
 There is a brief macro function description.
 
 Macros are divided into two categories. One is for state, the other is for special duration.

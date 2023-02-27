@@ -78,9 +78,9 @@ private protected override bool DefenceSingleAbility(byte abilitiesRemaining, ou
 }
 ```
 
-This is what it look like.
+This is what tooltips look like.
 
-
+![Description Example](assets/image-20230227112019649.png)
 
 ## RotationCheck
 

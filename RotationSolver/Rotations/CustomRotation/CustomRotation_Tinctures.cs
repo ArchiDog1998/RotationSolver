@@ -6,13 +6,9 @@ namespace RotationSolver.Rotations.CustomRotation;
 internal abstract partial class CustomRotation
 {
     private static readonly IBaseItem
-        //刚力
         TinctureofStrength6 = new BaseItem(36109, 196625),
-        //巧力
         TinctureofDexterity6 = new BaseItem(36110, 65535),
-        //意力
         TinctureofMind6 = new BaseItem(36113, 65535),
-        //意力
         TinctureofIntelligence6 = new BaseItem(36112, 65535);
 
     protected bool UseTincture(out IAction act)
@@ -20,7 +16,7 @@ internal abstract partial class CustomRotation
         act = null;
         
         if (!IsFullParty) return false;
-        if (Service.ClientState.LocalPlayer.Level < 90) return false;
+        if (Service.ClientState.LocalPlayer?.Level < 90) return false;
 
         var role = Job.GetJobRole();
         switch (role)
