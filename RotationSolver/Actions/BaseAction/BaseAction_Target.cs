@@ -225,7 +225,7 @@ internal partial class BaseAction
         //找到没死的队友们。
         var availableCharas = TargetUpdater.PartyMembers.Where(player => player.CurrentHp != 0);
 
-        if ((ActionID)ID == ActionID.AethericMimicry)
+        if (Service.Configuration.TargetFriendly ? _action.CanTargetFriendly : (ActionID)ID == ActionID.AethericMimicry)
         {
             availableCharas = availableCharas.Union(TargetUpdater.AllianceMembers);
         }

@@ -209,6 +209,7 @@ internal partial class Strings
     public string Configwindow_Param_MoveTowardsScreen { get; set; } = "Using movement actions towards the object in the center of the screen";
     public string Configwindow_Param_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";
     public string Configwindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
+    public string Configwindow_Param_TargetFriendly { get; set; } = "Target all for friendly actions(include passerby)";
     public string Configwindow_Param_RaiseBrinkofDeath { get; set; } = "Raise player even has Brink of Death";
     public string Configwindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
     public string Configwindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";

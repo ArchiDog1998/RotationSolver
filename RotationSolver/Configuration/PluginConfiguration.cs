@@ -77,6 +77,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseHealWhenNotAHealer = true;
     public float ObjectMinRadius = 0f;
     public float HealthDifference = 0.25f;
+    public bool TargetFriendly = false;
+
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<ClassJobID, float>();
 
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractAreas { get; set; } = new Dictionary<ClassJobID, float>();
