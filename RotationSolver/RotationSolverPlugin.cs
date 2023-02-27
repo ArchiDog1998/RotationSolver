@@ -10,7 +10,6 @@ using RotationSolver.Updaters;
 using RotationSolver.Windows;
 using RotationSolver.Windows.RotationConfigWindow;
 using System;
-using System.Threading.Tasks;
 
 namespace RotationSolver;
 
@@ -68,9 +67,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         if(territory?.ContentFinderCondition?.Value?.RowId != 0)
         {
             SocialUpdater.CanSaying = true;
-#if DEBUG
-            Service.ChatGui.PrintError("Reset Saying");
-#endif
         }
     }
 
