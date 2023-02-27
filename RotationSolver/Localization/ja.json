@@ -151,6 +151,7 @@
   "Configwindow_Param_MoveTowardsScreen": "Using movement actions towards the object in the center of the screen",
   "Configwindow_Param_MoveTowardsScreenDesc": "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.",
   "Configwindow_Param_RaiseAll": "Raise all (include passerby)",
+  "Configwindow_Param_TargetFriendly": "Target all for friendly actions(include passerby)",
   "Configwindow_Param_RaiseBrinkofDeath": "Raise player even has Brink of Death",
   "Configwindow_Param_MoveAreaActionFarthest": "Moving Area Ability to farthest",
   "Configwindow_Param_MoveAreaActionFarthestDesc": "Move to the furthest position from character's face direction.",
