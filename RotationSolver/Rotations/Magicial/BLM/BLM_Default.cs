@@ -102,7 +102,7 @@ internal class BLM_Default : BLM_Base
         //Using Manafont
         if (InAstralFire)
         {
-            if (Player.CurrentMp == 0 && Manafont.CanUse(out act)) return true;
+            if (Player.CurrentMp == 0 && abilitiesRemaining == 2 && Manafont.CanUse(out act)) return true;
             //To Ice
             if (NeedToTransposeGoIce(true) && Transpose.CanUse(out act)) return true;
         }
@@ -348,6 +348,8 @@ internal class BLM_Default : BLM_Base
 
     private bool MaintainceStatus(out IAction act)
     {
+        act = null;
+        if (CombatElapsedLess(6)) return false;
         if (UmbralSoul.CanUse(out act)) return true;
         if (InAstralFire && Transpose.CanUse(out act)) return true;
         if (Configs.GetBool("UseTransposeForParadox") &&
