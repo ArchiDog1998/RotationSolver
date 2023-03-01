@@ -788,7 +788,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     protected static bool AllOnSlot(params IBLUAction[] actions) => actions.All(a => a.OnSlot);
     protected static uint OnSlotCount(params IBLUAction[] actions) => (uint)actions.Count(a => a.OnSlot);
 
-    public override IBaseAction[] AllActions => base.AllActions.Where(a =>
+    public override IBaseAction[] AllBaseActions => base.AllBaseActions.Where(a =>
     {
         if (a is not BLUAction b) return false;
         return b.OnSlot;

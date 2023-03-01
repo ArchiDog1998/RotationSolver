@@ -144,7 +144,7 @@ internal class TargetCondition : ICondition
                 IsTarget = false;
             }
 
-            ImGuiHelper.SearchItems(ref searchTxt, combo.AllActions, i =>
+            ImGuiHelper.SearchItems(ref searchTxt, combo.AllBaseActions, i =>
             {
                 _action = (BaseAction)i;
                 ID = (ActionID)_action.ID;

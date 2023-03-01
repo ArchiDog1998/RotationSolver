@@ -62,7 +62,7 @@ internal sealed class DRK_Default : DRK_Base
     {
         //Provoke when has Shield.
         if (HasTankStance && remainTime <= Service.Configuration.AbilitiesInterval && Provoke.CanUse(out var act)) return act;
-        if (remainTime <= 2 && UseTincture(out act)) return act;
+        if (remainTime <= 2 && UseBurstMedicine(out act)) return act;
         if (remainTime <= 3 && TheBlackestNight.CanUse(out act)) return act;
         if (remainTime <= 4 && BloodWeapon.CanUse(out act)) return act;
         return base.CountDownAction(remainTime);

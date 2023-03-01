@@ -92,7 +92,7 @@ internal static class RotationUpdater
             if (!group.classJobIds.Contains(_job)) continue;
 
             RightNowRotation = GetChoosedRotation(group, _rotationName);
-            RightRotationBaseActions = RightNowRotation.AllActions;
+            RightRotationBaseActions = RightNowRotation.AllBaseActions;
             break;
         }
     }

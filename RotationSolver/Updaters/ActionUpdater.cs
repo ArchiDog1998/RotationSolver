@@ -93,9 +93,10 @@ internal static class ActionUpdater
             BluSlots[i] = ActionManager.Instance()->GetActiveBlueMageActionInSlot(i);
         }
         UPdateMPTimer();
+        UpdateWeaponTime();
     }
 
-    internal static unsafe void UpdateWeaponTime()
+    private static unsafe void UpdateWeaponTime()
     {
         var player = Service.ClientState.LocalPlayer;
         if (player == null) return;
@@ -117,8 +118,8 @@ internal static class ActionUpdater
 
         //确认能力技的相关信息
         var interval = Service.Configuration.AbilitiesInterval;
-        var checkRemain = WeaponRemain;
-        var checkElapsed = WeaponElapsed;
+        var checkRemain = WeaponRemain + Service.Configuration.ActionAhead;
+        var checkElapsed = WeaponElapsed - Service.Configuration.ActionAhead;
         if (checkRemain < interval || WeaponElapsed == 0)
         {
             AbilityRemain = 0;

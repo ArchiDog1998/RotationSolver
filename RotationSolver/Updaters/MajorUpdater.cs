@@ -47,7 +47,6 @@ internal static class MajorUpdater
         ActionUpdater.DoAction();
 
         //Late for update weapon time.
-        Task.Run(ActionUpdater.UpdateWeaponTime);
         MacroUpdater.UpdateMacro();
     }
 

@@ -23,7 +23,25 @@ internal class BaseItem : IBaseItem
 
     public string CateName => "Item";
 
-    public BaseItem(uint row, uint a4 = 0)
+    public bool IsEnabled
+    {
+        get => !Service.Configuration.DiabledActions.Contains(ID);
+        set
+        {
+            if (value)
+            {
+                Service.Configuration.DiabledActions.Remove(ID);
+            }
+            else
+            {
+                Service.Configuration.DiabledActions.Add(ID);
+            }
+        }
+    }
+
+    public string Description => string.Empty;
+
+    public BaseItem(uint row, uint a4 = 65535)
     {
         _item = Service.DataManager.GetExcelSheet<Item>().GetRow(row);
         IconID = _item.Icon;

@@ -5,6 +5,7 @@ using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -217,7 +218,9 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// 当前这个类所有的BaseAction
     /// </summary>
-    public virtual IBaseAction[] AllActions => GetBaseActions(GetType());
+    public virtual IBaseAction[] AllBaseActions => GetBaseActions(GetType()).ToArray();
+
+    public IAction[] AllActions => new IAction[0].Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
 
     /// <summary>
     /// 这个类所有的公开bool值
@@ -241,17 +244,26 @@ internal abstract partial class CustomRotation
         return types.Length == 2 && types[0].ParameterType == typeof(uint) && types[1].ParameterType == typeof(uint);
     });
 
-    private IBaseAction[] GetBaseActions(Type type)
+    private IEnumerable<IBaseAction> GetBaseActions(Type type)
     {
-        if (type == null) return new IBaseAction[0];
+        return GetIActions(type).OfType<IBaseAction>().Where(a => a is RoleAction role ? role.InRole(Job.GetJobRole()) : true);
+    }
+
+    private IEnumerable<IBaseItem> GetBaseItems(Type type)
+    {
+        return GetIActions(type).OfType<IBaseItem>().Where(a => a is RoleItem role ? role.InRole(Job.GetJobRole()) : true).Reverse();
+    }
+
+    private IEnumerable<IAction> GetIActions(Type type)
+    {
+        if (type == null) return new IAction[0];
 
         var acts = from prop in type.GetProperties()
-                   where typeof(IBaseAction).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true)
-                   select (IBaseAction)prop.GetValue(this) into act
+                   where typeof(IAction).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true)
+                   select (IAction)prop.GetValue(this) into act
                    orderby act.ID
-                   where act is RoleAction role ? role.InRole(Job.GetJobRole()) : true
                    select act;
 
-        return acts.Union(GetBaseActions(type.BaseType)).ToArray();
+        return acts.Union(GetIActions(type.BaseType));
     }
 }

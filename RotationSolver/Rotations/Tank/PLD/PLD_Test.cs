@@ -52,7 +52,7 @@ internal class PLD_Test : PLD_Base
         }
         else if(InBurst)
         {
-            if(UseTincture(out act)) return true;
+            if(UseBurstMedicine(out act)) return true;
         }
 
         if (CircleofScorn.CanUse(out act, mustUse: true)) return true;

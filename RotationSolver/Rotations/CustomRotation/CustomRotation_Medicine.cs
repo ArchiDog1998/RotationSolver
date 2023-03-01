@@ -5,18 +5,28 @@ using System.Linq;
 namespace RotationSolver.Rotations.CustomRotation;
 internal abstract partial class CustomRotation
 {
-    private static readonly IBaseItem
-        TinctureofStrength6 = new BaseItem(36109, 196625),
-        TinctureofDexterity6 = new BaseItem(36110, 65535),
-        TinctureofMind6 = new BaseItem(36113, 65535),
-        TinctureofIntelligence6 = new BaseItem(36112, 65535),
+    public static IBaseItem TinctureofStrength6 { get; } = new RoleItem(36109,
+        new JobRole[] { JobRole.Tank, JobRole.Melee }, 196625);
+    public static IBaseItem TinctureofDexterity6 { get; } = new RoleItem(36110,
+        new JobRole[] { JobRole.RangedPhysical });
+    public static IBaseItem TinctureofIntelligence6 { get; } = new RoleItem(36112,
+        new JobRole[] { JobRole.RangedMagicial });
+    public static IBaseItem TinctureofMind6 { get; } = new RoleItem(36113,
+        new JobRole[] { JobRole.Healer });
 
-        TinctureofStrength7 = new BaseItem(37840, 196625),
-        TinctureofDexterity7 = new BaseItem(37841, 65535),
-        TinctureofMind7 = new BaseItem(37843, 65535),
-        TinctureofIntelligence7 = new BaseItem(37844, 65535);
+    public static IBaseItem TinctureofStrength7 { get; } = new RoleItem(37840,
+        new JobRole[] { JobRole.Tank, JobRole.Melee });
+    public static IBaseItem TinctureofDexterity7 { get; } = new RoleItem(37841,
+        new JobRole[] { JobRole.RangedPhysical });
+    public static IBaseItem TinctureofIntelligence7 { get; } = new RoleItem(37843,
+        new JobRole[] { JobRole.RangedMagicial });
+    public static IBaseItem TinctureofMind7 { get; } = new RoleItem(37844,
+        new JobRole[] { JobRole.Healer });
 
-    protected bool UseTincture(out IAction act)
+    public static IBaseItem EchoDrops { get; } = new BaseItem(4566);
+
+
+    protected bool UseBurstMedicine(out IAction act)
     {
         act = null;
         

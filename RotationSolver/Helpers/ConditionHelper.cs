@@ -14,7 +14,7 @@ namespace RotationSolver.Helpers
         {
             if (id != ActionID.None && (action == null || (ActionID)action.ID != id))
             {
-                action = rotation.AllActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == id);
+                action = rotation.AllBaseActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == id);
             }
             if (action == null || Service.ClientState.LocalPlayer == null) return false;
             return true;

@@ -1,6 +1,7 @@
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Actions;
 using RotationSolver.Commands;
 using RotationSolver.Configuration;
 using RotationSolver.Data;

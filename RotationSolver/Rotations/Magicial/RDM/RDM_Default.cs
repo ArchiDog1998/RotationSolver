@@ -157,7 +157,7 @@ internal sealed class RDM_Default : RDM_Base
             }
         }
 
-        if(InBurst && UseTincture(out act)) return true;
+        if(InBurst && UseBurstMedicine(out act)) return true;
 
         //Attack abilities.
         if (ContreSixte.CanUse(out act, mustUse: true)) return true;

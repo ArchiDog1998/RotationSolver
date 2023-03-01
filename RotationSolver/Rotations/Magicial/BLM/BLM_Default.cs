@@ -61,7 +61,7 @@ internal class BLM_Default : BLM_Base
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (InBurst && UseTincture(out act)) return true;
+        if (InBurst && UseBurstMedicine(out act)) return true;
         if (InUmbralIce)
         {
             if (UmbralIceStacks == 2 && !HasFire
