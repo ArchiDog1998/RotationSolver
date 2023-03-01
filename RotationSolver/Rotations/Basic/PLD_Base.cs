@@ -168,7 +168,10 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 悔罪
     /// </summary>
-    public static IBaseAction Confiteor { get; } = new BaseAction(ActionID.Confiteor);
+    public static IBaseAction Confiteor { get; } = new BaseAction(ActionID.Confiteor)
+    {
+        StatusNeed = new StatusID[] {StatusID.ConfiteorReady},
+    };
 
     /// <summary>
     /// 圣环
@@ -202,10 +205,12 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
         ActionCheck = Cover.ActionCheck,
     };
 
+    public static IBaseAction Bulwark { get; } = new BaseAction(ActionID.Bulwark, isTimeline: true);
+
+
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], HallowedGround.Target)) return true;
-        //神圣领域 如果谢不够了。
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 

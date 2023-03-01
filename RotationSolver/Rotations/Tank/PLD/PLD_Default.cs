@@ -15,8 +15,9 @@ internal sealed class PLD_Default : PLD_Base
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
-        return base.CreateConfiguration().SetBool("UseDivineVeilPre", false, "DivineVeilPre in 15 seconds.")
-                                            .SetBool("UseHolySpiritPre", true, "use HolySpirit in 2 seconds");
+        return base.CreateConfiguration()
+            .SetBool("UseDivineVeilPre", false, "DivineVeilPre in 15 seconds.")
+            .SetBool("UseHolySpiritPre", true, "use HolySpirit in 2 seconds");
     }
     private protected override IAction CountDownAction(float remainTime)
     {

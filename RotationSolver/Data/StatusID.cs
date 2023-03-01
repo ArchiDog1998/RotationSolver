@@ -656,6 +656,8 @@ internal enum StatusID : ushort
     /// </summary>
     BladeofValor = 2721,
 
+    DivineMight = 2673,
+
     /// <summary>
     /// 赎罪剑
     /// </summary>
@@ -1115,4 +1117,6 @@ internal enum StatusID : ushort
     CircleOfPower = 738,
 
     Aetherpact = 1223,
+
+    ConfiteorReady = 3019,
 }

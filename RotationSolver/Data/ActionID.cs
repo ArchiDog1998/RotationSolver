@@ -2020,6 +2020,8 @@ public enum ActionID : uint
     /// </summary>
     IronWill = 28,
 
+    Bulwark = 22,
+
     /// <summary>
     /// 先锋剑
     /// </summary>
