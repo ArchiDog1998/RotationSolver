@@ -5,13 +5,12 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
-using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace RotationSolver.Rotations.Tank.DRK;
 
+[DefaultRotation]
 [RotationDesc(ActionID.BloodWeapon, ActionID.Delirium)]
 internal sealed class DRK_Default : DRK_Base
 {

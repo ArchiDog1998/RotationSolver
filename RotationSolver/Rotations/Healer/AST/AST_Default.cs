@@ -11,6 +11,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.AST;
 
+[DefaultRotation]
 [RotationDesc(ActionID.Divination)]
 internal sealed class AST_Default : AST_Base
 {

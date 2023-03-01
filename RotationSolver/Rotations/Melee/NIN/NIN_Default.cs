@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.Melee.NIN;
 
+[DefaultRotation]
 [RotationDesc(ActionID.Mug)]
 internal sealed class NIN_Default : NIN_Base
 {

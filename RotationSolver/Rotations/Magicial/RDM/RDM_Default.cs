@@ -4,11 +4,10 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
-using RotationSolver.Rotations.CustomRotation;
-using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.RangedMagicial.RDM;
 
+[DefaultRotation]
 [RotationDesc(ActionID.Embolden)]
 internal sealed class RDM_Default : RDM_Base
 {

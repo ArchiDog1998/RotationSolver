@@ -9,16 +9,12 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.RangedMagicial.BLM;
 
+[DefaultRotation]
 internal class BLM_Default : BLM_Base
 {
     public override string GameVersion => "6.31";
 
     public override string RotationName => "Default";
-
-    //public override SortedList<DescType, string> DescriptionDict => new SortedList<DescType, string>() 
-    //{
-    //    {DescType.HealSingle, $"{BetweenTheLines}, {Leylines}" }
-    //};
 
     private static bool NeedToGoIce
     {

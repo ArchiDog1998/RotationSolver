@@ -1,15 +1,15 @@
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
-using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace RotationSolver.Rotations.RangedPhysicial.MCH;
 
+[DefaultRotation]
 internal sealed class MCH_Default : MCH_Base
 {
     public override string GameVersion => "6.28";

@@ -1,4 +1,5 @@
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
@@ -6,6 +7,7 @@ using RotationSolver.Updaters;
 
 namespace RotationSolver.Rotations.RangedPhysicial.DNC;
 
+[DefaultRotation]
 internal sealed class DNC_Default : DNC_Base
 {
     public override string GameVersion => "6.28";

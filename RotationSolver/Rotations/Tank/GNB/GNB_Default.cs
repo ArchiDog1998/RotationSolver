@@ -4,11 +4,10 @@ using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
-using RotationSolver.Rotations.CustomRotation;
-using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.Tank.GNB;
 
+[DefaultRotation]
 internal sealed class GNB_Default : GNB_Base
 {
     public override string GameVersion => "6.18";
