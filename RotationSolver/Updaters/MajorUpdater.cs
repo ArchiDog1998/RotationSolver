@@ -45,6 +45,9 @@ internal static class MajorUpdater
         SocialUpdater.UpdateSocial();
         PreviewUpdater.UpdatePreview();
         ActionUpdater.DoAction();
+
+        //Late for update weapon time.
+        Task.Run(ActionUpdater.UpdateWeaponTime);
         MacroUpdater.UpdateMacro();
     }
 

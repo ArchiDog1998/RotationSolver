@@ -15,6 +15,7 @@ internal sealed class GNB_Default : GNB_Base
     public override string RotationName => "Default";
 
     protected override bool CanHealSingleSpell => false;
+
     protected override bool CanHealAreaSpell => false;
 
     private protected override bool GeneralGCD(out IAction act)
@@ -273,9 +274,7 @@ internal sealed class GNB_Default : GNB_Base
 
             //爆发期,无情中且音速破在冷却中
             if (Player.HasStatus(true, StatusID.NoMercy) && SonicBreak.IsCoolingDown) return true;
-
         }
         return false;
     }
 }
-
