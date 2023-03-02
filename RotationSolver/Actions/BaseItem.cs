@@ -2,7 +2,9 @@
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Helpers;
+using RotationSolver.Updaters;
 using System;
+using System.Linq;
 
 namespace RotationSolver.Actions;
 
@@ -26,16 +28,16 @@ internal class BaseItem : IBaseItem
 
     public bool IsEnabled
     {
-        get => !Service.Configuration.DiabledActions.Contains(ID);
+        get => !Service.Configuration.DiabledItems.Contains(ID);
         set
         {
             if (value)
             {
-                Service.Configuration.DiabledActions.Remove(ID);
+                Service.Configuration.DiabledItems.Remove(ID);
             }
             else
             {
-                Service.Configuration.DiabledActions.Add(ID);
+                Service.Configuration.DiabledItems.Add(ID);
             }
         }
     }
@@ -57,7 +59,11 @@ internal class BaseItem : IBaseItem
 
         if (!Service.Configuration.UseItem) return false;
 
-        if (ActionManager.Instance()->GetRecastTime(ActionType.Item, _item.RowId) > 0) return false;
+        if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))) return false;
+
+        var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, ID);
+
+        if (!CooldownHelper.RecastAfter(ActionUpdater.AbilityRemain, remain, false)) return false;
 
         if (OtherCheck != null && !OtherCheck()) return false;
 
@@ -79,7 +85,9 @@ internal class BaseItem : IBaseItem
     public unsafe void Display(bool IsActive) => this.DrawEnableTexture(false, null, otherThing: () =>
     {
 #if DEBUG
-        ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID).ToString());
+        ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, ID).ToString());
+        var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, ID);
+        ImGui.Text("remain: " + remain.ToString());
 #endif
     });
 }
