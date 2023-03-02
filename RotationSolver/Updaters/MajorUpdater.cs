@@ -3,7 +3,9 @@ using Dalamud.Logging;
 using RotationSolver.Commands;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace RotationSolver.Updaters;
 
@@ -60,7 +62,7 @@ internal static class MajorUpdater
         Service.Framework.Update += FrameworkUpdate;
         MovingUpdater.Enable();
 
-        Task.Run(async () =>
+        Task.Factory.StartNew(async () =>
         {
             while (_work)
             {
@@ -83,7 +85,7 @@ internal static class MajorUpdater
 
                 CalculateFPS();
             }
-        });
+        }, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
     }
 
     private static void CalculateFPS()

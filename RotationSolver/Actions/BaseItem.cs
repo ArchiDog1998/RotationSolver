@@ -1,4 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Helpers;
 using System;
@@ -21,7 +22,7 @@ internal class BaseItem : IBaseItem
 
     public string Name => _item.Name;
 
-    public string CateName => "Item";
+    public string CateName => "Items";
 
     public bool IsEnabled
     {
@@ -75,5 +76,10 @@ internal class BaseItem : IBaseItem
         return ActionManager.Instance()->UseAction(ActionType.Item, _item.RowId, Service.ClientState.LocalPlayer.ObjectId, A4);
     }
 
-    public void Display(bool IsActive) => this.DrawEnableTexture(false, null);
+    public unsafe void Display(bool IsActive) => this.DrawEnableTexture(false, null, otherThing: () =>
+    {
+#if DEBUG
+        ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID).ToString());
+#endif
+    });
 }
