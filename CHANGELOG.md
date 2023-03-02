@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.4.5](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.4...v1.4.5) (2023-03-02)
+
+
+### Bug Fixes
+
+* add a defaultRotation Attribute. ([2c30477](https://github.com/ArchiDog1998/RotationSolver/commit/2c304772874d6645768a37e71817b5184f457986))
+* add an option for target all friendly. ([0266366](https://github.com/ArchiDog1998/RotationSolver/commit/0266366705952f55bc40a5f3797a044c3f384981))
+* add grade 7 tinctures. ([8b96ff0](https://github.com/ArchiDog1998/RotationSolver/commit/8b96ff0bc5a96dd3ba9ad3aba48577cb9fa5edac))
+* add items control. ([3698f0a](https://github.com/ArchiDog1998/RotationSolver/commit/3698f0a667daad712152dc6fe58379f01d1b6cac))
+* add PLD Test rotation. ([80b282d](https://github.com/ArchiDog1998/RotationSolver/commit/80b282ded0d9b4f565fd002355a071657c4a3767))
+* BLM default countdown. ([af5cce2](https://github.com/ArchiDog1998/RotationSolver/commit/af5cce206e4c9e318d1889bc4873d690c4777c3e))
+* chagned the duty start event. ([a0ea03b](https://github.com/ArchiDog1998/RotationSolver/commit/a0ea03b4384b1bce619d3369e9416783ec74404f))
+* change the lowBlow usage. ([eff8400](https://github.com/ArchiDog1998/RotationSolver/commit/eff8400b6bbc14f16cff77a54441a144f29b2bf2))
+* change the tast to longrunning. ([f4e21c2](https://github.com/ArchiDog1998/RotationSolver/commit/f4e21c206f134975a00933dea8af9321d0b4595e))
+* change the time to the duty start event. ([5b3385c](https://github.com/ArchiDog1998/RotationSolver/commit/5b3385c9f5134fa00cf6e00cabd45fc6b35a959e))
+* changed the checkitem's tooltip. ([434be78](https://github.com/ArchiDog1998/RotationSolver/commit/434be78909073fff124643e04296f72539afd805))
+* changed the interrupt acting using time. ([5b85736](https://github.com/ArchiDog1998/RotationSolver/commit/5b85736e4da812c769777ca23ce3b216ae5da663))
+* changed the time to update CombatTime. ([c2f6771](https://github.com/ArchiDog1998/RotationSolver/commit/c2f6771068397098cd7f2315cbf7456ff0ae49d9))
+* fix duty start event. ([1087b16](https://github.com/ArchiDog1998/RotationSolver/commit/1087b161f13b9449da64847427f72d5e710f5776))
+* fix for items' usage. ([3f4cc93](https://github.com/ArchiDog1998/RotationSolver/commit/3f4cc938dab765fd78599558aebc6ac3d9112e7b))
+* tank use LowBlow when target is casting a cant interruptible action. ([838fdff](https://github.com/ArchiDog1998/RotationSolver/commit/838fdffa1bcc65dcbad762e3efce5c7944d328a9))
+* the mob targeting your campanion will be your hostile target. ([3136a80](https://github.com/ArchiDog1998/RotationSolver/commit/3136a800d4cb4aa659bf62cc6d66fff1aa8c36f2))
+* try to add PLD. ([d5cb641](https://github.com/ArchiDog1998/RotationSolver/commit/d5cb6419f122e4c36c471d8cae6e7551053a3283))
+* try to fix duty start event again! ([8e39c5b](https://github.com/ArchiDog1998/RotationSolver/commit/8e39c5bc7795bf167fac080a9c5531d1b550f933))
+
 ## [1.4.4](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.3...v1.4.4) (2023-02-23)
 
 
