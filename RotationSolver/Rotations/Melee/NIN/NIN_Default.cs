@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.Melee.NIN;
 
+[DefaultRotation]
 [RotationDesc(ActionID.Mug)]
 internal sealed class NIN_Default : NIN_Base
 {
@@ -308,7 +309,7 @@ internal sealed class NIN_Default : NIN_Base
 
         if (!IsMoving && TenChiJin.CanUse(out act)) return true;
         if (Kassatsu.CanUse(out act)) return true;
-        if (UseTincture(out act)) return true;
+        if (UseBurstMedicine(out act)) return true;
 
         if (Bunshin.CanUse(out act)) return true;
         if (HellfrogMedium.CanUse(out act)) return true;

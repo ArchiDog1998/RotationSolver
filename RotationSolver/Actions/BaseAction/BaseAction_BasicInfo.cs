@@ -54,16 +54,16 @@ internal partial class BaseAction : IBaseAction
     }
     public bool IsEnabled
     {
-        get => !Service.Configuration.DiabledActions.Contains((uint)ID);
+        get => !Service.Configuration.DiabledActions.Contains(ID);
         set
         {
             if (value)
             {
-                Service.Configuration.DiabledActions.Remove((uint)ID);
+                Service.Configuration.DiabledActions.Remove(ID);
             }
             else
             {
-                Service.Configuration.DiabledActions.Add((uint)ID);
+                Service.Configuration.DiabledActions.Add(ID);
             }
         }
     }

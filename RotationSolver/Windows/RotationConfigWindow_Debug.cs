@@ -52,7 +52,7 @@ internal partial class RotationConfigWindow
 
         ImGui.Text("Have pet: " + TargetUpdater.HavePet.ToString());
         ImGui.Text("Have Companion: " + TargetUpdater.HaveCompanion.ToString());
-        ImGui.Text("Is Moving: " + AgentMap.Instance()->IsPlayerMoving.ToString());
+        ImGui.Text("Targetable: " + Service.ClientState.LocalPlayer.IsTargetable().ToString());
 
 
         foreach (var status in Service.ClientState.LocalPlayer.StatusList)
@@ -86,11 +86,6 @@ internal partial class RotationConfigWindow
         foreach (var member in TargetUpdater.PartyMembers)
         {
             var cha = (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)member.GetAddress();
-            var omen = (VfxStruct*)cha->Omen;
-            if ((IntPtr)omen != 0)
-            {
-                ImGui.Text("Omen:" + omen->Flags.ToString());
-            }
 
             ImGui.Text("StatusVfxId:" + cha->StatusEffectVFXId.ToString());
         }

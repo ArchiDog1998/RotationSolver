@@ -64,7 +64,7 @@ namespace RotationSolver.Rotations.CustomRotation
                 ImGui.End();
             }
 
-        }, () =>
+        }, showToolTip =>
         {
             if (!string.IsNullOrEmpty(RotationName) && rotations != null)
             {
@@ -83,7 +83,7 @@ namespace RotationSolver.Rotations.CustomRotation
                         }
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip(r.Description);
+                            showToolTip?.Invoke(r.Description);
                         }
                     }
                     ImGui.EndCombo();

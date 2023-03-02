@@ -33,6 +33,7 @@ internal static class ConfigurationHelper
 
     public static readonly uint[] BadStatus = new uint[]
     {
+        583, //No items.
         581, //Unable to use.
         579, //Between Area
         574, //Job

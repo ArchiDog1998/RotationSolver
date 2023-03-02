@@ -1,4 +1,5 @@
 ﻿using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.Melee.SAM;
 
+[DefaultRotation]
 internal sealed class SAM_Default : SAM_Base
 {
     public override string GameVersion => "6.28";

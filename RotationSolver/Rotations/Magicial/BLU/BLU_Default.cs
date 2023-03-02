@@ -1,4 +1,5 @@
 ﻿using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
@@ -9,6 +10,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.RangedMagicial.BLU;
 
+[DefaultRotation]
 internal sealed class BLU_Default : BLU_Base
 {
     public override string GameVersion => "6.18";

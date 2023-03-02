@@ -9,16 +9,12 @@ using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.RangedMagicial.BLM;
 
+[DefaultRotation]
 internal class BLM_Default : BLM_Base
 {
     public override string GameVersion => "6.31";
 
     public override string RotationName => "Default";
-
-    //public override SortedList<DescType, string> DescriptionDict => new SortedList<DescType, string>() 
-    //{
-    //    {DescType.HealSingle, $"{BetweenTheLines}, {Leylines}" }
-    //};
 
     private static bool NeedToGoIce
     {
@@ -65,7 +61,7 @@ internal class BLM_Default : BLM_Base
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (InBurst && UseTincture(out act)) return true;
+        if (InBurst && UseBurstMedicine(out act)) return true;
         if (InUmbralIce)
         {
             if (UmbralIceStacks == 2 && !HasFire
@@ -102,7 +98,7 @@ internal class BLM_Default : BLM_Base
         //Using Manafont
         if (InAstralFire)
         {
-            if (Player.CurrentMp == 0 && Manafont.CanUse(out act)) return true;
+            if (Player.CurrentMp == 0 && abilitiesRemaining == 2 && Manafont.CanUse(out act)) return true;
             //To Ice
             if (NeedToTransposeGoIce(true) && Transpose.CanUse(out act)) return true;
         }
@@ -348,6 +344,8 @@ internal class BLM_Default : BLM_Base
 
     private bool MaintainceStatus(out IAction act)
     {
+        act = null;
+        if (CombatElapsedLess(6)) return false;
         if (UmbralSoul.CanUse(out act)) return true;
         if (InAstralFire && Transpose.CanUse(out act)) return true;
         if (Configs.GetBool("UseTransposeForParadox") &&

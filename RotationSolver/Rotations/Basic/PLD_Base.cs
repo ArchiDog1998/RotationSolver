@@ -13,6 +13,10 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
 {
     private static PLDGauge JobGauge => Service.JobGauges.Get<PLDGauge>();
 
+    protected static bool HasDivineMight => !Player.WillStatusEndGCD(0, 0, true, StatusID.DivineMight);
+
+    protected static bool HasFightOrFlight => !Player.WillStatusEndGCD(0, 0, true, StatusID.FightOrFlight);
+
     /// <summary>
     /// 忠义度
     /// </summary>
@@ -47,7 +51,6 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
         TargetStatus = new[]
         {
             StatusID.GoringBlade,
-            StatusID.BladeofValor,
         }
     };
 
@@ -155,10 +158,7 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 信念之剑
     /// </summary>
-    public static IBaseAction BladeofFaith { get; } = new BaseAction(ActionID.BladeofFaith)
-    {
-        StatusNeed = new[] { StatusID.ReadyForBladeofFaith },
-    };
+    public static IBaseAction BladeofFaith { get; } = new BaseAction(ActionID.BladeofFaith);
 
     /// <summary>
     /// 安魂祈祷
@@ -168,7 +168,10 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 悔罪
     /// </summary>
-    public static IBaseAction Confiteor { get; } = new BaseAction(ActionID.Confiteor);
+    public static IBaseAction Confiteor { get; } = new BaseAction(ActionID.Confiteor)
+    {
+        StatusNeed = new StatusID[] {StatusID.ConfiteorReady},
+    };
 
     /// <summary>
     /// 圣环
@@ -202,10 +205,12 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
         ActionCheck = Cover.ActionCheck,
     };
 
+    public static IBaseAction Bulwark { get; } = new BaseAction(ActionID.Bulwark, isTimeline: true);
+
+
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], HallowedGround.Target)) return true;
-        //神圣领域 如果谢不够了。
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 

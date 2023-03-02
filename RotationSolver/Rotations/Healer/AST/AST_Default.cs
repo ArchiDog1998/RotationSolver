@@ -11,6 +11,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.AST;
 
+[DefaultRotation]
 [RotationDesc(ActionID.Divination)]
 internal sealed class AST_Default : AST_Base
 {
@@ -31,9 +32,9 @@ internal sealed class AST_Default : AST_Base
 
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (remainTime < Malefic.CastTime + Service.Configuration.WeaponInterval
+        if (remainTime < Malefic.CastTime + Service.Configuration.CountDownAhead
             && Malefic.CanUse(out var act)) return act;
-        if (remainTime < 3 && UseTincture(out act)) return act;
+        if (remainTime < 3 && UseBurstMedicine(out act)) return act;
         if (remainTime < 4 && AspectedBeneficDefense.CanUse(out act)) return act;
         if (remainTime < Configs.GetFloat("UseEarthlyStarTime") 
             && EarthlyStar.CanUse(out act)) return act;
@@ -95,6 +96,10 @@ internal sealed class AST_Default : AST_Base
     private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (base.EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
+
+        if (TargetUpdater.PartyHealers.Count() == 1 && Player.HasStatus(false, StatusID.Silence)
+            && HasHostilesInRange && EchoDrops.CanUse(out act)) return true;
+
 
         if (!InCombat) return false;
 

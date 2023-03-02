@@ -1,8 +1,7 @@
-//本插件不得以任何形式在国服中使用。
-
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Actions;
 using RotationSolver.Commands;
 using RotationSolver.Configuration;
 using RotationSolver.Data;
@@ -12,13 +11,11 @@ using RotationSolver.Updaters;
 using RotationSolver.Windows;
 using RotationSolver.Windows.RotationConfigWindow;
 using System;
-using System.Threading.Tasks;
 
 namespace RotationSolver;
 
 public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
-
     private readonly WindowSystem windowSystem;
 
     private static RotationConfigWindow _comboConfigWindow;
@@ -27,8 +24,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
-
-        if ((int)Service.ClientState.ClientLanguage is < 0 or > 3) return;
 
         try
         {
@@ -68,6 +63,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
         RSCommands.UpdateStateNamePlate();
+        var territory = Service.DataManager.GetExcelSheet<TerritoryType>().GetRow(e);
+        if(territory?.ContentFinderCondition?.Value?.RowId != 0)
+        {
+            SocialUpdater.CanSaying = true;
+        }
     }
 
     internal static void ChangeUITranslation()

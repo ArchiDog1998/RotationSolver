@@ -107,7 +107,7 @@ internal class RotationDescAttribute : Attribute
 
     public void Display(ICustomRotation rotation)
 	{
-		var acts = rotation.AllActions;
+		var acts = rotation.AllBaseActions;
 
 		var allActions = Actions.Select(i => acts.FirstOrDefault(a => a.ID == (uint)i))
 			.Where(i => i != null);

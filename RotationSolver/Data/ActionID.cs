@@ -693,7 +693,7 @@ public enum ActionID : uint
     /// <summary>
     /// 以太复制
     /// </summary>
-    AetherialMimicry = 18322,
+    AethericMimicry = 18322,
 
     /// <summary>
     /// 穿甲散弹
@@ -2019,6 +2019,8 @@ public enum ActionID : uint
     /// 钢铁信念
     /// </summary>
     IronWill = 28,
+
+    Bulwark = 22,
 
     /// <summary>
     /// 先锋剑

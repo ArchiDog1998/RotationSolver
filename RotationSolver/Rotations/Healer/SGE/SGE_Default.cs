@@ -12,6 +12,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.SGE;
 
+[DefaultRotation]
 internal sealed class SGE_Default : SGE_Base
 {
     public override string GameVersion => "6.18";

@@ -1,14 +1,14 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
-using RotationSolver.Rotations.CustomRotation;
-using System.Collections.Generic;
 
 namespace RotationSolver.Rotations.RangedPhysicial.BRD;
 
+[DefaultRotation]
 internal sealed class BRD_Default : BRD_Base
 {
     public override string GameVersion => "6.28";

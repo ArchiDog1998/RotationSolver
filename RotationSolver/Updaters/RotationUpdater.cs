@@ -1,5 +1,6 @@
 ﻿using Lumina.Data.Parsing;
 using RotationSolver.Actions;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Rotations.CustomRotation;
 using System;
@@ -91,7 +92,7 @@ internal static class RotationUpdater
             if (!group.classJobIds.Contains(_job)) continue;
 
             RightNowRotation = GetChoosedRotation(group, _rotationName);
-            RightRotationBaseActions = RightNowRotation.AllActions;
+            RightRotationBaseActions = RightNowRotation.AllBaseActions;
             break;
         }
     }
@@ -99,6 +100,7 @@ internal static class RotationUpdater
     internal static ICustomRotation GetChoosedRotation(CustomRotationGroup group, string name)
     {
         var rotation = group.rotations.FirstOrDefault(r => r.RotationName == name);
+        rotation ??= group.rotations.FirstOrDefault(r => r.GetType().GetCustomAttribute<DefaultRotationAttribute>() != null);
         rotation ??= group.rotations.FirstOrDefault(r => r.GetType().Name.Contains("Default"));
         rotation ??= group.rotations.FirstOrDefault();
         return rotation;

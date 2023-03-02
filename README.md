@@ -52,8 +52,8 @@ If you have any questions about usage, please check the [Wiki](https://archidog1
 ## 对于国服用户
 
 > 这个库已经不再维护了。
->
-> 本插件不得以任何形式在国服中使用。
+
+想要了解更多，可以参考这个[网页](https://archidog1998.github.io/RotationSolver/#/ChineseServer/)。
 
 ### 声明
 本仓库使用的是[GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)协议，任何人均享有自由分发软件的自由。详看[原文](https://github.com/ArchiDog1998/XIVAutoAction/blob/main/LICENSE#L23-L27)。请所有使用本仓库的作者遵循此协议。

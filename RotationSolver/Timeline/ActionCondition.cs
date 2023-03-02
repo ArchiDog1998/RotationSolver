@@ -89,7 +89,7 @@ internal class ActionCondition : ICondition
         var name = _action?.Name ?? string.Empty;
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
 
-        ImGuiHelper.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, combo.AllActions, i =>
+        ImGuiHelper.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, combo.AllBaseActions, i =>
         {
             _action = (BaseAction)i;
             ID = (ActionID)_action.ID;

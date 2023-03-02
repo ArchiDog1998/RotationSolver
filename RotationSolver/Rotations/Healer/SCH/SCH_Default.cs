@@ -11,6 +11,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.Healer.SCH;
 
+[DefaultRotation]
 [RotationDesc(ActionID.ChainStratagem)]
 internal sealed class SCH_Default : SCH_Base
 {

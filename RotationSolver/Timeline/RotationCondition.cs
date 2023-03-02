@@ -224,7 +224,7 @@ internal class RotationCondition : ICondition
 
                 ImGui.SameLine();
                 var name = _action?.Name ?? string.Empty;
-                ImGuiHelper.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, rotation.AllActions, i =>
+                ImGuiHelper.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, rotation.AllBaseActions, i =>
                 {
                     _action = (BaseAction)i;
                     ID = (ActionID)_action.ID;

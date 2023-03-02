@@ -16,8 +16,8 @@ namespace RotationSolver.Helpers;
 internal static class ImGuiHelper
 {
     public static void DrawEnableTexture<T>(this T texture, bool isSelected, Action selected,
-        Action<string> showToolTip = null,Action additonalHeader = null, Action otherThing = null)
-        where T : class, ITexture
+        Action<string> showToolTip = null, Action<Action<string>> additonalHeader = null, 
+        Action otherThing = null) where T : class, ITexture
     {
         showToolTip ??= text =>
         {
@@ -65,8 +65,7 @@ internal static class ImGuiHelper
             }
         }
 
-
-        additonalHeader?.Invoke();
+        additonalHeader?.Invoke(showToolTip);
 
         if (enable)
         {

@@ -3,7 +3,9 @@ using Dalamud.Logging;
 using RotationSolver.Commands;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace RotationSolver.Updaters;
 
@@ -42,8 +44,11 @@ internal static class MajorUpdater
             UpdateWork();
         }
 
+        SocialUpdater.UpdateSocial();
         PreviewUpdater.UpdatePreview();
         ActionUpdater.DoAction();
+
+        //Late for update weapon time.
         MacroUpdater.UpdateMacro();
     }
 
@@ -55,7 +60,9 @@ internal static class MajorUpdater
     public static void Enable()
     {
         Service.Framework.Update += FrameworkUpdate;
-        Task.Run(async () =>
+        MovingUpdater.Enable();
+
+        Task.Factory.StartNew(async () =>
         {
             while (_work)
             {
@@ -78,8 +85,7 @@ internal static class MajorUpdater
 
                 CalculateFPS();
             }
-        });
-        MovingUpdater.Enable();
+        }, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
     }
 
     private static void CalculateFPS()

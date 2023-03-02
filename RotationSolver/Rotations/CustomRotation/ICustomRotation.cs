@@ -19,7 +19,8 @@ internal interface ICustomRotation : ITexture, IEnable
 
     BattleChara MoveTarget { get; }
 
-    IBaseAction[] AllActions { get; }
+    IBaseAction[] AllBaseActions { get; }
+    IAction[] AllActions { get; }
     PropertyInfo[] AllBools { get; }
     PropertyInfo[] AllBytes { get; }
 

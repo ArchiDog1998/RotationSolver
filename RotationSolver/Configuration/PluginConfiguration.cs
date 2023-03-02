@@ -1,4 +1,4 @@
-    using Dalamud.Configuration;
+using Dalamud.Configuration;
 using RotationSolver.Data;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,7 @@ public class PluginConfiguration : IPluginConfiguration
     public int VoiceVolume = 100;
     public SortedSet<string> DisabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DiabledActions { get; private set; } = new SortedSet<uint>();
+    public SortedSet<uint> DiabledItems { get; private set; } = new SortedSet<uint>();
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
     public Dictionary<uint, Dictionary<string, Dictionary<string, string>>> RotationsConfigurations { get; private set; }
         = new Dictionary<uint, Dictionary<string, Dictionary<string, string>>>();
@@ -76,6 +77,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseHealWhenNotAHealer = true;
     public float ObjectMinRadius = 0f;
     public float HealthDifference = 0.25f;
+    public bool TargetFriendly = false;
+
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<ClassJobID, float>();
 
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractAreas { get; set; } = new Dictionary<ClassJobID, float>();
@@ -95,8 +98,8 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool InterruptibleMoreCheck = true;
     public float SpecialDuration = 3;
-    public float WeaponInterval = 0.67f;
-    public float WeaponAhead = 0.08f;
+    public float AbilitiesInterval = 0.67f;
+    public float ActionAhead = 0.08f;
 
     public float WeaponDelayMin = 0;
     public float WeaponDelayMax = 0;
@@ -110,9 +113,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float HostileDelayMin = 0;
     public float HostileDelayMax = 0;
 
-    public float HealDelayMin = 0.5f;
-    public float HealDelayMax = 1;
-
+    public float HealDelayMin = 0;
+    public float HealDelayMax = 0;
     public float StopCastingDelayMin = 0.5f;
     public float StopCastingDelayMax = 1;
 

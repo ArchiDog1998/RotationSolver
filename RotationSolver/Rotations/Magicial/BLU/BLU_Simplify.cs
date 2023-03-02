@@ -4,14 +4,16 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
 using RotationSolver.Updaters;
-#if DEBUG
+
 namespace RotationSolver.Rotations.RangedMagicial.BLU;
 
-internal class BLU_25 : BLU_Base
+internal class BLU_Simplify : BLU_Base
 {
     public override string GameVersion => "6.3";
 
-    public override string RotationName => "25";
+    public override string RotationName => "Simplify";
+
+    public override string Description => "This is a simplfied version for me (ArchiTed) using, \nwhich doesn't contain all actions.";
 
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
@@ -21,7 +23,8 @@ internal class BLU_25 : BLU_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        if (ChocoMeteor.CanUse(out act, mustUse: TargetUpdater.HaveCompanion)) return true;
+        if (ChocoMeteor.CanUse(out act)) return true;
+        if (DrillCannons.CanUse(out act)) return true;
 
 
         if (TripleTrident.OnSlot && TripleTrident.RightType && TripleTrident.WillHaveOneChargeGCD(OnSlotCount(Whistle, Tingle), 0))
@@ -34,6 +37,7 @@ internal class BLU_25 : BLU_Base
 
             if (TripleTrident.CanUse(out act, mustUse: true)) return true;
         }
+        if (ChocoMeteor.CanUse(out act, mustUse: TargetUpdater.HaveCompanion)) return true;
 
         if (SonicBoom.CanUse(out act)) return true;
         if (DrillCannons.CanUse(out act, mustUse: true)) return true;
@@ -41,4 +45,3 @@ internal class BLU_25 : BLU_Base
         return false;
     }
 }
-#endif

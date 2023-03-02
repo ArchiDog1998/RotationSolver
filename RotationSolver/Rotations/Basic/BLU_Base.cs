@@ -1,5 +1,6 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -55,6 +56,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
         static readonly StatusID[] NoMagic = new StatusID[]
         {
             StatusID.RespellingSpray,
+            StatusID.Magitek,
         };
 
         private BLUActionType _type;
@@ -722,7 +724,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 以太复制
     /// </summary>
-    private static IBLUAction AetherialMimicry { get; } = new BLUAction(ActionID.AetherialMimicry, BLUActionType.None, true)
+    private static IBLUAction AethericMimicry { get; } = new BLUAction(ActionID.AethericMimicry, BLUActionType.None, true)
     {
         ChoiceTarget = (charas, mustUse) =>
         {
@@ -764,20 +766,29 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
 
     private protected override bool EmergencyGCD(out IAction act)
     {
-        if (AetherialMimicry.CanUse(out act)) return true;
+        if (AethericMimicry.CanUse(out act)) return true;
+        if (BlueId == BLUID.Healer)
+        {
+            //有某些非常危险的状态。
+            if (RSCommands.SpecialType == SpecialCommandType.EsunaStanceNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
+            {
+                if (Exuviation.CanUse(out act, mustUse: true)) return true;
+            }
+        }
         if (BasicInstinct.CanUse(out _))
         {
             if (MightyGuard.CanUse(out act)) return true;
             act = BasicInstinct;
             return true;
         }
+
         return base.EmergencyGCD(out act);
     }
 
     protected static bool AllOnSlot(params IBLUAction[] actions) => actions.All(a => a.OnSlot);
     protected static uint OnSlotCount(params IBLUAction[] actions) => (uint)actions.Count(a => a.OnSlot);
 
-    public override IBaseAction[] AllActions => base.AllActions.Where(a =>
+    public override IBaseAction[] AllBaseActions => base.AllBaseActions.Where(a =>
     {
         if (a is not BLUAction b) return false;
         return b.OnSlot;
@@ -801,8 +812,6 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     {
         if (BlueId == BLUID.Healer)
         {
-            //if (Exuviation.CanUse(out act, mustUse: true)) return true;
-
             if (PomCure.CanUse(out act)) return true;
         }
         if (WhiteWind.CanUse(out act, mustUse: true)) return true;
@@ -813,10 +822,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
     {
         if (BlueId == BLUID.Healer)
         {
-            //if (Exuviation.CanUse(out act, mustUse: true)) return true;
-
             if (AngelsSnack.CanUse(out act)) return true;
-            if (Stotram.CanUse(out act)) return true;
             if (Stotram.CanUse(out act)) return true;
         }
 
