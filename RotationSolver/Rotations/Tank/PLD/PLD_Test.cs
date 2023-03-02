@@ -4,63 +4,58 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
-using RotationSolver.Updaters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Rotations.Tank.PLD;
 
+[RotationDesc("The whole rotation's burst is base on this:")]
+[RotationDesc(ActionID.FightorFlight)]
 internal class PLD_Test : PLD_Base
 {
     public override string GameVersion => "6.31";
     public override string RotationName => "Test";
 
-    public override string Description => "NO PRE-PULL FOF OPENER";
+    public override string Description => "Tentative v1.2";
+
     private protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("UseDivineVeilPre", false, "DivineVeilPre in 15 seconds counting down.");
     }
+
     private protected override IAction CountDownAction(float remainTime)
     {
-        if (remainTime <= HolySpirit.CastTime + Service.Configuration.CountDownAhead
+        if (remainTime < HolySpirit.CastTime + Service.Configuration.CountDownAhead
             && HolySpirit.CanUse(out var act)) return act;
 
-        if (Configs.GetBool("UseDivineVeilPre") && remainTime <= 15
+        if (remainTime < 15 && Configs.GetBool("UseDivineVeilPre")
             && DivineVeil.CanUse(out act)) return act;
 
         return base.CountDownAction(remainTime);
     }
 
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
-    {
-        if (abilitiesRemaining == 1 && nextGCD.IsTheSameTo(true, RiotBlade, GoringBlade))
-        {
-            if (FightorFlight.CanUse(out act)) return true;
-        }
-        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
-    }
-
     private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if(CombatElapsedLess(6) )
+        act = null;
+
+        if (abilitiesRemaining == 1 && InCombat)
         {
-            if(FightorFlight.CanUse(out act)) return true;
+            if (UseBurstMedicine(out act)) return true;
+            if (InBurst && FightorFlight.CanUse(out act)) return true;
         }
-        else if(InBurst)
-        {
-            if(UseBurstMedicine(out act)) return true;
-        }
+        if (CombatElapsedLess(5)) return false;
 
         if (CircleofScorn.CanUse(out act, mustUse: true)) return true;
-        if (SpiritsWithin.CanUse(out act, mustUse: true)) return true;
         if (Expiacion.CanUse(out act, mustUse: true)) return true;
-        act = null;
+        if (SpiritsWithin.CanUse(out act, mustUse: true)) return true;
+
+        if (Player.WillStatusEndGCD(4, 0, true, StatusID.FightOrFlight)
+            && Requiescat.CanUse(out act, mustUse: true)) return true;
+
+        if (HasFightOrFlight && Intervene.CanUse(out act, true, true)) return true;
         return false;
     }
+
+    private static bool UseHoly => HasDivineMight && !FightorFlight.WillHaveOneChargeGCD(1);
 
     private protected override bool GeneralGCD(out IAction act)
     {
@@ -70,14 +65,15 @@ internal class PLD_Test : PLD_Base
         if (Confiteor.CanUse(out act, mustUse: true)) return true;
 
         //AOE
-        if (Player.HasStatus(true, StatusID.Requiescat)
-            && HolyCircle.CanUse(out act)) return true;
+        if (UseHoly && HolyCircle.CanUse(out act)) return true;
         if (Prominence.CanUse(out act)) return true;
         if (TotalEclipse.CanUse(out act)) return true;
 
         //Single
-        if (GoringBlade.CanUse(out act)) return true; // Dot
+        if (UseHoly && HolySpirit.CanUse(out act)) return true;
+        if (!CombatElapsedLess(7) && GoringBlade.CanUse(out act)) return true; // Dot
         if (RageofHalone.CanUse(out act)) return true;
+        if (!FightorFlight.WillHaveOneChargeGCD(1) && Atonement.CanUse(out act)) return true;
         if (RiotBlade.CanUse(out act)) return true;
         if (FastBlade.CanUse(out act)) return true;
 

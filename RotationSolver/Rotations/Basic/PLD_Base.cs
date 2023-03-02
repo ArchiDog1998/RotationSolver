@@ -13,6 +13,10 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
 {
     private static PLDGauge JobGauge => Service.JobGauges.Get<PLDGauge>();
 
+    protected static bool HasDivineMight => !Player.WillStatusEndGCD(0, 0, true, StatusID.DivineMight);
+
+    protected static bool HasFightOrFlight => !Player.WillStatusEndGCD(0, 0, true, StatusID.FightOrFlight);
+
     /// <summary>
     /// 忠义度
     /// </summary>
@@ -47,7 +51,6 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
         TargetStatus = new[]
         {
             StatusID.GoringBlade,
-            StatusID.BladeofValor,
         }
     };
 
@@ -155,10 +158,7 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 信念之剑
     /// </summary>
-    public static IBaseAction BladeofFaith { get; } = new BaseAction(ActionID.BladeofFaith)
-    {
-        StatusNeed = new[] { StatusID.ReadyForBladeofFaith },
-    };
+    public static IBaseAction BladeofFaith { get; } = new BaseAction(ActionID.BladeofFaith);
 
     /// <summary>
     /// 安魂祈祷

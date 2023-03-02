@@ -30,7 +30,7 @@ internal abstract partial class CustomRotation
     {
         act = null;
         
-        if (!IsFullParty) return false;
+        if (!IsFullParty || !InCombat) return false;
         if (Service.ClientState.LocalPlayer?.Level < 90) return false;
 
         var role = Job.GetJobRole();
