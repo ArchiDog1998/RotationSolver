@@ -1,5 +1,6 @@
 ﻿using Dalamud.Utility;
 using ImGuiNET;
+using Lumina.Data.Parsing;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using System.Numerics;
@@ -10,10 +11,6 @@ namespace RotationSolver.Windows.RotationConfigWindow
     {
         private void DrawHelpTab()
         {
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
-
-            ImGui.SameLine();
-
             if (ImGui.Button("Github"))
             {
                 Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
@@ -39,6 +36,18 @@ namespace RotationSolver.Windows.RotationConfigWindow
             {
                 Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver/blob/release/CHANGELOG.md");
             }
+
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Button, 0xFF5E5BFF);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD5E5BFF);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0xAA5E5BFF);
+            if (ImGui.Button("Support on Ko-fi"))
+            {
+                Util.OpenLink("https://ko-fi.com/rotationsolver");
+            }
+            ImGui.PopStyleColor(3);
+
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
 
             if (ImGui.BeginChild("Help Infomation", new Vector2(0f, -1f), true))
             {
