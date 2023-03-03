@@ -1,18 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="RotationSolver.Timeline.IConditionConverter">
-    <Position X="0.5" Y="3.5" Width="1.5" />
+    <Position X="11.25" Y="4.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAACAAAAAAAAAA=</HashCode>
       <FileName>Timeline\IConditionConverter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Timeline.JsonCreationConverter&lt;T&gt;">
-    <Position X="0.5" Y="0.75" Width="1.5" />
+    <Position X="11.5" Y="1.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAQQAAAAAEAAAAAAAAAAAAEAAAAAAAAAACAA=</HashCode>
       <FileName>Timeline\IConditionConverter.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="RotationSolver.Timeline.ActionCondition">
+    <Position X="3" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIABACAgggAAAAAAAAAAAAAAAAAAIAAgAAAAQA=</HashCode>
+      <FileName>Timeline\ActionCondition.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RotationSolver.Timeline.ConditionSet">
+    <Position X="0.5" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAABAAAAggAABAAEAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Timeline\ConditionSet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RotationSolver.Timeline.MajorConditionSet">
+    <Position X="2.5" Y="0.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAABAAAAQgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Timeline\MajorConditionSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationSolver.Timeline.RotationCondition">
+    <Position X="5.25" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIABECAwggAAABAAAAAAAAAAAAAAAACggBAAQA=</HashCode>
+      <FileName>Timeline\RotationCondition.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RotationSolver.Timeline.BaseStatus">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAggAgAAAEAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Timeline\BaseStatus.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RotationSolver.Timeline.TargetCondition">
+    <Position X="7.75" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AEAAAQQkJACAkggAAQAABAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Timeline\TargetCondition.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="RotationSolver.Timeline.ICondition">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAggAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Timeline\ICondition.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="RotationSolver.Timeline.ActionConditonType">
+    <Position X="3" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAIAAAAABIAgAAAAAAAAACAAAAAAAAABAAAAgIA=</HashCode>
+      <FileName>Timeline\ActionCondition.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="RotationSolver.Timeline.ComboConditionType">
+    <Position X="5.25" Y="8.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAABAAAAAAAAAACAAAAAQI=</HashCode>
+      <FileName>Timeline\RotationCondition.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="RotationSolver.Timeline.TargetConditionType">
+    <Position X="7.75" Y="9.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACCAAAAAAAAQAAhAAAEAAIAAAAA=</HashCode>
+      <FileName>Timeline\TargetCondition.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

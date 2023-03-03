@@ -23,7 +23,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Configuration.RotationConfig.RotationConfigComparer">
-    <Position X="10" Y="7.25" Width="1.5" />
+    <Position X="10" Y="7.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Configuration\RotationConfig\RotationConfigComparer.cs</FileName>
@@ -38,7 +38,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Configuration.RotationConfig.RotationConfigSet">
-    <Position X="12.25" Y="7.5" Width="1.75" />
+    <Position X="12.5" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>CACgAAgAACAAAhAIAEAABAAAAAAQAgQkAAAAAAAAAAA=</HashCode>
       <FileName>Configuration\RotationConfig\RotationConfigSet.cs</FileName>

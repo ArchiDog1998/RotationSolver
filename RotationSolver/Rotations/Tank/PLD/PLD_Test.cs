@@ -7,14 +7,14 @@ using RotationSolver.Rotations.Basic;
 
 namespace RotationSolver.Rotations.Tank.PLD;
 
-[RotationDesc("The whole rotation's burst is base on this:")]
+[RotationDesc("The whole rotation's burst\nis base on:")]
 [RotationDesc(ActionID.FightorFlight)]
 internal class PLD_Test : PLD_Base
 {
     public override string GameVersion => "6.31";
     public override string RotationName => "Test";
 
-    public override string Description => "Tentative v1.2";
+    public override string Description => "Tentative v1.2\nPlease work well!";
 
     private protected override IRotationConfigSet CreateConfiguration()
     {

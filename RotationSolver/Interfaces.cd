@@ -1,56 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="RotationSolver.IEnable">
-    <Position X="4.75" Y="7.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ITexture.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="RotationSolver.ITexture">
     <Position X="4.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAAgAAAEAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ITexture.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Actions.IAction">
-    <Position X="2.75" Y="6.25" Width="1.5" />
+    <Position X="3" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgABAAAAAAQAAAAAEAAAAAAAAAgAAAAA=</HashCode>
       <FileName>Actions\IAction.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Actions.IBaseAction">
-    <Position X="4.25" Y="9.75" Width="1.5" />
+    <Position X="4.75" Y="9" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CAAogAAAAAAABYQABIAIADAAAACABIAAAAABAAAAgMA=</HashCode>
+      <HashCode>CAAogAAAACAABYQEBIAIADAAAACABYABAAAEAAAAAMA=</HashCode>
       <FileName>Actions\IBaseAction.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Actions.IBaseItem">
-    <Position X="2" Y="9.75" Width="1.5" />
+    <Position X="3" Y="9" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Actions\IBaseItem.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Rotations.CustomRotation.ICustomRotation">
-    <Position X="6.75" Y="6.25" Width="1.5" />
+    <Position X="6.5" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAgAAAAAAEAAEAAAAAAIAQAAgAACAAAAABACCIBAAEE=</HashCode>
+      <HashCode>EAAAAAAAAEAAEAAAAAAIAQAAgAACAAAAABACCABAAEE=</HashCode>
       <FileName>Rotations\CustomRotation\ICustomRotation.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Rotations.Basic.IBLUAction">
-    <Position X="3.25" Y="15.5" Width="1.5" />
+    <Position X="3" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAEAAAAA=</HashCode>
       <FileName>Rotations\Basic\BLU_Base.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="RotationSolver.Rotations.Basic.INinAction">
-    <Position X="5.25" Y="15.5" Width="1.5" />
+    <Position X="6.5" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Rotations\Basic\NIN_Base.cs</FileName>

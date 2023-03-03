@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
-internal interface ICustomRotation : ITexture, IEnable
+internal interface ICustomRotation : ITexture
 {
     ClassJob Job { get; }
     ClassJobID[] JobIDs { get; }

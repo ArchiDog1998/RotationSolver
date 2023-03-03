@@ -278,17 +278,3 @@ public enum TargetConditionType : int
     StatusEndGCD,
     CastingAction,
 }
-
-
-internal class BaseStatus : ITexture
-{
-    public Status _status;
-    public uint IconID => _status.Icon;
-    public StatusID ID => (StatusID)_status.RowId;
-    public string Name => $"{_status.Name}[{_status.RowId}]";
-
-    public BaseStatus(StatusID id)
-    {
-        _status = Service.DataManager.GetExcelSheet<Status>().GetRow((uint)id);
-    }
-}

@@ -1,10 +1,8 @@
 ﻿using Dalamud.Utility;
 using ImGuiNET;
-using Lumina.Data.Parsing;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using System.Numerics;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RotationSolver.Windows.RotationConfigWindow
 {
