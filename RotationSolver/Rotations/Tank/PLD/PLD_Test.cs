@@ -59,10 +59,11 @@ internal class PLD_Test : PLD_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        if (BladeofValor.CanUse(out act, mustUse: true)) return true;
-        if (BladeofTruth.CanUse(out act, mustUse: true)) return true;
-        if (BladeofFaith.CanUse(out act, mustUse: true)) return true;
-        if (Confiteor.CanUse(out act, mustUse: true)) return true;
+        if (Confiteor.CanUse(out act, mustUse: true))
+        {
+            if (Player.HasStatus(true, StatusID.ConfiteorReady)) return true;
+            if (Confiteor.ID != Confiteor.AdjustedID) return true;
+        }
 
         //AOE
         if (UseHoly && HolyCircle.CanUse(out act)) return true;
