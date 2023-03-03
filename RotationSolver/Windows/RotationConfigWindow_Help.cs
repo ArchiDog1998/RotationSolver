@@ -4,6 +4,7 @@ using Lumina.Data.Parsing;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using System.Numerics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RotationSolver.Windows.RotationConfigWindow
 {
@@ -38,10 +39,13 @@ namespace RotationSolver.Windows.RotationConfigWindow
             }
 
             ImGui.SameLine();
+
+            var support = "Support on Ko-fi";
+            ImGui.SetCursorPosX(ImGui.GetWindowSize().X - ImGui.CalcTextSize(support).X - ImGui.GetStyle().ItemSpacing.X * 2);
             ImGui.PushStyleColor(ImGuiCol.Button, 0xFF5E5BFF);
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD5E5BFF);
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0xAA5E5BFF);
-            if (ImGui.Button("Support on Ko-fi"))
+            if (ImGui.Button(support))
             {
                 Util.OpenLink("https://ko-fi.com/rotationsolver");
             }
