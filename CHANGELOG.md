@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.6](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.5...v1.4.6) (2023-03-03)
+
+
+### Bug Fixes
+
+* add a support button. ([e174708](https://github.com/ArchiDog1998/RotationSolver/commit/e1747088c35466f7c039fb8e2c25252530dbec62))
+* PLD text Blade using changed. ([eb0b0b2](https://github.com/ArchiDog1998/RotationSolver/commit/eb0b0b209e307b8e9a6ff821b30bdab05f19353f))
+* right alignment of the donation. ([2314dfe](https://github.com/ArchiDog1998/RotationSolver/commit/2314dfee76e5a7c13b4c4c6f2db6bd53baa20ad1))
+
 ## [1.4.5](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.4...v1.4.5) (2023-03-02)
 
 
