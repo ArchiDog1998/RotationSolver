@@ -7,14 +7,14 @@ using RotationSolver.Rotations.Basic;
 
 namespace RotationSolver.Rotations.Tank.PLD;
 
-[RotationDesc("The whole rotation's burst is base on this:")]
+[RotationDesc("The whole rotation's burst\nis base on:")]
 [RotationDesc(ActionID.FightorFlight)]
 internal class PLD_Test : PLD_Base
 {
     public override string GameVersion => "6.31";
     public override string RotationName => "Test";
 
-    public override string Description => "Tentative v1.2";
+    public override string Description => "Tentative v1.2\nPlease work well!";
 
     private protected override IRotationConfigSet CreateConfiguration()
     {
@@ -59,10 +59,11 @@ internal class PLD_Test : PLD_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        if (BladeofValor.CanUse(out act, mustUse: true)) return true;
-        if (BladeofTruth.CanUse(out act, mustUse: true)) return true;
-        if (BladeofFaith.CanUse(out act, mustUse: true)) return true;
-        if (Confiteor.CanUse(out act, mustUse: true)) return true;
+        if (Confiteor.CanUse(out act, mustUse: true))
+        {
+            if (Player.HasStatus(true, StatusID.ConfiteorReady)) return true;
+            if (Confiteor.ID != Confiteor.AdjustedID) return true;
+        }
 
         //AOE
         if (UseHoly && HolyCircle.CanUse(out act)) return true;

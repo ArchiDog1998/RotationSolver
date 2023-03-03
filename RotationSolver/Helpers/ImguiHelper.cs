@@ -34,9 +34,7 @@ internal static class ImGuiHelper
 
         ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
 
-        var able = texture as IEnable;
-
-        var desc = able?.Description;
+        var desc = texture?.Description;
         if (ImGui.IsItemHovered())
         {
             showToolTip(desc);
@@ -48,21 +46,19 @@ internal static class ImGuiHelper
         ImGui.NextColumn();
 
         bool enable = false;
-        if (able != null)
-        {
-            if (isSelected) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-            enable = able.IsEnabled;
-            if (ImGui.Checkbox($"{texture.Name}##{texture.Name}", ref enable))
-            {
-                able.IsEnabled = enable;
-                Service.Configuration.Save();
-            }
-            if (isSelected) ImGui.PopStyleColor();
 
-            if (ImGui.IsItemHovered())
-            {
-                showToolTip(desc);
-            }
+        if (isSelected) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+        enable = texture.IsEnabled;
+        if (ImGui.Checkbox($"{texture.Name}##{texture.Name}", ref enable))
+        {
+            texture.IsEnabled = enable;
+            Service.Configuration.Save();
+        }
+        if (isSelected) ImGui.PopStyleColor();
+
+        if (ImGui.IsItemHovered())
+        {
+            showToolTip(desc);
         }
 
         additonalHeader?.Invoke(showToolTip);
