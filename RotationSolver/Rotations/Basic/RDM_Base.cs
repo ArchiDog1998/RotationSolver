@@ -227,9 +227,9 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.CorpsAcorps)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (CorpsAcorps.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (CorpsAcorps.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 

@@ -34,6 +34,7 @@ internal partial class BaseAction
     public BattleChara Target { get; private set; } = Service.ClientState.LocalPlayer;
 
     private Vector3 _position = default;
+    private uint _targetId = Service.ClientState.LocalPlayer.ObjectId;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
     internal Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget

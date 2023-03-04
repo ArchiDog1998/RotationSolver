@@ -83,7 +83,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
             ActionCheck = t => OnSlot && RightType;
         }
 
-        public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0)
+        public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0, bool recordTarget = true)
         {
             act = null;
 

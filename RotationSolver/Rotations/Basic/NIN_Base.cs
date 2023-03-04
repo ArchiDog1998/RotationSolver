@@ -308,9 +308,9 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
     public static INinAction HyoshoRanryu { get; } = new NinAction(ActionID.HyoshoRanryu, Ten, Jin);
 
     [RotationDesc(ActionID.Shukuchi)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (Shukuchi.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Shukuchi.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
 
         return false;
     }

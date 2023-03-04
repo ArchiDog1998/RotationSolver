@@ -123,7 +123,7 @@ namespace RotationSolver.Rotations.Basic
             {
             }
 
-            public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0)
+            public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0, bool recordTarget = true)
             {
                 if (ElementTimeEndAfter(CastTime - 0.1f))
                 {

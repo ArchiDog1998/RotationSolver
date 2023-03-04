@@ -22,7 +22,7 @@ internal abstract partial class CustomRotation
             return false;
         }
 
-        MoveTarget = (MoveForwardAbility(1, out var act) && act is BaseAction a) ? a.Target : null;
+        MoveTarget = (MoveForwardAbility(1, out var act, recordTarget: false) && act is BaseAction a) ? a.Target : null;
         UpdateInfo();
 
         newAction = Invoke();

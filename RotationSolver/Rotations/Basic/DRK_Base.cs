@@ -218,9 +218,9 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.Plunge)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (Plunge.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Plunge.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
 
         return false;
     }

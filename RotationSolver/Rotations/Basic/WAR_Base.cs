@@ -186,9 +186,9 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.Onslaught)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (Onslaught.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Onslaught.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 }

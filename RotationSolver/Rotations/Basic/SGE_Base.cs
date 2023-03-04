@@ -251,10 +251,10 @@ internal abstract class SGE_Base : CustomRotation.CustomRotation
         },
     };
 
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         //…Ò“Ì
-        if (Icarus.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Icarus.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 }

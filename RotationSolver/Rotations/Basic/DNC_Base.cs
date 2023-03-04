@@ -311,9 +311,9 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.EnAvant)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (EnAvant.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (EnAvant.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 

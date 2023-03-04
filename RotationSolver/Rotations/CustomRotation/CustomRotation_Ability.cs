@@ -268,7 +268,7 @@ internal abstract partial class CustomRotation
     }
 
     [RotationDesc(DescType.MoveForwardAbility)]
-    private protected virtual bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected virtual bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         act = null; return false;
     }

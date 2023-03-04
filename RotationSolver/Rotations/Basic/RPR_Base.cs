@@ -307,10 +307,10 @@ internal abstract class RPR_Base : CustomRotation.CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HellsIngress)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         //E上去
-        if (HellsIngress.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (HellsIngress.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 

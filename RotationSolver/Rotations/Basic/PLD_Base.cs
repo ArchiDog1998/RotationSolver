@@ -218,9 +218,9 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.Intervene)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (Intervene.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Intervene.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 
