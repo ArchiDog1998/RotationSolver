@@ -4,6 +4,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.Rotations.Basic
@@ -11,6 +12,9 @@ namespace RotationSolver.Rotations.Basic
     internal abstract partial class BLM_Base : CustomRotation.CustomRotation
     {
         private static BLMGauge JobGauge => Service.JobGauges.Get<BLMGauge>();
+
+        public override MedicineType MedicineType => MedicineType.Intelligence;
+
 
         /// <summary>
         /// 冰状态层数

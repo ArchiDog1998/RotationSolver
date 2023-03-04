@@ -3,12 +3,15 @@ using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Basic;
 
 internal abstract class WHM_Base : CustomRotation.CustomRotation
 {
     private static WHMGauge JobGauge => Service.JobGauges.Get<WHMGauge>();
+    public override MedicineType MedicineType => MedicineType.Mind;
+
 
     /// <summary>
     /// 百合花的数量

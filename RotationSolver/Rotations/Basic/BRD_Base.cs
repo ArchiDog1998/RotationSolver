@@ -6,6 +6,7 @@ using RotationSolver.Attributes;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Linq;
 
@@ -14,6 +15,8 @@ namespace RotationSolver.Rotations.Basic;
 internal abstract class BRD_Base : CustomRotation.CustomRotation
 {
     private static BRDGauge JobGauge => Service.JobGauges.Get<BRDGauge>();
+
+    public override MedicineType MedicineType => MedicineType.Dexterity;
 
     /// <summary>
     /// Ê«ĞÄÊıÁ¿

@@ -4,12 +4,15 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Basic;
 
 internal abstract class WAR_Base : CustomRotation.CustomRotation
 {
     private static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
+    public override MedicineType MedicineType => MedicineType.Strength;
+
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
     private sealed protected override IBaseAction Shield => Defiance;

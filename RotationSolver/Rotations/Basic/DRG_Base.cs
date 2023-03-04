@@ -4,6 +4,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using System.Linq;
 
 namespace RotationSolver.Rotations.Basic;
@@ -12,6 +13,8 @@ internal abstract class DRG_Base : CustomRotation.CustomRotation
 
 {
     private static DRGGauge JobGauge => Service.JobGauges.Get<DRGGauge>();
+
+    public override MedicineType MedicineType => MedicineType.Strength;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dragoon, ClassJobID.Lancer };
 

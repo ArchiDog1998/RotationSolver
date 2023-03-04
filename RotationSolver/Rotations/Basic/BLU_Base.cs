@@ -4,6 +4,7 @@ using RotationSolver.Commands;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Linq;
 
@@ -17,6 +18,8 @@ internal interface IBLUAction : IBaseAction
 }
 internal abstract class BLU_Base : CustomRotation.CustomRotation
 {
+    public override MedicineType MedicineType => MedicineType.Intelligence;
+
     internal enum BLUID : byte
     {
         Tank,

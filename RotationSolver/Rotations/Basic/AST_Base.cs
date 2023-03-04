@@ -4,6 +4,7 @@ using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using System;
 using System.Linq;
 
@@ -12,6 +13,8 @@ namespace RotationSolver.Rotations.Basic;
 internal abstract class AST_Base : CustomRotation.CustomRotation
 {
     private static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
+
+    public override MedicineType MedicineType => MedicineType.Mind;
 
     /// <summary>
     /// 抽出来的卡是啥。

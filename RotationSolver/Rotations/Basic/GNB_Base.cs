@@ -5,6 +5,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -12,6 +13,8 @@ namespace RotationSolver.Rotations.Basic;
 internal abstract class GNB_Base : CustomRotation.CustomRotation
 {
     private static GNBGauge JobGauge => Service.JobGauges.Get<GNBGauge>();
+
+    public override MedicineType MedicineType => MedicineType.Strength;
 
     /// <summary>
     /// ¾§ÄÒÊıÁ¿

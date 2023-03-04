@@ -80,8 +80,8 @@ internal class PLD_Test : PLD_Base
         if (TotalEclipse.CanUse(out act)) return true;
 
         //Single
-        if (UseHoly && HolySpirit.CanUse(out act)) return true;
         if (!CombatElapsedLess(7) && GoringBlade.CanUse(out act)) return true; // Dot
+        if (UseHoly && HolySpirit.CanUse(out act)) return true;
         if (RageofHalone.CanUse(out act)) return true;
         if (!FightorFlight.WillHaveOneChargeGCD(1) && Atonement.CanUse(out act)) return true;
         if (RiotBlade.CanUse(out act)) return true;

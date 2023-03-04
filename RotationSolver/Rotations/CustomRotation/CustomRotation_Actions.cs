@@ -251,7 +251,7 @@ internal abstract partial class CustomRotation
 
     private IEnumerable<IBaseItem> GetBaseItems(Type type)
     {
-        return GetIActions(type).OfType<IBaseItem>().Where(a => a is RoleItem role ? role.InRole(Job.GetJobRole()) : true).Reverse();
+        return GetIActions(type).OfType<IBaseItem>().Where(a => a is MedicineItem medicine ? medicine.InType(this) : true).Reverse();
     }
 
     private IEnumerable<IAction> GetIActions(Type type)

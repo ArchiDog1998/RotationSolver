@@ -5,11 +5,15 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Basic;
 internal abstract class DRK_Base : CustomRotation.CustomRotation
 {
     private static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();
+
+    public override MedicineType MedicineType => MedicineType.Strength;
+
     private static float DarksideTimeRemaining => JobGauge.DarksideTimeRemaining / 1000f;
     /// <summary>
     /// 暗血

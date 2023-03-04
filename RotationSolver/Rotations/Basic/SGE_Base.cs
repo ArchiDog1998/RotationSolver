@@ -3,6 +3,7 @@ using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Linq;
 
@@ -16,6 +17,8 @@ internal abstract class SGE_Base : CustomRotation.CustomRotation
     protected static byte Addersgall => JobGauge.Addersgall;
 
     protected static byte Addersting => JobGauge.Addersting;
+    public override MedicineType MedicineType => MedicineType.Strength;
+
 
     /// <summary>
     /// 豆子倒计时还有多久能来一颗啊
