@@ -52,6 +52,9 @@ internal class PLD_Test : PLD_Base
             && Requiescat.CanUse(out act, mustUse: true)) return true;
 
         if (!IsMoving && Intervene.CanUse(out act, true, HasFightOrFlight)) return true;
+
+        if (HasTankStance && OathGauge == 100 && Sheltron.CanUse(out act)) return true;
+
         return false;
     }
 
