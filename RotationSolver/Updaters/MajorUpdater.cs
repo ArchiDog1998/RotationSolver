@@ -13,115 +13,86 @@ internal static class MajorUpdater
 {
     private static bool IsValid => Service.Conditions.Any() && Service.ClientState.LocalPlayer != null;
 
-//#if DEBUG
-//    private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
-//#endif
+    //#if DEBUG
+    //    private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
+    //#endif
+
     private static void FrameworkUpdate(Framework framework)
     {
         if (!IsValid) return;
 
-//#if DEBUG
-//        //Get changed condition.
-//        string[] enumNames = Enum.GetNames(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));
-//        int[] indexs = (int[])Enum.GetValues(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));
-//        if (enumNames.Length == indexs.Length)
-//        {
-//            for (int i = 0; i < enumNames.Length; i++)
-//            {
-//                string key = enumNames[i];
-//                bool newValue = Service.Conditions[(Dalamud.Game.ClientState.Conditions.ConditionFlag)indexs[i]];
-//                if (_valus.ContainsKey(i) && _valus[i] != newValue && indexs[i] != 48 && indexs[i] != 27)
-//                {
-//                    Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
-//                }
-//                _valus[i] = newValue;
-//            }
-//        }
-//#endif
-
-        if (!Service.Configuration.UseWorkTask)
-        {
-            UpdateWork();
-        }
+        //#if DEBUG
+        //        //Get changed condition.
+        //        string[] enumNames = Enum.GetNames(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));
+        //        int[] indexs = (int[])Enum.GetValues(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));
+        //        if (enumNames.Length == indexs.Length)
+        //        {
+        //            for (int i = 0; i < enumNames.Length; i++)
+        //            {
+        //                string key = enumNames[i];
+        //                bool newValue = Service.Conditions[(Dalamud.Game.ClientState.Conditions.ConditionFlag)indexs[i]];
+        //                if (_valus.ContainsKey(i) && _valus[i] != newValue && indexs[i] != 48 && indexs[i] != 27)
+        //                {
+        //                    Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
+        //                }
+        //                _valus[i] = newValue;
+        //            }
+        //        }
+        //#endif
 
         SocialUpdater.UpdateSocial();
         PreviewUpdater.UpdatePreview();
+        ActionUpdater.UpdateWeaponTime();
+
         ActionUpdater.DoAction();
 
-        //Late for update weapon time.
         MacroUpdater.UpdateMacro();
+
+        if (Service.Configuration.UseWorkTask)
+        {
+            Task.Run(UpdateWork);
+        }
+        else
+        {
+            UpdateWork();
+        }
     }
 
-    static bool _work = true;
-    static DateTime _lastUpdate = DateTime.MinValue;
-    static readonly TimeSpan _oneSecond = TimeSpan.FromSeconds(1);
-    static int _frameCount = 0;
-    public static string FrameCount { get; private set; }
     public static void Enable()
     {
         Service.Framework.Update += FrameworkUpdate;
         MovingUpdater.Enable();
-
-        Task.Factory.StartNew(async () =>
-        {
-            while (_work)
-            {
-                if (!Service.Configuration.UseWorkTask || !Service.Conditions.Any() || Service.ClientState.LocalPlayer == null)
-                {
-                    await Task.Delay(200);
-                    continue;
-                }
-
-                try
-                {
-                    UpdateWork();
-                }
-                catch(Exception ex) 
-                {
-                    PluginLog.Error(ex, "TaskException");
-                }
-
-                await Task.Delay(Service.Configuration.WorkTaskDelay);
-
-                CalculateFPS();
-            }
-        }, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
     }
 
-    private static void CalculateFPS()
-    {
-        var now = DateTime.Now;
-        var span = now - _lastUpdate;
-        if (span > _oneSecond)
-        {
-            FrameCount = _frameCount.ToString();
-            _lastUpdate = now;
-            _frameCount = 0;
-        }
-        else
-        {
-            _frameCount++;
-        }
-    }
-
+    static bool _work;
     private static void UpdateWork()
     {
         if (!IsValid) return;
+        if (_work) return;
+        _work = true;
 
-        ActionUpdater.UpdateActionInfo();
-        PreviewUpdater.UpdateCastBarState();
-        TargetUpdater.UpdateTarget();
+        try
+        {
+            PreviewUpdater.UpdateCastBarState();
+            TargetUpdater.UpdateTarget();
+            ActionUpdater.UpdateActionInfo();
 
-        RotationUpdater.UpdateRotation();
+            RotationUpdater.UpdateRotation();
 
-        TimeLineUpdater.UpdateTimelineAction();
-        ActionUpdater.UpdateNextAction();
-        RSCommands.UpdateRotationState();
+            TimeLineUpdater.UpdateTimelineAction();
+            ActionUpdater.UpdateNextAction();
+            RSCommands.UpdateRotationState();
+        }
+        catch (Exception ex)
+        {
+            PluginLog.Error(ex, "Worker Exception");
+        }
+
+        _work = false;
     }
 
     public static void Dispose()
     {
-        _work = false;
         Service.Framework.Update -= FrameworkUpdate;
         PreviewUpdater.Dispose();
         MovingUpdater.Dispose();

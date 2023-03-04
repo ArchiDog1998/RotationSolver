@@ -106,12 +106,6 @@ internal partial class RotationConfigWindow
             DrawRangedFloat(LocalizationManager.RightLang.Configwindow_Param_StopCastingDelay,
                 ref Service.Configuration.StopCastingDelayMin, ref Service.Configuration.StopCastingDelayMax);
         }
-
-        if (Service.Configuration.UseWorkTask)
-        {
-            DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_WorkTaskDelay,
-                ref Service.Configuration.WorkTaskDelay, min: 0, max: 200);
-        }
     }
 
     private void DrawParamAdvanced()
@@ -219,12 +213,6 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowInfoOnToast,
             ref Service.Configuration.ShowInfoOnToast);
-
-        if (Service.Configuration.ShowInfoOnDtr && Service.Configuration.UseWorkTask)
-        {
-            DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowWorkTaskFPS,
-                ref Service.Configuration.ShowWorkTaskFPS);
-        }
 
         DrawIntNumber(LocalizationManager.RightLang.Configwindow_Param_NamePlateIconId,
             ref Service.Configuration.NamePlateIconId, 5, 0, 150000, otherThing: RSCommands.UpdateStateNamePlate);

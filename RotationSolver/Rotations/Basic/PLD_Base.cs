@@ -27,6 +27,7 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     private sealed protected override IBaseAction Shield => IronWill;
 
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
+    protected override bool CanHealAreaAbility => false;
 
     /// <summary>
     /// ¸ÖÌúĞÅÄî

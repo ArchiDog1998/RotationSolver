@@ -115,8 +115,6 @@ internal partial class Strings
 
     public string Configwindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in second.";
     public string Configwindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stoping casting when target is no need to cast in second.";
-    public string Configwindow_Param_WorkTaskDelay { get; set; } = "Set the work task delay in millisecond. Smaller, more precise, more resource-intensive";
-
     public string Configwindow_Param_Display { get; set; } = "Display";
     public string Configwindow_Param_Advanced { get; set; } = "Advanced";
     public string Configwindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting.";

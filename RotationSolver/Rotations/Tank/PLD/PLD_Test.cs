@@ -94,13 +94,19 @@ internal class PLD_Test : PLD_Base
         return false;
     }
 
-    [RotationDesc(ActionID.Reprisal, ActionID.DivineVeil, ActionID.PassageofArms)]
+    [RotationDesc(ActionID.Reprisal, ActionID.DivineVeil)]
     private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Reprisal.CanUse(out act, mustUse: true)) return true;
         if (DivineVeil.CanUse(out act)) return true;
-        if (PassageofArms.CanUse(out act)) return true;
         return false;
+    }
+
+    [RotationDesc(ActionID.PassageofArms)]
+    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    {
+        if (PassageofArms.CanUse(out act)) return true;
+        return base.HealAreaAbility(abilitiesRemaining, out act);
     }
 
     [RotationDesc(ActionID.Sentinel, ActionID.Rampart, ActionID.Bulwark, ActionID.Sheltron, ActionID.Reprisal)]

@@ -125,8 +125,6 @@ public class PluginConfiguration : IPluginConfiguration
     public float NotInCombatDelayMax = 2;
 
     public bool UseWorkTask = true;
-    public int WorkTaskDelay = 10;
-    public bool ShowWorkTaskFPS = true;
 
     public bool UseStopCasting = false;
     public bool EsunaAll = false;
