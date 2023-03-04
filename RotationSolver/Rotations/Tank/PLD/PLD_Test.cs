@@ -51,7 +51,7 @@ internal class PLD_Test : PLD_Base
         if (Player.WillStatusEndGCD(4, 0, true, StatusID.FightOrFlight)
             && Requiescat.CanUse(out act, mustUse: true)) return true;
 
-        if (HasFightOrFlight && Intervene.CanUse(out act, true, true)) return true;
+        if (!IsMoving && Intervene.CanUse(out act, true, HasFightOrFlight)) return true;
         return false;
     }
 
@@ -59,11 +59,17 @@ internal class PLD_Test : PLD_Base
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        if (Confiteor.CanUse(out act, mustUse: true))
+        if(Player.HasStatus(true, StatusID.Requiescat))
         {
-            if (Player.HasStatus(true, StatusID.ConfiteorReady)) return true;
-            if (Confiteor.ID != Confiteor.AdjustedID) return true;
+            if (Confiteor.CanUse(out act, mustUse: true))
+            {
+                if (Player.HasStatus(true, StatusID.ConfiteorReady)) return true;
+                if (Confiteor.ID != Confiteor.AdjustedID) return true;
+            }
+            if (HolyCircle.CanUse(out act)) return true;
+            if (HolySpirit.CanUse(out act)) return true;
         }
+
 
         //AOE
         if (UseHoly && HolyCircle.CanUse(out act)) return true;
