@@ -181,7 +181,7 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //死斗 如果血不够了。
-        if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], Holmgang.Target)) return true;
+        if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 

@@ -105,7 +105,7 @@ internal abstract partial class CustomRotation
         StatusProvide = new StatusID[]
         {
             StatusID.Superbolide, StatusID.HallowedGround,
-            StatusID.Rampart1, StatusID.Rampart2, StatusID.Rampart3,
+            StatusID.Rampart, StatusID.Bulwark,
             //原初的直觉和血气
             StatusID.RawIntuition, StatusID.Bloodwhetting,
             //复仇

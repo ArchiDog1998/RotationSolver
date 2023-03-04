@@ -104,7 +104,7 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// <summary>
     /// …Ò •¡Ï”Ú
     /// </summary>
-    public static IBaseAction HallowedGround { get; } = new BaseAction(ActionID.HallowedGround, isTimeline: true);
+    public static IBaseAction HallowedGround { get; } = new BaseAction(ActionID.HallowedGround, true, isTimeline: true);
 
     /// <summary>
     ///  •π‚ƒª¡±
@@ -200,17 +200,20 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ∂‹’Û
     /// </summary>
-    public static IBaseAction Sheltron { get; } = new BaseAction(ActionID.Sheltron, isTimeline: true)
+    public static IBaseAction Sheltron { get; } = new BaseAction(ActionID.Sheltron, true, isTimeline: true)
     {
         ActionCheck = Cover.ActionCheck,
     };
 
-    public static IBaseAction Bulwark { get; } = new BaseAction(ActionID.Bulwark, isTimeline: true);
+    public static IBaseAction Bulwark { get; } = new BaseAction(ActionID.Bulwark, true, isTimeline: true)
+    {
+        StatusProvide = Rampart.StatusProvide,
+    };
 
 
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], HallowedGround.Target)) return true;
+        if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 

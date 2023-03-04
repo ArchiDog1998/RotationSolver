@@ -212,7 +212,7 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //行尸走肉
-        if (LivingDead.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], LivingDead.Target)) return true;
+        if (LivingDead.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
 
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }

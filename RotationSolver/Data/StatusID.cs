@@ -249,9 +249,7 @@ internal enum StatusID : ushort
     /// <summary>
     /// 铁壁
     /// </summary>
-    Rampart1 = 71,
-    Rampart2 = 1191,
-    Rampart3 = 1978,
+    Rampart = 1191,
 
     /// <summary>
     /// 复仇
@@ -1119,4 +1117,6 @@ internal enum StatusID : ushort
     Aetherpact = 1223,
 
     ConfiteorReady = 3019,
+
+    Bulwark = 77,
 }
