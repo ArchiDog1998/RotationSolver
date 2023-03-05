@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.5.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.6...v1.5.0) (2023-03-05)
+
+
+### Features
+
+* Rewrite the `PLD` Default. ([b4af4da](https://github.com/ArchiDog1998/RotationSolver/commit/b4af4da7f480ed37e2f7dee092e3bfd41aa81985))
+
+
+### Bug Fixes
+
+* add bulwark status. ([fc4c49f](https://github.com/ArchiDog1998/RotationSolver/commit/fc4c49f3f5170587c680f542fa4f6e7075b1c30a))
+* changed the medicine type framework. ([67c8795](https://github.com/ArchiDog1998/RotationSolver/commit/67c8795681f4908ffe4709316597d749930feb43))
+* fix for moving target choice mistakes. ([8346317](https://github.com/ArchiDog1998/RotationSolver/commit/834631732de519cde66a6565b37500f26b3c437f))
+* fix the task stuff. ([2a613fe](https://github.com/ArchiDog1998/RotationSolver/commit/2a613fe3f8f77934ff8809751d70630236b49949))
+* fix with NoNewHostiles ([87ea46c](https://github.com/ArchiDog1998/RotationSolver/commit/87ea46cd0866c2bcdb0f5ccbafe99834944e4509))
+* PLD test the usage of holy. ([ea17382](https://github.com/ArchiDog1998/RotationSolver/commit/ea173825dbab4e6ca83416eb2681e3053f917f88))
+
 ## [1.4.6](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.5...v1.4.6) (2023-03-03)
 
 
