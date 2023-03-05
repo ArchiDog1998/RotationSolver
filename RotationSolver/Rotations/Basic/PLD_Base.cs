@@ -150,21 +150,6 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     public static IBaseAction Expiacion { get; } = new BaseAction(ActionID.Expiacion);
 
     /// <summary>
-    /// 英勇之剑
-    /// </summary>
-    public static IBaseAction BladeofValor { get; } = new BaseAction(ActionID.BladeofValor);
-
-    /// <summary>
-    /// 真理之剑
-    /// </summary>
-    public static IBaseAction BladeofTruth { get; } = new BaseAction(ActionID.BladeofTruth);
-
-    /// <summary>
-    /// 信念之剑
-    /// </summary>
-    public static IBaseAction BladeofFaith { get; } = new BaseAction(ActionID.BladeofFaith);
-
-    /// <summary>
     /// 安魂祈祷
     /// </summary>
     public static IBaseAction Requiescat { get; } = new BaseAction(ActionID.Requiescat, true);
@@ -172,10 +157,7 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 悔罪
     /// </summary>
-    public static IBaseAction Confiteor { get; } = new BaseAction(ActionID.Confiteor)
-    {
-        StatusNeed = new StatusID[] {StatusID.ConfiteorReady},
-    };
+    public static IBaseAction Confiteor { get; } = new BaseAction(ActionID.Confiteor);
 
     /// <summary>
     /// 圣环
