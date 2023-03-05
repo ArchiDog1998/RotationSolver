@@ -5,12 +5,16 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Basic;
 
 internal abstract class MNK_Base : CustomRotation.CustomRotation
 {
     private static MNKGauge JobGauge => Service.JobGauges.Get<MNKGauge>();
+
+    public override MedicineType MedicineType => MedicineType.Strength;
+
 
     /// <summary>
     /// 查克拉们
@@ -186,9 +190,9 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     public static IBaseAction RiddleofWind { get; } = new BaseAction(ActionID.RiddleofWind, true);
 
     [RotationDesc(ActionID.Thunderclap)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (Thunderclap.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Thunderclap.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 

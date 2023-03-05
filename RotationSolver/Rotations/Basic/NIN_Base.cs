@@ -4,6 +4,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Basic;
 
@@ -16,6 +17,8 @@ internal interface INinAction : IBaseAction
 internal abstract class NIN_Base : CustomRotation.CustomRotation
 {
     private static NINGauge JobGauge => Service.JobGauges.Get<NINGauge>();
+    public override MedicineType MedicineType => MedicineType.Dexterity;
+
 
     /// <summary>
     /// 在风buff中
@@ -308,9 +311,9 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
     public static INinAction HyoshoRanryu { get; } = new NinAction(ActionID.HyoshoRanryu, Ten, Jin);
 
     [RotationDesc(ActionID.Shukuchi)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (Shukuchi.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Shukuchi.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
 
         return false;
     }

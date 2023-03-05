@@ -4,12 +4,15 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 
 namespace RotationSolver.Rotations.Basic;
 
 internal abstract class SAM_Base : CustomRotation.CustomRotation
 {
     private static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
+    public override MedicineType MedicineType => MedicineType.Strength;
+
 
     /// <summary>
     /// я╘иа
@@ -283,9 +286,9 @@ internal abstract class SAM_Base : CustomRotation.CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HissatsuGyoten)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (HissatsuGyoten.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (HissatsuGyoten.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 

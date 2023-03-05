@@ -16,7 +16,7 @@ namespace RotationSolver.Windows;
 
 internal static class OverlayWindow
 {
-    internal static BattleChara EnemyLocationTarget;
+    internal static BattleChara EnemyLocationTarget { get; set; }
     internal static EnemyPositional ShouldPositional { get; set; } = EnemyPositional.None;
     public static void Draw()
     {

@@ -33,11 +33,7 @@ internal static class PreviewUpdater
     private static void UpdateEntry()
     {
         var showStr = RSCommands.EntryString;
-        if (Service.Configuration.UseWorkTask && Service.Configuration.ShowWorkTaskFPS)
-        {
-            showStr += " - " + MajorUpdater.FrameCount + "Hz";
-        }
-        if (Service.Configuration.ShowInfoOnDtr && showStr != null)
+        if (Service.Configuration.ShowInfoOnDtr && !string.IsNullOrEmpty(showStr))
         {
             try
             {

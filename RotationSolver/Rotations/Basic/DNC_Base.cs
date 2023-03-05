@@ -4,12 +4,15 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using System.Linq;
 
 namespace RotationSolver.Rotations.Basic;
 internal abstract class DNC_Base : CustomRotation.CustomRotation
 {
     private static DNCGauge JobGauge => Service.JobGauges.Get<DNCGauge>();
+
+    public override MedicineType MedicineType => MedicineType.Dexterity;
 
     /// <summary>
     /// ÕýÔÚÌøÎè
@@ -311,9 +314,9 @@ internal abstract class DNC_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.EnAvant)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (EnAvant.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (EnAvant.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 

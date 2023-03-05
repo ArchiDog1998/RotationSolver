@@ -3,6 +3,7 @@ using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.Rotations.Basic;
@@ -10,6 +11,9 @@ namespace RotationSolver.Rotations.Basic;
 internal abstract class SCH_Base : CustomRotation.CustomRotation
 {
     private static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
+
+    public override MedicineType MedicineType => MedicineType.Mind;
+
 
     /// <summary>
     /// 契约槽

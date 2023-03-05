@@ -3,6 +3,7 @@ using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.Rotations.Basic;
@@ -10,6 +11,9 @@ namespace RotationSolver.Rotations.Basic;
 internal abstract class SMN_Base : CustomRotation.CustomRotation
 {
     private static SMNGauge JobGauge => Service.JobGauges.Get<SMNGauge>();
+
+    public override MedicineType MedicineType => MedicineType.Strength;
+
 
     /// <summary>
     /// 有以太超流

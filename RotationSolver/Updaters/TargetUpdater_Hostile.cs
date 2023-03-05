@@ -24,6 +24,8 @@ internal static partial class TargetUpdater
     internal static ObjectListDelay<BattleChara> HostileTargets { get; } = new ObjectListDelay<BattleChara>(
         () => (Service.Configuration.HostileDelayMin, Service.Configuration.HostileDelayMax));
 
+    internal static IEnumerable<BattleChara> AllHostileTargets { get; private set; } = new BattleChara[0];
+
     internal static IEnumerable<BattleChara> TarOnMeTargets { get; private set; } = new BattleChara[0];
 
     internal static ObjectListDelay<BattleChara> CanInterruptTargets { get;} = new ObjectListDelay<BattleChara>(
@@ -75,7 +77,7 @@ internal static partial class TargetUpdater
 
     private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
     {
-        var allAttackableTargets = allTargets.Where(b =>
+        AllHostileTargets = allTargets.Where(b =>
         {
             if (!b.IsNPCEnemy()) return false;
 
@@ -94,7 +96,7 @@ internal static partial class TargetUpdater
             return true;
         });
 
-        HostileTargets.Delay(GetHostileTargets(allAttackableTargets));
+        HostileTargets.Delay(GetHostileTargets(AllHostileTargets));
 
         CanInterruptTargets.Delay(HostileTargets.Where(ObjectHelper.CanInterrupt));
 

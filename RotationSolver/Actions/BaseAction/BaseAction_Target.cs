@@ -34,6 +34,7 @@ internal partial class BaseAction
     public BattleChara Target { get; private set; } = Service.ClientState.LocalPlayer;
 
     private Vector3 _position = default;
+    private uint _targetId = Service.ClientState.LocalPlayer.ObjectId;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
     internal Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget
@@ -54,13 +55,13 @@ internal partial class BaseAction
     {
         return TargetUpdater.TarOnMeTargets.Any();
     }
-    internal static bool TankBreakOtherCheck(ClassJobID id, BattleChara chara)
+    internal static bool TankBreakOtherCheck(ClassJobID id)
     {
         var tankHealth = id.GetHealthForDyingTank();
 
         return TargetUpdater.HasHostilesInRange
             && Service.ClientState.LocalPlayer.GetHealthRatio() < tankHealth
-            && TargetUpdater.PartyMembersAverHP > tankHealth + 0.05f;
+            && TargetUpdater.PartyMembersAverHP > tankHealth + 0.01f;
     }
 
     private bool FindTarget(bool mustUse, out BattleChara target)
@@ -339,7 +340,9 @@ internal partial class BaseAction
 
             var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(TargetUpdater.HostileTargets, mustUse), _action.EffectRange);
             if (tars.Count() < aoeCount) return false;
-            if (Service.Configuration.NoNewHostiles && tars.Any(t => t.TargetObject == null)) return false;
+            
+            if (Service.Configuration.NoNewHostiles && TargetFilter.GetObjectInRadius(TargetUpdater.AllHostileTargets, _action.EffectRange)
+                .Any(t => t.TargetObject == null)) return false;
         }
         return true;
     }
@@ -388,13 +391,13 @@ internal partial class BaseAction
             }
             else if(CanGetTarget(target, t))
             {
-                if (Service.Configuration.NoNewHostiles 
-                    && t.TargetObject == null)
-                {
-                    return 0;
-                }
                 count++;
             }
+        }
+        if (Service.Configuration.NoNewHostiles)
+        {
+            if (TargetUpdater.AllHostileTargets.Where(t => t.TargetObject == null)
+                .Any(t => CanGetTarget(target, t))) return 0;
         }
         return count;
     }

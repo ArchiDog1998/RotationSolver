@@ -93,10 +93,9 @@ internal static class ActionUpdater
             BluSlots[i] = ActionManager.Instance()->GetActiveBlueMageActionInSlot(i);
         }
         UPdateMPTimer();
-        UpdateWeaponTime();
     }
 
-    private static unsafe void UpdateWeaponTime()
+    internal static unsafe void UpdateWeaponTime()
     {
         var player = Service.ClientState.LocalPlayer;
         if (player == null) return;
@@ -118,18 +117,16 @@ internal static class ActionUpdater
 
         //确认能力技的相关信息
         var interval = Service.Configuration.AbilitiesInterval;
-        var checkRemain = WeaponRemain + Service.Configuration.ActionAhead;
-        var checkElapsed = WeaponElapsed - Service.Configuration.ActionAhead;
-        if (checkRemain < interval || WeaponElapsed == 0)
+        if (WeaponRemain < interval || WeaponElapsed == 0)
         {
             AbilityRemain = 0;
-            if (checkRemain > 0)
+            if (WeaponRemain > 0)
             {
                 AbilityRemain = WeaponRemain + interval;
             }
             AbilityRemainCount = 0;
         }
-        else if (checkRemain < 2 * interval)
+        else if (WeaponRemain < 2 * interval)
         {
             AbilityRemain = WeaponRemain - interval;
             AbilityRemainCount = 1;
@@ -138,7 +135,7 @@ internal static class ActionUpdater
         {
             var abilityWhole = (int)(weapontotal / Service.Configuration.AbilitiesInterval - 1);
             AbilityRemain = interval - WeaponElapsed % interval;
-            AbilityRemainCount = (byte)(abilityWhole - (int)(checkElapsed / interval));
+            AbilityRemainCount = (byte)(abilityWhole - (int)(WeaponElapsed / interval));
         }
 
         if (weapontotal > 0) WeaponTotal = weapontotal;
@@ -206,8 +203,6 @@ internal static class ActionUpdater
         {
             if (WeaponRemain > Service.Configuration.AbilitiesInterval + Service.Configuration.ActionAhead) return;
             RSCommands.DoAnAction(false);
-
-            return;
         }
         else if ((WeaponElapsed - _lastCastingTotal) % Service.Configuration.AbilitiesInterval <= Service.Configuration.ActionAhead)
         {

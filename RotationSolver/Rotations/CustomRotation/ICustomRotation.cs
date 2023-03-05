@@ -16,7 +16,7 @@ internal interface ICustomRotation : ITexture
     string GameVersion { get; }
     string RotationName { get; }
     IRotationConfigSet Configs { get; }
-
+    MedicineType MedicineType { get; }
     BattleChara MoveTarget { get; }
 
     IBaseAction[] AllBaseActions { get; }

@@ -25,12 +25,12 @@ internal sealed class DRG_Default : DRG_Base
     }
 
     [RotationDesc(ActionID.SpineshatterDive, ActionID.DragonfireDive)]
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act)
+    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act, bool recordTarget = true)
     {
         if (abilityRemain > 1)
         {
-            if (SpineshatterDive.CanUse(out act, emptyOrSkipCombo: true)) return true;
-            if (DragonfireDive.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (SpineshatterDive.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+            if (DragonfireDive.CanUse(out act, mustUse: true, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         }
 
         act = null;

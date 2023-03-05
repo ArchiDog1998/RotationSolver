@@ -51,7 +51,7 @@ internal partial class BaseAction
         }
     }
 
-    public unsafe virtual bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0)
+    public unsafe virtual bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0, bool recordTarget = true)
     {
         act = this;
 
@@ -101,6 +101,7 @@ internal partial class BaseAction
         if (!skipDisable && RotationCheck != null && !RotationCheck(target)) return false;
 
         Target = target;
+        if(recordTarget) _targetId = target.ObjectId;
         return true;
     }
 
@@ -137,6 +138,6 @@ internal partial class BaseAction
         if (ShouldEndSpecial) RSCommands.ResetSpecial();
 
         return _action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.ClientState.LocalPlayer.ObjectId, &loc) :
-            ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, Target.ObjectId);
+            ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, _targetId);
     }
 }

@@ -4,6 +4,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Linq;
 
@@ -12,6 +13,9 @@ namespace RotationSolver.Rotations.Basic;
 internal abstract class RDM_Base : CustomRotation.CustomRotation
 {
     private static RDMGauge JobGauge => Service.JobGauges.Get<RDMGauge>();
+
+    public override MedicineType MedicineType => MedicineType.Intelligence;
+
 
     /// <summary>
     /// °×Ä§Ôª
@@ -227,9 +231,9 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.CorpsAcorps)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (CorpsAcorps.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (CorpsAcorps.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 

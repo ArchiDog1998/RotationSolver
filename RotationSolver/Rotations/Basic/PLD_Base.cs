@@ -4,6 +4,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Linq;
 
@@ -12,6 +13,8 @@ namespace RotationSolver.Rotations.Basic;
 internal abstract class PLD_Base : CustomRotation.CustomRotation
 {
     private static PLDGauge JobGauge => Service.JobGauges.Get<PLDGauge>();
+    public override MedicineType MedicineType => MedicineType.Strength;
+
 
     protected static bool HasDivineMight => !Player.WillStatusEndGCD(0, 0, true, StatusID.DivineMight);
 
@@ -27,6 +30,7 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     private sealed protected override IBaseAction Shield => IronWill;
 
     protected override bool CanHealSingleSpell => TargetUpdater.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
+    protected override bool CanHealAreaAbility => false;
 
     /// <summary>
     /// ∏÷Ã˙–≈ƒÓ
@@ -104,7 +108,7 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// <summary>
     /// …Ò •¡Ï”Ú
     /// </summary>
-    public static IBaseAction HallowedGround { get; } = new BaseAction(ActionID.HallowedGround, isTimeline: true);
+    public static IBaseAction HallowedGround { get; } = new BaseAction(ActionID.HallowedGround, true, isTimeline: true);
 
     /// <summary>
     ///  •π‚ƒª¡±
@@ -146,21 +150,6 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     public static IBaseAction Expiacion { get; } = new BaseAction(ActionID.Expiacion);
 
     /// <summary>
-    /// ”¢”¬÷ÆΩ£
-    /// </summary>
-    public static IBaseAction BladeofValor { get; } = new BaseAction(ActionID.BladeofValor);
-
-    /// <summary>
-    /// ’Ê¿Ì÷ÆΩ£
-    /// </summary>
-    public static IBaseAction BladeofTruth { get; } = new BaseAction(ActionID.BladeofTruth);
-
-    /// <summary>
-    /// –≈ƒÓ÷ÆΩ£
-    /// </summary>
-    public static IBaseAction BladeofFaith { get; } = new BaseAction(ActionID.BladeofFaith);
-
-    /// <summary>
     /// ∞≤ªÍ∆Ìµª
     /// </summary>
     public static IBaseAction Requiescat { get; } = new BaseAction(ActionID.Requiescat, true);
@@ -168,10 +157,7 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ª⁄◊Ô
     /// </summary>
-    public static IBaseAction Confiteor { get; } = new BaseAction(ActionID.Confiteor)
-    {
-        StatusNeed = new StatusID[] {StatusID.ConfiteorReady},
-    };
+    public static IBaseAction Confiteor { get; } = new BaseAction(ActionID.Confiteor);
 
     /// <summary>
     ///  •ª∑
@@ -200,24 +186,27 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// <summary>
     /// ∂‹’Û
     /// </summary>
-    public static IBaseAction Sheltron { get; } = new BaseAction(ActionID.Sheltron, isTimeline: true)
+    public static IBaseAction Sheltron { get; } = new BaseAction(ActionID.Sheltron, true, isTimeline: true)
     {
         ActionCheck = Cover.ActionCheck,
     };
 
-    public static IBaseAction Bulwark { get; } = new BaseAction(ActionID.Bulwark, isTimeline: true);
+    public static IBaseAction Bulwark { get; } = new BaseAction(ActionID.Bulwark, true, isTimeline: true)
+    {
+        StatusProvide = Rampart.StatusProvide,
+    };
 
 
     private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0], HallowedGround.Target)) return true;
+        if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
     [RotationDesc(ActionID.Intervene)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (Intervene.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Intervene.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 

@@ -178,7 +178,7 @@ internal abstract partial class CustomRotation
     public static bool CombatElapsedLess(float time)
     {
         if (!InCombat) return true;
-        return CooldownHelper.ElapsedAfter(time, (float)ActionUpdater.CombatTime.TotalSeconds);
+        return CooldownHelper.ElapsedAfter(time, (float)ActionUpdater.CombatTime.TotalSeconds + ActionUpdater.WeaponRemain);
     }
 
     public MethodInfo[] AllLast => GetType().GetStaticBoolMethodInfo(m =>

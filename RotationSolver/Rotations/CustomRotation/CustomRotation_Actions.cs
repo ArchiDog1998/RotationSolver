@@ -105,7 +105,7 @@ internal abstract partial class CustomRotation
         StatusProvide = new StatusID[]
         {
             StatusID.Superbolide, StatusID.HallowedGround,
-            StatusID.Rampart1, StatusID.Rampart2, StatusID.Rampart3,
+            StatusID.Rampart, StatusID.Bulwark,
             //原初的直觉和血气
             StatusID.RawIntuition, StatusID.Bloodwhetting,
             //复仇
@@ -251,7 +251,7 @@ internal abstract partial class CustomRotation
 
     private IEnumerable<IBaseItem> GetBaseItems(Type type)
     {
-        return GetIActions(type).OfType<IBaseItem>().Where(a => a is RoleItem role ? role.InRole(Job.GetJobRole()) : true).Reverse();
+        return GetIActions(type).OfType<IBaseItem>().Where(a => a is MedicineItem medicine ? medicine.InType(this) : true).Reverse();
     }
 
     private IEnumerable<IAction> GetIActions(Type type)
