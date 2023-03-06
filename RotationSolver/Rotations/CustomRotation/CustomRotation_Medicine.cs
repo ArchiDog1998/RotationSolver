@@ -32,8 +32,32 @@ internal abstract partial class CustomRotation
         MedicineType.Mind);
 
     public static IBaseItem EchoDrops { get; } = new BaseItem(4566);
+    
+    static bool UseStrength(out IAction act)
+    {
+        if (TinctureofStrength7.CanUse(out act)) return true;
+        if (TinctureofStrength6.CanUse(out act)) return true;
+        return false;
+    }
 
-
+    static bool UseDexterity(out IAction act)
+    {
+        if (TinctureofDexterity7.CanUse(out act)) return true;
+        if (TinctureofDexterity6.CanUse(out act)) return true;
+        return false;
+    }
+    static bool UseIntelligence(out IAction act)
+    {
+        if (TinctureofIntelligence7.CanUse(out act)) return true;
+        if (TinctureofIntelligence6.CanUse(out act)) return true;
+        return false;
+    }
+    static bool UseMind(out IAction act)
+    {
+        if (TinctureofMind7.CanUse(out act)) return true;
+        if (TinctureofMind6.CanUse(out act)) return true;
+        return false;
+    }
     protected bool UseBurstMedicine(out IAction act)
     {
         act = null;
@@ -41,29 +65,16 @@ internal abstract partial class CustomRotation
         if (!IsFullParty || !InCombat) return false;
         if (Service.ClientState.LocalPlayer?.Level < 90) return false;
 
-        var role = Job.GetJobRole();
-        switch (role)
+        switch (MedicineType)
         {
-            case JobRole.Tank:
-            case JobRole.Melee:
-                if (TinctureofStrength7.CanUse(out act)) return true;
-                if (TinctureofStrength6.CanUse(out act)) return true;
-                break;
-
-            case JobRole.RangedPhysical:
-                if (TinctureofDexterity7.CanUse(out act)) return true;
-                if (TinctureofDexterity6.CanUse(out act)) return true;
-                break;
-
-            case JobRole.RangedMagicial:
-                if (TinctureofIntelligence7.CanUse(out act)) return true;
-                if (TinctureofIntelligence6.CanUse(out act)) return true;
-                break;
-
-            case JobRole.Healer:
-                if (TinctureofMind7.CanUse(out act)) return true;
-                if (TinctureofMind6.CanUse(out act)) return true;
-                break;
+            case MedicineType.Strength:
+                return UseStrength(out act);
+            case MedicineType.Dexterity:
+                return UseDexterity(out act);
+            case MedicineType.Intelligence:
+                return UseIntelligence(out act);
+            case MedicineType.Mind:
+                return UseMind(out act);
         }
         return false;
     }
