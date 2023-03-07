@@ -52,4 +52,10 @@ internal static class IActionHelper
     {
         return actions.Select(a => isAdjust ? (ActionID)a.AdjustedID : (ActionID)a.ID).ToArray();
     }
+
+    internal static bool IsMeleeAction(this IAction act)
+    {
+        if (act is not IBaseAction baseAct) return false;
+        return baseAct.Range == 3;
+    }
 }

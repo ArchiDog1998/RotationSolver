@@ -225,11 +225,18 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_FlytextPositional,
             ref Service.Configuration.FlytextPositional);
 
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_PositionalFeedback,
+            ref Service.Configuration.PositionalFeedback,
+            LocalizationManager.RightLang.Configwindow_Param_PositionalFeedbackDesc);
+
         if (useOverlayWindow)
         {
-            DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_PositionalFeedback,
-                ref Service.Configuration.PositionalFeedback,
+            DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_DrawPositional,
+                ref Service.Configuration.DrawPositional,
                 LocalizationManager.RightLang.Configwindow_Param_PositionalFeedbackDesc);
+
+            DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_DrawMeleeRange,
+                ref Service.Configuration.DrawMeleeRange);
         }
     }
 

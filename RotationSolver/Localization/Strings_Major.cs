@@ -139,6 +139,8 @@ internal partial class Strings
     public string Configwindow_Param_FlytextPositional { get; set; } = "Hint positional anticipation by flytext";
     public string Configwindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
     public string Configwindow_Param_PositionalFeedback { get; set; } = "Positional error feedback";
+    public string Configwindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
+    public string Configwindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
     public string Configwindow_Param_ShowMoveTarget { get; set; } = "Show the pointing target of the move skill";
     public string Configwindow_Param_ShowTarget { get; set; } = "Show Target";
     public string Configwindow_Param_PositionalFeedbackDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";

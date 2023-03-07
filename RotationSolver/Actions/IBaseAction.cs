@@ -16,6 +16,8 @@ namespace RotationSolver.Actions
         /// </summary>
         float CastTime { get; }
 
+        float Range { get; }
+
         /// <summary>
         /// If combo id is on this list, this aciton will not used.
         /// </summary>

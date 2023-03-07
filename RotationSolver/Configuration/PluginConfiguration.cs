@@ -57,6 +57,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseAOEAction = true;
     public bool UseItem = false;
     public bool PositionalFeedback = true;
+    public bool DrawPositional = true;
+    public bool DrawMeleeRange = true;
     public bool ShowMoveTarget = true;
     public bool ShowHealthRatio = false;
     public bool ShowTarget = true;

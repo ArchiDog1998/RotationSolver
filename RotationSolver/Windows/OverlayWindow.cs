@@ -2,6 +2,7 @@
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiNET;
+using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -39,7 +40,8 @@ internal static class OverlayWindow
 
         ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
 
-        DrawPositional();
+        if (!DrawPositional())
+            DrawMeleeRange();
         DrawTarget();
         DrawMoveTarget();
         DrawHealthRatio();
@@ -133,17 +135,17 @@ internal static class OverlayWindow
     }
 
     const int COUNT = 20;
-    private static void DrawPositional()
+    private static bool DrawPositional()
     {
-        if (EnemyLocationTarget == null || !Service.Configuration.PositionalFeedback) return;
-        if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth)) return;
-        if (ShouldPositional is EnemyPositional.None or EnemyPositional.Front) return;
+        if (EnemyLocationTarget == null || !Service.Configuration.DrawPositional) return false;
+        if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth)) return false;
+        if (ShouldPositional is EnemyPositional.None or EnemyPositional.Front) return false;
 
-        float radius = EnemyLocationTarget.HitboxRadius + 3.5f;
+        float radius = EnemyLocationTarget.HitboxRadius + Service.ClientState.LocalPlayer.HitboxRadius + 3;
         float rotation = EnemyLocationTarget.Rotation;
 
         Vector3 pPosition = EnemyLocationTarget.Position;
-        if (!Service.GameGui.WorldToScreen(pPosition, out var scrPos)) return;
+        if (!Service.GameGui.WorldToScreen(pPosition, out var scrPos)) return false;
 
         List<Vector2> pts = new List<Vector2>(2 * COUNT + 2) { scrPos };
         switch (ShouldPositional)
@@ -157,22 +159,45 @@ internal static class OverlayWindow
                 SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
                 break;
             default:
-                return;
+                return false;
         }
         pts.Add(scrPos);
 
-        bool wrong = ShouldPositional != EnemyLocationTarget.FindEnemyPositional();
+        bool wrong = ShouldPositional != EnemyLocationTarget.FindEnemyPositional() || EnemyLocationTarget.DistanceToPlayer() > 3;
+        DrawRange(pts, wrong);
+        return true;
+    }
+
+    private static void DrawMeleeRange()
+    {
+        if (!Service.Configuration.DrawMeleeRange ||
+            !Service.ClientState.LocalPlayer.IsJobCategory(JobRole.Melee)) return;
+        if (ActionUpdater.NextAction is not IBaseAction act) return;
+        if (!act.IsMeleeAction()) return;
+
+        List<Vector2> pts = new List<Vector2>(4 * COUNT);
+
+        float radius = act.Target.HitboxRadius + Service.ClientState.LocalPlayer.HitboxRadius + 3;
+
+        SectorPlots(ref pts, act.Target.Position, radius, 0, 4 * COUNT, 2 * Math.PI);
+
+        DrawRange(pts, act.Target.DistanceToPlayer() > 3);
+    }
+
+    static void DrawRange(List<Vector2> pts, bool wrong)
+    {
         var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
 
         pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
-        ImGui.GetWindowDrawList().PathStroke(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 1f)), ImDrawFlags.None, 3);
-        pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
         ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 0.2f)));
+
+        pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
+        ImGui.GetWindowDrawList().PathStroke(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 1f)), ImDrawFlags.None, 3);
     }
 
-    private static void SectorPlots(ref List<Vector2> pts, Vector3 centre, float radius, double rotation, int segments)
+    private static void SectorPlots(ref List<Vector2> pts, Vector3 centre, float radius, double rotation, int segments, double round = Math.PI / 2)
     {
-        var step = Math.PI / 2 / segments;
+        var step = round / segments;
         for (int i = 0; i <= segments; i++)
         {
             Service.GameGui.WorldToScreen(ChangePoint(centre, radius, rotation + i * step), out var pt);

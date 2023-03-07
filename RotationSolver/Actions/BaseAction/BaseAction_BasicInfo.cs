@@ -14,7 +14,6 @@ internal partial class BaseAction : IBaseAction
     Action _action;
 
     private bool ShouldEndSpecial { get; set; }
-
     internal bool IsTimeline { get; } = false;
 
     /// <summary>

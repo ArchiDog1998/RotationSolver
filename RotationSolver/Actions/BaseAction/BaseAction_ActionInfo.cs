@@ -13,7 +13,7 @@ namespace RotationSolver.Actions.BaseAction;
 
 internal partial class BaseAction
 {
-    private float Range => ActionManager.GetActionRange(ID);
+    public float Range => ActionManager.GetActionRange(ID);
 
     public ActionID[] ComboIdsNot { private get; set; } = null;
 
