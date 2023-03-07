@@ -74,7 +74,7 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction Unmend { get; } = new BaseAction(ActionID.Unmend)
     {
-        FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+        FilterForHostiles = TargetFilter.TankRangeTarget,
     };
 
     /// <summary>

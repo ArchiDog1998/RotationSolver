@@ -66,7 +66,10 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 飞刀
     /// </summary>
-    public static IBaseAction ThrowingDagger { get; } = new BaseAction(ActionID.ThrowingDagger);
+    public static IBaseAction ThrowingDagger { get; } = new BaseAction(ActionID.ThrowingDagger)
+    {
+        FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
+    };
 
     /// <summary>
     /// 夺取

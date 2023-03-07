@@ -50,7 +50,7 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction Tomahawk { get; } = new BaseAction(ActionID.Tomahawk)
     {
-        FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+        FilterForHostiles = TargetFilter.TankRangeTarget,
     };
 
     /// <summary>

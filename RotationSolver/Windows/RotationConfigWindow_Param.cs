@@ -323,6 +323,10 @@ internal partial class RotationConfigWindow
             ref Service.Configuration.HealOutOfCombat);
 
         const float speed = 0.005f;
+
+        DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_MeleeRangeOffset,
+            ref Service.Configuration.MeleeRangeOffset, 5 * speed, max: 5);
+
         DrawFloatNumber(LocalizationManager.RightLang.Configwindow_Param_HealthDifference,
              ref Service.Configuration.HealthDifference,
              speed * 2, 0, 0.5f);

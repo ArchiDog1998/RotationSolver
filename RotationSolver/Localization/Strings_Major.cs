@@ -187,8 +187,12 @@ internal partial class Strings
     public string Configwindow_Param_HealingOfTimeSubtractArea { get; set; } = "Set the HP threshold reduce with hot effect(AOE)";
     public string Configwindow_Param_HealthSingleAbility { get; set; } = "Set the HP threshold for using single healing ability";
     public string Configwindow_Param_HealthSingleSpell { get; set; } = "Set the HP threshold for using single healing spell";
+
+
     public string Configwindow_Param_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
     public string Configwindow_Param_HealthForDyingTank { get; set; } = "Set the HP threshold for tank to use invincibility";
+
+    public string Configwindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string Configwindow_Param_Target { get; set; } = "Target";
     public string Configwindow_Param_RightNowTargetToHostileType { get; set; } = "Hostile target filtering condition";
     public string Configwindow_Param_TargetToHostileType1 { get; set; } = "All targets can attack";

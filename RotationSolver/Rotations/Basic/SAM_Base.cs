@@ -207,7 +207,10 @@ internal abstract class SAM_Base : CustomRotation.CustomRotation
     /// <summary>
     /// Ñà·É
     /// </summary>
-    public static IBaseAction Enpi { get; } = new BaseAction(ActionID.Enpi);
+    public static IBaseAction Enpi { get; } = new BaseAction(ActionID.Enpi)
+    {
+        FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
+    };
 
     /// <summary>
     /// Ã÷¾µÖ¹Ë®

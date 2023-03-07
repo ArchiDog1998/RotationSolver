@@ -68,7 +68,7 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction ShieldLob { get; } = new BaseAction(ActionID.ShieldLob)
     {
-        FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+        FilterForHostiles = TargetFilter.TankRangeTarget,
     };
 
     /// <summary>

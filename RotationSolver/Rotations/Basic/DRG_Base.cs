@@ -68,7 +68,10 @@ internal abstract class DRG_Base : CustomRotation.CustomRotation
     /// <summary>
     /// π·¥©º‚
     /// </summary>
-    public static IBaseAction PiercingTalon { get; } = new BaseAction(ActionID.PiercingTalon);
+    public static IBaseAction PiercingTalon { get; } = new BaseAction(ActionID.PiercingTalon)
+    {
+        FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
+    };
 
     /// <summary>
     /// À¿ÃÏ«π

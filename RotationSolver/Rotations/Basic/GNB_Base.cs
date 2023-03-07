@@ -73,7 +73,10 @@ internal abstract class GNB_Base : CustomRotation.CustomRotation
     /// <summary>
     /// …¡¿◊µØ
     /// </summary>
-    public static IBaseAction LightningShot { get; } = new BaseAction(ActionID.LightningShot);
+    public static IBaseAction LightningShot { get; } = new BaseAction(ActionID.LightningShot)
+    {
+        FilterForHostiles = TargetFilter.TankRangeTarget,
+    };
 
     /// <summary>
     /// Œ£œ’¡Ï”Ú
