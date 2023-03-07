@@ -17,8 +17,7 @@ namespace RotationSolver.Windows;
 
 internal static class OverlayWindow
 {
-    internal static BattleChara EnemyLocationTarget { get; set; }
-    internal static EnemyPositional ShouldPositional { get; set; } = EnemyPositional.None;
+    internal static IBaseAction MeleeAction { get; set; }
     public static void Draw()
     {
         if (Service.GameGui == null || Service.ClientState.LocalPlayer == null || !Service.Configuration.UseOverlayWindow) return;
@@ -40,8 +39,7 @@ internal static class OverlayWindow
 
         ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
 
-        if (!DrawPositional())
-            DrawMeleeRange();
+        DrawPositional();
         DrawTarget();
         DrawMoveTarget();
         DrawHealthRatio();
@@ -135,53 +133,48 @@ internal static class OverlayWindow
     }
 
     const int COUNT = 20;
-    private static bool DrawPositional()
+    private static void DrawPositional()
     {
-        if (EnemyLocationTarget == null || !Service.Configuration.DrawPositional) return false;
-        if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth)) return false;
-        if (ShouldPositional is EnemyPositional.None or EnemyPositional.Front) return false;
+        if (MeleeAction == null) return;
 
-        float radius = EnemyLocationTarget.HitboxRadius + Service.ClientState.LocalPlayer.HitboxRadius + 3;
-        float rotation = EnemyLocationTarget.Rotation;
+        Vector3 pPosition = MeleeAction.Target.Position;
+        Service.GameGui.WorldToScreen(pPosition, out var scrPos);
 
-        Vector3 pPosition = EnemyLocationTarget.Position;
-        if (!Service.GameGui.WorldToScreen(pPosition, out var scrPos)) return false;
-
-        List<Vector2> pts = new List<Vector2>(2 * COUNT + 2) { scrPos };
-        switch (ShouldPositional)
-        {
-            case EnemyPositional.Flank:
-                SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
-                pts.Add(scrPos);
-                SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
-                break;
-            case EnemyPositional.Rear:
-                SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
-                break;
-            default:
-                return false;
-        }
-        pts.Add(scrPos);
-
-        bool wrong = ShouldPositional != EnemyLocationTarget.FindEnemyPositional() || EnemyLocationTarget.DistanceToPlayer() > 3;
-        DrawRange(pts, wrong);
-        return true;
-    }
-
-    private static void DrawMeleeRange()
-    {
-        if (!Service.Configuration.DrawMeleeRange ||
-            !Service.ClientState.LocalPlayer.IsJobCategory(JobRole.Melee)) return;
-        if (ActionUpdater.NextAction is not IBaseAction act) return;
-        if (!act.IsMeleeAction()) return;
-
+        float radius = MeleeAction.Target.HitboxRadius + Service.ClientState.LocalPlayer.HitboxRadius + 3;
+        float rotation = MeleeAction.Target.Rotation;
+        bool wrong = MeleeAction.Target.DistanceToPlayer() > 3;
         List<Vector2> pts = new List<Vector2>(4 * COUNT);
 
-        float radius = act.Target.HitboxRadius + Service.ClientState.LocalPlayer.HitboxRadius + 3;
+        if(Service.Configuration.DrawPositional && !Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth))
+        {
+            var shouldPos = MeleeAction.EnermyPositonal;
 
-        SectorPlots(ref pts, act.Target.Position, radius, 0, 4 * COUNT, 2 * Math.PI);
+            switch (shouldPos)
+            {
+                case EnemyPositional.Flank:
+                    pts.Add(scrPos);
+                    SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
+                    pts.Add(scrPos);
+                    SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
+                    pts.Add(scrPos);
+                    break;
+                case EnemyPositional.Rear:
+                    pts.Add(scrPos);
+                    SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
+                    pts.Add(scrPos);
+                    break;
+            }
+            if (!wrong && pts.Count > 0)
+            {
+                wrong = shouldPos != MeleeAction.Target.FindEnemyPositional();
+            }
+        }
+        if(pts.Count == 0 && Service.Configuration.DrawMeleeRange)
+        {
+            SectorPlots(ref pts, pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
+        }
 
-        DrawRange(pts, act.Target.DistanceToPlayer() > 3);
+        if(pts.Count > 0) DrawRange(pts, wrong);
     }
 
     static void DrawRange(List<Vector2> pts, bool wrong)

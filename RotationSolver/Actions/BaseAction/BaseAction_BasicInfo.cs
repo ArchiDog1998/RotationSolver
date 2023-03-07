@@ -79,7 +79,7 @@ internal partial class BaseAction : IBaseAction
 
     public unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
 
-    internal virtual EnemyPositional EnermyPositonal
+    public virtual EnemyPositional EnermyPositonal
     {
         get
         {

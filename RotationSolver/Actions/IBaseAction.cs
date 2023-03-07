@@ -18,6 +18,8 @@ namespace RotationSolver.Actions
 
         float Range { get; }
 
+        EnemyPositional EnermyPositonal { get; }
+
         /// <summary>
         /// If combo id is on this list, this aciton will not used.
         /// </summary>
