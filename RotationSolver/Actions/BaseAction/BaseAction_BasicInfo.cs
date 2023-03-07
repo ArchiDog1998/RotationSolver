@@ -2,6 +2,7 @@
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using System;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Actions.BaseAction;
@@ -15,6 +16,8 @@ internal partial class BaseAction : IBaseAction
 
     private bool ShouldEndSpecial { get; set; }
     internal bool IsTimeline { get; } = false;
+
+    public Func<uint> GetDotGcdCount { private get; set; }
 
     /// <summary>
     /// EnoughLevel for using.

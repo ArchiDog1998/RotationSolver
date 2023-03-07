@@ -469,7 +469,8 @@ internal partial class BaseAction
 
         if (TargetStatus == null) return true;
 
-        return tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus);
+        return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Configuration.AddDotGCDCount, 
+            0, true, TargetStatus);
     }
 
     unsafe bool CanTargetTo(BattleChara tar)

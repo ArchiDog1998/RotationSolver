@@ -26,10 +26,8 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     /// </summary>
     protected static byte Chakra => JobGauge.Chakra;
 
-    /// <summary>
-    /// 阴阳必杀
-    /// </summary>
-    protected static Nadi Nadi => JobGauge.Nadi;
+    protected static bool HasSolar => (JobGauge.Nadi & Nadi.SOLAR) != 0;
+    protected static bool HasLunar => (JobGauge.Nadi & Nadi.LUNAR) != 0;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
 
@@ -77,6 +75,7 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     public static IBaseAction Demolish { get; } = new BaseAction(ActionID.Demolish, isEot: true)
     {
         TargetStatus = new StatusID[] { StatusID.Demolish },
+        GetDotGcdCount = () => 2,
     };
 
     /// <summary>
@@ -138,7 +137,6 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction PerfectBalance { get; } = new BaseAction(ActionID.PerfectBalance)
     {
-        StatusNeed = new StatusID[] { StatusID.RaptorForm },
         ActionCheck = b => InCombat,
     };
 
