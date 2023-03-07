@@ -8,6 +8,7 @@ using RotationSolver.Rotations.Basic;
 namespace RotationSolver.Rotations.Tank.PLD;
 
 [RotationDesc("The whole rotation's burst\nis base on:")]
+[LinkDesc("https://xiv.sleepyshiba.com/pld/img/63-60stentative2.png")]
 [RotationDesc(ActionID.FightorFlight)]
 internal class PLD_Default : PLD_Base
 {

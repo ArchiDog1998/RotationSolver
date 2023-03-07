@@ -1,18 +1,12 @@
 ﻿using Dalamud.Interface.Colors;
 using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Actions;
-using RotationSolver.Actions.BaseAction;
 using RotationSolver.Commands;
 using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Attributes;
 

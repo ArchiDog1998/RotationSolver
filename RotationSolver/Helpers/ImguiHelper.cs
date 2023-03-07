@@ -2,6 +2,7 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
+using RotationSolver.Attributes;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using System;
@@ -15,6 +16,25 @@ namespace RotationSolver.Helpers;
 
 internal static class ImGuiHelper
 {
+    const ImGuiWindowFlags TOOLTIP_FLAG =
+      ImGuiWindowFlags.Tooltip |
+      ImGuiWindowFlags.NoMove |
+      ImGuiWindowFlags.NoSavedSettings |
+      ImGuiWindowFlags.NoBringToFrontOnFocus |
+      ImGuiWindowFlags.NoDecoration |
+      ImGuiWindowFlags.NoInputs |
+      ImGuiWindowFlags.AlwaysAutoResize;
+
+    public static void DrawTooltip(Action act, string id)
+    {
+        if (act == null) return;
+        ImGui.SetWindowPos(id, ImGui.GetIO().MousePos);
+        if (ImGui.Begin(id, TOOLTIP_FLAG))
+        {
+            act();
+            ImGui.End();
+        }
+    }
     public static void DrawEnableTexture<T>(this T texture, bool isSelected, Action selected,
         Action<string> showToolTip = null, Action<Action<string>> additonalHeader = null, 
         Action otherThing = null) where T : class, ITexture
