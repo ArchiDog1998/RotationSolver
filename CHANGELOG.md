@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.5.1](https://github.com/ArchiDog1998/RotationSolver/compare/v1.5.0...v1.5.1) (2023-03-08)
+
+
+### Bug Fixes
+
+* add a Action Toggle to control action in macro. ([8360254](https://github.com/ArchiDog1998/RotationSolver/commit/83602542c5ae0dcfb5434fc2440496130dd6729c))
+* add a desc picutre. ([1eb3705](https://github.com/ArchiDog1998/RotationSolver/commit/1eb37050f3ce96970f63a71315a362fc0a2e6124))
+* add an offset option for melee or tank using range action. ([969d958](https://github.com/ArchiDog1998/RotationSolver/commit/969d9580f5d4d1c0dd178c74cdf502bc7682aea3))
+* add an option to draw melee range. ([ddafea6](https://github.com/ArchiDog1998/RotationSolver/commit/ddafea63419a766de1d47504263300ef592471f8))
+* changed the drawing of melee target. ([91c3c9e](https://github.com/ArchiDog1998/RotationSolver/commit/91c3c9e1e5b6eee0b93fd7a1599f01e10368dec7))
+* targe CutScene as between area ([0a0333c](https://github.com/ArchiDog1998/RotationSolver/commit/0a0333c2ec6bfda0820dbeacefd3d2d74ac9d9e2))
+* the type of medicine usage. ([04000cd](https://github.com/ArchiDog1998/RotationSolver/commit/04000cd62f40b8abac209ebed536218d8cb5fedd))
+* try to change the default mnk. ([2e1acf9](https://github.com/ArchiDog1998/RotationSolver/commit/2e1acf9a95a9043d1de6edd5d4f72308b4f09d93))
+
 ## [1.5.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.4.6...v1.5.0) (2023-03-05)
 
 
