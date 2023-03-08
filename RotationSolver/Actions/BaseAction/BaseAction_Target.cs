@@ -47,7 +47,7 @@ internal partial class BaseAction
         set => _choiceTarget = value;
     }
 
-    internal Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForTarget { private get; set; } = null;
+    internal Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { private get; set; } = null;
 
     public StatusID[] TargetStatus { get; set; } = null;
 
@@ -440,7 +440,7 @@ internal partial class BaseAction
 
     private IEnumerable<BattleChara> TargetFilterFuncEot(IEnumerable<BattleChara> tars, bool mustUse)
     {
-        if (FilterForTarget != null) return FilterForTarget(tars);
+        if (FilterForHostiles != null) return FilterForHostiles(tars);
         if (TargetStatus == null || !_isEot) return tars;
 
         var dontHave = tars.Where(CheckStatus);
@@ -469,7 +469,8 @@ internal partial class BaseAction
 
         if (TargetStatus == null) return true;
 
-        return tar.WillStatusEndGCD((uint)Service.Configuration.AddDotGCDCount, 0, true, TargetStatus);
+        return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Configuration.AddDotGCDCount, 
+            0, true, TargetStatus);
     }
 
     unsafe bool CanTargetTo(BattleChara tar)

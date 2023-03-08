@@ -2,7 +2,7 @@
 
 namespace RotationSolver.Configuration.RotationConfig
 {
-    internal interface IRotationConfigSet : IEnumerable<IRotationConfig>
+    public interface IRotationConfigSet : IEnumerable<IRotationConfig>
     {
         IRotationConfigSet SetFloat(string name, float value, string displayName, float min = 0, float max = 1, float speed = 0.002f);
 

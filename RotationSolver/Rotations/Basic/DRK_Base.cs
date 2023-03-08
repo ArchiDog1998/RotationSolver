@@ -74,7 +74,7 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction Unmend { get; } = new BaseAction(ActionID.Unmend)
     {
-        FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+        FilterForHostiles = TargetFilter.TankRangeTarget,
     };
 
     /// <summary>
@@ -213,7 +213,7 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
         StatusNeed = new[] { StatusID.SaltedEarth },
     };
 
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //行尸走肉
         if (LivingDead.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
@@ -222,7 +222,7 @@ internal abstract class DRK_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.Plunge)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         if (Plunge.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
 

@@ -207,7 +207,10 @@ internal abstract class SAM_Base : CustomRotation.CustomRotation
     /// <summary>
     /// Ñà·É
     /// </summary>
-    public static IBaseAction Enpi { get; } = new BaseAction(ActionID.Enpi);
+    public static IBaseAction Enpi { get; } = new BaseAction(ActionID.Enpi)
+    {
+        FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
+    };
 
     /// <summary>
     /// Ã÷¾µÖ¹Ë®
@@ -286,21 +289,21 @@ internal abstract class SAM_Base : CustomRotation.CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HissatsuGyoten)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         if (HissatsuGyoten.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Feint)]
-    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.ThirdEye)]
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (ThirdEye.CanUse(out act)) return true;
         return false;

@@ -139,6 +139,8 @@ internal partial class Strings
     public string Configwindow_Param_FlytextPositional { get; set; } = "Hint positional anticipation by flytext";
     public string Configwindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
     public string Configwindow_Param_PositionalFeedback { get; set; } = "Positional error feedback";
+    public string Configwindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
+    public string Configwindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
     public string Configwindow_Param_ShowMoveTarget { get; set; } = "Show the pointing target of the move skill";
     public string Configwindow_Param_ShowTarget { get; set; } = "Show Target";
     public string Configwindow_Param_PositionalFeedbackDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
@@ -185,8 +187,12 @@ internal partial class Strings
     public string Configwindow_Param_HealingOfTimeSubtractArea { get; set; } = "Set the HP threshold reduce with hot effect(AOE)";
     public string Configwindow_Param_HealthSingleAbility { get; set; } = "Set the HP threshold for using single healing ability";
     public string Configwindow_Param_HealthSingleSpell { get; set; } = "Set the HP threshold for using single healing spell";
+
+
     public string Configwindow_Param_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
     public string Configwindow_Param_HealthForDyingTank { get; set; } = "Set the HP threshold for tank to use invincibility";
+
+    public string Configwindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string Configwindow_Param_Target { get; set; } = "Target";
     public string Configwindow_Param_RightNowTargetToHostileType { get; set; } = "Hostile target filtering condition";
     public string Configwindow_Param_TargetToHostileType1 { get; set; } = "All targets can attack";

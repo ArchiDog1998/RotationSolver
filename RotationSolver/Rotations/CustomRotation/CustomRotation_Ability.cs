@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
-internal abstract partial class CustomRotation
+public abstract partial class CustomRotation
 {
     private bool Ability(byte abilitiesRemaining, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
@@ -247,7 +247,7 @@ internal abstract partial class CustomRotation
     }
 
 
-    private protected virtual bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected virtual bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         if (nextGCD is BaseAction action)
         {
@@ -268,45 +268,45 @@ internal abstract partial class CustomRotation
     }
 
     [RotationDesc(DescType.MoveForwardAbility)]
-    private protected virtual bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected virtual bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         act = null; return false;
     }
 
     [RotationDesc(DescType.MoveBackAbility)]
-    private protected virtual bool MoveBackAbility(byte abilitiesRemaining, out IAction act)
+    protected virtual bool MoveBackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
     [RotationDesc(DescType.HealSingleAbility)]
-    private protected virtual bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected virtual bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
     [RotationDesc(DescType.HealAreaAbility)]
-    private protected virtual bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected virtual bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
     [RotationDesc(DescType.DefenceSingleAbility)]
-    private protected virtual bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected virtual bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
     [RotationDesc(DescType.DefenceAreaAbility)]
-    private protected virtual bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected virtual bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected virtual bool GeneralAbility(byte abilitiesRemaining, out IAction act)
+    protected virtual bool GeneralAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null; return false;
     }
 
-    private protected abstract bool AttackAbility(byte abilitiesRemaining, out IAction act);
+    protected abstract bool AttackAbility(byte abilitiesRemaining, out IAction act);
 }

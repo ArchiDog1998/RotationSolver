@@ -12,7 +12,7 @@ using System.Reflection;
 namespace RotationSolver.Rotations.CustomRotation;
 
 [RotationDesc(DescType.BurstActions)]
-internal abstract partial class CustomRotation : ICustomRotation
+public abstract partial class CustomRotation : ICustomRotation
 {
     public abstract ClassJobID[] JobIDs { get; }
 
@@ -61,7 +61,7 @@ internal abstract partial class CustomRotation : ICustomRotation
         Configs = CreateConfiguration();
     }
 
-    private protected virtual IRotationConfigSet CreateConfiguration()
+    protected virtual IRotationConfigSet CreateConfiguration()
     {
         return new RotationConfigSet(JobIDs[0], RotationName);
     }
@@ -70,5 +70,5 @@ internal abstract partial class CustomRotation : ICustomRotation
     /// <summary>
     /// Update your customized field.
     /// </summary>
-    private protected virtual void UpdateInfo() { }
+    protected virtual void UpdateInfo() { }
 }

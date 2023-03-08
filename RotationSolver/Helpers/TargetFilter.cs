@@ -14,6 +14,8 @@ namespace RotationSolver.Helpers;
 internal static class TargetFilter
 {
     #region Find one target
+    internal static IEnumerable<BattleChara> MeleeRangeTargetFilter(IEnumerable<BattleChara> availableCharas)
+        => availableCharas.Where(t => t.DistanceToPlayer() >= 3 + Service.Configuration.MeleeRangeOffset);
     internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas, bool mustUse)
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
@@ -154,6 +156,9 @@ internal static class TargetFilter
 
         return attachedT.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
     }
+
+    internal static IEnumerable<BattleChara> TankRangeTarget(IEnumerable<BattleChara> inputCharas)
+        => ProvokeTarget(MeleeRangeTargetFilter(inputCharas));
 
     /// <summary>
     /// 挑衅目标
@@ -343,8 +348,6 @@ internal static class TargetFilter
     {
         return objects.Where(o => o.DistanceToPlayer() <= radius);
     }
-
-
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
     {

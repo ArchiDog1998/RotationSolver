@@ -4,7 +4,7 @@ using System;
 
 namespace RotationSolver.Actions
 {
-    internal interface IBaseAction : IAction
+    public interface IBaseAction : IAction
     {
         /// <summary>
         /// MP for casting.
@@ -15,6 +15,10 @@ namespace RotationSolver.Actions
         /// Casting time
         /// </summary>
         float CastTime { get; }
+
+        float Range { get; }
+
+        EnemyPositional EnermyPositonal { get; }
 
         /// <summary>
         /// If combo id is on this list, this aciton will not used.

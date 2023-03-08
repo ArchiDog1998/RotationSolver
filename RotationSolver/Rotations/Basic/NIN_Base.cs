@@ -66,7 +66,10 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
     /// <summary>
     /// 飞刀
     /// </summary>
-    public static IBaseAction ThrowingDagger { get; } = new BaseAction(ActionID.ThrowingDagger);
+    public static IBaseAction ThrowingDagger { get; } = new BaseAction(ActionID.ThrowingDagger)
+    {
+        FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
+    };
 
     /// <summary>
     /// 夺取
@@ -311,7 +314,7 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
     public static INinAction HyoshoRanryu { get; } = new NinAction(ActionID.HyoshoRanryu, Ten, Jin);
 
     [RotationDesc(ActionID.Shukuchi)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         if (Shukuchi.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
 
@@ -319,14 +322,14 @@ internal abstract class NIN_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.Feint)]
-    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.ShadeShift)]
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (ShadeShift.CanUse(out act)) return true;
 

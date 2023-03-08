@@ -54,11 +54,11 @@ internal sealed class DRK_Default : DRK_Base
         }
     }
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
         => base.CreateConfiguration()
             .SetBool("TheBlackestNight", true, "Keep 3000 MP");
 
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
         //Provoke when has Shield.
         if (HasTankStance && remainTime <= Service.Configuration.AbilitiesInterval && Provoke.CanUse(out var act)) return act;
@@ -69,7 +69,7 @@ internal sealed class DRK_Default : DRK_Base
     }
 
     [RotationDesc(ActionID.TheBlackestNight)]
-    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (TheBlackestNight.CanUse(out act)) return true;
 
@@ -77,7 +77,7 @@ internal sealed class DRK_Default : DRK_Base
     }
 
     [RotationDesc(ActionID.DarkMissionary, ActionID.Reprisal)]
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (DarkMissionary.CanUse(out act)) return true;
         if (Reprisal.CanUse(out act, mustUse: true)) return true;
@@ -86,7 +86,7 @@ internal sealed class DRK_Default : DRK_Base
     }
 
     [RotationDesc(ActionID.TheBlackestNight, ActionID.Oblation, ActionID.ShadowWall, ActionID.Rampart, ActionID.DarkMind, ActionID.Reprisal)]
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (TheBlackestNight.CanUse(out act)) return true;
 
@@ -112,7 +112,7 @@ internal sealed class DRK_Default : DRK_Base
         return false;
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //Use Blood
         if (UseBlood)
@@ -136,7 +136,7 @@ internal sealed class DRK_Default : DRK_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (CheckDrakSide)
         {

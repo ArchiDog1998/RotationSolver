@@ -211,7 +211,7 @@ internal abstract class BRD_Base : CustomRotation.CustomRotation
             StatusID.ShieldSamba),
     };
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //有某些非常危险的状态。
         if (RSCommands.SpecialType == SpecialCommandType.EsunaStanceNorth && TargetUpdater.WeakenPeople.Any() || TargetUpdater.DyingPeople.Any())
@@ -222,14 +222,14 @@ internal abstract class BRD_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.Troubadour)]
-    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Troubadour.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.NaturesMinne)]
-    private protected sealed override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (NaturesMinne.CanUse(out act)) return true;
         return false;

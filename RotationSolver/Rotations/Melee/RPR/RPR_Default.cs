@@ -16,7 +16,7 @@ internal sealed class RPR_Default : RPR_Base
 
     public override string RotationName => "Default";
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("EnshroudPooling", false, "Enshroud Pooling");
     }
@@ -34,7 +34,7 @@ internal sealed class RPR_Default : RPR_Base
     }
 
 
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
         //倒数收获月
         if (remainTime <= 30 && Soulsow.CanUse(out _)) return Soulsow;
@@ -44,7 +44,7 @@ internal sealed class RPR_Default : RPR_Base
         return base.CountDownAction(remainTime);
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //非战斗收获月
         if (Soulsow.CanUse(out act)) return true;
@@ -146,7 +146,7 @@ internal sealed class RPR_Default : RPR_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (InBurst)
         {

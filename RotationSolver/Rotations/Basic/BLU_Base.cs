@@ -760,14 +760,14 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
 
     #endregion
 
-    private protected override bool MoveForwardGCD(out IAction act)
+    protected override bool MoveForwardGCD(out IAction act)
     {
         if (Loom.CanUse(out act)) return true;
         return base.MoveForwardGCD(out act);
     }
 
 
-    private protected override bool EmergencyGCD(out IAction act)
+    protected override bool EmergencyGCD(out IAction act)
     {
         if (AethericMimicry.CanUse(out act)) return true;
         if (BlueId == BLUID.Healer)
@@ -797,21 +797,21 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
         return b.OnSlot;
     }).ToArray();
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetCombo("BlueId", 2, "Role", "Tank", "Healer", "DPS")
             .SetCombo("AttackType", 2, "Type", "Magic", "Physic", "Both");
     }
 
-    private protected override void UpdateInfo()
+    protected override void UpdateInfo()
     {
         BlueId = (BLUID)Configs.GetCombo("BlueId");
         AttackType = (BLUAttackType)Configs.GetCombo("AttackType");
         base.UpdateInfo();
     }
 
-    private protected override bool HealSingleGCD(out IAction act)
+    protected override bool HealSingleGCD(out IAction act)
     {
         if (BlueId == BLUID.Healer)
         {
@@ -821,7 +821,7 @@ internal abstract class BLU_Base : CustomRotation.CustomRotation
         return base.HealSingleGCD(out act);
     }
 
-    private protected override bool HealAreaGCD(out IAction act)
+    protected override bool HealAreaGCD(out IAction act)
     {
         if (BlueId == BLUID.Healer)
         {

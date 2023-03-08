@@ -2,6 +2,7 @@
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using System;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Actions.BaseAction;
@@ -14,8 +15,9 @@ internal partial class BaseAction : IBaseAction
     Action _action;
 
     private bool ShouldEndSpecial { get; set; }
-
     internal bool IsTimeline { get; } = false;
+
+    public Func<uint> GetDotGcdCount { private get; set; }
 
     /// <summary>
     /// EnoughLevel for using.
@@ -80,7 +82,7 @@ internal partial class BaseAction : IBaseAction
 
     public unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
 
-    internal virtual EnemyPositional EnermyPositonal
+    public virtual EnemyPositional EnermyPositonal
     {
         get
         {

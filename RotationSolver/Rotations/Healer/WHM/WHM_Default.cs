@@ -17,7 +17,7 @@ internal sealed class WHM_Default : WHM_Base
 
     public override string RotationName => "Default";
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("UseLilyWhenFull", true, "Auto use Lily when full")
                                             .SetBool("UsePreRegen", false, "Regen on Tank in 5 seconds.");
@@ -33,7 +33,7 @@ internal sealed class WHM_Default : WHM_Base
         }
     };
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //苦难之心
         if (AfflatusMisery.CanUse(out act, mustUse: true)) return true;
@@ -62,7 +62,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //加个神速咏唱
         if (PresenseOfMind.CanUse(out act)) return true;
@@ -73,7 +73,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //加个无中生有
         if (nextGCD is BaseAction action && action.MPNeed >= 1000 &&
@@ -89,7 +89,7 @@ internal sealed class WHM_Default : WHM_Base
     }
 
     [RotationDesc(ActionID.AfflatusSolace, ActionID.Regen, ActionID.Cure2, ActionID.Cure)]
-    private protected override bool HealSingleGCD(out IAction act)
+    protected override bool HealSingleGCD(out IAction act)
     {
         //安慰之心
         if (AfflatusSolace.CanUse(out act)) return true;
@@ -108,7 +108,7 @@ internal sealed class WHM_Default : WHM_Base
     }
 
     [RotationDesc(ActionID.Benediction, ActionID.Asylum, ActionID.DivineBenison, ActionID.Tetragrammaton)]
-    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Benediction.CanUse(out act) && 
             Benediction.Target.GetHealthRatio() < 0.3) return true;
@@ -125,7 +125,7 @@ internal sealed class WHM_Default : WHM_Base
     }
 
     [RotationDesc(ActionID.AfflatusRapture, ActionID.Medica2, ActionID.Cure3, ActionID.Medica)]
-    private protected override bool HealAreaGCD(out IAction act)
+    protected override bool HealAreaGCD(out IAction act)
     {
         //狂喜之心
         if (AfflatusRapture.CanUse(out act)) return true;
@@ -146,14 +146,14 @@ internal sealed class WHM_Default : WHM_Base
     }
 
     [RotationDesc(ActionID.Asylum)]
-    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Asylum.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.DivineBenison, ActionID.Aquaveil)]
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //神祝祷
         if (DivineBenison.CanUse(out act)) return true;
@@ -164,7 +164,7 @@ internal sealed class WHM_Default : WHM_Base
     }
 
     [RotationDesc(ActionID.Temperance, ActionID.LiturgyoftheBell)]
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //节制
         if (Temperance.CanUse(out act)) return true;
@@ -174,7 +174,7 @@ internal sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
         if(remainTime < Stone.CastTime + Service.Configuration.CountDownAhead
             && Stone.CanUse(out var act)) return act;

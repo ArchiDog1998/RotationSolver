@@ -22,7 +22,7 @@ using RotationSolver.SigReplacers;
 
 namespace RotationSolver;
 
-internal class Service
+public class Service
 {
     internal static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager* CharacterManager
         => FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager.Instance();
@@ -31,44 +31,44 @@ internal class Service
         => Control.Instance()->LocalPlayer;
     internal static LocalizationManager Localization { get; set; }
 
-    internal static PluginConfiguration Configuration { get; set; }
+    public static PluginConfiguration Configuration { get; set; }
 
     internal static IconReplacer IconReplacer { get; set; }
 
     internal static PluginAddressResolver Address { get; set; }
 
     [PluginService]
-    internal static DalamudPluginInterface Interface { get; private set; }
+    public static DalamudPluginInterface Interface { get; private set; }
 
     [PluginService]
-    internal static ChatGui ChatGui { get; private set; }
+    public static ChatGui ChatGui { get; private set; }
 
     [PluginService]
     public static GameGui GameGui { get; private set; }
 
     [PluginService]
-    internal static ClientState ClientState { get; private set; }
+    public static ClientState ClientState { get; private set; }
 
     [PluginService]
-    internal static CommandManager CommandManager { get; private set; }
+    public static CommandManager CommandManager { get; private set; }
 
     [PluginService]
-    internal static Condition Conditions { get; private set; }
+    public static Condition Conditions { get; private set; }
 
     [PluginService]
-    internal static DataManager DataManager { get; private set; }
+    public static DataManager DataManager { get; private set; }
 
     [PluginService]
-    internal static JobGauges JobGauges { get; private set; }
+    public static JobGauges JobGauges { get; private set; }
 
     [PluginService]
-    internal static ObjectTable ObjectTable { get; private set; }
+    public static ObjectTable ObjectTable { get; private set; }
 
     [PluginService]
-    internal static TargetManager TargetManager { get; private set; }
+    public static TargetManager TargetManager { get; private set; }
 
     [PluginService]
-    internal static PartyList PartyList { get; private set; }
+    public static PartyList PartyList { get; private set; }
 
     [PluginService]
     public static DtrBar DtrBar { get; private set; }

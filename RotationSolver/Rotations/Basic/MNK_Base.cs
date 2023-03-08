@@ -26,10 +26,8 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     /// </summary>
     protected static byte Chakra => JobGauge.Chakra;
 
-    /// <summary>
-    /// 阴阳必杀
-    /// </summary>
-    protected static Nadi Nadi => JobGauge.Nadi;
+    protected static bool HasSolar => (JobGauge.Nadi & Nadi.SOLAR) != 0;
+    protected static bool HasLunar => (JobGauge.Nadi & Nadi.LUNAR) != 0;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
 
@@ -77,6 +75,7 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     public static IBaseAction Demolish { get; } = new BaseAction(ActionID.Demolish, isEot: true)
     {
         TargetStatus = new StatusID[] { StatusID.Demolish },
+        GetDotGcdCount = () => 2,
     };
 
     /// <summary>
@@ -138,7 +137,6 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction PerfectBalance { get; } = new BaseAction(ActionID.PerfectBalance)
     {
-        StatusNeed = new StatusID[] { StatusID.RaptorForm },
         ActionCheck = b => InCombat,
     };
 
@@ -190,28 +188,28 @@ internal abstract class MNK_Base : CustomRotation.CustomRotation
     public static IBaseAction RiddleofWind { get; } = new BaseAction(ActionID.RiddleofWind, true);
 
     [RotationDesc(ActionID.Thunderclap)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         if (Thunderclap.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Feint)]
-    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Mantra)]
-    private protected sealed override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Mantra.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.RiddleofEarth)]
-    private protected sealed override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (RiddleofEarth.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;

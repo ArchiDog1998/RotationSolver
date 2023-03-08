@@ -62,14 +62,14 @@ namespace RotationSolver.Commands
         internal static void UpdateRotationState()
         {
             if (Service.ClientState.LocalPlayer.CurrentHp == 0
-                || Service.Conditions[ConditionFlag.LoggingOut]
-                || Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent])
+                || Service.Conditions[ConditionFlag.LoggingOut])
             {
                 CancelState();
             }
             else if (Service.Configuration.AutoOffBetweenArea && (
                 Service.Conditions[ConditionFlag.BetweenAreas]
-                || Service.Conditions[ConditionFlag.BetweenAreas51]))
+                || Service.Conditions[ConditionFlag.BetweenAreas51])
+                || Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent])
             {
                 CancelState();
             }

@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver.Data;
 
-internal enum StatusID : ushort
+public enum StatusID : ushort
 {
     /// <summary>
     /// 空值

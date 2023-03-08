@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace RotationSolver.Helpers;
 
-internal static class StatusHelper
+public static class StatusHelper
 {
     public static StatusID[] AreaHots { get; } = new StatusID[]
     {
@@ -43,7 +43,7 @@ internal static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    internal static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool isFromSelf = true, params StatusID[] statusIDs)
+    public static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool isFromSelf = true, params StatusID[] statusIDs)
     {
         var remain = obj.StatusTime(isFromSelf, statusIDs);
         return CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount);
@@ -96,7 +96,7 @@ internal static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    internal static bool HasStatus(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    public static bool HasStatus(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         return obj.GetStatus(isFromSelf, statusIDs).Any();
     }

@@ -12,18 +12,35 @@ using System.Linq;
 namespace RotationSolver.Rotations.Melee.MNK;
 
 [DefaultRotation]
+[RotationDesc(ActionID.RiddleofFire)]
 internal sealed class MNK_Default : MNK_Base
 {
-    public override string GameVersion => "6.0";
+    public override string GameVersion => "6.31";
 
-    public override string RotationName => "Default";
+    public override string RotationName => "LunarSolarOpener";
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("AutoFormShift", true, "Auto use FormShift");
     }
 
-    private bool OpoOpoForm(out IAction act)
+    protected override IAction CountDownAction(float remainTime)
+    {
+        if (remainTime < 0.2)
+        {
+            if (Thunderclap.CanUse(out var act, true, true)) return act;
+            if (Thunderclap.CanUse(out act, false, true)) return act;
+        }
+        if (remainTime < 15)
+        {
+            if (Chakra < 5 && Meditation.CanUse(out var act)) return act;
+            if (FormShift.CanUse(out act)) return act;
+        }
+
+        return base.CountDownAction(remainTime);
+    }
+
+    private static bool OpoOpoForm(out IAction act)
     {
         if (ArmoftheDestroyer.CanUse(out act)) return true;
         if (DragonKick.CanUse(out act)) return true;
@@ -32,17 +49,15 @@ internal sealed class MNK_Default : MNK_Base
     }
 
 
-    private bool RaptorForm(out IAction act)
+    private static bool RaptorForm(out IAction act)
     {
         if (FourpointFury.CanUse(out act)) return true;
-
         if (Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist) && TwinSnakes.CanUse(out act)) return true;
-
         if (TrueStrike.CanUse(out act)) return true;
         return false;
     }
 
-    private bool CoerlForm(out IAction act)
+    private static bool CoerlForm(out IAction act)
     {
         if (Rockbreaker.CanUse(out act)) return true;
         if (Demolish.CanUse(out act)) return true;
@@ -50,59 +65,9 @@ internal sealed class MNK_Default : MNK_Base
         return false;
     }
 
-    private bool LunarNadi(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
-        if (OpoOpoForm(out act)) return true;
-        return false;
-    }
-
-    private bool SolarNadi(out IAction act)
-    {
-        if (!BeastChakras.Contains(BeastChakra.RAPTOR))
-        {
-            if (RaptorForm(out act)) return true;
-        }
-        else if (!BeastChakras.Contains(BeastChakra.OPOOPO))
-        {
-            if (OpoOpoForm(out act)) return true;
-        }
-        else
-        {
-            if (CoerlForm(out act)) return true;
-        }
-
-        return false;
-    }
-
-    private protected override bool GeneralGCD(out IAction act)
-    {
-        bool havesolar = (Nadi & Nadi.SOLAR) != 0;
-        bool havelunar = (Nadi & Nadi.LUNAR) != 0;
-
-        //满了的话，放三个大招
-        if (!BeastChakras.Contains(BeastChakra.NONE))
-        {
-            if (havesolar && havelunar)
-            {
-                if (PhantomRush.CanUse(out act, mustUse: true)) return true;
-                if (TornadoKick.CanUse(out act, mustUse: true)) return true;
-            }
-            if (BeastChakras.Contains(BeastChakra.RAPTOR))
-            {
-                if (RisingPhoenix.CanUse(out act, mustUse: true)) return true;
-                if (FlintStrike.CanUse(out act, mustUse: true)) return true;
-            }
-            else
-            {
-                if (ElixirField.CanUse(out act, mustUse: true)) return true;
-            }
-        }
-        //有震脚就阴阳
-        else if (Player.HasStatus(true, StatusID.PerfectBalance))
-        {
-            if (havesolar && LunarNadi(out act)) return true;
-            if (SolarNadi(out act)) return true;
-        }
+        if(PerfectBalanceActions(out act)) return true;
 
         if (Player.HasStatus(true, StatusID.CoerlForm))
         {
@@ -121,35 +86,103 @@ internal sealed class MNK_Default : MNK_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    static bool PerfectBalanceActions(out IAction act)
     {
-        if (InBurst)
+        if (!BeastChakras.Contains(BeastChakra.NONE))
         {
-            if (RiddleofFire.CanUse(out act)) return true;
-            if (Brotherhood.CanUse(out act)) return true;
-        }
-
-        //震脚
-        if (BeastChakras.Contains(BeastChakra.NONE))
-        {
-            //有阳斗气
-            if ((Nadi & Nadi.SOLAR) != 0)
+            if (HasSolar && HasLunar)
             {
-                //两种Buff都在6s以上
-                var dis = Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist);
-
-                Demolish.CanUse(out _);
-                var demo = Demolish.Target.WillStatusEndGCD(3, 0, true, StatusID.Demolish);
-
-                if (!dis && (!demo || !PerfectBalance.IsCoolingDown))
-                {
-                    if (PerfectBalance.CanUse(out act, emptyOrSkipCombo: true)) return true;
-                }
+                if (PhantomRush.CanUse(out act, mustUse: true)) return true;
+                if (TornadoKick.CanUse(out act, mustUse: true)) return true;
+            }
+            if (BeastChakras.Contains(BeastChakra.RAPTOR))
+            {
+                if (RisingPhoenix.CanUse(out act, mustUse: true)) return true;
+                if (FlintStrike.CanUse(out act, mustUse: true)) return true;
             }
             else
             {
-                if (PerfectBalance.CanUse(out act, emptyOrSkipCombo: true)) return true;
+                if (ElixirField.CanUse(out act, mustUse: true)) return true;
             }
+        }
+        else if (Player.HasStatus(true, StatusID.PerfectBalance) && Level >= 60)
+        {
+            //Some time, no choice
+            if (HasSolar)
+            {
+                if (LunarNadi(out act)) return true;
+            }
+            else if(BeastChakras.Contains(BeastChakra.COEURL) || BeastChakras.Contains(BeastChakra.RAPTOR))
+            {
+                if (SolarNadi(out act)) return true;
+            }
+
+            //Add status when solar.
+            if (Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist)
+                || Target.WillStatusEndGCD(3, 0, true, StatusID.Demolish))
+            {
+                if (SolarNadi(out act)) return true;
+            }
+            if (LunarNadi(out act)) return true;
+        }
+
+        act = null;
+        return false;
+    }
+
+    static bool LunarNadi(out IAction act)
+    {
+        if (OpoOpoForm(out act)) return true;
+        return false;
+    }
+
+    static bool SolarNadi(out IAction act)
+    {
+        //Emergency usage of status.
+        if (!BeastChakras.Contains(BeastChakra.RAPTOR)
+            && Player.WillStatusEndGCD(1, 0, true, StatusID.DisciplinedFist))
+        {
+            if (RaptorForm(out act)) return true;
+        }
+        if (!BeastChakras.Contains(BeastChakra.COEURL)
+            && Target.WillStatusEndGCD(1, 0, true, StatusID.Demolish))
+        {
+            if (CoerlForm(out act)) return true;
+        }
+
+        if (!BeastChakras.Contains(BeastChakra.RAPTOR))
+        {
+            if (RaptorForm(out act)) return true;
+        }
+        if (!BeastChakras.Contains(BeastChakra.OPOOPO))
+        {
+            if (OpoOpoForm(out act)) return true;
+        }
+        if (!BeastChakras.Contains(BeastChakra.COEURL))
+        {
+            if (CoerlForm(out act)) return true;
+        }
+
+        return CoerlForm(out act);
+    }
+
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    {
+        act = null;
+        if (abilitiesRemaining == 1 && InCombat)
+        {
+            if (UseBurstMedicine(out act)) return true;
+            if (InBurst && !CombatElapsedLess(5) && RiddleofFire.CanUse(out act)) return true;
+        }
+
+        if (CombatElapsedLess(8)) return false;
+
+        if (Brotherhood.CanUse(out act)) return true;
+
+        if (BeastChakras.Contains(BeastChakra.NONE) && Player.HasStatus(true, StatusID.RaptorForm)
+            && (!RiddleofFire.EnoughLevel || Player.HasStatus(false, StatusID.RiddleofFire)))
+        {
+            if (PerfectBalance.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         if (RiddleofWind.CanUse(out act)) return true;

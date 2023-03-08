@@ -57,6 +57,9 @@ internal class SocialUpdater
     static async void DutyState_DutyCompleted(object sender, ushort e)
     {
         RSCommands.CancelState();
+
+        if (TargetUpdater.PartyMembers.Count() < 2) return;
+
         await Task.Delay(new Random().Next(4000, 6000));
 
         Service.Configuration.DutyEnd.AddMacro();
@@ -80,7 +83,7 @@ internal class SocialUpdater
 
     internal static async void UpdateSocial()
     {
-        if (ActionUpdater.InCombat) return;
+        if (ActionUpdater.InCombat || TargetUpdater.PartyMembers.Count() < 2) return;
         if (CanSaying && CanSocial)
         {
             CanSaying = false;

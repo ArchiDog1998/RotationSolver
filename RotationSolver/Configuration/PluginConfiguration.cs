@@ -57,6 +57,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseAOEAction = true;
     public bool UseItem = false;
     public bool PositionalFeedback = true;
+    public bool DrawPositional = true;
+    public bool DrawMeleeRange = true;
     public bool ShowMoveTarget = true;
     public bool ShowHealthRatio = false;
     public bool ShowTarget = true;
@@ -77,6 +79,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseHealWhenNotAHealer = true;
     public float ObjectMinRadius = 0f;
     public float HealthDifference = 0.25f;
+    public float MeleeRangeOffset = 1;
     public bool TargetFriendly = false;
 
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<ClassJobID, float>();

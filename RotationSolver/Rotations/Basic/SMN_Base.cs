@@ -301,21 +301,21 @@ internal abstract class SMN_Base : CustomRotation.CustomRotation
     public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, true);
 
     [RotationDesc(ActionID.RadiantAegis)]
-    private protected sealed override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (RadiantAegis.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Physick)]
-    private protected override bool HealSingleGCD(out IAction act)
+    protected override bool HealSingleGCD(out IAction act)
     {
         if (Physick.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Addle)]
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Addle.CanUse(out act)) return true;
         return false;

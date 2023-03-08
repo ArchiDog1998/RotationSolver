@@ -2,6 +2,7 @@
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiNET;
+using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -16,8 +17,7 @@ namespace RotationSolver.Windows;
 
 internal static class OverlayWindow
 {
-    internal static BattleChara EnemyLocationTarget { get; set; }
-    internal static EnemyPositional ShouldPositional { get; set; } = EnemyPositional.None;
+    internal static IBaseAction MeleeAction { get; set; }
     public static void Draw()
     {
         if (Service.GameGui == null || Service.ClientState.LocalPlayer == null || !Service.Configuration.UseOverlayWindow) return;
@@ -135,44 +135,62 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        if (EnemyLocationTarget == null || !Service.Configuration.PositionalFeedback) return;
-        if (Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth)) return;
-        if (ShouldPositional is EnemyPositional.None or EnemyPositional.Front) return;
+        if (MeleeAction == null) return;
 
-        float radius = EnemyLocationTarget.HitboxRadius + 3.5f;
-        float rotation = EnemyLocationTarget.Rotation;
+        Vector3 pPosition = MeleeAction.Target.Position;
+        Service.GameGui.WorldToScreen(pPosition, out var scrPos);
 
-        Vector3 pPosition = EnemyLocationTarget.Position;
-        if (!Service.GameGui.WorldToScreen(pPosition, out var scrPos)) return;
+        float radius = MeleeAction.Target.HitboxRadius + Service.ClientState.LocalPlayer.HitboxRadius + 3;
+        float rotation = MeleeAction.Target.Rotation;
+        bool wrong = MeleeAction.Target.DistanceToPlayer() > 3;
+        List<Vector2> pts = new List<Vector2>(4 * COUNT);
 
-        List<Vector2> pts = new List<Vector2>(2 * COUNT + 2) { scrPos };
-        switch (ShouldPositional)
+        if(Service.Configuration.DrawPositional && !Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth))
         {
-            case EnemyPositional.Flank:
-                SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
-                pts.Add(scrPos);
-                SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
-                break;
-            case EnemyPositional.Rear:
-                SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
-                break;
-            default:
-                return;
-        }
-        pts.Add(scrPos);
+            var shouldPos = MeleeAction.EnermyPositonal;
 
-        bool wrong = ShouldPositional != EnemyLocationTarget.FindEnemyPositional();
+            switch (shouldPos)
+            {
+                case EnemyPositional.Flank:
+                    pts.Add(scrPos);
+                    SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
+                    pts.Add(scrPos);
+                    SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
+                    pts.Add(scrPos);
+                    break;
+                case EnemyPositional.Rear:
+                    pts.Add(scrPos);
+                    SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
+                    pts.Add(scrPos);
+                    break;
+            }
+            if (!wrong && pts.Count > 0)
+            {
+                wrong = shouldPos != MeleeAction.Target.FindEnemyPositional();
+            }
+        }
+        if(pts.Count == 0 && Service.Configuration.DrawMeleeRange)
+        {
+            SectorPlots(ref pts, pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
+        }
+
+        if(pts.Count > 0) DrawRange(pts, wrong);
+    }
+
+    static void DrawRange(List<Vector2> pts, bool wrong)
+    {
         var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
 
         pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
-        ImGui.GetWindowDrawList().PathStroke(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 1f)), ImDrawFlags.None, 3);
+        ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 0.15f)));
+
         pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
-        ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 0.2f)));
+        ImGui.GetWindowDrawList().PathStroke(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 1f)), ImDrawFlags.None, 2);
     }
 
-    private static void SectorPlots(ref List<Vector2> pts, Vector3 centre, float radius, double rotation, int segments)
+    private static void SectorPlots(ref List<Vector2> pts, Vector3 centre, float radius, double rotation, int segments, double round = Math.PI / 2)
     {
-        var step = Math.PI / 2 / segments;
+        var step = round / segments;
         for (int i = 0; i <= segments; i++)
         {
             Service.GameGui.WorldToScreen(ChangePoint(centre, radius, rotation + i * step), out var pt);

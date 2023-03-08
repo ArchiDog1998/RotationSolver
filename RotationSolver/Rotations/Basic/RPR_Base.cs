@@ -44,7 +44,7 @@ internal abstract class RPR_Base : CustomRotation.CustomRotation
 
     public class PRPAction : BaseAction
     {
-        internal override EnemyPositional EnermyPositonal => Player.HasStatus(true, StatusID.Enshrouded)
+        public override EnemyPositional EnermyPositonal => Player.HasStatus(true, StatusID.Enshrouded)
             ? EnemyPositional.None : base.EnermyPositonal;
         internal PRPAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false)
             : base(actionID, isFriendly, shouldEndSpecial)
@@ -266,7 +266,8 @@ internal abstract class RPR_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBaseAction Harpe { get; } = new BaseAction(ActionID.Harpe)
     {
-        ActionCheck = b => !SoulReaver
+        ActionCheck = b => !SoulReaver,
+        FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
     };
 
     /// <summary>
@@ -311,7 +312,7 @@ internal abstract class RPR_Base : CustomRotation.CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HellsIngress)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         //E上去
         if (HellsIngress.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
@@ -319,7 +320,7 @@ internal abstract class RPR_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.Feint)]
-    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (!SoulReaver && !Enshrouded)
         {
@@ -331,7 +332,7 @@ internal abstract class RPR_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.ArcaneCrest)]
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (!SoulReaver && !Enshrouded)
         {

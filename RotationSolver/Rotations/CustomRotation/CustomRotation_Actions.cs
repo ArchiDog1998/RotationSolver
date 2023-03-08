@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
-internal abstract partial class CustomRotation
+public abstract partial class CustomRotation
 {
     internal class RoleAction : BaseAction
     {
@@ -127,7 +127,7 @@ internal abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, new JobRole[] { JobRole.Tank }, isTimeline: true)
     {
-        FilterForTarget = b => TargetFilter.ProvokeTarget(b),
+        FilterForHostiles = b => TargetFilter.ProvokeTarget(b),
     };
 
     /// <summary>

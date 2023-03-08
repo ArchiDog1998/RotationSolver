@@ -22,7 +22,7 @@ internal sealed class MCH_Default : MCH_Base
     /// </summary>
     private static bool isDyingNotBoss => !Target.IsBoss() && IsTargetDying && TargetUpdater.PartyMembers.Count() is > 1 and <= 4;
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("MCH_Opener", true, "Basic Opener")
@@ -31,7 +31,7 @@ internal sealed class MCH_Default : MCH_Base
             .SetBool("DelayHypercharge", false, "Use Hypercharge late");
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //不在战斗中时重置起手
         if (!InCombat)
@@ -73,13 +73,13 @@ internal sealed class MCH_Default : MCH_Base
         return false;
     }
 
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
         //提前5秒整备
         if (remainTime <= 5 && Reassemble.CanUse(out _, emptyOrSkipCombo: true)) return Reassemble;
         return base.CountDownAction(remainTime);
     }
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //等级小于钻头时,绑定狙击弹
         if (!Drill.EnoughLevel && nextGCD.IsTheSameTo(true, CleanShot))
@@ -110,7 +110,7 @@ internal sealed class MCH_Default : MCH_Base
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //野火
         if (InBurst && CanUseWildfire(out act)) return true;

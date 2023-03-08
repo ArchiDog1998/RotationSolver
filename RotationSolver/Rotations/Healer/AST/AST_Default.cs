@@ -19,18 +19,18 @@ internal sealed class AST_Default : AST_Base
 
     public override string RotationName => "Default";
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
         => base.CreateConfiguration()
             .SetFloat("UseEarthlyStarTime", 15, "Use the Earthly Star in Count down time", 4, 20);
 
-    private static IBaseAction AspectedBeneficDefense { get; } = new BaseAction(ActionID.AspectedBenefic, true, isEot: true)
+    static IBaseAction AspectedBeneficDefense { get; } = new BaseAction(ActionID.AspectedBenefic, true, isEot: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = b => b.IsJobCategory(JobRole.Tank),
         TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
     };
 
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
         if (remainTime < Malefic.CastTime + Service.Configuration.CountDownAhead
             && Malefic.CanUse(out var act)) return act;
@@ -44,7 +44,7 @@ internal sealed class AST_Default : AST_Base
     }
 
     [RotationDesc(ActionID.CelestialIntersection, ActionID.Exaltation)]
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //天星交错
         if (CelestialIntersection.CanUse(out act, emptyOrSkipCombo: true)) return true;
@@ -55,7 +55,7 @@ internal sealed class AST_Default : AST_Base
     }
 
     [RotationDesc(ActionID.CollectiveUnconscious)]
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //来个命运之轮
         if (CollectiveUnconscious.CanUse(out act)) return true;
@@ -63,7 +63,7 @@ internal sealed class AST_Default : AST_Base
         return base.DefenceAreaAbility(abilitiesRemaining, out act);
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //Add AspectedBeneficwhen not in combat.
         if (NotInCombatDelay && AspectedBeneficDefense.CanUse(out act)) return true;
@@ -81,7 +81,7 @@ internal sealed class AST_Default : AST_Base
     }
 
     [RotationDesc(ActionID.AspectedHelios, ActionID.Helios)]
-    private protected override bool HealAreaGCD(out IAction act)
+    protected override bool HealAreaGCD(out IAction act)
     {
         //阳星相位
         if (AspectedHelios.CanUse(out act)) return true;
@@ -93,7 +93,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (base.EmergencyAbility(abilityRemain, nextGCD, out act)) return true;
 
@@ -120,7 +120,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
-    private protected override bool GeneralAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool GeneralAbility(byte abilitiesRemaining, out IAction act)
     {
         //如果当前还没有卡牌，那就抽一张
         if (Draw.CanUse(out act)) return true;
@@ -135,7 +135,7 @@ internal sealed class AST_Default : AST_Base
     }
 
     [RotationDesc(ActionID.AspectedBenefic, ActionID.Benefic2, ActionID.Benefic)]
-    private protected override bool HealSingleGCD(out IAction act)
+    protected override bool HealSingleGCD(out IAction act)
     {
         //吉星相位
         if (AspectedBenefic.CanUse(out act)
@@ -151,7 +151,7 @@ internal sealed class AST_Default : AST_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (InBurst && Divination.CanUse(out act)) return true;
 
@@ -193,7 +193,7 @@ internal sealed class AST_Default : AST_Base
 
     [RotationDesc(ActionID.EssentialDignity, ActionID.CelestialIntersection, ActionID.CelestialOpposition,
         ActionID.EarthlyStar, ActionID.Horoscope)]
-    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //常规奶
         if (EssentialDignity.CanUse(out act)) return true;
@@ -230,7 +230,7 @@ internal sealed class AST_Default : AST_Base
     }
 
     [RotationDesc(ActionID.CelestialOpposition, ActionID.EarthlyStar, ActionID.Horoscope)]
-    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //群Hot
         if (CelestialOpposition.CanUse(out act)) return true;

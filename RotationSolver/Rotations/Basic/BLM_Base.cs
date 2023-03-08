@@ -305,7 +305,7 @@ namespace RotationSolver.Rotations.Basic
         public static IBaseAction Freeze { get; } = new ElementAction(ActionID.Freeze);
 
         public static float Fire4Time { get; private set; }
-        private protected override void UpdateInfo()
+        protected override void UpdateInfo()
         {
             if (Player.CastActionId == (uint)ActionID.Fire4 && Player.CurrentCastTime < 0.2)
             {
@@ -315,21 +315,21 @@ namespace RotationSolver.Rotations.Basic
         }
 
         [RotationDesc(ActionID.Manaward)]
-        private protected sealed override bool DefenseSingleGCD(out IAction act)
+        protected sealed override bool DefenseSingleGCD(out IAction act)
         {
             if (Manaward.CanUse(out act)) return true;
             return base.DefenseSingleGCD(out act);
         }
 
         [RotationDesc(ActionID.Addle)]
-        private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+        protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
         {
             if (Addle.CanUse(out act)) return true;
             return false;
         }
 
         [RotationDesc(ActionID.AetherialManipulation)]
-        private protected sealed override bool MoveForwardGCD(out IAction act)
+        protected sealed override bool MoveForwardGCD(out IAction act)
         {
             if (AetherialManipulation.CanUse(out act, mustUse: true)) return true;
             return base.MoveForwardGCD(out act);

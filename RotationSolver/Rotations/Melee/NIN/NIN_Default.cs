@@ -21,7 +21,7 @@ internal sealed class NIN_Default : NIN_Base
 
     private static INinAction _ninactionAim = null;
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("UseHide", true, "Use hide")
@@ -231,7 +231,7 @@ internal sealed class NIN_Default : NIN_Base
         return false;
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         if (IsLastAction(false, DotonChi, SuitonJin,
             RabbitMedium, FumaShuriken, Katon, Raiton,
@@ -289,13 +289,13 @@ internal sealed class NIN_Default : NIN_Base
     }
 
     [RotationDesc(ActionID.ForkedRaiju)]
-    private protected override bool MoveForwardGCD(out IAction act)
+    protected override bool MoveForwardGCD(out IAction act)
     {
         if (ForkedRaiju.CanUse(out act)) return true;
         return base.MoveForwardGCD(out act);
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
         if (!InCombat || Service.IconReplacer.OriginalHook(2260) != 2260) return false;

@@ -15,7 +15,7 @@ internal sealed class SMN_Default : SMN_Base
 
     public override string RotationName => "Default";
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetCombo("addSwiftcast", 0, "Use Swiftcast", "No", "Wind", "Fire", "All")
@@ -32,14 +32,14 @@ internal sealed class SMN_Default : SMN_Base
     protected override bool CanHealSingleSpell => false;
 
     [RotationDesc(ActionID.CrimsonCyclone)]
-    private protected override bool MoveForwardGCD(out IAction act)
+    protected override bool MoveForwardGCD(out IAction act)
     {
         //火神突进
         if (CrimsonCyclone.CanUse(out act, mustUse: true)) return true;
         return base.MoveForwardGCD(out act);
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //宝石兽召唤
         if (SummonCarbuncle.CanUse(out act)) return true;
@@ -102,7 +102,7 @@ internal sealed class SMN_Default : SMN_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (InBurst)
         {
@@ -133,7 +133,7 @@ internal sealed class SMN_Default : SMN_Base
 
         return false;
     }
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //即刻进循环
         switch (Configs.GetCombo("addSwiftcast"))
@@ -164,7 +164,7 @@ internal sealed class SMN_Default : SMN_Base
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
         if (remainTime <= 30 && SummonCarbuncle.CanUse(out _)) return SummonCarbuncle;
         //1.5s预读毁3

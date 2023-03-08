@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
-internal abstract partial class CustomRotation
+public abstract partial class CustomRotation
 {
     public bool TryInvoke(out IAction newAction)
     {
@@ -53,27 +53,26 @@ internal abstract partial class CustomRotation
 
         IAction act = GCD(abilityRemain, helpDefenseAOE, helpDefenseSingle);
 
-        if (act != null && act is BaseAction GcdAction)
+        OverlayWindow.MeleeAction = null;
+        if (act != null && act is IBaseAction GcdAction)
         {
-            //Sayout!
-            if (GcdAction.EnermyPositonal != EnemyPositional.None && GcdAction.Target.HasPositional()
-                 && !Player.HasStatus(true, StatusID.TrueNorth))
+            if (GcdAction.IsMeleeAction())
             {
-                if (CheckAction(GcdAction.ID))
+                OverlayWindow.MeleeAction = GcdAction;
+                //Sayout!
+                if (GcdAction.EnermyPositonal != EnemyPositional.None && GcdAction.Target.HasPositional()
+                     && !Player.HasStatus(true, StatusID.TrueNorth))
                 {
-                    string positional = GcdAction.EnermyPositonal.ToName();
-                    if (Service.Configuration.SayPotional) Watcher.Speak(positional);
-                    if (Service.Configuration.FlytextPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    if (CheckAction(GcdAction.ID))
                     {
-                        IconId = GcdAction.IconID,
-                    });
-                    OverlayWindow.EnemyLocationTarget = GcdAction.Target;
-                    OverlayWindow.ShouldPositional = GcdAction.EnermyPositonal;
+                        string positional = GcdAction.EnermyPositonal.ToName();
+                        if (Service.Configuration.SayPotional) Watcher.Speak(positional);
+                        if (Service.Configuration.FlytextPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                        {
+                            IconId = GcdAction.IconID,
+                        });
+                    }
                 }
-            }
-            else
-            {
-                OverlayWindow.ShouldPositional = EnemyPositional.None;
             }
 
             if (abilityRemain == 0 || ActionUpdater.WeaponTotal < ActionUpdater._lastCastingTotal) return GcdAction;
@@ -84,18 +83,13 @@ internal abstract partial class CustomRotation
         }
         else if (act == null)
         {
-            OverlayWindow.ShouldPositional = EnemyPositional.None;
             if (Ability(abilityRemain, Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
             return null;
-        }
-        else
-        {
-            OverlayWindow.ShouldPositional = EnemyPositional.None;
         }
         return act;
     }
 
-    private protected virtual IAction CountDownAction(float remainTime) => null;
+    protected virtual IAction CountDownAction(float remainTime) => null;
 
 
     uint _lastSayingGCDAction;

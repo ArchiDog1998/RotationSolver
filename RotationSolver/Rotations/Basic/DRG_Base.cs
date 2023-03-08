@@ -68,7 +68,10 @@ internal abstract class DRG_Base : CustomRotation.CustomRotation
     /// <summary>
     /// π·¥©º‚
     /// </summary>
-    public static IBaseAction PiercingTalon { get; } = new BaseAction(ActionID.PiercingTalon);
+    public static IBaseAction PiercingTalon { get; } = new BaseAction(ActionID.PiercingTalon)
+    {
+        FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
+    };
 
     /// <summary>
     /// À¿ÃÏ«π
@@ -192,7 +195,7 @@ internal abstract class DRG_Base : CustomRotation.CustomRotation
 
 
     [RotationDesc(ActionID.Feint)]
-    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
         return false;
