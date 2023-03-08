@@ -44,8 +44,12 @@ namespace RotationSolver.Commands
                     DoRotationCommand(customCombo, str);
                     break;
 
-                case OtherCommandType.Actions:
+                case OtherCommandType.DoActions:
                     DoActionCommand(str);
+                    break;
+
+                case OtherCommandType.ToggleActions:
+                    ToggleActionCommand(str);
                     break;
 
                 case OtherCommandType.Settings:
@@ -63,6 +67,25 @@ namespace RotationSolver.Commands
                 //Say out.
                 Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeAutoBurst,
                     Service.Configuration.AutoBurst));
+            }
+        }
+
+        private static void ToggleActionCommand(string str)
+        {
+            foreach (var act in RotationUpdater.RightRotationBaseActions)
+            {
+                if (str == act.Name)
+                {
+                    act.IsEnabled = !act.IsEnabled;
+
+                    //Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
+                    //    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    //    {
+                    //        IconId = act.IconID,
+                    //    });
+
+                    return;
+                }
             }
         }
 

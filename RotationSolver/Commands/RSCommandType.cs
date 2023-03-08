@@ -26,6 +26,7 @@
     {
         Settings,
         Rotations,
-        Actions,
+        DoActions,
+        ToggleActions,
     }
 }

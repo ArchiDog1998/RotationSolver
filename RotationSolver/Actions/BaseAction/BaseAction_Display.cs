@@ -16,7 +16,12 @@ namespace RotationSolver.Actions.BaseAction
             if (IsTimeline) RotationConfigWindow.ActiveAction = this;
         }, otherThing: () =>
         {
-            if (IsTimeline) OtherCommandType.Actions.DisplayCommandHelp($"{this}-{5}",
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            OtherCommandType.ToggleActions.DisplayCommandHelp(this.ToString());
+
+            if (IsTimeline) OtherCommandType.DoActions.DisplayCommandHelp($"{this}-{5}",
                type => string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, this), false);
 
 #if DEBUG
